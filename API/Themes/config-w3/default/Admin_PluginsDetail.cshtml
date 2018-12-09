@@ -1,0 +1,241 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<NBrightDNN.NBrightRazor>
+@using System
+@using System.Collections.Generic
+@using System.Web.Razor.Parser.SyntaxTree
+@using System.Xml
+@using DotNetNuke.Common
+@using DotNetNuke.Entities.Portals
+@using NBrightCore.common
+@using NBrightDNN
+@using NBrightDNN.render
+@using Nevoweb.DNN.NBrightBuy.Components
+@using DNNrocketAPI;
+
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{
+    var plugin = (PluginRecord)Model.List.First();
+}
+
+
+<span class="w3-section" id="buttonsrequired" style="display:none;">
+    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="plugins_admin_save" s-post="#pluginsdatasection" s-before="PrePostInterfaceList">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="plugins_admin_delete" s-post="#pluginsdatasection" s-return="#contentplaceholder" s-after="reloadpluginlist">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
+    <button class="w3-button w3-sand w3-padding-8 simplisity_click" s-cmd="plugins_admin_getlist" s-fields="selecteditemid:,theme:config-w3,template:Admin_Plugins.cshtml,ajaxprovider:plugins2" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdReturnButton")</button>
+</span>
+
+<div class="w3-container">
+
+    <button onclick="AccordianFunction('pluginsdatasection')" class="w3-button w3-block w3-left-align w3-blue">
+        <i class="w3-margin-right fa fa-caret-down"></i>@ResourceKey("Plugins.plugins")
+    </button>
+
+    <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+    <div id="pluginsdatasection" class="w3-container w3-hide w3-margin w3-show">
+
+        <input id="itemid" type="hidden" value="@plugin.Info().ItemID" />
+        <input id="editlanguage" type="hidden" value="@plugin.Info().Lang" />
+        <input id="index" type="hidden" value="@plugin.Info().GetXmlPropertyInt("genxml/hidden/index").ToString()" />
+        <input id="ajaxprovider" type="hidden" value="plugins2" />
+
+        <!-- postback fields to keep ajax populated data for update: datatype='coded' so we don't corrupt the return XML -->
+        <input id="xmlupdateparamdata" type="hidden" datatype="coded" value="" />
+        <input id="xmlupdatemodeldata" type="hidden" datatype="coded" value="" />
+        <input id="uilang1" type="hidden" value="@Utils.GetCurrentCulture()" />
+        
+        <div id="plugins" class="">
+
+            <div class="w3-card w3-light-grey w3-padding-large">
+
+                <div class="w3-row-padding">
+                    <div class="w3-third">
+                        <label class="">@ResourceKey("Plugins.lblctrl")</label>
+                        @TextBox(plugin.Info(), "genxml/textbox/ctrl", "class='w3-input w3-border' maxlength='50'")
+                    </div>
+                    <div class="w3-third">
+                        <label class="">@ResourceKey("Plugins.lblname")</label>
+                        @TextBox(plugin.Info(), "genxml/textbox/name", "class='w3-input w3-border' maxlength='50'")
+                    </div>
+                    <div class="w3-third">
+                        <label class="">@ResourceKey("Plugins.lblicon")</label>
+                        @TextBox(plugin.Info(), "genxml/textbox/icon", "class='w3-input w3-border' maxlength='50'")
+                    </div>
+                </div>
+                <div class="w3-row-padding">
+                    <div class="w3-half">
+                        <label class="">@ResourceKey("Plugins.lblpath")</label>
+                        @TextBox(plugin.Info(), "genxml/textbox/path", "class='w3-input w3-border' maxlength='350'")
+                    </div>
+                    <div class="w3-half">
+                        <label class="">@ResourceKey("Plugins.lblhelp")</label>
+                        @TextBox(plugin.Info(), "genxml/textbox/help", "class='w3-input w3-border' ")
+                    </div>
+                </div>
+
+                <div class="w3-row-padding">
+                    <div class="w3-half">
+                        <label class="">@ResourceKey("Plugins.lblgroup")</label>
+                        @TextBox(plugin.Info(), "genxml/textbox/group", "class='w3-input w3-border' maxlength='50'")
+                    </div>
+                    <div class="w3-half">
+                        <label class="">@ResourceKey("Plugins.systemcode")</label>
+                        @TextBox(plugin.Info(), "genxml/textbox/systemcode", "class='w3-input w3-border' ")
+                    </div>
+                </div>
+
+                <div class="w3-row-padding">
+                    <label class="">@ResourceKey("Plugins.lbldescription")</label>
+                    @TextArea(plugin.Info(), "genxml/textbox/description", "class='w3-input w3-border' height='100'")
+                </div>
+
+                <div class="w3-row-padding w3-margin">
+                    <div class="w3-quarter">
+                        <label class="">@ResourceKey("Plugins.lblhidden")</label>
+                        @CheckBox(plugin.Info(), "genxml/checkbox/hidden", "", "class='w3-check'")
+                    </div>
+                    <div class="w3-row-padding w3-half">
+                        @CheckBoxList(plugin.Info(), "genxml/checkboxlist/securityroles", ResourceKey("DNNrocket.roles").ToString(), ResourceKey("DNNrocket.roles").ToString(), "")
+                    </div>
+                    <div class="w3-quarter w3-right-align">
+                        @plugin.Info().GUIDKey / @plugin.Info().ItemID
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <button onclick="AccordianFunction('Interface')" class="w3-button w3-block w3-left-align w3-blue">
+        <i class="w3-margin-right fa fa-caret-down"></i>@ResourceKey("Plugins.interfaces")
+    </button>
+
+    <div id="Interface" class="w3-container w3-hide w3-show">
+        <div class="w3-container">
+            <div class="w3-margin">
+                <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="plugins_addpluginsmodels" s-fields="selecteditemid:@plugin.Info().ItemID,themefolder:config-w3,razortemplate:Admin_PluginsDetail.cshtml,ajaxprovider:plugins2" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdAddButton")</a>
+                <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="interfacesbin" s-return="#plugininterfaces" s-undoselector=".interfacedata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+            </div>
+
+            <ul id="plugininterfaces" class="w3-ul">
+
+                @{
+                    var lp1 = 0;
+                }
+                @foreach (var nbiModel in plugin.GetInterfaces())
+                {
+                    lp1 += 1;
+                    <li class="interfacedata w3-card w3-margin w3-display-container">
+                        <a href="javascript:void(0)" class="w3-display-right simplisity_itemremove" s-recylebin="interfacesbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+                        <a href="javascript:void(0)" class="w3-display-topleft simplisity_itemup"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
+                        <a href="javascript:void(0)" class="w3-display-bottomleft simplisity_itemdown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
+                        <div class="w3-row">
+                            <div class="w3-padding w3-half">
+                                <label class="">@ResourceKey("Plugins.assembly")</label>
+                                @TextBox(nbiModel, "genxml/textbox/assembly_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                                <label class="">@ResourceKey("Plugins.namespaceclass")</label>
+                                @TextBox(nbiModel, "genxml/textbox/namespaceclass_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                            </div>
+                            <div class="w3-padding w3-third">
+                                <label class="">@ResourceKey("Plugins.lblprovidertype")</label>
+                                @DropDownList(nbiModel, "genxml/dropdownlist/providertype_" + lp1, ResourceKey("Plugins.providertype", "", "datavalue").ToString(), ResourceKey("Plugins.providertype", "", "data").ToString(), "class='w3-select w3-border'")
+                                <div class="w3-row">
+                                    <div class="w3-margin-top w3-twothird">
+                                        <label class="">@ResourceKey("DNNrocket.Active")</label>
+                                        @CheckBox(nbiModel, "genxml/checkbox/active_" + lp1, "", "class='w3-input w3-border'")
+                                        <label class="">@ResourceKey("DNNrocket.Default")</label>
+                                        @CheckBox(nbiModel, "genxml/checkbox/default_" + lp1, "", "class='w3-input w3-border'")
+                                    </div>
+                                    <div class="w3-padding w3-margin-top w3-third">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+
+        </div>
+    </div>
+
+    <button onclick="AccordianFunction('parameters')" class="w3-button w3-block w3-left-align w3-blue">
+        <i class="w3-margin-right fa fa-caret-down"></i>@ResourceKey("Plugins.parameters")
+    </button>    
+
+    <div id="parameters" class="w3-container w3-hide w3-show">
+        <div class="w3-container">
+            <div class="w3-margin">
+                <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="plugins_addpluginsparam" s-fields="selecteditemid:@plugin.Info().ItemID,themefolder:config-w3,razortemplate:Admin_PluginsDetail.cshtml,ajaxprovider:plugins2" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdAddButton")</a>
+                <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="parametersbin" s-return="#pluginparameters" s-undoselector=".parameterdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+            </div>
+
+            <ul id="pluginparameters" class="w3-ul">
+
+                @{
+                    var lp2 = 0;
+                }
+                @foreach (var nbiModel in plugin.GetParameters())
+                {
+                    lp2 += 1;
+                    <li class="parameterdata w3-card w3-margin w3-display-container">
+                        <a href="javascript:void(0)" class="w3-display-right simplisity_itemremove"  s-recylebin="parametersbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+                        <a href="javascript:void(0)" class="w3-display-topleft simplisity_itemup"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
+                        <a href="javascript:void(0)" class="w3-display-bottomleft simplisity_itemdown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
+                        <div class="w3-row">
+                            <div class="w3-padding w3-half">
+                                <label class="">@ResourceKey("Plugins.Name")</label>
+                                @TextBox(nbiModel, "genxml/textbox/name_" + lp2, "class='w3-input w3-border' maxlength='250' ", "")
+                            </div>
+                            <div class="w3-padding w3-third">
+                                <div class="w3-row">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+
+        </div>
+    </div>
+
+
+    <button onclick="AccordianFunction('XML')" class="w3-button w3-block w3-left-align w3-blue">
+        <i class="w3-margin-right fa fa-caret-down"></i>XML
+    </button>
+
+    <div id="XML" class="w3-container w3-hide w3-margin">
+        <div class="w3-card-4 w3-padding w3-codespan">
+            @AdminPanelUtils.PrintXML(plugin.Info().XMLData)
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    function AccordianFunction(id) {
+        var x = document.getElementById(id);
+        if (x.className.indexOf("w3-show") === -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+
+    function PrePostInterfaceList() {
+        $('#xmlupdatemodeldata').val(simplisity_getxmlitems('#plugininterfaces', '.interfacedata', ''));
+        $('#xmlupdateparamdata').val(simplisity_getxmlitems('#pluginparameters', '.parameterdata', ''));        
+    }
+
+    function reloadpluginlist() {
+        $('#contentplaceholder').getSimplisity('/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx', 'plugins_admin_getlist', 'selecteditemid:,theme:config-w3,template:Admin_Plugins.cshtml');
+    };
+
+    $(document).ready(function () {
+        $("#menubuttons").panelButtons('#buttonsrequired');
+        $(':checkbox').attr('class', 'w3-check');
+    });
+
+
+</script>

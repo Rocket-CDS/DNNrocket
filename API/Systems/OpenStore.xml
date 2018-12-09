@@ -1,0 +1,6 @@
+﻿<genxml>
+  <systemname>OpenStore</systemname>
+  <systemtable>NBrightBuy</systemtable>
+  <systempath>/DesktopModules/NBright/NBrigthBuy</systempath>
+  <apiurl>/DesktopModules/NBright/NBrigthBuy/XmlConnector.ashx</apiurl>
+</genxml>

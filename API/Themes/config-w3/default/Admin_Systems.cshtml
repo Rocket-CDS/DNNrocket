@@ -1,0 +1,71 @@
+@inherits NBrightBuy.render.NBrightBuyRazorTokens<Simplisity.SimplisityRazor>
+@using DotNetNuke.Entities.Users
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+@using Simplisity;
+@using DotNetNuke.Entities.Portals
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+
+<div class="w3-container">
+
+    <div class="w3-row-padding plugins">
+
+        <span class="w3-section" id="buttonsrequired" style="display:none;">
+            <!-- display no buttons. -->
+        </span>
+
+        <header class="w3-container w3-blue">
+            <h5>DNNrocket @ResourceKey("Plugins.systems") Portal: @PortalSettings.Current.PortalId</h5>
+        </header>
+
+        <div id="Interface" class="w3-container w3-hide w3-show">
+            <div class="w3-container">
+
+                <ul id="systems" class="w3-ul">
+
+                    @{
+                        var lp1 = 0;
+                    }
+                    @foreach (SimplisityInfo nbi in Model.List)
+                    {
+                        lp1 += 1;
+                        <li class="systemdata w3-card w3-margin w3-display-container">
+                            <div class="w3-row">
+                                <div class="w3-padding w3-quarter">
+                                    <label class="">@ResourceKey("Plugins.systemname")</label>
+                                    @TextBox(nbi, "genxml/systemname_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                                    <label class="">@ResourceKey("Plugins.systemtable")</label>
+                                    @TextBox(nbi, "genxml/systemtable_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                                </div>
+                                <div class="w3-padding w3-half">
+                                    <label class="">@ResourceKey("Plugins.systempath")</label>
+                                    @TextBox(nbi, "genxml/systempath_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                                    <label class="">@ResourceKey("Plugins.apiurl")</label>
+                                    @TextBox(nbi, "genxml/apiurl_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                                    <label class="">@ResourceKey("Plugins.licensekey")</label>
+                                    @TextBox(nbi, "genxml/licensekey_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                                </div>
+                                <div class="w3-padding w3-quarter">
+                                    <a class="simplisity_click" s-cmd="plugins_admin_getlist" s-fields="selecteditemid:,theme:config-w3,template:Admin_Plugins.cshtml,ajaxprovider:plugins2" s-return="#contentplaceholder" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#menubuttons").panelButtons('#buttonsrequired');
+    });
+
+</script>
