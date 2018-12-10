@@ -50,6 +50,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\RazorEngine.dll</HintPath>
     </Reference>
+    <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Simplisity">
       <HintPath>..\..\..\bin\Simplisity.dll</HintPath>
     </Reference>

@@ -285,4 +285,22 @@
   <data name="cmdUndoButton.Text" xml:space="preserve">
     <value>&lt;i title="Add New" class="fa fa-undo fa-fw fa-lg"&gt;&lt;/i&gt; Undo</value>
   </data>
+  <data name="apiurl.Text" xml:space="preserve">
+    <value>API url</value>
+  </data>
+  <data name="licensekey.Text" xml:space="preserve">
+    <value>License Key</value>
+  </data>
+  <data name="systemname.Text" xml:space="preserve">
+    <value>System Name</value>
+  </data>
+  <data name="systempath.Text" xml:space="preserve">
+    <value>System Path</value>
+  </data>
+  <data name="systems.Text" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="systemtable.Text" xml:space="preserve">
+    <value>System Table</value>
+  </data>
 </root>
