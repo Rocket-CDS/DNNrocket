@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace DNNrocketAPI.Interfaces
 {
-    public class DataInterface
-    {
 
-        public abstract class NBrightDataCtrlInterface
+        public abstract class DNNrocketCtrlInterface
         {
             public abstract List<SimplisityInfo> GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0, string lang = "");
             public abstract int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "");
@@ -20,5 +18,4 @@ namespace DNNrocketAPI.Interfaces
             public abstract void Delete(int itemId);
             public abstract void CleanData();
         }
-    }
 }

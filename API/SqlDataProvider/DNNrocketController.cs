@@ -10,6 +10,8 @@ using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN.render;
 using NBrightDNN.SqlDataProvider;
+using DNNrocketAPI.Interfaces;
+using Simplisity;
 
 namespace DNNrocketAPI
 {
@@ -42,14 +44,14 @@ namespace DNNrocketAPI
         /// <param name="itemId">itmeid of base genxml</param>
         /// <param name="lang">Culturecode of data to be injected into base genxml</param>
         /// <returns></returns>
-        public override NBrightInfo Get(int itemId, string lang = "")
+        public override SimplisityInfo Get(int itemId, string lang = "")
         {
-            return CBO.FillObject<NBrightInfo>(DataProvider.Instance().Get(itemId, lang));
+            return CBO.FillObject<SimplisityInfo>(DataProvider.Instance().Get(itemId, lang));
         }
 
-        public override NBrightInfo GetData(int itemId)
+        public override SimplisityInfo GetData(int itemId)
         {
-            return CBO.FillObject<NBrightInfo>(DataProvider.Instance().GetData(itemId));
+            return CBO.FillObject<SimplisityInfo>(DataProvider.Instance().GetData(itemId));
         }
 
 
@@ -68,9 +70,9 @@ namespace DNNrocketAPI
         /// <param name="typeCodeLang"></param>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public override List<NBrightInfo> GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0, string lang = "")
+        public override List<SimplisityInfo> GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0, string lang = "")
         {
-            return CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetList(portalId, moduleId, typeCode, sqlSearchFilter, sqlOrderBy, returnLimit, pageNumber, pageSize, recordCount, lang));
+            return CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, typeCode, sqlSearchFilter, sqlOrderBy, returnLimit, pageNumber, pageSize, recordCount, lang));
         }
 
 	    /// <summary>
@@ -93,7 +95,7 @@ namespace DNNrocketAPI
         /// </summary>
         /// <param name="objInfo"></param>
         /// <returns></returns>
-        public override int Update(NBrightInfo objInfo)
+        public override int Update(SimplisityInfo objInfo)
         {
             objInfo.ModifiedDate = DateTime.Now;
             return DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang);
@@ -109,7 +111,7 @@ namespace DNNrocketAPI
         /// <param name="entityTypeCodeLang"></param>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public NBrightInfo GetByType(int portalId, int moduleId, string entityTypeCode, string selUserId = "", string lang = "")
+        public SimplisityInfo GetByType(int portalId, int moduleId, string entityTypeCode, string selUserId = "", string lang = "")
         {
             var strFilter = "";
             if (selUserId != "")
@@ -117,10 +119,10 @@ namespace DNNrocketAPI
                 strFilter += " and NB1.UserId = " + selUserId + " ";
             }
 
-            var l = CBO.FillCollection<NBrightInfo>(DataProvider.Instance().GetList(portalId, moduleId, entityTypeCode, strFilter, "", 1, 1, 1, 1, lang));
+            var l = CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, entityTypeCode, strFilter, "", 1, 1, 1, 1, lang));
             if (l.Count >= 1)
             {
-                NBrightInfo nbi = l[0];
+                SimplisityInfo nbi = l[0];
                 if (lang != "" && nbi.Lang != lang) return null; // GetByType will return invalid langauge if langaugue record does not exists, so test for it.
                 return l[0];
             }
@@ -136,7 +138,7 @@ namespace DNNrocketAPI
         /// <param name="guidKey"></param>
         /// <param name="selUserId"></param>
         /// <returns></returns>
-        public NBrightInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "")
+        public SimplisityInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "")
         {
             var strFilter = " and NB1.GUIDKey = '" + guidKey + "' ";
             if (selUserId != "")
@@ -158,41 +160,41 @@ namespace DNNrocketAPI
         }
 
 
-        public NBrightInfo GetData(int itemId, string typeCodeLang, string lang = "",bool debugMode = false)
+        public SimplisityInfo GetData(int itemId, string typeCodeLang, string lang = "",bool debugMode = false)
         {
             if (lang == "") lang = Utils.GetCurrentCulture();
             // get cache data
             var strCacheKey = itemId.ToString("") + "*" + typeCodeLang + "*" + "*" + lang;
-            NBrightInfo rtnInfo = null;
+            SimplisityInfo rtnInfo = null;
             if (debugMode == false)
             {
                 var obj = Utils.GetCache(strCacheKey);
-                if (obj != null) rtnInfo = (NBrightInfo)obj;
+                if (obj != null) rtnInfo = (SimplisityInfo)obj;
             }
 
             if (rtnInfo == null)
             {
-                rtnInfo = CBO.FillObject<NBrightInfo>(DataProvider.Instance().Get(itemId, lang)); 
+                rtnInfo = CBO.FillObject<SimplisityInfo>(DataProvider.Instance().Get(itemId, lang)); 
                 if (debugMode == false) Utils.SetCache(strCacheKey, rtnInfo);
             }
             return rtnInfo;
         }
 
-        public NBrightInfo GetDataLang(int parentitemId, string lang = "", bool debugMode = false)
+        public SimplisityInfo GetDataLang(int parentitemId, string lang = "", bool debugMode = false)
         {
             if (lang == "") lang = Utils.GetCurrentCulture();
             // get cache data
             var strCacheKey = "datalang*" + parentitemId.ToString("") + "*" + lang;
-            NBrightInfo rtnInfo = null;
+            SimplisityInfo rtnInfo = null;
             if (debugMode == false)
             {
                 var obj = Utils.GetCache(strCacheKey);
-                if (obj != null) rtnInfo = (NBrightInfo)obj;
+                if (obj != null) rtnInfo = (SimplisityInfo)obj;
             }
 
             if (rtnInfo == null)
             {
-                rtnInfo = CBO.FillObject<NBrightInfo>(DataProvider.Instance().GetDataLang(parentitemId, lang));
+                rtnInfo = CBO.FillObject<SimplisityInfo>(DataProvider.Instance().GetDataLang(parentitemId, lang));
                 if (debugMode == false) Utils.SetCache(strCacheKey, rtnInfo);
             }
             return rtnInfo;
@@ -248,7 +250,7 @@ namespace DNNrocketAPI
         /// <param name="pageSize"></param>
         /// <param name="recordCount"></param>
         /// <returns></returns>
-        public List<NBrightInfo> GetDataList(Repeater rp1, int portalId, int moduleId, string entityTypeCode,  string cultureCode, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
+        public List<SimplisityInfo> GetDataList(Repeater rp1, int portalId, int moduleId, string entityTypeCode,  string cultureCode, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
         {
             var strFilters = GenXmlFunctions.GetSqlSearchFilters(rp1);
             var strOrderBy = GenXmlFunctions.GetSqlOrderBy(rp1);
@@ -275,20 +277,20 @@ namespace DNNrocketAPI
 	    /// <param name="pageSize"></param>
 	    /// <param name="recordCount"></param>
 	    /// <returns></returns>
-	    public List<NBrightInfo> GetDataList(int portalId, int moduleId, string entityTypeCode, string cultureCode, string strFilters, string strOrderBy, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
+	    public List<SimplisityInfo> GetDataList(int portalId, int moduleId, string entityTypeCode, string cultureCode, string strFilters, string strOrderBy, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
         {
             if (selUserId != "")
             {
                 strFilters += " and UserId = " + selUserId + " ";
             }
 
-            List<NBrightInfo> l = null;
+            List<SimplisityInfo> l = null;
 
             // get cache template 
             var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + Utils.GetCurrentCulture();
             if (debugMode == false)
             {
-                l = (List<NBrightInfo>)Utils.GetCache(strCacheKey);
+                l = (List<SimplisityInfo>)Utils.GetCache(strCacheKey);
             }
 
             if (l == null)
@@ -414,14 +416,14 @@ namespace DNNrocketAPI
             }
         }
 
-        public NBrightInfo GetSinglePageData(string GuidKey, string typeCode, string lang)
+        public SimplisityInfo GetSinglePageData(string GuidKey, string typeCode, string lang)
         {
             DataCache.ClearCache(); // clear ALL cache.
             var info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
             if (info == null)
             {
                 // create record if not in DB
-                info = new NBrightInfo(true);
+                info = new SimplisityInfo(true);
                 info.GUIDKey = GuidKey;
                 info.TypeCode = typeCode;
                 info.ModuleId = -1;
@@ -437,7 +439,7 @@ namespace DNNrocketAPI
                     nbilang = GetDataLang(info.ItemID, lg);
                     if (nbilang == null)
                     {
-                        nbilang = new NBrightInfo(true);
+                        nbilang = new SimplisityInfo(true);
                         nbilang.GUIDKey = "";
                         nbilang.TypeCode = typeCode + "LANG";
                         nbilang.ParentItemId = info.ItemID;
