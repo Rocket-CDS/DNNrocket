@@ -9,11 +9,10 @@ using NBrightCore.common;
 using NBrightCore.render;
 using NBrightDNN;
 using DotNetNuke.Common.Utilities;
-using Nevoweb.DNN.NBrightBuy.Components;
-using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
 using DNNrocketAPI;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using Simplisity;
 
 namespace DNNrocketAPI
 {
@@ -83,19 +82,18 @@ namespace DNNrocketAPI
 
             try
             {
-                    var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                    var ajaxInfo = DNNrocketUtils.GetAjaxFields(context);
                     var list = PluginUtils.GetPluginList();
                     return RenderPluginAdminList(list, ajaxInfo, 0);
             }
             catch (Exception ex)
             {
-                Logging.LogException(ex);
                 return ex.ToString();
             }
             return "";
         }
 
-        public static String RenderPluginAdminList(List<NBrightInfo> list, NBrightInfo ajaxInfo, int recordCount)
+        public static String RenderPluginAdminList(List<SimplisityInfo> list, SimplisityInfo ajaxInfo, int recordCount)
         {
 
             try
@@ -113,15 +111,8 @@ namespace DNNrocketAPI
                     {
                         passSettings.Add(s.Key, s.Value);
                     }
-                    foreach (var s in StoreSettings.Current.Settings()) // copy store setting, otherwise we get a byRef assignement
-                    {
-                        if (passSettings.ContainsKey(s.Key))
-                            passSettings[s.Key] = s.Value;
-                        else
-                            passSettings.Add(s.Key, s.Value);
-                    }
 
-                    strOut = NBrightBuyUtils.RazorTemplRenderList(razortemplate, 0, "", list, TemplateRelPath, themeFolder, Utils.GetCurrentCulture(), passSettings);
+                    strOut = DNNrocketUtils.RazorTemplRenderList(razortemplate, 0, "", list, TemplateRelPath, themeFolder, Utils.GetCurrentCulture(), passSettings);
 
                     return strOut;
             }
@@ -136,7 +127,7 @@ namespace DNNrocketAPI
         {
             try
             {
-                    var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                    var ajaxInfo = DNNrocketUtils.GetAjaxFields(context);
 
                     var strOut = "";
                     var selecteditemid = ajaxInfo.GetXmlProperty("genxml/hidden/selecteditemid");
@@ -146,13 +137,13 @@ namespace DNNrocketAPI
                         if (themeFolder == "") themeFolder = "config";
                         var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
 
-                        var passSettings = NBrightBuyUtils.GetPassSettings(ajaxInfo);
+                        var passSettings = DNNrocketUtils.GetPassSettings(ajaxInfo);
 
                         var objCtrl = new NBrightBuyController();
                         var info = objCtrl.GetData(Convert.ToInt32(selecteditemid));
                         var pluginRecord = new PluginRecord(info);
 
-                        strOut = NBrightBuyUtils.RazorTemplRender(razortemplate, 0, "", pluginRecord, TemplateRelPath, themeFolder, Utils.GetCurrentCulture(), passSettings);
+                        strOut = DNNrocketUtils.RazorTemplRender(razortemplate, 0, "", pluginRecord, TemplateRelPath, themeFolder, Utils.GetCurrentCulture(), passSettings);
                     }
                     return strOut;
             }
@@ -166,16 +157,16 @@ namespace DNNrocketAPI
         {
             try
             {
-                    var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                    var ajaxInfo = DNNrocketUtils.GetAjaxFields(context);
 
                     var strOut = "";
                     var themeFolder = ajaxInfo.GetXmlProperty("genxml/hidden/themefolder");
                     if (themeFolder == "") themeFolder = "config";
                     var razortemplate = ajaxInfo.GetXmlProperty("genxml/hidden/razortemplate");
 
-                    var passSettings = NBrightBuyUtils.GetPassSettings(ajaxInfo);
+                    var passSettings = DNNrocketUtils.GetPassSettings(ajaxInfo);
 
-                    var info = new NBrightInfo(true);
+                    var info = new SimplisityInfo();
                     info.ItemID = -1;
                     info.Lang = Utils.GetCurrentCulture();
                     info.SetXmlProperty("genxml/hidden/index", "99");
@@ -198,7 +189,7 @@ namespace DNNrocketAPI
         {
             try
             {
-                    var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                    var ajaxInfo = DNNrocketUtils.GetAjaxFields(context);
                     var selecteditemid = ajaxInfo.GetXmlProperty("genxml/hidden/selecteditemid");
                     if (Utils.IsNumeric(selecteditemid))
                     {
@@ -218,7 +209,7 @@ namespace DNNrocketAPI
         {
             try
             {
-                var ajaxInfo = NBrightBuyUtils.GetAjaxInfo(context);
+                var ajaxInfo = DNNrocketUtils.GetAjaxFields(context);
                 var selecteditemid = ajaxInfo.GetXmlProperty("genxml/hidden/selecteditemid");
                 if (Utils.IsNumeric(selecteditemid))
                 {

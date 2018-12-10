@@ -43,7 +43,7 @@ namespace DNNrocketAPI
                         var datain = File.ReadAllText(f);
                         try
                         {
-                            var nbi = new NBrightInfo();
+                            var nbi = new SimplisityInfo();
                             nbi.XMLData = datain;
                             // check if we are injecting multiple
                             var nodlist = nbi.XMLDoc.SelectNodes("genxml");

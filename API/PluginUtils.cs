@@ -14,18 +14,19 @@ using NBrightCore.providers;
 using DotNetNuke.Entities.Users;
 using System.Web;
 using Nevoweb.DNN.NBrightBuy.Components;
+using Simplisity;
 
 namespace DNNrocketAPI
 {
     public class PluginUtils
     {
 
-        public static List<NBrightInfo> GetPluginList()
+        public static List<SimplisityInfo> GetPluginList()
         {
             return GetPluginList(PortalSettings.Current.PortalId);
         }
 
-        public static List<NBrightInfo> GetPluginList(int portalId)
+        public static List<SimplisityInfo> GetPluginList(int portalId)
         {
             var objCtrl = new NBrightBuyController();
             var rtnList = objCtrl.GetList(portalId, -1, "PLUGIN","", "order by nb1.xmldata.value('(genxml/hidden/index)[1]','float')");
@@ -51,8 +52,8 @@ namespace DNNrocketAPI
                 var rtnList = objCtrl.GetList(99999, -1, "PLUGIN", "", "order by nb1.xmldata.value('(genxml/hidden/index)[1]','float')");
                 if (rtnList.Count == 0)
                 {
-                    var pluginList = new List<NBrightInfo>();
-                    var info = new NBrightInfo();
+                    var pluginList = new List<SimplisityInfo>();
+                    var info = new SimplisityInfo();
                     // no menuplugin.xml exists, so must be new install, get new config
                     var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath(StoreSettings.NBrightBuyPath() + "/Plugins");
                     if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath) && File.Exists(pluginfoldermappath + "\\menu.config"))
@@ -72,11 +73,11 @@ namespace DNNrocketAPI
             }
         }
 
-        private static List<NBrightInfo> CreatePortalPlugins(int portalId)
+        private static List<SimplisityInfo> CreatePortalPlugins(int portalId)
         {
-            var pluginList = new List<NBrightInfo>();
+            var pluginList = new List<SimplisityInfo>();
 
-            var info = new NBrightInfo();
+            var info = new SimplisityInfo();
             info.PortalId = portalId;
             
             var templCtrl = NBrightBuyUtils.GetTemplateGetter(portalId, "config");
@@ -110,15 +111,15 @@ namespace DNNrocketAPI
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        private static List<NBrightInfo> CalcSystemPluginList(NBrightInfo info)
+        private static List<SimplisityInfo> CalcSystemPluginList(SimplisityInfo info)
         {
-            var rtnList = new List<NBrightInfo>();
+            var rtnList = new List<SimplisityInfo>();
             var xmlNodeList = info.XMLDoc.SelectNodes("genxml/plugin/*");
             if (xmlNodeList != null)
             {
                 foreach (XmlNode carNod in xmlNodeList)
                 {
-                    var newInfo = new NBrightInfo { XMLData = carNod.OuterXml };
+                    var newInfo = new SimplisityInfo { XMLData = carNod.OuterXml };
                     newInfo.ItemID = rtnList.Count;
                     newInfo.PortalId = 99999;
                     newInfo.SetXmlProperty("genxml/hidden/index", rtnList.Count.ToString(""),TypeCode.Double);
@@ -130,18 +131,18 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        private static List<NBrightInfo> CalcPortalPluginList(NBrightInfo info)
+        private static List<SimplisityInfo> CalcPortalPluginList(SimplisityInfo info)
         {
-            var templCtrl = NBrightBuyUtils.GetTemplateGetter(PortalSettings.Current.PortalId, "config");
+            var templCtrl = GetTemplateGetter(PortalSettings.Current.PortalId, "config");
 
-            var rtnList = new List<NBrightInfo>();
+            var rtnList = new List<SimplisityInfo>();
 
             // get the systemlevel, incase this is an update and we have new system level provider that needs to be added
             // Some systems create their own portal specific menu we assume they don't require new updates from NBS core, so take that if we have one.
             var menupluginsys = templCtrl.GetTemplateData("menuplugin" + PortalSettings.Current.PortalId + ".xml", Utils.GetCurrentCulture(), true, true, false, StoreSettings.Current.Settings());
             // if no portal specific menus exist, take the default
             if (menupluginsys == "") menupluginsys = templCtrl.GetTemplateData("menuplugin.xml", Utils.GetCurrentCulture(), true, true, false, StoreSettings.Current.Settings());
-            var infosys = new NBrightInfo();
+            var infosys = new SimplisityInfo();
             infosys.XMLData = menupluginsys;
             if (infosys.XMLDoc != null)
             {
@@ -150,7 +151,7 @@ namespace DNNrocketAPI
                 {
                     foreach (XmlNode carNod in xmlNodeList2)
                     {
-                        var newInfo = new NBrightInfo { XMLData = carNod.OuterXml };
+                        var newInfo = new SimplisityInfo { XMLData = carNod.OuterXml };
                         newInfo.GUIDKey = newInfo.GetXmlProperty("genxml/textbox/ctrl");
                         var resultsys = rtnList.Where(p => p.GUIDKey == newInfo.GUIDKey);
                         if (!resultsys.Any())
@@ -169,7 +170,7 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        private static void CreateDBrecords(List<NBrightInfo> pluginList,int portalId)
+        private static void CreateDBrecords(List<SimplisityInfo> pluginList,int portalId)
         {
             var objCtrl = new NBrightBuyController();
             foreach (var p in pluginList)
@@ -256,7 +257,7 @@ namespace DNNrocketAPI
                         var datain = File.ReadAllText(f);
                         try
                         {
-                            var nbi = new NBrightInfo();
+                            var nbi = new SimplisityInfo();
                             nbi.XMLData = datain;
                             // check if we are injecting multiple
                             var nodlist = nbi.XMLDoc.SelectNodes("genxml");
@@ -264,7 +265,7 @@ namespace DNNrocketAPI
                             {
                                 foreach (XmlNode nod in nodlist)
                                 {
-                                    var nbi2 = new NBrightInfo();
+                                    var nbi2 = new SimplisityInfo();
                                     nbi2.XMLData = nod.OuterXml;
                                     nbi2.ItemID = -1;
                                     nbi2.GUIDKey = nbi.GetXmlProperty("genxml/textbox/ctrl");
@@ -337,7 +338,7 @@ namespace DNNrocketAPI
                         var datain = File.ReadAllText(f);
                         try
                         {
-                            var nbi = new NBrightInfo();
+                            var nbi = new SimplisityInfo();
                             nbi.XMLData = datain;
                             // check if we are injecting multiple
                             var nodlist = nbi.XMLDoc.SelectNodes("genxml/plugin/genxml");
@@ -423,7 +424,7 @@ namespace DNNrocketAPI
 
         }
 
-        public static bool CheckSecurity(NBrightInfo pluginXml)
+        public static bool CheckSecurity(SimplisityInfo pluginXml)
         {
             var currentuser = UserController.Instance.GetCurrentUserInfo();
             if (currentuser.IsInRole("Administrators"))

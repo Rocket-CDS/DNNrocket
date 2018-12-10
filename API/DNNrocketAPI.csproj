@@ -37,8 +37,8 @@
     <Reference Include="DotNetNuke">
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="NBrightBuy">
-      <HintPath>..\..\..\bin\NBrightBuy.dll</HintPath>
+    <Reference Include="Microsoft.ApplicationBlocks.Data">
+      <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
     <Reference Include="NBrightCore">
       <HintPath>..\..\..\bin\NBrightCore.dll</HintPath>
@@ -71,11 +71,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\APInterface.cs" />
+    <Compile Include="Interfaces\DataInterface.cs" />
     <Compile Include="Interfaces\SystemFunction.cs" />
-    <Compile Include="CtrlInterface.cs" />
+    <Compile Include="PluginInterface.cs" />
     <Compile Include="Interfaces\AjaxInterface.cs" />
     <Compile Include="Interfaces\DNNrocketUtils.cs" />
     <Compile Include="render\DNNrocketTokens.cs" />
+    <Compile Include="SqlDataProvider\DataProvider.cs" />
+    <Compile Include="SqlDataProvider\DNNrocketController.cs" />
+    <Compile Include="SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="SystemData.cs" />
     <Compile Include="PluginData.cs" />
     <Compile Include="PluginUtils.cs" />
@@ -102,6 +107,7 @@
     <Content Include="js\simplisity.js" />
     <Content Include="Systems\OpenStore.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetFileName)" "..\..\..\..\..\bin\$(TargetFileName)"

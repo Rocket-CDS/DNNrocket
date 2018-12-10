@@ -24,25 +24,25 @@ namespace DNNrocketAPI
 {
     public class PluginRecord
     {
-        private NBrightInfo _pluginInfo;
-        public PluginRecord(NBrightInfo pluginInfo)
+        private SimplisityInfo _pluginInfo;
+        public PluginRecord(SimplisityInfo pluginInfo)
         {
             _pluginInfo = pluginInfo;
         }
 
-        public NBrightInfo Info()
+        public SimplisityInfo Info()
         {
             return _pluginInfo;
         }
 
-        public List<NBrightInfo> GetInterfaces()
+        public List<SimplisityInfo> GetInterfaces()
         {
-            var rtnList = new List<NBrightInfo>();
+            var rtnList = new List<SimplisityInfo>();
 
             var interfaces = _pluginInfo.XMLDoc.SelectNodes("genxml/interfaces/*");
             foreach (XmlNode i in interfaces)
             {
-                var nbi = new NBrightInfo();
+                var nbi = new SimplisityInfo();
                 nbi.XMLData = i.OuterXml;
                 nbi.TypeCode = "PLUGININTERFACE";
                 rtnList.Add(nbi);
@@ -50,14 +50,14 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public List<NBrightInfo> GetParameters()
+        public List<SimplisityInfo> GetParameters()
         {
-            var rtnList = new List<NBrightInfo>();
+            var rtnList = new List<SimplisityInfo>();
 
             var parameters = _pluginInfo.XMLDoc.SelectNodes("genxml/parameters/*");
             foreach (XmlNode i in parameters)
             {
-                var nbi = new NBrightInfo();
+                var nbi = new SimplisityInfo();
                 nbi.XMLData = i.OuterXml;
                 nbi.TypeCode = "PLUGINPARAM";
                 rtnList.Add(nbi);
@@ -97,7 +97,7 @@ namespace DNNrocketAPI
                         basefields += xpath + ",";
                 }
 
-                var objInfo = new NBrightInfo(true);
+                var objInfo = new SimplisityInfo(true);
 
                 var fields = basefields.Split(',');
                 foreach (var f in fields.Where(f => f != ""))
@@ -125,7 +125,7 @@ namespace DNNrocketAPI
 
     public class PluginData
     {
-        private List<NBrightInfo> _pluginList;
+        private List<SimplisityInfo> _pluginList;
         private String _cachekey;
 
         public PluginData(int portalId, bool usecache = true)
@@ -136,7 +136,7 @@ namespace DNNrocketAPI
                 var pList = NBrightBuyUtils.GetCache(_cachekey);
                 if (pList != null)
                 {
-                    _pluginList = (List<NBrightInfo>)pList;
+                    _pluginList = (List<SimplisityInfo>)pList;
                 }
                 // if we have zero plugins, try and reload 
                 if (pList == null || !_pluginList.Any())
@@ -154,76 +154,76 @@ namespace DNNrocketAPI
 
         #region "base methods"
 
-        public NBrightInfo GetShippingProviderDefault()
+        public SimplisityInfo GetShippingProviderDefault()
         {
             var l = GetShippingProviders();
             if (l.Count > 0) return l.First().Value;
             return null;
         }
 
-        public Dictionary<String,NBrightInfo> GetShippingProviders(Boolean activeOnly = true)
+        public Dictionary<String,SimplisityInfo> GetShippingProviders(Boolean activeOnly = true)
         {
             return GetProviders("02", activeOnly);
         }
 
-        public Dictionary<String, NBrightInfo> GetTaxProviders(Boolean activeOnly = true)
+        public Dictionary<String, SimplisityInfo> GetTaxProviders(Boolean activeOnly = true)
         {
             return GetProviders("03", activeOnly);
         }
 
-        public Dictionary<String, NBrightInfo> GetPromoProviders(Boolean activeOnly = true)
+        public Dictionary<String, SimplisityInfo> GetPromoProviders(Boolean activeOnly = true)
         {
             return GetProviders("04", activeOnly);
         }
-        public Dictionary<String, NBrightInfo> GetSchedulerProviders(Boolean activeOnly = true)
+        public Dictionary<String, SimplisityInfo> GetSchedulerProviders(Boolean activeOnly = true)
         {
             return GetProviders("05", activeOnly);
         }
-        public Dictionary<String, NBrightInfo> GetEventsProviders(Boolean activeOnly = true)
+        public Dictionary<String, SimplisityInfo> GetEventsProviders(Boolean activeOnly = true)
         {
             return GetProviders("06", activeOnly);
         }
 
-        public Dictionary<String, NBrightInfo> GetPaymentProviders(Boolean activeOnly = true)
+        public Dictionary<String, SimplisityInfo> GetPaymentProviders(Boolean activeOnly = true)
         {
             return GetProviders("07", activeOnly);
         }
 
-        public Dictionary<String, NBrightInfo> GetDiscountCodeProviders(Boolean activeOnly = true)
+        public Dictionary<String, SimplisityInfo> GetDiscountCodeProviders(Boolean activeOnly = true)
         {
             return GetProviders("08", activeOnly);
         }
 
-        public Dictionary<String, NBrightInfo> GetFilterProviders(Boolean activeOnly = true)
+        public Dictionary<String, SimplisityInfo> GetFilterProviders(Boolean activeOnly = true)
         {
             return GetProviders("09", activeOnly);
         }
 
-        public Dictionary<String, NBrightInfo> GetTemplateExtProviders(Boolean activeOnly = true)
+        public Dictionary<String, SimplisityInfo> GetTemplateExtProviders(Boolean activeOnly = true)
         {
             return GetProviders("10", activeOnly);
         }
 
-        public Dictionary<String, NBrightInfo> GetEntityTypeProviders(Boolean activeOnly = true)
+        public Dictionary<String, SimplisityInfo> GetEntityTypeProviders(Boolean activeOnly = true)
         {
             return GetProviders("11", activeOnly);
         }
 
-        public Dictionary<String, NBrightInfo> GetAjaxProviders(Boolean activeOnly = true)
+        public Dictionary<String, SimplisityInfo> GetAjaxProviders(Boolean activeOnly = true)
         {
             return GetProviders("12", activeOnly);
         }
 
 
-        public Dictionary<String, NBrightInfo> GetOtherProviders(Boolean activeOnly = true)
+        public Dictionary<String, SimplisityInfo> GetOtherProviders(Boolean activeOnly = true)
         {
             return GetProviders("99", activeOnly);
         }
 
 
-        private Dictionary<String, NBrightInfo> GetProviders(String providerType, Boolean activeOnly = true)
+        private Dictionary<String, SimplisityInfo> GetProviders(String providerType, Boolean activeOnly = true)
         {
-            var pList = new Dictionary<String, NBrightInfo>();
+            var pList = new Dictionary<String, SimplisityInfo>();
             foreach (var p in _pluginList)
             {
                 var pr = new PluginRecord(p);
@@ -247,7 +247,7 @@ namespace DNNrocketAPI
         }
 
 
-        public NBrightInfo GetPaymentProviderDefault()
+        public SimplisityInfo GetPaymentProviderDefault()
         {
             var l = GetPaymentProviders();
             if (l.Count > 0) return l.First().Value;
@@ -256,9 +256,9 @@ namespace DNNrocketAPI
 
 
 
-        public List<NBrightInfo> GetSubList(String groupname)
+        public List<SimplisityInfo> GetSubList(String groupname)
         {
-            var rtnList = new List<NBrightInfo>();
+            var rtnList = new List<SimplisityInfo>();
             if (groupname != "")
             {
                 foreach (var p in _pluginList)
@@ -272,7 +272,7 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public NBrightInfo GetPluginByCtrl(String ctrlname)
+        public SimplisityInfo GetPluginByCtrl(String ctrlname)
         {
             var ctrllist = from i in _pluginList where i.GetXmlProperty("genxml/textbox/ctrl") == ctrlname select i;
             if (ctrllist.Any()) return ctrllist.First(); 

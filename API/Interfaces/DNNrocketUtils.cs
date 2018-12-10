@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using Simplisity;
 using RazorEngine.Templating;
@@ -12,7 +11,6 @@ using RazorEngine.Configuration;
 using RazorEngine;
 using System.Security.Cryptography;
 using NBrightCore.common;
-using NBrightBuy.render;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security;
@@ -26,18 +24,18 @@ using System.Net;
 using System.IO;
 using DotNetNuke.Common.Lists;
 using ICSharpCode.SharpZipLib.Zip;
-
+using NBrightCore.TemplateEngine;
 
 namespace DNNrocketAPI
 {
     public static class DNNrocketUtils
     {
-        public static NBrightInfo GetAjaxFields(HttpContext context)
+        public static SimplisityInfo GetAjaxFields(HttpContext context)
         {
             var strIn = HttpUtility.UrlDecode(RequestParam(context, "inputxml"));
             var xmlData = "";
             xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "", "genxml", true);
-            var objInfo = new NBrightInfo();
+            var objInfo = new SimplisityInfo();
             objInfo.ItemID = -1;
             objInfo.TypeCode = "AJAXDATA";
             objInfo.XMLData = xmlData;
@@ -84,15 +82,15 @@ namespace DNNrocketAPI
             var result = "";
             try
             {
-                var service = (IRazorEngineService)HttpContext.Current.Application.Get("NBrightBuyIRazorEngineService");
+                var service = (IRazorEngineService)HttpContext.Current.Application.Get("DNNrocketIRazorEngineService");
                 if (service == null)
                 {
                     // do razor test
                     var config = new TemplateServiceConfiguration();
                     config.Debug = debugMode;
-                    config.BaseTemplateType = typeof(NBrightBuyRazorTokens<>);
+                    config.BaseTemplateType = typeof(RazorEngineTokens<>);
                     service = RazorEngineService.Create(config);
-                    HttpContext.Current.Application.Set("NBrightBuyIRazorEngineService", service);
+                    HttpContext.Current.Application.Set("DNNrocketIRazorEngineService", service);
                 }
                 Engine.Razor = service;
                 var hashCacheKey = GetMd5Hash(razorTempl);
@@ -128,6 +126,41 @@ namespace DNNrocketAPI
             }
             return sb.ToString();
         }
+
+
+
+        public static string RazorTemplRenderList(string razorTemplName, int moduleid, string cacheKey, List<SimplisityInfo> objList, string templateControlPath, string theme, string lang, Dictionary<string, string> settings, SimplisityInfo headerData)
+        {
+            var razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
+            if (razorTempl != "")
+            {
+                var nbRazor = new SimplisityRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
+                nbRazor.ModuleId = moduleid;
+                nbRazor.FullTemplateName = theme + "." + razorTemplName;
+                nbRazor.TemplateName = razorTemplName;
+                nbRazor.ThemeFolder = theme;
+                nbRazor.Lang = lang;
+
+                nbRazor.HeaderData = headerData;
+
+                var razorTemplateKey = "DNNrocketRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString();
+                razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, true);
+            }
+            return razorTempl;
+        }
+
+        public static string GetRazorTemplateData(string templatename, string templateControlPath, string lang, string themeFolder = "config-w3")
+        {
+            var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
+            var templCtrl = new TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\config-w3", "Themes\\" + themeFolder);
+            var templ = templCtrl.GetTemplateData(templatename, lang);
+            return templ;
+        }
+
+
+
+
+
 
 
         public static void Zip(string zipFileMapPath, List<String> fileMapPathList)
@@ -432,27 +465,14 @@ namespace DNNrocketAPI
         }
 
 
-        public static void PurgeDataBaseInfo(int portalId, int moduleId, DataCtrlInterface objCtrl, string entityTypeCode, int purgeDays = -7)
+        public static TabCollection GetPortalTabs(int portalId)
         {
-            var l = objCtrl.GetList(portalId, moduleId, entityTypeCode);
-            foreach (NBrightInfo obj in l)
-            {
-                if (obj.ModifiedDate < (DateTime.Now.AddDays(purgeDays)))
-                {
-                    objCtrl.Delete(obj.ItemID);
-                }
-            }
-
-        }
-
-        public static DotNetNuke.Entities.Tabs.TabCollection GetPortalTabs(int portalId)
-        {
-            var portalTabs = (DotNetNuke.Entities.Tabs.TabCollection)NBrightCore.common.Utils.GetCache("NBright_portalTabs" + portalId.ToString(""));
+            var portalTabs = (TabCollection)GeneralUtils.GetCache("DNNrocket_portalTabs" + portalId.ToString(""));
             if (portalTabs == null)
             {
                 var objTabCtrl = new DotNetNuke.Entities.Tabs.TabController();
                 portalTabs = objTabCtrl.GetTabsByPortal(portalId);
-                NBrightCore.common.Utils.SetCache("NBright_portalTabs" + portalId.ToString(""), portalTabs);
+                GeneralUtils.SetCache("DNNrocket_portalTabs" + portalId.ToString(""), portalTabs);
             }
             return portalTabs;
         }
