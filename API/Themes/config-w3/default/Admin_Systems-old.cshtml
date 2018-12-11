@@ -1,0 +1,70 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DotNetNuke.Entities.Users
+@using NBrightDNN
+@using Nevoweb.DNN.NBrightBuy.Components;
+@using Simplisity;
+@using DotNetNuke.Entities.Portals
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+
+<div class="w3-container">
+
+    <div class="w3-row-padding plugins">
+
+        <span class="w3-section" id="buttonsrequired" style="display:none;">
+            <!-- display no buttons. -->
+        </span>
+
+        <header class="w3-container w3-blue">
+            <h5>DNNrocket @ResourceKey("DNNrocket.systems") Portal: @PortalSettings.Current.PortalId</h5>
+        </header>
+
+        <div id="Interface" class="w3-container w3-hide w3-show">
+            <div class="w3-container">
+
+                <ul id="systems" class="w3-ul">
+
+                    @{
+                        var lp1 = 0;
+                    }
+                    @foreach (SimplisityInfo nbi in Model.List)
+                    {
+                        lp1 += 1;
+                        <li class="systemdata w3-card w3-margin w3-display-container">
+                            <div class="w3-row">
+                                <div class="w3-padding w3-quarter">
+                                    <label class="">@ResourceKey("DNNrocket.systemname")</label>
+                                    @TextBox(nbi, "genxml/systemname_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                                    <label class="">@ResourceKey("DNNrocket.systemtable")</label>
+                                    @TextBox(nbi, "genxml/systemtable_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                                    <label class="">@ResourceKey("DNNrocket.licensekey")</label>
+                                    @TextBox(nbi, "genxml/licensekey_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                                </div>
+                                <div class="w3-padding w3-half">
+                                    <label class="">@ResourceKey("DNNrocket.systempath")</label>
+                                    @TextBox(nbi, "genxml/systempath_" + lp1, "class='w3-input w3-border'  ", "")
+                                    <label class="">@ResourceKey("DNNrocket.apiurl")</label>
+                                    @TextBox(nbi, "genxml/apiurl_" + lp1, "class='w3-input w3-border'  ", "")
+                                    <label class="">@ResourceKey("DNNrocket.adminurl")</label>
+                                    @TextBox(nbi, "genxml/adminurl_" + lp1, "class='w3-input w3-border' ", "")
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#menubuttons").panelButtons('#buttonsrequired');
+    });
+
+</script>

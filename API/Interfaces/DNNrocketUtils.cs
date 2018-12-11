@@ -94,11 +94,11 @@ namespace DNNrocketAPI
                 }
                 Engine.Razor = service;
                 var hashCacheKey = GetMd5Hash(razorTempl);
-                var israzorCached = Utils.GetCache("nbrightbuyrzcache_" + hashCacheKey); // get a cache flag for razor compile.
+                var israzorCached = Utils.GetCache("dnnrocketrzcache_" + hashCacheKey); // get a cache flag for razor compile.
                 if (israzorCached == null || (string)israzorCached != razorTempl || debugMode)
                 {
                     result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
-                    Utils.SetCache("nbrightbuyrzcache_" + hashCacheKey, razorTempl);
+                    Utils.SetCache("dnnrocketrzcache_" + hashCacheKey, razorTempl);
                 }
                 else
                 {
@@ -114,6 +114,7 @@ namespace DNNrocketAPI
             return result;
         }
 
+
         public static string GetMd5Hash(string input)
         {
             var md5 = MD5.Create();
@@ -125,6 +126,48 @@ namespace DNNrocketAPI
                 sb.Append(t.ToString("X2"));
             }
             return sb.ToString();
+        }
+
+        public static string RazorTemplRender(string razorTemplName, int moduleid, string cacheKey, object obj, string templateControlPath, string theme, string lang, Dictionary<string, string> settings)
+        {
+            // do razor template
+            var ckey = "DNNrocketRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang;
+            var hashCacheKey = GetMd5Hash(ckey);
+            var razorTempl = (string)GeneralUtils.GetCache(hashCacheKey);
+            if (razorTempl == null || cacheKey == "")
+            {
+                razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
+                if (razorTempl != "" && razorTemplName.EndsWith(".cshtml"))
+                {
+                    if (obj == null) obj = new NBrightInfo(true);
+                    var l = new List<object>();
+                    l.Add(obj);
+                    if (settings == null) settings = new Dictionary<string, string>();
+                    if (!settings.ContainsKey("userid")) settings.Add("userid", UserController.Instance.GetCurrentUserInfo().UserID.ToString());
+                    var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
+                    nbRazor.FullTemplateName = theme + "." + razorTemplName;
+                    nbRazor.TemplateName = razorTemplName;
+                    nbRazor.ThemeFolder = theme;
+                    nbRazor.Lang = lang;
+
+                    var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
+                    var debugMode = false;
+                    if (cacheKey == "")
+                    {
+                        debugMode = true;
+                    }
+                    razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, debugMode);
+                    if (!debugMode)
+                    {
+                        GeneralUtils.SetCache(hashCacheKey, razorTempl); // only save to cache if we pass in a cache key.
+                    }
+                }
+                else
+                {
+                    razorTempl = "ERROR - Razor Template Not Found: " + theme + "." + razorTemplName;
+                }
+            }
+            return razorTempl;
         }
 
 
@@ -921,6 +964,27 @@ namespace DNNrocketAPI
         }
 
         #endregion
+
+
+        public static string GetCurrentCulture()
+        {
+            if (HttpContext.Current.Request.Cookies["language"] != null)
+            {
+                return HttpContext.Current.Request.Cookies["language"].Value;
+            }
+            return "";
+        }
+
+        public static string GetCurrentCountryCode()
+        {
+            var cc = GetCurrentCulture();
+            var c = cc.Split('-');
+            var rtn = "";
+            if (c.Length > 0) rtn = c[c.Length - 1];
+            return rtn;
+        }
+
+
 
 
     }

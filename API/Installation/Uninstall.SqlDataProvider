@@ -1,0 +1,74 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+-------------------------------------------------------------------------------
+--------------                       TABLES                        ------------
+-------------------------------------------------------------------------------
+-- DO NOT REMOVE DNNrocket, just in case we have uninstalled by accident.  leaving the table should not effect performance and can always be removed manually.
+
+-------------------------------------------------------------------------------
+--------------                       FUNCTIONS                     ------------
+-------------------------------------------------------------------------------
+
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocketLangMerge]') and OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
+drop function {databaseOwner}[{objectQualifier}DNNrocketLangMerge]
+GO
+
+
+-------------------------------------------------------------------------------
+--------------                       SPROCS                        ------------
+-------------------------------------------------------------------------------
+
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_CleanData]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_CleanData]
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_Update]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_Update]
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_Get]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_Get]
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetData]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetData]
+GO
+
+if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetDataLang]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetDataLang]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetList]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetList]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetListCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetListCount]
+GO
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO

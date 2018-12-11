@@ -3,9 +3,9 @@ using System.Data;
 using System;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
-using NBrightDNN;
+using System.Configuration;
 
-namespace DNNrocketAPI.SqlDataProvider
+namespace DNNrocketAPI
 {
 
 	/// -----------------------------------------------------------------------------
@@ -25,7 +25,7 @@ namespace DNNrocketAPI.SqlDataProvider
 		{
 			if (provider == null)
 			{
-                const string assembly = "NBrightDNN.SqlDataprovider.SqlDataprovider,NBrightDNN";
+                const string assembly = "DNNrocketAPI.SqlDataProvider,DNNrocketAPI";
 				Type objectType = Type.GetType(assembly, true, true);
 
 				provider = (DataProvider)Activator.CreateInstance(objectType);

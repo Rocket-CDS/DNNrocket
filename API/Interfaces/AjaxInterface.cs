@@ -33,8 +33,6 @@ namespace DNNrocketAPI
 		private static void CreateProvider()
 		{
 
-			string providerName = null;
-
 		    _providerList = new Dictionary<string, AjaxInterface>();
 
             var pluginData = new PluginData(0);

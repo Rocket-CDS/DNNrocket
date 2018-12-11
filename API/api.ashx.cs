@@ -1,7 +1,4 @@
-﻿using NBrightCore.common;
-using NBrightCore.render;
-using NBrightDNN;
-using System;
+﻿using System;
 using System.Web;
 using Simplisity;
 using DotNetNuke.Entities.Users;
@@ -18,28 +15,27 @@ namespace DNNrocketAPI
             var strOut = "ERROR: Invalid.";
             try
             {
+                _editlang = DNNrocketUtils.GetCurrentCulture();
+
                 var paramCmd = context.Request.QueryString["cmd"];
 
                 var requestXml = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputxml"));
                 
                 var sInfo = SimplisityUtils.GetSimplisityInfo(requestXml);
 
-                var ajaxprovider = sInfo.GetXmlProperty("genxml/hidden/ajaxprovider");
-                if (ajaxprovider == "")
+                var systemprovider = sInfo.GetXmlProperty("genxml/hidden/systemprovider");
+                if (systemprovider == "")
                 {
-                    ajaxprovider = NBrightCore.common.Utils.RequestQueryStringParam(context, "ajaxprovider");
+                    systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");
                 }
 
-                if (ajaxprovider == "" || ajaxprovider == "systemapi")
+
+                if (systemprovider == "" || systemprovider == "systemapi")
                 {
                     if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                     {
-                        switch (paramCmd)
-                        {
-                            case "systemapi_admin_getsystemlist":
-                                strOut = SystemFunction.SystemAdminList(sInfo);
-                                break;
-                        }
+                        // By default we prcess the DNNrocketAPI system api.
+                        strOut = SystemFunction.ProcessCommand(paramCmd,sInfo, _editlang);
                     }
                     else
                     {
@@ -49,35 +45,17 @@ namespace DNNrocketAPI
                 }
                 else
                 {
-
-
-                    var pluginData = new PluginData(0);
-                    var provList = pluginData.GetAjaxProviders();
-                    if (ajaxprovider != "")
+                    if (systemprovider != "")
                     {
-                        strOut = "API not found: " + ajaxprovider;
-                        if (provList.ContainsKey(ajaxprovider))
+                        // Run API Provider.
+                        strOut = "API not found: " + systemprovider;
+
+                        var assembly = sInfo.GetXmlProperty("genxml/textbox/assembly");
+                        var namespaceclass = sInfo.GetXmlProperty("genxml/textbox/namespaceclass");
+                        var ajaxprov = APInterface.Instance(assembly, namespaceclass);
+                        if (ajaxprov != null)
                         {
-                            var ajaxprov = AjaxInterface.Instance(ajaxprovider);
-                            if (ajaxprov != null)
-                            {
-                                strOut = ajaxprov.ProcessCommand(paramCmd, context, _editlang);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        strOut = "Unknown ajaxprovider: " + ajaxprovider;
-                        foreach (var d in provList)
-                        {
-                            if (paramCmd.ToLower().StartsWith(d.Key.ToLower() + "_") || paramCmd.ToLower().StartsWith("cmd" + d.Key.ToLower() + "_"))
-                            {
-                                var ajaxprov = AjaxInterface.Instance(d.Key);
-                                if (ajaxprov != null)
-                                {
-                                    strOut = ajaxprov.ProcessCommand(paramCmd, context, _editlang);
-                                }
-                            }
+                            strOut = ajaxprov.ProcessCommand(paramCmd, sInfo, _editlang);
                         }
                     }
                 }

@@ -276,9 +276,6 @@
   <data name="Default.Text" xml:space="preserve">
     <value>Default</value>
   </data>
-  <data name="roles.Text" xml:space="preserve">
-    <value>Administrators,Manager,Editor,ClientEditor</value>
-  </data>
   <data name="cmdUndo.Text" xml:space="preserve">
     <value>Undo</value>
   </data>
@@ -288,19 +285,7 @@
   <data name="apiurl.Text" xml:space="preserve">
     <value>API url</value>
   </data>
-  <data name="licensekey.Text" xml:space="preserve">
-    <value>License Key</value>
-  </data>
-  <data name="systemname.Text" xml:space="preserve">
-    <value>System Name</value>
-  </data>
-  <data name="systempath.Text" xml:space="preserve">
-    <value>System Path</value>
-  </data>
-  <data name="systems.Text" xml:space="preserve">
-    <value>System</value>
-  </data>
-  <data name="systemtable.Text" xml:space="preserve">
-    <value>System Table</value>
+  <data name="adminurl.Text" xml:space="preserve">
+    <value>Admin URL</value>
   </data>
 </root>

@@ -19,27 +19,28 @@ using NBrightCore.render;
 using NBrightDNN;
 using Nevoweb.DNN.NBrightBuy.Components;
 using Nevoweb.DNN.NBrightBuy.Components.Interfaces;
+using Simplisity;
 
 namespace DNNrocketAPI
 {
-    public class PluginRecord
+    public class SystemRecord
     {
-        private SimplisityInfo _pluginInfo;
-        public PluginRecord(SimplisityInfo pluginInfo)
+        private SimplisityInfo _sInfo;
+        public SystemRecord(SimplisityInfo sInfo)
         {
-            _pluginInfo = pluginInfo;
+            _sInfo = sInfo;
         }
 
         public SimplisityInfo Info()
         {
-            return _pluginInfo;
+            return _sInfo;
         }
 
         public List<SimplisityInfo> GetInterfaces()
         {
             var rtnList = new List<SimplisityInfo>();
 
-            var interfaces = _pluginInfo.XMLDoc.SelectNodes("genxml/interfaces/*");
+            var interfaces = _sInfo.XMLDoc.SelectNodes("genxml/interfaces/*");
             foreach (XmlNode i in interfaces)
             {
                 var nbi = new SimplisityInfo();
@@ -54,7 +55,7 @@ namespace DNNrocketAPI
         {
             var rtnList = new List<SimplisityInfo>();
 
-            var parameters = _pluginInfo.XMLDoc.SelectNodes("genxml/parameters/*");
+            var parameters = _sInfo.XMLDoc.SelectNodes("genxml/parameters/*");
             foreach (XmlNode i in parameters)
             {
                 var nbi = new SimplisityInfo();
@@ -68,15 +69,15 @@ namespace DNNrocketAPI
         public void AddInterface()
         {
             var objCtrl = new NBrightBuyController();
-            _pluginInfo.AddXmlNode("<genxml></genxml>", "genxml","genxml/interfaces");
-            objCtrl.Update(_pluginInfo);
+            _sInfo.AddXmlNode("<genxml></genxml>", "genxml","genxml/interfaces");
+            objCtrl.Update(_sInfo);
         }
 
         public void AddParameter()
         {
             var objCtrl = new NBrightBuyController();
-            _pluginInfo.AddXmlNode("<genxml></genxml>", "genxml", "genxml/parameters");
-            objCtrl.Update(_pluginInfo);
+            _sInfo.AddXmlNode("<genxml></genxml>", "genxml", "genxml/parameters");
+            objCtrl.Update(_sInfo);
         }
 
         public void UpdateModels(String xmlAjaxData, string editlang, string nodename)

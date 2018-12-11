@@ -4,7 +4,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
 using Microsoft.ApplicationBlocks.Data;
 
-namespace DNNrocketAPI.SqlDataProvider
+namespace DNNrocketAPI
 {
 
 	/// -----------------------------------------------------------------------------
@@ -30,10 +30,8 @@ namespace DNNrocketAPI.SqlDataProvider
 
 		#region Constructors
 
-		public SqlDataProvider(string systemTable)
+		public SqlDataProvider()
 		{
-
-            ModuleQualifier = systemTable;
 
             // Read the configuration specific information for this provider
             Provider objProvider = (Provider)(_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
