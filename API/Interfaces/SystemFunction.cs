@@ -36,7 +36,7 @@ namespace DNNrocketAPI.Interfaces
                     case "systemapi_adminaddnew":
                         strOut = SystemAddNew(sInfo);
                         break;
-                    case "systemapi_addpluginsmodels":
+                    case "systemapi_addinterface":
                         SystemAddInterface(sInfo);
                         strOut = SystemAdminDetail(sInfo);
                         break;
@@ -48,7 +48,7 @@ namespace DNNrocketAPI.Interfaces
                         SystemDelete(sInfo);
                         strOut = SystemAdminList(sInfo);
                         break;
-                    case "systemapi_addpluginsparam":
+                    case "systemapi_addparam":
                         SystemAddParameter(sInfo);
                         strOut = SystemAdminDetail(sInfo);
                         break;
@@ -80,19 +80,17 @@ namespace DNNrocketAPI.Interfaces
             try
             {
                 var strOut = "";
-                var ctrlkey = sInfo.GetXmlProperty("genxml/hidden/ctrlkey");
-                    var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
-                    if (themeFolder == "") themeFolder = "config";
-                    var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
+                var selecteditemid = sInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
+                var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
 
-                    var passSettings = sInfo.ToDictionary();
+                var passSettings = sInfo.ToDictionary();
 
-                    var systemData = new SystemData();
-                    var info = systemData.GetSystemByKey(ctrlkey);
+                var systemRecord = new SystemRecord(selecteditemid);
 
-                    var systemRecord = new SystemRecord(info);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
-                    strOut = DNNrocketUtils.RazorTemplRender(razortemplate, 0, "", systemRecord, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), passSettings);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, systemRecord, passSettings);
 
                 return strOut;
             }
@@ -118,7 +116,9 @@ namespace DNNrocketAPI.Interfaces
 
                 var passSettings = sInfo.ToDictionary();
 
-                strOut = DNNrocketUtils.RazorTemplRenderList(razortemplate, 0, "", list, TemplateRelPath, themeFolder, sInfo.Lang, passSettings, new SimplisityInfo());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+
+                strOut = DNNrocketUtils.RazorList(razorTempl, list, passSettings);
 
                 return strOut;
             }
@@ -151,7 +151,9 @@ namespace DNNrocketAPI.Interfaces
                 info.ItemID = objCtrl.Update(info);
                 var systemRecord = new SystemRecord(info);
 
-                strOut = DNNrocketUtils.RazorTemplRender(razortemplate, 0, "", systemRecord, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), passSettings);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, systemRecord, passSettings);
 
                 return strOut;
             }
@@ -169,7 +171,7 @@ namespace DNNrocketAPI.Interfaces
                 if (GeneralUtils.IsNumeric(selecteditemid))
                 {
                     var objCtrl = new DNNrocketController();
-                    var info = objCtrl.GetData(Convert.ToInt32(selecteditemid));
+                    var info = objCtrl.GetRecord(Convert.ToInt32(selecteditemid));
                     var pluginRecord = new SystemRecord(info);
                     pluginRecord.AddInterface();
                 }
@@ -188,7 +190,7 @@ namespace DNNrocketAPI.Interfaces
                 if (GeneralUtils.IsNumeric(selecteditemid))
                 {
                     var objCtrl = new DNNrocketController();
-                    var info = objCtrl.GetData(Convert.ToInt32(selecteditemid));
+                    var info = objCtrl.GetRecord(Convert.ToInt32(selecteditemid));
                     var pluginRecord = new SystemRecord(info);
                     pluginRecord.AddParameter();
                 }
@@ -206,22 +208,23 @@ namespace DNNrocketAPI.Interfaces
             if (GeneralUtils.IsNumeric(itemid))
             {
                 var objCtrl = new DNNrocketController();
-                var info = objCtrl.GetData(Convert.ToInt32(itemid));
+                var info = objCtrl.GetRecord(Convert.ToInt32(itemid));
                 var systemRecord = new SystemRecord(info);
                 var modelXml = GeneralUtils.UnCode(sInfo.GetXmlProperty("genxml/hidden/xmlupdatemodeldata"));
                 var parametersXml = GeneralUtils.UnCode(sInfo.GetXmlProperty("genxml/hidden/xmlupdateparamdata"));
 
                 sInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata");
+                sInfo.RemoveXmlNode("genxml/hidden/xmlupdateparamdata");
                 systemRecord.Info().XMLData = sInfo.XMLData;
 
                 // check for unique ctrl ref
-                var ctrlref = systemRecord.Info().GetXmlProperty("genxml/textbox/ctrl");
-                var ctrltest = objCtrl.GetByGuidKey(0, -1, "PLUGIN", ctrlref);
+                var ctrlref = systemRecord.Info().GetXmlProperty("genxml/textbox/ctrlkey");
+                var ctrltest = objCtrl.GetByGuidKey(0, -1, "SYSTEM", ctrlref);
                 if (ctrltest != null)
                 {
                     if (ctrltest.ItemID != systemRecord.Info().ItemID)
                     {
-                        systemRecord.Info().SetXmlProperty("genxml/textbox/ctrl", systemRecord.Info().GetXmlProperty("genxml/textbox/ctrl") + GeneralUtils.GetUniqueKey());
+                        systemRecord.Info().SetXmlProperty("genxml/textbox/ctrl", systemRecord.Info().GetXmlProperty("genxml/textbox/ctrlkey") + GeneralUtils.GetUniqueKey());
                     }
                 }
 
@@ -230,7 +233,7 @@ namespace DNNrocketAPI.Interfaces
                 systemRecord.Info().RemoveXmlNode("genxml/hidden/itemid");
                 systemRecord.Info().RemoveXmlNode("genxml/hidden/editlanguage");
                 systemRecord.Info().RemoveXmlNode("genxml/hidden/uilang1");
-                systemRecord.Info().GUIDKey = systemRecord.Info().GetXmlProperty("genxml/textbox/ctrl");
+                systemRecord.Info().GUIDKey = systemRecord.Info().GetXmlProperty("genxml/textbox/ctrlkey");
 
                 systemRecord.UpdateModels(modelXml, DNNrocketUtils.GetCurrentCulture(), "interfaces");
                 systemRecord.UpdateModels(parametersXml, DNNrocketUtils.GetCurrentCulture(), "parameters");
@@ -247,6 +250,8 @@ namespace DNNrocketAPI.Interfaces
             {
                 var objCtrl = new DNNrocketController();
                 objCtrl.Delete(Convert.ToInt32(itemid));
+
+                GeneralUtils.ClearCache();
             }
         }
 

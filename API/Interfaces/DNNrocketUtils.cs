@@ -77,7 +77,7 @@ namespace DNNrocketAPI
         }
 
 
-        public static string RazorRender(Object info, string razorTempl, string templateKey, Boolean debugMode = false)
+        public static string RazorRender(Object info, string razorTempl, Boolean debugMode = false)
         {
             var result = "";
             try
@@ -128,69 +128,42 @@ namespace DNNrocketAPI
             return sb.ToString();
         }
 
-        public static string RazorTemplRender(string razorTemplName, int moduleid, string cacheKey, object obj, string templateControlPath, string theme, string lang, Dictionary<string, string> settings)
+        public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
         {
-            // do razor template
-            var ckey = "DNNrocketRazorOutput" + razorTemplName + "*" + cacheKey + PortalSettings.Current.PortalId.ToString() + "*" + lang;
-            var hashCacheKey = GetMd5Hash(ckey);
-            var razorTempl = (string)GeneralUtils.GetCache(hashCacheKey);
-            if (razorTempl == null || cacheKey == "")
+            var rtnStr = "";
+            if (razorTemplate != "")
             {
-                razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
-                if (razorTempl != "" && razorTemplName.EndsWith(".cshtml"))
-                {
-                    if (obj == null) obj = new NBrightInfo(true);
-                    var l = new List<object>();
-                    l.Add(obj);
-                    if (settings == null) settings = new Dictionary<string, string>();
-                    if (!settings.ContainsKey("userid")) settings.Add("userid", UserController.Instance.GetCurrentUserInfo().UserID.ToString());
-                    var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
-                    nbRazor.FullTemplateName = theme + "." + razorTemplName;
-                    nbRazor.TemplateName = razorTemplName;
-                    nbRazor.ThemeFolder = theme;
-                    nbRazor.Lang = lang;
+                if (settings == null) settings = new Dictionary<string, string>();
+                if (headerData == null) headerData = new SimplisityInfo();
 
-                    var razorTemplateKey = "NBrightBuyRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString() + "*" + lang;
-                    var debugMode = false;
-                    if (cacheKey == "")
-                    {
-                        debugMode = true;
-                    }
-                    razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, debugMode);
-                    if (!debugMode)
-                    {
-                        GeneralUtils.SetCache(hashCacheKey, razorTempl); // only save to cache if we pass in a cache key.
-                    }
-                }
-                else
-                {
-                    razorTempl = "ERROR - Razor Template Not Found: " + theme + "." + razorTemplName;
-                }
-            }
-            return razorTempl;
-        }
+                if (obj == null) obj = new SimplisityInfo();
+                var l = new List<object>();
+                l.Add(obj);
 
-
-
-        public static string RazorTemplRenderList(string razorTemplName, int moduleid, string cacheKey, List<SimplisityInfo> objList, string templateControlPath, string theme, string lang, Dictionary<string, string> settings, SimplisityInfo headerData)
-        {
-            var razorTempl = GetRazorTemplateData(razorTemplName, templateControlPath, theme, lang);
-            if (razorTempl != "")
-            {
-                var nbRazor = new SimplisityRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
-                nbRazor.ModuleId = moduleid;
-                nbRazor.FullTemplateName = theme + "." + razorTemplName;
-                nbRazor.TemplateName = razorTemplName;
-                nbRazor.ThemeFolder = theme;
-                nbRazor.Lang = lang;
-
+                var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
                 nbRazor.HeaderData = headerData;
+                rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
 
-                var razorTemplateKey = "DNNrocketRazorKey" + theme + razorTemplName + PortalSettings.Current.PortalId.ToString();
-                razorTempl = RazorRender(nbRazor, razorTempl, razorTemplateKey, true);
             }
-            return razorTempl;
+
+            return rtnStr;
         }
+
+
+        public static string RazorList(string razorTemplate, List<SimplisityInfo> objList, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        {
+            var rtnStr = "";
+            if (razorTemplate != "")
+            {
+                if (settings == null) settings = new Dictionary<string, string>(); 
+                if (headerData == null) headerData = new SimplisityInfo();
+                var nbRazor = new SimplisityRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
+                nbRazor.HeaderData = headerData;
+                rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
+            }
+            return rtnStr;
+        }
+
 
         public static string GetRazorTemplateData(string templatename, string templateControlPath, string lang, string themeFolder = "config-w3")
         {
@@ -199,10 +172,6 @@ namespace DNNrocketAPI
             var templ = templCtrl.GetTemplateData(templatename, lang);
             return templ;
         }
-
-
-
-
 
 
 

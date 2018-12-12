@@ -57,7 +57,7 @@
                                 <i class="fa fa@(checkdisplay)-circle fa-2x selectchangehidden" itemid="@nbi.ItemID"></i>
                             </td>
                             <td>
-                                <a class="simplisity_click" s-cmd="systemapi_admin_getdetail" s-fields="ctrlkey:@nbi.GetXmlProperty("genxml/textbox/ctrlkey"),theme:config-w3,template:Admin_SystemDetail.cshtml,systemprovider:systemapi" s-return="#contentplaceholder" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
+                                <a class="simplisity_click" s-cmd="systemapi_admin_getdetail" s-fields="selecteditemid:@nbi.ItemID,theme:config-w3,template:Admin_SystemDetail.cshtml,systemprovider:systemapi" s-return="#contentplaceholder" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
                             </td><!-- editlink class added to show processing -->
                         </tr>
                     }

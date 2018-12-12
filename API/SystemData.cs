@@ -19,6 +19,7 @@ namespace DNNrocketAPI
             var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath("/DesktopModules/DNNrocket/api/Systems");
             if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath))
             {
+                var upd = false;
                 var flist = Directory.GetFiles(pluginfoldermappath, "*.xml");
                 foreach (var f in flist)
                 {
@@ -51,6 +52,7 @@ namespace DNNrocketAPI
                                     if (s == null)
                                     {
                                         objCtrl.Update(nbi2);
+                                        upd = true;
                                     }
                                 }
                             }
@@ -61,10 +63,14 @@ namespace DNNrocketAPI
                         }
                         File.Delete(f);
                     }
+                    if (upd)
+                    {
+                        GeneralUtils.ClearCache();
+                    }
                 }
             }
 
-            var l = objCtrl.GetDataList(-1, -1, "SYSTEM", DNNrocketUtils.GetCurrentCulture(),"","");
+            var l = objCtrl.GetList(-1, -1, "SYSTEM");
             foreach (var s in l)
             {
                 _systemList.Add(s);

@@ -16,6 +16,13 @@ namespace DNNrocketAPI
             _sInfo = sInfo;
         }
 
+        public SystemRecord(int ItemId)
+        {
+            var objCtrl = new DNNrocketController();
+            _sInfo = objCtrl.GetRecord(ItemId);
+        }
+
+
         public SimplisityInfo Info()
         {
             return _sInfo;
@@ -25,13 +32,16 @@ namespace DNNrocketAPI
         {
             var rtnList = new List<SimplisityInfo>();
 
-            var interfaces = _sInfo.XMLDoc.SelectNodes("genxml/interfaces/*");
-            foreach (XmlNode i in interfaces)
+            if (_sInfo.XMLDoc != null)
             {
-                var nbi = new SimplisityInfo();
-                nbi.XMLData = i.OuterXml;
-                nbi.TypeCode = "SYSTEMINTERFACE";
-                rtnList.Add(nbi);
+                var interfaces = _sInfo.XMLDoc.SelectNodes("genxml/interfaces/*");
+                foreach (XmlNode i in interfaces)
+                {
+                    var nbi = new SimplisityInfo();
+                    nbi.XMLData = i.OuterXml;
+                    nbi.TypeCode = "SYSTEMINTERFACE";
+                    rtnList.Add(nbi);
+                }
             }
             return rtnList;
         }
@@ -40,14 +50,18 @@ namespace DNNrocketAPI
         {
             var rtnList = new List<SimplisityInfo>();
 
-            var parameters = _sInfo.XMLDoc.SelectNodes("genxml/parameters/*");
-            foreach (XmlNode i in parameters)
+            if (_sInfo.XMLDoc != null)
             {
-                var nbi = new SimplisityInfo();
-                nbi.XMLData = i.OuterXml;
-                nbi.TypeCode = "SYSTEMPARAM";
-                rtnList.Add(nbi);
+                var parameters = _sInfo.XMLDoc.SelectNodes("genxml/parameters/*");
+                foreach (XmlNode i in parameters)
+                {
+                    var nbi = new SimplisityInfo();
+                    nbi.XMLData = i.OuterXml;
+                    nbi.TypeCode = "SYSTEMPARAM";
+                    rtnList.Add(nbi);
+                }
             }
+
             return rtnList;
         }
 
@@ -83,7 +97,7 @@ namespace DNNrocketAPI
                     basefields += xpath + ",";
                 }
 
-                var objInfo = new SimplisityInfo();
+                var objInfo = new SimplisityInfo(true);
 
                 var fields = basefields.Split(',');
                 foreach (var f in fields.Where(f => f != ""))

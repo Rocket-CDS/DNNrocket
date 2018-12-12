@@ -39,14 +39,22 @@ namespace DNNrocketAPI
         /// <param name="itemId">itmeid of base genxml</param>
         /// <param name="lang">Culturecode of data to be injected into base genxml</param>
         /// <returns></returns>
-        public override SimplisityInfo Get(int itemId, string lang = "")
+        public override SimplisityInfo GetInfo(int itemId, string lang = "")
         {
-            return CBO.FillObject<SimplisityInfo>(DataProvider.Instance().Get(itemId, lang));
+            return CBO.FillObject<SimplisityInfo>(DataProvider.Instance().GetInfo(itemId, lang));
         }
 
-        public override SimplisityInfo GetData(int itemId)
+        public override SimplisityInfo GetRecord(int itemId)
         {
-            return CBO.FillObject<SimplisityInfo>(DataProvider.Instance().GetData(itemId));
+            return CBO.FillObject<SimplisityInfo>(DataProvider.Instance().GetRecord(itemId));
+        }
+
+        private SimplisityInfo GetRecordLang(int parentitemId, string lang = "", bool debugMode = false)
+        {
+            if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
+            SimplisityInfo rtnInfo = null;
+            rtnInfo = CBO.FillObject<SimplisityInfo>(DataProvider.Instance().GetRecordLang(parentitemId, lang));
+            return rtnInfo;
         }
 
 
@@ -65,24 +73,9 @@ namespace DNNrocketAPI
         /// <param name="typeCodeLang"></param>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public override List<SimplisityInfo> GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0, string lang = "")
+        public override List<SimplisityInfo> GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
         {
-            return CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, typeCode, sqlSearchFilter, sqlOrderBy, returnLimit, pageNumber, pageSize, recordCount, lang));
-        }
-
-	    /// <summary>
-	    /// override for Database Function
-	    /// </summary>
-	    /// <param name="portalId"></param>
-	    /// <param name="moduleId"></param>
-	    /// <param name="typeCode"></param>
-	    /// <param name="sqlSearchFilter"></param>
-	    /// <param name="typeCodeLang"></param>
-	    /// <param name="lang"></param>
-	    /// <returns></returns>
-	    public override int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "")
-        {
-            return DataProvider.Instance().GetListCount(portalId, moduleId, typeCode, sqlSearchFilter, lang);
+            return CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, typeCode, sqlSearchFilter, lang, sqlOrderBy, returnLimit, pageNumber, pageSize, recordCount));
         }
 
         /// <summary>
@@ -114,7 +107,7 @@ namespace DNNrocketAPI
                 strFilter += " and NB1.UserId = " + selUserId + " ";
             }
 
-            var l = CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, entityTypeCode, strFilter, "", 1, 1, 1, 1, lang));
+            var l = CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, entityTypeCode, strFilter, lang, "", 1, 1, 1, 1));
             if (l.Count >= 1)
             {
                 SimplisityInfo nbi = l[0];
@@ -141,7 +134,7 @@ namespace DNNrocketAPI
                 strFilter += " and NB1.UserId = " + selUserId + " ";
             }
 
-            var l = GetList(portalId, moduleId, entityTypeCode, strFilter, "", 1);
+            var l = GetList(portalId, moduleId, entityTypeCode, strFilter,"", "", 1);
             if (l.Count == 0) return null;
             if (l.Count > 1)
             {
@@ -155,126 +148,9 @@ namespace DNNrocketAPI
         }
 
 
-        public SimplisityInfo GetData(int itemId, string typeCodeLang, string lang = "",bool debugMode = false)
-        {
-            if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
-            // get cache data
-            var strCacheKey = itemId.ToString("") + "*" + typeCodeLang + "*" + "*" + lang;
-            SimplisityInfo rtnInfo = null;
-            if (debugMode == false)
-            {
-                var obj = GeneralUtils.GetCache(strCacheKey);
-                if (obj != null) rtnInfo = (SimplisityInfo)obj;
-            }
-
-            if (rtnInfo == null)
-            {
-                rtnInfo = CBO.FillObject<SimplisityInfo>(DataProvider.Instance().Get(itemId, lang)); 
-                if (debugMode == false) GeneralUtils.SetCache(strCacheKey, rtnInfo);
-            }
-            return rtnInfo;
-        }
-
-        public SimplisityInfo GetDataLang(int parentitemId, string lang = "", bool debugMode = false)
-        {
-            if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
-            // get cache data
-            var strCacheKey = "datalang*" + parentitemId.ToString("") + "*" + lang;
-            SimplisityInfo rtnInfo = null;
-            if (debugMode == false)
-            {
-                var obj = GeneralUtils.GetCache(strCacheKey);
-                if (obj != null) rtnInfo = (SimplisityInfo)obj;
-            }
-
-            if (rtnInfo == null)
-            {
-                rtnInfo = CBO.FillObject<SimplisityInfo>(DataProvider.Instance().GetDataLang(parentitemId, lang));
-                if (debugMode == false) GeneralUtils.SetCache(strCacheKey, rtnInfo);
-            }
-            return rtnInfo;
-        }
-
-
-        /* *********************  list Data Gets ********************** */
-
-	    /// <summary>
-	    /// Get data list count with caching
-	    /// </summary>
-	    /// <param name="portalId"></param>
-	    /// <param name="moduleId"></param>
-	    /// <param name="typeCode"></param>
-	    /// <param name="sqlSearchFilter"></param>
-	    /// <param name="typeCodeLang"></param>
-	    /// <param name="lang"></param>
-	    /// <param name="debugMode"></param>
-	    /// <param name="visibleOnly"> </param>
-	    /// <returns></returns>
-	    public int GetDataListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", Boolean debugMode = false)
-        {
-            // get cache data
-            var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + typeCode + "*" + "*filter:" + sqlSearchFilter.Replace(" ", "") + "*" + lang;
-            var rtncount = -1;
-            if (debugMode == false)
-            {
-                var obj = GeneralUtils.GetCache(strCacheKey);
-                if (obj != null) rtncount = (int)obj;
-            }
-
-            if (rtncount == -1)
-            {
-                rtncount = DataProvider.Instance().GetListCount(portalId, moduleId, typeCode, sqlSearchFilter, lang);
-                if (debugMode == false) GeneralUtils.SetCache(strCacheKey, rtncount);
-            }
-            return rtncount;
-        }
-
-
-	    /// <summary>
-	    /// Data Get, used to call the Database provider and applies caching. Plus the option of adding user to the filter.
-	    /// </summary>
-	    /// <param name="portalId"></param>
-	    /// <param name="moduleId"></param>
-	    /// <param name="entityTypeCode"></param>
-	    /// <param name="entityTypeCodeLang"></param>
-	    /// <param name="cultureCode"></param>
-	    /// <param name="strFilters"></param>
-	    /// <param name="strOrderBy"></param>
-	    /// <param name="debugMode"></param>
-	    /// <param name="selUserId"></param>
-	    /// <param name="returnLimit"></param>
-	    /// <param name="pageNumber"></param>
-	    /// <param name="pageSize"></param>
-	    /// <param name="recordCount"></param>
-	    /// <returns></returns>
-	    public List<SimplisityInfo> GetDataList(int portalId, int moduleId, string entityTypeCode, string cultureCode, string strFilters, string strOrderBy, bool debugMode = false, string selUserId = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
-        {
-            if (selUserId != "")
-            {
-                strFilters += " and UserId = " + selUserId + " ";
-            }
-
-            List<SimplisityInfo> l = null;
-
-            // get cache template 
-            var strCacheKey = portalId.ToString("") + "*" + moduleId.ToString("") + "*" + entityTypeCode + "*" + "*filter:" + strFilters.Replace(" ", "") + "*orderby:" + strOrderBy.Replace(" ", "") + "*" + returnLimit.ToString("") + "*" + pageNumber.ToString("") + "*" + pageSize.ToString("") + "*" + recordCount.ToString("") + "*" + DNNrocketUtils.GetCurrentCulture();
-            if (debugMode == false)
-            {
-                l = (List<SimplisityInfo>)GeneralUtils.GetCache(strCacheKey);
-            }
-
-            if (l == null)
-            {
-                l = GetList(portalId, moduleId, entityTypeCode, strFilters, strOrderBy, returnLimit, pageNumber, pageSize, recordCount, cultureCode);
-                if (debugMode == false) GeneralUtils.SetCache(strCacheKey, l);
-            }
-            return l;
-        }
-
-
         public void FillEmptyLanguageFields(int baseParentItemId, String baseLang)
         {
-            var baseInfo = GetDataLang(baseParentItemId, baseLang, true); // do NOT take cache
+            var baseInfo = GetRecordLang(baseParentItemId, baseLang, true); // do NOT take cache
             if (baseInfo != null)
             {              
                 foreach (var toLang in DNNrocketUtils.GetCultureCodeList(baseInfo.PortalId))
@@ -282,7 +158,7 @@ namespace DNNrocketAPI
                     if (toLang != baseInfo.Lang)
                     {
                         var updatedata = false;
-                        var dlang = GetDataLang(baseParentItemId, toLang, true); // do NOT take cache
+                        var dlang = GetRecordLang(baseParentItemId, toLang, true); // do NOT take cache
                         if (dlang != null)
                         {
                             var nodList = baseInfo.XMLDoc.SelectNodes("genxml/textbox/*");
@@ -395,13 +271,13 @@ namespace DNNrocketAPI
                 info.PortalId = PortalSettings.Current.PortalId;
                 info.ItemID = Update(info);
             }
-            var nbilang = GetDataLang(info.ItemID, lang);
+            var nbilang = GetRecordLang(info.ItemID, lang);
             if (nbilang == null)
             {
                 // create lang records if not in DB
                 foreach (var lg in DNNrocketUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
                 {
-                    nbilang = GetDataLang(info.ItemID, lg);
+                    nbilang = GetRecordLang(info.ItemID, lg);
                     if (nbilang == null)
                     {
                         nbilang = new SimplisityInfo();
@@ -417,7 +293,7 @@ namespace DNNrocketAPI
             }
 
             // do edit field data if a itemid has been selected
-            var nbi = Get(info.ItemID, lang);
+            var nbi = GetInfo(info.ItemID, lang);
             return nbi;
         }
 
@@ -433,7 +309,7 @@ namespace DNNrocketAPI
                 if (GeneralUtils.IsNumeric(itemid))
                 {
                     var editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
-                    var nbi = Get(Convert.ToInt32(itemid));
+                    var nbi = GetInfo(Convert.ToInt32(itemid));
                     if (nbi != null)
                     {
                         // get data passed back by ajax
@@ -443,7 +319,7 @@ namespace DNNrocketAPI
                         Update(nbi);
 
                         // do langauge record
-                        var nbi2 = GetDataLang(Convert.ToInt32(itemid), editlang);
+                        var nbi2 = GetRecordLang(Convert.ToInt32(itemid), editlang);
                         nbi2.Update(strIn);
                         Update(nbi2);
                     }

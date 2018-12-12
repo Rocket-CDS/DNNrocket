@@ -63,14 +63,13 @@ namespace DNNrocketAPI
 
 		#region "Abstract Methods"
 
-        public abstract IDataReader GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0, string lang = "");
-        public abstract int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "");
-        public abstract IDataReader Get(int itemId, string lang = "");
+        public abstract IDataReader GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);
+        public abstract IDataReader GetInfo(int itemId, string lang = "");
         public abstract int Update(int ItemId, int PortalId, int ModuleId, String TypeCode, String XMLData, String GUIDKey, DateTime ModifiedDate, String TextData, int XrefItemId, int ParentItemId, int UserId, string lang);
         public abstract void Delete(int itemId);
         public abstract void CleanData();
-        public abstract IDataReader GetData(int itemId);
-        public abstract IDataReader GetDataLang(int parentitemId,String lang);
+        public abstract IDataReader GetRecord(int itemId);
+        public abstract IDataReader GetRecordLang(int parentitemId,String lang);
         
 		#endregion
 

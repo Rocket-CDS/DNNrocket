@@ -264,11 +264,11 @@ GO
 
 
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetData]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetData]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetRecord]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetRecord]
 GO
 
-CREATE     PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetData]
+CREATE     PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetRecord]
 @ItemID int
 AS
 begin
@@ -290,11 +290,11 @@ begin
 end
 GO
 
-if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetDataLang]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetDataLang]
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]
 GO
 
-CREATE     PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetDataLang]
+CREATE     PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]
 @ParentItemId int,
 @Lang nvarchar(10)
 AS

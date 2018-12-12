@@ -103,7 +103,7 @@
     <div id="Interface" class="w3-container w3-hide w3-show">
         <div class="w3-container">
             <div class="w3-margin">
-                <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="plugins_addpluginsmodels" s-fields="selecteditemid:@plugin.Info().ItemID,themefolder:config-w3,razortemplate:Admin_PluginsDetail.cshtml,ajaxprovider:plugins2" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdAddButton")</a>
+                <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addinterface" s-fields="selecteditemid:@plugin.Info().ItemID,theme:config-w3,template:Admin_SystemDetail.cshtml,ajaxprovider:systemapi" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdAddButton")</a>
                 <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="interfacesbin" s-return="#plugininterfaces" s-undoselector=".interfacedata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
             </div>
 
@@ -175,7 +175,7 @@
     <div id="parameters" class="w3-container w3-hide w3-show">
         <div class="w3-container">
             <div class="w3-margin">
-                <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="plugins_addpluginsparam" s-fields="selecteditemid:@plugin.Info().ItemID,themefolder:config-w3,razortemplate:Admin_PluginsDetail.cshtml,ajaxprovider:plugins2" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdAddButton")</a>
+                <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addparam" s-fields="selecteditemid:@plugin.Info().ItemID,theme:config-w3,template:Admin_SystemDetail.cshtml,ajaxprovider:systemapi" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdAddButton")</a>
                 <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="parametersbin" s-return="#pluginparameters" s-undoselector=".parameterdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
             </div>
 
@@ -239,7 +239,7 @@
     }
 
     function reloadpluginlist() {
-        $('#contentplaceholder').getSimplisity('/DesktopModules/NBright/NBrightBuy/XmlConnector.ashx', 'plugins_admin_getlist', 'selecteditemid:,theme:config-w3,template:Admin_Plugins.cshtml');
+        $('#contentplaceholder').getSimplisity('/DesktopModules/DNNrocket/api/api.ashx', 'systemapi_admin_getsystemlist', 'theme:config-w3,template:Admin_Systems.cshtml,systemprovider:systemapi');
     };
 
     $(document).ready(function () {
