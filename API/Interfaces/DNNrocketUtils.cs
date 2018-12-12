@@ -479,12 +479,12 @@ namespace DNNrocketAPI
 
         public static TabCollection GetPortalTabs(int portalId)
         {
-            var portalTabs = (TabCollection)GeneralUtils.GetCache("DNNrocket_portalTabs" + portalId.ToString(""));
+            var portalTabs = (TabCollection)CacheUtils.GetCache("DNNrocket_portalTabs" + portalId.ToString(""));
             if (portalTabs == null)
             {
                 var objTabCtrl = new DotNetNuke.Entities.Tabs.TabController();
                 portalTabs = objTabCtrl.GetTabsByPortal(portalId);
-                GeneralUtils.SetCache("DNNrocket_portalTabs" + portalId.ToString(""), portalTabs);
+                CacheUtils.SetCache("DNNrocket_portalTabs" + portalId.ToString(""), portalTabs);
             }
             return portalTabs;
         }

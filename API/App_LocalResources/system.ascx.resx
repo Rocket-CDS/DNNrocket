@@ -130,7 +130,7 @@
     <value>System Path</value>
   </data>
   <data name="systems.Text" xml:space="preserve">
-    <value>System</value>
+    <value>Systems</value>
   </data>
   <data name="systemtable.Text" xml:space="preserve">
     <value>System Table</value>
@@ -170,5 +170,14 @@
   </data>
   <data name="systemdata.Text" xml:space="preserve">
     <value>System Data</value>
+  </data>
+  <data name="adminurl.Text" xml:space="preserve">
+    <value>Admin URL</value>
+  </data>
+  <data name="apiurl.Text" xml:space="preserve">
+    <value>API URL</value>
+  </data>
+  <data name="system.Text" xml:space="preserve">
+    <value>System</value>
   </data>
 </root>

@@ -14,14 +14,12 @@
 
         <div class="w3-card">
             <header class="w3-container w3-blue">
-                <h5>@ResourceKey("Plugins.plugins")</h5>
+                <h5>@ResourceKey("system.systems")</h5>
             </header>
 
             <table class="w3-table w3-table-all">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -34,14 +32,7 @@
                     @foreach (SimplisityInfo nbi in Model.List)
                     {
                         <tr>
-
-                            <td class="text-nowrap" style="width:50px;">
-                            </td>
-
-                            <td class="text-nowrap">
-                                @nbi.GetXmlPropertyInt("genxml/hidden/index").ToString()
-                            </td>
-                            <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/group")</td>
+                           <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/group")</td>
                             <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/systemname")</td>
                             <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/ctrlkey")</td>
 

@@ -143,6 +143,7 @@ namespace DNNrocketAPI.Interfaces
 
                 var info = new SimplisityInfo();
                 info.ItemID = -1;
+                info.PortalId = 99999;
                 info.Lang = DNNrocketUtils.GetCurrentCulture();
                 info.SetXmlProperty("genxml/hidden/index", "99");
                 info.TypeCode = "SYSTEM";
@@ -251,7 +252,7 @@ namespace DNNrocketAPI.Interfaces
                 var objCtrl = new DNNrocketController();
                 objCtrl.Delete(Convert.ToInt32(itemid));
 
-                GeneralUtils.ClearCache();
+                CacheUtils.ClearCache();
             }
         }
 

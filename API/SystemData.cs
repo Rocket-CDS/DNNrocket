@@ -65,7 +65,7 @@ namespace DNNrocketAPI
                     }
                     if (upd)
                     {
-                        GeneralUtils.ClearCache();
+                        CacheUtils.ClearCache();
                     }
                 }
             }
