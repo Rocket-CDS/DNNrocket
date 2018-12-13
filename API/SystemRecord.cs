@@ -28,7 +28,23 @@ namespace DNNrocketAPI
             return _sInfo;
         }
 
-        public List<SimplisityInfo> GetInterfaces()
+        public SimplisityInfo GetInterface(string interfacekey)
+        {
+            if (_sInfo.XMLDoc != null)
+            {
+                var interfaces = _sInfo.XMLDoc.SelectNodes("genxml/interfaces/*");
+                foreach (XmlNode i in interfaces)
+                {
+                    var nbi = new SimplisityInfo();
+                    nbi.XMLData = i.OuterXml;
+                    nbi.TypeCode = "SYSTEMINTERFACE";
+                    return nbi;
+                }
+            }
+            return null;
+        }
+
+        public List<SimplisityInfo> GetInterfaces(string interfacekey = "")
         {
             var rtnList = new List<SimplisityInfo>();
 
@@ -40,7 +56,17 @@ namespace DNNrocketAPI
                     var nbi = new SimplisityInfo();
                     nbi.XMLData = i.OuterXml;
                     nbi.TypeCode = "SYSTEMINTERFACE";
-                    rtnList.Add(nbi);
+                    if (interfacekey == "")
+                    {
+                        rtnList.Add(nbi);
+                    }
+                    else
+                    {
+                        if (interfacekey == nbi.GetXmlProperty("genxml/textbox/interfacekey"))
+                        {
+                            rtnList.Add(nbi);
+                        }
+                    }
                 }
             }
             return rtnList;

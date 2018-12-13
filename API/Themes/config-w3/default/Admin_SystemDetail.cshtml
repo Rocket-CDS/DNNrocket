@@ -1,6 +1,5 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
-@using Simplisity;
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
@@ -54,17 +53,17 @@
                 <div class="w3-row-padding">
                     <div class="w3-half">
                         <label class="">@ResourceKey("system.apiurl")</label>
-                        @TextBox(plugin.Info(), "genxml/apiurl", "class='w3-input w3-border'  ", "")
+                        @TextBox(plugin.Info(), "genxml/textbox/apiurl", "class='w3-input w3-border'  ", "")
                     </div>
                     <div class="w3-half">
                         <label class="">@ResourceKey("system.adminurl")</label>
-                        @TextBox(plugin.Info(), "genxml/adminurl", "class='w3-input w3-border' ", "")
+                        @TextBox(plugin.Info(), "genxml/textbox/adminurl", "class='w3-input w3-border' ", "")
                     </div>
                 </div>
                 <div class="w3-row-padding">
                     <div class="w3-half">
                         <label class="">@ResourceKey("system.licensekey")</label>
-                        @TextBox(plugin.Info(), "genxml/licensekey", "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(plugin.Info(), "genxml/textbox/licensekey", "class='w3-input w3-border' maxlength='250' ", "")
                     </div>
                     <div class="w3-third">
                     </div>
@@ -100,6 +99,20 @@
                     <a href="javascript:void(0)" class="w3-display-right simplisity_itemremove" s-recylebin="interfacesbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
                     <a href="javascript:void(0)" class="w3-display-topleft simplisity_itemup"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
                     <a href="javascript:void(0)" class="w3-display-bottomleft simplisity_itemdown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
+
+                    <div class="w3-row">
+                        <div class="w3-padding w3-quarter">
+                            <label class="">@ResourceKey("system.interfacekey")</label>
+                            @TextBox(nbiModel, "genxml/textbox/interfacekey_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                        </div>
+                        <div class="w3-padding w3-quarter">
+                        </div>
+                        <div class="w3-padding w3-quarter">
+                        </div>
+                        <div class="w3-padding w3-quarter">
+                        </div>
+                    </div>
+
                     <div class="w3-row">
                         <div class="w3-padding w3-half">
                             <label class="">@ResourceKey("system.namespaceclass")</label>
@@ -113,8 +126,6 @@
                             <label class="">@ResourceKey("system.group")</label>
                             @TextBox(nbiModel, "genxml/textbox/group_" + lp1, "class='w3-input w3-border' maxlength='50'")
                         </div>
-                        <div class="w3-padding w3-quarter">
-                        </div>
                     </div>
                     <div class="w3-row">
                         <div class="w3-padding w3-half">
@@ -122,7 +133,7 @@
                         </div>
                         <div class="w3-padding w3-quarter">
                             <label class="">@ResourceKey("DNNrocket.Active")</label>
-                            @CheckBox(nbiModel, "genxml/checkbox/active_" + lp1, "", "class='w3-input w3-border'")
+                            @CheckBox(nbiModel, "genxml/checkbox/active_" + lp1, "", "class='w3-input w3-border'", true)
                         </div>
                         <div class="w3-padding w3-quarter">
                             <label class="">@ResourceKey("system.providertype")</label>

@@ -24,10 +24,9 @@ namespace DNNrocketAPI
                 var sInfo = SimplisityUtils.GetSimplisityInfo(requestXml);
 
                 var systemprovider = sInfo.GetXmlProperty("genxml/hidden/systemprovider");
-                if (systemprovider == "")
-                {
-                    systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");
-                }
+                if (systemprovider == "") systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");
+                var interfacekey = sInfo.GetXmlProperty("genxml/hidden/interfacekey");
+                if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
 
                 if (systemprovider == "" || systemprovider == "systemapi")
@@ -49,13 +48,44 @@ namespace DNNrocketAPI
                     {
                         // Run API Provider.
                         strOut = "API not found: " + systemprovider;
+                        var objCtrl = new DNNrocketController();
 
-                        var assembly = sInfo.GetXmlProperty("genxml/textbox/assembly");
-                        var namespaceclass = sInfo.GetXmlProperty("genxml/textbox/namespaceclass");
-                        var ajaxprov = APInterface.Instance(assembly, namespaceclass);
-                        if (ajaxprov != null)
+                        var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
+                        if (systemInfo != null)
                         {
-                            strOut = ajaxprov.ProcessCommand(paramCmd, sInfo, _editlang);
+                            var systemRecord = new SystemRecord(systemInfo);
+                            var iface = systemRecord.GetInterface(interfacekey);
+                            if (iface != null)
+                            {
+
+                                var assembly = iface.GetXmlProperty("genxml/textbox/assembly");
+                                var namespaceclass = iface.GetXmlProperty("genxml/textbox/namespaceclass");
+                                if (assembly == "" || namespaceclass == "")
+                                {
+                                    strOut = "No assembly or namespaceclass defined: " + systemprovider + " : " + assembly + "," + namespaceclass;
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        var ajaxprov = APInterface.Instance(assembly, namespaceclass);
+                                        strOut = ajaxprov.ProcessCommand(paramCmd, sInfo, _editlang);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        //strOut = ex.ToString();
+                                        strOut = "No valid assembly found: " + systemprovider + " : " + assembly + "," + namespaceclass;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                strOut = "interfacekey not found: " + interfacekey;
+                            }
+                        }
+                        else
+                        {
+                            strOut = "No valid system found: " + systemprovider;
                         }
                     }
                 }

@@ -180,4 +180,7 @@
   <data name="system.Text" xml:space="preserve">
     <value>System</value>
   </data>
+  <data name="interfacekey.Text" xml:space="preserve">
+    <value>Interface Key</value>
+  </data>
 </root>

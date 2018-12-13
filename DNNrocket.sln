@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		adminsystem.html = adminsystem.html
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simplisity", "..\..\..\..\..\..\Projects\Simplisity\Simplisity\Simplisity.csproj", "{8DE44440-8DD1-48CD-AB70-7B323E2C3D05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simplisity", "..\Simplisity\Simplisity\Simplisity.csproj", "{675D90F4-E1A4-4860-959E-412D64011C9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +22,10 @@ Global
 		{2200F6C3-7D4B-4CDF-908F-DCA37ADFB121}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2200F6C3-7D4B-4CDF-908F-DCA37ADFB121}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2200F6C3-7D4B-4CDF-908F-DCA37ADFB121}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8DE44440-8DD1-48CD-AB70-7B323E2C3D05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8DE44440-8DD1-48CD-AB70-7B323E2C3D05}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8DE44440-8DD1-48CD-AB70-7B323E2C3D05}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8DE44440-8DD1-48CD-AB70-7B323E2C3D05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{675D90F4-E1A4-4860-959E-412D64011C9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{675D90F4-E1A4-4860-959E-412D64011C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{675D90F4-E1A4-4860-959E-412D64011C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{675D90F4-E1A4-4860-959E-412D64011C9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
