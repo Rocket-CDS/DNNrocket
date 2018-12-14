@@ -109,6 +109,7 @@
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="packages.config" />
+    <None Include="Themes\config-w3\default\LoginForm.cshtml" />
     <None Include="Themes\config-w3\default\Admin_Systems.cshtml" />
     <None Include="Themes\config-w3\default\Admin_SystemDetail.cshtml" />
   </ItemGroup>

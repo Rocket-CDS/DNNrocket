@@ -288,4 +288,16 @@
   <data name="adminurl.Text" xml:space="preserve">
     <value>Admin URL</value>
   </data>
+  <data name="cmdStart.Text" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="cmdStartAsButton.confirm" xml:space="preserve">
+    <value>Start ?</value>
+  </data>
+  <data name="cmdStartButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Start" class="fa fa-play fa-fw fa-lg"&gt;&lt;/i&gt; Start</value>
+  </data>
+  <data name="cmdSignOutButton.Text" xml:space="preserve">
+    <value>&lt;i title="Search" class="fa fa-sign-out fa-fw fa-lg"&gt;&lt;/i&gt; SignOut</value>
+  </data>
 </root>

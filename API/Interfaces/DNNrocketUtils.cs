@@ -74,7 +74,7 @@ namespace DNNrocketAPI
         public static string RequestQueryStringParam(HttpContext context, string paramName)
         {
             return RequestQueryStringParam(context.Request, paramName);
-        }
+        }       
 
 
         public static string RazorRender(Object info, string razorTempl, Boolean debugMode = false)
@@ -953,7 +953,10 @@ namespace DNNrocketAPI
             return rtn;
         }
 
-
+        public static string MapPth(string relpath)
+        {
+            return System.Web.Hosting.HostingEnvironment.MapPath(relpath);
+        }
 
 
     }

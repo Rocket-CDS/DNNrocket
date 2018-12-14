@@ -8,6 +8,7 @@
 
     <span class="w3-section" id="buttonsrequired" style="display:none;">
         <button class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_adminaddnew" s-fields="theme:config-w3,template:Admin_SystemDetail.cshtml,systemprovider:systemapi" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdAddButton")</button>
+        <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_signout" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdSignOutButton")</button>
     </span>
 
     <div class="w3-row-padding plugins">
@@ -32,7 +33,7 @@
                     @foreach (SimplisityInfo nbi in Model.List)
                     {
                         <tr>
-                           <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/group")</td>
+                            <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/group")</td>
                             <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/systemname")</td>
                             <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/ctrlkey")</td>
 
@@ -61,10 +62,10 @@
 </div>
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    $(document).ready(function () {
-        $("#menubuttons").panelButtons('#buttonsrequired');
-    });
+        $(document).ready(function () {
+            $("#menubuttons").panelButtons('#buttonsrequired');
+        });
 
-</script>
+    </script>

@@ -3,12 +3,16 @@ using System.Web;
 using Simplisity;
 using DotNetNuke.Entities.Users;
 using DNNrocketAPI.Interfaces;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Security.Membership;
+using DotNetNuke.Security;
 
 namespace DNNrocketAPI
 {
     public class ProcessAPI : IHttpHandler
     {
         private String _editlang = "";
+        public static string TemplateRelPath = "/DesktopModules/DNNrocket/api";
 
         public void ProcessRequest(HttpContext context)
         {
@@ -33,12 +37,34 @@ namespace DNNrocketAPI
                 {
                     if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                     {
-                        // By default we prcess the DNNrocketAPI system api.
-                        strOut = SystemFunction.ProcessCommand(paramCmd,sInfo, _editlang);
+
+                        if (paramCmd == "systemapi_signout")
+                        {
+                            var ps = new PortalSecurity();
+                            ps.SignOut();
+                            strOut = LoginForm();
+                        }
+                        else
+                        {
+                            // By default we prcess the DNNrocketAPI system api.
+                            strOut = SystemFunction.ProcessCommand(paramCmd, sInfo, _editlang);
+                        }
+
+
                     }
                     else
                     {
-                        strOut = "ERROR: Invalid Security.";
+                        var ps = new PortalSecurity();
+                        ps.SignOut();
+
+                        if (paramCmd == "systemapi_login")
+                        {
+                            strOut = DoLogin(sInfo);
+                        }
+                        else
+                        {
+                            strOut = LoginForm();
+                        }
                     }
 
                 }
@@ -114,8 +140,47 @@ namespace DNNrocketAPI
             get
             {
                 return false;
+
             }
         }
+
+        private static string DoLogin(SimplisityInfo sInfo)
+        {
+            var strOut = "";
+            var username = sInfo.GetXmlProperty("genxml/textbox/username");
+            var password = sInfo.GetXmlProperty("genxml/textbox/password");
+            var rememberme = sInfo.GetXmlPropertyBool("genxml/checkbox/rememberme");
+
+            UserLoginStatus loginStatus = new UserLoginStatus();
+
+            UserInfo objUser = UserController.ValidateUser(PortalSettings.Current.PortalId, username, password, "DNN", "", PortalSettings.Current.PortalName, HttpContext.Current.Request.UserHostAddress, ref loginStatus);
+            if (objUser != null)
+            {
+                UserController.UserLogin(PortalSettings.Current.PortalId, objUser, PortalSettings.Current.PortalName, HttpContext.Current.Request.UserHostAddress, rememberme);
+                if (loginStatus != UserLoginStatus.LOGIN_SUCCESS && loginStatus != UserLoginStatus.LOGIN_SUPERUSER)
+                {
+                    strOut = "<h1>BOLLOCKS IN</h1>";
+                }
+                else
+                {
+                    strOut = "<h1>BOLLOCKS OUT</h1>";
+                }
+            }
+            else
+            {
+                strOut = "<h1>BOLLOCKS F UP USER</h1>";
+            }
+
+            return strOut;
+        }
+
+        private static string LoginForm()
+        {
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData("LoginForm.cshtml", TemplateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
+            return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo());
+        }
+
+
 
 
     }

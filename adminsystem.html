@@ -19,38 +19,37 @@
 <body class="w3-light-grey">
 
 
-<!-- Top container -->
-<div class="w3-bar w3-top w3-grey w3-large w3-padding-small " id="menubar" style="z-index:2">
-    <div class="w3-container">
-            <span class="w3-margin-right">                
-            </span>
-        <div class="w3-threequarter">
-            <span id="menubuttons" class="w3-margin-left"></span>
-        </div>
-        <div class="w3-quarter w3-right-align">
-            <span id="menulangflags" class="w3-right-align"></span>
+    <!-- Top container -->
+    <div class="w3-bar w3-top w3-grey w3-large w3-padding-small " id="menubar" style="z-index:2">
+        <div class="w3-container">
+            <div class="w3-threequarter">
+                <span id="menubuttons" class="w3-margin-left"></span>
+            </div>
+            <div class="w3-quarter w3-right-align">
+                <span id="menulangflags" class="w3-right-align"></span>
+            </div>
         </div>
     </div>
-</div>
 
 
 
-<!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-top:60px;" id="base-panel">
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main" style="margin-top:60px;" id="base-panel">
 
-    <div id="contentplaceholder" class="simplisity_panel" s-cmd="systemapi_admin_getsystemlist" s-fields="theme:config-w3,template:Admin_Systems.cshtml,systemprovider:systemapi"></div>
+        <div id="contentplaceholder" class="simplisity_panel" s-cmd="systemapi_admin_getsystemlist" s-fields="theme:config-w3,template:Admin_Systems.cshtml,systemprovider:systemapi"></div>
 
-  <!-- End page content -->
-</div>
+        <!-- End page content -->
+    </div>
 
-<script>
-$(document).ready(function () {
+    <script>
+        $(document).ready(function () {
 
-    $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx');
+            $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx');
 
-});
+        });
 
-</script>
+    </script>
+
 
 </body>
 </html>

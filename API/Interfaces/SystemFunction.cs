@@ -1,5 +1,6 @@
 ﻿using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Membership;
 using NBrightCore.TemplateEngine;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
@@ -21,7 +22,7 @@ namespace DNNrocketAPI.Interfaces
 
         public static string ProcessCommand(string paramCmd, SimplisityInfo sInfo, string editlang = "")
         {
-            var strOut = "ERROR!! - No Security rights or function command.";
+            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined.";
 
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
@@ -52,8 +53,6 @@ namespace DNNrocketAPI.Interfaces
                         SystemAddParameter(sInfo);
                         strOut = SystemAdminDetail(sInfo);
                         break;
-
-
                 }
             }
             return strOut;
@@ -255,6 +254,8 @@ namespace DNNrocketAPI.Interfaces
                 CacheUtils.ClearCache();
             }
         }
+
+
 
     }
 }
