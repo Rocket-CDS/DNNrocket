@@ -35,22 +35,21 @@ namespace DNNrocketAPI
 
                 if (systemprovider == "" || systemprovider == "systemapi")
                 {
+                    var rtnInfo = new SimplisityInfo(true);
+
                     if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                     {
-
                         if (paramCmd == "systemapi_signout")
                         {
                             var ps = new PortalSecurity();
                             ps.SignOut();
-                            strOut = LoginForm();
+                            strOut = LoginForm(rtnInfo);
                         }
                         else
                         {
                             // By default we prcess the DNNrocketAPI system api.
                             strOut = SystemFunction.ProcessCommand(paramCmd, sInfo, _editlang);
                         }
-
-
                     }
                     else
                     {
@@ -63,7 +62,7 @@ namespace DNNrocketAPI
                         }
                         else
                         {
-                            strOut = LoginForm();
+                            strOut = LoginForm(rtnInfo);
                         }
                     }
 
@@ -151,33 +150,38 @@ namespace DNNrocketAPI
             var password = sInfo.GetXmlProperty("genxml/textbox/password");
             var rememberme = sInfo.GetXmlPropertyBool("genxml/checkbox/rememberme");
 
+            var rtnInfo = new SimplisityInfo(true);
+
             UserLoginStatus loginStatus = new UserLoginStatus();
 
             UserInfo objUser = UserController.ValidateUser(PortalSettings.Current.PortalId, username, password, "DNN", "", PortalSettings.Current.PortalName, HttpContext.Current.Request.UserHostAddress, ref loginStatus);
             if (objUser != null)
             {
                 UserController.UserLogin(PortalSettings.Current.PortalId, objUser, PortalSettings.Current.PortalName, HttpContext.Current.Request.UserHostAddress, rememberme);
-                if (loginStatus != UserLoginStatus.LOGIN_SUCCESS && loginStatus != UserLoginStatus.LOGIN_SUPERUSER)
+                if (loginStatus != UserLoginStatus.LOGIN_SUCCESS || loginStatus != UserLoginStatus.LOGIN_SUPERUSER)
                 {
-                    strOut = "<h1>BOLLOCKS IN</h1>";
+                    rtnInfo.SetXmlProperty("genxml/loginstatus", "ok");
+                    strOut = LoginForm(rtnInfo);
                 }
                 else
                 {
-                    strOut = "<h1>BOLLOCKS OUT</h1>";
+                    rtnInfo.SetXmlProperty("genxml/loginstatus", "fail");
+                    strOut = LoginForm(rtnInfo);
                 }
             }
             else
             {
-                strOut = "<h1>BOLLOCKS F UP USER</h1>";
+                rtnInfo.SetXmlProperty("genxml/loginstatus", "fail");
+                strOut = LoginForm(rtnInfo);
             }
 
             return strOut;
         }
 
-        private static string LoginForm()
+        private static string LoginForm(SimplisityInfo sInfo)
         {
             var razorTempl = DNNrocketUtils.GetRazorTemplateData("LoginForm.cshtml", TemplateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
-            return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo());
+            return DNNrocketUtils.RazorDetail(razorTempl, sInfo);
         }
 
 

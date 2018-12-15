@@ -114,6 +114,7 @@
     <None Include="Themes\config-w3\default\Admin_SystemDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="App_LocalResources\login.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\system.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\DNNrocket.ascx.resx" />
   </ItemGroup>
