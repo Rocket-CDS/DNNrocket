@@ -6,6 +6,9 @@ using DNNrocketAPI.Interfaces;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security;
+using DotNetNuke.Services.Mail;
+using DotNetNuke.Entities.Users.Membership;
+using DNNrocket.Login;
 
 namespace DNNrocketAPI
 {
@@ -43,7 +46,7 @@ namespace DNNrocketAPI
                         {
                             var ps = new PortalSecurity();
                             ps.SignOut();
-                            strOut = LoginForm(rtnInfo);
+                            strOut = LoginUtils.LoginForm(rtnInfo);
                         }
                         else
                         {
@@ -56,16 +59,19 @@ namespace DNNrocketAPI
                         var ps = new PortalSecurity();
                         ps.SignOut();
 
-                        if (paramCmd == "systemapi_login")
+                        switch (paramCmd)
                         {
-                            strOut = DoLogin(sInfo);
-                        }
-                        else
-                        {
-                            strOut = LoginForm(rtnInfo);
+                            case "systemapi_login":
+                                strOut = LoginUtils.DoLogin(sInfo, HttpContext.Current.Request.UserHostAddress);
+                                break;
+                            case "systemapi_sendreset":
+                                //strOut = ResetPass(sInfo);
+                                break;
+                            default:
+                                strOut = LoginUtils.LoginForm(rtnInfo);
+                                break;
                         }
                     }
-
                 }
                 else
                 {
@@ -98,7 +104,6 @@ namespace DNNrocketAPI
                                     }
                                     catch (Exception ex)
                                     {
-                                        //strOut = ex.ToString();
                                         strOut = "No valid assembly found: " + systemprovider + " : " + assembly + "," + namespaceclass;
                                     }
                                 }
@@ -142,49 +147,6 @@ namespace DNNrocketAPI
 
             }
         }
-
-        private static string DoLogin(SimplisityInfo sInfo)
-        {
-            var strOut = "";
-            var username = sInfo.GetXmlProperty("genxml/textbox/username");
-            var password = sInfo.GetXmlProperty("genxml/textbox/password");
-            var rememberme = sInfo.GetXmlPropertyBool("genxml/checkbox/rememberme");
-
-            var rtnInfo = new SimplisityInfo(true);
-
-            UserLoginStatus loginStatus = new UserLoginStatus();
-
-            UserInfo objUser = UserController.ValidateUser(PortalSettings.Current.PortalId, username, password, "DNN", "", PortalSettings.Current.PortalName, HttpContext.Current.Request.UserHostAddress, ref loginStatus);
-            if (objUser != null)
-            {
-                UserController.UserLogin(PortalSettings.Current.PortalId, objUser, PortalSettings.Current.PortalName, HttpContext.Current.Request.UserHostAddress, rememberme);
-                if (loginStatus != UserLoginStatus.LOGIN_SUCCESS || loginStatus != UserLoginStatus.LOGIN_SUPERUSER)
-                {
-                    rtnInfo.SetXmlProperty("genxml/loginstatus", "ok");
-                    strOut = LoginForm(rtnInfo);
-                }
-                else
-                {
-                    rtnInfo.SetXmlProperty("genxml/loginstatus", "fail");
-                    strOut = LoginForm(rtnInfo);
-                }
-            }
-            else
-            {
-                rtnInfo.SetXmlProperty("genxml/loginstatus", "fail");
-                strOut = LoginForm(rtnInfo);
-            }
-
-            return strOut;
-        }
-
-        private static string LoginForm(SimplisityInfo sInfo)
-        {
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData("LoginForm.cshtml", TemplateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
-            return DNNrocketUtils.RazorDetail(razorTempl, sInfo);
-        }
-
-
 
 
     }

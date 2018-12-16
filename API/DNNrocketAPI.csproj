@@ -109,20 +109,25 @@
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="packages.config" />
-    <None Include="Themes\config-w3\default\LoginForm.cshtml" />
     <None Include="Themes\config-w3\default\Admin_Systems.cshtml" />
     <None Include="Themes\config-w3\default\Admin_SystemDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App_LocalResources\login.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\system.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\DNNrocket.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="js\simplisity.js" />
     <Content Include="Systems\OpenStore.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="js\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Login\Login.csproj">
+      <Project>{57f0a549-1c5b-47bb-a7df-342fe18cb295}</Project>
+      <Name>Login</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetFileName)" "..\..\..\..\..\bin\$(TargetFileName)"
