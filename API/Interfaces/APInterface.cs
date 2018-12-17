@@ -25,11 +25,7 @@ namespace DNNrocketAPI
 
 		#endregion
 
-        public abstract string Ajaxkey { get; set; }
-
         public abstract string ProcessCommand(string paramCmd, SimplisityInfo sInfo, string editlang = "");
-
-        public abstract void Validate();
 
     }
 

@@ -7,7 +7,7 @@
     var plugin = (SystemRecord)Model.List.First();
 }
 
-<span class="w3-section" id="buttonsrequired" style="display:none;">
+<span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
     <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_admin_save" s-post="#pluginsdatasection" s-before="PrePostInterfaceList">@ResourceKey("DNNrocket.cmdSaveButton")</button>
     <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="systemapi_admin_delete" s-post="#pluginsdatasection" s-return="#contentplaceholder" s-after="reloadpluginlist">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
     <button class="w3-button w3-sand w3-padding-8 simplisity_click" s-cmd="systemapi_admin_getsystemlist" s-fields="theme:config-w3,template:Admin_Systems.cshtml,systemprovider:systemapi" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdReturnButton")</button>
@@ -223,7 +223,6 @@
     };
 
     $(document).ready(function () {
-        $("#menubuttons").panelButtons('#buttonsrequired');
         $(':checkbox').attr('class', 'w3-check');
     });
 

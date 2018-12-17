@@ -89,10 +89,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Componants\DNNrocketConst.cs" />
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\DataInterface.cs" />
-    <Compile Include="Interfaces\SystemFunction.cs" />
-    <Compile Include="Interfaces\DNNrocketUtils.cs" />
+    <Compile Include="Componants\SystemFunction.cs" />
+    <Compile Include="Componants\DNNrocketUtils.cs" />
     <Compile Include="render\DNNrocketTokens.cs" />
     <Compile Include="SqlDataProvider\DataProvider.cs" />
     <Compile Include="SqlDataProvider\DNNrocketController.cs" />

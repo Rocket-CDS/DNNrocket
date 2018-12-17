@@ -906,6 +906,15 @@ namespace DNNrocketAPI
             return UserController.Instance.GetCurrentUserInfo().IsInRole(role);
         }
 
+        public static Boolean IsClientOnly()
+        {
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ClientEditorRole) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.EditorRole) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ManagerRole) && !UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators")))
+            {
+                return true;
+            }
+            return false;
+        }
+
         #region "encryption"
 
         public static String Encrypt(String value, String passkey = "")
