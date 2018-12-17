@@ -6,7 +6,7 @@
 
 <div class="w3-container">
 
-    <span class="w3-section" id="buttonsrequired" style="display:none;">
+    <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
         <button class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_adminaddnew" s-fields="theme:config-w3,template:Admin_SystemDetail.cshtml,systemprovider:systemapi" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdAddButton")</button>
         <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_signout" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdSignOutButton")</button>
     </span>
@@ -50,7 +50,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $("#menubuttons").panelButtons('#buttonsrequired');
+          //  $(".simplisity_buttonholder").panelButtons('.simplisity_buttons');
         });
 
     </script>
