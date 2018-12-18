@@ -149,7 +149,7 @@
     </div>
 
     <button onclick="AccordianFunction('parameters')" class="w3-button w3-block w3-left-align w3-blue">
-        <i class="w3-margin-right fa fa-caret-down"></i>@ResourceKey("system.parameters")
+        <i class="w3-margin-right fa fa-caret-down"></i>@ResourceKey("system.idxfield")
     </button>
 
     <div id="parameters" class="w3-container w3-hide w3-show">
@@ -164,7 +164,7 @@
                 @{
                     var lp2 = 0;
                 }
-                @foreach (var nbiModel in plugin.GetParameters())
+                @foreach (var nbiModel in plugin.GetIndexFields())
                 {
                     lp2 += 1;
                     <li class="parameterdata w3-card w3-margin w3-display-container">
@@ -173,10 +173,16 @@
                         <a href="javascript:void(0)" class="w3-display-bottomleft simplisity_itemdown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
                         <div class="w3-row">
                             <div class="w3-padding w3-half">
-                                <label class="">@ResourceKey("system.Name")</label>
+                                <label class="">@ResourceKey("system.fieldxpath")</label>
                                 @TextBox(nbiModel, "genxml/textbox/name_" + lp2, "class='w3-input w3-border' maxlength='250' ", "")
                             </div>
-                            <div class="w3-padding w3-third">
+                            <div class="w3-padding w3-quarter">
+                                <div class="w3-row">
+                                    <label class="">@ResourceKey("system.fieldcol")</label>
+                                    @DropDownList(nbiModel, "genxml/dropdownlist/fieldcol_" + lp1, ResourceKey("system.idxcols", "", "datavalue").ToString(), ResourceKey("system.idxcols", "", "data").ToString(), "class='w3-select w3-border'")
+                                </div>
+                            </div>
+                            <div class="w3-padding w3-quarter">
                                 <div class="w3-row">
                                 </div>
                             </div>

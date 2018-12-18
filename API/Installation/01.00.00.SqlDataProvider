@@ -41,13 +41,13 @@ CREATE TABLE {databaseOwner}[{objectQualifier}DNNrocket] (
 ) ON [PRIMARY]
 
 -- Index DNNrocket
- CREATE  INDEX [IX_DNNrocketXref] ON {databaseOwner}[{objectQualifier}DNNrocket]([XrefItemId]) ON [PRIMARY]
- CREATE  INDEX [IX_DNNrocketMod] ON {databaseOwner}[{objectQualifier}DNNrocket]([ModuleId]) ON [PRIMARY]
- CREATE  INDEX [IX_DNNrocketParent] ON {databaseOwner}[{objectQualifier}DNNrocket]([ParentItemId]) ON [PRIMARY]
- CREATE  INDEX [IX_DNNrocketPortal] ON {databaseOwner}[{objectQualifier}DNNrocket]([PortalId]) ON [PRIMARY]
- CREATE  INDEX [IX_DNNrocketType] ON {databaseOwner}[{objectQualifier}DNNrocket]([TypeCode]) ON [PRIMARY]
- CREATE  INDEX [IX_DNNrocketUserId] ON {databaseOwner}[{objectQualifier}DNNrocket]([UserId]) ON [PRIMARY]
- CREATE  INDEX [IX_DNNrocketLang] ON {databaseOwner}[{objectQualifier}DNNrocket]([Lang]) ON [PRIMARY]
+ CREATE NONCLUSTERED INDEX IX_DNNrocketXref ON dbo.DNNrocket (  XrefItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ]  
+ CREATE NONCLUSTERED INDEX IX_DNNrocketMod ON dbo.DNNrocket (  ModuleId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketParent ON dbo.DNNrocket (  ParentItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketPortal ON dbo.DNNrocket (  PortalId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketType ON dbo.DNNrocket (  TypeCode ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketUserId ON dbo.DNNrocket (  UserId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketLang ON dbo.DNNrocket (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
 
 END
 
@@ -107,6 +107,7 @@ GO
 -------------------------------------------------------------------------------
 
 SET QUOTED_IDENTIFIER ON 
+
 GO
 SET ANSI_NULLS ON 
 GO
@@ -516,7 +517,7 @@ CREATE TABLE [dbo].[DNNrocketIdx](
 	[idxField7] [nvarchar](50) NULL,
 	[idxField8] [nvarchar](50) NULL,
 	[idxField9] [nvarchar](50) NULL,
-	[idxField0] [varbinary](max) NULL,
+	[idxField0] [nvarchar](50) NULL,
 	[idxInt1] [int] NULL,
 	[idxInt2] [int] NULL,
 	[idxInt3] [int] NULL,
@@ -524,7 +525,7 @@ CREATE TABLE [dbo].[DNNrocketIdx](
 	[idxDecimal2] [decimal](18, 5) NULL,
 	[idxDecimal3] [decimal](18, 5) NULL,
 	[TypeCode] [nvarchar](50) NULL,
-	[Lang] [nchar](10) NOT NULL,
+	[Lang] [nvarchar](10) NOT NULL,
 	[Visible] [bit] NULL,
 	[Disabled] [bit] NULL,
  CONSTRAINT [PK_DNNrocketIdx] PRIMARY KEY CLUSTERED 
@@ -561,12 +562,6 @@ GO
 
  /**
 
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[DNNrocketLang](
 	[ParentItemId] [int] NOT NULL,
 	[Lang] [varchar](10) NOT NULL,
@@ -580,3 +575,5 @@ CREATE TABLE [dbo].[DNNrocketLang](
 GO
 
 **/
+
+

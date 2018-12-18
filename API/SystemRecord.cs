@@ -72,18 +72,18 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public List<SimplisityInfo> GetParameters()
+        public List<SimplisityInfo> GetIndexFields()
         {
             var rtnList = new List<SimplisityInfo>();
 
             if (_sInfo.XMLDoc != null)
             {
-                var parameters = _sInfo.XMLDoc.SelectNodes("genxml/parameters/*");
+                var parameters = _sInfo.XMLDoc.SelectNodes("genxml/indexfields/*");
                 foreach (XmlNode i in parameters)
                 {
                     var nbi = new SimplisityInfo();
                     nbi.XMLData = i.OuterXml;
-                    nbi.TypeCode = "SYSTEMPARAM";
+                    nbi.TypeCode = "SYSTEMIDXFIELD";
                     rtnList.Add(nbi);
                 }
             }
@@ -98,10 +98,10 @@ namespace DNNrocketAPI
             objCtrl.Update(_sInfo);
         }
 
-        public void AddParameter()
+        public void AddIndexField()
         {
             var objCtrl = new DNNrocketController();
-            _sInfo.AddXmlNode("<genxml></genxml>", "genxml", "genxml/parameters");
+            _sInfo.AddXmlNode("<genxml></genxml>", "genxml", "genxml/indexfields");
             objCtrl.Update(_sInfo);
         }
 

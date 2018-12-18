@@ -192,7 +192,7 @@ namespace DNNrocketAPI.Interfaces
                     var objCtrl = new DNNrocketController();
                     var info = objCtrl.GetRecord(Convert.ToInt32(selecteditemid));
                     var pluginRecord = new SystemRecord(info);
-                    pluginRecord.AddParameter();
+                    pluginRecord.AddIndexField();
                 }
             }
             catch (Exception ex)
@@ -236,7 +236,7 @@ namespace DNNrocketAPI.Interfaces
                 systemRecord.Info().GUIDKey = systemRecord.Info().GetXmlProperty("genxml/textbox/ctrlkey");
 
                 systemRecord.UpdateModels(modelXml, DNNrocketUtils.GetCurrentCulture(), "interfaces");
-                systemRecord.UpdateModels(parametersXml, DNNrocketUtils.GetCurrentCulture(), "parameters");
+                systemRecord.UpdateModels(parametersXml, DNNrocketUtils.GetCurrentCulture(), "indexfields");
 
                 objCtrl.Update(systemRecord.Info());
 
