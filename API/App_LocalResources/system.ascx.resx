@@ -193,10 +193,10 @@
     <value>xPath</value>
   </data>
   <data name="idxcols.data" xml:space="preserve">
-    <value>[idxField1] [nvarchar],[idxField2] [nvarchar],[idxField3] [nvarchar],[idxField4] [nvarchar],[idxField5] [nvarchar],[idxField6] [nvarchar],[idxField7] [nvarchar],[idxField8] [nvarchar],[idxField9] [nvarchar],[idxField0] [nvarchar],[idxInt1] [int,[idxInt2] [int,[idxInt3] [int,[idxDecimal1] [decimal],[idxDecimal2] [decimal],[idxDecimal3] [decimal],[TypeCode] [nvarchar],[Lang] [nvarchar],[Visible] [bit],[Disabled] [bit]</value>
+    <value>[idxField1] [nvarchar],[idxField2] [nvarchar],[idxField3] [nvarchar],[idxField4] [nvarchar],[idxField5] [nvarchar],[idxField6] [nvarchar],[idxField7] [nvarchar],[idxField8] [nvarchar],[idxField9] [nvarchar],[idxField0] [nvarchar],[idxInt1] [int,[idxInt2] [int,[idxInt3] [int,[idxDecimal1] [decimal],[idxDecimal2] [decimal],[idxDecimal3] [decimal],[Visible] [bit],[Disabled] [bit]</value>
   </data>
   <data name="idxcols.datavalue" xml:space="preserve">
-    <value>[idxField1],[idxField2],[idxField3],[idxField4],[idxField5],[idxField6],[idxField7],[idxField8],[idxField9],[idxField0],[idxInt1],[idxInt2],[idxInt3],[idxDecimal1],[idxDecimal2],[idxDecimal3],[TypeCode],[Lang],[Visible],[Disabled]</value>
+    <value>[idxField1],[idxField2],[idxField3],[idxField4],[idxField5],[idxField6],[idxField7],[idxField8],[idxField9],[idxField0],[idxInt1],[idxInt2],[idxInt3],[idxDecimal1],[idxDecimal2],[idxDecimal3],[Visible],[Disabled]</value>
   </data>
   <data name="idxfield.Text" xml:space="preserve">
     <value>Index Fields</value>
