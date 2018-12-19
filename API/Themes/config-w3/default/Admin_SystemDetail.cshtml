@@ -18,249 +18,52 @@
 <div class="w3-container">
 
     <div class="w3-container">
-        <h2>Tabs in a Grid</h2>
+        <h2>@plugin.Info().GetXmlProperty("genxml/textbox/systemname")</h2>
 
         <div class="w3-row">
             <a href="javascript:void(0)" onclick="openSection(event, 'pluginsdatasection');">
-                <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red ">@ResourceKey("system.systemdata")</div>
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding w3-border-blue w3-light-blue " style="width:15%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("system.systemdata")</div>
+            </a>
+            <a href="javascript:void(0)" onclick="openSection(event, 'Groups');">
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fa fa-link"></i>&nbsp;@ResourceKey("system.menugroups")</div>
+            </a>
+            <a href="javascript:void(0)" onclick="openSection(event, 'provtypes');">
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fa fa-handshake-o"></i>&nbsp;@ResourceKey("system.provtypes")</div>
             </a>
             <a href="javascript:void(0)" onclick="openSection(event, 'Interface');">
-                <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">@ResourceKey("system.interfaces")</div>
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fa fa-link"></i>&nbsp;@ResourceKey("system.interfaces")</div>
             </a>
             <a href="javascript:void(0)" onclick="openSection(event, 'parameters');">
-                <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">@ResourceKey("system.idxfield")</div>
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fa fa-indent"></i>&nbsp;@ResourceKey("system.idxfield")</div>
             </a>
             <a href="javascript:void(0)" onclick="openSection(event, 'settings');">
-                <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">@ResourceKey("system.settings")</div>
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fa fa-cog"></i>&nbsp;@ResourceKey("system.settings")</div>
             </a>
         </div>
 
         <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
         <div id="pluginsdatasection" class="w3-container w3-margin tabsection" style="display:block;">
+            @RenderTemplate("Admin_SystemDetailData.cshtml", "\\DesktopModules\\DNNrocket\\API", "config-w3", Model)
+        </div>
 
-            <input id="itemid" type="hidden" value="@plugin.Info().ItemID" />
-            <input id="editlanguage" type="hidden" value="@plugin.Info().Lang" />
-            <input id="index" type="hidden" value="@plugin.Info().GetXmlPropertyInt("genxml/hidden/index").ToString()" />
-            <input id="systemprovider" type="hidden" value="systemapi" />
+        <div id="provtypes" class="w3-container tabsection" style="display:none">
+            @RenderTemplate("Admin_SystemDetailProvType.cshtml", "\\DesktopModules\\DNNrocket\\API", "config-w3", Model)
+        </div>
 
-            <!-- postback fields to keep ajax populated data for update: datatype='coded' so we don't corrupt the return XML -->
-            <input id="xmlupdateparamdata" type="hidden" datatype="coded" value="" />
-            <input id="xmlupdatemodeldata" type="hidden" datatype="coded" value="" />
-            <input id="xmlupdatesettings" type="hidden" datatype="coded" value="" />
-            <input id="uilang1" type="hidden" value="@DNNrocketUtils.GetCurrentCulture()" />
-
-            <div id="plugins" class="">
-
-                <div class="w3-card w3-light-grey w3-padding-large">
-
-                    <div class="w3-row-padding">
-                        <div class="w3-quarter">
-                            <label class="">@ResourceKey("system.ctrlkey")</label>
-                            @TextBox(plugin.Info(), "genxml/textbox/ctrlkey", "class='w3-input w3-border' maxlength='50'")
-                        </div>
-                        <div class="w3-quarter">
-                            <label class="">@ResourceKey("system.systemname")</label>
-                            @TextBox(plugin.Info(), "genxml/textbox/systemname", "class='w3-input w3-border' maxlength='50'")
-                        </div>
-                        <div class="w3-half">
-                            <label class="">@ResourceKey("system.systempath")</label>
-                            @TextBox(plugin.Info(), "genxml/textbox/path", "class='w3-input w3-border' maxlength='350'")
-                        </div>
-                    </div>
-                    <div class="w3-row-padding">
-                        <div class="w3-half">
-                            <label class="">@ResourceKey("system.apiurl")</label>
-                            @TextBox(plugin.Info(), "genxml/textbox/apiurl", "class='w3-input w3-border'  ", "")
-                        </div>
-                        <div class="w3-half">
-                            <label class="">@ResourceKey("system.adminurl")</label>
-                            @TextBox(plugin.Info(), "genxml/textbox/adminurl", "class='w3-input w3-border' ", "")
-                        </div>
-                    </div>
-                    <div class="w3-row-padding">
-                        <div class="w3-half">
-                            <label class="">@ResourceKey("system.licensekey")</label>
-                            @TextBox(plugin.Info(), "genxml/textbox/licensekey", "class='w3-input w3-border' maxlength='250' ", "")
-                        </div>
-                        <div class="w3-third">
-                        </div>
-                        <div class="w3-third">
-                        </div>
-
-                    </div>
-
-                    <div class="w3-row-padding">
-                        @plugin.Info().GUIDKey / @plugin.Info().ItemID
-                    </div>
-
-
-                </div>
-            </div>
-
-            <button onclick="AccordianFunction('XML')" class="w3-button w3-block w3-left-align w3-blue w3-margin-top">
-                <i class="w3-margin-right fa fa-caret-down"></i>XML
-            </button>
-
-            <div id="XML" class="w3-container-padding w3-margin">
-                <div class="w3-card-4 w3-padding w3-codespan">
-                    @plugin.Info().XMLData
-                </div>
-            </div>
-
+        <div id="Groups" class="w3-container tabsection" style="display:none">
+            @RenderTemplate("Admin_SystemDetailGroups.cshtml", "\\DesktopModules\\DNNrocket\\API", "config-w3", Model)
         </div>
 
         <div id="Interface" class="w3-container tabsection" style="display:none">
-            <div class="w3-container">
-                <div class="w3-margin">
-                    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addinterface" s-fields="selecteditemid:@plugin.Info().ItemID,theme:config-w3,template:Admin_SystemDetail.cshtml,ajaxprovider:systemapi" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdAddButton")</a>
-                    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="interfacesbin" s-return="#plugininterfaces" s-undoselector=".interfacedata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
-                </div>
-
-                <ul id="plugininterfaces" class="w3-ul">
-
-                    @{
-                        var lp1 = 0;
-                    }
-                    @foreach (var nbiModel in plugin.GetInterfaces())
-                    {
-                        lp1 += 1;
-                        <li class="interfacedata w3-card w3-margin w3-display-container">
-                            <a href="javascript:void(0)" class="w3-display-right simplisity_removelistitem" s-recylebin="interfacesbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
-                            <a href="javascript:void(0)" class="w3-display-topleft simplisity_itemup"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
-                            <a href="javascript:void(0)" class="w3-display-bottomleft simplisity_itemdown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
-
-                            <div class="w3-row">
-                                <div class="w3-padding w3-quarter">
-                                    <label class="">@ResourceKey("system.interfacekey")</label>
-                                    @TextBox(nbiModel, "genxml/textbox/interfacekey_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
-                                </div>
-                                <div class="w3-padding w3-quarter">
-                                </div>
-                                <div class="w3-padding w3-quarter">
-                                </div>
-                                <div class="w3-padding w3-quarter">
-                                </div>
-                            </div>
-
-                            <div class="w3-row">
-                                <div class="w3-padding w3-half">
-                                    <label class="">@ResourceKey("system.namespaceclass")</label>
-                                    @TextBox(nbiModel, "genxml/textbox/namespaceclass_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
-                                </div>
-                                <div class="w3-padding w3-quarter">
-                                    <label class="">@ResourceKey("system.assembly")</label>
-                                    @TextBox(nbiModel, "genxml/textbox/assembly_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
-                                </div>
-                                <div class="w3-padding w3-quarter">
-                                    <label class="">@ResourceKey("system.group")</label>
-                                    @TextBox(nbiModel, "genxml/textbox/group_" + lp1, "class='w3-input w3-border' maxlength='50'")
-                                </div>
-                            </div>
-                            <div class="w3-row">
-                                <div class="w3-padding w3-half">
-                                    @CheckBoxList(plugin.Info(), "genxml/checkboxlist/securityroles", ResourceKey("system.roles").ToString(), ResourceKey("system.roles").ToString(), "")
-                                </div>
-                                <div class="w3-padding w3-quarter">
-                                    <label class="">@ResourceKey("DNNrocket.Active")</label>
-                                    @CheckBox(nbiModel, "genxml/checkbox/active_" + lp1, "", "class='w3-input w3-border'", true)
-                                </div>
-                                <div class="w3-padding w3-quarter">
-                                    <label class="">@ResourceKey("system.providertype")</label>
-                                    @DropDownList(nbiModel, "genxml/dropdownlist/providertype_" + lp1, ResourceKey("Plugins.providertype", "", "datavalue").ToString(), ResourceKey("Plugins.providertype", "", "data").ToString(), "class='w3-select w3-border'")
-                                </div>
-                            </div>
-
-                        </li>
-                    }
-                </ul>
-
-            </div>
+            @RenderTemplate("Admin_SystemDetailInterfaces.cshtml", "\\DesktopModules\\DNNrocket\\API", "config-w3", Model)
         </div>
 
         <div id="parameters" class="w3-container tabsection" style="display:none">
-            <div class="w3-container">
-                <div class="w3-margin">
-                    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addparam" s-fields="selecteditemid:@plugin.Info().ItemID,theme:config-w3,template:Admin_SystemDetail.cshtml,ajaxprovider:systemapi" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdAddButton")</a>
-                    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="parametersbin" s-return="#pluginparameters" s-undoselector=".parameterdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
-                </div>
-
-                <div class="w3-row w3-margin">
-
-                    <table id="pluginparameters" class="w3-table-all">
-
-                        <tr>
-                            <th class="w3-half">@ResourceKey("system.fieldxpath")</th>
-                            <th class="w3-quarter">@ResourceKey("system.fieldcol")</th>
-                            <th style="width:20px;"></th>
-                        </tr>
-
-                        @{
-                            var lp2 = 0;
-                        }
-                        @foreach (var nbiModel in plugin.GetIndexFields())
-                        {
-                            lp2 += 1;
-
-                            <tr class="parameterdata">
-                                <td class="w3-half">
-                                    @TextBox(nbiModel, "genxml/textbox/xpath_" + lp2, "class='w3-input w3-border' maxlength='250' ", "")
-                                </td>
-                                <td class="w3-quarter">
-                                    @DropDownList(nbiModel, "genxml/dropdownlist/fieldcol_" + lp1, ResourceKey("system.idxcols", "", "datavalue").ToString(), ResourceKey("system.idxcols", "", "data").ToString(), "class='w3-select w3-border'")
-                                </td>
-                                <td style="width:20px;">
-                                    <a href="javascript:void(0)" class="simplisity_removetablerow" s-recylebin="parametersbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
-                                </td>
-                            </tr>
-
-                        }
-                    </table>
-
-                </div>
-            </div>
+            @RenderTemplate("Admin_SystemDetailIdxFields.cshtml", "\\DesktopModules\\DNNrocket\\API", "config-w3", Model)
         </div>
 
         <div id="settings" class="w3-container tabsection" style="display:none">
-            <div class="w3-container">
-                <div class="w3-margin">
-                    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addsetting" s-fields="selecteditemid:@plugin.Info().ItemID,theme:config-w3,template:Admin_SystemDetail.cshtml,ajaxprovider:systemapi" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdAddButton")</a>
-                    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#pluginsettings" s-undoselector=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
-                </div>
-
-                <div class="w3-row w3-margin">
-
-                    <table id="pluginsettings" class="w3-table-all">
-
-                        <tr>
-                            <th class="w3-half">@ResourceKey("system.name")</th>
-                            <th class="w3-quarter">@ResourceKey("system.value")</th>
-                            <th style="width:20px;"></th>
-                        </tr>
-
-                        @{
-                            var lp3 = 0;
-                        }
-                        @foreach (var nbiModel in plugin.GetSettings())
-                        {
-                            lp2 += 1;
-
-                            <tr class="settingsdata">
-                                <td class="w3-half">
-                                    @TextBox(nbiModel, "genxml/textbox/name_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
-                                </td>
-                                <td class="w3-quarter">
-                                    @TextBox(nbiModel, "genxml/textbox/value_" + lp3, "class='w3-input w3-border' maxlength='500' ", "")
-                                </td>
-                                <td style="width:20px;">
-                                    <a href="javascript:void(0)" class="simplisity_removetablerow" s-recylebin="parametersbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
-                                </td>
-                            </tr>
-
-                        }
-                    </table>
-
-                </div>
-            </div>
+            @RenderTemplate("Admin_SystemDetailSettings.cshtml", "\\DesktopModules\\DNNrocket\\API", "config-w3", Model)
         </div>
 
     </div>
@@ -283,6 +86,8 @@
         $('#xmlupdatemodeldata').val(simplisity_getxmlitems('#plugininterfaces', '.interfacedata', ''));
         $('#xmlupdateparamdata').val(simplisity_getxmlitems('#pluginparameters', '.parameterdata', ''));
         $('#xmlupdatesettings').val(simplisity_getxmlitems('#pluginsettings', '.settingsdata', ''));
+        $('#xmlupdategroups').val(simplisity_getxmlitems('#plugingroups', '.groupsdata', ''));        
+        $('#xmlupdateprovtypes').val(simplisity_getxmlitems('#pluginprovtypes', '.provtypesdata', ''));                
     }
 
     function reloadpluginlist() {
@@ -297,16 +102,12 @@
         }
         tablinks = document.getElementsByClassName("tablink");
         for (i = 0; i < x.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" w3-border-red", "");
+            tablinks[i].className = tablinks[i].className.replace(" w3-border-blue", "");
+            tablinks[i].className = tablinks[i].className.replace(" w3-light-blue", "");
         }
         document.getElementById(sectionName).style.display = "block";
-        evt.currentTarget.firstElementChild.className += " w3-border-red";
+        evt.currentTarget.firstElementChild.className += " w3-border-blue";
+        evt.currentTarget.firstElementChild.className += " w3-light-blue";        
     }
-
-
-    $(document).ready(function () {
-        $(':checkbox').attr('class', 'w3-check');
-    });
-
 
 </script>

@@ -110,6 +110,44 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
+        public List<SimplisityInfo> GetGroups()
+        {
+            var rtnList = new List<SimplisityInfo>();
+
+            if (_sInfo.XMLDoc != null)
+            {
+                var parameters = _sInfo.XMLDoc.SelectNodes("genxml/groups/*");
+                foreach (XmlNode i in parameters)
+                {
+                    var nbi = new SimplisityInfo();
+                    nbi.XMLData = i.OuterXml;
+                    nbi.TypeCode = "SYSTEMGROUP";
+                    rtnList.Add(nbi);
+                }
+            }
+
+            return rtnList;
+        }
+
+        public List<SimplisityInfo> GetProvTypes()
+        {
+            var rtnList = new List<SimplisityInfo>();
+
+            if (_sInfo.XMLDoc != null)
+            {
+                var parameters = _sInfo.XMLDoc.SelectNodes("genxml/provtypes/*");
+                foreach (XmlNode i in parameters)
+                {
+                    var nbi = new SimplisityInfo();
+                    nbi.XMLData = i.OuterXml;
+                    nbi.TypeCode = "SYSTEMPROVTYPE";
+                    rtnList.Add(nbi);
+                }
+            }
+
+            return rtnList;
+        }        
+
 
         public void AddInterface()
         {
@@ -142,6 +180,30 @@ namespace DNNrocketAPI
 
             var objCtrl = new DNNrocketController();
             _sInfo.AddXmlNode("<genxml></genxml>", "genxml", "genxml/settings");
+            objCtrl.Update(_sInfo);
+        }
+
+        public void AddGroup()
+        {
+            if (GetGroups().Count() == 0)
+            {
+                _sInfo.SetXmlProperty("genxml/groups", "");
+            }
+
+            var objCtrl = new DNNrocketController();
+            _sInfo.AddXmlNode("<genxml></genxml>", "genxml", "genxml/groups");
+            objCtrl.Update(_sInfo);
+        }
+
+        public void AddProvType()
+        {
+            if (GetProvTypes().Count() == 0)
+            {
+                _sInfo.SetXmlProperty("genxml/provtypes", "");
+            }
+
+            var objCtrl = new DNNrocketController();
+            _sInfo.AddXmlNode("<genxml></genxml>", "genxml", "genxml/provtypes");
             objCtrl.Update(_sInfo);
         }
 

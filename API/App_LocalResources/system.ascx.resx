@@ -126,8 +126,8 @@
   <data name="systemname.Text" xml:space="preserve">
     <value>System Name</value>
   </data>
-  <data name="systempath.Text" xml:space="preserve">
-    <value>System Path</value>
+  <data name="systemrelpath.Text" xml:space="preserve">
+    <value>System Rel Path</value>
   </data>
   <data name="systems.Text" xml:space="preserve">
     <value>Systems</value>
@@ -209,5 +209,17 @@
   </data>
   <data name="value.Text" xml:space="preserve">
     <value>Value</value>
+  </data>
+  <data name="groupname.Text" xml:space="preserve">
+    <value>Group Name</value>
+  </data>
+  <data name="groupref.Text" xml:space="preserve">
+    <value>Group Ref</value>
+  </data>
+  <data name="menugroups.Text" xml:space="preserve">
+    <value>Menu Groups</value>
+  </data>
+  <data name="provtypes.Text" xml:space="preserve">
+    <value>Provider Types</value>
   </data>
 </root>

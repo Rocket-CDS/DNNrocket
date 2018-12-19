@@ -1,10 +1,13 @@
 ﻿using NBrightDNN.render;
 using RazorEngine.Text;
+using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace DNNrocketAPI.render
 {
@@ -36,6 +39,14 @@ namespace DNNrocketAPI.render
                 }
             }
             return strOut;
+        }
+
+        public IEncodedString RenderTemplate(string razorTemplateName, string templateControlRelPath, string themeFolder, SimplisityRazor model)
+        {
+            var strOut = "";
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            strOut = DNNrocketUtils.RazorRender(model, razorTempl, false);
+            return new RawString(strOut);
         }
 
 

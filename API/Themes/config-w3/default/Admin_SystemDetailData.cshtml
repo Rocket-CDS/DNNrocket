@@ -1,0 +1,87 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{
+    var plugin = (SystemRecord)Model.List.First();
+}
+
+
+
+<input id="itemid" type="hidden" value="@plugin.Info().ItemID" />
+<input id="editlanguage" type="hidden" value="@plugin.Info().Lang" />
+<input id="index" type="hidden" value="@plugin.Info().GetXmlPropertyInt("genxml/hidden/index").ToString()" />
+<input id="systemprovider" type="hidden" value="systemapi" />
+
+<!-- postback fields to keep ajax populated data for update: datatype='coded' so we don't corrupt the return XML -->
+<input id="xmlupdateparamdata" type="hidden" datatype="coded" value="" />
+<input id="xmlupdatemodeldata" type="hidden" datatype="coded" value="" />
+<input id="xmlupdatesettings" type="hidden" datatype="coded" value="" />
+<input id="xmlupdategroups" type="hidden" datatype="coded" value="" />
+<input id="xmlupdateprovtypes" type="hidden" datatype="coded" value="" />
+
+<input id="uilang1" type="hidden" value="@DNNrocketUtils.GetCurrentCulture()" />
+
+<div id="plugins" class="">
+
+    <div class="w3-card w3-light-grey w3-padding-large">
+
+        <div class="w3-row-padding">
+            <div class="w3-quarter">
+                <label class="">@ResourceKey("system.ctrlkey")</label>
+                @TextBox(plugin.Info(), "genxml/textbox/ctrlkey", "class='w3-input w3-border' maxlength='50'")
+            </div>
+            <div class="w3-quarter">
+                <label class="">@ResourceKey("system.systemname")</label>
+                @TextBox(plugin.Info(), "genxml/textbox/systemname", "class='w3-input w3-border' maxlength='50'")
+            </div>
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.systemrelpath")</label>
+                @TextBox(plugin.Info(), "genxml/textbox/relpath", "class='w3-input w3-border' maxlength='350'")
+            </div>
+        </div>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.apiurl")</label>
+                @TextBox(plugin.Info(), "genxml/textbox/apiurl", "class='w3-input w3-border'  ", "")
+            </div>
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.adminurl")</label>
+                @TextBox(plugin.Info(), "genxml/textbox/adminurl", "class='w3-input w3-border' ", "")
+            </div>
+        </div>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.licensekey")</label>
+                @TextBox(plugin.Info(), "genxml/textbox/licensekey", "class='w3-input w3-border' maxlength='250' ", "")
+            </div>
+            <div class="w3-third">
+                @if (plugin.Info().GetXmlProperty("genxml/textbox/adminurl") != "")
+                {
+                    <a class="w3-button w3-teal w3-padding-8 w3-margin-top" href="@plugin.Info().GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ResourceKey("DNNrocket.cmdAdminButton")</a>
+                }
+            </div>
+            <div class="w3-third">
+            </div>
+
+        </div>
+
+        <div class="w3-row-padding">
+            @plugin.Info().GUIDKey / @plugin.Info().ItemID
+        </div>
+
+
+    </div>
+</div>
+
+<button onclick="AccordianFunction('XML')" class="w3-button w3-block w3-left-align w3-pale-yellow w3-margin-top">
+    <i class="w3-margin-right fa fa-caret-down"></i>XML
+</button>
+
+<div id="XML" class="w3-container-padding w3-hide w3-margin">
+    <div class="w3-card-4 w3-padding w3-codespan">
+        @plugin.Info().XMLData
+    </div>
+</div>
+

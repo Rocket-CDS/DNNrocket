@@ -300,4 +300,13 @@
   <data name="cmdSignOutButton.Text" xml:space="preserve">
     <value>&lt;i title="Search" class="fa fa-sign-out fa-fw fa-lg"&gt;&lt;/i&gt; SignOut</value>
   </data>
+  <data name="cmdAdmin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="cmdAdminButton.Text" xml:space="preserve">
+    <value>&lt;i title="Admin" class="fa fa-list fa-fw fa-lg"&gt;&lt;/i&gt; Admin</value>
+  </data>
+  <data name="cmdAdminIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Admin" class="fa fa-list fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
 </root>

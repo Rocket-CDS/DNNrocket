@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Componants\DNNrocketConst.cs" />
+    <Compile Include="Componants\SideMenu.cs" />
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\DataInterface.cs" />
     <Compile Include="Componants\SystemFunction.cs" />
@@ -110,6 +111,12 @@
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="packages.config" />
+    <None Include="Themes\config-w3\default\Admin_SystemDetailData.cshtml" />
+    <None Include="Themes\config-w3\default\Admin_SystemDetailProvType.cshtml" />
+    <None Include="Themes\config-w3\default\Admin_SystemDetailInterfaces.cshtml" />
+    <None Include="Themes\config-w3\default\Admin_SystemDetailIdxFields.cshtml" />
+    <None Include="Themes\config-w3\default\Admin_SystemDetailGroups.cshtml" />
+    <None Include="Themes\config-w3\default\Admin_SystemDetailSettings.cshtml" />
     <None Include="Themes\config-w3\default\Admin_Systems.cshtml" />
     <None Include="Themes\config-w3\default\Admin_SystemDetail.cshtml" />
   </ItemGroup>

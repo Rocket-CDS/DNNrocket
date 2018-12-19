@@ -1,0 +1,100 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{
+    var plugin = (SystemRecord)Model.List.First();
+}
+
+
+
+<div class="w3-container">
+    <div class="w3-margin">
+        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addinterface" s-fields="selecteditemid:@plugin.Info().ItemID,theme:config-w3,template:Admin_SystemDetailInterfaces.cshtml,ajaxprovider:systemapi" s-return="#Interface">@ResourceKey("DNNrocket.cmdAddButton")</a>
+        <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="interfacesbin" s-return="#plugininterfaces" s-undoselector=".interfacedata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    </div>
+
+    <ul id="plugininterfaces" class="w3-ul">
+
+        @{
+            var lp1 = 0;
+        }
+        @foreach (var nbiModel in plugin.GetInterfaces())
+        {
+            lp1 += 1;
+            <li class="interfacedata w3-card w3-margin w3-display-container">
+                <a href="javascript:void(0)" class="w3-display-right simplisity_removelistitem" s-recylebin="interfacesbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+                <a href="javascript:void(0)" class="w3-display-topleft simplisity_itemup"><i class="fa fa-caret-up fa-2x fa-fw"></i></a>
+                <a href="javascript:void(0)" class="w3-display-bottomleft simplisity_itemdown"><i class="fa fa-caret-down fa-2x fa-fw"></i></a>
+
+                <div class="w3-row">
+                    <div class="w3-padding w3-quarter">
+                        <label class="">@ResourceKey("system.interfacekey")</label>
+                        @TextBox(nbiModel, "genxml/textbox/interfacekey_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                    </div>
+                    <div class="w3-padding w3-quarter">
+                    </div>
+                    <div class="w3-padding w3-quarter">
+                    </div>
+                    <div class="w3-padding w3-quarter">
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-padding w3-half">
+                        <label class="">@ResourceKey("system.namespaceclass")</label>
+                        @TextBox(nbiModel, "genxml/textbox/namespaceclass_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                    </div>
+                    <div class="w3-padding w3-quarter">
+                        <label class="">@ResourceKey("system.assembly")</label>
+                        @TextBox(nbiModel, "genxml/textbox/assembly_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                    </div>
+                    <div class="w3-padding w3-quarter">
+                        <label class="">@ResourceKey("system.group")</label>
+                        @{ 
+                            var grouplist = "";
+                            var l = plugin.GetGroups();
+                            foreach (var g in l)
+                            {
+                                grouplist += "," + g.GetXmlProperty("genxml/textbox/groupref");
+                            }
+                        }
+                        @DropDownList(nbiModel,"genxml/dropdownlist/group_" + lp1, grouplist, grouplist, "class='w3-input w3-border'")
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-padding w3-half">
+                        @CheckBoxList(plugin.Info(), "genxml/checkboxlist/securityroles", ResourceKey("system.roles").ToString(), ResourceKey("system.roles").ToString(), "")
+                    </div>
+                    <div class="w3-padding w3-quarter">
+                        <label class="">@ResourceKey("DNNrocket.Active")</label>
+                        @CheckBox(nbiModel, "genxml/checkbox/active_" + lp1, "", "class='w3-input w3-border'", true)
+                    </div>
+                    <div class="w3-padding w3-quarter">
+                        <label class="">@ResourceKey("system.providertype")</label>
+                        @{
+                            var providertyperef = "";
+                            var providertypelist = "";
+                            var l2 = plugin.GetProvTypes();
+                            foreach (var g in l2)
+                            {
+                                providertyperef += "," + g.GetXmlProperty("genxml/textbox/provtypes");
+                                providertypelist += "," + g.GetXmlProperty("genxml/textbox/provname");
+                            }
+                        }
+                        @DropDownList(nbiModel, "genxml/dropdownlist/providertype_" + lp1, providertyperef, providertypelist, "class='w3-input w3-border'")
+                    </div>
+                </div>
+
+            </li>
+        }
+    </ul>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(':checkbox').attr('class', 'w3-check');
+    });
+</script>
