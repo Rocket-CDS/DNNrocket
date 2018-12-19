@@ -65,6 +65,10 @@ namespace DNNrocketAPI.Interfaces
                             SystemAddParameter(sInfo);
                             strOut = SystemAdminDetail(sInfo);
                             break;
+                        case "systemapi_addsetting":
+                            SystemAddSetting(sInfo);
+                            strOut = SystemAdminDetail(sInfo);
+                            break;
                     }
                 }
             }
@@ -172,7 +176,7 @@ namespace DNNrocketAPI.Interfaces
 
                 var passSettings = sInfo.ToDictionary();
 
-                var info = new SimplisityInfo();
+                var info = new SimplisityInfo(true);
                 info.ItemID = -1;
                 info.PortalId = 99999;
                 info.Lang = DNNrocketUtils.GetCurrentCulture();
@@ -233,6 +237,25 @@ namespace DNNrocketAPI.Interfaces
             }
         }
 
+        public static void SystemAddSetting(SimplisityInfo sInfo)
+        {
+            try
+            {
+                var selecteditemid = sInfo.GetXmlProperty("genxml/hidden/selecteditemid");
+                if (GeneralUtils.IsNumeric(selecteditemid))
+                {
+                    var objCtrl = new DNNrocketController();
+                    var info = objCtrl.GetRecord(Convert.ToInt32(selecteditemid));
+                    var pluginRecord = new SystemRecord(info);
+                    pluginRecord.AddSetting();
+                }
+            }
+            catch (Exception ex)
+            {
+                // ignore
+            }
+        }
+
 
         public static void SystemSave(SimplisityInfo sInfo)
         {
@@ -244,9 +267,11 @@ namespace DNNrocketAPI.Interfaces
                 var systemRecord = new SystemRecord(info);
                 var modelXml = GeneralUtils.UnCode(sInfo.GetXmlProperty("genxml/hidden/xmlupdatemodeldata"));
                 var parametersXml = GeneralUtils.UnCode(sInfo.GetXmlProperty("genxml/hidden/xmlupdateparamdata"));
+                var settingsXml = GeneralUtils.UnCode(sInfo.GetXmlProperty("genxml/hidden/xmlupdatesettings"));
 
                 sInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata");
                 sInfo.RemoveXmlNode("genxml/hidden/xmlupdateparamdata");
+                sInfo.RemoveXmlNode("genxml/hidden/xmlupdatesettings");
                 systemRecord.Info().XMLData = sInfo.XMLData;
 
                 // check for unique ctrl ref
@@ -269,6 +294,7 @@ namespace DNNrocketAPI.Interfaces
 
                 systemRecord.UpdateModels(modelXml, DNNrocketUtils.GetCurrentCulture(), "interfaces");
                 systemRecord.UpdateModels(parametersXml, DNNrocketUtils.GetCurrentCulture(), "indexfields");
+                systemRecord.UpdateModels(parametersXml, DNNrocketUtils.GetCurrentCulture(), "settings");
 
                 objCtrl.Update(systemRecord.Info());
 

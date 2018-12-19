@@ -908,7 +908,7 @@ namespace DNNrocketAPI
 
         public static Boolean IsClientOnly()
         {
-            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ClientEditorRole) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.EditorRole) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ManagerRole) && !UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators")))
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ClientEditor) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators)))
             {
                 return true;
             }

@@ -91,8 +91,32 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
+        public List<SimplisityInfo> GetSettings()
+        {
+            var rtnList = new List<SimplisityInfo>();
+
+            if (_sInfo.XMLDoc != null)
+            {
+                var parameters = _sInfo.XMLDoc.SelectNodes("genxml/settings/*");
+                foreach (XmlNode i in parameters)
+                {
+                    var nbi = new SimplisityInfo();
+                    nbi.XMLData = i.OuterXml;
+                    nbi.TypeCode = "SYSTEMSETTING";
+                    rtnList.Add(nbi);
+                }
+            }
+
+            return rtnList;
+        }
+
+
         public void AddInterface()
         {
+            if (GetInterfaces().Count() == 0)
+            {
+                _sInfo.SetXmlProperty("genxml/interfaces", "");
+            }
             var objCtrl = new DNNrocketController();
             _sInfo.AddXmlNode("<genxml></genxml>", "genxml", "genxml/interfaces");
             objCtrl.Update(_sInfo);
@@ -100,8 +124,24 @@ namespace DNNrocketAPI
 
         public void AddIndexField()
         {
+            if (GetIndexFields().Count() == 0)
+            {
+                _sInfo.SetXmlProperty("genxml/indexfields", "");
+            }
             var objCtrl = new DNNrocketController();
             _sInfo.AddXmlNode("<genxml></genxml>", "genxml", "genxml/indexfields");
+            objCtrl.Update(_sInfo);
+        }
+
+        public void AddSetting()
+        {
+            if (GetSettings().Count() == 0)
+            {
+                _sInfo.SetXmlProperty("genxml/settings", "");
+            }
+
+            var objCtrl = new DNNrocketController();
+            _sInfo.AddXmlNode("<genxml></genxml>", "genxml", "genxml/settings");
             objCtrl.Update(_sInfo);
         }
 
