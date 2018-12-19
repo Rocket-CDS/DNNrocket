@@ -1,5 +1,7 @@
-﻿using DotNetNuke.Entities.Portals;
+﻿using DNNrocket.Login;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using NBrightCore.TemplateEngine;
 using RazorEngine.Configuration;
@@ -24,37 +26,67 @@ namespace DNNrocketAPI.Interfaces
         {
             var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined.";
 
+
+            var rtnInfo = new SimplisityInfo(true);
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
+                if (paramCmd == "systemapi_signout")
+                {
+                    var ps = new PortalSecurity();
+                    ps.SignOut();
+                    strOut = LoginUtils.LoginForm(rtnInfo);
+                }
+                else
+                {
+                    switch (paramCmd)
+                    {
+                        case "systemapi_admin_getsystemlist":
+                            strOut = SystemAdminList(sInfo);
+                            break;
+                        case "systemapi_admin_getdetail":
+                            strOut = SystemAdminDetail(sInfo);
+                            break;
+                        case "systemapi_adminaddnew":
+                            strOut = SystemAddNew(sInfo);
+                            break;
+                        case "systemapi_addinterface":
+                            SystemAddInterface(sInfo);
+                            strOut = SystemAdminDetail(sInfo);
+                            break;
+                        case "systemapi_admin_save":
+                            SystemSave(sInfo);
+                            strOut = SystemAdminDetail(sInfo);
+                            break;
+                        case "systemapi_admin_delete":
+                            SystemDelete(sInfo);
+                            strOut = SystemAdminList(sInfo);
+                            break;
+                        case "systemapi_addparam":
+                            SystemAddParameter(sInfo);
+                            strOut = SystemAdminDetail(sInfo);
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                var ps = new PortalSecurity();
+                ps.SignOut();
+
                 switch (paramCmd)
                 {
-                    case "systemapi_admin_getsystemlist":
-                        strOut = SystemAdminList(sInfo);
+                    case "systemapi_login":
+                        strOut = LoginUtils.DoLogin(sInfo, HttpContext.Current.Request.UserHostAddress);
                         break;
-                    case "systemapi_admin_getdetail":
-                        strOut = SystemAdminDetail(sInfo);
+                    case "systemapi_sendreset":
+                        //strOut = ResetPass(sInfo);
                         break;
-                    case "systemapi_adminaddnew":
-                        strOut = SystemAddNew(sInfo);
-                        break;
-                    case "systemapi_addinterface":
-                        SystemAddInterface(sInfo);
-                        strOut = SystemAdminDetail(sInfo);
-                        break;
-                    case "systemapi_admin_save":
-                        SystemSave(sInfo);
-                        strOut = SystemAdminDetail(sInfo);
-                        break;
-                    case "systemapi_admin_delete":
-                        SystemDelete(sInfo);
-                        strOut = SystemAdminList(sInfo);
-                        break;
-                    case "systemapi_addparam":
-                        SystemAddParameter(sInfo);
-                        strOut = SystemAdminDetail(sInfo);
+                    default:
+                        strOut = LoginUtils.LoginForm(rtnInfo);
                         break;
                 }
             }
+
             return strOut;
         }
 

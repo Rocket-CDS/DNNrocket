@@ -38,40 +38,7 @@ namespace DNNrocketAPI
 
                 if (systemprovider == "" || systemprovider == "systemapi")
                 {
-                    var rtnInfo = new SimplisityInfo(true);
-
-                    if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
-                    {
-                        if (paramCmd == "systemapi_signout")
-                        {
-                            var ps = new PortalSecurity();
-                            ps.SignOut();
-                            strOut = LoginUtils.LoginForm(rtnInfo);
-                        }
-                        else
-                        {
-                            // By default we prcess the DNNrocketAPI system api.
-                            strOut = SystemFunction.ProcessCommand(paramCmd, sInfo, _editlang);
-                        }
-                    }
-                    else
-                    {
-                        var ps = new PortalSecurity();
-                        ps.SignOut();
-
-                        switch (paramCmd)
-                        {
-                            case "systemapi_login":
-                                strOut = LoginUtils.DoLogin(sInfo, HttpContext.Current.Request.UserHostAddress);
-                                break;
-                            case "systemapi_sendreset":
-                                //strOut = ResetPass(sInfo);
-                                break;
-                            default:
-                                strOut = LoginUtils.LoginForm(rtnInfo);
-                                break;
-                        }
-                    }
+                    strOut = SystemFunction.ProcessCommand(paramCmd, sInfo, _editlang);
                 }
                 else
                 {
