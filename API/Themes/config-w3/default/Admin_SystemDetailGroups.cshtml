@@ -19,7 +19,7 @@
 
             <tr>
                 <th class="w3-quarter">@ResourceKey("system.groupref")</th>
-                <th class="w3-quarter"></th>
+                <th class="w3-quarter">@ResourceKey("system.groupicon")</th>
                 <th class="w3-quarter"></th>
                 <th style="width:20px;"></th>
             </tr>
@@ -36,8 +36,11 @@
                         @TextBox(nbiModel, "genxml/textbox/groupref_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
                     </td>
                     <td class="w3-quarter">
+                        @TextBox(nbiModel, "genxml/textbox/groupicon_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
                     </td>
-                    <td class="w3-quarter"></td>
+                    <td class="w3-quarter">
+                        <i class="@nbiModel.GetXmlProperty("genxml/textbox/groupicon")"></i>
+                    </td>
                     <td style="width:20px;">
                         <a href="javascript:void(0)" class="simplisity_removetablerow" s-recylebin="groupsbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
                     </td>

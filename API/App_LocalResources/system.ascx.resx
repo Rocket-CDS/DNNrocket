@@ -222,4 +222,19 @@
   <data name="provtypes.Text" xml:space="preserve">
     <value>Provider Types</value>
   </data>
+  <data name="defaulttemplate.Text" xml:space="preserve">
+    <value>Default Template</value>
+  </data>
+  <data name="defaulttheme.Text" xml:space="preserve">
+    <value>Default Theme</value>
+  </data>
+  <data name="defaultcommand.Text" xml:space="preserve">
+    <value>Default Command</value>
+  </data>
+  <data name="groupicon.Text" xml:space="preserve">
+    <value>Group Icon Class</value>
+  </data>
+  <data name="interfaceicon.Text" xml:space="preserve">
+    <value>Interface Icon Class</value>
+  </data>
 </root>

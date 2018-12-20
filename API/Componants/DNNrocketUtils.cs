@@ -26,6 +26,7 @@ namespace DNNrocketAPI
 {
     public static class DNNrocketUtils
     {
+
         public static SimplisityInfo GetAjaxFields(HttpContext context)
         {
             var strIn = HttpUtility.UrlDecode(RequestParam(context, "inputxml"));

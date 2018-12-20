@@ -34,15 +34,25 @@
                         @TextBox(nbiModel, "genxml/textbox/interfacekey_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
                     </div>
                     <div class="w3-padding w3-quarter">
+                        <label class="">@ResourceKey("system.defaulttheme")</label>
+                        @TextBox(nbiModel, "genxml/textbox/defaulttheme_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
                     </div>
                     <div class="w3-padding w3-quarter">
+                        <label class="">@ResourceKey("system.defaulttemplate")</label>
+                        @TextBox(nbiModel, "genxml/textbox/defaulttemplate_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
                     </div>
                     <div class="w3-padding w3-quarter">
+                        <label class="">@ResourceKey("system.defaultcommand")</label>
+                        @TextBox(nbiModel, "genxml/textbox/defaultcommand_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
                     </div>
                 </div>
 
                 <div class="w3-row">
-                    <div class="w3-padding w3-half">
+                    <div class="w3-padding w3-quarter">
+                        <label class="">@ResourceKey("system.interfaceicon")</label>
+                        @TextBox(nbiModel, "genxml/textbox/interfaceicon_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                    </div>
+                    <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.namespaceclass")</label>
                         @TextBox(nbiModel, "genxml/textbox/namespaceclass_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
                     </div>
@@ -52,7 +62,7 @@
                     </div>
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.group")</label>
-                        @{ 
+                        @{
                             var grouplist = "";
                             var l = plugin.GetGroups();
                             foreach (var g in l)
@@ -60,7 +70,7 @@
                                 grouplist += "," + g.GetXmlProperty("genxml/textbox/groupref");
                             }
                         }
-                        @DropDownList(nbiModel,"genxml/dropdownlist/group_" + lp1, grouplist, grouplist, "class='w3-input w3-border'")
+                        @DropDownList(nbiModel, "genxml/dropdownlist/group_" + lp1, grouplist, grouplist, "class='w3-input w3-border'")
                     </div>
                 </div>
                 <div class="w3-row">
