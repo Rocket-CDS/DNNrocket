@@ -1,6 +1,4 @@
-﻿using NBrightCore.render;
-using NBrightDNN;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +8,6 @@ using RazorEngine.Templating;
 using RazorEngine.Configuration;
 using RazorEngine;
 using System.Security.Cryptography;
-using NBrightCore.common;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security;
@@ -24,7 +21,6 @@ using System.Net;
 using System.IO;
 using DotNetNuke.Common.Lists;
 using ICSharpCode.SharpZipLib.Zip;
-using NBrightCore.TemplateEngine;
 
 namespace DNNrocketAPI
 {
@@ -34,7 +30,7 @@ namespace DNNrocketAPI
         {
             var strIn = HttpUtility.UrlDecode(RequestParam(context, "inputxml"));
             var xmlData = "";
-            xmlData = GenXmlFunctions.GetGenXmlByAjax(strIn, "", "genxml", true);
+            xmlData = SimplisityUtils.GetSimplisityXml(strIn, "", "genxml", true);
             var objInfo = new SimplisityInfo();
             objInfo.ItemID = -1;
             objInfo.TypeCode = "AJAXDATA";
@@ -94,11 +90,11 @@ namespace DNNrocketAPI
                 }
                 Engine.Razor = service;
                 var hashCacheKey = GetMd5Hash(razorTempl);
-                var israzorCached = Utils.GetCache("dnnrocketrzcache_" + hashCacheKey); // get a cache flag for razor compile.
+                var israzorCached = CacheUtils.GetCache("dnnrocketrzcache_" + hashCacheKey); // get a cache flag for razor compile.
                 if (israzorCached == null || (string)israzorCached != razorTempl || debugMode)
                 {
                     result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
-                    Utils.SetCache("dnnrocketrzcache_" + hashCacheKey, razorTempl);
+                    CacheUtils.SetCache("dnnrocketrzcache_" + hashCacheKey, razorTempl);
                 }
                 else
                 {
@@ -165,10 +161,10 @@ namespace DNNrocketAPI
         }
 
 
-        public static string GetRazorTemplateData(string templatename, string templateControlPath, string lang, string themeFolder = "config-w3")
+        public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder, string lang)
         {
             var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
-            var templCtrl = new TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, controlMapPath, "Themes\\config-w3", "Themes\\" + themeFolder);
+            var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, "Themes\\" + themeFolder, controlMapPath);
             var templ = templCtrl.GetTemplateData(templatename, lang);
             return templ;
         }
@@ -423,7 +419,7 @@ namespace DNNrocketAPI
 
         public static string GetCurrentValidCultureCode(List<string> validCultureCodes = null)
         {
-            var validCurrentCulture = Utils.GetCurrentCulture();
+            var validCurrentCulture = GetCurrentCulture();
 
             if (validCultureCodes != null)
             {
@@ -667,7 +663,7 @@ namespace DNNrocketAPI
 
         public static Dictionary<int, string> GetTreeTabList()
         {
-            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, Utils.GetCurrentCulture(), true);
+            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
             var rtnList = new Dictionary<int, string>();
             return GetTreeTabList(rtnList, tabList, 0, 0);
         }
@@ -700,7 +696,7 @@ namespace DNNrocketAPI
 
         public static Dictionary<Guid, string> GetTreeTabListOnUniqueId()
         {
-            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, Utils.GetCurrentCulture(), true);
+            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
             var rtnList = new Dictionary<Guid, string>();
             return GetTreeTabListOnUniqueId(rtnList, tabList, 0, 0);
         }
@@ -732,7 +728,7 @@ namespace DNNrocketAPI
 
         public static Dictionary<int, string> GetTreeTabListOnTabId()
         {
-            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, Utils.GetCurrentCulture(), true);
+            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
             var rtnList = new Dictionary<int, string>();
             return GetTreeTabListOnTabId(rtnList, tabList, 0, 0);
         }
@@ -765,7 +761,7 @@ namespace DNNrocketAPI
 
         public static String GetTreeViewTabJSData(String selectTabIdCVS = "")
         {
-            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, Utils.GetCurrentCulture(), true);
+            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
             var rtnDataString = "";
             var selecttabidlist = selectTabIdCVS.Split(',');
             rtnDataString = GetTreeViewTabJSData(rtnDataString, tabList, 0, 0, selecttabidlist);
@@ -814,7 +810,7 @@ namespace DNNrocketAPI
 
         public static Dictionary<string, string> GetUserProfileProperties(String userId)
         {
-            if (!Utils.IsNumeric(userId)) return null;
+            if (!GeneralUtils.IsNumeric(userId)) return null;
             var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
             return GetUserProfileProperties(userInfo);
         }
@@ -829,7 +825,7 @@ namespace DNNrocketAPI
         }
         public static void SetUserProfileProperties(String userId, Dictionary<string, string> properties)
         {
-            if (Utils.IsNumeric(userId))
+            if (GeneralUtils.IsNumeric(userId))
             {
                 var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
                 SetUserProfileProperties(userInfo, properties);
@@ -855,9 +851,9 @@ namespace DNNrocketAPI
 
         public static Dictionary<String, String> GetResourceData(String resourcePath, String resourceKey, String lang = "")
         {
-            if (lang == "") lang = DnnUtils.GetCurrentValidCultureCode();
+            if (lang == "") lang = GetCurrentValidCultureCode();
             var ckey = resourcePath + resourceKey + lang;
-            var obj = Utils.GetCache(ckey);
+            var obj = CacheUtils.GetCache(ckey);
             if (obj != null) return (Dictionary<String, String>)obj;
 
             var rtnList = new Dictionary<String, String>();
@@ -868,6 +864,11 @@ namespace DNNrocketAPI
                 var rKey = s[1];
                 var relativefilename = resourcePath.TrimEnd('/') + "/" + fName + ".ascx.resx";
                 var fullFileName = System.Web.Hosting.HostingEnvironment.MapPath(relativefilename);
+                if (String.IsNullOrEmpty(fullFileName) || !System.IO.File.Exists(fullFileName))
+                {
+                    relativefilename = resourcePath.TrimEnd('/') + "/" + fName + ".resx";
+                    fullFileName = System.Web.Hosting.HostingEnvironment.MapPath(relativefilename);
+                }
                 if (!String.IsNullOrEmpty(fullFileName) && System.IO.File.Exists(fullFileName))
                 {
                     var xmlDoc = new XmlDocument();
@@ -880,7 +881,7 @@ namespace DNNrocketAPI
                             if (nod.Attributes != null)
                             {
                                 var n = nod.Attributes["name"].Value;
-                                if (lang == "") lang = Utils.GetCurrentCulture();
+                                if (lang == "") lang = GetCurrentCulture();
                                 var rtnValue = Localization.GetString(n, relativefilename, PortalSettings.Current, lang, true);
                                 if (!rtnList.ContainsKey(n.Replace(rKey + ".", "")))
                                 {
@@ -891,7 +892,7 @@ namespace DNNrocketAPI
                     }
                 }
 
-                Utils.SetCache(ckey, rtnList, DateTime.Now.AddMinutes(20));
+                CacheUtils.SetCache(ckey, rtnList);
             }
             return rtnList;
         }
