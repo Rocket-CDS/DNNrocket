@@ -127,6 +127,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Systems\OpenStore.xml" />
+    <Content Include="Themes\config-w3\css\coconutmilk-theme.css" />
+    <Content Include="Themes\config-w3\css\sailorblue-theme.css" />
+    <Content Include="Themes\config-w3\css\ultravoilet-theme.css" />
+    <Content Include="Themes\config-w3\css\arcadia-theme.css" />
+    <Content Include="Themes\config-w3\css\bloomingdahlia-theme.css" />
+    <Content Include="Themes\config-w3\css\littleboyblue-theme.css" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="js\" />
