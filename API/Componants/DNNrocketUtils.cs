@@ -31,7 +31,7 @@ namespace DNNrocketAPI
         {
             var strIn = HttpUtility.UrlDecode(RequestParam(context, "inputxml"));
             var xmlData = "";
-            xmlData = SimplisityUtils.GetSimplisityXml(strIn, "", "genxml", true);
+            xmlData = SimplisityUtils.GetSimplisityXml(strIn, "", "genxml","", true);
             var objInfo = new SimplisityInfo();
             objInfo.ItemID = -1;
             objInfo.TypeCode = "AJAXDATA";

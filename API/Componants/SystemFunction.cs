@@ -27,7 +27,7 @@ namespace DNNrocketAPI.Interfaces
             var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined.";
 
 
-            var rtnInfo = new SimplisityInfo(true);
+            var rtnInfo = new SimplisityInfo();
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 if (paramCmd == "systemapi_signout")
@@ -184,7 +184,7 @@ namespace DNNrocketAPI.Interfaces
 
                 var passSettings = sInfo.ToDictionary();
 
-                var info = new SimplisityInfo(true);
+                var info = new SimplisityInfo();
                 info.ItemID = -1;
                 info.PortalId = 99999;
                 info.Lang = DNNrocketUtils.GetCurrentCulture();

@@ -198,7 +198,7 @@ namespace DNNrocketAPI
                                                         {
                                                             if (dlang.XMLDoc.SelectSingleNode("genxml/imgs") == null)
                                                             {
-                                                                dlang.AddSingleNode("imgs", "", "genxml");
+                                                                dlang.SetXmlProperty("genxml/imags","");
                                                             }
                                                             dlang.AddXmlNode(baseXml.OuterXml, "genxml", "genxml/imgs");
                                                         }
@@ -234,7 +234,7 @@ namespace DNNrocketAPI
                                                         {
                                                             if (dlang.XMLDoc.SelectSingleNode("genxml/docs") == null)
                                                             {
-                                                                dlang.AddSingleNode("docs","","genxml");
+                                                                dlang.SetXmlProperty("genxml/docs", "");
                                                             }
                                                             dlang.AddXmlNode(baseXml.OuterXml, "genxml", "genxml/docs");
                                                         }
@@ -259,7 +259,7 @@ namespace DNNrocketAPI
 
         public SimplisityInfo GetSinglePageData(string GuidKey, string typeCode, string lang)
         {
-            DataCache.ClearCache(); // clear ALL cache.
+            CacheUtils.ClearAllCache(); // clear ALL cache.
             var info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
             if (info == null)
             {
@@ -297,33 +297,24 @@ namespace DNNrocketAPI
             return nbi;
         }
 
-        public string SaveSinglePageData(HttpContext context)
+        public string SaveSinglePageData(string GuidKey, string typeCode, string lang, SimplisityInfo sInfo)
         {
             try
             {
-
-               //get uploaded params
-                var ajaxInfo = DNNrocketUtils.GetAjaxFields(context);
-
-                var itemid = ajaxInfo.GetXmlProperty("genxml/hidden/itemid");
-                if (GeneralUtils.IsNumeric(itemid))
+                var editlang = sInfo.GetXmlProperty("genxml/hidden/editlang");
+                var info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
+                if (info == null)
                 {
-                    var editlang = ajaxInfo.GetXmlProperty("genxml/hidden/editlang");
-                    var nbi = GetInfo(Convert.ToInt32(itemid));
-                    if (nbi != null)
-                    {
-                        // get data passed back by ajax
-                        var strIn = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputxml"));
-                        // update record with ajax data
-                        nbi.Update(strIn);
-                        Update(nbi);
-
-                        // do langauge record
-                        var nbi2 = GetRecordLang(Convert.ToInt32(itemid), editlang);
-                        nbi2.Update(strIn);
-                        Update(nbi2);
-                    }
-                    DataCache.ClearCache(); // clear ALL cache.
+                    // do read, so it creates the record and do a new read.
+                    info = GetSinglePageData(GuidKey,  typeCode, "");
+                    info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
+                }
+                if (info != null)
+                {
+                    Update(sInfo);
+                    var nbi2 = GetRecordLang(info.ItemID, editlang);
+                    Update(sInfo);
+                    CacheUtils.ClearAllCache(); // clear ALL cache.
                 }
                 return "";
             }

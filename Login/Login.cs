@@ -57,7 +57,7 @@ namespace DNNrocket.Login
             var password = sInfo.GetXmlProperty("genxml/textbox/password");
             var rememberme = sInfo.GetXmlPropertyBool("genxml/checkbox/rememberme");
 
-            var rtnInfo = new SimplisityInfo(true);
+            var rtnInfo = new SimplisityInfo();
 
 
             UserLoginStatus loginStatus = new UserLoginStatus();
