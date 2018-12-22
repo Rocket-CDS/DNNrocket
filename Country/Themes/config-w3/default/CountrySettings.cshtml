@@ -43,10 +43,10 @@
                             {
                                 checkvar = "checked='checked'";
                             }
-                            <div class="w3-col m4">
-                                <input class="w3-check countrycheckbox" type="checkbox" @checkvar value="@l.Key" name="@l.Value">
-                                <label>@l.Value</label>
-                            </div>
+                        <div class="w3-col m4">
+                            <input class="w3-check countrycheckbox" type="checkbox" @checkvar value="@l.Key" name="@l.Value">
+                            <label>@l.Value</label>
+                        </div>
                         }
                     </div>
                 </div>
@@ -75,7 +75,7 @@
         $('.countrycheckbox').unbind('click');
         $('.countrycheckbox').click(function () {
             if ($(this).is(':checked')) {
-                $('#sortable').append("<li class='countrylist' countrycode='" + $(this).val() + "'>" + $(this).attr('name') + "<input id='countrycode_" + $(this).val() + "' type='hidden' value='" + $(this).val() + "' /></li>")                    
+                $('#sortable').append("<li class='countrylist' countrycode='" + $(this).val() + "'>" + $(this).attr('name') + "<input id='countrycode_" + $(this).val() + "' type='hidden' value='" + $(this).val() + "' /><input id='countrycodelang_" + $(this).val() + "' update='lang' type='hidden' value='" + $(this).val() + "' /></li>")                    
             }
             else {
                 $('#sortable li[countrycode="' + $(this).val()  + '"]').remove();

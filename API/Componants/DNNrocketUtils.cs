@@ -27,16 +27,10 @@ namespace DNNrocketAPI
     public static class DNNrocketUtils
     {
 
-        public static SimplisityInfo GetAjaxFields(HttpContext context)
+        public static SimplisityInfo GetPostedFields(HttpContext context)
         {
             var strIn = HttpUtility.UrlDecode(RequestParam(context, "inputxml"));
-            var xmlData = "";
-            xmlData = SimplisityUtils.GetSimplisityXml(strIn, "", "genxml","", true);
-            var objInfo = new SimplisityInfo();
-            objInfo.ItemID = -1;
-            objInfo.TypeCode = "AJAXDATA";
-            objInfo.XMLData = xmlData;
-            return objInfo;
+            return SimplisityUtils.GetSimplisityXml(strIn, "", "genxml", "", true);
         }
 
         public static string RequestParam(HttpContext context, string paramName)
