@@ -26,9 +26,11 @@ namespace DNNrocketAPI
 
                 var paramCmd = context.Request.QueryString["cmd"];
 
-                var requestXml = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputxml"));
-                
+                var requestXml = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputxml"));                
                 var sInfo = SimplisityUtils.GetSimplisityInfo(requestXml);
+
+                var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
+                var sInfoJson = SimplisityUtils.GetSimplisityInfoFromJson(requestJson);
 
                 var systemprovider = sInfo.GetXmlProperty("genxml/hidden/systemprovider");
                 if (systemprovider == "") systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");

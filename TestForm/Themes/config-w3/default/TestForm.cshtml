@@ -1,0 +1,86 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/TestForm/App_LocalResources/")
+
+@{
+    var info = (SimplisityInfo)Model.List.First();
+}
+
+<span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
+    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="settingcountry_save" s-post=".countrydata" s-fields="theme:config-w3,template:CountrySettings.cshtml,systemprovider:businessdirectory,interfacekey:settingcountry">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+</span>
+
+
+<div class="w3-container">
+
+    <div class="w3-container">
+        <h2>@ResourceKey("testform.testform")</h2>
+
+        <div class="w3-row">
+            <a href="javascript:void(0)" onclick="openSection(event, 'testform');">
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding w3-border-blue w3-light-blue " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testform")</div>
+            </a>
+        </div>
+
+        <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+        <div id="testform" class="w3-container w3-margin tabsection" style="display:block;">
+
+            <div class="w3-row wrapperheight">
+                <div class="w3-threequarter">
+                    <div>
+                        @TextBox(info, "genxml/textbox/testingtxt")
+                    </div>
+                    <div>
+                        @DropDownList(info, "genxml/dropdownlist/testddl", "1,2,3", "a,b,c")
+                    </div>
+                    <div>
+                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c")
+                    </div>
+                    <div>
+                        @TextArea(info, "genxml/textbox/testingta")
+                    </div>
+                    <div>
+                        @CheckBox(info, "genxml/checkbox/testingcb","testcb")
+                    </div>
+                    <div>
+                        @CheckBoxList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c")
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+    });
+
+
+    function openSection(evt, sectionName) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("tabsection");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-border-blue", "");
+            tablinks[i].className = tablinks[i].className.replace(" w3-light-blue", "");
+        }
+        document.getElementById(sectionName).style.display = "block";
+        evt.currentTarget.firstElementChild.className += " w3-border-blue";
+        evt.currentTarget.firstElementChild.className += " w3-light-blue";
+    }
+
+</script>

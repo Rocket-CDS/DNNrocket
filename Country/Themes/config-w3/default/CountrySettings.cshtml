@@ -52,8 +52,26 @@
                 </div>
                 <div class="w3-quarter countrydata">
                     <b>@ResourceKey("country.selectedcountries")</b>
-                    <ul id="sortable" class="w3-ul w3-border w3-theme-l3">
-                    </ul>
+                    <ul id="sortable" class="w3-ul w3-border w3-theme-l3"></ul>
+
+                    <div>
+                        @TextBox(info, "genxml/textbox/testingtxt")
+                    </div>
+                    <div>
+                        @DropDownList(info, "genxml/dropdownlist/testddl", "1,2,3", "a,b,c")
+                    </div>
+                    <div>
+                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c")
+                    </div>
+                    <div>
+                        @TextArea(info, "genxml/textbox/testingta")
+                    </div>
+                    <div>
+                        @CheckBox(info, "genxml/checkbox/testingcb","testcb")
+                    </div>
+                    <div>
+                        @CheckBoxList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c")
+                    </div>
                 </div>
             </div>
 
@@ -75,7 +93,7 @@
         $('.countrycheckbox').unbind('click');
         $('.countrycheckbox').click(function () {
             if ($(this).is(':checked')) {
-                $('#sortable').append("<li class='countrylist' countrycode='" + $(this).val() + "'>" + $(this).attr('name') + "<input id='countrycode_" + $(this).val() + "' type='hidden' value='" + $(this).val() + "' /><input id='countrycodelang_" + $(this).val() + "' update='lang' type='hidden' value='" + $(this).val() + "' /></li>")                    
+                $('#sortable').append("<li class='countrylist' countrycode='" + $(this).val() + "'>" + $(this).attr('name') + "<input id='countrycode_" + $(this).val() + "' s-list='countrylist' type='hidden' value='" + $(this).val() + "' /><input id='countrycodelang_" + $(this).val() + "' s-list='countrylist' s-update='lang' type='hidden' value='" + $(this).val() + "' /></li>")                    
             }
             else {
                 $('#sortable li[countrycode="' + $(this).val()  + '"]').remove();
