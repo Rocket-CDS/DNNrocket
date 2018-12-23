@@ -10,7 +10,7 @@
 }
 
 <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="settingcountry_save" s-post=".countrydata" s-fields="theme:config-w3,template:CountrySettings.cshtml,systemprovider:businessdirectory,interfacekey:settingcountry">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testform_save" s-post="#testform" s-postitem=".testlist" s-fields="theme:config-w3,template:TestForm.cshtml,systemprovider:businessdirectory,interfacekey:testform">@ResourceKey("DNNrocket.cmdSaveButton")</button>
 </span>
 
 
@@ -43,10 +43,61 @@
                         @TextArea(info, "genxml/textbox/testingta")
                     </div>
                     <div>
-                        @CheckBox(info, "genxml/checkbox/testingcb","testcb")
+                        @CheckBox(info, "genxml/checkbox/testingcb", "testcb")
                     </div>
                     <div>
                         @CheckBoxList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c")
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <hr/>
+        <h1>Test List</h1>
+        <div id="testformlist" class="w3-container w3-margin tabsection" style="display:block;">
+
+            <div class="w3-row wrapperheight testlist">
+                <div class="w3-threequarter">
+                    <div>
+                        @TextBox(info, "genxml/textbox/testingtxt_1")
+                    </div>
+                    <div>
+                        @DropDownList(info, "genxml/dropdownlist/testddl_1", "1,2,3", "a,b,c")
+                    </div>
+                    <div>
+                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbl_1", "1,2,3", "a,b,c")
+                    </div>
+                    <div>
+                        @TextArea(info, "genxml/textbox/testingta_1")
+                    </div>
+                    <div>
+                        @CheckBox(info, "genxml/checkbox/testingcb_1", "testcb")
+                    </div>
+                    <div>
+                        @CheckBoxList(info, "genxml/radiobuttonlist/testrbl_1", "1,2,3", "a,b,c")
+                    </div>
+                </div>
+            </div>
+            <div class="w3-row wrapperheight testlist">
+                <div class="w3-threequarter">
+                    <div>
+                        @TextBox(info, "genxml/textbox/testingtxt_2")
+                    </div>
+                    <div>
+                        @DropDownList(info, "genxml/dropdownlist/testddl_2", "1,2,3", "a,b,c")
+                    </div>
+                    <div>
+                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbl_2", "1,2,3", "a,b,c")
+                    </div>
+                    <div>
+                        @TextArea(info, "genxml/textbox/testingta")
+                    </div>
+                    <div>
+                        @CheckBox(info, "genxml/checkbox/testingcb_2", "testcb")
+                    </div>
+                    <div>
+                        @CheckBoxList(info, "genxml/radiobuttonlist/testrbl_2", "1,2,3", "a,b,c")
                     </div>
                 </div>
             </div>
