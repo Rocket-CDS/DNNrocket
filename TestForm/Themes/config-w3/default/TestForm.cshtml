@@ -9,8 +9,9 @@
     var info = (SimplisityInfo)Model.List.First();
 }
 
-<span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testform_save" s-post="#testform" s-postitem=".testlist" s-fields="theme:config-w3,template:TestForm.cshtml,systemprovider:businessdirectory,interfacekey:testform">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+
+<span class="w3-section simplisity_buttons">
+    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testform_save" s-post="#testform" s-postitem=".testlist,.testlist2" s-fields="theme:config-w3,template:TestForm.cshtml,systemprovider:businessdirectory,interfacekey:testform">@ResourceKey("DNNrocket.cmdSaveButton")</button>
 </span>
 
 
@@ -25,85 +26,89 @@
             </a>
         </div>
 
-        <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
-        <div id="testform" class="w3-container w3-margin tabsection" style="display:block;">
+        <div class="w3-half">
 
-            <div class="w3-row wrapperheight">
-                <div class="w3-threequarter">
-                    <div>
-                        @TextBox(info, "genxml/textbox/testingtxt")
-                    </div>
-                    <div>
-                        @DropDownList(info, "genxml/dropdownlist/testddl", "1,2,3", "a,b,c")
-                    </div>
-                    <div>
-                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c")
-                    </div>
-                    <div>
-                        @TextArea(info, "genxml/textbox/testingta")
-                    </div>
-                    <div>
-                        @CheckBox(info, "genxml/checkbox/testingcb", "testcb")
-                    </div>
-                    <div>
-                        @CheckBoxList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c")
+            <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+            <div id="testform" class="w3-container w3-margin tabsection" style="display:block;">
+
+                <div class="w3-row wrapperheight">
+                    <div class="w3-threequarter">
+                        <div>
+                            @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border' maxlength='50'", "First !\"£$%^&*()")
+                        </div>
+                        <div>
+                            @DropDownList(info, "genxml/dropdownlist/testddl", "1,2,3", "a,b,c")
+                        </div>
+                        <div>
+                            @RadioButtonList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c")
+                        </div>
+                        <div>
+                            @TextArea(info, "genxml/textbox/testingta", "class='w3-input w3-border'", "Line 1 Line 2?")
+                        </div>
+                        <div>
+                            @CheckBox(info, "genxml/checkbox/testingcb", "testcb")
+                        </div>
+                        <div>
+                            @CheckBoxList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c")
+                        </div>
                     </div>
                 </div>
+
+
+            </div>
+            <hr />
+            <h1>Test List</h1>
+            <div id="testformlist" class="w3-container w3-margin tabsection" style="display:block;">
+
+                <div class="w3-row wrapperheight testlist">
+                    <div class="w3-threequarter">
+                        <div>
+                            @TextBox(info, "genxml/textbox/testingtxt_1", "class='w3-input w3-border'", "Second row1")
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-row wrapperheight testlist">
+                    <div class="w3-threequarter">
+                        <div>
+                            @TextBox(info, "genxml/textbox/testingtxt_2", "class='w3-input w3-border'", "Second 1 row2")
+                        </div>
+                        <div>
+                            @TextBox(info, "genxml/textbox/testingtxt_3", "class='w3-input w3-border'", "Second 2 row2")
+                        </div>
+                        <div>
+                            @TextBox(info, "genxml/textbox/testingtxt_4", "class='w3-input w3-border'", "Second 3 row2")
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
 
+            <div id="testformlist2" class="w3-container w3-margin tabsection" style="display:block;">
+
+                <div class="w3-row wrapperheight testlist2">
+                    <div class="w3-threequarter">
+                        <div>
+                            @TextBox(info, "genxml/textbox/testingtxt2_1", "class='w3-input w3-border'", "Third row1")
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-row wrapperheight testlist2">
+                    <div class="w3-threequarter">
+                        <div>
+                            @TextBox(info, "genxml/textbox/testingtxt2_2", "class='w3-input w3-border'", "Third row2")
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
 
         </div>
-        <hr/>
-        <h1>Test List</h1>
-        <div id="testformlist" class="w3-container w3-margin tabsection" style="display:block;">
 
-            <div class="w3-row wrapperheight testlist">
-                <div class="w3-threequarter">
-                    <div>
-                        @TextBox(info, "genxml/textbox/testingtxt_1")
-                    </div>
-                    <div>
-                        @DropDownList(info, "genxml/dropdownlist/testddl_1", "1,2,3", "a,b,c")
-                    </div>
-                    <div>
-                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbl_1", "1,2,3", "a,b,c")
-                    </div>
-                    <div>
-                        @TextArea(info, "genxml/textbox/testingta_1")
-                    </div>
-                    <div>
-                        @CheckBox(info, "genxml/checkbox/testingcb_1", "testcb")
-                    </div>
-                    <div>
-                        @CheckBoxList(info, "genxml/radiobuttonlist/testrbl_1", "1,2,3", "a,b,c")
-                    </div>
-                </div>
-            </div>
-            <div class="w3-row wrapperheight testlist">
-                <div class="w3-threequarter">
-                    <div>
-                        @TextBox(info, "genxml/textbox/testingtxt_2")
-                    </div>
-                    <div>
-                        @DropDownList(info, "genxml/dropdownlist/testddl_2", "1,2,3", "a,b,c")
-                    </div>
-                    <div>
-                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbl_2", "1,2,3", "a,b,c")
-                    </div>
-                    <div>
-                        @TextArea(info, "genxml/textbox/testingta")
-                    </div>
-                    <div>
-                        @CheckBox(info, "genxml/checkbox/testingcb_2", "testcb")
-                    </div>
-                    <div>
-                        @CheckBoxList(info, "genxml/radiobuttonlist/testrbl_2", "1,2,3", "a,b,c")
-                    </div>
-                </div>
-            </div>
-
-
+        <div class="w3-half">
         </div>
+
 
     </div>
 
