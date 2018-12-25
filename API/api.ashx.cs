@@ -37,58 +37,64 @@ namespace DNNrocketAPI
                 var interfacekey = sInfo.GetXmlProperty("genxml/hidden/interfacekey");
                 if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
-
-                if (systemprovider == "" || systemprovider == "systemapi")
+                if (paramCmd == "getsidemenu")
                 {
-                    strOut = SystemFunction.ProcessCommand(paramCmd, sInfo, _editlang);
+                    strOut = GetSideMenu(sInfo, systemprovider);
                 }
                 else
                 {
-                    if (systemprovider != "")
+
+                    if (systemprovider == "" || systemprovider == "systemapi")
                     {
-                        // Run API Provider.
-                        strOut = "API not found: " + systemprovider;
-                        var objCtrl = new DNNrocketController();
-
-                        var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
-                        if (systemInfo != null)
+                        strOut = SystemFunction.ProcessCommand(paramCmd, sInfo, _editlang);
+                    }
+                    else
+                    {
+                        if (systemprovider != "")
                         {
-                            var systemRecord = new SystemRecord(systemInfo);
-                            var iface = systemRecord.GetInterface(interfacekey);
-                            if (iface != null)
-                            {
+                            // Run API Provider.
+                            strOut = "API not found: " + systemprovider;
+                            var objCtrl = new DNNrocketController();
 
-                                var assembly = iface.GetXmlProperty("genxml/textbox/assembly");
-                                var namespaceclass = iface.GetXmlProperty("genxml/textbox/namespaceclass");
-                                if (assembly == "" || namespaceclass == "")
+                            var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
+                            if (systemInfo != null)
+                            {
+                                var systemRecord = new SystemRecord(systemInfo);
+                                var iface = systemRecord.GetInterface(interfacekey);
+                                if (iface != null)
                                 {
-                                    strOut = "No assembly or namespaceclass defined: " + systemprovider + " : " + assembly + "," + namespaceclass;
+
+                                    var assembly = iface.GetXmlProperty("genxml/textbox/assembly");
+                                    var namespaceclass = iface.GetXmlProperty("genxml/textbox/namespaceclass");
+                                    if (assembly == "" || namespaceclass == "")
+                                    {
+                                        strOut = "No assembly or namespaceclass defined: " + systemprovider + " : " + assembly + "," + namespaceclass;
+                                    }
+                                    else
+                                    {
+                                        try
+                                        {
+                                            var ajaxprov = APInterface.Instance(assembly, namespaceclass);
+                                            strOut = ajaxprov.ProcessCommand(paramCmd, sInfo, _editlang);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            strOut = "No valid assembly found: " + systemprovider + " : " + assembly + "," + namespaceclass;
+                                        }
+                                    }
                                 }
                                 else
                                 {
-                                    try
-                                    {
-                                        var ajaxprov = APInterface.Instance(assembly, namespaceclass);
-                                        strOut = ajaxprov.ProcessCommand(paramCmd, sInfo, _editlang);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        strOut = "No valid assembly found: " + systemprovider + " : " + assembly + "," + namespaceclass;
-                                    }
+                                    strOut = "interfacekey not found: " + interfacekey;
                                 }
                             }
                             else
                             {
-                                strOut = "interfacekey not found: " + interfacekey;
+                                strOut = "No valid system found: " + systemprovider;
                             }
-                        }
-                        else
-                        {
-                            strOut = "No valid system found: " + systemprovider;
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -117,6 +123,33 @@ namespace DNNrocketAPI
             }
         }
 
+        public static string GetSideMenu(SimplisityInfo sInfo, string systemprovider)
+        {
+            try
+            {
+                var strOut = "";
+                var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
+                var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
+
+                var passSettings = sInfo.ToDictionary();
+
+                var systemData = new SystemData();
+                var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+                var systemRecord = new SystemRecord(sInfoSystem);
+                var sidemenu = new Componants.SideMenu(systemRecord);
+                var templateControlRelPath = systemRecord.Info().GetXmlProperty("genxml/textbox/relpath");
+
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, sidemenu, passSettings);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
 
     }
 }
