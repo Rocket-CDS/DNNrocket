@@ -30,7 +30,7 @@ namespace DNNrocketAPI
                 var sInfo = SimplisityUtils.GetSimplisityInfo(requestXml);
 
                 var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
-                var sInfoJson = SimplisityUtils.GetSimplisityInfoFromJson(requestJson);
+                var sInfoJson = SimplisityJson.GetSimplisityInfoFromJson(requestJson);
 
                 var systemprovider = sInfo.GetXmlProperty("genxml/hidden/systemprovider");
                 if (systemprovider == "") systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");
