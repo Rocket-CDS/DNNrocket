@@ -37,6 +37,10 @@ namespace DNNrocketAPI
                 var interfacekey = sInfo.GetXmlProperty("genxml/hidden/interfacekey");
                 if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
+                // does NOT work across portals.
+                CacheUtils.SetCache("debugOutMapPath", PortalSettings.Current.HomeDirectoryMapPath);
+                //--------------------------
+
                 if (paramCmd == "getsidemenu")
                 {
                     strOut = GetSideMenu(sInfo, systemprovider);
