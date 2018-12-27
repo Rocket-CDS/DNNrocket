@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="js\" />
+    <Folder Include="Themes\config-w3\js\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Login\Login.csproj">

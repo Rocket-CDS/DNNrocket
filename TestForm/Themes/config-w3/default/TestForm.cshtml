@@ -18,110 +18,143 @@
 <div class="w3-container">
 
     <div class="w3-container">
-        <h2>@ResourceKey("testform.testform")</h2>
-
         <div class="w3-row">
             <a href="javascript:void(0)" onclick="openSection(event, 'testform');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding w3-border-blue w3-light-blue " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testform")</div>
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding w3-border-black w3-theme " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testform")</div>
+            </a>
+            <a href="javascript:void(0)" onclick="openSection(event, 'testformlist');">
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testformlist")</div>
+            </a>
+            <a href="javascript:void(0)" onclick="openSection(event, 'testformlist2');">
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testformlist") 2</div>
             </a>
         </div>
 
-        <div class="w3-half">
+        <div id="testform" class="w3-container w3-margin tabsection" style="display:block;">
 
-            <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
-            <div id="testform" class="w3-container w3-margin tabsection" style="display:block;">
+            <h2>@ResourceKey("testform.testform")</h2>
 
-                <div class="w3-row wrapperheight">
-                    <div class="w3-threequarter">
-                        <div>
-                            @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border' maxlength='50'", "First !\"£$%^&*()")
-                        </div>
-                        <div>
-                            @TextBox(info, "genxml/lang/genxml/textbox/testingtxt2", "class='w3-input w3-border' maxlength='50'", "First !\"£$%^&*()")
-                        </div>
-                        <div>
-                            @TextBox(info, "genxml/lang/genxml/textbox/testingtxt3", " s-update='lang' class='w3-input w3-border' maxlength='50'", "First !\"£$%^&*()")
-                        </div>
-                        <div>
-                            @DropDownList(info, "genxml/dropdownlist/testddl", "1,2,3", "a,b,c")
-                        </div>
-                        <div>
-                            @RadioButtonList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c")
-                        </div>
-                        <div>
-                            @TextArea(info, "genxml/textbox/testingta", "class='w3-input w3-border'", "Line 1 Line 2?")
-                        </div>
-                        <div>
-                            @CheckBox(info, "genxml/checkbox/testingcb", "testcb")
-                        </div>
-                        <div>
-                            @CheckBoxList(info, "genxml/checkboxlist/testcbl", "1,2,3", "a,b,c")
-                        </div>
+            <div class="w3-row wrapperheight">
+                <div class="w3-half w3-padding">
+                    <div>
+                        @TextBox(info, "genxml/textbox/txt", "class='w3-input w3-border' maxlength='50'", "First !\"£$%^&*()")
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/lang/genxml/textbox/txtl", "class='w3-input w3-border' maxlength='50'", "First !\"£$%^&*()")
+                    </div>
+
+                    <div>
+                        @TextBox(info, "genxml/textbox/passtxt", "class='w3-input w3-border' maxlength='50' type='password' ", "passwordtest")
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/lang/genxml/textbox/passtxtl", "class='w3-input w3-border' maxlength='50' type='password'", "passwordtest")
+                    </div>
+
+                    <div>
+                        @TextBox(info, "genxml/textbox/doubletxt", "class='w3-input w3-border' maxlength='50' s-datatype='double'", "99")
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/lang/genxml/textbox/doubletxtl", "class='w3-input w3-border' maxlength='50' s-datatype='double'", "99.99")
+                    </div>
+
+                    <div>
+                        @TextBox(info, "genxml/textbox/datetxt", "class='w3-input w3-border' maxlength='50' type='date' s-datatype='date'", "")
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/lang/genxml/textbox/datetxtl", "class='w3-input w3-border' maxlength='50' type='date' s-datatype='date'", "")
+                    </div>
+                </div>
+                <div class="w3-half  w3-padding">
+                    <div>
+                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxt3", " s-update='lang' class='w3-input w3-border' maxlength='50'", "First !\"£$%^&*()")
+                    </div>
+                    <div>
+                        @DropDownList(info, "genxml/dropdownlist/testddl", "1,2,3", "a,b,c")
+                    </div>
+                    <div>
+                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c")
+                    </div>
+                    <div>
+                        @TextArea(info, "genxml/textbox/testingta", "class='w3-input w3-border'", "Line 1 Line 2?")
+                    </div>
+                    <div>
+                        @CheckBox(info, "genxml/checkbox/testingcb", "testcb")
+                    </div>
+                    <div>
+                        @CheckBoxList(info, "genxml/checkboxlist/testcbl", "1,2,3", "a,b,c")
                     </div>
                 </div>
 
 
             </div>
-            <hr />
-            <h1>Test List</h1>
-            <div id="testformlist" class="w3-container w3-margin tabsection" style="display:block;">
+        </div>
 
-                <div class="w3-row wrapperheight testlist">
-                    <div class="w3-threequarter">
-                        <div>
-                            @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "row1", false, 1)
-                        </div>
-                        <div>
-                            @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row1", false, 1)
-                        </div>
-                        <div>
-                            @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang2", "update='lang' class='w3-input w3-border'", "row1 lang", false, 1)
-                        </div>
+        <div id="testformlist" class="w3-container w3-margin tabsection" style="display: none;">
+            <h1>@ResourceKey("testform.testformlist")</h1>
+            <div class="w3-row w3-card wrapperheight testlist">
+                <div class="w3-threequarter">
+                    <div>
+                        @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "row1", false, 1)
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row1", false, 1)
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang2", "update='lang' class='w3-input w3-border'", "row1 lang", false, 1)
                     </div>
                 </div>
-                <div class="w3-row wrapperheight testlist">
-                    <div class="w3-threequarter">
-                        <div>
-                            @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "Second 1 row2", false, 2)
-                        </div>
-                        <div>
-                            @TextBox(info, "genxml/textbox/testingtxt3", "class='w3-input w3-border'", "Second 2 row2", false, 2)
-                        </div>
-                        <div>
-                            @TextBox(info, "genxml/textbox/testingtxt4", "class='w3-input w3-border'", "Second 3 row2", false, 2)
-                        </div>
-                        <div>
-                            @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row2 lang", false, 1)
-                        </div>
-                    </div>
-                </div>
-
-
             </div>
-
-            <div id="testformlist2" class="w3-container w3-margin tabsection" style="display:block;">
-
-                <div class="w3-row wrapperheight testlist2">
-                    <div class="w3-threequarter">
-                        <div>
-                            @TextBox(info, "genxml/textbox/testingtxt2", "class='w3-input w3-border'", "Third row1", false, 1)
-                        </div>
+            <div class="w3-row w3-card wrapperheight testlist">
+                <div class="w3-threequarter">
+                    <div>
+                        @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "Second 1 row2", false, 2)
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/textbox/testingtxt3", "class='w3-input w3-border'", "Second 2 row2", false, 2)
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/textbox/testingtxt4", "class='w3-input w3-border'", "Second 3 row2", false, 2)
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row2 lang", false, 1)
                     </div>
                 </div>
-                <div class="w3-row wrapperheight testlist2">
-                    <div class="w3-threequarter">
-                        <div>
-                            @TextBox(info, "genxml/textbox/testingtxt2", "class='w3-input w3-border'", "Third row2", false, 1)
-                        </div>
-                    </div>
-                </div>
-
-
             </div>
 
         </div>
 
-        <div class="w3-half">
+        <div id="testformlist2" class="w3-container w3-margin tabsection" style="display: none;">
+            <h1>@ResourceKey("testform.testformlist") 2</h1>
+            <div class="w3-row w3-card wrapperheight testlist">
+                <div class="w3-threequarter">
+                    <div>
+                        @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "row1", false, 1)
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row1", false, 1)
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang2", "update='lang' class='w3-input w3-border'", "row1 lang", false, 1)
+                    </div>
+                </div>
+            </div>
+            <div class="w3-row w3-card wrapperheight testlist">
+                <div class="w3-threequarter">
+                    <div>
+                        @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "Second 1 row2", false, 2)
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/textbox/testingtxt3", "class='w3-input w3-border'", "Second 2 row2", false, 2)
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/textbox/testingtxt4", "class='w3-input w3-border'", "Second 3 row2", false, 2)
+                    </div>
+                    <div>
+                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row2 lang", false, 1)
+                    </div>
+                </div>
+            </div>
+
         </div>
 
 
@@ -145,13 +178,13 @@
             x[i].style.display = "none";
         }
         tablinks = document.getElementsByClassName("tablink");
-        for (i = 0; i < x.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" w3-border-blue", "");
-            tablinks[i].className = tablinks[i].className.replace(" w3-light-blue", "");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-border-black", "");
+            tablinks[i].className = tablinks[i].className.replace(" w3-theme", "");
         }
         document.getElementById(sectionName).style.display = "block";
-        evt.currentTarget.firstElementChild.className += " w3-border-blue";
-        evt.currentTarget.firstElementChild.className += " w3-light-blue";
+        evt.currentTarget.firstElementChild.className += " w3-border-black";
+        evt.currentTarget.firstElementChild.className += " w3-theme";
     }
 
 </script>

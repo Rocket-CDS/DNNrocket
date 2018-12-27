@@ -22,7 +22,7 @@ namespace DNNrocketAPI
             var strOut = "ERROR: Invalid.";
             try
             {
-                _editlang = DNNrocketUtils.GetCurrentCulture();
+                _editlang = DNNrocketUtils.GetEditCulture();
 
                 var paramCmd = context.Request.QueryString["cmd"];
 
@@ -30,7 +30,7 @@ namespace DNNrocketAPI
                 var sInfo = SimplisityUtils.GetSimplisityInfo(requestXml);
 
                 var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
-                var sInfoJson = SimplisityJson.GetSimplisityInfoFromJson(requestJson);
+                var sInfoJson = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
 
                 var systemprovider = sInfo.GetXmlProperty("genxml/hidden/systemprovider");
                 if (systemprovider == "") systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");

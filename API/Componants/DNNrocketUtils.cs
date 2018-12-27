@@ -412,21 +412,6 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public static string GetCurrentValidCultureCode(List<string> validCultureCodes = null)
-        {
-            var validCurrentCulture = GetCurrentCulture();
-
-            if (validCultureCodes != null)
-            {
-                if (validCultureCodes.Count > 0 && !validCultureCodes.Contains(validCurrentCulture))
-                {
-                    //Cannot find the current culture so return the first in the valid list
-                    return validCultureCodes[0];
-                }
-            }
-
-            return validCurrentCulture;
-        }
 
         public static string GetDataResponseAsString(string dataurl, string headerFieldId = "", string headerFieldData = "")
         {
@@ -846,7 +831,7 @@ namespace DNNrocketAPI
 
         public static Dictionary<String, String> GetResourceData(String resourcePath, String resourceKey, String lang = "")
         {
-            if (lang == "") lang = GetCurrentValidCultureCode();
+            if (lang == "") lang = GetCurrentCulture();
             var ckey = resourcePath + resourceKey + lang;
             var obj = CacheUtils.GetCache(ckey);
             if (obj != null) return (Dictionary<String, String>)obj;
@@ -940,13 +925,57 @@ namespace DNNrocketAPI
         #endregion
 
 
+        public static void SetEditCulture(string editlang)
+        {
+            if (editlang != null)
+            {
+                HttpCookie MyCookie = new HttpCookie("editlang");
+                MyCookie.Value = editlang;
+                HttpContext.Current.Response.Cookies.Add(MyCookie);
+            }
+        }
+
+        public static string GetEditCulture()
+        {
+            if (HttpContext.Current.Request.Cookies["editlang"] != null)
+            {
+                var l = GetCultureCodeList();
+                var rtnlang = HttpContext.Current.Request.Cookies["editlang"].Value;
+                if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
+                {
+                    if (l.Count >= 1)
+                    {
+                        rtnlang = l.First();
+                    }
+                }
+                return rtnlang;
+
+            }
+            return GetCurrentCulture();
+        }
+
+
         public static string GetCurrentCulture()
         {
             if (HttpContext.Current.Request.Cookies["language"] != null)
             {
-                return HttpContext.Current.Request.Cookies["language"].Value;
+                var l = GetCultureCodeList();
+                var rtnlang = HttpContext.Current.Request.Cookies["language"].Value;
+                if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
+                {
+                    if (l.Count >= 1)
+                    {
+                        rtnlang = l.First();
+                    }
+                }
+                return rtnlang;
             }
-            return "";
+            var l2 = GetCultureCodeList();
+            if (l2.Count >= 1)
+            {
+                return l2.First();
+            }
+            return "en-US";  // should not happen.
         }
 
         public static string GetCurrentCountryCode()
