@@ -37,51 +37,68 @@
             <div class="w3-row wrapperheight">
                 <div class="w3-half w3-padding">
                     <div>
-                        @TextBox(info, "genxml/textbox/txt", "class='w3-input w3-border' maxlength='50'", "First !\"£$%^&*()")
+                        <label>Save</label>
+                        @TextBox(info, "genxml/textbox/txt", "class='w3-input w3-border' maxlength='50'", "First !\"Â£,$%^&*()")
                     </div>
                     <div>
-                        @TextBox(info, "genxml/lang/genxml/textbox/txtl", "class='w3-input w3-border' maxlength='50'", "First !\"£$%^&*()")
+                        @EditFlag()&nbsp;<label>Lang </label>
+                        @TextBox(info, "genxml/lang/genxml/textbox/txtl", "class='w3-input w3-border' maxlength='50'", "First !\"Â£$%^&*()")
                     </div>
 
                     <div>
+                        <label>Save</label>
                         @TextBox(info, "genxml/textbox/passtxt", "class='w3-input w3-border' maxlength='50' type='password' ", "passwordtest")
                     </div>
                     <div>
+                        @EditFlag()&nbsp;<label>Lang </label>
                         @TextBox(info, "genxml/lang/genxml/textbox/passtxtl", "class='w3-input w3-border' maxlength='50' type='password'", "passwordtest")
                     </div>
 
                     <div>
+                        <label>Save</label>
                         @TextBox(info, "genxml/textbox/doubletxt", "class='w3-input w3-border' maxlength='50' s-datatype='double'", "99")
                     </div>
                     <div>
+                        @EditFlag()&nbsp;<label>Lang </label>
                         @TextBox(info, "genxml/lang/genxml/textbox/doubletxtl", "class='w3-input w3-border' maxlength='50' s-datatype='double'", "99.99")
                     </div>
 
                     <div>
-                        @TextBox(info, "genxml/textbox/datetxt", "class='w3-input w3-border' maxlength='50' type='date' s-datatype='date'", "")
+                        <label>Save</label>
+                        @TextBox(info, "genxml/textbox/datetxt", "class='w3-input w3-border' maxlength='50' s-datatype='date'", "")
                     </div>
                     <div>
-                        @TextBox(info, "genxml/lang/genxml/textbox/datetxtl", "class='w3-input w3-border' maxlength='50' type='date' s-datatype='date'", "")
+                        @EditFlag()&nbsp;<label>Lang</label>
+                        @TextBox(info, "genxml/lang/genxml/textbox/datetxtl", "class='w3-input w3-border' maxlength='50' s-datatype='date'", "")
                     </div>
                 </div>
                 <div class="w3-half  w3-padding">
                     <div>
+                        @EditFlag()&nbsp;<label>Lang </label>
                         @TextBox(info, "genxml/lang/genxml/textbox/testingtxt3", " s-update='lang' class='w3-input w3-border' maxlength='50'", "First !\"£$%^&*()")
                     </div>
                     <div>
-                        @DropDownList(info, "genxml/dropdownlist/testddl", "1,2,3", "a,b,c")
+                        <label>Save</label>
+                        @DropDownList(info, "genxml/dropdownlist/testddl", "1,2,3", "a,b,c", "class='w3-input w3-border'")
                     </div>
                     <div>
-                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c")
+                        @EditFlag()&nbsp;<label>Lang </label>
+                        @DropDownList(info, "genxml/lang/genxml/dropdownlist/testddl", "1,2,3", "a,b,c", "class='w3-input w3-border'")
                     </div>
                     <div>
+                        <label>Save</label>
+                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c", "class='w3-padding w3-border'")
+                    </div>
+                    <div>
+                        <label>Save</label>
                         @TextArea(info, "genxml/textbox/testingta", "class='w3-input w3-border'", "Line 1 Line 2?")
                     </div>
                     <div>
-                        @CheckBox(info, "genxml/checkbox/testingcb", "testcb")
+                        @CheckBox(info, "genxml/checkbox/testingcb", "testcb", "class='w3-check'")
                     </div>
                     <div>
-                        @CheckBoxList(info, "genxml/checkboxlist/testcbl", "1,2,3", "a,b,c")
+                        <label>Save</label>
+                        @CheckBoxList(info, "genxml/checkboxlist/testcbl", "1,2,3", "a,b,c", "class='w3-border w3-padding'")
                     </div>
                 </div>
 
@@ -125,7 +142,7 @@
 
         <div id="testformlist2" class="w3-container w3-margin tabsection" style="display: none;">
             <h1>@ResourceKey("testform.testformlist") 2</h1>
-            <div class="w3-row w3-card wrapperheight testlist">
+            <div class="w3-row w3-card wrapperheight testlist2">
                 <div class="w3-threequarter">
                     <div>
                         @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "row1", false, 1)
@@ -138,7 +155,7 @@
                     </div>
                 </div>
             </div>
-            <div class="w3-row w3-card wrapperheight testlist">
+            <div class="w3-row w3-card wrapperheight testlist2">
                 <div class="w3-threequarter">
                     <div>
                         @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "Second 1 row2", false, 2)
@@ -166,7 +183,9 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-
+        // we can't place class on each input with Razor Tokens so use JQuery to add at runtime.
+        $(':checkbox').attr('class', 'w3-check');
+        $(':radio').attr('class', 'w3-radio');
 
     });
 

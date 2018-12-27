@@ -19,18 +19,18 @@ namespace DNNrocket.TestForm
             switch (paramCmd)
             {
                 case "testform_get":
-                    strOut = CountryDetail(sInfo, controlRelPath);
+                    strOut = TestFormDetail(sInfo, controlRelPath);
                     break;
                 case "testform_save":
                     TestFormSave(sInfo);
-                    strOut = CountryDetail(sInfo, controlRelPath);
+                    strOut = TestFormDetail(sInfo, controlRelPath);
                     break;
             }
             return strOut;
 
         }
 
-        public static String CountryDetail(SimplisityInfo sInfo, string templateControlRelPath)
+        public static String TestFormDetail(SimplisityInfo sInfo, string templateControlRelPath)
         {
             try
             {
@@ -40,8 +40,7 @@ namespace DNNrocket.TestForm
                 var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
 
                 var passSettings = sInfo.ToDictionary();
-
-
+                               
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), passSettings);
@@ -57,7 +56,7 @@ namespace DNNrocket.TestForm
         public static void TestFormSave(SimplisityInfo sInfo)
         {
             var objCtrl = new DNNrocketController();
-            var nbi = objCtrl.GetSinglePageData("testform", "SETTINGS", "");
+            var nbi = objCtrl.GetSinglePageData("testform", "TEST", "");
 
             if (nbi == null)
             {
@@ -66,8 +65,12 @@ namespace DNNrocket.TestForm
                 nbi.GUIDKey = "";
                 nbi.ItemID = -1;
             }
+
+            var smiLang = sInfo.GetLangRecord();
+
             nbi.XMLData = sInfo.XMLData;
-            objCtrl.SaveSinglePageData("testform", "SETTINGS", "", nbi);
+            nbi.RemoveLangRecord();
+            objCtrl.SaveSinglePageData("testform", "TEST", "", nbi);
 
         }
 

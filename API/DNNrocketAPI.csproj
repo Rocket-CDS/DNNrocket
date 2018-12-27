@@ -120,6 +120,7 @@
     <None Include="Themes\config-w3\default\Admin_SystemDetailSettings.cshtml" />
     <None Include="Themes\config-w3\default\Admin_Systems.cshtml" />
     <None Include="Themes\config-w3\default\Admin_SystemDetail.cshtml" />
+    <None Include="Themes\config-w3\default\SideMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_LocalResources\system.ascx.resx" />

@@ -49,6 +49,14 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
+        public IEncodedString EditFlag(string classvalues = "")
+        {
+            var cultureCode = DNNrocketUtils.GetEditCulture();
+            var strOut = "<img class='" + classvalues + "' src='/DesktopModules/DNNrocket/API/images/flags/16/" + cultureCode + ".png' alt='" + cultureCode + "' />";
+            return new RawString(strOut);
+        }
+
+
 
     }
 }

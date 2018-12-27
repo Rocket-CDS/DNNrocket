@@ -26,15 +26,15 @@ namespace DNNrocketAPI
 
                 var paramCmd = context.Request.QueryString["cmd"];
 
-                var requestXml = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputxml"));                
-                var sInfo = SimplisityUtils.GetSimplisityInfo(requestXml);
+                //var requestXml = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputxml"));                
+                //var sInfo = SimplisityUtils.GetSimplisityInfo(requestXml);
 
                 var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
                 var sInfoJson = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
 
-                var systemprovider = sInfo.GetXmlProperty("genxml/hidden/systemprovider");
+                var systemprovider = sInfoJson.GetXmlProperty("genxml/hidden/systemprovider");
                 if (systemprovider == "") systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");
-                var interfacekey = sInfo.GetXmlProperty("genxml/hidden/interfacekey");
+                var interfacekey = sInfoJson.GetXmlProperty("genxml/hidden/interfacekey");
                 if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
                 // does NOT work across portals.
@@ -43,14 +43,14 @@ namespace DNNrocketAPI
 
                 if (paramCmd == "getsidemenu")
                 {
-                    strOut = GetSideMenu(sInfo, systemprovider);
+                    strOut = GetSideMenu(sInfoJson, systemprovider);
                 }
                 else
                 {
 
                     if (systemprovider == "" || systemprovider == "systemapi")
                     {
-                        strOut = SystemFunction.ProcessCommand(paramCmd, sInfo, _editlang);
+                        strOut = SystemFunction.ProcessCommand(paramCmd, sInfoJson, _editlang);
                     }
                     else
                     {
@@ -79,7 +79,7 @@ namespace DNNrocketAPI
                                         try
                                         {
                                             var ajaxprov = APInterface.Instance(assembly, namespaceclass);
-                                            strOut = ajaxprov.ProcessCommand(paramCmd, sInfo, _editlang);
+                                            strOut = ajaxprov.ProcessCommand(paramCmd, sInfoJson, _editlang);
                                         }
                                         catch (Exception ex)
                                         {
@@ -144,6 +144,12 @@ namespace DNNrocketAPI
                 var templateControlRelPath = systemRecord.Info().GetXmlProperty("genxml/textbox/relpath");
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+
+                if (razorTempl == "")
+                {
+                    // no razor template for sidemenu, so use default.
+                    razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                }
 
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, sidemenu, passSettings);
 
