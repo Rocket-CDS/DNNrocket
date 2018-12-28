@@ -1,14 +1,16 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
+@using Simplisity;
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
 @{
-    var plugin = (SystemRecord)Model.List.First();
+    var sysRecord = (SystemRecord)Model.List.First();
+    var sInfo = new SimplisityInfo(sysRecord.Record());
 }
 
 <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_admin_save" s-post="#pluginsdatasection" s-before="PrePostInterfaceList">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_admin_save" s-post="#pluginsdatasection" s-list=".interfacedata,.parameterdata,.settingsdata,.groupsdata,.provtypesdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
     <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="systemapi_admin_delete" s-post="#pluginsdatasection" s-return="#contentplaceholder" s-after="reloadpluginlist">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
     <button class="w3-button w3-sand w3-padding-8 simplisity_click" s-cmd="systemapi_admin_getsystemlist" s-fields="theme:config-w3,template:Admin_Systems.cshtml,systemprovider:systemapi" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdReturnButton")</button>
 </span>
@@ -18,7 +20,7 @@
 <div class="w3-container">
 
     <div class="w3-container">
-        <h2>@plugin.Info().GetXmlProperty("genxml/textbox/systemname")</h2>
+        <h2>@sInfo.GetXmlProperty("genxml/textbox/systemname")</h2>
 
         <div class="w3-row">
             <a href="javascript:void(0)" onclick="openSection(event, 'pluginsdatasection');">
@@ -46,12 +48,12 @@
             @RenderTemplate("Admin_SystemDetailData.cshtml", "\\DesktopModules\\DNNrocket\\API", "config-w3", Model)
         </div>
 
-        <div id="provtypes" class="w3-container tabsection" style="display:none">
-            @RenderTemplate("Admin_SystemDetailProvType.cshtml", "\\DesktopModules\\DNNrocket\\API", "config-w3", Model)
-        </div>
-
         <div id="Groups" class="w3-container tabsection" style="display:none">
             @RenderTemplate("Admin_SystemDetailGroups.cshtml", "\\DesktopModules\\DNNrocket\\API", "config-w3", Model)
+        </div>
+
+        <div id="provtypes" class="w3-container tabsection" style="display:none">
+            @RenderTemplate("Admin_SystemDetailProvType.cshtml", "\\DesktopModules\\DNNrocket\\API", "config-w3", Model)
         </div>
 
         <div id="Interface" class="w3-container tabsection" style="display:none">
@@ -67,7 +69,7 @@
         </div>
 
     </div>
-       
+
 </div>
 
 
@@ -82,14 +84,6 @@
         }
     }
 
-    function PrePostInterfaceList() {
-        $('#xmlupdatemodeldata').val(simplisity_getxmlitems('#plugininterfaces', '.interfacedata', ''));
-        $('#xmlupdateparamdata').val(simplisity_getxmlitems('#pluginparameters', '.parameterdata', ''));
-        $('#xmlupdatesettings').val(simplisity_getxmlitems('#pluginsettings', '.settingsdata', ''));
-        $('#xmlupdategroups').val(simplisity_getxmlitems('#plugingroups', '.groupsdata', ''));        
-        $('#xmlupdateprovtypes').val(simplisity_getxmlitems('#pluginprovtypes', '.provtypesdata', ''));                
-    }
-
     function reloadpluginlist() {
         $('#contentplaceholder').getSimplisity('/DesktopModules/DNNrocket/api/api.ashx', 'systemapi_admin_getsystemlist', 'theme:config-w3,template:Admin_Systems.cshtml,systemprovider:systemapi');
     };
@@ -98,7 +92,7 @@
         var i, x, tablinks;
         x = document.getElementsByClassName("tabsection");
         for (i = 0; i < x.length; i++) {
-          x[i].style.display = "none";
+            x[i].style.display = "none";
         }
         tablinks = document.getElementsByClassName("tablink");
         for (i = 0; i < x.length; i++) {
@@ -107,7 +101,7 @@
         }
         document.getElementById(sectionName).style.display = "block";
         evt.currentTarget.firstElementChild.className += " w3-border-blue";
-        evt.currentTarget.firstElementChild.className += " w3-light-blue";        
+        evt.currentTarget.firstElementChild.className += " w3-light-blue";
     }
 
 </script>

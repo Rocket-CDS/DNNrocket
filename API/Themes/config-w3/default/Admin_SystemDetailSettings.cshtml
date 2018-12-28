@@ -1,5 +1,7 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
+@using Simplisity;
+
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
@@ -27,16 +29,17 @@
             @{
                 var lp3 = 0;
             }
-            @foreach (var nbiModel in plugin.GetSettings())
+            @foreach (var sRecord in plugin.GetSettings())
             {
+                var sInfo = new SimplisityInfo(sRecord);
                 lp3 += 1;
 
                 <tr class="settingsdata">
                     <td class="w3-half">
-                        @TextBox(nbiModel, "genxml/textbox/name_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(sInfo, "genxml/textbox/name_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
                     </td>
                     <td class="w3-quarter">
-                        @TextBox(nbiModel, "genxml/textbox/value_" + lp3, "class='w3-input w3-border' maxlength='500' ", "")
+                        @TextBox(sInfo, "genxml/textbox/value_" + lp3, "class='w3-input w3-border' maxlength='500' ", "")
                     </td>
                     <td style="width:20px;">
                         <a href="javascript:void(0)" class="simplisity_removetablerow" s-recylebin="settingsbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
@@ -48,4 +51,3 @@
 
     </div>
 </div>
-       

@@ -42,7 +42,7 @@
                     </div>
                     <div>
                         @EditFlag()&nbsp;<label>Lang </label>
-                        <input value="First !\£,$%^&*()" id="txtinputl" class="w3-input w3-border" maxlength="50" type="text" s-update="lang" s-xpath="genxml/textbox/txtinputl">
+                        <input value="@info.GetXmlProperty("genxml/lang/genxml/textbox/txtinputl")" id="txtinputl" class="w3-input w3-border" maxlength="50" type="text" s-update="lang" s-xpath="genxml/textbox/txtinputl">
                     </div>
 
                     <div>
@@ -84,9 +84,9 @@
                     <div>
                         @EditFlag()&nbsp;<label>Lang </label>
                         <select id="testddl" s-xpath="genxml/dropdownlist/testddl" s-update="save" class="w3-input w3-border">
-                        <option value="1">X</option>
-                        <option value="2">Y</option>
-                        <option value="3">Z</option>
+                            <option value="1">X</option>
+                            <option value="2">Y</option>
+                            <option value="3">Z</option>
                         </select>
                         @DropDownList(info, "genxml/lang/genxml/dropdownlist/testddl", "1,2,3", "a,b,c", "class='w3-input w3-border'")
                     </div>

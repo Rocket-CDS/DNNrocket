@@ -1,5 +1,6 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
+@using Simplisity;
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
@@ -27,19 +28,20 @@
             @{
                 var lp3 = 0;
             }
-            @foreach (var nbiModel in plugin.GetGroups())
+            @foreach (var sRecord in plugin.GetGroups())
             {
+                var sInfo = new SimplisityInfo(sRecord);
                 lp3 += 1;
-
+                
                 <tr class="groupsdata">
                     <td class="w3-quarter">
-                        @TextBox(nbiModel, "genxml/textbox/groupref_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(sInfo, "genxml/textbox/groupref_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
                     </td>
                     <td class="w3-quarter">
-                        @TextBox(nbiModel, "genxml/textbox/groupicon_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(sInfo, "genxml/textbox/groupicon_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
                     </td>
                     <td class="w3-quarter">
-                        <i class="@nbiModel.GetXmlProperty("genxml/textbox/groupicon")"></i>
+                        <i class="@sInfo.GetXmlProperty("genxml/textbox/groupicon")"></i>
                     </td>
                     <td style="width:20px;">
                         <a href="javascript:void(0)" class="simplisity_removetablerow" s-recylebin="groupsbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>

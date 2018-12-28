@@ -35,15 +35,15 @@ namespace DNNrocket.TestForm
             try
             {
                 var strOut = "";
-                var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
                 var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
                 var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
 
                 var passSettings = postInfo.ToDictionary();
                                
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), passSettings);
+                var objCtrl = new DNNrocketController();
+                var info = objCtrl.GetData("testform", "TEST", DNNrocketUtils.GetEditCulture());
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
 
                 return strOut;
             }

@@ -20,7 +20,7 @@ namespace DNNrocket.Login
 
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
-                var emailaddress = sInfo.GetXmlProperty("genxml/textbox/emailaddress");
+                var emailaddress = sInfo.GetXmlProperty("genxml/text/emailaddress");
                 var objUser = UserController.GetUserByEmail(PortalSettings.Current.PortalId, emailaddress);
                 if (objUser != null)
                 {
@@ -53,8 +53,8 @@ namespace DNNrocket.Login
         public static string DoLogin(SimplisityInfo sInfo, string userHostAddress)
         {
             var strOut = "";
-            var username = sInfo.GetXmlProperty("genxml/textbox/username");
-            var password = sInfo.GetXmlProperty("genxml/textbox/password");
+            var username = sInfo.GetXmlProperty("genxml/text/username");
+            var password = sInfo.GetXmlProperty("genxml/text/password");
             var rememberme = sInfo.GetXmlPropertyBool("genxml/checkbox/rememberme");
 
             var rtnInfo = new SimplisityInfo();

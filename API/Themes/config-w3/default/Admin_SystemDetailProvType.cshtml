@@ -1,5 +1,7 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
+@using Simplisity;
+
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
@@ -27,16 +29,17 @@
             @{
                 var lp3 = 0;
             }
-            @foreach (var nbiModel in plugin.GetProvTypes())
+            @foreach (var sRecord in plugin.GetProvTypes())
             {
+                var sInfo = new SimplisityInfo(sRecord);
                 lp3 += 1;
 
                 <tr class="provtypesdata">
                     <td class="w3-quarter">
-                        @TextBox(nbiModel, "genxml/textbox/provtypes_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(sInfo, "genxml/textbox/provtypes_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
                     </td>
                     <td class="w3-quarter">
-                        @TextBox(nbiModel, "genxml/textbox/provname_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(sInfo, "genxml/textbox/provname_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
                     </td>
                     <td class="w3-quarter"></td>
                     <td style="width:20px;">

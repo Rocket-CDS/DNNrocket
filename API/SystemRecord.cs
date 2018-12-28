@@ -12,6 +12,7 @@ namespace DNNrocketAPI
     {
         private SimplisityRecord _sInfo;
 
+
         public SystemRecord(SimplisityRecord sInfo)
         {
             _sInfo = sInfo;
@@ -24,7 +25,13 @@ namespace DNNrocketAPI
         }
 
 
-        public SimplisityRecord Info()
+        public SimplisityInfo Info()
+        {
+            var info = new SimplisityInfo(_sInfo);
+            return info;
+        }
+
+        public SimplisityRecord Record()
         {
             return _sInfo;
         }

@@ -32,14 +32,25 @@ namespace DNNrocketAPI
                 var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
                 var sInfoJson = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
 
+                // -------------------------------------------------------------
+                // -------------- OUTPUT TEST DATA -----------------------------
+                // -------------------------------------------------------------
+                FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\test.xml", sInfoJson.XMLData);
+
+                // does NOT work across portals.
+                CacheUtils.SetCache("debugOutMapPath", PortalSettings.Current.HomeDirectoryMapPath);
+                //--------------------------
+
+                // -------------------------------------------------------------
+                // -------------- OUTPUT TEST DATA -----------------------------
+                // -------------------------------------------------------------
+
+
                 var systemprovider = sInfoJson.GetXmlProperty("genxml/hidden/systemprovider");
                 if (systemprovider == "") systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");
                 var interfacekey = sInfoJson.GetXmlProperty("genxml/hidden/interfacekey");
                 if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
-                // does NOT work across portals.
-                CacheUtils.SetCache("debugOutMapPath", PortalSettings.Current.HomeDirectoryMapPath);
-                //--------------------------
 
                 if (paramCmd == "getsidemenu")
                 {
