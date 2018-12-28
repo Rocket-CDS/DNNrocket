@@ -25,9 +25,32 @@ namespace DNNrocket.TestForm
                     TestFormSave(postInfo);
                     strOut = TestFormDetail(postInfo, controlRelPath);
                     break;
+                case "testform_add":
+                    strOut = AddToList(postInfo, controlRelPath);
+                    break;
             }
             return strOut;
 
+        }
+
+        public static string AddToList(SimplisityInfo postInfo, string templateControlRelPath)
+        {
+            var strOut = "";
+            var listname = postInfo.GetXmlProperty("genxml/hidden/listname");
+            var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
+            var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
+
+            var objCtrl = new DNNrocketController();
+            var info = objCtrl.GetData("testform", "TEST", DNNrocketUtils.GetEditCulture());
+
+            info.AddListRow(listname);
+
+            var passSettings = postInfo.ToDictionary();
+
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+
+            return strOut;
         }
 
         public static String TestFormDetail(SimplisityInfo postInfo, string templateControlRelPath)
