@@ -7,7 +7,7 @@ namespace DNNrocket.TestForm
     public class startconnect : DNNrocketAPI.APInterface
     {
 
-        public override string ProcessCommand(string paramCmd, SimplisityInfo sInfo, string editlang = "")
+        public override string ProcessCommand(string paramCmd, SimplisityInfo postInfo, string editlang = "")
         {
 
             //CacheUtils.ClearAllCache();
@@ -19,27 +19,27 @@ namespace DNNrocket.TestForm
             switch (paramCmd)
             {
                 case "testform_get":
-                    strOut = TestFormDetail(sInfo, controlRelPath);
+                    strOut = TestFormDetail(postInfo, controlRelPath);
                     break;
                 case "testform_save":
-                    TestFormSave(sInfo);
-                    strOut = TestFormDetail(sInfo, controlRelPath);
+                    TestFormSave(postInfo);
+                    strOut = TestFormDetail(postInfo, controlRelPath);
                     break;
             }
             return strOut;
 
         }
 
-        public static String TestFormDetail(SimplisityInfo sInfo, string templateControlRelPath)
+        public static String TestFormDetail(SimplisityInfo postInfo, string templateControlRelPath)
         {
             try
             {
                 var strOut = "";
-                var selecteditemid = sInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-                var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
-                var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
+                var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
+                var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
 
-                var passSettings = sInfo.ToDictionary();
+                var passSettings = postInfo.ToDictionary();
                                
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
@@ -53,25 +53,10 @@ namespace DNNrocket.TestForm
             }
         }
 
-        public static void TestFormSave(SimplisityInfo sInfo)
+        public static void TestFormSave(SimplisityInfo postInfo)
         {
             var objCtrl = new DNNrocketController();
-            var nbi = objCtrl.GetSinglePageData("testform", "TEST", "");
-
-            if (nbi == null)
-            {
-                nbi = new SimplisityInfo();
-                nbi.TypeCode = "";
-                nbi.GUIDKey = "";
-                nbi.ItemID = -1;
-            }
-
-            var smiLang = sInfo.GetLangRecord();
-
-            nbi.XMLData = sInfo.XMLData;
-            nbi.RemoveLangRecord();
-            objCtrl.SaveSinglePageData("testform", "TEST", "", nbi);
-
+            objCtrl.SaveData("testform", "TEST", postInfo);
         }
 
 

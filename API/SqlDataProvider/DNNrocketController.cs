@@ -44,9 +44,9 @@ namespace DNNrocketAPI
             return CBO.FillObject<SimplisityInfo>(DataProvider.Instance().GetInfo(itemId, lang));
         }
 
-        public override SimplisityInfo GetRecord(int itemId)
+        public override SimplisityRecord GetRecord(int itemId)
         {
-            return CBO.FillObject<SimplisityInfo>(DataProvider.Instance().GetRecord(itemId));
+            return CBO.FillObject<SimplisityRecord>(DataProvider.Instance().GetRecord(itemId));
         }
 
         private SimplisityInfo GetRecordLang(int parentitemId, string lang = "", bool debugMode = false)
@@ -83,7 +83,7 @@ namespace DNNrocketAPI
         /// </summary>
         /// <param name="objInfo"></param>
         /// <returns></returns>
-        public override int Update(SimplisityInfo objInfo)
+        public override int Update(SimplisityRecord objInfo)
         {
             objInfo.ModifiedDate = DateTime.Now;
             return DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang);
@@ -257,7 +257,7 @@ namespace DNNrocketAPI
             }
         }
 
-        public SimplisityInfo GetSinglePageData(string GuidKey, string typeCode, string lang)
+        public SimplisityInfo GetData(string GuidKey, string typeCode, string lang)
         {
             CacheUtils.ClearAllCache(); // clear ALL cache.
             var info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
@@ -297,25 +297,42 @@ namespace DNNrocketAPI
             return nbi;
         }
 
-        public string SaveSinglePageData(string GuidKey, string typeCode, string lang, SimplisityInfo sInfo)
+        public string SaveData(string GuidKey, string typeCode, SimplisityInfo postInfo)
         {
             try
             {
-                var editlang = sInfo.GetXmlProperty("genxml/hidden/editlang");
+
                 var info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
                 if (info == null)
                 {
                     // do read, so it creates the record and do a new read.
-                    info = GetSinglePageData(GuidKey,  typeCode, "");
+                    info = GetData(GuidKey, typeCode, postInfo.Lang);
                     info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
                 }
                 if (info != null)
                 {
-                    Update(sInfo);
-                    var nbi2 = GetRecordLang(info.ItemID, editlang);
-                    Update(sInfo);
+                    var smiLang = postInfo.GetLangRecord();
+                    smiLang.Lang = postInfo.Lang;
+                    info.XMLData = postInfo.XMLData;
+                    info.RemoveLangRecord();
+                    info.Lang = "";
+                    Update(info);
+                    var nbi2 = GetRecordLang(info.ItemID, smiLang.Lang);
+                    if (nbi2 == null)
+                    {
+                        smiLang.ItemID = -1; // add if null (should not happen)
+                    }
+                    else
+                    {
+                        smiLang.ItemID = nbi2.ItemID;
+                    }
+                    smiLang.ParentItemId = info.ItemID;
+                    smiLang.TypeCode = info.TypeCode + "LANG";
+                    smiLang.GUIDKey = "";
+                    Update(smiLang);
                     CacheUtils.ClearAllCache(); // clear ALL cache.
                 }
+
                 return "";
             }
             catch (Exception e)

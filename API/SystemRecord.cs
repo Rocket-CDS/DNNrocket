@@ -10,8 +10,9 @@ namespace DNNrocketAPI
 
     public class SystemRecord
     {
-        private SimplisityInfo _sInfo;
-        public SystemRecord(SimplisityInfo sInfo)
+        private SimplisityRecord _sInfo;
+
+        public SystemRecord(SimplisityRecord sInfo)
         {
             _sInfo = sInfo;
         }
@@ -23,23 +24,23 @@ namespace DNNrocketAPI
         }
 
 
-        public SimplisityInfo Info()
+        public SimplisityRecord Info()
         {
             return _sInfo;
         }
 
-        public SimplisityInfo GetInterface(string interfacekey)
+        public SimplisityRecord GetInterface(string interfacekey)
         {
             if (_sInfo.XMLDoc != null)
             {
                 var interfaces = _sInfo.XMLDoc.SelectNodes("genxml/interfaces/*");
                 foreach (XmlNode i in interfaces)
                 {
-                    var sI = new SimplisityInfo();
+                    var sI = new SimplisityRecord();
                     sI.XMLData = i.OuterXml;
                     if (interfacekey == sI.GetXmlProperty("genxml/textbox/interfacekey"))
                     {
-                        var nbi = new SimplisityInfo();
+                        var nbi = new SimplisityRecord();
                         nbi.XMLData = i.OuterXml;
                         nbi.TypeCode = "SYSTEMINTERFACE";
                         return nbi;
@@ -49,16 +50,16 @@ namespace DNNrocketAPI
             return null;
         }
 
-        public List<SimplisityInfo> GetInterfaces(string interfacekey = "")
+        public List<SimplisityRecord> GetInterfaces(string interfacekey = "")
         {
-            var rtnList = new List<SimplisityInfo>();
+            var rtnList = new List<SimplisityRecord>();
 
             if (_sInfo.XMLDoc != null)
             {
                 var interfaces = _sInfo.XMLDoc.SelectNodes("genxml/interfaces/*");
                 foreach (XmlNode i in interfaces)
                 {
-                    var nbi = new SimplisityInfo();
+                    var nbi = new SimplisityRecord();
                     nbi.XMLData = i.OuterXml;
                     nbi.TypeCode = "SYSTEMINTERFACE";
                     if (interfacekey == "")
@@ -77,16 +78,16 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public List<SimplisityInfo> GetIndexFields()
+        public List<SimplisityRecord> GetIndexFields()
         {
-            var rtnList = new List<SimplisityInfo>();
+            var rtnList = new List<SimplisityRecord>();
 
             if (_sInfo.XMLDoc != null)
             {
                 var parameters = _sInfo.XMLDoc.SelectNodes("genxml/indexfields/*");
                 foreach (XmlNode i in parameters)
                 {
-                    var nbi = new SimplisityInfo();
+                    var nbi = new SimplisityRecord();
                     nbi.XMLData = i.OuterXml;
                     nbi.TypeCode = "SYSTEMIDXFIELD";
                     rtnList.Add(nbi);
@@ -96,16 +97,16 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public List<SimplisityInfo> GetSettings()
+        public List<SimplisityRecord> GetSettings()
         {
-            var rtnList = new List<SimplisityInfo>();
+            var rtnList = new List<SimplisityRecord>();
 
             if (_sInfo.XMLDoc != null)
             {
                 var parameters = _sInfo.XMLDoc.SelectNodes("genxml/settings/*");
                 foreach (XmlNode i in parameters)
                 {
-                    var nbi = new SimplisityInfo();
+                    var nbi = new SimplisityRecord();
                     nbi.XMLData = i.OuterXml;
                     nbi.TypeCode = "SYSTEMSETTING";
                     rtnList.Add(nbi);
@@ -115,16 +116,16 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public List<SimplisityInfo> GetGroups()
+        public List<SimplisityRecord> GetGroups()
         {
-            var rtnList = new List<SimplisityInfo>();
+            var rtnList = new List<SimplisityRecord>();
 
             if (_sInfo.XMLDoc != null)
             {
                 var parameters = _sInfo.XMLDoc.SelectNodes("genxml/groups/*");
                 foreach (XmlNode i in parameters)
                 {
-                    var nbi = new SimplisityInfo();
+                    var nbi = new SimplisityRecord();
                     nbi.XMLData = i.OuterXml;
                     nbi.TypeCode = "SYSTEMGROUP";
                     rtnList.Add(nbi);
@@ -134,16 +135,16 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public List<SimplisityInfo> GetProvTypes()
+        public List<SimplisityRecord> GetProvTypes()
         {
-            var rtnList = new List<SimplisityInfo>();
+            var rtnList = new List<SimplisityRecord>();
 
             if (_sInfo.XMLDoc != null)
             {
                 var parameters = _sInfo.XMLDoc.SelectNodes("genxml/provtypes/*");
                 foreach (XmlNode i in parameters)
                 {
-                    var nbi = new SimplisityInfo();
+                    var nbi = new SimplisityRecord();
                     nbi.XMLData = i.OuterXml;
                     nbi.TypeCode = "SYSTEMPROVTYPE";
                     rtnList.Add(nbi);
@@ -230,7 +231,7 @@ namespace DNNrocketAPI
                     basefields += xpath + ",";
                 }
 
-                var objInfo = new SimplisityInfo();
+                var objInfo = new SimplisityRecord();
 
                 var fields = basefields.Split(',');
                 foreach (var f in fields.Where(f => f != ""))

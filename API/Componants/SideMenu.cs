@@ -21,9 +21,9 @@ namespace DNNrocketAPI.Componants
             systemkey = sysRecord.Info().GetXmlProperty("genxml/textbox/ctrlkey");
         }
 
-        public List<SimplisityInfo> GetGroups()
+        public List<SimplisityRecord> GetGroups()
         {
-            var rtnList = new List<SimplisityInfo>();
+            var rtnList = new List<SimplisityRecord>();
 
             foreach (var i in _sysRecord.GetGroups())
             {
@@ -33,9 +33,9 @@ namespace DNNrocketAPI.Componants
 
             return rtnList;
         }
-        public List<SimplisityInfo> GetInterfaces(string groupref)
+        public List<SimplisityRecord> GetInterfaces(string groupref)
         {
-            var rtnList = new List<SimplisityInfo>();
+            var rtnList = new List<SimplisityRecord>();
 
             foreach (var i in _sysRecord.GetInterfaces())
             {
@@ -49,10 +49,10 @@ namespace DNNrocketAPI.Componants
             return rtnList;
         }
 
-        public List<SimplisityInfo> GetMenuOnUserSecurity()
+        public List<SimplisityRecord> GetMenuOnUserSecurity()
         {
             var roles = UserUtils.GetCurrentUserRoles();
-            var rtnList = new List<SimplisityInfo>();
+            var rtnList = new List<SimplisityRecord>();
             foreach (var i in _sysRecord.GetInterfaces())
             {
 
