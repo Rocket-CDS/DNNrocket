@@ -11,7 +11,7 @@
 
 
 <span class="w3-section simplisity_buttons">
-    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testform_save" s-post="#testform" s-postitem=".testlist,.testlist2" s-fields="theme:config-w3,template:TestForm.cshtml,systemprovider:businessdirectory,interfacekey:testform">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testform_save" s-post="#testform" s-list=".testlist,.testlist2" s-fields="theme:config-w3,template:TestForm.cshtml,systemprovider:businessdirectory,interfacekey:testform">@ResourceKey("DNNrocket.cmdSaveButton")</button>
 </span>
 
 
@@ -38,7 +38,7 @@
                 <div class="w3-half w3-padding">
                     <div>
                         <label>Save</label>
-                        <input value="First !\£,$%^&*()" id="txtinput" class="w3-input w3-border" maxlength="50" type="text" s-update="save" s-xpath="genxml/textbox/txtinput">
+                        <input value="@info.GetXmlProperty("genxml/textbox/txtinput")" id="txtinput" class="w3-input w3-border" maxlength="50" type="text" s-update="save" s-xpath="genxml/textbox/txtinput">
                     </div>
                     <div>
                         @EditFlag()&nbsp;<label>Lang </label>
@@ -83,12 +83,7 @@
                     </div>
                     <div>
                         @EditFlag()&nbsp;<label>Lang </label>
-                        <select id="testddl" s-xpath="genxml/dropdownlist/testddl" s-update="save" class="w3-input w3-border">
-                            <option value="1">X</option>
-                            <option value="2">Y</option>
-                            <option value="3">Z</option>
-                        </select>
-                        @DropDownList(info, "genxml/lang/genxml/dropdownlist/testddl", "1,2,3", "a,b,c", "class='w3-input w3-border'")
+                        @DropDownList(info, "genxml/dropdownlist/testddllang2", "1,2,3", "a,b,c", "class='w3-input w3-border'","2",true)
                     </div>
                     <div>
                         <label>Save</label>
@@ -113,71 +108,56 @@
 
         <div id="testformlist" class="w3-container w3-margin tabsection" style="display: none;">
             <h1>@ResourceKey("testform.testformlist")</h1>
-            <div class="w3-row w3-card wrapperheight testlist">
-                <div class="w3-threequarter">
-                    <div>
-                        @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "row1", false, 1)
-                    </div>
-                    <div>
-                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row1", false, 1)
-                    </div>
-                    <div>
-                        @TextBox(info, "genxml/textbox/testingtxtlang2", "update='lang' class='w3-input w3-border'", "row1 lang", true, 1)
-                    </div>
-                </div>
-            </div>
-            <div class="w3-row w3-card wrapperheight testlist">
-                <div class="w3-threequarter">
-                    <div>
-                        @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "Second 1 row2", false, 2)
-                    </div>
-                    <div>
-                        @TextBox(info, "genxml/textbox/testingtxt3", "class='w3-input w3-border'", "Second 2 row2", false, 2)
-                    </div>
-                    <div>
-                        @TextBox(info, "genxml/textbox/testingtxt4", "class='w3-input w3-border'", "Second 3 row2", false, 2)
-                    </div>
-                    <div>
-                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row2 lang", true, 1)
+
+            @{ 
+                var lp = 1;
+            }
+            @foreach (var i in info.GetList("testlist"))
+            {
+                <div class="w3-row w3-margin testlist">
+                    <div class="w3-threequarter">
+                        <div>
+                            @TextBox(i, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "row1", false, lp)
+                        </div>
+                        <div>
+                            @TextBox(i, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row1", false, lp)
+                        </div>
+                        <div>
+                            @TextBox(i, "genxml/textbox/testingtxtlang2", "update='lang' class='w3-input w3-border'", "row1 lang", true, lp)
+                        </div>
                     </div>
                 </div>
-            </div>
+                lp += 1;
+            }
 
         </div>
 
         <div id="testformlist2" class="w3-container w3-margin tabsection" style="display: none;">
             <h1>@ResourceKey("testform.testformlist") 2</h1>
-            <div class="w3-row w3-card wrapperheight testlist2">
-                <div class="w3-threequarter">
-                    <div>
-                        @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "row1", false, 1)
-                    </div>
-                    <div>
-                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row1", false, 1)
-                    </div>
-                    <div>
-                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang2", "update='lang' class='w3-input w3-border'", "row1 lang", false, 1)
-                    </div>
-                </div>
-            </div>
-            <div class="w3-row w3-card wrapperheight testlist2">
-                <div class="w3-threequarter">
-                    <div>
-                        @TextBox(info, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "Second 1 row2", false, 2)
-                    </div>
-                    <div>
-                        @TextBox(info, "genxml/textbox/testingtxt3", "class='w3-input w3-border'", "Second 2 row2", false, 2)
-                    </div>
-                    <div>
-                        @TextBox(info, "genxml/textbox/testingtxt4", "class='w3-input w3-border'", "Second 3 row2", false, 2)
-                    </div>
-                    <div>
-                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row2 lang", false, 1)
-                    </div>
-                </div>
-            </div>
 
-        </div>
+            @{ 
+                lp = 1;
+            }
+            @foreach (var i in info.GetList("testlist2"))
+            {
+
+                <div class="w3-row w3-margin testlist2">
+                    <div class="w3-threequarter">
+                        <div>
+                            @TextBox(i, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "row1", false, lp)
+                        </div>
+                        <div>
+                            @TextBox(i, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row1", false, lp)
+                        </div>
+                        <div>
+                            @TextBox(i, "genxml/lang/genxml/textbox/testingtxtlang2", "update='lang' class='w3-input w3-border'", "row1 lang", false, lp)
+                        </div>
+                    </div>
+                </div>
+                lp += 1;
+            }
+
+            </div>
 
 
     </div>
