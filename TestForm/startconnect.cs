@@ -45,6 +45,8 @@ namespace DNNrocket.TestForm
 
             info.AddListRow(listname);
 
+            objCtrl.SaveData("testform", "TEST", info);  //TestFormSave so if we add multiple it works correct.
+
             var passSettings = postInfo.ToDictionary();
 
             var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());

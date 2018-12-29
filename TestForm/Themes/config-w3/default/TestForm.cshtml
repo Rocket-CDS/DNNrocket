@@ -15,6 +15,7 @@
 </span>
 
 
+
 <div class="w3-container">
 
     <div class="w3-container">
@@ -83,7 +84,7 @@
                     </div>
                     <div>
                         @EditFlag()&nbsp;<label>Lang </label>
-                        @DropDownList(info, "genxml/dropdownlist/testddllang2", "1,2,3", "a,b,c", "class='w3-input w3-border'","2",true)
+                        @DropDownList(info, "genxml/dropdownlist/testddllang2", "1,2,3", "a,b,c", "class='w3-input w3-border'", "2", true)
                     </div>
                     <div>
                         <label>Save</label>
@@ -107,63 +108,14 @@
         </div>
 
         <div id="testformlist" class="w3-container w3-margin tabsection" style="display: none;">
-            <h1>@ResourceKey("testform.testformlist")</h1>
 
-            <span class="w3-section">
-                <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testform_add" s-fields="itemid:@info.ItemID,theme:config-w3,template:TestForm.cshtml,systemprovider:businessdirectory,interfacekey:testform,listname:testlist">@ResourceKey("DNNrocket.cmdAddButton")</button>
-            </span>
-
-            @{
-                var lp = 1;
-            }
-            @foreach (var i in info.GetList("testlist"))
-            {
-                <div class="w3-row w3-margin testlist">
-                    <div class="w3-threequarter">
-                        <div>
-                            @TextBox(i, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "row1", false, lp)
-                        </div>
-                        <div>
-                            @TextBox(i, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row1", false, lp)
-                        </div>
-                        <div>
-                            @TextBox(i, "genxml/textbox/testingtxtlang2", "update='lang' class='w3-input w3-border'", "row1 lang", true, lp)
-                        </div>
-                    </div>
-                </div>
-                lp += 1;
-            }
+            @RenderTemplate("TestFormList.cshtml", "\\DesktopModules\\DNNrocket\\testForm", "config-w3", Model)
 
         </div>
 
         <div id="testformlist2" class="w3-container w3-margin tabsection" style="display: none;">
-            <h1>@ResourceKey("testform.testformlist") 2</h1>
 
-            <span class="w3-section">
-                <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testform_add" s-fields="theme:config-w3,template:TestForm.cshtml,systemprovider:businessdirectory,interfacekey:testform,listname:testlist2">@ResourceKey("DNNrocket.cmdAddButton")</button>
-            </span>
-
-            @{
-                lp = 1;
-            }
-            @foreach (var i in info.GetList("testlist2"))
-            {
-
-                <div class="w3-row w3-margin testlist2">
-                    <div class="w3-threequarter">
-                        <div>
-                            @TextBox(i, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "row1", false, lp)
-                        </div>
-                        <div>
-                            @TextBox(i, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row1", false, lp)
-                        </div>
-                        <div>
-                            @TextBox(i, "genxml/lang/genxml/textbox/testingtxtlang2", "update='lang' class='w3-input w3-border'", "row1 lang", false, lp)
-                        </div>
-                    </div>
-                </div>
-                lp += 1;
-            }
+            @RenderTemplate("TestFormList2.cshtml", "\\DesktopModules\\DNNrocket\\testForm", "config-w3", Model)
 
         </div>
 
@@ -179,6 +131,12 @@
         // we can't place class on each input with Razor Tokens so use JQuery to add at runtime.
         $(':checkbox').attr('class', 'w3-check');
         $(':radio').attr('class', 'w3-radio');
+
+        $("#sortlist1").sortable();
+        $("#sortlist1").disableSelection();
+
+        $("#sortlist2").sortable();
+        $("#sortlist2").disableSelection();
 
     });
 

@@ -29,16 +29,18 @@ namespace DNNrocketAPI
                 //var requestXml = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputxml"));                
                 //var sInfo = SimplisityUtils.GetSimplisityInfo(requestXml);
 
+                // does NOT work across portals.
+                CacheUtils.SetCache("debugOutMapPath", PortalSettings.Current.HomeDirectoryMapPath);
+
                 var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
                 var sInfoJson = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
 
                 // -------------------------------------------------------------
                 // -------------- OUTPUT TEST DATA -----------------------------
                 // -------------------------------------------------------------
-                FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\test.xml", sInfoJson.XMLData);
+                FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\requestJson.xml", requestJson);
+                FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\sInfoJson.xml", sInfoJson.XMLData);
 
-                // does NOT work across portals.
-                CacheUtils.SetCache("debugOutMapPath", PortalSettings.Current.HomeDirectoryMapPath);
                 //--------------------------
 
                 // -------------------------------------------------------------

@@ -120,7 +120,7 @@
   <data name="testform.Text" xml:space="preserve">
     <value>Test Form</value>
   </data>
-  <data name="testformlist.text" xml:space="preserve">
+  <data name="testformlist.Text" xml:space="preserve">
     <value>Test List</value>
   </data>
 </root>
