@@ -28,13 +28,13 @@
             <div class="w3-row w3-margin">
                 <div class="w3-threequarter">
                     <div>
-                        @TextBox(i, "genxml/textbox/testingtxt", "class='w3-input w3-border'", "row1", false, lp)
+                        <label>Text Input (Standard)</label>
+                        <!-- We use the "row" paramater on the razor token to get a unique id for each row.  This MUST be added-->
+                        @TextBox(info, "genxml/textbox/list2txt", "class='w3-input w3-border' maxlength='50' type='text' ", "Razor Token Input Text", false, lp)
                     </div>
                     <div>
-                        @TextBox(i, "genxml/lang/genxml/textbox/testingtxtlang", "class='w3-input w3-border'", "row1", false, lp)
-                    </div>
-                    <div>
-                        @TextBox(i, "genxml/lang/genxml/textbox/testingtxtlang2", "update='lang' class='w3-input w3-border'", "row1 lang", false, lp)
+                        @EditFlag()&nbsp;<label>Text Input (Localized)</label>
+                        @TextBox(info, "genxml/textbox/list2txtlang", "class='w3-input w3-border' maxlength='50' type='text'", "Localized Razor Token Input Text", true, lp)
                     </div>
                 </div>
                 <div class="w3-rest">

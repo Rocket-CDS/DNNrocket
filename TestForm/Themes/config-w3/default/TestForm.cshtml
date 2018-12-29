@@ -37,69 +37,93 @@
 
             <div class="w3-row wrapperheight">
                 <div class="w3-half w3-padding">
+
+                    <!-- START:  input fields using html ------------------------------------------>
                     <div>
-                        <label>Save</label>
+                        <label>Text Input (Standard)</label>
                         <input value="@info.GetXmlProperty("genxml/textbox/txtinput")" id="txtinput" class="w3-input w3-border" maxlength="50" type="text" s-update="save" s-xpath="genxml/textbox/txtinput">
                     </div>
                     <div>
-                        @EditFlag()&nbsp;<label>Lang </label>
+                        @EditFlag()&nbsp;<label>Text Input (Localized)</label>
                         <input value="@info.GetXmlProperty("genxml/lang/genxml/textbox/txtinputl")" id="txtinputl" class="w3-input w3-border" maxlength="50" type="text" s-update="lang" s-xpath="genxml/textbox/txtinputl">
                     </div>
-
+                    <!-- END: input fields using html ------------------------------------------>
+                    <!----------------------------------------------------------------------------------->
+                    <!-- START:  input fields using razor tokens ------------------------------------------>
                     <div>
-                        <label>Save</label>
-                        @TextBox(info, "genxml/textbox/passtxt", "class='w3-input w3-border' maxlength='50' type='password' ", "passwordtest")
+                        <label>Razor Token Text Input (Standard)</label>
+                        @TextBox(info, "genxml/textbox/passtxt", "class='w3-input w3-border' maxlength='50' type='text' ", "Razor Token Input Text")
                     </div>
                     <div>
-                        @EditFlag()&nbsp;<label>Lang </label>
-                        @TextBox(info, "genxml/lang/genxml/textbox/passtxtl", "class='w3-input w3-border' maxlength='50' type='password'", "passwordtest")
+                        @EditFlag()&nbsp;<label>Razor Token Text Input (Localized)</label>
+                        @TextBox(info, "genxml/lang/genxml/textbox/passtxtl", "class='w3-input w3-border' maxlength='50' type='text'", "Localized Razor Token Input Text")
                     </div>
-
+                    <!-- END:  input fields using razor tokens ------------------------------------------>
+                    <!----------------------------------------------------------------------------------->
+                    <!-- START:  input fields [Double]  ------------------------------------------>
                     <div>
-                        <label>Save</label>
+                        <label>Text Input [Double] (Standard)</label>
                         @TextBox(info, "genxml/textbox/doubletxt", "class='w3-input w3-border' maxlength='50' s-datatype='double'", "99")
                     </div>
                     <div>
-                        @EditFlag()&nbsp;<label>Lang </label>
+                        @EditFlag()&nbsp;<label>Text Input [Double] (Localized)</label>
+                        <!-- Localized flag if NOT set. therefore the "genxml/lang" on the xpath IS required.-->
                         @TextBox(info, "genxml/lang/genxml/textbox/doubletxtl", "class='w3-input w3-border' maxlength='50' s-datatype='double'", "99.99")
                     </div>
-
+                    <!-- END:  input fields [Double]  ------------------------------------------>
+                    <!----------------------------------------------------------------------------------->
+                    <!-- START:  input fields [Date]  ------------------------------------------>
                     <div>
-                        <label>Save</label>
+                        <label>Text Input [Date] (Standard)</label>
                         @TextBox(info, "genxml/textbox/datetxt", "class='w3-input w3-border' maxlength='50' s-datatype='date'", "")
                     </div>
                     <div>
-                        @EditFlag()&nbsp;<label>Lang</label>
-                        @TextBox(info, "genxml/lang/genxml/textbox/datetxtl", "class='w3-input w3-border' maxlength='50' s-datatype='date'", "")
+                        @EditFlag()&nbsp;<label>Text Input [Date] (Localized)</label>
+                        <!-- Localized flag set to "true", with this the "genxml/lang" on the xpath is not required.-->
+                        @TextBox(info, "genxml/textbox/datetxtl", "class='w3-input w3-border' maxlength='50' s-datatype='date'", "",true)
                     </div>
+                    <!-- END:  input fields [Date]  ------------------------------------------>
                 </div>
                 <div class="w3-half  w3-padding">
                     <div>
-                        @EditFlag()&nbsp;<label>Lang </label>
-                        @TextBox(info, "genxml/lang/genxml/textbox/testingtxt3", " s-update='lang' class='w3-input w3-border' maxlength='50'", "First !\"£$%^&*()")
-                    </div>
-                    <div>
-                        <label>Save</label>
+                        <label>DropDownList (Standard)</label>
                         @DropDownList(info, "genxml/dropdownlist/testddl", "1,2,3", "a,b,c", "class='w3-input w3-border'")
                     </div>
                     <div>
-                        @EditFlag()&nbsp;<label>Lang </label>
+                        @EditFlag()&nbsp;<label>DropDownList (Localized)</label>
                         @DropDownList(info, "genxml/dropdownlist/testddllang2", "1,2,3", "a,b,c", "class='w3-input w3-border'", "2", true)
                     </div>
                     <div>
-                        <label>Save</label>
+                        <label>RadioButtonList (Standard)</label>
                         @RadioButtonList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c", "class='w3-padding w3-border'")
                     </div>
                     <div>
-                        <label>Save</label>
-                        @TextArea(info, "genxml/textbox/testingta", "class='w3-input w3-border'", "Line 1 Line 2?")
+                        @EditFlag()&nbsp;<label>RadioButtonList (Localized)</label>
+                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbllang", "1,2,3", "a,b,c", "class='w3-padding w3-border'", "", "", true)
                     </div>
                     <div>
-                        @CheckBox(info, "genxml/checkbox/testingcb", "testcb", "class='w3-check'")
+                        <label>TextArea (Standard)</label>
+                        @TextArea(info, "genxml/textbox/testingta", "class='w3-input w3-border'", "Text Area Standard")
                     </div>
                     <div>
-                        <label>Save</label>
-                        @CheckBoxList(info, "genxml/checkboxlist/testcbl", "1,2,3", "a,b,c", "class='w3-border w3-padding'")
+                        @EditFlag()&nbsp;<label>TextArea (Localized)</label>
+                        @TextArea(info, "genxml/textbox/testingtalang", "class='w3-input w3-border'", "Text Area Localized", true)
+                    </div>
+                    <div>
+                        <label>Checkbox (Standard)</label>
+                        @CheckBox(info, "genxml/checkbox/testingcb", "testcb", "class='w3-check' ")
+                    </div>
+                    <div>
+                        @EditFlag()&nbsp;<label>Checkbox (Localized)</label>
+                        @CheckBox(info, "genxml/checkbox/testingcblang", "testcb", "class='w3-check' ", false, true)
+                    </div>
+                    <div>
+                        <label>CheckBoxList (Standard)</label>
+                        @CheckBoxList(info, "genxml/checkboxlist/testcbl", "1,2,3", "a,b,c", "class='w3-border w3-padding' ")
+                    </div>
+                    <div>
+                        @EditFlag()&nbsp;<label>CheckBoxList (Localized)</label>
+                        @CheckBoxList(info, "genxml/checkboxlist/testcbllang", "1,2,3", "a,b,c", "class='w3-border w3-padding' ", false, true)
                     </div>
                 </div>
 
@@ -109,12 +133,14 @@
 
         <div id="testformlist" class="w3-container w3-margin tabsection" style="display: none;">
 
+            <!-- Inject list data onto form, not required but allow a post-return for the list only and hence is smoother for UI -->
             @RenderTemplate("TestFormList.cshtml", "\\DesktopModules\\DNNrocket\\testForm", "config-w3", Model)
 
         </div>
 
         <div id="testformlist2" class="w3-container w3-margin tabsection" style="display: none;">
 
+            <!-- Inject list data onto form -->
             @RenderTemplate("TestFormList2.cshtml", "\\DesktopModules\\DNNrocket\\testForm", "config-w3", Model)
 
         </div>
@@ -132,6 +158,7 @@
         $(':checkbox').attr('class', 'w3-check');
         $(':radio').attr('class', 'w3-radio');
 
+        // Sort for the lists.
         $("#sortlist1").sortable();
         $("#sortlist1").disableSelection();
 
@@ -140,7 +167,7 @@
 
     });
 
-
+    // Tab change.
     function openSection(evt, sectionName) {
         var i, x, tablinks;
         x = document.getElementsByClassName("tabsection");
