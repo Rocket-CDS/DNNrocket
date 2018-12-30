@@ -220,48 +220,6 @@ namespace DNNrocketAPI
             objCtrl.Update(_sInfo);
         }
 
-        public void UpdateModels(String xmlAjaxData, string editlang, string nodename)
-        {
-            var modelList = SimplisityUtils.GetSimplisityXmlList(xmlAjaxData, "", editlang);
-
-            var basefields = "";
-
-            // build xml for data records
-            var strXml = "<genxml><" + nodename + ">";
-            foreach (var modelInfo in modelList)
-            {
-
-                // build list of xpath fields that need processing.
-                var filedList = SimplisityUtils.GetAllFieldxPaths(modelInfo);
-                foreach (var xpath in filedList)
-                {
-                    basefields += xpath + ",";
-                }
-
-                var objInfo = new SimplisityRecord();
-
-                var fields = basefields.Split(',');
-                foreach (var f in fields.Where(f => f != ""))
-                {
-                    var datatype = modelInfo.GetXmlProperty(f + "/@datatype");
-                    if (datatype == "date")
-                        objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f), TypeCode.DateTime);
-                    else if (datatype == "double")
-                        objInfo.SetXmlPropertyDouble(f, modelInfo.GetXmlProperty(f));
-                    else if (datatype == "html")
-                        objInfo.SetXmlProperty(f, modelInfo.GetXmlPropertyRaw(f));
-                    else
-                        objInfo.SetXmlProperty(f, modelInfo.GetXmlProperty(f));
-                }
-                strXml += objInfo.XMLData;
-            }
-            strXml += "</" + nodename + "></genxml>";
-
-            // replace models xml 
-            Info().ReplaceXmlNode(strXml, "genxml/" + nodename, "genxml");
-
-        }
-
     }
 
 }

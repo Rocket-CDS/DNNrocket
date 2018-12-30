@@ -11,7 +11,7 @@
 
 
 <span class="w3-section simplisity_buttons">
-    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testform_save" s-post="#testform" s-list=".testlist,.testlist2" s-fields="theme:config-w3,template:TestForm.cshtml,systemprovider:businessdirectory,interfacekey:testform">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testform_save" s-post="#testform" s-list=".testlist,.testlist2,.testtabledata" s-fields="theme:config-w3,template:TestForm.cshtml,systemprovider:businessdirectory,interfacekey:testform">@ResourceKey("DNNrocket.cmdSaveButton")</button>
 </span>
 
 
@@ -28,6 +28,9 @@
             </a>
             <a href="javascript:void(0)" onclick="openSection(event, 'testformlist2');">
                 <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testformlist") 2</div>
+            </a>
+            <a href="javascript:void(0)" onclick="openSection(event, 'testtable');">
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-home"></i>&nbsp;Test Table</div>
             </a>
         </div>
 
@@ -80,7 +83,7 @@
                     <div>
                         @EditFlag()&nbsp;<label>Text Input [Date] (Localized)</label>
                         <!-- Localized flag set to "true", with this the "genxml/lang" on the xpath is not required.-->
-                        @TextBox(info, "genxml/textbox/datetxtl", "class='w3-input w3-border' maxlength='50' s-datatype='date'", "",true)
+                        @TextBox(info, "genxml/textbox/datetxtl", "class='w3-input w3-border' maxlength='50' s-datatype='date'", "", true)
                     </div>
                     <!-- END:  input fields [Date]  ------------------------------------------>
                 </div>
@@ -145,6 +148,12 @@
 
         </div>
 
+        <div id="testtable" class="w3-container w3-margin tabsection" style="display: none;">
+
+            <!-- Inject list data onto form -->
+            @RenderTemplate("TestTable.cshtml", "\\DesktopModules\\DNNrocket\\testForm", "config-w3", Model)
+
+        </div>        
 
     </div>
 

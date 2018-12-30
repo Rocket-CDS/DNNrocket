@@ -1,0 +1,53 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/TestForm/App_LocalResources/")
+
+@{
+    var info = (SimplisityInfo)Model.List.First();
+}
+
+<div class="w3-container">
+    <div class="w3-margin">
+        <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testform_add" s-return="#testtable" s-fields="theme:config-w3,template:testtable.cshtml,systemprovider:businessdirectory,interfacekey:testform,listname:testtable">@ResourceKey("DNNrocket.cmdAddButton")</button>
+        <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="testtablebin" s-return="#testtablesettings" s-removelist=".testtabledata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    </div>
+
+    <div class="w3-row w3-margin">
+
+        <table id="testtablesettings" class="w3-table-all">
+
+            <tr>
+                <th class="w3-half">@ResourceKey("system.name")</th>
+                <th class="w3-quarter">@ResourceKey("system.value")</th>
+                <th style="width:20px;"></th>
+            </tr>
+
+            @{
+                var lp3 = 0;
+            }
+            @foreach (var i in info.GetList("testtabledata"))
+            {
+                lp3 += 1;
+
+            <tr class="testtabledata">
+                <td class="w3-half">
+                    @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border' maxlength='50' type='text' ", "", false, lp3)
+                </td>
+                <td class="w3-quarter">
+                    @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='50' type='text' ", "", false, lp3)
+                </td>
+                <td style="width:20px;">
+                    <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".testtabledata" s-recylebin="testtablebin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+                </td>
+            </tr>
+
+            }
+        </table>
+
+    </div>
+</div>
+
+

@@ -317,11 +317,6 @@ namespace DNNrocketAPI.Interfaces
                 var groupsXml = GeneralUtils.UnCode(sInfo.GetXmlProperty("genxml/hidden/xmlupdategroups"));
                 var provtypesXml = GeneralUtils.UnCode(sInfo.GetXmlProperty("genxml/hidden/xmlupdateprovtypes"));
 
-                sInfo.RemoveXmlNode("genxml/hidden/xmlupdatemodeldata");
-                sInfo.RemoveXmlNode("genxml/hidden/xmlupdateparamdata");
-                sInfo.RemoveXmlNode("genxml/hidden/xmlupdatesettings");
-                sInfo.RemoveXmlNode("genxml/hidden/xmlupdategroups");
-                sInfo.RemoveXmlNode("genxml/hidden/xmlupdateprovtypes");
                 systemRecord.Info().XMLData = sInfo.XMLData;
 
                 // check for unique ctrl ref
@@ -341,12 +336,6 @@ namespace DNNrocketAPI.Interfaces
                 systemRecord.Info().RemoveXmlNode("genxml/hidden/editlanguage");
                 systemRecord.Info().RemoveXmlNode("genxml/hidden/uilang1");
                 systemRecord.Info().GUIDKey = systemRecord.Info().GetXmlProperty("genxml/textbox/ctrlkey");
-
-                systemRecord.UpdateModels(modelXml, DNNrocketUtils.GetCurrentCulture(), "interfaces");
-                systemRecord.UpdateModels(parametersXml, DNNrocketUtils.GetCurrentCulture(), "indexfields");
-                systemRecord.UpdateModels(settingsXml, DNNrocketUtils.GetCurrentCulture(), "settings");
-                systemRecord.UpdateModels(groupsXml, DNNrocketUtils.GetCurrentCulture(), "groups");
-                systemRecord.UpdateModels(provtypesXml, DNNrocketUtils.GetCurrentCulture(), "provtypes");                
 
                 objCtrl.Update(systemRecord.Info());
 
