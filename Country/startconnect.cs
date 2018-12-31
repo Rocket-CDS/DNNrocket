@@ -18,33 +18,36 @@ namespace DNNrocket.Country
             switch (paramCmd)
             {
                 case "settingcountry_get":
-                    strOut = CountryDetail(sInfo, controlRelPath);
+                    strOut = CountryDetail(sInfo, controlRelPath, editlang);
                     break;
                 case "settingcountry_save":
                     CountrySave(sInfo);
-                    strOut = CountryDetail(sInfo, controlRelPath);
                     break;
             }
             return strOut;
 
         }
 
-        public static String CountryDetail(SimplisityInfo sInfo, string templateControlRelPath)
+        public static String CountryDetail(SimplisityInfo sInfo, string templateControlRelPath, string editlang)
         {
             try
             {
                 var strOut = "";
-                var selecteditemid = sInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-                var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
-                var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
-                
-                var passSettings = sInfo.ToDictionary();
+                var objCtrl = new DNNrocketController();
+                var smi = objCtrl.GetData("countrysettings", "SETTINGS", editlang);
+                if (smi != null)
+                {
 
+                    var selecteditemid = sInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                    var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
+                    var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                    var passSettings = sInfo.ToDictionary();
 
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), passSettings);
+                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
+                    strOut = DNNrocketUtils.RazorDetail(razorTempl, smi, passSettings);
+                }
                 return strOut;
             }
             catch (Exception ex)
@@ -53,21 +56,10 @@ namespace DNNrocket.Country
             }
         }
 
-        public static void CountrySave(SimplisityInfo sInfo)
+        public static void CountrySave(SimplisityInfo postInfo)
         {
             var objCtrl = new DNNrocketController();
-            var nbi = objCtrl.GetSinglePageData("countrysettings", "SETTINGS", "");
-
-            if (nbi == null)
-            {
-                nbi = new SimplisityInfo();
-                nbi.TypeCode = "";
-                nbi.GUIDKey = "";
-                nbi.ItemID = -1;
-            }
-            nbi.XMLData = sInfo.XMLData;
-            objCtrl.SaveSinglePageData("countrysettings", "SETTINGS", "", nbi);
-
+            objCtrl.SaveData("countrysettings", "SETTINGS", postInfo);
         }
 
     }

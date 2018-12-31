@@ -72,16 +72,16 @@
                                 grouplist += "," + g.GetXmlProperty("genxml/textbox/groupref");
                             }
                         }
-                        @DropDownList(sInfo, "genxml/dropdownlist/group", grouplist, grouplist, "class='w3-input w3-border'", "", false, lp1)
+                        @DropDownList(i, "genxml/dropdownlist/group", grouplist, grouplist, "class='w3-input w3-border'", "", false, lp1)
                     </div>
                 </div>
                 <div class="w3-row">
                     <div class="w3-padding w3-half">
-                        @CheckBoxList(sInfo, "genxml/checkboxlist/securityroles", ResourceKey("system.roles").ToString(), ResourceKey("system.roles").ToString(), "", false, false, lp1)
+                        @CheckBoxList(i, "genxml/checkboxlist/securityroles", ResourceKey("system.roles").ToString(), ResourceKey("system.roles").ToString(), "", false, false, lp1)
                     </div>
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("DNNrocket.Active")</label>
-                        @CheckBox(sInfo, "genxml/checkbox/active", "", "class='w3-input w3-border'", true, false, lp1)
+                        @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border'", true, false, lp1)
                     </div>
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.providertype")</label>
@@ -95,7 +95,7 @@
                                 providertypelist += "," + g.GetXmlProperty("genxml/textbox/provname");
                             }
                         }
-                        @DropDownList(sInfo, "genxml/dropdownlist/providertype_" + lp1, providertyperef, providertypelist, "class='w3-input w3-border'", "", false, lp1)
+                        @DropDownList(i, "genxml/dropdownlist/providertype", providertyperef, providertypelist, "class='w3-input w3-border'", "", false, lp1)
                     </div>
                 </div>
 

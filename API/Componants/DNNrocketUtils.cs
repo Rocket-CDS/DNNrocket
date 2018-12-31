@@ -390,6 +390,11 @@ namespace DNNrocketAPI
             }
             return rtnDic;
         }
+        public static string GetCountryName(string CountryCode, int portalId = -1)
+        {
+            var l = GetCountryCodeList(portalId);
+            return l[CountryCode]; ;
+        }
 
         public static List<string> GetCultureCodeList(int portalId = -1)
         {

@@ -235,6 +235,7 @@ namespace DNNrocket.SystemData
                 var info = objCtrl.GetInfo(Convert.ToInt32(selecteditemid));
                 info.XMLData = postInfo.XMLData;
                 objCtrl.Update(info);
+                CacheUtils.ClearAllCache();
             }
         }
 
