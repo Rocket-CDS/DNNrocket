@@ -9,23 +9,23 @@ namespace DNNrocketAPI.Componants
 {
     public class SideMenu
     {
-        private SystemRecord _sysRecord;
+        private SimplisityInfo _sysInfo;
 
         private string systemkey;
 
         public string SystemKey { get => systemkey; set => systemkey = value; }
 
-        public SideMenu(SystemRecord sysRecord)
+        public SideMenu(SimplisityInfo sysInfo)
         {
-            _sysRecord = sysRecord;
-            systemkey = sysRecord.Info().GetXmlProperty("genxml/textbox/ctrlkey");
+            _sysInfo = sysInfo;
+            systemkey = sysInfo.GetXmlProperty("genxml/textbox/ctrlkey");
         }
 
         public List<SimplisityRecord> GetGroups()
         {
             var rtnList = new List<SimplisityRecord>();
 
-            foreach (var i in _sysRecord.GetGroups())
+            foreach (var i in _sysInfo.GetList("groupsdata"))
             {
                 // [TODO: add security]
                 rtnList.Add(i);
@@ -37,7 +37,7 @@ namespace DNNrocketAPI.Componants
         {
             var rtnList = new List<SimplisityRecord>();
 
-            foreach (var i in _sysRecord.GetInterfaces())
+            foreach (var i in _sysInfo.GetList("interfacedata"))
             {
                 // [TODO: add security]
                 if (groupref == i.GetXmlProperty("genxml/dropdownlist/group"))
@@ -53,7 +53,7 @@ namespace DNNrocketAPI.Componants
         {
             var roles = UserUtils.GetCurrentUserRoles();
             var rtnList = new List<SimplisityRecord>();
-            foreach (var i in _sysRecord.GetInterfaces())
+            foreach (var i in _sysInfo.GetList("interfacedata"))
             {
 
 

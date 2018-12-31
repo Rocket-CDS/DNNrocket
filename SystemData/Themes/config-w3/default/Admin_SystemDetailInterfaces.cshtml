@@ -3,16 +3,17 @@
 @using Simplisity;
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 
 @{
-    var plugin = (SystemRecord)Model.List.First();
+    var sInfo = (SimplisityInfo)Model.List.First();
 }
 
 
 
 <div class="w3-container">
     <div class="w3-margin">
-        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addinterface" s-fields="selecteditemid:@plugin.Info().ItemID,theme:config-w3,template:Admin_SystemDetailInterfaces.cshtml,ajaxprovider:systemapi" s-return="#Interface">@ResourceKey("DNNrocket.cmdAddButton")</a>
+        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addinterface" s-fields="selecteditemid:@sInfo.ItemID,theme:config-w3,template:Admin_SystemDetailInterfaces.cshtml,ajaxprovider:systemapi" s-return="#Interface">@ResourceKey("DNNrocket.cmdAddButton")</a>
         <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="interfacesbin" s-return="#plugininterfaces" s-undoselector=".interfacedata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
     </div>
 
@@ -21,9 +22,8 @@
         @{
             var lp1 = 0;
         }
-        @foreach (var sRecord in plugin.GetInterfaces())
+        @foreach (var i in sInfo.GetList("interfacedata"))
         {
-            var sInfo = new SimplisityInfo(sRecord);
             lp1 += 1;
             <li class="interfacedata w3-card w3-margin w3-display-container">
                 <a href="javascript:void(0)" class="w3-display-right simplisity_removelistitem" s-recylebin="interfacesbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
@@ -33,69 +33,69 @@
                 <div class="w3-row">
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.interfacekey")</label>
-                        @TextBox(sInfo, "genxml/textbox/interfacekey_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(i, "genxml/textbox/interfacekey", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
                     </div>
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.defaulttheme")</label>
-                        @TextBox(sInfo, "genxml/textbox/defaulttheme_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(i, "genxml/textbox/defaulttheme", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
                     </div>
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.defaulttemplate")</label>
-                        @TextBox(sInfo, "genxml/textbox/defaulttemplate_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(i, "genxml/textbox/defaulttemplate", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
                     </div>
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.defaultcommand")</label>
-                        @TextBox(sInfo, "genxml/textbox/defaultcommand_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(i, "genxml/textbox/defaultcommand", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
                     </div>
                 </div>
 
                 <div class="w3-row">
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.interfaceicon")</label>
-                        @TextBox(sInfo, "genxml/textbox/interfaceicon_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(i, "genxml/textbox/interfaceicon", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
                     </div>
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.namespaceclass")</label>
-                        @TextBox(sInfo, "genxml/textbox/namespaceclass_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(i, "genxml/textbox/namespaceclass", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
                     </div>
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.assembly")</label>
-                        @TextBox(sInfo, "genxml/textbox/assembly_" + lp1, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(i, "genxml/textbox/assembly", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
                     </div>
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.group")</label>
                         @{
                             var grouplist = "";
-                            var l = plugin.GetGroups();
+                            var l = sInfo.GetList("groupsdata");
                             foreach (var g in l)
                             {
                                 grouplist += "," + g.GetXmlProperty("genxml/textbox/groupref");
                             }
                         }
-                        @DropDownList(sInfo, "genxml/dropdownlist/group_" + lp1, grouplist, grouplist, "class='w3-input w3-border'")
+                        @DropDownList(sInfo, "genxml/dropdownlist/group", grouplist, grouplist, "class='w3-input w3-border'", "", false, lp1)
                     </div>
                 </div>
                 <div class="w3-row">
                     <div class="w3-padding w3-half">
-                        @CheckBoxList(sInfo, "genxml/checkboxlist/securityroles", ResourceKey("system.roles").ToString(), ResourceKey("system.roles").ToString(), "")
+                        @CheckBoxList(sInfo, "genxml/checkboxlist/securityroles", ResourceKey("system.roles").ToString(), ResourceKey("system.roles").ToString(), "", false, false, lp1)
                     </div>
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("DNNrocket.Active")</label>
-                        @CheckBox(sInfo, "genxml/checkbox/active_" + lp1, "", "class='w3-input w3-border'", true)
+                        @CheckBox(sInfo, "genxml/checkbox/active", "", "class='w3-input w3-border'", true, false, lp1)
                     </div>
                     <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.providertype")</label>
                         @{
                             var providertyperef = "";
                             var providertypelist = "";
-                            var l2 = plugin.GetProvTypes();
+                            var l2 = sInfo.GetList("provtypesdata");
                             foreach (var g in l2)
                             {
                                 providertyperef += "," + g.GetXmlProperty("genxml/textbox/provtypes");
                                 providertypelist += "," + g.GetXmlProperty("genxml/textbox/provname");
                             }
                         }
-                        @DropDownList(sInfo, "genxml/dropdownlist/providertype_" + lp1, providertyperef, providertypelist, "class='w3-input w3-border'")
+                        @DropDownList(sInfo, "genxml/dropdownlist/providertype_" + lp1, providertyperef, providertypelist, "class='w3-input w3-border'", "", false, lp1)
                     </div>
                 </div>
 

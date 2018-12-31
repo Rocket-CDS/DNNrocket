@@ -25,7 +25,7 @@ namespace DNNrocketAPI
 
 		#endregion
 
-        public abstract string ProcessCommand(string paramCmd, SimplisityInfo sInfo, string editlang = "");
+        public abstract string ProcessCommand(string paramCmd, SimplisityInfo sInfo,string userHostAddress, string editlang = "");
 
     }
 

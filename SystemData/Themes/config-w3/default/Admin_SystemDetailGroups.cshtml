@@ -3,14 +3,15 @@
 @using Simplisity;
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 
 @{
-    var plugin = (SystemRecord)Model.List.First();
+    var sInfo = (SimplisityInfo)Model.List.First();
 }
 
 <div class="w3-container">
     <div class="w3-margin">
-        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addgroup" s-fields="selecteditemid:@plugin.Info().ItemID,theme:config-w3,template:Admin_SystemDetailGroups.cshtml,ajaxprovider:systemapi" s-return="#Groups">@ResourceKey("DNNrocket.cmdAddButton")</a>
+        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addgroup" s-fields="selecteditemid:@sInfo.ItemID,theme:config-w3,template:Admin_SystemDetailGroups.cshtml,ajaxprovider:systemapi" s-return="#Groups">@ResourceKey("DNNrocket.cmdAddButton")</a>
         <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="groupsbin" s-return="#plugingroups" s-undoselector=".groupsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
     </div>
 
@@ -28,20 +29,19 @@
             @{
                 var lp3 = 0;
             }
-            @foreach (var sRecord in plugin.GetGroups())
+            @foreach (var i in sInfo.GetList("groupsdata"))
             {
-                var sInfo = new SimplisityInfo(sRecord);
                 lp3 += 1;
-                
+
                 <tr class="groupsdata">
                     <td class="w3-quarter">
-                        @TextBox(sInfo, "genxml/textbox/groupref_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(i, "genxml/textbox/groupref", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
                     </td>
                     <td class="w3-quarter">
-                        @TextBox(sInfo, "genxml/textbox/groupicon_" + lp3, "class='w3-input w3-border' maxlength='250' ", "")
+                        @TextBox(i, "genxml/textbox/groupicon", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
                     </td>
                     <td class="w3-quarter">
-                        <i class="@sInfo.GetXmlProperty("genxml/textbox/groupicon")"></i>
+                        <i class="@i.GetXmlProperty("genxml/textbox/groupicon")"></i>
                     </td>
                     <td style="width:20px;">
                         <a href="javascript:void(0)" class="simplisity_removetablerow" s-recylebin="groupsbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>

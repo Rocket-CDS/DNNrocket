@@ -6,7 +6,7 @@ namespace DNNrocket.Country
 {
     public class startconnect : DNNrocketAPI.APInterface
     {
-        public override string ProcessCommand(string paramCmd, SimplisityInfo sInfo, string editlang = "")
+        public override string ProcessCommand(string paramCmd, SimplisityInfo sInfo, string userHostAddress, string editlang = "")
         {
 
             //CacheUtils.ClearAllCache();

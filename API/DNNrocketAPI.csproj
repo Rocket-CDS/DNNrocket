@@ -90,18 +90,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Componants\DNNrocketConst.cs" />
+    <Compile Include="Componants\SystemData.cs" />
     <Compile Include="Componants\UserUtils.cs" />
     <Compile Include="Componants\SideMenu.cs" />
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\DataInterface.cs" />
-    <Compile Include="Componants\SystemFunction.cs" />
     <Compile Include="Componants\DNNrocketUtils.cs" />
     <Compile Include="render\DNNrocketTokens.cs" />
     <Compile Include="SqlDataProvider\DataProvider.cs" />
     <Compile Include="SqlDataProvider\DNNrocketController.cs" />
     <Compile Include="SqlDataProvider\SqlDataProvider.cs" />
-    <Compile Include="SystemRecord.cs" />
-    <Compile Include="SystemData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="api.ashx.cs">
       <DependentUpon>api.ashx</DependentUpon>
@@ -112,18 +110,9 @@
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="packages.config" />
-    <None Include="Themes\config-w3\default\Admin_SystemDetailData.cshtml" />
-    <None Include="Themes\config-w3\default\Admin_SystemDetailProvType.cshtml" />
-    <None Include="Themes\config-w3\default\Admin_SystemDetailInterfaces.cshtml" />
-    <None Include="Themes\config-w3\default\Admin_SystemDetailIdxFields.cshtml" />
-    <None Include="Themes\config-w3\default\Admin_SystemDetailGroups.cshtml" />
-    <None Include="Themes\config-w3\default\Admin_SystemDetailSettings.cshtml" />
-    <None Include="Themes\config-w3\default\Admin_Systems.cshtml" />
-    <None Include="Themes\config-w3\default\Admin_SystemDetail.cshtml" />
     <None Include="Themes\config-w3\default\SideMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App_LocalResources\system.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\DNNrocket.ascx.resx" />
   </ItemGroup>
   <ItemGroup>

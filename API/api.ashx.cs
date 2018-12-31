@@ -63,7 +63,8 @@ namespace DNNrocketAPI
 
                     if (systemprovider == "" || systemprovider == "systemapi")
                     {
-                        strOut = SystemFunction.ProcessCommand(paramCmd, sInfoJson, _editlang);
+                        var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect");
+                        strOut = ajaxprov.ProcessCommand(paramCmd, sInfoJson, HttpContext.Current.Request.UserHostAddress, _editlang);
                     }
                     else
                     {
@@ -76,8 +77,7 @@ namespace DNNrocketAPI
                             var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
                             if (systemInfo != null)
                             {
-                                var systemRecord = new SystemRecord(systemInfo);
-                                var iface = systemRecord.GetInterface(interfacekey);
+                                var iface = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);                                
                                 if (iface != null)
                                 {
 
@@ -92,7 +92,7 @@ namespace DNNrocketAPI
                                         try
                                         {
                                             var ajaxprov = APInterface.Instance(assembly, namespaceclass);
-                                            strOut = ajaxprov.ProcessCommand(paramCmd, sInfoJson, _editlang);
+                                            strOut = ajaxprov.ProcessCommand(paramCmd, sInfoJson, HttpContext.Current.Request.UserHostAddress, _editlang);
                                         }
                                         catch (Exception ex)
                                         {
@@ -152,9 +152,8 @@ namespace DNNrocketAPI
 
                 var systemData = new SystemData();
                 var sInfoSystem = systemData.GetSystemByKey(systemprovider);
-                var systemRecord = new SystemRecord(sInfoSystem);
-                var sidemenu = new Componants.SideMenu(systemRecord);
-                var templateControlRelPath = systemRecord.Info().GetXmlProperty("genxml/textbox/relpath");
+                var sidemenu = new Componants.SideMenu(sInfoSystem);
+                var templateControlRelPath = sInfoSystem.GetXmlProperty("genxml/textbox/relpath");
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 

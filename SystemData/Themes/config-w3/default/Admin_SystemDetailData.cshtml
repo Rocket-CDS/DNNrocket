@@ -3,24 +3,18 @@
 @using Simplisity;
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 
 @{
-    var sysRecord = (SystemRecord)Model.List.First();
+    var sInfo = (SimplisityInfo)Model.List.First();
 }
 
 
 
-<input id="itemid" type="hidden" value="@sysRecord.Info().ItemID" />
-<input id="editlanguage" type="hidden" value="@sysRecord.Info().Lang" />
-<input id="index" type="hidden" value="@sysRecord.Info().GetXmlPropertyInt("genxml/hidden/index").ToString()" />
+<input id="itemid" type="hidden" value="@sInfo.ItemID" />
+<input id="editlanguage" type="hidden" value="@sInfo.Lang" />
+<input id="index" type="hidden" value="@sInfo.GetXmlPropertyInt("genxml/hidden/index").ToString()" />
 <input id="systemprovider" type="hidden" value="systemapi" />
-
-<!-- postback fields to keep ajax populated data for update: datatype='coded' so we don't corrupt the return XML -->
-<input id="xmlupdateparamdata" type="hidden" datatype="coded" value="" />
-<input id="xmlupdatemodeldata" type="hidden" datatype="coded" value="" />
-<input id="xmlupdatesettings" type="hidden" datatype="coded" value="" />
-<input id="xmlupdategroups" type="hidden" datatype="coded" value="" />
-<input id="xmlupdateprovtypes" type="hidden" datatype="coded" value="" />
 
 <input id="uilang1" type="hidden" value="@DNNrocketUtils.GetCurrentCulture()" />
 
@@ -31,36 +25,36 @@
         <div class="w3-row-padding">
             <div class="w3-quarter">
                 <label class="">@ResourceKey("system.ctrlkey")</label>
-                @TextBox(sysRecord.Info(), "genxml/textbox/ctrlkey", "class='w3-input w3-border' maxlength='50'")
+                @TextBox(sInfo, "genxml/textbox/ctrlkey", "class='w3-input w3-border' maxlength='50'")
             </div>
             <div class="w3-quarter">
                 <label class="">@ResourceKey("system.systemname")</label>
-                @TextBox(sysRecord.Info(), "genxml/textbox/systemname", "class='w3-input w3-border' maxlength='50'")
+                @TextBox(sInfo, "genxml/textbox/systemname", "class='w3-input w3-border' maxlength='50'")
             </div>
             <div class="w3-half">
                 <label class="">@ResourceKey("system.systemrelpath")</label>
-                @TextBox(sysRecord.Info(), "genxml/textbox/relpath", "class='w3-input w3-border' maxlength='350'")
+                @TextBox(sInfo, "genxml/textbox/relpath", "class='w3-input w3-border' maxlength='350'")
             </div>
         </div>
         <div class="w3-row-padding">
             <div class="w3-half">
                 <label class="">@ResourceKey("system.apiurl")</label>
-                @TextBox(sysRecord.Info(), "genxml/textbox/apiurl", "class='w3-input w3-border'  ", "")
+                @TextBox(sInfo, "genxml/textbox/apiurl", "class='w3-input w3-border'  ", "")
             </div>
             <div class="w3-half">
                 <label class="">@ResourceKey("system.adminurl")</label>
-                @TextBox(sysRecord.Info(), "genxml/textbox/adminurl", "class='w3-input w3-border' ", "")
+                @TextBox(sInfo, "genxml/textbox/adminurl", "class='w3-input w3-border' ", "")
             </div>
         </div>
         <div class="w3-row-padding">
             <div class="w3-half">
                 <label class="">@ResourceKey("system.licensekey")</label>
-                @TextBox(sysRecord.Info(), "genxml/textbox/licensekey", "class='w3-input w3-border' maxlength='250' ", "")
+                @TextBox(sInfo, "genxml/textbox/licensekey", "class='w3-input w3-border' maxlength='250' ", "")
             </div>
             <div class="w3-third">
-                @if (sysRecord.Info().GetXmlProperty("genxml/textbox/adminurl") != "")
+                @if (sInfo.GetXmlProperty("genxml/textbox/adminurl") != "")
                 {
-                    <a class="w3-button w3-teal w3-padding-8 w3-margin-top" href="@sysRecord.Info().GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ResourceKey("DNNrocket.cmdAdminButton")</a>
+                    <a class="w3-button w3-teal w3-padding-8 w3-margin-top" href="@sInfo.GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ResourceKey("DNNrocket.cmdAdminButton")</a>
                 }
             </div>
             <div class="w3-third">
@@ -69,7 +63,7 @@
         </div>
 
         <div class="w3-row-padding">
-            @sysRecord.Info().GUIDKey / @sysRecord.Info().ItemID
+            @sInfo.GUIDKey / @sInfo.ItemID
         </div>
 
 
@@ -82,7 +76,7 @@
 
 <div id="XML" class="w3-container-padding w3-hide w3-margin">
     <div class="w3-card-4 w3-padding w3-codespan">
-        @sysRecord.Info().XMLData
+        @sInfo.XMLData
     </div>
 </div>
 
