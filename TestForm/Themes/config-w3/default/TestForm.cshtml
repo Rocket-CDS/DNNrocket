@@ -11,7 +11,7 @@
 
 
 <span class="w3-section simplisity_buttons">
-    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testform_save" s-post="#testform" s-list=".testlist,.testlist2,.testtabledata" s-fields="theme:config-w3,template:TestForm.cshtml,systemprovider:businessdirectory,interfacekey:testform">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="testform_save" s-post="#testform" s-list=".testlist,.testlist2,.testtabledata" s-fields="theme:config-w3,template:TestForm.cshtml,systemprovider:businessdirectory,interfacekey:testform">@ResourceKey("DNNrocket.cmdSaveButton")</button>
 </span>
 
 
@@ -20,16 +20,16 @@
 
     <div class="w3-container">
         <div class="w3-row">
-            <a href="javascript:void(0)" onclick="openSection(event, 'testform');">
+            <a href="javascript:void(0)" class="sectiontab" sectionname="testform" >
                 <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding w3-border-black w3-theme " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testform")</div>
             </a>
-            <a href="javascript:void(0)" onclick="openSection(event, 'testformlist');">
+            <a href="javascript:void(0)" class="sectiontab" sectionname="testformlist" >
                 <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testformlist")</div>
             </a>
-            <a href="javascript:void(0)" onclick="openSection(event, 'testformlist2');">
+            <a href="javascript:void(0)" class="sectiontab" sectionname="testformlist2">
                 <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testformlist") 2</div>
             </a>
-            <a href="javascript:void(0)" onclick="openSection(event, 'testtable');">
+            <a href="javascript:void(0)" class="sectiontab" sectionname="testtable">
                 <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-home"></i>&nbsp;Test Table</div>
             </a>
         </div>
@@ -174,10 +174,17 @@
         $("#sortlist2").sortable();
         $("#sortlist2").disableSelection();
 
+        var sectionname = simplisity_getCookieValue('selectedtabname');
+        if (sectionname !== '') {
+            $('.sectiontab[sectionname="' + sectionname + '"]').trigger('click');
+        }
+
+
     });
 
-    // Tab change.
-    function openSection(evt, sectionName) {
+
+    $('.sectiontab').unbind('click');
+    $('.sectiontab').click(function () {
         var i, x, tablinks;
         x = document.getElementsByClassName("tabsection");
         for (i = 0; i < x.length; i++) {
@@ -188,9 +195,15 @@
             tablinks[i].className = tablinks[i].className.replace(" w3-border-black", "");
             tablinks[i].className = tablinks[i].className.replace(" w3-theme", "");
         }
+
+        var sectionName = $(this).attr('sectionname');
         document.getElementById(sectionName).style.display = "block";
-        evt.currentTarget.firstElementChild.className += " w3-border-black";
-        evt.currentTarget.firstElementChild.className += " w3-theme";
-    }
+
+        document.cookie = "selectedtabname=" + sectionName + ";path=/";
+
+        $(this).children().first().addClass('w3-theme').addClass('w3-border-black')
+
+    });
+
 
 </script>

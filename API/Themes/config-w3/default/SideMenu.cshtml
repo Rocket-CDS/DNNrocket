@@ -115,8 +115,10 @@
 
         $('.selectlang').unbind('click');
         $('.selectlang').click(function () {
-            document.cookie = "editlang=" + $(this).attr('editlang') + ";path=/";
-            location.reload();
+            // change langauge by setting "nextlang" cookie and then trigger the save with "simplisity_langchange" class on the save button.
+            // the ajax return with switch the editlang cookie to the nextlang cookie and delete the nextlang cookie, it will then reload the page.
+            document.cookie = "nextlang=" + $(this).attr('editlang') + ";path=/";
+            $('.simplisity_langchange').trigger('click');
         });
 
     });
