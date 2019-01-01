@@ -811,6 +811,11 @@ namespace DNNrocketAPI
             }
         }
 
+        public static int GetPortalId()
+        {
+            return PortalSettings.Current.PortalId;
+        }
+
         public static PortalSettings GetPortalSettings(int portalId)
         {
             var controller = new PortalController();

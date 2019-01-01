@@ -259,7 +259,7 @@ namespace DNNrocketAPI
 
         public SimplisityInfo GetData(string GuidKey, string typeCode, string lang)
         {
-            CacheUtils.ClearAllCache(); // clear ALL cache.
+            //CacheUtils.ClearAllCache(); // clear ALL cache.
             var info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
             if (info == null)
             {
@@ -297,48 +297,115 @@ namespace DNNrocketAPI
             return nbi;
         }
 
-        public string SaveData(string GuidKey, string typeCode, SimplisityInfo postInfo)
+        public SimplisityInfo SaveData(string GuidKey, string typeCode, SimplisityInfo postInfo)
         {
-            try
+            var info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
+            if (info == null)
             {
-
-                var info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
-                if (info == null)
-                {
-                    // do read, so it creates the record and do a new read.
-                    info = GetData(GuidKey, typeCode, postInfo.Lang);
-                    info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
-                }
-                if (info != null)
-                {
-                    var smiLang = postInfo.GetLangRecord();
-                    smiLang.Lang = postInfo.Lang;
-                    info.XMLData = postInfo.XMLData;
-                    info.RemoveLangRecord();
-                    info.Lang = "";
-                    Update(info);
-                    var nbi2 = GetRecordLang(info.ItemID, smiLang.Lang);
-                    if (nbi2 == null)
-                    {
-                        smiLang.ItemID = -1; // add if null (should not happen)
-                    }
-                    else
-                    {
-                        smiLang.ItemID = nbi2.ItemID;
-                    }
-                    smiLang.ParentItemId = info.ItemID;
-                    smiLang.TypeCode = info.TypeCode + "LANG";
-                    smiLang.GUIDKey = "";
-                    Update(smiLang);
-                    CacheUtils.ClearAllCache(); // clear ALL cache.
-                }
-
-                return "";
+                // do read, so it creates the record and do a new read.
+                info = GetData(GuidKey, typeCode, postInfo.Lang);
             }
-            catch (Exception e)
+            if (info != null)
             {
-                return e.ToString();
+                var smiLang = postInfo.GetLangRecord();
+                smiLang.Lang = postInfo.Lang;
+                info.XMLData = postInfo.XMLData;
+                info.RemoveLangRecord();
+                info.Lang = "";
+                Update(info);
+                var nbi2 = GetRecordLang(info.ItemID, smiLang.Lang);
+                if (nbi2 == null)
+                {
+                    smiLang.ItemID = -1; // add if null (should not happen)
+                }
+                else
+                {
+                    smiLang.ItemID = nbi2.ItemID;
+                }
+                smiLang.ParentItemId = info.ItemID;
+                smiLang.TypeCode = info.TypeCode + "LANG";
+                smiLang.GUIDKey = "";
+                Update(smiLang);
+                CacheUtils.ClearAllCache(); // clear ALL cache.
+                info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
             }
+
+            return info;
+        }
+
+        public SimplisityInfo GetData(string typeCode, int ItemId, string lang)
+        {
+            var info = GetInfo(ItemId, lang);
+            if (info == null)
+            {
+                // create record if not in DB
+                info = new SimplisityInfo();
+                info.GUIDKey = "";
+                info.TypeCode = typeCode;
+                info.ModuleId = -1;
+                info.PortalId = PortalSettings.Current.PortalId;
+                info.ItemID = Update(info);
+            }
+            var nbilang = GetRecordLang(info.ItemID, lang);
+            if (nbilang == null)
+            {
+                // create lang records if not in DB
+                foreach (var lg in DNNrocketUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+                {
+                    nbilang = GetRecordLang(info.ItemID, lg);
+                    if (nbilang == null)
+                    {
+                        nbilang = new SimplisityInfo();
+                        nbilang.GUIDKey = "";
+                        nbilang.TypeCode = typeCode + "LANG";
+                        nbilang.ParentItemId = info.ItemID;
+                        nbilang.Lang = lg;
+                        nbilang.ModuleId = -1;
+                        nbilang.PortalId = PortalSettings.Current.PortalId;
+                        nbilang.ItemID = Update(nbilang);
+                    }
+                }
+            }
+
+            // do edit field data if a itemid has been selected
+            var nbi = GetInfo(info.ItemID, lang);
+            return nbi;
+        }
+
+        public SimplisityInfo SaveData(SimplisityInfo sInfo)
+        {
+            var info = GetInfo(sInfo.ItemID, sInfo.Lang);
+            if (info == null)
+            {
+                // do read, so it creates the record and do a new read.
+                info = GetData(sInfo.TypeCode, sInfo.ItemID, sInfo.Lang);
+            }
+            if (info != null)
+            {
+                var smiLang = sInfo.GetLangRecord();
+                smiLang.Lang = sInfo.Lang;
+                info.XMLData = sInfo.XMLData;
+                info.RemoveLangRecord();
+                info.Lang = "";
+                Update(info);
+                var nbi2 = GetRecordLang(info.ItemID, smiLang.Lang);
+                if (nbi2 == null)
+                {
+                    smiLang.ItemID = -1; // add if null (should not happen)
+                }
+                else
+                {
+                    smiLang.ItemID = nbi2.ItemID;
+                }
+                smiLang.ParentItemId = info.ItemID;
+                smiLang.TypeCode = info.TypeCode + "LANG";
+                smiLang.GUIDKey = "";
+                Update(smiLang);
+                CacheUtils.ClearAllCache(); // clear ALL cache.
+                info = GetInfo(sInfo.ItemID, sInfo.Lang);
+            }
+
+            return info;
         }
 
 

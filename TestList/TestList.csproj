@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>DNNrocketTestList</AssemblyName>
+    <RootNamespace>DNNrocket.TestList</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Simplisity\Simplisity\Simplisity.csproj" />
+    <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="App_LocalResources\" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(ProjectDir)..\..\..\bin\$(TargetFileName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(AssemblyName).pdb&quot; &quot;$(ProjectDir)..\..\..\bin\$(AssemblyName).pdb&quot;&#xD;&#xA;" />
+  </Target>
+
+</Project>

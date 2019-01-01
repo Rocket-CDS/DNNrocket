@@ -64,7 +64,6 @@ namespace DNNrocket.TestForm
                 var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
 
                 var passSettings = postInfo.ToDictionary();
-                               
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetData("testform", "TEST", DNNrocketUtils.GetEditCulture());
