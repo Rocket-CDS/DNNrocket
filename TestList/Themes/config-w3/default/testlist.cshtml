@@ -8,7 +8,7 @@
 <div class="w3-container">
 
     <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-        <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_add" s-fields="theme:config-w3,template:TestListForm.cshtml,systemprovider:businessdirectory,interfacekey:testlist" s-return="#contentplaceholder">@ResourceKey("DNNrocket.cmdAddButton")</button>
+        <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_add" s-fields="theme:config-w3,template:TestListForm.cshtml,systemprovider:businessdirectory,interfacekey:testlist">@ResourceKey("DNNrocket.cmdAddButton")</button>
     </span>
 
     <div class="w3-row-padding plugins">
@@ -24,6 +24,7 @@
                         <th></th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,14 +32,17 @@
                     @foreach (SimplisityInfo nbi in Model.List)
                     {
                         <tr>
+                            <td style="width:50px">
+                                <a class="simplisity_sortrow" s-itemid="@nbi.ItemID" s-cmd="testlist_sort" s-fields="selecteditemid:@nbi.ItemID,theme:config-w3,template:TestList.cshtml,systemprovider:businessdirectory,interfacekey:testlist"  href="javascript:void(0)"></a>
+                            </td>
                             <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/txtinput")</td>
                             <td class="text-nowrap">@nbi.GetXmlProperty("genxml/lang/genxml/textbox/txtinputl")</td>
                             <td>
-                                <a class="simplisity_click" s-cmd="testlist_get" s-fields="selecteditemid:@nbi.ItemID,theme:config-w3,template:TestListForm.cshtml,systemprovider:businessdirectory,interfacekey:testlist" s-return="#contentplaceholder" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
+                                <a class="simplisity_click" s-track="true" s-cmd="testlist_getdetail" s-fields="selecteditemid:@nbi.ItemID,theme:config-w3,template:TestListForm.cshtml,systemprovider:businessdirectory,interfacekey:testlist" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
                             </td><!-- editlink class added to show processing -->
                         </tr>
                     }
-
+                    
                 </tbody>
             </table>
         </div>

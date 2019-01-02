@@ -402,7 +402,7 @@ namespace DNNrocketAPI
                 smiLang.GUIDKey = "";
                 Update(smiLang);
                 CacheUtils.ClearAllCache(); // clear ALL cache.
-                info = GetInfo(sInfo.ItemID, sInfo.Lang);
+                info = GetInfo(info.ItemID, info.Lang);
             }
 
             return info;

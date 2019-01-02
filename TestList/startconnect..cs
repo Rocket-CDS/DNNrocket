@@ -13,47 +13,37 @@ namespace DNNrocket.TestList
 
             var controlRelPath = "/DesktopModules/DNNrocket/TestList";
 
-            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [testform]";
+            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [testlist]";
 
             switch (paramCmd)
             {
-                case "testlist_get":
-                    strOut = Get(postInfo, controlRelPath);
+                case "testlist_getlist":
+                    strOut = GetList(postInfo, controlRelPath);
+                    break;
+                case "testlist_getdetail":
+                    strOut = GetDetail(postInfo, controlRelPath);
                     break;
                 case "testlist_add":
                     var newInfo = AddNew(postInfo);
                     postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
-                    strOut = Get(postInfo, controlRelPath);
+                    strOut = GetDetail(postInfo, controlRelPath);
                     break;
                 case "testlist_save":
                     Save(postInfo);
-                    strOut = Get(postInfo, controlRelPath);
+                    strOut = GetDetail(postInfo, controlRelPath);
+                    break;
+                case "testlist_delete":
+                    Delete(postInfo);
+                    strOut = GetList(postInfo, controlRelPath);
+                    break;
+                case "testlist_sort":
+                    strOut = GetList(postInfo, controlRelPath);
                     break;
                 default:
-                    strOut = "default path";
+                    strOut = "COMMAND NOT FOUND!!! - [testlist]";
                     break;
             }
             return strOut;
-        }
-
-        public static String Get(SimplisityInfo postInfo, string templateControlRelPath)
-        {
-            try
-            {
-                var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-                if (selecteditemid > 0)
-                {
-                    return GetDetail(postInfo,templateControlRelPath);
-                }
-                else
-                {
-                    return GetList(postInfo, templateControlRelPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
         }
 
         public static String GetList(SimplisityInfo postInfo, string templateControlRelPath)
@@ -137,15 +127,27 @@ namespace DNNrocket.TestList
 
         public static void Save(SimplisityInfo postInfo)
         {
-            var selecteditemid = postInfo.GetXmlProperty("genxml/hidden/selecteditemid");
-            if (GeneralUtils.IsNumeric(selecteditemid))
+            var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            if (selecteditemid > 0)
             {
                 var objCtrl = new DNNrocketController();
-                var info = objCtrl.GetInfo(Convert.ToInt32(selecteditemid),DNNrocketUtils.GetEditCulture());
+                var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
                 info.XMLData = postInfo.XMLData;
-                objCtrl.Update(info);
+                objCtrl.SaveData(info);
                 CacheUtils.ClearAllCache();
             }
         }
+
+        public static void Delete(SimplisityInfo postInfo)
+        {
+            var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            if (selecteditemid > 0)
+            {
+                var objCtrl = new DNNrocketController();
+                objCtrl.Delete(selecteditemid);
+                CacheUtils.ClearAllCache();
+            }
+        }
+
     }
 }
