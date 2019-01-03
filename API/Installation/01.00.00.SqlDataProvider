@@ -41,13 +41,14 @@ CREATE TABLE {databaseOwner}[{objectQualifier}DNNrocket] (
 ) ON [PRIMARY]
 
 -- Index DNNrocket
- CREATE NONCLUSTERED INDEX IX_DNNrocketXref ON dbo.DNNrocket (  XrefItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ]  
- CREATE NONCLUSTERED INDEX IX_DNNrocketMod ON dbo.DNNrocket (  ModuleId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
- CREATE NONCLUSTERED INDEX IX_DNNrocketParent ON dbo.DNNrocket (  ParentItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
- CREATE NONCLUSTERED INDEX IX_DNNrocketPortal ON dbo.DNNrocket (  PortalId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
- CREATE NONCLUSTERED INDEX IX_DNNrocketType ON dbo.DNNrocket (  TypeCode ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
- CREATE NONCLUSTERED INDEX IX_DNNrocketUserId ON dbo.DNNrocket (  UserId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
- CREATE NONCLUSTERED INDEX IX_DNNrocketLang ON dbo.DNNrocket (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = ON , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketXref ON dbo.DNNrocket (  XrefItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ]  
+ CREATE NONCLUSTERED INDEX IX_DNNrocketMod ON dbo.DNNrocket (  ModuleId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketParent ON dbo.DNNrocket (  ParentItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketPortal ON dbo.DNNrocket (  PortalId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketType ON dbo.DNNrocket (  TypeCode ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketUserId ON dbo.DNNrocket (  UserId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketLang ON dbo.DNNrocket (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketGuidKey ON dbo.DNNrocket (  GuidKey ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
 
 END
 
@@ -243,21 +244,21 @@ CREATE     PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_Get]
 AS
 begin
 	select
-	NB1.[ItemId]
-	,NB1.[PortalId]
-	,NB1.[ModuleId]
-	,NB1.[TypeCode]
-	,{databaseOwner}[{objectQualifier}DNNrocketLangMerge](NB2.[XMLData],NB1.[XMLData]) as [XMLData]
-	,NB1.[GUIDKey]
-	,NB1.[ModifiedDate]
-	,NB1.[TextData]
-	,NB1.[XrefItemId]
-	,NB1.[ParentItemId]
-	,ISNULL(NB2.[Lang],ISNULL(NB1.[Lang],'')) as [Lang] 
-	,NB1.[UserId]
-	from {databaseOwner}[{objectQualifier}DNNrocket] as NB1
-	left join dbo.[DNNrocket] as NB2 on NB1.Itemid = NB2.ParentItemId and NB2.Lang = @Lang  and NB2.TypeCode = NB1.TypeCode + 'LANG'
-	where NB1.ItemId = @ItemId
+	R1.[ItemId]
+	,R1.[PortalId]
+	,R1.[ModuleId]
+	,R1.[TypeCode]
+	,{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]) as [XMLData]
+	,R1.[GUIDKey]
+	,R1.[ModifiedDate]
+	,R1.[TextData]
+	,R1.[XrefItemId]
+	,R1.[ParentItemId]
+	,ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'')) as [Lang] 
+	,R1.[UserId]
+	from {databaseOwner}[{objectQualifier}DNNrocket] as R1
+	left join dbo.[DNNrocket] as RLang1 on R1.Itemid = RLang1.ParentItemId and RLang1.Lang = @Lang  and RLang1.TypeCode = R1.TypeCode + 'LANG'
+	where R1.ItemId = @ItemId
 end
 
 GO
@@ -286,8 +287,8 @@ begin
 	,[ParentItemId]
 	,[Lang] 
 	,[UserId]
-	from {databaseOwner}[{objectQualifier}DNNrocket] as NB1
-	where NB1.ItemId = @ItemId
+	from {databaseOwner}[{objectQualifier}DNNrocket] as R1
+	where R1.ItemId = @ItemId
 end
 GO
 
@@ -313,8 +314,8 @@ begin
 	,[ParentItemId]
 	,[Lang] 
 	,[UserId]
-	from {databaseOwner}[{objectQualifier}DNNrocket] as NB1
-	where NB1.ParentItemId = @ParentItemId and NB1.Lang = @Lang
+	from {databaseOwner}[{objectQualifier}DNNrocket] as R1
+	where R1.ParentItemId = @ParentItemId and R1.Lang = @Lang
 end
 GO
 
@@ -348,29 +349,29 @@ begin
 	IF (@PortalId >= 0) BEGIN
 
 		IF (@ModuleId >= 0) BEGIN
-			SET @Filter = ' and (NB1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or NB1.PortalId = ''-1'') and (NB1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or NB1.ModuleId = ''-1'') ' + @Filter
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or R1.PortalId = ''-1'') and (R1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or R1.ModuleId = ''-1'') ' + @Filter
 		END ELSE BEGIN
-			SET @Filter = ' and (NB1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + '''  or NB1.PortalId = ''-1'') ' + @Filter
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + '''  or R1.PortalId = ''-1'') ' + @Filter
 		END 
 
 	END 
 
-	SET @Filter = REPLACE(@Filter,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](NB2.[XMLData],NB1.[XMLData])')
-	SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](NB2.[XMLData],NB1.[XMLData])')
+	SET @Filter = REPLACE(@Filter,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
+	SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
 
-	set @rtnFields = ' NB1.[ItemId] '
-	set @rtnFields = @rtnFields + ',{databaseOwner}[{objectQualifier}DNNrocketLangMerge](NB2.[XMLData],NB1.[XMLData]) as [XMLData] '				
-	set @rtnFields = @rtnFields + ',ISNULL(NB2.[Lang],ISNULL(NB1.[Lang],'''')) as [Lang] '	 
+	set @rtnFields = ' R1.[ItemId] '
+	set @rtnFields = @rtnFields + ',{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]) as [XMLData] '				
+	set @rtnFields = @rtnFields + ',ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang] '	 
  
-	set @rtnFields = @rtnFields + ',NB1.[PortalId] '
-	set @rtnFields = @rtnFields + ',NB1.[ModuleId] '
-	set @rtnFields = @rtnFields + ',NB1.[TypeCode] '
-	set @rtnFields = @rtnFields + ',NB1.[GUIDKey] '
-	set @rtnFields = @rtnFields + ',NB1.[ModifiedDate] '
-	set @rtnFields = @rtnFields + ',NB1.[TextData] '
-	set @rtnFields = @rtnFields + ',NB1.[XrefItemId] '
-	set @rtnFields = @rtnFields + ',NB1.[ParentItemId] '
-	set @rtnFields = @rtnFields + ',NB1.[UserId] '
+	set @rtnFields = @rtnFields + ',R1.[PortalId] '
+	set @rtnFields = @rtnFields + ',R1.[ModuleId] '
+	set @rtnFields = @rtnFields + ',R1.[TypeCode] '
+	set @rtnFields = @rtnFields + ',R1.[GUIDKey] '
+	set @rtnFields = @rtnFields + ',R1.[ModifiedDate] '
+	set @rtnFields = @rtnFields + ',R1.[TextData] '
+	set @rtnFields = @rtnFields + ',R1.[XrefItemId] '
+	set @rtnFields = @rtnFields + ',R1.[ParentItemId] '
+	set @rtnFields = @rtnFields + ',R1.[UserId] '
 
 
 	IF (@PageSize > 0)
@@ -396,7 +397,7 @@ begin
 		-- Default order by clause
 		if @OrderBy = '' 
 		Begin
-			set @OrderBy = ' ORDER BY NB1.ModifiedDate DESC '
+			set @OrderBy = ' ORDER BY R1.ModifiedDate DESC '
 		End
 		
 		set @STMT = @STMT + ' SELECT '
@@ -410,25 +411,25 @@ begin
 		set @STMT = @STMT + ' FROM    (
 								SELECT  ROW_NUMBER() OVER(' + @orderBy + ') AS row, '
 		set @STMT = @STMT + @rtnFields		
-		set @STMT = @STMT + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as NB1 '
-		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as NB2 on NB2.ParentItemId = NB1.ItemId and NB2.[Lang] = ''' + @Lang + '''  and NB2.TypeCode =  NB1.TypeCode + ''LANG'' ' 
+		set @STMT = @STMT + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as R1 '
+		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
 		
 				IF (RIGHT(@TypeCode,1) = '%')
 			BEGIN
-				set @STMT = @STMT + 'WHERE NB1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+				set @STMT = @STMT + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
 			END ELSE
 			BEGIN
 				IF (@TypeCode = '')
 				BEGIN
-					set @STMT = @STMT + 'WHERE NB1.TypeCode != ''''' + @Filter  
+					set @STMT = @STMT + 'WHERE R1.TypeCode != ''''' + @Filter  
 				END ELSE
 				BEGIN
-					set @STMT = @STMT + 'WHERE NB1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+					set @STMT = @STMT + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
 				END
 			END	                                                              
 			
-			set @STMT = @STMT + ' ) AS NB1 '
-			set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as NB2 on NB2.ParentItemId = NB1.ItemId and NB2.[Lang] = ''' + @Lang + '''  and NB2.TypeCode =  NB1.TypeCode + ''LANG'' ' 
+			set @STMT = @STMT + ' ) AS R1 '
+			set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
 			set @STMT = @STMT + ' WHERE row > @lbound AND row < @ubound '
 
 			
@@ -444,20 +445,20 @@ begin
 		
 		set @STMT = @STMT + @rtnFields		
 
-		set @STMT = @STMT + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as NB1 '
-		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as NB2 on NB2.ParentItemId = NB1.ItemId and NB2.[Lang] = ''' + @Lang + '''  and NB2.TypeCode =  NB1.TypeCode + ''LANG'' ' 
+		set @STMT = @STMT + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as R1 '
+		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
 	
 		IF (RIGHT(@TypeCode,1) = '%')
 		BEGIN
-			set @STMT = @STMT + 'WHERE NB1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+			set @STMT = @STMT + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
 		END ELSE
 		BEGIN
 			IF (@TypeCode = '')
 			BEGIN
-				set @STMT = @STMT + 'WHERE NB1.TypeCode != ''''' + @Filter  
+				set @STMT = @STMT + 'WHERE R1.TypeCode != ''''' + @Filter  
 			END ELSE
 			BEGIN
-				set @STMT = @STMT + 'WHERE NB1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+				set @STMT = @STMT + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
 			END
 		END	                                                              	
 

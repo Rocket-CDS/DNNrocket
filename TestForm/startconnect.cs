@@ -7,7 +7,7 @@ namespace DNNrocket.TestForm
     public class startconnect : DNNrocketAPI.APInterface
     {
 
-        public override string ProcessCommand(string paramCmd, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
+        public override string ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
 
             //CacheUtils.ClearAllCache();

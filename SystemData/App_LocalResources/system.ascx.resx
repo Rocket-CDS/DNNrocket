@@ -237,4 +237,10 @@
   <data name="interfaceicon.Text" xml:space="preserve">
     <value>Interface Icon Class</value>
   </data>
+  <data name="entitytypecode.Text" xml:space="preserve">
+    <value>Entity Type Code</value>
+  </data>
+  <data name="indexref.Text" xml:space="preserve">
+    <value>Index Ref</value>
+  </data>
 </root>

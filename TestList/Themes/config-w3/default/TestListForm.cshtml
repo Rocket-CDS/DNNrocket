@@ -79,6 +79,10 @@
                         @TextBox(info, "genxml/textbox/datetxtl", "class='w3-input w3-border' maxlength='50' s-datatype='date'", "", true)
                     </div>
                     <!-- END:  input fields [Date]  ------------------------------------------>
+                    <div>
+                        <label>Premier</label>
+                        @CheckBox(info, "genxml/checkbox/premier", "", "class='w3-check' ", false, false)
+                    </div>
                 </div>
                 <div class="w3-half  w3-padding">
                     <div>
@@ -107,11 +111,11 @@
                     </div>
                     <div>
                         <label>Checkbox (Standard)</label>
-                        @CheckBox(info, "genxml/checkbox/testingcb", "testcb", "class='w3-check' ")
+                        @CheckBox(info, "genxml/checkbox/testingcb", "", "class='w3-check' ")
                     </div>
                     <div>
                         @EditFlag()&nbsp;<label>Checkbox (Localized)</label>
-                        @CheckBox(info, "genxml/checkbox/testingcblang", "testcb", "class='w3-check' ", false, true)
+                        @CheckBox(info, "genxml/checkbox/testingcblang", "", "class='w3-check' ", false, true)
                     </div>
                     <div>
                         <label>CheckBoxList (Standard)</label>

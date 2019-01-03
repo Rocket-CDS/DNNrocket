@@ -11,7 +11,7 @@ namespace DNNrocket.SystemData
     public class startconnect : DNNrocketAPI.APInterface
     {
 
-        public override string ProcessCommand(string paramCmd, SimplisityInfo postInfo,string userHostAddress, string editlang = "")
+        public override string ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo,string userHostAddress, string editlang = "")
         {
 
             //CacheUtils.ClearAllCache();
@@ -55,7 +55,7 @@ namespace DNNrocket.SystemData
                             strOut = SystemAdminList(postInfo, controlRelPath);
                             break;
                         case "systemapi_addparam":
-                            SystemAddListRow(postInfo, "parameterdata");
+                            SystemAddListRow(postInfo, "idxfielddata");
                             strOut = SystemAdminDetail(postInfo, controlRelPath);
                             break;
                         case "systemapi_addsetting":
@@ -228,20 +228,42 @@ namespace DNNrocket.SystemData
 
         public static void SystemSave(SimplisityInfo postInfo)
         {
-            var selecteditemid = postInfo.GetXmlProperty("genxml/hidden/itemid");
+            var selecteditemid = postInfo.GetXmlProperty("genxml/hidden/selecteditemid");
             if (GeneralUtils.IsNumeric(selecteditemid))
             {
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(Convert.ToInt32(selecteditemid));
                 info.XMLData = postInfo.XMLData;
                 objCtrl.Update(info);
+
+                // make systemlink, so we can get systeminfo from entitytypecode.
+                var entityList = new List<string>();
+                foreach (var i in info.GetList("interfacedata"))
+                {
+                    entityList.Add(i.GetXmlProperty("genxml/textbox/entitytypecode"));
+                }
+
+                foreach (var entityname in entityList)
+                {
+                    var idxinfo = objCtrl.GetByGuidKey(info.PortalId,-1, "SYSTEMLINK", entityname);
+                    if (idxinfo == null)
+                    {
+                        idxinfo = new SimplisityInfo();
+                        idxinfo.PortalId = info.PortalId;
+                        idxinfo.TypeCode = "SYSTEMLINK";
+                        idxinfo.GUIDKey = entityname;
+                        idxinfo.ParentItemId = info.ItemID;
+                        objCtrl.Update(idxinfo);
+                    }
+                }
+
                 CacheUtils.ClearAllCache();
             }
         }
 
         public static void SystemDelete(SimplisityInfo sInfo)
         {
-            var itemid = sInfo.GetXmlProperty("genxml/hidden/itemid");
+            var itemid = sInfo.GetXmlProperty("genxml/hidden/selecteditemid");
             if (GeneralUtils.IsNumeric(itemid))
             {
                 var objCtrl = new DNNrocketController();

@@ -7,13 +7,17 @@ namespace DNNrocket.TestList
 {
     public class startconnect : DNNrocketAPI.APInterface
     {
-        public override string ProcessCommand(string paramCmd, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
+        private static string _EntityTypeCode;
+        private static string _editlang;
+
+        public override string ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
-            //CacheUtils.ClearAllCache();
+            _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
+            _editlang = DNNrocketUtils.GetEditCulture();
 
             var controlRelPath = "/DesktopModules/DNNrocket/TestList";
 
-            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [testlist]";
+            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
 
             switch (paramCmd)
             {
@@ -40,7 +44,7 @@ namespace DNNrocket.TestList
                     strOut = GetList(postInfo, controlRelPath);
                     break;
                 default:
-                    strOut = "COMMAND NOT FOUND!!! - [testlist]";
+                    strOut = "COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
                     break;
             }
             return strOut;
@@ -51,7 +55,7 @@ namespace DNNrocket.TestList
             try
             {
                 var objCtrl = new DNNrocketController();
-                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, "TESTLIST");
+                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode,"", _editlang, "");
                 return RenderList(list, postInfo, 0, templateControlRelPath);
             }
             catch (Exception ex)

@@ -24,7 +24,6 @@
                         <th></th>
                         <th></th>
                         <th></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,9 +31,6 @@
                     @foreach (SimplisityInfo nbi in Model.List)
                     {
                         <tr>
-                            <td style="width:50px">
-                                <a class="simplisity_sortrow" s-itemid="@nbi.ItemID" s-cmd="testlist_sort" s-fields="selecteditemid:@nbi.ItemID,theme:config-w3,template:TestList.cshtml,systemprovider:businessdirectory,interfacekey:testlist"  href="javascript:void(0)"></a>
-                            </td>
                             <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/txtinput")</td>
                             <td class="text-nowrap">@nbi.GetXmlProperty("genxml/lang/genxml/textbox/txtinputl")</td>
                             <td>

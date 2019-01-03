@@ -996,6 +996,20 @@ namespace DNNrocketAPI
             return System.Web.Hosting.HostingEnvironment.MapPath(relpath);
         }
 
+        public static string GetEntityTypeCode(SimplisityInfo interfaceInfo)
+        {
+            var rtn = "";
+            if (interfaceInfo != null)
+            {
+                rtn = interfaceInfo.GetXmlProperty("genxml/textbox/entitytypecode");
+                if (rtn == "")
+                {
+                    rtn = interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey").ToUpper();
+                }
+            }
+            return rtn;
+        }
+
 
     }
 }

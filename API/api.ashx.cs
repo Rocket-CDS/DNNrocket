@@ -26,11 +26,14 @@ namespace DNNrocketAPI
 
                 var paramCmd = context.Request.QueryString["cmd"];
 
-                //var requestXml = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputxml"));                
-                //var sInfo = SimplisityUtils.GetSimplisityInfo(requestXml);
-
+                // -------------------------------------------------------------
+                // -------------- OUTPUT TEST DATA -----------------------------
+                // -------------------------------------------------------------
                 // does NOT work across portals.
-                CacheUtils.SetCache("debugOutMapPath", PortalSettings.Current.HomeDirectoryMapPath);
+                //CacheUtils.SetCache("debugOutMapPath", PortalSettings.Current.HomeDirectoryMapPath);
+                // -------------------------------------------------------------
+                // -------------- OUTPUT TEST DATA -----------------------------
+                // -------------------------------------------------------------
 
                 var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
                 var sInfoJson = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
@@ -38,8 +41,8 @@ namespace DNNrocketAPI
                 // -------------------------------------------------------------
                 // -------------- OUTPUT TEST DATA -----------------------------
                 // -------------------------------------------------------------
-                FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\requestJson.xml", requestJson);
-                FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\sInfoJson.xml", sInfoJson.XMLData);
+                //FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\requestJson.xml", requestJson);
+                //FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\sInfoJson.xml", sInfoJson.XMLData);
 
                 //--------------------------
 
@@ -61,10 +64,13 @@ namespace DNNrocketAPI
                 else
                 {
 
+                    var objCtrl = new DNNrocketController();
+                    var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
+
                     if (systemprovider == "" || systemprovider == "systemapi")
                     {
                         var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect");
-                        strOut = ajaxprov.ProcessCommand(paramCmd, sInfoJson, HttpContext.Current.Request.UserHostAddress, _editlang);
+                        strOut = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, sInfoJson, HttpContext.Current.Request.UserHostAddress, _editlang);
                     }
                     else
                     {
@@ -72,17 +78,14 @@ namespace DNNrocketAPI
                         {
                             // Run API Provider.
                             strOut = "API not found: " + systemprovider;
-                            var objCtrl = new DNNrocketController();
-
-                            var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
                             if (systemInfo != null)
                             {
-                                var iface = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);                                
-                                if (iface != null)
+                                var interfaceInfo = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);                                
+                                if (interfaceInfo != null)
                                 {
 
-                                    var assembly = iface.GetXmlProperty("genxml/textbox/assembly");
-                                    var namespaceclass = iface.GetXmlProperty("genxml/textbox/namespaceclass");
+                                    var assembly = interfaceInfo.GetXmlProperty("genxml/textbox/assembly");
+                                    var namespaceclass = interfaceInfo.GetXmlProperty("genxml/textbox/namespaceclass");
                                     if (assembly == "" || namespaceclass == "")
                                     {
                                         strOut = "No assembly or namespaceclass defined: " + systemprovider + " : " + assembly + "," + namespaceclass;
@@ -92,7 +95,7 @@ namespace DNNrocketAPI
                                         try
                                         {
                                             var ajaxprov = APInterface.Instance(assembly, namespaceclass);
-                                            strOut = ajaxprov.ProcessCommand(paramCmd, sInfoJson, HttpContext.Current.Request.UserHostAddress, _editlang);
+                                            strOut = ajaxprov.ProcessCommand(paramCmd, systemInfo, interfaceInfo, sInfoJson, HttpContext.Current.Request.UserHostAddress, _editlang);
                                         }
                                         catch (Exception ex)
                                         {

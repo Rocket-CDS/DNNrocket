@@ -13,7 +13,7 @@
 <div class="w3-container">
     <div class="w3-margin">
         <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addprovtype" s-fields="selecteditemid:@sInfo.ItemID,theme:config-w3,template:Admin_SystemDetailProvType.cshtml,ajaxprovider:systemapi" s-return="#provtypes">@ResourceKey("DNNrocket.cmdAddButton")</a>
-        <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="provtypesbin" s-return="#pluginprovtypes" s-undoselector=".provtypesdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+        <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="provtypesbin" s-return="#pluginprovtypes" s-removelist=".provtypesdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
     </div>
 
     <div class="w3-row w3-margin">
@@ -43,7 +43,7 @@
                     </td>
                     <td class="w3-quarter"></td>
                     <td style="width:20px;">
-                        <a href="javascript:void(0)" class="simplisity_removetablerow" s-recylebin="provtypesbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+                        <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".provtypesdata" s-recylebin="provtypesbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
                     </td>
                 </tr>
 

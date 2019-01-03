@@ -12,7 +12,7 @@
 <div class="w3-container">
     <div class="w3-margin">
         <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addparam" s-fields="selecteditemid:@sInfo.ItemID,theme:config-w3,template:Admin_SystemDetailIdxFields.cshtml,ajaxprovider:systemapi" s-return="#parameters">@ResourceKey("DNNrocket.cmdAddButton")</a>
-        <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="parametersbin" s-return="#pluginparameters" s-undoselector=".parameterdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+        <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="parametersbin" s-return="#pluginparameters" s-removelist=".idxfielddata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
     </div>
 
     <div class="w3-row w3-margin">
@@ -20,7 +20,8 @@
         <table id="pluginparameters" class="w3-table-all">
 
             <tr>
-                <th class="w3-half">@ResourceKey("system.fieldxpath")</th>
+                <th class="w3-quarter">@ResourceKey("system.indexref")</th>
+                <th class="w3-quarter">@ResourceKey("system.fieldxpath")</th>
                 <th class="w3-quarter">@ResourceKey("system.fieldcol")</th>
                 <th class="w3-quarter">@ResourceKey("system.interfacekey")</th>
                 <th style="width:20px;"></th>
@@ -29,34 +30,37 @@
             @{
                 var lp2 = 0;
             }
-            @foreach (var i in sInfo.GetList("parameterdata"))
+            @foreach (var i in sInfo.GetList("idxfielddata"))
             {
                 lp2 += 1;
 
-                <tr class="parameterdata">
-                    <td class="w3-half">
-                        @TextBox(i, "genxml/textbox/xpath", "class='w3-input w3-border' maxlength='250' ", "", false, lp2)
-                    </td>
-                    <td class="w3-quarter">
-                        @DropDownList(i, "genxml/dropdownlist/fieldcol", ResourceKey("system.idxcols", "", "datavalue").ToString(), ResourceKey("system.idxcols", "", "data").ToString(), "class='w3-select w3-border'", "", false, lp2)
-                    </td>
-                    <td class="w3-quarter">
-                        @{
-                            var interfacekey = "";
-                            var l2 = sInfo.GetList("interfacedata");
-                            foreach (var g in l2)
-                            {
-                                interfacekey += "," + g.GetXmlProperty("genxml/textbox/interfacekey");
-                            }
+            <tr class="idxfielddata">
+                <td class="w3-quarter">
+                    @TextBox(i, "genxml/textbox/indexref", "class='w3-input w3-border' maxlength='250' ", "", false, lp2)
+                </td>
+                <td class="w3-quarter">
+                    @TextBox(i, "genxml/textbox/xpath", "class='w3-input w3-border' maxlength='250' ", "", false, lp2)
+                </td>
+                <td class="w3-quarter">
+                    @DropDownList(i, "genxml/dropdownlist/fieldcol", ResourceKey("system.idxcols", "", "datavalue").ToString(), ResourceKey("system.idxcols", "", "data").ToString(), "class='w3-select w3-border'", "", false, lp2)
+                </td>
+                <td class="w3-quarter">
+                    @{
+                        var interfacekey = "";
+                        var l2 = sInfo.GetList("interfacedata");
+                        foreach (var g in l2)
+                        {
+                            interfacekey += "," + g.GetXmlProperty("genxml/textbox/entitytypecode");
                         }
-                        @DropDownList(i, "genxml/dropdownlist/providertype", interfacekey, interfacekey, "class='w3-input w3-border'", "", false, lp2)
+                    }
+                    @DropDownList(i, "genxml/dropdownlist/entitytypecode", interfacekey, interfacekey, "class='w3-input w3-border'", "", false, lp2)
 
 
-                    </td>
-                    <td style="width:20px;">
-                        <a href="javascript:void(0)" class="simplisity_removetablerow" s-recylebin="parametersbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
-                    </td>
-                </tr>
+                </td>
+                <td style="width:20px;">
+                    <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".idxfielddata" s-recylebin="parametersbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+                </td>
+            </tr>
 
             }
         </table>

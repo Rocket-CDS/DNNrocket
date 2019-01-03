@@ -14,7 +14,7 @@
 <div class="w3-container">
     <div class="w3-margin">
         <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addsetting" s-fields="selecteditemid:@sInfo.ItemID,theme:config-w3,template:Admin_SystemDetailSettings.cshtml,ajaxprovider:systemapi" s-return="#settings">@ResourceKey("DNNrocket.cmdAddButton")</a>
-        <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#pluginsettings" s-undoselector=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+        <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#pluginsettings" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
     </div>
 
     <div class="w3-row w3-margin">
@@ -42,7 +42,7 @@
                         @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' ", "", false, lp3)
                     </td>
                     <td style="width:20px;">
-                        <a href="javascript:void(0)" class="simplisity_removetablerow" s-recylebin="settingsbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+                        <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".settingsdata" s-recylebin="settingsbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
                     </td>
                 </tr>
 

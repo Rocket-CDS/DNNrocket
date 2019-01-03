@@ -10,7 +10,7 @@
 }
 
 <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_admin_save" s-post="#pluginsdatasection" s-list=".interfacedata,.parameterdata,.settingsdata,.groupsdata,.provtypesdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_admin_save" s-fields="theme:config-w3,template:Admin_SystemDetail.cshtml"  s-post="#pluginsdatasection" s-list=".interfacedata,.idxfielddata,.settingsdata,.groupsdata,.provtypesdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
     <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="systemapi_admin_delete" s-post="#pluginsdatasection" s-return="#simplisity_startpanel" s-after="reloadpluginlist">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
     <button class="w3-button w3-sand w3-padding-8 simplisity_click" s-cmd="systemapi_admin_getsystemlist" s-fields="theme:config-w3,template:Admin_Systems.cshtml,systemprovider:systemapi" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdReturnButton")</button>
 </span>
