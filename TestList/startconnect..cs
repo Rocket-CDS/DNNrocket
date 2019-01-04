@@ -28,7 +28,7 @@ namespace DNNrocket.TestList
                     strOut = GetDetail(postInfo, controlRelPath);
                     break;
                 case "testlist_add":
-                    var newInfo = AddNew(postInfo);
+                    var newInfo = AddNew();
                     postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
                     strOut = GetDetail(postInfo, controlRelPath);
                     break;
@@ -41,6 +41,14 @@ namespace DNNrocket.TestList
                     strOut = GetList(postInfo, controlRelPath);
                     break;
                 case "testlist_sort":
+                    strOut = GetList(postInfo, controlRelPath);
+                    break;
+                case "testlist_createrows":
+                    CreateRows(postInfo);
+                    strOut = GetList(postInfo, controlRelPath);
+                    break;
+                case "testlist_deleterows":
+                    DeleteRows();
                     strOut = GetList(postInfo, controlRelPath);
                     break;
                 default:
@@ -116,7 +124,7 @@ namespace DNNrocket.TestList
         }
 
 
-        public static SimplisityInfo AddNew(SimplisityInfo postInfo)
+        public static SimplisityInfo AddNew()
         {
             var info = new SimplisityInfo();
             info.ItemID = -1;
@@ -141,6 +149,37 @@ namespace DNNrocket.TestList
                 CacheUtils.ClearAllCache();
             }
         }
+
+        public static void DeleteRows()
+        {
+            var objCtrl = new DNNrocketController();
+            var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _EntityTypeCode, "and R1.guidkey = 'testrecord'");
+            foreach (var i in l)
+            {
+                objCtrl.Delete(i.ItemID);
+            }
+        }
+
+        public static void CreateRows(SimplisityInfo postInfo)
+        {
+            var objCtrl = new DNNrocketController();
+
+            for (int i = 0; i < 10000; i++)
+            {
+                var newInfo = AddNew();
+                newInfo.XMLData = postInfo.XMLData;
+                newInfo.SetXmlProperty("genxml/row", i.ToString());
+                newInfo.SetXmlProperty("genxml/textbox/txtinput", postInfo.GetXmlProperty("genxml/textbox/txtinput") + i.ToString());
+                newInfo.SetXmlProperty("genxml/lang/genxml/textbox/txtinputl", postInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtinputl") + i.ToString());
+                newInfo.Lang = DNNrocketUtils.GetEditCulture();
+                objCtrl.SaveData(newInfo);
+                var rec = objCtrl.GetRecord(newInfo.ItemID);
+                rec.GUIDKey = "testrecord";
+                objCtrl.Update(rec);
+            }
+             CacheUtils.ClearAllCache();
+        }
+
 
         public static void Delete(SimplisityInfo postInfo)
         {
