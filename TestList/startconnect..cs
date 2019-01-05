@@ -164,13 +164,13 @@ namespace DNNrocket.TestList
         {
             var objCtrl = new DNNrocketController();
 
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 10; i++)
             {
                 var newInfo = AddNew();
                 newInfo.XMLData = postInfo.XMLData;
                 newInfo.SetXmlProperty("genxml/row", i.ToString());
-                newInfo.SetXmlProperty("genxml/textbox/txtinput", postInfo.GetXmlProperty("genxml/textbox/txtinput") + i.ToString());
-                newInfo.SetXmlProperty("genxml/lang/genxml/textbox/txtinputl", postInfo.GetXmlProperty("genxml/lang/genxml/textbox/txtinputl") + i.ToString());
+                newInfo.SetXmlProperty("genxml/textbox/txtinput", GeneralUtils.GetUniqueKey() + "-" + i.ToString());
+                newInfo.SetXmlProperty("genxml/lang/genxml/textbox/txtinputl", GeneralUtils.GetUniqueKey() + "-" + i.ToString());
                 newInfo.Lang = DNNrocketUtils.GetEditCulture();
                 objCtrl.SaveData(newInfo);
                 var rec = objCtrl.GetRecord(newInfo.ItemID);

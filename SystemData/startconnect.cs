@@ -236,6 +236,12 @@ namespace DNNrocket.SystemData
                 info.XMLData = postInfo.XMLData;
                 objCtrl.Update(info);
 
+                // Capture existing SYSTEMLINK records, so we can selectivly delete. Protect system suring operation, records always there.
+                var systemlinklist = objCtrl.GetList(info.PortalId, -1, "SYSTEMLINK");
+                var systemlinkidxlist = objCtrl.GetList(info.PortalId, -1, "SYSTEMLINKIDX");
+                var newsystemlinklist = new List<int>();
+                var newsystemlinkidxlist = new List<int>();
+
                 // make systemlink, so we can get systeminfo from entitytypecode.
                 var entityList = new List<string>();
                 foreach (var i in info.GetList("interfacedata"))
@@ -243,9 +249,19 @@ namespace DNNrocket.SystemData
                     entityList.Add(i.GetXmlProperty("genxml/textbox/entitytypecode"));
                 }
 
+                // Get idxfields.
+                var idxListStr = new List<string>();
+                var idxList = new List<SimplisityInfo>();
+                foreach (var i in info.GetList("idxfielddata"))
+                {
+                    idxList.Add(i);
+                    idxListStr.Add(i.GetXmlProperty("genxml/dropdownlist/entitytypecode") + "," + i.GetXmlProperty("genxml/textbox/indexref"));
+                }
+
+
                 foreach (var entityname in entityList)
                 {
-                    var idxinfo = objCtrl.GetByGuidKey(info.PortalId,-1, "SYSTEMLINK", entityname);
+                    var idxinfo = objCtrl.GetByGuidKey(info.PortalId, -1, "SYSTEMLINK", entityname);
                     if (idxinfo == null)
                     {
                         idxinfo = new SimplisityInfo();
@@ -253,9 +269,61 @@ namespace DNNrocket.SystemData
                         idxinfo.TypeCode = "SYSTEMLINK";
                         idxinfo.GUIDKey = entityname;
                         idxinfo.ParentItemId = info.ItemID;
+                        var itemid = objCtrl.Update(idxinfo);
+                        idxinfo.ItemID = itemid;
+                    }
+                    else
+                    {
+                        idxinfo.ParentItemId = info.ItemID;
                         objCtrl.Update(idxinfo);
                     }
+                    newsystemlinklist.Add(idxinfo.ItemID);
+
+                    //SYSTEMIDX  - use indexref to create a table join in SQL PROC.
+                    foreach (var idxfield in idxList)
+                    {
+                        if (idxfield.GetXmlProperty("genxml/dropdownlist/entitytypecode") == entityname)
+                        {
+                            var idxref = idxfield.GetXmlProperty("genxml/textbox/indexref");
+                            var idxinfo2 = objCtrl.GetByGuidKey(info.PortalId, -1, "SYSTEMLINKIDX", idxref);
+                            if (idxinfo2 == null)
+                            {
+                                idxinfo2 = new SimplisityInfo();
+                                idxinfo2.PortalId = info.PortalId;
+                                idxinfo2.TypeCode = "SYSTEMLINKIDX";
+                                idxinfo2.GUIDKey = idxref;
+                                idxinfo2.ParentItemId = idxinfo.ItemID;
+                                var itemid = objCtrl.Update(idxinfo2);
+                                idxinfo2.ItemID = itemid;
+                            }
+                            else
+                            {
+                                idxinfo2.ParentItemId = idxinfo.ItemID;
+                                objCtrl.Update(idxinfo2);
+                            }
+                            newsystemlinkidxlist.Add(idxinfo2.ItemID);
+                        }
+                    }
                 }
+
+                // delete any that have been remove.
+                foreach (var sl in systemlinklist)
+                {
+                    if (!newsystemlinklist.Contains(sl.ItemID))
+                    {
+                        objCtrl.Delete(sl.ItemID);
+                    }
+                }
+                foreach (var sl in systemlinkidxlist)
+                {
+                    if (!newsystemlinkidxlist.Contains(sl.ItemID))
+                    {
+                        objCtrl.Delete(sl.ItemID);
+                    }
+                }
+
+
+
 
                 CacheUtils.ClearAllCache();
             }

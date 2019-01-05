@@ -91,70 +91,70 @@ namespace DNNrocketAPI
             var itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang);
 
             //-------------------------------------------------------------------
-            // The speed of the DB is fast, these index fields may not be required. - so they are commented out for now.
+            // build index records.
             //-------------------------------------------------------------------
 
-            // build index records.
-            //var dataLang = "";
-            //var dataitemid = itemid;
-            //var entityTypeCode = objInfo.TypeCode;
-            //if (entityTypeCode.EndsWith("LANG"))
-            //{
-            //    // langauge record, alter as required.
-            //    entityTypeCode = entityTypeCode.Substring(0, entityTypeCode.Length - 4);
-            //    dataLang = objInfo.Lang;
-            //    var langInfo = GetRecord(dataitemid);
-            //    dataitemid = langInfo.ParentItemId;
-            //}
-            //var systemLink = GetByGuidKey(-1,-1,"SYSTEMLINK", entityTypeCode);
-            //if (systemLink != null)
-            //{
-            //    var systemInfo = GetInfo(systemLink.ParentItemId);
-            //    if (systemLink != null)
-            //    {
-            //        var idxfieldlist = systemInfo.GetList("idxfielddata");
-            //        foreach(var i in idxfieldlist)
-            //        {
-            //            if (entityTypeCode == i.GetXmlProperty("genxml/dropdownlist/entitytypecode"))
-            //            {
-            //                var xpath = i.GetXmlProperty("genxml/textbox/xpath");
-            //                if (xpath.StartsWith("genxml/lang/") && objInfo.Lang != "")
-            //                {
-            //                    xpath = xpath.Substring(("genxml/lang/").Length);
-            //                }
-            //                var value = objInfo.GetXmlProperty(xpath);
-            //                if (value != "")
-            //                {
-            //                    // read is index exists already
-            //                    var strFilter = "and R1.ParentItemId = '" + dataitemid + "' and R1.Lang = '" + dataLang + "'";
-            //                    SimplisityInfo sRecord = null;
-            //                    var l = GetList(objInfo.PortalId, objInfo.ModuleId, entityTypeCode + "IDX", strFilter, "", "", 1);
-            //                    if (l.Count == 1)
-            //                    {
-            //                        sRecord = l[0];
-            //                    }
-            //                    if (sRecord == null)
-            //                    {
-            //                        sRecord = new SimplisityInfo();
-            //                        sRecord.ItemID = -1;
-            //                    }
-            //                    sRecord.PortalId = objInfo.PortalId;
-            //                    sRecord.ModuleId = -1;
-            //                    sRecord.ParentItemId = dataitemid;
-            //                    sRecord.TypeCode = entityTypeCode + "IDX";
-            //                    sRecord.ModifiedDate = DateTime.Now;
-            //                    sRecord.Lang = dataLang;
-            //                    if (sRecord.GUIDKey != value)
-            //                    {
-            //                        sRecord.GUIDKey = value;
-            //                        DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang);
-            //                    }
-            //                }
-            //            }
-            //        }
+            var dataLang = "";
+            var dataitemid = itemid;
+            var entityTypeCode = objInfo.TypeCode;
+            if (entityTypeCode.EndsWith("LANG"))
+            {
+                // langauge record, alter as required.
+                entityTypeCode = entityTypeCode.Substring(0, entityTypeCode.Length - 4);
+                dataLang = objInfo.Lang;
+                var langInfo = GetRecord(dataitemid);
+                dataitemid = langInfo.ParentItemId;
+            }
+            var systemLink = GetByGuidKey(-1, -1, "SYSTEMLINK", entityTypeCode);
+            if (systemLink != null)
+            {
+                var systemInfo = GetInfo(systemLink.ParentItemId);
+                if (systemLink != null)
+                {
+                    var idxfieldlist = systemInfo.GetList("idxfielddata");
+                    foreach (var i in idxfieldlist)
+                    {
+                        if (entityTypeCode == i.GetXmlProperty("genxml/dropdownlist/entitytypecode"))
+                        {
+                            var xpath = i.GetXmlProperty("genxml/textbox/xpath");
+                            if (xpath.StartsWith("genxml/lang/") && objInfo.Lang != "")
+                            {
+                                xpath = xpath.Substring(("genxml/lang/").Length);
+                            }
+                            var value = objInfo.GetXmlProperty(xpath);
+                            if (value != "")
+                            {
+                                var indexref = i.GetXmlProperty("genxml/textbox/indexref");
+                                // read is index exists already
+                                var strFilter = "and R1.ParentItemId = '" + dataitemid + "' and R1.Lang = '" + dataLang + "'";
+                                SimplisityInfo sRecord = null;
+                                var l = GetList(objInfo.PortalId, objInfo.ModuleId, entityTypeCode + "IDX", strFilter, "", "", 1);
+                                if (l.Count == 1)
+                                {
+                                    sRecord = l[0];
+                                }
+                                if (sRecord == null)
+                                {
+                                    sRecord = new SimplisityInfo();
+                                    sRecord.ItemID = -1;
+                                }
+                                sRecord.PortalId = objInfo.PortalId;
+                                sRecord.ModuleId = -1;
+                                sRecord.ParentItemId = dataitemid;
+                                sRecord.TypeCode = entityTypeCode + "IDX_" + indexref;
+                                sRecord.ModifiedDate = DateTime.Now;
+                                sRecord.Lang = dataLang;
+                                if (sRecord.GUIDKey != value)
+                                {
+                                    sRecord.GUIDKey = value;
+                                    DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang);
+                                }
+                            }
+                        }
+                    }
 
-            //    }
-            //}
+                }
+            }
             return itemid;
         }
 
