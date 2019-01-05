@@ -169,10 +169,16 @@ namespace DNNrocket.TestList
                 var newInfo = AddNew();
                 newInfo.XMLData = postInfo.XMLData;
                 newInfo.SetXmlProperty("genxml/row", i.ToString());
-                newInfo.SetXmlProperty("genxml/textbox/txtinput", GeneralUtils.GetUniqueKey() + "-" + i.ToString());
-                newInfo.SetXmlProperty("genxml/lang/genxml/textbox/txtinputl", GeneralUtils.GetUniqueKey() + "-" + i.ToString());
-                newInfo.Lang = DNNrocketUtils.GetEditCulture();
-                objCtrl.SaveData(newInfo);
+
+                var cultureList = DNNrocketUtils.GetCultureCodeList();
+                foreach( var c in cultureList)
+                {
+                    newInfo.SetXmlProperty("genxml/textbox/txtinput", GeneralUtils.GetUniqueKey() + "-" + i.ToString());
+                    newInfo.SetXmlProperty("genxml/lang/genxml/textbox/txtinputl", GeneralUtils.GetUniqueKey() + "-" + i.ToString());
+                    newInfo.Lang = c;
+                    objCtrl.SaveData(newInfo);
+                }
+
                 var rec = objCtrl.GetRecord(newInfo.ItemID);
                 rec.GUIDKey = "testrecord";
                 objCtrl.Update(rec);

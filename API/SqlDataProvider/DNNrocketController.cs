@@ -128,7 +128,7 @@ namespace DNNrocketAPI
                                 // read is index exists already
                                 var strFilter = "and R1.ParentItemId = '" + dataitemid + "' and R1.Lang = '" + dataLang + "'";
                                 SimplisityInfo sRecord = null;
-                                var l = GetList(objInfo.PortalId, objInfo.ModuleId, entityTypeCode + "IDX", strFilter, "", "", 1);
+                                var l = GetList(objInfo.PortalId, objInfo.ModuleId, entityTypeCode + "IDX_" + indexref, strFilter, "", "", 1);
                                 if (l.Count == 1)
                                 {
                                     sRecord = l[0];

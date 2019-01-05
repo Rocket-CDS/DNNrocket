@@ -41,14 +41,14 @@ CREATE TABLE {databaseOwner}[{objectQualifier}DNNrocket] (
 ) ON [PRIMARY]
 
 -- Index DNNrocket
- CREATE NONCLUSTERED INDEX IX_DNNrocketXref ON dbo.DNNrocket (  XrefItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ]  
- CREATE NONCLUSTERED INDEX IX_DNNrocketMod ON dbo.DNNrocket (  ModuleId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
- CREATE NONCLUSTERED INDEX IX_DNNrocketParent ON dbo.DNNrocket (  ParentItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
- CREATE NONCLUSTERED INDEX IX_DNNrocketPortal ON dbo.DNNrocket (  PortalId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
- CREATE NONCLUSTERED INDEX IX_DNNrocketType ON dbo.DNNrocket (  TypeCode ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
- CREATE NONCLUSTERED INDEX IX_DNNrocketUserId ON dbo.DNNrocket (  UserId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
- CREATE NONCLUSTERED INDEX IX_DNNrocketLang ON dbo.DNNrocket (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
- CREATE NONCLUSTERED INDEX IX_DNNrocketGuidKey ON dbo.DNNrocket (  GuidKey ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketXref ON {databaseOwner}[{objectQualifier}DNNrocket] (  XrefItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ]  
+ CREATE NONCLUSTERED INDEX IX_DNNrocketMod ON {databaseOwner}[{objectQualifier}DNNrocket] (  ModuleId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketParent ON {databaseOwner}[{objectQualifier}DNNrocket] (  ParentItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketPortal ON {databaseOwner}[{objectQualifier}DNNrocket] (  PortalId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketType ON {databaseOwner}[{objectQualifier}DNNrocket] (  TypeCode ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketUserId ON {databaseOwner}[{objectQualifier}DNNrocket] (  UserId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketLang ON {databaseOwner}[{objectQualifier}DNNrocket] (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketGuidKey ON {databaseOwner}[{objectQualifier}DNNrocket] (  GuidKey ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
 
 END
 
@@ -342,7 +342,78 @@ AS
 begin
 
 	SET NOCOUNT ON
-	  DECLARE
+	 
+	SET @Filter = REPLACE(@Filter,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
+
+------------------------------------------------------------------------------------
+--- Paging Count
+------------------------------------------------------------------------------------
+
+IF (@RecordCount = 0 and @pageNum >= 1) BEGIN
+
+DECLARE @countselect nvarchar(max)
+
+		set @countselect = ' SELECT '
+	
+		set @countselect = @countselect + ' @RecordCount=count(R1.ItemId) '	
+
+		set @countselect = @countselect + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as R1 '
+		set @countselect = @countselect + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+	
+		IF (RIGHT(@TypeCode,1) = '%')
+		BEGIN
+			set @countselect = @countselect + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+		END ELSE
+		BEGIN
+			IF (@TypeCode = '')
+			BEGIN
+				set @countselect = @countselect + 'WHERE R1.TypeCode != ''''' + @Filter  
+			END ELSE
+			BEGIN
+				set @countselect = @countselect + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+			END
+		END	                                                              	
+
+exec sp_executesql @countselect, N'@RecordCount int output', @RecordCount output;
+
+END
+
+------------------------------------------------------------------------------------
+--- Cursor for INDEX records.
+------------------------------------------------------------------------------------
+DECLARE @idxname nvarchar(250) = ''
+DECLARE @idxparentItemId int = 0
+DECLARE @systemlinkItemId int = 0
+DECLARE @JoinIndex nvarchar(max)
+
+select @systemlinkItemId = itemid from {databaseOwner}[{objectQualifier}DNNrocket] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
+
+DECLARE idx_cursor CURSOR FOR 
+SELECT GUIDKey, ParentItemId
+FROM dbo.[DNNrocket]
+WHERE [TypeCode] = 'SYSTEMLINKIDX' and ParentItemId = @systemlinkItemId
+
+SET @JoinIndex = ''
+
+OPEN idx_cursor  
+FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId
+
+WHILE @@FETCH_STATUS = 0  
+BEGIN  
+
+	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [' + @idxname + '] on [' + @idxname + '].ParentItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''' + @TypeCode  + 'IDX_' + @idxname + ''' and [' + @idxname + '].[Lang] = ''' + @Lang + ''' '
+
+	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId
+END 
+
+CLOSE idx_cursor
+DEALLOCATE idx_cursor
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+	 
+	 
+	 
+	 DECLARE
 		 @STMT nvarchar(max)         -- SQL to execute
 		,@rtnFields nvarchar(max)
 
@@ -356,7 +427,6 @@ begin
 
 	END 
 
-	SET @Filter = REPLACE(@Filter,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
 	SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
 
 	set @rtnFields = ' R1.[ItemId] '
