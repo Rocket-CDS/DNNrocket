@@ -8,10 +8,11 @@
 <div class="w3-container">
 
     <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
+        <i style="display:none;" class="fa fa-refresh simplisity_langchange simplisity_click" s-cmd="testlist_getlist" s-fields="theme:config-w3,template:TestList.cshtml,systemprovider:businessdirectory,interfacekey:testlist"></i>
         <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_add" s-fields="theme:config-w3,template:TestListForm.cshtml,systemprovider:businessdirectory,interfacekey:testlist">@ResourceKey("DNNrocket.cmdAddButton")</button>
         @if (Model.List.Count() > 10)
         {
-            <button class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="Delete test rows?" s-cmd="testlist_deleterows" s-post="#testform" s-fields="selecteditemid:,theme:config-w3,template:TestList.cshtml,systemprovider:businessdirectory,interfacekey:testlist">Delete Test Rows</button>
+            <button class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="Delete test rows?" s-cmd="testlist_deleterows" s-fields="selecteditemid:,theme:config-w3,template:TestList.cshtml,systemprovider:businessdirectory,interfacekey:testlist">Delete Test Rows</button>
         }
     </span>
 
