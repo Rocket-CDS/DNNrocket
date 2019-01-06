@@ -49,11 +49,11 @@ namespace DNNrocketAPI
             return CBO.FillObject<SimplisityRecord>(DataProvider.Instance().GetRecord(itemId));
         }
 
-        private SimplisityInfo GetRecordLang(int parentitemId, string lang = "", bool debugMode = false)
+        private SimplisityRecord GetRecordLang(int parentitemId, string lang = "", bool debugMode = false)
         {
             if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
-            SimplisityInfo rtnInfo = null;
-            rtnInfo = CBO.FillObject<SimplisityInfo>(DataProvider.Instance().GetRecordLang(parentitemId, lang));
+            SimplisityRecord rtnInfo = null;
+            rtnInfo = CBO.FillObject<SimplisityRecord>(DataProvider.Instance().GetRecordLang(parentitemId, lang));
             return rtnInfo;
         }
 
@@ -85,10 +85,58 @@ namespace DNNrocketAPI
         /// <returns></returns>
         public override int Update(SimplisityRecord objInfo)
         {
-
             // save data
             objInfo.ModifiedDate = DateTime.Now;
             var itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang);
+
+            //-------------------------------------------------------------------
+            // Save Merged Lang data.
+            //-------------------------------------------------------------------
+            if (objInfo.Lang == "")
+            {
+                var langList = DNNrocketUtils.GetCultureCodeList(objInfo.PortalId);
+                foreach (var l in langList)
+                {
+                    var idxLang = GetByGuidKey(objInfo.PortalId, -1, objInfo.TypeCode + "LANGIDX", objInfo.ItemID.ToString() + "_" + objInfo.Lang);
+                    if (idxLang != null)
+                    {
+                        var langXml = idxLang.GetLangXml();
+                        idxLang.XMLData = objInfo.XMLData;
+                        idxLang.SetLangXml(langXml);
+                        DataProvider.Instance().Update(idxLang.ItemID, idxLang.PortalId, idxLang.ModuleId, idxLang.TypeCode, idxLang.XMLData, idxLang.GUIDKey, idxLang.ModifiedDate, idxLang.TextData, idxLang.XrefItemId, idxLang.ParentItemId, idxLang.UserId, idxLang.Lang);
+                    }
+                }
+            }
+            else
+            {
+                var idxLang = GetByGuidKey(objInfo.PortalId, -1, objInfo.TypeCode + "IDX", objInfo.ParentItemId.ToString() + "_" + objInfo.Lang);
+                if (idxLang != null)
+                {
+                    idxLang.RemoveLangRecord();
+                    idxLang.SetLangXml(objInfo.XMLData);
+                    DataProvider.Instance().Update(idxLang.ItemID, idxLang.PortalId, idxLang.ModuleId, idxLang.TypeCode, idxLang.XMLData, idxLang.GUIDKey, idxLang.ModifiedDate, idxLang.TextData, idxLang.XrefItemId, idxLang.ParentItemId, idxLang.UserId, idxLang.Lang);
+                }
+                else
+                {
+                    // Langauge record update.
+                    var baseRecord = GetRecord(objInfo.ParentItemId);
+                    if (baseRecord != null)
+                    {
+                        var sRecord = new SimplisityInfo();
+                        sRecord.PortalId = baseRecord.PortalId;
+                        sRecord.ModuleId = -1;
+                        sRecord.ParentItemId = baseRecord.ItemID;
+                        sRecord.TypeCode = objInfo.TypeCode + "IDX";
+                        sRecord.ModifiedDate = DateTime.Now;
+                        sRecord.XMLData = baseRecord.XMLData;
+                        sRecord.Lang = objInfo.Lang;
+                        sRecord.GUIDKey = objInfo.ParentItemId.ToString() + "_" + objInfo.Lang;
+                        sRecord.SetLangRecord(objInfo);
+                        DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang);
+                    }
+
+                }
+            }
 
             //-------------------------------------------------------------------
             // build index records.
@@ -97,7 +145,7 @@ namespace DNNrocketAPI
             var dataLang = "";
             var dataitemid = itemid;
             var entityTypeCode = objInfo.TypeCode;
-            if (entityTypeCode.EndsWith("LANG"))
+            if (objInfo.Lang != "" && entityTypeCode.EndsWith("LANG"))
             {
                 // langauge record, alter as required.
                 entityTypeCode = entityTypeCode.Substring(0, entityTypeCode.Length - 4);

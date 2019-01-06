@@ -427,10 +427,12 @@ DEALLOCATE idx_cursor
 
 	END 
 
-	SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
+	SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
 
 	set @rtnFields = ' R1.[ItemId] '
-	set @rtnFields = @rtnFields + ',{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]) as [XMLData] '				
+	set @rtnFields = @rtnFields + ',ISNULL([RLangIdx].XMLData,{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
+
+
 	set @rtnFields = @rtnFields + ',ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang] '	 
  
 	set @rtnFields = @rtnFields + ',R1.[PortalId] '
@@ -483,6 +485,7 @@ DEALLOCATE idx_cursor
 		set @STMT = @STMT + @rtnFields		
 		set @STMT = @STMT + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as R1 '
 		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
 		
 				IF (RIGHT(@TypeCode,1) = '%')
 			BEGIN
@@ -500,6 +503,7 @@ DEALLOCATE idx_cursor
 			
 			set @STMT = @STMT + ' ) AS R1 '
 			set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+			set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
 			set @STMT = @STMT + ' WHERE row > @lbound AND row < @ubound '
 
 			
@@ -517,6 +521,7 @@ DEALLOCATE idx_cursor
 
 		set @STMT = @STMT + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as R1 '
 		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
 	
 		IF (RIGHT(@TypeCode,1) = '%')
 		BEGIN
