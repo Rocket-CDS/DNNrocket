@@ -164,7 +164,7 @@ namespace DNNrocket.TestList
         {
             var objCtrl = new DNNrocketController();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
                 var newInfo = AddNew();
                 newInfo.XMLData = postInfo.XMLData;

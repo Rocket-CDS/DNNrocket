@@ -99,7 +99,7 @@ namespace DNNrocketAPI
                                         }
                                         catch (Exception ex)
                                         {
-                                            strOut = "No valid assembly found: " + systemprovider + " : " + assembly + "," + namespaceclass;
+                                            strOut = "No valid assembly found: " + systemprovider + " : " + assembly + "," + namespaceclass + "<br/>" + ex.ToString();
                                         }
                                     }
                                 }

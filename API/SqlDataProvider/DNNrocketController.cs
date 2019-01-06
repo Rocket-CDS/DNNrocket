@@ -92,12 +92,12 @@ namespace DNNrocketAPI
             //-------------------------------------------------------------------
             // Save Merged Lang data.
             //-------------------------------------------------------------------
-            if (objInfo.Lang == "")
+            if (String.IsNullOrEmpty(objInfo.Lang))
             {
                 var langList = DNNrocketUtils.GetCultureCodeList(objInfo.PortalId);
                 foreach (var l in langList)
                 {
-                    var idxLang = GetByGuidKey(objInfo.PortalId, -1, objInfo.TypeCode + "LANGIDX", objInfo.ItemID.ToString() + "_" + objInfo.Lang);
+                    var idxLang = GetByGuidKey(objInfo.PortalId, -1, objInfo.TypeCode + "LANGIDX", objInfo.ItemID.ToString() + "_" + l);
                     if (idxLang != null)
                     {
                         var langXml = idxLang.GetLangXml();
@@ -131,7 +131,7 @@ namespace DNNrocketAPI
                         sRecord.XMLData = baseRecord.XMLData;
                         sRecord.Lang = objInfo.Lang;
                         sRecord.GUIDKey = objInfo.ParentItemId.ToString() + "_" + objInfo.Lang;
-                        sRecord.SetLangRecord(objInfo);
+                        sRecord.SetLangXml(objInfo.XMLData);
                         DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang);
                     }
 
@@ -519,7 +519,7 @@ namespace DNNrocketAPI
                 smiLang.GUIDKey = "";
                 Update(smiLang);
                 CacheUtils.ClearAllCache(); // clear ALL cache.
-                info = GetInfo(info.ItemID, info.Lang);
+                info = GetInfo(info.ItemID, smiLang.Lang);
             }
 
             return info;
