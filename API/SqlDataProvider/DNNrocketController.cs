@@ -57,6 +57,11 @@ namespace DNNrocketAPI
             return rtnInfo;
         }
 
+        public override int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "")
+        {
+            return DataProvider.Instance().GetListCount(portalId, moduleId, typeCode, sqlSearchFilter, lang);
+        }
+
 
         /// <summary>
         /// override for Database Function

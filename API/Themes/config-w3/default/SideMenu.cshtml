@@ -110,6 +110,11 @@
             $('.simplisity_langchange').trigger('click');
         });
 
+        //reset paging
+        simplisity_setCookieValue('s-page','1');
+        simplisity_setCookieValue('s-pagesize', '5');
+
+
     });
 
     function sidemenuchange() {

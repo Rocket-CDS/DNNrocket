@@ -28,6 +28,10 @@ namespace DNNrocket.TestForm
                 case "testform_add":
                     strOut = AddToList(postInfo, controlRelPath);
                     break;
+                case "testform_delete":
+                    Delete(postInfo);
+                    strOut = TestFormDetail(postInfo, controlRelPath);
+                    break;
             }
             return strOut;
 
@@ -83,6 +87,12 @@ namespace DNNrocket.TestForm
             objCtrl.SaveData("testform", "TEST", postInfo);
         }
 
+        public static void Delete(SimplisityInfo postInfo)
+        {
+            var objCtrl = new DNNrocketController();
+            var info = objCtrl.GetData("testform", "TEST", DNNrocketUtils.GetEditCulture());
+            objCtrl.Delete(info.ItemID);
+        }
 
     }
 }

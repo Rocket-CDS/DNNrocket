@@ -113,9 +113,15 @@ namespace DNNrocketAPI
 			return DotNetNuke.Common.Utilities.Null.GetNull(Field, DBNull.Value);
 		}
 
-		#endregion
-        
+        #endregion
+
         #region Public Methods
+
+        public override int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "")
+        {
+            var rtncount = 0;
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetListCount", portalId, moduleId, typeCode, sqlSearchFilter, lang, rtncount));
+        }
 
         public override IDataReader GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
         {

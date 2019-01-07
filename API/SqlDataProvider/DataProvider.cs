@@ -58,11 +58,12 @@ namespace DNNrocketAPI
 			return newConnection;
 		}
 
-		#endregion
+        #endregion
 
 
-		#region "Abstract Methods"
+        #region "Abstract Methods"
 
+        public abstract int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "");
         public abstract IDataReader GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);
         public abstract IDataReader GetInfo(int itemId, string lang = "");
         public abstract int Update(int ItemId, int PortalId, int ModuleId, String TypeCode, String XMLData, String GUIDKey, DateTime ModifiedDate, String TextData, int XrefItemId, int ParentItemId, int UserId, string lang);

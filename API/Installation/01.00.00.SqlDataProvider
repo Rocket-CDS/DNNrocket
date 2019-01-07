@@ -346,39 +346,6 @@ begin
 	SET @Filter = REPLACE(@Filter,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
 
 ------------------------------------------------------------------------------------
---- Paging Count
-------------------------------------------------------------------------------------
-
-IF (@RecordCount = 0 and @pageNum >= 1) BEGIN
-
-DECLARE @countselect nvarchar(max)
-
-		set @countselect = ' SELECT '
-	
-		set @countselect = @countselect + ' @RecordCount=count(R1.ItemId) '	
-
-		set @countselect = @countselect + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as R1 '
-		set @countselect = @countselect + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
-	
-		IF (RIGHT(@TypeCode,1) = '%')
-		BEGIN
-			set @countselect = @countselect + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
-		END ELSE
-		BEGIN
-			IF (@TypeCode = '')
-			BEGIN
-				set @countselect = @countselect + 'WHERE R1.TypeCode != ''''' + @Filter  
-			END ELSE
-			BEGIN
-				set @countselect = @countselect + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
-			END
-		END	                                                              	
-
-exec sp_executesql @countselect, N'@RecordCount int output', @RecordCount output;
-
-END
-
-------------------------------------------------------------------------------------
 --- Cursor for INDEX records.
 ------------------------------------------------------------------------------------
 DECLARE @idxname nvarchar(250) = ''
@@ -546,6 +513,59 @@ DEALLOCATE idx_cursor
 	EXEC sp_executeSQL @STMT                 -- return requested records
 
 end
+
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetListCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetListCount]
+GO
+
+
+CREATE    PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetListCount] 
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@Filter nvarchar(1000),
+@Lang nvarchar(50),
+@RecordCount int OUTPUT
+AS
+begin
+
+	SET @Filter = REPLACE(@Filter,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
+
+	--DECLARE @RecordCount int
+	DECLARE @countselect nvarchar(max)
+
+			set @countselect = ' SELECT '
+	
+			set @countselect = @countselect + ' @RecordCount=count(R1.ItemId) '	
+
+			set @countselect = @countselect + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as R1 '
+			set @countselect = @countselect + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+	
+			IF (RIGHT(@TypeCode,1) = '%')
+			BEGIN
+				set @countselect = @countselect + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+			END ELSE
+			BEGIN
+				IF (@TypeCode = '')
+				BEGIN
+					set @countselect = @countselect + 'WHERE R1.TypeCode != ''''' + @Filter  
+				END ELSE
+				BEGIN
+					set @countselect = @countselect + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+				END
+			END	                                                              	
+
+		exec sp_executesql @countselect, N'@RecordCount int output', @RecordCount output;
+
+		SELECT @RecordCount AS RecordCount       -- return the total # of records
+
+END
+GO
+
+
 
 
 GO

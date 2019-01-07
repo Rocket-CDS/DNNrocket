@@ -63,7 +63,15 @@ namespace DNNrocket.TestList
             try
             {
                 var objCtrl = new DNNrocketController();
-                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode,"", _editlang, "");
+
+                var listcount = objCtrl.GetListCount(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, "", _editlang);
+
+                var page = postInfo.GetXmlPropertyInt("genxml/hidden/page");
+                var pagesize = postInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
+
+                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode,"", _editlang, "",0, page, pagesize, listcount);
+               
+
                 return RenderList(list, postInfo, 0, templateControlRelPath);
             }
             catch (Exception ex)
