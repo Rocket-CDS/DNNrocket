@@ -70,9 +70,13 @@ namespace DNNrocket.TestList
                 var pagesize = postInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
 
                 var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode,"", _editlang, "",0, page, pagesize, listcount);
-               
 
-                return RenderList(list, postInfo, 0, templateControlRelPath);
+                var headerData = new SimplisityInfo();
+                headerData.SetXmlProperty("genxml/hidden/rowcount", listcount.ToString());
+                headerData.SetXmlProperty("genxml/hidden/page", page.ToString());
+                headerData.SetXmlProperty("genxml/hidden/pagesize", pagesize.ToString());
+
+                return RenderList(list, postInfo, 0, templateControlRelPath, headerData);
             }
             catch (Exception ex)
             {
@@ -80,7 +84,7 @@ namespace DNNrocket.TestList
             }
         }
 
-        public static String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath)
+        public static String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath, SimplisityInfo headerData)
         {
             try
             {
@@ -96,7 +100,7 @@ namespace DNNrocket.TestList
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
-                strOut = DNNrocketUtils.RazorList(razorTempl, list, passSettings);
+                strOut = DNNrocketUtils.RazorList(razorTempl, list, passSettings,headerData);
 
                 return strOut;
             }

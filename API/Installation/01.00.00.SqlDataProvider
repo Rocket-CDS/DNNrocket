@@ -514,7 +514,7 @@ DEALLOCATE idx_cursor
 
 end
 
-
+GO
 
 
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetListCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)

@@ -48,12 +48,7 @@
             </table>
         </div>
 
-        <div class="w3-center w3-margin">
-            <div class="w3-bar">
-                @SimplisityPaging(new SimplisityInfo())
-            </div>
-
-        </div>
+        @RenderTemplate("Paging.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model)
 
     </div>
  </div>
