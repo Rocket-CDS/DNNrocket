@@ -17,26 +17,52 @@
     var rowcount = info.GetXmlPropertyInt("genxml/hidden/rowcount");
     var page = info.GetXmlPropertyInt("genxml/hidden/page");
     var pagesize = info.GetXmlPropertyInt("genxml/hidden/pagesize");
+    var lastpage = System.Convert.ToInt32(rowcount / pagesize);
+    if (rowcount % pagesize > 0)
+    {
+        lastpage += 1;
+    }
+
+    var pagechapter = 5;
+
+    var r = (page - 1) / pagechapter;
+    var BeginPage = pagechapter * r + 1;
+    var EndPage = Math.Min(pagechapter * (r + 1), lastpage);
+
 }
 
 <div class="w3-center w3-margin">
     <div class="w3-bar">
-        <a class="w3-button w3-hover-theme" href="#">|❮</a>
-        <a class="w3-button w3-hover-theme" href="#">..</a>
-        <a class="w3-button w3-hover-theme" href="#">❮</a>
+        @if (BeginPage != 1)
+        {
+            <a class="w3-button w3-hover-theme simplisity_pageclick" s-page="1" s-pagesize='@(pagesize)' href="#">|❮</a>
+            if (page >= 6)
+            {
+                <a class="w3-button w3-hover-theme simplisity_pageclick" s-page="@(BeginPage - 1)" s-pagesize='@(pagesize)' href="#">..</a>
+            }
+        }
 
-        @for (int i = 1; i < pagesize; i++)
+        @for (int i = BeginPage; i < (EndPage + 1); i++)
         {
             var selected = "";
             if (i == page)
             {
                 selected = "w3-theme-l3";
             }
-            <a href='#' class='w3-button w3-hover-theme @selected simplisity_pageclick' s-page='@i' s-pagesize='@(pagesize)'>@i</a>
+            if (i <= lastpage)
+            {
+                <a href='#' class='w3-button w3-hover-theme @selected simplisity_pageclick' s-page='@i' s-pagesize='@(pagesize)'>@i</a>
+            }
         }
 
-        <a class="w3-button w3-hover-theme" href="#">❯</a>
-        <a class="w3-button w3-hover-theme" href="#">..</a>
-        <a class="w3-button w3-hover-theme" href="#">❯|</a>
-    </div>
+        @if (page < lastpage)
+        {
+            if (EndPage != lastpage)
+            {
+                <a class="w3-button w3-hover-theme simplisity_pageclick" s-page="@(EndPage + 1)" s-pagesize='@(pagesize)' href="#">..</a>
+            }
+            <a class="w3-button w3-hover-theme simplisity_pageclick" s-page="@lastpage" s-pagesize='@(pagesize)' href="#">❯|</a>
+        }
+
+        </div>
 </div>
