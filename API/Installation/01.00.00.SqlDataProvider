@@ -368,7 +368,7 @@ FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId
 WHILE @@FETCH_STATUS = 0  
 BEGIN  
 
-	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [' + @idxname + '] on [' + @idxname + '].ParentItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''' + @TypeCode  + 'IDX_' + @idxname + ''' and [' + @idxname + '].[Lang] = ''' + @Lang + ''' '
+	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [' + @idxname + '] on [' + @idxname + '].ParentItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''' + @TypeCode  + 'IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
 
 	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId
 END 
@@ -534,6 +534,40 @@ begin
 
 	SET @Filter = REPLACE(@Filter,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
 
+
+------------------------------------------------------------------------------------
+--- Cursor for INDEX records.
+------------------------------------------------------------------------------------
+DECLARE @idxname nvarchar(250) = ''
+DECLARE @idxparentItemId int = 0
+DECLARE @systemlinkItemId int = 0
+DECLARE @JoinIndex nvarchar(max)
+
+select @systemlinkItemId = itemid from {databaseOwner}[{objectQualifier}DNNrocket] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
+
+DECLARE idx_cursor CURSOR FOR 
+SELECT GUIDKey, ParentItemId
+FROM {databaseOwner}[{objectQualifier}DNNrocket]
+WHERE [TypeCode] = 'SYSTEMLINKIDX' and ParentItemId = @systemlinkItemId
+
+SET @JoinIndex = ''
+
+OPEN idx_cursor  
+FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId
+
+WHILE @@FETCH_STATUS = 0  
+BEGIN  
+
+	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [' + @idxname + '] on [' + @idxname + '].ParentItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''' + @TypeCode  + 'IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
+
+	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId
+END 
+
+CLOSE idx_cursor
+DEALLOCATE idx_cursor
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+
 	--DECLARE @RecordCount int
 	DECLARE @countselect nvarchar(max)
 
@@ -544,6 +578,8 @@ begin
 			set @countselect = @countselect + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as R1 '
 			set @countselect = @countselect + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
 	
+			set @countselect = @countselect + @JoinIndex
+
 			IF (RIGHT(@TypeCode,1) = '%')
 			BEGIN
 				set @countselect = @countselect + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  

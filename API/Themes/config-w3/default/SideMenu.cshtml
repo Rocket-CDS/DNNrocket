@@ -111,8 +111,11 @@
         });
 
         //reset paging
-        simplisity_setCookieValue('s-page','1');
-        simplisity_setCookieValue('s-pagesize', '10');
+        simplisity_setCookieValue('s-page', '1');
+
+        if (simplisity_getCookieValue('s-pagesize') == '') {
+            simplisity_setCookieValue('s-pagesize', '20');
+        }
 
 
     });

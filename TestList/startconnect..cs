@@ -51,6 +51,9 @@ namespace DNNrocket.TestList
                     DeleteRows();
                     strOut = GetList(postInfo, controlRelPath);
                     break;
+                case "testlist_search":
+                    strOut = GetList(postInfo, controlRelPath);
+                    break;
                 default:
                     strOut = "COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
                     break;
@@ -62,19 +65,28 @@ namespace DNNrocket.TestList
         {
             try
             {
-                var objCtrl = new DNNrocketController();
-
-                var listcount = objCtrl.GetListCount(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, "", _editlang);
 
                 var page = postInfo.GetXmlPropertyInt("genxml/hidden/page");
                 var pagesize = postInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
 
-                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode,"", _editlang, "",0, page, pagesize, listcount);
+                var searchtext = postInfo.GetXmlProperty("genxml/textbox/searchtext");
+
+                var filter = "";
+                if (searchtext != "")
+                {
+                    filter = " and inputlang1.GuidKey like '%" + searchtext + "%'";
+                }
+
+
+                var objCtrl = new DNNrocketController();
+                var listcount = objCtrl.GetListCount(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang);
+                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang, "",0, page, pagesize, listcount);
 
                 var headerData = new SimplisityInfo();
                 headerData.SetXmlProperty("genxml/hidden/rowcount", listcount.ToString());
                 headerData.SetXmlProperty("genxml/hidden/page", page.ToString());
                 headerData.SetXmlProperty("genxml/hidden/pagesize", pagesize.ToString());
+                headerData.SetXmlProperty("genxml/textbox/searchtext", searchtext);
 
                 return RenderList(list, postInfo, 0, templateControlRelPath, headerData);
             }

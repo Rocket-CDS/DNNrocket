@@ -3,6 +3,16 @@
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/testlist/App_LocalResources/")
+
+@{
+    var headerData = Model.HeaderData;
+    var rowcount = headerData.GetXmlPropertyInt("genxml/hidden/rowcount");
+    var page = headerData.GetXmlPropertyInt("genxml/hidden/page");
+    var pagesize = headerData.GetXmlPropertyInt("genxml/hidden/pagesize");
+    var lastpage = System.Convert.ToInt32(rowcount / pagesize);
+}
+
 
 
 <div class="w3-container">
@@ -16,19 +26,44 @@
         }
     </span>
 
-    <div class="w3-row-padding plugins">
 
-        <div class="w3-card">
+    <div class="w3-row w3-card searchdata ">
+
+        <div class="">
             <header class="w3-container w3-theme">
-                <h5>@ResourceKey("system.systems")</h5>
+                <h5>@ResourceKey("testlist.search")</h5>
             </header>
 
+            <div class="w3-row w3-padding">
+                <div class="w3-col m2 w3-padding">
+                    @TextBox(headerData, "genxml/textbox/searchtext", "class='w3-input w3-border simplisity_searchfield'")
+                </div>
+                <div class="w3-col m8 w3-padding">
+                    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_search" s-post=".searchdata" s-fields="theme:config-w3,template:TestList.cshtml,systemprovider:businessdirectory,interfacekey:testlist">@ResourceKey("DNNrocket.cmdSearchButton")</button>
+                </div>
+                <div class="w3-col m2 w3-padding w3-right-align" style="width: 100px">
+                    @DropDownList(headerData, "genxml/hidden/pagesize", "5,10,20,50,100", "5,10,20,50,100", "class='w3-input w3-border simplisity_pagesize ' title='Page Size'", "20")
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <hr />
+
+    <div class="w3-row w3-card plugins">
+
+        <header class="w3-container w3-theme">
+            <h5>@ResourceKey("system.systems")</h5>
+        </header>
+
+        <div class="w3-row">
             <table class="w3-table w3-table-all">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th>Column1</th>
+                        <th>Column2</th>
+                        <th>Column3</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,8 +82,8 @@
                 </tbody>
             </table>
         </div>
-
         @RenderTemplate("Paging.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model)
 
     </div>
- </div>
+    <br />
+</div>
