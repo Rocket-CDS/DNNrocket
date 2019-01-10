@@ -454,6 +454,8 @@ DEALLOCATE idx_cursor
 		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
 		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
 		
+		set @STMT = @STMT + @JoinIndex
+
 				IF (RIGHT(@TypeCode,1) = '%')
 			BEGIN
 				set @STMT = @STMT + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
@@ -490,6 +492,8 @@ DEALLOCATE idx_cursor
 		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
 		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
 	
+		set @STMT = @STMT + @JoinIndex
+
 		IF (RIGHT(@TypeCode,1) = '%')
 		BEGIN
 			set @STMT = @STMT + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  

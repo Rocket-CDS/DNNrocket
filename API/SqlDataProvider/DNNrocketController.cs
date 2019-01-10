@@ -94,6 +94,22 @@ namespace DNNrocketAPI
             objInfo.ModifiedDate = DateTime.Now;
             var itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang);
 
+            RebuildIndex(objInfo, itemid);
+
+            return itemid;
+        }
+
+        public void DeleteIndex(SimplisityRecord objInfo)
+        {
+            var l = GetList(-1, -1, "", " and (R1.typecode = '" + objInfo.TypeCode + "IDX' or R1.typecode = '" + objInfo.TypeCode + "LANGIDX' or R1.typecode like '" + objInfo.TypeCode + "IDX_%')  and R1.parentitemid = " + objInfo.ItemID);
+            foreach (var i in l)
+            {
+                Delete(i.ItemID);
+            }
+        }
+
+        public void RebuildIndex(SimplisityRecord objInfo, int itemid)
+        {
             //-------------------------------------------------------------------
             // Save Merged Lang data.
             //-------------------------------------------------------------------
@@ -208,7 +224,6 @@ namespace DNNrocketAPI
 
                 }
             }
-            return itemid;
         }
 
         /// <summary>

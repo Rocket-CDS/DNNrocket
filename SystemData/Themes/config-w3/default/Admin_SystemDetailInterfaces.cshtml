@@ -13,7 +13,7 @@
 
 <div class="w3-container">
     <div class="w3-margin">
-        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addinterface" s-fields="selecteditemid:@sInfo.ItemID,theme:config-w3,template:Admin_SystemDetailInterfaces.cshtml,ajaxprovider:systemapi" s-return="#Interface">@ResourceKey("DNNrocket.cmdAddButton")</a>
+        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addinterface" s-fields="selecteditemid:@sInfo.ItemID,theme:config-w3,template:Admin_SystemDetailInterfaces.cshtml,systemprovider:systemapi" s-return="#Interface">@ResourceKey("DNNrocket.cmdAddButton")</a>
         <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-removelist=".interfacedata" s-recylebin="interfacesbin" s-return="#plugininterfaces" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
     </div>
 

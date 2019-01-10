@@ -70,6 +70,14 @@ namespace DNNrocket.SystemData
                             SystemAddListRow(postInfo, "provtypesdata");
                             strOut = SystemAdminDetail(postInfo, controlRelPath);
                             break;
+                        case "systemapi_rebuildindex":
+                            RebuildIndex(postInfo, false);
+                            strOut = "<h1>Rebuilding Index</h1>";
+                            break;
+                        case "systemapi_deleterebuildindex":
+                            RebuildIndex(postInfo, true);
+                            strOut = "<h1>Deleting and Rebuilding Index</h1>";
+                            break;
                     }
                 }
             }
@@ -342,67 +350,45 @@ namespace DNNrocket.SystemData
         }
 
 
-
-
-        //-----------------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------------
-
-        public static string AddToList(SimplisityInfo postInfo, string templateControlRelPath)
+        public static void RebuildIndex(SimplisityInfo postInfo, bool deleteindex )
         {
-            var strOut = "";
-            var listname = postInfo.GetXmlProperty("genxml/hidden/listname");
-            var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
-            var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
-
-            var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("testform", "TEST", DNNrocketUtils.GetEditCulture());
-
-            info.AddListRow(listname);
-
-            objCtrl.SaveData("testform", "TEST", info);  //TestFormSave so if we add multiple it works correct.
-
-            var passSettings = postInfo.ToDictionary();
-
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
-
-            return strOut;
-        }
-
-        public static String TestFormDetail(SimplisityInfo postInfo, string templateControlRelPath)
-        {
-            try
+            var itemid = postInfo.GetXmlProperty("genxml/hidden/selecteditemid");
+            if (GeneralUtils.IsNumeric(itemid))
             {
-                var strOut = "";
-                var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
-                var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
-
-                var passSettings = postInfo.ToDictionary();
-                               
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
-                var info = objCtrl.GetData("testform", "TEST", DNNrocketUtils.GetEditCulture());
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+                var sysInfo = objCtrl.GetInfo(Convert.ToInt32(itemid));
 
-                return strOut;
+                var entityList = new List<string>();
+                foreach (var i in sysInfo.GetList("idxfielddata"))
+                {
+                    var entityTypeCode = i.GetXmlProperty("genxml/dropdownlist/entitytypecode");
+                    if (!entityList.Contains(entityTypeCode) && entityTypeCode != "")
+                    {
+                        entityList.Add(entityTypeCode);
+                    }
+                }
+                foreach (var entityCode in entityList)
+                {
+                    var l = objCtrl.GetList(-1, -1, entityCode);
+                    foreach (var sInfo in l)
+                    {
+                        if (deleteindex)
+                        {
+                            objCtrl.DeleteIndex(sInfo);
+                        }
+                        objCtrl.RebuildIndex(sInfo, sInfo.ItemID);
+                    }
+                    l = objCtrl.GetList(-1, -1, entityCode + "LANG");
+                    foreach (var sInfo in l)
+                    {
+                        objCtrl.RebuildIndex(sInfo, sInfo.ItemID);
+                    }
+                }
+
+                CacheUtils.ClearCache();
             }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
 
-        public static void TestFormSave(SimplisityInfo postInfo)
-        {
-            var objCtrl = new DNNrocketController();
-            objCtrl.SaveData("testform", "TEST", postInfo);
         }
-
 
     }
 }
