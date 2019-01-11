@@ -110,6 +110,8 @@
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="packages.config" />
+    <None Include="Systems\dnnrocket.Zxml" />
+    <None Include="Systems\OpenStore.Zxml" />
     <None Include="Themes\config-w3\default\Paging.cshtml" />
     <None Include="Themes\config-w3\default\SideMenu.cshtml" />
   </ItemGroup>
@@ -117,7 +119,6 @@
     <EmbeddedResource Include="App_LocalResources\DNNrocket.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Systems\OpenStore.xml" />
     <Content Include="Themes\config-w3\css\coconutmilk-theme.css" />
     <Content Include="Themes\config-w3\css\sailorblue-theme.css" />
     <Content Include="Themes\config-w3\css\ultravoilet-theme.css" />

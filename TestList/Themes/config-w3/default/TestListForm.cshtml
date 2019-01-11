@@ -11,10 +11,10 @@
 
 
 <span class="w3-section simplisity_buttons">
-    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="testlist_save" s-post="#testform" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestListForm.cshtml,systemprovider:businessdirectory,interfacekey:testlist">@ResourceKey("DNNrocket.cmdSaveButton")</button>
-    <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="testlist_delete" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestList.cshtml,systemprovider:businessdirectory,interfacekey:testlist">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
-    <button class="w3-button w3-sand w3-padding-8 simplisity_click" s-track="true" s-cmd="testlist_getlist" s-fields="selecteditemid:,theme:config-w3,template:TestList.cshtml,systemprovider:businessdirectory,interfacekey:testlist">@ResourceKey("DNNrocket.cmdReturnButton")</button>
-    <button class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="create test rows?" s-cmd="testlist_createrows" s-post="#testform" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestList.cshtml,systemprovider:businessdirectory,interfacekey:testlist">Create Test Rows</button>
+    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="testlist_save" s-post="#testform" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestListForm.cshtml,interfacekey:testlist">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="testlist_delete" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
+    <button class="w3-button w3-sand w3-padding-8 simplisity_click" s-track="true" s-cmd="testlist_getlist" s-fields="selecteditemid:,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">@ResourceKey("DNNrocket.cmdReturnButton")</button>
+    <button class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="create test rows?" s-cmd="testlist_createrows" s-post="#testform" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">Create Test Rows</button>
 </span>
 
 
