@@ -6,10 +6,13 @@ namespace DNNrocket.Country
 {
     public class startconnect : DNNrocketAPI.APInterface
     {
+        private static string _systemprovider;
+
         public override string ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo sInfo, string userHostAddress, string editlang = "")
         {
 
             //CacheUtils.ClearAllCache();
+            _systemprovider = sInfo.GetXmlProperty("genxml/systemprovider");
 
             var controlRelPath = "/DesktopModules/DNNrocket/Country";
 
@@ -22,6 +25,7 @@ namespace DNNrocket.Country
                     break;
                 case "settingcountry_save":
                     CountrySave(sInfo);
+                    strOut = CountryDetail(sInfo, controlRelPath, editlang);
                     break;
             }
             return strOut;
@@ -34,7 +38,7 @@ namespace DNNrocket.Country
             {
                 var strOut = "";
                 var objCtrl = new DNNrocketController();
-                var smi = objCtrl.GetData("countrysettings", "SETTINGS", editlang);
+                var smi = objCtrl.GetData("countrysettings", _systemprovider + "_SETTINGS", editlang);
                 if (smi != null)
                 {
 
@@ -59,7 +63,7 @@ namespace DNNrocket.Country
         public static void CountrySave(SimplisityInfo postInfo)
         {
             var objCtrl = new DNNrocketController();
-            objCtrl.SaveData("countrysettings", "SETTINGS", postInfo);
+            objCtrl.SaveData("countrysettings", _systemprovider + "_SETTINGS", postInfo);
         }
 
     }

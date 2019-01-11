@@ -52,10 +52,12 @@ namespace DNNrocketAPI
 
 
                 var systemprovider = sInfoJson.GetXmlProperty("genxml/hidden/systemprovider");
+                if (systemprovider == "") systemprovider = sInfoJson.GetXmlProperty("genxml/systemprovider");
                 if (systemprovider == "") systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");
                 var interfacekey = sInfoJson.GetXmlProperty("genxml/hidden/interfacekey");
                 if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
+                sInfoJson.SetXmlProperty("genxml/systemprovider", systemprovider);
 
                 if (paramCmd == "getsidemenu")
                 {
