@@ -9,6 +9,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Entities.Users.Membership;
 using DNNrocket.Login;
+using System.Collections.Generic;
 
 namespace DNNrocketAPI
 {
@@ -22,39 +23,47 @@ namespace DNNrocketAPI
             var strOut = "ERROR: Invalid.";
             try
             {
-                _editlang = DNNrocketUtils.GetEditCulture();
+                // Do file upload is this is a file upload request.
+                if (context.Request.Files.Count > 0)
+                {
+                    var fileout = DNNrocketUtils.FileUpload(context);
+                }
+                else
+                {
+                    _editlang = DNNrocketUtils.GetEditCulture();
+
 
                 var paramCmd = context.Request.QueryString["cmd"];
 
-                // -------------------------------------------------------------
-                // -------------- OUTPUT TEST DATA -----------------------------
-                // -------------------------------------------------------------
-                // does NOT work across portals.
-                //CacheUtils.SetCache("debugOutMapPath", PortalSettings.Current.HomeDirectoryMapPath);
-                // -------------------------------------------------------------
-                // -------------- OUTPUT TEST DATA -----------------------------
-                // -------------------------------------------------------------
+                    // -------------------------------------------------------------
+                    // -------------- OUTPUT TEST DATA -----------------------------
+                    // -------------------------------------------------------------
+                    // does NOT work across portals.
+                    //CacheUtils.SetCache("debugOutMapPath", PortalSettings.Current.HomeDirectoryMapPath);
+                    // -------------------------------------------------------------
+                    // -------------- OUTPUT TEST DATA -----------------------------
+                    // -------------------------------------------------------------
 
-                var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
-                var sInfoJson = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
+                    var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
+                    var sInfoJson = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
 
-                // -------------------------------------------------------------
-                // -------------- OUTPUT TEST DATA -----------------------------
-                // -------------------------------------------------------------
-                //FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\requestJson.xml", requestJson);
-                //FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\sInfoJson.xml", sInfoJson.XMLData);
+                    // -------------------------------------------------------------
+                    // -------------- OUTPUT TEST DATA -----------------------------
+                    // -------------------------------------------------------------
+                    //FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\requestJson.xml", requestJson);
+                    //FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\sInfoJson.xml", sInfoJson.XMLData);
 
-                //--------------------------
+                    //--------------------------
 
-                // -------------------------------------------------------------
-                // -------------- OUTPUT TEST DATA -----------------------------
-                // -------------------------------------------------------------
+                    // -------------------------------------------------------------
+                    // -------------- OUTPUT TEST DATA -----------------------------
+                    // -------------------------------------------------------------
 
+                    var systemprovider = sInfoJson.GetXmlProperty("genxml/hidden/systemprovider");
+                    if (systemprovider == "") systemprovider = sInfoJson.GetXmlProperty("genxml/systemprovider");
+                    if (systemprovider == "") systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");
 
-                var systemprovider = sInfoJson.GetXmlProperty("genxml/hidden/systemprovider");
-                if (systemprovider == "") systemprovider = sInfoJson.GetXmlProperty("genxml/systemprovider");
-                if (systemprovider == "") systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");
-                var interfacekey = sInfoJson.GetXmlProperty("genxml/hidden/interfacekey");
+                    var interfacekey = sInfoJson.GetXmlProperty("genxml/hidden/interfacekey");
                 if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
                 sInfoJson.SetXmlProperty("genxml/systemprovider", systemprovider);
@@ -71,7 +80,7 @@ namespace DNNrocketAPI
 
                     if (systemprovider == "" || systemprovider == "systemapi")
                     {
-                        var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect");
+                        var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
                         strOut = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, sInfoJson, HttpContext.Current.Request.UserHostAddress, _editlang);
                     }
                     else
@@ -85,7 +94,7 @@ namespace DNNrocketAPI
                                 var interfaceInfo = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);                                
                                 if (interfaceInfo != null)
                                 {
-
+                                    var controlRelPath = interfaceInfo.GetXmlProperty("genxml/textbox/relpath");
                                     var assembly = interfaceInfo.GetXmlProperty("genxml/textbox/assembly");
                                     var namespaceclass = interfaceInfo.GetXmlProperty("genxml/textbox/namespaceclass");
                                     if (assembly == "" || namespaceclass == "")
@@ -96,7 +105,7 @@ namespace DNNrocketAPI
                                     {
                                         try
                                         {
-                                            var ajaxprov = APInterface.Instance(assembly, namespaceclass);
+                                            var ajaxprov = APInterface.Instance(assembly, namespaceclass, controlRelPath);
                                             strOut = ajaxprov.ProcessCommand(paramCmd, systemInfo, interfaceInfo, sInfoJson, HttpContext.Current.Request.UserHostAddress, _editlang);
                                         }
                                         catch (Exception ex)
@@ -116,6 +125,7 @@ namespace DNNrocketAPI
                             }
                         }
                     }
+                }
                 }
             }
             catch (Exception ex)

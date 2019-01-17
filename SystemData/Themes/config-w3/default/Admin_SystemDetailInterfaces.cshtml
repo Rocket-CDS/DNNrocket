@@ -27,7 +27,7 @@
             lp1 += 1;
         <li class="interfacedata w3-card w3-margin w3-display-container">
             <a href="javascript:void(0)" class="w3-display-topright"><i title="Remove" class="fa fa-arrows "></i></a>
-            <a href="javascript:void(0)" class="w3-display-right simplisity_removelistitem" s-removelist=".interfacedata"  s-recylebin="interfacesbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+            <a href="javascript:void(0)" class="w3-display-right simplisity_removelistitem" s-removelist=".interfacedata" s-recylebin="interfacesbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
 
             <div class="w3-row">
                 <div class="w3-padding w3-quarter">
@@ -98,6 +98,17 @@
                 <div class="w3-padding w3-quarter">
                 </div>
             </div>
+            <div class="w3-row">
+                <div class="w3-padding w3-half">
+                    <label class="">@ResourceKey("system.controlrelpath")</label>
+                    @TextBox(i, "genxml/textbox/relpath", "class='w3-input w3-border' maxlength='350'")
+                </div>
+                <div class="w3-padding w3-quarter">
+                </div>
+                <div class="w3-padding w3-quarter">
+                </div>
+            </div>
+
             <div class="w3-row">
                 <div class="w3-padding w3-quarter">
                     <label class="">@ResourceKey("DNNrocket.Active")</label>

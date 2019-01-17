@@ -243,4 +243,10 @@
   <data name="indexref.Text" xml:space="preserve">
     <value>Index Ref</value>
   </data>
+  <data name="controlrelpath.Text" xml:space="preserve">
+    <value>Control Relative Path</value>
+  </data>
+  <data name="encryptkey.Text" xml:space="preserve">
+    <value>Encryption Key</value>
+  </data>
 </root>

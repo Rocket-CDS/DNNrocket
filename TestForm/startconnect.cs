@@ -1,6 +1,7 @@
 ﻿using DNNrocketAPI;
 using Simplisity;
 using System;
+using System.IO;
 
 namespace DNNrocket.TestForm
 {
@@ -12,25 +13,26 @@ namespace DNNrocket.TestForm
 
             //CacheUtils.ClearAllCache();
 
-            var controlRelPath = "/DesktopModules/DNNrocket/TestForm";
-
             var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [testform]";
 
             switch (paramCmd)
             {
                 case "testform_get":
-                    strOut = TestFormDetail(postInfo, controlRelPath);
+                    strOut = TestFormDetail(postInfo, ControlRelPath);
                     break;
                 case "testform_save":
                     TestFormSave(postInfo);
-                    strOut = TestFormDetail(postInfo, controlRelPath);
+                    strOut = TestFormDetail(postInfo, ControlRelPath);
                     break;
                 case "testform_add":
-                    strOut = AddToList(postInfo, controlRelPath);
+                    strOut = AddToList(postInfo, ControlRelPath);
                     break;
                 case "testform_delete":
                     Delete(postInfo);
-                    strOut = TestFormDetail(postInfo, controlRelPath);
+                    strOut = TestFormDetail(postInfo, ControlRelPath);
+                    break;
+                case "testform_addimage":
+                    strOut = AddImageToList(postInfo, ControlRelPath);
                     break;
             }
             return strOut;
@@ -93,6 +95,51 @@ namespace DNNrocket.TestForm
             var info = objCtrl.GetData("testform", "TEST", DNNrocketUtils.GetEditCulture());
             objCtrl.Delete(info.ItemID);
         }
+
+        public static string AddImageToList(SimplisityInfo postInfo, string templateControlRelPath)
+        {
+            var imageDirectory = DNNrocketUtils.MapPath(templateControlRelPath + "/images");
+            if (!Directory.Exists(imageDirectory))
+            {
+                Directory.CreateDirectory(imageDirectory);
+            }
+
+            var strOut = "";
+            var listname = postInfo.GetXmlProperty("genxml/hidden/listname");
+            var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
+            var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
+            var fileuploadlist = postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+
+            var objCtrl = new DNNrocketController();
+            var info = objCtrl.GetData("testform", "TEST", DNNrocketUtils.GetEditCulture());
+
+            if (fileuploadlist != "")
+            {
+
+                foreach (var f in fileuploadlist.Split(','))
+                {
+                    var imgInfo = new SimplisityInfo();
+                    var imagerelpath = templateControlRelPath + "/images/" + f;
+                    var imagepath = imageDirectory + "\\" + f;
+                    imgInfo.SetXmlProperty("genxml/hidden/imagerelpath", imagerelpath);
+                    imgInfo.SetXmlProperty("genxml/hidden/imagepath", imagepath);
+                    imgInfo.SetXmlProperty("genxml/hidden/filename", f);
+
+                    info.AddListRow(listname, imgInfo);
+                }
+
+                objCtrl.SaveData("testform", "TEST", info);  //TestFormSave so if we add multiple it works correct.
+
+            }
+
+            var passSettings = postInfo.ToDictionary();
+
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+
+            return strOut;
+        }
+
 
     }
 }

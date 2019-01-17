@@ -15,44 +15,42 @@ namespace DNNrocket.TestList
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
             _editlang = DNNrocketUtils.GetEditCulture();
 
-            var controlRelPath = "/DesktopModules/DNNrocket/TestList";
-
             var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
 
             switch (paramCmd)
             {
                 case "testlist_getlist":
-                    strOut = GetList(postInfo, controlRelPath);
+                    strOut = GetList(postInfo, ControlRelPath);
                     break;
                 case "testlist_getdetail":
-                    strOut = GetDetail(postInfo, controlRelPath);
+                    strOut = GetDetail(postInfo, ControlRelPath);
                     break;
                 case "testlist_add":
                     var newInfo = AddNew();
                     postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
-                    strOut = GetDetail(postInfo, controlRelPath);
+                    strOut = GetDetail(postInfo, ControlRelPath);
                     break;
                 case "testlist_save":
                     Save(postInfo);
-                    strOut = GetDetail(postInfo, controlRelPath);
+                    strOut = GetDetail(postInfo, ControlRelPath);
                     break;
                 case "testlist_delete":
                     Delete(postInfo);
-                    strOut = GetList(postInfo, controlRelPath);
+                    strOut = GetList(postInfo, ControlRelPath);
                     break;
                 case "testlist_sort":
-                    strOut = GetList(postInfo, controlRelPath);
+                    strOut = GetList(postInfo, ControlRelPath);
                     break;
                 case "testlist_createrows":
                     CreateRows(postInfo);
-                    strOut = GetList(postInfo, controlRelPath);
+                    strOut = GetList(postInfo, ControlRelPath);
                     break;
                 case "testlist_deleterows":
                     DeleteRows();
-                    strOut = GetList(postInfo, controlRelPath);
+                    strOut = GetList(postInfo, ControlRelPath);
                     break;
                 case "testlist_search":
-                    strOut = GetList(postInfo, controlRelPath);
+                    strOut = GetList(postInfo, ControlRelPath);
                     break;
                 default:
                     strOut = "COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";

@@ -309,4 +309,13 @@
   <data name="cmdAdminIcon.Text" xml:space="preserve">
     <value>&lt;i title="Admin" class="fa fa-list fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
+  <data name="dropdocument.Text" xml:space="preserve">
+    <value>Drop Document Here</value>
+  </data>
+  <data name="dropfile.Text" xml:space="preserve">
+    <value>Drop File Here</value>
+  </data>
+  <data name="dropimage.Text" xml:space="preserve">
+    <value>Drop Image Here</value>
+  </data>
 </root>

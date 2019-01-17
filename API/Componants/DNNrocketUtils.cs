@@ -21,6 +21,7 @@ using System.Net;
 using System.IO;
 using DotNetNuke.Common.Lists;
 using ICSharpCode.SharpZipLib.Zip;
+using System.Text.RegularExpressions;
 
 namespace DNNrocketAPI
 {
@@ -1002,7 +1003,7 @@ namespace DNNrocketAPI
             return rtn;
         }
 
-        public static string MapPth(string relpath)
+        public static string MapPath(string relpath)
         {
             return System.Web.Hosting.HostingEnvironment.MapPath(relpath);
         }
@@ -1019,6 +1020,127 @@ namespace DNNrocketAPI
                 }
             }
             return rtn;
+        }
+
+        public static string FileUpload(HttpContext context)
+        {
+            try
+            {
+
+                var strOut = "";
+                switch (context.Request.HttpMethod)
+                {
+                    case "HEAD":
+                    case "GET":
+                        break;
+                    case "POST":
+                    case "PUT":
+                        strOut = UploadFile(context);
+                        break;
+                    case "DELETE":
+                        break;
+                    case "OPTIONS":
+                        break;
+
+                    default:
+                        context.Response.ClearHeaders();
+                        context.Response.StatusCode = 405;
+                        break;
+                }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        // Upload file to the server
+        public static string UploadFile(HttpContext context)
+        {
+            if (!Directory.Exists(PortalSettings.Current.HomeDirectoryMapPath + "\\DNNrocketTemp")) {
+                Directory.CreateDirectory(PortalSettings.Current.HomeDirectoryMapPath + "\\DNNrocketTemp");
+            }
+
+            var statuses = new List<FilesStatus>();
+            var headers = context.Request.Headers;
+
+            if (string.IsNullOrEmpty(headers["X-File-Name"]))
+            {
+                return UploadWholeFile(context, statuses, "");
+            }
+            else
+            {
+                return UploadPartialFile(headers["X-File-Name"], context, statuses, "");
+            }
+        }
+
+        // Upload partial file
+        public static string UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses, string fileregexpr)
+        {
+            Regex fexpr = new Regex(fileregexpr);
+            if (fexpr.Match(fileName.ToLower()).Success)
+            {
+                if (context.Request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
+                var inputStream = context.Request.Files[0].InputStream;
+
+                var systemData = new SystemData();
+                var systemprovider = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "systemprovider"));
+                var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+                var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
+
+                var fn = GeneralUtils.Encrypt(encryptkey, fileName);
+                foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+                {
+                    fn = fn.Replace(c, '_');
+                }
+
+                var fullName = PortalSettings.Current.HomeDirectoryMapPath + "\\DNNrocketTemp\\" + fn;
+
+                using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
+                {
+                    var buffer = new byte[1024];
+
+                    var l = inputStream.Read(buffer, 0, 1024);
+                    while (l > 0)
+                    {
+                        fs.Write(buffer, 0, l);
+                        l = inputStream.Read(buffer, 0, 1024);
+                    }
+                    fs.Flush();
+                    fs.Close();
+                }
+                statuses.Add(new FilesStatus(new System.IO.FileInfo(fullName)));
+            }
+            return "";
+        }
+
+        // Upload entire file
+        public static string UploadWholeFile(HttpContext context, List<FilesStatus> statuses, string fileregexpr)
+        {
+            var systemData = new SystemData();
+            var systemprovider = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "systemprovider"));
+            var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+            var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
+
+            for (int i = 0; i < context.Request.Files.Count; i++)
+            {
+                var file = context.Request.Files[i];
+                Regex fexpr = new Regex(fileregexpr);
+                if (fexpr.Match(file.FileName.ToLower()).Success)
+                {
+                    var fn = GeneralUtils.Encrypt(encryptkey, file.FileName);
+                    foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+                    {
+                        fn = fn.Replace(c, '_');
+                    }
+                    file.SaveAs(PortalSettings.Current.HomeDirectoryMapPath + "\\DNNrocketTemp\\" + fn);
+                    statuses.Add(new FilesStatus(Path.GetFileName(fn), file.ContentLength));
+                }
+            }
+            return "";
         }
 
 
