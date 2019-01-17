@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml;
 
 namespace DNNrocketAPI.render
 {
@@ -56,7 +57,23 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
+        public IEncodedString ThumbnailImageUrl(string url, int width = 0, int height = 0, string extraurlparams = "")
+        {
+            url = "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams;
+            return new RawString(url);
+        }
 
+        public IEncodedString InjectHiddenFieldData(SimplisityInfo sInfo)
+        {
+            var strOut = "";
+            var nodList = sInfo.XMLDoc.SelectNodes("genxml/hidden/*");
+            foreach (XmlNode nod in nodList)
+            {
+                var id = nod.Name.ToLower();
+                strOut += "<input id='" + id + "' type='hidden' value='" + sInfo.GetXmlProperty("genxml/hidden/" + id) + "'/>";
+            }
+            return new RawString(strOut);
+        }
 
     }
 }

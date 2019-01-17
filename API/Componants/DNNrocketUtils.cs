@@ -1003,6 +1003,11 @@ namespace DNNrocketAPI
             return rtn;
         }
 
+        public static string TempDirectory()
+        {
+            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketTemp";
+        }        
+
         public static string MapPath(string relpath)
         {
             return System.Web.Hosting.HostingEnvironment.MapPath(relpath);
@@ -1060,8 +1065,8 @@ namespace DNNrocketAPI
         // Upload file to the server
         public static string UploadFile(HttpContext context)
         {
-            if (!Directory.Exists(PortalSettings.Current.HomeDirectoryMapPath + "\\DNNrocketTemp")) {
-                Directory.CreateDirectory(PortalSettings.Current.HomeDirectoryMapPath + "\\DNNrocketTemp");
+            if (!Directory.Exists(TempDirectory())) {
+                Directory.CreateDirectory(TempDirectory());
             }
 
             var statuses = new List<FilesStatus>();
@@ -1091,13 +1096,9 @@ namespace DNNrocketAPI
                 var sInfoSystem = systemData.GetSystemByKey(systemprovider);
                 var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
 
-                var fn = GeneralUtils.Encrypt(encryptkey, fileName);
-                foreach (char c in System.IO.Path.GetInvalidFileNameChars())
-                {
-                    fn = fn.Replace(c, '_');
-                }
+                var fn = DNNrocketUtils.EncryptFileName(encryptkey, fileName);
 
-                var fullName = PortalSettings.Current.HomeDirectoryMapPath + "\\DNNrocketTemp\\" + fn;
+                var fullName = TempDirectory() + "\\" + fn;
 
                 using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
                 {
@@ -1131,16 +1132,65 @@ namespace DNNrocketAPI
                 Regex fexpr = new Regex(fileregexpr);
                 if (fexpr.Match(file.FileName.ToLower()).Success)
                 {
-                    var fn = GeneralUtils.Encrypt(encryptkey, file.FileName);
-                    foreach (char c in System.IO.Path.GetInvalidFileNameChars())
-                    {
-                        fn = fn.Replace(c, '_');
-                    }
-                    file.SaveAs(PortalSettings.Current.HomeDirectoryMapPath + "\\DNNrocketTemp\\" + fn);
+                    var fn = EncryptFileName(encryptkey, file.FileName);
+                    file.SaveAs(TempDirectory() + "\\" + fn);
                     statuses.Add(new FilesStatus(Path.GetFileName(fn), file.ContentLength));
                 }
             }
             return "";
+        }
+
+        public static string EncryptFileName(string encryptkey, string fileName)
+        {
+            var fn = GeneralUtils.Encrypt(encryptkey, fileName);
+            foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+            {
+                fn = fn.Replace(c, '_');
+            }
+            return fn;
+        }
+
+        public static string DownloadSystemFile(string paramCmd, HttpContext context)
+        {
+            var strOut = "";
+            var fname = DNNrocketUtils.RequestQueryStringParam(context, "filename");
+            var filekey = DNNrocketUtils.RequestQueryStringParam(context, "key");
+            if (fname != "")
+            {
+                strOut = fname; // return this is error.
+                var downloadname = DNNrocketUtils.RequestQueryStringParam(context, "downloadname");
+                var fpath = HttpContext.Current.Server.MapPath(fname);
+                if (downloadname == "") downloadname = Path.GetFileName(fname);
+                try
+                {
+                    DNNrocketUtils.ForceDocDownload(fpath, downloadname, context.Response);
+                }
+                catch (Exception ex)
+                {
+                    // ignore, robots can cause error on thread abort.
+                }
+            }
+            return strOut;
+        }
+
+        public static void ForceDocDownload(string docFilePath, string fileName, HttpResponse response)
+        {
+            if (File.Exists(docFilePath) & !String.IsNullOrEmpty(fileName))
+            {
+                response.AppendHeader("content-disposition", "attachment; filename=" + fileName);
+                response.ContentType = "application/octet-stream";
+                response.WriteFile(docFilePath);
+                response.End();
+            }
+
+        }
+
+        public static void ForceStringDownload(HttpResponse response, string fileName, string fileData)
+        {
+            response.AppendHeader("content-disposition", "attachment; filename=" + fileName);
+            response.ContentType = "application/octet-stream";
+            response.Write(fileData);
+            response.End();
         }
 
 

@@ -34,6 +34,9 @@ namespace DNNrocket.TestForm
                 case "testform_addimage":
                     strOut = AddImageToList(postInfo, ControlRelPath);
                     break;
+                case "testform_adddoc":
+                    strOut = AddDocToList(postInfo, ControlRelPath);
+                    break;
             }
             return strOut;
 
@@ -104,6 +107,11 @@ namespace DNNrocket.TestForm
                 Directory.CreateDirectory(imageDirectory);
             }
 
+            var systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
+            var systemData = new SystemData();
+            var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+            var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
+
             var strOut = "";
             var listname = postInfo.GetXmlProperty("genxml/hidden/listname");
             var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
@@ -116,16 +124,91 @@ namespace DNNrocket.TestForm
             if (fileuploadlist != "")
             {
 
-                foreach (var f in fileuploadlist.Split(','))
+                foreach (var f in fileuploadlist.Split(';'))
                 {
-                    var imgInfo = new SimplisityInfo();
-                    var imagerelpath = templateControlRelPath + "/images/" + f;
-                    var imagepath = imageDirectory + "\\" + f;
-                    imgInfo.SetXmlProperty("genxml/hidden/imagerelpath", imagerelpath);
-                    imgInfo.SetXmlProperty("genxml/hidden/imagepath", imagepath);
-                    imgInfo.SetXmlProperty("genxml/hidden/filename", f);
+                    if (f != "")
+                    {
+                        var friendlyname = GeneralUtils.DeCode(f);
+                        var encryptName = DNNrocketUtils.EncryptFileName(encryptkey, friendlyname);
+                        var newfilename = GeneralUtils.GetUniqueKey(12);
 
-                    info.AddListRow(listname, imgInfo);
+                        var imgInfo = new SimplisityInfo();
+                        var imagerelpath = templateControlRelPath + "/images/" + newfilename;
+                        var imagepath = imageDirectory + "\\" + newfilename;
+
+                        File.Move(DNNrocketUtils.TempDirectory() + "\\" + encryptName, imagepath);
+
+                        imgInfo.SetXmlProperty("genxml/hidden", "");
+                        imgInfo.SetXmlProperty("genxml/hidden/imagerelpath", imagerelpath);
+                        imgInfo.SetXmlProperty("genxml/hidden/imagepath", imagepath);
+                        imgInfo.SetXmlProperty("genxml/hidden/filename", newfilename);
+                        imgInfo.SetXmlProperty("genxml/hidden/friendlyfilename", friendlyname);
+                        imgInfo.SetXmlProperty("genxml/hidden/ext", Path.GetExtension(friendlyname));
+
+                        info.AddListRow(listname, imgInfo);
+                    }
+                }
+
+                objCtrl.SaveData("testform", "TEST", info);  //TestFormSave so if we add multiple it works correct.
+
+            }
+
+            var passSettings = postInfo.ToDictionary();
+
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+
+            return strOut;
+        }
+
+        public static string AddDocToList(SimplisityInfo postInfo, string templateControlRelPath)
+        {
+            var imageDirectory = DNNrocketUtils.MapPath(templateControlRelPath + "/docs");
+            if (!Directory.Exists(imageDirectory))
+            {
+                Directory.CreateDirectory(imageDirectory);
+            }
+
+            var systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
+            var systemData = new SystemData();
+            var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+            var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
+
+            var strOut = "";
+            var listname = postInfo.GetXmlProperty("genxml/hidden/listname");
+            var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
+            var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
+            var fileuploadlist = postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+
+            var objCtrl = new DNNrocketController();
+            var info = objCtrl.GetData("testform", "TEST", DNNrocketUtils.GetEditCulture());
+
+            if (fileuploadlist != "")
+            {
+
+                foreach (var f in fileuploadlist.Split(';'))
+                {
+                    if (f != "")
+                    {
+                        var friendlyname = GeneralUtils.DeCode(f);
+                        var encryptName = DNNrocketUtils.EncryptFileName(encryptkey, friendlyname);
+                        var newfilename = GeneralUtils.GetUniqueKey(12);
+
+                        var docInfo = new SimplisityInfo();
+                        var docrelpath = templateControlRelPath + "/docs/" + newfilename;
+                        var docpath = imageDirectory + "\\" + newfilename;
+
+                        File.Move(DNNrocketUtils.TempDirectory() + "\\" + encryptName, docpath);
+
+                        docInfo.SetXmlProperty("genxml/hidden", "");
+                        docInfo.SetXmlProperty("genxml/hidden/docrelpath", docrelpath);
+                        docInfo.SetXmlProperty("genxml/hidden/docpath", docpath);
+                        docInfo.SetXmlProperty("genxml/hidden/filename", newfilename);
+                        docInfo.SetXmlProperty("genxml/hidden/friendlyfilename", friendlyname);
+                        docInfo.SetXmlProperty("genxml/hidden/ext", Path.GetExtension(friendlyname));
+
+                        info.AddListRow(listname, docInfo);
+                    }
                 }
 
                 objCtrl.SaveData("testform", "TEST", info);  //TestFormSave so if we add multiple it works correct.
