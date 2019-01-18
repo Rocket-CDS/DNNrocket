@@ -101,7 +101,8 @@ namespace DNNrocket.TestForm
 
         public static string AddImageToList(SimplisityInfo postInfo, string templateControlRelPath)
         {
-            var imageDirectory = DNNrocketUtils.MapPath(templateControlRelPath + "/images");
+
+            var imageDirectory =  DNNrocketUtils.HomeDirectory() + "/images";
             if (!Directory.Exists(imageDirectory))
             {
                 Directory.CreateDirectory(imageDirectory);
@@ -133,7 +134,7 @@ namespace DNNrocket.TestForm
                         var newfilename = GeneralUtils.GetUniqueKey(12);
 
                         var imgInfo = new SimplisityInfo();
-                        var imagerelpath = templateControlRelPath + "/images/" + newfilename;
+                        var imagerelpath = DNNrocketUtils.HomeRelDirectory() + "/images/" + newfilename;
                         var imagepath = imageDirectory + "\\" + newfilename;
 
                         File.Move(DNNrocketUtils.TempDirectory() + "\\" + encryptName, imagepath);
@@ -163,10 +164,10 @@ namespace DNNrocket.TestForm
 
         public static string AddDocToList(SimplisityInfo postInfo, string templateControlRelPath)
         {
-            var imageDirectory = DNNrocketUtils.MapPath(templateControlRelPath + "/docs");
-            if (!Directory.Exists(imageDirectory))
+            var docDirectory = DNNrocketUtils.HomeDirectory() + "/docs";
+            if (!Directory.Exists(docDirectory))
             {
-                Directory.CreateDirectory(imageDirectory);
+                Directory.CreateDirectory(docDirectory);
             }
 
             var systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
@@ -195,8 +196,8 @@ namespace DNNrocket.TestForm
                         var newfilename = GeneralUtils.GetUniqueKey(12);
 
                         var docInfo = new SimplisityInfo();
-                        var docrelpath = templateControlRelPath + "/docs/" + newfilename;
-                        var docpath = imageDirectory + "\\" + newfilename;
+                        var docrelpath = DNNrocketUtils.HomeRelDirectory() + "/docs/" + newfilename;
+                        var docpath = docDirectory + "\\" + newfilename;
 
                         File.Move(DNNrocketUtils.TempDirectory() + "\\" + encryptName, docpath);
 
@@ -209,6 +210,7 @@ namespace DNNrocket.TestForm
 
                         info.AddListRow(listname, docInfo);
                     }
+
                 }
 
                 objCtrl.SaveData("testform", "TEST", info);  //TestFormSave so if we add multiple it works correct.
@@ -222,7 +224,6 @@ namespace DNNrocket.TestForm
 
             return strOut;
         }
-
 
     }
 }

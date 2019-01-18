@@ -1006,7 +1006,16 @@ namespace DNNrocketAPI
         public static string TempDirectory()
         {
             return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketTemp";
-        }        
+        }
+
+        public static string HomeDirectory()
+        {
+            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocket";
+        }
+        public static string HomeRelDirectory()
+        {
+            return PortalSettings.Current.HomeDirectory + "DNNrocket";
+        }
 
         public static string MapPath(string relpath)
         {
@@ -1067,6 +1076,10 @@ namespace DNNrocketAPI
         {
             if (!Directory.Exists(TempDirectory())) {
                 Directory.CreateDirectory(TempDirectory());
+            }
+            if (!Directory.Exists(HomeDirectory()))
+            {
+                Directory.CreateDirectory(HomeDirectory());
             }
 
             var statuses = new List<FilesStatus>();
@@ -1150,48 +1163,6 @@ namespace DNNrocketAPI
             return fn;
         }
 
-        public static string DownloadSystemFile(string paramCmd, HttpContext context)
-        {
-            var strOut = "";
-            var fname = DNNrocketUtils.RequestQueryStringParam(context, "filename");
-            var filekey = DNNrocketUtils.RequestQueryStringParam(context, "key");
-            if (fname != "")
-            {
-                strOut = fname; // return this is error.
-                var downloadname = DNNrocketUtils.RequestQueryStringParam(context, "downloadname");
-                var fpath = HttpContext.Current.Server.MapPath(fname);
-                if (downloadname == "") downloadname = Path.GetFileName(fname);
-                try
-                {
-                    DNNrocketUtils.ForceDocDownload(fpath, downloadname, context.Response);
-                }
-                catch (Exception ex)
-                {
-                    // ignore, robots can cause error on thread abort.
-                }
-            }
-            return strOut;
-        }
-
-        public static void ForceDocDownload(string docFilePath, string fileName, HttpResponse response)
-        {
-            if (File.Exists(docFilePath) & !String.IsNullOrEmpty(fileName))
-            {
-                response.AppendHeader("content-disposition", "attachment; filename=" + fileName);
-                response.ContentType = "application/octet-stream";
-                response.WriteFile(docFilePath);
-                response.End();
-            }
-
-        }
-
-        public static void ForceStringDownload(HttpResponse response, string fileName, string fileData)
-        {
-            response.AppendHeader("content-disposition", "attachment; filename=" + fileName);
-            response.ContentType = "application/octet-stream";
-            response.Write(fileData);
-            response.End();
-        }
 
 
     }

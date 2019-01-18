@@ -10,6 +10,7 @@ using DotNetNuke.Services.Mail;
 using DotNetNuke.Entities.Users.Membership;
 using DNNrocket.Login;
 using System.Collections.Generic;
+using System.IO;
 
 namespace DNNrocketAPI
 {
@@ -33,7 +34,7 @@ namespace DNNrocketAPI
                     _editlang = DNNrocketUtils.GetEditCulture();
 
 
-                var paramCmd = context.Request.QueryString["cmd"];
+                    var paramCmd = context.Request.QueryString["cmd"];
 
                     // -------------------------------------------------------------
                     // -------------- OUTPUT TEST DATA -----------------------------
@@ -45,13 +46,13 @@ namespace DNNrocketAPI
                     // -------------------------------------------------------------
 
                     var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
-                    var sInfoJson = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
+                    var postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
 
                     // -------------------------------------------------------------
                     // -------------- OUTPUT TEST DATA -----------------------------
                     // -------------------------------------------------------------
                     //FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\requestJson.xml", requestJson);
-                    //FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\sInfoJson.xml", sInfoJson.XMLData);
+                    //FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\postInfo.xml", postInfo.XMLData);
 
                     //--------------------------
 
@@ -59,73 +60,79 @@ namespace DNNrocketAPI
                     // -------------- OUTPUT TEST DATA -----------------------------
                     // -------------------------------------------------------------
 
-                    var systemprovider = sInfoJson.GetXmlProperty("genxml/hidden/systemprovider");
-                    if (systemprovider == "") systemprovider = sInfoJson.GetXmlProperty("genxml/systemprovider");
+                    var systemprovider = postInfo.GetXmlProperty("genxml/hidden/systemprovider");
+                    if (systemprovider == "") systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
                     if (systemprovider == "") systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");
 
-                    var interfacekey = sInfoJson.GetXmlProperty("genxml/hidden/interfacekey");
-                if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
+                    var interfacekey = postInfo.GetXmlProperty("genxml/hidden/interfacekey");
+                    if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
-                sInfoJson.SetXmlProperty("genxml/systemprovider", systemprovider);
+                    postInfo.SetXmlProperty("genxml/systemprovider", systemprovider);
 
-                if (paramCmd == "getsidemenu")
-                {
-                    strOut = GetSideMenu(sInfoJson, systemprovider);
-                }
-                else
-                {
-
-                    var objCtrl = new DNNrocketController();
-                    var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
-
-                    if (systemprovider == "" || systemprovider == "systemapi")
+                    switch (paramCmd)
                     {
-                        var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
-                        strOut = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, sInfoJson, HttpContext.Current.Request.UserHostAddress, _editlang);
-                    }
-                    else
-                    {
-                        if (systemprovider != "")
-                        {
-                            // Run API Provider.
-                            strOut = "API not found: " + systemprovider;
-                            if (systemInfo != null)
+                        case "getsidemenu":
+                            strOut = GetSideMenu(postInfo, systemprovider);
+                            break;
+                        case "filedownload":
+                            DownloadSystemFile(context, postInfo);
+                            break;
+                        default:
+                            var objCtrl = new DNNrocketController();
+                            var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
+
+                            if (systemprovider == "" || systemprovider == "systemapi")
                             {
-                                var interfaceInfo = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);                                
-                                if (interfaceInfo != null)
-                                {
-                                    var controlRelPath = interfaceInfo.GetXmlProperty("genxml/textbox/relpath");
-                                    var assembly = interfaceInfo.GetXmlProperty("genxml/textbox/assembly");
-                                    var namespaceclass = interfaceInfo.GetXmlProperty("genxml/textbox/namespaceclass");
-                                    if (assembly == "" || namespaceclass == "")
-                                    {
-                                        strOut = "No assembly or namespaceclass defined: " + systemprovider + " : " + assembly + "," + namespaceclass;
-                                    }
-                                    else
-                                    {
-                                        try
-                                        {
-                                            var ajaxprov = APInterface.Instance(assembly, namespaceclass, controlRelPath);
-                                            strOut = ajaxprov.ProcessCommand(paramCmd, systemInfo, interfaceInfo, sInfoJson, HttpContext.Current.Request.UserHostAddress, _editlang);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            strOut = "No valid assembly found: " + systemprovider + " : " + assembly + "," + namespaceclass + "<br/>" + ex.ToString();
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    strOut = "interfacekey not found: " + interfacekey;
-                                }
+                                var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
+                                strOut = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
                             }
                             else
                             {
-                                strOut = "No valid system found: " + systemprovider;
+                                if (systemprovider != "")
+                                {
+                                    // Run API Provider.
+                                    strOut = "API not found: " + systemprovider;
+                                    if (systemInfo != null)
+                                    {
+                                        var interfaceInfo = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
+                                        if (interfaceInfo != null)
+                                        {
+                                            var controlRelPath = interfaceInfo.GetXmlProperty("genxml/textbox/relpath");
+                                            var assembly = interfaceInfo.GetXmlProperty("genxml/textbox/assembly");
+                                            var namespaceclass = interfaceInfo.GetXmlProperty("genxml/textbox/namespaceclass");
+                                            if (assembly == "" || namespaceclass == "")
+                                            {
+                                                strOut = "No assembly or namespaceclass defined: " + systemprovider + " : " + assembly + "," + namespaceclass;
+                                            }
+                                            else
+                                            {
+                                                try
+                                                {
+                                                    var ajaxprov = APInterface.Instance(assembly, namespaceclass, controlRelPath);
+                                                    strOut = ajaxprov.ProcessCommand(paramCmd, systemInfo, interfaceInfo, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    strOut = "No valid assembly found: " + systemprovider + " : " + assembly + "," + namespaceclass + "<br/>" + ex.ToString();
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            strOut = "interfacekey not found: " + interfacekey;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        strOut = "No valid system found: " + systemprovider;
+                                    }
+                                }
                             }
-                        }
+
+                            break;
                     }
-                }
+
+
                 }
             }
             catch (Exception ex)
@@ -187,6 +194,34 @@ namespace DNNrocketAPI
                 return ex.ToString();
             }
         }
+
+        public static string DownloadSystemFile(HttpContext context, SimplisityInfo postInfo)
+        {
+            var strOut = "";
+            var filenamepath = DNNrocketUtils.MapPath(postInfo.GetXmlProperty("genxml/hidden/filerelpath"));
+            var filekey = postInfo.GetXmlProperty("genxml/hidden/key");
+            if (filenamepath != "")
+            {
+                strOut = filenamepath; // return this is error.
+                var downloadname = postInfo.GetXmlProperty("genxml/hidden/downloadname");
+                if (downloadname == "") downloadname = Path.GetFileName(filenamepath);
+                try
+                {
+                    context.Response.Clear();
+                    context.Response.AppendHeader("content-disposition", "attachment; filename=" + downloadname);
+                    context.Response.ContentType = "application/octet-stream";
+                    context.Response.WriteFile(filenamepath);
+                    context.Response.End();
+                }
+                catch (Exception ex)
+                {
+                    // ignore, robots can cause error on thread abort.
+                }
+            }
+            return strOut;
+        }
+
+
 
     }
 }
