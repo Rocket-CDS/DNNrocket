@@ -1,6 +1,7 @@
 ﻿using DNNrocketAPI;
 using Simplisity;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace DNNrocket.TestForm
@@ -8,7 +9,7 @@ namespace DNNrocket.TestForm
     public class startconnect : DNNrocketAPI.APInterface
     {
 
-        public override string ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
 
             //CacheUtils.ClearAllCache();
@@ -38,8 +39,9 @@ namespace DNNrocket.TestForm
                     strOut = AddDocToList(postInfo, ControlRelPath);
                     break;
             }
-            return strOut;
-
+            var rtnDic = new Dictionary<string, string>();
+            rtnDic.Add("outputhtml", strOut);
+            return rtnDic;
         }
 
         public static string AddToList(SimplisityInfo postInfo, string templateControlRelPath)

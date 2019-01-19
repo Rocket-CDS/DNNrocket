@@ -9,7 +9,7 @@ namespace DNNrocket.Country
     {
         private static string _systemprovider;
 
-        public override string ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo sInfo, string userHostAddress, string editlang = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo sInfo, string userHostAddress, string editlang = "")
         {
 
             //CacheUtils.ClearAllCache();
@@ -29,8 +29,9 @@ namespace DNNrocket.Country
                     strOut = CountryDetail(sInfo, controlRelPath, editlang);
                     break;
             }
-            return strOut;
-
+            var rtnDic = new Dictionary<string, string>();
+            rtnDic.Add("outputhtml", strOut);
+            return rtnDic;
         }
 
         public static String CountryDetail(SimplisityInfo sInfo, string templateControlRelPath, string editlang)

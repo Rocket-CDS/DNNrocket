@@ -10,7 +10,7 @@ namespace DNNrocket.TestList
         private static string _EntityTypeCode;
         private static string _editlang;
 
-        public override string ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
             _editlang = DNNrocketUtils.GetEditCulture();
@@ -56,7 +56,9 @@ namespace DNNrocket.TestList
                     strOut = "COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
                     break;
             }
-            return strOut;
+            var rtnDic = new Dictionary<string, string>();
+            rtnDic.Add("outputhtml", strOut);
+            return rtnDic;
         }
 
         public static String GetList(SimplisityInfo postInfo, string templateControlRelPath)

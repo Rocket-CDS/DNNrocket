@@ -11,7 +11,7 @@ namespace DNNrocket.SystemData
     public class startconnect : DNNrocketAPI.APInterface
     {
 
-        public override string ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo,string userHostAddress, string editlang = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo,string userHostAddress, string editlang = "")
         {
 
             //CacheUtils.ClearAllCache();
@@ -99,8 +99,9 @@ namespace DNNrocket.SystemData
                         break;
                 }
             }
-            return strOut;
-
+            var rtnDic = new Dictionary<string, string>();
+            rtnDic.Add("outputhtml", strOut);
+            return rtnDic;            
         }
 
 

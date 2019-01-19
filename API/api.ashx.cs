@@ -36,33 +36,31 @@ namespace DNNrocketAPI
 
                     var paramCmd = context.Request.QueryString["cmd"];
 
-                    // -------------------------------------------------------------
-                    // -------------- OUTPUT TEST DATA -----------------------------
-                    // -------------------------------------------------------------
-                    // does NOT work across portals.
-                    //CacheUtils.SetCache("debugOutMapPath", PortalSettings.Current.HomeDirectoryMapPath);
-                    // -------------------------------------------------------------
-                    // -------------- OUTPUT TEST DATA -----------------------------
-                    // -------------------------------------------------------------
+                    var requestJson = "";
+                    var postInfo = new SimplisityInfo();
+                    postInfo.SetXmlProperty("genxml/hidden","");
+                    if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
+                    {
+                        requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
+                        postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
+                    }
 
-                    var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
-                    var postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
+                    // Add any url params
+                    foreach (string key in context.Request.QueryString.Keys)
+                    {
+                        if (key != "cmd")
+                        {
+                            var values = context.Request.QueryString.GetValues(key);
+                            foreach (string value in values)
+                            {
+                                postInfo.SetXmlProperty("genxml/hidden/" + key, GeneralUtils.DeCode(value));
+                            }
 
-                    // -------------------------------------------------------------
-                    // -------------- OUTPUT TEST DATA -----------------------------
-                    // -------------------------------------------------------------
-                    //FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\requestJson.xml", requestJson);
-                    //FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + @"\postInfo.xml", postInfo.XMLData);
-
-                    //--------------------------
-
-                    // -------------------------------------------------------------
-                    // -------------- OUTPUT TEST DATA -----------------------------
-                    // -------------------------------------------------------------
+                        }
+                    }
 
                     var systemprovider = postInfo.GetXmlProperty("genxml/hidden/systemprovider");
                     if (systemprovider == "") systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
-                    if (systemprovider == "") systemprovider = DNNrocketUtils.RequestQueryStringParam(context, "systemprovider");
 
                     var interfacekey = postInfo.GetXmlProperty("genxml/hidden/interfacekey");
                     if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
@@ -84,7 +82,8 @@ namespace DNNrocketAPI
                             if (systemprovider == "" || systemprovider == "systemapi")
                             {
                                 var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
-                                strOut = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
+                                var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
+                                strOut = returnDictionary["outputhtml"];
                             }
                             else
                             {
@@ -109,7 +108,8 @@ namespace DNNrocketAPI
                                                 try
                                                 {
                                                     var ajaxprov = APInterface.Instance(assembly, namespaceclass, controlRelPath);
-                                                    strOut = ajaxprov.ProcessCommand(paramCmd, systemInfo, interfaceInfo, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
+                                                    var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, interfaceInfo, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
+                                                    strOut = returnDictionary["outputhtml"];
                                                 }
                                                 catch (Exception ex)
                                                 {
