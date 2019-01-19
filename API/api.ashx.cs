@@ -72,9 +72,6 @@ namespace DNNrocketAPI
                         case "getsidemenu":
                             strOut = GetSideMenu(postInfo, systemprovider);
                             break;
-                        case "filedownload":
-                            DownloadSystemFile(context, postInfo);
-                            break;
                         default:
                             var objCtrl = new DNNrocketController();
                             var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
@@ -110,6 +107,12 @@ namespace DNNrocketAPI
                                                     var ajaxprov = APInterface.Instance(assembly, namespaceclass, controlRelPath);
                                                     var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, interfaceInfo, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
                                                     strOut = returnDictionary["outputhtml"];
+                                                    if (returnDictionary.ContainsKey("filenamepath"))
+                                                    {
+                                                        if (!returnDictionary.ContainsKey("downloadname")) returnDictionary["downloadname"] = "";
+                                                        if (!returnDictionary.ContainsKey("fileext")) returnDictionary["fileext"] = "";
+                                                        DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
+                                                    }
                                                 }
                                                 catch (Exception ex)
                                                 {
@@ -195,16 +198,13 @@ namespace DNNrocketAPI
             }
         }
 
-        public static string DownloadSystemFile(HttpContext context, SimplisityInfo postInfo)
+        public static string DownloadFile(HttpContext context, string filenamepath, string downloadname, string fileext)
         {
             var strOut = "";
-            var filenamepath = DNNrocketUtils.MapPath(postInfo.GetXmlProperty("genxml/hidden/filerelpath"));
-            var filekey = postInfo.GetXmlProperty("genxml/hidden/key");
             if (filenamepath != "")
             {
                 strOut = filenamepath; // return this is error.
-                var downloadname = postInfo.GetXmlProperty("genxml/hidden/downloadname");
-                if (downloadname == "") downloadname = Path.GetFileName(filenamepath);
+                if (downloadname == "") downloadname = Path.GetFileNameWithoutExtension(filenamepath) + fileext;
                 try
                 {
                     context.Response.Clear();

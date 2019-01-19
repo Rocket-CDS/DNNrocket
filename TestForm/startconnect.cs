@@ -14,6 +14,8 @@ namespace DNNrocket.TestForm
 
             //CacheUtils.ClearAllCache();
 
+            var rtnDic = new Dictionary<string, string>();
+
             var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [testform]";
 
             switch (paramCmd)
@@ -38,8 +40,12 @@ namespace DNNrocket.TestForm
                 case "testform_adddoc":
                     strOut = AddDocToList(postInfo, ControlRelPath);
                     break;
+                case "testform_download":
+                    rtnDic.Add("filenamepath", postInfo.GetXmlProperty("genxml/hidden/filerelpath"));
+                    rtnDic.Add("downloadname", postInfo.GetXmlProperty("genxml/hidden/downloadname"));
+                    rtnDic.Add("fileext", "");
+                    break;
             }
-            var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;
         }
