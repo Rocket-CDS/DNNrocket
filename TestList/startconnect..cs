@@ -13,7 +13,8 @@ namespace DNNrocket.TestList
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
-            _editlang = DNNrocketUtils.GetEditCulture();
+            _editlang = editlang;
+            if (_editlang == "") _editlang = DNNrocketUtils.GetEditCulture();
 
             var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
 
