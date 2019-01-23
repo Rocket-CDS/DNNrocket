@@ -78,6 +78,10 @@ namespace DNNrocket.SystemData
                             RebuildIndex(postInfo, true);
                             strOut = "<h1>Deleting and Rebuilding Index</h1>";
                             break;
+                        case "systemapi_copyinterface":
+                            CopyInterface(postInfo);
+                            strOut = "";
+                            break;
                     }
                 }
             }
@@ -243,6 +247,7 @@ namespace DNNrocket.SystemData
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(Convert.ToInt32(selecteditemid));
                 info.XMLData = postInfo.XMLData;
+                info.GUIDKey = postInfo.GetXmlProperty("genxml/textbox/ctrlkey");
                 objCtrl.Update(info);
 
                 // Capture existing SYSTEMLINK records, so we can selectivly delete. Protect system suring operation, records always there.
@@ -387,6 +392,38 @@ namespace DNNrocket.SystemData
                 }
 
                 CacheUtils.ClearCache();
+            }
+
+        }
+
+
+        public static void CopyInterface(SimplisityInfo postInfo)
+        {
+            var itemid = postInfo.GetXmlProperty("genxml/hidden/fromsystemid");
+            if (GeneralUtils.IsNumeric(itemid))
+            {
+                var objCtrl = new DNNrocketController();
+                var sysInfo = objCtrl.GetInfo(Convert.ToInt32(itemid));
+                if (sysInfo != null)
+                {
+                    var interfacekey = postInfo.GetXmlProperty("genxml/hidden/interfacekey");
+                    var tosystemid = postInfo.GetXmlProperty("genxml/hidden/tosystemid");
+                    var sysInfoTo = objCtrl.GetInfo(Convert.ToInt32(itemid));
+                    if (sysInfoTo != null)
+                    {
+                        // find from interface
+                        foreach (var i in sysInfo.GetList("interfacedata"))
+                        {
+
+                        }
+
+                        // check doesn;t exist
+
+                            // copy to new ystsem
+                    }
+                }
+
+                    CacheUtils.ClearCache();
             }
 
         }

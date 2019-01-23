@@ -318,4 +318,16 @@
   <data name="dropimage.Text" xml:space="preserve">
     <value>Drop Image Here</value>
   </data>
+  <data name="docs.Text" xml:space="preserve">
+    <value>Docs</value>
+  </data>
+  <data name="documents.Text" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="images.Text" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="remove.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
 </root>
