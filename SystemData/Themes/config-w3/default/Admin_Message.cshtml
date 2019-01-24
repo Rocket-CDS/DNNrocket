@@ -1,0 +1,33 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
+@{
+    var sInfo = (SimplisityInfo)Model.List.First();
+    var delay = sInfo.GetXmlPropertyInt("genxml/delay");
+    if (delay == 0)
+    {
+        delay = 1000;
+    }
+}
+
+<div id="messagepanel" style="width:80%;z-index:5" class="w3-card-4 @sInfo.GetXmlProperty("genxml/color") w3-border w3-margin w3-display-middle">
+    <div class="w3-right-align">
+        <span onclick="document.getElementById('messagepanel').style.display='none'" class="w3-button">&times;</span>
+ </div>
+    <div class="w3-padding" style="text-align:center;">
+        @sInfo.GetXmlProperty("genxml/message")
+    </div>
+    </div>
+
+<script>
+        $(document).ready(function () {
+            $('#messagepanel').parent().show().delay(@(delay)).hide(0);
+        });
+
+</script>
+
+

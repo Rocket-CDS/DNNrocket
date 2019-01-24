@@ -79,8 +79,7 @@ namespace DNNrocket.SystemData
                             strOut = "<h1>Deleting and Rebuilding Index</h1>";
                             break;
                         case "systemapi_copyinterface":
-                            CopyInterface(postInfo);
-                            strOut = "";
+                            strOut = CopyInterface(postInfo, controlRelPath);
                             break;
                     }
                 }
@@ -397,8 +396,11 @@ namespace DNNrocket.SystemData
         }
 
 
-        public static void CopyInterface(SimplisityInfo postInfo)
+        public static string CopyInterface(SimplisityInfo postInfo, string templateControlRelPath)
         {
+            var strOut = "";
+            var info = new SimplisityInfo();
+            info.SetXmlProperty("genxml/delay", "2000");
             var itemid = postInfo.GetXmlProperty("genxml/hidden/fromsystemid");
             if (GeneralUtils.IsNumeric(itemid))
             {
@@ -408,24 +410,58 @@ namespace DNNrocket.SystemData
                 {
                     var interfacekey = postInfo.GetXmlProperty("genxml/hidden/interfacekey");
                     var tosystemid = postInfo.GetXmlProperty("genxml/hidden/tosystemid");
-                    var sysInfoTo = objCtrl.GetInfo(Convert.ToInt32(itemid));
-                    if (sysInfoTo != null)
+                    if (tosystemid == itemid)
                     {
-                        // find from interface
-                        foreach (var i in sysInfo.GetList("interfacedata"))
+                        info.SetXmlProperty("genxml/message", "Canont copy the interface to the same system.");
+                        info.SetXmlProperty("genxml/color", "w3-pale-red");
+                    }
+                    else
+                    {
+
+                        var sysInfoTo = objCtrl.GetInfo(Convert.ToInt32(tosystemid));
+                        if (sysInfoTo != null)
                         {
+                            var interfaceToCopy = sysInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
+                            if (interfaceToCopy != null)
+                            {
+                                var interfaceExists = sysInfoTo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
+                                if (interfaceExists == null)
+                                {
+                                    sysInfoTo.AddListRow("interfacedata", interfaceToCopy);
+                                    objCtrl.Update(sysInfoTo);
+                                    info.SetXmlProperty("genxml/message", "Interface Copied");
+                                    info.SetXmlProperty("genxml/color", "w3-pale-green");
+                                    info.SetXmlProperty("genxml/delay", "750");
+                                }
+                                else
+                                {
+                                    info.SetXmlProperty("genxml/message", "Interface already exists in destination.  Delete the Interface in destination and try again.");
+                                    info.SetXmlProperty("genxml/color", "w3-pale-red");
+                                    info.SetXmlProperty("genxml/delay", "3000");
+                                }
 
+                            }
+                            else
+                            {
+                                info.SetXmlProperty("genxml/message", "Interface does not exists.");
+                                info.SetXmlProperty("genxml/color", "w3-pale-red");
+                            }
                         }
-
-                        // check doesn;t exist
-
-                            // copy to new ystsem
+                        else
+                        {
+                            info.SetXmlProperty("genxml/message", "System does not exists.");
+                            info.SetXmlProperty("genxml/color", "w3-pale-red");
+                        }
                     }
                 }
+                CacheUtils.ClearCache();
+                var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
+                var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, info);
 
-                    CacheUtils.ClearCache();
             }
-
+            return strOut;
         }
 
     }
