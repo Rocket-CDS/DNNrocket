@@ -376,6 +376,24 @@ namespace DNNrocketAPI
             return files;
         }
 
+        public static Dictionary<string, string> GetRegionList(string countrycode, string dnnlistname = "Region")
+        {
+            var parentkey = "Country." + countrycode;
+            var objCtrl = new DotNetNuke.Common.Lists.ListController();
+            var tList = objCtrl.GetListEntryInfoDictionary(dnnlistname, parentkey);
+            var rtnDic = new Dictionary<string, string>();
+
+            foreach (var r in tList)
+            {
+                var datavalue = r.Value;
+                var regionname = datavalue.Text;
+                rtnDic.Add(datavalue.Key, regionname);
+            }
+
+            return rtnDic;
+        }
+
+
         public static Dictionary<String, String> GetCountryCodeList(int portalId = -1)
         {
             var rtnDic = new Dictionary<String, String>();
