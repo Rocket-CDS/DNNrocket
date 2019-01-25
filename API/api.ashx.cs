@@ -11,6 +11,7 @@ using DotNetNuke.Entities.Users.Membership;
 using DNNrocket.Login;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace DNNrocketAPI
 {
@@ -22,6 +23,8 @@ namespace DNNrocketAPI
         public void ProcessRequest(HttpContext context)
         {
             var strOut = "ERROR: Invalid.";
+            var strJson = "";
+
             try
             {
                 // Do file upload is this is a file upload request.
@@ -106,12 +109,19 @@ namespace DNNrocketAPI
                                                 {
                                                     var ajaxprov = APInterface.Instance(assembly, namespaceclass, controlRelPath);
                                                     var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, interfaceInfo, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
-                                                    strOut = returnDictionary["outputhtml"];
+                                                    if (returnDictionary.ContainsKey("outputhtml"))
+                                                    {
+                                                        strOut = returnDictionary["outputhtml"];
+                                                    }
                                                     if (returnDictionary.ContainsKey("filenamepath"))
                                                     {
                                                         if (!returnDictionary.ContainsKey("downloadname")) returnDictionary["downloadname"] = "";
                                                         if (!returnDictionary.ContainsKey("fileext")) returnDictionary["fileext"] = "";
                                                         DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
+                                                    }
+                                                    if (returnDictionary.ContainsKey("outputjson"))
+                                                    {
+                                                        strJson = returnDictionary["outputjson"];
                                                     }
                                                 }
                                                 catch (Exception ex)
@@ -146,11 +156,25 @@ namespace DNNrocketAPI
 
             #region "return results"
 
-            //send back xml as plain text
-            context.Response.Clear();
-            context.Response.ContentType = "text/plain";
-            context.Response.Write(strOut);
-            context.Response.End();
+            if (strJson != "")
+            {
+                //send back xml as plain text
+                context.Response.Clear();
+                context.Response.ContentType = "application/json; charset=utf-8";
+                context.Response.Write(JsonConvert.SerializeObject(strJson));
+                //context.Response.Write(strJson);
+                context.Response.End();
+
+            }
+            else
+            {
+                //send back xml as plain text
+                context.Response.Clear();
+                context.Response.ContentType = "text/plain";
+                context.Response.Write(strOut);
+                context.Response.End();
+            }
+
 
             #endregion
 

@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI;
+using Newtonsoft.Json;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -19,18 +20,24 @@ namespace DNNrocket.Country
 
             var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [settingcountry]";
 
+            var rtnDic = new Dictionary<string, string>();
+
             switch (paramCmd)
             {
                 case "settingcountry_get":
-                    strOut = CountryDetail(sInfo, controlRelPath, editlang);
+                    rtnDic.Add("outputhtml", CountryDetail(sInfo, controlRelPath, editlang));
                     break;
                 case "settingcountry_save":
                     CountrySave(sInfo);
-                    strOut = CountryDetail(sInfo, controlRelPath, editlang);
+                    rtnDic.Add("outputhtml", CountryDetail(sInfo, controlRelPath, editlang));
+                    break;
+                case "settingcountry_getregion":
+                    rtnDic.Add("outputhtml", "");
+                    var regionlist = CountryUtils.RegionListCSV(sInfo.GetXmlProperty("genxml/hidden/activevalue"));
+                    rtnDic.Add("outputjson", "{listkey: [" + regionlist[0] + "], listvalue: [" + regionlist[1] + "] }");
                     break;
             }
-            var rtnDic = new Dictionary<string, string>();
-            rtnDic.Add("outputhtml", strOut);
+
             return rtnDic;
         }
 

@@ -18,8 +18,8 @@ namespace DNNrocket.Country
             {
                 foreach (var i in smi.GetList("countrylist"))
                 {
-                    countrycode_csv += i.GetXmlProperty("genxml/hidden/countrycode") + ",";
-                    countryname_csv += DNNrocketUtils.GetCountryName(i.GetXmlProperty("genxml/hidden/countrycode")) + ",";
+                    countrycode_csv += "'" + i.GetXmlProperty("genxml/hidden/countrycode").Replace("'", "") + "',";
+                    countryname_csv += "'" + DNNrocketUtils.GetCountryName(i.GetXmlProperty("genxml/hidden/countrycode")).Replace("'", "") + "',";
                 }
                 countryname_csv = countryname_csv.TrimEnd(',');
                 countrycode_csv = countrycode_csv.TrimEnd(',');
@@ -37,14 +37,14 @@ namespace DNNrocket.Country
             var name_csv = "";
                 foreach (var i in DNNrocketUtils.GetRegionList(countrycode))
                 {
-                    code_csv += i.Key + ",";
-                    name_csv += i.Value + ",";
+                    code_csv += "'" + i.Key.Replace("'","") + "',";
+                    name_csv += "'" + i.Value.Replace("'", "") + "',";
                 }
                 name_csv = name_csv.TrimEnd(',');
                 code_csv = code_csv.TrimEnd(',');
 
-                rtn[1] = name_csv;
                 rtn[0] = code_csv;
+                rtn[1] = name_csv;
             return rtn;
         }
 
