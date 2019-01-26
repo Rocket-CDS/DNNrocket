@@ -156,24 +156,20 @@ namespace DNNrocketAPI
 
             #region "return results"
 
+            context.Response.Clear();
             if (strJson != "")
             {
                 //send back xml as plain text
-                context.Response.Clear();
                 context.Response.ContentType = "application/json; charset=utf-8";
                 context.Response.Write(JsonConvert.SerializeObject(strJson));
-                //context.Response.Write(strJson);
-                context.Response.End();
-
             }
             else
             {
                 //send back xml as plain text
-                context.Response.Clear();
                 context.Response.ContentType = "text/plain";
                 context.Response.Write(strOut);
-                context.Response.End();
             }
+            context.Response.End();
 
 
             #endregion
