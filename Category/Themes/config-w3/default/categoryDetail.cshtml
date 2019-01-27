@@ -1,0 +1,151 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/TestForm/App_LocalResources/")
+
+@{
+    var info = (SimplisityInfo)Model.List.First();
+}
+
+
+<span class="w3-section simplisity_buttons">
+    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="category_save" s-post="#testform" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="category_delete" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:CategoryList.cshtml,interfacekey:category">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
+    <button class="w3-button w3-sand w3-padding-8 simplisity_click" s-track="true" s-cmd="category_getlist" s-fields="selecteditemid:,theme:config-w3,template:CategoryList.cshtml,interfacekey:category">@ResourceKey("DNNrocket.cmdReturnButton")</button>
+</span>
+
+
+
+<div class="w3-container">
+
+    <div class="w3-container">
+        <div class="w3-row">
+            <a href="javascript:void(0)" class="sectiontab" sectionname="testform" >
+                <div class="w3-col tablink w3-bottombar w3-hover-theme w3-padding w3-border-black w3-theme " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testform")</div>
+            </a>
+        </div>
+
+        <div id="testform" class="w3-container w3-margin tabsection" style="display:block;">
+
+            <h2>@ResourceKey("testform.testform")</h2>
+            <b>ItemId: @info.ItemID</b>
+            <div class="w3-row wrapperheight">
+                <div class="w3-half w3-padding">
+
+                    <!-- START:  input fields using html ------------------------------------------>
+                    <div>
+                        <label>Text Input (Standard)</label>
+                        @TextBox(info, "genxml/textbox/categoryref", "class='w3-input w3-border' maxlength='50' placeholder='ref...' ", "")
+                    </div>
+                    <div>
+                        @EditFlag()&nbsp;<label>Text Input (Localized)</label>
+                        @TextBox(info, "genxml/lang/genxml/textbox/categoryname", "class='w3-input w3-border' maxlength='50'", "")
+                    </div>
+                    <!-- END: input fields using html ------------------------------------------>
+                    <!----------------------------------------------------------------------------------->
+                    <!-- START:  input fields using razor tokens ------------------------------------------>
+                    <div>
+                        <label>Razor Token Text Input (Standard)</label>
+                        @TextBox(info, "genxml/textbox/passtxt", "class='w3-input w3-border' maxlength='50' ", "Razor Token Input Text")
+                    </div>
+                    <div>
+                        @EditFlag()&nbsp;<label>Razor Token Text Input (Localized)</label>
+                        @TextBox(info, "genxml/lang/genxml/textbox/passtxtl", "class='w3-input w3-border' maxlength='50' ", "Localized Razor Token Input Text")
+                    </div>
+                    <!-- END:  input fields using razor tokens ------------------------------------------>
+                    <!----------------------------------------------------------------------------------->
+                    <!-- START:  input fields [Double]  ------------------------------------------>
+                    <div>
+                        <label>Text Input [Double] (Standard)</label>
+                        @TextBox(info, "genxml/textbox/doubletxt", "class='w3-input w3-border' maxlength='50' s-datatype='double'", "99")
+                    </div>
+                    <div>
+                        @EditFlag()&nbsp;<label>Text Input [Double] (Localized)</label>
+                        <!-- Localized flag if NOT set. therefore the "genxml/lang" on the xpath IS required.-->
+                        @TextBox(info, "genxml/lang/genxml/textbox/doubletxtl", "class='w3-input w3-border' maxlength='50' s-datatype='double'", "99.99")
+                    </div>
+                    <!-- END:  input fields [Double]  ------------------------------------------>
+                    <!----------------------------------------------------------------------------------->
+                    <!-- START:  input fields [Date]  ------------------------------------------>
+                    <div>
+                        <label>Text Input [Date] (Standard)</label>
+                        @TextBox(info, "genxml/textbox/datetxt", "class='w3-input w3-border' maxlength='50' s-datatype='date'", "")
+                    </div>
+                    <div>
+                        @EditFlag()&nbsp;<label>Text Input [Date] (Localized)</label>
+                        <!-- Localized flag set to "true", with this the "genxml/lang" on the xpath is not required.-->
+                        @TextBox(info, "genxml/textbox/datetxtl", "class='w3-input w3-border' maxlength='50' s-datatype='date'", "", true)
+                    </div>
+                    <!-- END:  input fields [Date]  ------------------------------------------>
+                    <div>
+                        <label>Premier</label>
+                        @CheckBox(info, "genxml/checkbox/premier", "", "class='w3-check' ", false, false)
+                    </div>
+                </div>
+                <div class="w3-half  w3-padding">
+                    <div>
+                        <label>DropDownList (Standard)</label>
+                        @DropDownList(info, "genxml/dropdownlist/testddl", "1,2,3", "a,b,c", "class='w3-input w3-border'")
+                    </div>
+                    <div>
+                        @EditFlag()&nbsp;<label>DropDownList (Localized)</label>
+                        @DropDownList(info, "genxml/dropdownlist/testddllang2", "1,2,3", "a,b,c", "class='w3-input w3-border'", "2", true)
+                    </div>
+                    <div>
+                        <label>RadioButtonList (Standard)</label>
+                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbl", "1,2,3", "a,b,c", "class='w3-padding w3-border'")
+                    </div>
+                    <div>
+                        @EditFlag()&nbsp;<label>RadioButtonList (Localized)</label>
+                        @RadioButtonList(info, "genxml/radiobuttonlist/testrbllang", "1,2,3", "a,b,c", "class='w3-padding w3-border'", "", "", true)
+                    </div>
+                    <div>
+                        <label>TextArea (Standard)</label>
+                        @TextArea(info, "genxml/textbox/testingta", "class='w3-input w3-border'", "Text Area Standard")
+                    </div>
+                    <div>
+                        @EditFlag()&nbsp;<label>TextArea (Localized)</label>
+                        @TextArea(info, "genxml/textbox/testingtalang", "class='w3-input w3-border'", "Text Area Localized", true)
+                    </div>
+                    <div>
+                        <label>Checkbox (Standard)</label>
+                        @CheckBox(info, "genxml/checkbox/testingcb", "", "class='w3-check' ")
+                    </div>
+                    <div>
+                        @EditFlag()&nbsp;<label>Checkbox (Localized)</label>
+                        @CheckBox(info, "genxml/checkbox/testingcblang", "", "class='w3-check' ", false, true)
+                    </div>
+                    <div>
+                        <label>CheckBoxList (Standard)</label>
+                        @CheckBoxList(info, "genxml/checkboxlist/testcbl", "1,2,3", "a,b,c", "class='w3-border w3-padding' ")
+                    </div>
+                    <div>
+                        @EditFlag()&nbsp;<label>CheckBoxList (Localized)</label>
+                        @CheckBoxList(info, "genxml/checkboxlist/testcbllang", "1,2,3", "a,b,c", "class='w3-border w3-padding' ", false, true)
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        // we can't place class on each input with Razor Tokens so use JQuery to add at runtime.
+        $(':checkbox').attr('class', 'w3-check');
+        $(':radio').attr('class', 'w3-radio');
+
+
+    });
+
+
+</script>

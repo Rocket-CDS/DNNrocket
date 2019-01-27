@@ -24,7 +24,6 @@
             <tr>
                 <th class="w3-quarter">@ResourceKey("system.indexref")</th>
                 <th class="w3-quarter">@ResourceKey("system.fieldxpath")</th>
-                <th class="w3-quarter">@ResourceKey("system.fieldcol")</th>
                 <th class="w3-quarter">@ResourceKey("system.interfacekey")</th>
                 <th style="width:20px;"></th>
             </tr>
@@ -42,9 +41,6 @@
                 </td>
                 <td class="w3-quarter">
                     @TextBox(i, "genxml/textbox/xpath", "class='w3-input w3-border' maxlength='250' ", "", false, lp2)
-                </td>
-                <td class="w3-quarter">
-                    @DropDownList(i, "genxml/dropdownlist/fieldcol", ResourceKey("system.idxcols", "", "datavalue").ToString(), ResourceKey("system.idxcols", "", "data").ToString(), "class='w3-select w3-border'", "", false, lp2)
                 </td>
                 <td class="w3-quarter">
                     @{
