@@ -65,6 +65,7 @@ namespace DNNrocketAPI
 
         public static string RazorRender(Object info, string razorTempl, Boolean debugMode = false)
         {
+            var errorPath = "";
             var result = "";
             try
             {
@@ -83,18 +84,31 @@ namespace DNNrocketAPI
                 var israzorCached = CacheUtils.GetCache("dnnrocketrzcache_" + hashCacheKey); // get a cache flag for razor compile.
                 if (israzorCached == null || (string)israzorCached != razorTempl || debugMode)
                 {
-                    result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
-                    CacheUtils.SetCache("dnnrocketrzcache_" + hashCacheKey, razorTempl);
+                    errorPath += "RunCompile1>";
+                        result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
+                        CacheUtils.SetCache("dnnrocketrzcache_" + hashCacheKey, razorTempl);
                 }
                 else
                 {
-                    result = Engine.Razor.Run(hashCacheKey, null, info);
+                    try
+                    {
+                        errorPath += "Run>";
+                        result = Engine.Razor.Run(hashCacheKey, null, info);
+                    }
+                    catch (Exception ex)
+                    {
+                        errorPath += "RunCompile2>";
+                        result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
+                        CacheUtils.SetCache("dnnrocketrzcache_" + hashCacheKey, razorTempl);
+
+                    }
                 }
 
             }
             catch (Exception ex)
             {
-                result = ex.ToString();
+                CacheUtils.ClearAllCache();
+                result = "CANNOT REBUILD TEMPLATE: errorPath=" + errorPath + " - " + ex.ToString();
             }
 
             return result;

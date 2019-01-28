@@ -132,6 +132,9 @@
   <data name="disable.Text" xml:space="preserve">
     <value>Disable</value>
   </data>
+  <data name="dropimage.Text" xml:space="preserve">
+    <value>Drop Image Here...</value>
+  </data>
   <data name="hidden.Text" xml:space="preserve">
     <value>Hidden</value>
   </data>

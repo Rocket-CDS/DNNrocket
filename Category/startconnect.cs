@@ -2,6 +2,7 @@
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace DNNrocket.Category
 {
@@ -44,6 +45,9 @@ namespace DNNrocket.Category
                     break;
                 case "category_search":
                     strOut = GetList(postInfo, ControlRelPath);
+                    break;
+                case "category_addimage":
+                    strOut = AddImageToList(postInfo, ControlRelPath);
                     break;
                 default:
                     strOut = "COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
@@ -177,6 +181,78 @@ namespace DNNrocket.Category
                 CacheUtils.ClearAllCache();
             }
         }
+
+        public static string AddImageToList(SimplisityInfo postInfo, string templateControlRelPath)
+        {
+
+
+                var imageDirectory = DNNrocketUtils.HomeDirectory() + "\\images";
+                if (!Directory.Exists(imageDirectory))
+                {
+                    Directory.CreateDirectory(imageDirectory);
+                }
+
+                var systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
+                var systemData = new SystemData();
+                var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+                var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
+
+                var strOut = "";
+                var listname = postInfo.GetXmlProperty("genxml/hidden/listname");
+                var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
+                var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
+                var fileuploadlist = postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+
+            var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            if (selecteditemid > 0)
+            {
+
+                var objCtrl = new DNNrocketController();
+                var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
+
+                if (info != null && fileuploadlist != "")
+                {
+
+                    foreach (var f in fileuploadlist.Split(';'))
+                    {
+                        if (f != "")
+                        {
+                            var friendlyname = GeneralUtils.DeCode(f);
+                            var encryptName = DNNrocketUtils.EncryptFileName(encryptkey, friendlyname);
+                            var newfilename = GeneralUtils.GetUniqueKey(12);
+
+                            var imgInfo = new SimplisityInfo();
+                            var imagerelpath = DNNrocketUtils.HomeRelDirectory() + "/images/" + newfilename;
+                            var imagepath = imageDirectory + "\\" + newfilename;
+
+                            File.Move(DNNrocketUtils.TempDirectory() + "\\" + encryptName, imagepath);
+
+                            imgInfo.SetXmlProperty("genxml/hidden", "");
+                            imgInfo.SetXmlProperty("genxml/hidden/imagerelpath", imagerelpath);
+                            imgInfo.SetXmlProperty("genxml/hidden/imagepath", imagepath);
+                            imgInfo.SetXmlProperty("genxml/hidden/filename", newfilename);
+                            imgInfo.SetXmlProperty("genxml/hidden/friendlyfilename", friendlyname);
+                            imgInfo.SetXmlProperty("genxml/hidden/ext", Path.GetExtension(friendlyname));
+
+                            info.AddListRow(listname, imgInfo);
+                        }
+                    }
+
+                    objCtrl.SaveData(info);
+
+                }
+
+                var passSettings = postInfo.ToDictionary();
+
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+
+            }
+
+
+            return strOut;
+        }
+
 
     }
 }

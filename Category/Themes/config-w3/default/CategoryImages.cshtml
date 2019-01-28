@@ -3,62 +3,54 @@
 @using Simplisity;
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/TestForm/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/Category/App_LocalResources/")
 
 @{
     var info = (SimplisityInfo)Model.List.First();
 }
 
-<h1>@ResourceKey("testform.testformlist") Images</h1>
+<h1>@ResourceKey("Category.images")</h1>
 
 <span class="w3-section">
     <button class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')" >@ResourceKey("DNNrocket.cmdUploadButton")</button>
-    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="testlist2bin" s-return="#sortlist2" s-removelist=".testlist2" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="categoryimgbin" s-return="#sortlistimg" s-removelist=".categoryimg" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 
 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
-    <input id="imagefileupload" class="simplisity_fileupload" s-cmd="testform_addimage" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-return="#TestFormImages" s-fields="theme:config-w3,template:TestFormImages.cshtml,interfacekey:testform,listname:testlist2" type="file" name="files[]" multiple style="display:none;">
-    <p><i>@ResourceKey("DNNrocket.dropimage")...</i></p>
+    <input id="imagefileupload" class="simplisity_fileupload" s-cmd="category_addimage" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-return="#imagesection" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:CategoryImages.cshtml,interfacekey:category,listname:categoryimg" type="file" name="files[]" multiple style="display:none;">
+    <p><i>@ResourceKey("category.dropimage")</i></p>
 </div>
 
 
-<ul id="sortlist2" class="w3-ul">
+<ul id="sortlistimg" class="w3-ul">
     @{
         var lp = 1;
     }
-    @foreach (var i in info.GetList("testlist2"))
+    @foreach (var i in info.GetList("categoryimg"))
     {
 
-        <li class="testlist2 w3-card w3-margin w3-display-container">
+    <li class="categoryimg w3-card w3-margin w3-display-container">
 
-            <!-- The images fields on upload are populated, we need to inject them here so they get posted back on update and are not lost. -->
-            @InjectHiddenFieldData(i)
+        <!-- The images fields on upload are populated, we need to inject them here so they get posted back on update and are not lost. -->
+        @InjectHiddenFieldData(i)
 
-            <div class="w3-row w3-margin">
-                <div class="w3-quarter">
-                    <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagerelpath"),200)" class="w3-round" alt="">
-                </div>
-
-                <div class="w3-threequarter">
-                    <div>
-                        <label>Name (Standard)</label>
-                        <!-- We use the "row" paramater on the razor token to get a unique id for each row.  This MUST be added-->
-                        @TextBox(i, "genxml/textbox/filename", "class='w3-input w3-border' maxlength='50' type='text' ", "FileName", false, lp)
-                    </div>
-                    <div>
-                        @EditFlag()&nbsp;<label>Name (Localized)</label>
-                        @TextBox(i, "genxml/textbox/filename", "class='w3-input w3-border' maxlength='50' type='text'", "Localized FileName", true, lp)
-                    </div>
-                    <div>
-                        @EditFlag()&nbsp;<label>Alt</label>
-                        @TextBox(i, "genxml/textbox/alt", "class='w3-input w3-border' maxlength='50' type='text'", "Alt", true, lp)
-                    </div>
-                </div>
-                    <div class="w3-col" style="100px">
-                        <a href="javascript:void(0)" class="simplisity_removelistitem w3-display-right " s-removelist=".testlist2" s-recylebin="testlist2bin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
-                    </div>
-                </div>
-</li>
+        <div class="w3-row w3-margin">
+            <div class="w3-col" style="width: 70px;">
+                <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagerelpath"),50)" class="w3-round" alt="">
+            </div>
+            <div class="w3-col m4 w3-padding">
+                    @EditFlag()&nbsp;<label>@ResourceKey("category.name")</label>
+                    @TextBox(i, "genxml/lang/genxml/textbox/filename", "class='w3-input w3-border' maxlength='50' type='text'", "", true, lp)
+            </div>
+            <div class="w3-col m4 w3-padding">
+                    @EditFlag()&nbsp;<label>@ResourceKey("category.alt")</label>
+                    @TextBox(i, "genxml/lang/genxml/textbox/alt", "class='w3-input w3-border' maxlength='50' type='text'", "", true, lp)
+            </div>
+            <div class="w3-col" style="100px">
+                <a href="javascript:void(0)" class="simplisity_removelistitem w3-display-right " s-removelist=".categoryimg" s-recylebin="categoryimgbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+            </div>
+        </div>
+    </li>
 
         lp += 1;
     }
