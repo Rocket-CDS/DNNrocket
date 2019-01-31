@@ -81,6 +81,10 @@ namespace DNNrocket.SystemData
                         case "systemapi_copyinterface":
                             strOut = CopyInterface(postInfo, controlRelPath);
                             break;
+                        case "systemapi_clearallcache":
+                            CacheUtils.ClearAllCache();
+                            strOut = SystemAdminList(postInfo, controlRelPath);
+                            break;
                     }
                 }
             }

@@ -330,4 +330,16 @@
   <data name="remove.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="cmdClearCache.confirm" xml:space="preserve">
+    <value>Clear All Cache ?</value>
+  </data>
+  <data name="cmdClearCache.Text" xml:space="preserve">
+    <value>Clear All Cache</value>
+  </data>
+  <data name="cmdClearCacheButton.Text" xml:space="preserve">
+    <value>&lt;i title="Clear All Cache" class="fa fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Clear All Cache</value>
+  </data>
+  <data name="cmdClearCacheIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Clear All Cache" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
 </root>
