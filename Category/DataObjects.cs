@@ -38,12 +38,14 @@ namespace DNNrocket.Category
 
         public void PopulateChildren(List<SimplisityInfo> simplisityList)
         {
-            var lenum = from i in simplisityList where i.ParentItemId == this.ParentItemId select i;
-            var l = lenum.ToList();            
-            foreach (var s in l)
+            foreach (var s in simplisityList)
             {
-                var c = new Category(s);
-                Children.Add(c);
+                if (s.ParentItemId == Info.ItemID)
+                {
+                    var c = new Category(s);
+                    c.PopulateChildren(simplisityList);
+                    _children.Add(c);
+                }
             }
         }
     }
