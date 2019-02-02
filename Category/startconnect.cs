@@ -1,8 +1,12 @@
 ﻿using DNNrocketAPI;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Xml;
 
 namespace DNNrocket.Category
 {
@@ -35,6 +39,10 @@ namespace DNNrocket.Category
                 case "category_save":
                     Save(postInfo);
                     strOut = GetDetail(postInfo, ControlRelPath);
+                    break;
+                case "category_savelist":
+                    SaveList(postInfo, systemInfo);
+                    strOut = GetList(postInfo, ControlRelPath);
                     break;
                 case "category_delete":
                     Delete(postInfo);
@@ -71,13 +79,13 @@ namespace DNNrocket.Category
                 var filter = "";
                 if (searchtext != "")
                 {
-                    filter = " and (categoryname.GuidKey like '%" + searchtext + "%' or categoryref.GuidKey like '%" + searchtext + "%')";
+                    filter = " and (categoryname.GuidKey like '%" + searchtext + "%' or categoryref.GuidKey like '%" + searchtext + "%') ";
                 }
 
 
                 var objCtrl = new DNNrocketController();
                 var listcount = objCtrl.GetListCount(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang);
-                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang, "", 0, page, pagesize, listcount);
+                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang, "order by R1.XrefItemId", 0, page, pagesize, listcount);
 
                 var headerData = new SimplisityInfo();
                 headerData.SetXmlProperty("genxml/hidden/rowcount", listcount.ToString());
@@ -253,6 +261,53 @@ namespace DNNrocket.Category
             return strOut;
         }
 
+
+        public static void SaveList(SimplisityInfo postInfo, SimplisityInfo systemInfo)
+        {
+            // For some mad reason Stringify passes back a json string which cannot be parse by JsonConvert.
+            // So we do the required replace chars to make it work. 
+            // NOTE: This could be an area of issue!!!!
+            var requestJson = "{\"results\":" + postInfo.GetXmlProperty("genxml/hidden/jsondata").Replace("{", "").Replace("}", "").Replace("[", "{").Replace("]", "}") + "}";
+            XmlDocument xmldoc = JsonConvert.DeserializeXmlNode(requestJson);
+
+            // the processing could be done in json, but I personally prefer xml.
+            var index = 1;
+            RecursiveUpdateParent(xmldoc.SelectNodes("./results/*"),0, ref index);
+
+
+            var objCtrl = new DNNrocketController();
+            var info = objCtrl.GetData(systemInfo.GUIDKey, "CATEGORYLIST", _editlang);
+            info.XMLData = postInfo.XMLData;
+            info.AddXmlNode(xmldoc.OuterXml, "results", "genxml");
+            objCtrl.SaveData(info);
+
+            CacheUtils.ClearAllCache();
+        }
+
+        private static void RecursiveUpdateParent(XmlNodeList xmlNodList, int parentid, ref int index)
+        {
+            var lastItemId = 0;
+            var objCtrl = new DNNrocketController();
+            foreach (XmlNode nod in xmlNodList)
+            {
+                if (nod.Name.ToLower() == "id")
+                {
+                    if (GeneralUtils.IsNumeric(nod.InnerText))
+                    {
+                        var catRecord = objCtrl.GetRecord(Convert.ToInt32(nod.InnerText));
+                        catRecord.ParentItemId = parentid;
+                        catRecord.XrefItemId = index;
+                        objCtrl.Update(catRecord);
+                        index += 1;
+                        lastItemId = catRecord.ItemID;
+                    }
+                }
+                if (nod.Name.ToLower() == "children")
+                {
+                    RecursiveUpdateParent(nod.SelectNodes("./*"), lastItemId, ref index);
+                }
+            }
+        }
 
     }
 }
