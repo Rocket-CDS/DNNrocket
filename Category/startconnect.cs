@@ -128,6 +128,7 @@ namespace DNNrocket.Category
 
         }
 
+
         public static String GetDetail(SimplisityInfo postInfo, string templateControlRelPath)
         {
             try

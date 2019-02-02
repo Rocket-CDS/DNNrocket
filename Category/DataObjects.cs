@@ -8,6 +8,47 @@ using System.Text;
 namespace DNNrocket.Category
 {
 
+    public class Category : SimplisityInfo 
+    {
+        private List<Category> _children;
+
+        public SimplisityInfo Info;
+
+        public Category(SimplisityInfo simplisityInfo)
+        {
+            Info = simplisityInfo;
+            _children = new List<Category>();
+        }
+
+        public List<Category> Children
+        {
+            get { return _children; }
+            set { _children = value; }
+        }
+
+        public bool HasChildren()
+        {
+            return (_children.Count > 0);
+        }
+
+        public bool IsRoot()
+        {
+            return (Info.ParentItemId == 0);
+        }
+
+        public void PopulateChildren(List<SimplisityInfo> simplisityList)
+        {
+            var lenum = from i in simplisityList where i.ParentItemId == this.ParentItemId select i;
+            var l = lenum.ToList();            
+            foreach (var s in l)
+            {
+                var c = new Category(s);
+                Children.Add(c);
+            }
+        }
+    }
+
+
     /// <summary>
     /// Class to hold Category data, so we can use linq and help speed up access from the memory var CategoryList
     /// </summary>
