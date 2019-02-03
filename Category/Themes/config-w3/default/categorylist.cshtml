@@ -6,14 +6,6 @@
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/Category/App_LocalResources/")
 
-@{
-    var headerData = Model.HeaderData;
-    var rowcount = headerData.GetXmlPropertyInt("genxml/hidden/rowcount");
-    var page = headerData.GetXmlPropertyInt("genxml/hidden/page");
-    var pagesize = headerData.GetXmlPropertyInt("genxml/hidden/pagesize");
-    var lastpage = System.Convert.ToInt32(rowcount / pagesize);
-}
-
 <style type="text/css">
 
     /**
@@ -259,26 +251,6 @@
     }
 </style>
 
-@{
-    // Build simplsity list
-    var simplisityList = new List<SimplisityInfo>();
-    foreach (SimplisityInfo sip in Model.List)
-    {
-        simplisityList.Add(sip);
-    }
-
-    // Build List<Category> so we have children structure.
-    var categoryList = new List<Category>();
-    foreach (SimplisityInfo sip in Model.List)
-    {
-        var c = new Category(sip);
-        c.PopulateChildren(simplisityList);
-        categoryList.Add(c);
-<b>@c.Info.ItemID = @c.Children.Count(),</b>
-    }
-
-}
-
 
 
 <div class="w3-container">
@@ -301,16 +273,16 @@
         <div class="dd w3-margin" id="nestable3">
             <ol class="dd-list">
 
-                @foreach (Category cat in categoryList)
+                @foreach (Category cat in Model.List)
                 {
-                    if (cat.IsRoot())
+                    if (cat.IsRoot)
                     {
                         <li class="dd-item dd3-item" data-id="@cat.Info.ItemID" data-parentid="@cat.Info.ParentItemId">
                             <div class="dd-handle dd3-handle w3-theme">Drag</div><div class="dd3-content w3-theme-l4">
-                                @cat.Info.GetXmlProperty("genxml/textbox/categoryref") <span>[@cat.Info.ItemID]</span>
-                                <a class="simplisity_click w3-right " s-track="true" s-cmd="category_getdetail" s-fields="selecteditemid:@cat.Info.ItemID ,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
-                            </div>
-                            @if (cat.Children.Any())
+    @cat.Ref <span>[@cat.Info.ItemID]</span> @cat.Name
+    <a class="simplisity_click w3-right " s-track="true" s-cmd="category_getdetail" s-fields="selecteditemid:@cat.Info.ItemID ,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
+</div>
+                            @if (cat.HasChildren)
                             {
                                     @ShowTree(cat.Children);
                             }
@@ -344,7 +316,8 @@
         };
 
         $('#nestable3').nestable({
-            group: 1
+            group: 1,
+            maxDepth: 20
         })
             .on('change', updateOutput);
 
@@ -356,14 +329,14 @@
     cats)
     {
     <ol class="dd-list">
-        @foreach (var cat in cats)
+        @foreach (Category cat in cats)
         {
         <li class="dd-item dd3-item" data-id="@cat.Info.ItemID" data-parentid="@cat.Info.ParentItemId">
             <div class="dd-handle dd3-handle w3-theme">Drag</div><div class="dd3-content w3-theme-l4">
-                @cat.Info.GetXmlProperty("genxml/textbox/categoryref") <span>[@cat.Info.ItemID]</span>
+                @cat.Ref <span>[@cat.Info.ItemID]</span> @cat.Name 
                 <a class="simplisity_click w3-right " s-track="true" s-cmd="category_getdetail" s-fields="selecteditemid:@cat.Info.ItemID ,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
             </div>
-            @if (cat.Children.Any())
+            @if (cat.HasChildren)
             {
                 @ShowTree(cat.Children);
             }

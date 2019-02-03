@@ -152,12 +152,17 @@ namespace DNNrocketAPI
 
         public static string RazorList(string razorTemplate, List<SimplisityInfo> objList, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
         {
+            return RazorList(razorTemplate, objList.Cast<object>().ToList(), settings, headerData, debugmode);
+        }
+
+        public static string RazorList(string razorTemplate, List<object> objList, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        {
             var rtnStr = "";
             if (razorTemplate != "")
             {
                 if (settings == null) settings = new Dictionary<string, string>(); 
                 if (headerData == null) headerData = new SimplisityInfo();
-                var nbRazor = new SimplisityRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
+                var nbRazor = new SimplisityRazor(objList, settings, HttpContext.Current.Request.QueryString);
                 nbRazor.HeaderData = headerData;
                 rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
             }

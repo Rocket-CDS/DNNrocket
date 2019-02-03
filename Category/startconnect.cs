@@ -75,25 +75,12 @@ namespace DNNrocket.Category
                 var pagesize = postInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
 
                 var searchtext = postInfo.GetXmlProperty("genxml/textbox/searchtext");
-
-                var filter = "";
-                if (searchtext != "")
-                {
-                    filter = " and (categoryname.GuidKey like '%" + searchtext + "%' or categoryref.GuidKey like '%" + searchtext + "%') ";
-                }
-
-
-                var objCtrl = new DNNrocketController();
-                var listcount = objCtrl.GetListCount(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang);
-                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang, "order by R1.XrefItemId", 0, page, pagesize, listcount);
-
                 var headerData = new SimplisityInfo();
-                headerData.SetXmlProperty("genxml/hidden/rowcount", listcount.ToString());
-                headerData.SetXmlProperty("genxml/hidden/page", page.ToString());
-                headerData.SetXmlProperty("genxml/hidden/pagesize", pagesize.ToString());
                 headerData.SetXmlProperty("genxml/textbox/searchtext", searchtext);
 
-                return RenderList(list, postInfo, 0, templateControlRelPath, headerData);
+                var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, _editlang, searchtext);
+
+                return RenderList(categoryList, postInfo, 0, templateControlRelPath, headerData);
             }
             catch (Exception ex)
             {
@@ -101,7 +88,7 @@ namespace DNNrocket.Category
             }
         }
 
-        public static String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath, SimplisityInfo headerData)
+        public static String RenderList(List<Category> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath, SimplisityInfo headerData)
         {
             try
             {
@@ -117,7 +104,7 @@ namespace DNNrocket.Category
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
-                strOut = DNNrocketUtils.RazorList(razorTempl, list, passSettings, headerData);
+                strOut = DNNrocketUtils.RazorList(razorTempl, list.Cast<object>().ToList(), passSettings, headerData);
 
                 return strOut;
             }
@@ -174,6 +161,9 @@ namespace DNNrocket.Category
             {
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
+
+                var parentid = postInfo.GetXmlPropertyInt("genxml/dropdownlist/parentid");
+                info.ParentItemId = parentid;
                 info.XMLData = postInfo.XMLData;
                 objCtrl.SaveData(info);
                 CacheUtils.ClearAllCache();
@@ -297,6 +287,7 @@ namespace DNNrocket.Category
                     {
                         var catRecord = objCtrl.GetRecord(Convert.ToInt32(nod.InnerText));
                         catRecord.ParentItemId = parentid;
+                        catRecord.SetXmlProperty("genxml/dropdownlist/parentid", parentid.ToString());
                         catRecord.XrefItemId = index;
                         objCtrl.Update(catRecord);
                         index += 1;

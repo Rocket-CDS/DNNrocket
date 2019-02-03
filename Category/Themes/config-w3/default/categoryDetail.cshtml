@@ -1,6 +1,7 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
 @using Simplisity;
+@using DNNrocket.Category;
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/Category/App_LocalResources/")
@@ -39,22 +40,23 @@
                 <div class="w3-half w3-padding">
                     <div>
                         <label>@ResourceKey("category.ref")</label>
-                        @TextBox(info, "genxml/textbox/categoryref", "class='w3-input w3-border' maxlength='50' placeholder='" + @ResourceKey("category.ref") + "...' ", "")
+                        @TextBox(info, "genxml/textbox/ref", "class='w3-input w3-border' maxlength='50' placeholder='" + @ResourceKey("category.ref") + "...' ", "")
                     </div>
                     <div class="">
                         @EditFlag()&nbsp;<label>@ResourceKey("category.name")</label>
-                        @TextBox(info, "genxml/lang/genxml/textbox/categoryname", "maxlength='250' class='w3-input w3-border'", "")
+                        @TextBox(info, "genxml/lang/genxml/textbox/name", "maxlength='250' class='w3-input w3-border'", "")
                     </div>
                     <div class="">
                         @EditFlag()&nbsp;<label>@ResourceKey("category.code")</label>
-                        @TextBox(info, "genxml/textbox/categorycode", "class='w3-input w3-border' maxlength='250'", "")
+                        @TextBox(info, "genxml/textbox/code", "class='w3-input w3-border' maxlength='250'", "")
                     </div>
                     <div class="">
                         <label>@ResourceKey("category.parent")</label>
+                        @DropDownList(info,"genxml/dropdownlist/parentid",CategoryUtils.GetCategoriesDict(info.PortalId, info.Lang), "class='w3-input w3-border'")
                     </div>
                     <div class="">
                         @EditFlag()&nbsp;<label>@ResourceKey("category.description")</label>
-                        @TextArea(info, "genxml/lang/genxml/textbox/categorydesc", "class='w3-input w3-border' rows='4' maxlength='200'", "")
+                        @TextArea(info, "genxml/lang/genxml/textbox/description", "class='w3-input w3-border' rows='4' maxlength='200'", "")
                     </div>
                 </div>
                 <div class="w3-half w3-padding">

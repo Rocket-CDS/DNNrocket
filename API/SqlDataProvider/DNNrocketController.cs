@@ -524,6 +524,10 @@ namespace DNNrocketAPI
                 info.XMLData = sInfo.XMLData;
                 info.RemoveLangRecord();
                 info.Lang = "";
+                info.XrefItemId = sInfo.XrefItemId;
+                info.ParentItemId = sInfo.ParentItemId;
+                info.GUIDKey = sInfo.GUIDKey;
+                info.ModuleId = sInfo.ModuleId;
                 Update(info);
                 var nbi2 = GetRecordLang(info.ItemID, smiLang.Lang);
                 if (nbi2 == null)
