@@ -10,7 +10,7 @@ namespace DNNrocket.Category
     public static class CategoryUtils
     {
 
-        public static Dictionary<string,string> GetCategoriesDict(int portalId, string editlang, bool showdisabled = false, bool showhidden = true, string searchtext = "")
+        public static Dictionary<string,string> GetCategoriesDict(int portalId, string editlang, bool showdisabled = false, bool showhidden = true, string searchtext = "", bool addEmpty = true)
         {
             var catDict = new Dictionary<string, string>();
             var filter = "";
@@ -24,9 +24,14 @@ namespace DNNrocket.Category
             }
             var categoryList = CategoryUtils.GetCategoryList(portalId, editlang, searchtext, filter);
 
+            if (addEmpty)
+            {
+                catDict.Add("-1", "");
+            }
+
             foreach (var cat in categoryList)
             {
-                catDict.Add(cat.Info.ItemID.ToString(), cat.IndentPrefix() + cat.Name);
+                catDict.Add(cat.Info.ItemID.ToString(), cat.IndentPrefix() + cat.Name + " [" + cat.Level + "]");
             }
 
             return catDict;

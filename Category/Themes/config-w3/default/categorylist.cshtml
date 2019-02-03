@@ -279,7 +279,7 @@
                     {
                         <li class="dd-item dd3-item" data-id="@cat.Info.ItemID" data-parentid="@cat.Info.ParentItemId">
                             <div class="dd-handle dd3-handle w3-theme">Drag</div><div class="dd3-content w3-theme-l4">
-    @cat.Ref <span>[@cat.Info.ItemID]</span> @cat.Name
+    @cat.Ref <span>[@cat.Info.ItemID]</span> @cat.Name  [@cat.Level]
     <a class="simplisity_click w3-right " s-track="true" s-cmd="category_getdetail" s-fields="selecteditemid:@cat.Info.ItemID ,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
 </div>
                             @if (cat.HasChildren)
@@ -333,9 +333,9 @@
         {
         <li class="dd-item dd3-item" data-id="@cat.Info.ItemID" data-parentid="@cat.Info.ParentItemId">
             <div class="dd-handle dd3-handle w3-theme">Drag</div><div class="dd3-content w3-theme-l4">
-                @cat.Ref <span>[@cat.Info.ItemID]</span> @cat.Name 
-                <a class="simplisity_click w3-right " s-track="true" s-cmd="category_getdetail" s-fields="selecteditemid:@cat.Info.ItemID ,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
-            </div>
+    @cat.Ref <span>[@cat.Info.ItemID]</span> @cat.Name [@cat.Level]
+    <a class="simplisity_click w3-right " s-track="true" s-cmd="category_getdetail" s-fields="selecteditemid:@cat.Info.ItemID ,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
+</div>
             @if (cat.HasChildren)
             {
                 @ShowTree(cat.Children);

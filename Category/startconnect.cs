@@ -163,7 +163,28 @@ namespace DNNrocket.Category
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
 
                 var parentid = postInfo.GetXmlPropertyInt("genxml/dropdownlist/parentid");
-                info.ParentItemId = parentid;
+                if (parentid == info.ItemID) 
+                {
+                    // cannot be parent of itself. so keep the same.
+                    postInfo.SetXmlProperty("genxml/dropdownlist/parentid", info.ParentItemId.ToString());
+                }
+                else
+                {
+                    // read parent and insert row order (XrefItemID) value + 1.  Gap of 100 ceated on list save, so we should not have to resequence.
+                    var pInfo = objCtrl.GetRecord(parentid);
+                    if (pInfo != null)
+                    {
+                        info.ParentItemId = parentid;
+                        info.XrefItemId = pInfo.XrefItemId + 1;
+                        postInfo.SetXmlProperty("genxml/level", (pInfo.GetXmlPropertyInt("genxml/level") + 1).ToString());
+                    }
+                    else
+                    {
+                        info.ParentItemId = 0;
+                        info.XrefItemId = 0;
+                        postInfo.SetXmlProperty("genxml/level", "0");
+                    }
+                }
                 info.XMLData = postInfo.XMLData;
                 objCtrl.SaveData(info);
                 CacheUtils.ClearAllCache();
@@ -262,8 +283,9 @@ namespace DNNrocket.Category
             XmlDocument xmldoc = JsonConvert.DeserializeXmlNode(requestJson);
 
             // the processing could be done in json, but I personally prefer xml.
-            var index = 1;
-            RecursiveUpdateParent(xmldoc.SelectNodes("./results/*"),0, ref index);
+            var index = 100;
+            var level = 0;
+            RecursiveUpdateParent(xmldoc.SelectNodes("./results/*"),0, ref index, level);
 
 
             var objCtrl = new DNNrocketController();
@@ -275,12 +297,18 @@ namespace DNNrocket.Category
             CacheUtils.ClearAllCache();
         }
 
-        private static void RecursiveUpdateParent(XmlNodeList xmlNodList, int parentid, ref int index)
+        private static void RecursiveUpdateParent(XmlNodeList xmlNodList, int parentid, ref int index, int level)
         {
+            var levelstatic = level;
             var lastItemId = 0;
             var objCtrl = new DNNrocketController();
             foreach (XmlNode nod in xmlNodList)
             {
+                if (nod.Name.ToLower() == "children")
+                {
+                    level += 1;
+                    RecursiveUpdateParent(nod.SelectNodes("./*"), lastItemId, ref index, level);
+                }
                 if (nod.Name.ToLower() == "id")
                 {
                     if (GeneralUtils.IsNumeric(nod.InnerText))
@@ -288,15 +316,12 @@ namespace DNNrocket.Category
                         var catRecord = objCtrl.GetRecord(Convert.ToInt32(nod.InnerText));
                         catRecord.ParentItemId = parentid;
                         catRecord.SetXmlProperty("genxml/dropdownlist/parentid", parentid.ToString());
+                        catRecord.SetXmlProperty("genxml/level", levelstatic.ToString());
                         catRecord.XrefItemId = index;
                         objCtrl.Update(catRecord);
-                        index += 1;
+                        index += 100;  // so we can insert rows on parentid change for detail save.
                         lastItemId = catRecord.ItemID;
                     }
-                }
-                if (nod.Name.ToLower() == "children")
-                {
-                    RecursiveUpdateParent(nod.SelectNodes("./*"), lastItemId, ref index);
                 }
             }
         }

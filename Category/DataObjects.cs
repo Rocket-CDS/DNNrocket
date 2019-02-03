@@ -39,9 +39,15 @@ namespace DNNrocket.Category
             }
         }
 
+        public int Level
+        {
+            get { return Info.GetXmlPropertyInt("genxml/level"); }
+            set { Info.SetXmlProperty("genxml/level", value.ToString()); }
+        }
+
         public string IndentPrefix(char prefixChar = '.')
         {
-            return new String(prefixChar, _children.Count);
+            return new String(prefixChar, Level);
         }
 
         public bool HasChildren
