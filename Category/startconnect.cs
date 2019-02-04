@@ -14,9 +14,12 @@ namespace DNNrocket.Category
     {
         private static string _EntityTypeCode;
         private static string _editlang;
+        private static string _systemprovider;
+
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
+            _systemprovider = systemInfo.GUIDKey;
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
             _editlang = editlang;
             if (_editlang == "") _editlang = DNNrocketUtils.GetEditCulture();
@@ -41,7 +44,7 @@ namespace DNNrocket.Category
                     strOut = GetDetail(postInfo, ControlRelPath);
                     break;
                 case "category_savelist":
-                    SaveList(postInfo, systemInfo);
+                    SaveList(postInfo);
                     strOut = GetList(postInfo, ControlRelPath);
                     break;
                 case "category_delete":
@@ -78,7 +81,7 @@ namespace DNNrocket.Category
                 var headerData = new SimplisityInfo();
                 headerData.SetXmlProperty("genxml/textbox/searchtext", searchtext);
 
-                var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, _editlang, searchtext);
+                var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, _editlang, _systemprovider, searchtext);
 
                 return RenderList(categoryList, postInfo, 0, templateControlRelPath, headerData);
             }
@@ -185,6 +188,7 @@ namespace DNNrocket.Category
                         postInfo.SetXmlProperty("genxml/level", "0");
                     }
                 }
+                info.GUIDKey = _systemprovider;
                 info.XMLData = postInfo.XMLData;
                 objCtrl.SaveData(info);
                 CacheUtils.ClearAllCache();
@@ -274,7 +278,7 @@ namespace DNNrocket.Category
         }
 
 
-        public static void SaveList(SimplisityInfo postInfo, SimplisityInfo systemInfo)
+        public static void SaveList(SimplisityInfo postInfo)
         {
             // For some mad reason Stringify passes back a json string which cannot be parse by JsonConvert.
             // So we do the required replace chars to make it work. 
@@ -289,7 +293,7 @@ namespace DNNrocket.Category
 
 
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData(systemInfo.GUIDKey, "CATEGORYLIST", _editlang);
+            var info = objCtrl.GetData(_systemprovider, "CATEGORYLIST", _editlang);
             info.XMLData = postInfo.XMLData;
             info.AddXmlNode(xmldoc.OuterXml, "results", "genxml");
             objCtrl.SaveData(info);
@@ -318,6 +322,7 @@ namespace DNNrocket.Category
                         catRecord.SetXmlProperty("genxml/dropdownlist/parentid", parentid.ToString());
                         catRecord.SetXmlProperty("genxml/level", levelstatic.ToString());
                         catRecord.XrefItemId = index;
+                        catRecord.GUIDKey = _systemprovider;
                         objCtrl.Update(catRecord);
                         index += 100;  // so we can insert rows on parentid change for detail save.
                         lastItemId = catRecord.ItemID;

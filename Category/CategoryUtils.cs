@@ -10,7 +10,7 @@ namespace DNNrocket.Category
     public static class CategoryUtils
     {
 
-        public static Dictionary<string,string> GetCategoriesDict(int portalId, string editlang, bool showdisabled = false, bool showhidden = true, string searchtext = "", bool addEmpty = true)
+        public static Dictionary<string,string> GetCategoriesDict(int portalId, string editlang, string systemprovider, bool showdisabled = false, bool showhidden = true, string searchtext = "", bool addEmpty = true)
         {
             var catDict = new Dictionary<string, string>();
             var filter = "";
@@ -22,7 +22,7 @@ namespace DNNrocket.Category
             {
                 filter += " and (R1.XMLData.value('(genxml/checkbox/hidden)[1]','nvarchar(max)') = 'false') ";
             }
-            var categoryList = CategoryUtils.GetCategoryList(portalId, editlang, searchtext, filter);
+            var categoryList = CategoryUtils.GetCategoryList(portalId, editlang, systemprovider, searchtext, filter);
 
             if (addEmpty)
             {
@@ -37,12 +37,15 @@ namespace DNNrocket.Category
             return catDict;
         }
 
-        public static List<Category> GetCategoryList(int portalId, string editlang, string searchtext = "", string filter = "")
+        public static List<Category> GetCategoryList(int portalId, string editlang, string systemprovider, string searchtext = "", string filter = "")
         {
-
+            if (systemprovider != "")
+            {
+                filter += " and R1.GuidKey = '" + systemprovider + "' ";
+            }
             if (filter == "" && searchtext != "")
             {
-                filter = " and (categoryname.GuidKey like '%" + searchtext + "%' or categoryref.GuidKey like '%" + searchtext + "%') ";
+                filter += " and (categoryname.GuidKey like '%" + searchtext + "%' or categoryref.GuidKey like '%" + searchtext + "%') ";
             }
 
 

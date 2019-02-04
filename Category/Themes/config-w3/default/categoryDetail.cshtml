@@ -52,7 +52,7 @@
                     </div>
                     <div class="">
                         <label>@ResourceKey("category.parent")</label>
-                        @DropDownList(info,"genxml/dropdownlist/parentid",CategoryUtils.GetCategoriesDict(info.PortalId, info.Lang), "class='w3-input w3-border'")
+                        @DropDownList(info,"genxml/dropdownlist/parentid",CategoryUtils.GetCategoriesDict(info.PortalId, info.Lang, info.GUIDKey), "class='w3-input w3-border'")
                     </div>
                     <div class="">
                         @EditFlag()&nbsp;<label>@ResourceKey("category.description")</label>
