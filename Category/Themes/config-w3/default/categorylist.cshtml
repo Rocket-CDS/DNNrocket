@@ -305,10 +305,12 @@
         var updateOutput = function (e) {
             var list = e.length ? e : $(e.target),
                 output = list.data('output');
-            if (window.JSON) {
-                output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
-            } else {
-                output.val('');
+            if (typeof output !== 'undefined') {
+                if (window.JSON) {
+                    output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                } else {
+                    output.val('');
+                }
             }
         };
 
@@ -319,7 +321,9 @@
             .on('change', updateOutput);
 
         updateOutput($('#nestable3').data('output', $('#jsondata')));
+
     });
+
 </script>
 
 @helper ShowTree(IEnumerable<Category>
@@ -345,18 +349,18 @@
     @cat.Ref  @cat.Name
     <a class="simplisity_click w3-right" s-track="true" s-cmd="category_getdetail" s-fields="selecteditemid:@cat.Info.ItemID ,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
     @{
-        var eyestate = "<i class='fa fa-eye'></i>";
+        var eyestate = ResourceKey("category.hiddenicon_false").ToString();
         if (cat.IsHidden)
         {
-            eyestate = "<i class='fa fa-eye-slash'></i>";
+            eyestate = ResourceKey("category.hiddenicon_true").ToString();
         }
-        var diablestate = "<i class='fa fa-toggle-on'></i>";
+        var diablestate = ResourceKey("category.toggleicon_on").ToString();
         if (cat.IsDisabled)
         {
-            diablestate = "<i class='fa fa-toggle-off'></i>";
+            diablestate = ResourceKey("category.toggleicon_off").ToString();
         }
     }
-    <a class="simplisity_click w3-right w3-margin-right eyestatus" s-cmd="category_visible" s-fields="selecteditemid:@cat.Info.ItemID,interfacekey:category" href="javascript:void(0)">@HtmlOf(eyestate)</a>
-    <a class="simplisity_click w3-right w3-margin-right disablestatus" s-cmd="category_disbale" s-fields="selecteditemid:@cat.Info.ItemID,interfacekey:category" href="javascript:void(0)">@HtmlOf(diablestate)</a>
+    <a class="simplisity_click w3-right w3-margin-right eyestatus@(cat.Info.ItemID)" s-cmd="category_visible" s-return=".eyestatus@(cat.Info.ItemID)" s-fields="selecteditemid:@cat.Info.ItemID,interfacekey:category" href="javascript:void(0)">@HtmlOf(eyestate)</a>
+    <a class="simplisity_click w3-right w3-margin-right disablestatus@(cat.Info.ItemID)" s-cmd="category_disable" s-return=".disablestatus@(cat.Info.ItemID)" s-fields="selecteditemid:@cat.Info.ItemID,interfacekey:category" href="javascript:void(0)">@HtmlOf(diablestate)</a>
 </div>
         }

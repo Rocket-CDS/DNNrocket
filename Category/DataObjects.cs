@@ -63,21 +63,26 @@ namespace DNNrocket.Category
         public string Name
         {
             get { return Info.GetXmlProperty("genxml/lang/genxml/textbox/name"); }
+            set { Info.SetXmlProperty("genxml/lang/genxml/textbox/name", value.ToString()); }
         }
 
         public string Ref
         {
             get { return Info.GetXmlProperty("genxml/textbox/ref"); }
+            set { Info.SetXmlProperty("genxml/textbox/ref", value.ToString()); }
         }
 
         public bool IsHidden
         {
             get { return Info.GetXmlPropertyBool("genxml/checkbox/hidden"); }
+            set { Info.SetXmlProperty("genxml/checkbox/hidden", value.ToString()); }
         }
         public bool IsDisabled
         {
             get { return Info.GetXmlPropertyBool("genxml/checkbox/disable"); }
+            set { Info.SetXmlProperty("genxml/checkbox/disable", value.ToString()); }
         }
+
 
     }
 

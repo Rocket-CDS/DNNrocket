@@ -60,6 +60,12 @@ namespace DNNrocket.Category
                 case "category_addimage":
                     strOut = AddImageToList(postInfo, ControlRelPath);
                     break;
+                case "category_visible":
+                    strOut = ToggleHidden(postInfo, ControlRelPath);
+                    break;
+                case "category_disable":
+                    strOut = ToggleDisable(postInfo, ControlRelPath);
+                    break;                    
                 default:
                     strOut = "COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
                     break;
@@ -330,6 +336,72 @@ namespace DNNrocket.Category
                 }
             }
         }
+
+
+        private static String ToggleHidden(SimplisityInfo postInfo, string ControlRelPath)
+        {
+            try
+            {
+                var strOut = "";
+                var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+
+                var objCtrl = new DNNrocketController();
+                var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
+                var catData = new Category(info);
+                                
+                if (catData.IsHidden)
+                {
+                    catData.IsHidden = false;
+                    strOut = DNNrocketUtils.GetResourceString(ControlRelPath + "/App_LocalResources", "category.hiddenicon_false", "Text", DNNrocketUtils.GetEditCulture());
+                }
+                else
+                {
+                    catData.IsHidden = true;
+                    strOut = DNNrocketUtils.GetResourceString(ControlRelPath + "/App_LocalResources", "category.hiddenicon_true", "Text", DNNrocketUtils.GetEditCulture());
+                }
+
+                objCtrl.SaveData(catData.Info);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private static String ToggleDisable(SimplisityInfo postInfo, string ControlRelPath)
+        {
+            try
+            {
+                var strOut = "";
+                var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+
+                var objCtrl = new DNNrocketController();
+                var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
+                var catData = new Category(info);
+
+                if (catData.IsDisabled)
+                {
+                    catData.IsDisabled = false;
+                    strOut = DNNrocketUtils.GetResourceString(ControlRelPath + "/App_LocalResources", "category.toggleicon_on", "Text", DNNrocketUtils.GetEditCulture());
+                }
+                else
+                {
+                    catData.IsDisabled = true;
+                    strOut = DNNrocketUtils.GetResourceString(ControlRelPath + "/App_LocalResources", "category.toggleicon_off", "Text", DNNrocketUtils.GetEditCulture());
+                }
+
+                objCtrl.SaveData(catData.Info);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
 
     }
 }
