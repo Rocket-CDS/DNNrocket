@@ -183,8 +183,11 @@ namespace DNNrocket.Category
                     var pInfo = objCtrl.GetRecord(parentid);
                     if (pInfo != null)
                     {
+                        if (parentid != info.ParentItemId)  // for sorting only change on parentid change.
+                        {
+                            info.XrefItemId = pInfo.XrefItemId + 1;
+                        }
                         info.ParentItemId = parentid;
-                        info.XrefItemId = pInfo.XrefItemId + 1;
                         postInfo.SetXmlProperty("genxml/level", (pInfo.GetXmlPropertyInt("genxml/level") + 1).ToString());
                     }
                     else

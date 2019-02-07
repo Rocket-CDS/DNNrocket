@@ -31,7 +31,12 @@ namespace DNNrocket.Category
 
             foreach (var cat in categoryList)
             {
-                catDict.Add(cat.Info.ItemID.ToString(), cat.IndentPrefix() + cat.Name + " [" + cat.Level + "]");
+                var catdisplay = cat.Name;
+                if (catdisplay == "")
+                {
+                    catdisplay = cat.Ref;
+                }
+                catDict.Add(cat.Info.ItemID.ToString(), cat.IndentPrefix() + catdisplay);
             }
 
             return catDict;
