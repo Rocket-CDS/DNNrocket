@@ -19,7 +19,7 @@
         padding: 0;
         list-style: none;
         font-size: 13px;
-        line-height: 20px;
+        line-height: 40px;
     }
 
     .dd-list {
@@ -45,14 +45,14 @@
         position: relative;
         margin: 0;
         padding: 0;
-        min-height: 20px;
+        min-height: 40px;
         font-size: 13px;
-        line-height: 20px;
+        line-height: 40px;
     }
 
     .dd-handle {
         display: block;
-        height: 30px;
+        height: 50px;
         margin: 5px 0;
         padding: 5px 10px;
         color: #333;
@@ -80,7 +80,7 @@
         cursor: pointer;
         float: left;
         width: 25px;
-        height: 20px;
+        height: 40px;
         margin: 5px 0;
         padding: 0;
         text-indent: 100%;
@@ -95,23 +95,23 @@
     }
 
         .dd-item > button:before {
-            content: '+';
+            content: '\f067';
             display: block;
             position: absolute;
             width: 100%;
             text-align: center;
             text-indent: 0;
+            font-family: "FontAwesome";
+            font-weight: 600;
         }
 
-        .dd-item > button[data-action="collapse"]:before {
-            content: '-';
-        }
+        .dd-item > button[data-action="collapse"]:before { content: '\f068'; font-family: "FontAwesome"; font-weight: 600; }
 
     .dd-placeholder,
     .dd-empty {
         margin: 5px 0;
         padding: 0;
-        min-height: 30px;
+        min-height: 50px;
         background: #f2fbff;
         border: 1px dashed #b6bcbf;
         box-sizing: border-box;
@@ -173,8 +173,8 @@
 
     .dd3-content {
         display: block;
-        height: 30px;
-        margin: 5px 0;
+        height: 50px;
+        margin: 5px 20px;
         padding: 5px 10px 5px 40px;
         color: #333;
         text-decoration: none;
@@ -200,7 +200,7 @@
     }
 
     .dd3-item > button {
-        margin-left: 30px;
+        margin-left: -20px;
     }
 
     .dd3-handle {
@@ -209,7 +209,7 @@
         left: 0;
         top: 0;
         cursor: pointer;
-        width: 30px;
+        width: 40px;
         text-indent: 100%;
         white-space: nowrap;
         overflow: hidden;
@@ -247,7 +247,7 @@
     .socialite {
         display: block;
         float: left;
-        height: 35px;
+        height: 55px;
     }
 </style>
 
@@ -260,13 +260,17 @@
         <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="category_savelist" s-post="#datareturn" s-fields="theme:config-w3,template:CategoryList.cshtml,interfacekey:category">@ResourceKey("DNNrocket.cmdSaveButton")</button>
     </span>
 
-    <header class="w3-container w3-theme">
-        <h5>@ResourceKey("category.categories")</h5>
-    </header>
-
     <div class="w3-row w3-margin">
         <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="category_add" s-fields="theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category">@ResourceKey("DNNrocket.cmdAddButton")</button>
     </div>
+
+    <header class="w3-container w3-theme">
+        <h5>
+            @ResourceKey("category.categories")
+                <button class="w3-button w3-pale-blue w3-padding-8 category_expandall">@ResourceKey("category.expandall")</button>
+                <button class="w3-button w3-padding-8 w3-pale-green category_colapseall">@ResourceKey("category.colapseall")</button>
+            </h5>
+    </header>
 
     <div class="w3-row">
 
@@ -277,13 +281,13 @@
                 {
                     if (cat.IsRoot)
                     {
-                    <li class="dd-item dd3-item" data-id="@cat.Info.ItemID" data-parentid="@cat.Info.ParentItemId">
-                        @Showli(cat)
-                        @if (cat.HasChildren)
-                        {
-                            @ShowTree(cat.Children);
-                        }
-                    </li>
+                        <li class="dd-item dd3-item" data-id="@cat.Info.ItemID" data-parentid="@cat.Info.ParentItemId">
+                            @Showli(cat)
+                            @if (cat.HasChildren)
+                            {
+                                @ShowTree(cat.Children);
+                            }
+                        </li>
                     }
                 }
             </ol>
@@ -346,7 +350,7 @@
     @helper Showli(Category cat)
         {
                     <div class="dd-handle dd3-handle w3-theme">Drag</div><div class="dd3-content w3-theme-l4">
-    @cat.Ref  @cat.Name
+    @cat.Ref:     @cat.Name
     <a class="simplisity_click w3-right" s-track="true" s-cmd="category_getdetail" s-fields="selecteditemid:@cat.Info.ItemID ,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
     @{
         var eyestate = ResourceKey("category.hiddenicon_false").ToString();

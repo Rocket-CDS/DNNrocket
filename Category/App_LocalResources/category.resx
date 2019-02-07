@@ -126,6 +126,9 @@
   <data name="code.Text" xml:space="preserve">
     <value>Code</value>
   </data>
+  <data name="colapseall.Text" xml:space="preserve">
+    <value>Colapse All</value>
+  </data>
   <data name="description.Text" xml:space="preserve">
     <value>Description</value>
   </data>
@@ -138,14 +141,17 @@
   <data name="dropimage.Text" xml:space="preserve">
     <value>Drop Image Here...</value>
   </data>
+  <data name="expandall.Text" xml:space="preserve">
+    <value>Expand All</value>
+  </data>
   <data name="hidden.Text" xml:space="preserve">
     <value>Hidden</value>
   </data>
   <data name="hiddenicon_false.Text" xml:space="preserve">
-    <value>&lt;i class='fa fa-eye'&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='fa fa-eye fa-fw fa-lg'&gt;&lt;/i&gt;</value>
   </data>
   <data name="hiddenicon_true.Text" xml:space="preserve">
-    <value>&lt;i class='fa fa-eye-slash'&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='fa fa-eye-slash fa-fw fa-lg'&gt;&lt;/i&gt;</value>
   </data>
   <data name="images.Text" xml:space="preserve">
     <value>Images</value>
@@ -175,9 +181,9 @@
     <value>SEO Title</value>
   </data>
   <data name="toggleicon_off.Text" xml:space="preserve">
-    <value>&lt;i class='fa fa-toggle-off'&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='fa fa-toggle-off fa-fw fa-lg'&gt;&lt;/i&gt;</value>
   </data>
   <data name="toggleicon_on.Text" xml:space="preserve">
-    <value>&lt;i class='fa fa-toggle-on'&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='fa fa-toggle-on fa-fw fa-lg'&gt;&lt;/i&gt;</value>
   </data>
 </root>
