@@ -133,19 +133,32 @@ if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{
 drop procedure {databaseOwner}[{objectQualifier}DNNrocket_Delete]
 GO
 
+
+
 CREATE   PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_Delete]
 @ItemID int
 AS
 begin
-	delete from {databaseOwner}[{objectQualifier}DNNrocket] 
-	where ItemId = @ItemId
 	
+	DECLARE @DelItemId int	
+
 	-- Delete all linked child records.
-	delete from {databaseOwner}[{objectQualifier}DNNrocket] 
-	where ParentItemId = @ItemId
+	DECLARE delete_cursor CURSOR LOCAL FOR 
+	select ItemId from {databaseOwner}[{objectQualifier}DNNrocket] where ParentItemId = @ItemId
+
+	OPEN delete_cursor
+	FETCH NEXT FROM delete_cursor INTO @DelItemId
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}DNNrocket_Delete] @DelItemId
+		FETCH NEXT FROM delete_cursor INTO @DelItemId
+	END
+	CLOSE delete_cursor;
+	DEALLOCATE delete_cursor;
+
+	delete from {databaseOwner}[{objectQualifier}DNNrocket] where ItemId = @ItemId
 	
 end
-
 GO
 
 
