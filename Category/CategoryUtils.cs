@@ -44,19 +44,17 @@ namespace DNNrocket.Category
 
         public static List<Category> GetCategoryList(int portalId, string editlang, string systemprovider, string searchtext = "", string filter = "")
         {
-            if (systemprovider != "")
-            {
-                filter += " and R1.GuidKey = '" + systemprovider + "' ";
-            }
             if (filter == "" && searchtext != "")
             {
                 filter += " and (categoryname.GuidKey like '%" + searchtext + "%' or categoryref.GuidKey like '%" + searchtext + "%') ";
             }
-
+            if (systemprovider != "")
+            {
+                filter += " and R1.GuidKey = '" + systemprovider + "' ";
+            }
 
             var objCtrl = new DNNrocketController();
-            var listcount = objCtrl.GetListCount(portalId, -1, "CATEGORY", filter, editlang);
-            var list = objCtrl.GetList(portalId, -1, "CATEGORY", filter, editlang, "order by R1.XrefItemId", 0, 0, 0, listcount);
+            var list = objCtrl.GetList(portalId, -1, "CATEGORY", filter, editlang, "order by R1.XrefItemId");
 
             // create a populated list of categories with children.
             var categoryList = new List<Category>();
