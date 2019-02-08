@@ -33,7 +33,7 @@ namespace DNNrocket.Country
                     break;
                 case "settingcountry_getregion":
                     rtnDic.Add("outputhtml", "");
-                    var regionlist = CountryUtils.RegionListCSV(sInfo.GetXmlProperty("genxml/hidden/activevalue"));
+                    var regionlist = CountryUtils.RegionListCSV(GeneralUtils.DeCode(sInfo.GetXmlProperty("genxml/hidden/activevalue")));
                     rtnDic.Add("outputjson", "{listkey: [" + regionlist[0] + "], listvalue: [" + regionlist[1] + "] }");
                     break;
             }
