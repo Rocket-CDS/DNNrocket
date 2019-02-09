@@ -29,6 +29,9 @@
             <a href="javascript:void(0)" class="sectiontab" sectionname="imagesection">
                 <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-image"></i>&nbsp;@ResourceKey("category.images")</div>
             </a>
+            <a href="javascript:void(0)" class="sectiontab" sectionname="entrysection">
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-th"></i>&nbsp;@ResourceKey("category.entries")</div>
+            </a>
         </div>
 
         <div id="detailsection" class="w3-container w3-margin tabsection" style="display:block;">
@@ -52,7 +55,7 @@
                     </div>
                     <div class="">
                         <label>@ResourceKey("category.parent")</label>
-                        @DropDownList(info,"genxml/dropdownlist/parentid",CategoryUtils.GetCategoriesDict(info.PortalId, info.Lang, info.GUIDKey,true,true), "class='w3-input w3-border'")
+                        @DropDownList(info, "genxml/dropdownlist/parentid", CategoryUtils.GetCategoriesDict(info.PortalId, info.Lang, info.GUIDKey, true, true), "class='w3-input w3-border'")
                     </div>
                     <div class="">
                         @EditFlag()&nbsp;<label>@ResourceKey("category.description")</label>
@@ -94,6 +97,15 @@
             @RenderTemplate("CategoryImages.cshtml", "/DesktopModules/DNNrocket/Category", "config-w3", Model)
         </div>
 
+        <div id="entrysection" class="w3-container w3-margin tabsection" style="display: none;">
+            @foreach (var i in Model.HeaderData.GetList("interfacedata"))
+            {
+                if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
+                {
+                    @RenderTemplate("CategoryList.cshtml", i.GetXmlProperty("genxml/textbox/relpath"), i.GetXmlProperty("genxml/textbox/defaulttheme"), Model)
+                }
+            }
+        </div>
 
     </div>
 

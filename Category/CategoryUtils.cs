@@ -42,7 +42,7 @@ namespace DNNrocket.Category
             return catDict;
         }
 
-        public static List<Category> GetCategoryList(int portalId, string editlang, string systemprovider, string searchtext = "", string filter = "")
+        public static List<Category> GetCategoryList(int portalId, string editlang, string systemprovider, string searchtext = "", string filter = "", bool showdisabled = false, bool showhidden = true)
         {
             if (filter == "" && searchtext != "")
             {
@@ -52,6 +52,16 @@ namespace DNNrocket.Category
             {
                 filter += " and R1.GuidKey = '" + systemprovider + "' ";
             }
+
+            if (!showdisabled)
+            {
+                filter += " and (R1.XMLData.value('(genxml/checkbox/disable)[1]','nvarchar(max)') = 'false') ";
+            }
+            if (!showhidden)
+            {
+                filter += " and (R1.XMLData.value('(genxml/checkbox/hidden)[1]','nvarchar(max)') = 'false') ";
+            }
+
 
             var objCtrl = new DNNrocketController();
             var list = objCtrl.GetList(portalId, -1, "CATEGORY", filter, editlang, "order by R1.XrefItemId");

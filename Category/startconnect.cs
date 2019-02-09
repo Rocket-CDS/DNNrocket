@@ -32,16 +32,16 @@ namespace DNNrocket.Category
                     strOut = GetList(postInfo, ControlRelPath);
                     break;
                 case "category_getdetail":
-                    strOut = GetDetail(postInfo, ControlRelPath);
+                    strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
                     break;
                 case "category_add":
                     var newInfo = AddNew();
                     postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
-                    strOut = GetDetail(postInfo, ControlRelPath);
+                    strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
                     break;
                 case "category_save":
                     Save(postInfo);
-                    strOut = GetDetail(postInfo, ControlRelPath);
+                    strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
                     break;
                 case "category_savelist":
                     SaveList(postInfo);
@@ -87,7 +87,7 @@ namespace DNNrocket.Category
                 var headerData = new SimplisityInfo();
                 headerData.SetXmlProperty("genxml/textbox/searchtext", searchtext);
 
-                var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, _editlang, _systemprovider, searchtext);
+                var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, _editlang, _systemprovider, searchtext,"",true,true);
 
                 return RenderList(categoryList, postInfo, 0, templateControlRelPath, headerData);
             }
@@ -125,7 +125,7 @@ namespace DNNrocket.Category
         }
 
 
-        public static String GetDetail(SimplisityInfo postInfo, string templateControlRelPath)
+        public static String GetDetail(SimplisityInfo postInfo, string templateControlRelPath, SimplisityInfo systemInfo)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace DNNrocket.Category
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings, systemInfo);
 
                 return strOut;
             }

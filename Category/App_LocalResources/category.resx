@@ -141,6 +141,9 @@
   <data name="dropimage.Text" xml:space="preserve">
     <value>Drop Image Here...</value>
   </data>
+  <data name="entries.Text" xml:space="preserve">
+    <value>Entries</value>
+  </data>
   <data name="expandall.Text" xml:space="preserve">
     <value>Expand All</value>
   </data>

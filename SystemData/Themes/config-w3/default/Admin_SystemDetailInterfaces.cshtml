@@ -81,7 +81,7 @@
                         <label class="">@ResourceKey("system.assembly")</label>
                         @TextBox(i, "genxml/textbox/assembly", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
                     </div>
-                    <div class="w3-padding w3-quarter">
+                    <div class="w3-padding w3-half">
                         <label class="">@ResourceKey("system.providertype")</label>
                         @{
                             var providertyperef = "";
@@ -89,62 +89,63 @@
                             var l2 = sInfo.GetList("provtypesdata");
                             foreach (var g in l2)
                             {
-                                providertyperef += "," + g.GetXmlProperty("genxml/textbox/provtypes");
-                                providertypelist += "," + g.GetXmlProperty("genxml/textbox/provname");
+                                providertyperef += g.GetXmlProperty("genxml/textbox/provtypes") + ",";
+                                providertypelist += g.GetXmlProperty("genxml/textbox/provname") + ",";
                             }
                         }
-                        @DropDownList(i, "genxml/dropdownlist/providertype", providertyperef, providertypelist, "class='w3-input w3-border'", "", false, lp1)
+                        <!-- DropDownList(i, "genxml/dropdownlist/providertype", providertyperef, providertypelist, "class='w3-input w3-border'", "", false, lp1)  -->
+                            @CheckBoxList(i, "genxml/checkboxlist/providertype", providertyperef.TrimEnd(','), providertypelist.TrimEnd(','), "", false, false, lp1)
+                        </div>
+                        <div class="w3-padding w3-quarter">
+                        </div>
                     </div>
-                    <div class="w3-padding w3-quarter">
+                    <div class="w3-row">
+                        <div class="w3-padding w3-half">
+                            <label class="">@ResourceKey("system.controlrelpath")</label>
+                            @TextBox(i, "genxml/textbox/relpath", "class='w3-input w3-border' maxlength='350'")
+                        </div>
+                        <div class="w3-padding w3-quarter">
+                        </div>
+                        <div class="w3-padding w3-quarter">
+                        </div>
                     </div>
-                </div>
-                <div class="w3-row">
-                    <div class="w3-padding w3-half">
-                        <label class="">@ResourceKey("system.controlrelpath")</label>
-                        @TextBox(i, "genxml/textbox/relpath", "class='w3-input w3-border' maxlength='350'")
+
+                    <div class="w3-row">
+                        <div class="w3-padding w3-quarter">
+                            <i class="fa fa-files-o fa-lg w3-padding getsystemlist" aria-hidden="true" interfacekey="@i.GetXmlProperty("genxml/textbox/interfacekey")" systemid="@sInfo.ItemID" ></i>
+                            <label class="">@ResourceKey("DNNrocket.Active")</label>
+                            @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border'", true, false, lp1)
+                        </div>
+                        <div class="w3-padding w3-half">
+                            @CheckBoxList(i, "genxml/checkboxlist/securityroles", ResourceKey("system.roles").ToString(), ResourceKey("system.roles").ToString(), "", false, false, lp1)
+                        </div>
+                        <div class="w3-padding w3-quarter">
+                        </div>
                     </div>
-                    <div class="w3-padding w3-quarter">
-                    </div>
-                    <div class="w3-padding w3-quarter">
-                    </div>
-                </div>
 
-                <div class="w3-row">
-                    <div class="w3-padding w3-quarter">
-                        <i class="fa fa-files-o fa-lg w3-padding getsystemlist" aria-hidden="true" interfacekey="@i.GetXmlProperty("genxml/textbox/interfacekey")" systemid="@sInfo.ItemID" ></i>
-                        <label class="">@ResourceKey("DNNrocket.Active")</label>
-                        @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border'", true, false, lp1)
-                    </div>
-                    <div class="w3-padding w3-half">
-                        @CheckBoxList(i, "genxml/checkboxlist/securityroles", ResourceKey("system.roles").ToString(), ResourceKey("system.roles").ToString(), "", false, false, lp1)
-                    </div>
-                    <div class="w3-padding w3-quarter">
-                    </div>
-                </div>
+                </li>
+            }
+        </ul>
 
-            </li>
-        }
-    </ul>
+    </div>
 
-</div>
+    <!-- The Modal -->
+                        <div id="systemselect" class="w3-modal">
+                        </div>
 
-<!-- The Modal -->
-<div id="systemselect" class="w3-modal">
-</div>
+                        <script>
+                            $(document).ready(function () {
+                                $(':checkbox').attr('class', 'w3-check');
 
-<script>
-    $(document).ready(function () {
-        $(':checkbox').attr('class', 'w3-check');
+                                $("#plugininterfaces").sortable();
+                                $("#plugininterfaces").disableSelection();
 
-        $("#plugininterfaces").sortable();
-        $("#plugininterfaces").disableSelection();
+                                $(".getsystemlist").unbind("click");
+                                $(".getsystemlist").click(function () {
+                                    $('#systemselect').getSimplisity('/DesktopModules/DNNrocket/api/api.ashx', 'systemapi_admin_getsystemlist', 'theme:config-w3,template:Admin_SystemSelect.cshtml,systemid:' + $(this).attr('systemid') + ',interfacekey:' + $(this).attr('interfacekey'))
+                                    document.getElementById('systemselect').style.display = 'block';
+                                });
 
-        $(".getsystemlist").unbind("click");
-        $(".getsystemlist").click(function () {
-            $('#systemselect').getSimplisity('/DesktopModules/DNNrocket/api/api.ashx', 'systemapi_admin_getsystemlist', 'theme:config-w3,template:Admin_SystemSelect.cshtml,systemid:' + $(this).attr('systemid') + ',interfacekey:' + $(this).attr('interfacekey'))
-            document.getElementById('systemselect').style.display = 'block';
-        });
+                            });
 
-    });
-
-</script>
+                        </script>
