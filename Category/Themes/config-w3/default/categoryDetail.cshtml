@@ -101,8 +101,8 @@
             @foreach (var i in Model.HeaderData.GetList("interfacedata"))
             {
                 if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
-                {
-                    @RenderTemplate("CategoryList.cshtml", i.GetXmlProperty("genxml/textbox/relpath"), i.GetXmlProperty("genxml/textbox/defaulttheme"), Model)
+                {                    
+                    @RenderTemplate(i.GetXmlProperty("genxml/textbox/defaulttemplate").Replace(".cshtml", "_CategorySelect.cshtml"), i.GetXmlProperty("genxml/textbox/relpath"), i.GetXmlProperty("genxml/textbox/defaulttheme"), Model)
                 }
             }
         </div>
