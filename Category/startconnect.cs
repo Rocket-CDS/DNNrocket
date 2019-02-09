@@ -258,16 +258,20 @@ namespace DNNrocket.Category
                             var imagerelpath = DNNrocketUtils.HomeRelDirectory() + "/images/" + newfilename;
                             var imagepath = imageDirectory + "\\" + newfilename;
 
-                            File.Move(DNNrocketUtils.TempDirectory() + "\\" + encryptName, imagepath);
+                            if (File.Exists(DNNrocketUtils.TempDirectory() + "\\" + encryptName))
+                            {
 
-                            imgInfo.SetXmlProperty("genxml/hidden", "");
-                            imgInfo.SetXmlProperty("genxml/hidden/imagerelpath", imagerelpath);
-                            imgInfo.SetXmlProperty("genxml/hidden/imagepath", imagepath);
-                            imgInfo.SetXmlProperty("genxml/hidden/filename", newfilename);
-                            imgInfo.SetXmlProperty("genxml/hidden/friendlyfilename", friendlyname);
-                            imgInfo.SetXmlProperty("genxml/hidden/ext", Path.GetExtension(friendlyname));
+                                File.Move(DNNrocketUtils.TempDirectory() + "\\" + encryptName, imagepath);
 
-                            info.AddListRow(listname, imgInfo);
+                                imgInfo.SetXmlProperty("genxml/hidden", "");
+                                imgInfo.SetXmlProperty("genxml/hidden/imagerelpath", imagerelpath);
+                                imgInfo.SetXmlProperty("genxml/hidden/imagepath", imagepath);
+                                imgInfo.SetXmlProperty("genxml/hidden/filename", newfilename);
+                                imgInfo.SetXmlProperty("genxml/hidden/friendlyfilename", friendlyname);
+                                imgInfo.SetXmlProperty("genxml/hidden/ext", Path.GetExtension(friendlyname));
+
+                                info.AddListRow(listname, imgInfo);
+                            }
                         }
                     }
 
