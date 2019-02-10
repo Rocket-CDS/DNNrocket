@@ -28,9 +28,19 @@
             <a href="javascript:void(0)" class="sectiontab" sectionname="imagesection">
                 <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-image"></i>&nbsp;@ResourceKey("category.images")</div>
             </a>
-            <a href="javascript:void(0)" class="sectiontab" sectionname="entrysection">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-th"></i>&nbsp;@ResourceKey("category.entries")</div>
-            </a>
+
+            @foreach (var i in Model.HeaderData.GetList("interfacedata"))
+            {
+                if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
+                {
+                    <a href="javascript:void(0)" class="sectiontab" sectionname="@i.GetXmlProperty("genxml/textbox/interfacekey")section">
+                        <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-th"></i>&nbsp;@i.GetXmlProperty("genxml/textbox/interfacekey")</div>
+                    </a>
+                }
+            }
+
+
+
         </div>
 
         <div id="detailsection" class="w3-container w3-margin tabsection" style="display:block;">
@@ -96,15 +106,14 @@
             @RenderTemplate("CategoryImages.cshtml", "/DesktopModules/DNNrocket/Category", "config-w3", Model)
         </div>
 
-        <div id="entrysection" class="w3-container w3-margin tabsection" style="display: none;">
-            @foreach (var i in Model.HeaderData.GetList("interfacedata"))
+        @foreach (var i in Model.HeaderData.GetList("interfacedata"))
+        {
+            if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
             {
-                if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
-                {
-                    @RenderTemplate(i.GetXmlProperty("genxml/textbox/defaulttemplate").Replace(".cshtml", "_CategorySelect.cshtml"), i.GetXmlProperty("genxml/textbox/relpath"), i.GetXmlProperty("genxml/textbox/defaulttheme"), Model)
-                }
+                <div id="@i.GetXmlProperty("genxml/textbox/interfacekey")section" class="w3-container w3-margin tabsection" style="display: none;"></div>
             }
-        </div>
+        }
+
 
     </div>
 
@@ -126,6 +135,16 @@
         if (sectionname !== '') {
             $('.sectiontab[sectionname="' + sectionname + '"]').trigger('click');
         }
+
+        // load interfaces
+            @foreach (var i in Model.HeaderData.GetList("interfacedata"))
+            {
+                if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
+                {
+                   @: $('#@i.GetXmlProperty("genxml/textbox/interfacekey")section').getSimplisity('@Model.HeaderData.GetXmlProperty("genxml/textbox/apiurl")', '@i.GetXmlProperty("genxml/textbox/defaultcommand")', 'theme:@i.GetXmlProperty("genxml/textbox/defaulttheme"),template:@i.GetXmlProperty("genxml/textbox/defaulttemplate").Replace(".cshtml", "_CategorySelect.cshtml"),interfacekey:@i.GetXmlProperty("genxml/textbox/interfacekey")', '');
+                }
+            }
+
 
     });
 
