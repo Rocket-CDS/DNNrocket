@@ -342,4 +342,10 @@
   <data name="cmdClearCacheIcon.Text" xml:space="preserve">
     <value>&lt;i title="Clear All Cache" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
+  <data name="pagingtext.Text" xml:space="preserve">
+    <value>5,10,20,50,100,All</value>
+  </data>
+  <data name="pagingvalues.Text" xml:space="preserve">
+    <value>5,10,20,50,100,0</value>
+  </data>
 </root>

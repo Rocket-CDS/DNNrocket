@@ -10,6 +10,9 @@
     var info = (SimplisityInfo)Model.List.First();
 }
 
+<!-- gridy for entry grids -->
+<script src="/DesktopModules/DNNrocket/category/Themes/config-w3/js/jquery.matchHeight-min.js" type="text/javascript"></script>
+
 <span class="w3-section simplisity_buttons">
     <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="category_save" s-post="#detailsection" s-list=".categoryimg" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category">@ResourceKey("DNNrocket.cmdSaveButton")</button>
     <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="category_delete" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:CategoryList.cshtml,interfacekey:category">@ResourceKey("DNNrocket.cmdDeleteButton")</button>

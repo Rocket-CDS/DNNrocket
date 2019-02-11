@@ -42,14 +42,16 @@ namespace DNNrocketAPI.render
             return strOut;
         }
 
-        public IEncodedString RenderPagingTemplate(string scmd, string sfields, SimplisityRazor model)
+        public IEncodedString RenderPagingTemplate(string scmd, string spost, string sfields, string sreturn, SimplisityRazor model)
         {
             if (model.HeaderData == null)
             {
                 model.HeaderData = new SimplisityInfo();
             }
-            model.HeaderData.SetXmlProperty("genxml/s-paging-cmd",scmd);
             model.HeaderData.SetXmlProperty("genxml/s-paging-fields", sfields);
+            model.HeaderData.SetXmlProperty("genxml/s-paging-return", sreturn);
+            model.HeaderData.SetXmlProperty("genxml/s-paging-cmd", scmd);
+            model.HeaderData.SetXmlProperty("genxml/s-paging-post", spost);
             return RenderTemplate("Paging.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model);
         }
 
