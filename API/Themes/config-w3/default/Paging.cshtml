@@ -35,10 +35,10 @@
     <div class="w3-bar">
         @if (BeginPage != 1)
         {
-            <a class="w3-button w3-hover-theme simplisity_pageclick" s-page="1" href="#">|❮</a>
+            <a class="w3-button w3-hover-theme simplisity_pageclick" s-page="1" s-cmd="@info.GetXmlProperty("genxml/s-paging-cmd")" s-fields="@info.GetXmlProperty("genxml/s-paging-fields")" href="#">|❮</a>
             if (page >= 6)
             {
-                <a class="w3-button w3-hover-theme simplisity_pageclick" s-page="@(BeginPage - 1)" href="#">..</a>
+                <a class="w3-button w3-hover-theme simplisity_pageclick" s-page="@(BeginPage - 1)" s-cmd="@info.GetXmlProperty("genxml/s-paging-cmd")" s-fields="@info.GetXmlProperty("genxml/s-paging-fields")" href="#">..</a>
             }
         }
 
@@ -51,7 +51,7 @@
             }
             if (i <= lastpage)
             {
-                <a href='#' class='w3-button w3-hover-theme @selected simplisity_pageclick' s-page='@i' >@i</a>
+                <a href='#' class='w3-button w3-hover-theme @selected simplisity_pageclick' s-page='@i' s-cmd="@info.GetXmlProperty("genxml/s-paging-cmd")" s-fields="@info.GetXmlProperty("genxml/s-paging-fields")">@i</a>
             }
         }
 
@@ -59,9 +59,9 @@
         {
             if (EndPage != lastpage)
             {
-                <a class="w3-button w3-hover-theme simplisity_pageclick" s-page="@(EndPage + 1)" href="#">..</a>
+                <a class="w3-button w3-hover-theme simplisity_pageclick" s-page="@(EndPage + 1)" s-cmd="@info.GetXmlProperty("genxml/s-paging-cmd")" s-fields="@info.GetXmlProperty("genxml/s-paging-fields")" href="#">..</a>
             }
-            <a class="w3-button w3-hover-theme simplisity_pageclick" s-page="@lastpage" href="#">❯|</a>
+            <a class="w3-button w3-hover-theme simplisity_pageclick" s-page="@lastpage" s-cmd="@info.GetXmlProperty("genxml/s-paging-cmd")" s-fields="@info.GetXmlProperty("genxml/s-paging-fields")" href="#">❯|</a>
         }
 
         </div>
