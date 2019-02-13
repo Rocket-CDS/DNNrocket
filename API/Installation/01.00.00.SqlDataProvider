@@ -156,6 +156,21 @@ begin
 	CLOSE delete_cursor;
 	DEALLOCATE delete_cursor;
 
+	-- Delete all linked child records (xrefitemid).
+	DECLARE delete_cursor1 CURSOR LOCAL FOR 
+	select ItemId from {databaseOwner}[{objectQualifier}DNNrocket] where XrefItemId = @ItemId
+
+	OPEN delete_cursor1
+	FETCH NEXT FROM delete_cursor1 INTO @DelItemId
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}DNNrocket_Delete] @DelItemId
+		FETCH NEXT FROM delete_cursor1 INTO @DelItemId
+	END
+	CLOSE delete_cursor1;
+	DEALLOCATE delete_cursor1;
+
+
 	delete from {databaseOwner}[{objectQualifier}DNNrocket] where ItemId = @ItemId
 	
 end

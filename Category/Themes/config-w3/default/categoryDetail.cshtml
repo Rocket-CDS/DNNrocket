@@ -14,7 +14,7 @@
 <script src="/DesktopModules/DNNrocket/category/Themes/config-w3/js/jquery.matchHeight-min.js" type="text/javascript"></script>
 
 <span class="w3-section simplisity_buttons">
-    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="category_save" s-post="#detailsection" s-list=".categoryimg" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="category_save" s-post="#datasave" s-list=".categoryimg" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category">@ResourceKey("DNNrocket.cmdSaveButton")</button>
     <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="category_delete" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:CategoryList.cshtml,interfacekey:category">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
     <button class="w3-button w3-sand w3-padding-8 simplisity_click" s-track="true" s-cmd="category_getlist" s-fields="selecteditemid:,theme:config-w3,template:CategoryList.cshtml,interfacekey:category">@ResourceKey("DNNrocket.cmdReturnButton")</button>
 </span>
@@ -45,78 +45,80 @@
 
 
         </div>
+        <span id="datasave">
 
-        <div id="detailsection" class="w3-container w3-margin tabsection" style="display:block;">
+            <div id="detailsection" class="w3-container w3-margin tabsection" style="display:block;">
 
-            <h2>@ResourceKey("category.categories")</h2>
-            <b>ItemId: @info.ItemID</b>
+                <h2>@ResourceKey("category.categories")</h2>
+                <b>ItemId: @info.ItemID</b>
 
-            <div class="w3-row">
-                <div class="w3-half w3-padding">
-                    <div>
-                        <label>@ResourceKey("category.ref")</label>
-                        @TextBox(info, "genxml/textbox/ref", "class='w3-input w3-border' maxlength='50' placeholder='" + @ResourceKey("category.ref") + "...' ", "")
+                <div class="w3-row">
+                    <div class="w3-half w3-padding">
+                        <div>
+                            <label>@ResourceKey("category.ref")</label>
+                            @TextBox(info, "genxml/textbox/ref", "class='w3-input w3-border' maxlength='50' placeholder='" + @ResourceKey("category.ref") + "...' ", "")
+                        </div>
+                        <div class="">
+                            @EditFlag()&nbsp;<label>@ResourceKey("category.name")</label>
+                            @TextBox(info, "genxml/lang/genxml/textbox/name", "maxlength='250' class='w3-input w3-border'", "")
+                        </div>
+                        <div class="">
+                            @EditFlag()&nbsp;<label>@ResourceKey("category.code")</label>
+                            @TextBox(info, "genxml/textbox/code", "class='w3-input w3-border' maxlength='250'", "")
+                        </div>
+                        <div class="">
+                            <label>@ResourceKey("category.parent")</label>
+                            @DropDownList(info, "genxml/dropdownlist/parentid", CategoryUtils.GetCategoriesDict(info.PortalId, info.Lang, info.GUIDKey, true, true), "class='w3-input w3-border'")
+                        </div>
+                        <div class="">
+                            @EditFlag()&nbsp;<label>@ResourceKey("category.description")</label>
+                            @TextArea(info, "genxml/lang/genxml/textbox/description", "class='w3-input w3-border' rows='4' maxlength='200'", "")
+                        </div>
                     </div>
-                    <div class="">
-                        @EditFlag()&nbsp;<label>@ResourceKey("category.name")</label>
-                        @TextBox(info, "genxml/lang/genxml/textbox/name", "maxlength='250' class='w3-input w3-border'", "")
-                    </div>
-                    <div class="">
-                        @EditFlag()&nbsp;<label>@ResourceKey("category.code")</label>
-                        @TextBox(info, "genxml/textbox/code", "class='w3-input w3-border' maxlength='250'", "")
-                    </div>
-                    <div class="">
-                        <label>@ResourceKey("category.parent")</label>
-                        @DropDownList(info, "genxml/dropdownlist/parentid", CategoryUtils.GetCategoriesDict(info.PortalId, info.Lang, info.GUIDKey, true, true), "class='w3-input w3-border'")
-                    </div>
-                    <div class="">
-                        @EditFlag()&nbsp;<label>@ResourceKey("category.description")</label>
-                        @TextArea(info, "genxml/lang/genxml/textbox/description", "class='w3-input w3-border' rows='4' maxlength='200'", "")
+                    <div class="w3-half w3-padding">
+                        <div class="">
+                            @EditFlag()&nbsp;<label>@ResourceKey("category.seoname")</label>
+                            @TextBox(info, "genxml/lang/genxml/textbox/seoname", "class='w3-input w3-border' maxlength='250'", "")
+                        </div>
+                        <div class="">
+                            @EditFlag()&nbsp;<label>@ResourceKey("category.seotitle")</label>
+                            @TextBox(info, "genxml/lang/genxml/textbox/seopagetitle", "class='w3-input w3-border' maxlength='250'", "")
+                        </div>
+                        <div class="">
+                            @EditFlag()&nbsp;<label>@ResourceKey("category.keywords") @ResourceKey("General.Tags")</label>
+                            @TextArea(info, "genxml/lang/genxml/textbox/metakeywords", "class='w3-input w3-border' maxlength='250' rows='2'", "")
+                        </div>
+                        <div class="">
+                            @EditFlag()&nbsp;<label>@ResourceKey("category.seodescription")</label>
+                            @TextArea(info, "genxml/lang/genxml/textbox/seodescription", "class='w3-input w3-border' rows='2' maxlength='250'", "")
+                        </div>
+                        <div class="">
+                            <label>@ResourceKey("category.attrcode")</label>
+                        </div>
+                        <div class="">
+                            @CheckBox(info, "genxml/checkbox/hidden", "")
+                            <label class="control-label">@ResourceKey("category.hidden")</label>
+                            @CheckBox(info, "genxml/checkbox/disable", "")
+                            <label class="control-label">@ResourceKey("category.disable")</label>
+                        </div>
                     </div>
                 </div>
-                <div class="w3-half w3-padding">
-                    <div class="">
-                        @EditFlag()&nbsp;<label>@ResourceKey("category.seoname")</label>
-                        @TextBox(info, "genxml/lang/genxml/textbox/seoname", "class='w3-input w3-border' maxlength='250'", "")
-                    </div>
-                    <div class="">
-                        @EditFlag()&nbsp;<label>@ResourceKey("category.seotitle")</label>
-                        @TextBox(info, "genxml/lang/genxml/textbox/seopagetitle", "class='w3-input w3-border' maxlength='250'", "")
-                    </div>
-                    <div class="">
-                        @EditFlag()&nbsp;<label>@ResourceKey("category.keywords") @ResourceKey("General.Tags")</label>
-                        @TextArea(info, "genxml/lang/genxml/textbox/metakeywords", "class='w3-input w3-border' maxlength='250' rows='2'", "")
-                    </div>
-                    <div class="">
-                        @EditFlag()&nbsp;<label>@ResourceKey("category.seodescription")</label>
-                        @TextArea(info, "genxml/lang/genxml/textbox/seodescription", "class='w3-input w3-border' rows='2' maxlength='250'", "")
-                    </div>
-                    <div class="">
-                        <label>@ResourceKey("category.attrcode")</label>
-                    </div>
-                    <div class="">
-                        @CheckBox(info, "genxml/checkbox/hidden", "")
-                        <label class="control-label">@ResourceKey("category.hidden")</label>
-                        @CheckBox(info, "genxml/checkbox/disable", "")
-                        <label class="control-label">@ResourceKey("category.disable")</label>
-                    </div>
-                </div>
+
             </div>
 
-        </div>
+            @foreach (var i in Model.HeaderData.GetList("interfacedata"))
+            {
+                if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
+                {
+                    <div id="@i.GetXmlProperty("genxml/textbox/interfacekey")section" class="w3-container w3-margin tabsection" style="display: none;"></div>
+                }
+            }
+
+        </span>
 
         <div id="imagesection" class="w3-container w3-margin tabsection" style="display: none;">
             @RenderTemplate("CategoryImages.cshtml", "/DesktopModules/DNNrocket/Category", "config-w3", Model)
         </div>
-
-        @foreach (var i in Model.HeaderData.GetList("interfacedata"))
-        {
-            if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
-            {
-                <div id="@i.GetXmlProperty("genxml/textbox/interfacekey")section" class="w3-container w3-margin tabsection" style="display: none;"></div>
-            }
-        }
-
 
     </div>
 
