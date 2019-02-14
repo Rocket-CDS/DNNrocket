@@ -246,4 +246,7 @@
   <data name="interfacecopy.Text" xml:space="preserve">
     <value>Copy interface to another system</value>
   </data>
+  <data name="xreftypecode.Text" xml:space="preserve">
+    <value>Database Xref TypeCode</value>
+  </data>
 </root>
