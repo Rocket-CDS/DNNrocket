@@ -124,10 +124,6 @@
 
 </div>
 
-<h1>@Model.HeaderData.GetXmlProperty("genxml/settingsdata/genxml/textbox/name/text()")QQQ</h1>
-
-<h1>@Model.HeaderData.GetXmlProperty("genxml/settingsdata/genxml/textbox[name/text()=\"entry_catcmd\"]../value")ZZZ</h1>
-
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -149,12 +145,12 @@
             {
                 if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
                 {
-                    var runcmd = Model.HeaderData.GetXmlProperty("genxml/settingsdata/genxml[textbox/name/text()='entry_catcmd']/textbox/value");
+                    var runcmd = Model.HeaderData.GetListItem("settingsdata", "genxml/textbox/name", i.GetXmlProperty("genxml/textbox/interfacekey") + "_catcmd").GetXmlProperty("genxml/textbox/value");
                     if (runcmd == "")
                     {
                         runcmd = i.GetXmlProperty("genxml/textbox/defaultcommand");
                     }
-                   @: $('#@i.GetXmlProperty("genxml/textbox/interfacekey")section').getSimplisity('@Model.HeaderData.GetXmlProperty("genxml/textbox/apiurl")', '@runcmd', 'theme:@i.GetXmlProperty("genxml/textbox/defaulttheme"),template:@i.GetXmlProperty("genxml/textbox/defaulttemplate").Replace(".cshtml", "_CategorySelect.cshtml"),interfacekey:@i.GetXmlProperty("genxml/textbox/interfacekey")', '');
+                   @: $('#@i.GetXmlProperty("genxml/textbox/interfacekey")section').getSimplisity('@Model.HeaderData.GetXmlProperty("genxml/textbox/apiurl")', '@runcmd', 'theme:@i.GetXmlProperty("genxml/textbox/defaulttheme"),template:@i.GetXmlProperty("genxml/textbox/defaulttemplate").Replace(".cshtml", "_CategorySelect.cshtml"),interfacekey:@i.GetXmlProperty("genxml/textbox/interfacekey"),categorylist:@info.ItemID', '');
                 }
             }
 

@@ -371,7 +371,7 @@ begin
 
 	SET NOCOUNT ON
 	 
-	SET @Filter = REPLACE(@Filter,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
+	SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
 
 ------------------------------------------------------------------------------------
 --- Cursor for INDEX records.

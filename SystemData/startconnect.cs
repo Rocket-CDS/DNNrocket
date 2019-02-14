@@ -253,18 +253,24 @@ namespace DNNrocket.SystemData
                 info.GUIDKey = postInfo.GetXmlProperty("genxml/textbox/ctrlkey");
                 objCtrl.Update(info);
 
-                // Capture existing SYSTEMLINK records, so we can selectivly delete. Protect system suring operation, records always there.
+                // Capture existing SYSTEMLINK records, so we can selectivly delete. To protect the system during operation, so records are always there.
                 var systemlinklist = objCtrl.GetList(info.PortalId, -1, "SYSTEMLINK");
                 var systemlinkidxlist = objCtrl.GetList(info.PortalId, -1, "SYSTEMLINKIDX");
                 var newsystemlinklist = new List<int>();
                 var newsystemlinkidxlist = new List<int>();
 
                 // make systemlink, so we can get systeminfo from entitytypecode.
-                var entityList = new List<string>();
+                var entityList = new Dictionary<string,string>();
                 foreach (var i in info.GetList("interfacedata"))
                 {
-                    entityList.Add(i.GetXmlProperty("genxml/textbox/entitytypecode"));
+                    entityList.Add(i.GetXmlProperty("genxml/textbox/entitytypecode"),"");
                 }
+                // Add PROPERTY, CATXREF and CASCADE record, these are generic category linking records.
+                // Uste system name (info.GUIDKey), so we can only reindex the records for the selected system based onthe data guidkey.
+                entityList.Add("CATXREF", info.GUIDKey);
+                entityList.Add("CASCADE", info.GUIDKey);
+                entityList.Add("PROPXREF", info.GUIDKey);
+                entityList.Add("ATTRXREF", info.GUIDKey);
 
                 // Get idxfields.
                 var idxListStr = new List<string>();
@@ -278,14 +284,15 @@ namespace DNNrocket.SystemData
 
                 foreach (var entityname in entityList)
                 {
-                    var idxinfo = objCtrl.GetByGuidKey(info.PortalId, -1, "SYSTEMLINK", entityname);
+                    var idxinfo = objCtrl.GetByGuidKey(info.PortalId, -1, "SYSTEMLINK", entityname.Key);
                     if (idxinfo == null)
                     {
                         idxinfo = new SimplisityInfo();
                         idxinfo.PortalId = info.PortalId;
                         idxinfo.TypeCode = "SYSTEMLINK";
-                        idxinfo.GUIDKey = entityname;
+                        idxinfo.GUIDKey = entityname.Key;
                         idxinfo.ParentItemId = info.ItemID;
+                        idxinfo.SetXmlProperty("genxml/systemprovider", entityname.Value);
                         var itemid = objCtrl.Update(idxinfo);
                         idxinfo.ItemID = itemid;
                     }
@@ -299,7 +306,7 @@ namespace DNNrocket.SystemData
                     //SYSTEMIDX  - use indexref to create a table join in SQL PROC.
                     foreach (var idxfield in idxList)
                     {
-                        if (idxfield.GetXmlProperty("genxml/dropdownlist/entitytypecode") == entityname)
+                        if (idxfield.GetXmlProperty("genxml/dropdownlist/entitytypecode") == entityname.Key)
                         {
                             var idxref = idxfield.GetXmlProperty("genxml/textbox/indexref");
                             var idxinfo2 = objCtrl.GetByGuidKey(info.PortalId, -1, "SYSTEMLINKIDX", idxref);
@@ -310,6 +317,7 @@ namespace DNNrocket.SystemData
                                 idxinfo2.TypeCode = "SYSTEMLINKIDX";
                                 idxinfo2.GUIDKey = idxref;
                                 idxinfo2.ParentItemId = idxinfo.ItemID;
+                                idxinfo2.SetXmlProperty("genxml/systemprovider", entityname.Value);
                                 var itemid = objCtrl.Update(idxinfo2);
                                 idxinfo2.ItemID = itemid;
                             }
