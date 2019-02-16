@@ -14,9 +14,10 @@ namespace DNNrocket.Category
 
         public SimplisityInfo Info;
 
-        public Category(SimplisityInfo simplisityInfo)
+        public Category(int systemId, SimplisityInfo simplisityInfo)
         {
             Info = simplisityInfo;
+            Info.ModuleId = systemId;
             _children = new List<Category>();
         }
 
@@ -32,7 +33,7 @@ namespace DNNrocket.Category
             {
                 if (s.ParentItemId == Info.ItemID)
                 {
-                    var c = new Category(s);
+                    var c = new Category(Info.ModuleId, s);
                     c.PopulateChildren(simplisityList);
                     _children.Add(c);
                 }

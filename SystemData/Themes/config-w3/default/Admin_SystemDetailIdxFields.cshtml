@@ -24,7 +24,7 @@
             <tr>
                 <th class="w3-col m2">@ResourceKey("system.indexref")</th>
                 <th class="w3-col m4">@ResourceKey("system.fieldxpath")</th>
-                <th class="w3-col m3">@ResourceKey("system.interfacekey")</th>
+                <th class="w3-col m3">@ResourceKey("system.dbtypecode")</th>
                 <th class="w3-col m2">@ResourceKey("system.xreftypecode")</th>
                 <th style="width:20px;"></th>
             </tr>
@@ -36,36 +36,33 @@
             {
                 lp2 += 1;
 
-            <tr class="idxfielddata">
-                <td class="w3-col m2">
-                    @TextBox(i, "genxml/textbox/indexref", "class='w3-input w3-border' maxlength='250' ", "", false, lp2)
-                </td>
-                <td class="w3-col m4">
-                    @TextBox(i, "genxml/textbox/xpath", "class='w3-input w3-border' maxlength='250' ", "", false, lp2)
-                </td>
-                <td class="w3-col m3">
-                    @{
-                        var interfacekey = "";
-                        var l2 = sInfo.GetList("interfacedata");
-                        foreach (var g in l2)
-                        {
-                            interfacekey += "," + g.GetXmlProperty("genxml/textbox/entitytypecode");
-                        }
-                        interfacekey += ",CATXREF,CASCADE,PROPXREF,ATTRXREF";
-                    }
-                    @DropDownList(i, "genxml/dropdownlist/entitytypecode", interfacekey, interfacekey, "class='w3-input w3-border'", "", false, lp2)
+                var interfacekey = "";
+                var l2 = sInfo.GetList("interfacedata");
+                foreach (var g in l2)
+                {
+                    interfacekey += "," + g.GetXmlProperty("genxml/textbox/entitytypecode");
+                }
+                interfacekey += ",CATXREF,CASCADE,PROPXREF,ATTRXREF";
 
+                <tr class="idxfielddata">
+                    <td class="w3-col m2">
+                        @TextBox(i, "genxml/textbox/indexref", "class='w3-input w3-border' maxlength='250' ", "", false, lp2)
+                    </td>
+                    <td class="w3-col m4">
+                        @TextBox(i, "genxml/textbox/xpath", "class='w3-input w3-border' maxlength='250' ", "", false, lp2)
+                    </td>
+                    <td class="w3-col m3">
+                        @DropDownList(i, "genxml/dropdownlist/entitytypecode", interfacekey, interfacekey, "class='w3-input w3-border'", "", false, lp2)
+                    </td>
 
-                </td>
+                    <td class="w3-col m2">
+                        @DropDownList(i, "genxml/dropdownlist/xreftypecode", interfacekey, interfacekey, "class='w3-input w3-border'", "", false, lp2)
+                    </td>
 
-                <td class="w3-col m2">
-                    @DropDownList(i, "genxml/dropdownlist/xreftypecode", ",CATXREF,CASCADE,PROPXREF,ATTRXREF", ",CATXREF,CASCADE,PROPXREF,ATTRXREF", "class='w3-input w3-border'", "", false, lp2)
-                </td>
-
-                <td class="w3-col" style="width:20px;">
-                    <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".idxfielddata" s-recylebin="parametersbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
-                </td>
-            </tr>
+                    <td class="w3-col" style="width:20px;">
+                        <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".idxfielddata" s-recylebin="parametersbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+                    </td>
+                </tr>
 
             }
         </table>

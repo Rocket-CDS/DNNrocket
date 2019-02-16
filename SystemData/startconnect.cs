@@ -5,6 +5,7 @@ using DotNetNuke.Security;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.Xml;
 
 namespace DNNrocket.SystemData
 {
@@ -259,75 +260,74 @@ namespace DNNrocket.SystemData
                 var newsystemlinklist = new List<int>();
                 var newsystemlinkidxlist = new List<int>();
 
-                // make systemlink, so we can get systeminfo from entitytypecode.
-                var entityList = new Dictionary<string,string>();
-                foreach (var i in info.GetList("interfacedata"))
-                {
-                    entityList.Add(i.GetXmlProperty("genxml/textbox/entitytypecode"),"");
-                }
-                // Add PROPERTY, CATXREF and CASCADE record, these are generic category linking records.
-                // Uste system name (info.GUIDKey), so we can only reindex the records for the selected system based onthe data guidkey.
-                entityList.Add("CATXREF", info.GUIDKey);
-                entityList.Add("CASCADE", info.GUIDKey);
-                entityList.Add("PROPXREF", info.GUIDKey);
-                entityList.Add("ATTRXREF", info.GUIDKey);
-
-                // Get idxfields.
-                var idxListStr = new List<string>();
-                var idxList = new List<SimplisityInfo>();
+                // make systemlink record
+                var entityList = new List<string>();
                 foreach (var i in info.GetList("idxfielddata"))
                 {
-                    idxList.Add(i);
-                    idxListStr.Add(i.GetXmlProperty("genxml/dropdownlist/entitytypecode") + "," + i.GetXmlProperty("genxml/textbox/indexref"));
-                }
+                    var entitytypecode = i.GetXmlProperty("genxml/dropdownlist/entitytypecode");
 
-
-                foreach (var entityname in entityList)
-                {
-                    var idxinfo = objCtrl.GetByGuidKey(info.PortalId, -1, "SYSTEMLINK", entityname.Key);
-                    if (idxinfo == null)
+                    if (!entityList.Contains(entitytypecode))
                     {
-                        idxinfo = new SimplisityInfo();
-                        idxinfo.PortalId = info.PortalId;
-                        idxinfo.TypeCode = "SYSTEMLINK";
-                        idxinfo.GUIDKey = entityname.Key;
-                        idxinfo.ParentItemId = info.ItemID;
-                        idxinfo.SetXmlProperty("genxml/systemprovider", entityname.Value);
-                        var itemid = objCtrl.Update(idxinfo);
-                        idxinfo.ItemID = itemid;
-                    }
-                    else
-                    {
-                        idxinfo.ParentItemId = info.ItemID;
-                        objCtrl.Update(idxinfo);
-                    }
-                    newsystemlinklist.Add(idxinfo.ItemID);
-
-                    //SYSTEMIDX  - use indexref to create a table join in SQL PROC.
-                    foreach (var idxfield in idxList)
-                    {
-                        if (idxfield.GetXmlProperty("genxml/dropdownlist/entitytypecode") == entityname.Key)
+                        //build xref list
+                        var xmldata = "<genxml>";
+                        foreach (XmlNode xrefnod in info.XMLDoc.SelectNodes("genxml/idxfielddata/genxml[dropdownlist/entitytypecode/text()='" + entitytypecode + "']"))
                         {
-                            var idxref = idxfield.GetXmlProperty("genxml/textbox/indexref");
-                            var idxinfo2 = objCtrl.GetByGuidKey(info.PortalId, -1, "SYSTEMLINKIDX", idxref);
+                            xmldata += xrefnod.OuterXml;
+                        }
+                        xmldata += "</genxml>";
+
+                        var idxinfo = objCtrl.GetByGuidKey(info.PortalId, info.ItemID, "SYSTEMLINK", entitytypecode); // use system id as moduleid
+                        if (idxinfo == null)
+                        {
+                            idxinfo = new SimplisityInfo();
+                            idxinfo.PortalId = info.PortalId;
+                            idxinfo.TypeCode = "SYSTEMLINK";
+                            idxinfo.GUIDKey = entitytypecode;
+                            idxinfo.XMLData = xmldata;
+                            idxinfo.ParentItemId = info.ItemID;
+                            idxinfo.ModuleId = info.ItemID;
+                            var itemid = objCtrl.Update(idxinfo);
+                            idxinfo.ItemID = itemid;
+                        }
+                        else
+                        {
+                            idxinfo.ParentItemId = info.ItemID;
+                            idxinfo.XMLData = xmldata;
+                            objCtrl.Update(idxinfo);
+                        }
+                        newsystemlinklist.Add(idxinfo.ItemID);
+
+                        // SYSTEMLINKIDX
+                        foreach (XmlNode xrefnod in idxinfo.XMLDoc.SelectNodes("genxml/genxml"))
+                        {
+                            var i2 = new SimplisityRecord();
+                            i2.XMLData = xrefnod.OuterXml;
+
+                            var idxref = i2.GetXmlProperty("genxml/textbox/indexref");
+
+                            var idxinfo2 = objCtrl.GetByGuidKey(info.PortalId, info.ItemID, "SYSTEMLINKIDX", idxref);
                             if (idxinfo2 == null)
                             {
                                 idxinfo2 = new SimplisityInfo();
                                 idxinfo2.PortalId = info.PortalId;
                                 idxinfo2.TypeCode = "SYSTEMLINKIDX";
-                                idxinfo2.GUIDKey = idxref;
+                                idxinfo2.GUIDKey = entitytypecode;
                                 idxinfo2.ParentItemId = idxinfo.ItemID;
-                                idxinfo2.SetXmlProperty("genxml/systemprovider", entityname.Value);
+                                idxinfo2.ModuleId = info.ItemID;
+                                idxinfo2.TextData = idxref;
+                                idxinfo2.XMLData = i2.XMLData;
                                 var itemid = objCtrl.Update(idxinfo2);
                                 idxinfo2.ItemID = itemid;
                             }
                             else
                             {
                                 idxinfo2.ParentItemId = idxinfo.ItemID;
+                                idxinfo2.XMLData = i2.XMLData;
                                 objCtrl.Update(idxinfo2);
                             }
                             newsystemlinkidxlist.Add(idxinfo2.ItemID);
                         }
+                        entityList.Add(entitytypecode);
                     }
                 }
 
@@ -382,6 +382,11 @@ namespace DNNrocket.SystemData
                     if (!entityList.Contains(entityTypeCode) && entityTypeCode != "")
                     {
                         entityList.Add(entityTypeCode);
+                    }
+                    var xrefTypeCode = i.GetXmlProperty("genxml/dropdownlist/xreftypecode");
+                    if (!entityList.Contains(xrefTypeCode) && xrefTypeCode != "")
+                    {
+                        entityList.Add(xrefTypeCode);
                     }
                 }
                 foreach (var entityCode in entityList)

@@ -174,56 +174,75 @@ namespace DNNrocketAPI
                 var langInfo = GetRecord(dataitemid);
                 dataitemid = langInfo.ParentItemId;
             }
-            var systemLink = GetByGuidKey(-1, -1, "SYSTEMLINK", entityTypeCode);
-            if (systemLink != null)
+
+            var systemid = objInfo.ModuleId;
+            var systemInfo = GetRecord(systemid);
+
+            if (systemInfo != null)
             {
-                var systemInfo = GetInfo(systemLink.ParentItemId);
-                if (systemLink != null)
+                var systemLinkRec = GetByGuidKey(-1, systemid, "SYSTEMLINK", objInfo.TypeCode);
+                if (systemLinkRec != null)
                 {
-                    var idxfieldlist = systemInfo.GetList("idxfielddata");
-                    foreach (var i in idxfieldlist)
+                    var xrefTypeCodeList = GetList(-1, systemid, "SYSTEMLINKIDX", " and R1.ParentitemId = '" + systemLinkRec.ItemID + "' ");
+                    foreach (var i in xrefTypeCodeList)
                     {
-                        if (entityTypeCode == i.GetXmlProperty("genxml/dropdownlist/entitytypecode"))
+                        var xrefTypeCode = i.GUIDKey;
+                        var xpath = i.GetXmlProperty("genxml/textbox/xpath");
+                        var value = objInfo.GetXmlProperty(xpath);
+                        if (value == "")
                         {
-                            var xpath = i.GetXmlProperty("genxml/textbox/xpath");
-                            if (xpath.StartsWith("genxml/lang/") && objInfo.Lang != "")
+                            // we need a langauge recrod.
+                            var langList = DNNrocketUtils.GetCultureCodeList(objInfo.PortalId);
+                            foreach (var lang in langList)
                             {
-                                xpath = xpath.Substring(("genxml/lang/").Length);
-                            }
-                            var value = objInfo.GetXmlProperty(xpath);
-                            if (value != "")
-                            {
-                                var indexref = i.GetXmlProperty("genxml/textbox/indexref");
-                                // read is index exists already
-                                var strFilter = "and R1.ParentItemId = '" + dataitemid + "' and R1.Lang = '" + dataLang + "'";
-                                SimplisityInfo sRecord = null;
-                                var l = GetList(objInfo.PortalId, objInfo.ModuleId, entityTypeCode + "IDX_" + indexref, strFilter, "", "", 1);
-                                if (l.Count == 1)
+                                var dataInfo = GetInfo(objInfo.ItemID, lang);
+                                if (dataInfo != null)
                                 {
-                                    sRecord = l[0];
-                                }
-                                if (sRecord == null)
-                                {
-                                    sRecord = new SimplisityInfo();
-                                    sRecord.ItemID = -1;
-                                }
-                                sRecord.PortalId = objInfo.PortalId;
-                                sRecord.ModuleId = -1;
-                                sRecord.ParentItemId = dataitemid;
-                                sRecord.TypeCode = entityTypeCode + "IDX_" + indexref;
-                                sRecord.ModifiedDate = DateTime.Now;
-                                sRecord.Lang = dataLang;
-                                if (sRecord.GUIDKey != value)
-                                {
-                                    sRecord.GUIDKey = value;
-                                    DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang);
+                                    value = dataInfo.GetXmlProperty(xpath);
+                                    var indexref = i.TextData;
+                                    CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.ModuleId, xrefTypeCode, indexref, dataitemid, dataLang, value);
                                 }
                             }
                         }
-                    }
+                        else
+                        {
+                            // non-langauge recrdo
+                            var indexref = i.TextData;
+                            CreateSystemLinkIdx(objInfo.PortalId, objInfo.ModuleId, xrefTypeCode, indexref, dataitemid, dataLang, value);
 
+                        }
+                    }
                 }
             }
+        }
+
+        private void CreateSystemLinkIdx(int portalId, int systemId, string idxTypeCode,string indexref, int parentItemId, string lang, string value)
+        {
+            // read is index exists already
+            var strFilter = "and R1.ParentItemId = '" + parentItemId + "' and R1.Lang = '" + lang + "'";
+            SimplisityInfo sRecord = null;
+            var l = GetList(portalId, systemId, idxTypeCode + "IDX_" + indexref, strFilter, "", "", 1);
+            if (l.Count == 1)
+            {
+                sRecord = l[0];
+            }
+            if (sRecord == null)
+            {
+                sRecord = new SimplisityInfo();
+                sRecord.ItemID = -1;
+            }
+            sRecord.PortalId = portalId;
+            sRecord.ModuleId = -1;
+            sRecord.ParentItemId = parentItemId;
+            sRecord.TypeCode = idxTypeCode + "IDX_" + indexref;
+            sRecord.ModifiedDate = DateTime.Now;
+            sRecord.Lang = lang;
+            if (sRecord.GUIDKey != value)
+            {
+                sRecord.GUIDKey = value;
+                DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang);
+            }
+
         }
 
         /// <summary>

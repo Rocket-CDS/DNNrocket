@@ -249,4 +249,7 @@
   <data name="xreftypecode.Text" xml:space="preserve">
     <value>Database Xref TypeCode</value>
   </data>
+  <data name="dbtypecode.Text" xml:space="preserve">
+    <value>Database TypeCode</value>
+  </data>
 </root>

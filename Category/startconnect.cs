@@ -29,7 +29,7 @@ namespace DNNrocket.Category
             switch (paramCmd)
             {
                 case "category_getlist":
-                    strOut = GetList(postInfo, ControlRelPath);
+                    strOut = GetList(postInfo, ControlRelPath, systemInfo);
                     break;
                 case "category_getdetail":
                     strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
@@ -40,31 +40,31 @@ namespace DNNrocket.Category
                     strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
                     break;
                 case "category_save":
-                    Save(postInfo);
+                    Save(postInfo, systemInfo);
                     strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
                     break;
                 case "category_savelist":
-                    SaveList(postInfo);
-                    strOut = GetList(postInfo, ControlRelPath);
+                    SaveList(postInfo, systemInfo);
+                    strOut = GetList(postInfo, ControlRelPath, systemInfo);
                     break;
                 case "category_delete":
                     Delete(postInfo);
-                    strOut = GetList(postInfo, ControlRelPath);
+                    strOut = GetList(postInfo, ControlRelPath, systemInfo);
                     break;
                 case "category_sort":
-                    strOut = GetList(postInfo, ControlRelPath);
+                    strOut = GetList(postInfo, ControlRelPath, systemInfo);
                     break;
                 case "category_search":
-                    strOut = GetList(postInfo, ControlRelPath);
+                    strOut = GetList(postInfo, ControlRelPath, systemInfo);
                     break;
                 case "category_addimage":
                     strOut = AddImageToList(postInfo, ControlRelPath);
                     break;
                 case "category_visible":
-                    strOut = ToggleHidden(postInfo, ControlRelPath);
+                    strOut = ToggleHidden(postInfo, ControlRelPath, systemInfo);
                     break;
                 case "category_disable":
-                    strOut = ToggleDisable(postInfo, ControlRelPath);
+                    strOut = ToggleDisable(postInfo, ControlRelPath, systemInfo);
                     break;                    
                 default:
                     strOut = "COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
@@ -75,7 +75,7 @@ namespace DNNrocket.Category
             return rtnDic;
         }
 
-        public static String GetList(SimplisityInfo postInfo, string templateControlRelPath)
+        public static String GetList(SimplisityInfo postInfo, string templateControlRelPath, SimplisityInfo systemInfo)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace DNNrocket.Category
                 var headerData = new SimplisityInfo();
                 headerData.SetXmlProperty("genxml/textbox/searchtext", searchtext);
 
-                var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, _editlang, _systemprovider, searchtext,"",true,true);
+                var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, systemInfo.ItemID, _editlang, _systemprovider, searchtext,"",true,true);
 
                 return RenderList(categoryList, postInfo, 0, templateControlRelPath, headerData);
             }
@@ -163,7 +163,7 @@ namespace DNNrocket.Category
             return objCtrl.SaveData(info);
         }
 
-        public static void Save(SimplisityInfo postInfo)
+        public static void Save(SimplisityInfo postInfo, SimplisityInfo systemInfo)
         {
             var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (selecteditemid > 0)
@@ -199,6 +199,7 @@ namespace DNNrocket.Category
                 }
                 info.GUIDKey = _systemprovider;
                 info.XMLData = postInfo.XMLData;
+                info.ModuleId = systemInfo.ItemID;
                 objCtrl.SaveData(info);
                 CacheUtils.ClearAllCache();
             }
@@ -291,7 +292,7 @@ namespace DNNrocket.Category
         }
 
 
-        public static void SaveList(SimplisityInfo postInfo)
+        public static void SaveList(SimplisityInfo postInfo, SimplisityInfo systemInfo)
         {
             // For some mad reason Stringify passes back a json string which cannot be parse by JsonConvert.
             // So we do the required replace chars to make it work. 
@@ -309,6 +310,7 @@ namespace DNNrocket.Category
             var info = objCtrl.GetData(_systemprovider, "CATEGORYLIST", _editlang);
             info.XMLData = postInfo.XMLData;
             info.AddXmlNode(xmldoc.OuterXml, "results", "genxml");
+            info.ModuleId = systemInfo.ItemID;
             objCtrl.SaveData(info);
 
             CacheUtils.ClearAllCache();
@@ -345,7 +347,7 @@ namespace DNNrocket.Category
         }
 
 
-        private static String ToggleHidden(SimplisityInfo postInfo, string ControlRelPath)
+        private static String ToggleHidden(SimplisityInfo postInfo, string ControlRelPath, SimplisityInfo systemInfo)
         {
             try
             {
@@ -354,7 +356,7 @@ namespace DNNrocket.Category
 
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
-                var catData = new Category(info);
+                var catData = new Category(systemInfo.ItemID, info);
                                 
                 if (catData.IsHidden)
                 {
@@ -377,7 +379,7 @@ namespace DNNrocket.Category
             }
         }
 
-        private static String ToggleDisable(SimplisityInfo postInfo, string ControlRelPath)
+        private static String ToggleDisable(SimplisityInfo postInfo, string ControlRelPath, SimplisityInfo systemInfo)
         {
             try
             {
@@ -386,7 +388,7 @@ namespace DNNrocket.Category
 
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
-                var catData = new Category(info);
+                var catData = new Category(systemInfo.ItemID, info);
 
                 if (catData.IsDisabled)
                 {
