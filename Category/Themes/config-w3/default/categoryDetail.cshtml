@@ -68,7 +68,7 @@
                         </div>
                         <div class="">
                             <label>@ResourceKey("category.parent")</label>
-                            @DropDownList(info, "genxml/dropdownlist/parentid", CategoryUtils.GetCategoriesDict(info.PortalId, info.ModuleId, info.Lang, info.GUIDKey, true, true), "class='w3-input w3-border'")
+                            @DropDownList(info, "genxml/dropdownlist/parentid", CategoryUtils.GetCategoriesDict(info.PortalId, info.ModuleId, info.Lang, true, true), "class='w3-input w3-border'")
                         </div>
                         <div class="">
                             @EditFlag()&nbsp;<label>@ResourceKey("category.description")</label>
@@ -145,7 +145,12 @@
             {
                 if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
                 {
-                    var runcmd = Model.HeaderData.GetListItem("settingsdata", "genxml/textbox/name", i.GetXmlProperty("genxml/textbox/interfacekey") + "_catcmd").GetXmlProperty("genxml/textbox/value");
+                    var runcmd = "";
+                    var settingValueInfo = Model.HeaderData.GetListItem("settingsdata", "genxml/textbox/name", i.GetXmlProperty("genxml/textbox/interfacekey") + "_catcmd");
+                    if (settingValueInfo != null)
+                    {
+                        runcmd = settingValueInfo.GetXmlProperty("genxml/textbox/value");
+                    }
                     if (runcmd == "")
                     {
                         runcmd = i.GetXmlProperty("genxml/textbox/defaultcommand");

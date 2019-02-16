@@ -186,7 +186,7 @@ namespace DNNrocketAPI
                     var xrefTypeCodeList = GetList(-1, systemid, "SYSTEMLINKIDX", " and R1.ParentitemId = '" + systemLinkRec.ItemID + "' ");
                     foreach (var i in xrefTypeCodeList)
                     {
-                        var xrefTypeCode = i.GUIDKey;
+                        var indexref = i.GUIDKey;
                         var xpath = i.GetXmlProperty("genxml/textbox/xpath");
                         var value = objInfo.GetXmlProperty(xpath);
                         if (value == "")
@@ -199,7 +199,7 @@ namespace DNNrocketAPI
                                 if (dataInfo != null)
                                 {
                                     value = dataInfo.GetXmlProperty(xpath);
-                                    var indexref = i.TextData;
+                                    var xrefTypeCode = i.TextData;
                                     CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.ModuleId, xrefTypeCode, indexref, dataitemid, dataLang, value);
                                 }
                             }
@@ -207,7 +207,7 @@ namespace DNNrocketAPI
                         else
                         {
                             // non-langauge recrdo
-                            var indexref = i.TextData;
+                            var xrefTypeCode = i.TextData;
                             CreateSystemLinkIdx(objInfo.PortalId, objInfo.ModuleId, xrefTypeCode, indexref, dataitemid, dataLang, value);
 
                         }

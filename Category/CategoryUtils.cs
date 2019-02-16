@@ -10,7 +10,7 @@ namespace DNNrocket.Category
     public static class CategoryUtils
     {
 
-        public static Dictionary<string,string> GetCategoriesDict(int portalId, int systemId, string editlang, string systemprovider, bool showdisabled = false, bool showhidden = true, string searchtext = "", bool addEmpty = true)
+        public static Dictionary<string,string> GetCategoriesDict(int portalId, int systemId, string editlang, bool showdisabled = false, bool showhidden = true, string searchtext = "", bool addEmpty = true)
         {
             var catDict = new Dictionary<string, string>();
             var filter = "";
@@ -22,7 +22,7 @@ namespace DNNrocket.Category
             {
                 filter += " and (R1.XMLData.value('(genxml/checkbox/hidden)[1]','nvarchar(max)') = 'false') ";
             }
-            var categoryList = CategoryUtils.GetCategoryList(portalId, systemId, editlang, systemprovider, searchtext, filter);
+            var categoryList = CategoryUtils.GetCategoryList(portalId, systemId, editlang, searchtext, filter);
 
             if (addEmpty)
             {
@@ -42,15 +42,13 @@ namespace DNNrocket.Category
             return catDict;
         }
 
-        public static List<Category> GetCategoryList(int portalId, int systemId, string editlang, string systemprovider, string searchtext = "", string filter = "", bool showdisabled = false, bool showhidden = true)
+        public static List<Category> GetCategoryList(int portalId, int systemId, string editlang, string searchtext = "", string filter = "", bool showdisabled = false, bool showhidden = true)
         {
+            filter += " and R1.ModuleId = '" + systemId + "' ";
+
             if (filter == "" && searchtext != "")
             {
                 filter += " and (categoryname.GuidKey like '%" + searchtext + "%' or categoryref.GuidKey like '%" + searchtext + "%') ";
-            }
-            if (systemprovider != "")
-            {
-                filter += " and R1.GuidKey = '" + systemprovider + "' ";
             }
 
             if (!showdisabled)

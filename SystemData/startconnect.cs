@@ -265,8 +265,10 @@ namespace DNNrocket.SystemData
                 foreach (var i in info.GetList("idxfielddata"))
                 {
                     var entitytypecode = i.GetXmlProperty("genxml/dropdownlist/entitytypecode");
+                    var xreftypecode = i.GetXmlProperty("genxml/dropdownlist/xreftypecode");
+                    var entityguidkey = entitytypecode;
 
-                    if (!entityList.Contains(entitytypecode))
+                    if (!entityList.Contains(entityguidkey))
                     {
                         //build xref list
                         var xmldata = "<genxml>";
@@ -276,13 +278,13 @@ namespace DNNrocket.SystemData
                         }
                         xmldata += "</genxml>";
 
-                        var idxinfo = objCtrl.GetByGuidKey(info.PortalId, info.ItemID, "SYSTEMLINK", entitytypecode); // use system id as moduleid
+                        var idxinfo = objCtrl.GetByGuidKey(info.PortalId, info.ItemID, "SYSTEMLINK", entityguidkey); // use system id as moduleid
                         if (idxinfo == null)
                         {
                             idxinfo = new SimplisityInfo();
                             idxinfo.PortalId = info.PortalId;
                             idxinfo.TypeCode = "SYSTEMLINK";
-                            idxinfo.GUIDKey = entitytypecode;
+                            idxinfo.GUIDKey = entityguidkey;
                             idxinfo.XMLData = xmldata;
                             idxinfo.ParentItemId = info.ItemID;
                             idxinfo.ModuleId = info.ItemID;
@@ -296,6 +298,7 @@ namespace DNNrocket.SystemData
                             objCtrl.Update(idxinfo);
                         }
                         newsystemlinklist.Add(idxinfo.ItemID);
+                        entityList.Add(entityguidkey);
 
                         // SYSTEMLINKIDX
                         foreach (XmlNode xrefnod in idxinfo.XMLDoc.SelectNodes("genxml/genxml"))
@@ -304,17 +307,21 @@ namespace DNNrocket.SystemData
                             i2.XMLData = xrefnod.OuterXml;
 
                             var idxref = i2.GetXmlProperty("genxml/textbox/indexref");
-
+                            var typecodeIdx = i2.GetXmlProperty("genxml/dropdownlist/xreftypecode");
+                            if (typecodeIdx == "")
+                            {
+                                typecodeIdx = i2.GetXmlProperty("genxml/dropdownlist/entitytypecode");
+                            }
                             var idxinfo2 = objCtrl.GetByGuidKey(info.PortalId, info.ItemID, "SYSTEMLINKIDX", idxref);
                             if (idxinfo2 == null)
                             {
                                 idxinfo2 = new SimplisityInfo();
                                 idxinfo2.PortalId = info.PortalId;
                                 idxinfo2.TypeCode = "SYSTEMLINKIDX";
-                                idxinfo2.GUIDKey = entitytypecode;
+                                idxinfo2.GUIDKey = idxref;
                                 idxinfo2.ParentItemId = idxinfo.ItemID;
                                 idxinfo2.ModuleId = info.ItemID;
-                                idxinfo2.TextData = idxref;
+                                idxinfo2.TextData = typecodeIdx;
                                 idxinfo2.XMLData = i2.XMLData;
                                 var itemid = objCtrl.Update(idxinfo2);
                                 idxinfo2.ItemID = itemid;
@@ -323,11 +330,11 @@ namespace DNNrocket.SystemData
                             {
                                 idxinfo2.ParentItemId = idxinfo.ItemID;
                                 idxinfo2.XMLData = i2.XMLData;
+                                idxinfo2.TextData = typecodeIdx;
                                 objCtrl.Update(idxinfo2);
                             }
                             newsystemlinkidxlist.Add(idxinfo2.ItemID);
                         }
-                        entityList.Add(entitytypecode);
                     }
                 }
 

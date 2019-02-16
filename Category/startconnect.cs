@@ -35,7 +35,7 @@ namespace DNNrocket.Category
                     strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
                     break;
                 case "category_add":
-                    var newInfo = AddNew();
+                    var newInfo = AddNew(systemInfo);
                     postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
                     strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
                     break;
@@ -87,7 +87,7 @@ namespace DNNrocket.Category
                 var headerData = new SimplisityInfo();
                 headerData.SetXmlProperty("genxml/textbox/searchtext", searchtext);
 
-                var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, systemInfo.ItemID, _editlang, _systemprovider, searchtext,"",true,true);
+                var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, systemInfo.ItemID, _editlang, searchtext,"",true,true);
 
                 return RenderList(categoryList, postInfo, 0, templateControlRelPath, headerData);
             }
@@ -150,14 +150,15 @@ namespace DNNrocket.Category
         }
 
 
-        public static SimplisityInfo AddNew()
+        public static SimplisityInfo AddNew(SimplisityInfo systemInfo)
         {
             var info = new SimplisityInfo();
             info.ItemID = -1;
+            info.ModuleId = systemInfo.ItemID;
             info.PortalId = DNNrocketUtils.GetPortalId();
             info.Lang = DNNrocketUtils.GetEditCulture();
             info.TypeCode = _EntityTypeCode;
-            info.GUIDKey = GeneralUtils.GetUniqueKey(12);
+            info.GUIDKey = systemInfo.GUIDKey;
 
             var objCtrl = new DNNrocketController();
             return objCtrl.SaveData(info);

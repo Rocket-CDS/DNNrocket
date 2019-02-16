@@ -42,7 +42,8 @@
                 {
                     interfacekey += "," + g.GetXmlProperty("genxml/textbox/entitytypecode");
                 }
-                interfacekey += ",CATXREF,CASCADE,PROPXREF,ATTRXREF";
+                var xreftypecodes = ",CATXREF,CASCADE,PROPXREF,ATTRXREF";
+
 
                 <tr class="idxfielddata">
                     <td class="w3-col m2">
@@ -56,7 +57,7 @@
                     </td>
 
                     <td class="w3-col m2">
-                        @DropDownList(i, "genxml/dropdownlist/xreftypecode", interfacekey, interfacekey, "class='w3-input w3-border'", "", false, lp2)
+                        @DropDownList(i, "genxml/dropdownlist/xreftypecode", xreftypecodes, xreftypecodes, "class='w3-input w3-border'", "", false, lp2)
                     </td>
 
                     <td class="w3-col" style="width:20px;">
