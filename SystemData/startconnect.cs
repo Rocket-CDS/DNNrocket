@@ -392,16 +392,20 @@ namespace DNNrocket.SystemData
                 }
                 foreach (var entityCode in entityList)
                 {
-                    var l = objCtrl.GetList(-1, -1, entityCode);
-                    foreach (var sInfo in l)
+                    if (deleteindex)
                     {
-                        if (deleteindex)
+                        var l2 = objCtrl.GetList(-1, -1, entityCode);
+                        foreach (var sInfo in l2)
                         {
                             objCtrl.DeleteIndex(sInfo);
                         }
-                        objCtrl.RebuildIndex(sInfo, sInfo.ItemID);
                     }
-                    l = objCtrl.GetList(-1, -1, entityCode + "LANG");
+                    var l = objCtrl.GetList(-1, -1, entityCode + "LANG");
+                    foreach (var sInfo in l)
+                    {
+                        objCtrl.RebuildLangIndex(sInfo, sInfo.ItemID);
+                    }
+                    l = objCtrl.GetList(-1, -1, entityCode);
                     foreach (var sInfo in l)
                     {
                         objCtrl.RebuildIndex(sInfo, sInfo.ItemID);

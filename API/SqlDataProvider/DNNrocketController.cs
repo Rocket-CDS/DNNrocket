@@ -94,6 +94,7 @@ namespace DNNrocketAPI
             objInfo.ModifiedDate = DateTime.Now;
             var itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang);
 
+            RebuildLangIndex(objInfo, itemid);
             RebuildIndex(objInfo, itemid);
 
             return itemid;
@@ -108,11 +109,13 @@ namespace DNNrocketAPI
             }
         }
 
-        public void RebuildIndex(SimplisityRecord objInfo, int itemid)
+        /// <summary>
+        /// rebuild language index merge record.
+        /// </summary>
+        /// <param name="objInfo"></param>
+        /// <param name="itemid"></param>
+        public void RebuildLangIndex(SimplisityRecord objInfo, int itemid)
         {
-            //-------------------------------------------------------------------
-            // Save Merged Lang data.
-            //-------------------------------------------------------------------
             if (String.IsNullOrEmpty(objInfo.Lang))
             {
                 var langList = DNNrocketUtils.GetCultureCodeList(objInfo.PortalId);
@@ -159,10 +162,15 @@ namespace DNNrocketAPI
                 }
             }
 
-            //-------------------------------------------------------------------
-            // build index records.
-            //-------------------------------------------------------------------
+        }
 
+        /// <summary>
+        /// Build Index Records
+        /// </summary>
+        /// <param name="objInfo"></param>
+        /// <param name="itemid"></param>
+        public void RebuildIndex(SimplisityRecord objInfo, int itemid)
+        {
             var dataitemid = itemid;
             var entityTypeCode = objInfo.TypeCode;
             if (objInfo.Lang == "") // do not process language record
