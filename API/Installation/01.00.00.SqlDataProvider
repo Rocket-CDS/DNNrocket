@@ -373,38 +373,53 @@ begin
 	 
 	SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
 
+
 ------------------------------------------------------------------------------------
 --- Cursor for INDEX records.
 ------------------------------------------------------------------------------------
 DECLARE @idxname nvarchar(250) = ''
+DECLARE @TCode nvarchar(250) = ''
 DECLARE @idxparentItemId int = 0
 DECLARE @systemlinkItemId int = 0
 DECLARE @JoinIndex nvarchar(max)
 
 select @systemlinkItemId = itemid from {databaseOwner}[{objectQualifier}DNNrocket] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
 
+--print '@systemlinkItemId: ' + convert(nvarchar(max),@systemlinkItemId)
+
 DECLARE idx_cursor CURSOR FOR 
-SELECT GUIDKey, ParentItemId
-FROM dbo.[DNNrocket]
-WHERE [TypeCode] = 'SYSTEMLINKIDX' and ParentItemId = @systemlinkItemId
+SELECT GUIDKey, ParentItemId, textdata
+FROM {databaseOwner}[{objectQualifier}DNNrocket]
+WHERE [TypeCode] like 'SYSTEMLINK%' and ParentItemId = @systemlinkItemId
 
 SET @JoinIndex = ''
 
 OPEN idx_cursor  
-FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId
+FETCH NEXT FROM idx_cursor INTO @idxname, @idxparentItemId, @TCode
 
 WHILE @@FETCH_STATUS = 0  
 BEGIN  
 
-	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [' + @idxname + '] on [' + @idxname + '].ParentItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''' + @TypeCode  + 'IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
+	if (CHARINDEX(@idxname, @Filter) > 0)
+	begin
 
-	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId
+		set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [' + @idxname + '] on [' + @idxname + '].ParentItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
+
+	end
+
+	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId, @TCode
 END 
 
 CLOSE idx_cursor
 DEALLOCATE idx_cursor
+
+--print '@JoinIndex: ' + @JoinIndex
+
 ------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------
+
+
+
 	 
 	 
 	 
@@ -571,34 +586,47 @@ begin
 --- Cursor for INDEX records.
 ------------------------------------------------------------------------------------
 DECLARE @idxname nvarchar(250) = ''
+DECLARE @TCode nvarchar(250) = ''
 DECLARE @idxparentItemId int = 0
 DECLARE @systemlinkItemId int = 0
 DECLARE @JoinIndex nvarchar(max)
 
 select @systemlinkItemId = itemid from {databaseOwner}[{objectQualifier}DNNrocket] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
 
+--print '@systemlinkItemId: ' + convert(nvarchar(max),@systemlinkItemId)
+
 DECLARE idx_cursor CURSOR FOR 
-SELECT GUIDKey, ParentItemId
+SELECT GUIDKey, ParentItemId, textdata
 FROM {databaseOwner}[{objectQualifier}DNNrocket]
-WHERE [TypeCode] = 'SYSTEMLINKIDX' and ParentItemId = @systemlinkItemId
+WHERE [TypeCode] like 'SYSTEMLINK%' and ParentItemId = @systemlinkItemId
 
 SET @JoinIndex = ''
 
 OPEN idx_cursor  
-FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId
+FETCH NEXT FROM idx_cursor INTO @idxname, @idxparentItemId, @TCode
 
 WHILE @@FETCH_STATUS = 0  
 BEGIN  
 
-	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [' + @idxname + '] on [' + @idxname + '].ParentItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''' + @TypeCode  + 'IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
+	if (CHARINDEX(@idxname, @Filter) > 0)
+	begin
 
-	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId
+		set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [' + @idxname + '] on [' + @idxname + '].ParentItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
+
+	end
+
+	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId, @TCode
 END 
 
 CLOSE idx_cursor
 DEALLOCATE idx_cursor
+
+--print '@JoinIndex: ' + @JoinIndex
+
 ------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------
+
+
 
 	--DECLARE @RecordCount int
 	DECLARE @countselect nvarchar(max)

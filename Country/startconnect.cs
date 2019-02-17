@@ -8,14 +8,13 @@ namespace DNNrocket.Country
 {
     public class startconnect : DNNrocketAPI.APInterface
     {
-        private static string _systemprovider;
+        private static SimplisityInfo _systemInfo;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo sInfo, string userHostAddress, string editlang = "")
         {
 
             //CacheUtils.ClearAllCache();
-            _systemprovider = sInfo.GetXmlProperty("genxml/systemprovider");
-
+            _systemInfo = systemInfo;
             var controlRelPath = "/DesktopModules/DNNrocket/Country";
 
             var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [settingcountry]";
@@ -33,7 +32,7 @@ namespace DNNrocket.Country
                     break;
                 case "settingcountry_getregion":
                     rtnDic.Add("outputhtml", "");
-                    var regionlist = CountryUtils.RegionListCSV(GeneralUtils.DeCode(sInfo.GetXmlProperty("genxml/hidden/activevalue")));
+                    var regionlist = CountryUtils.RegionListCSV(GeneralUtils.DeCode(sInfo.GetXmlProperty("genxml/hidden/activevalue")),true);
                     rtnDic.Add("outputjson", "{listkey: [" + regionlist[0] + "], listvalue: [" + regionlist[1] + "] }");
                     break;
             }
@@ -47,7 +46,7 @@ namespace DNNrocket.Country
             {
                 var strOut = "";
                 var objCtrl = new DNNrocketController();
-                var smi = objCtrl.GetData("countrysettings", _systemprovider + "_SETTINGS", editlang);
+                var smi = objCtrl.GetData("countrysettings", "SETTINGS", editlang, _systemInfo.ItemID);
                 if (smi != null)
                 {
 
@@ -72,7 +71,7 @@ namespace DNNrocket.Country
         public static void CountrySave(SimplisityInfo postInfo)
         {
             var objCtrl = new DNNrocketController();
-            objCtrl.SaveData("countrysettings", _systemprovider + "_SETTINGS", postInfo);
+            objCtrl.SaveData("countrysettings", "SETTINGS", postInfo, _systemInfo.ItemID);
         }
 
     }

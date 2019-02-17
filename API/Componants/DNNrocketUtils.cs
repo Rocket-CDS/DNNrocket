@@ -1200,6 +1200,11 @@ namespace DNNrocketAPI
             return fn;
         }
 
+        public static SimplisityInfo GetSystemByName(string systemprovider)
+        {
+            var objCtrl = new DNNrocketController();
+            return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
+        }
 
 
     }

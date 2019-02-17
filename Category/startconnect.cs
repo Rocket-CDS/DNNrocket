@@ -161,7 +161,7 @@ namespace DNNrocket.Category
             info.GUIDKey = systemInfo.GUIDKey;
 
             var objCtrl = new DNNrocketController();
-            return objCtrl.SaveData(info);
+            return objCtrl.SaveData(info, systemInfo.ItemID);
         }
 
         public static void Save(SimplisityInfo postInfo, SimplisityInfo systemInfo)

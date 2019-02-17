@@ -369,7 +369,7 @@
 
     @helper Showli(Category cat)
         {
-                    <div class="dd-handle dd3-handle w3-theme">Drag</div><div class="dd3-content w3-theme-l4">
+                    <div class="dd-handle dd3-handle w3-theme"></div><div class="dd3-content w3-theme-l4">
     @cat.Ref:     @cat.Name
     <a class="simplisity_click w3-right" s-track="true" s-cmd="category_getdetail" s-fields="selecteditemid:@cat.Info.ItemID ,theme:config-w3,template:CategoryDetail.cshtml,interfacekey:category" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
     @{

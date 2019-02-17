@@ -312,16 +312,15 @@ namespace DNNrocket.SystemData
                             {
                                 typecodeIdx = i2.GetXmlProperty("genxml/dropdownlist/entitytypecode");
                             }
-                            var idxinfo2 = objCtrl.GetByGuidKey(info.PortalId, info.ItemID, "SYSTEMLINKIDX", idxref);
+                            var idxinfo2 = objCtrl.GetByGuidKey(info.PortalId, info.ItemID, "SYSTEMLINK" + typecodeIdx, idxref);
                             if (idxinfo2 == null)
                             {
                                 idxinfo2 = new SimplisityInfo();
                                 idxinfo2.PortalId = info.PortalId;
-                                idxinfo2.TypeCode = "SYSTEMLINKIDX";
+                                idxinfo2.TypeCode = "SYSTEMLINK" + typecodeIdx;
                                 idxinfo2.GUIDKey = idxref;
                                 idxinfo2.ParentItemId = idxinfo.ItemID;
                                 idxinfo2.ModuleId = info.ItemID;
-                                idxinfo2.TextData = typecodeIdx;
                                 idxinfo2.XMLData = i2.XMLData;
                                 var itemid = objCtrl.Update(idxinfo2);
                                 idxinfo2.ItemID = itemid;

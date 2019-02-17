@@ -57,9 +57,9 @@ namespace DNNrocketAPI
             return rtnInfo;
         }
 
-        public override int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "")
+        public override int GetListCount(int portalId, int systemId, string typeCode, string sqlSearchFilter = "", string lang = "")
         {
-            return DataProvider.Instance().GetListCount(portalId, moduleId, typeCode, sqlSearchFilter, lang);
+            return DataProvider.Instance().GetListCount(portalId, systemId, typeCode, sqlSearchFilter, lang);
         }
 
 
@@ -78,9 +78,9 @@ namespace DNNrocketAPI
         /// <param name="typeCodeLang"></param>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public override List<SimplisityInfo> GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
+        public override List<SimplisityInfo> GetList(int portalId, int systemId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
         {
-            return CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, typeCode, sqlSearchFilter, lang, sqlOrderBy, returnLimit, pageNumber, pageSize, recordCount));
+            return CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, systemId, typeCode, sqlSearchFilter, lang, sqlOrderBy, returnLimit, pageNumber, pageSize, recordCount));
         }
 
         /// <summary>
@@ -181,11 +181,17 @@ namespace DNNrocketAPI
             if (systemInfo != null)
             {
                 var systemLinkRec = GetByGuidKey(-1, systemid, "SYSTEMLINK", objInfo.TypeCode);
+                if (systemLinkRec == null)
+                {
+                    // might be a xref, search for xref typecode
+                    systemLinkRec = GetByGuidKey(-1, systemid, "SYSTEMLINK", objInfo.GUIDKey);
+                }
                 if (systemLinkRec != null)
                 {
-                    var xrefTypeCodeList = GetList(-1, systemid, "SYSTEMLINKIDX", " and R1.ParentitemId = '" + systemLinkRec.ItemID + "' ");
+                    var xrefTypeCodeList = GetList(-1, systemid, "SYSTEMLINK" + objInfo.TypeCode, " and R1.ParentitemId = '" + systemLinkRec.ItemID + "' ");
                     foreach (var i in xrefTypeCodeList)
                     {
+                        var xrefTypeCode = i.TextData;
                         var indexref = i.GUIDKey;
                         var xpath = i.GetXmlProperty("genxml/textbox/xpath");
                         var value = objInfo.GetXmlProperty(xpath);
@@ -199,7 +205,6 @@ namespace DNNrocketAPI
                                 if (dataInfo != null)
                                 {
                                     value = dataInfo.GetXmlProperty(xpath);
-                                    var xrefTypeCode = i.TextData;
                                     CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.ModuleId, xrefTypeCode, indexref, dataitemid, dataLang, value);
                                 }
                             }
@@ -207,9 +212,7 @@ namespace DNNrocketAPI
                         else
                         {
                             // non-langauge recrdo
-                            var xrefTypeCode = i.TextData;
                             CreateSystemLinkIdx(objInfo.PortalId, objInfo.ModuleId, xrefTypeCode, indexref, dataitemid, dataLang, value);
-
                         }
                     }
                 }
@@ -249,13 +252,13 @@ namespace DNNrocketAPI
         /// Gte a single record from the Database using the EntityTypeCode.  This is usually used to fetch settings data "SETTINGS", where only 1 record will exist for the module.
         /// </summary>
         /// <param name="portalId"></param>
-        /// <param name="moduleId"></param>
+        /// <param name="systemId"></param>
         /// <param name="entityTypeCode"></param>
         /// <param name="selUserId"></param>
         /// <param name="entityTypeCodeLang"></param>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public SimplisityInfo GetByType(int portalId, int moduleId, string entityTypeCode, string selUserId = "", string lang = "")
+        public SimplisityInfo GetByType(int portalId, int systemId, string entityTypeCode, string selUserId = "", string lang = "")
         {
             var strFilter = "";
             if (selUserId != "")
@@ -263,7 +266,7 @@ namespace DNNrocketAPI
                 strFilter += " and R1.UserId = " + selUserId + " ";
             }
 
-            var l = CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, entityTypeCode, strFilter, lang, "", 1, 1, 1, 1));
+            var l = CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, systemId, entityTypeCode, strFilter, lang, "", 1, 1, 1, 1));
             if (l.Count >= 1)
             {
                 SimplisityInfo nbi = l[0];
@@ -277,12 +280,12 @@ namespace DNNrocketAPI
         /// Get a single record back from the database, using the guyidkey (The seluserid is used to confirm the correct user.)
         /// </summary>
         /// <param name="portalId"></param>
-        /// <param name="moduleId"></param>
+        /// <param name="systemId  (using: moduleId)"></param>
         /// <param name="entityTypeCode"></param>
         /// <param name="guidKey"></param>
         /// <param name="selUserId"></param>
         /// <returns></returns>
-        public SimplisityInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "")
+        public SimplisityInfo GetByGuidKey(int portalId, int systemId, string entityTypeCode, string guidKey, string selUserId = "")
         {
             var strFilter = " and R1.GUIDKey = '" + guidKey + "' ";
             if (selUserId != "")
@@ -290,7 +293,7 @@ namespace DNNrocketAPI
                 strFilter += " and R1.UserId = " + selUserId + " ";
             }
 
-            var l = GetList(portalId, moduleId, entityTypeCode, strFilter,"", "", 1);
+            var l = GetList(portalId, systemId, entityTypeCode, strFilter,"", "", 1);
             if (l.Count == 0) return null;
             if (l.Count > 1)
             {
@@ -413,17 +416,17 @@ namespace DNNrocketAPI
             }
         }
 
-        public SimplisityInfo GetData(string GuidKey, string typeCode, string lang)
+        public SimplisityInfo GetData(string GuidKey, string typeCode, string lang, int systemId = -1)
         {
             //CacheUtils.ClearAllCache(); // clear ALL cache.
-            var info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
+            var info = GetByGuidKey(PortalSettings.Current.PortalId, systemId, typeCode, GuidKey);
             if (info == null)
             {
                 // create record if not in DB
                 info = new SimplisityInfo();
                 info.GUIDKey = GuidKey;
                 info.TypeCode = typeCode;
-                info.ModuleId = -1;
+                info.ModuleId = systemId;
                 info.PortalId = PortalSettings.Current.PortalId;
                 info.ItemID = Update(info);
             }
@@ -441,7 +444,7 @@ namespace DNNrocketAPI
                         nbilang.TypeCode = typeCode + "LANG";
                         nbilang.ParentItemId = info.ItemID;
                         nbilang.Lang = lg;
-                        nbilang.ModuleId = -1;
+                        nbilang.ModuleId = systemId;
                         nbilang.PortalId = PortalSettings.Current.PortalId;
                         nbilang.ItemID = Update(nbilang);
                     }
@@ -453,43 +456,34 @@ namespace DNNrocketAPI
             return nbi;
         }
 
-        public SimplisityInfo SaveData(string GuidKey, string typeCode, SimplisityInfo postInfo)
+        public SimplisityInfo SaveData(string GuidKey, string typeCode, SimplisityInfo postInfo, int systemId = -1)
         {
-            var info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
+            var info = GetByGuidKey(PortalSettings.Current.PortalId, systemId, typeCode, GuidKey);
             if (info == null)
             {
                 // do read, so it creates the record and do a new read.
-                info = GetData(GuidKey, typeCode, postInfo.Lang);
+                info = GetData(GuidKey, typeCode, postInfo.Lang, systemId);
             }
             if (info != null)
             {
-                var smiLang = postInfo.GetLangRecord();
-                smiLang.Lang = postInfo.Lang;
                 info.XMLData = postInfo.XMLData;
                 info.RemoveLangRecord();
                 info.Lang = "";
                 Update(info);
-                var nbi2 = GetRecordLang(info.ItemID, smiLang.Lang);
-                if (nbi2 == null)
+                var nbi2 = GetRecordLang(info.ItemID, postInfo.Lang);
+                if (nbi2 != null)
                 {
-                    smiLang.ItemID = -1; // add if null (should not happen)
+                    nbi2.XMLData = postInfo.XMLData;
+                    Update(nbi2);
                 }
-                else
-                {
-                    smiLang.ItemID = nbi2.ItemID;
-                }
-                smiLang.ParentItemId = info.ItemID;
-                smiLang.TypeCode = info.TypeCode + "LANG";
-                smiLang.GUIDKey = "";
-                Update(smiLang);
                 CacheUtils.ClearAllCache(); // clear ALL cache.
-                info = GetByGuidKey(PortalSettings.Current.PortalId, -1, typeCode, GuidKey);
+                info = GetByGuidKey(PortalSettings.Current.PortalId, systemId, typeCode, GuidKey);
             }
 
             return info;
         }
 
-        public SimplisityInfo GetData(string typeCode, int ItemId, string lang)
+        public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int systemId = -1)
         {
             var info = GetInfo(ItemId, lang);
             if (info == null)
@@ -498,7 +492,7 @@ namespace DNNrocketAPI
                 info = new SimplisityInfo();
                 info.GUIDKey = "";
                 info.TypeCode = typeCode;
-                info.ModuleId = -1;
+                info.ModuleId = systemId;
                 info.PortalId = PortalSettings.Current.PortalId;
                 info.ItemID = Update(info);
             }
@@ -516,7 +510,7 @@ namespace DNNrocketAPI
                         nbilang.TypeCode = typeCode + "LANG";
                         nbilang.ParentItemId = info.ItemID;
                         nbilang.Lang = lg;
-                        nbilang.ModuleId = -1;
+                        nbilang.ModuleId = systemId;
                         nbilang.PortalId = PortalSettings.Current.PortalId;
                         nbilang.ItemID = Update(nbilang);
                     }
@@ -528,13 +522,13 @@ namespace DNNrocketAPI
             return nbi;
         }
 
-        public SimplisityInfo SaveData(SimplisityInfo sInfo)
+        public SimplisityInfo SaveData(SimplisityInfo sInfo, int systemId = -1)
         {
             var info = GetInfo(sInfo.ItemID, sInfo.Lang);
             if (info == null)
             {
                 // do read, so it creates the record and do a new read.
-                info = GetData(sInfo.TypeCode, sInfo.ItemID, sInfo.Lang);
+                info = GetData(sInfo.TypeCode, sInfo.ItemID, sInfo.Lang, systemId);
             }
             if (info != null)
             {
@@ -546,7 +540,10 @@ namespace DNNrocketAPI
                 info.XrefItemId = sInfo.XrefItemId;
                 info.ParentItemId = sInfo.ParentItemId;
                 info.GUIDKey = sInfo.GUIDKey;
-                info.ModuleId = sInfo.ModuleId;
+                if (systemId > -1)
+                {
+                    info.ModuleId = systemId;
+                }
                 Update(info);
                 var nbi2 = GetRecordLang(info.ItemID, smiLang.Lang);
                 if (nbi2 == null)
