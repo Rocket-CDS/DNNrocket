@@ -175,6 +175,12 @@ namespace DNNrocketAPI
                 dataitemid = langInfo.ParentItemId;
             }
 
+            var xrefitemid = objInfo.ParentItemId; // check for xref record, therefore parentitemid will be set.
+            if (xrefitemid <= 0)
+            {
+                xrefitemid = objInfo.ItemID; // not a xref record, so take the id.
+            }
+
             var systemid = objInfo.ModuleId;
             var systemInfo = GetRecord(systemid);
 
@@ -205,21 +211,21 @@ namespace DNNrocketAPI
                                 if (dataInfo != null)
                                 {
                                     value = dataInfo.GetXmlProperty(xpath);
-                                    CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.ModuleId, xrefTypeCode, indexref, dataitemid, dataLang, value);
+                                    CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.ModuleId, xrefTypeCode, indexref, xrefitemid, dataitemid, dataLang, value);
                                 }
                             }
                         }
                         else
                         {
                             // non-langauge recrdo
-                            CreateSystemLinkIdx(objInfo.PortalId, objInfo.ModuleId, xrefTypeCode, indexref, dataitemid, dataLang, value);
+                            CreateSystemLinkIdx(objInfo.PortalId, objInfo.ModuleId, xrefTypeCode, indexref, xrefitemid, dataitemid, dataLang, value);
                         }
                     }
                 }
             }
         }
 
-        private void CreateSystemLinkIdx(int portalId, int systemId, string idxTypeCode,string indexref, int parentItemId, string lang, string value)
+        private void CreateSystemLinkIdx(int portalId, int systemId, string idxTypeCode,string indexref, int xrefitemid, int parentItemId, string lang, string value)
         {
             // read is index exists already
             var strFilter = "and R1.ParentItemId = '" + parentItemId + "' and R1.Lang = '" + lang + "'";
@@ -240,6 +246,7 @@ namespace DNNrocketAPI
             sRecord.TypeCode = idxTypeCode + "IDX_" + indexref;
             sRecord.ModifiedDate = DateTime.Now;
             sRecord.Lang = lang;
+            sRecord.XrefItemId = xrefitemid;
             if (sRecord.GUIDKey != value)
             {
                 sRecord.GUIDKey = value;

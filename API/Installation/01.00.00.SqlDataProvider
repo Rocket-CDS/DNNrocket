@@ -403,7 +403,7 @@ BEGIN
 	if (CHARINDEX(@idxname, @Filter) > 0)
 	begin
 
-		set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [' + @idxname + '] on [' + @idxname + '].ParentItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
+		set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [' + @idxname + '] on [' + @idxname + '].XrefItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
 
 	end
 
@@ -611,7 +611,7 @@ BEGIN
 	if (CHARINDEX(@idxname, @Filter) > 0)
 	begin
 
-		set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [' + @idxname + '] on [' + @idxname + '].ParentItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
+		set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [' + @idxname + '] on [' + @idxname + '].XrefItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
 
 	end
 
