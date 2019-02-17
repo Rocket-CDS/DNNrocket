@@ -15,10 +15,11 @@ namespace DNNrocket.Category
         private static string _EntityTypeCode;
         private static string _editlang;
         private static string _systemprovider;
-
+        private static SimplisityInfo _systemInfo;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
+            _systemInfo = systemInfo;
             _systemprovider = systemInfo.GUIDKey;
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
             _editlang = editlang;
@@ -201,7 +202,7 @@ namespace DNNrocket.Category
                 info.GUIDKey = _systemprovider;
                 info.XMLData = postInfo.XMLData;
                 info.ModuleId = systemInfo.ItemID;
-                objCtrl.SaveData(info);
+                objCtrl.SaveData(info, systemInfo.ItemID);
                 CacheUtils.ClearAllCache();
             }
         }
@@ -277,12 +278,12 @@ namespace DNNrocket.Category
                         }
                     }
 
-                    objCtrl.SaveData(info);
+                    objCtrl.SaveData(info, _systemInfo.ItemID);
 
                 }
 
                 var passSettings = postInfo.ToDictionary();
-
+                
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
 
@@ -312,7 +313,7 @@ namespace DNNrocket.Category
             info.XMLData = postInfo.XMLData;
             info.AddXmlNode(xmldoc.OuterXml, "results", "genxml");
             info.ModuleId = systemInfo.ItemID;
-            objCtrl.SaveData(info);
+            objCtrl.SaveData(info, systemInfo.ItemID);
 
             CacheUtils.ClearAllCache();
         }
@@ -370,7 +371,7 @@ namespace DNNrocket.Category
                     strOut = DNNrocketUtils.GetResourceString(ControlRelPath + "/App_LocalResources", "category.hiddenicon_true", "Text", DNNrocketUtils.GetEditCulture());
                 }
 
-                objCtrl.SaveData(catData.Info);
+                objCtrl.SaveData(catData.Info, _systemInfo.ItemID);
 
                 return strOut;
             }
@@ -402,7 +403,7 @@ namespace DNNrocket.Category
                     strOut = DNNrocketUtils.GetResourceString(ControlRelPath + "/App_LocalResources", "category.toggleicon_off", "Text", DNNrocketUtils.GetEditCulture());
                 }
 
-                objCtrl.SaveData(catData.Info);
+                objCtrl.SaveData(catData.Info, systemInfo.ItemID);
 
                 return strOut;
             }

@@ -9,9 +9,11 @@ namespace DNNrocket.TestList
     {
         private static string _EntityTypeCode;
         private static string _editlang;
+        private static SimplisityInfo _systemInfo;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
+            _systemInfo = systemInfo;
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
             _editlang = editlang;
             if (_editlang == "") _editlang = DNNrocketUtils.GetEditCulture();
@@ -159,7 +161,7 @@ namespace DNNrocket.TestList
             info.GUIDKey = GeneralUtils.GetUniqueKey(12);
             
             var objCtrl = new DNNrocketController();
-            return objCtrl.SaveData(info);
+            return objCtrl.SaveData(info, _systemInfo.ItemID);
         }
 
         public static void Save(SimplisityInfo postInfo)
@@ -170,7 +172,7 @@ namespace DNNrocket.TestList
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
                 info.XMLData = postInfo.XMLData;
-                objCtrl.SaveData(info);
+                objCtrl.SaveData(info, _systemInfo.ItemID);
                 CacheUtils.ClearAllCache();
             }
         }
@@ -201,7 +203,7 @@ namespace DNNrocket.TestList
                     newInfo.SetXmlProperty("genxml/textbox/txtinput", GeneralUtils.GetUniqueKey() + "-" + i.ToString());
                     newInfo.SetXmlProperty("genxml/lang/genxml/textbox/txtinputl", GeneralUtils.GetUniqueKey() + "-" + i.ToString());
                     newInfo.Lang = c;
-                    objCtrl.SaveData(newInfo);
+                    objCtrl.SaveData(newInfo, _systemInfo.ItemID);
                 }
 
                 var rec = objCtrl.GetRecord(newInfo.ItemID);

@@ -389,11 +389,6 @@ namespace DNNrocket.SystemData
                     {
                         entityList.Add(entityTypeCode);
                     }
-                    var xrefTypeCode = i.GetXmlProperty("genxml/dropdownlist/xreftypecode");
-                    if (!entityList.Contains(xrefTypeCode) && xrefTypeCode != "")
-                    {
-                        entityList.Add(xrefTypeCode);
-                    }
                 }
                 foreach (var entityCode in entityList)
                 {
