@@ -322,6 +322,7 @@ namespace DNNrocket.SystemData
                                 idxinfo2.ParentItemId = idxinfo.ItemID;
                                 idxinfo2.ModuleId = info.ItemID;
                                 idxinfo2.XMLData = i2.XMLData;
+                                idxinfo2.TextData = typecodeIdx;
                                 var itemid = objCtrl.Update(idxinfo2);
                                 idxinfo2.ItemID = itemid;
                             }
@@ -404,11 +405,6 @@ namespace DNNrocket.SystemData
                     foreach (var sInfo in l)
                     {
                         objCtrl.RebuildLangIndex(sInfo, sInfo.ItemID);
-                    }
-                    l = objCtrl.GetList(-1, -1, entityCode);
-                    foreach (var sInfo in l)
-                    {
-                        objCtrl.RebuildIndex(sInfo, sInfo.ItemID);
                     }
                 }
 

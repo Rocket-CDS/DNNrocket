@@ -116,6 +116,7 @@
   <ItemGroup>
     <None Include="api.ashx" />
     <None Include="DNNrocketThumb.ashx" />
+    <None Include="Documents\IndexSystem.docx" />
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="packages.config" />

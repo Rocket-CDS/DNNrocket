@@ -235,7 +235,7 @@
     <value>Entity Type Code</value>
   </data>
   <data name="indexref.Text" xml:space="preserve">
-    <value>Index Ref (DB Column Name)</value>
+    <value>Index Ref (Join Table)</value>
   </data>
   <data name="controlrelpath.Text" xml:space="preserve">
     <value>Control Relative Path</value>

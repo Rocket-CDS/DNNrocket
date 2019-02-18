@@ -95,7 +95,6 @@ namespace DNNrocketAPI
             var itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang);
 
             RebuildLangIndex(objInfo, itemid);
-            RebuildIndex(objInfo, itemid);
 
             return itemid;
         }
@@ -116,29 +115,15 @@ namespace DNNrocketAPI
         /// <param name="itemid"></param>
         public void RebuildLangIndex(SimplisityRecord objInfo, int itemid)
         {
-            if (String.IsNullOrEmpty(objInfo.Lang))
+            if (!String.IsNullOrEmpty(objInfo.Lang))
             {
-                var langList = DNNrocketUtils.GetCultureCodeList(objInfo.PortalId);
-                foreach (var l in langList)
-                {
-                    var idxLang = GetByGuidKey(objInfo.PortalId, -1, objInfo.TypeCode + "LANGIDX", objInfo.ItemID.ToString() + "_" + l);
-                    if (idxLang != null)
-                    {
-                        var langXml = idxLang.GetLangXml();
-                        idxLang.XMLData = objInfo.XMLData;
-                        idxLang.SetLangXml(langXml);
-                        DataProvider.Instance().Update(idxLang.ItemID, idxLang.PortalId, idxLang.ModuleId, idxLang.TypeCode, idxLang.XMLData, idxLang.GUIDKey, idxLang.ModifiedDate, idxLang.TextData, idxLang.XrefItemId, idxLang.ParentItemId, idxLang.UserId, idxLang.Lang);
-                    }
-                }
-            }
-            else
-            {
+                var saveItemId = 0;
                 var idxLang = GetByGuidKey(objInfo.PortalId, -1, objInfo.TypeCode + "IDX", objInfo.ParentItemId.ToString() + "_" + objInfo.Lang);
                 if (idxLang != null)
                 {
                     idxLang.RemoveLangRecord();
                     idxLang.SetLangXml(objInfo.XMLData);
-                    DataProvider.Instance().Update(idxLang.ItemID, idxLang.PortalId, idxLang.ModuleId, idxLang.TypeCode, idxLang.XMLData, idxLang.GUIDKey, idxLang.ModifiedDate, idxLang.TextData, idxLang.XrefItemId, idxLang.ParentItemId, idxLang.UserId, idxLang.Lang);
+                    saveItemId = DataProvider.Instance().Update(idxLang.ItemID, idxLang.PortalId, idxLang.ModuleId, idxLang.TypeCode, idxLang.XMLData, idxLang.GUIDKey, idxLang.ModifiedDate, idxLang.TextData, idxLang.XrefItemId, idxLang.ParentItemId, idxLang.UserId, idxLang.Lang);
                 }
                 else
                 {
@@ -156,12 +141,19 @@ namespace DNNrocketAPI
                         sRecord.Lang = objInfo.Lang;
                         sRecord.GUIDKey = objInfo.ParentItemId.ToString() + "_" + objInfo.Lang;
                         sRecord.SetLangXml(objInfo.XMLData);
-                        DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang);
+                        saveItemId = DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang);
                     }
 
                 }
+                // we can only index after the langauge update, so we have all data (language data) in the DB
+                // This will call multiple times for each language.
+                if (saveItemId > 0)
+                {
+                    var langInfo = GetRecord(saveItemId);
+                    var baseInfo = GetRecord(langInfo.ParentItemId);
+                    RebuildIndex(baseInfo);
+                }
             }
-
         }
 
         /// <summary>
@@ -169,11 +161,11 @@ namespace DNNrocketAPI
         /// </summary>
         /// <param name="objInfo"></param>
         /// <param name="itemid"></param>
-        public void RebuildIndex(SimplisityRecord objInfo, int itemid)
+        public void RebuildIndex(SimplisityRecord objInfo)
         {
-            var dataitemid = itemid;
+            var dataitemid = objInfo.ItemID;
             var entityTypeCode = objInfo.TypeCode;
-            if (objInfo.Lang == "") // do not process language record
+            if (String.IsNullOrEmpty(objInfo.Lang)) // do not process language record
             {
 
                 var xrefitemid = objInfo.ParentItemId; // check for xref record, therefore parentitemid will be set.
@@ -200,8 +192,7 @@ namespace DNNrocketAPI
                         {                          
                             var indexref = i.GUIDKey;
                             var xpath = i.GetXmlProperty("genxml/textbox/xpath");
-                            var value = objInfo.GetXmlProperty(xpath);
-                            if (String.IsNullOrEmpty(value))
+                            if (xpath.StartsWith("genxml/lang/"))
                             {
                                 // we need a langauge recrod.
                                 var langList = DNNrocketUtils.GetCultureCodeList(objInfo.PortalId);
@@ -210,15 +201,22 @@ namespace DNNrocketAPI
                                     var dataInfo = GetInfo(objInfo.ItemID, lang);
                                     if (dataInfo != null)
                                     {
-                                        value = dataInfo.GetXmlProperty(xpath);
-                                        CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.ModuleId, indexref, xrefitemid, dataitemid, lang, value);
+                                        var value = dataInfo.GetXmlProperty(xpath);
+                                        if (!String.IsNullOrEmpty(value))
+                                        {
+                                            CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.ModuleId, indexref, xrefitemid, dataitemid, lang, value);
+                                        }
                                     }
                                 }
                             }
                             else
                             {
                                 // non-langauge recrdo
-                                CreateSystemLinkIdx(objInfo.PortalId, objInfo.ModuleId, indexref, xrefitemid, dataitemid, "", value);
+                                var value = objInfo.GetXmlProperty(xpath);
+                                if (!String.IsNullOrEmpty(value))
+                                {
+                                    CreateSystemLinkIdx(objInfo.PortalId, objInfo.ModuleId, indexref, xrefitemid, dataitemid, "", value);
+                                }
                             }
                         }
                     }
