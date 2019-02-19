@@ -410,6 +410,26 @@ BEGIN
 	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId, @TCode
 END 
 
+if (CHARINDEX('CATXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as CATXREF on CATXREF.ParentItemId = R1.ItemId and CATXREF.TypeCode =  ''CATXREF'' '
+end
+if (CHARINDEX('CASCADE', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as CASCADE on CASCADE.ParentItemId = R1.ItemId and CASCADE.TypeCode =  ''CASCADE'' '
+end
+if (CHARINDEX('PROPXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as PROPXREF on PROPXREF.ParentItemId = R1.ItemId and PROPXREF.TypeCode =  ''PROPXREF'' '
+end
+if (CHARINDEX('ATTRXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as ATTRXREF on ATTRXREF.ParentItemId = R1.ItemId and ATTRXREF.TypeCode =  ''ATTRXREF'' '
+end
+
+
+
+
 CLOSE idx_cursor
 DEALLOCATE idx_cursor
 
@@ -617,6 +637,24 @@ BEGIN
 
 	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId, @TCode
 END 
+
+if (CHARINDEX('CATXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as CATXREF on CATXREF.ParentItemId = R1.ItemId and CATXREF.TypeCode =  ''CATXREF'' '
+end
+if (CHARINDEX('CASCADE', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as CASCADE on CASCADE.ParentItemId = R1.ItemId and CASCADE.TypeCode =  ''CASCADE'' '
+end
+if (CHARINDEX('PROPXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as PROPXREF on PROPXREF.ParentItemId = R1.ItemId and PROPXREF.TypeCode =  ''PROPXREF'' '
+end
+if (CHARINDEX('ATTRXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as ATTRXREF on ATTRXREF.ParentItemId = R1.ItemId and ATTRXREF.TypeCode =  ''ATTRXREF'' '
+end
+
 
 CLOSE idx_cursor
 DEALLOCATE idx_cursor
