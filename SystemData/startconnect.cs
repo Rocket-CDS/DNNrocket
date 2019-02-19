@@ -383,6 +383,15 @@ namespace DNNrocket.SystemData
                 var sysInfo = objCtrl.GetInfo(Convert.ToInt32(itemid));
 
                 var entityList = new List<string>();
+                // get interface data, the langauge needs indexing.
+                foreach (var i in sysInfo.GetList("interfacedata"))
+                {
+                    var entityTypeCode = i.GetXmlProperty("genxml/textbox/entitytypecode");
+                    if (!entityList.Contains(entityTypeCode) && entityTypeCode != "")
+                    {
+                        entityList.Add(entityTypeCode);
+                    }
+                }
                 foreach (var i in sysInfo.GetList("idxfielddata"))
                 {
                     var entityTypeCode = i.GetXmlProperty("genxml/dropdownlist/entitytypecode");

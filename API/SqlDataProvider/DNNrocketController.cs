@@ -117,18 +117,19 @@ namespace DNNrocketAPI
         {
             if (!String.IsNullOrEmpty(objInfo.Lang))
             {
+                // do langauge record.
+                var baseRecord = GetRecord(objInfo.ParentItemId);
                 var saveItemId = 0;
                 var idxLang = GetByGuidKey(objInfo.PortalId, -1, objInfo.TypeCode + "IDX", objInfo.ParentItemId.ToString() + "_" + objInfo.Lang);
                 if (idxLang != null)
                 {
-                    idxLang.RemoveLangRecord();
+                    idxLang.XMLData = baseRecord.XMLData;
                     idxLang.SetLangXml(objInfo.XMLData);
                     saveItemId = DataProvider.Instance().Update(idxLang.ItemID, idxLang.PortalId, idxLang.ModuleId, idxLang.TypeCode, idxLang.XMLData, idxLang.GUIDKey, idxLang.ModifiedDate, idxLang.TextData, idxLang.XrefItemId, idxLang.ParentItemId, idxLang.UserId, idxLang.Lang);
                 }
                 else
                 {
                     // Langauge record update.
-                    var baseRecord = GetRecord(objInfo.ParentItemId);
                     if (baseRecord != null)
                     {
                         var sRecord = new SimplisityInfo();
@@ -146,7 +147,7 @@ namespace DNNrocketAPI
 
                 }
                 // we can only index after the langauge update, so we have all data (language data) in the DB
-                // This will call multiple times for each language.
+                // This will call multiple times, once for each language.
                 if (saveItemId > 0)
                 {
                     var langInfo = GetRecord(saveItemId);
