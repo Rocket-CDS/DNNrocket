@@ -58,6 +58,9 @@
   <ItemGroup>
     <None Include="Themes\config-w3\default\LoginForm.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Themes\config-w3\img\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetFileName)" "..\..\..\..\..\bin\$(TargetFileName)"

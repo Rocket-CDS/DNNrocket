@@ -22,6 +22,7 @@ using System.IO;
 using DotNetNuke.Common.Lists;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Text.RegularExpressions;
+using System.Web.UI;
 
 namespace DNNrocketAPI
 {
@@ -1204,6 +1205,69 @@ namespace DNNrocketAPI
         {
             var objCtrl = new DNNrocketController();
             return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
+        }
+
+        public static bool SecurityCheckCurrentUser(SimplisityInfo systemInfo, string interfacekey)
+        {
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser) return true;
+
+            var i = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
+            if (i != null)
+            {
+                if (i.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Administrators']/@value"))
+                {
+                    if (UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators")) return true;
+                }
+                if (i.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Manager']/@value"))
+                {
+                    if (UserController.Instance.GetCurrentUserInfo().IsInRole("Manager")) return true;
+                }
+                if (i.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Editor']/@value"))
+                {
+                    if (UserController.Instance.GetCurrentUserInfo().IsInRole("Editor")) return true;
+                }
+                if (i.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='ClientEditor']/@value"))
+                {
+                    if (UserController.Instance.GetCurrentUserInfo().IsInRole("ClientEditor")) return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        public static void IncludePageHeaders(String moduleid, Page page, String moduleName, string templateControlRelPath, String razortemplate = "", String theme = "")
+        {
+            //if (!page.Items.Contains("dnnrocketinject")) page.Items.Add("dnnrocketinject", "");
+            //var settignInfo = GetSettings(moduleid);
+
+            //if (theme == "") theme = settignInfo.GetXmlProperty("genxml/dropdownlist/themefolder");
+            //var fullTemplName = theme + "." + templateprefix + "pageheader.cshtml";
+            //if (!page.Items["dnnrocketinject"].ToString().Contains(fullTemplName + "." + moduleName + ","))
+            //{
+            //    var debug = settignInfo.GetXmlPropertyBool("genxml/checkbox/debugmode");
+            //    var nbi = new SimplisityInfo();
+            //    nbi.Lang = GetCurrentCulture();
+
+            //    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+
+            //    if (razorTempl == "")
+            //    {
+            //        // no razor template for sidemenu, so use default.
+            //        razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            //    }
+
+            //    strOut = DNNrocketUtils.RazorDetail(razorTempl, sidemenu, passSettings);
+
+
+
+            //    var razorTempl = RazorTemplRender(fullTemplName, moduleid, DNNrocketUtils.GetCurrentCulture(), nbi, DNNrocketUtils.GetCurrentCulture(), debug);
+            //    if (razorTempl != "")
+            //    {
+            //        PageIncludes.IncludeTextInHeader(page, razorTempl);
+            //        page.Items["nbrightinject"] = page.Items["nbrightinject"] + fullTemplName + "." + moduleName + ",";
+            //    }
+            //}
         }
 
 

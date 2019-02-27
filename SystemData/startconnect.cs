@@ -24,7 +24,7 @@ namespace DNNrocket.SystemData
             var rtnInfo = new SimplisityInfo();
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
-                if (paramCmd == "systemapi_signout")
+                if (paramCmd == "login_signout")
                 {
                     var ps = new PortalSecurity();
                     ps.SignOut();
@@ -96,10 +96,10 @@ namespace DNNrocket.SystemData
 
                 switch (paramCmd)
                 {
-                    case "systemapi_login":
+                    case "login_login":
                         strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
                         break;
-                    case "systemapi_sendreset":
+                    case "login_sendreset":
                         //strOut = ResetPass(sInfo);
                         break;
                     default:

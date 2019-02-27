@@ -552,6 +552,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="js\" />
+    <Folder Include="Themes\config-w3\img\" />
     <Folder Include="Themes\config-w3\js\" />
   </ItemGroup>
   <ItemGroup>

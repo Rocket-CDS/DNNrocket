@@ -39,7 +39,18 @@ namespace DNNrocketAPI
 
                     var paramCmd = context.Request.QueryString["cmd"];
 
-                    var requestJson = "";
+                    if (paramCmd == "login_signout")
+                    {
+                        var ps = new PortalSecurity();
+                        ps.SignOut();
+                        strOut = LoginUtils.LoginForm(new SimplisityInfo());
+                        context.Response.ContentType = "text/plain";
+                        context.Response.Write(strOut);
+                        context.Response.End();
+                    }
+
+
+                var requestJson = "";
                     var postInfo = new SimplisityInfo();
                     postInfo.SetXmlProperty("genxml/hidden","");
                     if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
@@ -79,7 +90,7 @@ namespace DNNrocketAPI
                             var objCtrl = new DNNrocketController();
                             var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
 
-                            if (systemprovider == "" || systemprovider == "systemapi")
+                            if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
                             {
                                 var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
                                 var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
