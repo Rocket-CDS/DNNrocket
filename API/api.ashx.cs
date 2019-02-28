@@ -90,67 +90,21 @@ namespace DNNrocketAPI
                             var objCtrl = new DNNrocketController();
                             var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
 
-                            if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
+                            var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, interfacekey, postInfo, TemplateRelPath, _editlang);
+
+                            if (returnDictionary.ContainsKey("outputhtml"))
                             {
-                                var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
-                                var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
                                 strOut = returnDictionary["outputhtml"];
                             }
-                            else
+                            if (returnDictionary.ContainsKey("filenamepath"))
                             {
-                                if (systemprovider != "")
-                                {
-                                    // Run API Provider.
-                                    strOut = "API not found: " + systemprovider;
-                                    if (systemInfo != null)
-                                    {
-                                        var interfaceInfo = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
-                                        if (interfaceInfo != null)
-                                        {
-                                            var controlRelPath = interfaceInfo.GetXmlProperty("genxml/textbox/relpath");
-                                            var assembly = interfaceInfo.GetXmlProperty("genxml/textbox/assembly");
-                                            var namespaceclass = interfaceInfo.GetXmlProperty("genxml/textbox/namespaceclass");
-                                            if (assembly == "" || namespaceclass == "")
-                                            {
-                                                strOut = "No assembly or namespaceclass defined: " + systemprovider + " : " + assembly + "," + namespaceclass;
-                                            }
-                                            else
-                                            {
-                                                try
-                                                {
-                                                    var ajaxprov = APInterface.Instance(assembly, namespaceclass, controlRelPath);
-                                                    var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, interfaceInfo, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
-                                                    if (returnDictionary.ContainsKey("outputhtml"))
-                                                    {
-                                                        strOut = returnDictionary["outputhtml"];
-                                                    }
-                                                    if (returnDictionary.ContainsKey("filenamepath"))
-                                                    {
-                                                        if (!returnDictionary.ContainsKey("downloadname")) returnDictionary["downloadname"] = "";
-                                                        if (!returnDictionary.ContainsKey("fileext")) returnDictionary["fileext"] = "";
-                                                        DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
-                                                    }
-                                                    if (returnDictionary.ContainsKey("outputjson"))
-                                                    {
-                                                        strJson = returnDictionary["outputjson"];
-                                                    }
-                                                }
-                                                catch (Exception ex)
-                                                {
-                                                    strOut = "No valid assembly found: " + systemprovider + " : " + assembly + "," + namespaceclass + "<br/>" + ex.ToString();
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            strOut = "interfacekey not found: " + interfacekey;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        strOut = "No valid system found: " + systemprovider;
-                                    }
-                                }
+                                if (!returnDictionary.ContainsKey("downloadname")) returnDictionary["downloadname"] = "";
+                                if (!returnDictionary.ContainsKey("fileext")) returnDictionary["fileext"] = "";
+                                DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
+                            }
+                            if (returnDictionary.ContainsKey("outputjson"))
+                            {
+                                strJson = returnDictionary["outputjson"];
                             }
 
                             break;
@@ -246,6 +200,7 @@ namespace DNNrocketAPI
                 }
                 catch (Exception ex)
                 {
+                    var errmsg = ex.ToString();
                     // ignore, robots can cause error on thread abort.
                 }
             }

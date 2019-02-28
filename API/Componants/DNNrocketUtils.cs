@@ -98,6 +98,7 @@ namespace DNNrocketAPI
                     }
                     catch (Exception ex)
                     {
+                        var errmsg = ex.ToString();
                         errorPath += "RunCompile2>";
                         result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
                         CacheUtils.SetCache("dnnrocketrzcache_" + hashCacheKey, razorTempl);
@@ -364,6 +365,8 @@ namespace DNNrocketAPI
                         }
                         catch (Exception ex)
                         {
+                            var errmsg = ex.ToString();
+
                             //   DnnLog.Error(ex);
                         }
                     }
@@ -611,6 +614,7 @@ namespace DNNrocketAPI
             }
             catch (Exception ex)
             {
+                var errmsg = ex.ToString();
                 blnCreated = false;
             }
 
@@ -622,6 +626,7 @@ namespace DNNrocketAPI
                 }
                 catch (Exception ex)
                 {
+                    var errmsg = ex.ToString();
                     // Suppress error, becuase the folder may already exist!..NASTY!!..try and find a better way to deal with folders out of portal range!!
                 }
             }
@@ -638,6 +643,7 @@ namespace DNNrocketAPI
             }
             catch (Exception ex)
             {
+                var errmsg = ex.ToString();
                 blnCreated = false;
             }
 
@@ -654,6 +660,7 @@ namespace DNNrocketAPI
                     }
                     catch (Exception ex)
                     {
+                        var errmsg = ex.ToString();
                     }
                     folderInfo = FolderManager.Instance.GetFolder(PortalSettings.PortalId, FolderName);
                     if ((folderInfo != null))
@@ -1268,6 +1275,96 @@ namespace DNNrocketAPI
             //        page.Items["nbrightinject"] = page.Items["nbrightinject"] + fullTemplName + "." + moduleName + ",";
             //    }
             //}
+        }
+
+        public static SimplisityInfo GetModuleSettings(int moduleid, Boolean useCache = true)
+        {
+            var rtnCache =  CacheUtils.GetCache("dnnrocketmodsettings*" + moduleid);
+            if (rtnCache != null && useCache) return (SimplisityInfo)rtnCache;
+            // get template
+            if (GeneralUtils.IsNumeric(moduleid) && Convert.ToInt32(moduleid) > 0)
+            {
+                var objCtrl = new DNNrocketController();
+                var dataRecord = objCtrl.GetByType(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid), "MODULESETTINGS");
+                if (dataRecord == null) dataRecord = new SimplisityInfo();
+                if (dataRecord.TypeCode == "MODULESETTINGS")
+                {
+                    // only add to cache if we have a valid settings record, LocalUtils.IncludePageHeaders may be called before the creation of the settings.
+                    CacheUtils.SetCache("dnnrocketmodsettings*" + moduleid, dataRecord);
+                }
+                return dataRecord;
+            }
+            return new SimplisityInfo();
+        }
+
+        public static void UpdateModuleSettings(SimplisityInfo settings)
+        {
+            // get template
+            if (settings.ModuleId > 0)
+            {
+                var objCtrl = new DNNrocketController();
+
+                objCtrl.Update(settings);
+                CacheUtils.RemoveCache("dnnrocketmodsettings*" + settings.ModuleId);
+            }
+        }
+
+        public static Dictionary<string,string> GetProviderReturn(string paramCmd,SimplisityInfo systemInfo, string interfacekey, SimplisityInfo postInfo, string templateRelPath, string editlang)
+        {
+            var rtnDic = new Dictionary<string, string>();
+            var systemprovider = "";
+            if (systemInfo != null)
+            {
+                systemprovider = systemInfo.GUIDKey;
+            }
+            if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
+            {
+                var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", templateRelPath);
+                rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, editlang);
+            }
+            else
+            {
+                if (systemprovider != "")
+                {
+                    // Run API Provider.
+                    rtnDic.Add("outputhtml", "API not found: " + systemprovider);
+                    if (systemInfo != null)
+                    {
+                        var interfaceInfo = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
+                        if (interfaceInfo != null)
+                        {
+                            var controlRelPath = interfaceInfo.GetXmlProperty("genxml/textbox/relpath");
+                            var assembly = interfaceInfo.GetXmlProperty("genxml/textbox/assembly");
+                            var namespaceclass = interfaceInfo.GetXmlProperty("genxml/textbox/namespaceclass");
+                            if (assembly == "" || namespaceclass == "")
+                            {
+                                rtnDic.Add("outputhtml", "No assembly or namespaceclass defined: " + systemprovider + " : " + assembly + "," + namespaceclass);
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    var ajaxprov = APInterface.Instance(assembly, namespaceclass, controlRelPath);
+                                    rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, interfaceInfo, postInfo, HttpContext.Current.Request.UserHostAddress, editlang);
+                                }
+                                catch (Exception ex)
+                                {
+                                    rtnDic.Add("outputhtml", "No valid assembly found: " + systemprovider + " : " + assembly + "," + namespaceclass + "<br/>" + ex.ToString());
+                                }
+                            }
+                        }
+                        else
+                        {
+                            rtnDic.Add("outputhtml", "interfacekey not found: " + interfacekey);
+                        }
+                    }
+                    else
+                    {
+                        rtnDic.Add("outputhtml", "No valid system found: " + systemprovider);
+                    }
+                }
+            }
+            return rtnDic;
         }
 
 

@@ -351,4 +351,7 @@
   <data name="pagesize.Text" xml:space="preserve">
     <value>Page Size</value>
   </data>
+  <data name="nosettings.Text" xml:space="preserve">
+    <value>No Settings</value>
+  </data>
 </root>
