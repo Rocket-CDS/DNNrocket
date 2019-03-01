@@ -1345,6 +1345,7 @@ namespace DNNrocketAPI
                             var namespaceclass = interfaceInfo.GetXmlProperty("genxml/textbox/namespaceclass");
                             if (assembly == "" || namespaceclass == "")
                             {
+                                rtnDic.Remove("outputhtml");
                                 rtnDic.Add("outputhtml", "No assembly or namespaceclass defined: " + systemprovider + " : " + assembly + "," + namespaceclass);
                             }
                             else
@@ -1356,17 +1357,20 @@ namespace DNNrocketAPI
                                 }
                                 catch (Exception ex)
                                 {
+                                    rtnDic.Remove("outputhtml");
                                     rtnDic.Add("outputhtml", "No valid assembly found: " + systemprovider + " : " + assembly + "," + namespaceclass + "<br/>" + ex.ToString());
                                 }
                             }
                         }
                         else
                         {
+                            rtnDic.Remove("outputhtml");
                             rtnDic.Add("outputhtml", "interfacekey not found: " + interfacekey);
                         }
                     }
                     else
                     {
+                        rtnDic.Remove("outputhtml");
                         rtnDic.Add("outputhtml", "No valid system found: " + systemprovider);
                     }
                 }
