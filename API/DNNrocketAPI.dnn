@@ -41,7 +41,48 @@ DNNrocketAPI
 							<name>DNNrocketAPI.dll</name>
 							<sourceFileName>DNNrocketAPI.dll</sourceFileName>
 						</assembly>
-					</assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>DNNrocketCategory.dll</name>
+              <sourceFileName>DNNrocketCategory.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DNNrocketCountry.dll</name>
+              <sourceFileName>DNNrocketCountry.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DNNrocketLogin.dll</name>
+              <sourceFileName>DNNrocketLogin.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DNNrocketSystemData.dll</name>
+              <sourceFileName>DNNrocketSystemData.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Simplisity.dll</name>
+              <sourceFileName>Simplisity.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Drawing.Common.dll</name>
+              <sourceFileName>System.Drawing.Common.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>netstandard.dll</name>
+              <sourceFileName>netstandard.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>RazorEngine.dll</name>
+              <sourceFileName>RazorEngine.dll</sourceFileName>
+            </assembly>            
+
+          </assemblies>
 				</component>
 				<component type="Module">
 					<desktopModule>

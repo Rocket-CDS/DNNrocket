@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Simplisity\Simplisity\Simplisity.csproj" />
     <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
     <ProjectReference Include="..\Login\Login.csproj" />
+    <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
   </ItemGroup>
 
   <ItemGroup>

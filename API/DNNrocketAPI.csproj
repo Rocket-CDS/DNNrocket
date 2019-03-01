@@ -40,12 +40,6 @@
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
-    <Reference Include="NBrightCore">
-      <HintPath>..\..\..\bin\NBrightCore.dll</HintPath>
-    </Reference>
-    <Reference Include="NBrightDNN">
-      <HintPath>..\..\..\bin\NBrightDNN.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Newtonsoft.Json.dll</HintPath>
@@ -58,9 +52,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Simplisity">
-      <HintPath>..\..\..\bin\Simplisity.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.ConfigurationManager, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -69,6 +60,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.4.5.1\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
@@ -569,7 +563,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="js\" />
     <Folder Include="Themes\config-w3\img\" />
     <Folder Include="Themes\config-w3\js\" />
   </ItemGroup>
@@ -577,6 +570,10 @@
     <ProjectReference Include="..\Login\Login.csproj">
       <Project>{57f0a549-1c5b-47bb-a7df-342fe18cb295}</Project>
       <Name>Login</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplisity\Simplisity.csproj">
+      <Project>{ea312f3d-9284-4f1f-b395-879721415573}</Project>
+      <Name>Simplisity</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

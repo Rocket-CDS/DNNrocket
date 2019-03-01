@@ -1,0 +1,446 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<title>Simplisity</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+<style>
+    body, h1, h2, h3, h4, h5 {
+        font-family: "Poppins", sans-serif
+    }
+
+    body {
+        font-size: 16px;
+    }
+
+    .w3-half img {
+        margin-bottom: -6px;
+        margin-top: 16px;
+        opacity: 0.8;
+        cursor: pointer
+    }
+
+        .w3-half img:hover {
+            opacity: 1
+        }
+</style>
+<body>
+
+    <!-- Sidebar/menu -->
+    <nav class="w3-sidebar w3-cyan w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar">
+        <br>
+        <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
+        <div class="w3-container">
+            <h3 class="w3-padding-64"><b>Simplisty</b></h3>
+        </div>
+        <div class="w3-bar-block">
+            <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a>
+            <a href="#attributes" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Command Attributes</a>
+            <a href="#methods" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Methods</a>
+            <a href="#classevents" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Class Events</a>
+            <a href="#sessioncookies" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Session Cookies</a>
+            <a href="#fielddata" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Field Data</a>
+            <a href="#ajaxdropdown" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Ajax DropDown</a>
+        </div>
+    </nav>
+
+    <!-- Top menu on small screens -->
+    <header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
+        <a href="javascript:void(0)" class="w3-button w3-red w3-margin-right" onclick="w3_open()">☰</a>
+        <span>Simplisity</span>
+    </header>
+
+    <!-- Overlay effect when opening sidebar on small screens -->
+    <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main" style="margin-left:340px;margin-right:40px">
+
+        <!-- Header -->
+        <div class="w3-container" style="margin-top:80px" id="showcase">
+            <h1 class="w3-jumbo"><b>Simplisity</b></h1>
+            <h1 class="w3-xxxlarge w3-text-teal"><b>What is it?</b></h1>
+            <hr style="width:50px;border:5px solid teal" class="w3-round">
+        </div>
+
+        <!-- Photo grid (modal) -->
+        <div class="w3-row-padding">
+            <p>Simplisity is a client side jQuery based framework and a set of Server side utilities.  The idea is to keep things as simple and flexible as possible.</p>
+            <p>Simplisity is designed to take data from the html page, pass it to a server side API for processing, which then can return data or html to be added to the html page.   Simplisity currently uses JQuery to ensure compatibility across browsers.</p>
+        </div>
+
+        <div class="w3-container" id="attributes" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-teal"><b>Command Attributes</b></h1>
+            <hr style="width:50px;border:5px solid teal" class="w3-round">
+            <p>Simplisty uses element attributes to do the required processing and to pass/return data to the server side API.</p>
+            <table class="w3-table w3-bordered">
+                <tr class="w3-teal">
+                    <th style="width:200px;">Attribute Name</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>s-cmdurl</td>
+                    <td>Server side API url.</td>
+                </tr>
+                <tr>
+                    <td>s-cmd</td>
+                    <td>API command.</td>
+                </tr>
+                <tr>
+                    <td>s-fields</td>
+                    <td>paramater fields that can be passed to the API.  This is a csv string in the format of "name:value,name:value,name:value". Any number of parameters can be passed. </td>
+                </tr>
+                <tr>
+                    <td>s-itemid</td>
+                    <td>Identify records in list.  Used for sorting and selecting.</td>
+                </tr>
+                <tr>
+                    <td>s-post</td>
+                    <td>The JQuery selector of an element that will be passed to the server.  Simplisity takes ALL input fields in the selected html element and posts to the server, which can then process the data. If s-fields and s-post are defined both sets of data are passed to the server.</td>
+                </tr>
+                <tr>
+                    <td>s-list</td>
+                    <td>The JQuery selector of repeating data which will be past to server as a list. The value can be a csv of list classes used on the page, each row should have the class assigned to the parent/enclosing element.  If you want to save a list to the DB then this should be on the save button, it will then be passed to the server along with the s-post element.  It can be read by using &lt;SimplisityInfo&gt;.GetList(<i>list name</i>) and is returned as a List&lt;SimplisityInfo&gt;.</td>
+                </tr>
+                <tr>
+                    <td>s-return</td>
+                    <td>The JQuery selector of the return element.  Any data returned from the server will be added/replace to this html element content.  If not specified, this will default to "#simplisity_startpanel"</td>
+                </tr>
+                <tr>
+                    <td>s-append</td>
+                    <td>Specifies that any return data will be added to the s-return element. ('true' or 'false')</td>
+                </tr>
+                <tr>
+                    <td>s-before</td>
+                    <td>The name of a js function to be activated before the API call is made.</td>
+                </tr>
+                <tr>
+                    <td>s-after</td>
+                    <td>The name of a js function to be activated after the API call is made.</td>
+                </tr>
+                <tr>
+                    <td>s-hideloader</td>
+                    <td>Hide the client side loader after the server API call.  Default = 'true'.  This is used when you need to stop flicker because of multiple calls before processing is completed.</td>
+                </tr>
+                <tr>
+                    <td>s-recylebin</td>
+                    <td>Specify the recycle bin when a list element or table row is removed.  This must be on both the remove button and the undo button.</td>
+                </tr>
+                <tr>
+                    <td>s-removelist</td>
+                    <td>The JQuery selector of the removed element.  This is used to move the list element into and out of the recycle bin.  It should be placed on the removeitem button and the undo button.  This is the li[s-index] or tr[s-index] parent of the removed button.</td>
+                </tr>
+                <tr>
+                    <td>s-confirm</td>
+                    <td>Confirm message of "simplisity_confirmclick"</td>
+                </tr>
+                <tr>
+                    <td>s-track</td>
+                    <td>(Optional: true, false or clear. Default: false) If this attribute is added to a command click, the command is remembered as a cookie.  When a page refresh is made, like for language change, it is the last s-track command that will activate first. "clear" will remove the s-track cookies.</td>
+                </tr>
+                <tr>
+                    <td>s-regexpr</td>
+                    <td>Regular Expression used to limit file type upload.  This is used only on the "simplisity_fileupload" class element. If not specified the default is used.  '/(\.|\/)(gif|jpe?g|png|pdf)$/i'</td>
+                </tr>
+                <tr>
+                    <td>s-maxfilesize</td>
+                    <td>Used to limit file size on upload.  This is used only on the "simplisity_fileupload" class element. If not specified the default is used.  5000000</td>
+                </tr>
+                <tr>
+                    <td>s-dropdownlist</td>
+                    <td>Used to link a dropdown to another field. If used the server will return a JSON object.  This can be used to populated the dropdownlist when an element changes. The JSON return format shoud be {listkey:['1','2','3'],listvalue:['1','2','3']}</td>
+                </tr>
+                <tr>
+                    <td><i>s-index</i></td>
+                    <td>This is an attribute which is automatically added to elements in a list, so Simplisity can identify them.</td>
+                </tr>
+                <tr>
+                    <td><i>s-update</i></td>
+                    <td>INPUT FIELD: This attribute is optional for all input fields. There are 3 possible values: <b>s-update="save"</b> the server will deal with the value as a normal non-localized value. This is the same as if no s-update attribute was added.  <b>s-update="lang"</b> the server will deal with the value as a localized value.  <b>s-update="ignore"</b> the value will be ignored. </td>
+                </tr>
+                <tr>
+                    <td><i>s-datatype</i></td>
+                    <td>INPUT FIELD: Datatype of the field data. "email","date","double","html","coded".  All other data type are dealt with as string. </td>
+                </tr>
+                <tr>
+                    <td><i>s-page</i></td>
+                    <td>Page Number</td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div class="w3-container" id="methods" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-teal"><b>Methods</b></h1>
+            <hr style="width:50px;border:5px solid teal" class="w3-round">
+            <p>Simplisty has a few methods which are called to make things happen.</p>
+            <hr />
+
+            <p><b>$(document).simplisityStartUp(<i>string</i> apiurl)</b></p>
+            <p>This is the main activation for Simplisity.  It searches the webpage for any html elements with "simplisity_panel" class.  Simplisity will then process the command attributes attached to the html element</p>
+            <hr />
+
+            <p><b>$('#mycontainer').activateSimplisityPanel()</b></p>
+            <p>Each "simplisity_panel" can be called individually.</p>
+            <hr />
+
+            <p><b>$('#mycontainer').getSimplisity(<i>string</i> s-cmdurl, <i>string</i> s-cmd, <i>string</i> s-fields,<i>string</i> s-after) </b></p>
+            <p>This method will do an individual post to the server API.</p>
+            <hr />
+
+            <p><b>simplisity_callserver(element, cmdurl, returncontainer, reload)</b></p>
+            <p>The JavaScript function to post to the server can also be called directly.  This works by passing the html element and the command attributes on the element tell the simplisity code what to do.            </p>
+            <p>If we have already called simplisity server then the last command url used will be activate.  Therefore we can call this function with the minimum of parameters.  i.e. only the html element.</p>
+            <H4>Examples</H4>
+            simplisity_callserver(this, '/DesktopModules/DNNrocket/API/api.ashx', '#myreturn', false)<br />
+                                                                                                     <br />
+            <i>Minimum call parameters</i><br />
+            simplisity_callserver(this)
+            <br />
+
+            <hr />
+
+
+        </div>
+
+
+        <!-- classevents -->
+        <div class="w3-container" id="classevents" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-teal"><b>Class Events</b></h1>
+            <hr style="width:50px;border:5px solid teal" class="w3-round">
+            <p>Most operations for Simplisity are setup by applying a class or id onto html element.  Simplisity uses these class or id as instructions on what needs to be done.</p>
+
+            <table class="w3-table w3-bordered">
+                <tr class="w3-teal">
+                    <th>Element ID</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>simplisity_startpanel</td>
+                    <td>Identifies a html START container to use as a simplisity panel. This will be the default panel and activated when "simplisityStartUp" is called. This must be the ID of the element.</td>
+                </tr>
+            </table>
+
+            <table class="w3-table w3-bordered">
+                <tr class="w3-teal">
+                    <th>Class Name</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>simplisity_panel</td>
+                    <td>Identifies a html container to use as a simplisity panel. This will be activated when "simplisityStartUp" is called.</td>
+                </tr>
+                <tr>
+                    <td>simplisity_buttons</td>
+                    <td>html element containing the actions buttons, if buttons are required for the page.</td>
+                </tr>
+                <tr>
+                    <td>simplisity_buttonpanel</td>
+                    <td>The button menu element.  Content from the "simplisity_buttons" element will be moved into this html element when the html content is returned from the server.</td>
+                </tr>
+                <tr>
+                    <td>simplisity_click</td>
+                    <td>Apply a Simplisity click event onto an element.</td>
+                </tr>
+                <tr>
+                    <td>simplisity_confirmclick</td>
+                    <td>Apply a Simplisity click event onto an element, but ask for a confirmation popup. use "s-confirm" attribute to specify a message.</td>
+                </tr>
+                <tr>
+                    <td>simplisity_change</td>
+                    <td>Apply a Simplisity change event onto an element. This is usually used for dropdownlist, so something can be populated on selection.</td>
+                </tr>
+                <tr>
+                    <td>simplisity_removelistitem</td>
+                    <td>Remove item from html li list</td>
+                </tr>
+                <tr>
+                    <td>simplisity_removetablerow</td>
+                    <td>Remove row from html table</td>
+                </tr>
+                <tr>
+                    <td>simplisity_itemundo</td>
+                    <td>Undo Remove item from html li list</td>
+                </tr>
+                <tr>
+                    <td>simplisity_langchange</td>
+                    <td>If this class is on a Save button, then after a langauge change the save button click will be triggered.  This is to save data on language change.  (This class should only be placed on 1 button on the page.)</td>
+                </tr>
+                <tr>
+                    <td>simplisity_pageclick</td>
+                    <td>This class will activate the paging function. the attribute "s-page" needs to be specified on the element which is page link.The new page number is saved as a cookie. (s-page)</td>
+                </tr>
+                <tr>
+                    <td>simplisity_pagesize</td>
+                    <td>Enables a "change" or "click" event for the change of pagesize.  The new pagesize is saved as a cookie. (s-pagesize)</td>
+                </tr>
+                <tr>
+                    <td>simplisity_searchfield</td>
+                    <td>Identifies fields used for searching.  Simplisity will make a cookie from the fields identified, the data will then be sent to the search by being added automatically to the "s-field" param.</td>
+                </tr>
+                <tr>
+                    <td>simplisity_fileupload</td>
+                    <td>Identifies a file upload.  This class should be on the input field with type='file'</td>
+                </tr>
+                <tr>
+                    <td>simplisity_filedownload</td>
+                    <td>Identifies a download file link.  This class should be on the &lt;a&gt; element and should have he relivate s-fields and s-cmd attributes.</td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div class="w3-container" id="sessioncookies" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-teal"><b>Session Cookies</b></h1>
+            <hr style="width:50px;border:5px solid teal" class="w3-round">
+            <p>Session cookies are used to keep track of operations.</p>
+
+            <table class="w3-table w3-bordered">
+                <tr class="w3-teal">
+                    <th>Cookie Name</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>editlang</td>
+                    <td>Keeps track of the current edit langauge.</td>
+                </tr>
+                <tr>
+                    <td>nextlang</td>
+                    <td>Identifies the next edit langauge to be activated.  This is set before an edit langauge changed, the data is saved in the current edit langauge and then the edit language is changed to the nextlang cookie and the nextlang cookie is cleared.</td>
+                </tr>
+                <tr>
+                    <td>s-cmd-menu-<i>systemprovider</i></td>
+                    <td>Is the last s-cmd to be tracked when using the s-track attribute.  This then used to call the last tracked command on page refresh.</td>
+                </tr>
+                <tr>
+                    <td>s-field-menu-<i>systemprovider</i></td>
+                    <td>Is the last s-field to be tracked when using the s-track attribute.  This then used to call the last tracked command on page refresh.</td>
+                </tr>
+                <tr>
+                    <td>s-cmdurl-<i>systemprovider</i></td>
+                    <td>The last API url called for this system provider.</td>
+                </tr>
+                <tr>
+                    <td>s-lastindex</td>
+                    <td>Tracks the last menu index button, this identifies the last menu item clicked.  This is used to activate the menu item that should be selected on a page refresh.</td>
+                </tr>
+                <tr>
+                    <td>s-tabname</td>
+                    <td>Tracks the last tab used, so a refresh of page displays the last tab.</td>
+                </tr>
+                <tr>
+                    <td>s-page</td>
+                    <td>Current Page Number.</td>
+                </tr>
+                <tr>
+                    <td>s-pagesize</td>
+                    <td>Current Page Size.</td>
+                </tr>
+            </table>
+
+        </div>
+        
+        <div class="w3-container" id="fielddata" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-teal"><b>Field Data</b></h1>
+            <hr style="width:50px;border:5px solid teal" class="w3-round">
+            <p>Hidden fields are created by simplisity on page load, these are to keep track of data that often needs passing to the server.</p>
+
+            <table class="w3-table w3-bordered">
+                <tr class="w3-teal">
+                    <th>Field ID</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>simplisity_systemprovider</td>
+                    <td>
+                        This is usually set by the "simplisity_startup" function (see below).  It keeps track of the default systemprovider being used by the page.  Multiple systemproviders can be used on the same page by providing the field "systemprovider:<i>MySystemProvider</i>" on the s-field attribute of the simplisity html element.
+                        <hr />
+                        <div>
+                            $(document).ready(function () {<br />
+                            $(document).simplisityStartUp('/<i>My API call url</i>', { systemprovider: 'amylisbusiness'});<br />
+                            });<br />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>simplisity_loader</td>
+                    <td>This is a an eleent with a class which will be displayed when a call to the server s made.  By default this is "overlayclass: 'w3-overlay'"  but this call can be overwritten on the "simplisity_startup" function.</td>
+                </tr>
+                <tr>
+                    <td>simplisity_fileuploadlist</td>
+                    <td>This field keeps a list of the fields which need to be uploaded.  They are then passed and processed server side.</td>
+                </tr>
+            </table>
+
+        </div>
+
+
+        <div class="w3-container" id="ajaxdropdown" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-teal"><b>Ajax DropDownList Example</b></h1>
+            <hr style="width:50px;border:5px solid teal" class="w3-round">
+            <p>DropDownLists can be populated by ajax.  This exmaple show 2 dropdownlists, a country list and a region list.  When the country list is selected the second list is populated with region data.</p>
+
+            <div class="w3-panel w3-card w3-light-grey">
+                <h4>Client Side Code</h4>
+                <div class="w3-code htmlHigh notranslate">
+                    &lt;div&gt;<br>
+                    &lt;label&gt;@ResourceKey("businessdirectory.country")&lt;/label&gt;<br>
+                    @{<br>
+                    var countrydata = DNNrocket.Country.CountryUtils.CountryListCSV("amylisbusiness");<br>
+                    }<br>
+                    @DropDownList(info, "genxml/dropdownlist/country", "," + countrydata[0].Replace("'",""), "," + countrydata[1].Replace("'", ""), "class='w3-input w3-border simplisity_change' s-cmd='settingcountry_getregion' s-dropdownlist='#region'")<br>
+                    &lt;/div&gt;<br>
+                    &lt;div&gt;<br>
+                    &lt;label&gt;@ResourceKey("businessdirectory.region")&lt;/label&gt;<br>
+                    @{<br>
+                    var regiondata = DNNrocket.Country.CountryUtils.RegionListCSV(info.GetXmlProperty("genxml/dropdownlist/country"));<br>
+                    }<br>
+                    @DropDownList(info, "genxml/dropdownlist/region", regiondata[0].Replace("'",""), regiondata[1].Replace("'", ""), "class='w3-input w3-border' ")<br>
+                    &lt;/div&gt;<br>
+                </div>
+            </div>
+            <p>The client side code is a razor template.  The country dropdown is created by a razor token "@DropDownList" and the initial load populates the dropdown by using the server side "CountryListCSV" function.</p>
+            <p>The "simplisity_change" class on the country dropdown identifies that a simplisity change event will be triggered when a country is selected.  The "s-dropdownllist" command attribute is defined as the jQuery selector for the region dropdownlist, this identifies the dropdownlist that will be populated by ajax.</p>
+            <p>On inital load we populated the region dropdownlist with the regions for the selected country dropdownlist and the razor token "@DropDownList" deals with the selected value.</p>
+            <p>The "s-dropdownlist" command attribute requires a json object to be returned by the server.  The server returns a json string and this is converted into a json object, by simplisity, which is used to populate the region dropdownlist.</p>
+            <div class="w3-panel w3-card w3-light-grey">
+                <h4>Json Return Format</h4>
+                <div class="w3-code htmlHigh notranslate">
+                    {listkey: ["'key1','key2','key3'"], listvalue: ["'name1','name2','name3'"] }
+                </div>
+            </div>
+            <p>The json return data should have 2 lists, "listkey" and "listvalue", The server side code should place the json string into the return dictionary with a key value of "outputjson"</p>
+
+        </div>
+
+        <!-- End page content -->
+    </div>
+
+    <!-- W3.CSS Container -->
+    <div class="w3-light-grey w3-container w3-padding-32" style="margin-top:75px;padding-right:58px"><p class="w3-right">Powered by <a href="#" title="Simplisity" target="_blank" class="w3-hover-opacity">Simplisity</a></p></div>
+
+
+    <script src="https://www.w3schools.com/lib/w3codecolor.js"></script>
+
+    <script>
+
+        w3CodeColor();
+
+
+        // Script to open and close sidebar
+        function w3_open() {
+            document.getElementById("mySidebar").style.display = "block";
+            document.getElementById("myOverlay").style.display = "block";
+        }
+
+        function w3_close() {
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("myOverlay").style.display = "none";
+        }
+
+    </script>
+
+
+</body>
+</html>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simplisity;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -6,8 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Web;
-using NBrightCore.common;
-using NBrightCore.images;
 
 namespace DNNrocketAPI
 {
@@ -17,25 +16,25 @@ namespace DNNrocketAPI
         public void ProcessRequest(HttpContext context)
         {
 
-            var w = Utils.RequestQueryStringParam(context, "w");
-            var h = Utils.RequestQueryStringParam(context, "h");
-            var src = Utils.RequestQueryStringParam(context, "src");
-            var imgtype = Utils.RequestQueryStringParam(context, "imgtype");
+            var w = DNNrocketUtils.RequestQueryStringParam(context, "w");
+            var h = DNNrocketUtils.RequestQueryStringParam(context, "h");
+            var src = DNNrocketUtils.RequestQueryStringParam(context, "src");
+            var imgtype = DNNrocketUtils.RequestQueryStringParam(context, "imgtype");
 
             if (h == "") h = "0";
             if (w == "") w = "0";
 
-            if (Utils.IsNumeric(w) && Utils.IsNumeric(h))
+            if (GeneralUtils.IsNumeric(w) && GeneralUtils.IsNumeric(h))
             {
                 src = HttpContext.Current.Server.MapPath(src);
 
-                var strCacheKey = context.Request.Url.Host.ToLower() + "*" + src + "*" + Utils.GetCurrentCulture() + "*img:" + w + "*" + h + "*";
-                var newImage = (Bitmap) Utils.GetCache(strCacheKey);
+                var strCacheKey = context.Request.Url.Host.ToLower() + "*" + src + "*" + DNNrocketUtils.GetCurrentCulture() + "*img:" + w + "*" + h + "*";
+                var newImage = (Bitmap) CacheUtils.GetCache(strCacheKey);
 
                 if (newImage == null)
                 {
-                    newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h));
-                    Utils.SetCache(strCacheKey, newImage);
+                    newImage = Simplisity.ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h));
+                    CacheUtils.SetCache(strCacheKey, newImage);
                 }
 
                 if ((newImage != null))
@@ -56,7 +55,7 @@ namespace DNNrocketAPI
                     }
                     catch (Exception exc)
                     {
-                        var outArray = Utils.StrToByteArray(exc.ToString());
+                        var outArray = GeneralUtils.StrToByteArray(exc.ToString());
                         context.Response.OutputStream.Write(outArray, 0, outArray.Count());
                     }
                 }

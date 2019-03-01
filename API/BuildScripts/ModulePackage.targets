@@ -30,8 +30,6 @@
       <InstallInclude Include="..\**\images\**" Exclude="packages\**;Themes\**;Thumbs.db;" />
       <InstallInclude Include="..\**\img\**" Exclude="packages\**;Themes\**;Thumbs.db;" />
 
-      <InstallInclude Include="..\..\Simplisity\Simplisity\js\simplisity.js" Exclude="" />
-      <InstallInclude Include="..\..\Simplisity\Simplisity\js\jquery.fileupload.js" Exclude="" />
 
     </ItemGroup>
     
@@ -49,7 +47,11 @@
     <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketCategory.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketLogin.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketSystemData.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
-    <Copy SourceFiles="$(MSBuildDnnBinPath)\Simplisity.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>    
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\Simplisity.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\System.Drawing.Common.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\netstandard.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\RazorEngine.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    
 
     <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
     <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />

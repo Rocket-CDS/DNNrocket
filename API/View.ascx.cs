@@ -22,9 +22,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Exceptions;
-using NBrightCore.common;
-using NBrightCore.render;
-using NBrightDNN;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
@@ -85,13 +82,13 @@ namespace DNNrocketAPI
 
         private void PageLoad()
         {
-            var objCtrl = new NBrightDataController();
+            var objCtrl = new DNNrocketController();
 
-            var eid = Utils.RequestQueryStringParam(Request, "eid");
+            var eid = DNNrocketUtils.RequestQueryStringParam(Request, "eid");
             // check for detail page display
-            if (Utils.IsNumeric(eid))
+            if (GeneralUtils.IsNumeric(eid))
             {
-                var info = objCtrl.Get(Convert.ToInt32(eid), Utils.GetCurrentCulture());
+                var info = objCtrl.GetInfo(Convert.ToInt32(eid), DNNrocketUtils.GetCurrentCulture());
 
                 var pagename = info.GetXmlProperty("genxml/lang/genxml/textbox/pagename");
                 if (pagename == "") pagename = info.GetXmlProperty("genxml/textbox/pagename");
@@ -127,7 +124,7 @@ namespace DNNrocketAPI
             var templateRelPath = iface.GetXmlProperty("genxml/textbox/relpath");
 
             var strOut = "";
-            var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, interfacekey, postInfo, templateRelPath, Utils.GetCurrentCulture());
+            var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, interfacekey, postInfo, templateRelPath, DNNrocketUtils.GetCurrentCulture());
 
             if (returnDictionary.ContainsKey("outputhtml"))
             {

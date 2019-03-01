@@ -1,7 +1,5 @@
 ﻿using DNNrocket.Login;
 using DNNrocketAPI;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -22,12 +20,12 @@ namespace DNNrocket.SystemData
             var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [SystemData]";
 
             var rtnInfo = new SimplisityInfo();
-            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            // Security Check MUST be in the extension.
+            if (DNNrocketUtils.SecurityCheckCurrentUser(systemInfo, "")) // only check superuser for this.
             {
                 if (paramCmd == "login_signout")
                 {
-                    var ps = new PortalSecurity();
-                    ps.SignOut();
+                    DNNrocketUtils.SignUserOut();
                     strOut = LoginUtils.LoginForm(rtnInfo);
                 }
                 else
@@ -91,8 +89,6 @@ namespace DNNrocket.SystemData
             }
             else
             {
-                var ps = new PortalSecurity();
-                ps.SignOut();
 
                 switch (paramCmd)
                 {

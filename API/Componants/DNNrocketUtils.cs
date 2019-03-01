@@ -1238,10 +1238,17 @@ namespace DNNrocketAPI
                     if (UserController.Instance.GetCurrentUserInfo().IsInRole("ClientEditor")) return true;
                 }
             }
+            var ps = new PortalSecurity();
+            ps.SignOut();
 
             return false;
         }
 
+        public static void SignUserOut()
+        {
+            var ps = new PortalSecurity();
+            ps.SignOut();
+        }
 
         public static void IncludePageHeaders(String moduleid, Page page, String moduleName, string templateControlRelPath, String razortemplate = "", String theme = "")
         {
