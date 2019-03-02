@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Categories", "Category\Cate
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simplisity", "Simplisity\Simplisity.csproj", "{EA312F3D-9284-4F1F-B395-879721415573}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNNrocketModule", "DNNrocketModule\DNNrocketModule.csproj", "{CD4BAD35-32B0-465B-AF2F-4405891B652E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{EA312F3D-9284-4F1F-B395-879721415573}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA312F3D-9284-4F1F-B395-879721415573}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA312F3D-9284-4F1F-B395-879721415573}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD4BAD35-32B0-465B-AF2F-4405891B652E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD4BAD35-32B0-465B-AF2F-4405891B652E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD4BAD35-32B0-465B-AF2F-4405891B652E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD4BAD35-32B0-465B-AF2F-4405891B652E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

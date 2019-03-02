@@ -1,0 +1,31 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{
+    var info = Model.HeaderData;
+}
+
+<div id="dnnrocketmodule_@info.ModuleId" class="simplisity_panel">
+
+    <div class="w3-center w3-margin">
+        <p>
+            No configuration has been setup for this module.  Click the "Setup" button and enter your required configuration.
+        </p>
+        <!-- "systemprovider:<systemprovider>" needs to be defined in the s-field.  We will not have a valid cookie on first load. -->
+        <a class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="dnnrocketmodule_getconfig" s-return="#dnnrocketmodule_@info.ModuleId" s-fields="systemprovider:dnnrocket,moduleid:@info.ModuleId,theme:config-w3,template:config.cshtml,interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdConfigButton")</a>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocket' });
+    });
+</script>

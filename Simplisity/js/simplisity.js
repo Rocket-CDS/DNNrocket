@@ -16,152 +16,13 @@
         var settings = $.extend({
         }, options);
 
+        simplisity_assignevents(cmdurl);
+
         $(this).unbind("change");
         $(this).change(function () {
-
-            $('.simplisity_change').each(function (index) {
-
-                $(this).attr("s-index", index);
-
-                simplisity_setCookieValue('s-page', '1');
-
-                $(this).unbind("change");
-                $(this).change(function () {
-
-                    simplisity_searchfields();
-
-                    simplisity_setCookieValue('s-lastindex', index);
-                    simplisity_callserver(this, cmdurl);
-                });
-
-            });
-
-            $('.simplisity_click').each(function (index) {
-
-                $(this).attr("s-index", index);
-
-                simplisity_setCookieValue('s-page', '1');
-
-                $(this).unbind("click");
-                $(this).click(function () {
-
-                    simplisity_searchfields();
-
-                    simplisity_setCookieValue('s-lastindex', index);
-                    simplisity_callserver(this, cmdurl);
-                });
-
-            });
-
-            $('.simplisity_confirmclick').each(function (index) {
-
-                $(this).attr("s-index", index);
-
-                $(this).unbind("click");
-                $(this).click(function () {
-                    if (confirm($(this).attr("s-confirm"))) {
-                        simplisity_setCookieValue('s-lastindex', index);
-                        simplisity_callserver(this, cmdurl);
-                    }
-                });
-
-            });
-
-
-            $('.simplisity_removelistitem').each(function (index) {
-                $(this).attr("s-index", index);
-                $(this).parents('li').first().attr("s-index", index);
-
-                $(this).unbind("click");
-                $(this).click(function () {
-                        simplisity_removelistitem(this);
-                });
-            });
-
-            $('.simplisity_removetablerow').each(function (index) {
-                $(this).attr("s-index", index);
-                $(this).parents('tr').first().attr("s-index", index);
-
-                $(this).unbind("click");
-                $(this).click(function () {
-                        simplisity_removetablerow(this);
-                });
-            });
-
-            $('.simplisity_itemundo').each(function (index) {
-                if (typeof $(this).attr("s-recylebin") !== 'undefined') {
-                    if (typeof $('#simplisity_recyclebin_' + $(this).attr("s-recylebin")).val() === 'undefined') {
-                        var elementstr = '<div id="simplisity_recyclebin_' + $(this).attr("s-recylebin") + '" style="display:none;" ></div>';
-                        var elem = document.createElement('span');
-                        elem.innerHTML = elementstr;
-                        document.body.appendChild(elem);
-                    }
-                }                
-                $(this).unbind("click");
-                $(this).click(function () {
-                    simplisity_undoremovelistitem(this);
-                });
-            });
-
-            $('.simplisity_pageclick').each(function (index) {
-
-                $(this).attr("s-index", index);
-
-                $(this).unbind("click");
-                $(this).click(function () {
-                    var p = $(this).attr("s-page");
-                    simplisity_setCookieValue('s-page', p);
-                    simplisity_pagechange(this, cmdurl);
-                });
-
-            });
-
-            $('.simplisity_pagesize').each(function (index) {
-
-                if (simplisity_isSelect(this)) {
-                    $(this).unbind("change");
-                    $(this).change(function () {
-                        simplisity_setCookieValue('s-pagesize', $(this).val());
-                        simplisity_pagechange(this, cmdurl);
-                    });
-                }
-
-                if (simplisity_isTextInput(this)) {
-                    $(this).unbind("click");
-                    $(this).click(function () {
-                        simplisity_setCookieValue('s-pagesize', $(this).val());
-                        simplisity_pagechange(this, cmdurl);
-                    });
-                }
-
-            });            
-
-            $('.simplisity_fileupload').each(function (index) {
-                initFileUpload('#' + $(this).attr('id'));
-            });            
-
-            $('.simplisity_filedownload').each(function (index) {
-                var params = "cmd=" + $(this).attr('s-cmd');
-                var sfields = $(this).attr('s-fields');
-
-                if (typeof sfields !== 'undefined' && sfields !== '') {
-                    sfields.replace(',,', '{comma}');
-                    sfields.replace('::', '{colon}');
-                    var sfieldlist = sfields.split(',');
-                    sfieldlist.forEach((field, index) => {
-                        fieldsplit = field.split(':');
-                        params = params + '&' + fieldsplit[0].replace('{comma}', ',').replace('{colon}', ':') + '=' + simplisity_encode(fieldsplit[1].replace('{comma}', ',').replace('{colon}', ':'));
-                    });
-                    var systemprovider = simplisity_getSystemProvider(sfields);  // use systemprovider so we can have multiple cookie for Different systems.
-                    params = params + '&systemprovider=' + simplisity_encode(systemprovider); 
-                }
-
-                $(this).attr({
-                    href: cmdurl + '?' + params
-                });
-            });            
-
+            simplisity_assignevents(cmdurl);
         });
+
     };
 
     }(jQuery));
@@ -211,6 +72,9 @@
                 $(this).activateSimplisityPanel(cmdurl, options);
             }
         });
+
+        $('#simplisity_loader').hide();
+
     };
 }(jQuery));
 
@@ -716,5 +580,152 @@ async function initFileUpload(fileuploadselector) {
                     }
                 }
             });
+
+}
+
+
+function simplisity_assignevents(cmdurl) {
+
+        $('.simplisity_change').each(function (index) {
+
+            $(this).attr("s-index", index);
+
+            simplisity_setCookieValue('s-page', '1');
+
+            $(this).unbind("change");
+            $(this).change(function () {
+
+                simplisity_searchfields();
+
+                simplisity_setCookieValue('s-lastindex', index);
+                simplisity_callserver(this, cmdurl);
+            });
+
+        });
+
+        $('.simplisity_click').each(function (index) {
+
+            $(this).attr("s-index", index);
+
+            simplisity_setCookieValue('s-page', '1');
+
+            $(this).unbind("click");
+            $(this).click(function () {
+
+                simplisity_searchfields();
+
+                simplisity_setCookieValue('s-lastindex', index);
+                simplisity_callserver(this, cmdurl);
+            });
+
+        });
+
+        $('.simplisity_confirmclick').each(function (index) {
+
+            $(this).attr("s-index", index);
+
+            $(this).unbind("click");
+            $(this).click(function () {
+                if (confirm($(this).attr("s-confirm"))) {
+                    simplisity_setCookieValue('s-lastindex', index);
+                    simplisity_callserver(this, cmdurl);
+                }
+            });
+
+        });
+
+
+        $('.simplisity_removelistitem').each(function (index) {
+            $(this).attr("s-index", index);
+            $(this).parents('li').first().attr("s-index", index);
+
+            $(this).unbind("click");
+            $(this).click(function () {
+                simplisity_removelistitem(this);
+            });
+        });
+
+        $('.simplisity_removetablerow').each(function (index) {
+            $(this).attr("s-index", index);
+            $(this).parents('tr').first().attr("s-index", index);
+
+            $(this).unbind("click");
+            $(this).click(function () {
+                simplisity_removetablerow(this);
+            });
+        });
+
+        $('.simplisity_itemundo').each(function (index) {
+            if (typeof $(this).attr("s-recylebin") !== 'undefined') {
+                if (typeof $('#simplisity_recyclebin_' + $(this).attr("s-recylebin")).val() === 'undefined') {
+                    var elementstr = '<div id="simplisity_recyclebin_' + $(this).attr("s-recylebin") + '" style="display:none;" ></div>';
+                    var elem = document.createElement('span');
+                    elem.innerHTML = elementstr;
+                    document.body.appendChild(elem);
+                }
+            }
+            $(this).unbind("click");
+            $(this).click(function () {
+                simplisity_undoremovelistitem(this);
+            });
+        });
+
+        $('.simplisity_pageclick').each(function (index) {
+
+            $(this).attr("s-index", index);
+
+            $(this).unbind("click");
+            $(this).click(function () {
+                var p = $(this).attr("s-page");
+                simplisity_setCookieValue('s-page', p);
+                simplisity_pagechange(this, cmdurl);
+            });
+
+        });
+
+        $('.simplisity_pagesize').each(function (index) {
+
+            if (simplisity_isSelect(this)) {
+                $(this).unbind("change");
+                $(this).change(function () {
+                    simplisity_setCookieValue('s-pagesize', $(this).val());
+                    simplisity_pagechange(this, cmdurl);
+                });
+            }
+
+            if (simplisity_isTextInput(this)) {
+                $(this).unbind("click");
+                $(this).click(function () {
+                    simplisity_setCookieValue('s-pagesize', $(this).val());
+                    simplisity_pagechange(this, cmdurl);
+                });
+            }
+
+        });
+
+        $('.simplisity_fileupload').each(function (index) {
+            initFileUpload('#' + $(this).attr('id'));
+        });
+
+        $('.simplisity_filedownload').each(function (index) {
+            var params = "cmd=" + $(this).attr('s-cmd');
+            var sfields = $(this).attr('s-fields');
+
+            if (typeof sfields !== 'undefined' && sfields !== '') {
+                sfields.replace(',,', '{comma}');
+                sfields.replace('::', '{colon}');
+                var sfieldlist = sfields.split(',');
+                sfieldlist.forEach((field, index) => {
+                    fieldsplit = field.split(':');
+                    params = params + '&' + fieldsplit[0].replace('{comma}', ',').replace('{colon}', ':') + '=' + simplisity_encode(fieldsplit[1].replace('{comma}', ',').replace('{colon}', ':'));
+                });
+                var systemprovider = simplisity_getSystemProvider(sfields);  // use systemprovider so we can have multiple cookie for Different systems.
+                params = params + '&systemprovider=' + simplisity_encode(systemprovider);
+            }
+
+            $(this).attr({
+                href: cmdurl + '?' + params
+            });
+        });
 
 }

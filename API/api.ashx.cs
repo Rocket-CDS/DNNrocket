@@ -50,7 +50,7 @@ namespace DNNrocketAPI
                     }
 
 
-                var requestJson = "";
+                    var requestJson = "";
                     var postInfo = new SimplisityInfo();
                     postInfo.SetXmlProperty("genxml/hidden","");
                     if (DNNrocketUtils.RequestParam(context, "inputjson") != "")

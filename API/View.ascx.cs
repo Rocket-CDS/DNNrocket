@@ -41,12 +41,47 @@ namespace DNNrocketAPI
         #region Event Handlers
 
 
+        private SimplisityInfo _settings;
+        private bool _debugmode = false;
+        private bool _activatedetail = false;
+
+        private string _paramCmd;
+        private string _systemprovider;
+
+        private SimplisityInfo _systemInfo;
+        private string _interfacekey;
+        private SimplisityInfo _iface;
+        private string _templateRelPath;
+
+
         protected override void OnInit(EventArgs e)
         {
 
             base.OnInit(e);
 
-            DNNrocketUtils.IncludePageHeaders(base.ModuleId.ToString(""), this.Page, "NBrightMod","view");
+
+            var objCtrl = new DNNrocketController();
+
+            _settings = DNNrocketUtils.GetModuleSettings(ModuleId);
+            _debugmode = _settings.GetXmlPropertyBool("genxml/checkbox/debugmode");
+            _activatedetail = _settings.GetXmlPropertyBool("genxml/checkbox/activatedetail");
+            // check for detail page display
+
+            _paramCmd = _settings.GetXmlProperty("genxml/hidden/command");
+            _systemprovider = _settings.GetXmlProperty("genxml/hidden/systemprovider");
+            if (_systemprovider == "") _systemprovider = "dnnrocket";
+
+            _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
+            _interfacekey = _settings.GetXmlProperty("genxml/hidden/interfacekey");
+            if (_interfacekey == "") _interfacekey = "dnnrocketmodule";
+            _iface = _systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", _interfacekey);
+            _templateRelPath = base.ControlPath;
+            if (_iface != null)
+            {
+                _templateRelPath = _iface.GetXmlProperty("genxml/textbox/relpath");
+            }
+
+            DNNrocketUtils.IncludePageHeaders(base.ModuleId, this.Page, "DNNrocket", _templateRelPath,"pageheader.cshtml", "config-w3");
         }
 
         protected override void OnLoad(EventArgs e)
@@ -58,20 +93,7 @@ namespace DNNrocketAPI
 
                 if (Page.IsPostBack == false)
                 {
-                    // check we have settings
-                    var settings = DNNrocketUtils.GetModuleSettings(ModuleId);
-
-                    if (settings.ModuleId == 0 || settings.GetXmlProperty("genxml/dropdownlist/themefolder") == "")
-                    {
-                        var lit = new Literal();
-                        var rtnValue = DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/api","DNNrocket.nosettings");
-                        lit.Text = rtnValue;
-                        phData.Controls.Add(lit);
-                    }
-                    else
-                    {
-                        PageLoad();
-                    }
+                    PageLoad();
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -111,20 +133,26 @@ namespace DNNrocketAPI
 
             }
 
-            var settings = DNNrocketUtils.GetModuleSettings(ModuleId);
-            var debug = settings.GetXmlPropertyBool("genxml/checkbox/debugmode");
-            var activatedetail = settings.GetXmlPropertyBool("genxml/checkbox/activatedetail");
-            // check for detail page display
-
-            var paramCmd = settings.GetXmlProperty("genxml/hidden/command");
             var postInfo = new SimplisityInfo();
-            var systemInfo = new SimplisityInfo();
-            var interfacekey = settings.GetXmlProperty("genxml/hidden/interfacekey");
-            var iface = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
-            var templateRelPath = iface.GetXmlProperty("genxml/textbox/relpath");
+            postInfo.ModuleId = ModuleId;
+
+            if (_iface != null)
+            {
+                // we have interface so link to the interface system
+                _templateRelPath = _iface.GetXmlProperty("genxml/textbox/relpath");
+            }
+            else
+            {
+                // no interface, so link to the default DNNrocketModule.
+                _paramCmd = "";
+                _interfacekey = "dnnrocketmodule";
+                _systemInfo.GUIDKey = "dnnrocket";
+                _templateRelPath = "/DesktopModules/DNNrocket/DNNrocketModule";
+            }
+
 
             var strOut = "";
-            var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, interfacekey, postInfo, templateRelPath, DNNrocketUtils.GetCurrentCulture());
+            var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _interfacekey, postInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
 
             if (returnDictionary.ContainsKey("outputhtml"))
             {
@@ -149,10 +177,10 @@ namespace DNNrocketAPI
                 var actions = new ModuleActionCollection();
                 if (settings.GUIDKey == settings.GetXmlProperty("genxml/dropdownlist/datasourceref") || settings.GetXmlProperty("genxml/dropdownlist/datasourceref") == "")
                 {
-                    actions.Add(GetNextActionID(), Localization.GetString("EditModule", this.LocalResourceFile), "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
+                    actions.Add(GetNextActionID(), "***Edit Data***", "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
                 }
 
-                actions.Add(GetNextActionID(), Localization.GetString("Refresh", this.LocalResourceFile), "", "", "action_refresh.gif", EditUrl() + "?refreshview=1", false, SecurityAccessLevel.Edit, true, false);
+                actions.Add(GetNextActionID(), "***Refrsh***", "", "", "action_refresh.gif", EditUrl() + "?refreshview=1", false, SecurityAccessLevel.Edit, true, false);
                 return actions;
             }
         }

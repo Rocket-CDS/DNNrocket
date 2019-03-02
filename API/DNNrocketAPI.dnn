@@ -99,7 +99,7 @@ DNNrocketAPI
 				</component>
 				<component type="Module">
 					<desktopModule>
-						<moduleName>DNNrocketAPI</moduleName>
+						<moduleName>DNNrocket</moduleName>
 						<foldername>DNNrocket</foldername>
 						<businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
 						<supportedFeatures>
