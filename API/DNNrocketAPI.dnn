@@ -1,7 +1,7 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNNrocketAPI" type="Module" version="1.0.0">
-			<friendlyName>DNNrocketAPI</friendlyName>
+		<package name="DNNrocket" type="Module" version="1.0.0">
+			<friendlyName>DNNrocket</friendlyName>
 			<description>DNNrocket Module Interface </description>
 			<iconFile />
 			<owner>

@@ -41,17 +41,20 @@ namespace DNNrocketAPI
         #region Event Handlers
 
 
-        private SimplisityInfo _settings;
         private bool _debugmode = false;
         private bool _activatedetail = false;
 
         private string _paramCmd;
         private string _systemprovider;
 
-        private SimplisityInfo _systemInfo;
         private string _interfacekey;
-        private SimplisityInfo _iface;
         private string _templateRelPath;
+        private string _entiytypecode;
+
+        private SimplisityInfo _settingsInfo;
+        private SimplisityInfo _ifaceInfo;
+        private SimplisityInfo _configInfo;
+        private SimplisityInfo _systemInfo;
 
 
         protected override void OnInit(EventArgs e)
@@ -59,29 +62,34 @@ namespace DNNrocketAPI
 
             base.OnInit(e);
 
+            _templateRelPath = base.ControlPath;
 
             var objCtrl = new DNNrocketController();
 
-            _settings = DNNrocketUtils.GetModuleSettings(ModuleId);
-            _debugmode = _settings.GetXmlPropertyBool("genxml/checkbox/debugmode");
-            _activatedetail = _settings.GetXmlPropertyBool("genxml/checkbox/activatedetail");
-            // check for detail page display
+            _settingsInfo = DNNrocketUtils.GetModuleSettings(ModuleId);
+            _activatedetail = _settingsInfo.GetXmlPropertyBool("genxml/checkbox/activatedetail");
+            _paramCmd = _settingsInfo.GetXmlProperty("genxml/hidden/command");
+            _debugmode = _settingsInfo.GetXmlPropertyBool("genxml/checkbox/debugmode");
 
-            _paramCmd = _settings.GetXmlProperty("genxml/hidden/command");
-            _systemprovider = _settings.GetXmlProperty("genxml/hidden/systemprovider");
-            if (_systemprovider == "") _systemprovider = "dnnrocket";
 
+            var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
+            var desktopModule = moduleInfo.DesktopModule;
+            _systemprovider = desktopModule.ModuleName.ToLower();  // Use the module name for the system.
             _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
-            _interfacekey = _settings.GetXmlProperty("genxml/hidden/interfacekey");
-            if (_interfacekey == "") _interfacekey = "dnnrocketmodule";
-            _iface = _systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", _interfacekey);
-            _templateRelPath = base.ControlPath;
-            if (_iface != null)
+
+            _configInfo = objCtrl.GetData("moduleconfig", "MDATA", DNNrocketUtils.GetEditCulture(), ModuleId);
+            _interfacekey = _configInfo.GetXmlProperty("genxml/dropdownlist/interfacekey");
+            if (_interfacekey != "") // If we have no config data (_interfacekey), display setup button
             {
-                _templateRelPath = _iface.GetXmlProperty("genxml/textbox/relpath");
+                _ifaceInfo = _systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", _interfacekey);
+                if (_ifaceInfo != null)
+                {
+                    _templateRelPath = _ifaceInfo.GetXmlProperty("genxml/textbox/relpath");
+                    _entiytypecode = _ifaceInfo.GetXmlProperty("genxml/textbox/entitytypecode");
+                }
             }
 
-            DNNrocketUtils.IncludePageHeaders(base.ModuleId, this.Page, "DNNrocket", _templateRelPath,"pageheader.cshtml", "config-w3");
+            DNNrocketUtils.IncludePageHeaders(base.ModuleId, this.Page, _systemprovider, _templateRelPath,"pageheader.cshtml", "config-w3");
         }
 
         protected override void OnLoad(EventArgs e)
@@ -136,20 +144,13 @@ namespace DNNrocketAPI
             var postInfo = new SimplisityInfo();
             postInfo.ModuleId = ModuleId;
 
-            if (_iface != null)
+            if (_ifaceInfo == null)
             {
-                // we have interface so link to the interface system
-                _templateRelPath = _iface.GetXmlProperty("genxml/textbox/relpath");
-            }
-            else
-            {
-                // no interface, so link to the default DNNrocketModule.
+                // no interface, so link to the default DNNrocketModule for setup button
                 _paramCmd = "";
                 _interfacekey = "dnnrocketmodule";
                 _systemInfo.GUIDKey = "dnnrocket";
-                _templateRelPath = "/DesktopModules/DNNrocket/DNNrocketModule";
             }
-
 
             var strOut = "";
             var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _interfacekey, postInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());

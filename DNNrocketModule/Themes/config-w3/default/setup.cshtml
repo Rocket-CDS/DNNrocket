@@ -19,7 +19,7 @@
             No configuration has been setup for this module.  Click the "Setup" button and enter your required configuration.
         </p>
         <!-- "systemprovider:<systemprovider>" needs to be defined in the s-field.  We will not have a valid cookie on first load. -->
-        <a class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="dnnrocketmodule_getconfig" s-after="showconfig@(Model.ModuleId)" s-return="#dnnrocketmodule_@(Model.ModuleId)" s-fields="systemprovider:dnnrocket,moduleid:@(Model.ModuleId),theme:config-w3,template:config.cshtml,interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdConfigButton")</a>
+        <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="dnnrocketmodule_getconfig" s-after="showconfig@(Model.ModuleId)" s-return="#dnnrocketmodule_@(Model.ModuleId)" s-fields="systemprovider:dnnrocket,moduleid:@(Model.ModuleId),theme:config-w3,template:config.cshtml,interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdConfigButton")</span>
 
     </div>
 </div>

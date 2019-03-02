@@ -10,6 +10,7 @@ namespace DNNrocketModule
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
             var controlRelPath = "/DesktopModules/DNNrocket/DNNrocketModule";
+
             var strOut = "";
 
             switch (paramCmd)
@@ -18,8 +19,13 @@ namespace DNNrocketModule
                     strOut = GetConfig(postInfo, ControlRelPath);
                     break;
                 case "dnnrocketmodule_getdata":
-                    strOut = "<h1> DATA to be returned</h1>";
-                    strOut += "<p> lkwde fpowe pofk ok wefopk wepof kpowe fop weop fd po we odkopwed opkweopd weopkdpowefodpk wpoefk</p>";
+                    strOut = GetData(postInfo, ControlRelPath);
+                    break;
+                case "dnnrocketmodule_saveconfig":
+                    strOut = SaveConfig(postInfo, ControlRelPath);                    
+                    break;
+                case "dnnrocketmodule_getsetupmenu":
+                    strOut = GetSetup(postInfo, interfaceInfo, ControlRelPath);
                     break;
                 default:
                     strOut = GetSetup(postInfo, interfaceInfo, ControlRelPath);
@@ -32,6 +38,56 @@ namespace DNNrocketModule
             return rtnDic;
         }
 
+        public static String GetData(SimplisityInfo postInfo, string templateControlRelPath)
+        {
+            try
+            {
+                var strOut = "";
+
+                strOut = "<h1> DATA to be returned</h1>";
+                strOut += "<p> lkwde fpowe pofk ok wefopk wepof kpowe fop weop fd po we odkopwed opkweopd weopkdpowefodpk wpoefk</p>";
+
+                return strOut;
+
+
+                var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
+                var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
+                var moduleid = postInfo.ModuleId;
+
+                var passSettings = postInfo.ToDictionary();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var objCtrl = new DNNrocketController();
+
+                var info = objCtrl.GetData("moduleconfig", "MDATA", DNNrocketUtils.GetEditCulture(), moduleid);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public static String SaveConfig(SimplisityInfo postInfo, string templateControlRelPath)
+        {
+            try
+            {
+                var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
+                var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
+                var moduleid = postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+
+                var objCtrl = new DNNrocketController();
+                var info = objCtrl.SaveData("moduleconfig", "MDATA", postInfo, moduleid);
+
+                return GetData(postInfo, ControlRelPath);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+
         public static String GetConfig(SimplisityInfo postInfo, string templateControlRelPath)
         {
             try
@@ -39,7 +95,7 @@ namespace DNNrocketModule
                 var strOut = "";
                 var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
                 var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
-                var moduleid = postInfo.ModuleId;
+                var moduleid = postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
 
                 var passSettings = postInfo.ToDictionary();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
@@ -55,6 +111,7 @@ namespace DNNrocketModule
                 return ex.ToString();
             }
         }
+
 
         public static String GetSetup(SimplisityInfo postInfo, SimplisityInfo iInfo, string templateControlRelPath)
         {
