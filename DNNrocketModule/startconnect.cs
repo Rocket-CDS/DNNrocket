@@ -17,8 +17,9 @@ namespace DNNrocketModule
                 case "dnnrocketmodule_getconfig":
                     strOut = GetConfig(postInfo, ControlRelPath);
                     break;
-                case "dnnrocketmodule_getdetails":
-                    strOut = "<h1>dnnrocketmodule_getdetails</h1>";
+                case "dnnrocketmodule_getdata":
+                    strOut = "<h1> DATA to be returned</h1>";
+                    strOut += "<p> lkwde fpowe pofk ok wefopk wepof kpowe fop weop fd po we odkopwed opkweopd weopkdpowefodpk wpoefk</p>";
                     break;
                 default:
                     strOut = GetSetup(postInfo, interfaceInfo, ControlRelPath);

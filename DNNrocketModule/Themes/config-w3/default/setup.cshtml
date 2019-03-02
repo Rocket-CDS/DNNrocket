@@ -12,20 +12,27 @@
     var info = Model.HeaderData;
 }
 
-<div id="dnnrocketmodule_@info.ModuleId" class="simplisity_panel">
+<div id="dnnrocketmodule_@(Model.ModuleId)" class="simplisity_panel">
 
     <div class="w3-center w3-margin">
         <p>
             No configuration has been setup for this module.  Click the "Setup" button and enter your required configuration.
         </p>
         <!-- "systemprovider:<systemprovider>" needs to be defined in the s-field.  We will not have a valid cookie on first load. -->
-        <a class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="dnnrocketmodule_getconfig" s-return="#dnnrocketmodule_@info.ModuleId" s-fields="systemprovider:dnnrocket,moduleid:@info.ModuleId,theme:config-w3,template:config.cshtml,interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdConfigButton")</a>
+        <a class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="dnnrocketmodule_getconfig" s-after="showconfig@(Model.ModuleId)" s-return="#dnnrocketmodule_@(Model.ModuleId)" s-fields="systemprovider:dnnrocket,moduleid:@(Model.ModuleId),theme:config-w3,template:config.cshtml,interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdConfigButton")</a>
 
     </div>
 </div>
 
 <script>
-    $(document).ready(function () {
-        $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocket' });
-    });
+
+    function showconfig@(Model.ModuleId)() {
+        $('#configdata_@(Model.ModuleId)').show();
+    }
+
+    function canelconfig@(Model.ModuleId)(modelselector) {
+        $(modelselector).hide();
+        $('#dnnrocketmodule_@(Model.ModuleId)').getSimplisity('/DesktopModules/DNNrocket/api/api.ashx', 'dnnrocketmodule_getdata', 'systemprovider:dnnrocket,moduleid:@(Model.ModuleId),theme:config-w3,template:view.cshtml,interfacekey:dnnrocketmodule')
+    }
+
 </script>
