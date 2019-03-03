@@ -18,8 +18,15 @@ namespace DNNrocketAPI
         public DNNrocketInterface(SimplisityInfo systemInfo, string interfaceKey)
         {
             exists = true;
-            Info = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfaceKey);
-            if (Info == null) exists = false;
+            if (systemInfo == null)
+            {
+                exists = false;
+            }
+            else
+            {
+                Info = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfaceKey);
+                if (Info == null) exists = false;
+            }
         }
 
         public DNNrocketInterface(SimplisityInfo simplisityInfo)

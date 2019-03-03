@@ -23,7 +23,7 @@ namespace DNNrocket.SystemData
 
             var rtnInfo = new SimplisityInfo();
             // Security Check MUST be in the extension.
-            if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface)) 
+            if (DNNrocketUtils.SecurityCheckIsSuperUser()) 
             {
                 if (paramCmd == "login_signout")
                 {

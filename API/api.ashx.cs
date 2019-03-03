@@ -75,6 +75,7 @@ namespace DNNrocketAPI
 
                     var systemprovider = postInfo.GetXmlProperty("genxml/hidden/systemprovider");
                     if (systemprovider == "") systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
+                    if (systemprovider == "") systemprovider = "dnnrocket";
 
                     var interfacekey = postInfo.GetXmlProperty("genxml/hidden/interfacekey");
                     if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
@@ -91,21 +92,40 @@ namespace DNNrocketAPI
                             var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
                             var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
 
-                            var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, TemplateRelPath, _editlang);
+                            if (rocketInterface.Exists)
+                            {
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, TemplateRelPath, _editlang);
 
-                            if (returnDictionary.ContainsKey("outputhtml"))
-                            {
-                                strOut = returnDictionary["outputhtml"];
+                                if (returnDictionary.ContainsKey("outputhtml"))
+                                {
+                                    strOut = returnDictionary["outputhtml"];
+                                }
+                                if (returnDictionary.ContainsKey("filenamepath"))
+                                {
+                                    if (!returnDictionary.ContainsKey("downloadname")) returnDictionary["downloadname"] = "";
+                                    if (!returnDictionary.ContainsKey("fileext")) returnDictionary["fileext"] = "";
+                                    DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
+                                }
+                                if (returnDictionary.ContainsKey("outputjson"))
+                                {
+                                    strJson = returnDictionary["outputjson"];
+                                }
+
                             }
-                            if (returnDictionary.ContainsKey("filenamepath"))
+                            else
                             {
-                                if (!returnDictionary.ContainsKey("downloadname")) returnDictionary["downloadname"] = "";
-                                if (!returnDictionary.ContainsKey("fileext")) returnDictionary["fileext"] = "";
-                                DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
-                            }
-                            if (returnDictionary.ContainsKey("outputjson"))
-                            {
-                                strJson = returnDictionary["outputjson"];
+                                // check for systemspi, does not exist.  It's used to create the systemprovders 
+                                if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
+                                {
+                                    var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
+                                    var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
+                                    strOut = returnDictionary["outputhtml"];
+                                }
+                                else
+                                {
+                                    strOut = "ERROR: Invalid SystemProvider: " + systemprovider + "  interfacekey: " + interfacekey;
+                                }
+
                             }
 
                             break;

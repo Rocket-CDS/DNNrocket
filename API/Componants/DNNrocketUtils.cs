@@ -82,12 +82,13 @@ namespace DNNrocketAPI
                 }
                 Engine.Razor = service;
                 var hashCacheKey = GetMd5Hash(razorTempl);
-                var israzorCached = CacheUtils.GetCache("dnnrocketrzcache_" + hashCacheKey); // get a cache flag for razor compile.
+
+                var israzorCached = CacheUtils.GetCache(razorTempl); // get a cache flag for razor compile.
                 if (israzorCached == null || (string)israzorCached != razorTempl || debugMode)
                 {
                     errorPath += "RunCompile1>";
-                        result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
-                        CacheUtils.SetCache("dnnrocketrzcache_" + hashCacheKey, razorTempl);
+                    result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
+                    CacheUtils.SetCache(razorTempl, razorTempl);
                 }
                 else
                 {
@@ -101,8 +102,7 @@ namespace DNNrocketAPI
                         var errmsg = ex.ToString();
                         errorPath += "RunCompile2>";
                         result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
-                        CacheUtils.SetCache("dnnrocketrzcache_" + hashCacheKey, razorTempl);
-
+                        CacheUtils.SetCache(razorTempl, razorTempl);
                     }
                 }
 
@@ -1212,6 +1212,11 @@ namespace DNNrocketAPI
         {
             var objCtrl = new DNNrocketController();
             return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
+        }
+
+        public static bool SecurityCheckIsSuperUser()
+        {
+            return UserController.Instance.GetCurrentUserInfo().IsSuperUser;
         }
 
         public static bool SecurityCheckCurrentUser(DNNrocketInterface interfaceInfo)

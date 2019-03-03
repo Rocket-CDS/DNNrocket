@@ -40,7 +40,11 @@
                 var l2 = sInfo.GetList("interfacedata");
                 foreach (var g in l2)
                 {
-                    interfacekey += "," + g.GetXmlProperty("genxml/textbox/entitytypecode");
+                    if (g.GetXmlProperty("genxml/textbox/entitytypecode") != ""  && !interfacekey.Contains("," + g.GetXmlProperty("genxml/textbox/entitytypecode")))
+                    {
+                        interfacekey += "," + g.GetXmlProperty("genxml/textbox/entitytypecode");
+
+                    }
                 }
                 var xreftypecodes = ",CATXREF,CASCADE,PROPXREF,ATTRXREF";
 
