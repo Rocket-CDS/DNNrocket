@@ -1214,30 +1214,34 @@ namespace DNNrocketAPI
             return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
         }
 
-        public static bool SecurityCheckCurrentUser(SimplisityInfo systemInfo, string interfacekey)
+        public static bool SecurityCheckCurrentUser(DNNrocketInterface interfaceInfo)
         {
-            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser) return true;
-            if (systemInfo != null)
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return SecurityCheckUser(PortalSettings.Current.PortalId, user.UserID, interfaceInfo);
+        }
+
+        public static bool SecurityCheckUser(int portalid, int userid, DNNrocketInterface interfaceInfo)
+        {
+            var user = UserController.Instance.GetUserById(portalid, userid);
+
+            if (user.IsSuperUser) return true;
+            if (interfaceInfo != null)
             {
-                var i = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
-                if (i != null)
+                if (interfaceInfo.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Administrators']/@value"))
                 {
-                    if (i.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Administrators']/@value"))
-                    {
-                        if (UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators")) return true;
-                    }
-                    if (i.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Manager']/@value"))
-                    {
-                        if (UserController.Instance.GetCurrentUserInfo().IsInRole("Manager")) return true;
-                    }
-                    if (i.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Editor']/@value"))
-                    {
-                        if (UserController.Instance.GetCurrentUserInfo().IsInRole("Editor")) return true;
-                    }
-                    if (i.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='ClientEditor']/@value"))
-                    {
-                        if (UserController.Instance.GetCurrentUserInfo().IsInRole("ClientEditor")) return true;
-                    }
+                    if (user.IsInRole("Administrators")) return true;
+                }
+                if (interfaceInfo.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Manager']/@value"))
+                {
+                    if (user.IsInRole("Manager")) return true;
+                }
+                if (interfaceInfo.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Editor']/@value"))
+                {
+                    if (user.IsInRole("Editor")) return true;
+                }
+                if (interfaceInfo.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='ClientEditor']/@value"))
+                {
+                    if (user.IsInRole("ClientEditor")) return true;
                 }
             }
             var ps = new PortalSecurity();
@@ -1312,7 +1316,7 @@ namespace DNNrocketAPI
             }
         }
 
-        public static Dictionary<string,string> GetProviderReturn(string paramCmd,SimplisityInfo systemInfo, string interfacekey, SimplisityInfo postInfo, string templateRelPath, string editlang)
+        public static Dictionary<string,string> GetProviderReturn(string paramCmd,SimplisityInfo systemInfo, DNNrocketInterface rocketInterface, SimplisityInfo postInfo, string templateRelPath, string editlang)
         {
             var rtnDic = new Dictionary<string, string>();
             var systemprovider = "";
@@ -1333,35 +1337,33 @@ namespace DNNrocketAPI
                     rtnDic.Add("outputhtml", "API not found: " + systemprovider);
                     if (systemInfo != null)
                     {
-                        var interfaceInfo = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
-                        if (interfaceInfo != null)
+                        if (rocketInterface.Exists)
                         {
-                            var controlRelPath = interfaceInfo.GetXmlProperty("genxml/textbox/relpath");
-                            var assembly = interfaceInfo.GetXmlProperty("genxml/textbox/assembly");
-                            var namespaceclass = interfaceInfo.GetXmlProperty("genxml/textbox/namespaceclass");
-                            if (assembly == "" || namespaceclass == "")
+                            var controlRelPath = rocketInterface.TemplateRelPath;
+                            if (controlRelPath == "") controlRelPath = templateRelPath;
+                            if (rocketInterface.Assembly == "" || rocketInterface.NameSpaceClass == "")
                             {
                                 rtnDic.Remove("outputhtml");
-                                rtnDic.Add("outputhtml", "No assembly or namespaceclass defined: " + systemprovider + " : " + assembly + "," + namespaceclass);
+                                rtnDic.Add("outputhtml", "No assembly or namespaceclass defined: " + systemprovider + " : " + rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass);
                             }
                             else
                             {
                                 try
                                 {
-                                    var ajaxprov = APInterface.Instance(assembly, namespaceclass, controlRelPath);
-                                    rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, interfaceInfo, postInfo, HttpContext.Current.Request.UserHostAddress, editlang);
+                                    var ajaxprov = APInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass, controlRelPath);
+                                    rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, HttpContext.Current.Request.UserHostAddress, editlang);
                                 }
                                 catch (Exception ex)
                                 {
                                     rtnDic.Remove("outputhtml");
-                                    rtnDic.Add("outputhtml", "No valid assembly found: " + systemprovider + " : " + assembly + "," + namespaceclass + "<br/>" + ex.ToString());
+                                    rtnDic.Add("outputhtml", "No valid assembly found: " + systemprovider + " : " + rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass + "<br/>" + ex.ToString());
                                 }
                             }
                         }
                         else
                         {
                             rtnDic.Remove("outputhtml");
-                            rtnDic.Add("outputhtml", "interfacekey not found: " + interfacekey);
+                            rtnDic.Add("outputhtml", "interfacekey not found: ");
                         }
                     }
                     else

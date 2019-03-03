@@ -357,4 +357,10 @@
   <data name="cmdConfigButton.Text" xml:space="preserve">
     <value>&lt;i  title="Upload" class="fa fa-plug fa-fw fa-lg"&gt;&lt;/i&gt; Setup</value>
   </data>
+  <data name="config.Text" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="settings.Text" xml:space="preserve">
+    <value>DNN Rocket Settings</value>
+  </data>
 </root>

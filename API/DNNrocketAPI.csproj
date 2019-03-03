@@ -88,32 +88,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Componants\DNNrocketConst.cs" />
+    <Compile Include="Componants\ConfigUtils.cs" />
     <Compile Include="Componants\FileStatus.cs" />
     <Compile Include="Componants\SystemData.cs" />
     <Compile Include="Componants\PageIncludes.cs" />
     <Compile Include="Componants\UserUtils.cs" />
     <Compile Include="Componants\SideMenu.cs" />
+    <Compile Include="DataObjects.cs" />
     <Compile Include="DNNrocketThumb.ashx.cs">
       <DependentUpon>DNNrocketThumb.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit.ascx.cs">
-      <DependentUpon>Edit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit.ascx.designer.cs">
-      <DependentUpon>Edit.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\DataInterface.cs" />
     <Compile Include="Componants\DNNrocketUtils.cs" />
     <Compile Include="render\DNNrocketTokens.cs" />
-    <Compile Include="Settings.ascx.cs">
-      <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Settings.ascx.designer.cs">
-      <DependentUpon>Settings.ascx.cs</DependentUpon>
-    </Compile>
     <Compile Include="SqlDataProvider\DataProvider.cs" />
     <Compile Include="SqlDataProvider\DNNrocketController.cs" />
     <Compile Include="SqlDataProvider\SqlDataProvider.cs" />
@@ -148,14 +136,14 @@
     <None Include="Systems\OpenStore.Zxml" />
     <None Include="Themes\config-w3\default\Paging.cshtml" />
     <None Include="Themes\config-w3\default\SideMenu.cshtml" />
+    <None Include="Themes\config\default\config.cshtml" />
+    <None Include="Themes\config\default\pageheader.cshtml" />
+    <None Include="Themes\config\default\setup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_LocalResources\DNNrocket.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Edit.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
     <Content Include="images\flags\16\af-ZA.png" />
     <Content Include="images\flags\16\ar-AE.png" />
     <Content Include="images\flags\16\ar-BH.png" />
@@ -570,10 +558,8 @@
     <Content Include="images\flags\32\zh-MO.png" />
     <Content Include="images\flags\32\zh-SG.png" />
     <Content Include="images\flags\32\zh-TW.png" />
-    <Content Include="Settings.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
     <Content Include="Themes\config-w3\css\coconutmilk-theme.css" />
+    <None Include="Themes\config-w3\css\dnnrocket-theme.css" />
     <Content Include="Themes\config-w3\css\sailorblue-theme.css" />
     <Content Include="Themes\config-w3\css\ultravoilet-theme.css" />
     <Content Include="Themes\config-w3\css\arcadia-theme.css" />

@@ -51,8 +51,9 @@ namespace DNNrocketAPI
         private string _templateRelPath;
         private string _entiytypecode;
 
+        private DNNrocketInterface _rocketInterface;
+
         private SimplisityInfo _settingsInfo;
-        private SimplisityInfo _ifaceInfo;
         private SimplisityInfo _configInfo;
         private SimplisityInfo _systemInfo;
 
@@ -61,8 +62,6 @@ namespace DNNrocketAPI
         {
 
             base.OnInit(e);
-
-            _templateRelPath = base.ControlPath;
 
             var objCtrl = new DNNrocketController();
 
@@ -74,22 +73,25 @@ namespace DNNrocketAPI
 
             var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
             var desktopModule = moduleInfo.DesktopModule;
-            _systemprovider = desktopModule.ModuleName.ToLower();  // Use the module name for the system.
+
+            _systemprovider = desktopModule.ModuleDefinitions.First().Key.ToLower(); // Use the First DNN Module definition as the DNNrocket systemprovider
+
+            _interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
+
             _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
 
             _configInfo = objCtrl.GetData("moduleconfig", "MDATA", DNNrocketUtils.GetEditCulture(), ModuleId);
-            _interfacekey = _configInfo.GetXmlProperty("genxml/dropdownlist/interfacekey");
-            if (_interfacekey != "") // If we have no config data (_interfacekey), display setup button
-            {
-                _ifaceInfo = _systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", _interfacekey);
-                if (_ifaceInfo != null)
-                {
-                    _templateRelPath = _ifaceInfo.GetXmlProperty("genxml/textbox/relpath");
-                    _entiytypecode = _ifaceInfo.GetXmlProperty("genxml/textbox/entitytypecode");
-                }
-            }
 
-            DNNrocketUtils.IncludePageHeaders(base.ModuleId, this.Page, _systemprovider, _templateRelPath,"pageheader.cshtml", "config-w3");
+            _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
+
+            if (_rocketInterface.Exists)
+            {
+                _templateRelPath = _rocketInterface.TemplateRelPath;
+                _entiytypecode = _rocketInterface.EntityTypeCode;
+            }
+            if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we dont; define template path in the interface assume it's the control path.
+
+            DNNrocketUtils.IncludePageHeaders(base.ModuleId, this.Page, _systemprovider, _templateRelPath,"pageheader.cshtml", "config");
         }
 
         protected override void OnLoad(EventArgs e)
@@ -144,7 +146,7 @@ namespace DNNrocketAPI
             var postInfo = new SimplisityInfo();
             postInfo.ModuleId = ModuleId;
 
-            if (_ifaceInfo == null)
+            if (!_rocketInterface.Exists)
             {
                 // no interface, so link to the default DNNrocketModule for setup button
                 _paramCmd = "";
@@ -153,7 +155,7 @@ namespace DNNrocketAPI
             }
 
             var strOut = "";
-            var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _interfacekey, postInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
+            var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
 
             if (returnDictionary.ContainsKey("outputhtml"))
             {

@@ -1,7 +1,7 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNNrocket" type="Module" version="1.0.0">
-			<friendlyName>DNNrocket</friendlyName>
+		<package name="DNNrocketModule" type="Module" version="1.0.0">
+			<friendlyName>DNNrocketModule</friendlyName>
 			<description>DNNrocket Module Interface </description>
 			<iconFile />
 			<owner>
@@ -99,8 +99,8 @@ DNNrocketAPI
 				</component>
 				<component type="Module">
 					<desktopModule>
-						<moduleName>DNNrocket</moduleName>
-						<foldername>DNNrocket</foldername>
+						<moduleName>DNNrocketModule</moduleName>
+						<foldername>DNNrocketModule</foldername>
 						<businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
 						<supportedFeatures>
 							<supportedFeature type="Portable" />
@@ -108,7 +108,7 @@ DNNrocketAPI
 						</supportedFeatures>
 						<moduleDefinitions>
 							<moduleDefinition>
-								<friendlyName>DNNrocketAPI</friendlyName>
+								<friendlyName>dnnrocket</friendlyName>
 								<defaultCacheTime>0</defaultCacheTime>
 								<moduleControls>
 									<moduleControl>
@@ -144,7 +144,7 @@ DNNrocketAPI
 									</moduleControl>
                 </moduleControls>
 							</moduleDefinition>
-						</moduleDefinitions>
+            </moduleDefinitions>
 					</desktopModule>
 				</component>
 

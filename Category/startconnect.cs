@@ -19,14 +19,53 @@ namespace DNNrocket.Category
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
+            var rocketInterface = new DNNrocketInterface(interfaceInfo);
+
             _systemInfo = systemInfo;
             _systemprovider = systemInfo.GUIDKey;
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
             _editlang = editlang;
             if (_editlang == "") _editlang = DNNrocketUtils.GetEditCulture();
 
-            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
+            var strOut = "";
 
+            if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface))
+            {
+                switch (paramCmd)
+                {
+                    case "category_add":
+                        var newInfo = AddNew(systemInfo);
+                        postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
+                        strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
+                        break;
+                    case "category_save":
+                        Save(postInfo, systemInfo);
+                        strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
+                        break;
+                    case "category_savelist":
+                        SaveList(postInfo, systemInfo);
+                        strOut = GetList(postInfo, ControlRelPath, systemInfo);
+                        break;
+                    case "category_delete":
+                        Delete(postInfo);
+                        strOut = GetList(postInfo, ControlRelPath, systemInfo);
+                        break;
+                    case "category_sort":
+                        strOut = GetList(postInfo, ControlRelPath, systemInfo);
+                        break;
+                    case "category_addimage":
+                        strOut = AddImageToList(postInfo, ControlRelPath);
+                        break;
+                    case "category_visible":
+                        strOut = ToggleHidden(postInfo, ControlRelPath, systemInfo);
+                        break;
+                    case "category_disable":
+                        strOut = ToggleDisable(postInfo, ControlRelPath, systemInfo);
+                        break;
+                }
+
+
+            }
             switch (paramCmd)
             {
                 case "category_getlist":
@@ -35,42 +74,14 @@ namespace DNNrocket.Category
                 case "category_getdetail":
                     strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
                     break;
-                case "category_add":
-                    var newInfo = AddNew(systemInfo);
-                    postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
-                    strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
-                    break;
-                case "category_save":
-                    Save(postInfo, systemInfo);
-                    strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
-                    break;
-                case "category_savelist":
-                    SaveList(postInfo, systemInfo);
-                    strOut = GetList(postInfo, ControlRelPath, systemInfo);
-                    break;
-                case "category_delete":
-                    Delete(postInfo);
-                    strOut = GetList(postInfo, ControlRelPath, systemInfo);
-                    break;
-                case "category_sort":
-                    strOut = GetList(postInfo, ControlRelPath, systemInfo);
-                    break;
                 case "category_search":
                     strOut = GetList(postInfo, ControlRelPath, systemInfo);
                     break;
-                case "category_addimage":
-                    strOut = AddImageToList(postInfo, ControlRelPath);
-                    break;
-                case "category_visible":
-                    strOut = ToggleHidden(postInfo, ControlRelPath, systemInfo);
-                    break;
-                case "category_disable":
-                    strOut = ToggleDisable(postInfo, ControlRelPath, systemInfo);
-                    break;                    
                 default:
-                    strOut = "COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
+                    strOut = "SECURITY FAILURE OR COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
                     break;
             }
+
             var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;

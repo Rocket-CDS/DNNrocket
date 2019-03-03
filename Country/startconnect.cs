@@ -12,6 +12,7 @@ namespace DNNrocket.Country
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo sInfo, string userHostAddress, string editlang = "")
         {
+            var rocketInterface = new DNNrocketInterface(interfaceInfo);
 
             //CacheUtils.ClearAllCache();
             _systemInfo = systemInfo;
@@ -21,18 +22,25 @@ namespace DNNrocket.Country
 
             var rtnDic = new Dictionary<string, string>();
 
+            if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface))
+            {
+                switch (paramCmd)
+                {
+                    case "settingcountry_save":
+                        CountrySave(sInfo);
+                        rtnDic.Add("outputhtml", CountryDetail(sInfo, controlRelPath, editlang));
+                        break;
+                }
+            }
+
             switch (paramCmd)
             {
                 case "settingcountry_get":
                     rtnDic.Add("outputhtml", CountryDetail(sInfo, controlRelPath, editlang));
                     break;
-                case "settingcountry_save":
-                    CountrySave(sInfo);
-                    rtnDic.Add("outputhtml", CountryDetail(sInfo, controlRelPath, editlang));
-                    break;
                 case "settingcountry_getregion":
                     rtnDic.Add("outputhtml", "");
-                    var regionlist = CountryUtils.RegionListCSV(GeneralUtils.DeCode(sInfo.GetXmlProperty("genxml/hidden/activevalue")),true);
+                    var regionlist = CountryUtils.RegionListCSV(GeneralUtils.DeCode(sInfo.GetXmlProperty("genxml/hidden/activevalue")), true);
                     rtnDic.Add("outputjson", "{listkey: [" + regionlist[0] + "], listvalue: [" + regionlist[1] + "] }");
                     break;
             }

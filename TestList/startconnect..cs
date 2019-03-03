@@ -13,12 +13,42 @@ namespace DNNrocket.TestList
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
+            var rocketInterface = new DNNrocketInterface(interfaceInfo);
+
             _systemInfo = systemInfo;
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
             _editlang = editlang;
             if (_editlang == "") _editlang = DNNrocketUtils.GetEditCulture();
 
-            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
+            var strOut = "";
+            if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface))
+            {
+
+                switch (paramCmd)
+                {
+                    case "testlist_add":
+                        var newInfo = AddNew();
+                        postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
+                        strOut = GetDetail(postInfo, ControlRelPath);
+                        break;
+                    case "testlist_save":
+                        Save(postInfo);
+                        strOut = GetDetail(postInfo, ControlRelPath);
+                        break;
+                    case "testlist_delete":
+                        Delete(postInfo);
+                        strOut = GetList(postInfo, ControlRelPath);
+                        break;
+                    case "testlist_createrows":
+                        CreateRows(postInfo);
+                        strOut = GetList(postInfo, ControlRelPath);
+                        break;
+                    case "testlist_deleterows":
+                        DeleteRows();
+                        strOut = GetList(postInfo, ControlRelPath);
+                        break;
+                }
+            }
 
             switch (paramCmd)
             {
@@ -28,28 +58,7 @@ namespace DNNrocket.TestList
                 case "testlist_getdetail":
                     strOut = GetDetail(postInfo, ControlRelPath);
                     break;
-                case "testlist_add":
-                    var newInfo = AddNew();
-                    postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
-                    strOut = GetDetail(postInfo, ControlRelPath);
-                    break;
-                case "testlist_save":
-                    Save(postInfo);
-                    strOut = GetDetail(postInfo, ControlRelPath);
-                    break;
-                case "testlist_delete":
-                    Delete(postInfo);
-                    strOut = GetList(postInfo, ControlRelPath);
-                    break;
                 case "testlist_sort":
-                    strOut = GetList(postInfo, ControlRelPath);
-                    break;
-                case "testlist_createrows":
-                    CreateRows(postInfo);
-                    strOut = GetList(postInfo, ControlRelPath);
-                    break;
-                case "testlist_deleterows":
-                    DeleteRows();
                     strOut = GetList(postInfo, ControlRelPath);
                     break;
                 case "testlist_search":
@@ -59,6 +68,7 @@ namespace DNNrocket.TestList
                     strOut = "COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
                     break;
             }
+
             var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;

@@ -11,39 +11,49 @@ namespace DNNrocket.TestForm
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
+            var rocketInterface = new DNNrocketInterface(interfaceInfo);
 
             //CacheUtils.ClearAllCache();
 
             var rtnDic = new Dictionary<string, string>();
 
-            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [testform]";
+            var strOut = "";
 
+            if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface))
+            {
+                switch (paramCmd)
+                {
+                    case "testform_save":
+                        TestFormSave(postInfo);
+                        strOut = TestFormDetail(postInfo, ControlRelPath);
+                        break;
+                    case "testform_add":
+                        strOut = AddToList(postInfo, ControlRelPath);
+                        break;
+                    case "testform_delete":
+                        Delete(postInfo);
+                        strOut = TestFormDetail(postInfo, ControlRelPath);
+                        break;
+                    case "testform_addimage":
+                        strOut = AddImageToList(postInfo, ControlRelPath);
+                        break;
+                    case "testform_adddoc":
+                        strOut = AddDocToList(postInfo, ControlRelPath);
+                        break;
+                }
+            }
             switch (paramCmd)
             {
                 case "testform_get":
                     strOut = TestFormDetail(postInfo, ControlRelPath);
                     break;
-                case "testform_save":
-                    TestFormSave(postInfo);
-                    strOut = TestFormDetail(postInfo, ControlRelPath);
-                    break;
-                case "testform_add":
-                    strOut = AddToList(postInfo, ControlRelPath);
-                    break;
-                case "testform_delete":
-                    Delete(postInfo);
-                    strOut = TestFormDetail(postInfo, ControlRelPath);
-                    break;
-                case "testform_addimage":
-                    strOut = AddImageToList(postInfo, ControlRelPath);
-                    break;
-                case "testform_adddoc":
-                    strOut = AddDocToList(postInfo, ControlRelPath);
-                    break;
                 case "testform_download":
                     rtnDic.Add("filenamepath", postInfo.GetXmlProperty("genxml/hidden/filerelpath"));
                     rtnDic.Add("downloadname", postInfo.GetXmlProperty("genxml/hidden/downloadname"));
                     rtnDic.Add("fileext", "");
+                    break;
+                default:
+                    strOut = "SECURITY FAILURE OR COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
                     break;
             }
             rtnDic.Add("outputhtml", strOut);

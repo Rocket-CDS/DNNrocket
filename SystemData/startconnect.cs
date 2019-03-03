@@ -13,6 +13,8 @@ namespace DNNrocket.SystemData
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo,string userHostAddress, string editlang = "")
         {
 
+            var rocketInterface = new DNNrocketInterface(interfaceInfo);
+
             //CacheUtils.ClearAllCache();
 
             var controlRelPath = "/DesktopModules/DNNrocket/SystemData";
@@ -21,7 +23,7 @@ namespace DNNrocket.SystemData
 
             var rtnInfo = new SimplisityInfo();
             // Security Check MUST be in the extension.
-            if (DNNrocketUtils.SecurityCheckCurrentUser(systemInfo, "")) // only check superuser for this.
+            if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface)) 
             {
                 if (paramCmd == "login_signout")
                 {

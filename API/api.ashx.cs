@@ -89,8 +89,9 @@ namespace DNNrocketAPI
                         default:
                             var objCtrl = new DNNrocketController();
                             var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
+                            var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
 
-                            var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, interfacekey, postInfo, TemplateRelPath, _editlang);
+                            var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, TemplateRelPath, _editlang);
 
                             if (returnDictionary.ContainsKey("outputhtml"))
                             {

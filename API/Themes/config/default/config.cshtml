@@ -7,7 +7,6 @@
 @using DNNrocketAPI.Componants;
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/DNNrocketModule/App_LocalResources/")
 
 @{
     var info = (SimplisityInfo)Model.List.First();
@@ -17,7 +16,7 @@
     <div class="w3-modal-content">
         <header class="w3-container w3-theme w3-bottombar w3-border-theme">
             <span onclick="canelconfig@(Model.ModuleId)('#configdata_@(Model.ModuleId)')"  class="w3-button w3-display-topright">&times;</span>
-            <h2>@ResourceKey("DNNrocketModule.config")</h2>
+            <h2>@ResourceKey("DNNrocket.config")</h2>
         </header>
         <div class="w3-container">
 
@@ -26,15 +25,15 @@
                 <div class="w3-row">
                     <div class="w3-half w3-padding">
                         <div>
-                            <label>@ResourceKey("DNNrocketModule.system")</label>
+                            <label>@ResourceKey("Config.system")</label>
                             @TextBox(info, "genxml/textbox/systemprovider", "class='w3-input w3-border' maxlength='50' autocomplete='off'", "")
                         </div>
                         <div class="">
-                            <label>@ResourceKey("DNNrocketModule.interfacekey")</label>
+                            <label>@ResourceKey("Config.interfacekey")</label>
                             @TextBox(info, "genxml/textbox/interfacekey", "maxlength='250' autocomplete='off' class='w3-input w3-border'", "")
                         </div>
                         <div class="">
-                            <label>@ResourceKey("DNNrocketModule.apptheme")</label>
+                            <label>@ResourceKey("Config.apptheme")</label>
                             @TextBox(info, "genxml/textbox/apptheme", "maxlength='250' autocomplete='off' class='w3-input w3-border'", "")
                         </div>
                     </div>
@@ -42,7 +41,7 @@
 
             </div>
 
-            <span class="w3-button w3-green w3-padding-8 simplisity_click w3-margin" s-post="#configdata_@(Model.ModuleId)" s-cmd="dnnrocketmodule_saveconfig" s-return="#dnnrocketmodule_@(Model.ModuleId)" s-fields="systemprovider:dnnrocket,moduleid:@(Model.ModuleId),theme:config,template:view.cshtml,interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+            <span class="w3-button w3-green w3-padding-8 simplisity_click w3-margin" s-post="#configdata_@(Model.ModuleId)" s-cmd="dnnrocketconfig_saveconfig" s-return="#dnnrocketconfig_@(Model.ModuleId)" s-fields="systemprovider:dnnrocket,moduleid:@(Model.ModuleId),theme:config-w3,template:view.cshtml,interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdSaveButton")</span>
 
 
         </div>
