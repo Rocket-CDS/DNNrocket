@@ -19,20 +19,7 @@
             No configuration has been setup for this module.  Click the "Setup" button and enter your required configuration.
         </p>
         <!-- "systemprovider:<systemprovider>" needs to be defined in the s-field.  We will not have a valid cookie on first load. -->
-        <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="dnnrocketconfig_getconfig" s-after="showconfig@(Model.ModuleId)" s-return="#dnnrocketconfig_@(Model.ModuleId)" s-fields="systemprovider:dnnrocket,moduleid:@(Model.ModuleId),interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdConfigButton")</span>
+        <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="dnnrocketconfig_iframe" s-return="#dnnrocketconfig_@(Model.ModuleId)" s-fields="systemprovider:dnnrocket,moduleid:@(Model.ModuleId),interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdConfigButton")</span>
 
     </div>
 </div>
-
-<script>
-
-    function showconfig@(Model.ModuleId)() {
-        $('#configdata_@(Model.ModuleId)').show();
-    }
-
-    function canelconfig@(Model.ModuleId)(modelselector) {
-        $(modelselector).hide();
-        $('#dnnrocketconfig_@(Model.ModuleId)').getSimplisity('/DesktopModules/DNNrocket/api/api.ashx', 'dnnrocketconfig_getdata', 'systemprovider:dnnrocket,moduleid:@(Model.ModuleId),theme:config-w3,template:view.cshtml')
-    }
-
-</script>

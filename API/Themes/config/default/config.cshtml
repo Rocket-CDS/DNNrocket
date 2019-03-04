@@ -15,7 +15,7 @@
 <div id="configdata_@(Model.ModuleId)" class="w3-modal">
     <div class="w3-modal-content">
         <header class="w3-container w3-theme w3-bottombar w3-border-theme">
-            <span onclick="canelconfig@(Model.ModuleId)('#configdata_@(Model.ModuleId)')"  class="w3-button w3-display-topright">&times;</span>
+            <span onclick="canelconfig@(Model.ModuleId)('#configdata_@(Model.ModuleId)')" class="w3-button w3-display-topright">&times;</span>
             <h2>@ResourceKey("DNNrocket.config")</h2>
         </header>
         <div class="w3-container">
@@ -47,3 +47,20 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    $(document).ready(function () {
+            $('#configdata_@(Model.ModuleId)').show();
+    });
+
+    function canelconfig@(Model.ModuleId)(modelselector) {
+        alert('cancel');
+        removeiframepopup();
+        $(modelselector).hide();
+        //$('#dnnrocketconfig_@(Model.ModuleId)').getSimplisity('/DesktopModules/DNNrocket/api/api.ashx', 'dnnrocketconfig_getdata', 'systemprovider:dnnrocket,moduleid:@(Model.ModuleId),theme:config-w3,template:view.cshtml');
+    }
+
+
+</script>
+

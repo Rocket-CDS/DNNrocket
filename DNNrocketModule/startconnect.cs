@@ -35,6 +35,9 @@ namespace DNNrocketModule
                 case "dnnrocketconfig_getsetupmenu":
                     strOut = ConfigUtils.GetSetup(postInfo, interfaceInfo);
                     break;
+                case "dnnrocketconfig_iframe":
+                    strOut = ConfigUtils.IFrame(postInfo, interfaceInfo);
+                    break;
                 default:
                     strOut = ConfigUtils.GetSetup(postInfo, interfaceInfo);
                     break;

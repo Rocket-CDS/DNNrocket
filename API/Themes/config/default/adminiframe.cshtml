@@ -1,0 +1,29 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{
+    var info = Model.HeaderData;
+}
+
+<iframe id="dnnmoduleiframepopup" src='/desktopmodules/DNNrocket/api/Themes/config/default/modelpopup.html?var=@(DateTime.Now.Millisecond)@(DateTime.Now.TimeOfDay)' style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; border: none"></iframe>
+
+<script>
+    $(document).ready(function () {
+        $('#dnnmoduleiframepopup').appendTo(document.body);
+    });
+
+    function removeiframepopup() {
+        alert('removeiframepopup');
+        $('#dnnmoduleiframepopup').remove();
+    }
+
+
+</script>
+

@@ -79,6 +79,27 @@ namespace DNNrocketAPI
             }
         }
 
+        public static String IFrame(SimplisityInfo postInfo, SimplisityInfo iInfo, string templateControlRelPath = "/DesktopModules/DNNrocket/API")
+        {
+            try
+            {
+                var strOut = "";
+                var themeFolder = iInfo.GetXmlProperty("genxml/textbox/defaulttheme");
+                if (themeFolder == "") themeFolder = "config";
+                var razortemplate = "adminiframe.cshtml";
+                iInfo.ModuleId = postInfo.ModuleId;
+
+                var passSettings = iInfo.ToDictionary();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), passSettings, iInfo, true);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
 
     }
 }
