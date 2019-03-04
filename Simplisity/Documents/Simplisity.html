@@ -178,7 +178,17 @@
             <hr />
 
             <p><b>$(document).simplisityStartUp(<i>string</i> apiurl)</b></p>
-            <p>This is the main activation for Simplisity.  It searches the webpage for any html elements with "simplisity_panel" class.  Simplisity will then process the command attributes attached to the html element</p>
+            <p>This is the main activation for Simplisity.  It searches the webpage for any html elements with "simplisity_panel" class.  Simplisity will then process the command attributes attached to the html element.  On first call for the page, this function will look for the last cookie used and take that as the required command.</p>
+            <p>
+                Options can also be passed.  {systemprovider: 'dnnrocket',usehistory: false,activatepanel: true, overlayclass: 'w3-overlay'}.<br />
+                <br />
+                <i>systemprovider:</i> You can pass a default systemprovider to use if non are specifiecd on the simplisity_panel.  Very often simplisity is used for a single systemprovider page, this stops the need to specify the systemprovider on each simplisity_panel.<br />
+<i>usehistory:</i> Do not use any history on page refresh.  Simplisity keeps a history of the last action, when the page is refreshed the last action is rerun to leave the users in the same position they refreshed the page in.<br />
+<i>activatepanel:</i> Activate the simplsity_panels.  Default:true<br />
+            <i>overlayclass:</i> Defines a overlayclass to use, for when the server is called. Default:'w3-overlay'<br />
+            </p>
+            <i>Exmaple:</i>
+            $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { usehistory: false });
             <hr />
 
             <p><b>$('#mycontainer').activateSimplisityPanel()</b></p>
@@ -186,7 +196,7 @@
             <hr />
 
             <p><b>$('#mycontainer').getSimplisity(<i>string</i> s-cmdurl, <i>string</i> s-cmd, <i>string</i> s-fields,<i>string</i> s-after) </b></p>
-            <p>This method will do an individual post to the server API.</p>
+            <p>This method will do an individual post to the server API and a return of data to the selected element.</p>
             <hr />
 
             <p><b>simplisity_callserver(element, cmdurl, returncontainer, reload)</b></p>
@@ -194,7 +204,7 @@
             <p>If we have already called simplisity server then the last command url used will be activate.  Therefore we can call this function with the minimum of parameters.  i.e. only the html element.</p>
             <H4>Examples</H4>
             simplisity_callserver(this, '/DesktopModules/DNNrocket/API/api.ashx', '#myreturn', false)<br />
-                                                                                                     <br />
+            <br />
             <i>Minimum call parameters</i><br />
             simplisity_callserver(this)
             <br />

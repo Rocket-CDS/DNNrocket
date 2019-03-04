@@ -1229,6 +1229,8 @@ namespace DNNrocketAPI
         {
             var user = UserController.Instance.GetUserById(portalid, userid);
 
+            if (user == null) return false;
+
             if (user.IsSuperUser) return true;
             if (interfaceInfo != null)
             {

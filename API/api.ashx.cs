@@ -184,7 +184,7 @@ namespace DNNrocketAPI
                 var systemData = new SystemData();
                 var sInfoSystem = systemData.GetSystemByKey(systemprovider);
                 var sidemenu = new Componants.SideMenu(sInfoSystem);
-                var templateControlRelPath = sInfoSystem.GetXmlProperty("genxml/textbox/relpath");
+                var templateControlRelPath = sInfo.GetXmlProperty("genxml/hidden/relpath");
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 

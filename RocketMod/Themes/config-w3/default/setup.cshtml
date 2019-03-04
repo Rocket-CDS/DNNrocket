@@ -18,8 +18,6 @@
         <p>
             No configuration has been setup for this module.  Click the "Setup" button and enter your required configuration.
         </p>
-        <!-- "systemprovider:<systemprovider>" needs to be defined in the s-field.  We will not have a valid cookie on first load. -->
-        <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="dnnrocketconfig_iframe" s-return="#dnnrocketconfig_@(Model.ModuleId)" s-fields="systemprovider:dnnrocket,moduleid:@(Model.ModuleId),interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdConfigButton")</span>
-
+        <a class="w3-button w3-green w3-padding-8 " href="/desktopmodules/dnnrocket/RocketMod/admin.html">@ResourceKey("DNNrocket.cmdConfigButton")</a>
     </div>
 </div>

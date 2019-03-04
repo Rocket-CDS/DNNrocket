@@ -1,0 +1,131 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using DotNetNuke.Entities.Users;
+@using DotNetNuke.Services.Localization;
+@using DotNetNuke.Entities.Portals;
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocketModules/BusinessDirectory/App_LocalResources/")
+
+
+@{
+    var sidemenu = (SideMenu)Model.List.First();
+
+    var menuOut = "";
+    var lp = 0;
+    foreach (SimplisityRecord g in sidemenu.GetGroups())
+    {
+        var groupref = g.GetXmlProperty("genxml/textbox/groupref");
+        var groupicon = g.GetXmlProperty("genxml/textbox/groupicon");
+        var interfacelist = sidemenu.GetInterfaces(groupref);
+        if (interfacelist.Count() > 0)
+        {
+            menuOut += "<div class='w3-bar-item w3-button w3-theme-l4 w3-hover-theme menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + groupref + "&nbsp;<i class='fa fa-caret-down'></i></div>";
+            menuOut += "<div id='" + groupref + "' class='w3-hide w3-theme-l4'>";
+            foreach (var i in interfacelist)
+            {
+                var defaulttheme = i.GetXmlProperty("genxml/textbox/defaulttheme");
+                var defaulttemplate = i.GetXmlProperty("genxml/textbox/defaulttemplate");
+                var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
+                var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
+                var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
+                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme menulink simplisity_click' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfacekey + "</div>";
+            }
+            menuOut += "</div>";
+            lp += 1;
+        }
+    }
+}
+
+<div class="w3-sidebar w3-bar-block w3-card w3-theme-l4" style="width:260px;">
+    @HtmlOf(menuOut)
+    <hr/>
+    <div onclick="window.history.back();" class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+
+</div>
+
+
+<span id="langflagrequired" style="display:none;" class="w3-display-right w3-right-align w3-padding">
+
+    @{
+
+        var strOut1 = "";
+
+        var enabledlanguages = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
+        foreach (var l in enabledlanguages)
+        {
+            var imageclass = "";
+            if (DNNrocketUtils.GetEditCulture() == l.Value.Code)
+            {
+                imageclass = "w3-border-top w3-border-theme";
+            }
+            strOut1 += "<a href='javascript:void(0)' class='w3-margin-right " + imageclass + " selectlang' editlang='" + l.Value.Code + "'>";
+            strOut1 += "<img class='' src='/DesktopModules/DNNrocket/API/images/flags/32/" + l.Value.Code + ".png' alt='" + l.Value.EnglishName + "' />";
+            strOut1 += "</a>";
+        }
+    }
+
+    @HtmlOf(strOut1)
+
+</span>
+
+<!-- Overlay effect when opening the side navigation on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="Close Sidemenu" id="myOverlay"></div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#menulangflags").empty();
+        $("#langflagrequired").appendTo("#menulangflags");
+        $('#langflagrequired').show();
+
+
+        $('.menuaccordian').unbind('click');
+        $('.menuaccordian').click(function () {
+            var actionid = $(this).attr("actionid")
+            if ($('#' + actionid).hasClass('w3-show')) {
+                $('#' + actionid).addClass('w3-hide');
+                $('#' + actionid).removeClass('w3-show');
+                $(this).removeClass('w3-theme-d4');
+            }
+            else {
+                $('#' + actionid).addClass('w3-show');
+                $('#' + actionid).removeClass('w3-hide');
+                $(this).addClass('w3-theme-d4');
+            }
+        });
+
+        $('.selectlang').unbind('click');
+        $('.selectlang').click(function () {
+            // change langauge by setting "nextlang" cookie and then trigger the save with "simplisity_langchange" class on the save button.
+            // the ajax return with switch the editlang cookie to the nextlang cookie and delete the nextlang cookie, it will then reload the page.
+            simplisity_setCookieValue('nextlang', $(this).attr('editlang'))
+            $('.simplisity_langchange').trigger('click');
+        });
+
+        //reset paging
+        simplisity_setCookieValue('s-page', '1');
+
+        if (simplisity_getCookieValue('s-pagesize') == '') {
+            simplisity_setCookieValue('s-pagesize', '20');
+        }
+
+
+    });
+
+    function sidemenuchange() {
+        $('.menulink').addClass('w3-light-grey');
+        $('.menulink').removeClass('w3-theme-l2');
+        var index = simplisity_getCookieValue('s-lastindex');
+        $('.menulink[s-index=' + index + ']').removeClass('w3-light-grey');
+        $('.menulink[s-index=' + index + ']').addClass('w3-theme-l2');
+    }
+
+
+</script>

@@ -1,8 +1,8 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNNrocket" type="Module" version="1.0.0">
-			<friendlyName>DNNrocket</friendlyName>
-			<description>DNNrocket Admin Interface </description>
+		<package name="RocketMod" type="Module" version="1.0.0">
+			<friendlyName>RocketMod</friendlyName>
+			<description>DNNrocket Module </description>
 			<iconFile />
 			<owner>
 				<name>Charles France</name>
@@ -27,17 +27,6 @@ DNNrocketAPI
       </dependencies>
       <components>
         <component type="Script">
-          <scripts>
-            <basePath>DesktopModules\DNNrocket</basePath>
-            <script type="Install">
-              <name>01.00.00.SqlDataProvider</name>
-              <version>01.00.00</version>
-            </script>
-            <script type="UnInstall">
-              <name>Uninstall.SqlDataProvider</name>
-              <version>01.00.00</version>
-            </script>
-          </scripts>
         </component>
         <component type="ResourceFile">
 					<resourceFiles>
@@ -49,58 +38,17 @@ DNNrocketAPI
 				</component>
 				<component type="Assembly">
 					<assemblies>
-						<assembly>
-							<path>bin</path>
-							<name>DNNrocketAPI.dll</name>
-							<sourceFileName>DNNrocketAPI.dll</sourceFileName>
-						</assembly>
             <assembly>
               <path>bin</path>
-              <name>DNNrocketCategory.dll</name>
-              <sourceFileName>DNNrocketCategory.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>DNNrocketCountry.dll</name>
-              <sourceFileName>DNNrocketCountry.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>DNNrocketLogin.dll</name>
-              <sourceFileName>DNNrocketLogin.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>DNNrocketSystemData.dll</name>
-              <sourceFileName>DNNrocketSystemData.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>Simplisity.dll</name>
-              <sourceFileName>Simplisity.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>System.Drawing.Common.dll</name>
-              <sourceFileName>System.Drawing.Common.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>netstandard.dll</name>
-              <sourceFileName>netstandard.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>RazorEngine.dll</name>
-              <sourceFileName>RazorEngine.dll</sourceFileName>
+              <name>RocketMod.dll</name>
+              <sourceFileName>RocketMod.dll</sourceFileName>
             </assembly>            
-
           </assemblies>
 				</component>
 				<component type="Module">
 					<desktopModule>
-						<moduleName>DNNrocketAdmin</moduleName>
-						<foldername>DNNrocketAdmin</foldername>
+						<moduleName>rocketmod</moduleName>
+						<foldername>RocketMod</foldername>
 						<businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
 						<supportedFeatures>
 							<supportedFeature type="Portable" />
@@ -108,7 +56,7 @@ DNNrocketAPI
 						</supportedFeatures>
 						<moduleDefinitions>
 							<moduleDefinition>
-								<friendlyName>dnnrocket</friendlyName>
+								<friendlyName>dnnrocketmodule</friendlyName>
 								<defaultCacheTime>0</defaultCacheTime>
 								<moduleControls>
 									<moduleControl>

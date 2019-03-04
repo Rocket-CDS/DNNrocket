@@ -7,16 +7,34 @@ namespace DNNrocketAPI
 {
     public static class ConfigUtils
     {
-        public static String SaveConfig(SimplisityInfo postInfo, string templateControlRelPath = "/DesktopModules/DNNrocket/API")
+
+        public static bool HasConfig(int moduleId)
+        {
+            var objCtrl = new DNNrocketController();
+            var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), moduleId);
+            if (info == null)
+            {
+                return false;
+            }
+            else
+            {
+                if (info.XMLDoc.SelectNodes("genxml/*").Count <= 1) // <lang> node will be created for new record.
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        public static String SaveConfig(int moduleId, SimplisityInfo postInfo)
         {
             try
             {
-                var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
-                var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
-                var moduleid = postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-
                 var objCtrl = new DNNrocketController();
-                var info = objCtrl.SaveData("moduleconfig", "MDATA", postInfo, moduleid);
+                var info = objCtrl.SaveData("moduleconfig", "CONFIG", postInfo, moduleId);
 
                 return "";
             }
@@ -27,22 +45,16 @@ namespace DNNrocketAPI
         }
 
 
-        public static String GetConfig(SimplisityInfo postInfo, string templateControlRelPath = "/DesktopModules/DNNrocket/API")
+        public static String GetConfig(int moduleId, DNNrocketInterface interfaceInfo)
         {
             try
             {
                 var strOut = "";
-                var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
-                if (themeFolder == "") themeFolder = "config";
-                var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
-                if (razortemplate == "") razortemplate = "config.cshtml";
-                var moduleid = postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-
-                var passSettings = postInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var passSettings = interfaceInfo.ToDictionary();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("config.cshtml", interfaceInfo.TemplateRelPath, interfaceInfo.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
 
-                var info = objCtrl.GetData("moduleconfig", "MDATA", DNNrocketUtils.GetEditCulture(), moduleid);
+                var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), moduleId);
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
 
                 return strOut;
@@ -54,22 +66,15 @@ namespace DNNrocketAPI
         }
 
 
-        public static String GetSetup(SimplisityInfo postInfo, SimplisityInfo iInfo, string templateControlRelPath = "/DesktopModules/DNNrocket/API")
+        public static String GetSetup(DNNrocketInterface interfaceInfo)
         {
             try
             {
                 var strOut = "";
-                var themeFolder = iInfo.GetXmlProperty("genxml/textbox/defaulttheme");
-                if (themeFolder == "") themeFolder = "config";
-                var razortemplate = iInfo.GetXmlProperty("genxml/textbox/defaulttemplate");
-                if (razortemplate == "") razortemplate = "setup.cshtml";
-                iInfo.ModuleId = postInfo.ModuleId;
-
-
-                var passSettings = iInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var passSettings = interfaceInfo.ToDictionary();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", interfaceInfo.TemplateRelPath, interfaceInfo.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), passSettings, iInfo, true);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), passSettings, interfaceInfo.Info, true);
 
                 return strOut;
             }
@@ -79,27 +84,6 @@ namespace DNNrocketAPI
             }
         }
 
-        public static String IFrame(SimplisityInfo postInfo, SimplisityInfo iInfo, string templateControlRelPath = "/DesktopModules/DNNrocket/API")
-        {
-            try
-            {
-                var strOut = "";
-                var themeFolder = iInfo.GetXmlProperty("genxml/textbox/defaulttheme");
-                if (themeFolder == "") themeFolder = "config";
-                var razortemplate = "adminiframe.cshtml";
-                iInfo.ModuleId = postInfo.ModuleId;
-
-                var passSettings = iInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), passSettings, iInfo, true);
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
 
     }
 }

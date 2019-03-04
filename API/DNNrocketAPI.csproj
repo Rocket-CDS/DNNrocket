@@ -136,10 +136,6 @@
     <None Include="Systems\OpenStore.Zxml" />
     <None Include="Themes\config-w3\default\Paging.cshtml" />
     <None Include="Themes\config-w3\default\SideMenu.cshtml" />
-    <None Include="Themes\config\default\config.cshtml" />
-    <None Include="Themes\config\default\pageheader.cshtml" />
-    <None Include="Themes\config\default\adminiframe.cshtml" />
-    <None Include="Themes\config\default\setup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_LocalResources\DNNrocket.ascx.resx" />
@@ -566,13 +562,12 @@
     <Content Include="Themes\config-w3\css\arcadia-theme.css" />
     <Content Include="Themes\config-w3\css\bloomingdahlia-theme.css" />
     <Content Include="Themes\config-w3\css\littleboyblue-theme.css" />
-    <None Include="Themes\config\default\modelpopup.html" />
+    <Content Include="Themes\config-w3\img\img_avatar4.png" />
     <Content Include="View.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Themes\config-w3\img\" />
     <Folder Include="Themes\config-w3\js\" />
   </ItemGroup>
   <ItemGroup>

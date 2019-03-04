@@ -18,8 +18,6 @@ namespace DNNrocket.Country
             _systemInfo = systemInfo;
             var controlRelPath = "/DesktopModules/DNNrocket/Country";
 
-            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [settingcountry]";
-
             var rtnDic = new Dictionary<string, string>();
 
             if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface))
@@ -30,19 +28,24 @@ namespace DNNrocket.Country
                         CountrySave(sInfo);
                         rtnDic.Add("outputhtml", CountryDetail(sInfo, controlRelPath, editlang));
                         break;
+                    case "settingcountry_get":
+                        rtnDic.Add("outputhtml", CountryDetail(sInfo, controlRelPath, editlang));
+                        break;
                 }
             }
 
             switch (paramCmd)
             {
-                case "settingcountry_get":
-                    rtnDic.Add("outputhtml", CountryDetail(sInfo, controlRelPath, editlang));
-                    break;
                 case "settingcountry_getregion":
                     rtnDic.Add("outputhtml", "");
                     var regionlist = CountryUtils.RegionListCSV(GeneralUtils.DeCode(sInfo.GetXmlProperty("genxml/hidden/activevalue")), true);
                     rtnDic.Add("outputjson", "{listkey: [" + regionlist[0] + "], listvalue: [" + regionlist[1] + "] }");
                     break;
+            }
+
+            if (rtnDic.Count == 0)
+            {
+                rtnDic.Add("outputhtml", "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [settingcountry]");
             }
 
             return rtnDic;

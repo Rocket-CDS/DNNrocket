@@ -12,15 +12,8 @@
     var info = (SimplisityInfo)Model.List.First();
 }
 
-<div id="configdata_@(Model.ModuleId)" class="w3-modal">
-    <div class="w3-modal-content">
-        <header class="w3-container w3-theme w3-bottombar w3-border-theme">
-            <span onclick="canelconfig@(Model.ModuleId)('#configdata_@(Model.ModuleId)')" class="w3-button w3-display-topright">&times;</span>
-            <h2>@ResourceKey("DNNrocket.config")</h2>
-        </header>
+    <div id="configdata_@(Model.ModuleId)" class="w3-modal-content">
         <div class="w3-container">
-
-            <div id="detailsection" class="w3-container w3-margin tabsection" style="display:block;">
 
                 <div class="w3-row">
                     <div class="w3-half w3-padding">
@@ -39,28 +32,8 @@
                     </div>
                 </div>
 
-            </div>
-
-            <span class="w3-button w3-green w3-padding-8 simplisity_click w3-margin" s-post="#configdata_@(Model.ModuleId)" s-cmd="dnnrocketconfig_saveconfig" s-return="#dnnrocketconfig_@(Model.ModuleId)" s-fields="systemprovider:dnnrocket,moduleid:@(Model.ModuleId),theme:config-w3,template:view.cshtml,interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-
+            <span class="w3-button w3-green w3-padding-8 simplisity_click w3-margin" s-after="canelconfig@(Model.ModuleId)" s-post="#configdata_@(Model.ModuleId)" s-cmd="dnnrocketconfig_saveconfig" s-return="#dnnrocketconfig_@(Model.ModuleId)" s-fields="systemprovider:dnnrocket,moduleid:@(Model.ModuleId),theme:config-w3,template:view.cshtml,interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdSaveButton")</span>
 
         </div>
     </div>
-</div>
-
-<script>
-
-    $(document).ready(function () {
-            $('#configdata_@(Model.ModuleId)').show();
-    });
-
-    function canelconfig@(Model.ModuleId)(modelselector) {
-        alert('cancel');
-        removeiframepopup();
-        $(modelselector).hide();
-        //$('#dnnrocketconfig_@(Model.ModuleId)').getSimplisity('/DesktopModules/DNNrocket/api/api.ashx', 'dnnrocketconfig_getdata', 'systemprovider:dnnrocket,moduleid:@(Model.ModuleId),theme:config-w3,template:view.cshtml');
-    }
-
-
-</script>
 

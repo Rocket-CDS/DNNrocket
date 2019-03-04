@@ -88,10 +88,11 @@ namespace DNNrocketAPI
             {
                 _templateRelPath = _rocketInterface.TemplateRelPath;
                 _entiytypecode = _rocketInterface.EntityTypeCode;
-            }
-            if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we dont; define template path in the interface assume it's the control path.
+                _paramCmd = _rocketInterface.DefaultCommand;
+                if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we dont; define template path in the interface assume it's the control path.
 
-            DNNrocketUtils.IncludePageHeaders(base.ModuleId, this.Page, _systemprovider, _templateRelPath,"pageheader.cshtml", "config");
+                DNNrocketUtils.IncludePageHeaders(base.ModuleId, this.Page, _systemprovider, _templateRelPath, "pageheader.cshtml", "config");
+            }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -146,24 +147,19 @@ namespace DNNrocketAPI
             var postInfo = new SimplisityInfo();
             postInfo.ModuleId = ModuleId;
 
-            if (!_rocketInterface.Exists)
+            if (_rocketInterface.Exists)
             {
-                // no interface, so link to the default DNNrocketModule for setup button
-                _paramCmd = "";
-                _interfacekey = "dnnrocketmodule";
-                _systemInfo.GUIDKey = "dnnrocket";
-            }
+                var strOut = "No Interface Found.";
+                var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
 
-            var strOut = "";
-            var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
-
-            if (returnDictionary.ContainsKey("outputhtml"))
-            {
-                strOut = returnDictionary["outputhtml"];
+                if (returnDictionary.ContainsKey("outputhtml"))
+                {
+                    strOut = returnDictionary["outputhtml"];
+                }
+                var lit = new Literal();
+                lit.Text = strOut;
+                phData.Controls.Add(lit);
             }
-            var lit = new Literal();
-            lit.Text = strOut;
-            phData.Controls.Add(lit);
 
         }
 
