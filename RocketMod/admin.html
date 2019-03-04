@@ -57,7 +57,7 @@
         <!-- !PAGE CONTENT! -->
     <div class="w3-main" style="margin-left:300px;margin-top:60px; " id="base-panel">
 
-        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketmod_get" s-track="true" s-fields="theme:config-w3,template:edit.cshtml,interfacekey:rocketmod"></div>
+        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketmod_edit" s-track="true" s-fields="theme:config-w3,template:edit.cshtml,interfacekey:rocketmod"></div>
 
         <!-- End page content -->
     </div>
@@ -65,7 +65,7 @@
         <script>
             $(document).ready(function () {
 
-                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketmodule'});
+                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketmodule', usehistory: false});
 
             });
 

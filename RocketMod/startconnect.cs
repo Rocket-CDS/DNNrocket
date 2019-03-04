@@ -32,6 +32,16 @@ namespace RocketMod
                         strOut = ConfigUtils.GetSetup(rocketInterface);
                     }
                     break;
+                case "rocketmod_edit":
+                    if (ConfigUtils.HasConfig(moduleid))
+                    {
+                        strOut = "EDIT THE DATA";
+                    }
+                    else
+                    {
+                        strOut = ConfigUtils.GetConfig(moduleid, rocketInterface);
+                    }
+                    break;
                 case "rocketmod_saveconfig":
                     strOut = ConfigUtils.SaveConfig(moduleid, postInfo);
                     if (strOut == "")
