@@ -13,7 +13,17 @@ namespace RocketMod
 
             var controlRelPath = rocketInterface.TemplateRelPath;
             if (controlRelPath == "") controlRelPath = ControlRelPath;
-            var moduleid = postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            var cookieModuleId = DNNrocketUtils.GetCookieValue("rocketmod_moduleid");
+            var moduleid = 0;
+            if (!GeneralUtils.IsNumeric(cookieModuleId))
+            {
+                moduleid = postInfo.ModuleId;
+            }
+            else
+            {
+                moduleid = Convert.ToInt32(cookieModuleId);
+            }
+
 
             var strOut = "";
 
@@ -29,7 +39,7 @@ namespace RocketMod
                     }
                     else
                     {
-                        strOut = ConfigUtils.GetSetup(rocketInterface);
+                        strOut = ConfigUtils.GetSetup(moduleid,rocketInterface);
                     }
                     break;
                 case "rocketmod_edit":
@@ -51,8 +61,11 @@ namespace RocketMod
                     }
                     break;
                 case "rocketmod_getsetupmenu":
-                    strOut = ConfigUtils.GetSetup(rocketInterface);
+                    strOut = ConfigUtils.GetSetup(moduleid,rocketInterface);
                     break;
+                case "rocketmod_adminurl":
+                    strOut = "/desktopmodules/dnnrocket/RocketMod/admin.html";
+                    break;                    
                 default:
                     strOut = "Comamnd Not Found";
                     break;

@@ -986,6 +986,26 @@ namespace DNNrocketAPI
         #endregion
 
 
+        public static void SetCookieValue(string name, string value)
+        {
+            if (value != null)
+            {
+                HttpCookie MyCookie = new HttpCookie(name);
+                MyCookie.Value = value;
+                HttpContext.Current.Response.Cookies.Add(MyCookie);
+            }
+        }
+
+        public static string GetCookieValue(string name)
+        {
+            if (HttpContext.Current.Request.Cookies[name] != null)
+            {
+                return HttpContext.Current.Request.Cookies[name].Value;
+            }
+            return "";
+        }
+
+
         public static void SetEditCulture(string editlang)
         {
             if (editlang != null)

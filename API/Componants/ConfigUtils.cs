@@ -66,15 +66,16 @@ namespace DNNrocketAPI
         }
 
 
-        public static String GetSetup(DNNrocketInterface interfaceInfo)
+        public static String GetSetup(int moduleId, DNNrocketInterface interfaceInfo)
         {
             try
             {
+                interfaceInfo.ModuleId = moduleId;
+
                 var strOut = "";
-                var passSettings = interfaceInfo.ToDictionary();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", interfaceInfo.TemplateRelPath, interfaceInfo.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), passSettings, interfaceInfo.Info, true);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, interfaceInfo.Info);
 
                 return strOut;
             }

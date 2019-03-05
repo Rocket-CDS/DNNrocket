@@ -12,7 +12,7 @@
     var info = (SimplisityInfo)Model.List.First();
 }
 
-    <div id="configdata_@(Model.ModuleId)" class="w3-modal-content">
+    <div id="configdata_@(info.ModuleId)" class="w3-modal-content">
         <div class="w3-container">
 
                 <div class="w3-row">
@@ -32,7 +32,7 @@
                     </div>
                 </div>
 
-            <span class="w3-button w3-green w3-padding-8 simplisity_click w3-margin" s-after="canelconfig@(Model.ModuleId)" s-post="#configdata_@(Model.ModuleId)" s-cmd="dnnrocketconfig_saveconfig" s-return="#dnnrocketconfig_@(Model.ModuleId)" s-fields="systemprovider:dnnrocket,moduleid:@(Model.ModuleId),theme:config-w3,template:view.cshtml,interfacekey:dnnrocketmodule">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+            <span class="w3-button w3-green w3-padding-8 simplisity_click w3-margin" s-post="#configdata_@(info.ModuleId)" s-cmd="rocketmod_saveconfig" s-fields="systemprovider:dnnrocketmodule,moduleid:@(info.ModuleId),theme:config-w3,template:view.cshtml,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</span>
 
         </div>
     </div>

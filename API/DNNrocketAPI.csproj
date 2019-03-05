@@ -94,7 +94,7 @@
     <Compile Include="Componants\PageIncludes.cs" />
     <Compile Include="Componants\UserUtils.cs" />
     <Compile Include="Componants\SideMenu.cs" />
-    <Compile Include="DataObjects.cs" />
+    <Compile Include="Componants\DNNrocketInterface.cs" />
     <Compile Include="DNNrocketThumb.ashx.cs">
       <DependentUpon>DNNrocketThumb.ashx</DependentUpon>
     </Compile>

@@ -80,7 +80,7 @@ namespace DNNrocketAPI
 
             _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
 
-            _configInfo = objCtrl.GetData("moduleconfig", "MDATA", DNNrocketUtils.GetEditCulture(), ModuleId);
+            _configInfo = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), ModuleId);
 
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
 
@@ -91,7 +91,7 @@ namespace DNNrocketAPI
                 _paramCmd = _rocketInterface.DefaultCommand;
                 if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we dont; define template path in the interface assume it's the control path.
 
-                DNNrocketUtils.IncludePageHeaders(base.ModuleId, this.Page, _systemprovider, _templateRelPath, "pageheader.cshtml", "config");
+                DNNrocketUtils.IncludePageHeaders(base.ModuleId, this.Page, _systemprovider, _templateRelPath, "pageheader.cshtml", _rocketInterface.DefaultTheme);
             }
         }
 
@@ -172,14 +172,16 @@ namespace DNNrocketAPI
         {
             get
             {
-                var settings = DNNrocketUtils.GetModuleSettings(ModuleId);
-                var actions = new ModuleActionCollection();
-                if (settings.GUIDKey == settings.GetXmlProperty("genxml/dropdownlist/datasourceref") || settings.GetXmlProperty("genxml/dropdownlist/datasourceref") == "")
+                var adminurl = "";
+                var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketmod_adminurl", _systemInfo, _rocketInterface, new SimplisityInfo(), _templateRelPath, DNNrocketUtils.GetCurrentCulture());
+                if (returnDictionary.ContainsKey("outputhtml"))
                 {
-                    actions.Add(GetNextActionID(), "***Edit Data***", "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
+                    adminurl = returnDictionary["outputhtml"];
                 }
 
-                actions.Add(GetNextActionID(), "***Refrsh***", "", "", "action_refresh.gif", EditUrl() + "?refreshview=1", false, SecurityAccessLevel.Edit, true, false);
+                var settings = DNNrocketUtils.GetModuleSettings(ModuleId);
+                var actions = new ModuleActionCollection();
+                actions.Add(GetNextActionID(), "Rocket Admin", "", "", "plus2.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
                 return actions;
             }
         }

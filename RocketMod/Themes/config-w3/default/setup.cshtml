@@ -9,15 +9,33 @@
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
 @{
-    var info = Model.HeaderData;
+    var info = (SimplisityInfo)Model.List.First();
 }
 
-<div id="dnnrocketconfig_@(Model.ModuleId)" class="simplisity_panel">
+
+<div id="dnnrocketconfig_@(info.ModuleId)" class="simplisity_panel">
 
     <div class="w3-center w3-margin">
         <p>
             No configuration has been setup for this module.  Click the "Setup" button and enter your required configuration.
         </p>
-        <a class="w3-button w3-green w3-padding-8 " href="/desktopmodules/dnnrocket/RocketMod/admin.html">@ResourceKey("DNNrocket.cmdConfigButton")</a>
+        <span class="w3-button w3-green w3-padding-8 redirectsetup_@(info.ModuleId)">@ResourceKey("DNNrocket.cmdConfigButton")</span>
     </div>
 </div>
+
+<script>
+
+    $(document).ready(function () {
+        
+        $('.redirectsetup_@(info.ModuleId)').unbind("click");
+        $('.redirectsetup_@(info.ModuleId)').click(function () {
+            // save moduleid in cookie, so admin page can use it.
+            simplisity_setCookieValue('rocketmod_moduleid', @(info.ModuleId));
+            simplisity_setCookieValue('rocketmod_return', window.location.href);
+            // redirect to admin page.
+            window.location = "/desktopmodules/dnnrocket/RocketMod/admin.html";
+        });
+
+    });
+
+</script>
