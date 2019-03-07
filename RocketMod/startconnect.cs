@@ -11,8 +11,6 @@ namespace RocketMod
         {
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
 
-            var controlRelPath = rocketInterface.TemplateRelPath;
-            if (controlRelPath == "") controlRelPath = ControlRelPath;
             var cookieModuleId = DNNrocketUtils.GetCookieValue("rocketmod_moduleid");
             var moduleid = 0;
             if (!GeneralUtils.IsNumeric(cookieModuleId))
@@ -33,72 +31,109 @@ namespace RocketMod
                     strOut = ConfigUtils.GetConfig(moduleid, rocketInterface);
                     break;
                 case "rocketmod_getdata":
-                    if (ConfigUtils.HasConfig(moduleid))
-                    {
-                        strOut = GetData(rocketInterface, postInfo);
-                    }
-                    else
-                    {
-                        strOut = ConfigUtils.GetSetup(moduleid,rocketInterface);
-                    }
+                        strOut = GetData(moduleid, rocketInterface, postInfo);
                     break;
                 case "rocketmod_edit":
-                    if (ConfigUtils.HasConfig(moduleid))
-                    {
-                        strOut = "EDIT THE DATA";
-                    }
-                    else
-                    {
-                        strOut = ConfigUtils.GetConfig(moduleid, rocketInterface);
-                    }
+                    strOut = "EDIT THE DATA";
                     break;
                 case "rocketmod_saveconfig":
                     strOut = ConfigUtils.SaveConfig(moduleid, postInfo);
                     if (strOut == "")
                     {
                         // not error returned , so return details.
-                        strOut = GetData(rocketInterface, postInfo);
+                        strOut = GetData(moduleid, rocketInterface, postInfo);
                     }
                     break;
                 case "rocketmod_getsetupmenu":
-                    strOut = ConfigUtils.GetSetup(moduleid,rocketInterface);
+                    strOut = ConfigUtils.GetSetup(moduleid, rocketInterface);
                     break;
                 case "rocketmod_adminurl":
                     strOut = "/desktopmodules/dnnrocket/RocketMod/admin.html";
-                    break;                    
+                    break;
+                case "rocketmod_dashboard":
+                    strOut = GetDashBoard(moduleid, rocketInterface);
+                    break;
+                case "rocketmod_reset":
+                    strOut = ResetRocketMod(moduleid, rocketInterface);
+                    break;
                 default:
                     strOut = "Comamnd Not Found";
                     break;
             }
-
 
             var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;
         }
 
-        public static String GetData(DNNrocketInterface rocketInterface, SimplisityInfo postInfo)
+        public static String ResetRocketMod(int moduleid, DNNrocketInterface rocketInterface)
+        {
+            try
+            {
+                ConfigUtils.DeleteConfig(moduleid);
+                return ConfigUtils.GetSetup(moduleid, rocketInterface);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public static String GetDashBoard(int moduleid, DNNrocketInterface rocketInterface)
+        {
+            try
+            {
+                var controlRelPath = rocketInterface.TemplateRelPath;
+                if (controlRelPath == "") controlRelPath = ControlRelPath;
+
+                var themeFolder = rocketInterface.DefaultTheme;
+                var razortemplate = rocketInterface.DefaultTemplate;
+
+                var passSettings = rocketInterface.ToDictionary();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var objCtrl = new DNNrocketController();
+
+                var info = objCtrl.GetData("moduleconfig", "MDATA", DNNrocketUtils.GetEditCulture(), moduleid);
+                return DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public static String GetData(int moduleid, DNNrocketInterface rocketInterface, SimplisityInfo postInfo)
         {
             try
             {
                 var strOut = "";
 
-                strOut = "<h1> DATA to be returned</h1>";
-                strOut += "<p> lkwde fpowe pofk ok wefopk wepof kpowe fop weop fd po we odkopwed opkweopd weopkdpowefodpk wpoefk</p>";
+                if (ConfigUtils.HasConfig(moduleid))
+                {
+                    strOut = "<h1> DATA to be returned</h1>";
+                    strOut += "<p> lkwde fpowe pofk ok wefopk wepof kpowe fop weop fd po we odkopwed opkweopd weopkdpowefodpk wpoefk</p>";
+
+                    var controlRelPath = rocketInterface.TemplateRelPath;
+                    if (controlRelPath == "") controlRelPath = ControlRelPath;
+
+                    var themeFolder = rocketInterface.DefaultTheme;
+                    var razortemplate = rocketInterface.DefaultTemplate;
+
+                    var passSettings = rocketInterface.ToDictionary();
+                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                    var objCtrl = new DNNrocketController();
+
+                    var info = objCtrl.GetData("moduleconfig", "MDATA", DNNrocketUtils.GetEditCulture(), moduleid);
+                    //return DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+
+
+                }
+                else
+                {
+                    strOut = ConfigUtils.GetSetup(moduleid, rocketInterface);
+                }
 
                 return strOut;
-
-
-                //var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
-                //var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
-                //var moduleid = postInfo.ModuleId;
-
-                //var passSettings = postInfo.ToDictionary();
-                //var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-                //var objCtrl = new DNNrocketController();
-
-                //var info = objCtrl.GetData("moduleconfig", "MDATA", DNNrocketUtils.GetEditCulture(), moduleid);
-                //strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
 
             }
             catch (Exception ex)

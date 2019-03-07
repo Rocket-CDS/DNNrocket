@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="admin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
   <data name="apptheme.Text" xml:space="preserve">
     <value>App Theme</value>
   </data>
   <data name="config.Text" xml:space="preserve">
     <value>Configuration</value>
+  </data>
+  <data name="dashboard.Text" xml:space="preserve">
+    <value>DashBoard</value>
+  </data>
+  <data name="edit.Text" xml:space="preserve">
+    <value>Edit Data</value>
   </data>
   <data name="interfacekey.Text" xml:space="preserve">
     <value>Interface</value>

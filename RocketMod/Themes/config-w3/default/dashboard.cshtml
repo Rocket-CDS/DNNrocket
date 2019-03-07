@@ -1,0 +1,63 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+
+@{
+    var info = (SimplisityInfo)Model.List.First();
+}
+
+
+<div id="" class="simplisity_panel">
+
+    <div class="w3-center w3-margin">
+        <h1>
+            DashBoard stuff
+        </h1>
+        <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketmod_reset" s-fields="moduleid:@(info.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdResetButton")</span>
+    </div>
+
+    <div id="configdata_@(info.ModuleId)" class="w3-modal-content">
+        <div class="w3-container">
+
+            <div class="w3-row">
+                <div class="w3-half w3-padding">
+                    <div>
+                        <label>@ResourceKey("Config.system")</label>
+                        @TextBox(info, "genxml/textbox/systemprovider", "class='w3-input w3-border' maxlength='50' autocomplete='off'", "")
+                    </div>
+                    <div class="">
+                        <label>@ResourceKey("Config.interfacekey")</label>
+                        @TextBox(info, "genxml/textbox/interfacekey", "maxlength='250' autocomplete='off' class='w3-input w3-border'", "")
+                    </div>
+                    <div class="">
+                        <label>@ResourceKey("Config.apptheme")</label>
+                        @TextBox(info, "genxml/textbox/apptheme", "maxlength='250' autocomplete='off' class='w3-input w3-border'", "")
+                    </div>
+                </div>
+            </div>
+
+            <span class="w3-button w3-green w3-padding-8 simplisity_click w3-margin" s-post="#configdata_@(info.ModuleId)" s-cmd="rocketmod_saveconfig" s-fields="systemprovider:dnnrocketmodule,moduleid:@(info.ModuleId),theme:config-w3,template:view.cshtml,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+
+        </div>
+    </div>
+
+
+
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+
+    });
+
+</script>

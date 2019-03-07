@@ -1,0 +1,111 @@
+﻿<genxml>
+  <hidden>
+    <theme>config-w3</theme>
+    <template>Admin_SystemDetail.cshtml</template>
+    <activevalue />
+    <pagesize>20</pagesize>
+    <page>1</page>
+    <selecteditemid>5397</selecteditemid>
+    <editlanguage>fr-FR</editlanguage>
+    <index>99</index>
+    <systemprovider>systemapi</systemprovider>
+    <uilang1>fr-FR</uilang1>
+  </hidden>
+  <textbox>
+    <ctrlkey>dnnrocketmodule</ctrlkey>
+    <systemname>DNN Rocket Mod</systemname>
+    <adminurl>/DesktopModules/DNNrocket/RocketMod/admin.html</adminurl>
+    <apiurl>/DesktopModules/DNNrocket/API/api.ashx</apiurl>
+    <licensekey />
+    <encryptkey>12365498765454654</encryptkey>
+  </textbox>
+  <interfacedata list="true">
+    <genxml>
+      <textbox>
+        <interfacekey>dashboard</interfacekey>
+        <entitytypecode />
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <defaulttemplate>dashboard.cshtml</defaulttemplate>
+        <defaultcommand>rocketmod_dashboard</defaultcommand>
+        <namespaceclass>RocketMod.startconnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="false" data="Administrators" />
+          <chk value="false" data="Manager" />
+          <chk value="false" data="Editor" />
+          <chk value="false" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>rocketmod</interfacekey>
+        <entitytypecode>DATA</entitytypecode>
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <defaulttemplate>edit.cshtml</defaulttemplate>
+        <defaultcommand>rocketmod_edit</defaultcommand>
+        <namespaceclass>RocketMod.startconnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+      </checkbox>
+    </genxml>
+  </interfacedata>
+  <groupsdata list="true">
+    <genxml>
+      <textbox>
+        <groupref>Admin</groupref>
+        <groupicon />
+      </textbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <groupref>Themes</groupref>
+        <groupicon />
+      </textbox>
+    </genxml>
+  </groupsdata>
+  <lang>
+    <genxml>
+      <interfacedata list="true">
+        <genxml />
+        <genxml />
+      </interfacedata>
+      <groupsdata list="true">
+        <genxml />
+        <genxml />
+      </groupsdata>
+    </genxml>
+  </lang>
+  <systemprovider>systemapi</systemprovider>
+</genxml>

@@ -252,4 +252,7 @@
   <data name="dbtypecode.Text" xml:space="preserve">
     <value>Database TypeCode</value>
   </data>
+  <data name="onmenu.Text" xml:space="preserve">
+    <value>Display On Admin Menu</value>
+  </data>
 </root>

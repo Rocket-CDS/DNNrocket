@@ -29,6 +29,21 @@ namespace DNNrocketAPI
             }
         }
 
+        public static String DeleteConfig(int moduleId)
+        {
+            try
+            {
+                var objCtrl = new DNNrocketController();
+                var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetCurrentCulture(), moduleId);
+                objCtrl.Delete(info.ItemID);
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
         public static String SaveConfig(int moduleId, SimplisityInfo postInfo)
         {
             try
