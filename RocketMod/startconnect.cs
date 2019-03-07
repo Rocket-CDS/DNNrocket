@@ -13,10 +13,20 @@ namespace RocketMod
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
 
             var cookieModuleId = DNNrocketUtils.GetCookieValue("rocketmod_moduleid");
+
             var moduleid = postInfo.ModuleId;
-            if (!GeneralUtils.IsNumeric(cookieModuleId) && (Convert.ToInt32(cookieModuleId) > 0))
+            // use moduleid form cookie it's been set.
+            if (GeneralUtils.IsNumeric(cookieModuleId) && (Convert.ToInt32(cookieModuleId) > 0))
             {
                 moduleid = Convert.ToInt32(cookieModuleId);
+            }
+
+            // use command form cookie if we have set it.
+            var cookieCmd = DNNrocketUtils.GetCookieValue("rocketmod_cmd");
+            if (cookieCmd != "")
+            {
+                paramCmd = cookieCmd;
+                DNNrocketUtils.DeleteCookieValue("rocketmod_cmd");
             }
 
             var strOut = "";

@@ -29,6 +29,7 @@
             // save moduleid in cookie, so admin page can use it.
             simplisity_setCookieValue('rocketmod_moduleid', @(info.ModuleId));
             simplisity_setCookieValue('rocketmod_return', window.location.href);
+            simplisity_setCookieValue('rocketmod_cmd', 'rocketmod_dashboard');
             // redirect to admin page.
             window.location = "/desktopmodules/dnnrocket/RocketMod/admin.html";
         });

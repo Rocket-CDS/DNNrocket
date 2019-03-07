@@ -986,6 +986,14 @@ namespace DNNrocketAPI
         #endregion
 
 
+        public static void DeleteCookieValue(string name)
+        {
+            HttpCookie MyCookie = new HttpCookie(name);
+            MyCookie.Expires = DateTime.Now.AddDays(-10);
+            MyCookie.Value = null;
+            HttpContext.Current.Response.Cookies.Set(MyCookie);
+        }
+
         public static void SetCookieValue(string name, string value)
         {
             if (value != null)

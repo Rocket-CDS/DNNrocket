@@ -109,6 +109,12 @@
             $('.simplisity_langchange').trigger('click');
         });
 
+        $('.selectlangreload').unbind('click');
+        $('.selectlangreload').click(function () {
+            simplisity_setCookieValue('nextlang', $(this).attr('editlang'))
+            location.reload();
+        });
+
         //reset paging
         simplisity_setCookieValue('s-page', '1');
 

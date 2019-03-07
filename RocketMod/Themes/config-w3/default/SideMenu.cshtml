@@ -87,7 +87,7 @@
             {
                 imageclass = "w3-border-top w3-border-theme";
             }
-            strOut1 += "<a href='javascript:void(0)' class='w3-margin-right " + imageclass + " selectlang' editlang='" + l.Value.Code + "'>";
+            strOut1 += "<a href='javascript:void(0)' class='w3-margin-right " + imageclass + " selectlangreload' editlang='" + l.Value.Code + "'>";
             strOut1 += "<img class='' src='/DesktopModules/DNNrocket/API/images/flags/32/" + l.Value.Code + ".png' alt='" + l.Value.EnglishName + "' />";
             strOut1 += "</a>";
         }
@@ -131,6 +131,13 @@
             simplisity_setCookieValue('nextlang', $(this).attr('editlang'));
             $('.simplisity_langchange').trigger('click');
         });
+
+        $('.selectlangreload').unbind('click');
+        $('.selectlangreload').click(function () {
+            simplisity_setCookieValue('nextlang', $(this).attr('editlang'))
+            location.reload();
+        });
+
 
         //reset paging
         simplisity_setCookieValue('s-page', '1');

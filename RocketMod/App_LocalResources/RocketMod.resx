@@ -135,6 +135,9 @@
   <data name="interfacekey.Text" xml:space="preserve">
     <value>Interface</value>
   </data>
+  <data name="resetmsg.Text" xml:space="preserve">
+    <value>Reset this module? </value>
+  </data>
   <data name="system.Text" xml:space="preserve">
     <value>System</value>
   </data>
