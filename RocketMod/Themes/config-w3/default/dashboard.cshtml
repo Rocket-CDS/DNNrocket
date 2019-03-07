@@ -13,6 +13,10 @@
     var info = (SimplisityInfo)Model.List.First();
 }
 
+<span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
+    <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketmod_reset" s-fields="moduleid:@(info.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdResetButton")</span>
+</span>
+
 
 <div id="" class="simplisity_panel">
 
@@ -20,36 +24,56 @@
         <h1>
             DashBoard stuff
         </h1>
-        <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketmod_reset" s-fields="moduleid:@(info.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdResetButton")</span>
     </div>
 
-    <div id="configdata_@(info.ModuleId)" class="w3-modal-content">
-        <div class="w3-container">
 
-            <div class="w3-row">
-                <div class="w3-half w3-padding">
-                    <div>
-                        <label>@ResourceKey("Config.system")</label>
-                        @TextBox(info, "genxml/textbox/systemprovider", "class='w3-input w3-border' maxlength='50' autocomplete='off'", "")
+
+
+    @if (ConfigUtils.HasConfig(info.ModuleId))
+    {
+        <h1>@info.GetXmlProperty("genxml/textbox/systemprovider")</h1>
+        <h1>@info.GetXmlProperty("genxml/textbox/interfacekey")</h1>
+        <h1>@info.GetXmlProperty("genxml/textbox/apptheme")</h1>
+    }
+    else
+    {
+
+        <div id="configdata_@(info.ModuleId)" class="w3-modal">
+
+            <div class="w3-modal-content w3-animate-top w3-card-4">
+                <header class="w3-container w3-theme-d3">
+                    <span onclick="document.getElementById('id01').style.display='none'"
+                          class="w3-button w3-display-topright">&times;</span>
+                    <h2>Modal Header</h2>
+                </header>
+                <div class="w3-container">
+
+                    <div class="w3-row">
+                        <div class="w3-half w3-padding">
+                            <div>
+                                <label>@ResourceKey("Config.system")</label>
+                                @TextBox(info, "genxml/textbox/systemprovider", "class='w3-input w3-border' maxlength='50' autocomplete='off'", "")
+                            </div>
+                            <div class="">
+                                <label>@ResourceKey("Config.interfacekey")</label>
+                                @TextBox(info, "genxml/textbox/interfacekey", "maxlength='250' autocomplete='off' class='w3-input w3-border'", "")
+                            </div>
+                            <div class="">
+                                <label>@ResourceKey("Config.apptheme")</label>
+                                @TextBox(info, "genxml/textbox/apptheme", "maxlength='250' autocomplete='off' class='w3-input w3-border'", "")
+                            </div>
+                        </div>
                     </div>
-                    <div class="">
-                        <label>@ResourceKey("Config.interfacekey")</label>
-                        @TextBox(info, "genxml/textbox/interfacekey", "maxlength='250' autocomplete='off' class='w3-input w3-border'", "")
-                    </div>
-                    <div class="">
-                        <label>@ResourceKey("Config.apptheme")</label>
-                        @TextBox(info, "genxml/textbox/apptheme", "maxlength='250' autocomplete='off' class='w3-input w3-border'", "")
-                    </div>
+
+                    <div class="w3-button w3-green w3-padding-8 simplisity_click w3-margin" s-post="#configdata_@(info.ModuleId)" s-before="hideconfigpopup" s-cmd="rocketmod_saveconfig" s-fields="moduleid:@(info.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+
+                    <div class="w3-button w3-red w3-padding-8 w3-margin" onclick="returnclick();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
+
                 </div>
             </div>
 
-            <span class="w3-button w3-green w3-padding-8 simplisity_click w3-margin" s-post="#configdata_@(info.ModuleId)" s-cmd="rocketmod_saveconfig" s-fields="systemprovider:dnnrocketmodule,moduleid:@(info.ModuleId),theme:config-w3,template:view.cshtml,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-
         </div>
-    </div>
-
-
-
+    }
 
 </div>
 
@@ -57,7 +81,16 @@
 
     $(document).ready(function () {
 
+        $('#configdata_@(info.ModuleId)').show();
 
     });
+
+    function hideconfigpopup() {
+        $('#configdata_@(info.ModuleId)').hide();
+    }
+
+    function returntopage() {
+        windo.location($(),val());
+    }
 
 </script>

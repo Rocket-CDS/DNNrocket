@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DNNrocket.Login;
 using DNNrocketAPI;
 using Simplisity;
 
@@ -12,53 +13,60 @@ namespace RocketMod
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
 
             var cookieModuleId = DNNrocketUtils.GetCookieValue("rocketmod_moduleid");
-            var moduleid = 0;
-            if (!GeneralUtils.IsNumeric(cookieModuleId))
-            {
-                moduleid = postInfo.ModuleId;
-            }
-            else
+            var moduleid = postInfo.ModuleId;
+            if (!GeneralUtils.IsNumeric(cookieModuleId) && (Convert.ToInt32(cookieModuleId) > 0))
             {
                 moduleid = Convert.ToInt32(cookieModuleId);
             }
 
-
             var strOut = "";
 
+            if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface))
+            {
+                switch (paramCmd)
+                {
+                    case "rocketmod_getconfig":
+                        strOut = ConfigUtils.GetConfig(moduleid, rocketInterface);
+                        break;
+                    case "rocketmod_edit":
+                        strOut = "EDIT THE DATA";
+                        break;
+                    case "rocketmod_saveconfig":
+                        strOut = ConfigUtils.SaveConfig(moduleid, postInfo);
+                        if (strOut == "")
+                        {
+                            // not error returned , so return Dashboard.
+                            strOut = GetDashBoard(moduleid, rocketInterface);
+                        }
+                        break;
+                    case "rocketmod_getsetupmenu":
+                        strOut = ConfigUtils.GetSetup(moduleid, rocketInterface);
+                        break;
+                    case "rocketmod_dashboard":
+                        strOut = GetDashBoard(moduleid, rocketInterface);
+                        break;
+                    case "rocketmod_reset":
+                        strOut = ResetRocketMod(moduleid, rocketInterface);
+                        break;
+                }
+            }
             switch (paramCmd)
             {
-                case "rocketmod_getconfig":
-                    strOut = ConfigUtils.GetConfig(moduleid, rocketInterface);
+                case "rocketmod_login":
+                    strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
                     break;
                 case "rocketmod_getdata":
-                        strOut = GetData(moduleid, rocketInterface, postInfo);
-                    break;
-                case "rocketmod_edit":
-                    strOut = "EDIT THE DATA";
-                    break;
-                case "rocketmod_saveconfig":
-                    strOut = ConfigUtils.SaveConfig(moduleid, postInfo);
-                    if (strOut == "")
-                    {
-                        // not error returned , so return details.
-                        strOut = GetData(moduleid, rocketInterface, postInfo);
-                    }
-                    break;
-                case "rocketmod_getsetupmenu":
-                    strOut = ConfigUtils.GetSetup(moduleid, rocketInterface);
+                    strOut = GetData(moduleid, rocketInterface, postInfo);
                     break;
                 case "rocketmod_adminurl":
                     strOut = "/desktopmodules/dnnrocket/RocketMod/admin.html";
                     break;
-                case "rocketmod_dashboard":
-                    strOut = GetDashBoard(moduleid, rocketInterface);
-                    break;
-                case "rocketmod_reset":
-                    strOut = ResetRocketMod(moduleid, rocketInterface);
-                    break;
-                default:
-                    strOut = "Comamnd Not Found";
-                    break;
+            }
+
+            if (strOut == "")
+            {
+                postInfo.SetXmlProperty("genxml/interfacekey", rocketInterface.InterfaceKey);
+                strOut = LoginUtils.LoginForm(postInfo);
             }
 
             var rtnDic = new Dictionary<string, string>();
@@ -71,7 +79,7 @@ namespace RocketMod
             try
             {
                 ConfigUtils.DeleteConfig(moduleid);
-                return ConfigUtils.GetSetup(moduleid, rocketInterface);
+                return GetDashBoard(moduleid, rocketInterface);
             }
             catch (Exception ex)
             {
@@ -87,13 +95,13 @@ namespace RocketMod
                 if (controlRelPath == "") controlRelPath = ControlRelPath;
 
                 var themeFolder = rocketInterface.DefaultTheme;
-                var razortemplate = rocketInterface.DefaultTemplate;
+                var razortemplate = "dashboard.cshtml";
 
                 var passSettings = rocketInterface.ToDictionary();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
 
-                var info = objCtrl.GetData("moduleconfig", "MDATA", DNNrocketUtils.GetEditCulture(), moduleid);
+                var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), moduleid);
                 return DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
             }
             catch (Exception ex)
@@ -123,7 +131,7 @@ namespace RocketMod
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
                     var objCtrl = new DNNrocketController();
 
-                    var info = objCtrl.GetData("moduleconfig", "MDATA", DNNrocketUtils.GetEditCulture(), moduleid);
+                    var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), moduleid);
                     //return DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
 
 
