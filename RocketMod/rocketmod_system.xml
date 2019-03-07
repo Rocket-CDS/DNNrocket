@@ -22,6 +22,37 @@
   <interfacedata list="true">
     <genxml>
       <textbox>
+        <interfacekey>rocketmod</interfacekey>
+        <entitytypecode>DATA</entitytypecode>
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <defaulttemplate>view.cshtml</defaulttemplate>
+        <defaultcommand>rocketmod_getdata</defaultcommand>
+        <namespaceclass>RocketMod.startconnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <onmenu>false</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
         <interfacekey>dashboard</interfacekey>
         <entitytypecode />
         <interfaceicon />
@@ -40,19 +71,20 @@
           <chk value="false" data="1" />
         </providertype>
         <securityroles>
-          <chk value="false" data="Administrators" />
-          <chk value="false" data="Manager" />
-          <chk value="false" data="Editor" />
-          <chk value="false" data="ClientEditor" />
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
         </securityroles>
       </checkboxlist>
       <checkbox>
         <active>true</active>
+        <onmenu>true</onmenu>
       </checkbox>
     </genxml>
     <genxml>
       <textbox>
-        <interfacekey>rocketmod</interfacekey>
+        <interfacekey>edit</interfacekey>
         <entitytypecode>DATA</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
@@ -78,6 +110,7 @@
       </checkboxlist>
       <checkbox>
         <active>true</active>
+        <onmenu>true</onmenu>
       </checkbox>
     </genxml>
   </interfacedata>
@@ -94,14 +127,22 @@
         <groupicon />
       </textbox>
     </genxml>
+    <genxml>
+      <textbox>
+        <groupref>root</groupref>
+        <groupicon />
+      </textbox>
+    </genxml>
   </groupsdata>
   <lang>
     <genxml>
       <interfacedata list="true">
         <genxml />
         <genxml />
+        <genxml />
       </interfacedata>
       <groupsdata list="true">
+        <genxml />
         <genxml />
         <genxml />
       </groupsdata>
