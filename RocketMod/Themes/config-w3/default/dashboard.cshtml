@@ -20,20 +20,17 @@
 
 <div id="" class="simplisity_panel">
 
-    <div class="w3-center w3-margin">
-        <h1>
-            DashBoard stuff
-        </h1>
+    <div class="w3-row">
+        <a href="javascript:void(0)" class="" sectionname="">
+            <div class="w3-col tablink w3-bottombar w3-padding w3-border-black w3-theme " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("RocketMod.dashboard")</div>
+        </a>
     </div>
-
 
 
 
     @if (ConfigUtils.HasConfig(info.ModuleId))
     {
-        <h1>@info.GetXmlProperty("genxml/textbox/systemprovider")</h1>
-        <h1>@info.GetXmlProperty("genxml/textbox/interfacekey")</h1>
-        <h1>@info.GetXmlProperty("genxml/textbox/apptheme")</h1>
+        <h1>@info.GetXmlProperty("genxml/select/apptheme")</h1>
     }
     else
     {
@@ -42,25 +39,15 @@
 
             <div class="w3-modal-content w3-animate-top w3-card-4">
                 <header class="w3-container w3-theme-d3">
-                    <span onclick="document.getElementById('id01').style.display='none'"
-                          class="w3-button w3-display-topright">&times;</span>
-                    <h2>Modal Header</h2>
+                    <h2>@ResourceKey("RocketMod.selectapptheme")</h2>
                 </header>
                 <div class="w3-container">
 
                     <div class="w3-row">
                         <div class="w3-half w3-padding">
-                            <div>
-                                <label>@ResourceKey("Config.system")</label>
-                                @TextBox(info, "genxml/textbox/systemprovider", "class='w3-input w3-border' maxlength='50' autocomplete='off'", "")
-                            </div>
-                            <div class="">
-                                <label>@ResourceKey("Config.interfacekey")</label>
-                                @TextBox(info, "genxml/textbox/interfacekey", "maxlength='250' autocomplete='off' class='w3-input w3-border'", "")
-                            </div>
                             <div class="">
                                 <label>@ResourceKey("Config.apptheme")</label>
-                                @TextBox(info, "genxml/textbox/apptheme", "maxlength='250' autocomplete='off' class='w3-input w3-border'", "")
+                                @FolderSelectList(info, "genxml/select/apptheme", Model.GetSetting("mappathAppThemeFolder"), " class='w3-input w3-border'",false)
                             </div>
                         </div>
                     </div>
