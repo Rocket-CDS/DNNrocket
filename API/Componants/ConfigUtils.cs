@@ -11,7 +11,7 @@ namespace DNNrocketAPI
         public static bool HasConfig(int moduleId)
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), moduleId);
+            var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(),-1, moduleId);
             if (info == null)
             {
                 return false;
@@ -34,7 +34,7 @@ namespace DNNrocketAPI
             try
             {
                 var objCtrl = new DNNrocketController();
-                var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetCurrentCulture(), moduleId);
+                var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetCurrentCulture(),-1, moduleId);
                 objCtrl.Delete(info.ItemID);
                 return "";
             }
@@ -49,7 +49,20 @@ namespace DNNrocketAPI
             try
             {
                 var objCtrl = new DNNrocketController();
-                var info = objCtrl.SaveData("moduleconfig", "CONFIG", postInfo, moduleId);
+
+                // find out is this is a list or single data record, nby looking for the "editlist.cshtml" template.  (editlist.cshtml will exist for lists)
+                var appthemerelpath = postInfo.GetXmlProperty("genxml/appthemerelpath");
+                var themeFolder = postInfo.GetXmlProperty("genxml/select/apptheme");
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", appthemerelpath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                if (razorTempl == "")
+                {
+                    postInfo.SetXmlProperty("genxml/checkbox/datalist", "False");
+                }
+                else
+                {
+                    postInfo.SetXmlProperty("genxml/checkbox/datalist", "True");
+                }
+                var info = objCtrl.SaveData("moduleconfig", "CONFIG", postInfo, -1, moduleId);
 
                 return "";
             }
@@ -69,7 +82,7 @@ namespace DNNrocketAPI
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("config.cshtml", interfaceInfo.TemplateRelPath, interfaceInfo.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
 
-                var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), moduleId);
+                var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(),-1, moduleId);
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
 
                 return strOut;
@@ -86,10 +99,8 @@ namespace DNNrocketAPI
             try
             {
                 interfaceInfo.ModuleId = moduleId;
-
                 var strOut = "";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", interfaceInfo.TemplateRelPath, interfaceInfo.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
-                var objCtrl = new DNNrocketController();
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, interfaceInfo.Info);
 
                 return strOut;

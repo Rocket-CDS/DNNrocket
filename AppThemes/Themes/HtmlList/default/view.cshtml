@@ -1,0 +1,25 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+
+@{
+
+    var info = new SimplisityInfo();
+    if (Model.List.Count > 0)
+    {
+        info = (SimplisityInfo)Model.List.First();
+    }
+}
+
+
+<h1>Hello Display the fucking list you twat!!!! </h1>
+
+

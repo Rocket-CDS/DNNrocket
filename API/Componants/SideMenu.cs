@@ -11,14 +11,14 @@ namespace DNNrocketAPI.Componants
     {
         private SimplisityInfo _sysInfo;
 
-        private string systemkey;
-
-        public string SystemKey { get => systemkey; set => systemkey = value; }
+        public string SystemKey { get; set; }
+        public int SystemId { get; set; }
+        public int ModuleId { get; set; }
 
         public SideMenu(SimplisityInfo sysInfo)
         {
             _sysInfo = sysInfo;
-            systemkey = sysInfo.GetXmlProperty("genxml/textbox/ctrlkey");
+            SystemKey = sysInfo.GetXmlProperty("genxml/textbox/ctrlkey");
         }
 
         public List<SimplisityRecord> GetGroups()

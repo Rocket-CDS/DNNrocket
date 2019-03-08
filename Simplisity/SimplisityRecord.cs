@@ -23,6 +23,7 @@ namespace Simplisity
         public int UserId { get; set; }
         public int RowCount { get; set; }
         public string EncodingKey { get; set; }
+        public int SystemId { get; set; }
 
         private string _xmlData;
 
@@ -39,8 +40,9 @@ namespace Simplisity
             string XMLData,
             string Lang,
             int UserId,
-            int RowCount,
-            string EncodingKey)
+            int RowCount,            
+            string EncodingKey,
+            int SystemId)
         {
             this.ItemID = ItemID;
             this.PortalId = PortalId;
@@ -56,6 +58,7 @@ namespace Simplisity
             this.UserId = UserId;
             this.RowCount = RowCount;
             this.EncodingKey = EncodingKey;
+            this.SystemId = SystemId;
         }
 
         public SimplisityRecord(SimplisityInfo info)
@@ -75,6 +78,7 @@ namespace Simplisity
             this.UserId = info.UserId;
             this.RowCount = info.RowCount;
             this.EncodingKey = info.EncodingKey;
+            this.SystemId = info.SystemId;
         }
 
         public SimplisityRecord()
@@ -450,6 +454,7 @@ namespace Simplisity
             if (!rtnDictionary.ContainsKey("moduleid")) rtnDictionary.Add("moduleid", ModuleId.ToString(""));
             if (!rtnDictionary.ContainsKey("portalid")) rtnDictionary.Add("portalid", PortalId.ToString(""));
             if (!rtnDictionary.ContainsKey("itemid")) rtnDictionary.Add("itemid", ItemID.ToString(""));
+            if (!rtnDictionary.ContainsKey("systemid")) rtnDictionary.Add("systemid", SystemId.ToString(""));
             return rtnDictionary;
         }
 

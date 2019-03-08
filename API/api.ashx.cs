@@ -108,52 +108,43 @@ namespace DNNrocketAPI
                             break;
                         default:
                             var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
-                            if (systemInfo != null)
+                            var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
+
+                            if (rocketInterface.Exists)
                             {
-                                var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, TemplateRelPath, _editlang);
 
-                                if (rocketInterface.Exists)
+                                if (returnDictionary.ContainsKey("outputhtml"))
                                 {
-                                    var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, TemplateRelPath, _editlang);
-
-                                    if (returnDictionary.ContainsKey("outputhtml"))
-                                    {
-                                        strOut = returnDictionary["outputhtml"];
-                                    }
-                                    if (returnDictionary.ContainsKey("filenamepath"))
-                                    {
-                                        if (!returnDictionary.ContainsKey("downloadname")) returnDictionary["downloadname"] = "";
-                                        if (!returnDictionary.ContainsKey("fileext")) returnDictionary["fileext"] = "";
-                                        DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
-                                    }
-                                    if (returnDictionary.ContainsKey("outputjson"))
-                                    {
-                                        strJson = returnDictionary["outputjson"];
-                                    }
-
+                                    strOut = returnDictionary["outputhtml"];
                                 }
-                                else
+                                if (returnDictionary.ContainsKey("filenamepath"))
                                 {
-                                    // check for systemspi, does not exist.  It's used to create the systemprovders 
-                                    if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
-                                    {
-                                        var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
-                                        var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
-                                        strOut = returnDictionary["outputhtml"];
-                                    }
-                                    else
-                                    {
-                                        strOut = "ERROR: Invalid SystemProvider: " + systemprovider + "  interfacekey: " + interfacekey;
-                                    }
-
+                                    if (!returnDictionary.ContainsKey("downloadname")) returnDictionary["downloadname"] = "";
+                                    if (!returnDictionary.ContainsKey("fileext")) returnDictionary["fileext"] = "";
+                                    DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
                                 }
+                                if (returnDictionary.ContainsKey("outputjson"))
+                                {
+                                    strJson = returnDictionary["outputjson"];
+                                }
+
                             }
                             else
                             {
-                                strOut = "ERROR: SystemProvider is NULL";
+                                // check for systemspi, does not exist.  It's used to create the systemprovders 
+                                if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
+                                {
+                                    var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
+                                    var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
+                                    strOut = returnDictionary["outputhtml"];
+                                }
+                                else
+                                {
+                                    strOut = "ERROR: Invalid SystemProvider: " + systemprovider + "  interfacekey: " + interfacekey;
+                                }
 
                             }
-
                             break;
                     }
 
@@ -204,6 +195,7 @@ namespace DNNrocketAPI
                 var strOut = "";
                 var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
                 var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
+                var moduleid = sInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
 
                 var passSettings = sInfo.ToDictionary();
 
@@ -211,6 +203,7 @@ namespace DNNrocketAPI
                 var sInfoSystem = systemData.GetSystemByKey(systemprovider);
                 var sidemenu = new Componants.SideMenu(sInfoSystem);
                 var templateControlRelPath = sInfo.GetXmlProperty("genxml/hidden/relpath");
+                sidemenu.ModuleId = moduleid;
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 

@@ -423,17 +423,18 @@ namespace DNNrocketAPI
             }
         }
 
-        public SimplisityInfo GetData(string GuidKey, string typeCode, string lang, int systemId = -1)
+        public SimplisityInfo GetData(string GuidKey, string typeCode, string lang, int systemId = -1, int moduleId = -1)
         {
             //CacheUtils.ClearAllCache(); // clear ALL cache.
-            var info = GetByGuidKey(PortalSettings.Current.PortalId, systemId, typeCode, GuidKey);
+            var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey);
             if (info == null)
             {
                 // create record if not in DB
                 info = new SimplisityInfo();
                 info.GUIDKey = GuidKey;
                 info.TypeCode = typeCode;
-                info.ModuleId = systemId;
+                info.SystemId = systemId;
+                info.ModuleId = moduleId;                
                 info.PortalId = PortalSettings.Current.PortalId;
                 info.ItemID = Update(info);
             }
@@ -451,7 +452,8 @@ namespace DNNrocketAPI
                         nbilang.TypeCode = typeCode + "LANG";
                         nbilang.ParentItemId = info.ItemID;
                         nbilang.Lang = lg;
-                        nbilang.ModuleId = systemId;
+                        nbilang.SystemId = systemId;
+                        nbilang.ModuleId = moduleId;
                         nbilang.PortalId = PortalSettings.Current.PortalId;
                         nbilang.ItemID = Update(nbilang);
                     }
@@ -463,7 +465,7 @@ namespace DNNrocketAPI
             return nbi;
         }
 
-        public SimplisityInfo SaveData(string GuidKey, string typeCode, SimplisityInfo postInfo, int systemId = -1)
+        public SimplisityInfo SaveData(string GuidKey, string typeCode, SimplisityInfo postInfo, int systemId = -1, int moduleId = -1)
         {
             var info = GetByGuidKey(PortalSettings.Current.PortalId, systemId, typeCode, GuidKey);
             if (info == null)
@@ -476,11 +478,15 @@ namespace DNNrocketAPI
                 info.XMLData = postInfo.XMLData;
                 info.RemoveLangRecord();
                 info.Lang = "";
+                info.SystemId = systemId;
+                info.ModuleId = moduleId;
                 Update(info);
                 var nbi2 = GetRecordLang(info.ItemID, postInfo.Lang);
                 if (nbi2 != null)
                 {
                     nbi2.XMLData = postInfo.GetLangXml();
+                    nbi2.SystemId = systemId;
+                    nbi2.ModuleId = moduleId;
                     Update(nbi2);
                 }
                 CacheUtils.ClearAllCache(); // clear ALL cache.
@@ -490,7 +496,7 @@ namespace DNNrocketAPI
             return info;
         }
 
-        public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int systemId = -1)
+        public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int systemId = -1, int moduleId = -1)
         {
             var info = GetInfo(ItemId, lang);
             if (info == null)
@@ -499,7 +505,8 @@ namespace DNNrocketAPI
                 info = new SimplisityInfo();
                 info.GUIDKey = "";
                 info.TypeCode = typeCode;
-                info.ModuleId = systemId;
+                info.SystemId = systemId;
+                info.ModuleId = moduleId;
                 info.PortalId = PortalSettings.Current.PortalId;
                 info.ItemID = Update(info);
             }
@@ -517,7 +524,8 @@ namespace DNNrocketAPI
                         nbilang.TypeCode = typeCode + "LANG";
                         nbilang.ParentItemId = info.ItemID;
                         nbilang.Lang = lg;
-                        nbilang.ModuleId = systemId;
+                        info.SystemId = systemId;
+                        info.ModuleId = moduleId;
                         nbilang.PortalId = PortalSettings.Current.PortalId;
                         nbilang.ItemID = Update(nbilang);
                     }

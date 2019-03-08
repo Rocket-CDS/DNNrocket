@@ -26,12 +26,9 @@
         
         $('.redirectsetup_@(info.ModuleId)').unbind("click");
         $('.redirectsetup_@(info.ModuleId)').click(function () {
-            // save moduleid in cookie, so admin page can use it.
-            simplisity_setCookieValue('rocketmod_moduleid', @(info.ModuleId));
+            // redirect to admin page with return cookie.
             simplisity_setCookieValue('rocketmod_return', window.location.href);
-            simplisity_setCookieValue('rocketmod_cmd', 'rocketmod_dashboard');
-            // redirect to admin page.
-            window.location = "/desktopmodules/dnnrocket/RocketMod/admin.html";
+            window.location = "/desktopmodules/dnnrocket/RocketMod/admin.aspx?moduleid=@(info.ModuleId)";
         });
 
     });

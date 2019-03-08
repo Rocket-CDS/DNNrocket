@@ -1,0 +1,31 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+    if (Model.List.Count > 0)
+    {
+        info = (SimplisityInfo)Model.List.First();
+    }
+}
+
+
+<h1>Hello New World Display!!!! </h1>
+
+<h2>
+    @info.GetXmlProperty("genxml/textbox/test")
+</h2>
+
+<div class='w3-padding'>
+    @HtmlOf(info.GetXmlProperty("genxml/textbox/ckeditor"))
+</div>
+
