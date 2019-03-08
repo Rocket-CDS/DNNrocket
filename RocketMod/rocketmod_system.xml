@@ -5,11 +5,11 @@
     <activevalue />
     <pagesize>20</pagesize>
     <page>1</page>
-    <selecteditemid>5397</selecteditemid>
-    <editlanguage>fr-FR</editlanguage>
+    <selecteditemid>367981</selecteditemid>
+    <editlanguage />
     <index>99</index>
     <systemprovider>systemapi</systemprovider>
-    <uilang1>fr-FR</uilang1>
+    <uilang1>en-US</uilang1>
   </hidden>
   <textbox>
     <ctrlkey>dnnrocketmodule</ctrlkey>
@@ -17,8 +17,11 @@
     <adminurl>/DesktopModules/DNNrocket/RocketMod/admin.html</adminurl>
     <apiurl>/DesktopModules/DNNrocket/API/api.ashx</apiurl>
     <licensekey />
-    <encryptkey>12365498765454654</encryptkey>
+    <encryptkey>12365498765454654222222222</encryptkey>
   </textbox>
+  <checkbox>
+    <debugmode>true</debugmode>
+  </checkbox>
   <interfacedata list="true">
     <genxml>
       <textbox>
