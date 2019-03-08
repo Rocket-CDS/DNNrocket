@@ -27,6 +27,8 @@ namespace DNNrocketAPI
 
             try
             {
+                var objCtrl = new DNNrocketController();
+
                 // Do file upload is this is a file upload request.
                 if (context.Request.Files.Count > 0)
                 {
@@ -49,14 +51,31 @@ namespace DNNrocketAPI
                         context.Response.End();
                     }
 
-
                     var requestJson = "";
                     var postInfo = new SimplisityInfo();
                     postInfo.SetXmlProperty("genxml/hidden","");
                     if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
                     {
                         requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
+                        
+                        // ---- START: DEBUG POST ------
+                        var debugSystemProvider = DNNrocketUtils.GetCookieValue("s-current-systemprovider");
+                            var debugSystemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", debugSystemProvider);
+                        if (debugSystemInfo != null && debugSystemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
+                        {
+                            FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + "\\debug_requestJson.json", requestJson);
+                        }
+                        // ---- END: DEBUG POST ------
+
                         postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
+
+                        // ---- START: DEBUG POST ------
+                        if (debugSystemInfo != null && debugSystemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
+                        {
+                            FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + "\\debug_postInfo.xml", postInfo.XMLData);
+                        }
+                        // ---- END: DEBUG POST ------
+
                     }
 
                     // Add any url params
@@ -88,43 +107,50 @@ namespace DNNrocketAPI
                             strOut = GetSideMenu(postInfo, systemprovider);
                             break;
                         default:
-                            var objCtrl = new DNNrocketController();
                             var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
-                            var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
-
-                            if (rocketInterface.Exists)
+                            if (systemInfo != null)
                             {
-                                var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, TemplateRelPath, _editlang);
+                                var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
 
-                                if (returnDictionary.ContainsKey("outputhtml"))
+                                if (rocketInterface.Exists)
                                 {
-                                    strOut = returnDictionary["outputhtml"];
-                                }
-                                if (returnDictionary.ContainsKey("filenamepath"))
-                                {
-                                    if (!returnDictionary.ContainsKey("downloadname")) returnDictionary["downloadname"] = "";
-                                    if (!returnDictionary.ContainsKey("fileext")) returnDictionary["fileext"] = "";
-                                    DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
-                                }
-                                if (returnDictionary.ContainsKey("outputjson"))
-                                {
-                                    strJson = returnDictionary["outputjson"];
-                                }
+                                    var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, TemplateRelPath, _editlang);
 
-                            }
-                            else
-                            {
-                                // check for systemspi, does not exist.  It's used to create the systemprovders 
-                                if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
-                                {
-                                    var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
-                                    var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
-                                    strOut = returnDictionary["outputhtml"];
+                                    if (returnDictionary.ContainsKey("outputhtml"))
+                                    {
+                                        strOut = returnDictionary["outputhtml"];
+                                    }
+                                    if (returnDictionary.ContainsKey("filenamepath"))
+                                    {
+                                        if (!returnDictionary.ContainsKey("downloadname")) returnDictionary["downloadname"] = "";
+                                        if (!returnDictionary.ContainsKey("fileext")) returnDictionary["fileext"] = "";
+                                        DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
+                                    }
+                                    if (returnDictionary.ContainsKey("outputjson"))
+                                    {
+                                        strJson = returnDictionary["outputjson"];
+                                    }
+
                                 }
                                 else
                                 {
-                                    strOut = "ERROR: Invalid SystemProvider: " + systemprovider + "  interfacekey: " + interfacekey;
+                                    // check for systemspi, does not exist.  It's used to create the systemprovders 
+                                    if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
+                                    {
+                                        var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
+                                        var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
+                                        strOut = returnDictionary["outputhtml"];
+                                    }
+                                    else
+                                    {
+                                        strOut = "ERROR: Invalid SystemProvider: " + systemprovider + "  interfacekey: " + interfacekey;
+                                    }
+
                                 }
+                            }
+                            else
+                            {
+                                strOut = "ERROR: SystemProvider is NULL";
 
                             }
 

@@ -121,6 +121,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
 
     var systemprovider = simplisity_getSystemProvider(sfields);
     simplisity_setCookieValue('s-cmdurl-' + systemprovider, scmdurl);
+    simplisity_setCookieValue('s-current-systemprovider', systemprovider);
 
     if (typeof reload === 'undefined' || reload === '') {
         reload = 'false';
@@ -291,10 +292,19 @@ function ConvertFormToJSON(spost, slist, sfields) {
         sposts.forEach((post) => {
             $(post).find('input, textarea, select').each(function () {
 
-                if (this.getAttribute("s-update") !== 'ignore') {
+                if (this.getAttribute("s-update") !== 'ignore' && this.id !== '') {
+
+                    if (this.getAttribute("s-datatype") === 'coded') {
+                        postvalue = this.value || '';
+                        postvalue = simplisity_encode(postvalue);
+                    }
+                    else {
+                        postvalue = this.value || '';
+                    }
+
                     var jsonData = {};
                     jsonData['id'] = this.id || '';
-                    jsonData['value'] = this.value || '';
+                    jsonData['value'] = postvalue;
                     jsonData['s-post'] = post || '';
                     jsonData['s-update'] = this.getAttribute("s-update") || '';
                     jsonData['s-datatype'] = this.getAttribute("s-datatype") || '';
@@ -317,18 +327,30 @@ function ConvertFormToJSON(spost, slist, sfields) {
             var lp2 = 1;
             $(list).each(function () {
                 $(this).find('input, textarea, select').each(function () {
-                    var jsonDataL = {};
-                    jsonDataL['id'] = this.id || '';
-                    jsonDataL['value'] = this.value || '';
-                    jsonDataL['row'] = lp2.toString() || '';
-                    jsonDataL['listname'] = list || '';
-                    jsonDataL['s-update'] = this.getAttribute("s-update") || '';
-                    jsonDataL['s-datatype'] = this.getAttribute("s-datatype") || '';
-                    jsonDataL['s-xpath'] = this.getAttribute("s-xpath") || '';
-                    jsonDataL['type'] = this.getAttribute("type") || 'select';
-                    jsonDataL['checked'] = $(this).prop('checked') || '';
-                    jsonDataL['name'] = this.getAttribute("name") || '';
-                    viewData.listdata.push(jsonDataL);
+
+                    if (this.getAttribute("s-update") !== 'ignore' && this.id !== '') {
+
+                        if (this.getAttribute("s-datatype") === 'coded') {
+                            postvalue = this.value || '';
+                            postvalue = simplisity_encode(postvalue);
+                        }
+                        else {
+                            postvalue = this.value || '';
+                        }
+
+                        var jsonDataL = {};
+                        jsonDataL['id'] = this.id || '';
+                        jsonDataL['value'] = postvalue || '';
+                        jsonDataL['row'] = lp2.toString() || '';
+                        jsonDataL['listname'] = list || '';
+                        jsonDataL['s-update'] = this.getAttribute("s-update") || '';
+                        jsonDataL['s-datatype'] = this.getAttribute("s-datatype") || '';
+                        jsonDataL['s-xpath'] = this.getAttribute("s-xpath") || '';
+                        jsonDataL['type'] = this.getAttribute("type") || 'select';
+                        jsonDataL['checked'] = $(this).prop('checked') || '';
+                        jsonDataL['name'] = this.getAttribute("name") || '';
+                        viewData.listdata.push(jsonDataL);
+                    }
                 });
                 lp2 += 1;
             });

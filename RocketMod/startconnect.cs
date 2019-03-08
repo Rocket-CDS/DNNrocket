@@ -37,10 +37,17 @@ namespace RocketMod
             var strOut = "";
 
             if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface))
-            {
+            {                
                 switch (paramCmd)
                 {
                     case "rocketmod_edit":
+                        strOut = GetEditData(moduleid, rocketInterface);
+                        break;
+                    case "rocketmod_savedata":
+                        strOut = GetSaveData(moduleid, rocketInterface, postInfo);
+                        break;
+                    case "rocketmod_delete":
+                        DeleteData(moduleid, postInfo);
                         strOut = GetEditData(moduleid, rocketInterface);
                         break;
                     case "rocketmod_saveconfig":
@@ -86,14 +93,23 @@ namespace RocketMod
             return rtnDic;
         }
 
+        public static void DeleteData(int moduleid, SimplisityInfo postInfo)
+        {
+            var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            var objCtrl = new DNNrocketController();
+            objCtrl.Delete(selecteditemid);
+        }
+
         public static String GetEditData(int moduleid, DNNrocketInterface rocketInterface)
         {
             try
             {
                 var objCtrl = new DNNrocketController();
-                var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), moduleid);
+                var configInfo = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), moduleid);
 
-                var themeFolder = info.GetXmlProperty("genxml/select/apptheme");
+                var info = objCtrl.GetData(moduleid.ToString(), rocketInterface.EntityTypeCode, DNNrocketUtils.GetEditCulture());
+
+                var themeFolder = configInfo.GetXmlProperty("genxml/select/apptheme");
                 var razortemplate = "edit.cshtml";
 
                 var passSettings = rocketInterface.ToDictionary();
@@ -104,6 +120,22 @@ namespace RocketMod
                 var strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
                 if (strOut == "") strOut = "ERROR: No data returned for " + _appthemeMapPath + "\\" + themeFolder + "\\default\\" + razortemplate;
                 return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public static String GetSaveData(int moduleid, DNNrocketInterface rocketInterface, SimplisityInfo postInfo)
+        {
+            try
+            {
+                var objCtrl = new DNNrocketController();
+                var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), moduleid);
+                postInfo.ParentItemId = info.ItemID;
+                objCtrl.SaveData(moduleid.ToString(), rocketInterface.EntityTypeCode, postInfo);
+                return GetEditData(moduleid,rocketInterface);
             }
             catch (Exception ex)
             {

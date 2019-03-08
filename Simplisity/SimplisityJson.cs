@@ -236,6 +236,7 @@ namespace Simplisity
                 var xpath = smi.GetXmlProperty(dataroot + "/s-xpath");
                 var type = smi.GetXmlProperty(dataroot + "/type");
                 var checkfield = smi.GetXmlPropertyBool(dataroot + "/checked");
+
                 var processControl = true;
                 if (type.ToLower() == "radio")
                 {
@@ -273,13 +274,16 @@ namespace Simplisity
                         {
 
                             var val = smi.GetXmlProperty(dataroot + "/value");
-                            switch (smi.GetXmlProperty(dataroot + "/s-datatype"))
+                            switch (smi.GetXmlProperty(dataroot + "/s-datatype").ToLower())
                             {
                                 case "date":
                                     xmlOut.SetXmlProperty(xpath, val, TypeCode.DateTime);
                                     break;
                                 case "double":
                                     xmlOut.SetXmlProperty(xpath, val, TypeCode.Double);
+                                    break;
+                                case "coded":
+                                    xmlOut.SetXmlProperty(xpath, GeneralUtils.DeCode(val));
                                     break;
                                 default:
                                     xmlOut.SetXmlProperty(xpath, val);

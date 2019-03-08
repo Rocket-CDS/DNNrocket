@@ -480,7 +480,7 @@ namespace DNNrocketAPI
                 var nbi2 = GetRecordLang(info.ItemID, postInfo.Lang);
                 if (nbi2 != null)
                 {
-                    nbi2.XMLData = postInfo.XMLData;
+                    nbi2.XMLData = postInfo.GetLangXml();
                     Update(nbi2);
                 }
                 CacheUtils.ClearAllCache(); // clear ALL cache.

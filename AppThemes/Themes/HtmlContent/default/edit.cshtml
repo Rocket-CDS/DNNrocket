@@ -1,4 +1,36 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+
+@{
+    var info = (SimplisityInfo)Model.List.First();
+}
+
+<span class="w3-section simplisity_buttons">
+    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="rocketmod_savedata" s-post="#datasave" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:edit.cshtml,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="rocketmod_delete" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:CategoryList.cshtml,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
+    <button class="w3-button w3-sand w3-padding-8 simplisity_click" s-track="true" s-cmd="rocketmod_getlist" s-fields="selecteditemid:,theme:config-w3,template:editlist.cshtml,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdReturnButton")</button>
+</span>
 
 
 <h1>Hello New World Theme!!!! :-)</h1>
+
+<div id="datasave">
+
+    @TextBox(info, "genxml/textbox/test");
+
+    <div class='w3-padding'>
+        @CKEditor(info, "genxml/textbox/ckeditor")
+    </div>
+
+
+</div>
+

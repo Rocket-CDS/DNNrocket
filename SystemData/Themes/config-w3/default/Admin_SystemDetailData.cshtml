@@ -58,8 +58,16 @@
                 @TextBox(sInfo, "genxml/textbox/encryptkey", "class='w3-input w3-border required' maxlength='250' ", "")
             </div>
         </div>
-
         <div class="w3-row-padding">
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.debugmode")</label>
+                @CheckBox(sInfo, "genxml/checkbox/debugmode", "")
+            </div>
+            <div class="w3-half">
+            </div>
+        </div>
+
+        <div class="w3-row-padding w3-right-align">
             @sInfo.GUIDKey / @sInfo.ItemID
         </div>
 
