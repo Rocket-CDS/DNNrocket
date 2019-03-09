@@ -51,27 +51,23 @@ namespace RocketMod
 
         public void PopulateConfig()
         {
-            if (_moduleid > 0)
+            var objCtrl = new DNNrocketController();
+            ConfigInfo = objCtrl.GetData("rocketmod_" + _moduleid, "CONFIG", DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
+            if (ConfigInfo == null)
             {
-                var objCtrl = new DNNrocketController();
-                // read Config data
-                ConfigInfo = objCtrl.GetData("rocketmod_" + _moduleid, "CONFIG", DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
-                if (ConfigInfo == null)
+                _configExists = false;
+                ConfigInfo = new SimplisityInfo();
+                ConfigInfo.ModuleId = _moduleid;
+            }
+            else
+            {
+                if (ConfigInfo.XMLDoc.SelectNodes("genxml/*").Count <= 1) // <lang> node will be created for new record.
                 {
                     _configExists = false;
-                    ConfigInfo = new SimplisityInfo();
-                    ConfigInfo.ModuleId = _moduleid;
                 }
                 else
                 {
-                    if (ConfigInfo.XMLDoc.SelectNodes("genxml/*").Count <= 1) // <lang> node will be created for new record.
-                    {
-                        _configExists = false;
-                    }
-                    else
-                    {
-                        _configExists = true;
-                    }
+                    _configExists = true;
                 }
             }
         }

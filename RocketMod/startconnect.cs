@@ -14,82 +14,82 @@ namespace RocketMod
         private static string _appthemeMapPath;
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
-            var strOut = "*TriggerLogin*";
+            var rocketInterface = new DNNrocketInterface(interfaceInfo);
+            var strOut = ""; // return nothing if not matching commands.
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
 
-            var rocketInterface = new DNNrocketInterface(interfaceInfo);
+            var commandSecurity = new Dictionary<string, bool>();
+            commandSecurity.Add("rocketmod_edit", true);
+            commandSecurity.Add("rocketmod_savedata", true);
+            commandSecurity.Add("rocketmod_delete", true);
+            commandSecurity.Add("rocketmod_saveconfig", true);
+            commandSecurity.Add("rocketmod_getsetupmenu", true);
+            commandSecurity.Add("rocketmod_dashboard", true);
+            commandSecurity.Add("rocketmod_reset", true);
+            commandSecurity.Add("rocketmod_getdata", false);
+            commandSecurity.Add("rocketmod_login", false);
+            commandSecurity.Add("rocketmod_adminurl", false);
 
             // we should ALWAYS pass back the moduleid in the template post.
             // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
             var moduleid = postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (moduleid == 0) moduleid = postInfo.ModuleId;
-            if (moduleid == 0)
+
+            _moduleData = new ModuleData(moduleid);
+
+            // use command form cookie if we have set it.
+            var cookieCmd = DNNrocketUtils.GetCookieValue("rocketmod_cmd");
+            if (cookieCmd != "")
             {
-                strOut = "ERROR: No moduleId has been passed to the API";
+                paramCmd = cookieCmd;
+                DNNrocketUtils.DeleteCookieValue("rocketmod_cmd");
             }
-            else
+            if (commandSecurity.ContainsKey(paramCmd) && (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface) || !commandSecurity[paramCmd]))
             {
-                _moduleData = new ModuleData(moduleid);
-
-                // use command form cookie if we have set it.
-                var cookieCmd = DNNrocketUtils.GetCookieValue("rocketmod_cmd");
-                if (cookieCmd != "")
-                {
-                    paramCmd = cookieCmd;
-                    DNNrocketUtils.DeleteCookieValue("rocketmod_cmd");
-                }
-
-                if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface))
-                {
-                    switch (paramCmd)
-                    {
-                        case "rocketmod_edit":
-                            strOut = EditData(rocketInterface, postInfo);
-                            break;
-                        case "rocketmod_savedata":
-                            strOut = SaveData(moduleid, rocketInterface, postInfo);
-                            break;
-                        case "rocketmod_delete":
-                            DeleteData(moduleid, postInfo);
-                            strOut = EditData(rocketInterface, postInfo);
-                            break;
-                        case "rocketmod_saveconfig":
-                            _moduleData.SaveConfig(postInfo);
-                            _moduleData.PopulateConfig();
-                            strOut = GetDashBoard(rocketInterface);
-                            break;
-                        case "rocketmod_getsetupmenu":
-                            strOut = GetSetup(rocketInterface);
-                            break;
-                        case "rocketmod_dashboard":
-                            strOut = GetDashBoard(rocketInterface);
-                            break;
-                        case "rocketmod_reset":
-                            strOut = ResetRocketMod(rocketInterface);
-                            break;
-                    }
-                }
                 switch (paramCmd)
                 {
+                    case "rocketmod_edit":
+                        strOut = EditData(rocketInterface, postInfo);
+                        break;
+                    case "rocketmod_savedata":
+                        strOut = SaveData(moduleid, rocketInterface, postInfo);
+                        break;
+                    case "rocketmod_delete":
+                        DeleteData(moduleid, postInfo);
+                        strOut = EditData(rocketInterface, postInfo);
+                        break;
+                    case "rocketmod_saveconfig":
+                        _moduleData.SaveConfig(postInfo);
+                        _moduleData.PopulateConfig();
+                        strOut = GetDashBoard(rocketInterface);
+                        break;
+                    case "rocketmod_getsetupmenu":
+                        strOut = GetSetup(rocketInterface);
+                        break;
+                    case "rocketmod_dashboard":
+                        strOut = GetDashBoard(rocketInterface);
+                        break;
+                    case "rocketmod_reset":
+                        strOut = ResetRocketMod(rocketInterface);
+                        break;
                     case "rocketmod_getdata":
                         strOut = GetDisplay(rocketInterface);
                         break;
+                    case "rocketmod_login":
+                        strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
+                        break;
+                    case "rocketmod_adminurl":
+                        strOut = "/desktopmodules/dnnrocket/RocketMod/admin.aspx";
+                        break;
                 }
             }
-            switch (paramCmd)
+            else
             {
-                case "rocketmod_login":
-                    strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
-                    break;
-                case "rocketmod_adminurl":
-                    strOut = "/desktopmodules/dnnrocket/RocketMod/admin.aspx";
-                    break;
-            }
-
-            if (strOut == "*TriggerLogin*")
-            {
-                strOut = LoginUtils.LoginForm(postInfo, rocketInterface.InterfaceKey);
+                if (commandSecurity.ContainsKey(paramCmd))
+                {
+                    strOut = LoginUtils.LoginForm(postInfo, rocketInterface.InterfaceKey);
+                }
             }
 
             var rtnDic = new Dictionary<string, string>();
