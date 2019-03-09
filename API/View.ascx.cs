@@ -80,7 +80,7 @@ namespace DNNrocketAPI
 
             _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
 
-            _configInfo = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), ModuleId);
+            _configInfo = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), -1, ModuleId, true);
 
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
 

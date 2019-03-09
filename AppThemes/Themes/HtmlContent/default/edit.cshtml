@@ -11,7 +11,11 @@
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 @{
-    var info = (SimplisityInfo)Model.List.First();
+    var info = new SimplisityInfo();
+    if (Model.List.Count > 0)
+    {
+        info = (SimplisityInfo)Model.List.First();
+    }
 }
 
 <span class="w3-section simplisity_buttons">

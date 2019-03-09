@@ -11,7 +11,7 @@ namespace DNNrocketAPI
         public static bool HasConfig(int moduleId)
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(),-1, moduleId);
+            var info = objCtrl.GetByGuidKey(-1,moduleId, "CONFIG", "moduleconfig");
             if (info == null)
             {
                 return false;
@@ -94,22 +94,6 @@ namespace DNNrocketAPI
         }
 
 
-        public static String GetSetup(int moduleId, DNNrocketInterface interfaceInfo)
-        {
-            try
-            {
-                interfaceInfo.ModuleId = moduleId;
-                var strOut = "";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", interfaceInfo.TemplateRelPath, interfaceInfo.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, interfaceInfo.Info);
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
 
 
     }

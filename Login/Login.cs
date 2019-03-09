@@ -90,9 +90,10 @@ namespace DNNrocket.Login
             return strOut;
         }
 
-        public static string LoginForm(SimplisityInfo sInfo)
+        public static string LoginForm(SimplisityInfo sInfo, string interfacekey = "login")
         {
             var razorTempl = DNNrocketUtils.GetRazorTemplateData("LoginForm.cshtml", "/DesktopModules/DNNrocket/Login", "config-w3", DNNrocketUtils.GetCurrentCulture());
+            sInfo.SetXmlProperty("genxml/interfacekey", interfacekey); // make sure the login form has the correct interface command.
             return DNNrocketUtils.RazorDetail(razorTempl, sInfo);
         }
 
