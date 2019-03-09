@@ -23,8 +23,8 @@ BEGIN
 
 CREATE TABLE {databaseOwner}[{objectQualifier}DNNrocket] (
 	[ItemId] [int] IDENTITY (1, 1) NOT NULL ,
-	[PortalId] [int] NULL ,
-	[ModuleId] [int] NULL ,
+	[PortalId] [int] NULL CONSTRAINT [DF_DNNrocket_PortalId]  DEFAULT ((-1)),
+	[ModuleId] [int] NULL CONSTRAINT [DF_DNNrocket_ModuleId]  DEFAULT ((-1)),
 	[TypeCode] [nvarchar](50) NULL ,
 	[XMLData] [xml] NULL ,
 	[GUIDKey] [nvarchar](250) NULL ,
@@ -33,7 +33,8 @@ CREATE TABLE {databaseOwner}[{objectQualifier}DNNrocket] (
 	[XrefItemId] [int] NULL ,
 	[ParentItemId] [int] NULL ,
 	[Lang] [nvarchar] (50) NULL ,
-	[UserId] [int] NOT NULL CONSTRAINT [DF_DNNrocket_UserId] DEFAULT ((-1))
+	[UserId] [int] NOT NULL CONSTRAINT [DF_DNNrocket_UserId] DEFAULT ((-1)),
+	[SystemId] [int] NULL CONSTRAINT [DF_DNNrocket_SystemId]  DEFAULT ((-1)),	
 	CONSTRAINT [PK_DNNrocket] PRIMARY KEY  CLUSTERED 
 	(
 		[ItemId]
@@ -49,6 +50,7 @@ CREATE TABLE {databaseOwner}[{objectQualifier}DNNrocket] (
  CREATE NONCLUSTERED INDEX IX_DNNrocketUserId ON {databaseOwner}[{objectQualifier}DNNrocket] (  UserId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
  CREATE NONCLUSTERED INDEX IX_DNNrocketLang ON {databaseOwner}[{objectQualifier}DNNrocket] (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
  CREATE NONCLUSTERED INDEX IX_DNNrocketGuidKey ON {databaseOwner}[{objectQualifier}DNNrocket] (  GuidKey ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketSystemId ON {databaseOwner}[{objectQualifier}DNNrocket] (  SystemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
 
 END
 
@@ -195,7 +197,8 @@ CREATE   PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_Update]
 @XrefItemId int,
 @ParentItemId int,
 @UserId int,
-@Lang nvarchar(10)
+@Lang nvarchar(10),
+@SystemId int
 )
 AS
 BEGIN
@@ -215,7 +218,8 @@ TextData,
 XrefItemId,
 ParentItemId,
 UserId,
-Lang
+Lang,
+SystemId
 		)
 		values
 		(
@@ -229,7 +233,8 @@ Lang
 @XrefItemId,
 @ParentItemId,
 @UserId,
-@Lang
+@Lang,
+@SystemId
 		)
 		
 		set @ItemID = @@IDENTITY
@@ -249,7 +254,8 @@ TextData = @TextData,
 XrefItemId = @XrefItemId,
 ParentItemId = @ParentItemId,
 UserId = @UserId,
-Lang = @Lang
+Lang = @Lang,
+SystemId = @SystemId
 		where ItemId = @ItemId
  
 	end
@@ -364,7 +370,8 @@ CREATE    PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetList]
 @pageNum int = 0,
 @PageSize int = 0,
 @RecordCount int = 0,
-@Lang nvarchar(50) = ''
+@Lang nvarchar(50) = '',
+@SystemId int
 
 AS
 begin
@@ -412,19 +419,19 @@ END
 
 if (CHARINDEX('CATXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as CATXREF on CATXREF.ParentItemId = R1.ItemId and CATXREF.TypeCode =  ''CATXREF'' '
+	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as CATXREF on CATXREF.ParentItemId = R1.ItemId and CATXREF.TypeCode =  ''CATXREF'' '
 end
 if (CHARINDEX('CASCADE', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as CASCADE on CASCADE.ParentItemId = R1.ItemId and CASCADE.TypeCode =  ''CASCADE'' '
+	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as CASCADE on CASCADE.ParentItemId = R1.ItemId and CASCADE.TypeCode =  ''CASCADE'' '
 end
 if (CHARINDEX('PROPXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as PROPXREF on PROPXREF.ParentItemId = R1.ItemId and PROPXREF.TypeCode =  ''PROPXREF'' '
+	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as PROPXREF on PROPXREF.ParentItemId = R1.ItemId and PROPXREF.TypeCode =  ''PROPXREF'' '
 end
 if (CHARINDEX('ATTRXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as ATTRXREF on ATTRXREF.ParentItemId = R1.ItemId and ATTRXREF.TypeCode =  ''ATTRXREF'' '
+	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as ATTRXREF on ATTRXREF.ParentItemId = R1.ItemId and ATTRXREF.TypeCode =  ''ATTRXREF'' '
 end
 
 
@@ -438,7 +445,15 @@ DEALLOCATE idx_cursor
 ------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------
 
-
+		IF (@PortalId  >= 0) BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or R1.PortalId = ''-1'') ' + @Filter
+		END 
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (R1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or R1.ModuleId = ''-1'') ' + @Filter
+		END 
+		IF (@SystemId >= 0) BEGIN
+			SET @Filter = ' and (R1.SystemId = ''' + Convert(nvarchar(10),@SystemId) + ''' or R1.SystemId = ''-1'') ' + @Filter
+		END 
 
 	 
 	 
@@ -595,6 +610,7 @@ CREATE    PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetListCount]
 @TypeCode nvarchar(50),
 @Filter nvarchar(1000),
 @Lang nvarchar(50),
+@SystemId int,
 @RecordCount int OUTPUT
 AS
 begin
@@ -640,19 +656,19 @@ END
 
 if (CHARINDEX('CATXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as CATXREF on CATXREF.ParentItemId = R1.ItemId and CATXREF.TypeCode =  ''CATXREF'' '
+	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as CATXREF on CATXREF.ParentItemId = R1.ItemId and CATXREF.TypeCode =  ''CATXREF'' '
 end
 if (CHARINDEX('CASCADE', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as CASCADE on CASCADE.ParentItemId = R1.ItemId and CASCADE.TypeCode =  ''CASCADE'' '
+	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as CASCADE on CASCADE.ParentItemId = R1.ItemId and CASCADE.TypeCode =  ''CASCADE'' '
 end
 if (CHARINDEX('PROPXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as PROPXREF on PROPXREF.ParentItemId = R1.ItemId and PROPXREF.TypeCode =  ''PROPXREF'' '
+	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as PROPXREF on PROPXREF.ParentItemId = R1.ItemId and PROPXREF.TypeCode =  ''PROPXREF'' '
 end
 if (CHARINDEX('ATTRXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join dbo.[DNNrocket] as ATTRXREF on ATTRXREF.ParentItemId = R1.ItemId and ATTRXREF.TypeCode =  ''ATTRXREF'' '
+	set @JoinIndex = @JoinIndex + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as ATTRXREF on ATTRXREF.ParentItemId = R1.ItemId and ATTRXREF.TypeCode =  ''ATTRXREF'' '
 end
 
 
@@ -664,6 +680,15 @@ DEALLOCATE idx_cursor
 ------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------
 
+		IF (@PortalId  >= 0) BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or R1.PortalId = ''-1'') ' + @Filter
+		END 
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (R1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or R1.ModuleId = ''-1'') ' + @Filter
+		END 
+		IF (@SystemId >= 0) BEGIN
+			SET @Filter = ' and (R1.SystemId = ''' + Convert(nvarchar(10),@SystemId) + ''' or R1.SystemId = ''-1'') ' + @Filter
+		END 
 
 
 	--DECLARE @RecordCount int

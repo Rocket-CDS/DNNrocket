@@ -10,7 +10,7 @@ namespace DNNrocket.Category
     public static class CategoryUtils
     {
 
-        public static Dictionary<string,string> GetCategoriesDict(int portalId, int systemId, string editlang, bool showdisabled = false, bool showhidden = true, string searchtext = "", bool addEmpty = true)
+        public static Dictionary<string,string> GetCategoriesDict(int portalId, int moduleId, string editlang, bool showdisabled = false, bool showhidden = true, string searchtext = "", bool addEmpty = true, int systemId = -1)
         {
             var catDict = new Dictionary<string, string>();
             var filter = "";
@@ -22,7 +22,7 @@ namespace DNNrocket.Category
             {
                 filter += " and (R1.XMLData.value('(genxml/checkbox/hidden)[1]','nvarchar(max)') = 'false') ";
             }
-            var categoryList = CategoryUtils.GetCategoryList(portalId, systemId, editlang, searchtext, filter);
+            var categoryList = CategoryUtils.GetCategoryList(portalId, -1, editlang, searchtext, filter,false,true, systemId);
 
             if (addEmpty)
             {
@@ -42,9 +42,9 @@ namespace DNNrocket.Category
             return catDict;
         }
 
-        public static List<Category> GetCategoryList(int portalId, int systemId, string editlang, string searchtext = "", string filter = "", bool showdisabled = false, bool showhidden = true)
+        public static List<Category> GetCategoryList(int portalId, int moduleId, string editlang, string searchtext = "", string filter = "", bool showdisabled = false, bool showhidden = true, int systemId = -1)
         {
-            filter += " and R1.ModuleId = '" + systemId + "' ";
+            filter += " and R1.SystemId = '" + systemId + "' ";
 
             if (filter == "" && searchtext != "")
             {

@@ -99,7 +99,7 @@ namespace DNNrocket.Category
                 var headerData = new SimplisityInfo();
                 headerData.SetXmlProperty("genxml/textbox/searchtext", searchtext);
 
-                var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, systemInfo.ItemID, _editlang, searchtext,"",true,true);
+                var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, -1, _editlang, searchtext,"",true,true, systemInfo.ItemID);
 
                 return RenderList(categoryList, postInfo, 0, templateControlRelPath, headerData);
             }

@@ -59,11 +59,6 @@ namespace DNNrocketAPI
 
         public bool Exists { get; }
 
-        public int SystemId
-        {
-            get { return base.ModuleId; }
-            set { base.ModuleId = value; }
-        }
         
         public string InterfaceKey
         {

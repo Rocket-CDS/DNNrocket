@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DNNrocketAPI
+namespace RocketMod
 {
 
     public class ModuleData
@@ -55,11 +55,12 @@ namespace DNNrocketAPI
             {
                 var objCtrl = new DNNrocketController();
                 // read Config data
-                ConfigInfo = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
+                ConfigInfo = objCtrl.GetData("rocketmod_" + _moduleid, "CONFIG", DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
                 if (ConfigInfo == null)
                 {
                     _configExists = false;
                     ConfigInfo = new SimplisityInfo();
+                    ConfigInfo.ModuleId = _moduleid;
                 }
                 else
                 {
@@ -78,7 +79,7 @@ namespace DNNrocketAPI
         public void DeleteConfig()
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetCurrentCulture(), -1, _moduleid, true);
+            var info = objCtrl.GetData("rocketmod_" + _moduleid, "CONFIG", DNNrocketUtils.GetCurrentCulture(), -1, _moduleid, true);
             if (info != null)
             {
                 objCtrl.Delete(info.ItemID);
@@ -93,7 +94,7 @@ namespace DNNrocketAPI
         public void SaveConfig(SimplisityInfo postInfo)
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.SaveData("moduleconfig", "CONFIG", postInfo, -1, _moduleid);
+            var info = objCtrl.SaveData("rocketmod_" + _moduleid, "CONFIG", postInfo, -1, _moduleid);
         }
 
         #endregion

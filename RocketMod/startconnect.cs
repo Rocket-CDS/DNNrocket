@@ -45,28 +45,28 @@ namespace RocketMod
                     switch (paramCmd)
                     {
                         case "rocketmod_edit":
-                            strOut = EditData(moduleid, rocketInterface, postInfo);
+                            strOut = EditData(rocketInterface, postInfo);
                             break;
                         case "rocketmod_savedata":
                             strOut = SaveData(moduleid, rocketInterface, postInfo);
                             break;
                         case "rocketmod_delete":
                             DeleteData(moduleid, postInfo);
-                            strOut = EditData(moduleid, rocketInterface, postInfo);
+                            strOut = EditData(rocketInterface, postInfo);
                             break;
                         case "rocketmod_saveconfig":
                             _moduleData.SaveConfig(postInfo);
                             _moduleData.PopulateConfig();
-                            strOut = GetDashBoard(moduleid, rocketInterface);
+                            strOut = GetDashBoard(rocketInterface);
                             break;
                         case "rocketmod_getsetupmenu":
                             strOut = GetSetup(rocketInterface);
                             break;
                         case "rocketmod_dashboard":
-                            strOut = GetDashBoard(moduleid, rocketInterface);
+                            strOut = GetDashBoard(rocketInterface);
                             break;
                         case "rocketmod_reset":
-                            strOut = ResetRocketMod(moduleid, rocketInterface);
+                            strOut = ResetRocketMod(rocketInterface);
                             break;
                     }
                 }
@@ -104,7 +104,7 @@ namespace RocketMod
             objCtrl.Delete(selecteditemid);
         }
 
-        public static String EditData(int moduleid, DNNrocketInterface rocketInterface, SimplisityInfo postInfo)
+        public static String EditData(DNNrocketInterface rocketInterface, SimplisityInfo postInfo)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace RocketMod
                 if (!_moduleData.ConfigExists)
                 {
                     // no display type set, return dashboard.
-                    return GetDashBoard(moduleid, rocketInterface);
+                    return GetDashBoard(rocketInterface);
                 }
 
                 if (_moduleData.IsList)
@@ -128,7 +128,7 @@ namespace RocketMod
                 }
 
                 themeFolder = _moduleData.ConfigInfo.GetXmlProperty("genxml/select/apptheme");
-                postInfo.ModuleId = moduleid; // make sure we have correct moduleid.
+                postInfo.ModuleId = _moduleData.ModuleId; // make sure we have correct moduleid.
 
                 var passSettings = postInfo.ToDictionary();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
@@ -158,7 +158,7 @@ namespace RocketMod
                 info.ModuleId = moduleid;
                 objCtrl.SaveData(moduleid.ToString(), rocketInterface.EntityTypeCode, info, -1, moduleid);
                 _moduleData.PopulateList();
-                return EditData(moduleid,rocketInterface, postInfo);
+                return EditData(rocketInterface, postInfo);
             }
             catch (Exception ex)
             {
@@ -166,12 +166,12 @@ namespace RocketMod
             }
         }
 
-        public static String ResetRocketMod(int moduleid, DNNrocketInterface rocketInterface)
+        public static String ResetRocketMod(DNNrocketInterface rocketInterface)
         {
             try
             {
-                ConfigUtils.DeleteConfig(moduleid);
-                return GetDashBoard(moduleid, rocketInterface);
+                _moduleData.DeleteConfig();
+                return GetDashBoard(rocketInterface);
             }
             catch (Exception ex)
             {
@@ -179,7 +179,7 @@ namespace RocketMod
             }
         }
 
-        public static String GetDashBoard(int moduleid, DNNrocketInterface  rocketInterface)
+        public static String GetDashBoard(DNNrocketInterface  rocketInterface)
         {
             try
             {
