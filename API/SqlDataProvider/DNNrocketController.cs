@@ -14,7 +14,7 @@ namespace DNNrocketAPI
     public class DNNrocketController : DNNrocketCtrlInterface
     {
 
-        #region "NBrightBuy override DB Public Methods"
+        #region "DNNrocket override DB Public Methods"
 
         /// <summary>
         /// override for Database Function

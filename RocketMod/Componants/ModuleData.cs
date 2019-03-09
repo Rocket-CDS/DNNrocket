@@ -41,7 +41,7 @@ namespace RocketMod
             {
                 var objCtrl = new DNNrocketController();
                 var filter = "";
-                _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetEditCulture(), "", 0, 0, 0, 0);
+                _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetCurrentCulture(), "", 0, 0, 0, 0);
             }
         }
 

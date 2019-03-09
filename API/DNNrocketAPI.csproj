@@ -88,7 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Componants\DNNrocketConst.cs" />
-    <Compile Include="Componants\ConfigUtils.cs" />
     <Compile Include="Componants\FileStatus.cs" />
     <Compile Include="Componants\SystemData.cs" />
     <Compile Include="Componants\PageIncludes.cs" />

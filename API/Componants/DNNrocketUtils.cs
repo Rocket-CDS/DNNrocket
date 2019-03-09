@@ -23,6 +23,8 @@ using DotNetNuke.Common.Lists;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Text.RegularExpressions;
 using System.Web.UI;
+using System.Threading;
+using System.Globalization;
 
 namespace DNNrocketAPI
 {
@@ -1046,25 +1048,8 @@ namespace DNNrocketAPI
 
         public static string GetCurrentCulture()
         {
-            if (HttpContext.Current.Request.Cookies["language"] != null)
-            {
-                var l = GetCultureCodeList();
-                var rtnlang = HttpContext.Current.Request.Cookies["language"].Value;
-                if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
-                {
-                    if (l.Count >= 1)
-                    {
-                        rtnlang = l.First();
-                    }
-                }
-                return rtnlang;
-            }
-            var l2 = GetCultureCodeList();
-            if (l2.Count >= 1)
-            {
-                return l2.First();
-            }
-            return "en-US";  // should not happen.
+            CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
+            return currentCulture.Name;
         }
 
         public static string GetCurrentCountryCode()
