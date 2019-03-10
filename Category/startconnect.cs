@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI;
+using DNNrocketAPI.Componants;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Simplisity;
@@ -20,6 +21,18 @@ namespace DNNrocket.Category
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
+            var commandSecurity = new CommandSecurity(rocketInterface);
+            commandSecurity.AddCommand("category_add", true);
+            commandSecurity.AddCommand("category_save", true);
+            commandSecurity.AddCommand("category_savelist", true);
+            commandSecurity.AddCommand("category_delete", true);
+            commandSecurity.AddCommand("category_sort", true);
+            commandSecurity.AddCommand("category_addimage", true);
+            commandSecurity.AddCommand("category_visible", true);
+            commandSecurity.AddCommand("category_disable", true);
+            commandSecurity.AddCommand("category_getlist", false);
+            commandSecurity.AddCommand("category_getdetail", false);
+            commandSecurity.AddCommand("category_search", false);
 
             _systemInfo = systemInfo;
             _systemprovider = systemInfo.GUIDKey;
@@ -29,7 +42,7 @@ namespace DNNrocket.Category
 
             var strOut = "";
 
-            if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface))
+            if (commandSecurity.SecurityCommandCheck(paramCmd))
             {
                 switch (paramCmd)
                 {
@@ -62,24 +75,23 @@ namespace DNNrocket.Category
                     case "category_disable":
                         strOut = ToggleDisable(postInfo, ControlRelPath, systemInfo);
                         break;
+                    case "category_getlist":
+                        strOut = GetList(postInfo, ControlRelPath, systemInfo);
+                        break;
+                    case "category_getdetail":
+                        strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
+                        break;
+                    case "category_search":
+                        strOut = GetList(postInfo, ControlRelPath, systemInfo);
+                        break;
                 }
-
-
             }
-            switch (paramCmd)
+            else
             {
-                case "category_getlist":
-                    strOut = GetList(postInfo, ControlRelPath, systemInfo);
-                    break;
-                case "category_getdetail":
-                    strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
-                    break;
-                case "category_search":
-                    strOut = GetList(postInfo, ControlRelPath, systemInfo);
-                    break;
-                default:
-                    strOut = "SECURITY FAILURE OR COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
-                    break;
+                if (commandSecurity.ValidCommand(paramCmd))
+                {
+                    strOut = LoginUtils.LoginForm(postInfo, rocketInterface.InterfaceKey);
+                }
             }
 
             var rtnDic = new Dictionary<string, string>();

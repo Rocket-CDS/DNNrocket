@@ -8,10 +8,10 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Entities.Users.Membership;
-using DNNrocket.Login;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using DNNrocketAPI.Componants;
 
 namespace DNNrocketAPI
 {

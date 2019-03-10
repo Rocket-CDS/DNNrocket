@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI;
+using DNNrocketAPI.Componants;
 using Newtonsoft.Json;
 using Simplisity;
 using System;
@@ -13,6 +14,10 @@ namespace DNNrocket.Country
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo sInfo, string userHostAddress, string editlang = "")
         {
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
+            var commandSecurity = new CommandSecurity(rocketInterface);
+            commandSecurity.AddCommand("settingcountry_save", true);
+            commandSecurity.AddCommand("settingcountry_get", true);
+            commandSecurity.AddCommand("settingcountry_getregion", false);
 
             //CacheUtils.ClearAllCache();
             _systemInfo = systemInfo;
@@ -20,7 +25,7 @@ namespace DNNrocket.Country
 
             var rtnDic = new Dictionary<string, string>();
 
-            if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface))
+            if (commandSecurity.SecurityCommandCheck(paramCmd))
             {
                 switch (paramCmd)
                 {
@@ -31,23 +36,13 @@ namespace DNNrocket.Country
                     case "settingcountry_get":
                         rtnDic.Add("outputhtml", CountryDetail(sInfo, controlRelPath, editlang));
                         break;
+                    case "settingcountry_getregion":
+                        rtnDic.Add("outputhtml", "");
+                        var regionlist = CountryUtils.RegionListCSV(GeneralUtils.DeCode(sInfo.GetXmlProperty("genxml/hidden/activevalue")), true);
+                        rtnDic.Add("outputjson", "{listkey: [" + regionlist[0] + "], listvalue: [" + regionlist[1] + "] }");
+                        break;
                 }
             }
-
-            switch (paramCmd)
-            {
-                case "settingcountry_getregion":
-                    rtnDic.Add("outputhtml", "");
-                    var regionlist = CountryUtils.RegionListCSV(GeneralUtils.DeCode(sInfo.GetXmlProperty("genxml/hidden/activevalue")), true);
-                    rtnDic.Add("outputjson", "{listkey: [" + regionlist[0] + "], listvalue: [" + regionlist[1] + "] }");
-                    break;
-            }
-
-            if (rtnDic.Count == 0)
-            {
-                rtnDic.Add("outputhtml", "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [settingcountry]");
-            }
-
             return rtnDic;
         }
 

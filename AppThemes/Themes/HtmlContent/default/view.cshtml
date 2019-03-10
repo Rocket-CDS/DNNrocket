@@ -1,4 +1,4 @@
-@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@inherits DNNrocketAPI.render.RocketModTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
 @using System
 @using System.Linq
@@ -10,6 +10,9 @@
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
+@RenderEditIframe(Model)
+
+
 @{
     var info = new SimplisityInfo();
     if (Model.List.Count > 0)
@@ -18,14 +21,17 @@
     }
 }
 
+<div class="w3-container rm-container">
 
-<h1>Hello New World Display!!!! </h1>
+    <h1>Hello New World Display!!!! </h1>
 
-<h2>
-    @info.GetXmlProperty("genxml/textbox/test")
-</h2>
+    <h2>
+        @info.GetXmlProperty("genxml/textbox/test")
+    </h2>
 
-<div class='w3-padding'>
-    @HtmlOf(info.GetXmlProperty("genxml/textbox/ckeditor"))
+    <div class='w3-padding'>
+        @HtmlOf(info.GetXmlProperty("genxml/textbox/ckeditor"))
+    </div>
+
 </div>
 

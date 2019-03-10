@@ -355,7 +355,7 @@
     <value>No Settings</value>
   </data>
   <data name="cmdConfigButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Upload" class="fa fa-plug fa-fw fa-lg"&gt;&lt;/i&gt; Setup</value>
+    <value>&lt;i  title="Setup" class="fa fa-plug fa-fw fa-lg"&gt;&lt;/i&gt; Setup</value>
   </data>
   <data name="config.Text" xml:space="preserve">
     <value>Configuration</value>

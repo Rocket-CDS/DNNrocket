@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DNNrocketAPI;
+using DNNrocketAPI.Componants;
 using Simplisity;
 
 namespace DNNrocket.TestList
@@ -14,6 +15,16 @@ namespace DNNrocket.TestList
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
+            var commandSecurity = new CommandSecurity(rocketInterface);
+            commandSecurity.AddCommand("testlist_add", true);
+            commandSecurity.AddCommand("testlist_save", true);
+            commandSecurity.AddCommand("testlist_delete", true);
+            commandSecurity.AddCommand("testlist_createrows", true);
+            commandSecurity.AddCommand("testlist_deleterows", true);
+            commandSecurity.AddCommand("testlist_getlist", false);
+            commandSecurity.AddCommand("testlist_getdetail", false);
+            commandSecurity.AddCommand("testlist_sort", false);
+            commandSecurity.AddCommand("testlist_search", false);
 
             _systemInfo = systemInfo;
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
@@ -21,9 +32,8 @@ namespace DNNrocket.TestList
             if (_editlang == "") _editlang = DNNrocketUtils.GetEditCulture();
 
             var strOut = "";
-            if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface))
+            if (commandSecurity.SecurityCommandCheck(paramCmd))
             {
-
                 switch (paramCmd)
                 {
                     case "testlist_add":
@@ -47,29 +57,29 @@ namespace DNNrocket.TestList
                         DeleteRows();
                         strOut = GetList(postInfo, ControlRelPath);
                         break;
+                    case "testlist_getlist":
+                        strOut = GetList(postInfo, ControlRelPath);
+                        break;
+                    case "testlist_getdetail":
+                        strOut = GetDetail(postInfo, ControlRelPath);
+                        break;
+                    case "testlist_sort":
+                        strOut = GetList(postInfo, ControlRelPath);
+                        break;
+                    case "testlist_search":
+                        strOut = GetList(postInfo, ControlRelPath);
+                        break;
+                }
+            }
+            else
+            {
+                if (commandSecurity.ValidCommand(paramCmd))
+                {
+                    strOut = LoginUtils.LoginForm(postInfo, rocketInterface.InterfaceKey);
                 }
             }
 
-            switch (paramCmd)
-            {
-                case "testlist_getlist":
-                    strOut = GetList(postInfo, ControlRelPath);
-                    break;
-                case "testlist_getdetail":
-                    strOut = GetDetail(postInfo, ControlRelPath);
-                    break;
-                case "testlist_sort":
-                    strOut = GetList(postInfo, ControlRelPath);
-                    break;
-                case "testlist_search":
-                    strOut = GetList(postInfo, ControlRelPath);
-                    break;
-                default:
-                    strOut = "COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
-                    break;
-            }
-
-            var rtnDic = new Dictionary<string, string>();
+var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;
         }

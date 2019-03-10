@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI;
+using DNNrocketAPI.Componants;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,14 @@ namespace DNNrocket.TestForm
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
+            var commandSecurity = new CommandSecurity(rocketInterface);
+            commandSecurity.AddCommand("testform_save", true);
+            commandSecurity.AddCommand("testform_add", true);
+            commandSecurity.AddCommand("testform_delete", true);
+            commandSecurity.AddCommand("testform_addimage", true);
+            commandSecurity.AddCommand("testform_adddoc", true);
+            commandSecurity.AddCommand("testform_get", false);
+            commandSecurity.AddCommand("testform_download", false);
 
             //CacheUtils.ClearAllCache();
 
@@ -19,7 +28,7 @@ namespace DNNrocket.TestForm
 
             var strOut = "";
 
-            if (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface))
+            if (commandSecurity.SecurityCommandCheck(paramCmd))
             {
                 switch (paramCmd)
                 {
@@ -40,22 +49,24 @@ namespace DNNrocket.TestForm
                     case "testform_adddoc":
                         strOut = AddDocToList(postInfo, ControlRelPath);
                         break;
+                    case "testform_get":
+                        strOut = TestFormDetail(postInfo, ControlRelPath);
+                        break;
+                    case "testform_download":
+                        rtnDic.Add("filenamepath", postInfo.GetXmlProperty("genxml/hidden/filerelpath"));
+                        rtnDic.Add("downloadname", postInfo.GetXmlProperty("genxml/hidden/downloadname"));
+                        rtnDic.Add("fileext", "");
+                        break;
                 }
             }
-            switch (paramCmd)
+            else
             {
-                case "testform_get":
-                    strOut = TestFormDetail(postInfo, ControlRelPath);
-                    break;
-                case "testform_download":
-                    rtnDic.Add("filenamepath", postInfo.GetXmlProperty("genxml/hidden/filerelpath"));
-                    rtnDic.Add("downloadname", postInfo.GetXmlProperty("genxml/hidden/downloadname"));
-                    rtnDic.Add("fileext", "");
-                    break;
-                default:
-                    strOut = "SECURITY FAILURE OR COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
-                    break;
+                if (commandSecurity.ValidCommand(paramCmd))
+                {
+                    strOut = LoginUtils.LoginForm(postInfo, rocketInterface.InterfaceKey);
+                }
             }
+
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;
         }

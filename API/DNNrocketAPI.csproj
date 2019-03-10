@@ -90,6 +90,7 @@
     <Compile Include="Componants\CommandSecurity.cs" />
     <Compile Include="Componants\DNNrocketConst.cs" />
     <Compile Include="Componants\FileStatus.cs" />
+    <Compile Include="Componants\Login.cs" />
     <Compile Include="Componants\SystemData.cs" />
     <Compile Include="Componants\PageIncludes.cs" />
     <Compile Include="Componants\UserUtils.cs" />
@@ -134,11 +135,13 @@
     <None Include="packages.config" />
     <None Include="Systems\dnnrocket.Zxml" />
     <None Include="Systems\OpenStore.Zxml" />
+    <None Include="Themes\config-w3\default\LoginForm.cshtml" />
     <None Include="Themes\config-w3\default\Paging.cshtml" />
     <None Include="Themes\config-w3\default\SideMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_LocalResources\DNNrocket.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\login.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\flags\16\af-ZA.png" />
@@ -556,6 +559,7 @@
     <Content Include="images\flags\32\zh-SG.png" />
     <Content Include="images\flags\32\zh-TW.png" />
     <Content Include="Themes\config-w3\css\coconutmilk-theme.css" />
+    <Content Include="View.ascx" />
     <None Include="Themes\config-w3\css\dnnrocket-theme.css" />
     <Content Include="Themes\config-w3\css\sailorblue-theme.css" />
     <Content Include="Themes\config-w3\css\ultravoilet-theme.css" />
@@ -563,18 +567,11 @@
     <Content Include="Themes\config-w3\css\bloomingdahlia-theme.css" />
     <Content Include="Themes\config-w3\css\littleboyblue-theme.css" />
     <Content Include="Themes\config-w3\img\img_avatar4.png" />
-    <Content Include="View.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Themes\config-w3\js\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Login\Login.csproj">
-      <Project>{57f0a549-1c5b-47bb-a7df-342fe18cb295}</Project>
-      <Name>Login</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Simplisity\Simplisity.csproj">
       <Project>{ea312f3d-9284-4f1f-b395-879721415573}</Project>
       <Name>Simplisity</Name>

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNNrocket.Login
+namespace DNNrocketAPI.Componants
 {
     public class LoginUtils
     {
@@ -92,7 +92,7 @@ namespace DNNrocket.Login
 
         public static string LoginForm(SimplisityInfo sInfo, string interfacekey = "login")
         {
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData("LoginForm.cshtml", "/DesktopModules/DNNrocket/Login", "config-w3", DNNrocketUtils.GetCurrentCulture());
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData("LoginForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture());
             sInfo.SetXmlProperty("genxml/interfacekey", interfacekey); // make sure the login form has the correct interface command.
             return DNNrocketUtils.RazorDetail(razorTempl, sInfo);
         }

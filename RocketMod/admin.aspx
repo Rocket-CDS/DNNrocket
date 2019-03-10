@@ -5,13 +5,21 @@
 <%@ Import Namespace="DNNrocketAPI" %>
 
 <script runat="server">
-  
+
     public string ModuleId { get; set; }
+    public string EditMode { get; set; }
+    public string displaynone { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)
     {
         // We are using an aspx page querystring param so we can pass the moduleid from DNN.  The API requires this.
         ModuleId = HttpContext.Current.Request.QueryString["moduleid"];
+        EditMode = HttpContext.Current.Request.QueryString["editmode"];
+        displaynone = "";
+        if (EditMode == "1")
+        {
+            displaynone = "display:none;";
+        }
     }
 
 </script>
@@ -68,15 +76,17 @@
     </div>
 
 
-    <!-- Side Navigation -->
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-theme-d5 w3-animate-left w3-card" style="z-index:3;width:260px;top: 55px" id="mySidebar">
-        <img src="/DesktopModules/DNNrocket/API/Themes/config-w3/img/img_avatar4.png" alt="Avatar" style="width:20%" class="w3-circle w3-margin">
-        <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="getsidemenu" s-fields="moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,theme:config-w3,template:SideMenu.cshtml,interfacekey:rocketmod,relpath:/DesktopModules/DNNrocket/rocketmod/"></div>
-    </nav>
+    <!-- Side Navigation (use mask div if in iframe editmode)-->
+    <div style="<%= String.IsNullOrEmpty(displaynone) ? "" : displaynone %>"> 
 
+    <nav class="w3-sidebar w3-bar-block w3-collapse w3-theme-d5 w3-animate-left w3-card" style="z-index:3;width:260px;top: 55px;" id="mySidebar">
+        <img src="/DesktopModules/DNNrocket/API/Themes/config-w3/img/img_avatar4.png" alt="Avatar" style="width:20%" class="w3-circle w3-margin">
+        <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="getsidemenu" s-fields="moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,editmode:<%= String.IsNullOrEmpty(EditMode) ? "" : EditMode %>,theme:config-w3,template:SideMenu.cshtml,interfacekey:rocketmod,relpath:/DesktopModules/DNNrocket/rocketmod/"></div>
+    </nav>
+    </div>
 
         <!-- !PAGE CONTENT! -->
-    <div class="w3-main" style="margin-left:300px;margin-top:60px; " id="base-panel">
+    <div class="w3-main" style="margin-left:<%= String.IsNullOrEmpty(EditMode) ? "300px" : "10px" %>;margin-top:60px; " id="base-panel">
 
         <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketmod_edit" s-track="true" s-fields="moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,theme:config-w3,template:edit.cshtml,interfacekey:rocketmod"></div>
 

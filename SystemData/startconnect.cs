@@ -1,5 +1,5 @@
-﻿using DNNrocket.Login;
-using DNNrocketAPI;
+﻿using DNNrocketAPI;
+using DNNrocketAPI.Componants;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,7 @@ namespace DNNrocket.SystemData
         {
 
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
+            var commandSecurity = new CommandSecurity(rocketInterface);
 
             //CacheUtils.ClearAllCache();
 
@@ -23,11 +24,11 @@ namespace DNNrocket.SystemData
 
             var rtnInfo = new SimplisityInfo();
             // Security Check MUST be in the extension.
-            if (DNNrocketUtils.SecurityCheckIsSuperUser()) 
+            if (commandSecurity.SecurityCheckIsSuperUser()) 
             {
                 if (paramCmd == "login_signout")
                 {
-                    DNNrocketUtils.SignUserOut();
+                    commandSecurity.SignUserOut();
                     strOut = LoginUtils.LoginForm(rtnInfo);
                 }
                 else

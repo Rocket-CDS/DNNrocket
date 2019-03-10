@@ -80,7 +80,7 @@ namespace DNNrocketAPI
 
             _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
 
-            _configInfo = objCtrl.GetData("moduleconfig", "CONFIG", DNNrocketUtils.GetEditCulture(), -1, ModuleId, true);
+            _configInfo = objCtrl.GetData(_interfacekey + "_" + ModuleId, "CONFIG", DNNrocketUtils.GetEditCulture(), -1, ModuleId, true);
 
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
 
@@ -182,6 +182,12 @@ namespace DNNrocketAPI
 
                 var settings = DNNrocketUtils.GetModuleSettings(ModuleId);
                 var actions = new ModuleActionCollection();
+
+                if (_configInfo != null && _configInfo.XMLDoc.SelectNodes("genxml/*").Count > 1)
+                {
+                    actions.Add(GetNextActionID(), "Edit", "", "", "plus2.gif", "javascript:rocketmodeditiframe_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
+                }
+
                 actions.Add(GetNextActionID(), "Rocket Admin", "", "", "plus2.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
                 return actions;
             }

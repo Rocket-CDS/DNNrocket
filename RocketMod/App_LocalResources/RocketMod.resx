@@ -132,6 +132,12 @@
   <data name="edit.Text" xml:space="preserve">
     <value>Edit Data</value>
   </data>
+  <data name="edittitle.Text" xml:space="preserve">
+    <value>DNNrocket - High Energy Development</value>
+  </data>
+  <data name="iframesupport.Text" xml:space="preserve">
+    <value>Your browser does not support iframes. Use the Rocket Admin option.</value>
+  </data>
   <data name="interfacekey.Text" xml:space="preserve">
     <value>Interface</value>
   </data>
