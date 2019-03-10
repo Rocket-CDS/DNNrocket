@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DNNrocket.Login;
 using DNNrocketAPI;
+using DNNrocketAPI.Componants;
 using Simplisity;
 
 namespace RocketMod
@@ -19,17 +20,17 @@ namespace RocketMod
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
 
-            var commandSecurity = new Dictionary<string, bool>();
-            commandSecurity.Add("rocketmod_edit", true);
-            commandSecurity.Add("rocketmod_savedata", true);
-            commandSecurity.Add("rocketmod_delete", true);
-            commandSecurity.Add("rocketmod_saveconfig", true);
-            commandSecurity.Add("rocketmod_getsetupmenu", true);
-            commandSecurity.Add("rocketmod_dashboard", true);
-            commandSecurity.Add("rocketmod_reset", true);
-            commandSecurity.Add("rocketmod_getdata", false);
-            commandSecurity.Add("rocketmod_login", false);
-            commandSecurity.Add("rocketmod_adminurl", false);
+            var commandSecurity = new CommandSecurity(rocketInterface);
+            commandSecurity.AddCommand("rocketmod_edit", true);
+            commandSecurity.AddCommand("rocketmod_savedata", true);
+            commandSecurity.AddCommand("rocketmod_delete", true);
+            commandSecurity.AddCommand("rocketmod_saveconfig", true);
+            commandSecurity.AddCommand("rocketmod_getsetupmenu", true);
+            commandSecurity.AddCommand("rocketmod_dashboard", true);
+            commandSecurity.AddCommand("rocketmod_reset", true);
+            commandSecurity.AddCommand("rocketmod_getdata", false);
+            commandSecurity.AddCommand("rocketmod_login", false);
+            commandSecurity.AddCommand("rocketmod_adminurl", false);
 
             // we should ALWAYS pass back the moduleid in the template post.
             // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
@@ -45,7 +46,8 @@ namespace RocketMod
                 paramCmd = cookieCmd;
                 DNNrocketUtils.DeleteCookieValue("rocketmod_cmd");
             }
-            if (commandSecurity.ContainsKey(paramCmd) && (DNNrocketUtils.SecurityCheckCurrentUser(rocketInterface) || !commandSecurity[paramCmd]))
+
+            if (commandSecurity.SecurityCommandCheck(paramCmd))
             {
                 switch (paramCmd)
                 {
@@ -57,6 +59,7 @@ namespace RocketMod
                         break;
                     case "rocketmod_delete":
                         DeleteData(moduleid, postInfo);
+                        _moduleData.PopulateList();  // we need to clear the data, now it's deleted.
                         strOut = EditData(rocketInterface, postInfo);
                         break;
                     case "rocketmod_saveconfig":
@@ -86,7 +89,7 @@ namespace RocketMod
             }
             else
             {
-                if (commandSecurity.ContainsKey(paramCmd))
+                if (commandSecurity.ValidCommand(paramCmd))
                 {
                     strOut = LoginUtils.LoginForm(postInfo, rocketInterface.InterfaceKey);
                 }
@@ -131,7 +134,7 @@ namespace RocketMod
                 postInfo.ModuleId = _moduleData.ModuleId; // make sure we have correct moduleid.
 
                 var passSettings = postInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, themeFolder, DNNrocketUtils.GetEditCulture());
                 strOut = DNNrocketUtils.RazorList(razorTempl, _moduleData.List, passSettings,_moduleData.HeaderInfo);
 
                 if (strOut == "") strOut = "ERROR: No data returned for " + _appthemeMapPath + "\\" + themeFolder + "\\default\\" + razortemplate;

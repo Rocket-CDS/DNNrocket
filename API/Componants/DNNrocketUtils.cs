@@ -1227,54 +1227,6 @@ namespace DNNrocketAPI
             return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
         }
 
-        public static bool SecurityCheckIsSuperUser()
-        {
-            return UserController.Instance.GetCurrentUserInfo().IsSuperUser;
-        }
-
-        public static bool SecurityCheckCurrentUser(DNNrocketInterface interfaceInfo)
-        {
-            var user = UserController.Instance.GetCurrentUserInfo();
-            return SecurityCheckUser(PortalSettings.Current.PortalId, user.UserID, interfaceInfo);
-        }
-
-        public static bool SecurityCheckUser(int portalid, int userid, DNNrocketInterface interfaceInfo)
-        {
-            var user = UserController.Instance.GetUserById(portalid, userid);
-
-            if (user == null) return false;
-
-            if (user.IsSuperUser) return true;
-            if (interfaceInfo != null)
-            {
-                if (interfaceInfo.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Administrators']/@value"))
-                {
-                    if (user.IsInRole("Administrators")) return true;
-                }
-                if (interfaceInfo.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Manager']/@value"))
-                {
-                    if (user.IsInRole("Manager")) return true;
-                }
-                if (interfaceInfo.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Editor']/@value"))
-                {
-                    if (user.IsInRole("Editor")) return true;
-                }
-                if (interfaceInfo.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='ClientEditor']/@value"))
-                {
-                    if (user.IsInRole("ClientEditor")) return true;
-                }
-            }
-            var ps = new PortalSecurity();
-            ps.SignOut();
-
-            return false;
-        }
-
-        public static void SignUserOut()
-        {
-            var ps = new PortalSecurity();
-            ps.SignOut();
-        }
 
         public static void IncludePageHeaders(int moduleid, Page page, String moduleName, string templateControlRelPath, String razortemplate = "", String theme = "")
         {
