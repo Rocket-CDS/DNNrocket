@@ -42,7 +42,6 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmod_reset", true);
             _commandSecurity.AddCommand("rocketmod_getdata", false);
             _commandSecurity.AddCommand("rocketmod_login", false);
-            _commandSecurity.AddCommand("rocketmod_adminurl", false);
 
 
             // use command form cookie if we have set it.
@@ -87,9 +86,6 @@ namespace RocketMod
                         break;
                     case "rocketmod_login":
                         strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
-                        break;
-                    case "rocketmod_adminurl":
-                        strOut = "/desktopmodules/dnnrocket/RocketMod/admin.aspx";
                         break;
                 }
             }

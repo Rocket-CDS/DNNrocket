@@ -10,6 +10,7 @@
     public string TabId { get; set; }
     public string IframeEdit { get; set; }
     public string displaynone { get; set; }
+    public string editlang { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -17,6 +18,7 @@
         ModuleId = HttpContext.Current.Request.QueryString["moduleid"];
         TabId = HttpContext.Current.Request.QueryString["tabid"];
         IframeEdit = HttpContext.Current.Request.QueryString["editmode"];
+        editlang = HttpContext.Current.Request.QueryString["editlang"];
         displaynone = "";
         if (IframeEdit == "1")
         {
@@ -97,9 +99,7 @@
 
         <script>
             $(document).ready(function () {
-
-                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketmodule', usehistory: false});
-
+                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketmodule', usehistory: false });
             });
 
             // Get the Sidebar

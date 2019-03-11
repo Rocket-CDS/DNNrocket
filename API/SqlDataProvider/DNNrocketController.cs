@@ -84,17 +84,18 @@ namespace DNNrocketAPI
         }
 
         /// <summary>
-        /// override for Database Function
+        /// Update record
         /// </summary>
         /// <param name="objInfo"></param>
+        /// <param name="doindex"> if calling from the index function we don't want to index again.</param>
         /// <returns></returns>
-        public override int Update(SimplisityRecord objInfo)
+        public override int Update(SimplisityRecord objInfo, bool doindex = true)
         {
             // save data
             objInfo.ModifiedDate = DateTime.Now;
             var itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang, objInfo.SystemId);
 
-            RebuildLangIndex(objInfo, itemid);
+            if (doindex) RebuildLangIndex(objInfo, itemid);
 
             return itemid;
         }
@@ -153,6 +154,18 @@ namespace DNNrocketAPI
                     var langInfo = GetRecord(saveItemId);
                     var baseInfo = GetRecord(langInfo.ParentItemId);
                     RebuildIndex(baseInfo);
+                }
+            }
+            else
+            {
+                // we have a base language, so we need to update all language LANGIDX records.
+                var l = GetList(-1, -1, "", " and (R1.typecode = '" + objInfo.TypeCode + "LANGIDX')  and R1.parentitemid = " + objInfo.ItemID);
+                foreach (var i in l)
+                {
+                    var langxml = i.GetLangXml();
+                    i.XMLData = objInfo.XMLData;
+                    i.SetLangXml(langxml);
+                    Update(i, false);
                 }
             }
         }
@@ -475,7 +488,7 @@ namespace DNNrocketAPI
             if (info == null)
             {
                 // do read, so it creates the record and do a new read.
-                info = GetData(GuidKey, typeCode, postInfo.Lang, moduleId);
+                info = GetData(GuidKey, typeCode, postInfo.Lang, systemId, moduleId);
             }
             if (info != null)
             {
