@@ -14,16 +14,18 @@ namespace RocketMod
         private bool _configExists;
         private int _tabid;
         private int _moduleid;
+        private int _selecteditemid;
         private bool _isList;
-
+        
         public SimplisityInfo ConfigInfo;
         public SimplisityInfo HeaderInfo;
 
 
-        public ModuleData(int tabId, int moduleId)
+        public ModuleData(int tabId, int moduleId, int selecteditemid)
         {
             _tabid = tabId;
             _moduleid = moduleId;
+            _selecteditemid = selecteditemid;
             _dataList = new List<SimplisityInfo>();
             
             PopulateConfig();
@@ -43,6 +45,10 @@ namespace RocketMod
             {
                 var objCtrl = new DNNrocketController();
                 var filter = "";
+                if (_selecteditemid > 0)
+                {
+                    filter = " and R1.ItemId = " + _selecteditemid + " ";
+                }
                 _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetEditCulture(), "", 0, 0, 0, 0);
             }
         }
@@ -118,6 +124,7 @@ namespace RocketMod
         public bool ConfigExists { get { return _configExists; } }
         public int ModuleId { get {return _moduleid;} }
         public int TabId { get { return _tabid; } }
+        public int SelectedItemId { get { return _selecteditemid; } }
 
         public bool IsList { get { return ConfigInfo.GetXmlPropertyBool("genxml/hidden/islist"); }}
         

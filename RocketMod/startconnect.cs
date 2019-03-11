@@ -23,13 +23,16 @@ namespace RocketMod
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _postInfo = postInfo;
 
+            var selecteditemid = _postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+
+
             // we should ALWAYS pass back the moduleid & tabid in the template post.
             // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
             var moduleid = _postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (moduleid == 0) moduleid = _postInfo.ModuleId;
             var tabid = _postInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
 
-            _moduleData = new ModuleData(tabid, moduleid);
+            _moduleData = new ModuleData(tabid, moduleid, selecteditemid);
             _postInfo.ModuleId = _moduleData.ModuleId; // make sure we have correct moduleid.
 
             _commandSecurity = new CommandSecurity(_moduleData.TabId, _moduleData.ModuleId, rocketInterface);
@@ -41,6 +44,8 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmod_dashboard", true);
             _commandSecurity.AddCommand("rocketmod_reset", true);
             _commandSecurity.AddCommand("rocketmod_resetdata", true);
+            _commandSecurity.AddCommand("rocketmod_add", true);
+
             _commandSecurity.AddCommand("rocketmod_getdata", false);
             _commandSecurity.AddCommand("rocketmod_login", false);
 
@@ -63,8 +68,13 @@ namespace RocketMod
                     case "rocketmod_savedata":
                         strOut = SaveData(moduleid, rocketInterface);
                         break;
+                    case "rocketmod_add":
+                        var newInfo = AddNew(rocketInterface);
+                        _moduleData.PopulateList();
+                        strOut = EditData(rocketInterface);
+                        break;
                     case "rocketmod_delete":
-                        DeleteData(moduleid, postInfo);
+                        DeleteData(moduleid);
                         _moduleData.PopulateList();  // we need to clear the data, now it's deleted.
                         strOut = EditData(rocketInterface);
                         break;
@@ -106,9 +116,9 @@ namespace RocketMod
             return rtnDic;
         }
 
-        public static void DeleteData(int moduleid, SimplisityInfo postInfo)
+        public static void DeleteData(int moduleid)
         {
-            var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            var selecteditemid = _postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             var objCtrl = new DNNrocketController();
             objCtrl.Delete(selecteditemid);
         }
@@ -129,7 +139,14 @@ namespace RocketMod
 
                 if (_moduleData.IsList)
                 {
-                    razortemplate = "editlist.cshtml";
+                    if (_moduleData.SelectedItemId > 0)
+                    {
+                        razortemplate = "editdetail.cshtml";
+                    }
+                    else
+                    {
+                        razortemplate = "editlist.cshtml";
+                    }
                 }
                 else
                 {
@@ -149,6 +166,19 @@ namespace RocketMod
             {
                 return ex.ToString();
             }
+        }
+
+        public static SimplisityInfo AddNew(DNNrocketInterface rocketInterface)
+        {
+            var info = new SimplisityInfo();
+            info.ItemID = -1;
+            info.PortalId = DNNrocketUtils.GetPortalId();
+            info.Lang = DNNrocketUtils.GetEditCulture();
+            info.TypeCode = rocketInterface.EntityTypeCode;
+            info.ModuleId = _moduleData.ModuleId;
+
+            var objCtrl = new DNNrocketController();
+            return objCtrl.SaveData(info, rocketInterface.SystemId);
         }
 
 

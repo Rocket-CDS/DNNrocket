@@ -15,7 +15,7 @@ namespace DNNrocket.TestList
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
-            var commandSecurity = new CommandSecurity(rocketInterface);
+            var commandSecurity = new CommandSecurity(-1,-1,rocketInterface);
             commandSecurity.AddCommand("testlist_add", true);
             commandSecurity.AddCommand("testlist_save", true);
             commandSecurity.AddCommand("testlist_delete", true);

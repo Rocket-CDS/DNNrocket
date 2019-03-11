@@ -14,7 +14,7 @@ namespace DNNrocket.Country
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo sInfo, string userHostAddress, string editlang = "")
         {
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
-            var commandSecurity = new CommandSecurity(rocketInterface);
+            var commandSecurity = new CommandSecurity(-1,-1,rocketInterface);
             commandSecurity.AddCommand("settingcountry_save", true);
             commandSecurity.AddCommand("settingcountry_get", true);
             commandSecurity.AddCommand("settingcountry_getregion", false);

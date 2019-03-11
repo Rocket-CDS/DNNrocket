@@ -126,6 +126,7 @@ namespace DNNrocketAPI.Componants
         {
            try
             {
+                if (_tabid == -1 && _moduleid == -1) return true;
                 if (_tabid == 0) return false;
                 if (_moduleid == 0) return false;
                 var moduleInfo = ModuleController.Instance.GetModule(_moduleid, _tabid, false);

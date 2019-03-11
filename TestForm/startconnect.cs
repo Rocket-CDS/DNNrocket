@@ -13,7 +13,7 @@ namespace DNNrocket.TestForm
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
-            var commandSecurity = new CommandSecurity(rocketInterface);
+            var commandSecurity = new CommandSecurity(-1,-1, rocketInterface);
             commandSecurity.AddCommand("testform_save", true);
             commandSecurity.AddCommand("testform_add", true);
             commandSecurity.AddCommand("testform_delete", true);

@@ -14,7 +14,7 @@ namespace DNNrocket.SystemData
         {
 
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
-            var commandSecurity = new CommandSecurity(rocketInterface);
+            var commandSecurity = new CommandSecurity(-1, -1, rocketInterface);
 
             //CacheUtils.ClearAllCache();
 

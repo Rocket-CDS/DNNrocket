@@ -562,7 +562,7 @@ namespace DNNrocketAPI
             if (info == null)
             {
                 // do read, so it creates the record and do a new read.
-                info = GetData(sInfo.TypeCode, sInfo.ItemID, sInfo.Lang, systemId);
+                info = GetData(sInfo.TypeCode, sInfo.ItemID, sInfo.Lang, systemId, sInfo.ModuleId);
             }
             if (info != null)
             {
@@ -574,10 +574,7 @@ namespace DNNrocketAPI
                 info.XrefItemId = sInfo.XrefItemId;
                 info.ParentItemId = sInfo.ParentItemId;
                 info.GUIDKey = sInfo.GUIDKey;
-                if (systemId > -1)
-                {
-                    info.ModuleId = systemId;
-                }
+                info.SystemId = systemId;
                 Update(info);
                 var nbi2 = GetRecordLang(info.ItemID, smiLang.Lang);
                 if (nbi2 == null)
