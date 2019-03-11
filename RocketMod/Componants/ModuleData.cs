@@ -12,6 +12,7 @@ namespace RocketMod
     {
         private List<SimplisityInfo> _dataList;
         private bool _configExists;
+        private int _tabid;
         private int _moduleid;
         private bool _isList;
 
@@ -19,8 +20,9 @@ namespace RocketMod
         public SimplisityInfo HeaderInfo;
 
 
-        public ModuleData(int moduleId)
+        public ModuleData(int tabId, int moduleId)
         {
+            _tabid = tabId;
             _moduleid = moduleId;
             _dataList = new List<SimplisityInfo>();
 
@@ -99,6 +101,7 @@ namespace RocketMod
 
         public bool ConfigExists { get { return _configExists; } }
         public int ModuleId { get {return _moduleid;} }
+        public int TabId { get { return _tabid; } }
 
         public bool IsList { get { return _isList; } set { _isList = value; } }
         

@@ -147,10 +147,13 @@ namespace DNNrocketAPI
 
             var postInfo = new SimplisityInfo();
             postInfo.ModuleId = ModuleId;
+            postInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
+            postInfo.SetXmlProperty("genxml/hidden/tabid", PortalSettings.Current.ActiveTab.TabID.ToString());
 
             if (_rocketInterface.Exists)
             {
                 var strOut = "No Interface Found.";
+
                 var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
 
                 if (returnDictionary.ContainsKey("outputhtml"))
@@ -177,7 +180,7 @@ namespace DNNrocketAPI
                 var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketmod_adminurl", _systemInfo, _rocketInterface, new SimplisityInfo(), _templateRelPath, DNNrocketUtils.GetCurrentCulture());
                 if (returnDictionary.ContainsKey("outputhtml"))
                 {
-                    adminurl = returnDictionary["outputhtml"] + "?moduleid=" + ModuleId;
+                    adminurl = returnDictionary["outputhtml"] + "?moduleid=" + ModuleId + "&tabid=" + TabId;
                 }
 
                 var settings = DNNrocketUtils.GetModuleSettings(ModuleId);

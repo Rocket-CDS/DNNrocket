@@ -12,11 +12,11 @@
 
 @{
     var info = (SimplisityInfo)Model.List.First();
-    var moduleData = new ModuleData(info.ModuleId);
+    var moduleData = new ModuleData(Model.GetSettingInt("tabid"), info.ModuleId);
 }
 
 <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-    <span class="w3-button w3-green w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields="moduleid:@(info.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdResetButton")</span>
+    <span class="w3-button w3-green w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(info.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdResetButton")</span>
 </span>
 
 
@@ -57,7 +57,7 @@
                     </div>
                 </div>
 
-                <div class="w3-button w3-green w3-padding-8 simplisity_click w3-margin" s-post="#configdata_@(info.ModuleId)" s-before="hideconfigpopup" s-cmd="rocketmod_saveconfig" s-fields="moduleid:@(info.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+                <div class="w3-button w3-green w3-padding-8 simplisity_click w3-margin" s-post="#configdata_@(info.ModuleId)" s-before="hideconfigpopup" s-cmd="rocketmod_saveconfig" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(info.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</div>
 
                 <div class="w3-button w3-red w3-padding-8 w3-margin" onclick="returnclick();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
 

@@ -1,5 +1,8 @@
-﻿using DotNetNuke.Entities.Users;
+﻿using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,16 +17,22 @@ namespace DNNrocketAPI.Componants
         private UserInfo _userInfo;
         private Dictionary<string, bool> _commandSecurity;
         private DNNrocketInterface _interfaceInfo;
+        private int _tabid;
+        private int _moduleid;
 
-        public CommandSecurity(DNNrocketInterface interfaceInfo)
+        public CommandSecurity(int tabId, int moduleId, DNNrocketInterface interfaceInfo)
         {
+            _tabid = tabId;
+            _moduleid = moduleId;
             _interfaceInfo = interfaceInfo;
             _userInfo = UserController.Instance.GetCurrentUserInfo();
             ValidateUser();
         }
 
-        public CommandSecurity(int portalid, int userid, DNNrocketInterface interfaceInfo)
+        public CommandSecurity(int portalid, int userid, int tabId, int moduleId, DNNrocketInterface interfaceInfo)
         {
+            _tabid = tabId;
+            _moduleid = moduleId;
             _interfaceInfo = interfaceInfo;
             _userInfo = UserController.Instance.GetUserById(portalid, userid);
             ValidateUser();
@@ -43,6 +52,10 @@ namespace DNNrocketAPI.Componants
                 _userId = -1;
             }
         }
+
+        public int TabId { get { return _tabid; } }
+        public int ModuleId { get { return _moduleid; } }
+
         public bool ValidUser { get; private set; }
 
         public int UserId { get { return _userId; } }
@@ -103,9 +116,29 @@ namespace DNNrocketAPI.Componants
 
         public bool SecurityCommandCheck(string commandKey)
         {
-            if (_commandSecurity.ContainsKey(commandKey) && (SecurityCheckUser() || !_commandSecurity[commandKey]))
+            if (!_commandSecurity.ContainsKey(commandKey)) return false;  // command does not exists.
+            if (!_commandSecurity[commandKey]) return true; // No security needed.
+            if (_commandSecurity[commandKey] && SecurityCheckUser() && HasModuleEditRights()) return true; // passed security check
+            return false; // no security match
+        }
+
+        public bool HasModuleEditRights()
+        {
+           try
             {
-                return true;
+                if (_tabid == 0) return false;
+                if (_moduleid == 0) return false;
+                var moduleInfo = ModuleController.Instance.GetModule(_moduleid, _tabid, false);
+                if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", moduleInfo))
+                {
+                    return true;
+                }
+            }
+            catch (Exception exc) 
+            {
+                // We may not have all infomration from DNN to do this, so just return false.
+                var msg = exc.ToString();
+                return false;
             }
             return false;
         }
