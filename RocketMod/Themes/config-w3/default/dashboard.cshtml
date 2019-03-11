@@ -16,7 +16,8 @@
 }
 
 <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-    <span class="w3-button w3-green w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(info.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdResetButton")</span>
+    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(info.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetButton")</span>
+    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(info.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetDataButton")</span>
 </span>
 
 

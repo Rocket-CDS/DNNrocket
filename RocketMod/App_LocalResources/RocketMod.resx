@@ -123,6 +123,12 @@
   <data name="apptheme.Text" xml:space="preserve">
     <value>App Theme</value>
   </data>
+  <data name="cmdResetButton.Text" xml:space="preserve">
+    <value>&lt;i title="Reset" class="fa fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt; Reset Config.</value>
+  </data>
+  <data name="cmdResetDataButton.Text" xml:space="preserve">
+    <value>&lt;i title="Reset" class="fa fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt; Reset Data</value>
+  </data>
   <data name="config.Text" xml:space="preserve">
     <value>Configuration</value>
   </data>
@@ -133,7 +139,7 @@
     <value>Edit Data</value>
   </data>
   <data name="edittitle.Text" xml:space="preserve">
-    <value>DNNrocket - High Energy Development</value>
+    <value>DNNrocket - High Speed Integration</value>
   </data>
   <data name="iframesupport.Text" xml:space="preserve">
     <value>Your browser does not support iframes. Use the Rocket Admin option.</value>
@@ -141,8 +147,11 @@
   <data name="interfacekey.Text" xml:space="preserve">
     <value>Interface</value>
   </data>
+  <data name="resetdatamsg.Text" xml:space="preserve">
+    <value>Delete ALL data ? (Config NOT deleted)</value>
+  </data>
   <data name="resetmsg.Text" xml:space="preserve">
-    <value>Reset this module? </value>
+    <value>Reset this module config?  (Data NOT deleted)</value>
   </data>
   <data name="search.Text" xml:space="preserve">
     <value>Search</value>

@@ -40,6 +40,7 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmod_getsetupmenu", true);
             _commandSecurity.AddCommand("rocketmod_dashboard", true);
             _commandSecurity.AddCommand("rocketmod_reset", true);
+            _commandSecurity.AddCommand("rocketmod_resetdata", true);
             _commandSecurity.AddCommand("rocketmod_getdata", false);
             _commandSecurity.AddCommand("rocketmod_login", false);
 
@@ -68,7 +69,7 @@ namespace RocketMod
                         strOut = EditData(rocketInterface);
                         break;
                     case "rocketmod_saveconfig":
-                        _moduleData.SaveConfig(postInfo);
+                        _moduleData.SaveConfig(postInfo, CheckIfList());
                         _moduleData.PopulateConfig();
                         strOut = GetDashBoard(rocketInterface);
                         break;
@@ -80,6 +81,9 @@ namespace RocketMod
                         break;
                     case "rocketmod_reset":
                         strOut = ResetRocketMod(rocketInterface);
+                        break;
+                    case "rocketmod_resetdata":
+                        strOut = ResetDataRocketMod(rocketInterface);
                         break;
                     case "rocketmod_getdata":
                         strOut = GetDisplay(rocketInterface);
@@ -183,6 +187,19 @@ namespace RocketMod
             }
         }
 
+        public static String ResetDataRocketMod(DNNrocketInterface rocketInterface)
+        {
+            try
+            {
+                _moduleData.DeleteData();
+                return GetDashBoard(rocketInterface);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
         public static String GetDashBoard(DNNrocketInterface  rocketInterface)
         {
             try
@@ -253,6 +270,26 @@ namespace RocketMod
             {
                 return ex.ToString();
             }
+        }
+
+        public static bool CheckIfList()
+        {
+            try
+            {
+                if (_moduleData.ConfigExists)
+                {
+                    var themeFolder = _moduleData.ConfigInfo.GetXmlProperty("genxml/select/apptheme");
+                    var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", _appthemeRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                    if (razorTempl != "") return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.ToString();
+                return false;
+            }
+
         }
 
 

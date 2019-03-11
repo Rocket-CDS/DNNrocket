@@ -14,10 +14,6 @@
 
 @{
     var headerData = Model.HeaderData;
-    var rowcount = headerData.GetXmlPropertyInt("genxml/hidden/rowcount");
-    var page = headerData.GetXmlPropertyInt("genxml/hidden/page");
-    var pagesize = headerData.GetXmlPropertyInt("genxml/hidden/pagesize");
-    var lastpage = System.Convert.ToInt32(rowcount / pagesize);
 }
 
 
@@ -45,7 +41,6 @@
                     <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketmod_search" s-post=".searchdata" s-fields="moduleid:@(Model.ModuleId),theme:config-w3,template:editllist.cshtml,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSearchButton")</button>
                 </div>
                 <div class="w3-col m2 w3-padding w3-right-align" style="width: 100px">
-                    @DropDownList(headerData, "genxml/hidden/pagesize", "5,10,20,50,100", "5,10,20,50,100", "class='w3-input w3-border simplisity_pagesize ' title='Page Size'", "20")
                 </div>
             </div>
 
@@ -85,7 +80,6 @@
                 </tbody>
             </table>
         </div>
-        @RenderTemplate("Paging.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model)
 
     </div>
     <br />

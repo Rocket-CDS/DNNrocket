@@ -25,7 +25,7 @@ namespace RocketMod
             _tabid = tabId;
             _moduleid = moduleId;
             _dataList = new List<SimplisityInfo>();
-
+            
             PopulateConfig();
             if (_configExists)
             {
@@ -43,6 +43,21 @@ namespace RocketMod
             {
                 var objCtrl = new DNNrocketController();
                 var filter = "";
+                _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetEditCulture(), "", 0, 0, 0, 0);
+            }
+        }
+
+        public void DeleteData()
+        {
+            if (_moduleid > 0)
+            {
+                var objCtrl = new DNNrocketController();
+                var filter = "";
+                _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetEditCulture(), "", 0, 0, 0, 0);
+                foreach (var i in _dataList)
+                {
+                    objCtrl.Delete(i.ItemID);
+                }
                 _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetEditCulture(), "", 0, 0, 0, 0);
             }
         }
@@ -89,8 +104,9 @@ namespace RocketMod
             }
         }
 
-        public void SaveConfig(SimplisityInfo postInfo)
+        public void SaveConfig(SimplisityInfo postInfo, bool isList)
         {
+            postInfo.SetXmlProperty("genxml/hidden/islist", "True");
             var objCtrl = new DNNrocketController();
             var info = objCtrl.SaveData("rocketmod_" + _moduleid, "CONFIG", postInfo, -1, _moduleid);
         }
@@ -103,7 +119,7 @@ namespace RocketMod
         public int ModuleId { get {return _moduleid;} }
         public int TabId { get { return _tabid; } }
 
-        public bool IsList { get { return _isList; } set { _isList = value; } }
+        public bool IsList { get { return ConfigInfo.GetXmlPropertyBool("genxml/hidden/islist"); }}
         
 
         public List<SimplisityInfo> List
