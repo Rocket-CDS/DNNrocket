@@ -1328,7 +1328,7 @@ namespace DNNrocketAPI
                                 catch (Exception ex)
                                 {
                                     rtnDic.Remove("outputhtml");
-                                    rtnDic.Add("outputhtml", "No valid assembly found: " + systemprovider + " : " + rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass + "<br/>" + ex.ToString());
+                                    rtnDic.Add("outputhtml", "No valid assembly found: " + systemprovider + " : " + rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass + " cmd:" + paramCmd + "<br/>" + ex.ToString());
                                 }
                             }
                         }
