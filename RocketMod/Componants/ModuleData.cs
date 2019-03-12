@@ -86,6 +86,7 @@ namespace RocketMod
                         objCtrl.Delete(i.ItemID);
                     }
                     _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetEditCulture(), "", 0, 0, 0, 0);
+                    PopulateList();
                 }
             }
         }
@@ -148,6 +149,7 @@ namespace RocketMod
             postInfo.SetXmlProperty("genxml/hidden/islist", "True");
             var objCtrl = new DNNrocketController();
             var info = objCtrl.SaveData("rocketmod_" + _moduleid, "CONFIG", postInfo, -1, _moduleid);
+            PopulateConfig();
         }
 
         #endregion

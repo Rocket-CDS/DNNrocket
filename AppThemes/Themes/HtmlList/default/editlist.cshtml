@@ -22,11 +22,10 @@
 
     <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
         <button class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmod_add" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdAddButton")</button>
-        <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="rocketmod_savelist" s-post="#datasave" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.ModuleId),selecteditemid:,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</button>
     </span>
 
 
-    <div class="w3-row w3-card searchdata ">
+    <div id="headerdata" class="w3-row w3-card ">
 
         <div class="">
             <header class="w3-container w3-theme">
@@ -41,6 +40,7 @@
                     <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketmod_search" s-post=".searchdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.ModuleId),theme:config-w3,template:editllist.cshtml,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSearchButton")</button>
                 </div>
                 <div class="w3-col m2 w3-padding w3-right-align" style="width: 100px">
+                    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="rocketmod_saveheader" s-post="#headerdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.ModuleId),selecteditemid:,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</button>
                 </div>
             </div>
 

@@ -76,12 +76,10 @@ namespace RocketMod
                         break;
                     case "rocketmod_delete":
                         _moduleData.DeleteData();
-                        _moduleData.PopulateList();  // we need to clear the data, now it's deleted.
                         strOut = EditData();
                         break;
                     case "rocketmod_saveconfig":
                         _moduleData.SaveConfig(postInfo, CheckIfList());
-                        _moduleData.PopulateConfig();
                         strOut = GetDashBoard();
                         break;
                     case "rocketmod_getsetupmenu":
