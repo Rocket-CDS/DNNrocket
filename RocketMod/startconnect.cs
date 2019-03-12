@@ -14,11 +14,13 @@ namespace RocketMod
         private static string _appthemeMapPath;
         private static SimplisityInfo _postInfo;
         private static CommandSecurity _commandSecurity;
+        private static DNNrocketInterface _rocketInterface;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
         {
-            var rocketInterface = new DNNrocketInterface(interfaceInfo);
             var strOut = ""; // return nothing if not matching commands.
+
+            _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _postInfo = postInfo;
@@ -35,7 +37,7 @@ namespace RocketMod
             _moduleData = new ModuleData(tabid, moduleid, selecteditemid);
             _postInfo.ModuleId = _moduleData.ModuleId; // make sure we have correct moduleid.
 
-            _commandSecurity = new CommandSecurity(_moduleData.TabId, _moduleData.ModuleId, rocketInterface);
+            _commandSecurity = new CommandSecurity(_moduleData.TabId, _moduleData.ModuleId, _rocketInterface);
             _commandSecurity.AddCommand("rocketmod_edit", true);
             _commandSecurity.AddCommand("rocketmod_savedata", true);
             _commandSecurity.AddCommand("rocketmod_delete", true);
@@ -63,40 +65,39 @@ namespace RocketMod
                 switch (paramCmd)
                 {
                     case "rocketmod_edit":
-                        strOut = EditData(rocketInterface);
+                        strOut = EditData();
                         break;
                     case "rocketmod_savedata":
-                        strOut = SaveData(moduleid, rocketInterface);
+                        strOut = SaveData();
                         break;
                     case "rocketmod_add":
-                        var newInfo = AddNew(rocketInterface);
-                        _moduleData.PopulateList();
-                        strOut = EditData(rocketInterface);
+                        _moduleData.AddNew();
+                        strOut = EditData();
                         break;
                     case "rocketmod_delete":
-                        DeleteData(moduleid);
+                        _moduleData.DeleteData();
                         _moduleData.PopulateList();  // we need to clear the data, now it's deleted.
-                        strOut = EditData(rocketInterface);
+                        strOut = EditData();
                         break;
                     case "rocketmod_saveconfig":
                         _moduleData.SaveConfig(postInfo, CheckIfList());
                         _moduleData.PopulateConfig();
-                        strOut = GetDashBoard(rocketInterface);
+                        strOut = GetDashBoard();
                         break;
                     case "rocketmod_getsetupmenu":
-                        strOut = GetSetup(rocketInterface);
+                        strOut = GetSetup();
                         break;
                     case "rocketmod_dashboard":
-                        strOut = GetDashBoard(rocketInterface);
+                        strOut = GetDashBoard();
                         break;
                     case "rocketmod_reset":
-                        strOut = ResetRocketMod(rocketInterface);
+                        strOut = ResetRocketMod();
                         break;
                     case "rocketmod_resetdata":
-                        strOut = ResetDataRocketMod(rocketInterface);
+                        strOut = ResetDataRocketMod();
                         break;
                     case "rocketmod_getdata":
-                        strOut = GetDisplay(rocketInterface);
+                        strOut = GetDisplay();
                         break;
                     case "rocketmod_login":
                         strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
@@ -107,7 +108,7 @@ namespace RocketMod
             {
                 if (_commandSecurity.ValidCommand(paramCmd))
                 {
-                    strOut = LoginUtils.LoginForm(postInfo, rocketInterface.InterfaceKey);
+                    strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey);
                 }
             }
 
@@ -116,14 +117,7 @@ namespace RocketMod
             return rtnDic;
         }
 
-        public static void DeleteData(int moduleid)
-        {
-            var selecteditemid = _postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-            var objCtrl = new DNNrocketController();
-            objCtrl.Delete(selecteditemid);
-        }
-
-        public static String EditData(DNNrocketInterface rocketInterface)
+        public static String EditData()
         {
             try
             {
@@ -134,7 +128,7 @@ namespace RocketMod
                 if (!_moduleData.ConfigExists)
                 {
                     // no display type set, return dashboard.
-                    return GetDashBoard(rocketInterface);
+                    return GetDashBoard();
                 }
 
                 if (_moduleData.IsList)
@@ -168,21 +162,7 @@ namespace RocketMod
             }
         }
 
-        public static SimplisityInfo AddNew(DNNrocketInterface rocketInterface)
-        {
-            var info = new SimplisityInfo();
-            info.ItemID = -1;
-            info.PortalId = DNNrocketUtils.GetPortalId();
-            info.Lang = DNNrocketUtils.GetEditCulture();
-            info.TypeCode = rocketInterface.EntityTypeCode;
-            info.ModuleId = _moduleData.ModuleId;
-
-            var objCtrl = new DNNrocketController();
-            return objCtrl.SaveData(info, rocketInterface.SystemId);
-        }
-
-
-        public static String SaveData(int moduleid, DNNrocketInterface rocketInterface)
+        public static String SaveData()
         {
             try
             {
@@ -193,10 +173,17 @@ namespace RocketMod
                     info = _moduleData.List.First();
                     info.XMLData = _postInfo.XMLData;
                 }
-                info.ModuleId = moduleid;
-                objCtrl.SaveData(moduleid.ToString(), rocketInterface.EntityTypeCode, info, -1, moduleid);
+                info.ModuleId = _moduleData.ModuleId;
+                if (_moduleData.SelectedItemId > 0)
+                {
+                    objCtrl.SaveData(info, _rocketInterface.SystemId);
+                }
+                else
+                {
+                    objCtrl.SaveData(_moduleData.ModuleId.ToString(), _rocketInterface.EntityTypeCode, info, -1, _moduleData.ModuleId);
+                }
                 _moduleData.PopulateList();
-                return EditData(rocketInterface);
+                return EditData();
             }
             catch (Exception ex)
             {
@@ -204,12 +191,12 @@ namespace RocketMod
             }
         }
 
-        public static String ResetRocketMod(DNNrocketInterface rocketInterface)
+        public static String ResetRocketMod()
         {
             try
             {
                 _moduleData.DeleteConfig();
-                return GetDashBoard(rocketInterface);
+                return GetDashBoard();
             }
             catch (Exception ex)
             {
@@ -217,12 +204,12 @@ namespace RocketMod
             }
         }
 
-        public static String ResetDataRocketMod(DNNrocketInterface rocketInterface)
+        public static String ResetDataRocketMod()
         {
             try
             {
                 _moduleData.DeleteData();
-                return GetDashBoard(rocketInterface);
+                return GetDashBoard();
             }
             catch (Exception ex)
             {
@@ -230,14 +217,14 @@ namespace RocketMod
             }
         }
 
-        public static String GetDashBoard(DNNrocketInterface  rocketInterface)
+        public static String GetDashBoard()
         {
             try
             {
-                var controlRelPath = rocketInterface.TemplateRelPath;
+                var controlRelPath = _rocketInterface.TemplateRelPath;
                 if (controlRelPath == "") controlRelPath = ControlRelPath;
 
-                var themeFolder = rocketInterface.DefaultTheme;
+                var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "dashboard.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
@@ -252,7 +239,7 @@ namespace RocketMod
             }
         }
 
-        public static String GetDisplay(DNNrocketInterface rocketInterface)
+        public static String GetDisplay()
         {
 
             try
@@ -275,7 +262,7 @@ namespace RocketMod
                 }
                 else
                 {
-                    strOut = GetSetup(rocketInterface);
+                    strOut = GetSetup();
                 }
 
                 return strOut;
@@ -287,14 +274,14 @@ namespace RocketMod
 
         }
 
-        private static String GetSetup(DNNrocketInterface interfaceInfo)
+        private static String GetSetup()
         {
             try
             {
-                interfaceInfo.ModuleId = _moduleData.ModuleId;
+                _rocketInterface.ModuleId = _moduleData.ModuleId;
                 var strOut = "";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", interfaceInfo.TemplateRelPath, interfaceInfo.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
-                return DNNrocketUtils.RazorDetail(razorTempl, interfaceInfo.Info,_postInfo.ToDictionary());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
+                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_postInfo.ToDictionary());
             }
             catch (Exception ex)
             {

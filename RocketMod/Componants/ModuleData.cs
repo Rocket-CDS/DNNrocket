@@ -53,18 +53,51 @@ namespace RocketMod
             }
         }
 
+        public void AddNew()
+        {
+            var info = new SimplisityInfo();
+            info.ItemID = -1;
+            info.PortalId = DNNrocketUtils.GetPortalId();
+            info.Lang = DNNrocketUtils.GetEditCulture();
+            info.TypeCode = "DATA";
+            info.ModuleId = _moduleid;
+
+            var objCtrl = new DNNrocketController();
+            var newInfo = objCtrl.SaveData(info, -1);
+            _selecteditemid = newInfo.ItemID;
+            PopulateList();
+        }
+
         public void DeleteData()
         {
             if (_moduleid > 0)
             {
-                var objCtrl = new DNNrocketController();
-                var filter = "";
-                _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetEditCulture(), "", 0, 0, 0, 0);
-                foreach (var i in _dataList)
+                if (_selecteditemid > 0)
                 {
-                    objCtrl.Delete(i.ItemID);
+                    DeleteCurrentRecord();
                 }
-                _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetEditCulture(), "", 0, 0, 0, 0);
+                else
+                {
+                    var objCtrl = new DNNrocketController();
+                    var filter = "";
+                    _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetEditCulture(), "", 0, 0, 0, 0);
+                    foreach (var i in _dataList)
+                    {
+                        objCtrl.Delete(i.ItemID);
+                    }
+                    _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetEditCulture(), "", 0, 0, 0, 0);
+                }
+            }
+        }
+
+        public void DeleteCurrentRecord()
+        {
+            if (_moduleid > 0)
+            {
+                var objCtrl = new DNNrocketController();
+                objCtrl.Delete(_selecteditemid);
+                _selecteditemid = 0;
+                PopulateList();
             }
         }
 

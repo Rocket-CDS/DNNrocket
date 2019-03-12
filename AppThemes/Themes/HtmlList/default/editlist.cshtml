@@ -69,7 +69,7 @@
                     @foreach (SimplisityInfo nbi in Model.List)
                     {
                     <tr>
-                        <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/txtinput")</td>
+                        <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/test")</td>
                         <td class="text-nowrap">@nbi.GetXmlProperty("genxml/lang/genxml/textbox/txtinputl")</td>
                         <td>
                             <a class="simplisity_click" s-track="true" s-cmd="rocketmod_edit" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.ModuleId),selecteditemid:@nbi.ItemID,interfacekey:rocketmod" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
