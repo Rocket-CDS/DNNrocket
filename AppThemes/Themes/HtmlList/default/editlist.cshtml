@@ -29,15 +29,14 @@
 
         <div class="">
             <header class="w3-container w3-theme">
-                <h5>@ResourceKey("rocketmod.search")</h5>
             </header>
 
             <div class="w3-row w3-padding">
                 <div class="w3-col m2 w3-padding">
-                    @TextBox(headerData, "genxml/textbox/searchtext", "class='w3-input w3-border simplisity_searchfield'")
+                    @TextBox(headerData, "genxml/textbox/testtext", "class='w3-input w3-border simplisity_searchfield'")
                 </div>
                 <div class="w3-col m8 w3-padding">
-                    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketmod_search" s-post=".searchdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.ModuleId),theme:config-w3,template:editllist.cshtml,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSearchButton")</button>
+                    @TextBox(headerData, "genxml/lang/genxml/textbox/testtext", "class='w3-input w3-border simplisity_searchfield'","",true)
                 </div>
                 <div class="w3-col m2 w3-padding w3-right-align" style="width: 100px">
                     <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="rocketmod_saveheader" s-post="#headerdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.ModuleId),selecteditemid:,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</button>

@@ -30,6 +30,10 @@ namespace DNNrocketAPI
 {
     public static class DNNrocketUtils
     {
+        public static string HtmlOf(String htmlString)
+        {
+            return System.Web.HttpUtility.HtmlDecode(htmlString);
+        }
 
         public static string RequestParam(HttpContext context, string paramName)
         {

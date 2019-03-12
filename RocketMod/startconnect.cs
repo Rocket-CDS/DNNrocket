@@ -42,6 +42,7 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmod_savedata", true);
             _commandSecurity.AddCommand("rocketmod_delete", true);
             _commandSecurity.AddCommand("rocketmod_saveconfig", true);
+            _commandSecurity.AddCommand("rocketmod_saveheader", true);
             _commandSecurity.AddCommand("rocketmod_getsetupmenu", true);
             _commandSecurity.AddCommand("rocketmod_dashboard", true);
             _commandSecurity.AddCommand("rocketmod_reset", true);
@@ -69,6 +70,10 @@ namespace RocketMod
                         break;
                     case "rocketmod_savedata":
                         strOut = SaveData();
+                        break;
+                    case "rocketmod_saveheader":
+                        _moduleData.SaveHeader(postInfo);
+                        strOut = EditData();
                         break;
                     case "rocketmod_add":
                         _moduleData.AddNew();
@@ -104,6 +109,12 @@ namespace RocketMod
             }
             else
             {
+                if (systemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
+                {
+                    strOut = "<h1>ERROR</h1> <p><b>Invalid Command - check commandSecurity() class</b></p> <p>" + paramCmd + "  ModuleID:" + _moduleData.ModuleId + "  SelectedItemId:" + _moduleData.SelectedItemId + " TabID:" + _moduleData.TabId + "</p>";
+                    strOut += "<div class='w3-card-4 w3-padding w3-codespan'>" + DNNrocketUtils.HtmlOf(postInfo.XMLData) + "</div>";
+                }
+
                 if (_commandSecurity.ValidCommand(paramCmd))
                 {
                     strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey);

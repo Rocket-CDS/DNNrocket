@@ -31,9 +31,43 @@ namespace RocketMod
             PopulateConfig();
             if (_configExists)
             {
+                PopulateHeader();
                 PopulateList();
             }
         }
+
+        #region "HEADER"
+
+        public void PopulateHeader()
+        {
+            var objCtrl = new DNNrocketController();
+            HeaderInfo = objCtrl.GetData("rocketmod_" + _moduleid, "HEADER", DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
+            if (HeaderInfo == null)
+            {
+                HeaderInfo = new SimplisityInfo();
+                HeaderInfo.ModuleId = _moduleid;
+            }
+        }
+
+        public void DeleteHeader()
+        {
+            var objCtrl = new DNNrocketController();
+            var info = objCtrl.GetData("rocketmod_" + _moduleid, "HEADER", DNNrocketUtils.GetCurrentCulture(), -1, _moduleid, true);
+            if (info != null)
+            {
+                objCtrl.Delete(info.ItemID);
+                PopulateHeader();
+            }
+        }
+
+        public void SaveHeader(SimplisityInfo postInfo)
+        {
+            var objCtrl = new DNNrocketController();
+            var info = objCtrl.SaveData("rocketmod_" + _moduleid, "HEADER", postInfo, -1, _moduleid);
+            PopulateHeader();
+        }
+
+        #endregion
 
         #region "Data"
 
