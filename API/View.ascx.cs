@@ -188,19 +188,12 @@ namespace DNNrocketAPI
         {
             get
             {
-                //var adminurl = "";
-                //var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketmod_adminurl", _systemInfo, _rocketInterface, new SimplisityInfo(), _templateRelPath, DNNrocketUtils.GetCurrentCulture());
-                //if (returnDictionary.ContainsKey("outputhtml"))
-                //{
-                //    adminurl = returnDictionary["outputhtml"] + "?moduleid=" + ModuleId + "&tabid=" + TabId  + "&editlang=" + DNNrocketUtils.GetCurrentCulture();
-                //}
-
                 var actions = new ModuleActionCollection();
                 if (_configInfo != null && _configInfo.XMLDoc.SelectNodes("genxml/*").Count > 1)
                 {
-                    actions.Add(GetNextActionID(), "Edit", "", "", "plus2.gif", "javascript:rocketmodeditiframe_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
+                    actions.Add(GetNextActionID(), "Edit", "", "", "plus2.gif", "javascript:" + _interfacekey + "editiframe_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
                 }
-                actions.Add(GetNextActionID(), "Rocket Admin", "", "", "plus2.gif", "javascript:rocketmodadmin_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
+                actions.Add(GetNextActionID(), "Rocket Admin", "", "", "plus2.gif", "javascript:" + _interfacekey + "admin_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
                 return actions;
             }
         }

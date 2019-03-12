@@ -129,6 +129,7 @@
     </None>
     <None Include="DNNrocketAPI.dnn" />
     <None Include="DNNrocketThumb.ashx" />
+    <None Include="Documents\Build-DNNrocket-Module.docx" />
     <None Include="Documents\IndexSystem.docx" />
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />

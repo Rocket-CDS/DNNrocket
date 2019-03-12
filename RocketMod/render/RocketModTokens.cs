@@ -14,14 +14,7 @@ namespace DNNrocketAPI.render
     public class RocketModTokens<T> : DNNrocketTokens<T>
     {
 
-        public IEncodedString RenderEditIframe(SimplisityRazor model)
-        {
-            if (model.HeaderData == null)
-            {
-                model.HeaderData = new SimplisityInfo();
-            }
-            return RenderTemplate("editiframe.cshtml", "\\DesktopModules\\DNNrocket\\RocketMod", "config-w3", model);
-        }
+
 
     }
 }
