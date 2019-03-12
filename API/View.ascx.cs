@@ -153,13 +153,25 @@ namespace DNNrocketAPI
             if (_rocketInterface.Exists)
             {
                 var strOut = "No Interface Found.";
+                var cacheOutPut = "";
+                var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture();
+                if (_rocketInterface.IsCached) cacheOutPut = (string)CacheUtils.GetCache(cacheKey);
 
-                var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
-
-                if (returnDictionary.ContainsKey("outputhtml"))
+                if (cacheOutPut == null || cacheOutPut == "")
                 {
-                    strOut = returnDictionary["outputhtml"];
+                    var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
+
+                    if (returnDictionary.ContainsKey("outputhtml"))
+                    {
+                        strOut = returnDictionary["outputhtml"];
+                        if (_rocketInterface.IsCached) CacheUtils.SetCache(cacheKey, strOut, _interfacekey + ModuleId);
+                    }
                 }
+                else
+                {
+                    strOut = cacheOutPut;
+                }
+
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);

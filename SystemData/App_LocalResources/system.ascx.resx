@@ -258,4 +258,7 @@
   <data name="debugmode.Text" xml:space="preserve">
     <value>Debug Mode (TURN OFF for production)</value>
   </data>
+  <data name="cache.Text" xml:space="preserve">
+    <value>Cached</value>
+  </data>
 </root>

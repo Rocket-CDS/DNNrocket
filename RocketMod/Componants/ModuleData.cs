@@ -16,13 +16,15 @@ namespace RocketMod
         private int _moduleid;
         private int _selecteditemid;
         private bool _isList;
-        
+        private string _langRequired;
+
         public SimplisityInfo ConfigInfo;
         public SimplisityInfo HeaderInfo;
 
 
-        public ModuleData(int tabId, int moduleId, int selecteditemid)
+        public ModuleData(int tabId, int moduleId, int selecteditemid, string langRequired)
         {
+            _langRequired = langRequired;
             _tabid = tabId;
             _moduleid = moduleId;
             _selecteditemid = selecteditemid;
@@ -41,7 +43,7 @@ namespace RocketMod
         public void PopulateHeader()
         {
             var objCtrl = new DNNrocketController();
-            HeaderInfo = objCtrl.GetData("rocketmod_" + _moduleid, "HEADER", DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
+            HeaderInfo = objCtrl.GetData("rocketmod_" + _moduleid, "HEADER", _langRequired, -1, _moduleid, true);
             if (HeaderInfo == null)
             {
                 HeaderInfo = new SimplisityInfo();
@@ -52,10 +54,11 @@ namespace RocketMod
         public void DeleteHeader()
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("rocketmod_" + _moduleid, "HEADER", DNNrocketUtils.GetCurrentCulture(), -1, _moduleid, true);
+            var info = objCtrl.GetData("rocketmod_" + _moduleid, "HEADER", DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
             if (info != null)
             {
                 objCtrl.Delete(info.ItemID);
+                ClearCache();
                 PopulateHeader();
             }
         }
@@ -64,6 +67,7 @@ namespace RocketMod
         {
             var objCtrl = new DNNrocketController();
             var info = objCtrl.SaveData("rocketmod_" + _moduleid, "HEADER", postInfo, -1, _moduleid);
+            ClearCache();
             PopulateHeader();
         }
 
@@ -83,7 +87,7 @@ namespace RocketMod
                 {
                     filter = " and R1.ItemId = " + _selecteditemid + " ";
                 }
-                _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetEditCulture(), "", 0, 0, 0, 0);
+                _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, _langRequired, "", 0, 0, 0, 0);
             }
         }
 
@@ -99,6 +103,7 @@ namespace RocketMod
             var objCtrl = new DNNrocketController();
             var newInfo = objCtrl.SaveData(info, -1);
             _selecteditemid = newInfo.ItemID;
+            ClearCache();
             PopulateList();
         }
 
@@ -119,6 +124,7 @@ namespace RocketMod
                     {
                         objCtrl.Delete(i.ItemID);
                     }
+                    ClearCache();
                     _dataList = objCtrl.GetList(-1, _moduleid, "DATA", filter, DNNrocketUtils.GetEditCulture(), "", 0, 0, 0, 0);
                     PopulateList();
                 }
@@ -132,9 +138,36 @@ namespace RocketMod
                 var objCtrl = new DNNrocketController();
                 objCtrl.Delete(_selecteditemid);
                 _selecteditemid = 0;
+                ClearCache();
                 PopulateList();
             }
         }
+
+        public void SaveData(SimplisityInfo postInfo)
+        {
+            if (_moduleid > 0)
+            {
+                var objCtrl = new DNNrocketController();
+                var info = postInfo;
+                if (_dataList.Count() > 0)
+                {
+                    info = _dataList.First();
+                    info.XMLData = postInfo.XMLData;
+                }
+                info.ModuleId = _moduleid;
+                if (_selecteditemid > 0)
+                {
+                    objCtrl.SaveData(info,-1);
+                }
+                else
+                {
+                    objCtrl.SaveData(_moduleid.ToString(), "DATA", info, -1, _moduleid);
+                }
+                ClearCache();
+                PopulateList();
+            }
+        }
+
 
         #endregion
 
@@ -143,7 +176,7 @@ namespace RocketMod
         public void PopulateConfig()
         {
             var objCtrl = new DNNrocketController();
-            ConfigInfo = objCtrl.GetData("rocketmod_" + _moduleid, "CONFIG", DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
+            ConfigInfo = objCtrl.GetData("rocketmod_" + _moduleid, "CONFIG", _langRequired, -1, _moduleid, true);
             if (ConfigInfo == null)
             {
                 _configExists = false;
@@ -170,6 +203,7 @@ namespace RocketMod
             if (info != null)
             {
                 objCtrl.Delete(info.ItemID);
+                ClearCache();
                 PopulateConfig();
                 if (_configExists)
                 {
@@ -183,6 +217,7 @@ namespace RocketMod
             postInfo.SetXmlProperty("genxml/hidden/islist", "True");
             var objCtrl = new DNNrocketController();
             var info = objCtrl.SaveData("rocketmod_" + _moduleid, "CONFIG", postInfo, -1, _moduleid);
+            ClearCache();
             PopulateConfig();
         }
 
@@ -206,11 +241,10 @@ namespace RocketMod
         #endregion
 
 
-
-        #region "Private"
-
-
-        #endregion
+        public void ClearCache()
+        {
+            CacheUtils.ClearCache("rocketmod" + _moduleid);
+        }
 
 
 

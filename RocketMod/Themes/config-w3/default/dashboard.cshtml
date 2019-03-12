@@ -12,7 +12,7 @@
 
 @{
     var info = (SimplisityInfo)Model.List.First();
-    var moduleData = new ModuleData(Model.GetSettingInt("tabid"), info.ModuleId,-1);
+    var moduleData = new ModuleData(Model.GetSettingInt("tabid"), info.ModuleId,-1,DNNrocketUtils.GetEditCulture());
 }
 
 <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">

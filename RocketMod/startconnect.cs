@@ -16,7 +16,7 @@ namespace RocketMod
         private static CommandSecurity _commandSecurity;
         private static DNNrocketInterface _rocketInterface;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string langRequired = "")
         {
             var strOut = ""; // return nothing if not matching commands.
 
@@ -34,7 +34,7 @@ namespace RocketMod
             if (moduleid == 0) moduleid = _postInfo.ModuleId;
             var tabid = _postInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
 
-            _moduleData = new ModuleData(tabid, moduleid, selecteditemid);
+            _moduleData = new ModuleData(tabid, moduleid, selecteditemid, langRequired);
             _postInfo.ModuleId = _moduleData.ModuleId; // make sure we have correct moduleid.
 
             _commandSecurity = new CommandSecurity(_moduleData.TabId, _moduleData.ModuleId, _rocketInterface);
@@ -69,7 +69,8 @@ namespace RocketMod
                         strOut = EditData();
                         break;
                     case "rocketmod_savedata":
-                        strOut = SaveData();
+                        _moduleData.SaveData(postInfo);
+                        strOut = EditData();
                         break;
                     case "rocketmod_saveheader":
                         _moduleData.SaveHeader(postInfo);
@@ -171,34 +172,6 @@ namespace RocketMod
             }
         }
 
-        public static String SaveData()
-        {
-            try
-            {
-                var objCtrl = new DNNrocketController();
-                var info = _postInfo;
-                if (_moduleData.List.Count() > 0)
-                {
-                    info = _moduleData.List.First();
-                    info.XMLData = _postInfo.XMLData;
-                }
-                info.ModuleId = _moduleData.ModuleId;
-                if (_moduleData.SelectedItemId > 0)
-                {
-                    objCtrl.SaveData(info, _rocketInterface.SystemId);
-                }
-                else
-                {
-                    objCtrl.SaveData(_moduleData.ModuleId.ToString(), _rocketInterface.EntityTypeCode, info, -1, _moduleData.ModuleId);
-                }
-                _moduleData.PopulateList();
-                return EditData();
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
 
         public static String ResetRocketMod()
         {

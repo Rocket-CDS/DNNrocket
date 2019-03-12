@@ -506,7 +506,7 @@ namespace DNNrocketAPI
                     nbi2.ModuleId = moduleId;
                     Update(nbi2);
                 }
-                CacheUtils.ClearAllCache(); // clear ALL cache.
+                //CacheUtils.ClearAllCache(); // clear ALL cache.
                 info = GetByGuidKey(PortalSettings.Current.PortalId, systemId, typeCode, GuidKey);
             }
 
@@ -589,7 +589,7 @@ namespace DNNrocketAPI
                 smiLang.TypeCode = info.TypeCode + "LANG";
                 smiLang.GUIDKey = "";
                 Update(smiLang);
-                CacheUtils.ClearAllCache(); // clear ALL cache.
+                //CacheUtils.ClearAllCache(); // clear ALL cache.
                 info = GetInfo(info.ItemID, smiLang.Lang);
             }
 

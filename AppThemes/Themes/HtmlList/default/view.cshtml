@@ -24,4 +24,33 @@
 
 <h1>Hello Display List !!!! </h1>
 
+<h2>@Model.HeaderData.GetXmlProperty("genxml/lang/genxml/textbox/testtext")</h2>
+<h2>@Model.HeaderData.GetXmlProperty("genxml/textbox/testtext")</h2>
 
+<div class="w3-row w3-card plugins">
+
+    <header class="w3-container w3-theme">
+        <h5>@ResourceKey("system.systems")</h5>
+    </header>
+
+    <div class="w3-row">
+        <table class="w3-table w3-table-all">
+            <thead>
+                <tr>
+                    <th>Column1</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (SimplisityInfo nbi in Model.List)
+                {
+                    <tr>
+                        <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/test")</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
