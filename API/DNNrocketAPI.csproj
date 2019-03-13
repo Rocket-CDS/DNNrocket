@@ -560,7 +560,9 @@
     <Content Include="images\flags\32\zh-SG.png" />
     <Content Include="images\flags\32\zh-TW.png" />
     <Content Include="Themes\config-w3\css\coconutmilk-theme.css" />
-    <Content Include="View.ascx" />
+    <Content Include="View.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <None Include="Themes\config-w3\css\dnnrocket-theme.css" />
     <Content Include="Themes\config-w3\css\sailorblue-theme.css" />
     <Content Include="Themes\config-w3\css\ultravoilet-theme.css" />

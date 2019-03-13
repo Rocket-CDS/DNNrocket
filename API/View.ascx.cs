@@ -152,9 +152,17 @@ namespace DNNrocketAPI
 
             if (_rocketInterface.Exists)
             {
+                // add parameters to postInfo and cachekey
+                var paramString = "";
+                foreach (String key in Request.QueryString.AllKeys)
+                {
+                    paramString += key + "=" + Request.QueryString[key];
+                    postInfo.SetXmlProperty("genxml/urlparams/" + key, Request.QueryString[key]);
+                }
+
                 var strOut = "No Interface Found.";
                 var cacheOutPut = "";
-                var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture();
+                var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString;
                 if (_rocketInterface.IsCached) cacheOutPut = (string)CacheUtils.GetCache(cacheKey);
 
                 if (cacheOutPut == null || cacheOutPut == "")
@@ -172,6 +180,13 @@ namespace DNNrocketAPI
                     strOut = cacheOutPut;
                 }
 
+                var lit = new Literal();
+                lit.Text = strOut;
+                phData.Controls.Add(lit);
+            }
+            else
+            {
+                var strOut = "Invalid Interface: systemprovider: " + _systemprovider + "  interfacekey: " + _interfacekey;
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);
