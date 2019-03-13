@@ -1,0 +1,59 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketSettings;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
+@{
+    var settingsData = new SettingsData(0, 0, "");
+    if (Model.List.Count > 0)
+    {
+        settingsData = (SettingsData)Model.List.First();
+    }
+
+}
+
+<span class="w3-section simplisity_buttons">
+    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="selecteditemid:@settingsData.Info.ItemID" s-return="#settings">@ResourceKey("DNNrocket.cmdAddButton")</a>
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#pluginsettings" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+</span>
+
+
+<div class="w3-container">
+
+    <div class="w3-row w3-margin">
+
+        <table id="pluginsettings" class="w3-table-all">
+
+            <tr>
+                <th class="w3-half">@ResourceKey("system.name")</th>
+                <th class="w3-quarter">@ResourceKey("system.value")</th>
+                <th style="width:20px;"></th>
+            </tr>
+
+            @{
+                var lp3 = 0;
+            }
+            @foreach (var i in settingsData.List)
+            {
+                lp3 += 1;
+
+                <tr class="settingsdata">
+                    <td class="w3-half">
+                        @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
+                    </td>
+                    <td class="w3-quarter">
+                        @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' ", "", false, lp3)
+                    </td>
+                    <td style="width:20px;">
+                        <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".settingsdata" s-recylebin="settingsbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+                    </td>
+                </tr>
+
+            }
+        </table>
+
+    </div>
+</div>

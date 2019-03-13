@@ -1,0 +1,107 @@
+﻿using DNNrocketAPI;
+using DNNrocketAPI.Componants;
+using Simplisity;
+using System;
+using System.Collections.Generic;
+
+namespace RocketSettings
+{
+    public class startconnect : DNNrocketAPI.APInterface
+    {
+        private static string _appthemeRelPath;
+        private static string _appthemeMapPath;
+        private static SimplisityInfo _postInfo;
+        private static CommandSecurity _commandSecurity;
+        private static DNNrocketInterface _rocketInterface;
+        private static SettingsData _settingsData;
+
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string langRequired = "")
+        {
+            var strOut = ""; // return nothing if not matching commands.
+
+            paramCmd = paramCmd.ToLower();
+
+            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            _appthemeRelPath = "/DesktopModules/DNNrocket/Settings";
+            _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
+            _postInfo = postInfo;
+
+            // we should ALWAYS pass back the moduleid & tabid in the template post.
+            // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
+            var moduleid = _postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            if (moduleid == 0) moduleid = _postInfo.ModuleId;
+            var tabid = _postInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
+
+            _settingsData = new SettingsData(tabid, moduleid, langRequired);
+
+            _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);
+            _commandSecurity.AddCommand("rocketsettings_edit", true);
+            _commandSecurity.AddCommand("rocketsettings_add", true);
+
+            _commandSecurity.AddCommand("rocketsettings_getdata", false);
+            _commandSecurity.AddCommand("rocketsettings_login", false);
+
+
+            if (_commandSecurity.SecurityCommandCheck(paramCmd))
+            {
+                switch (paramCmd)
+                {
+                    case "rocketsettings_edit":
+                        strOut = EditData();
+                        break;
+                    case "rocketsettings_add":
+                        _settingsData.Add();
+                        strOut = EditData();
+                        break;
+                    case "rocketsettings_save":
+                        //strOut = Save();
+                        break;
+                    case "rocketsettings_login":
+                        strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
+                        break;
+                }
+            }
+            else
+            {
+                if (systemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
+                {
+                    strOut = "<h1>ERROR</h1> <p><b>Invalid Command - check commandSecurity() class</b></p> <p>" + paramCmd + "  ModuleID:" + _settingsData.ModuleId + "  TabID:" + _settingsData.TabId + "</p>";
+                    strOut += "<div class='w3-card-4 w3-padding w3-codespan'>" + DNNrocketUtils.HtmlOf(postInfo.XMLData) + "</div>";
+                }
+
+                if (_commandSecurity.ValidCommand(paramCmd))
+                {
+                    strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey);
+                }
+            }
+
+            var rtnDic = new Dictionary<string, string>();
+            rtnDic.Add("outputhtml", strOut);
+            return rtnDic;
+
+
+
+        }
+
+        public static String EditData()
+        {
+            try
+            {
+                var strOut = "";
+                var razortemplate = "settings.cshtml";
+
+                var passSettings = _postInfo.ToDictionary();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, "config-w3", DNNrocketUtils.GetEditCulture());
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, _settingsData, passSettings);
+
+                if (strOut == "") strOut = "ERROR: No data returned for " + _appthemeMapPath + "\\Themes\\config-w3\\default\\" + razortemplate;
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+    }
+}
