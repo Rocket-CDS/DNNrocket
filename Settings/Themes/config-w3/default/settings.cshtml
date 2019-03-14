@@ -16,7 +16,9 @@
 }
 
 <span class="w3-section simplisity_buttons">
-    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="selecteditemid:@settingsData.Info.ItemID" s-return="#settings">@ResourceKey("DNNrocket.cmdAddButton")</a>
+    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:rocketsettings">@ResourceKey("DNNrocket.cmdAddButton")</a>
+    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketsettings_save" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:rocketsettings" s-post="#pluginsettings" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="rocketsettings_delete" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:rocketsettings">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
     <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#pluginsettings" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 
@@ -42,10 +44,10 @@
 
                 <tr class="settingsdata">
                     <td class="w3-half">
-                        @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
+                        @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border' maxlength='250' autocomplete='off' ", "", false, lp3)
                     </td>
                     <td class="w3-quarter">
-                        @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' ", "", false, lp3)
+                        @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' autocomplete='off' ", "", false, lp3)
                     </td>
                     <td style="width:20px;">
                         <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".settingsdata" s-recylebin="settingsbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>

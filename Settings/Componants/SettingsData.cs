@@ -24,7 +24,7 @@ namespace RocketSettings
             _tabid = tabId;
             _moduleid = moduleId;
             _dataList = new List<SimplisityInfo>();
-            
+
             Populate();
             PopulateList();
         }
@@ -42,11 +42,12 @@ namespace RocketSettings
 
         public void PopulateList()
         {
+            _dataList = new List<SimplisityInfo>();
             var objCtrl = new DNNrocketController();
             var info = objCtrl.GetData("rocketsettings_" + _moduleid, "ROCKETSETTINGS", _langRequired, -1, _moduleid, true);
             if (info != null)
             {
-                _dataList = info.GetList("rocketsettings");
+                _dataList = info.GetList("settingsdata");
             }
         }
 
@@ -59,6 +60,7 @@ namespace RocketSettings
                 objCtrl.Delete(info.ItemID);
                 ClearCache();
                 Populate();
+                PopulateList();
             }
         }
 
@@ -68,15 +70,15 @@ namespace RocketSettings
             var info = objCtrl.SaveData("rocketsettings_" + _moduleid, "ROCKETSETTINGS", postInfo, -1, _moduleid);
             ClearCache();
             Populate();
+            PopulateList();
         }
 
 
-        public void Add()
+        public void AddRow()
         {
-            Info.AddListRow("rocketsettings");
+            Info.AddListRow("settingsdata");
             Save(Info);
         }
-
 
 
         #region "properties"

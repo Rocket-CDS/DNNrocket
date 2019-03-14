@@ -620,11 +620,26 @@ function simplisity_assignevents(cmdurl) {
 
                 simplisity_searchfields();
 
-                simplisity_setCookieValue('s-lastindex', index);
                 simplisity_callserver(this, cmdurl);
             });
 
         });
+
+    $('.simplisity_menulink').each(function (index) {
+
+        console.log('index: ' + index);
+
+        $(this).attr("s-index", index);
+
+        simplisity_setCookieValue('s-page', '1');
+
+        $(this).unbind("click");
+        $(this).click(function () {
+            simplisity_setCookieValue('s-lastmenuindex', index);
+            simplisity_callserver(this, cmdurl);
+        });
+
+    });
 
         $('.simplisity_click').each(function (index) {
 
@@ -634,9 +649,7 @@ function simplisity_assignevents(cmdurl) {
 
             $(this).unbind("click");
             $(this).click(function () {
-
                 simplisity_searchfields();
-
                 simplisity_setCookieValue('s-lastindex', index);
                 simplisity_callserver(this, cmdurl);
             });

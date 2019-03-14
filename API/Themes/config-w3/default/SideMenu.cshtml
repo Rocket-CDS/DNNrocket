@@ -34,7 +34,7 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme menulink simplisity_click' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfacekey + "</div>";
+                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfacekey + "</div>";
             }
             menuOut += "</div>";
             lp += 1;
@@ -126,11 +126,11 @@
     });
 
     function sidemenuchange() {
-        $('.menulink').addClass('w3-light-grey');
-        $('.menulink').removeClass('w3-theme-l2');
-        var index = simplisity_getCookieValue('s-lastindex');
-        $('.menulink[s-index=' + index + ']').removeClass('w3-light-grey');
-        $('.menulink[s-index=' + index + ']').addClass('w3-theme-l2');
+        $('.simplisity_menulink').addClass('w3-light-grey');
+        $('.simplisity_menulink').removeClass('w3-theme-l2');
+        var index = simplisity_getCookieValue('s-lastmenuindex');
+        $('.simplisity_menulink[s-index=' + index + ']').removeClass('w3-light-grey');
+        $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-theme-l2');
     }
 
 

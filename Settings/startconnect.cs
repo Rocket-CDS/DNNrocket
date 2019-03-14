@@ -17,7 +17,7 @@ namespace RocketSettings
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string langRequired = "")
         {
-            var strOut = ""; // return nothing if not matching commands.
+            var strOut = "ERROR"; // return ERROR if not matching commands.
 
             paramCmd = paramCmd.ToLower();
 
@@ -32,46 +32,60 @@ namespace RocketSettings
             if (moduleid == 0) moduleid = _postInfo.ModuleId;
             var tabid = _postInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
 
-            _settingsData = new SettingsData(tabid, moduleid, langRequired);
-
-            _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);
-            _commandSecurity.AddCommand("rocketsettings_edit", true);
-            _commandSecurity.AddCommand("rocketsettings_add", true);
-
-            _commandSecurity.AddCommand("rocketsettings_getdata", false);
-            _commandSecurity.AddCommand("rocketsettings_login", false);
-
-
-            if (_commandSecurity.SecurityCommandCheck(paramCmd))
+            if (tabid == 0 || moduleid == 0)
             {
-                switch (paramCmd)
-                {
-                    case "rocketsettings_edit":
-                        strOut = EditData();
-                        break;
-                    case "rocketsettings_add":
-                        _settingsData.Add();
-                        strOut = EditData();
-                        break;
-                    case "rocketsettings_save":
-                        //strOut = Save();
-                        break;
-                    case "rocketsettings_login":
-                        strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
-                        break;
-                }
+                strOut = "Interface must be attached to a module.";
             }
             else
             {
-                if (systemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
-                {
-                    strOut = "<h1>ERROR</h1> <p><b>Invalid Command - check commandSecurity() class</b></p> <p>" + paramCmd + "  ModuleID:" + _settingsData.ModuleId + "  TabID:" + _settingsData.TabId + "</p>";
-                    strOut += "<div class='w3-card-4 w3-padding w3-codespan'>" + DNNrocketUtils.HtmlOf(postInfo.XMLData) + "</div>";
-                }
+                _settingsData = new SettingsData(tabid, moduleid, langRequired);
 
-                if (_commandSecurity.ValidCommand(paramCmd))
+                _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);
+                _commandSecurity.AddCommand("rocketsettings_edit", true);
+                _commandSecurity.AddCommand("rocketsettings_add", true);
+                _commandSecurity.AddCommand("rocketsettings_save", true);
+                _commandSecurity.AddCommand("rocketsettings_delete", true);
+
+                _commandSecurity.AddCommand("rocketsettings_getdata", false);
+                _commandSecurity.AddCommand("rocketsettings_login", false);
+
+
+                if (_commandSecurity.SecurityCommandCheck(paramCmd))
                 {
-                    strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey);
+                    switch (paramCmd)
+                    {
+                        case "rocketsettings_edit":
+                            strOut = EditData();
+                            break;
+                        case "rocketsettings_add":
+                            _settingsData.AddRow();
+                            strOut = EditData();
+                            break;
+                        case "rocketsettings_save":
+                            _settingsData.Save(postInfo);
+                            strOut = EditData();
+                            break;
+                        case "rocketsettings_delete":
+                            _settingsData.Delete();
+                            strOut = EditData();
+                            break;
+                        case "rocketsettings_login":
+                            strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
+                            break;
+                    }
+                }
+                else
+                {
+                    if (systemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
+                    {
+                        strOut = "<h1>ERROR</h1> <p><b>Invalid Command - check commandSecurity() class</b></p> <p>" + paramCmd + "  ModuleID:" + _settingsData.ModuleId + "  TabID:" + _settingsData.TabId + "</p>";
+                        strOut += "<div class='w3-card-4 w3-padding w3-codespan'>" + DNNrocketUtils.HtmlOf(postInfo.XMLData) + "</div>";
+                    }
+
+                    if (_commandSecurity.ValidCommand(paramCmd))
+                    {
+                        strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey);
+                    }
                 }
             }
 
