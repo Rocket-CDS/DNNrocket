@@ -627,8 +627,6 @@ function simplisity_assignevents(cmdurl) {
 
     $('.simplisity_menulink').each(function (index) {
 
-        console.log('index: ' + index);
-
         $(this).attr("s-index", index);
 
         simplisity_setCookieValue('s-page', '1');

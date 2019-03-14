@@ -311,7 +311,7 @@ namespace Simplisity
             var datat = datatext.Split(',');
             if (datav.Count() == datat.Count())
             {
-                strOut = "<ul " + attributes + ">";
+                strOut = "<ul " + attributes + " s-xpath='" + xpath + "'  >";
                 var c = 0;
                 foreach (var v in datav)
                 {
@@ -343,7 +343,7 @@ namespace Simplisity
 
             var upd = getUpdateAttr(xpath, attributes, localized);
             var id = getIdFromXpath(xpath,0);
-            strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
+            strOut = "<select id='" + id + "' " + upd + " " + attributes + "  s-xpath='" + xpath + "'  >";
             var c = 0;
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
@@ -374,7 +374,7 @@ namespace Simplisity
 
             var upd = getUpdateAttr(xpath, attributes, localized);
             var id = getIdFromXpath(xpath, 0);
-            strOut = "<select id='" + id + "' " + upd + " " + attributes + ">";
+            strOut = "<select id='" + id + "' " + upd + " " + attributes + "  s-xpath='" + xpath + "' >";
             var c = 0;
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
