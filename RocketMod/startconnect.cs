@@ -172,7 +172,6 @@ namespace RocketMod
             }
         }
 
-
         public static String ResetRocketMod()
         {
             try

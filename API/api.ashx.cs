@@ -141,7 +141,7 @@ namespace DNNrocketAPI
                                 }
                                 else
                                 {
-                                    strOut = "ERROR: Invalid SystemProvider: " + systemprovider + "  interfacekey: " + interfacekey;
+                                    strOut = "ERROR: Invalid SystemProvider: " + systemprovider + "  interfacekey: " + interfacekey + " - Check Database for SYSTEM,'" + systemprovider + "' (No spaces)";
                                 }
 
                             }

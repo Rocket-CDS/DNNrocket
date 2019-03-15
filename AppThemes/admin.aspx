@@ -32,7 +32,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/css/coconutmilk-theme.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/css/ultravoilet-theme.css">
 
     <!-- CDN -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -83,7 +83,7 @@
         <!-- !PAGE CONTENT! -->
     <div class="w3-main" style="margin-left:300px;margin-top:60px; " id="base-panel">
 
-        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketapptheme_edit" s-track="true" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,theme:config-w3,template:edit.cshtml,interfacekey:rocketapptheme"></div>
+        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketapptheme_dashboard" s-track="true" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,theme:config-w3,template:dashboard.cshtml,interfacekey:dashboard"></div>
 
         <!-- End page content -->
     </div>

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<genxml>
+  <hidden>
+    <theme>config-w3</theme>
+    <template>Admin_SystemDetail.cshtml</template>
+    <activevalue />
+    <pagesize>20</pagesize>
+    <page>1</page>
+    <selecteditemid>109</selecteditemid>
+    <editlanguage>en-US</editlanguage>
+    <index>99</index>
+    <systemprovider>systemapi</systemprovider>
+    <uilang1>en-US</uilang1>
+  </hidden>
+  <textbox>
+    <ctrlkey> dnnrocketapptheme</ctrlkey>
+    <systemname>App Themes</systemname>
+    <adminurl>/Desktopmodules/dnnrocket/AppThemes/admin.aspx</adminurl>
+    <apiurl>/DesktopModules/DNNrocket/API/api.ashx</apiurl>
+    <licensekey />
+    <encryptkey>12365498765454654</encryptkey>
+  </textbox>
+  <checkbox>
+    <debugmode>false</debugmode>
+  </checkbox>
+  <interfacedata list="true">
+    <genxml>
+      <textbox>
+        <interfacekey>rocketapptheme</interfacekey>
+        <entitytypecode>APPTHEME</entitytypecode>
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <defaulttemplate>dashboard.cshtml</defaulttemplate>
+        <defaultcommand>appthemes_dashboard</defaultcommand>
+        <namespaceclass>DNNrocket.AppThemes.startconnect</namespaceclass>
+        <assembly>DNNrocketAppThemes</assembly>
+        <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="false" data="Manager" />
+          <chk value="false" data="Editor" />
+          <chk value="false" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>true</cache>
+        <onmenu>true</onmenu>
+      </checkbox>
+    </genxml>
+  </interfacedata>
+  <lang>
+    <genxml>
+      <interfacedata list="true">
+        <genxml />
+      </interfacedata>
+    </genxml>
+  </lang>
+  <systemprovider>systemapi</systemprovider>
+</genxml>
