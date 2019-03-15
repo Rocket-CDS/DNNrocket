@@ -104,7 +104,16 @@ namespace DNNrocketAPI
 
                 if (Page.IsPostBack == false)
                 {
-                    PageLoad();
+                    var remotepost = DNNrocketUtils.RequestParam(Context, "remotepost");
+                    if (remotepost != "")
+                    {
+                        RemotePost(remotepost);
+                    }
+                    else
+                    {
+                        PageLoad();
+                    }
+
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -194,6 +203,50 @@ namespace DNNrocketAPI
 
         }
 
+
+        public string RemotePost(string cacheKey)
+        {
+            try
+            {
+                var objCtrl = new DNNrocketController();
+                var sRecord = objCtrl.GetByGuidKey(-1, -1, "TEMP", cacheKey);
+                if (sRecord != null)
+                {
+                    var posthtml = sRecord.TextData;
+                    objCtrl.Delete(sRecord.ItemID);
+
+                    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+
+                    HttpContext.Current.Response.Clear();
+                    HttpContext.Current.Response.Write(posthtml);
+                }
+                else
+                {
+                    HttpContext.Current.Response.Clear();
+                    HttpContext.Current.Response.Write("ERROR");
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.Write("ERROR");
+            }
+
+            try
+            {
+                HttpContext.Current.Response.End();
+            }
+            catch (Exception ex)
+            {
+                var msg = ex;
+                // this try/catch to avoid sending error 'ThreadAbortException'  
+            }
+
+            return "";
+        }
+
+
         #endregion
 
 
@@ -204,7 +257,7 @@ namespace DNNrocketAPI
             get
             {
                 var actions = new ModuleActionCollection();
-                if (_configInfo != null && _configInfo.XMLDoc.SelectNodes("genxml/*").Count > 1)
+                if (_configInfo != null && _configInfo.XMLDoc.SelectNodes("genxml/*").Count > 1 &&  !_configInfo.GetXmlPropertyBool("genxml/checkbox/noiframeedit"))
                 {
                     actions.Add(GetNextActionID(), "Edit", "", "", "plus2.gif", "javascript:" + _interfacekey + "editiframe_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
                 }
