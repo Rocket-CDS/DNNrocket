@@ -53,14 +53,14 @@ namespace DNNrocketAPI
 
                     var requestJson = "";
                     var postInfo = new SimplisityInfo();
-                    postInfo.SetXmlProperty("genxml/hidden","");
+                    postInfo.SetXmlProperty("genxml/hidden", "");
                     if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
                     {
                         requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
-                        
+
                         // ---- START: DEBUG POST ------
                         var debugSystemProvider = DNNrocketUtils.GetCookieValue("s-current-systemprovider");
-                            var debugSystemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", debugSystemProvider);
+                        var debugSystemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", debugSystemProvider);
                         if (debugSystemInfo != null && debugSystemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
                         {
                             FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + "\\debug_requestJson.json", requestJson);
@@ -100,6 +100,13 @@ namespace DNNrocketAPI
                     if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
                     postInfo.SetXmlProperty("genxml/systemprovider", systemprovider);
+
+                    if (paramCmd == "login_login")
+                    {
+                        LoginUtils.DoLogin(postInfo, HttpContext.Current.Request.UserHostAddress);
+                        paramCmd = DNNrocketUtils.GetCookieValue("DNNrocket_lastparamCmd");
+                    }
+                    DNNrocketUtils.SetCookieValue("DNNrocket_lastparamCmd", paramCmd);
 
                     switch (paramCmd)
                     {
@@ -147,8 +154,6 @@ namespace DNNrocketAPI
                             }
                             break;
                     }
-
-
                 }
             }
             catch (Exception ex)

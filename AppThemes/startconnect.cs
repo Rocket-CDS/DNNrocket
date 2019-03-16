@@ -32,6 +32,9 @@ namespace DNNrocket.AppThemes
             if (moduleid == 0) moduleid = _postInfo.ModuleId;
             var tabid = _postInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
 
+            if (moduleid == 0) moduleid = -1;
+            if (tabid == 0) tabid = -1;
+
             _appThemeData = new AppThemeData(tabid, moduleid, langRequired);
 
             _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);
@@ -42,12 +45,13 @@ namespace DNNrocket.AppThemes
             _commandSecurity.AddCommand("rocketapptheme_dashboard", true);
             _commandSecurity.AddCommand("rocketapptheme_builder", true);
 
-            _commandSecurity.AddCommand("rocketapptheme_getdata", false);
-            _commandSecurity.AddCommand("rocketapptheme_login", false);
-
-            if (_commandSecurity.SecurityCommandCheck(paramCmd))
+            if (_commandSecurity.NeedsToLogin(paramCmd))
             {
-                switch (paramCmd)
+                strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey);
+                return ReturnString(strOut);
+            }
+
+            switch (paramCmd)
                 {
                     case "rocketapptheme_dashboard":
                         strOut = GetDashBoard();
@@ -55,29 +59,17 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_builder":
                         strOut = GetDashBoard();
                         break;
-
-                }
-            }
-            else
-            {
-                if (systemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
-                {
-                    strOut = "<h1>ERROR</h1> <p><b>Invalid Command - check commandSecurity() class</b></p> <p>" + paramCmd + "  ModuleID:" + _appThemeData.ModuleId + "  TabID:" + _appThemeData.TabId + "</p>";
-                    strOut += "<div class='w3-card-4 w3-padding w3-codespan'>" + DNNrocketUtils.HtmlOf(postInfo.XMLData) + "</div>";
                 }
 
-                if (_commandSecurity.ValidCommand(paramCmd))
-                {
-                    strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey);
-                }
-            }
+            return ReturnString(strOut);
+        }
 
+        public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
+        {
             var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("outputhtml", strOut);
+            rtnDic.Add("outputjson", jsonOut);            
             return rtnDic;
-
-
-
         }
 
         public static String GetDashBoard()

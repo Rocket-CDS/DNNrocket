@@ -61,7 +61,7 @@ namespace RocketMod
                 DNNrocketUtils.DeleteCookieValue("rocketmod_cmd");
             }
 
-            if (_commandSecurity.SecurityCommandCheck(paramCmd))
+            if (_commandSecurity.NeedsToLogin(paramCmd))
             {
                 switch (paramCmd)
                 {

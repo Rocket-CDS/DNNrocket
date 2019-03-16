@@ -28,7 +28,7 @@ namespace DNNrocket.TestForm
 
             var strOut = "";
 
-            if (commandSecurity.SecurityCommandCheck(paramCmd))
+            if (commandSecurity.NeedsToLogin(paramCmd))
             {
                 switch (paramCmd)
                 {

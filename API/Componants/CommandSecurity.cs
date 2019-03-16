@@ -41,7 +41,7 @@ namespace DNNrocketAPI.Componants
         private void ValidateUser()
         {
             _commandSecurity = new Dictionary<string, bool>(); 
-            if (_userInfo != null)
+            if (_userInfo != null && _userInfo.UserID > 0)
             {
                 ValidUser = true;
                 _userId = _userInfo.UserID;
@@ -114,12 +114,21 @@ namespace DNNrocketAPI.Componants
             return _commandSecurity.ContainsKey(commandKey);
         }
 
-        public bool SecurityCommandCheck(string commandKey)
+
+        public bool NeedsToLogin(string commandKey)
         {
-            if (!_commandSecurity.ContainsKey(commandKey)) return false;  // command does not exists.
-            if (!_commandSecurity[commandKey]) return true; // No security needed.
-            if (_commandSecurity[commandKey] && SecurityCheckUser() && HasModuleEditRights()) return true; // passed security check
-            return false; // no security match
+            if (!HasModuleEditRights()) return true;
+            if (!SecurityCheckUser()) return true;            
+            if (!_commandSecurity.ContainsKey(commandKey)) return false; 
+            if (!_commandSecurity[commandKey]) return false; 
+            if (_commandSecurity[commandKey]) return true;
+            return true; 
+        }
+
+        public bool SecureCommand(string commandKey)
+        {
+            if (!_commandSecurity.ContainsKey(commandKey)) return true; 
+            return _commandSecurity[commandKey]; 
         }
 
         public bool HasModuleEditRights()

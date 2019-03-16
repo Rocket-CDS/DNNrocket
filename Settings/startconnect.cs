@@ -50,7 +50,7 @@ namespace RocketSettings
                 _commandSecurity.AddCommand("rocketsettings_login", false);
 
 
-                if (_commandSecurity.SecurityCommandCheck(paramCmd))
+                if (_commandSecurity.NeedsToLogin(paramCmd))
                 {
                     switch (paramCmd)
                     {

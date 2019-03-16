@@ -42,7 +42,7 @@ namespace DNNrocket.Category
 
             var strOut = "";
 
-            if (commandSecurity.SecurityCommandCheck(paramCmd))
+            if (commandSecurity.NeedsToLogin(paramCmd))
             {
                 switch (paramCmd)
                 {

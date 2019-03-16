@@ -25,7 +25,7 @@ namespace DNNrocket.Country
 
             var rtnDic = new Dictionary<string, string>();
 
-            if (commandSecurity.SecurityCommandCheck(paramCmd))
+            if (commandSecurity.NeedsToLogin(paramCmd))
             {
                 switch (paramCmd)
                 {
