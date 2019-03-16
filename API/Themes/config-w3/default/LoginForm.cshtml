@@ -26,7 +26,7 @@
                 <label><b>@ResourceKey("login.Password")</b></label>
                 <input class="w3-input w3-border" type="password" placeholder="@ResourceKey("login.enterpassword")" name="psw" id="password" required>
 
-                <button class="w3-button w3-block w3-green w3-section w3-padding simplisity_click" s-fields="" s-track="false" s-post=".logindata" s-cmd="login_login" s-before="hidelogin" s-return="#simplisity_startpanel">@ResourceKey("login.Login")</button>
+                <button class="w3-button w3-block w3-green w3-section w3-padding simplisity_click" s-fields="" s-track="false" s-post=".logindata" s-cmd="login_login" s-before="hidelogin" s-after="reloadpage">@ResourceKey("login.Login")</button>
 
                 @if (info.GetXmlProperty("genxml/loginstatus") == "fail")
                 {
@@ -36,6 +36,10 @@
                 {
                     <div class="w3-panel w3-orange w3-padding-16">@info.GetXmlProperty("genxml/message")</div>
                 }
+                @if (info.GetXmlProperty("genxml/securityaccess") != "")
+                {
+                    <div class="w3-panel w3-pale-red w3-padding-16">@info.GetXmlProperty("genxml/securityaccess")</div>
+                }                
 
                 <input class="w3-check w3-margin-top" type="checkbox" checked="checked" id="rememberme"><span>@ResourceKey("login.Rememberme")</span>
 
@@ -46,7 +50,7 @@
                 <label><b>@ResourceKey("login.emailaddress")</b></label>
                 <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="@ResourceKey("login.enteremailaddress")" id="emailaddress" required>
 
-                <button class="w3-button w3-block w3-teal w3-section w3-padding simplisity_click"  s-track="false" s-post=".logindata" s-cmd="login_sendreset" s-return="#simplisity_startpanel">@ResourceKey("login.sendreset")</button>
+                <button class="w3-button w3-block w3-teal w3-section w3-padding simplisity_click"  s-track="false" s-post=".logindata" s-cmd="login_sendreset" s-after="reloadpage">@ResourceKey("login.sendreset")</button>
 
             </div>
 

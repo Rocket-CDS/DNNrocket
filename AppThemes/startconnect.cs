@@ -45,9 +45,9 @@ namespace DNNrocket.AppThemes
             _commandSecurity.AddCommand("rocketapptheme_dashboard", true);
             _commandSecurity.AddCommand("rocketapptheme_builder", true);
 
-            if (_commandSecurity.NeedsToLogin(paramCmd))
+            if (!_commandSecurity.HasSecurityAccess(paramCmd))
             {
-                strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey);
+                strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                 return ReturnString(strOut);
             }
 

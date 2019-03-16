@@ -77,7 +77,7 @@
     <!-- Side Navigation (use mask div if in iframe editmode)-->
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-theme-d5 w3-animate-left w3-card" style="z-index:3;width:260px;top: 55px;" id="mySidebar">
         <img src="/DesktopModules/DNNrocket/API/Themes/config-w3/img/img_avatar4.png" alt="Avatar" style="width:20%" class="w3-circle w3-margin">
-        <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="getsidemenu" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,theme:config-w3,template:SideMenu.cshtml,interfacekey:rocketapptheme,relpath:/DesktopModules/DNNrocket/AppThemes/"></div>
+        <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="getsidemenu" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,theme:config-w3,template:SideMenu.cshtml,relpath:/DesktopModules/DNNrocket/AppThemes/"></div>
     </nav>
 
         <!-- !PAGE CONTENT! -->

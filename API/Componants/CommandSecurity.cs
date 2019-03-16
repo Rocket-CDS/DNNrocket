@@ -115,14 +115,20 @@ namespace DNNrocketAPI.Componants
         }
 
 
-        public bool NeedsToLogin(string commandKey)
+        public bool HasSecurityAccess(string commandKey)
         {
-            if (!HasModuleEditRights()) return true;
-            if (!SecurityCheckUser()) return true;            
-            if (!_commandSecurity.ContainsKey(commandKey)) return false; 
-            if (!_commandSecurity[commandKey]) return false; 
-            if (_commandSecurity[commandKey]) return true;
-            return true; 
+            if (!_commandSecurity.ContainsKey(commandKey) || !_commandSecurity[commandKey])
+            {
+                return true;
+            }
+            if (HasModuleEditRights() && SecurityCheckUser())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool SecureCommand(string commandKey)

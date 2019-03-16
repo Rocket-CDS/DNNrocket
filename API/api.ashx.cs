@@ -45,7 +45,7 @@ namespace DNNrocketAPI
                     {
                         var ps = new PortalSecurity();
                         ps.SignOut();
-                        strOut = LoginUtils.LoginForm(new SimplisityInfo());
+                        strOut = LoginUtils.LoginForm(new SimplisityInfo(),"login", UserUtils.GetCurrentUserId());
                         context.Response.ContentType = "text/plain";
                         context.Response.Write(strOut);
                         context.Response.End();
@@ -92,7 +92,7 @@ namespace DNNrocketAPI
                         }
                     }
 
-                    var systemprovider = postInfo.GetXmlProperty("genxml/hidden/systemprovider");
+                    var systemprovider = postInfo.GetXmlProperty("genxml/hidden/systemprovider").Trim(' ');
                     if (systemprovider == "") systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
                     if (systemprovider == "") systemprovider = "dnnrocket";
 
@@ -104,11 +104,11 @@ namespace DNNrocketAPI
                     if (paramCmd == "login_login")
                     {
                         LoginUtils.DoLogin(postInfo, HttpContext.Current.Request.UserHostAddress);
-                        paramCmd = DNNrocketUtils.GetCookieValue("DNNrocket_lastparamCmd");
+                        strOut = ""; // the page will rteload after the call
                     }
-                    DNNrocketUtils.SetCookieValue("DNNrocket_lastparamCmd", paramCmd);
-
-                    switch (paramCmd)
+                    else
+                    {
+                        switch (paramCmd)
                     {
                         case "getsidemenu":
                             strOut = GetSideMenu(postInfo, systemprovider);
@@ -154,6 +154,8 @@ namespace DNNrocketAPI
                             }
                             break;
                     }
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -201,6 +203,7 @@ namespace DNNrocketAPI
                 var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
                 var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
                 var moduleid = sInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+                if (moduleid == 0) moduleid = -1;
 
                 var passSettings = sInfo.ToDictionary();
 

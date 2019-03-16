@@ -85,13 +85,17 @@ namespace DNNrocketAPI.Componants
                     }
                 }
             }
-            strOut = LoginForm(rtnInfo);
+            strOut = LoginForm(rtnInfo,"login", objUser.UserID);
 
             return strOut;
         }
 
-        public static string LoginForm(SimplisityInfo sInfo, string interfacekey = "login")
+        public static string LoginForm(SimplisityInfo sInfo, string interfacekey,int userid)
         {
+            if (userid > 0)
+            {
+                sInfo.SetXmlProperty("genxml/securityaccess", "You do not have security access");
+            }
             var razorTempl = DNNrocketUtils.GetRazorTemplateData("LoginForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture());
             sInfo.SetXmlProperty("genxml/interfacekey", interfacekey); // make sure the login form has the correct interface command.
             return DNNrocketUtils.RazorDetail(razorTempl, sInfo);
