@@ -10,11 +10,20 @@
     <link rel="stylesheet" href="/DesktopModules/DNNrocket/api/Themes/config-w3/css/littleboyblue-theme.css">
 
 
+    <!-- CDN -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    -->
+    <!-- LOCAL -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/fa/css/font-awesome.min.css">
+    <script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
+    <script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
     <!-- Load these scripts to use nbrightajax functions -->
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
@@ -42,18 +51,19 @@
     <!-- !PAGE CONTENT! -->
     <div class="w3-main" style="margin-top:60px;" id="base-panel">
 
-        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="systemapi_admin_getsystemlist" s-fields="theme:config-w3,template:Admin_Systems.cshtml"></div>
+        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="systemapi_admin_getsystemlist" s-fields="theme:config-w3,template:Admin_Systems.cshtml">
+
+            <h1>Loading....</h1>
+
+        </div>
 
         <!-- End page content -->
     </div>
 
     <script>
         $(document).ready(function () {
-
             $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'systemapi' });
-
         });
-
     </script>
 
 

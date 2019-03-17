@@ -52,78 +52,65 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmod_getdata", false);
             _commandSecurity.AddCommand("rocketmod_login", false);
 
-
-            // use command form cookie if we have set it.
-            var cookieCmd = DNNrocketUtils.GetCookieValue("rocketmod_cmd");
-            if (cookieCmd != "")
+            if (!_commandSecurity.HasSecurityAccess(paramCmd))
             {
-                paramCmd = cookieCmd;
-                DNNrocketUtils.DeleteCookieValue("rocketmod_cmd");
+                strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                return ReturnString(strOut);
             }
 
-            if (_commandSecurity.HasSecurityAccess(paramCmd))
+            switch (paramCmd)
             {
-                switch (paramCmd)
-                {
-                    case "rocketmod_edit":
-                        strOut = EditData();
-                        break;
-                    case "rocketmod_savedata":
-                        _moduleData.SaveData(postInfo);
-                        strOut = EditData();
-                        break;
-                    case "rocketmod_saveheader":
-                        _moduleData.SaveHeader(postInfo);
-                        strOut = EditData();
-                        break;
-                    case "rocketmod_add":
-                        _moduleData.AddNew();
-                        strOut = EditData();
-                        break;
-                    case "rocketmod_delete":
-                        _moduleData.DeleteData();
-                        strOut = EditData();
-                        break;
-                    case "rocketmod_saveconfig":
-                        _moduleData.SaveConfig(postInfo, CheckIfList());
-                        strOut = GetDashBoard();
-                        break;
-                    case "rocketmod_getsetupmenu":
-                        strOut = GetSetup();
-                        break;
-                    case "rocketmod_dashboard":
-                        strOut = GetDashBoard();
-                        break;
-                    case "rocketmod_reset":
-                        strOut = ResetRocketMod();
-                        break;
-                    case "rocketmod_resetdata":
-                        strOut = ResetDataRocketMod();
-                        break;
-                    case "rocketmod_getdata":
-                        strOut = GetDisplay();
-                        break;
-                    case "rocketmod_login":
-                        strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
-                        break;
-                }
-            }
-            else
-            {
-                if (systemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
-                {
-                    strOut = "<h1>ERROR</h1> <p><b>Invalid Command - check commandSecurity() class</b></p> <p>" + paramCmd + "  ModuleID:" + _moduleData.ModuleId + "  SelectedItemId:" + _moduleData.SelectedItemId + " TabID:" + _moduleData.TabId + "</p>";
-                    strOut += "<div class='w3-card-4 w3-padding w3-codespan'>" + DNNrocketUtils.HtmlOf(postInfo.XMLData) + "</div>";
-                }
-
-                if (_commandSecurity.ValidCommand(paramCmd))
-                {
-                    strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
-                }
+                case "rocketmod_edit":
+                    strOut = EditData();
+                    break;
+                case "rocketmod_savedata":
+                    _moduleData.SaveData(postInfo);
+                    strOut = EditData();
+                    break;
+                case "rocketmod_saveheader":
+                    _moduleData.SaveHeader(postInfo);
+                    strOut = EditData();
+                    break;
+                case "rocketmod_add":
+                    _moduleData.AddNew();
+                    strOut = EditData();
+                    break;
+                case "rocketmod_delete":
+                    _moduleData.DeleteData();
+                    strOut = EditData();
+                    break;
+                case "rocketmod_saveconfig":
+                    _moduleData.SaveConfig(postInfo, CheckIfList());
+                    strOut = GetDashBoard();
+                    break;
+                case "rocketmod_getsetupmenu":
+                    strOut = GetSetup();
+                    break;
+                case "rocketmod_dashboard":
+                    strOut = GetDashBoard();
+                    break;
+                case "rocketmod_reset":
+                    strOut = ResetRocketMod();
+                    break;
+                case "rocketmod_resetdata":
+                    strOut = ResetDataRocketMod();
+                    break;
+                case "rocketmod_getdata":
+                    strOut = GetDisplay();
+                    break;
+                case "rocketmod_login":
+                    strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
+                    break;
             }
 
+            return ReturnString(strOut);
+        }
+
+        public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
+        {
             var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("outputhtml", strOut);
+            rtnDic.Add("outputjson", jsonOut);
             return rtnDic;
         }
 

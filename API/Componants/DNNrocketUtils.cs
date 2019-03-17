@@ -30,6 +30,17 @@ namespace DNNrocketAPI
 {
     public static class DNNrocketUtils
     {
+
+        public static Dictionary<string,Locale> GetEnabledLanguages()
+        {
+            if (PortalSettings.Current == null)
+            {
+                return new Dictionary<string, Locale>();
+            }
+            return LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
+        }
+
+
         public static string HtmlOf(String htmlString)
         {
             return System.Web.HttpUtility.HtmlDecode(htmlString);

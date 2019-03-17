@@ -22,7 +22,7 @@ namespace DNNrocket.AppThemes
             paramCmd = paramCmd.ToLower();
 
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
-            _appthemeRelPath = "/DesktopModules/DNNrocket/AppTheme";
+            _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _postInfo = postInfo;
 

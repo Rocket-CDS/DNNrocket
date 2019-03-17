@@ -35,6 +35,15 @@ namespace DNNrocketAPI
             return -1;
         }
 
+        public static string GetCurrentUserName()
+        {
+            if (UserController.Instance.GetCurrentUserInfo() != null)
+            {
+                return UserController.Instance.GetCurrentUserInfo().Username;
+            }
+            return "";
+        }
+
         public static bool GetCurrentUserIsInRole(string role)
         {
             if (UserController.Instance.GetCurrentUserInfo() != null)

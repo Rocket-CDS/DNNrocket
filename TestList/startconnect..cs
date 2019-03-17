@@ -75,7 +75,7 @@ namespace DNNrocket.TestList
             {
                 if (commandSecurity.ValidCommand(paramCmd))
                 {
-                    strOut = LoginUtils.LoginForm(postInfo, rocketInterface.InterfaceKey);
+                   // strOut = LoginUtils.LoginForm(postInfo, rocketInterface.InterfaceKey);
                 }
             }
 

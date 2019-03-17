@@ -84,7 +84,7 @@ namespace RocketSettings
 
                     if (_commandSecurity.ValidCommand(paramCmd))
                     {
-                        strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey);
+                       // strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey);
                     }
                 }
             }

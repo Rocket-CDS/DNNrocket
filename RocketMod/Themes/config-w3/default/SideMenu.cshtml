@@ -3,17 +3,15 @@
 @using System
 @using System.Linq
 @using System.Xml
-@using DotNetNuke.Entities.Users;
-@using DotNetNuke.Services.Localization;
-@using DotNetNuke.Entities.Portals;
 @using Simplisity;
 @using DNNrocketAPI.Componants;
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 
 @{
+    var username = UserUtils.GetCurrentUserName();
     var sidemenu = (SideMenu)Model.List.First();
 
     var menuOut = "";
@@ -31,14 +29,14 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketMod." + interfacekey) + "</div>";
+                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("AppThemes." + interfacekey) + "</div>";
             }
         }
         lp += 1;
     }
 
 
-    // get sub group interfaces 
+    // get sub group interfaces
     lp = 0;
     foreach (SimplisityRecord g in sidemenu.GetGroups())
     {
@@ -47,7 +45,7 @@
         interfacelist = sidemenu.GetInterfaces(groupref);
         if (interfacelist.Count() > 0)
         {
-            menuOut += "<div class='w3-bar-item w3-button w3-theme-l4 w3-hover-theme menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey("RocketMod." + groupref) + "&nbsp;<i class='fa fa-caret-down'></i></div>";
+            menuOut += "<div class='w3-bar-item w3-button w3-theme-l4 w3-hover-theme menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey("AppThemes." + groupref) + "&nbsp;<i class='fa fa-caret-down'></i></div>";
             menuOut += "<div id='" + groupref + "' class='w3-hide w3-theme-l4'>";
             foreach (var i in interfacelist)
             {
@@ -56,7 +54,7 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink ' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketMod." + interfacekey) + "</div>";
+                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink ' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("AppThemes." + interfacekey) + "</div>";
             }
             menuOut += "</div>";
             lp += 1;
@@ -66,9 +64,16 @@
 
 <div class="w3-sidebar w3-bar-block w3-card w3-theme-l4" style="width:260px;">
     @HtmlOf(menuOut)
-    <hr/>
-    
-    <div onclick="returnclick();" class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+    <hr />
+
+    @if (Model.ModuleId == 0)
+    {
+        <div class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme simplisity_click " s-cmd="login_signout" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdSignOutButton")</div>
+    }
+    else
+    {
+        <div onclick="returnclick();" class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+    }
 
 </div>
 
@@ -79,7 +84,7 @@
 
         var strOut1 = "";
 
-        var enabledlanguages = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
+        var enabledlanguages = DNNrocketUtils.GetEnabledLanguages();
         foreach (var l in enabledlanguages)
         {
             var imageclass = "";
@@ -146,6 +151,7 @@
             simplisity_setCookieValue('s-pagesize', '20');
         }
 
+        $('#dnnrocket_usernameplaceholder').text('@(username)');
 
     });
 
