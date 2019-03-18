@@ -31,6 +31,14 @@ namespace DNNrocketAPI
     public static class DNNrocketUtils
     {
 
+        public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
+        {
+            var rtnDic = new Dictionary<string, string>();
+            rtnDic.Add("outputhtml", strOut);
+            rtnDic.Add("outputjson", jsonOut);
+            return rtnDic;
+        }
+
         public static Dictionary<string,Locale> GetEnabledLanguages()
         {
             if (PortalSettings.Current == null)

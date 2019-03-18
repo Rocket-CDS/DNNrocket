@@ -55,7 +55,7 @@ namespace RocketMod
             if (!_commandSecurity.HasSecurityAccess(paramCmd))
             {
                 strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
-                return ReturnString(strOut);
+                return DNNrocketUtils.ReturnString(strOut);
             }
 
             switch (paramCmd)
@@ -103,16 +103,9 @@ namespace RocketMod
                     break;
             }
 
-            return ReturnString(strOut);
+            return DNNrocketUtils.ReturnString(strOut);
         }
 
-        public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
-        {
-            var rtnDic = new Dictionary<string, string>();
-            rtnDic.Add("outputhtml", strOut);
-            rtnDic.Add("outputjson", jsonOut);
-            return rtnDic;
-        }
 
         public static String EditData()
         {
