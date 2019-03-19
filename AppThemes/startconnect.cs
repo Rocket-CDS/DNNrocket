@@ -10,6 +10,8 @@ namespace DNNrocket.AppThemes
     {
         private static string _appthemeRelPath;
         private static string _appthemeMapPath;
+        private static string _adminAppthemeRelPath;
+        private static string _adminAppthemeMapPath;
         private static SimplisityInfo _postInfo;
         private static CommandSecurity _commandSecurity;
         private static DNNrocketInterface _rocketInterface;
@@ -24,6 +26,8 @@ namespace DNNrocket.AppThemes
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
+            _adminAppthemeRelPath = "/DesktopModules/DNNrocket/AppThemes/Admin";
+            _adminAppthemeMapPath = DNNrocketUtils.MapPath(_adminAppthemeRelPath);
             _postInfo = postInfo;
 
             // we should ALWAYS pass back the moduleid & tabid in the template post.
@@ -76,12 +80,7 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                var controlRelPath = _rocketInterface.TemplateRelPath;
-                if (controlRelPath == "") controlRelPath = ControlRelPath;
-
-                var themeFolder = _rocketInterface.DefaultTheme;
-                var razortemplate = "dashboard.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("dashboard.cshtml", _adminAppthemeRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
 
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
