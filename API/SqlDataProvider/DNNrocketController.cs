@@ -188,20 +188,20 @@ namespace DNNrocketAPI
                     xrefitemid = objInfo.ItemID; // not a xref record, so take the id.
                 }
 
-                var moduleId = objInfo.ModuleId;
-                var systemInfo = GetRecord(moduleId);
+                var systemId = objInfo.SystemId;
+                var systemInfo = GetRecord(systemId);
 
                 if (systemInfo != null)
                 {
-                    var systemLinkRec = GetByGuidKey(-1, moduleId, "SYSTEMLINK", objInfo.TypeCode);
+                    var systemLinkRec = GetByGuidKey(-1, -1, "SYSTEMLINK", objInfo.TypeCode);
                     if (systemLinkRec == null)
                     {
                         // might be a xref, search for xref typecode
-                        systemLinkRec = GetByGuidKey(-1, moduleId, "SYSTEMLINK", objInfo.GUIDKey);
+                        systemLinkRec = GetByGuidKey(-1, -1, "SYSTEMLINK", objInfo.GUIDKey);
                     }
                     if (systemLinkRec != null)
                     {
-                        var xrefTypeCodeList = GetList(-1, moduleId, "SYSTEMLINK" + objInfo.TypeCode, " and R1.ParentitemId = '" + systemLinkRec.ItemID + "' ");
+                        var xrefTypeCodeList = GetList(-1, -1, "SYSTEMLINK" + objInfo.TypeCode, " and R1.ParentitemId = '" + systemLinkRec.ItemID + "' ");
                         foreach (var i in xrefTypeCodeList)
                         {                          
                             var indexref = i.GUIDKey;
@@ -218,7 +218,7 @@ namespace DNNrocketAPI
                                         var value = dataInfo.GetXmlProperty(xpath);
                                         if (!String.IsNullOrEmpty(value))
                                         {
-                                            CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.ModuleId, indexref, xrefitemid, dataitemid, lang, value);
+                                            CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.SystemId, indexref, xrefitemid, dataitemid, lang, value);
                                         }
                                     }
                                 }
@@ -229,7 +229,7 @@ namespace DNNrocketAPI
                                 var value = objInfo.GetXmlProperty(xpath);
                                 if (!String.IsNullOrEmpty(value))
                                 {
-                                    CreateSystemLinkIdx(objInfo.PortalId, objInfo.ModuleId, indexref, xrefitemid, dataitemid, "", value);
+                                    CreateSystemLinkIdx(objInfo.PortalId, objInfo.SystemId, indexref, xrefitemid, dataitemid, "", value);
                                 }
                             }
                         }
@@ -238,12 +238,12 @@ namespace DNNrocketAPI
             }
         }
 
-        private void CreateSystemLinkIdx(int portalId, int moduleId, string indexref, int xrefitemid, int parentItemId, string lang, string value)
+        private void CreateSystemLinkIdx(int portalId, int systemId, string indexref, int xrefitemid, int parentItemId, string lang, string value)
         {
             // read is index exists already
             var strFilter = "and R1.ParentItemId = '" + parentItemId + "' and R1.Lang = '" + lang + "'";
             SimplisityInfo sRecord = null;
-            var l = GetList(portalId, moduleId, "IDX_" + indexref, strFilter, "", "", 1);
+            var l = GetList(portalId, -1, "IDX_" + indexref, strFilter, "", "", 1,0,0,0, systemId);
             if (l.Count == 1)
             {
                 sRecord = l[0];
@@ -260,6 +260,7 @@ namespace DNNrocketAPI
             sRecord.ModifiedDate = DateTime.Now;
             sRecord.Lang = lang;
             sRecord.XrefItemId = xrefitemid;
+            sRecord.SystemId = systemId;
             if (sRecord.GUIDKey != value)
             {
                 sRecord.GUIDKey = value;

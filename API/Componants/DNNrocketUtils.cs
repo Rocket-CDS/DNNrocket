@@ -1345,6 +1345,10 @@ namespace DNNrocketAPI
                             {
                                 try
                                 {
+                                    if (postInfo != null)
+                                    {
+                                        postInfo.SystemId = systemInfo.ItemID;  // systemid is required for index, always add to postdata so it gets passed to the razor templates.
+                                    }
                                     var ajaxprov = APInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass, controlRelPath);
                                     rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, HttpContext.Current.Request.UserHostAddress, editlang);
                                 }

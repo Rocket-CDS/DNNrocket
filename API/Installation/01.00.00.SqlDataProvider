@@ -290,6 +290,7 @@ begin
 	,R1.[ParentItemId]
 	,ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'')) as [Lang] 
 	,R1.[UserId]
+	,R1.[SystemId]
 	from {databaseOwner}[{objectQualifier}DNNrocket] as R1
 	left join dbo.[DNNrocket] as RLang1 on R1.Itemid = RLang1.ParentItemId and RLang1.Lang = @Lang  and RLang1.TypeCode = R1.TypeCode + 'LANG'
 	where R1.ItemId = @ItemId
@@ -321,6 +322,7 @@ begin
 	,[ParentItemId]
 	,[Lang] 
 	,[UserId]
+	,[SystemId]
 	from {databaseOwner}[{objectQualifier}DNNrocket] as R1
 	where R1.ItemId = @ItemId
 end
@@ -348,6 +350,7 @@ begin
 	,[ParentItemId]
 	,[Lang] 
 	,[UserId]
+	,[SystemId]
 	from {databaseOwner}[{objectQualifier}DNNrocket] as R1
 	where R1.ParentItemId = @ParentItemId and R1.Lang = @Lang
 end
@@ -489,6 +492,7 @@ DEALLOCATE idx_cursor
 	set @rtnFields = @rtnFields + ',R1.[XrefItemId] '
 	set @rtnFields = @rtnFields + ',R1.[ParentItemId] '
 	set @rtnFields = @rtnFields + ',R1.[UserId] '
+	set @rtnFields = @rtnFields + ',R1.[SystemId] '		
 
 
 	IF (@PageSize > 0)

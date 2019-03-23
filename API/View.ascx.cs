@@ -166,6 +166,7 @@ namespace DNNrocketAPI
                 foreach (String key in Request.QueryString.AllKeys)
                 {
                     paramString += key + "=" + Request.QueryString[key];
+                    // we need this if we need to process url parmas on the APInterface.  In the cshtml we can use (Model.GetUrlParam("????"))
                     postInfo.SetXmlProperty("genxml/urlparams/" + key, Request.QueryString[key]);
                 }
 

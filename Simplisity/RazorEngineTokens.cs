@@ -74,6 +74,7 @@ namespace Simplisity
 
         public IEncodedString HiddenField(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0)
         {
+            if (info == null) info = new SimplisityInfo();
             var value = info.GetXmlProperty(xpath);
             if (localized && !xpath.StartsWith("genxml/lang/"))
             {
@@ -89,6 +90,7 @@ namespace Simplisity
 
         public IEncodedString TextBox(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0)
         {
+            if (info == null) info = new SimplisityInfo();
             var value = info.GetXmlProperty(xpath);
             if (localized && !xpath.StartsWith("genxml/lang/"))
             {
@@ -111,6 +113,7 @@ namespace Simplisity
 
         public IEncodedString TextArea(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0)
         {
+            if (info == null) info = new SimplisityInfo();
             var value = info.GetXmlProperty(xpath);
             if (localized && !xpath.StartsWith("genxml/lang/"))
             {
@@ -126,6 +129,7 @@ namespace Simplisity
 
         public IEncodedString CheckBox(SimplisityInfo info, String xpath,String text, String attributes = "", Boolean defaultValue = false, bool localized = false, int row = 0)
         {
+            if (info == null) info = new SimplisityInfo();
             var value = getChecked(info, xpath, defaultValue);
             if (localized && !xpath.StartsWith("genxml/lang/"))
             {
@@ -139,6 +143,7 @@ namespace Simplisity
 
         public IEncodedString CheckBoxList(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "", Boolean defaultValue = false, bool localized = false, int row = 0)
         {
+            if (info == null) info = new SimplisityInfo();
 
             var strOut = "";
 
@@ -182,6 +187,7 @@ namespace Simplisity
 
         public IEncodedString RadioButtonList(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "", String defaultValue = "",String labelattributes = "", bool localized = false, int row = 0)
         {
+            if (info == null) info = new SimplisityInfo();
             var strOut = "";
             var datav = datavalue.Split(',');
             var datat = datatext.Split(',');
@@ -215,6 +221,7 @@ namespace Simplisity
 
         public IEncodedString DropDownList(SimplisityInfo info, String xpath, Dictionary<string,string> dataDictionary, String attributes = "", String defaultValue = "", bool localized = false, int row = 0)
         {
+            if (info == null) info = new SimplisityInfo();
             var strOut = "";
             var value = info.GetXmlProperty(xpath);
             if (localized && !xpath.StartsWith("genxml/lang/"))
@@ -245,6 +252,7 @@ namespace Simplisity
 
         public IEncodedString DropDownList(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "", String defaultValue = "", bool localized = false, int row = 0)
         {
+            if (info == null) info = new SimplisityInfo();
             var datav = datavalue.Split(',');
             var datat = datatext.Split(',');
             if (datav.Count() == datat.Count())
