@@ -399,22 +399,7 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
-        public IEncodedString SimplisityPaging(SimplisityInfo info)
-        {
-            var strOut = "";
-            strOut += "<a href='#' class='w3-button w3-hover-theme'>|&#10094;</a>";
-            strOut += "<a href='#' class='w3-button w3-hover-theme'>..</a>";
-            strOut += "<a href='#' class='w3-button w3-hover-theme'>&#10094;</a>";
-            for (int i = 1; i < 6; i++)
-            {
-                strOut += "<a href='#' class='w3-button w3-hover-theme simplisity_pageclick' s-page='" + i + "' s-pagesize='3' >" + i + "</a>";
-            }
-            strOut += "<a href='#' class='w3-button w3-hover-theme'>&#10095;</a>";
-            strOut += "<a href='#' class='w3-button w3-hover-theme'>..</a>";
-            strOut += "<a href='#' class='w3-button w3-hover-theme'>&#10095;|</a>";
 
-            return new RawString(strOut);
-        }
 
 
         #endregion

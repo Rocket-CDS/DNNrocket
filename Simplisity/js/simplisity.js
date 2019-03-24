@@ -500,7 +500,7 @@ function simplisity_getSystemProvider(sfields) {
 
 function simplisity_pagechange(element, cmdurl) {
     var scmd = $(element).attr('s-cmd');
-    if (scmd !== '') {
+    if (typeof scmd !== 'undefined' && scmd !== '') {
         simplisity_callserver(element, cmdurl);
     } else {
         location.reload();
