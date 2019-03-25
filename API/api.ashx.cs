@@ -78,7 +78,7 @@ namespace DNNrocketAPI
 
                     }
 
-                    // Add any url params
+                    // Add any url params (coded)
                     foreach (string key in context.Request.QueryString.Keys)
                     {
                         if (key != "cmd")
@@ -86,17 +86,35 @@ namespace DNNrocketAPI
                             var values = context.Request.QueryString.GetValues(key);
                             foreach (string value in values)
                             {
-                                postInfo.SetXmlProperty("genxml/hidden/" + key, GeneralUtils.DeCode(value));
+                                try
+                                {
+                                    postInfo.SetXmlProperty("genxml/hidden/" + key, GeneralUtils.DeCode(value));
+                                }
+                                catch (Exception ex)
+                                {
+                                    var msg = ex;
+                                    // it might not be coded. (ignore and use genxml/urlparams/* xpath)
+                                }
+
                             }
 
                         }
                     }
 
+                    // Add any url params (uncoded)
+                    foreach (String key in context.Request.QueryString.Keys)
+                    {
+                        postInfo.SetXmlProperty("genxml/urlparams/" + key, context.Request.QueryString[key]);
+                    }
+
+
                     var systemprovider = postInfo.GetXmlProperty("genxml/hidden/systemprovider").Trim(' ');
+                    if (systemprovider == "") systemprovider = postInfo.GetXmlProperty("genxml/urlparams/systemprovider").Trim(' ');
                     if (systemprovider == "") systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
                     if (systemprovider == "") systemprovider = "dnnrocket";
 
                     var interfacekey = postInfo.GetXmlProperty("genxml/hidden/interfacekey");
+                    if (interfacekey == "") interfacekey = postInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
                     if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
                     postInfo.SetXmlProperty("genxml/systemprovider", systemprovider);

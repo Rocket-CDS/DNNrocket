@@ -87,6 +87,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="api2.ashx.cs">
+      <DependentUpon>api2.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Componants\CommandSecurity.cs" />
     <Compile Include="Componants\DNNrocketConst.cs" />
     <Compile Include="Componants\FileStatus.cs" />
@@ -119,6 +122,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="api2.ashx" />
     <None Include="api.ashx" />
     <None Include="BuildScripts\build.bat" />
     <None Include="BuildScripts\ModulePackage.targets">
