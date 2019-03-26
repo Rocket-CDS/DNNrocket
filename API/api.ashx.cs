@@ -88,7 +88,7 @@ namespace DNNrocketAPI
                             {
                                 try
                                 {
-                                    postInfo.SetXmlProperty("genxml/hidden/" + key, GeneralUtils.DeCode(value));
+                                    postInfo.SetXmlProperty("genxml/hidden/" + key.Replace("_","-"), GeneralUtils.DeCode(value));
                                 }
                                 catch (Exception ex)
                                 {
@@ -104,8 +104,13 @@ namespace DNNrocketAPI
                     // Add any url params (uncoded)
                     foreach (String key in context.Request.QueryString.Keys)
                     {
-                        postInfo.SetXmlProperty("genxml/urlparams/" + key, context.Request.QueryString[key]);
+                        postInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_","-"), context.Request.QueryString[key]);
                     }
+                    foreach (string key in context.Request.Form)
+                    {
+                        postInfo.SetXmlProperty("genxml/postform/" + key.Replace("_","-"), context.Request.Form[key]); // remove '_' from xpath
+                    }
+
 
 
                     var systemprovider = postInfo.GetXmlProperty("genxml/hidden/systemprovider").Trim(' ');

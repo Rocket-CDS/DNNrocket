@@ -42,14 +42,13 @@ namespace DNNrocketAPI
                 // Add any url params (uncoded)
                 foreach (String key in context.Request.QueryString.Keys)
                 {
-                    postInfo.SetXmlProperty("genxml/urlparams/" + key, context.Request.QueryString[key]);
+                    postInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_","-"), context.Request.QueryString[key]);
+                }
+                foreach (string key in context.Request.Form)
+                {
+                    postInfo.SetXmlProperty("genxml/postform/" + key.Replace("_","-"), context.Request.Form[key]); // remove '_' from xpath
                 }
 
-                NameValueCollection requestForm = context.Request.Form;
-                foreach (string key in requestForm)
-                {
-                    postInfo.SetXmlProperty("genxml/postform/" + key, requestForm[key]);
-                }
 
                 var param = context.Request.BinaryRead(context.Request.ContentLength);
                 var strRequest = Encoding.ASCII.GetString(param);

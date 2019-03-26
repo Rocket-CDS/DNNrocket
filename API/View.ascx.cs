@@ -27,6 +27,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
 using Simplisity;
+using System.Collections.Specialized;
 
 namespace DNNrocketAPI
 {
@@ -167,7 +168,11 @@ namespace DNNrocketAPI
                 {
                     paramString += key + "=" + Request.QueryString[key];
                     // we need this if we need to process url parmas on the APInterface.  In the cshtml we can use (Model.GetUrlParam("????"))
-                    postInfo.SetXmlProperty("genxml/urlparams/" + key, Request.QueryString[key]);
+                    postInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_","-"), Request.QueryString[key]);
+                }
+                foreach (string key in Request.Form)
+                {
+                    postInfo.SetXmlProperty("genxml/postform/" + key.Replace("_","-"), Request.Form[key]); // remove '_' from xpath
                 }
 
                 var strOut = "No Interface Found.";
