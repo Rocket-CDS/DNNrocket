@@ -5,8 +5,8 @@
     <activevalue />
     <pagesize>20</pagesize>
     <page>1</page>
-    <selecteditemid>368691</selecteditemid>
-    <editlanguage />
+    <selecteditemid>109</selecteditemid>
+    <editlanguage>en-US</editlanguage>
     <index>99</index>
     <systemprovider>systemapi</systemprovider>
     <uilang1>en-US</uilang1>
@@ -30,7 +30,7 @@
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>dashboard.cshtml</defaulttemplate>
-        <defaultcommand>rocketmod_dashboard</defaultcommand>
+        <defaultcommand>rocketapptheme_dashboard</defaultcommand>
         <namespaceclass>DNNrocket.AppThemes.startconnect</namespaceclass>
         <assembly>DNNrocketAppThemes</assembly>
         <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
@@ -51,7 +51,7 @@
       </checkboxlist>
       <checkbox>
         <active>true</active>
-        <cache>false</cache>
+        <cache>true</cache>
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
@@ -61,10 +61,10 @@
         <entitytypecode>APPTHEME</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
-        <defaulttemplate>dashboard.cshtml</defaulttemplate>
-        <defaultcommand>appthemes_dashboard</defaultcommand>
-        <namespaceclass>DNNrocket.AppThemes.startconnect</namespaceclass>
-        <assembly>DNNrocketAppThemes</assembly>
+        <defaulttemplate>builder.cshtml</defaulttemplate>
+        <defaultcommand>rocketapptheme_builder</defaultcommand>
+        <namespaceclass>DNNrocket.FormBuilder.startconnect</namespaceclass>
+        <assembly>DNNrocketFormBuilder</assembly>
         <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
       </textbox>
       <dropdownlist>
@@ -83,7 +83,7 @@
       </checkboxlist>
       <checkbox>
         <active>true</active>
-        <cache>false</cache>
+        <cache>true</cache>
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
@@ -94,7 +94,7 @@
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>edit.cshtml</defaulttemplate>
-        <defaultcommand>rocketmod_edit</defaultcommand>
+        <defaultcommand>rocketapptheme_edit</defaultcommand>
         <namespaceclass>DNNrocket.AppThemes.startconnect</namespaceclass>
         <assembly>DNNrocketAppThemes</assembly>
         <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
@@ -115,7 +115,7 @@
       </checkboxlist>
       <checkbox>
         <active>true</active>
-        <cache>false</cache>
+        <cache>true</cache>
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
