@@ -156,6 +156,7 @@ namespace DNNrocketAPI
             }
 
             var postInfo = new SimplisityInfo();
+            postInfo.PortalId = PortalSettings.Current.PortalId;
             postInfo.ModuleId = ModuleId;
             postInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
             postInfo.SetXmlProperty("genxml/hidden/tabid", PortalSettings.Current.ActiveTab.TabID.ToString());

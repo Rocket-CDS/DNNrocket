@@ -53,6 +53,7 @@ namespace DNNrocketAPI
 
                     var requestJson = "";
                     var postInfo = new SimplisityInfo();
+                    postInfo.PortalId = PortalSettings.Current.PortalId;
                     postInfo.SetXmlProperty("genxml/hidden", "");
                     if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
                     {

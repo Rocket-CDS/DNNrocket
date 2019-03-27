@@ -36,6 +36,7 @@ namespace DNNrocketAPI
                 var paramCmd = context.Request.QueryString["cmd"];
 
                 var postInfo = new SimplisityInfo();
+                postInfo.PortalId = PortalSettings.Current.PortalId;
                 postInfo.SetXmlProperty("genxml/hidden", "");
 
 
