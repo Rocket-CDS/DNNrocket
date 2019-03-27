@@ -233,6 +233,10 @@ namespace DNNrocket.SystemData
 
         public static void SystemSave(SimplisityInfo postInfo)
         {
+            //remove any params
+            postInfo.RemoveXmlNode("genxml/postform");
+            postInfo.RemoveXmlNode("genxml/urlparams");
+
             var selecteditemid = postInfo.GetXmlProperty("genxml/hidden/selecteditemid");
             if (GeneralUtils.IsNumeric(selecteditemid))
             {
