@@ -327,6 +327,29 @@ namespace DNNrocketAPI
             return l[0];
         }
 
+        public SimplisityRecord GetRecordByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "")
+        {
+            var strFilter = " and R1.GUIDKey = '" + guidKey + "' ";
+            if (selUserId != "")
+            {
+                strFilter += " and R1.UserId = " + selUserId + " ";
+            }
+
+            var l = GetList(portalId, moduleId, entityTypeCode, strFilter, "", "", 1);
+            if (l.Count == 0) return null;
+            if (l.Count > 1)
+            {
+                for (int i = 1; i < l.Count; i++)
+                {
+                    // remove invalid DB entries
+                    Delete(l[i].ItemID);
+                }
+            }
+            if (l[0] == null) return null;
+            var rtn = GetRecord(l[0].ItemID);
+            return rtn;
+        }
+
 
         public void FillEmptyLanguageFields(int baseParentItemId, String baseLang)
         {
@@ -592,6 +615,90 @@ namespace DNNrocketAPI
                 Update(smiLang);
                 //CacheUtils.ClearAllCache(); // clear ALL cache.
                 info = GetInfo(info.ItemID, smiLang.Lang);
+            }
+
+            return info;
+        }
+
+        #endregion
+
+        #region "Get Save Record"
+
+        public SimplisityRecord GetRecord(string GuidKey, string typeCode, int systemId = -1, int moduleId = -1, bool readOnly = false)
+        {
+            //CacheUtils.ClearAllCache(); // clear ALL cache.
+            var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey);
+            if (info == null && !readOnly)
+            {
+                // create record if not in DB
+                info = new SimplisityInfo();
+                info.GUIDKey = GuidKey;
+                info.TypeCode = typeCode;
+                info.SystemId = systemId;
+                info.ModuleId = moduleId;
+                info.PortalId = PortalSettings.Current.PortalId;
+                info.ItemID = Update(info);
+            }
+            return info;
+        }
+
+        public SimplisityRecord SaveRecord(string GuidKey, string typeCode, SimplisityInfo postInfo, int systemId = -1, int moduleId = -1)
+        {
+            var info = GetRecordByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey);
+            if (info == null)
+            {
+                // do read, so it creates the record and do a new read.
+                info = GetRecord(GuidKey, typeCode, systemId, moduleId);
+            }
+            if (info != null)
+            {
+                info.XMLData = postInfo.XMLData;
+                info.Lang = "";
+                info.SystemId = systemId;
+                info.ModuleId = moduleId;
+                Update(info);
+            }
+
+            return info;
+        }
+
+
+        public SimplisityRecord GetRecord(string typeCode, int ItemId, int systemId = -1, int moduleId = -1, bool readOnly = false)
+        {
+            var info = GetRecord(ItemId);
+            if (info == null && !readOnly)
+            {
+                // create record if not in DB
+                info = new SimplisityInfo();
+                info.GUIDKey = "";
+                info.TypeCode = typeCode;
+                info.SystemId = systemId;
+                info.ModuleId = moduleId;
+                info.PortalId = PortalSettings.Current.PortalId;
+                info.ItemID = Update(info);
+            }
+            return GetRecord(info.ItemID);
+        }
+
+        public SimplisityRecord SaveRecord(SimplisityRecord sRecord, int systemId)
+        {
+            var info = GetRecord(sRecord.ItemID);
+            if (info == null)
+            {
+                // do read, so it creates the record and do a new read.
+                info = GetRecord(sRecord.TypeCode, sRecord.ItemID, systemId, sRecord.ModuleId);
+            }
+            if (info != null)
+            {
+                info.XMLData = sRecord.XMLData;
+                info.Lang = "";
+                info.XrefItemId = sRecord.XrefItemId;
+                info.ParentItemId = sRecord.ParentItemId;
+                info.GUIDKey = sRecord.GUIDKey;
+                info.SystemId = systemId;
+                Update(info);
+                //CacheUtils.ClearAllCache(); // clear ALL cache.
+                info = GetRecord(info.ItemID);
             }
 
             return info;
