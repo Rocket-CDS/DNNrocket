@@ -381,8 +381,10 @@ begin
 
 	SET NOCOUNT ON
 	 
-	SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
-
+	if NOT(@Lang = '')
+	begin
+		SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+	end
 
 ------------------------------------------------------------------------------------
 --- Cursor for INDEX records.
@@ -475,14 +477,23 @@ DEALLOCATE idx_cursor
 
 	END 
 
-	SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+	if NOT(@Lang = '')
+	begin
+		SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+	end
 
 	set @rtnFields = ' R1.[ItemId] '
-	set @rtnFields = @rtnFields + ',ISNULL([RLangIdx].XMLData,{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
 
-
-	set @rtnFields = @rtnFields + ',ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang] '	 
- 
+	if NOT(@Lang = '')
+	begin
+		set @rtnFields = @rtnFields + ',ISNULL([RLangIdx].XMLData,{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
+		set @rtnFields = @rtnFields + ',ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang] '	 
+	end
+	if @Lang = ''
+	begin
+		set @rtnFields = @rtnFields + ',R1.[XMLData] '
+	end
+	
 	set @rtnFields = @rtnFields + ',R1.[PortalId] '
 	set @rtnFields = @rtnFields + ',R1.[ModuleId] '
 	set @rtnFields = @rtnFields + ',R1.[TypeCode] '
@@ -533,8 +544,12 @@ DEALLOCATE idx_cursor
 								SELECT  ROW_NUMBER() OVER(' + @orderBy + ') AS row, '
 		set @STMT = @STMT + @rtnFields		
 		set @STMT = @STMT + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as R1 '
-		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
-		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+
+		if NOT(@Lang = '')
+		begin
+			set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+			set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+		end
 		
 		set @STMT = @STMT + @JoinIndex
 
@@ -553,8 +568,13 @@ DEALLOCATE idx_cursor
 			END	                                                              
 			
 			set @STMT = @STMT + ' ) AS R1 '
-			set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
-			set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+
+			if NOT(@Lang = '')
+			begin
+				set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+				set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+			end
+
 			set @STMT = @STMT + ' WHERE row > @lbound AND row < @ubound '
 
 			
@@ -571,9 +591,13 @@ DEALLOCATE idx_cursor
 		set @STMT = @STMT + @rtnFields		
 
 		set @STMT = @STMT + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as R1 '
-		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
-		set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
-	
+
+		if NOT(@Lang = '')
+		begin
+			set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+			set @STMT = @STMT + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+		end
+		
 		set @STMT = @STMT + @JoinIndex
 
 		IF (RIGHT(@TypeCode,1) = '%')
@@ -703,7 +727,11 @@ DEALLOCATE idx_cursor
 			set @countselect = @countselect + ' @RecordCount=count(R1.ItemId) '	
 
 			set @countselect = @countselect + ' FROM {databaseOwner}[{objectQualifier}DNNrocket]  as R1 '
-			set @countselect = @countselect + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+
+			if NOT(@Lang = '')
+			begin
+				set @countselect = @countselect + ' left join {databaseOwner}[{objectQualifier}DNNrocket] as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+			end
 	
 			set @countselect = @countselect + @JoinIndex
 

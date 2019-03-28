@@ -22,7 +22,10 @@ namespace RocketSettings
             paramCmd = paramCmd.ToLower();
 
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
-            _appthemeRelPath = "/DesktopModules/DNNrocket/Settings";
+
+            var appPath = _rocketInterface.TemplateRelPath;
+            if (appPath == "") appPath = "/DesktopModules/DNNrocket/Settings";
+            _appthemeRelPath = appPath;
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _postInfo = postInfo;
 
@@ -38,7 +41,7 @@ namespace RocketSettings
             }
             else
             {
-                _settingsData = new SettingsData(tabid, moduleid, langRequired);
+                _settingsData = new SettingsData(tabid, moduleid, langRequired, _rocketInterface.EntityTypeCode);
 
                 _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);
                 _commandSecurity.AddCommand("rocketsettings_edit", true);
@@ -87,6 +90,7 @@ namespace RocketSettings
                        // strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey);
                     }
                 }
+
             }
 
             var rtnDic = new Dictionary<string, string>();
@@ -102,13 +106,18 @@ namespace RocketSettings
             try
             {
                 var strOut = "";
-                var razortemplate = "settings.cshtml";
+                var theme = _postInfo.GetXmlProperty("genxml/hidden/theme");
+                if (theme == "") theme = _rocketInterface.DefaultTheme;
+                if (theme == "") theme = "config-w3";
+                var razortemplate = _postInfo.GetXmlProperty("genxml/hidden/template");
+                if (razortemplate == "") razortemplate = _rocketInterface.DefaultTemplate;                
+                if (razortemplate == "") razortemplate = "settings.cshtml";
 
                 var passSettings = _postInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, "config-w3", DNNrocketUtils.GetEditCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, theme, DNNrocketUtils.GetEditCulture());
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, _settingsData, passSettings);
 
-                if (strOut == "") strOut = "ERROR: No data returned for " + _appthemeMapPath + "\\Themes\\config-w3\\default\\" + razortemplate;
+                if (strOut == "") strOut = "ERROR: No data returned for " + _appthemeMapPath + "\\Themes\\" + theme + "\\default\\" + razortemplate;
                 return strOut;
             }
             catch (Exception ex)

@@ -14,12 +14,14 @@ namespace RocketSettings
         private int _tabid;
         private int _moduleid;
         private string _langRequired;
+        private string _entityTypeCode;
 
         public SimplisityInfo Info;
 
 
-        public SettingsData(int tabId, int moduleId, string langRequired)
+        public SettingsData(int tabId, int moduleId, string langRequired, string entityTypeCode = "ROCKETSETTINGS")
         {
+            _entityTypeCode = entityTypeCode;
             _langRequired = langRequired;
             _tabid = tabId;
             _moduleid = moduleId;
@@ -32,7 +34,7 @@ namespace RocketSettings
         public void Populate()
         {
             var objCtrl = new DNNrocketController();
-            Info = objCtrl.GetData("rocketsettings_" + _moduleid, "ROCKETSETTINGS", _langRequired, -1, _moduleid, true);
+            Info = objCtrl.GetData("moduleid" + _moduleid, _entityTypeCode, _langRequired, -1, _moduleid, true);
             if (Info == null)
             {
                 Info = new SimplisityInfo();
@@ -44,7 +46,7 @@ namespace RocketSettings
         {
             _dataList = new List<SimplisityInfo>();
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("rocketsettings_" + _moduleid, "ROCKETSETTINGS", _langRequired, -1, _moduleid, true);
+            var info = objCtrl.GetData("moduleid" + _moduleid, _entityTypeCode, _langRequired, -1, _moduleid, true);
             if (info != null)
             {
                 _dataList = info.GetList("settingsdata");
@@ -54,7 +56,7 @@ namespace RocketSettings
         public void Delete()
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("rocketsettings_" + _moduleid, "ROCKETSETTINGS", DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
+            var info = objCtrl.GetData("moduleid" + _moduleid, _entityTypeCode, DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
             if (info != null)
             {
                 objCtrl.Delete(info.ItemID);
@@ -66,8 +68,12 @@ namespace RocketSettings
 
         public void Save(SimplisityInfo postInfo)
         {
+            //remove any params
+            postInfo.RemoveXmlNode("genxml/postform");
+            postInfo.RemoveXmlNode("genxml/urlparams");
+
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.SaveData("rocketsettings_" + _moduleid, "ROCKETSETTINGS", postInfo, -1, _moduleid);
+            var info = objCtrl.SaveData( "moduleid" + _moduleid, _entityTypeCode, postInfo, -1, _moduleid);
             ClearCache();
             Populate();
             PopulateList();
@@ -85,7 +91,8 @@ namespace RocketSettings
 
         public int ModuleId { get {return _moduleid;} }
         public int TabId { get { return _tabid; } }
-      
+        public string EntityTypeCode { get { return _entityTypeCode; } set { _entityTypeCode = value; } }        
+
         public List<SimplisityInfo> List
         {
             get { return _dataList; }
