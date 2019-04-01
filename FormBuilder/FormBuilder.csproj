@@ -6,4 +6,9 @@
     <RootNamespace>DNNrocket.FormBuilder</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
+    <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
+  </ItemGroup>
+
 </Project>
