@@ -1,0 +1,37 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+
+<div id="rocketimageselect" class="w3-modal">
+    <div class="w3-modal-content" style="width: 96%;height: 96%;">
+        <header class="w3-container w3-theme-d5">
+            <span onclick="document.getElementById('rocketimageselect').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <h4>Images</h4>
+        </header>
+        <br/>
+        <div class="w3-container">
+
+            <span class="w3-section">
+                <button class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</button>
+                <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="testlist2bin" s-return="#sortlist2" s-removelist=".testlist2" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+            </span>
+
+            <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
+                <input id="imagefileupload" class="simplisity_fileupload" s-cmd="imageselect_addimage" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-return="#reocketimageselectlist1" s-fields="theme:config-w3,template:imagelist.cshtml" type="file" name="files[]" multiple style="display:none;">
+                <p><i>@ResourceKey("DNNrocket.dropimage")...</i></p>
+            </div>
+
+            <div id="reocketimageselectlist1">
+
+            </div>
+
+            <div id="reocketimageselectlist">
+
+            </div>
+
+        </div>
+    </div>
+</div>

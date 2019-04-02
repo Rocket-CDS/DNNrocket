@@ -141,6 +141,7 @@
     <None Include="packages.config" />
     <None Include="Systems\dnnrocket.Zxml" />
     <None Include="Systems\OpenStore.Zxml" />
+    <None Include="Themes\config-w3\default\ImageSelect.cshtml" />
     <None Include="Themes\config-w3\default\LoginForm.cshtml" />
     <None Include="Themes\config-w3\default\Paging.cshtml" />
     <None Include="Themes\config-w3\default\SideMenu.cshtml" />
@@ -150,6 +151,7 @@
     <EmbeddedResource Include="App_LocalResources\login.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="images\dnnrocket.jpg" />
     <Content Include="images\flags\16\af-ZA.png" />
     <Content Include="images\flags\16\ar-AE.png" />
     <Content Include="images\flags\16\ar-BH.png" />
@@ -564,6 +566,8 @@
     <Content Include="images\flags\32\zh-MO.png" />
     <Content Include="images\flags\32\zh-SG.png" />
     <Content Include="images\flags\32\zh-TW.png" />
+    <Content Include="images\noimage.png" />
+    <Content Include="images\noimage2.png" />
     <Content Include="Themes\config-w3\css\coconutmilk-theme.css" />
     <Content Include="View.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -574,9 +578,10 @@
     <Content Include="Themes\config-w3\css\arcadia-theme.css" />
     <Content Include="Themes\config-w3\css\bloomingdahlia-theme.css" />
     <Content Include="Themes\config-w3\css\littleboyblue-theme.css" />
-    <Content Include="Themes\config-w3\img\img_avatar4.png" />
+    <Content Include="images\img_avatar4.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Themes\config-w3\img\" />
     <Folder Include="Themes\config-w3\js\" />
   </ItemGroup>
   <ItemGroup>

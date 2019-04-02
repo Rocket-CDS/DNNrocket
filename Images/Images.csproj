@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
+    <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
+  </ItemGroup>
+
+</Project>
