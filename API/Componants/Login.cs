@@ -50,7 +50,7 @@ namespace DNNrocketAPI.Componants
 
         }
 
-        public static string DoLogin(SimplisityInfo sInfo, string userHostAddress)
+        public static string DoLogin(SimplisityInfo systemInfo, SimplisityInfo sInfo, string userHostAddress)
         {
             var strOut = "";
             var username = sInfo.GetXmlProperty("genxml/text/username");
@@ -85,13 +85,18 @@ namespace DNNrocketAPI.Componants
                     }
                 }
             }
-            strOut = LoginForm(rtnInfo,"login", objUser.UserID);
+            strOut = LoginForm(systemInfo, rtnInfo, "login", objUser.UserID);
 
             return strOut;
         }
 
-        public static string LoginForm(SimplisityInfo sInfo, string interfacekey,int userid)
+        public static string LoginForm(SimplisityInfo systemInfo, SimplisityInfo sInfo, string interfacekey,int userid)
         {
+            // clear cookie for cmd.  This could cause a fail login loop.
+            // A module MUST always have a tabid and a valid users.  Invalid cookies without tabid could cause a loop.
+            DNNrocketUtils.DeleteCookieValue("s-cmd-menu-" + systemInfo.GUIDKey);
+            DNNrocketUtils.DeleteCookieValue("s-fields-menu-" + systemInfo.GUIDKey);
+
             if (userid > 0)
             {
                 sInfo.SetXmlProperty("genxml/securityaccess", "You do not have security access");

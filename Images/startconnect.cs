@@ -46,42 +46,39 @@ namespace Images
                 _commandSecurity.AddCommand("rocketimages_remove", true);
                 _commandSecurity.AddCommand("rocketimages_list", true);
 
-
-                if (_commandSecurity.HasSecurityAccess(paramCmd))
+                if (!_commandSecurity.HasSecurityAccess(paramCmd))
                 {
-                    switch (paramCmd)
-                    {
-                        case "rocketimages_upload":
-                            strOut = Upload();
-                            break;
-                        case "rocketimages_add":
-//                          strOut = EditData();
-                            break;
-                        case "rocketimages_remove":
-//                            strOut = EditData();
-                            break;
-                        case "rocketimages_list":
-                            strOut = ListData();
-                            break;
-                    }
+                    strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                    return ReturnString(strOut);
                 }
-                else
+
+                switch (paramCmd)
                 {
-                    if (systemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
-                    {
-                        strOut = "<h1>ERROR</h1> <p><b>Invalid Command - check commandSecurity() class</b></p> <p>" + paramCmd + "  ModuleID:" + moduleid + "  TabID:" + tabid + "</p>";
-                        strOut += "<div class='w3-card-4 w3-padding w3-codespan'>" + DNNrocketUtils.HtmlOf(postInfo.XMLData) + "</div>";
-                    }
+                    case "rocketimages_upload":
+                        // strOut = Upload();
+                        break;
+                    case "rocketimages_add":
+                        //                          strOut = EditData();
+                        break;
+                    case "rocketimages_remove":
+                        //                            strOut = EditData();
+                        break;
+                    case "rocketimages_list":
+                        strOut = ListData();
+                        break;
                 }
 
             }
 
+            return ReturnString(strOut);
+        }
+
+        public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
+        {
             var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("outputhtml", strOut);
+            rtnDic.Add("outputjson", jsonOut);
             return rtnDic;
-
-
-
         }
 
         public static String ListData()

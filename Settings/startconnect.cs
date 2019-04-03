@@ -52,9 +52,12 @@ namespace RocketSettings
                 _commandSecurity.AddCommand("rocketsettings_getdata", false);
                 _commandSecurity.AddCommand("rocketsettings_login", false);
 
-
-                if (_commandSecurity.HasSecurityAccess(paramCmd))
+                if (!_commandSecurity.HasSecurityAccess(paramCmd))
                 {
+                    strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                    return ReturnString(strOut);
+                }
+
                     switch (paramCmd)
                     {
                         case "rocketsettings_edit":
@@ -73,32 +76,21 @@ namespace RocketSettings
                             strOut = EditData();
                             break;
                         case "rocketsettings_login":
-                            strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
+                            strOut = LoginUtils.DoLogin(systemInfo, postInfo, userHostAddress);
                             break;
                     }
-                }
-                else
-                {
-                    if (systemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
-                    {
-                        strOut = "<h1>ERROR</h1> <p><b>Invalid Command - check commandSecurity() class</b></p> <p>" + paramCmd + "  ModuleID:" + _settingsData.ModuleId + "  TabID:" + _settingsData.TabId + "</p>";
-                        strOut += "<div class='w3-card-4 w3-padding w3-codespan'>" + DNNrocketUtils.HtmlOf(postInfo.XMLData) + "</div>";
-                    }
-
-                    if (_commandSecurity.ValidCommand(paramCmd))
-                    {
-                       // strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey);
-                    }
-                }
 
             }
 
+            return ReturnString(strOut);
+        }
+
+        public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
+        {
             var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("outputhtml", strOut);
+            rtnDic.Add("outputjson", jsonOut);
             return rtnDic;
-
-
-
         }
 
         public static String EditData()

@@ -51,7 +51,7 @@ namespace DNNrocket.AppThemes
 
             if (!_commandSecurity.HasSecurityAccess(paramCmd))
             {
-                strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                 return ReturnString(strOut);
             }
 

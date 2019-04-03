@@ -54,7 +54,7 @@ namespace RocketMod
 
             if (!_commandSecurity.HasSecurityAccess(paramCmd))
             {
-                strOut = LoginUtils.LoginForm(postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                 return DNNrocketUtils.ReturnString(strOut);
             }
 
@@ -99,7 +99,7 @@ namespace RocketMod
                     strOut = GetDisplay();
                     break;
                 case "rocketmod_login":
-                    strOut = LoginUtils.DoLogin(postInfo, userHostAddress);
+                    strOut = LoginUtils.DoLogin(systemInfo, postInfo, userHostAddress);
                     break;
             }
 

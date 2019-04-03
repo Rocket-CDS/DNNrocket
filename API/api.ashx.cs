@@ -45,7 +45,7 @@ namespace DNNrocketAPI
                     {
                         var ps = new PortalSecurity();
                         ps.SignOut();
-                        strOut = LoginUtils.LoginForm(new SimplisityInfo(),"login", UserUtils.GetCurrentUserId());
+                        strOut = LoginUtils.LoginForm(new SimplisityInfo(), new SimplisityInfo(),"login", UserUtils.GetCurrentUserId());
                         context.Response.ContentType = "text/plain";
                         context.Response.Write(strOut);
                         context.Response.End();
@@ -118,6 +118,7 @@ namespace DNNrocketAPI
                     if (systemprovider == "") systemprovider = postInfo.GetXmlProperty("genxml/urlparams/systemprovider").Trim(' ');
                     if (systemprovider == "") systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
                     if (systemprovider == "") systemprovider = "dnnrocket";
+                    var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
 
                     var interfacekey = postInfo.GetXmlProperty("genxml/hidden/interfacekey");
                     if (interfacekey == "") interfacekey = postInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
@@ -127,7 +128,7 @@ namespace DNNrocketAPI
 
                     if (paramCmd == "login_login")
                     {
-                        LoginUtils.DoLogin(postInfo, HttpContext.Current.Request.UserHostAddress);
+                        LoginUtils.DoLogin(systemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
                         strOut = ""; // the page will rteload after the call
                     }
                     else
@@ -138,7 +139,6 @@ namespace DNNrocketAPI
                             strOut = GetSideMenu(postInfo, systemprovider);
                             break;
                         default:
-                            var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
                             var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
 
                             if (rocketInterface.Exists)

@@ -62,6 +62,24 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
+        public IEncodedString RenderImageSelect(SimplisityRazor model, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
+        {
+            var uploadFolderPath = DNNrocketUtils.HomeDirectory() + "\\" + uploadFolder;
+            var imgList = new List<object>();
+            foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
+            {
+                imgList.Add(i.Name);
+            }
+            model.List = imgList;
+
+            var strOut = "";
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            strOut = DNNrocketUtils.RazorRender(model, razorTempl, false);
+            return new RawString(strOut);
+        }
+
+
+
         public IEncodedString EditFlag(string classvalues = "")
         {
             var cultureCode = DNNrocketUtils.GetEditCulture();
