@@ -104,7 +104,7 @@ namespace Simplisity
                 var l = GetCacheKeys(g);
                 foreach (var c in l)
                 {
-                    cache.Remove(c);
+                    if (c != null) cache.Remove(c);
                 }
                 RemoveCache("dnnrocketcache" + g);
             }

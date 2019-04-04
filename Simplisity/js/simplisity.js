@@ -408,7 +408,8 @@ function ConvertFormToJSON(spost, slist, sfields) {
 
 
 function simplisity_removetablerow(item) {
-    simplisity_remove(item, 'tr')}
+    simplisity_remove(item, 'tr')
+}
 
 function simplisity_removelistitem(item) {
     simplisity_remove(item, 'li');

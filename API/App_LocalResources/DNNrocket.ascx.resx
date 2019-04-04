@@ -363,4 +363,10 @@
   <data name="settings.Text" xml:space="preserve">
     <value>DNN Rocket Settings</value>
   </data>
+  <data name="cmdUse.Text" xml:space="preserve">
+    <value>Use</value>
+  </data>
+  <data name="cmdUseButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Upload" class="fa fa-share-square-o fa-fw fa-lg"&gt;&lt;/i&gt; Use</value>
+  </data>
 </root>

@@ -62,8 +62,13 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        public IEncodedString RenderImageSelect(SimplisityRazor model, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
+        public IEncodedString RenderImageSelect(SimplisityRazor model,int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
         {
+            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectfolder", uploadFolder);
+            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectsingle", selectsingle.ToString());
+            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectautoreturn", autoreturn.ToString());
+            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectsize", imagesize.ToString());
+
             var uploadFolderPath = DNNrocketUtils.HomeDirectory() + "\\" + uploadFolder;
             var imgList = new List<object>();
             foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
@@ -93,6 +98,11 @@ namespace DNNrocketAPI.render
             return new RawString(url);
         }
 
+        /// <summary>
+        /// Add all genxml/hidden/* fields to the template.
+        /// </summary>
+        /// <param name="sInfo"></param>
+        /// <returns></returns>
         public IEncodedString InjectHiddenFieldData(SimplisityInfo sInfo)
         {
             var strOut = "";
