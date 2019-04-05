@@ -64,23 +64,7 @@ namespace DNNrocketAPI.render
 
         public IEncodedString RenderImageSelect(SimplisityRazor model,int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
         {
-            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectfolder", uploadFolder);
-            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectsingle", selectsingle.ToString());
-            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectautoreturn", autoreturn.ToString());
-            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectsize", imagesize.ToString());
-
-            var uploadFolderPath = DNNrocketUtils.HomeDirectory() + "\\" + uploadFolder;
-            var imgList = new List<object>();
-            foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
-            {
-                imgList.Add(i.Name);
-            }
-            model.List = imgList;
-
-            var strOut = "";
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut = DNNrocketUtils.RazorRender(model, razorTempl, false);
-            return new RawString(strOut);
+            return new RawString(DNNrocketUtils.RenderImageSelect(model, imagesize, selectsingle,autoreturn,uploadFolder,razorTemplateName,templateControlRelPath,themeFolder));
         }
 
 

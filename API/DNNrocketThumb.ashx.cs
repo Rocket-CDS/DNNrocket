@@ -1,11 +1,9 @@
 ﻿using Simplisity;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Web;
 
 namespace DNNrocketAPI
@@ -62,6 +60,15 @@ namespace DNNrocketAPI
             }
         }
 
+        public string ReplaceFirst(string text, string search, string replace)
+        {
+            int pos = text.IndexOf(search);
+            if (pos < 0)
+            {
+                return text;
+            }
+            return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
+        }
 
         public bool IsReusable
         {

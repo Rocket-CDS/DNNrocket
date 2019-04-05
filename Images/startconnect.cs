@@ -3,8 +3,9 @@ using DNNrocketAPI.Componants;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
-namespace Images
+namespace DNNrocket.Images
 {
     public class startconnect : DNNrocketAPI.APInterface
     {
@@ -23,51 +24,35 @@ namespace Images
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
 
             var appPath = _rocketInterface.TemplateRelPath;
-            if (appPath == "") appPath = "/DesktopModules/DNNrocket/Settings";
+            if (appPath == "") appPath = "/DesktopModules/DNNrocket/Images";
             _appthemeRelPath = appPath;
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _postInfo = postInfo;
 
-            // we should ALWAYS pass back the moduleid & tabid in the template post.
-            // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
-            var moduleid = _postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-            if (moduleid == 0) moduleid = _postInfo.ModuleId;
-            var tabid = _postInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
+            _commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
+            _commandSecurity.AddCommand("rocketimages_upload", true);
+            _commandSecurity.AddCommand("rocketimages_delete", true);
+            _commandSecurity.AddCommand("rocketimages_list", false);
 
-            if (tabid == 0 || moduleid == 0)
+            if (!_commandSecurity.HasSecurityAccess(paramCmd))
             {
-                strOut = "Interface must be attached to a module.";
+                strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, DNNrocketUtils.GetCurrentUserId());
+                return ReturnString(strOut);
             }
-            else
+
+            switch (paramCmd)
             {
-                _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);
-                _commandSecurity.AddCommand("rocketimages_upload", true);
-                _commandSecurity.AddCommand("rocketimages_add", true);
-                _commandSecurity.AddCommand("rocketimages_remove", true);
-                _commandSecurity.AddCommand("rocketimages_list", true);
-
-                if (!_commandSecurity.HasSecurityAccess(paramCmd))
-                {
-                    strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
-                    return ReturnString(strOut);
-                }
-
-                switch (paramCmd)
-                {
-                    case "rocketimages_upload":
-                        // strOut = Upload();
-                        break;
-                    case "rocketimages_add":
-                        //                          strOut = EditData();
-                        break;
-                    case "rocketimages_remove":
-                        //                            strOut = EditData();
-                        break;
-                    case "rocketimages_list":
-                        strOut = ListData();
-                        break;
-                }
-
+                case "rocketimages_upload":
+                    UploadImageToFolder();
+                    strOut = ListData();
+                    break;
+                case "rocketimages_delete":
+                    DeleteImages();
+                    strOut = ListData();
+                    break;
+                case "rocketimages_list":
+                    strOut = ListData();
+                    break;
             }
 
             return ReturnString(strOut);
@@ -81,31 +66,80 @@ namespace Images
             return rtnDic;
         }
 
+
         public static String ListData()
         {
             try
             {
-                var strOut = "";
-                var theme = _postInfo.GetXmlProperty("genxml/hidden/theme");
-                if (theme == "") theme = _rocketInterface.DefaultTheme;
-                if (theme == "") theme = "config-w3";
-                var razortemplate = _postInfo.GetXmlProperty("genxml/hidden/template");
-                if (razortemplate == "") razortemplate = _rocketInterface.DefaultTemplate;
-                if (razortemplate == "") razortemplate = "settings.cshtml";
-
-                var passSettings = _postInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, theme, DNNrocketUtils.GetEditCulture());
-                var l = new List<string>();
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, l, passSettings);
-
-                if (strOut == "") strOut = "ERROR: No data returned for " + _appthemeMapPath + "\\Themes\\" + theme + "\\default\\" + razortemplate;
-                return strOut;
+                return DNNrocketUtils.RenderImageSelect(new SimplisityRazor(), 100);
             }
             catch (Exception ex)
             {
                 return ex.ToString();
             }
         }
+
+        public static string UploadImageToFolder()
+        {
+            var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
+
+            var imageDirectory = DNNrocketUtils.HomeDirectory() + "\\images";
+            if (!Directory.Exists(imageDirectory)) Directory.CreateDirectory(imageDirectory);
+
+            var strOut = "";
+            var createseo = _postInfo.GetXmlPropertyBool("genxml/hidden/createseo");
+            var resize = _postInfo.GetXmlPropertyInt("genxml/hidden/imageresize");
+            if (resize == 0) resize = 640;
+            var fileuploadlist = _postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+            if (fileuploadlist != "")
+            {
+                foreach (var f in fileuploadlist.Split(';'))
+                {
+                    if (f != "")
+                    {
+                        var friendlyname = GeneralUtils.DeCode(f);
+                        var userfilename = userid + "_" + friendlyname;
+                        var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname, imageDirectory);
+                        ImgUtils.ResizeImage(DNNrocketUtils.TempDirectory() + "\\" + userfilename, imageDirectory + "\\" + unqName, resize);
+
+                        if (createseo)
+                        {
+                            var imageDirectorySEO = DNNrocketUtils.HomeDirectory() + "\\images\\seo";
+                            if (!Directory.Exists(imageDirectorySEO)) Directory.CreateDirectory(imageDirectorySEO);
+                            ImgUtils.CopyImageForSEO(DNNrocketUtils.TempDirectory() + "\\" + userfilename, imageDirectorySEO, unqName);
+                        }
+
+                        File.Delete(DNNrocketUtils.TempDirectory() + "\\" + userfilename);
+                    }
+                }
+
+            }
+
+            return strOut;
+        }
+
+        public static void DeleteImages()
+        {
+            var imagefolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
+            if (imagefolder == "") imagefolder = "images";
+            var imageDirectory = DNNrocketUtils.HomeDirectory() + "\\" + imagefolder;
+            var imageList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-imagelist").Split(';');
+            foreach (var i in imageList)
+            {
+                if (i != "")
+                {
+                    var friendlyname = GeneralUtils.DeCode(i);
+                    var imageFile = imageDirectory + "\\" + friendlyname;
+                    if (File.Exists(imageFile))
+                    {
+                        File.Delete(imageFile);
+                    }
+                }
+            }
+
+        }
+
+
 
     }
 }

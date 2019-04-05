@@ -44,6 +44,17 @@ namespace Simplisity
             }
 
         }
+
+        public SimplisityRazor()
+        {
+            Settings = new Dictionary<string, string>();
+            HeaderData = new SimplisityInfo();
+            var obj = new SimplisityInfo();
+            var l = new List<object>();
+            l.Add(obj);
+            List = l;
+        }
+
         public SimplisityRazor(List<object> list, Dictionary<String, String> settings)
         {
             Settings = settings;

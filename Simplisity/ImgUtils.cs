@@ -12,6 +12,27 @@ namespace Simplisity
     public class ImgUtils
     {
 
+        public static void CopyImageForSEO(string sourceFilePath, string destinationfolder, string fileName = "")
+        {
+            var imageDirectorySEO = destinationfolder;
+            if (!Directory.Exists(imageDirectorySEO))
+            {
+                Directory.CreateDirectory(imageDirectorySEO);
+            }
+
+            if (File.Exists(sourceFilePath) && !File.Exists(imageDirectorySEO + "\\XL_" + fileName))
+            {
+                if (fileName == "") fileName = Path.GetFileName(sourceFilePath);
+                ResizeImage(sourceFilePath, imageDirectorySEO + "\\XL_" + fileName, 1024);
+                ResizeImage(sourceFilePath, imageDirectorySEO + "\\L_" + fileName, 800);
+                ResizeImage(sourceFilePath, imageDirectorySEO + "\\M_" + fileName, 460);
+                ResizeImage(sourceFilePath, imageDirectorySEO + "\\S_" + fileName, 240);
+                ResizeImage(sourceFilePath, imageDirectorySEO + "\\T_" + fileName, 160);
+                ResizeImage(sourceFilePath, imageDirectorySEO + "\\XS_" + fileName, 75);
+            }
+        }
+
+
         public static ImageCodecInfo GetEncoder(ImageFormat format)
         {
             string mimeType = "image/x-unknown";

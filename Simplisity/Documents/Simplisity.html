@@ -167,6 +167,10 @@
                     <td><i>s-page</i></td>
                     <td>Page Number</td>
                 </tr>
+                <tr>
+                    <td><i>s-reload</i></td>
+                    <td>'true' or 'false'. By default an image or document upload will trigger a reload of the page.  In some situations this is not required (when ajax return updates the page), so the reload can be stopped by using s-reload='false'</td>
+                </tr>                
             </table>
         </div>
 
@@ -379,7 +383,7 @@
                 </tr>
                 <tr>
                     <td>simplisity_loader</td>
-                    <td>This is a an eleent with a class which will be displayed when a call to the server s made.  By default this is "overlayclass: 'w3-overlay'"  but this call can be overwritten on the "simplisity_startup" function.</td>
+                    <td>This is a an eleent with a class which will be displayed when a call to the server is made.  By default this is "overlayclass: 'w3-overlay'"  but this call can be overwritten on the "simplisity_startup" function.</td>
                 </tr>
                 <tr>
                     <td>simplisity_fileuploadlist</td>

@@ -595,7 +595,11 @@ async function initFileUpload(fileuploadselector) {
                 if (filesdone === filecount) {
                     if ($('input[id*="simplisity_fileuploadlist"]').val() !== '') {
 
-                        simplisity_callserver($(fileuploadselector), '', '', 'true');
+                        var reload = $(fileuploadselector).attr('s-reload');
+                        if (typeof reload === 'undefined' || reload === '') {
+                            reload = 'true';
+                        }
+                        simplisity_callserver($(fileuploadselector), '', '', reload);
 
                         filesdone = 0;
                         $('.processing').hide();

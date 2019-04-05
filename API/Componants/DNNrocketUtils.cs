@@ -858,6 +858,21 @@ namespace DNNrocketAPI
             return prop;
         }
 
+        public static int GetCurrentUserId()
+        {
+            try
+            {
+                return UserController.Instance.GetCurrentUserInfo().UserID;
+            }
+            catch (Exception ex)
+            {
+                var ms = ex.ToString();
+                return 0; // use zero;
+            }
+            return 0;
+        }
+
+
         public static Dictionary<string, string> GetUserProfileProperties(String userId)
         {
             if (!GeneralUtils.IsNumeric(userId)) return null;
@@ -1155,6 +1170,10 @@ namespace DNNrocketAPI
         // Upload file to the server
         public static string UploadFile(HttpContext context)
         {
+            // use the userid to try an stop any duplicate files being assiged to incorrect sessions.
+            // the userid is prefixed to the filename on upload to the temp folder and then used to get the file back from the temp folder.
+            var userid = GetCurrentUserId();
+
             if (!Directory.Exists(TempDirectory())) {
                 Directory.CreateDirectory(TempDirectory());
             }
@@ -1166,18 +1185,22 @@ namespace DNNrocketAPI
             var statuses = new List<FilesStatus>();
             var headers = context.Request.Headers;
 
+            var flist = "";
             if (string.IsNullOrEmpty(headers["X-File-Name"]))
             {
-                return UploadWholeFile(context, statuses, "");
+                flist = UploadWholeFile(context, statuses, "", userid);
             }
             else
             {
-                return UploadPartialFile(headers["X-File-Name"], context, statuses, "");
+                flist = UploadPartialFile(headers["X-File-Name"], context, statuses, "", userid);
             }
+
+            return flist;
+
         }
 
         // Upload partial file
-        public static string UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses, string fileregexpr)
+        public static string UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses, string fileregexpr, int userid)
         {
             Regex fexpr = new Regex(fileregexpr);
             if (fexpr.Match(fileName.ToLower()).Success)
@@ -1190,7 +1213,10 @@ namespace DNNrocketAPI
                 var sInfoSystem = systemData.GetSystemByKey(systemprovider);
                 var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
 
-                var fn = DNNrocketUtils.EncryptFileName(encryptkey, fileName);
+                //var fn = EncryptFileName(encryptkey, fileName);
+                //var fn = GetUniqueFileName(fileName);
+                var fn = fileName;
+                fn = userid + "_" + fn;
 
                 var fullName = TempDirectory() + "\\" + fn;
 
@@ -1208,17 +1234,19 @@ namespace DNNrocketAPI
                     fs.Close();
                 }
                 statuses.Add(new FilesStatus(new System.IO.FileInfo(fullName)));
+                return fn;
             }
             return "";
         }
 
         // Upload entire file
-        public static string UploadWholeFile(HttpContext context, List<FilesStatus> statuses, string fileregexpr)
+        public static string UploadWholeFile(HttpContext context, List<FilesStatus> statuses, string fileregexpr, int userid)
         {
             var systemData = new SystemData();
             var systemprovider = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "systemprovider"));
             var sInfoSystem = systemData.GetSystemByKey(systemprovider);
             var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
+            var flist = "";
 
             for (int i = 0; i < context.Request.Files.Count; i++)
             {
@@ -1226,13 +1254,31 @@ namespace DNNrocketAPI
                 Regex fexpr = new Regex(fileregexpr);
                 if (fexpr.Match(file.FileName.ToLower()).Success)
                 {
-                    var fn = EncryptFileName(encryptkey, file.FileName);
+                    //var fn = EncryptFileName(encryptkey, file.FileName);
+                    //var fn = GetUniqueFileName(file.FileName);
+                    var fn = file.FileName;
+                    fn = userid + "_" + fn;
                     file.SaveAs(TempDirectory() + "\\" + fn);
                     statuses.Add(new FilesStatus(Path.GetFileName(fn), file.ContentLength));
+                    flist = flist + ";" + fn;
                 }
             }
-            return "";
+            return flist.TrimStart(';');
         }
+
+        public static string GetUniqueFileName(string fileName,string folderMapPath, int idx = 1)
+        {
+            foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+            {
+                fileName = fileName.Replace(c, '_');
+            }
+            if (File.Exists(folderMapPath + "\\" + fileName))
+            {
+                fileName = GetUniqueFileName(Path.GetFileNameWithoutExtension(fileName) + idx + Path.GetExtension(fileName), folderMapPath, idx + 1);
+            }
+            return fileName;
+        }
+
 
         public static string EncryptFileName(string encryptkey, string fileName)
         {
@@ -1373,6 +1419,27 @@ namespace DNNrocketAPI
                 }
             }
             return rtnDic;
+        }
+
+        public static string RenderImageSelect(SimplisityRazor model, int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
+        {
+            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectfolder", uploadFolder);
+            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectsingle", selectsingle.ToString());
+            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectautoreturn", autoreturn.ToString());
+            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectsize", imagesize.ToString());
+
+            var uploadFolderPath = DNNrocketUtils.HomeDirectory() + "\\" + uploadFolder;
+            var imgList = new List<object>();
+            foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
+            {
+                imgList.Add(i.Name);
+            }
+            model.List = imgList;
+
+            var strOut = "";
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            strOut = DNNrocketUtils.RazorRender(model, razorTempl, false);
+            return strOut;
         }
 
 
