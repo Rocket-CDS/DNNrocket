@@ -93,6 +93,7 @@
     <Compile Include="Componants\CommandSecurity.cs" />
     <Compile Include="Componants\DNNrocketConst.cs" />
     <Compile Include="Componants\FileStatus.cs" />
+    <Compile Include="Componants\ImgUtils.cs" />
     <Compile Include="Componants\Login.cs" />
     <Compile Include="Componants\SystemData.cs" />
     <Compile Include="Componants\PageIncludes.cs" />

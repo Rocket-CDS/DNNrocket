@@ -31,7 +31,7 @@ namespace DNNrocketAPI
 
                 if (newImage == null)
                 {
-                    newImage = Simplisity.ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h));
+                    newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h));
                     CacheUtils.SetCache(strCacheKey, newImage);
                 }
 

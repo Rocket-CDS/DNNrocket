@@ -6,8 +6,9 @@ using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using Simplisity;
 
-namespace Simplisity
+namespace DNNrocketAPI
 {
     public class ImgUtils
     {
