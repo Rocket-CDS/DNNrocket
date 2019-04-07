@@ -141,39 +141,45 @@ CREATE   PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_Delete]
 @ItemID int
 AS
 begin
+
+	if (@ItemId > 0)
+	begin
+
 	
-	DECLARE @DelItemId int	
+		DECLARE @DelItemId int	
 
-	-- Delete all linked child records.
-	DECLARE delete_cursor CURSOR LOCAL FOR 
-	select ItemId from {databaseOwner}[{objectQualifier}DNNrocket] where ParentItemId = @ItemId
+		-- Delete all linked child records.
+		DECLARE delete_cursor CURSOR LOCAL FOR 
+		select ItemId from {databaseOwner}[{objectQualifier}DNNrocket] where ParentItemId = @ItemId
 
-	OPEN delete_cursor
-	FETCH NEXT FROM delete_cursor INTO @DelItemId
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		EXEC {databaseOwner}[{objectQualifier}DNNrocket_Delete] @DelItemId
+		OPEN delete_cursor
 		FETCH NEXT FROM delete_cursor INTO @DelItemId
-	END
-	CLOSE delete_cursor;
-	DEALLOCATE delete_cursor;
+		WHILE @@FETCH_STATUS = 0
+		BEGIN
+			EXEC {databaseOwner}[{objectQualifier}DNNrocket_Delete] @DelItemId
+			FETCH NEXT FROM delete_cursor INTO @DelItemId
+		END
+		CLOSE delete_cursor;
+		DEALLOCATE delete_cursor;
 
-	-- Delete all linked child records (xrefitemid).
-	DECLARE delete_cursor1 CURSOR LOCAL FOR 
-	select ItemId from {databaseOwner}[{objectQualifier}DNNrocket] where XrefItemId = @ItemId
+		-- Delete all linked child records (xrefitemid).
+		DECLARE delete_cursor1 CURSOR LOCAL FOR 
+		select ItemId from {databaseOwner}[{objectQualifier}DNNrocket] where XrefItemId = @ItemId
 
-	OPEN delete_cursor1
-	FETCH NEXT FROM delete_cursor1 INTO @DelItemId
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		EXEC {databaseOwner}[{objectQualifier}DNNrocket_Delete] @DelItemId
+		OPEN delete_cursor1
 		FETCH NEXT FROM delete_cursor1 INTO @DelItemId
-	END
-	CLOSE delete_cursor1;
-	DEALLOCATE delete_cursor1;
+		WHILE @@FETCH_STATUS = 0
+		BEGIN
+			EXEC {databaseOwner}[{objectQualifier}DNNrocket_Delete] @DelItemId
+			FETCH NEXT FROM delete_cursor1 INTO @DelItemId
+		END
+		CLOSE delete_cursor1;
+		DEALLOCATE delete_cursor1;
 
 
-	delete from {databaseOwner}[{objectQualifier}DNNrocket] where ItemId = @ItemId
+		delete from {databaseOwner}[{objectQualifier}DNNrocket] where ItemId = @ItemId
+	
+	end
 	
 end
 GO
