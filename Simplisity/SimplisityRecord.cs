@@ -74,7 +74,7 @@ namespace Simplisity
             this.XrefItemId = info.XrefItemId;
             this.ParentItemId = info.ParentItemId;
             this.XMLData = info.XMLData;
-            this.Lang = "";
+            this.Lang = info.Lang;
             this.UserId = info.UserId;
             this.RowCount = info.RowCount;
             this.EncodingKey = info.EncodingKey;
@@ -83,6 +83,13 @@ namespace Simplisity
 
         public SimplisityRecord()
         {
+            this.Lang = "en-US"; // we need a langauge for formating data, default to en-US, but we should the language shoudl be passed when we need formatted date.
+            if (XMLDoc == null) XMLData = "<genxml></genxml>"; // if we don;t have anything, create an empty default to stop errors.
+        }
+
+        public SimplisityRecord(string lang)
+        {
+            this.Lang = lang;
             if (XMLDoc == null) XMLData = "<genxml></genxml>"; // if we don;t have anything, create an empty default to stop errors.
         }
 
@@ -269,6 +276,12 @@ namespace Simplisity
                 }
             }
             return false;
+        }
+
+        public string GetXmlProperty(string xpath, string lang = "")
+        {
+            if (lang != "") Lang = lang;
+            return GetXmlProperty(xpath, false);
         }
 
         public string GetXmlProperty(string xpath)
@@ -477,6 +490,9 @@ namespace Simplisity
             {
                 return "";
             }
+
+            if (String.IsNullOrEmpty(lang)) lang = "en-US";
+
             if (xmlNod.Attributes != null && (xmlNod.Attributes["datatype"] != null))
             {
                 switch (xmlNod.Attributes["datatype"].InnerText.ToLower())

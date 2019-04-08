@@ -15,6 +15,12 @@ namespace Simplisity
             if (XMLDoc == null) XMLData = "<genxml></genxml>"; // if we don;t have anything, create an empty default to stop errors.
         }
 
+        public SimplisityInfo(string lang)
+        {
+            this.Lang = lang;
+            if (XMLDoc == null) XMLData = "<genxml></genxml>"; // if we don;t have anything, create an empty default to stop errors.
+        }
+
         public SimplisityInfo(SimplisityRecord simplisityRecord)
         {
             this.ItemID = simplisityRecord.ItemID;
@@ -31,6 +37,7 @@ namespace Simplisity
             this.UserId = simplisityRecord.UserId;
             this.RowCount = simplisityRecord.RowCount;
             this.EncodingKey = simplisityRecord.EncodingKey;
+            this.SystemId = simplisityRecord.SystemId;
         }
 
 

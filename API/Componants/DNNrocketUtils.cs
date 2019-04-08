@@ -1086,6 +1086,20 @@ namespace DNNrocketAPI
 
         public static string GetCurrentCulture()
         {
+            if (HttpContext.Current.Request.Cookies["language"] != null)
+            {
+                var l = GetCultureCodeList();
+                var rtnlang = HttpContext.Current.Request.Cookies["language"].Value;
+                if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
+                {
+                    if (l.Count >= 1)
+                    {
+                        rtnlang = l.First();
+                    }
+                }
+                return rtnlang;
+            }
+
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             return currentCulture.Name;
         }
