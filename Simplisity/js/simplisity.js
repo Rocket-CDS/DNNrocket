@@ -59,7 +59,7 @@
 
         var scmd = simplisity_getCookieValue('s-cmd-menu-' + systemprovider);
         var sfields = simplisity_getCookieValue('s-fields-menu-' + systemprovider);
-        if (scmd !== '' && settings.usehistory) {
+        if (scmd !== '' && settings.usehistory === true) {
             $('#simplisity_startpanel').removeAttr('s-cmd');
             $('#simplisity_startpanel').removeAttr('s-fields');
             $('#simplisity_startpanel').attr('s-cmd', scmd);
