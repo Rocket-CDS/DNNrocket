@@ -498,6 +498,7 @@ DEALLOCATE idx_cursor
 	if @Lang = ''
 	begin
 		set @rtnFields = @rtnFields + ',R1.[XMLData] '
+		set @rtnFields = @rtnFields + ','''' as [Lang] '	 
 	end
 	
 	set @rtnFields = @rtnFields + ',R1.[PortalId] '

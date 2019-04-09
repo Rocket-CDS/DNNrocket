@@ -1132,11 +1132,6 @@ namespace DNNrocketAPI
             return System.Web.Hosting.HostingEnvironment.MapPath(relpath);
         }
 
-        public static string WebsiteUrl()
-        {
-            return PortalSettings.Current.PrimaryAlias.HTTPAlias;
-        }
-
         public static string Email()
         {
             return PortalSettings.Current.Email;

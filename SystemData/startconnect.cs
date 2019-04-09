@@ -402,10 +402,22 @@ namespace DNNrocket.SystemData
                             objCtrl.DeleteIndex(sInfo);
                         }
                     }
-                    var l = objCtrl.GetList(-1, -1, entityCode + "LANG");
-                    foreach (var sInfo in l)
+                    var l = objCtrl.GetList(-1, -1, entityCode + "LANG","","","",0,0,0,0, sysInfo.ItemID);
+                    if (l.Count == 0)
                     {
-                        objCtrl.RebuildLangIndex(sInfo, sInfo.ItemID);
+                        // the record may NOT have a LANG record.
+                        l = objCtrl.GetList(-1, -1, entityCode, "", "", "", 0, 0, 0, 0, sysInfo.ItemID);
+                        foreach (var sInfo in l)
+                        {
+                            objCtrl.RebuildIndex(sInfo);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var sInfo in l)
+                        {
+                            objCtrl.RebuildLangIndex(sInfo, sInfo.ItemID);
+                        }
                     }
                 }
 

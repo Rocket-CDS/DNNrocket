@@ -95,7 +95,17 @@ namespace DNNrocketAPI
             objInfo.ModifiedDate = DateTime.Now;
             var itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang, objInfo.SystemId);
 
-            if (doindex) RebuildLangIndex(objInfo, itemid);
+            if (doindex)
+            {
+                if (objInfo.Lang == "")
+                {
+                    RebuildIndex(objInfo);
+                }
+                else
+                {
+                    RebuildLangIndex(objInfo, itemid);
+                }
+            }
 
             return itemid;
         }

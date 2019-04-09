@@ -2,22 +2,26 @@
   <hidden>
     <theme>config-w3</theme>
     <template>Admin_SystemDetail.cshtml</template>
-    <pagesize>5</pagesize>
+    <activevalue />
+    <pagesize>20</pagesize>
     <page>1</page>
-    <selecteditemid>2358</selecteditemid>
+    <selecteditemid>370486</selecteditemid>
     <editlanguage />
     <index>0</index>
     <systemprovider>systemapi</systemprovider>
-    <uilang1>en-US</uilang1>
+    <uilang1>fr-FR</uilang1>
   </hidden>
   <textbox>
     <ctrlkey>dnnrocket</ctrlkey>
     <systemname>DNN Rocket</systemname>
-    <relpath>/desktopmodules/dnnrocket/api/</relpath>
+    <adminurl>/desktopmodules/dnnrocket/admin.html</adminurl>
     <apiurl>/desktopmodules/dnnrocket/api/api.ashx</apiurl>
-    <adminurl>/desktopmodules/dnnrocket/api/admin.html</adminurl>
     <licensekey />
+    <encryptkey>dfvgdfvdfvdfvdf</encryptkey>
   </textbox>
+  <checkbox>
+    <debugmode>false</debugmode>
+  </checkbox>
   <interfacedata list="true">
     <genxml>
       <textbox>
@@ -29,15 +33,15 @@
         <defaultcommand>settingcountry_get</defaultcommand>
         <namespaceclass>DNNrocket.Country.startconnect</namespaceclass>
         <assembly>DNNrocketCountry</assembly>
+        <relpath />
       </textbox>
       <dropdownlist>
         <group>settings</group>
-        <providertype />
       </dropdownlist>
-      <checkbox>
-        <active>true</active>
-      </checkbox>
       <checkboxlist>
+        <providertype>
+          <chk value="false" data="api" />
+        </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
           <chk value="false" data="Manager" />
@@ -45,6 +49,11 @@
           <chk value="false" data="ClientEditor" />
         </securityroles>
       </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>true</cache>
+        <onmenu>true</onmenu>
+      </checkbox>
     </genxml>
     <genxml>
       <textbox>
@@ -56,15 +65,15 @@
         <defaultcommand>testform_get</defaultcommand>
         <namespaceclass>DNNrocket.TestForm.startconnect</namespaceclass>
         <assembly>DNNrocketTestForm</assembly>
+        <relpath>/DesktopModules/DNNrocket/TestForm/</relpath>
       </textbox>
       <dropdownlist>
         <group>Tests</group>
-        <providertype />
       </dropdownlist>
-      <checkbox>
-        <active>true</active>
-      </checkbox>
       <checkboxlist>
+        <providertype>
+          <chk value="false" data="api" />
+        </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
           <chk value="true" data="Manager" />
@@ -72,6 +81,11 @@
           <chk value="false" data="ClientEditor" />
         </securityroles>
       </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>true</cache>
+        <onmenu>true</onmenu>
+      </checkbox>
     </genxml>
     <genxml>
       <textbox>
@@ -83,15 +97,15 @@
         <defaultcommand>testlist_getlist</defaultcommand>
         <namespaceclass>DNNrocket.TestList.startconnect</namespaceclass>
         <assembly>DNNrocketTestList</assembly>
+        <relpath>/DesktopModules/DNNrocket/TestList/</relpath>
       </textbox>
       <dropdownlist>
         <group>Tests</group>
-        <providertype />
       </dropdownlist>
-      <checkbox>
-        <active>true</active>
-      </checkbox>
       <checkboxlist>
+        <providertype>
+          <chk value="false" data="api" />
+        </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
           <chk value="true" data="Manager" />
@@ -99,6 +113,11 @@
           <chk value="false" data="ClientEditor" />
         </securityroles>
       </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>true</cache>
+        <onmenu>true</onmenu>
+      </checkbox>
     </genxml>
   </interfacedata>
   <idxfielddata list="true">
@@ -108,8 +127,8 @@
         <xpath>genxml/textbox/txtinput</xpath>
       </textbox>
       <dropdownlist>
-        <fieldcol>[idxField1]</fieldcol>
         <entitytypecode>TESTLIST</entitytypecode>
+        <xreftypecode />
       </dropdownlist>
     </genxml>
     <genxml>
@@ -118,8 +137,8 @@
         <xpath>genxml/lang/genxml/textbox/txtinputl</xpath>
       </textbox>
       <dropdownlist>
-        <fieldcol>[idxField1]</fieldcol>
         <entitytypecode>TESTLIST</entitytypecode>
+        <xreftypecode />
       </dropdownlist>
     </genxml>
   </idxfielddata>
@@ -165,4 +184,5 @@
       </provtypesdata>
     </genxml>
   </lang>
+  <systemprovider>systemapi</systemprovider>
 </genxml>

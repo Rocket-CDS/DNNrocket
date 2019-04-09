@@ -1,26 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using Simplisity;
-using RazorEngine.Templating;
-using RazorEngine.Configuration;
-using RazorEngine;
-using System.Security.Cryptography;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security;
-using System.Xml;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Entities.Modules;
-using System.Net;
-using System.IO;
-using DotNetNuke.Common.Lists;
-using ICSharpCode.SharpZipLib.Zip;
+﻿using Simplisity;
 
 namespace DNNrocketAPI
 {

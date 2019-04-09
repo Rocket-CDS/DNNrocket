@@ -369,4 +369,25 @@
   <data name="cmdUseButton.Text" xml:space="preserve">
     <value>&lt;i  title="Upload" class="fa fa-share-square-o fa-fw fa-lg"&gt;&lt;/i&gt; Use</value>
   </data>
+  <data name="cmdPrint.Text" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="cmdPrintButton.Text" xml:space="preserve">
+    <value>&lt;i title="Print" class="fa fa-print fa-fw fa-lg"&gt;&lt;/i&gt; Print</value>
+  </data>
+  <data name="cmdPrintIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Print" class="fa fa-print fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cmdResendEmail.confirm" xml:space="preserve">
+    <value>Resend Email ?</value>
+  </data>
+  <data name="cmdResendEmail.Text" xml:space="preserve">
+    <value>Resend Email</value>
+  </data>
+  <data name="cmdResendEmailButton.Text" xml:space="preserve">
+    <value>&lt;i title="Delete" class="fa fa-envelope-o fa-fw fa-lg"&gt;&lt;/i&gt; Resend Email</value>
+  </data>
+  <data name="cmdResendEmailIcon.Text" xml:space="preserve">
+    <value>&lt;i title="Delete" class="fa fa-envelope-o fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+  </data>
 </root>
