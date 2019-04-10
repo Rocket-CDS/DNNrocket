@@ -93,6 +93,7 @@ namespace DNNrocketAPI
         {
             var errorPath = "";
             var result = "";
+            var errmsg = "";
             try
             {
                 var service = (IRazorEngineService)HttpContext.Current.Application.Get("DNNrocketIRazorEngineService");
@@ -124,7 +125,7 @@ namespace DNNrocketAPI
                     }
                     catch (Exception ex)
                     {
-                        var errmsg = ex.ToString();
+                        errmsg = ex.ToString();
                         errorPath += "RunCompile2>";
                         result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
                         CacheUtils.SetCache(razorTempl, razorTempl);
@@ -135,7 +136,7 @@ namespace DNNrocketAPI
             catch (Exception ex)
             {
                 CacheUtils.ClearAllCache();
-                result = "CANNOT REBUILD TEMPLATE: errorPath=" + errorPath + " - " + ex.ToString();
+                result = "CANNOT REBUILD TEMPLATE: errorPath=" + errorPath + " - " + ex.ToString() + " -------> " + result + " [" + errmsg + "]";
             }
 
             return result;
@@ -1086,6 +1087,12 @@ namespace DNNrocketAPI
 
         public static string GetCurrentCulture()
         {
+            // use url param first.  This is important on changing languages through DNN.
+            if (HttpContext.Current.Request.QueryString["language"] != null)
+            {
+                return HttpContext.Current.Request.QueryString["language"];
+            }
+            // no url language, look in the cookies.
             if (HttpContext.Current.Request.Cookies["language"] != null)
             {
                 var l = GetCultureCodeList();
@@ -1099,7 +1106,7 @@ namespace DNNrocketAPI
                 }
                 return rtnlang;
             }
-
+            // default to system thread, but in API this may be wrong.
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             return currentCulture.Name;
         }

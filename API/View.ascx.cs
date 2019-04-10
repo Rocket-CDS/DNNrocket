@@ -178,7 +178,7 @@ namespace DNNrocketAPI
 
                 var strOut = "No Interface Found.";
                 var cacheOutPut = "";
-                var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString;
+                var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture();
                 if (_rocketInterface.IsCached) cacheOutPut = (string)CacheUtils.GetCache(cacheKey);
 
                 if (cacheOutPut == null || cacheOutPut == "")
