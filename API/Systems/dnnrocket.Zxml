@@ -5,7 +5,7 @@
     <activevalue />
     <pagesize>20</pagesize>
     <page>1</page>
-    <selecteditemid>370486</selecteditemid>
+    <selecteditemid>2</selecteditemid>
     <editlanguage />
     <index>0</index>
     <systemprovider>systemapi</systemprovider>
@@ -14,10 +14,10 @@
   <textbox>
     <ctrlkey>dnnrocket</ctrlkey>
     <systemname>DNN Rocket</systemname>
-    <adminurl>/desktopmodules/dnnrocket/admin.html</adminurl>
+    <adminurl>/desktopmodules/dnnrocket/api/admin.html</adminurl>
     <apiurl>/desktopmodules/dnnrocket/api/api.ashx</apiurl>
     <licensekey />
-    <encryptkey>dfvgdfvdfvdfvdf</encryptkey>
+    <encryptkey />
   </textbox>
   <checkbox>
     <debugmode>false</debugmode>
@@ -65,7 +65,7 @@
         <defaultcommand>testform_get</defaultcommand>
         <namespaceclass>DNNrocket.TestForm.startconnect</namespaceclass>
         <assembly>DNNrocketTestForm</assembly>
-        <relpath>/DesktopModules/DNNrocket/TestForm/</relpath>
+        <relpath />
       </textbox>
       <dropdownlist>
         <group>Tests</group>
@@ -97,7 +97,7 @@
         <defaultcommand>testlist_getlist</defaultcommand>
         <namespaceclass>DNNrocket.TestList.startconnect</namespaceclass>
         <assembly>DNNrocketTestList</assembly>
-        <relpath>/DesktopModules/DNNrocket/TestList/</relpath>
+        <relpath />
       </textbox>
       <dropdownlist>
         <group>Tests</group>
@@ -109,6 +109,70 @@
         <securityroles>
           <chk value="true" data="Administrators" />
           <chk value="true" data="Manager" />
+          <chk value="false" data="Editor" />
+          <chk value="false" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>true</cache>
+        <onmenu>true</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>rocketsettings</interfacekey>
+        <entitytypecode>ROCKETSETTING</entitytypecode>
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <defaulttemplate>settings.cshtml</defaulttemplate>
+        <defaultcommand>rocketsettings_edit</defaultcommand>
+        <namespaceclass>RocketSettings.startconnect</namespaceclass>
+        <assembly>RocketSettings</assembly>
+        <relpath />
+      </textbox>
+      <dropdownlist>
+        <group>settings</group>
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="api" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>true</cache>
+        <onmenu>true</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>imageupload</interfacekey>
+        <entitytypecode>IMG</entitytypecode>
+        <interfaceicon />
+        <defaulttheme />
+        <defaulttemplate />
+        <defaultcommand />
+        <namespaceclass>DNNrocket.Images.startconnect</namespaceclass>
+        <assembly>DNNrocketImages</assembly>
+        <relpath />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="api" />
+        </providertype>
+        <securityroles>
+          <chk value="false" data="Administrators" />
+          <chk value="false" data="Manager" />
           <chk value="false" data="Editor" />
           <chk value="false" data="ClientEditor" />
         </securityroles>
@@ -167,6 +231,8 @@
   <lang>
     <genxml>
       <interfacedata list="true">
+        <genxml />
+        <genxml />
         <genxml />
         <genxml />
         <genxml />

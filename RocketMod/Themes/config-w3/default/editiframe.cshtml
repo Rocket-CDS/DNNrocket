@@ -21,21 +21,18 @@
 @if (Model.GetSettingBool("addeditscript"))
 {
 
-    <div id="rocketmodmodel_@(Model.ModuleId)" class="w3-modal">
-        <div class="w3-modal-content" style="width: 96%;height: 96%;">
-            <header class="w3-container w3-theme-d5">
-                <span onclick="location.reload();" class="w3-button w3-display-topright">&times;</span>
-                <h2>@ResourceKey("RocketMod.edittitle")</h2>
-            </header>
 
-            <div class="w3-row" style="height: 100%">
-                <iframe id="rocketmodIframe_@(Model.ModuleId)" style="width: 100%; height: 100%;">@ResourceKey("RocketMod.iframesupport")</iframe>
-            </div>
+<div id="rocketmodmodel_@(Model.ModuleId)" class="w3-modal">
+    <div class="w3-modal-content w3-grey" style="width: 96%;height: 90%;">
+        <span onclick="location.reload();" class="w3-button w3-right closeiframe">&times;</span>
+        <div class="w3-row" style="height: 100%">
+            <iframe id="rocketmodIframe_@(Model.ModuleId)" style="width: 100%; height: 100%;">@ResourceKey("RocketMod.iframesupport")</iframe>
         </div>
     </div>
+</div>
 
     <script>
-    $(document).ready(function () {        
+    $(document).ready(function () {
         simplisity_setCookieValue('rocketmod_return', window.location.href);
     });
 
