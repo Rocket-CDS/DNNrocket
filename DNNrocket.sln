@@ -9,7 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		admin.html = admin.html
 		adminsystem.html = adminsystem.html
+		dnnrocket.xml = dnnrocket.xml
 		README.md = README.md
+		rocketmod_system.xml = rocketmod_system.xml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Country", "Country\Country.csproj", "{6E1D0083-655A-4E7F-8408-84526EE67708}"
@@ -32,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Settings", "Settings\Settin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormBuilder", "FormBuilder\FormBuilder.csproj", "{EC90F963-1BA9-4E1E-9E75-71417CE91025}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Images", "Images\Images.csproj", "{96571E03-7FE8-48EB-B3F0-61299BF31C95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Images", "Images\Images.csproj", "{96571E03-7FE8-48EB-B3F0-61299BF31C95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

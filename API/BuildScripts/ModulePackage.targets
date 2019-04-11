@@ -15,20 +15,23 @@
 
     <!--in VS 2012 we exclude the packages folder -->
     <ItemGroup>
-      <InstallInclude Include="..\**\*.cshtml" Exclude="packages\**;Themes\**;" />
-      <InstallInclude Include="..\**\*.ascx" Exclude="packages\**;Skins\**;Themes\**;" />
-      <InstallInclude Include="..\**\*.ashx" Exclude="packages\**;Themes\**;" />
-      <InstallInclude Include="..\**\*.asmx" Exclude="packages\**;Themes\**;" />
-      <InstallInclude Include="..\**\*.css" Exclude="packages\**;Themes\**;" />
-      <InstallInclude Include="..\**\*.html" Exclude="packages\**;Themes\**;" />
-      <InstallInclude Include="..\**\*.htm" Exclude="packages\**;Themes\**;" />
-      <InstallInclude Include="..\**\*.resx" Exclude="packages\**;Themes\**;" />
-      <InstallInclude Include="..\**\*.aspx" Exclude="packages\**;Themes\**;" />
-      <InstallInclude Include="..\**\*.js" Exclude="packages\**;Themes\**;" />
-     <InstallInclude Include="..\**\*.xml" Exclude="**\menuplugin.xml;Themes\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
-      <InstallInclude Include="..\**\*.txt"  Exclude="Themes\**;**\obj\**;**\_ReSharper*\**;packages\**;**\.git\**;Installation\**;" />
-      <InstallInclude Include="..\**\images\**" Exclude="packages\**;Themes\**;Thumbs.db;" />
-      <InstallInclude Include="..\**\img\**" Exclude="packages\**;Themes\**;Thumbs.db;" />
+      
+      <!-- API -->
+      <InstallInclude Include="..\**\*.jpg" Exclude="**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.jpeg" Exclude="**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.png" Exclude="**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.cshtml" Exclude="..\TestList\**;..\TestForm\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.ascx" Exclude="..\TestList\**;..\TestForm\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.ashx" Exclude="..\TestList\**;..\TestForm\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.asmx" Exclude="..\TestList\**;..\TestForm\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.css" Exclude="..\TestList\**;..\TestForm\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.html" Exclude="..\admin.html;..\TestList\**;..\TestForm\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.htm" Exclude="..\TestList\**;..\TestForm\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.resx" Exclude="..\TestList\**;..\TestForm\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.aspx" Exclude="..\TestList\**;..\TestForm\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.js" Exclude="..\TestList\**;..\TestForm\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.xml" Exclude="..\TestList\**;..\TestForm\**;**\bin\**;**\obj\**;**\_ReSharper*\**;**\.git\**;..\packages\**;Installation\**;Providers\**\bin\**;Providers\**\obj\**;Skins\**;" />
+      <InstallInclude Include="..\**\*.txt;..\**\*.woff;..\**\*.woff2;..\**\*.ttf"  Exclude="..\TestList\**;..\TestForm\**;**\obj\**;**\_ReSharper*\**;..\packages\**;**\.git\**;Installation\**;" />
 
 
     </ItemGroup>
@@ -41,6 +44,14 @@
       <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
     </CreateItem>
 
+    <CreateItem Include="..\dnnrocket.xml">
+      <Output TaskParameter="Include" ItemName="PluginFiles" />
+    </CreateItem>
+    <CreateItem Include="..\rocket*.xml">
+      <Output TaskParameter="Include" ItemName="PluginFiles" />
+    </CreateItem>
+
+
     <Copy SourceFiles="$(MSBuildDnnBinPath)\$(AssemblyName).dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
 
     <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketCountry.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
@@ -51,7 +62,10 @@
     <Copy SourceFiles="$(MSBuildDnnBinPath)\System.Drawing.Common.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\netstandard.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\RazorEngine.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
-    
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\RocketMod.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketImages.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\RocketSettings.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
 
     <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
     <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />

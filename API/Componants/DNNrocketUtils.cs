@@ -870,7 +870,6 @@ namespace DNNrocketAPI
                 var ms = ex.ToString();
                 return 0; // use zero;
             }
-            return 0;
         }
 
 

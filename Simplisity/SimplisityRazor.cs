@@ -94,6 +94,7 @@ namespace Simplisity
             }
             catch (Exception ex)
             {
+                var ms = ex.ToString();
                 return defaultValue;
             }
         }

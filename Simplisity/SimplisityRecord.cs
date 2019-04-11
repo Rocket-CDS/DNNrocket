@@ -129,6 +129,7 @@ namespace Simplisity
                 }
                 catch (Exception ex)
                 {
+                    var ms = ex.ToString();
                     return "XML READ ERROR";
                 }
             }
@@ -218,6 +219,7 @@ namespace Simplisity
                 }
                 catch (Exception ex)
                 {
+                    var ms = ex.ToString();
                     return 0;
                 }
             }
@@ -244,6 +246,7 @@ namespace Simplisity
                 }
                 catch (Exception ex)
                 {
+                    var ms = ex.ToString();
                     return 0;
                 }
             }
@@ -272,6 +275,7 @@ namespace Simplisity
                 }
                 catch (Exception ex)
                 {
+                    var ms = ex.ToString();
                     return false;
                 }
             }
@@ -300,6 +304,7 @@ namespace Simplisity
                 }
                 catch (Exception ex)
                 {
+                    var ms = ex.ToString();
                     return "XML READ ERROR";
                 }
             }
@@ -321,6 +326,7 @@ namespace Simplisity
                 }
                 catch (Exception ex)
                 {
+                    var ms = ex.ToString();
                     return "XML READ ERROR";
                 }
             }

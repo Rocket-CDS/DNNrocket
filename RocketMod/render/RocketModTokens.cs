@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
 
-namespace DNNrocketAPI.render
+namespace RocketMod
 {
-    public class RocketModTokens<T> : DNNrocketTokens<T>
+    public class RocketModTokens<T> : DNNrocketAPI.render.DNNrocketTokens<T>
     {
 
 

@@ -1,8 +1,8 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNNrocket" type="Module" version="1.0.0">
-			<friendlyName>DNNrocket</friendlyName>
-			<description>DNNrocket Admin Interface </description>
+		<package name="DNNrocketMod" type="Module" version="1.0.0">
+			<friendlyName>DNNrocketMod</friendlyName>
+			<description>DNNrocket Module</description>
 			<iconFile />
 			<owner>
 				<name>Charles France</name>
@@ -93,42 +93,72 @@ DNNrocketAPI
               <path>bin</path>
               <name>RazorEngine.dll</name>
               <sourceFileName>RazorEngine.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>RocketMod.dll</name>
+              <sourceFileName>RocketMod.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DNNrocketImages.dll</name>
+              <sourceFileName>DNNrocketImages.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>RocketSettings.dll</name>
+              <sourceFileName>RocketSettings.dll</sourceFileName>
             </assembly>            
 
           </assemblies>
 				</component>
 				<component type="Module">
-					<desktopModule>
-						<moduleName>DNNrocketAdmin</moduleName>
-						<foldername>DNNrocketAdmin</foldername>
-						<businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
-						<supportedFeatures>
-							<supportedFeature type="Portable" />
-							<supportedFeature type="Searchable" />
-						</supportedFeatures>
-						<moduleDefinitions>
-							<moduleDefinition>
-								<friendlyName>dnnrocket</friendlyName>
-								<defaultCacheTime>0</defaultCacheTime>
-								<moduleControls>
-									<moduleControl>
-										<controlKey />
-										<controlSrc>DesktopModules/DNNrocket/API/View.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
-										<controlTitle />
-										<controlType>View</controlType>
-										<iconFile />
-										<helpUrl />
-										<supportsPopUps>False</supportsPopUps>
-										<viewOrder>0</viewOrder>
-									</moduleControl>
+
+          <desktopModule>
+            <moduleName>rocketmod</moduleName>
+            <foldername>RocketMod</foldername>
+            <businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Portable" />
+              <supportedFeature type="Searchable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>dnnrocketmodule</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/DNNrocket/API/View.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
                 </moduleControls>
-							</moduleDefinition>
+              </moduleDefinition>
             </moduleDefinitions>
-					</desktopModule>
+          </desktopModule>
+
 				</component>
 
-			</components>
+        <component type="File">
+          <files>
+            <basePath>DesktopModules\DNNrocket\API\Systems\</basePath>
+            <file>
+              <name>dnnrocket.xml</name>
+            </file>
+            <file>
+              <name>rocketmod_system.xml</name>
+            </file>
+          </files>
+        </component>
+
+
+      </components>
 		</package>	
 	</packages>
 </dotnetnuke>

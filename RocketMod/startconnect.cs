@@ -86,7 +86,7 @@ namespace RocketMod
                     strOut = EditData();
                     break;
                 case "rocketmod_add":
-                    _moduleData.AddNew();
+                    //_moduleData.AddNew();
                     strOut = EditData();
                     break;
                 case "rocketmod_delete":
@@ -94,7 +94,7 @@ namespace RocketMod
                     strOut = EditData();
                     break;
                 case "rocketmod_saveconfig":
-                    _moduleData.SaveConfig(postInfo, CheckIfList());
+                    _moduleData.configData.SaveConfig(postInfo);
                     strOut = GetDashBoard();
                     break;
                 case "rocketmod_getsetupmenu":
@@ -123,38 +123,38 @@ namespace RocketMod
             try
             {
                 var strOut = "";
-                var themeFolder = "";
-                var razortemplate = "";
+                //var themeFolder = "";
+                //var razortemplate = "";
 
-                if (!_moduleData.ConfigExists)
-                {
-                    // no display type set, return dashboard.
-                    return GetDashBoard();
-                }
+                //if (!_moduleData.configData.Exists)
+                //{
+                //    // no display type set, return dashboard.
+                //    return GetDashBoard();
+                //}
 
-                if (_moduleData.IsList)
-                {
-                    if (_moduleData.SelectedItemId > 0)
-                    {
-                        razortemplate = "editdetail.cshtml";
-                    }
-                    else
-                    {
-                        razortemplate = "editlist.cshtml";
-                    }
-                }
-                else
-                {
-                    razortemplate = "edit.cshtml";
-                }
+                //if (_moduleData.IsList)
+                //{
+                //    if (_moduleData.SelectedItemId > 0)
+                //    {
+                //        razortemplate = "editdetail.cshtml";
+                //    }
+                //    else
+                //    {
+                //        razortemplate = "editlist.cshtml";
+                //    }
+                //}
+                //else
+                //{
+                //    razortemplate = "edit.cshtml";
+                //}
 
-                themeFolder = _moduleData.ConfigInfo.GetXmlProperty("genxml/select/apptheme");
+                //themeFolder = _moduleData.configData.ConfigInfo.GetXmlProperty("genxml/select/apptheme");
 
-                var passSettings = _postInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, themeFolder, DNNrocketUtils.GetEditCulture());
-                strOut = DNNrocketUtils.RazorList(razorTempl, _moduleData.List, passSettings,_moduleData.HeaderInfo);
+                //var passSettings = _postInfo.ToDictionary();
+                //var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, themeFolder, DNNrocketUtils.GetEditCulture());
+                //strOut = DNNrocketUtils.RazorList(razorTempl, _moduleData.List, passSettings,_moduleData.HeaderInfo);
 
-                if (strOut == "") strOut = "ERROR: No data returned for " + _appthemeMapPath + "\\" + themeFolder + "\\default\\" + razortemplate;
+                //if (strOut == "") strOut = "ERROR: No data returned for " + _appthemeMapPath + "\\" + themeFolder + "\\default\\" + razortemplate;
                 return strOut;
             }
             catch (Exception ex)
@@ -167,7 +167,7 @@ namespace RocketMod
         {
             try
             {
-                _moduleData.DeleteConfig();
+                _moduleData.configData.DeleteConfig();
                 return GetDashBoard();
             }
             catch (Exception ex)
@@ -203,7 +203,7 @@ namespace RocketMod
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, _moduleData.ConfigInfo, passSettings);
+                return DNNrocketUtils.RazorDetail(razorTempl, _moduleData.configData.ConfigInfo, passSettings);
             }
             catch (Exception ex)
             {
@@ -217,12 +217,12 @@ namespace RocketMod
             try
             {
                 var strOut = "";
-                if (_moduleData.ConfigExists)
+                if (_moduleData.configData.Exists)
                 {
                     var objCtrl = new DNNrocketController();
 
                     var razortemplate = "view.cshtml";
-                    var themeFolder = _moduleData.ConfigInfo.GetXmlProperty("genxml/select/apptheme");
+                    var themeFolder = _moduleData.configData.ConfigInfo.GetXmlProperty("genxml/select/apptheme");
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
                     var passSettings = _postInfo.ToDictionary();
@@ -265,9 +265,9 @@ namespace RocketMod
         {
             try
             {
-                if (_moduleData.ConfigExists)
+                if (_moduleData.configData.Exists)
                 {
-                    var themeFolder = _moduleData.ConfigInfo.GetXmlProperty("genxml/select/apptheme");
+                    var themeFolder = _moduleData.configData.ConfigInfo.GetXmlProperty("genxml/select/apptheme");
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", _appthemeRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
                     if (razorTempl != "") return true;
                 }

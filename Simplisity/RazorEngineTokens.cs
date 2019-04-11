@@ -352,7 +352,6 @@ namespace Simplisity
             var upd = getUpdateAttr(xpath, attributes, localized);
             var id = getIdFromXpath(xpath,0);
             strOut = "<select id='" + id + "' " + upd + " " + attributes + "  s-xpath='" + xpath + "'  >";
-            var c = 0;
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
             foreach (var tItem in tList)
@@ -383,7 +382,6 @@ namespace Simplisity
             var upd = getUpdateAttr(xpath, attributes, localized);
             var id = getIdFromXpath(xpath, 0);
             strOut = "<select id='" + id + "' " + upd + " " + attributes + "  s-xpath='" + xpath + "' >";
-            var c = 0;
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
             foreach (var tItem in tList)

@@ -27,8 +27,9 @@ namespace Simplisity
                 fs = new FileStream(fullFileName, FileMode.Create, FileAccess.Write);
                 fs.Write(buffer, 0, buffer.Length);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                var ms = ex.ToString();
                 // ignore, stop eror here, not important if locked.
             }
             finally
@@ -51,8 +52,9 @@ namespace Simplisity
                 reader = File.OpenText(filePath);
                 fileContent = reader.ReadToEnd();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                var ms = ex.ToString();
                 // ignore, stop eror here, not important if locked.
                 fileContent = "";
             }
