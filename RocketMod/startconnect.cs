@@ -203,7 +203,7 @@ namespace RocketMod
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, _moduleData.configData.ConfigInfo, passSettings);
+                return DNNrocketUtils.RazorDetail(razorTempl, _moduleData, passSettings);
             }
             catch (Exception ex)
             {
