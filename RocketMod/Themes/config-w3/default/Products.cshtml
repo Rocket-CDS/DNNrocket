@@ -1,4 +1,4 @@
-﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
 @using Simplisity;
 @using RocketSettings;
@@ -17,7 +17,7 @@
 }
 
 <span class="w3-section simplisity_buttons">
-    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:products">@ResourceKey("DNNrocket.cmdAddButton")</a>
+    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:edit">@ResourceKey("DNNrocket.cmdAddButton")</a>
     <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click reckermodsavebutton" s-cmd="rocketsettings_save" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:edit" s-post="#productsettings" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
     <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="productbin" s-return="#productsettings" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
@@ -34,98 +34,98 @@
         @foreach (SimplisityInfo i in settingsData.List)
         {
             lp1 += 1;
-        <li class="settingsdata w3-card w3-margin w3-display-container">
-            <a href="javascript:void(0)" class="w3-display-topright"><i title="Remove" class="fa fa-arrows "></i></a>
-            <a href="javascript:void(0)" class="w3-display-right simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="productbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+            <li class="settingsdata w3-card w3-margin w3-display-container">
+                <a href="javascript:void(0)" class="w3-display-topright"><i title="Remove" class="fa fa-arrows "></i></a>
+                <a href="javascript:void(0)" class="w3-display-right simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="productbin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
 
 
-            <div class="w3-row">
-                <div class="w3-col" style="width: 100px">
-                    <div class="w3-cell-top dnnrocket-imagechange " imageindex="@(lp1)">
-                        @HiddenField(i, "genxml/hidden/imagerelpath", " class='dnnrocket-imagefield" + lp1 + "'", "", false, lp1)
-                        @if (i.GetXmlProperty("genxml/hidden/imagerelpath") != "")
-                        {
-                            <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagerelpath"),100,100,"")" class="w3-round dnnrocket-imageholder@(lp1)" alt="" />
-                        }
-                        else
-                        {
-                            <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png",100,100)" class="w3-round dnnrocket-imageholder@(lp1)" alt="" />
-                        }
-                    </div>
-                    <div class="w3-cell-bottom">
-                        <br />
-                    </div>
-                </div>
-                <div class="w3-padding w3-rest">
-                    <div class="w3-row">
-                        <div class="w3-padding w3-col m12">
-                            <label class="">@ResourceKey("RocketPayForm.name")</label>&nbsp;@EditFlag()
-                            @TextBox(i, "genxml/lang/genxml/textbox/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", true, lp1)
+                <div class="w3-row">
+                    <div class="w3-col" style="width: 100px">
+                        <div class="w3-cell-top dnnrocket-imagechange " imageindex="@(lp1)">
+                            @HiddenField(i, "genxml/hidden/imagerelpath", " class='dnnrocket-imagefield" + lp1 + "'", "", false, lp1)
+                            @if (i.GetXmlProperty("genxml/hidden/imagerelpath") != "")
+                            {
+                                <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagerelpath"),100,100,"")" class="w3-round dnnrocket-imageholder@(lp1)" alt="" />
+                            }
+                            else
+                            {
+                                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png",100,100)" class="w3-round dnnrocket-imageholder@(lp1)" alt="" />
+                            }
                         </div>
-                    </div>
-                    <div class="w3-row">
-                        <div class="w3-padding w3-col m2">
-                            <label class="">@ResourceKey("RocketPayForm.ref")</label>
-                            @TextBox(i, "genxml/textbox/ref", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false, lp1)
-                        </div>
-                        <div class="w3-padding w3-col m1">
-                            <label class="">@ResourceKey("RocketPayForm.price")</label>
-                            @TextBox(i, "genxml/textbox/price", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "0", false, lp1)
-                        </div>
-                        <div class="w3-padding w3-col m1">
-                            <label class="">@ResourceKey("RocketPayForm.saleprice")</label>
-                            @TextBox(i, "genxml/textbox/saleprice", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "0", false, lp1)
-                        </div>
-                        <div class="w3-padding w3-col m1">
-                            <label class="">@ResourceKey("RocketPayForm.tax")</label>
-                            @TextBox(i, "genxml/textbox/tax", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "0", false, lp1)
-                        </div>
-                        <div class="w3-padding w3-col m2">
-                            <label class="">@ResourceKey("RocketPayForm.barcode")</label>
-                            @TextBox(i, "genxml/textbox/barcode", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false, lp1)
-                        </div>
-                        <div class="w3-padding w3-col m2">
+                        <div class="w3-cell-bottom">
                             <br />
-                            <label class="">@ResourceKey("RocketPayForm.hidden")</label>
-                            @CheckBox(i, "genxml/checkbox/hidden", "", "class='w3-input w3-border '", false, false, lp1)
-                        </div>
-                        <div class="w3-padding w3-col m2">
-                            <i>Product Ref:</i>
-                            @TextBox(i, "genxml/textbox/productref", " disabled class='w3-input w3-border' autocomplete='off'", GeneralUtils.GetUniqueKey(), false, lp1)
                         </div>
                     </div>
-                    <div class="w3-row">
-                        <div class="w3-padding w3-col m12">
-                            <label class="">@ResourceKey("RocketPayForm.summary")</label>
-                            @TextArea(i, "genxml/textbox/summary", "class='w3-input w3-border' maxlength='350' row='2' autocomplete='off'", "", false, lp1)
+                    <div class="w3-padding w3-rest">
+                        <div class="w3-row">
+                            <div class="w3-padding w3-col m12">
+                                <label class="">@ResourceKey("RocketPayForm.name")</label>&nbsp;@EditFlag()
+                                @TextBox(i, "genxml/lang/genxml/textbox/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", true, lp1)
+                            </div>
                         </div>
-                        <!-- Trigger/Open the Modal -->
-                        <button onclick="document.getElementById('id01@(lp1)').style.display='block'"
-                                class="w3-button">
-                            Open Modal
-                        </button>
+                        <div class="w3-row">
+                            <div class="w3-padding w3-col m2">
+                                <label class="">@ResourceKey("RocketPayForm.ref")</label>
+                                @TextBox(i, "genxml/textbox/ref", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false, lp1)
+                            </div>
+                            <div class="w3-padding w3-col m1">
+                                <label class="">@ResourceKey("RocketPayForm.price")</label>
+                                @TextBox(i, "genxml/textbox/price", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "0", false, lp1)
+                            </div>
+                            <div class="w3-padding w3-col m1">
+                                <label class="">@ResourceKey("RocketPayForm.saleprice")</label>
+                                @TextBox(i, "genxml/textbox/saleprice", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "0", false, lp1)
+                            </div>
+                            <div class="w3-padding w3-col m1">
+                                <label class="">@ResourceKey("RocketPayForm.tax")</label>
+                                @TextBox(i, "genxml/textbox/tax", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "0", false, lp1)
+                            </div>
+                            <div class="w3-padding w3-col m2">
+                                <label class="">@ResourceKey("RocketPayForm.barcode")</label>
+                                @TextBox(i, "genxml/textbox/barcode", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false, lp1)
+                            </div>
+                            <div class="w3-padding w3-col m2">
+                                <br />
+                                <label class="">@ResourceKey("RocketPayForm.hidden")</label>
+                                @CheckBox(i, "genxml/checkbox/hidden", "", "class='w3-input w3-border '", false, false, lp1)
+                            </div>
+                            <div class="w3-padding w3-col m2">
+                                <i>Product Ref:</i>
+                                @TextBox(i, "genxml/textbox/productref", " disabled class='w3-input w3-border' autocomplete='off'", GeneralUtils.GetUniqueKey(), false, lp1)
+                            </div>
+                        </div>
+                        <div class="w3-row">
+                            <div class="w3-padding w3-col m12">
+                                <label class="">@ResourceKey("RocketPayForm.summary")</label>
+                                @TextArea(i, "genxml/textbox/summary", "class='w3-input w3-border' maxlength='350' row='2' autocomplete='off'", "", false, lp1)
+                            </div>
+                            <!-- Trigger/Open the Modal -->
+                            <button onclick="document.getElementById('id01@(lp1)').style.display='block'"
+                                    class="w3-button">
+                                Open Modal
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- The Modal -->
-            <div id="id01@(lp1)" class="w3-modal">
-                <div class="w3-modal-content" style="width:80%;height:80%">
-                    <header class="w3-container w3-theme">
-                        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                        <button onclick="$('.reckermodsavebutton').trigger('click');" class="w3-margin-top w3-margin-bottom w3-button w3-green modelsavebutton">@ResourceKey("DNNrocket.cmdSaveButton")</button>
-                        <button onclick="location.reload();" class="w3-margin-top w3-margin-bottom w3-button w3-pale-yellow modelcancelbutton">@ResourceKey("DNNrocket.cmdCancelButton")</button>
-                    </header>
+                <!-- The Modal -->
+                <div id="id01@(lp1)" class="w3-modal">
+                    <div class="w3-modal-content" style="width:80%;height:80%">
+                        <header class="w3-container w3-theme">
+                            <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                            <button onclick="$('.reckermodsavebutton').trigger('click');" class="w3-margin-top w3-margin-bottom w3-button w3-green modelsavebutton">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+                            <button onclick="location.reload();" class="w3-margin-top w3-margin-bottom w3-button w3-pale-yellow modelcancelbutton">@ResourceKey("DNNrocket.cmdCancelButton")</button>
+                        </header>
 
-                    <div class="w3-container w3-padding ">
-                        <span onclick="document.getElementById('id01@(lp1)').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                        @TextBox(i, "genxml/textbox/modeltest", " class='w3-input w3-border' autocomplete='off'", "", false, lp1)
+                        <div class="w3-container w3-padding ">
+                            <span onclick="document.getElementById('id01@(lp1)').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                            @TextBox(i, "genxml/textbox/modeltest", " class='w3-input w3-border' autocomplete='off'", "", false, lp1)
+                        </div>
+
                     </div>
-
                 </div>
-            </div>
 
-        </li>
+            </li>
         }
     </ul>
 

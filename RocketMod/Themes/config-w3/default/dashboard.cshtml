@@ -15,57 +15,20 @@
 }
 
 <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetButton")</span>
-    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetDataButton")</span>
 </span>
 
 
 <div id="" class="simplisity_panel">
 
-    <div class="w3-row">
-        <a href="javascript:void(0)" class="" sectionname="">
-            <div class="w3-col tablink w3-bottombar w3-padding w3-border-black w3-theme " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("RocketMod.dashboard")</div>
-        </a>
-    </div>
+    <span class="w3-section">
+        <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetButton")</span>
+        <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetDataButton")</span>
+    </span>
 
-
-
-    @if (!moduleData.configData.Exists)
-    {
     <h1>@moduleData.configData.ConfigInfo.GetXmlProperty("genxml/select/apptheme")</h1>
 
     <h1>Config ItemID: @moduleData.configData.ConfigInfo.ItemID</h1>
 
-    }
-    else
-    {
-
-    <div id="configdata_@(moduleData.configData.ConfigInfo.ModuleId)" class="w3-modal">
-
-        <div class="w3-modal-content w3-animate-top w3-card-4">
-            <header class="w3-container w3-theme-d3">
-                <h2>@ResourceKey("RocketMod.selectapptheme")</h2>
-            </header>
-            <div class="w3-container">
-
-                <div class="w3-row">
-                    <div class="w3-half w3-padding">
-                        <div class="">
-                            <label>@ResourceKey("Config.apptheme")</label>
-                            @FolderSelectList(moduleData.configData.ConfigInfo, "genxml/select/apptheme", Model.GetSetting("mappathAppThemeFolder") + "\\Themes", " class='w3-input w3-border'", false)
-                        </div>
-                    </div>
-                </div>
-
-                <div class="w3-button w3-green w3-padding-8 simplisity_click w3-margin" s-post="#configdata_@(moduleData.configData.ConfigInfo.ModuleId)" s-before="hideconfigpopup" s-cmd="rocketmod_saveconfig" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</div>
-
-                <div class="w3-button w3-red w3-padding-8 w3-margin" onclick="returnclick();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
-
-            </div>
-        </div>
-
-    </div>
-    }
 
 </div>
 
@@ -73,12 +36,7 @@
 
     $(document).ready(function () {
 
-        $('#configdata_@(moduleData.configData.ConfigInfo.ModuleId)').show();
-
     });
 
-    function hideconfigpopup() {
-        $('#configdata_@(moduleData.configData.ConfigInfo.ModuleId)').hide();
-    }
 
 </script>

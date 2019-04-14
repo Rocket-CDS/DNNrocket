@@ -103,6 +103,9 @@ namespace RocketMod
                 case "rocketmod_dashboard":
                     strOut = GetDashBoard();
                     break;
+                case "rocketmod_config":
+                    strOut = GetConfig();
+                    break;
                 case "rocketmod_reset":
                     strOut = ResetRocketMod();
                     break;
@@ -198,6 +201,28 @@ namespace RocketMod
 
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "dashboard.cshtml";
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+
+                var passSettings = _postInfo.ToDictionary();
+                passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
+
+                return DNNrocketUtils.RazorDetail(razorTempl, _moduleData, passSettings);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public static String GetConfig()
+        {
+            try
+            {
+                var controlRelPath = _rocketInterface.TemplateRelPath;
+                if (controlRelPath == "") controlRelPath = ControlRelPath;
+
+                var themeFolder = _rocketInterface.DefaultTheme;
+                var razortemplate = "config.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
                 var passSettings = _postInfo.ToDictionary();

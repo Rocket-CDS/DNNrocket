@@ -35,7 +35,7 @@ namespace RocketMod
         public void PopulateConfig()
         {
             var objCtrl = new DNNrocketController();
-            ConfigInfo = objCtrl.GetData("rocketpayform_" + _moduleid, "CONFIG",DNNrocketUtils.GetCurrentCulture(), -1, _moduleid, true);
+            ConfigInfo = objCtrl.GetData("rocketmod_" + _moduleid, "CONFIG",DNNrocketUtils.GetCurrentCulture(), -1, _moduleid, true);
             if (ConfigInfo == null)
             {
                 _configExists = false;
@@ -44,21 +44,15 @@ namespace RocketMod
             }
             else
             {
-                if (ConfigInfo.GetXmlProperty("genxml/dropdownlist/paymentprovider") != "") // must have paymentprovider to be valid.
-                {
                     _configExists = true;
-                }
-                else
-                {
-                    _configExists = false;
-                }
+
             }
         }
 
         public void DeleteConfig()
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("rocketpayform_" + _moduleid, "CONFIG", DNNrocketUtils.GetCurrentCulture(), -1, _moduleid, true);
+            var info = objCtrl.GetData("rocketmod_" + _moduleid, "CONFIG", DNNrocketUtils.GetCurrentCulture(), -1, _moduleid, true);
             if (info != null)
             {
                 objCtrl.Delete(info.ItemID);
@@ -85,7 +79,7 @@ namespace RocketMod
             ConfigInfo.XMLData = postInfo.XMLData;
 
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.SaveData("rocketpayform_" + _moduleid, "CONFIG", ConfigInfo, _systemid, _moduleid);
+            var info = objCtrl.SaveData("rocketmod_" + _moduleid, "CONFIG", ConfigInfo, _systemid, _moduleid);
             PopulateConfig();
         }
 
