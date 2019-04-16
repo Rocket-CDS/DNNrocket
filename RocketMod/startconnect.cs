@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DNNrocket.AppThemes;
 using DNNrocketAPI;
 using DNNrocketAPI.Componants;
 using Simplisity;
@@ -59,6 +60,7 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmod_reset", true);
             _commandSecurity.AddCommand("rocketmod_resetdata", true);
             _commandSecurity.AddCommand("rocketmod_add", true);
+            _commandSecurity.AddCommand("rocketmod_selectapptheme", true);
 
             _commandSecurity.AddCommand("rocketmod_getdata", false);
             _commandSecurity.AddCommand("rocketmod_login", false);
@@ -71,6 +73,9 @@ namespace RocketMod
 
             switch (paramCmd)
             {
+                case "rocketmod_selectapptheme":
+                    strOut = GetSelectApp();
+                    break;
                 case "rocketmod_getdata":
                     strOut = GetDisplay();
                     break;
@@ -236,6 +241,48 @@ namespace RocketMod
             }
         }
 
+        public static String GetSelectApp()
+        {
+
+            try
+            {
+                var strOut = "";
+                if (!_moduleData.configData.Exists)
+                {
+                    var objCtrl = new DNNrocketController();
+
+                    var razortemplate = "selectapp.cshtml";
+                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
+
+                    var passSettings = _postInfo.ToDictionary();
+
+                    var appList = new List<Object>();
+                    var dirlist = System.IO.Directory.GetDirectories(_appthemeMapPath + "\\Themes");
+                    foreach (var d in dirlist)
+                    {
+                        var dr = new System.IO.DirectoryInfo(d);
+                        var appTheme = new AppTheme(dr.Name);
+                        appList.Add(appTheme);
+                    }
+
+                    strOut = DNNrocketUtils.RazorList(razorTempl, appList, passSettings, _moduleData.HeaderInfo);
+
+                }
+                else
+                {
+                    strOut = EditData();
+                }
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+
         public static String GetDisplay()
         {
 
@@ -254,7 +301,9 @@ namespace RocketMod
                     
                     passSettings.Add("addeditscript", _commandSecurity.HasModuleEditRights().ToString());
 
-                    strOut = DNNrocketUtils.RazorList(razorTempl, _moduleData.List, passSettings, _moduleData.HeaderInfo);
+                    var appTheme = new DNNrocket.AppThemes.AppTheme(themeFolder);
+
+                    strOut = DNNrocketUtils.RazorList(appTheme.ActiveViewTemplate, _moduleData.List, passSettings, _moduleData.HeaderInfo);
 
                 }
                 else
