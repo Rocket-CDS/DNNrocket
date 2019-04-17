@@ -5,11 +5,11 @@
     <activevalue />
     <pagesize>20</pagesize>
     <page>1</page>
-    <selecteditemid>367981</selecteditemid>
+    <selecteditemid>370888</selecteditemid>
     <editlanguage />
     <index>99</index>
     <systemprovider>systemapi</systemprovider>
-    <uilang1>en-US</uilang1>
+    <uilang1>fr-FR</uilang1>
   </hidden>
   <textbox>
     <ctrlkey>dnnrocketmodule</ctrlkey>
@@ -51,13 +51,14 @@
       </checkboxlist>
       <checkbox>
         <active>true</active>
+        <cache>true</cache>
         <onmenu>false</onmenu>
       </checkbox>
     </genxml>
     <genxml>
       <textbox>
         <interfacekey>dashboard</interfacekey>
-        <entitytypecode />
+        <entitytypecode>ROCKETMODCONFIG</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>dashboard.cshtml</defaulttemplate>
@@ -76,26 +77,27 @@
         <securityroles>
           <chk value="true" data="Administrators" />
           <chk value="true" data="Manager" />
-          <chk value="true" data="Editor" />
-          <chk value="true" data="ClientEditor" />
+          <chk value="false" data="Editor" />
+          <chk value="false" data="ClientEditor" />
         </securityroles>
       </checkboxlist>
       <checkbox>
         <active>true</active>
+        <cache>false</cache>
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
     <genxml>
       <textbox>
         <interfacekey>edit</interfacekey>
-        <entitytypecode>DATA</entitytypecode>
+        <entitytypecode>ROCKETMOD</entitytypecode>
         <interfaceicon />
-        <defaulttheme>config-w3</defaulttheme>
+        <defaulttheme>HtmlContent</defaulttheme>
         <defaulttemplate>edit.cshtml</defaulttemplate>
-        <defaultcommand>rocketmod_edit</defaultcommand>
-        <namespaceclass>RocketMod.startconnect</namespaceclass>
-        <assembly>RocketMod</assembly>
-        <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
+        <defaultcommand>rocketsettings_edit</defaultcommand>
+        <namespaceclass>RocketSettings.startconnect</namespaceclass>
+        <assembly>RocketSettings</assembly>
+        <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
       </textbox>
       <dropdownlist>
         <group />
@@ -113,6 +115,7 @@
       </checkboxlist>
       <checkbox>
         <active>true</active>
+        <cache>false</cache>
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
