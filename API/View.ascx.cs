@@ -85,6 +85,18 @@ namespace DNNrocketAPI
 
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
 
+            var clearmodcache = DNNrocketUtils.RequestParam(Context, "clearmodcache");
+            if (clearmodcache != "")
+            {
+                CacheUtils.ClearCache(_interfacekey + clearmodcache);
+            }
+            var clearallcache = DNNrocketUtils.RequestParam(Context, "clearallcache");
+            if (clearallcache != "")
+            {
+                DNNrocketUtils.ClearPortalCache(PortalId);
+                CacheUtils.ClearAllCache();
+            }
+
             if (_rocketInterface.Exists)
             {
                 _templateRelPath = _rocketInterface.TemplateRelPath;
@@ -94,6 +106,8 @@ namespace DNNrocketAPI
 
                 DNNrocketUtils.IncludePageHeaders(base.ModuleId, this.Page, _systemprovider, _templateRelPath, "pageheader.cshtml", _rocketInterface.DefaultTheme);
             }
+
+
         }
 
         protected override void OnLoad(EventArgs e)
@@ -266,9 +280,11 @@ namespace DNNrocketAPI
                 var actions = new ModuleActionCollection();
                 if (_configInfo != null && _configInfo.XMLDoc.SelectNodes("genxml/*").Count > 1 &&  !_configInfo.GetXmlPropertyBool("genxml/checkbox/noiframeedit"))
                 {
-                    actions.Add(GetNextActionID(), "Edit", "", "", "plus2.gif", "javascript:" + _interfacekey + "editiframe_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
+                    actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.edit") , "", "", "register.gif", "javascript:" + _interfacekey + "editiframe_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
                 }
-                actions.Add(GetNextActionID(), "Rocket Admin", "", "", "plus2.gif", "javascript:" + _interfacekey + "admin_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
+                actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmin"), "", "", "icon_dashboard_16px.gif", "javascript:" + _interfacekey + "admin_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
+                actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearmodcache"), "", "", "action_refresh.gif", "?clearmodcache=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);
+                actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearallcache"), "", "", "action_refresh.gif", "?clearallcache=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);
                 return actions;
             }
         }

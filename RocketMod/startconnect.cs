@@ -62,6 +62,7 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmod_add", true);
             _commandSecurity.AddCommand("rocketmod_selectapptheme", true);
             _commandSecurity.AddCommand("rocketmod_saveapptheme", true);
+            _commandSecurity.AddCommand("rocketmod_getsidemenu", true);            
 
             _commandSecurity.AddCommand("rocketmod_getdata", false);
             _commandSecurity.AddCommand("rocketmod_login", false);
@@ -74,6 +75,9 @@ namespace RocketMod
 
             switch (paramCmd)
             {
+                case "rocketmod_getsidemenu":
+                    strOut = GetSideMenu(postInfo, systemInfo);
+                break;
                 case "rocketmod_selectapptheme":
                     strOut = GetSelectApp();
                     break;
@@ -129,6 +133,42 @@ namespace RocketMod
 
             return DNNrocketUtils.ReturnString(strOut);
         }
+
+        public static string GetSideMenu(SimplisityInfo sInfo, SimplisityInfo systemInfo)
+        {
+            try
+            {
+                var strOut = "";
+                var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
+                var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
+                var moduleid = sInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+                if (moduleid == 0) moduleid = -1;
+
+                var passSettings = sInfo.ToDictionary();
+
+                var systemData = new SystemData();
+                var sidemenu = new SideMenu(systemInfo);
+                var templateControlRelPath = sInfo.GetXmlProperty("genxml/hidden/relpath");
+                sidemenu.ModuleId = moduleid;
+
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+
+                if (razorTempl == "")
+                {
+                    // no razor template for sidemenu, so use default.
+                    razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                }
+
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, sidemenu, passSettings, _configData.ConfigInfo);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
 
 
         public static String EditData()

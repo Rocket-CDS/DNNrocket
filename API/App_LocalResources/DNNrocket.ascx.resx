@@ -390,4 +390,16 @@
   <data name="cmdResendEmailIcon.Text" xml:space="preserve">
     <value>&lt;i title="Delete" class="fa fa-envelope-o fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
+  <data name="clearallcache.Text" xml:space="preserve">
+    <value>Clear ALL Cache</value>
+  </data>
+  <data name="clearmodcache.Text" xml:space="preserve">
+    <value>Clear Module Cache</value>
+  </data>
+  <data name="edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="rocketadmin.Text" xml:space="preserve">
+    <value>Rocket Admin</value>
+  </data>
 </root>
