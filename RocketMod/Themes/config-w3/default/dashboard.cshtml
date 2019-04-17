@@ -12,22 +12,28 @@
 
 @{
     var moduleData = (ModuleData)Model.List.First();
+    var info = moduleData.configData.ConfigInfo;
 }
 
 <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
 </span>
 
 
-<div id="" class="simplisity_panel">
+<div id="configdata" class="w3-container simplisity_panel">
 
-    <span class="w3-section">
-        <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetButton")</span>
-        <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetDataButton")</span>
-    </span>
+    @HiddenField(info,"genxml/hidden/apptheme")
 
-    <h1>@moduleData.configData.ConfigInfo.GetXmlProperty("genxml/select/apptheme")</h1>
+    <div class="w3-container">
+        <div class="w3-threequarter">
+            <h1>AppTheme:&nbsp;@info.GetXmlProperty("genxml/hidden/apptheme")</h1>
+            <p>Config ItemID: @moduleData.configData.ConfigInfo.ItemID</p>
+        </div>
+        <div class="w3-quarter">
+            <span class="w3-button w3-block w3-red w3-padding-8 simplisity_confirmclick w3-margin" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetButton")</span>
+            <span class="w3-button w3-block w3-red w3-padding-8 simplisity_confirmclick w3-margin" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetDataButton")</span>
 
-    <h1>Config ItemID: @moduleData.configData.ConfigInfo.ItemID</h1>
+        </div>
+    </div>
 
 
 </div>
@@ -38,5 +44,8 @@
 
     });
 
+    function reloadpage() {
+        location.reload();
+    }
 
 </script>

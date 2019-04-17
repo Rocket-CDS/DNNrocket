@@ -60,13 +60,24 @@ namespace RocketMod
             }
         }
 
+        public void SaveAppTheme(string appTheme)
+        {
+            if (appTheme != "")
+            {
+                ConfigInfo.SetXmlProperty("genxml/hidden/apptheme", appTheme);
+                var objCtrl = new DNNrocketController();
+                var info = objCtrl.SaveData("rocketmod_" + _moduleid, "CONFIG", ConfigInfo, _systemid, _moduleid);
+                PopulateConfig();
+            }
+        }
+
         public void SaveConfig(SimplisityInfo postInfo)
         {
             //remove any params
             postInfo.RemoveXmlNode("genxml/postform");
             postInfo.RemoveXmlNode("genxml/urlparams");
 
-            if (postInfo.GetXmlProperty("genxml/dropdownlist/paymentprovider") != "")
+            if (postInfo.GetXmlProperty("genxml/hidden/apptheme") != "")
             {
                 ConfigInfo.SetXmlProperty("genxml/dropdownlist/paymentprovider", postInfo.GetXmlProperty("genxml/dropdownlist/paymentprovider"));
             }

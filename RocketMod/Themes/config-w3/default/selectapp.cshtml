@@ -31,7 +31,7 @@
                     @foreach (AppTheme apptheme in Model.List)
                     {
                 <p>
-                    <button class="w3-button w3-block w3-theme">@apptheme.AppName</button>
+                    <button class="w3-button w3-block w3-theme simplisity_click" s-cmd="rocketmod_saveapptheme" s-fields="apptheme:@apptheme.AppName,tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),interfacekey:rocketmod"   >@apptheme.AppName</button>
                 </p>
                     }
             </div>

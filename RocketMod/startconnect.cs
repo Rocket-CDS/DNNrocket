@@ -61,6 +61,7 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmod_resetdata", true);
             _commandSecurity.AddCommand("rocketmod_add", true);
             _commandSecurity.AddCommand("rocketmod_selectapptheme", true);
+            _commandSecurity.AddCommand("rocketmod_saveapptheme", true);
 
             _commandSecurity.AddCommand("rocketmod_getdata", false);
             _commandSecurity.AddCommand("rocketmod_login", false);
@@ -75,6 +76,10 @@ namespace RocketMod
             {
                 case "rocketmod_selectapptheme":
                     strOut = GetSelectApp();
+                    break;
+                case "rocketmod_saveapptheme":                    
+                    _moduleData.configData.SaveAppTheme(postInfo.GetXmlProperty("genxml/hidden/apptheme"));
+                    strOut = GetDashBoard();
                     break;
                 case "rocketmod_getdata":
                     strOut = GetDisplay();
@@ -294,14 +299,14 @@ namespace RocketMod
                     var objCtrl = new DNNrocketController();
 
                     var razortemplate = "view.cshtml";
-                    var themeFolder = _moduleData.configData.ConfigInfo.GetXmlProperty("genxml/select/apptheme");
-                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                    var apptheme = _moduleData.configData.ConfigInfo.GetXmlProperty("genxml/hidden/apptheme");
+                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, apptheme, DNNrocketUtils.GetCurrentCulture());
 
                     var passSettings = _postInfo.ToDictionary();
                     
                     passSettings.Add("addeditscript", _commandSecurity.HasModuleEditRights().ToString());
 
-                    var appTheme = new DNNrocket.AppThemes.AppTheme(themeFolder);
+                    var appTheme = new DNNrocket.AppThemes.AppTheme(apptheme);
 
                     strOut = DNNrocketUtils.RazorList(appTheme.ActiveViewTemplate, _moduleData.List, passSettings, _moduleData.HeaderInfo);
 
