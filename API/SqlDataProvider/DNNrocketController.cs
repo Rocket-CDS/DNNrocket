@@ -91,22 +91,25 @@ namespace DNNrocketAPI
         /// <returns></returns>
         public override int Update(SimplisityRecord objInfo, bool doindex = true)
         {
-            // save data
-            objInfo.ModifiedDate = DateTime.Now;
-            var itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang, objInfo.SystemId);
-
-            if (doindex)
+            var itemid = -1;
+            if (!String.IsNullOrEmpty(objInfo.TypeCode) && objInfo.TypeCode.ToUpper() != "LANG") // do not process non-data records.
             {
-                if (objInfo.Lang == "")
+                // save data
+                objInfo.ModifiedDate = DateTime.Now;
+                itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang, objInfo.SystemId);
+
+                if (doindex)
                 {
-                    RebuildIndex(objInfo);
-                }
-                else
-                {
-                    RebuildLangIndex(objInfo, itemid);
+                    if (objInfo.Lang == "")
+                    {
+                        RebuildIndex(objInfo);
+                    }
+                    else
+                    {
+                        RebuildLangIndex(objInfo, itemid);
+                    }
                 }
             }
-
             return itemid;
         }
 
@@ -126,56 +129,59 @@ namespace DNNrocketAPI
         /// <param name="itemid"></param>
         public void RebuildLangIndex(SimplisityRecord objInfo, int itemid)
         {
-            if (!String.IsNullOrEmpty(objInfo.Lang))
+            if (!String.IsNullOrEmpty(objInfo.TypeCode) && objInfo.TypeCode.ToUpper() != "LANG") // do not process non-data records.
             {
-                // do langauge record.
-                var baseRecord = GetRecord(objInfo.ParentItemId);
-                var saveItemId = 0;
-                var idxLang = GetByGuidKey(objInfo.PortalId, -1, objInfo.TypeCode + "IDX", objInfo.ParentItemId.ToString() + "_" + objInfo.Lang);
-                if (idxLang != null)
+                if (!String.IsNullOrEmpty(objInfo.Lang))
                 {
-                    idxLang.XMLData = baseRecord.XMLData;
-                    idxLang.SetLangXml(objInfo.XMLData);
-                    saveItemId = DataProvider.Instance().Update(idxLang.ItemID, idxLang.PortalId, idxLang.ModuleId, idxLang.TypeCode, idxLang.XMLData, idxLang.GUIDKey, idxLang.ModifiedDate, idxLang.TextData, idxLang.XrefItemId, idxLang.ParentItemId, idxLang.UserId, idxLang.Lang, idxLang.SystemId);
+                    // do langauge record.
+                    var baseRecord = GetRecord(objInfo.ParentItemId);
+                    var saveItemId = 0;
+                    var idxLang = GetByGuidKey(objInfo.PortalId, -1, objInfo.TypeCode + "IDX", objInfo.ParentItemId.ToString() + "_" + objInfo.Lang);
+                    if (idxLang != null)
+                    {
+                        idxLang.XMLData = baseRecord.XMLData;
+                        idxLang.SetLangXml(objInfo.XMLData);
+                        saveItemId = DataProvider.Instance().Update(idxLang.ItemID, idxLang.PortalId, idxLang.ModuleId, idxLang.TypeCode, idxLang.XMLData, idxLang.GUIDKey, idxLang.ModifiedDate, idxLang.TextData, idxLang.XrefItemId, idxLang.ParentItemId, idxLang.UserId, idxLang.Lang, idxLang.SystemId);
+                    }
+                    else
+                    {
+                        // Language record update.
+                        if (baseRecord != null && !String.IsNullOrEmpty(baseRecord.TypeCode))
+                        {
+                            var sRecord = new SimplisityInfo();
+                            sRecord.PortalId = baseRecord.PortalId;
+                            sRecord.ModuleId = -1;
+                            sRecord.ParentItemId = baseRecord.ItemID;
+                            sRecord.TypeCode = objInfo.TypeCode + "IDX";
+                            sRecord.ModifiedDate = DateTime.Now;
+                            sRecord.XMLData = baseRecord.XMLData;
+                            sRecord.Lang = objInfo.Lang;
+                            sRecord.GUIDKey = objInfo.ParentItemId.ToString() + "_" + objInfo.Lang;
+                            sRecord.SetLangXml(objInfo.XMLData);
+                            saveItemId = DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang, sRecord.SystemId);
+                        }
+
+                    }
+                    // we can only index after the langauge update, so we have all data (language data) in the DB
+                    // This will call multiple times, once for each language.
+                    if (saveItemId > 0)
+                    {
+                        var langInfo = GetRecord(saveItemId);
+                        var baseInfo = GetRecord(langInfo.ParentItemId);
+                        RebuildIndex(baseInfo);
+                    }
                 }
                 else
                 {
-                    // Langauge record update.
-                    if (baseRecord != null)
+                    // we have a base language, so we need to update all language LANGIDX records.
+                    var l = GetList(-1, -1, "", " and (R1.typecode = '" + objInfo.TypeCode + "LANGIDX')  and R1.parentitemid = " + objInfo.ItemID);
+                    foreach (var i in l)
                     {
-                        var sRecord = new SimplisityInfo();
-                        sRecord.PortalId = baseRecord.PortalId;
-                        sRecord.ModuleId = -1;
-                        sRecord.ParentItemId = baseRecord.ItemID;
-                        sRecord.TypeCode = objInfo.TypeCode + "IDX";
-                        sRecord.ModifiedDate = DateTime.Now;
-                        sRecord.XMLData = baseRecord.XMLData;
-                        sRecord.Lang = objInfo.Lang;
-                        sRecord.GUIDKey = objInfo.ParentItemId.ToString() + "_" + objInfo.Lang;
-                        sRecord.SetLangXml(objInfo.XMLData);
-                        saveItemId = DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang, sRecord.SystemId);
+                        var langxml = i.GetLangXml();
+                        i.XMLData = objInfo.XMLData;
+                        i.SetLangXml(langxml);
+                        Update(i, false);
                     }
-
-                }
-                // we can only index after the langauge update, so we have all data (language data) in the DB
-                // This will call multiple times, once for each language.
-                if (saveItemId > 0)
-                {
-                    var langInfo = GetRecord(saveItemId);
-                    var baseInfo = GetRecord(langInfo.ParentItemId);
-                    RebuildIndex(baseInfo);
-                }
-            }
-            else
-            {
-                // we have a base language, so we need to update all language LANGIDX records.
-                var l = GetList(-1, -1, "", " and (R1.typecode = '" + objInfo.TypeCode + "LANGIDX')  and R1.parentitemid = " + objInfo.ItemID);
-                foreach (var i in l)
-                {
-                    var langxml = i.GetLangXml();
-                    i.XMLData = objInfo.XMLData;
-                    i.SetLangXml(langxml);
-                    Update(i, false);
                 }
             }
         }
@@ -187,59 +193,62 @@ namespace DNNrocketAPI
         /// <param name="itemid"></param>
         public void RebuildIndex(SimplisityRecord objInfo)
         {
-            var dataitemid = objInfo.ItemID;
-            var entityTypeCode = objInfo.TypeCode;
-            if (String.IsNullOrEmpty(objInfo.Lang)) // do not process language record
+            if (!String.IsNullOrEmpty(objInfo.TypeCode) && objInfo.TypeCode.ToUpper() != "LANG") // do not process non-data records.
             {
-
-                var xrefitemid = objInfo.ParentItemId; // check for xref record, therefore parentitemid will be set.
-                if (xrefitemid <= 0)
+                if (String.IsNullOrEmpty(objInfo.Lang)) // do not process language records 
                 {
-                    xrefitemid = objInfo.ItemID; // not a xref record, so take the id.
-                }
+                    var dataitemid = objInfo.ItemID;
+                    var entityTypeCode = objInfo.TypeCode;
 
-                var systemId = objInfo.SystemId;
-                var systemInfo = GetRecord(systemId);
-
-                if (systemInfo != null)
-                {
-                    var systemLinkRec = GetByGuidKey(-1, -1, "SYSTEMLINK", objInfo.TypeCode);
-                    if (systemLinkRec == null)
+                    var xrefitemid = objInfo.ParentItemId; // check for xref record, therefore parentitemid will be set.
+                    if (xrefitemid <= 0)
                     {
-                        // might be a xref, search for xref typecode
-                        systemLinkRec = GetByGuidKey(-1, -1, "SYSTEMLINK", objInfo.GUIDKey);
+                        xrefitemid = objInfo.ItemID; // not a xref record, so take the id.
                     }
-                    if (systemLinkRec != null)
+
+                    var systemId = objInfo.SystemId;
+                    var systemInfo = GetRecord(systemId);
+
+                    if (systemInfo != null)
                     {
-                        var xrefTypeCodeList = GetList(-1, -1, "SYSTEMLINK" + objInfo.TypeCode, " and R1.ParentitemId = '" + systemLinkRec.ItemID + "' ");
-                        foreach (var i in xrefTypeCodeList)
-                        {                          
-                            var indexref = i.GUIDKey;
-                            var xpath = i.GetXmlProperty("genxml/textbox/xpath");
-                            if (xpath.StartsWith("genxml/lang/"))
+                        var systemLinkRec = GetByGuidKey(-1, -1, "SYSTEMLINK", objInfo.TypeCode);
+                        if (systemLinkRec == null)
+                        {
+                            // might be a xref, search for xref typecode
+                            systemLinkRec = GetByGuidKey(-1, -1, "SYSTEMLINK", objInfo.GUIDKey);
+                        }
+                        if (systemLinkRec != null)
+                        {
+                            var xrefTypeCodeList = GetList(-1, -1, "SYSTEMLINK" + objInfo.TypeCode, " and R1.ParentitemId = '" + systemLinkRec.ItemID + "' ");
+                            foreach (var i in xrefTypeCodeList)
                             {
-                                // we need a langauge recrod.
-                                var langList = DNNrocketUtils.GetCultureCodeList(objInfo.PortalId);
-                                foreach (var lang in langList)
+                                var indexref = i.GUIDKey;
+                                var xpath = i.GetXmlProperty("genxml/textbox/xpath");
+                                if (xpath.StartsWith("genxml/lang/"))
                                 {
-                                    var dataInfo = GetInfo(objInfo.ItemID, lang);
-                                    if (dataInfo != null)
+                                    // we need a langauge recrod.
+                                    var langList = DNNrocketUtils.GetCultureCodeList(objInfo.PortalId);
+                                    foreach (var lang in langList)
                                     {
-                                        var value = dataInfo.GetXmlProperty(xpath);
-                                        if (!String.IsNullOrEmpty(value))
+                                        var dataInfo = GetInfo(objInfo.ItemID, lang);
+                                        if (dataInfo != null)
                                         {
-                                            CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.SystemId, indexref, xrefitemid, dataitemid, lang, value);
+                                            var value = dataInfo.GetXmlProperty(xpath);
+                                            if (!String.IsNullOrEmpty(value))
+                                            {
+                                                CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.SystemId, indexref, xrefitemid, dataitemid, lang, value);
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            else
-                            {
-                                // non-langauge recrdo
-                                var value = objInfo.GetXmlProperty(xpath);
-                                if (!String.IsNullOrEmpty(value))
+                                else
                                 {
-                                    CreateSystemLinkIdx(objInfo.PortalId, objInfo.SystemId, indexref, xrefitemid, dataitemid, "", value);
+                                    // non-langauge recrdo
+                                    var value = objInfo.GetXmlProperty(xpath);
+                                    if (!String.IsNullOrEmpty(value))
+                                    {
+                                        CreateSystemLinkIdx(objInfo.PortalId, objInfo.SystemId, indexref, xrefitemid, dataitemid, "", value);
+                                    }
                                 }
                             }
                         }
