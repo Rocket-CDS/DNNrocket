@@ -27,7 +27,7 @@
       <textbox>
         <interfacekey>settingcountry</interfacekey>
         <entitytypecode>COUNTRY</entitytypecode>
-        <interfaceicon>fa fa-globe</interfaceicon>
+        <interfaceicon>fas fa-globe</interfaceicon>
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>CountrySettings.cshtml</defaulttemplate>
         <defaultcommand>settingcountry_get</defaultcommand>
@@ -59,7 +59,7 @@
       <textbox>
         <interfacekey>testform</interfacekey>
         <entitytypecode>TESTFORM</entitytypecode>
-        <interfaceicon>fa fa-hand-peace-o </interfaceicon>
+        <interfaceicon>fas fa-hand-peace-o </interfaceicon>
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>testform.cshtml</defaulttemplate>
         <defaultcommand>testform_get</defaultcommand>
@@ -91,7 +91,7 @@
       <textbox>
         <interfacekey>testlist</interfacekey>
         <entitytypecode>TESTLIST</entitytypecode>
-        <interfaceicon>fa fa-hand-spock-o</interfaceicon>
+        <interfaceicon>fas fa-hand-spock-o</interfaceicon>
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>testlist.cshtml</defaulttemplate>
         <defaultcommand>testlist_getlist</defaultcommand>
@@ -210,13 +210,13 @@
     <genxml>
       <textbox>
         <groupref>settings</groupref>
-        <groupicon>fa fa-cog</groupicon>
+        <groupicon>fas fa-cog</groupicon>
       </textbox>
     </genxml>
     <genxml>
       <textbox>
         <groupref>Tests</groupref>
-        <groupicon>fa fa-cogs</groupicon>
+        <groupicon>fas fa-cogs</groupicon>
       </textbox>
     </genxml>
   </groupsdata>

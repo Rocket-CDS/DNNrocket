@@ -45,7 +45,7 @@
         interfacelist = sidemenu.GetInterfaces(groupref);
         if (interfacelist.Count() > 0)
         {
-            menuOut += "<div class='w3-bar-item w3-button w3-theme-l4 w3-hover-theme menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey("AppThemes." + groupref) + "&nbsp;<i class='fa fa-caret-down'></i></div>";
+            menuOut += "<div class='w3-bar-item w3-button w3-theme-l4 w3-hover-theme menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey("AppThemes." + groupref) + "&nbsp;<i class='fas fa-caret-down'></i></div>";
             menuOut += "<div id='" + groupref + "' class='w3-hide w3-theme-l4'>";
             foreach (var i in interfacelist)
             {

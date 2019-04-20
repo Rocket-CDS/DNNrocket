@@ -121,19 +121,19 @@
     <value>Add</value>
   </data>
   <data name="cmdAddIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Add New" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Add New" class="fas fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdAddButton.Text" xml:space="preserve">
-    <value>&lt;i title="Add New" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Add</value>
+    <value>&lt;i title="Add New" class="fas fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Add</value>
   </data>
   <data name="cmdAddFiles.Text" xml:space="preserve">
-    <value>&lt;i title="Add New" class="fa fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Add</value>
+    <value>&lt;i title="Add New" class="fas fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Add</value>
   </data>
   <data name="cmdCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="cmdCancelButton.Text" xml:space="preserve">
-    <value>&lt;i title="Cancel" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Cancel</value>
+    <value>&lt;i title="Cancel" class="fas fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Cancel</value>
   </data>
   <data name="cmdClear.Text" xml:space="preserve">
     <value>Clear</value>
@@ -145,19 +145,19 @@
     <value>Delete</value>
   </data>
   <data name="cmdDeleteIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Delete" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Delete" class="fas fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdDeleteButton.Text" xml:space="preserve">
-    <value>&lt;i title="Delete" class="fa fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Delete</value>
+    <value>&lt;i title="Delete" class="fas fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Delete</value>
   </data>
   <data name="cmdEdit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="cmdEditIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Edit" class="fa fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Edit" class="fas fa-edit fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdEditButton.Text" xml:space="preserve">
-    <value>&lt;i title="Edit" class="fa fa-edit fa-fw fa-lg"&gt;&lt;/i&gt; Edit</value>
+    <value>&lt;i title="Edit" class="fas fa-edit fa-fw fa-lg"&gt;&lt;/i&gt; Edit</value>
   </data>
   <data name="cmdExit.confirm" xml:space="preserve">
     <value>Exit?</value>
@@ -169,10 +169,10 @@
     <value>Reset</value>
   </data>
   <data name="cmdResetIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Reset" class="fa fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Reset" class="fas fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdResetButton.Text" xml:space="preserve">
-    <value>&lt;i title="Reset" class="fa fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt; Reset</value>
+    <value>&lt;i title="Reset" class="fas fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt; Reset</value>
   </data>
   <data name="cmdSave.Text" xml:space="preserve">
     <value>Save</value>
@@ -187,10 +187,10 @@
     <value>Search</value>
   </data>
   <data name="cmdSearchIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Search" class="fa fa-search fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Search" class="fas fa-search fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdSearchButton.Text" xml:space="preserve">
-    <value>&lt;i title="Search" class="fa fa-search fa-fw fa-lg"&gt;&lt;/i&gt; Search</value>
+    <value>&lt;i title="Search" class="fas fa-search fa-fw fa-lg"&gt;&lt;/i&gt; Search</value>
   </data>
   <data name="cmdSelect.Text" xml:space="preserve">
     <value>Select</value>
@@ -202,37 +202,37 @@
     <value>Upload</value>
   </data>
   <data name="cmdUploadButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Upload" class="fa fa-upload fa-fw fa-lg"&gt;&lt;/i&gt; Upload</value>
+    <value>&lt;i  title="Upload" class="fas fa-upload fa-fw fa-lg"&gt;&lt;/i&gt; Upload</value>
   </data>
   <data name="cmdReturn.Text" xml:space="preserve">
     <value>Return</value>
   </data>
   <data name="cmdReturnIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Return" class="fa fa-reply fa-fw fa-2x"&gt;&lt;/i&gt; Return</value>
+    <value>&lt;i  title="Return" class="fas fa-reply fa-fw fa-2x"&gt;&lt;/i&gt; Return</value>
   </data>
   <data name="cmdReturnButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Return" class="fa fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Return</value>
+    <value>&lt;i  title="Return" class="fas fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Return</value>
   </data>
   <data name="cmdExport.Text" xml:space="preserve">
     <value>Export</value>
   </data>
   <data name="cmdDownloadButton.Text" xml:space="preserve">
-    <value>&lt;i title="Download" class="fa fa-download fa-fw fa-lg"&gt;&lt;/i&gt; Download</value>
+    <value>&lt;i title="Download" class="fas fa-download fa-fw fa-lg"&gt;&lt;/i&gt; Download</value>
   </data>
   <data name="cmdRemove.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
   <data name="cmdRemoveIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Remove" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Remove" class="fas fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdRemoveButton.Text" xml:space="preserve">
-    <value>&lt;i title="Remove" class="fa fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Remove</value>
+    <value>&lt;i title="Remove" class="fas fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Remove</value>
   </data>
   <data name="cmdSaveIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Save" class="fa fa-save fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Save" class="fas fa-save fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdSaveButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Save" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save</value>
+    <value>&lt;i  title="Save" class="fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save</value>
   </data>
   <data name="cmdCancelSelect.Text" xml:space="preserve">
     <value>Cancel Select</value>
@@ -241,13 +241,13 @@
     <value>Move</value>
   </data>
   <data name="cmdMoveIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Move to here" class="fa fa-arrow-circle-left fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Move to here" class="fas fa-arrow-circle-left fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdSaveAsButton.confirm" xml:space="preserve">
     <value>Save ?</value>
   </data>
   <data name="cmdSaveAsButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Save As" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save As</value>
+    <value>&lt;i  title="Save As" class="fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save As</value>
   </data>
   <data name="cmdOk.Text" xml:space="preserve">
     <value>Ok</value>
@@ -256,16 +256,16 @@
     <value>Folder</value>
   </data>
   <data name="cmdFolderIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Open" class="fa fa-folder-open fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Open" class="fas fa-folder-open fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdSaveExitButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Save" class="fa fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save &amp; Exit</value>
+    <value>&lt;i  title="Save" class="fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save &amp; Exit</value>
   </data>
   <data name="cmdFilter.Text" xml:space="preserve">
     <value>Filter</value>
   </data>
   <data name="cmdResetFilters.Text" xml:space="preserve">
-    <value>&amp;lt;i class="fa fa-times-circle"&amp;gt;&amp;lt;/i&amp;gt; Reset filter(s)</value>
+    <value>&amp;lt;i class="fas fa-times-circle"&amp;gt;&amp;lt;/i&amp;gt; Reset filter(s)</value>
   </data>
   <data name="cmdResetButton.confirm" xml:space="preserve">
     <value>Reset ?</value>
@@ -280,7 +280,7 @@
     <value>Undo</value>
   </data>
   <data name="cmdUndoButton.Text" xml:space="preserve">
-    <value>&lt;i title="Add New" class="fa fa-undo fa-fw fa-lg"&gt;&lt;/i&gt; Undo</value>
+    <value>&lt;i title="Add New" class="fas fa-undo fa-fw fa-lg"&gt;&lt;/i&gt; Undo</value>
   </data>
   <data name="apiurl.Text" xml:space="preserve">
     <value>API url</value>
@@ -295,19 +295,19 @@
     <value>Start ?</value>
   </data>
   <data name="cmdStartButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Start" class="fa fa-play fa-fw fa-lg"&gt;&lt;/i&gt; Start</value>
+    <value>&lt;i  title="Start" class="fas fa-play fa-fw fa-lg"&gt;&lt;/i&gt; Start</value>
   </data>
   <data name="cmdSignOutButton.Text" xml:space="preserve">
-    <value>&lt;i title="Sign Out" class="fa fa-sign-out fa-fw fa-lg"&gt;&lt;/i&gt; SignOut</value>
+    <value>&lt;i title="Sign Out" class="fas fa-sign-out-alt fa-fw fa-lg"&gt;&lt;/i&gt; SignOut</value>
   </data>
   <data name="cmdAdmin.Text" xml:space="preserve">
     <value>Admin</value>
   </data>
   <data name="cmdAdminButton.Text" xml:space="preserve">
-    <value>&lt;i title="Admin" class="fa fa-list fa-fw fa-lg"&gt;&lt;/i&gt; Admin</value>
+    <value>&lt;i title="Admin" class="fas fa-list fa-fw fa-lg"&gt;&lt;/i&gt; Admin</value>
   </data>
   <data name="cmdAdminIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Admin" class="fa fa-list fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Admin" class="fas fa-list fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="dropdocument.Text" xml:space="preserve">
     <value>Drop Document Here</value>
@@ -337,10 +337,10 @@
     <value>Clear All Cache</value>
   </data>
   <data name="cmdClearCacheButton.Text" xml:space="preserve">
-    <value>&lt;i title="Clear All Cache" class="fa fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Clear All Cache</value>
+    <value>&lt;i title="Clear All Cache" class="fas fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Clear All Cache</value>
   </data>
   <data name="cmdClearCacheIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Clear All Cache" class="fa fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Clear All Cache" class="fas fa-minus-square fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="pagingtext.Text" xml:space="preserve">
     <value>5,10,20,50,100,All</value>
@@ -355,28 +355,28 @@
     <value>No Settings</value>
   </data>
   <data name="cmdConfigButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Setup" class="fa fa-plug fa-fw fa-lg"&gt;&lt;/i&gt; Setup</value>
+    <value>&lt;i  title="Setup" class="fas fa-plug fa-fw fa-lg"&gt;&lt;/i&gt; Setup</value>
   </data>
   <data name="config.Text" xml:space="preserve">
     <value>Configuration</value>
   </data>
   <data name="settings.Text" xml:space="preserve">
-    <value>DNN Rocket Settings</value>
+    <value>Settings</value>
   </data>
   <data name="cmdUse.Text" xml:space="preserve">
     <value>Use</value>
   </data>
   <data name="cmdUseButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Upload" class="fa fa-share-square-o fa-fw fa-lg"&gt;&lt;/i&gt; Use</value>
+    <value>&lt;i  title="Upload" class="fas fa-share-square-o fa-fw fa-lg"&gt;&lt;/i&gt; Use</value>
   </data>
   <data name="cmdPrint.Text" xml:space="preserve">
     <value>Print</value>
   </data>
   <data name="cmdPrintButton.Text" xml:space="preserve">
-    <value>&lt;i title="Print" class="fa fa-print fa-fw fa-lg"&gt;&lt;/i&gt; Print</value>
+    <value>&lt;i title="Print" class="fas fa-print fa-fw fa-lg"&gt;&lt;/i&gt; Print</value>
   </data>
   <data name="cmdPrintIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Print" class="fa fa-print fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Print" class="fas fa-print fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdResendEmail.confirm" xml:space="preserve">
     <value>Resend Email ?</value>
@@ -385,10 +385,10 @@
     <value>Resend Email</value>
   </data>
   <data name="cmdResendEmailButton.Text" xml:space="preserve">
-    <value>&lt;i title="Delete" class="fa fa-envelope-o fa-fw fa-lg"&gt;&lt;/i&gt; Resend Email</value>
+    <value>&lt;i title="Delete" class="fas fa-envelope-o fa-fw fa-lg"&gt;&lt;/i&gt; Resend Email</value>
   </data>
   <data name="cmdResendEmailIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Delete" class="fa fa-envelope-o fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Delete" class="fas fa-envelope-o fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="clearallcache.Text" xml:space="preserve">
     <value>Clear ALL Cache</value>
@@ -400,6 +400,6 @@
     <value>Edit</value>
   </data>
   <data name="rocketadmin.Text" xml:space="preserve">
-    <value>Rocket Admin</value>
+    <value>Admin</value>
   </data>
 </root>
