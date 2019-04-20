@@ -47,33 +47,36 @@ namespace Simplisity
 
         public static void SetCache(string cacheKey, object objObject, string groupkey = "default")
         {
-            cacheKey = GetMd5Hash(cacheKey);
-
-            ObjectCache cache = MemoryCache.Default;
-            CacheItemPolicy policy = new CacheItemPolicy();
-            var cacheData = new CacheItem(cacheKey, objObject);
-            cache.Set(cacheData, policy);
-
-            if (groupkey == "") groupkey = "default";
-
-            var l1 = GetCacheKeys(groupkey);
-            if (!l1.Contains(cacheKey))
+            if (objObject != null)
             {
-                l1.Add(cacheKey);
-                cacheKey = GetMd5Hash("dnnrocketcache" + groupkey) ;
-                cacheData = new CacheItem(cacheKey, l1);
-                cache.Set(cacheData, policy);
-            }
 
-            var gl = GetCacheGroups();
-            if (!gl.Contains(groupkey))
-            {
-                gl.Add(groupkey);
-                cacheKey = GetMd5Hash("group_dnnrocketcache");
-                cacheData = new CacheItem(cacheKey, gl);
-                cache.Set(cacheData, policy);
-            }
+                cacheKey = GetMd5Hash(cacheKey);
 
+                ObjectCache cache = MemoryCache.Default;
+                CacheItemPolicy policy = new CacheItemPolicy();
+                var cacheData = new CacheItem(cacheKey, objObject);
+                cache.Set(cacheData, policy);
+
+                if (groupkey == "") groupkey = "default";
+
+                var l1 = GetCacheKeys(groupkey);
+                if (!l1.Contains(cacheKey))
+                {
+                    l1.Add(cacheKey);
+                    cacheKey = GetMd5Hash("dnnrocketcache" + groupkey);
+                    cacheData = new CacheItem(cacheKey, l1);
+                    cache.Set(cacheData, policy);
+                }
+
+                var gl = GetCacheGroups();
+                if (!gl.Contains(groupkey))
+                {
+                    gl.Add(groupkey);
+                    cacheKey = GetMd5Hash("group_dnnrocketcache");
+                    cacheData = new CacheItem(cacheKey, gl);
+                    cache.Set(cacheData, policy);
+                }
+            }
         }
 
         public static void RemoveCache(string cacheKey)

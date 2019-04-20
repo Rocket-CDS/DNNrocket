@@ -11,12 +11,16 @@
     public string IframeEdit { get; set; }
     public string displaynone { get; set; }
     public string editlang { get; set; }
+    public string interfacekey { get; set; }
+    public string cmd { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)
     {
         // We are using an aspx page querystring param so we can pass the moduleid from DNN.  The API requires this.
         ModuleId = HttpContext.Current.Request.QueryString["moduleid"];
         TabId = HttpContext.Current.Request.QueryString["tabid"];
+        interfacekey = HttpContext.Current.Request.QueryString["interfacekey"];
+        cmd = HttpContext.Current.Request.QueryString["cmd"];
         IframeEdit = HttpContext.Current.Request.QueryString["editmode"];
         editlang = HttpContext.Current.Request.QueryString["editlang"];
         displaynone = "";
@@ -24,6 +28,14 @@
         {
             displaynone = "display:none;";
         }
+        if (String.IsNullOrEmpty(interfacekey))
+        {
+            interfacekey = "edit"; 
+        }
+        if (String.IsNullOrEmpty(cmd))
+        {
+            interfacekey = "rocketsettings_edit"; 
+        }        
     }
 
 </script>
@@ -92,7 +104,7 @@
         <!-- !PAGE CONTENT! -->
     <div class="w3-main" style="margin-left:<%= String.IsNullOrEmpty(IframeEdit) ? "300px" : "10px" %>;margin-top:60px; " id="base-panel">
 
-        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketsettings_edit" s-track="true" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,template:edit.cshtml,interfacekey:edit"></div>
+        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="<%= String.IsNullOrEmpty(cmd) ? "" : cmd %>" s-track="true" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,template:edit.cshtml,interfacekey:<%= String.IsNullOrEmpty(interfacekey) ? "" : interfacekey %>"></div>
 
         <!-- End page content -->
     </div>

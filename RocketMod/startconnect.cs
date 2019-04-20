@@ -46,7 +46,7 @@ namespace RocketMod
             var selecteditemid = _postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
 
             _configData = new ConfigData(postInfo.PortalId, _systemInfo.ItemID, _tabid, _moduleid);
-            _moduleData = new ModuleData(_configData, selecteditemid, langRequired);
+            _moduleData = new ModuleData(_configData, langRequired);
             _postInfo.ModuleId = _moduleData.ModuleId; // make sure we have correct moduleid.
 
             _commandSecurity = new CommandSecurity(_moduleData.TabId, _moduleData.ModuleId, _rocketInterface);
@@ -125,9 +125,6 @@ namespace RocketMod
                     break;
                 case "rocketmod_resetdata":
                     strOut = ResetDataRocketMod();
-                    break;
-                case "rocketmod_login":
-                    strOut = LoginUtils.DoLogin(systemInfo, postInfo, userHostAddress);
                     break;
             }
 
@@ -348,7 +345,7 @@ namespace RocketMod
 
                     var appTheme = new DNNrocket.AppThemes.AppTheme(apptheme);
 
-                    strOut = DNNrocketUtils.RazorList(appTheme.ActiveViewTemplate, _moduleData.List, passSettings, _moduleData.HeaderInfo);
+                    strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveViewTemplate, _moduleData.CurrentRecord, passSettings, _moduleData.HeaderInfo);
 
                 }
                 else

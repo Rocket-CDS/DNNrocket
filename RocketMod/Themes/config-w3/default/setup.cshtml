@@ -28,7 +28,7 @@
         $('.redirectsetup_@(info.ModuleId)').click(function () {
             // redirect to admin page with return cookie.
             simplisity_setCookieValue('rocketmod_return', window.location.href);
-            window.location = "/desktopmodules/dnnrocket/RocketMod/admin.aspx?tabid=@(Model.GetSetting("tabid"))&moduleid=@(info.ModuleId)&cmd=rocketmod_selectapptheme";
+            window.location = "/desktopmodules/dnnrocket/RocketMod/admin.aspx?tabid=@(Model.GetSetting("tabid"))&moduleid=@(info.ModuleId)&interfacekey=rocketmod&cmd=rocketmod_selectapptheme";
         });
 
     });

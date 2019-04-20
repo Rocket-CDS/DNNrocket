@@ -38,7 +38,7 @@ namespace RocketMod
             _currentRecord = new SimplisityInfo(_langRequired);
         }
 
-        public ModuleData(ConfigData configData, int ItemId, string langRequired = "")
+        public ModuleData(ConfigData configData, string langRequired = "")
         {
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired =  DNNrocketUtils.GetCurrentCulture();
@@ -53,7 +53,7 @@ namespace RocketMod
             {
                 PopulateHeader();
                 _productData = new SettingsData(_tabid, _moduleid, _langRequired, _entityTypeCode);
-                Populate(ItemId);
+                Populate(_productData.Info.ItemID);
             }
         }
 
@@ -219,11 +219,9 @@ namespace RocketMod
             {
                 var objCtrl = new DNNrocketController();
 
-                _currentRecord = objCtrl.GetInfo(_selecteditemid);
+                _currentRecord = objCtrl.GetInfo(_selecteditemid, _langRequired);
                 if (_currentRecord == null) _currentRecord = new SimplisityInfo(_langRequired);
                 _currentRecord.Lang = _langRequired;  // we need the language to format data.
-                _status = _currentRecord.GetXmlPropertyInt("genxml/status");
-                _message = _currentRecord.GetXmlProperty("genxml/textbox/message");
 
             }
         }

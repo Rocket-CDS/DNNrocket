@@ -26,11 +26,19 @@
     <h1>Hello New World Display!!!! </h1>
     <h1>@Model.GetSetting("addeditscript")</h1>
     <h2>
-        @info.GetXmlProperty("genxml/textbox/test")
+        @info.GetXmlProperty("genxml/textbox/ref")
     </h2>
 
+    <div>
+        <img src="@ThumbnailImageUrl(info.GetXmlProperty("genxml/hidden/imagerelpath"),200,200,"")" class="w3-round" alt="" />
+    </div>
+
     <h3>
-        @info.GetXmlProperty("genxml/lang/genxml/textbox/test2")
+        @info.GetXmlProperty("genxml/lang/genxml/textbox/name")
+    </h3>
+
+    <h3>
+        @info.GetXmlProperty("genxml/textbox/modeltest")
     </h3>
 
     <div class='w3-padding'>
