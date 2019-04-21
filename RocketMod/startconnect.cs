@@ -72,17 +72,13 @@ namespace RocketMod
                 strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                 return DNNrocketUtils.ReturnString(strOut);
             }
-            if (!_moduleData.configData.Exists)
-            {
-                return DNNrocketUtils.ReturnString(GetSelectApp());
-            }
 
 
             switch (paramCmd)
             {
                 case "rocketmod_getsidemenu":
                     strOut = GetSideMenu(postInfo, systemInfo);
-                break;
+                    break;
                 case "rocketmod_selectapptheme":
                     strOut = GetSelectApp();
                     break;
@@ -131,6 +127,12 @@ namespace RocketMod
                     strOut = ResetDataRocketMod();
                     break;
             }
+
+            if (strOut == "" && !_moduleData.configData.Exists)
+            {
+                return DNNrocketUtils.ReturnString(GetSetup());
+            }
+
 
             return DNNrocketUtils.ReturnString(strOut);
         }

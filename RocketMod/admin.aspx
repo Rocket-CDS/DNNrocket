@@ -34,7 +34,7 @@
         }
         if (String.IsNullOrEmpty(cmd))
         {
-            interfacekey = "rocketsettings_edit"; 
+            cmd = "rocketmod_edit"; 
         }        
     }
 
@@ -104,7 +104,7 @@
         <!-- !PAGE CONTENT! -->
     <div class="w3-main" style="margin-left:<%= String.IsNullOrEmpty(IframeEdit) ? "300px" : "10px" %>;margin-top:60px; " id="base-panel">
 
-        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketmod_edit" s-track="true" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,template:edit.cshtml,interfacekey:rocketmod"></div>
+        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="<%= String.IsNullOrEmpty(cmd) ? "" : cmd %>" s-track="true" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,template:edit.cshtml,interfacekey:rocketmod"></div>
 
         <!-- End page content -->
     </div>

@@ -140,8 +140,8 @@ namespace RocketMod
 
         #region "properties"
 
-        public int ModuleId { get {return  _settingData.ModuleId;} }
-        public int TabId { get { return _settingData.TabId; } }
+        public int ModuleId { get {return configData.ModuleId; } }
+        public int TabId { get { return configData.TabId; } }
         public int ItemId { get { return _settingData.Info.ItemID; } }
 
         public SimplisityInfo CurrentRecord { get { return _currentRecord; } }
