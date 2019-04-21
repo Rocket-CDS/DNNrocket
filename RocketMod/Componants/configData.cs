@@ -101,11 +101,8 @@ namespace RocketMod
 
         public string ProviderAssembly { get { return ConfigInfo.GetXmlProperty("genxml/textbox/assembly"); } }
         public string ProviderClass { get { return ConfigInfo.GetXmlProperty("genxml/textbox/namespaceclass"); } }
-        public string RazorTemplate { get { return ConfigInfo.GetXmlProperty("genxml/textbox/razortemplate"); } }
-
         public string ManagerEmail { get { return ConfigInfo.GetXmlProperty("genxml/textbox/manageremail"); } }
-        public string WebsiteUrl { get { return ConfigInfo.GetXmlProperty("genxml/textbox/websiteurl"); } }
-        public string CompanyName { get { return ConfigInfo.GetXmlProperty("genxml/textbox/companyname"); } }
+        public string AppTheme { get { return ConfigInfo.GetXmlProperty("genxml/hidden/apptheme"); } }
 
         public bool Exists { get { return _configExists; } }
         public int ModuleId { get {return _moduleid;} }

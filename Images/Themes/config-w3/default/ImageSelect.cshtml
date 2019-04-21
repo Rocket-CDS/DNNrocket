@@ -122,8 +122,8 @@
         $('.dnnrocket-imageselector').each(function (index) {
             if ($(this).hasClass('w3-theme')) {
                 var idx = simplisity_getCookieValue('dnnrocket-imageindex');
-                $('.dnnrocket-imageholder' + idx).attr('src', $(this).attr('dnnrocket-imagethumburl'));
-                $('.dnnrocket-imagefield' + idx).val($(this).attr('dnnrocket-imageurl'));
+                $('#' + idx).parent().find("img:first-child").attr('src', $(this).attr('dnnrocket-imagethumburl'));
+                $('#' + idx).val($(this).attr('dnnrocket-imageurl'));
                 $(this).removeClass('w3-theme');
             }
         });

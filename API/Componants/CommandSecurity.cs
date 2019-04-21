@@ -4,6 +4,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,13 +16,14 @@ namespace DNNrocketAPI.Componants
     {
         private int _userId;
         private UserInfo _userInfo;
-        private Dictionary<string, bool> _commandSecurity;
+        static ConcurrentDictionary<string, bool> _commandSecurity;  // thread safe dictionary.
         private DNNrocketInterface _interfaceInfo;
         private int _tabid;
         private int _moduleid;
 
         public CommandSecurity(int tabId, int moduleId, DNNrocketInterface interfaceInfo)
         {
+            _commandSecurity = new ConcurrentDictionary<string, bool>();
             _tabid = tabId;
             _moduleid = moduleId;
             _interfaceInfo = interfaceInfo;
@@ -31,6 +33,7 @@ namespace DNNrocketAPI.Componants
 
         public CommandSecurity(int portalid, int userid, int tabId, int moduleId, DNNrocketInterface interfaceInfo)
         {
+            _commandSecurity = new ConcurrentDictionary<string, bool>();
             _tabid = tabId;
             _moduleid = moduleId;
             _interfaceInfo = interfaceInfo;
@@ -40,7 +43,6 @@ namespace DNNrocketAPI.Componants
 
         private void ValidateUser()
         {
-            _commandSecurity = new Dictionary<string, bool>(); 
             if (_userInfo != null && _userInfo.UserID > 0)
             {
                 ValidUser = true;
@@ -101,12 +103,20 @@ namespace DNNrocketAPI.Componants
 
         public void AddCommand(string commandKey,bool requiresSecurity)
         {
-            _commandSecurity.Add(commandKey, requiresSecurity);
+            if (!_commandSecurity.ContainsKey(commandKey))
+            {
+                _commandSecurity.AddOrUpdate(commandKey, requiresSecurity, (key, existingVal) => {return existingVal;});
+            }
         }
 
         public void RemoveCommand(string commandKey)
         {
-            _commandSecurity.Remove(commandKey);
+            bool v;
+            if (!_commandSecurity.TryRemove(commandKey, out v))
+            {
+                // should not fail, but ignore if does.
+            }
+
         }
 
         public bool ValidCommand(string commandKey)

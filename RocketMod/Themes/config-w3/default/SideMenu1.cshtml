@@ -3,9 +3,6 @@
 @using System
 @using System.Linq
 @using System.Xml
-@using DotNetNuke.Entities.Users;
-@using DotNetNuke.Services.Localization;
-@using DotNetNuke.Entities.Portals;
 @using Simplisity;
 @using DNNrocketAPI.Componants;
 
@@ -34,16 +31,15 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-
-
-                    menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketMod." + interfacekey) + "</div>";
-
+                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketMod." + interfacekey) + "</div>";
             }
         }
         lp += 1;
     }
 
 
+    // get sub group interfaces
+    lp = 0;
     foreach (SimplisityRecord g in sidemenu.GetGroups())
     {
         var groupref = g.GetXmlProperty("genxml/textbox/groupref");
@@ -51,7 +47,7 @@
         interfacelist = sidemenu.GetInterfaces(groupref);
         if (interfacelist.Count() > 0)
         {
-            menuOut += "<div class='w3-bar-item w3-button w3-theme-l4 w3-hover-theme menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + groupref + "&nbsp;<i class='fas fa-caret-down'></i></div>";
+            menuOut += "<div class='w3-bar-item w3-button w3-theme-l4 w3-hover-theme menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey("RocketMod." + groupref) + "&nbsp;<i class='fas fa-caret-down'></i></div>";
             menuOut += "<div id='" + groupref + "' class='w3-hide w3-theme-l4'>";
             foreach (var i in interfacelist)
             {
@@ -60,16 +56,14 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-
                 if (interfacekey == "edit")
                 {
                     menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink ' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + headerInfo.GetXmlProperty("genxml/hidden/apptheme") + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketMod." + interfacekey) + "</div>";
                 }
                 else
                 {
-                    menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketMod." + interfacekey) + "</div>";
+                    menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink ' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketMod." + interfacekey) + "</div>";
                 }
-
             }
             menuOut += "</div>";
             lp += 1;
@@ -98,7 +92,7 @@
 
         var strOut1 = "";
 
-        var enabledlanguages = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
+        var enabledlanguages = DNNrocketUtils.GetEnabledLanguages();
         foreach (var l in enabledlanguages)
         {
             var imageclass = "";
@@ -147,7 +141,7 @@
         $('.selectlang').click(function () {
             // change langauge by setting "nextlang" cookie and then trigger the save with "simplisity_langchange" class on the save button.
             // the ajax return with switch the editlang cookie to the nextlang cookie and delete the nextlang cookie, it will then reload the page.
-            simplisity_setCookieValue('nextlang', $(this).attr('editlang'))
+            simplisity_setCookieValue('nextlang', $(this).attr('editlang'));
             $('.simplisity_langchange').trigger('click');
         });
 
@@ -157,13 +151,15 @@
             location.reload();
         });
 
+
         //reset paging
         simplisity_setCookieValue('s-page', '1');
 
-        if (simplisity_getCookieValue('s-pagesize') == '') {
+        if (simplisity_getCookieValue('s-pagesize') === '') {
             simplisity_setCookieValue('s-pagesize', '20');
         }
 
+        $('#dnnrocket_usernameplaceholder').text('@(username)');
 
     });
 
@@ -184,5 +180,6 @@
             window.location = returnurl;
         }
     }
+
 
 </script>

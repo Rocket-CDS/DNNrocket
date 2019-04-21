@@ -1,0 +1,42 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketSettings;
+@using RocketMod;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocketModules/RocketPayForm/App_LocalResources/")
+
+@{
+        var moduleData = (ModuleData)Model.List.First();
+}
+
+<div class="w3-container">
+
+    @RenderTemplate("edit.cshtml", "/DesktopModules/DNNrocket/AppThemes/", moduleData.configData.ConfigInfo.GetXmlProperty("genxml/hidden/apptheme"), Model)
+
+</div>
+
+<div id="dnnrocket_imageselectwrapper">
+    @RenderImageSelect(Model, 100, true, false, "images")
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(':checkbox').attr('class', 'w3-check');
+
+        $("#datalist").sortable();
+        $("#datalist").disableSelection();
+
+        // Used to display image list and assign the index, so we knwo what image to update.
+        $('.dnnrocket-imagechange').unbind("click");
+        $('.dnnrocket-imagechange').click(function () {
+            simplisity_setCookieValue('dnnrocket-imageindex', $(this).find("input:first-child").attr('id'));
+            document.getElementById('rocketimageselect').style.display = 'block';
+        });
+
+    });
+
+</script>
+

@@ -2,41 +2,54 @@
 @using DNNrocketAPI;
 @using Simplisity;
 @using RocketSettings;
+@using RocketMod;
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocketModules/RocketPayForm/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocketModules/AppThemes/HtmlContent/resx/")
 
 @{
-
-    var settingsData = new SettingsData(0, 0, DNNrocketUtils.GetEditCulture(), "PAYFORMPRODUCTS");
-    if (Model.List.Count > 0)
-    {
-        settingsData = (SettingsData)Model.List.First();
-    }
+    var moduleData = (ModuleData)Model.List.First();
+    
 }
 
+
 <span class="w3-section simplisity_buttons">
-    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:edit">@ResourceKey("DNNrocket.cmdAddButton")</a>
-    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click reckermodsavebutton" s-cmd="rocketsettings_save" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:edit" s-post="#productsettings" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
-    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="productbin" s-return="#productsettings" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmod_add" s-fields="tabid:@(moduleData.TabId),moduleid:@(moduleData.ModuleId),selecteditemid:@moduleData.ItemId,interfacekey:edit">@ResourceKey("DNNrocket.cmdAddButton")</a>
+
+    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click rocketmodsavebutton" s-cmd="rocketmod_save" s-fields="tabid:@(moduleData.TabId),moduleid:@(moduleData.ModuleId),selecteditemid:@moduleData.ItemId,interfacekey:edit" s-post="#datasection" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="databin" s-return="#datasettings" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 
+<div id="datasection">
+
+    <div class="w3-padding w3-rest">
+        <h2>Data section</h2>
+        <div class="w3-row">
+            <div class="w3-padding w3-col m2">
+                <label class="">@ResourceKey("RocketPayForm.ref")</label>
+                @TextBox(moduleData.Data.Info, "genxml/textbox/href", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+            </div>
+            <div class="w3-padding w3-col m9">
+                <label class="">@ResourceKey("RocketPayForm.name")</label>&nbsp;@EditFlag()
+                @TextBox(moduleData.Data.Info, "genxml/lang/genxml/textbox/hname", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", true)
+            </div>
+        </div>
+    </div>
 
 
-<div class="w3-container">
-
-    <ul id="productsettings" class="w3-ul">
+    <ul id="datalist" class="w3-ul">
 
         @{
             var lp1 = 0;
         }
-        @foreach (SimplisityInfo i in settingsData.List)
+        @foreach (SimplisityInfo i in moduleData.List)
         {
             lp1 += 1;
             <li class="settingsdata w3-card w3-margin w3-display-container">
                 <a href="javascript:void(0)" class="w3-display-topright"><i title="Remove" class="fas fa-arrows "></i></a>
-                <a href="javascript:void(0)" class="w3-display-right simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="productbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
+                <a href="javascript:void(0)" class="w3-display-right simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="databin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
 
 
                 <div class="w3-row">
@@ -80,13 +93,26 @@
                     <div class="w3-modal-content" style="width:80%;height:80%">
                         <header class="w3-container w3-theme">
                             <span onclick="document.getElementById('modalPopup@(lp1)').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                            <button onclick="$('.reckermodsavebutton').trigger('click');" class="w3-margin-top w3-margin-bottom w3-button w3-green modelsavebutton">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+                            <button onclick="$('.rocketmodsavebutton').trigger('click');" class="w3-margin-top w3-margin-bottom w3-button w3-green modelsavebutton">@ResourceKey("DNNrocket.cmdSaveButton")</button>
                             <button onclick="location.reload();" class="w3-margin-top w3-margin-bottom w3-button w3-pale-yellow modelcancelbutton">@ResourceKey("DNNrocket.cmdCancelButton")</button>
                         </header>
 
                         <div class="w3-container w3-padding ">
                             @TextBox(i, "genxml/textbox/modeltest", " class='w3-input w3-border' autocomplete='off'", "", false, lp1)
                         </div>
+
+                        <div class="w3-cell-top dnnrocket-imagechange " imageindex="@(lp1)">
+                            @HiddenField(i, "genxml/hidden/imagerelpath2", "", "", false, lp1)
+                            @if (i.GetXmlProperty("genxml/hidden/imagerelpath2") != "")
+                            {
+                                <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagerelpath2"),100,100,"")" class="w3-round dnnrocket-imageholder@(lp1)" alt="" />
+                            }
+                            else
+                            {
+                                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png",100,100)" class="w3-round dnnrocket-imageholder@(lp1)" alt="" />
+                            }
+                        </div>
+
 
                     </div>
                 </div>
@@ -97,25 +123,4 @@
 
 </div>
 
-<div id="dnnrocket_imageselectwrapper">
-    @RenderImageSelect(Model, 100, true, false, "images")
-</div>
-
-<script>
-    $(document).ready(function () {
-        $(':checkbox').attr('class', 'w3-check');
-
-        $("#productsettings").sortable();
-        $("#productsettings").disableSelection();
-
-        // Used to display image list and assign the index, so we knwo what image to update.
-        $('.dnnrocket-imagechange').unbind("click");
-        $('.dnnrocket-imagechange').click(function () {
-            simplisity_setCookieValue('dnnrocket-imageindex', $(this).attr('imageindex'));
-            document.getElementById('rocketimageselect').style.display = 'block';
-        });
-
-    });
-
-</script>
 
