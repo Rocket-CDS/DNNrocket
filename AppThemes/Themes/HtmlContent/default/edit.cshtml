@@ -10,7 +10,7 @@
 
 @{
     var moduleData = (ModuleData)Model.List.First();
-    
+
 }
 
 
@@ -122,5 +122,15 @@
     </ul>
 
 </div>
+
+<script>
+    $(document).ready(function () {
+        $(':checkbox').attr('class', 'w3-check');
+
+        $("#datalist").sortable();
+        $("#datalist").disableSelection();
+
+    });
+</script>
 
 

@@ -22,21 +22,3 @@
     @RenderImageSelect(Model, 100, true, false, "images")
 </div>
 
-<script>
-    $(document).ready(function () {
-        $(':checkbox').attr('class', 'w3-check');
-
-        $("#datalist").sortable();
-        $("#datalist").disableSelection();
-
-        // Used to display image list and assign the index, so we knwo what image to update.
-        $('.dnnrocket-imagechange').unbind("click");
-        $('.dnnrocket-imagechange').click(function () {
-            simplisity_setCookieValue('dnnrocket-imageindex', $(this).find("input:first-child").attr('id'));
-            document.getElementById('rocketimageselect').style.display = 'block';
-        });
-
-    });
-
-</script>
-

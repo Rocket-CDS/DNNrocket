@@ -11,6 +11,10 @@
     <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Themes\config-w3\js\" />
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(ProjectDir)..\..\..\bin\$(TargetFileName)&quot;&#xD;&#xA;&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(AssemblyName).pdb&quot; &quot;$(ProjectDir)..\..\..\bin\$(AssemblyName).pdb&quot;&#xD;&#xA;&#xD;&#xA;" />
   </Target>

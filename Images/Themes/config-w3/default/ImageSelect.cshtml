@@ -75,6 +75,7 @@
 
 <script>
 
+
     $(document).ready(function () {
 
         $('.dnnrocket-imageselector').unbind("click");
@@ -82,28 +83,33 @@
             dnnrocketimages_selectimage(this);
         });
 
+        // Used to display image list and assign the index, so we knwo what image to update.
+        $('.dnnrocket-imagechange').unbind("click");
+        $('.dnnrocket-imagechange').click(function () {
+            simplisity_setCookieValue('dnnrocket-imageindex', $(this).find("input:first-child").attr('id'));
+            document.getElementById('rocketimageselect').style.display = 'block';
+        });
 
     });
 
-    function dnnrocketimages_selectimage(element) {
 
-        @if (Model.HeaderData.GetXmlPropertyBool("genxml/hidden/imageselectsingle"))
-        {
-            @:dnnrocketimages_clearselection();
-        }
+function dnnrocketimages_selectimage(element) {
 
-        if ($(element).hasClass('w3-theme')) {
-            $(element).removeClass('w3-theme');
-            }
-        else {
-            $(element).addClass('w3-theme');
-        }
-
-        @if (Model.HeaderData.GetXmlPropertyBool("genxml/hidden/imageselectautoreturn"))
-        {
-            @:dnnrocketimages_useimages();
-        }
+    @if (Model.HeaderData.GetXmlPropertyBool("genxml/hidden/imageselectsingle")) {
+        @: dnnrocketimages_clearselection();
     }
+
+    if ($(element).hasClass('w3-theme')) {
+        $(element).removeClass('w3-theme');
+    }
+    else {
+        $(element).addClass('w3-theme');
+    }
+
+    @if (Model.HeaderData.GetXmlPropertyBool("genxml/hidden/imageselectautoreturn")) {
+        @: dnnrocketimages_useimages();
+    }
+}
 
     function dnnrocketimages_deleteimages() {
         var imagelist = '';
@@ -122,7 +128,7 @@
         $('.dnnrocket-imageselector').each(function (index) {
             if ($(this).hasClass('w3-theme')) {
                 var idx = simplisity_getCookieValue('dnnrocket-imageindex');
-                $('#' + idx).parent().find("img:first-child").attr('src', $(this).attr('dnnrocket-imagethumburl'));
+                $('#' + idx).parent().children('img').attr('src', $(this).attr('dnnrocket-imagethumburl'));
                 $('#' + idx).val($(this).attr('dnnrocket-imageurl'));
                 $(this).removeClass('w3-theme');
             }
@@ -142,7 +148,5 @@
     function dnnrocketimages_showthelist() {
         document.getElementById('rocketimageselect').style.display = 'block';
     }
-
-
 
 </script>

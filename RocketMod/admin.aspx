@@ -67,8 +67,6 @@
     <script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-
-
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/jquery.fileupload.js"></script>
 

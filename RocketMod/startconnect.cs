@@ -213,6 +213,7 @@ namespace RocketMod
         {
             try
             {
+                _moduleData.DeleteData();
                 return GetDashBoard();
             }
             catch (Exception ex)
