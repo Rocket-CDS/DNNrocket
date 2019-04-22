@@ -82,6 +82,34 @@ namespace DNNrocketAPI.render
             return new RawString(url);
         }
 
+        public IEncodedString ImageEdit(SimplisityInfo info, string xpath, int width = 0, int height = 0, bool localized = false, int row = 0)
+        {
+            var imgurl = info.GetXmlProperty(xpath);
+            var strOut = "<div class='dnnrocket-imagechange '>";
+
+            if (info == null) info = new SimplisityInfo();
+            var value = info.GetXmlProperty(xpath);
+            if (localized && !xpath.StartsWith("genxml/lang/"))
+            {
+                value = info.GetXmlProperty("genxml/lang/" + xpath);
+            }
+            var upd = getUpdateAttr(xpath, "", localized);
+            var id = getIdFromXpath(xpath, row);
+            strOut += "<input value='" + value + "' id='" + id + "' s-xpath='" + xpath + "' " + upd + " type='hidden' />";
+
+            if (imgurl == "")
+            {
+                strOut += "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=" + width + "&h=" + height;
+            }
+            else
+            {
+                strOut += "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + imgurl + "&w=" + width + "&h=" + height;
+            }
+
+            strOut += "</div>";
+            return new RawString(strOut);
+        }
+
         /// <summary>
         /// Add all genxml/hidden/* fields to the template.
         /// </summary>

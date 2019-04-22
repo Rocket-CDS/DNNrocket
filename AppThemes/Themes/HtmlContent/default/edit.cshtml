@@ -97,22 +97,23 @@
                             <button onclick="location.reload();" class="w3-margin-top w3-margin-bottom w3-button w3-pale-yellow modelcancelbutton">@ResourceKey("DNNrocket.cmdCancelButton")</button>
                         </header>
 
-                        <div class="w3-container w3-padding ">
-                            @TextBox(i, "genxml/textbox/modeltest", " class='w3-input w3-border' autocomplete='off'", "", false, lp1)
-                        </div>
+                        <div class="w3-container ">
+                            <div class="w3-container ">
+                                @TextBox(i, "genxml/textbox/modeltest", " class='w3-input w3-border' autocomplete='off'", "", false, lp1)
+                            </div>
 
-                        <div class="w3-cell-top dnnrocket-imagechange " imageindex="@(lp1)">
-                            @HiddenField(i, "genxml/hidden/imagerelpath2", "", "", false, lp1)
-                            @if (i.GetXmlProperty("genxml/hidden/imagerelpath2") != "")
-                            {
-                                <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagerelpath2"),100,100,"")" class="w3-round dnnrocket-imageholder@(lp1)" alt="" />
-                            }
-                            else
-                            {
-                                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png",100,100)" class="w3-round dnnrocket-imageholder@(lp1)" alt="" />
-                            }
+                            <div class="w3-cell-top dnnrocket-imagechange ">
+                                @HiddenField(i, "genxml/hidden/imagerelpath2", "", "", false, lp1)
+                                @if (i.GetXmlProperty("genxml/hidden/imagerelpath2") != "")
+                                {
+                                    <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagerelpath2"),100,100,"")" class="w3-round dnnrocket-imageholder@(lp1)" alt="" />
+                                }
+                                else
+                                {
+                                    <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png",100,100)" class="w3-round dnnrocket-imageholder@(lp1)" alt="" />
+                                }
+                            </div>
                         </div>
-
 
                     </div>
                 </div>
