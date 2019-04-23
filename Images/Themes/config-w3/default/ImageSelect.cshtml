@@ -55,7 +55,7 @@
                                 <div class="w3-row">
                                     @foreach (string imageName in imageRow)
                                     {
-                                        <div class="w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@DNNrocketUtils.HomeRelDirectory()/images/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName,Model.HeaderData.GetXmlPropertyInt("genxml/hidden/imageselectsize"),Model.HeaderData.GetXmlPropertyInt("genxml/hidden/imageselectsize"))" selectorcount="@(lp)">
+                                        <div class="w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@DNNrocketUtils.HomeRelDirectory()/images/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
                                             <img src="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150)" class="w3-border w3-padding" style="width:100%" />
                                         </div>
                                         lp += 1;
@@ -87,6 +87,8 @@
         $('.dnnrocket-imagechange').unbind("click");
         $('.dnnrocket-imagechange').click(function () {
             simplisity_setCookieValue('dnnrocket-imageindex', $(this).find("input:first-child").attr('id'));
+            simplisity_setCookieValue('dnnrocket-imagewidth', $(this).find("img:first").attr('imagewidth'));
+            simplisity_setCookieValue('dnnrocket-imageheight', $(this).find("img:first").attr('imageheight'));
             document.getElementById('rocketimageselect').style.display = 'block';
         });
 
@@ -128,7 +130,12 @@ function dnnrocketimages_selectimage(element) {
         $('.dnnrocket-imageselector').each(function (index) {
             if ($(this).hasClass('w3-theme')) {
                 var idx = simplisity_getCookieValue('dnnrocket-imageindex');
-                $('#' + idx).parent().children('img').attr('src', $(this).attr('dnnrocket-imagethumburl'));
+                var w = simplisity_getCookieValue('dnnrocket-imagewidth');
+                var h = simplisity_getCookieValue('dnnrocket-imageheight');
+                
+                if (w === '') w = 100;
+                if (h === '') h = 100;
+                $('#' + idx).parent().children('img').attr('src', $(this).attr('dnnrocket-imagethumburl') + "&w=" + w + "&h=" + h);
                 $('#' + idx).val($(this).attr('dnnrocket-imageurl'));
                 $(this).removeClass('w3-theme');
             }
