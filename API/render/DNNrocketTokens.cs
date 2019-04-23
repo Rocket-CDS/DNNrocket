@@ -82,7 +82,7 @@ namespace DNNrocketAPI.render
             return new RawString(url);
         }
 
-        public IEncodedString ImageEdit(SimplisityInfo info, string xpath, int width = 0, int height = 0, bool localized = false, int row = 0)
+        public IEncodedString ImageEdit(SimplisityInfo info, string xpath, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0)
         {
             var imgurl = info.GetXmlProperty(xpath);
             var strOut = "<div class='dnnrocket-imagechange '>";
@@ -99,11 +99,11 @@ namespace DNNrocketAPI.render
 
             if (imgurl == "")
             {
-                strOut += "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=" + width + "&h=" + height;
+                strOut += "<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=" + width + "&h=" + height + "'  " + attributes + ">";
             }
             else
             {
-                strOut += "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + imgurl + "&w=" + width + "&h=" + height;
+                strOut += "<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + imgurl + "&w=" + width + "&h=" + height + "'  " + attributes + ">";
             }
 
             strOut += "</div>";
