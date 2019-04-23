@@ -69,8 +69,16 @@ namespace RocketMod
 
             if (!_commandSecurity.HasSecurityAccess(paramCmd))
             {
-                strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
-                return DNNrocketUtils.ReturnString(strOut);
+                if (paramCmd != "rocketmod_getsidemenu")
+                {
+                    // 2 calls are mode to the server at startup, we only want to return 1 login form.
+                    return DNNrocketUtils.ReturnString(""); 
+                }
+                else
+                {
+                    strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                    return DNNrocketUtils.ReturnString(strOut);
+                }
             }
 
 

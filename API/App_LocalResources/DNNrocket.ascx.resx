@@ -367,7 +367,7 @@
     <value>Use</value>
   </data>
   <data name="cmdUseButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Upload" class="fas fa-share-square-o fa-fw fa-lg"&gt;&lt;/i&gt; Use</value>
+    <value>&lt;i  title="Use" class="fas fa-check fa-fw fa-lg"&gt;&lt;/i&gt; Use</value>
   </data>
   <data name="cmdPrint.Text" xml:space="preserve">
     <value>Print</value>

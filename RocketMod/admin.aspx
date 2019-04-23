@@ -93,7 +93,7 @@
     <!-- Side Navigation (use mask div if in iframe editmode)-->
     <div style="<%= String.IsNullOrEmpty(displaynone) ? "" : displaynone %>"> 
 
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-theme-d5 w3-animate-left w3-card" style="z-index:3;width:260px;top: 55px;" id="mySidebar">
+    <nav class="w3-sidebar w3-bar-block w3-collapse w3-teal w3-text-black w3-animate-left w3-card" style="z-index:3;width:260px;top: 55px;" id="mySidebar">
         <img src="/DesktopModules/DNNrocket/API/images/dnnrocket.jpg" alt="Avatar" style="width:20%" class="w3-circle w3-margin">
         <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="rocketmod_getsidemenu" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,iframeedit:<%= String.IsNullOrEmpty(IframeEdit) ? "" : IframeEdit %>,theme:config-w3,template:SideMenu.cshtml,interfacekey:rocketmod,relpath:/DesktopModules/DNNrocket/rocketmod/"></div>
     </nav>
