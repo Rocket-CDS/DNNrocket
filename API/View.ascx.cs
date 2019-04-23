@@ -119,16 +119,7 @@ namespace DNNrocketAPI
 
                 if (Page.IsPostBack == false)
                 {
-                    var remotepost = DNNrocketUtils.RequestParam(Context, "remotepost");
-                    if (remotepost != "")
-                    {
-                        RemotePost(remotepost);
-                    }
-                    else
-                    {
-                        PageLoad();
-                    }
-
+                    PageLoad();
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -222,49 +213,6 @@ namespace DNNrocketAPI
                 phData.Controls.Add(lit);
             }
 
-        }
-
-
-        public string RemotePost(string cacheKey)
-        {
-            try
-            {
-                var objCtrl = new DNNrocketController();
-                var sRecord = objCtrl.GetByGuidKey(-1, -1, "TEMP", cacheKey);
-                if (sRecord != null)
-                {
-                    var posthtml = sRecord.TextData;
-                    objCtrl.Delete(sRecord.ItemID);
-
-                    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-
-                    HttpContext.Current.Response.Clear();
-                    HttpContext.Current.Response.Write(posthtml);
-                }
-                else
-                {
-                    HttpContext.Current.Response.Clear();
-                    HttpContext.Current.Response.Write("ERROR");
-                }
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-                HttpContext.Current.Response.Clear();
-                HttpContext.Current.Response.Write("ERROR");
-            }
-
-            try
-            {
-                HttpContext.Current.Response.End();
-            }
-            catch (Exception ex)
-            {
-                var msg = ex;
-                // this try/catch to avoid sending error 'ThreadAbortException'  
-            }
-
-            return "";
         }
 
 

@@ -1,0 +1,165 @@
+@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+<div id="dnnrocket_deleteimagelist">
+    <input id="dnnrocket-imagelist" type="hidden" value="" />
+</div>
+
+<div id="rocketimageselect" class="w3-modal">
+    <div class="w3-modal-content">
+
+        <header class="w3-theme-d5 w3-center" style="height: 38px;">
+            <span onclick="document.getElementById('rocketimageselect').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <h4>@ResourceKey("DNNrocket.images")</h4>
+        </header>
+        <div class="" style="">
+            <br />
+            <div class="w3-container">
+
+                <span class="w3-section">
+                    <button class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</button>
+                    <button class="w3-button w3-green w3-padding-8" onclick="dnnrocketdocs_useimages()">@ResourceKey("DNNrocket.cmdUseButton")</button>
+                    <button class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketdocs_delete" s-before="dnnrocketdocs_deleteimages" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist"  s-fields="theme:config-w3,template:imagelist.cshtml,systemprovider:dnnrocket,interfacekey:imageupload">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
+                </span>
+
+                <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
+                    <input id="imagefileupload" class="simplisity_fileupload" s-cmd="rocketdocs_upload" s-reload="false" s-after="dnnrocketdocs_showthelist"  s-return="#dnnrocket_imageselectwrapper" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields="createseo:false,imageresize:800,theme:config-w3,template:imagelist.cshtml,systemprovider:dnnrocket,interfacekey:imageupload" type="file" name="files[]" multiple style="display:none;">
+                    <p><i>@ResourceKey("DNNrocket.dropimage")...</i></p>
+                </div>
+
+                <div id="reocketimageselectlist" class="w3-container">
+                    <div class="">
+
+
+                        @{
+                            var imageRows = new List<List<string>>();
+                            var imageItems = new List<string>();
+                            var lp = 1;
+                            foreach (string i in Model.List)
+                            {
+                                imageItems.Add(i);
+                                if ((lp % 6) == 0)
+                                {
+                                    imageRows.Add(imageItems);
+                                    imageItems = new List<string>();
+                                }
+                                lp += 1;
+                            }
+
+                            lp = 1;
+                            foreach (List<string> imageRow in imageRows)
+                            {
+                                <div class="w3-row">
+                                    @foreach (string imageName in imageRow)
+                                    {
+                                        <div class="w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@DNNrocketUtils.HomeRelDirectory()/images/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
+                                            <img src="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150)" class="w3-border w3-padding" style="width:100%" />
+                                        </div>
+                                        lp += 1;
+                                    }
+                                </div>
+                            }
+
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        $('.dnnrocket-imageselector').unbind("click");
+        $('.dnnrocket-imageselector').click(function () {
+            dnnrocketdocs_selectimage(this);
+        });
+
+        // Used to display image list and assign the index, so we knwo what image to update.
+        $('.dnnrocket-imagechange').unbind("click");
+        $('.dnnrocket-imagechange').click(function () {
+            simplisity_setCookieValue('dnnrocket-imageindex', $(this).parent().find("input:first").attr('id'));
+            simplisity_setCookieValue('dnnrocket-imagewidth', $(this).parent().find("img:first").attr('imagewidth'));
+            simplisity_setCookieValue('dnnrocket-imageheight', $(this).parent().find("img:first").attr('imageheight'));
+            document.getElementById('rocketimageselect').style.display = 'block';
+        });
+
+        $('.dnnrocket-imageremove').unbind("click");
+        $('.dnnrocket-imageremove').click(function () {
+            $(this).parent().find("input:first").val('');
+            $(this).parent().find("img:first").attr('src', '/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=' + $(this).parent().find("img:first").attr('imagewidth') + "&h=" + $(this).parent().find("img:first").attr('imageheight'));
+        });
+
+    });
+
+
+function dnnrocketdocs_selectimage(element) {
+
+    @if (Model.HeaderData.GetXmlPropertyBool("genxml/hidden/imageselectsingle")) {
+        @: dnnrocketdocs_clearselection();
+    }
+
+    if ($(element).hasClass('w3-theme')) {
+        $(element).removeClass('w3-theme');
+    }
+    else {
+        $(element).addClass('w3-theme');
+    }
+
+    @if (Model.HeaderData.GetXmlPropertyBool("genxml/hidden/imageselectautoreturn")) {
+        @: dnnrocketdocs_useimages();
+    }
+}
+
+    function dnnrocketdocs_deleteimages() {
+        var imagelist = '';
+        $('.dnnrocket-imageselector').each(function (index) {
+            if ($(this).hasClass('w3-theme')) {
+                var imgname = simplisity_encode($(this).attr('dnnrocket-imagename'));
+                imagelist = imagelist + imgname + ";";
+                $(this).removeClass('w3-theme');
+            }
+        });
+        $('#dnnrocket-imagelist').val(imagelist);
+    }
+
+
+    function dnnrocketdocs_useimages() {
+        $('.dnnrocket-imageselector').each(function (index) {
+            if ($(this).hasClass('w3-theme')) {
+                var idx = simplisity_getCookieValue('dnnrocket-imageindex');
+                var w = simplisity_getCookieValue('dnnrocket-imagewidth');
+                var h = simplisity_getCookieValue('dnnrocket-imageheight');
+                
+                if (w === '') w = 100;
+                if (h === '') h = 100;
+                $('#' + idx).parent().children('img').attr('src', $(this).attr('dnnrocket-imagethumburl') + "&w=" + w + "&h=" + h);
+                $('#' + idx).val($(this).attr('dnnrocket-imageurl'));
+                $(this).removeClass('w3-theme');
+            }
+        });
+        document.getElementById('rocketimageselect').style.display = 'none';
+    }
+
+
+    function dnnrocketdocs_clearselection() {
+        $('.dnnrocket-imageselector').each(function (index) {
+            if ($(this).hasClass('w3-theme')) {
+                $(this).removeClass('w3-theme');
+            }
+        });
+    }
+
+    function dnnrocketdocs_showthelist() {
+        document.getElementById('rocketimageselect').style.display = 'block';
+    }
+
+</script>
