@@ -540,6 +540,7 @@ namespace DNNrocketAPI
                 info.Lang = "";
                 info.SystemId = systemId;
                 info.ModuleId = moduleId;
+                info.GUIDKey = GuidKey;
                 Update(info);
                 var nbi2 = GetRecordLang(info.ItemID, postInfo.Lang);
                 if (nbi2 != null)
