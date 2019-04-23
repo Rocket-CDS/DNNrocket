@@ -91,8 +91,9 @@ namespace DNNrocketAPI.render
 
         public IEncodedString ImageEdit(SimplisityInfo info, string xpath, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0)
         {
+            if (width == 0) width = 200;
             var imgurl = info.GetXmlProperty(xpath);
-            var strOut = "<div class='dnnrocket-imagechange '>";
+            var strOut = "<div class='w3-display-container' style='width: " + width + "px'>";
 
             if (info == null) info = new SimplisityInfo();
             var value = info.GetXmlProperty(xpath);
@@ -112,7 +113,8 @@ namespace DNNrocketAPI.render
             {
                 strOut += "<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + imgurl + "&w=" + width + "&h=" + height + "' imageheight='" + height + "' imagewidth='" + width + "' " + attributes + ">";
             }
-
+            strOut += "<span class='w3-button w3-transparent w3-display-topleft dnnrocket-imagechange' title='@ResourceKey('login.CloseModal')'><i class='fas fa-edit'></i></span>";
+            strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-imageremove ' title='@ResourceKey('login.CloseModal')'>&times;</span>";
             strOut += "</div>";
             return new RawString(strOut);
         }

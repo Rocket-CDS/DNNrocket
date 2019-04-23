@@ -86,10 +86,16 @@
         // Used to display image list and assign the index, so we knwo what image to update.
         $('.dnnrocket-imagechange').unbind("click");
         $('.dnnrocket-imagechange').click(function () {
-            simplisity_setCookieValue('dnnrocket-imageindex', $(this).find("input:first-child").attr('id'));
-            simplisity_setCookieValue('dnnrocket-imagewidth', $(this).find("img:first").attr('imagewidth'));
-            simplisity_setCookieValue('dnnrocket-imageheight', $(this).find("img:first").attr('imageheight'));
+            simplisity_setCookieValue('dnnrocket-imageindex', $(this).parent().find("input:first").attr('id'));
+            simplisity_setCookieValue('dnnrocket-imagewidth', $(this).parent().find("img:first").attr('imagewidth'));
+            simplisity_setCookieValue('dnnrocket-imageheight', $(this).parent().find("img:first").attr('imageheight'));
             document.getElementById('rocketimageselect').style.display = 'block';
+        });
+
+        $('.dnnrocket-imageremove').unbind("click");
+        $('.dnnrocket-imageremove').click(function () {
+            $(this).parent().find("input:first").val('');
+            $(this).parent().find("img:first").attr('src', '/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=' + $(this).parent().find("img:first").attr('imagewidth') + "&h=" + $(this).parent().find("img:first").attr('imageheight'));
         });
 
     });
