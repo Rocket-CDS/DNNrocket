@@ -81,7 +81,7 @@
                 </tr>
                 <tr>
                     <td>s-cmdurl</td>
-                    <td>Server side API url.</td>
+                    <td>Server side API url.  This is saved to a cookie when used.  If you are using "simplisityStartUp" then this should be defined in there, however from a module which is not using simplisity panels you may need to define this on the element.  It MUST be defined or any ajax calls will not work and may simply result is a reload of the page.</td>
                 </tr>
                 <tr>
                     <td>s-cmd</td>
@@ -206,6 +206,7 @@
             <p><b>simplisity_callserver(element, cmdurl, returncontainer, reload)</b></p>
             <p>The JavaScript function to post to the server can also be called directly.  This works by passing the html element and the command attributes on the element tell the simplisity code what to do.            </p>
             <p>If we have already called simplisity server then the last command url used will be activate.  Therefore we can call this function with the minimum of parameters.  i.e. only the html element.</p>
+            <p>WARNING!!  When used with simplisity_panel on the same page, multiple calls may be made to the server.  This can lead to unexpected results and race conditions. </p>
             <H4>Examples</H4>
             simplisity_callserver(this, '/DesktopModules/DNNrocket/API/api.ashx', '#myreturn', false)<br />
             <br />

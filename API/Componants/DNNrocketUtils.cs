@@ -1031,6 +1031,7 @@ namespace DNNrocketAPI
             HttpCookie MyCookie = new HttpCookie(name);
             MyCookie.Expires = DateTime.Now.AddDays(-10);
             MyCookie.Value = null;
+            MyCookie.Path = "/";
             HttpContext.Current.Response.Cookies.Set(MyCookie);
         }
 
@@ -1040,6 +1041,7 @@ namespace DNNrocketAPI
             {
                 HttpCookie MyCookie = new HttpCookie(name);
                 MyCookie.Value = value;
+                MyCookie.Path = "/";
                 HttpContext.Current.Response.Cookies.Add(MyCookie);
             }
         }
