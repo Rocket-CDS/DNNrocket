@@ -1478,6 +1478,26 @@ namespace DNNrocketAPI
             return strOut;
         }
 
+        public static string RenderDocumentSelect(SimplisityRazor model, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "docs", string razorTemplateName = "DocSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/documents/", string themeFolder = "config-w3")
+        {
+            model.HeaderData.SetXmlProperty("genxml/hidden/documentselectfolder", uploadFolder);
+            model.HeaderData.SetXmlProperty("genxml/hidden/documentselectsingle", selectsingle.ToString());
+            model.HeaderData.SetXmlProperty("genxml/hidden/documentselectautoreturn", autoreturn.ToString());
+
+            var uploadFolderPath = DNNrocketUtils.HomeDirectory() + "\\" + uploadFolder;
+            var imgList = new List<object>();
+            foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
+            {
+                imgList.Add(i.Name);
+            }
+            model.List = imgList;
+
+            var strOut = "";
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            strOut = DNNrocketUtils.RazorRender(model, razorTempl, false);
+            return strOut;
+        }
+
 
     }
 }

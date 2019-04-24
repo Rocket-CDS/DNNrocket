@@ -402,4 +402,7 @@
   <data name="rocketadmin.Text" xml:space="preserve">
     <value>Admin</value>
   </data>
+  <data name="drophere.Text" xml:space="preserve">
+    <value>Drop Here</value>
+  </data>
 </root>

@@ -9,7 +9,7 @@
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocketModules/RocketPayForm/App_LocalResources/")
 
 @{
-        var moduleData = (ModuleData)Model.List.First();
+    var moduleData = (ModuleData)Model.List.First();
 }
 
 <div class="w3-container">
@@ -22,3 +22,6 @@
     @RenderImageSelect(Model, 100, true, false, "images")
 </div>
 
+<div id="dnnrocket_documentselectwrapper">
+    @RenderDocumentSelect(Model, true, false, "docs")
+</div>

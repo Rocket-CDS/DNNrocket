@@ -24,7 +24,7 @@ namespace DNNrocket.Documents
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
 
             var appPath = _rocketInterface.TemplateRelPath;
-            if (appPath == "") appPath = "/DesktopModules/DNNrocket/Images";
+            if (appPath == "") appPath = "/DesktopModules/DNNrocket/Documents";
             _appthemeRelPath = appPath;
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _postInfo = postInfo;
@@ -43,7 +43,7 @@ namespace DNNrocket.Documents
             switch (paramCmd)
             {
                 case "rocketdocs_upload":
-                    UploadImageToFolder();
+                    UploadDocumentToFolder();
                     strOut = ListData();
                     break;
                 case "rocketdocs_delete":
@@ -79,7 +79,7 @@ namespace DNNrocket.Documents
             }
         }
 
-        public static string UploadImageToFolder()
+        public static string UploadDocumentToFolder()
         {
             var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
 

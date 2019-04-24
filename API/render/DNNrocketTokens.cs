@@ -67,6 +67,10 @@ namespace DNNrocketAPI.render
             return new RawString(DNNrocketUtils.RenderImageSelect(model, imagesize, selectsingle,autoreturn,uploadFolder,razorTemplateName,templateControlRelPath,themeFolder));
         }
 
+        public IEncodedString RenderDocumentSelect(SimplisityRazor model, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "docs", string razorTemplateName = "DocSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/documents/", string themeFolder = "config-w3")
+        {
+            return new RawString(DNNrocketUtils.RenderDocumentSelect(model, selectsingle, autoreturn, uploadFolder, razorTemplateName, templateControlRelPath, themeFolder));
+        }
 
 
         public IEncodedString EditFlag(string classvalues = "")
