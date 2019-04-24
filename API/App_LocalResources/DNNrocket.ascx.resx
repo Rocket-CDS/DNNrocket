@@ -385,10 +385,10 @@
     <value>Resend Email</value>
   </data>
   <data name="cmdResendEmailButton.Text" xml:space="preserve">
-    <value>&lt;i title="Delete" class="fas fa-envelope-o fa-fw fa-lg"&gt;&lt;/i&gt; Resend Email</value>
+    <value>&lt;i title="Email" class="fas fa-envelope fa-fw fa-lg"&gt;&lt;/i&gt; Resend Email</value>
   </data>
   <data name="cmdResendEmailIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Delete" class="fas fa-envelope-o fa-fw fa-2x"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Email" class="fas fa-envelope fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
   <data name="clearallcache.Text" xml:space="preserve">
     <value>Clear ALL Cache</value>
