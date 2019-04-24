@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
-    <ProjectReference Include="..\AppThemes\AppThemes.csproj" />
     <ProjectReference Include="..\Settings\Settings.csproj" />
     <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
   </ItemGroup>

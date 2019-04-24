@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
+    <ProjectReference Include="..\Images\Images.csproj" />
+    <ProjectReference Include="..\RocketMod\RocketMod.csproj" />
     <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
   </ItemGroup>
 

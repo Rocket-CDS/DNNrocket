@@ -113,11 +113,57 @@ namespace DNNrocketAPI.render
             {
                 strOut += "<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + imgurl + "&w=" + width + "&h=" + height + "' imageheight='" + height + "' imagewidth='" + width + "' " + attributes + ">";
             }
-            strOut += "<span class='w3-button w3-transparent w3-display-topleft dnnrocket-imagechange' title='@ResourceKey('login.CloseModal')'><i class='fas fa-edit'></i></span>";
-            strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-imageremove ' title='@ResourceKey('login.CloseModal')'>&times;</span>";
+            strOut += "<span class='w3-button w3-transparent w3-display-topleft dnnrocket-imagechange' title=''><i class='fas fa-edit'></i></span>";
+            strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-imageremove ' title=''>&times;</span>";
             strOut += "</div>";
             return new RawString(strOut);
         }
+
+        public IEncodedString DocumentEdit(SimplisityInfo info, string fieldId, string attributes = "", bool localized = true, int row = 0)
+        {
+            var xpath = "genxml/hidden/" + fieldId;
+            var xpathname = "genxml/textbox/" + fieldId;
+            var value = info.GetXmlProperty(xpath);
+            var valuename = info.GetXmlProperty(xpathname);
+
+            var strOut = "<div class='w3-display-container' >";
+
+            if (info == null) info = new SimplisityInfo();
+
+            value = info.GetXmlProperty(xpath);
+            if (localized && !xpath.StartsWith("genxml/lang/"))
+            {
+                value = info.GetXmlProperty("genxml/lang/" + xpath);
+            }
+
+            valuename = info.GetXmlProperty(xpath);
+            if (localized && !xpath.StartsWith("genxml/lang/"))
+            {
+                valuename = info.GetXmlProperty("genxml/lang/" + xpathname);
+            }
+
+            var disabled = "";
+            if (value == "") disabled = "disabled";
+            var upd = getUpdateAttr(xpath, "", localized);
+            var updname = getUpdateAttr(xpathname, "", localized);
+            var id = getIdFromXpath(xpath, row);
+            var idname = getIdFromXpath(xpathname, row);
+            strOut += "<input value='" + value + "' id='" + id + "' s-xpath='" + xpath + "' " + upd + " type='hidden' />";
+            strOut += "<input value='" + valuename + "' id='" + idname + "' s-xpath='" + xpathname + "' " + updname + " " + disabled + " " + attributes + " type='text' />";
+
+            if (value == "")
+            {
+                strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-documentchange' title=''><i class='fas fa-file-upload'></i></span>";
+            }
+            else
+            {
+                strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-documentremnove' title=''>&times;</span>";
+            }
+
+            strOut += "</div>";
+            return new RawString(strOut);
+        }
+
 
         /// <summary>
         /// Add all genxml/hidden/* fields to the template.

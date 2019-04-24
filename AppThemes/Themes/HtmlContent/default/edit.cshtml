@@ -55,7 +55,7 @@
                 <div class="w3-row">
                     <div class="w3-col" style="width: 200px">
 
-                        @ImageEdit(i, "genxml/hidden/imagerelpath", 100, 100)
+                        @ImageEdit(i, "genxml/hidden/imagerelpath", 100, 100, "", false, lp1)
 
                         <div class="w3-cell-bottom">
                             <br />
@@ -66,6 +66,10 @@
                             <div class="w3-padding w3-col m2">
                                 <label class="">@ResourceKey("RocketPayForm.ref")</label>
                                 @TextBox(i, "genxml/textbox/ref", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false, lp1)
+
+
+                                @DocumentEdit(i,"document2", " class='w3-input w3-border' ", true,lp1)
+
                             </div>
                             <div class="w3-padding w3-col m9">
                                 <label class="">@ResourceKey("RocketPayForm.name")</label>&nbsp;@EditFlag()
@@ -76,6 +80,10 @@
                                     <i>@ResourceKey("DNNrocket.cmdEditIcon")</i>
                                 </button>
                             </div>
+                        </div>
+                        <div class="w3-row">
+
+
                         </div>
                     </div>
                 </div>
@@ -94,13 +102,11 @@
                                 @TextBox(i, "genxml/textbox/modeltest", " class='w3-input w3-border' autocomplete='off'", "", false, lp1)
                             </div>
 
-                            @ImageEdit(i, "genxml/hidden/imagerelpath2", 150, 150)
+                            @ImageEdit(i, "genxml/hidden/imagerelpath2", 150, 150, "", false, lp1)
 
-                            @ImageEdit(i, "genxml/hidden/imagerelpath3", 200, 200)
+                            @ImageEdit(i, "genxml/hidden/imagerelpath3", 200, 200, "", false, lp1)
 
                         </div>
-
-                    </div>
                 </div>
 
             </li>
