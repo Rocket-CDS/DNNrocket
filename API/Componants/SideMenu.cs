@@ -46,10 +46,15 @@ namespace DNNrocketAPI.Componants
             {
                 foreach (var i in _sysInfo.GetList("interfacedata"))
                 {
-                    // [TODO: add security]
                     if (groupref == i.GetXmlProperty("genxml/dropdownlist/group"))
                     {
-                        rtnList.Add(i);
+                        var userid = UserUtils.GetCurrentUserId();
+                        var rocketinterface = new DNNrocketInterface(i);
+                        var commandSecurity = new CommandSecurity(rocketinterface);
+                        if (commandSecurity.SecurityCheckUser())
+                        {
+                            rtnList.Add(i);
+                        }
                     }
                 }
             }

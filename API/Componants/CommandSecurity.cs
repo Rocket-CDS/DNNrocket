@@ -21,6 +21,17 @@ namespace DNNrocketAPI.Componants
         private int _tabid;
         private int _moduleid;
 
+        public CommandSecurity(DNNrocketInterface interfaceInfo)
+        {
+            _commandSecurity = new ConcurrentDictionary<string, bool>();
+            _tabid = -1;
+            _moduleid = -1;
+            _interfaceInfo = interfaceInfo;
+            _userInfo = UserController.Instance.GetCurrentUserInfo();
+            ValidateUser();
+        }
+
+
         public CommandSecurity(int tabId, int moduleId, DNNrocketInterface interfaceInfo)
         {
             _commandSecurity = new ConcurrentDictionary<string, bool>();
