@@ -1121,6 +1121,15 @@ namespace DNNrocketAPI
             return rtn;
         }
 
+        public static string GetCurrentLanguageCode()
+        {
+            var cc = GetCurrentCulture();
+            var c = cc.Split('-');
+            var rtn = "";
+            if (c.Length > 0) rtn = c[0];
+            return rtn;
+        }
+
         public static string TempDirectory()
         {
             return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketTemp";

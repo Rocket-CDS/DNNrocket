@@ -5,7 +5,7 @@
     <activevalue />
     <pagesize>20</pagesize>
     <page>1</page>
-    <selecteditemid>370888</selecteditemid>
+    <selecteditemid>371339</selecteditemid>
     <editlanguage />
     <index>99</index>
     <systemprovider>systemapi</systemprovider>
@@ -92,12 +92,12 @@
         <interfacekey>edit</interfacekey>
         <entitytypecode>ROCKETMOD</entitytypecode>
         <interfaceicon />
-        <defaulttheme>HtmlContent</defaulttheme>
+        <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>edit.cshtml</defaulttemplate>
-        <defaultcommand>rocketsettings_edit</defaultcommand>
-        <namespaceclass>RocketSettings.startconnect</namespaceclass>
-        <assembly>RocketSettings</assembly>
-        <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
+        <defaultcommand>rocketmod_edit</defaultcommand>
+        <namespaceclass>RocketMod.startconnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
       </textbox>
       <dropdownlist>
         <group />

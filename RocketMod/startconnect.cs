@@ -51,7 +51,7 @@ namespace RocketMod
 
             _commandSecurity = new CommandSecurity(_moduleData.TabId, _moduleData.ModuleId, _rocketInterface);
             _commandSecurity.AddCommand("rocketmod_edit", true);
-            _commandSecurity.AddCommand("rocketmod_savedata", true);
+            _commandSecurity.AddCommand("rocketmod_save", true);
             _commandSecurity.AddCommand("rocketmod_delete", true);
             _commandSecurity.AddCommand("rocketmod_saveconfig", true);
             _commandSecurity.AddCommand("rocketmod_saveheader", true);
