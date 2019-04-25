@@ -5,7 +5,7 @@
     <activevalue />
     <pagesize>20</pagesize>
     <page>1</page>
-    <selecteditemid>2</selecteditemid>
+    <selecteditemid>370486</selecteditemid>
     <editlanguage />
     <index>0</index>
     <systemprovider>systemapi</systemprovider>
@@ -14,10 +14,10 @@
   <textbox>
     <ctrlkey>dnnrocket</ctrlkey>
     <systemname>DNN Rocket</systemname>
-    <adminurl>/desktopmodules/dnnrocket/api/admin.html</adminurl>
+    <adminurl>/desktopmodules/dnnrocket/admin.html</adminurl>
     <apiurl>/desktopmodules/dnnrocket/api/api.ashx</apiurl>
     <licensekey />
-    <encryptkey />
+    <encryptkey>dfvgdfvdfvdfvdf</encryptkey>
   </textbox>
   <checkbox>
     <debugmode>false</debugmode>
@@ -27,7 +27,7 @@
       <textbox>
         <interfacekey>settingcountry</interfacekey>
         <entitytypecode>COUNTRY</entitytypecode>
-        <interfaceicon>fas fa-globe</interfaceicon>
+        <interfaceicon>fa fa-globe</interfaceicon>
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>CountrySettings.cshtml</defaulttemplate>
         <defaultcommand>settingcountry_get</defaultcommand>
@@ -59,13 +59,13 @@
       <textbox>
         <interfacekey>testform</interfacekey>
         <entitytypecode>TESTFORM</entitytypecode>
-        <interfaceicon>fas fa-hand-peace-o </interfaceicon>
+        <interfaceicon>fa fa-hand-peace-o </interfaceicon>
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>testform.cshtml</defaulttemplate>
         <defaultcommand>testform_get</defaultcommand>
         <namespaceclass>DNNrocket.TestForm.startconnect</namespaceclass>
         <assembly>DNNrocketTestForm</assembly>
-        <relpath />
+        <relpath>/DesktopModules/DNNrocket/TestForm/</relpath>
       </textbox>
       <dropdownlist>
         <group>Tests</group>
@@ -91,13 +91,13 @@
       <textbox>
         <interfacekey>testlist</interfacekey>
         <entitytypecode>TESTLIST</entitytypecode>
-        <interfaceicon>fas fa-hand-spock-o</interfaceicon>
+        <interfaceicon>fa fa-hand-spock-o</interfaceicon>
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>testlist.cshtml</defaulttemplate>
         <defaultcommand>testlist_getlist</defaultcommand>
         <namespaceclass>DNNrocket.TestList.startconnect</namespaceclass>
         <assembly>DNNrocketTestList</assembly>
-        <relpath />
+        <relpath>/DesktopModules/DNNrocket/TestList/</relpath>
       </textbox>
       <dropdownlist>
         <group>Tests</group>
@@ -121,38 +121,6 @@
     </genxml>
     <genxml>
       <textbox>
-        <interfacekey>rocketsettings</interfacekey>
-        <entitytypecode>ROCKETSETTING</entitytypecode>
-        <interfaceicon />
-        <defaulttheme>config-w3</defaulttheme>
-        <defaulttemplate>settings.cshtml</defaulttemplate>
-        <defaultcommand>rocketsettings_edit</defaultcommand>
-        <namespaceclass>RocketSettings.startconnect</namespaceclass>
-        <assembly>RocketSettings</assembly>
-        <relpath />
-      </textbox>
-      <dropdownlist>
-        <group>settings</group>
-      </dropdownlist>
-      <checkboxlist>
-        <providertype>
-          <chk value="false" data="api" />
-        </providertype>
-        <securityroles>
-          <chk value="true" data="Administrators" />
-          <chk value="true" data="Manager" />
-          <chk value="true" data="Editor" />
-          <chk value="true" data="ClientEditor" />
-        </securityroles>
-      </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>true</cache>
-        <onmenu>true</onmenu>
-      </checkbox>
-    </genxml>
-    <genxml>
-      <textbox>
         <interfacekey>imageupload</interfacekey>
         <entitytypecode>IMG</entitytypecode>
         <interfaceicon />
@@ -161,7 +129,7 @@
         <defaultcommand />
         <namespaceclass>DNNrocket.Images.startconnect</namespaceclass>
         <assembly>DNNrocketImages</assembly>
-        <relpath />
+        <relpath>/DesktopModules/DNNrocket/Images/</relpath>
       </textbox>
       <dropdownlist>
         <group />
@@ -179,8 +147,40 @@
       </checkboxlist>
       <checkbox>
         <active>true</active>
-        <cache>true</cache>
-        <onmenu>true</onmenu>
+        <cache>false</cache>
+        <onmenu>false</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>documentupload</interfacekey>
+        <entitytypecode>DOC</entitytypecode>
+        <interfaceicon />
+        <defaulttheme />
+        <defaulttemplate />
+        <defaultcommand />
+        <namespaceclass>DNNrocket.Documents.startconnect</namespaceclass>
+        <assembly>DNNrocketDocuments</assembly>
+        <relpath>/DesktopModules/DNNrocket/Documents/</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="api" />
+        </providertype>
+        <securityroles>
+          <chk value="false" data="Administrators" />
+          <chk value="false" data="Manager" />
+          <chk value="false" data="Editor" />
+          <chk value="false" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
+        <onmenu>false</onmenu>
       </checkbox>
     </genxml>
   </interfacedata>
@@ -210,13 +210,13 @@
     <genxml>
       <textbox>
         <groupref>settings</groupref>
-        <groupicon>fas fa-cog</groupicon>
+        <groupicon>fa fa-cog</groupicon>
       </textbox>
     </genxml>
     <genxml>
       <textbox>
         <groupref>Tests</groupref>
-        <groupicon>fas fa-cogs</groupicon>
+        <groupicon>fa fa-cogs</groupicon>
       </textbox>
     </genxml>
   </groupsdata>

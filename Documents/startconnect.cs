@@ -71,7 +71,7 @@ namespace DNNrocket.Documents
         {
             try
             {
-                return DNNrocketUtils.RenderImageSelect(new SimplisityRazor(), 100);
+                return DNNrocketUtils.RenderDocumentSelect(new SimplisityRazor());
             }
             catch (Exception ex)
             {
@@ -83,13 +83,10 @@ namespace DNNrocket.Documents
         {
             var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
 
-            var imageDirectory = DNNrocketUtils.HomeDirectory() + "\\images";
-            if (!Directory.Exists(imageDirectory)) Directory.CreateDirectory(imageDirectory);
+            var docDirectory = DNNrocketUtils.HomeDirectory() + "\\docs";
+            if (!Directory.Exists(docDirectory)) Directory.CreateDirectory(docDirectory);
 
             var strOut = "";
-            var createseo = _postInfo.GetXmlPropertyBool("genxml/hidden/createseo");
-            var resize = _postInfo.GetXmlPropertyInt("genxml/hidden/imageresize");
-            if (resize == 0) resize = 640;
             var fileuploadlist = _postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
             if (fileuploadlist != "")
             {
@@ -99,16 +96,7 @@ namespace DNNrocket.Documents
                     {
                         var friendlyname = GeneralUtils.DeCode(f);
                         var userfilename = userid + "_" + friendlyname;
-                        var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname, imageDirectory);
-                        ImgUtils.ResizeImage(DNNrocketUtils.TempDirectory() + "\\" + userfilename, imageDirectory + "\\" + unqName, resize);
-
-                        if (createseo)
-                        {
-                            var imageDirectorySEO = DNNrocketUtils.HomeDirectory() + "\\images\\seo";
-                            if (!Directory.Exists(imageDirectorySEO)) Directory.CreateDirectory(imageDirectorySEO);
-                            ImgUtils.CopyImageForSEO(DNNrocketUtils.TempDirectory() + "\\" + userfilename, imageDirectorySEO, unqName);
-                        }
-
+                        File.Copy(DNNrocketUtils.TempDirectory() + "\\" + userfilename, docDirectory + "\\" + friendlyname,true);
                         File.Delete(DNNrocketUtils.TempDirectory() + "\\" + userfilename);
                     }
                 }
@@ -120,19 +108,19 @@ namespace DNNrocket.Documents
 
         public static void DeleteImages()
         {
-            var imagefolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
-            if (imagefolder == "") imagefolder = "images";
-            var imageDirectory = DNNrocketUtils.HomeDirectory() + "\\" + imagefolder;
-            var imageList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-imagelist").Split(';');
-            foreach (var i in imageList)
+            var docfolder = _postInfo.GetXmlProperty("genxml/hidden/docfolder");
+            if (docfolder == "") docfolder = "docs";
+            var docDirectory = DNNrocketUtils.HomeDirectory() + "\\" + docfolder;
+            var docList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-doclist").Split(';');
+            foreach (var i in docList)
             {
                 if (i != "")
                 {
                     var friendlyname = GeneralUtils.DeCode(i);
-                    var imageFile = imageDirectory + "\\" + friendlyname;
-                    if (File.Exists(imageFile))
+                    var docFile = docDirectory + "\\" + friendlyname;
+                    if (File.Exists(docFile))
                     {
-                        File.Delete(imageFile);
+                        File.Delete(docFile);
                     }
                 }
             }

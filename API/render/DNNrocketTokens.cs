@@ -126,7 +126,7 @@ namespace DNNrocketAPI.render
         public IEncodedString DocumentEdit(SimplisityInfo info, string fieldId, string attributes = "", bool localized = true, int row = 0)
         {
             var xpath = "genxml/hidden/" + fieldId;
-            var xpathname = "genxml/textbox/" + fieldId;
+            var xpathname = "genxml/textbox/name" + fieldId;
             var value = info.GetXmlProperty(xpath);
             var valuename = info.GetXmlProperty(xpathname);
 
@@ -161,7 +161,7 @@ namespace DNNrocketAPI.render
             }
             else
             {
-                strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-documentremnove' title=''>&times;</span>";
+                strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-documentremove' title=''>&times;</span>";
             }
 
             strOut += "</div>";

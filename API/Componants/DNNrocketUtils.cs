@@ -1485,12 +1485,12 @@ namespace DNNrocketAPI
             model.HeaderData.SetXmlProperty("genxml/hidden/documentselectautoreturn", autoreturn.ToString());
 
             var uploadFolderPath = DNNrocketUtils.HomeDirectory() + "\\" + uploadFolder;
-            var imgList = new List<object>();
+            var docList = new List<object>();
             foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
             {
-                imgList.Add(i.Name);
+                docList.Add(i.Name);
             }
-            model.List = imgList;
+            model.List = docList;
 
             var strOut = "";
             var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());

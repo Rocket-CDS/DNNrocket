@@ -1,4 +1,4 @@
-@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
 @using Simplisity;
 
@@ -37,17 +37,27 @@
                         @{
                             var imageRows = new List<List<string>>();
                             var imageItems = new List<string>();
+                            var lastImageItems = new List<string>();
                             var lp = 1;
+                            var imagecount = Model.List.Count();
                             foreach (string i in Model.List)
                             {
-                                imageItems.Add(i);
-                                if ((lp % 6) == 0)
+                                if ((imagecount - lp) < 5)
                                 {
-                                    imageRows.Add(imageItems);
-                                    imageItems = new List<string>();
+                                    lastImageItems.Add(i);
+                                }
+                                else
+                                {
+                                    imageItems.Add(i);
+                                    if ((lp % 6) == 0)
+                                    {
+                                        imageRows.Add(imageItems);
+                                        imageItems = new List<string>();
+                                    }
                                 }
                                 lp += 1;
                             }
+                            imageRows.Add(lastImageItems);
 
                             lp = 1;
                             foreach (List<string> imageRow in imageRows)
@@ -55,9 +65,10 @@
                                 <div class="w3-row">
                                     @foreach (string imageName in imageRow)
                                     {
-                                        <div class="w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@DNNrocketUtils.HomeRelDirectory()/images/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
-                                            <img src="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150)" class="w3-border w3-padding" style="width:100%" />
-                                        </div>
+                                    <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@DNNrocketUtils.HomeRelDirectory()/images/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
+                                        <img src="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150)" class="w3-border w3-padding" style="width:100%" />
+                                        <span class="w3-display-topright dnnrocket-imageselected " title="" style="display:none;" ><i class="fas fa-check-circle"></i></span>
+                                    </div>
                                         lp += 1;
                                     }
                                 </div>
@@ -65,7 +76,7 @@
 
                         }
                     </div>
-
+                    <br/>
                 </div>
 
             </div>
@@ -83,7 +94,7 @@
             dnnrocketimages_selectimage(this);
         });
 
-        // Used to display image list and assign the index, so we knwo what image to update.
+        // Used to display image list and assign the index, so we know what image to update.
         $('.dnnrocket-imagechange').unbind("click");
         $('.dnnrocket-imagechange').click(function () {
             simplisity_setCookieValue('dnnrocket-imageindex', $(this).parent().find("input:first").attr('id'));
@@ -107,11 +118,13 @@ function dnnrocketimages_selectimage(element) {
         @: dnnrocketimages_clearselection();
     }
 
-    if ($(element).hasClass('w3-theme')) {
-        $(element).removeClass('w3-theme');
+    if ($(element).hasClass('w3-pale-green')) {
+        $(element).removeClass('w3-pale-green');
+        $(element).find('.dnnrocket-imageselected').hide();
     }
     else {
-        $(element).addClass('w3-theme');
+        $(element).addClass('w3-pale-green');
+        $(element).find('.dnnrocket-imageselected').show();
     }
 
     @if (Model.HeaderData.GetXmlPropertyBool("genxml/hidden/imageselectautoreturn")) {
@@ -122,10 +135,10 @@ function dnnrocketimages_selectimage(element) {
     function dnnrocketimages_deleteimages() {
         var imagelist = '';
         $('.dnnrocket-imageselector').each(function (index) {
-            if ($(this).hasClass('w3-theme')) {
+            if ($(this).hasClass('w3-pale-green')) {
                 var imgname = simplisity_encode($(this).attr('dnnrocket-imagename'));
                 imagelist = imagelist + imgname + ";";
-                $(this).removeClass('w3-theme');
+                $(this).removeClass('w3-pale-green');
             }
         });
         $('#dnnrocket-imagelist').val(imagelist);
@@ -134,7 +147,7 @@ function dnnrocketimages_selectimage(element) {
 
     function dnnrocketimages_useimages() {
         $('.dnnrocket-imageselector').each(function (index) {
-            if ($(this).hasClass('w3-theme')) {
+            if ($(this).hasClass('w3-pale-green')) {
                 var idx = simplisity_getCookieValue('dnnrocket-imageindex');
                 var w = simplisity_getCookieValue('dnnrocket-imagewidth');
                 var h = simplisity_getCookieValue('dnnrocket-imageheight');
@@ -143,7 +156,7 @@ function dnnrocketimages_selectimage(element) {
                 if (h === '') h = 100;
                 $('#' + idx).parent().children('img').attr('src', $(this).attr('dnnrocket-imagethumburl') + "&w=" + w + "&h=" + h);
                 $('#' + idx).val($(this).attr('dnnrocket-imageurl'));
-                $(this).removeClass('w3-theme');
+                $(this).removeClass('w3-pale-green');
             }
         });
         document.getElementById('rocketimageselect').style.display = 'none';
@@ -152,8 +165,9 @@ function dnnrocketimages_selectimage(element) {
 
     function dnnrocketimages_clearselection() {
         $('.dnnrocket-imageselector').each(function (index) {
-            if ($(this).hasClass('w3-theme')) {
-                $(this).removeClass('w3-theme');
+            if ($(this).hasClass('w3-pale-green')) {
+                $(this).removeClass('w3-pale-green');
+                $(this).find('.dnnrocket-imageselected').hide();        
             }
         });
     }
