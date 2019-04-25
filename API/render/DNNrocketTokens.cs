@@ -239,5 +239,58 @@ namespace DNNrocketAPI.render
 
         #endregion
 
+        public IEncodedString TabSelectList(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0)
+        {
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            var tList = DNNrocketUtils.GetTreeTabListOnUniqueId();
+            var strOut = "";
+
+            var upd = getUpdateAttr(xpath, "", localized);
+            var id = getIdFromXpath(xpath, row);
+
+            strOut = "<select id='" + id + "' " + upd + " guidkey='tab' " + attributes + ">";
+            var s = "";
+            if (allowEmpty) strOut += "    <option value=''></option>";
+            foreach (var tItem in tList)
+            {
+                if (info.GetXmlProperty(xpath) == tItem.Key.ToString())
+                    s = "selected";
+                else
+                    s = "";
+                strOut += "    <option value='" + tItem.Key.ToString() + "' " + s + ">" + tItem.Value + "</option>";
+            }
+            strOut += "</select>";
+
+            return new RawString(strOut);
+        }
+
+        public IEncodedString TabSelectListOnTabId(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0)
+        {
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            var tList = DNNrocketUtils.GetTreeTabListOnTabId();
+            var strOut = "";
+
+            var upd = getUpdateAttr(xpath, "", localized);
+            var id = getIdFromXpath(xpath, row);
+
+            strOut = "<select id='" + id + "' " + upd + " guidkey='tab' " + attributes + ">";
+            var s = "";
+            if (allowEmpty) strOut += "    <option value=''></option>";
+            foreach (var tItem in tList)
+            {
+                if (info.GetXmlProperty(xpath) == tItem.Key.ToString())
+                    s = "selected";
+                else
+                    s = "";
+                strOut += "    <option value='" + tItem.Key.ToString() + "' " + s + ">" + tItem.Value + "</option>";
+            }
+            strOut += "</select>";
+
+            return new RawString(strOut);
+        }
+
+
     }
 }
