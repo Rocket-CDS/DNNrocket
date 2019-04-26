@@ -44,8 +44,14 @@ namespace RocketMod
             }
             else
             {
+                if (AppTheme == "")
+                {
+                    _configExists = false;
+                }
+                else
+                {
                     _configExists = true;
-
+                }
             }
         }
 
@@ -103,6 +109,38 @@ namespace RocketMod
         public string ProviderClass { get { return ConfigInfo.GetXmlProperty("genxml/textbox/namespaceclass"); } }
         public string ManagerEmail { get { return ConfigInfo.GetXmlProperty("genxml/textbox/manageremail"); } }
         public string AppTheme { get { return ConfigInfo.GetXmlProperty("genxml/hidden/apptheme"); } }
+        public string ImageFolderRel { get{ return DNNrocketUtils.HomeRelDirectory() + "/" + ImageFolder; } }
+        public string DocumentFolderRel { get{ return DNNrocketUtils.HomeRelDirectory() + "/" + DocumentFolder;} }
+        public string DocumentFolder
+        {
+            get
+            {
+                if (ConfigInfo.GetXmlProperty("genxml/textbox/documentfolder") == "")
+                {
+                    return "docs";
+                }
+                else
+                {
+                    return ConfigInfo.GetXmlProperty("genxml/textbox/documentfolder");
+                }
+            }
+        }
+        public string ImageFolder
+        {
+            get
+            {
+                if (ConfigInfo.GetXmlProperty("genxml/textbox/imagefolder") == "")
+                {
+                    return "images";
+                }
+                else
+                {
+                    return ConfigInfo.GetXmlProperty("genxml/textbox/imagefolder");
+                }
+            }
+        }
+        public string DocumentFolderMapPath { get { return DNNrocketUtils.MapPath(DocumentFolderRel); } }
+        public string ImageFolderMapPath { get { return DNNrocketUtils.MapPath(ImageFolderRel); } }
 
         public bool Exists { get { return _configExists; } }
         public int ModuleId { get {return _moduleid;} }

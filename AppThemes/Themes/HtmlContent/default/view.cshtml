@@ -21,29 +21,34 @@
     }
 }
 
-<div class="w3-container rm-container">
+@foreach (SimplisityInfo i in info.GetList("settingsdata"))
+{
 
-    <h1>Hello New World Display!!!! </h1>
-    <h1>@Model.GetSetting("addeditscript")</h1>
-    <h2>
-        @info.GetXmlProperty("genxml/textbox/ref")
-    </h2>
 
-    <div>
-        <img src="@ThumbnailImageUrl(info.GetXmlProperty("genxml/hidden/imagerelpath"),200,200,"")" class="w3-round" alt="" />
+    <div class="w3-container rm-container">
+
+        <h1>Hello New World Display!!!! </h1>
+        <h1>@Model.GetSetting("addeditscript")</h1>
+        <h2>
+            @info.GetXmlProperty("genxml/textbox/ref")
+        </h2>
+
+        <div>
+            <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagerelpath"),200,200,"")" class="w3-round" alt="" />
+        </div>
+
+        <h3>
+            @i.GetXmlProperty("genxml/lang/genxml/textbox/name")
+        </h3>
+
+        <h3>
+            @i.GetXmlProperty("genxml/textbox/modeltest")
+        </h3>
+
+        <div class='w3-padding'>
+            @HtmlOf(i.GetXmlProperty("genxml/textbox/ckeditor"))
+        </div>
+
     </div>
-
-    <h3>
-        @info.GetXmlProperty("genxml/lang/genxml/textbox/name")
-    </h3>
-
-    <h3>
-        @info.GetXmlProperty("genxml/textbox/modeltest")
-    </h3>
-
-    <div class='w3-padding'>
-        @HtmlOf(info.GetXmlProperty("genxml/textbox/ckeditor"))
-    </div>
-
-</div>
+}
 

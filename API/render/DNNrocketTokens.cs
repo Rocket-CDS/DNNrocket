@@ -1,4 +1,6 @@
-﻿using RazorEngine.Text;
+﻿using DNNrocketAPI.Componants;
+using DotNetNuke.Entities.Portals;
+using RazorEngine.Text;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -239,6 +241,20 @@ namespace DNNrocketAPI.render
 
 
         #endregion
+
+        public IEncodedString LinkInternalUrl(int portalid, int tabid, string cultureCode, PortalSettings portalSettings = null, string[] extraparams = null)
+        {
+            if (portalSettings == null)
+            {
+                portalSettings = PortalSettings.Current;
+            }
+            if (extraparams == null)
+            {
+                extraparams = new string[] { };
+            }
+            var strOut = DotNetNuke.Common.Globals.NavigateURL(tabid, false, portalSettings,"",cultureCode, extraparams);
+            return new RawString(strOut);
+        }
 
         public IEncodedString TabSelectList(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0)
         {

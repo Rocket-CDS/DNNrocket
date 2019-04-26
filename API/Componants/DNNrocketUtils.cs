@@ -25,6 +25,7 @@ using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Threading;
 using System.Globalization;
+using DNNrocketAPI.Componants;
 
 namespace DNNrocketAPI
 {
@@ -517,49 +518,6 @@ namespace DNNrocketAPI
                 strOut = "ERROR - No Data Url given";
             }
             return strOut;
-        }
-
-        public static List<SimplisityInfo> GetPortalPages(int portalId = -1, string cultureCode = "", int level = -1)
-        {
-            var rtnList = new List<SimplisityInfo>();
-            if (portalId == -1 && PortalSettings.Current != null) portalId = PortalSettings.Current.PortalId;
-            if (portalId > 0)
-            {
-                var cachekey = "dnnrocketcachepages" + portalId + "*" + level;
-                var cachePages = (List<SimplisityInfo>)CacheUtils.GetCache(cachekey);
-                if (cachePages != null)
-                {
-                    return cachePages;
-                }
-
-                if (cultureCode == "") cultureCode = GetCurrentCulture();
-                Locale targetLocale = LocaleController.Instance.GetLocale(cultureCode);
-                TabCollection portalTabs = TabController.Instance.GetTabsByPortal(portalId);
-                foreach (var p in portalTabs)
-                {
-                    if (level == -1 || level == p.Value.Level)
-                    {
-                        var tabid = p.Value.TabID;
-                        var tabCulture = TabController.Instance.GetTabByCulture(p.Value.TabID, portalId, targetLocale);
-                        var tabInfo = new SimplisityInfo();
-                        tabInfo.ItemID = tabCulture.TabID;
-                        tabInfo.ParentItemId = tabCulture.ParentId;
-                        tabInfo.XrefItemId = tabCulture.Level;
-                        tabInfo.ModuleId = tabCulture.TabOrder;
-                        tabInfo.SetXmlProperty("genxml/hidden/tabname", tabCulture.TabName);
-                        tabInfo.SetXmlProperty("genxml/hidden/fullurl", tabCulture.FullUrl);
-                        tabInfo.SetXmlProperty("genxml/hidden/currenturl", tabCulture.GetCurrentUrl(cultureCode));
-                        tabInfo.SetXmlProperty("genxml/hidden/haschildren", tabCulture.HasChildren.ToString());
-                        tabInfo.SetXmlProperty("genxml/hidden/title", tabCulture.Title);
-                        tabInfo.SetXmlProperty("genxml/hidden/url", tabCulture.Url);
-                        tabInfo.SetXmlProperty("genxml/hidden/tabpath", tabCulture.TabPath);
-                        tabInfo.SetXmlProperty("genxml/hidden/localizedtabname", tabCulture.LocalizedTabName);
-                        rtnList.Add(tabInfo);
-                    }
-                }
-                CacheUtils.SetCache(cachekey, rtnList);
-            }
-            return rtnList;
         }
 
 

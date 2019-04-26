@@ -13,7 +13,7 @@
 
         <header class="w3-theme-d5 w3-center" style="height: 38px;">
             <span onclick="document.getElementById('rocketimageselect').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <h4>@ResourceKey("DNNrocket.images")</h4>
+            <h4>@ResourceKey("DNNrocket.imagesfolder"):&nbsp; @Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")</h4>
         </header>
         <div class="" style="">
             <br />
@@ -22,11 +22,11 @@
                 <span class="w3-section">
                     <button class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</button>
                     <button class="w3-button w3-green w3-padding-8" onclick="dnnrocketimages_useimages()">@ResourceKey("DNNrocket.cmdUseButton")</button>
-                    <button class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketimages_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist"  s-fields="theme:config-w3,template:imagelist.cshtml,systemprovider:dnnrocket,interfacekey:imageupload">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
+                    <button class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketimages_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist"  s-fields="theme:config-w3,template:imagelist.cshtml,systemprovider:dnnrocket,interfacekey:imageupload,imagefolder:@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder"),singleselect:true,autoreturn:false">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
                 </span>
 
                 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
-                    <input id="imagefileupload" class="simplisity_fileupload" s-cmd="rocketimages_upload" s-reload="false" s-after="dnnrocketimages_showthelist"  s-return="#dnnrocket_imageselectwrapper" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields="createseo:false,imageresize:800,theme:config-w3,template:imagelist.cshtml,systemprovider:dnnrocket,interfacekey:imageupload" type="file" name="files[]" multiple style="display:none;">
+                    <input id="imagefileupload" class="simplisity_fileupload" s-cmd="rocketimages_upload" s-reload="false" s-after="dnnrocketimages_showthelist"  s-return="#dnnrocket_imageselectwrapper" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields="createseo:false,imageresize:800,theme:config-w3,template:imagelist.cshtml,systemprovider:dnnrocket,interfacekey:imageupload,imagefolder:@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder"),singleselect:true,autoreturn:false" type="file" name="files[]" multiple style="display:none;">
                     <p><i>@ResourceKey("DNNrocket.dropimage")...</i></p>
                 </div>
 
@@ -65,7 +65,7 @@
                                 <div class="w3-row">
                                     @foreach (string imageName in imageRow)
                                     {
-                                    <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@DNNrocketUtils.HomeRelDirectory()/images/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
+                                    <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@DNNrocketUtils.HomeRelDirectory()/@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
                                         <img src="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150)" class="w3-border w3-padding" style="width:100%" />
                                         <span class="w3-display-topright dnnrocket-imageselected " title="" style="display:none;" ><i class="fas fa-check-circle"></i></span>
                                     </div>
@@ -107,6 +107,10 @@
             simplisity_setCookieValue('dnnrocket-imagewidth', $(this).parent().find("img:first").attr('imagewidth'));
             simplisity_setCookieValue('dnnrocket-imageheight', $(this).parent().find("img:first").attr('imageheight'));
             document.getElementById('rocketimageselect').style.display = 'block';
+            $(this).removeClass('dnnrocket-imagechange');
+            $(this).addClass('dnnrocket-imageremove');
+            $(this).html('&times;');
+            dnnrocketimages_removeevent();
         });
     }
 
@@ -170,10 +174,12 @@ function dnnrocketimages_selectimage(element) {
                 $('#' + idx).parent().children('img').attr('src', $(this).attr('dnnrocket-imagethumburl') + "&w=" + w + "&h=" + h);
                 $('#' + idx).val($(this).attr('dnnrocket-imageurl'));
                 $(this).removeClass('w3-pale-green');
+                $(this).find('.dnnrocket-imageselected').hide();        
 
                 $('#' + idx).parent().find(".dnnrocket-imagechange").html('&times;');
                 $('#' + idx).parent().find(".dnnrocket-imagechange").addClass('dnnrocket-imageremove');
                 $('#' + idx).parent().find(".dnnrocket-imagechange").removeClass('dnnrocket-imagechange');
+
                 dnnrocketdocs_removeevent();
 
             }

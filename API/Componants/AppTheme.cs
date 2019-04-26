@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DNNrocket.AppThemes
+namespace DNNrocketAPI.Componants
 {
 
     public class AppTheme

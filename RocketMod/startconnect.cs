@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DNNrocket.AppThemes;
 using DNNrocketAPI;
 using DNNrocketAPI.Componants;
 using Simplisity;
@@ -334,7 +333,7 @@ namespace RocketMod
                     
                     passSettings.Add("addeditscript", _commandSecurity.HasModuleEditRights().ToString());
 
-                    var appTheme = new DNNrocket.AppThemes.AppTheme(apptheme);
+                    var appTheme = new AppTheme(apptheme);
 
                     strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveViewTemplate, _moduleData.CurrentRecord, passSettings, _moduleData.HeaderInfo);
 

@@ -405,4 +405,10 @@
   <data name="drophere.Text" xml:space="preserve">
     <value>Drop Here</value>
   </data>
+  <data name="documentsfolder.Text" xml:space="preserve">
+    <value>Documents Folder</value>
+  </data>
+  <data name="imagesfolder.Text" xml:space="preserve">
+    <value>Images Folder</value>
+  </data>
 </root>

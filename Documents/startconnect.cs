@@ -28,7 +28,6 @@ namespace DNNrocket.Documents
             _appthemeRelPath = appPath;
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _postInfo = postInfo;
-
             _commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
             _commandSecurity.AddCommand("rocketdocs_upload", true);
             _commandSecurity.AddCommand("rocketdocs_delete", true);
@@ -71,7 +70,7 @@ namespace DNNrocket.Documents
         {
             try
             {
-                return DNNrocketUtils.RenderDocumentSelect(new SimplisityRazor());
+                return DNNrocketUtils.RenderDocumentSelect(new SimplisityRazor(), _postInfo.GetXmlPropertyBool("genxml/hidden/singleselect"), _postInfo.GetXmlPropertyBool("genxml/hidden/autoreturn"), _postInfo.GetXmlProperty("genxml/hidden/documentfolder"));
             }
             catch (Exception ex)
             {
@@ -83,7 +82,9 @@ namespace DNNrocket.Documents
         {
             var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
 
-            var docDirectory = DNNrocketUtils.HomeDirectory() + "\\docs";
+            var documentfolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
+            if (documentfolder == "") documentfolder = "docs";
+            var docDirectory = DNNrocketUtils.HomeDirectory() + "\\" + documentfolder;
             if (!Directory.Exists(docDirectory)) Directory.CreateDirectory(docDirectory);
 
             var strOut = "";
@@ -108,16 +109,16 @@ namespace DNNrocket.Documents
 
         public static void DeleteImages()
         {
-            var docfolder = _postInfo.GetXmlProperty("genxml/hidden/docfolder");
+            var docfolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
             if (docfolder == "") docfolder = "docs";
             var docDirectory = DNNrocketUtils.HomeDirectory() + "\\" + docfolder;
-            var docList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-doclist").Split(';');
+            var docList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-documentlist").Split(';');
             foreach (var i in docList)
             {
                 if (i != "")
                 {
-                    var friendlyname = GeneralUtils.DeCode(i);
-                    var docFile = docDirectory + "\\" + friendlyname;
+                    var documentname = GeneralUtils.DeCode(i);
+                    var docFile = docDirectory + "\\" + documentname;
                     if (File.Exists(docFile))
                     {
                         File.Delete(docFile);

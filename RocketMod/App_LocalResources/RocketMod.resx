@@ -153,6 +153,12 @@
   <data name="interfacekey.Text" xml:space="preserve">
     <value>Interface</value>
   </data>
+  <data name="manageremail.Text" xml:space="preserve">
+    <value>Manager Email</value>
+  </data>
+  <data name="ref.Text" xml:space="preserve">
+    <value>Ref.</value>
+  </data>
   <data name="resetdatamsg.Text" xml:space="preserve">
     <value>Delete ALL data ? (Config NOT deleted)</value>
   </data>

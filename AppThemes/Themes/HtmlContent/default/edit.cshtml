@@ -38,9 +38,11 @@
     </div>
 
     <div>
-        @TabSelectList(moduleData.Data.Info,"genxml/select/tabselected", " class='w3-input w3-border' ")
+        @TabSelectListOnTabId(moduleData.Data.Info,"genxml/select/tabselected", " class='w3-input w3-border' ")
     </div>
-
+    <div>
+        @LinkInternalUrl(moduleData.Data.Info.PortalId, moduleData.Data.Info.GetXmlPropertyInt("genxml/select/tabselected"), DNNrocketUtils.GetEditCulture())
+    </div>
 
     <ul id="datalist" class="w3-ul">
 

@@ -13,7 +13,7 @@
 
         <header class="w3-theme-d5 w3-center" style="height: 38px;">
             <span onclick="document.getElementById('rocketdocumentselect').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <h4>@ResourceKey("DNNrocket.documents")</h4>
+            <h4>@ResourceKey("DNNrocket.documentsfolder"):&nbsp; @Model.HeaderData.GetXmlProperty("genxml/hidden/documentselectfolder")</h4>
         </header>
         <div class="" style="">
             <br />
@@ -22,11 +22,11 @@
                 <span class="w3-section">
                     <button class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#documentfileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</button>
                     <button class="w3-button w3-green w3-padding-8" onclick="dnnrocketdocs_usedocument()">@ResourceKey("DNNrocket.cmdUseButton")</button>
-                    <button class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketdocs_delete" s-before="dnnrocketdocs_deletedocument" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist"  s-fields="theme:config-w3,template:imagelist.cshtml,systemprovider:dnnrocket,interfacekey:imageupload">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
+                    <button class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketdocs_delete" s-before="dnnrocketdocs_deletedocument" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-post="#dnnrocket_deletedocumentlist"  s-fields="theme:config-w3,systemprovider:dnnrocket,interfacekey:documentupload,documentfolder:@Model.HeaderData.GetXmlProperty("genxml/hidden/documentselectfolder"),singleselect:true,autoreturn:false">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
                 </span>
 
                 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
-                    <input id="documentfileupload" class="simplisity_fileupload" s-cmd="rocketdocs_upload" s-reload="false" s-after="dnnrocketdocs_showthelist"  s-return="#dnnrocket_documentselectwrapper" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields="theme:config-w3,systemprovider:dnnrocket,interfacekey:documentupload" type="file" name="files[]" multiple style="display:none;">
+                    <input id="documentfileupload" class="simplisity_fileupload" s-cmd="rocketdocs_upload" s-reload="false" s-after="dnnrocketdocs_showthelist"  s-return="#dnnrocket_documentselectwrapper" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields="theme:config-w3,systemprovider:dnnrocket,interfacekey:documentupload,documentfolder:@Model.HeaderData.GetXmlProperty("genxml/hidden/documentselectfolder"),singleselect:true,autoreturn:false" type="file" name="files[]" multiple style="display:none;">
                     <p><i>@ResourceKey("DNNrocket.drophere")...</i></p>
                 </div>
 
@@ -37,7 +37,7 @@
                                 var lp = 1;
                                 foreach (string i in Model.List)
                                 {
-                                    <tr class='dnnrocket-documentselector' dnnrocket-documentname='@i' dnnrocket-documenturl='@DNNrocketUtils.HomeRelDirectory()/docs/@i' selectorcount='@(lp)'>
+                                    <tr class='dnnrocket-documentselector' dnnrocket-documentname='@i' selectorcount='@(lp)'>
                                         <td style="width:40px;"><i style="display:none;" class="fas fa-check-circle dnnrocket-docselector "></i></td>
                                         <td>@i</td>
                                     </tr>
@@ -116,7 +116,7 @@
         var documentlist = '';
         $('.dnnrocket-documentselector').each(function (index) {
             if ($(this).hasClass('w3-theme')) {
-                var documentname = simplisity_encode($(this).attr('dnnrocket-imagename'));
+                var documentname = simplisity_encode($(this).attr('dnnrocket-documentname'));
                 documentlist = documentlist + documentname + ";";
                 $(this).removeClass('w3-theme');
                 $(this).find('.dnnrocket-docselector').hide();
@@ -131,7 +131,7 @@
             if ($(this).hasClass('w3-theme')) {
                 var idx = simplisity_getCookieValue('dnnrocket-documentindex');
                 $('#name' + idx).val($(this).attr('dnnrocket-documentname'));
-                $('#' + idx).val($(this).attr('dnnrocket-documenturl'));
+                $('#' + idx).val($(this).attr('dnnrocket-documentname'));
 
                 $('#' + idx).parent().find(".dnnrocket-documentchange").html('&times;');
                 $('#' + idx).parent().find(".dnnrocket-documentchange").addClass('dnnrocket-documentremove');

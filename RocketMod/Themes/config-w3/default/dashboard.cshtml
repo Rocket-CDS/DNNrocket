@@ -12,63 +12,60 @@
 
 @{
     var moduleData = (ModuleData)Model.List.First();
-    var info = moduleData.configData.ConfigInfo;
+    var configinfo = moduleData.configData.ConfigInfo;
 }
 
 <span class="w3-section simplisity_buttons">
-    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click rocketmodsavebutton" s-cmd="rocketmod_saveconfig" s-fields="tabid:@(moduleData.TabId),moduleid:@(moduleData.ModuleId),selecteditemid:@moduleData.ItemId,interfacekey:edit" s-post="#datasection" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click rocketmodsavebutton" s-cmd="rocketmod_saveconfig" s-fields="tabid:@(moduleData.TabId),moduleid:@(moduleData.ModuleId),selecteditemid:@moduleData.ItemId,interfacekey:dashboard" s-post="#configdata" >@ResourceKey("DNNrocket.cmdSaveButton")</button>
+
+    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetButton")</span>
+    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetDataButton")</span>
+
 </span>
 
 
 <div id="configdata" class="w3-container simplisity_panel">
 
-    @HiddenField(info, "genxml/hidden/apptheme")
+    @HiddenField(configinfo, "genxml/hidden/apptheme")
 
     <div class="w3-container">
-        <div class="w3-threequarter">
-            <h1>AppTheme:&nbsp;@moduleData.configData.AppTheme</h1>
-            <p>Config ItemID: @moduleData.configData.ConfigInfo.ItemID</p>
+        <h1>@ResourceKey("RocketMod.config")</h1>
 
-            <div class="w3-row">
-                <div class="w3-row w3-cell w3-cell-middle">
-                    <b>@ResourceKey("RocketMod.imagefolder"):&nbsp;</b>
-                </div>
+        <table class="w3-table w3-responsive" >
+            <tr>
+                <td class="w3-right-align "><b>@ResourceKey("RocketMod.ref"):</b></td>
+                <td>@configinfo.ItemID</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="w3-right-align"><b>@ResourceKey("RocketMod.apptheme"):</b></td>
+                <td>@moduleData.configData.AppTheme</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="w3-right-align"><b>@ResourceKey("RocketMod.imagefolder"):</b></td>
+                <td>
+                    @TextBox(configinfo, "genxml/textbox/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
+                </td>
+                <td>@DNNrocketUtils.HomeRelDirectory()/@configinfo.GetXmlProperty("genxml/textbox/imagefolder")</td>
+            </tr>
+            <tr>
+                <td class="w3-right-align"><b>@ResourceKey("RocketMod.documentfolder"):</b></td>
+                <td>                    
+                    @TextBox(configinfo, "genxml/textbox/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
+                </td>
+                <td>@DNNrocketUtils.HomeRelDirectory()/@configinfo.GetXmlProperty("genxml/textbox/documentfolder")</td>
+            </tr>
+            <tr>
+                <td class="w3-right-align"><b>@ResourceKey("RocketMod.manageremail"):</b></td>
+                <td>
+                    @TextBox(configinfo, "genxml/textbox/manageremail", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+                </td>
+                <td></td>
+            </tr>
+        </table>
 
-                <div class="w3-row w3-cell w3-cell-middle">
-                    <p>@DNNrocketUtils.HomeRelDirectory()/</p>
-                </div>
-
-                <div class="w3-row w3-cell w3-cell-middle">
-                    <p>
-                        @TextBox(moduleData.Data.Info, "genxml/textbox/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
-                    </p>
-                </div>
-            </div>
-
-            <div class="w3-row">
-                <div class="w3-row w3-cell w3-cell-middle">
-                    <b>@ResourceKey("RocketMod.documentfolder"):&nbsp;</b>
-                </div>
-
-                <div class="w3-row w3-cell w3-cell-middle">
-                    <p>@DNNrocketUtils.HomeRelDirectory()/</p>
-                </div>
-
-                <div class="w3-row w3-cell w3-cell-middle">
-                    <p>
-                        @TextBox(moduleData.Data.Info, "genxml/textbox/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
-                    </p>
-                </div>
-            </div>
-
-
-        </div>
-            <div class="w3-quarter">
-                <span class="w3-button w3-block w3-red w3-padding-8 simplisity_confirmclick w3-margin" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetButton")</span>
-                <span class="w3-button w3-block w3-red w3-padding-8 simplisity_confirmclick w3-margin" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetDataButton")</span>
-
-            </div>
-        </div>
+    </div>
 
 
 </div>

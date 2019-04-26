@@ -71,7 +71,7 @@ namespace DNNrocket.Images
         {
             try
             {
-                return DNNrocketUtils.RenderImageSelect(new SimplisityRazor(), 100);
+                return DNNrocketUtils.RenderImageSelect(new SimplisityRazor(), 100, _postInfo.GetXmlPropertyBool("genxml/hidden/singleselect"), _postInfo.GetXmlPropertyBool("genxml/hidden/autoreturn"), _postInfo.GetXmlProperty("genxml/hidden/imagefolder"));
             }
             catch (Exception ex)
             {
@@ -83,7 +83,10 @@ namespace DNNrocket.Images
         {
             var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
 
-            var imageDirectory = DNNrocketUtils.HomeDirectory() + "\\images";
+            var imagefolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
+            if (imagefolder == "") imagefolder = "images";
+
+            var imageDirectory = DNNrocketUtils.HomeDirectory() + "\\" + imagefolder;
             if (!Directory.Exists(imageDirectory)) Directory.CreateDirectory(imageDirectory);
 
             var strOut = "";

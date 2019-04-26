@@ -62,22 +62,5 @@ namespace DNNrocketAPI.Componants
             return rtnList;
         }
 
-        public List<SimplisityRecord> GetMenuOnUserSecurity()
-        {
-            var roles = UserUtils.GetCurrentUserRoles();
-            var rtnList = new List<SimplisityRecord>();
-            if (_sysInfo != null)
-            {
-                foreach (var i in _sysInfo.GetList("interfacedata"))
-                {
-
-
-                }
-            }
-
-            return rtnList;
-        }
-
-
     }
 }
