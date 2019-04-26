@@ -135,6 +135,9 @@
   <data name="dashboard.Text" xml:space="preserve">
     <value>DashBoard</value>
   </data>
+  <data name="documentfolder.Text" xml:space="preserve">
+    <value>Document Folder</value>
+  </data>
   <data name="edit.Text" xml:space="preserve">
     <value>Edit Data</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="iframesupport.Text" xml:space="preserve">
     <value>Your browser does not support iframes. Use the Rocket Admin option.</value>
+  </data>
+  <data name="imagefolder.Text" xml:space="preserve">
+    <value>Image Folder</value>
   </data>
   <data name="interfacekey.Text" xml:space="preserve">
     <value>Interface</value>
