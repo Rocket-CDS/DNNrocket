@@ -15,11 +15,10 @@
 
 
 <span class="w3-section simplisity_buttons">
+    <a class="w3-button w3-pale-yellow w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdCancelButton")</a>
     <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmod_add" s-fields="tabid:@(moduleData.TabId),moduleid:@(moduleData.ModuleId),selecteditemid:@moduleData.ItemId,interfacekey:edit">@ResourceKey("DNNrocket.cmdAddButton")</a>
-
     <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click rocketmodsavebutton" s-cmd="rocketmod_save" s-fields="tabid:@(moduleData.TabId),moduleid:@(moduleData.ModuleId),selecteditemid:@moduleData.ItemId,interfacekey:edit" s-post="#datasection" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
-
-    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="databin" s-return="#datasettings" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="databin" s-return="#datalist" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 
 <div id="datasection">

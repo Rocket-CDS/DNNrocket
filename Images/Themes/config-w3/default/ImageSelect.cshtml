@@ -94,6 +94,12 @@
             dnnrocketimages_selectimage(this);
         });
 
+        dnnrocketimages_changeevent();
+        dnnrocketimages_removeevent();
+
+    });
+
+    function dnnrocketimages_changeevent() {
         // Used to display image list and assign the index, so we know what image to update.
         $('.dnnrocket-imagechange').unbind("click");
         $('.dnnrocket-imagechange').click(function () {
@@ -102,14 +108,21 @@
             simplisity_setCookieValue('dnnrocket-imageheight', $(this).parent().find("img:first").attr('imageheight'));
             document.getElementById('rocketimageselect').style.display = 'block';
         });
+    }
+
+    function dnnrocketimages_removeevent() {
 
         $('.dnnrocket-imageremove').unbind("click");
         $('.dnnrocket-imageremove').click(function () {
             $(this).parent().find("input:first").val('');
             $(this).parent().find("img:first").attr('src', '/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=' + $(this).parent().find("img:first").attr('imagewidth') + "&h=" + $(this).parent().find("img:first").attr('imageheight'));
+            $(this).html("<i class='fas fa-edit'></i>");
+            $(this).removeClass('dnnrocket-imageremove');
+            $(this).addClass('dnnrocket-imagechange');
+            dnnrocketimages_changeevent();
         });
+    }
 
-    });
 
 
 function dnnrocketimages_selectimage(element) {
@@ -157,6 +170,12 @@ function dnnrocketimages_selectimage(element) {
                 $('#' + idx).parent().children('img').attr('src', $(this).attr('dnnrocket-imagethumburl') + "&w=" + w + "&h=" + h);
                 $('#' + idx).val($(this).attr('dnnrocket-imageurl'));
                 $(this).removeClass('w3-pale-green');
+
+                $('#' + idx).parent().find(".dnnrocket-imagechange").html('&times;');
+                $('#' + idx).parent().find(".dnnrocket-imagechange").addClass('dnnrocket-imageremove');
+                $('#' + idx).parent().find(".dnnrocket-imagechange").removeClass('dnnrocket-imagechange');
+                dnnrocketdocs_removeevent();
+
             }
         });
         document.getElementById('rocketimageselect').style.display = 'none';
