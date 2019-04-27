@@ -6,7 +6,7 @@
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocketModules/AppThemes/HtmlContent/resx/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/resx/")
 
 @{
     var moduleData = (ModuleData)Model.List.First();
@@ -24,17 +24,19 @@
 <div id="datasection">
 
     <div class="w3-padding w3-rest">
-        <h2>Data section</h2>
-        <div class="w3-row">
-            <div class="w3-padding w3-col m2">
-                <label class="">@ResourceKey("RocketPayForm.ref")</label>
-                @TextBox(moduleData.Data.Info, "genxml/textbox/href", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+        <!-- Ensure head section does NOT have the same field id (xpath) as the list -->
+        <h2></h2>
+        <div class="w3-rest">
+            <div class="w3-threequarter w3-padding">
+                <label class="">@ResourceKey("HtmlContent.title")</label>&nbsp;@EditFlag()
+                @TextBox(moduleData.Data.Info, "genxml/lang/genxml/textbox/header1", " class='w3-input w3-border' autocomplete='off'", "", true)
             </div>
-            <div class="w3-padding w3-col m9">
-                <label class="">@ResourceKey("RocketPayForm.name")</label>&nbsp;@EditFlag()
-                @TextBox(moduleData.Data.Info, "genxml/lang/genxml/textbox/hname", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", true)
+            <div class="w3-quarter w3-padding">
+                <label class="">@ResourceKey("HtmlContent.style")</label>
+                @DropDownList(moduleData.Data.Info, "genxml/select/headerstyle1", "H1,H2,H3,H4", "H1,H2,H3,H4", " class='w3-input w3-border' style='width:100px;' ", "H1", false)
             </div>
         </div>
+
     </div>
 
     <ul id="datalist" class="w3-ul">
@@ -69,11 +71,13 @@
                             <span>&nbsp;</span>
                         }
                     </div>
-                    <div class="w3-rest w3-margin-top">
+                    <div class="w3-rest">
                         <div class="w3-threequarter w3-padding">
+                            <label class="">@ResourceKey("HtmlContent.title")</label>&nbsp;@EditFlag()
                             @TextBox(i, "genxml/lang/genxml/textbox/header", " class='w3-input w3-border' autocomplete='off'", "", true, lp1)
                         </div>
                         <div class="w3-quarter w3-padding">
+                            <label class="">@ResourceKey("HtmlContent.style")</label>
                             @DropDownList(i, "genxml/select/headerstyle", "H1,H2,H3,H4", "H1,H2,H3,H4", " class='w3-input w3-border' style='width:100px;' ", "H1", false, lp1)
                         </div>
                     </div>
@@ -92,7 +96,7 @@
 
                         <div class="w3-row w3-margin">
                             <div class="">
-                                @RadioButtonList(i, "genxml/hidden/layout", "0,1,2,3,4,5,6,7,8", "<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper0.png' style='width:24px;' />,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper1.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper2.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper3.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper4.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper5.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper6.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper7.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper8.png' style='width:24px;'/>", "class=''", "0")
+                                @RadioButtonList(i, "genxml/hidden/layout", "0,1,2,3,4,5,6,7,8", "<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper0.png' style='width:24px;' />,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper1.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper2.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper3.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper4.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper5.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper6.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper7.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper8.png' style='width:24px;'/>", "class=''", "0", "", false, lp1)
                             </div>
                         </div>
 

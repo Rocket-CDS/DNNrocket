@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="imgresize.Text" xml:space="preserve">
-    <value>Image Resize (px)</value>
-  </data>
-  <data name="imgresize.Help" xml:space="preserve">
-    <value>Image Resize (px)</value>
-  </data>
   <data name="layout.Text" xml:space="preserve">
     <value>Layout</value>
+  </data>
+  <data name="style.Text" xml:space="preserve">
+    <value>Style</value>
+  </data>
+  <data name="title.Text" xml:space="preserve">
+    <value>Title</value>
   </data>
 </root>

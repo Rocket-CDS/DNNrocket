@@ -208,7 +208,7 @@ namespace Simplisity
                 foreach (var v in datav)
                 {
                     if (value == v)
-                        s = "checked";
+                        s = "checked='checked'";
                     else
                         s = "";
                     strOut += "    <label " + labelattributes + "><input id='" + id + "_" + c.ToString("") + "' s-xpath='" + xpath + "' " + upd + " name='" + id + "radio' type='radio' value='" + v + "'  " + s + "/>" + datat[c] + "</label>";

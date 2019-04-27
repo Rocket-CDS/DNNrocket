@@ -42,22 +42,16 @@
                             var imagecount = Model.List.Count();
                             foreach (string i in Model.List)
                             {
-                                if ((imagecount - lp) < 5)
+                                imageItems.Add(i);
+                                if ((lp % 6) == 0)
                                 {
-                                    lastImageItems.Add(i);
-                                }
-                                else
-                                {
-                                    imageItems.Add(i);
-                                    if ((lp % 6) == 0)
-                                    {
-                                        imageRows.Add(imageItems);
-                                        imageItems = new List<string>();
-                                    }
+                                    imageRows.Add(imageItems);
+                                    imageItems = new List<string>();
                                 }
                                 lp += 1;
                             }
-                            imageRows.Add(lastImageItems);
+                            imageRows.Add(imageItems);
+
 
                             lp = 1;
                             foreach (List<string> imageRow in imageRows)
@@ -77,6 +71,7 @@
                         }
                     </div>
                     <br/>
+                    <h1>@imagecount</h1>
                 </div>
 
             </div>
