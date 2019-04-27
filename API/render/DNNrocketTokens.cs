@@ -199,8 +199,11 @@ namespace DNNrocketAPI.render
         /// <param name="xpath"></param>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        public IEncodedString CKEditor(SimplisityInfo info, String xpath, String attributes, String startupfile, bool localized = false, int row = 0)
+        public IEncodedString CKEditor(SimplisityInfo info, string xpath, string attributes, string startupfile, bool localized = false, int row = 0)
         {
+            if (startupfile == "") startupfile = "startup.js";
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
             var upd = getUpdateAttr(xpath, attributes, localized);
             var id = getIdFromXpath(xpath, row);
 
@@ -213,16 +216,9 @@ namespace DNNrocketAPI.render
             return CKEditor(info, xpath, attributes, "startup.js");
         }
 
-        public IEncodedString CKEditorFull(SimplisityInfo info, String xpath, String attributes, String startupfile, bool localized = false, int row = 0)
+        public IEncodedString CKEditorFull(SimplisityInfo info, String xpath, String attributes, string startupfile = "startupfull.js", bool localized = false, int row = 0)
         {
-            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
-
-            var upd = getUpdateAttr(xpath, attributes, localized);
-            var id = getIdFromXpath(xpath, row);
-
-            var strOut = " <textarea id='" + id + "' s-datatype='coded' s-xpath='" + xpath + "' type='text' name='editor" + id + "' " + attributes + " " + upd + " >" + info.GetXmlProperty(xpath) + "</textarea>";
-            strOut += GetCKEditorStartup(id, startupfile);
-            return new RawString(strOut);
+            return CKEditor(info, xpath, attributes, startupfile, localized, row);
         }
         public IEncodedString CKEditorFull(SimplisityInfo info, String xpath, String attributes = "", bool localized = false, int row = 0)
         {
