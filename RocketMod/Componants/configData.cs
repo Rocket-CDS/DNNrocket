@@ -93,7 +93,7 @@ namespace RocketMod
             {
                 postInfo.SetXmlProperty("genxml/dropdownlist/paymentprovider", ConfigInfo.GetXmlProperty("genxml/dropdownlist/paymentprovider"));
             }
-            postInfo.SetXmlProperty("genxml/checkbox/noiframeedit", "True"); // we do not want iframe edit
+            postInfo.SetXmlProperty("genxml/checkbox/noiframeedit", "False"); // we do not want iframe edit
 
             ConfigInfo.XMLData = postInfo.XMLData;
 

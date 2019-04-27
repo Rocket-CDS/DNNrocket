@@ -37,13 +37,6 @@
         </div>
     </div>
 
-    <div>
-        @TabSelectListOnTabId(moduleData.Data.Info, "genxml/select/tabselected", " class='w3-input w3-border' ")
-    </div>
-    <div>
-        @LinkInternalUrl(moduleData.Data.Info.PortalId, moduleData.Data.Info.GetXmlPropertyInt("genxml/select/tabselected"), DNNrocketUtils.GetEditCulture())
-    </div>
-
     <ul id="datalist" class="w3-ul">
 
         @{
@@ -63,31 +56,29 @@
                 </button>
 
                 <div class="w3-row">
-                    <div class="w3-col " style="width: 50px; clear:both;">
-                        &nbsp;
+                    <div class="w3-col " style="width: 50px;">
+                        <span>&nbsp;</span>
                     </div>
-                    <div class="w3-col " style="width: 200px">
-                        @ImageEdit(i, "genxml/hidden/imagerelpath", 100, 100, "", false, lp1)
+                    <div class="w3-col " style="width: 100px;">
+                        @if (i.GetXmlProperty("genxml/hidden/imagepath1") != "")
+                        {
+                            <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagepath1"),75,75)" />
+                        }
+                        else
+                        {
+                            <span>&nbsp;</span>
+                        }
                     </div>
-                    <div class="w3-padding w3-rest">
-                        <div class="w3-row">
-                            <div class="w3-padding w3-col m2">
-                                <label class="">@ResourceKey("RocketPayForm.ref")</label>
-                                @TextBox(i, "genxml/textbox/ref", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false, lp1)
-
-
-                            </div>
-                            <div class="w3-padding w3-col m9">
-                                <label class="">@ResourceKey("RocketPayForm.name")</label>&nbsp;@EditFlag()
-                                @TextBox(i, "genxml/lang/genxml/textbox/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", true, lp1)
-                            </div>
-                            <div class="w3-padding w3-col m1">
-                            </div>
+                    <div class="w3-rest w3-margin-top">
+                        <div class="w3-threequarter w3-padding">
+                            @TextBox(i, "genxml/lang/genxml/textbox/header", " class='w3-input w3-border' autocomplete='off'", "", true, lp1)
                         </div>
-                        <div class="w3-row">
-
-
+                        <div class="w3-quarter w3-padding">
+                            @DropDownList(i, "genxml/select/headerstyle", "H1,H2,H3,H4", "H1,H2,H3,H4", " class='w3-input w3-border' style='width:100px;' ", "H1", false, lp1)
                         </div>
+                    </div>
+                    <div class="w3-col " style="width: 50px;">
+                        <span>&nbsp;</span>
                     </div>
                 </div>
             </div>
@@ -109,15 +100,6 @@
                             @CKEditor(i, "genxml/lang/genxml/textbox/richtext", "", "", true, lp1)
                         </div>
 
-
-                        <div class="w3-row w3-padding">
-                            <div class="w3-threequarter w3-padding">
-                                @TextBox(i, "genxml/lang/genxml/textbox/header", " class='w3-input w3-border' autocomplete='off'", "", true, lp1)
-                            </div>
-                            <div class="w3-quarter w3-padding">
-                                @DropDownList(i, "genxml/select/headerstyle", "H1,H2,H3,H4", "H1,H2,H3,H4", " class='w3-input w3-border' style='width:100px;' ", "H1", false, lp1)
-                            </div>
-                        </div>
 
                         <div class="w3-row w3-padding">
                             <div class="w3-container w3-col w3-padding" style="width:140px;">
@@ -144,25 +126,12 @@
                             <div class="w3-container w3-margin">
                                 @DocumentEdit(i, "document1", " class='w3-input w3-border' ", true, lp1)
                             </div>
-                            <div class="w3-container w3-margin">
-                                @DocumentEdit(i, "document2", " class='w3-input w3-border' ", true, lp1)
-                            </div>
-                            <div class="w3-container w3-margin">
-                                @DocumentEdit(i, "document3", " class='w3-input w3-border' ", true, lp1)
-                            </div>
-                            <div class="w3-container w3-margin">
-                                @DocumentEdit(i, "document4", " class='w3-input w3-border' ", true, lp1)
-                            </div>
-                            <div class="w3-container w3-margin">
-                                @DocumentEdit(i, "document5", " class='w3-input w3-border' ", true, lp1)
-                            </div>
-                            <div class="w3-container w3-margin">
-                                @DocumentEdit(i, "document6", " class='w3-input w3-border' ", true, lp1)
-                            </div>
                         </div>
 
                         <div class="w3-row w3-padding">
-
+                            <div class="w3-container w3-margin">
+                                @TabSelectListOnTabId(moduleData.Data.Info, "genxml/select/internallink1", " class='w3-input w3-border' ")
+                            </div>
                         </div>
 
 
