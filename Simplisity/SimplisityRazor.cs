@@ -20,6 +20,8 @@ namespace Simplisity
 
         public String Lang { get; set; }
 
+
+        public SimplisityInfo Datainfo { get; set; }
         public SimplisityInfo HeaderData { get; set; }
 
         public SimplisityRazor(List<object> list, Dictionary<String, String> settings, NameValueCollection urlParams)

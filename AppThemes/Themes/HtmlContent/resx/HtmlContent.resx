@@ -120,10 +120,22 @@
   <data name="layout.Text" xml:space="preserve">
     <value>Layout</value>
   </data>
+  <data name="document.Text" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="internallink.Text" xml:space="preserve">
+    <value>Internal Link</value>
+  </data>
   <data name="style.Text" xml:space="preserve">
     <value>Style</value>
   </data>
   <data name="title.Text" xml:space="preserve">
     <value>Title</value>
+  </data>
+  <data name="externallink.Text" xml:space="preserve">
+    <value>External Link</value>
+  </data>
+  <data name="link.Text" xml:space="preserve">
+    <value>Link</value>
   </data>
 </root>

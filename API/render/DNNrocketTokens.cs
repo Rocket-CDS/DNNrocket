@@ -262,7 +262,7 @@ namespace DNNrocketAPI.render
             var upd = getUpdateAttr(xpath, "", localized);
             var id = getIdFromXpath(xpath, row);
 
-            strOut = "<select id='" + id + "' " + upd + " guidkey='tab' " + attributes + ">";
+            strOut = "<select id='" + id + "' s-xpath='" + xpath + "' " + upd + " " + attributes + ">";
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
             foreach (var tItem in tList)
@@ -288,7 +288,7 @@ namespace DNNrocketAPI.render
             var upd = getUpdateAttr(xpath, "", localized);
             var id = getIdFromXpath(xpath, row);
 
-            strOut = "<select id='" + id + "' " + upd + " guidkey='tab' " + attributes + ">";
+            strOut = "<select id='" + id + "' s-xpath='" + xpath + "' " + upd + " " + attributes + ">";
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
             foreach (var tItem in tList)

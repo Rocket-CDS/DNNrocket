@@ -5,12 +5,16 @@
 @using System.Xml
 @using Simplisity;
 @using DNNrocketAPI.Componants;
+@using RazorEngine.Text;
 
 
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/resx/")
 
 @RenderTemplate("editiframe.cshtml", "/DesktopModules/DNNrocket/rocketmod", "config-w3", Model)
+
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/css/htmlcontent2.css">
 
 
 @{
@@ -19,36 +23,38 @@
     {
         info = (SimplisityInfo)Model.List.First();
     }
+
 }
 
-@foreach (SimplisityInfo i in info.GetList("settingsdata"))
-{
+<div class="newspaper-wrapper newspaper-wrapper3col">
 
 
-    <div class="w3-container rm-container">
+    @foreach (SimplisityInfo i in info.GetList("settingsdata"))
+    {
+        Model.Datainfo = i;
+        var layout = i.GetXmlPropertyInt("genxml/hidden/layout");
 
-        <h1>Hello New World Display!!!! </h1>
-        <h1>@Model.GetSetting("addeditscript")</h1>
-        <h2>
-            @info.GetXmlProperty("genxml/textbox/ref")
-        </h2>
+        <div class="newspaper-wrapperdiv">
 
-        <div>
-            <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagerelpath"),200,200,"")" class="w3-round" alt="" />
+            @if (i.GetXmlProperty("genxml/lang/genxml/textbox/header") != "")
+            {
+                var headerstyle = i.GetXmlProperty("genxml/select/headerstyle");
+                var hstart = "<" + headerstyle + ">";
+                var hend = "</" + headerstyle + ">";
+                @HtmlOf(hstart)@i.GetXmlProperty("genxml/lang/genxml/textbox/header")@HtmlOf(hend)
+            }
+
+            //------------------------------------------------------------
+
+            <div class="newspaper-imgdivfloatleft">
+                <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@i.GetXmlProperty("genxml/hidden/imagepath1")&w=150&h=0" alt="" />
+            </div>
+
+            @RenderTemplate("displaytext0.cshtml", "/DesktopModules/DNNrocket/AppThemes", "HtmlContent", Model)
+
+
+            <div class="clearfix"></div>
         </div>
+    }
 
-        <h3>
-            @i.GetXmlProperty("genxml/lang/genxml/textbox/name")
-        </h3>
-
-        <h3>
-            @i.GetXmlProperty("genxml/textbox/modeltest")
-        </h3>
-
-        <div class='w3-padding'>
-            @HtmlOf(i.GetXmlProperty("genxml/textbox/ckeditor"))
-        </div>
-
-    </div>
-}
-
+</div>

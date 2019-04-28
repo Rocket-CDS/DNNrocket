@@ -127,17 +127,20 @@
                         </div>
 
                         <div class="w3-row w3-padding">
-                            <div class="w3-container w3-margin">
+                            <div class="w3-container ">
+                                <label class="">@ResourceKey("HtmlContent.document")</label>&nbsp;@EditFlag()
                                 @DocumentEdit(i, "document1", " class='w3-input w3-border' ", true, lp1)
                             </div>
                         </div>
 
                         <div class="w3-row w3-padding">
-                            <div class="w3-container w3-margin">
-                                @TabSelectListOnTabId(moduleData.Data.Info, "genxml/select/internallink1", " class='w3-input w3-border' ")
+                            <div class="w3-container">
+                                <label class="">@ResourceKey("HtmlContent.internallink")</label>
+                                @TabSelectListOnTabId(i, "genxml/select/internallink1", " class='w3-input w3-border' ", true, false, lp1)
+                                <label class="">@ResourceKey("HtmlContent.externallink")</label>
+                                @TextBox(i, "genxml/textbox/externallink1", " class='w3-input w3-border' autocomplete='off'", "", true, lp1)
                             </div>
                         </div>
-
 
                         <div class="w3-row w3-padding">
                             <button onclick="dnnrocket_hidedetail(@(lp1))" class="w3-button w3-display-bottomleft">
@@ -194,7 +197,6 @@
                 }
 
             }
-
 
         </script>
 
