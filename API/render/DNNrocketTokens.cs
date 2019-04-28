@@ -95,8 +95,11 @@ namespace DNNrocketAPI.render
             return new RawString(url);
         }
 
-        public IEncodedString ImageEdit(SimplisityInfo info, string xpath, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0)
+        public IEncodedString ImageEdit(SimplisityInfo info, string fieldId, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0)
         {
+            var xpath = "genxml/hidden/" + fieldId;
+            var xpathwidth = "genxml/hidden/width" + fieldId;
+            var xpathheight = "genxml/hidden/height" + fieldId;
             if (width == 0) width = 200;
             var imgurl = info.GetXmlProperty(xpath);
             var strOut = "<div class='w3-display-container' style='width: " + width + "px'>";
@@ -107,9 +110,14 @@ namespace DNNrocketAPI.render
             {
                 value = info.GetXmlProperty("genxml/lang/" + xpath);
             }
+            var valuewidth = info.GetXmlPropertyInt(xpathwidth);
+            var valueheight = info.GetXmlPropertyInt(xpathheight);
+
             var upd = getUpdateAttr(xpath, "", localized);
             var id = getIdFromXpath(xpath, row);
             strOut += "<input value='" + value + "' id='" + id + "' s-xpath='" + xpath + "' " + upd + " type='hidden' />";
+            strOut += "<input value='" + valuewidth + "' id='width" + id + "' s-xpath='" + xpathwidth + "' " + upd + " type='hidden' />";
+            strOut += "<input value='" + valueheight + "' id='height" + id + "' s-xpath='" + xpathheight + "' " + upd + " type='hidden' />";
 
             if (imgurl == "")
             {

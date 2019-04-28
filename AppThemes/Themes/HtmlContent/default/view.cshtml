@@ -15,6 +15,7 @@
 @RenderTemplate("editiframe.cshtml", "/DesktopModules/DNNrocket/rocketmod", "config-w3", Model)
 
 <link rel="stylesheet" href="/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/css/htmlcontent2.css">
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
 
 
 @{
@@ -26,35 +27,25 @@
 
 }
 
-<div class="newspaper-wrapper newspaper-wrapper3col">
+<div class="w3-display-container">
 
 
     @foreach (SimplisityInfo i in info.GetList("settingsdata"))
     {
         Model.Datainfo = i;
         var layout = i.GetXmlPropertyInt("genxml/hidden/layout");
+        var layouttemplate = "displaytext" + layout + ".cshtml";
 
-        <div class="newspaper-wrapperdiv">
+        if (i.GetXmlProperty("genxml/lang/genxml/textbox/header") != "")
+        {
+            var headerstyle = i.GetXmlProperty("genxml/select/headerstyle");
+            var hstart = "<" + headerstyle + ">";
+            var hend = "</" + headerstyle + ">";
+            @HtmlOf(hstart)@i.GetXmlProperty("genxml/lang/genxml/textbox/header")@HtmlOf(hend)
+        }
 
-            @if (i.GetXmlProperty("genxml/lang/genxml/textbox/header") != "")
-            {
-                var headerstyle = i.GetXmlProperty("genxml/select/headerstyle");
-                var hstart = "<" + headerstyle + ">";
-                var hend = "</" + headerstyle + ">";
-                @HtmlOf(hstart)@i.GetXmlProperty("genxml/lang/genxml/textbox/header")@HtmlOf(hend)
-            }
+        @RenderTemplate(layouttemplate, "/DesktopModules/DNNrocket/AppThemes", "HtmlContent", Model)
 
-            //------------------------------------------------------------
-
-            <div class="newspaper-imgdivfloatleft">
-                <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@i.GetXmlProperty("genxml/hidden/imagepath1")&w=150&h=0" alt="" />
-            </div>
-
-            @RenderTemplate("displaytext0.cshtml", "/DesktopModules/DNNrocket/AppThemes", "HtmlContent", Model)
-
-
-            <div class="clearfix"></div>
-        </div>
     }
 
 </div>

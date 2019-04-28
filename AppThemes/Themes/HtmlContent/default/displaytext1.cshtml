@@ -11,8 +11,16 @@
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/resx/")
 
+@{
+    var imagewidth = Model.Datainfo.GetXmlPropertyInt("genxml/hidden/imagewidth");
+    var imageheight = Model.Datainfo.GetXmlPropertyInt("genxml/hidden/imageheight");
+}
 
 <div id="w3-row">
+
+    <div class="w3-padding" style="float: left">
+        <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath1")&w=@imagewidth&h=@imageheight" alt="" />
+    </div>
 
     @HtmlOf(Model.Datainfo.GetXmlProperty("genxml/lang/genxml/textbox/richtext"))
 
