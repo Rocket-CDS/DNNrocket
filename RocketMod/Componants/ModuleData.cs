@@ -33,12 +33,7 @@ namespace RocketMod
             _systemid = configData.SystemId;
             _configData = configData;
 
-            if (_configData.Exists)
-            {
-                _settingData = new SettingsData(configData.TabId, configData.ModuleId, langRequired, _entityTypeCode);
-                PopulateHeader();
-                _currentRecord = _settingData.Info;
-             }
+            Populate();
         }
 
         public void DeleteData()
@@ -57,6 +52,15 @@ namespace RocketMod
             }
         }
 
+        public void Populate()
+        {
+            if (_configData.Exists)
+            {
+                _settingData = new SettingsData(configData.TabId, configData.ModuleId, _langRequired, _entityTypeCode);
+                PopulateHeader();
+                _currentRecord = _settingData.Info;
+            }
+        }
 
 
         #region "HEADER"

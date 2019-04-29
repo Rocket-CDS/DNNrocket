@@ -91,6 +91,7 @@ namespace RocketMod
                     break;
                 case "rocketmod_saveapptheme":                    
                     _moduleData.configData.SaveAppTheme(postInfo.GetXmlProperty("genxml/hidden/apptheme"));
+                    _moduleData.Populate();
                     strOut = GetDashBoard();
                     break;
                 case "rocketmod_getdata":
