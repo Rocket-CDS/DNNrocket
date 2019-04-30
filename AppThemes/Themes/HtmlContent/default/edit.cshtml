@@ -7,6 +7,7 @@
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
 @AddMetaData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/resx/")
+@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
 
 @{
     var moduleData = (ModuleData)Model.List.First();
@@ -47,107 +48,79 @@
         @foreach (SimplisityInfo i in moduleData.List)
         {
             lp1 += 1;
-        <li class="settingsdata w3-card w3-margin w3-display-container">
+            <li class="settingsdata w3-card w3-margin w3-display-container">
 
-            <div class="listrow">
-                <button id="deletebutton@(lp1)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="databin">
-                    <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
-                </button>
-                <button id="editbutton@(lp1)" onclick="dnnrocket_showdetail(@(lp1))" class="w3-button w3-display-topleft editbutton" >
-                    <i class="fas fa-edit"></i>
-                </button>
+                <div class="listrow">
+                    <button id="deletebutton@(lp1)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="databin">
+                        <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
+                    </button>
+                    <button id="editbutton@(lp1)" onclick="dnnrocket_showdetail(@(lp1))" class="w3-button w3-display-topleft editbutton">
+                        <i class="fas fa-edit"></i>
+                    </button>
 
-                <div class="w3-row">
-                    <div class="w3-col " style="width: 50px;">
-                        <span>&nbsp;</span>
-                    </div>
-                    <div class="w3-col " style="width: 100px;">
-                        @if (i.GetXmlProperty("genxml/hidden/imagepath1") != "")
-                        {
-                            <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagepath1"),75,75)" />
-                        }
-                        else
-                        {
+                    <div class="w3-row">
+                        <div class="w3-col " style="width: 50px;">
                             <span>&nbsp;</span>
-                        }
-                    </div>
-                    <div class="w3-rest">
-                        <div class="w3-threequarter w3-padding">
-                            <label class="">@ResourceKey("HtmlContent.title")</label>&nbsp;@EditFlag()
-                            @TextBox(i, "genxml/lang/genxml/textbox/header", " class='w3-input w3-border' autocomplete='off'", "", true, lp1)
                         </div>
-                        <div class="w3-quarter w3-padding">
-                            <label class="">@ResourceKey("HtmlContent.style")</label>
-                            @DropDownList(i, "genxml/select/headerstyle", "H1,H2,H3,H4", "H1,H2,H3,H4", " class='w3-input w3-border' style='width:100px;' ", "H1", false, lp1)
+                        <div class="w3-col " style="width: 100px;">
+                            @if (i.GetXmlProperty("genxml/hidden/imagepath1") != "")
+                            {
+                                <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagepath1"),75,75)" />
+                            }
+                            else
+                            {
+                                <span>&nbsp;</span>
+                            }
                         </div>
-                    </div>
-                    <div class="w3-col " style="width: 50px;">
-                        <span>&nbsp;</span>
+                        <div class="w3-rest">
+                            <div class="w3-threequarter w3-padding">
+                                <label class="">@ResourceKey("HtmlContent.title")</label>&nbsp;@EditFlag()
+                                @TextBox(i, "genxml/lang/genxml/textbox/header", " class='w3-input w3-border' autocomplete='off'", "", true, lp1)
+                            </div>
+                            <div class="w3-quarter w3-padding">
+                                <label class="">@ResourceKey("HtmlContent.style")</label>
+                                @DropDownList(i, "genxml/select/headerstyle", "H1,H2,H3,H4", "H1,H2,H3,H4", " class='w3-input w3-border' style='width:100px;' ", "H1", false, lp1)
+                            </div>
+                        </div>
+                        <div class="w3-col " style="width: 50px;">
+                            <span>&nbsp;</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
-            <!-- The Detail-->
-            <div id="detailDisplay@(lp1)" class="w3-container" style="display:none;">
-                <div class="" style="">
+                <!-- The Detail-->
+                <div id="detailDisplay@(lp1)" class="w3-container" style="display:none;">
+                    <div class="" style="">
 
-                    <div class="w3-container ">
+                        <div class="w3-container ">
 
-                        <div class="w3-row w3-margin">
-                            <div class="">
-                                @RadioButtonList(i, "genxml/hidden/layout", "0,1,2,3,4,5,6,7,8", "<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper0.png' style='width:24px;' />,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper1.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper2.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper3.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper4.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper5.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper6.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper7.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper8.png' style='width:24px;'/>", "class=''", "0", "", false, lp1)
-                            </div>
-                        </div>
-
-                        <div class="w3-row w3-padding">
-                            @CKEditor(i, "genxml/lang/genxml/textbox/richtext", "", "", true, lp1)
-                        </div>
-
-                        <div class="w3-row w3-padding">
-                            <div class="w3-col" style="width:160px;">
-                                @ImageEdit(i, "imagepath9", 140, 140, "", false, lp1)
-                            </div>
-                            <div class="w3-col m6">
-                                <div class="w3-row w3-padding">
-                                    <label class="">Alt</label>&nbsp;@EditFlag()
-                                    @TextBox(i, "genxml/lang/genxml/textbox/imagealt9", " class='w3-input w3-border' autocomplete='off'", "", true, lp1)
-                                </div>
-                                <div class="w3-row">
-                                    <div class="w3-col w3-padding" style="width:100px;">
-                                        <label class="">Width</label>
-                                        @TextBox(i, "genxml/textbox/imagewidth9", " class='w3-input w3-border' autocomplete='off'", "200", false, lp1)
-                                    </div>
-                                    <div class="w3-col w3-padding" style="width:100px;">
-                                        <label class="">Height</label>
-                                        @TextBox(i, "genxml/textbox/imageheight9", " class='w3-input w3-border' autocomplete='off'", "0", false, lp1)
-                                    </div>
+                            <div class="w3-row w3-margin">
+                                <div class="">
+                                    @RadioButtonList(i, "genxml/hidden/layout", "0,1,2,3,4,5,6,7,8", "<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper0.png' style='width:24px;' />,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper1.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper2.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper3.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper4.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper5.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper6.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper7.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper8.png' style='width:24px;'/>", "class=''", "0", "", false, lp1)
                                 </div>
                             </div>
-                        </div>
 
                             <div class="w3-row w3-padding">
-                                <div class="w3-container w3-col w3-padding" style="width:140px;">
-                                    @ImageEdit(i, "imagepath1", 100, 100, "", false, lp1)
-                                    @TextBox(i, "genxml/textbox/imagewidth", " class='w3-input w3-border' autocomplete='off'", "200", true, lp1)
-                                    @TextBox(i, "genxml/textbox/imageheight", " class='w3-input w3-border' autocomplete='off'", "0", true, lp1)
+                                @CKEditor(i, "genxml/lang/genxml/textbox/richtext", "", "", true, lp1)
+                            </div>
+                            <div class="w3-row">
+                                <div class="w3-half">
+                                    @ImageEditFull(i, "imagepath1", 140, 140, "", false, lp1)
                                 </div>
-                                <div class="w3-container w3-col w3-padding" style="width:140px;">
-                                    @ImageEdit(i, "imagepath2", 100, 100, "", false, lp1)
-                                </div>
-                                <div class="w3-container w3-col w3-padding" style="width:140px;">
-                                    @ImageEdit(i, "imagepath3", 100, 100, "", false, lp1)
-                                </div>
-                                <div class="w3-container w3-col w3-padding" style="width:140px;">
-                                    @ImageEdit(i, "imagepath4", 100, 100, "", false, lp1)
-                                </div>
-                                <div class="w3-container w3-col w3-padding" style="width:140px;">
-                                    @ImageEdit(i, "imagepath5", 100, 100, "", false, lp1)
-                                </div>
-                                <div class="w3-container w3-col w3-padding" style="width:140px;">
-                                    @ImageEdit(i, "imagepath6", 100, 100, "", false, lp1)
+                                <div class="w3-half">
+                                    @ImageEditFull(i, "imagepath2", 140, 140, "", false, lp1)
                                 </div>
                             </div>
+                            <div class="w3-row">
+                                <div class="w3-half">
+                                    @ImageEditFull(i, "imagepath3", 140, 140, "", false, lp1)
+                                </div>
+                                <div class="w3-half">
+                                    @ImageEditFull(i, "imagepath4", 140, 140, "", false, lp1)
+                                </div>
+                            </div>
+
 
                             <div class="w3-row w3-padding">
                                 <div class="w3-container ">
@@ -175,52 +148,52 @@
 
                         </div>
                     </div>
-            </div>
+                </div>
 
 
-        </li>
+            </li>
 
         }
-        </ul>
+    </ul>
 
-        </div>
+</div>
 
-        <script>
-            $(document).ready(function () {
-                $(':checkbox').attr('class', 'w3-check');
+<script>
+    $(document).ready(function () {
+        $(':checkbox').attr('class', 'w3-check');
 
-                $("#datalist").sortable();
-                $("#datalist").disableSelection();
+        $("#datalist").sortable();
+        $("#datalist").disableSelection();
 
-            });
+    });
 
 
-            function dnnrocket_showdetail(row) {
-                $('#detailDisplay' + row).show();
-                $("#datalist").sortable("option", "disabled", true);
-                $('#editbutton' + row).html('<i class="fas fa-caret-up"></i>');
-                $('#editbutton' + row).attr('onclick', 'dnnrocket_hidedetail(' + row + ')');
-                $('#editbutton' + row).addClass('detailopen');                
+    function dnnrocket_showdetail(row) {
+        $('#detailDisplay' + row).show();
+        $("#datalist").sortable("option", "disabled", true);
+        $('#editbutton' + row).html('<i class="fas fa-caret-up"></i>');
+        $('#editbutton' + row).attr('onclick', 'dnnrocket_hidedetail(' + row + ')');
+        $('#editbutton' + row).addClass('detailopen');
+    }
+
+    function dnnrocket_hidedetail(row) {
+        $('#detailDisplay' + row).hide();
+        $('#editbutton' + row).html('<i class="fas fa-edit"></i>');
+        $('#editbutton' + row).attr('onclick', 'dnnrocket_showdetail(' + row + ')');
+        $('#editbutton' + row).removeClass('detailopen');
+
+        var activatesort = true;
+        $('.editbutton').each(function (index) {
+            if ($(this).hasClass('detailopen')) {
+                activatesort = false;
             }
+        });
+        if (activatesort) {
+            $("#datalist").sortable("option", "disabled", false);
+        }
 
-            function dnnrocket_hidedetail(row) {
-                $('#detailDisplay' + row).hide();
-                $('#editbutton' + row).html('<i class="fas fa-edit"></i>');
-                $('#editbutton' + row).attr('onclick', 'dnnrocket_showdetail(' + row + ')');
-                $('#editbutton' + row).removeClass('detailopen');                
+    }
 
-                var activatesort = true;
-                $('.editbutton').each(function (index) {
-                    if ($(this).hasClass('detailopen')) {
-                        activatesort = false;
-                    }
-                });
-                if (activatesort) {
-                    $("#datalist").sortable("option", "disabled", false);
-                }
-
-            }
-
-        </script>
+</script>
 
 
