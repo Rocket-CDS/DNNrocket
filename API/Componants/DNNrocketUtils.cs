@@ -1501,6 +1501,26 @@ namespace DNNrocketAPI
             return strOut;
         }
 
+        public static void ForceDocDownload(string docFilePath, string fileName, HttpResponse response)
+        {
+            if (File.Exists(docFilePath) & !String.IsNullOrEmpty(fileName))
+            {
+                response.AppendHeader("content-disposition", "attachment; filename=" + fileName);
+                response.ContentType = "application/octet-stream";
+                response.WriteFile(docFilePath);
+                response.End();
+            }
+
+        }
+
+        public static void ForceStringDownload(HttpResponse response, string fileName, string fileData)
+        {
+            response.AppendHeader("content-disposition", "attachment; filename=" + fileName);
+            response.ContentType = "application/octet-stream";
+            response.Write(fileData);
+            response.End();
+        }
+
 
     }
 }

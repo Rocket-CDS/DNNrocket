@@ -36,6 +36,40 @@ namespace DNNrocketAPI
 
                 var paramCmd = context.Request.QueryString["cmd"];
 
+
+                if (paramCmd == "downloadfile")
+                {
+                    var fileindex = context.Request.QueryString["fileindex"];
+                    var itemid = context.Request.QueryString["itemid"];
+                    var filename = context.Request.QueryString["filename"];
+                    var downloadname = context.Request.QueryString["downloadname"];
+                    if (GeneralUtils.IsNumeric(itemid) && GeneralUtils.IsNumeric(fileindex))
+                    {
+                        var nbi = objCtrl.GetInfo(Convert.ToInt32(itemid), DNNrocketUtils.GetCurrentCulture());
+                        var fpath = nbi.GetXmlProperty("genxml/docs/genxml[" + fileindex + "]/hidden/docpath");
+                        if (downloadname == "") downloadname = Path.GetFileName(fpath);
+                        DNNrocketUtils.ForceDocDownload(fpath, downloadname, context.Response);
+                    }
+                    else
+                    {
+                        if (filename != "")
+                        {
+                            var fpath = PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\" + filename;
+                            if (downloadname == "") downloadname = Path.GetFileName(fpath);
+                            DNNrocketUtils.ForceDocDownload(fpath, downloadname, context.Response);
+                        }
+                    }
+                    strOut = "File Download Error, filename: " + filename + ", itemid: " + itemid + ", fileindex: " + fileindex + " ";
+
+
+
+                    context.Response.ContentType = "text/plain";
+                    context.Response.Write(strOut);
+                    context.Response.End();
+                }
+
+
+
                 var postInfo = new SimplisityInfo();
                 postInfo.PortalId = PortalSettings.Current.PortalId;
                 postInfo.SetXmlProperty("genxml/hidden", "");
