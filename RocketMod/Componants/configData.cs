@@ -109,8 +109,10 @@ namespace RocketMod
         public string ProviderClass { get { return ConfigInfo.GetXmlProperty("genxml/textbox/namespaceclass"); } }
         public string ManagerEmail { get { return ConfigInfo.GetXmlProperty("genxml/textbox/manageremail"); } }
         public string AppTheme { get { return ConfigInfo.GetXmlProperty("genxml/hidden/apptheme"); } }
+        public string AppThemeVersion { get { return ConfigInfo.GetXmlProperty("genxml/select/versionfolder"); } }
         public string ImageFolderRel { get{ return DNNrocketUtils.HomeRelDirectory() + "/" + ImageFolder; } }
         public string DocumentFolderRel { get{ return DNNrocketUtils.HomeRelDirectory() + "/" + DocumentFolder;} }
+
         public string DocumentFolder
         {
             get

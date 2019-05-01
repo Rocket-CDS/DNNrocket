@@ -199,10 +199,15 @@ namespace DNNrocketAPI
         }
 
 
-        public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder, string lang)
+        public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder, string lang, string versionFolder = "v1")
         {
             var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
-            var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, "Themes\\" + themeFolder, controlMapPath);
+            var themeFolderPath = "Themes\\" + themeFolder + "\\" + versionFolder;
+            if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath))
+            {
+                themeFolderPath = "Themes\\" + themeFolder;
+            }
+            var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, themeFolderPath, controlMapPath);
             var templ = templCtrl.GetTemplateData(templatename, lang);
             return templ;
         }
@@ -1126,9 +1131,18 @@ namespace DNNrocketAPI
 
         public static string HomeDirectory()
         {
-            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocket";
+            return PortalSettings.Current.HomeDirectoryMapPath;
         }
         public static string HomeRelDirectory()
+        {
+            return PortalSettings.Current.HomeDirectory;
+        }
+
+        public static string HomeDNNrocketDirectory()
+        {
+            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocket";
+        }
+        public static string HomeDNNrocketRelDirectory()
         {
             return PortalSettings.Current.HomeDirectory + "DNNrocket";
         }
@@ -1202,9 +1216,9 @@ namespace DNNrocketAPI
             if (!Directory.Exists(TempDirectory())) {
                 Directory.CreateDirectory(TempDirectory());
             }
-            if (!Directory.Exists(HomeDirectory()))
+            if (!Directory.Exists(HomeDNNrocketDirectory()))
             {
-                Directory.CreateDirectory(HomeDirectory());
+                Directory.CreateDirectory(HomeDNNrocketDirectory());
             }
 
             var statuses = new List<FilesStatus>();
@@ -1453,7 +1467,7 @@ namespace DNNrocketAPI
             model.HeaderData.SetXmlProperty("genxml/hidden/imageselectautoreturn", autoreturn.ToString());
             model.HeaderData.SetXmlProperty("genxml/hidden/imageselectsize", imagesize.ToString());
 
-            var uploadFolderPath = DNNrocketUtils.HomeDirectory() + "\\" + uploadFolder;
+            var uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + uploadFolder;
             var imgList = new List<object>();
             foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
             {
@@ -1473,7 +1487,7 @@ namespace DNNrocketAPI
             model.HeaderData.SetXmlProperty("genxml/hidden/documentselectsingle", selectsingle.ToString());
             model.HeaderData.SetXmlProperty("genxml/hidden/documentselectautoreturn", autoreturn.ToString());
 
-            var uploadFolderPath = DNNrocketUtils.HomeDirectory() + "\\" + uploadFolder;
+            var uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + uploadFolder;
             var docList = new List<object>();
             foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
             {

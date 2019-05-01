@@ -31,7 +31,7 @@
     <div class="w3-container">
         <h1>@ResourceKey("RocketMod.config")</h1>
 
-        <table class="w3-table w3-responsive" >
+        <table class="w3-table w3-responsive">
             <tr>
                 <td class="w3-right-align "><b>@ResourceKey("RocketMod.ref"):</b></td>
                 <td>@configinfo.ItemID</td>
@@ -43,6 +43,11 @@
                 <td></td>
             </tr>
             <tr>
+                <td class="w3-right-align"><b>@ResourceKey("RocketMod.apptheme"):</b></td>
+                <td>@FolderSelectList(configinfo, "genxml/select/versionfolder", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme), "class='w3-input w3-border'", false,false)</td>
+                <td></td>
+            </tr>
+            <tr>
                 <td class="w3-right-align"><b>@ResourceKey("RocketMod.imagefolder"):</b></td>
                 <td>
                     @TextBox(configinfo, "genxml/textbox/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
@@ -51,7 +56,7 @@
             </tr>
             <tr>
                 <td class="w3-right-align"><b>@ResourceKey("RocketMod.documentfolder"):</b></td>
-                <td>                    
+                <td>
                     @TextBox(configinfo, "genxml/textbox/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
                 </td>
                 <td>@DNNrocketUtils.HomeRelDirectory()/@configinfo.GetXmlProperty("genxml/textbox/documentfolder")</td>

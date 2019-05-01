@@ -192,7 +192,7 @@ namespace DNNrocketAPI.render
                             strOut += TextBox(info, xpathheight, " class='w3-input w3-border' autocomplete='off' datatype='int'", "0", false, row);
                         strOut += "</div>";
 
-                        strOut += "<div class='w3-rest w3-padding'>";
+                        strOut += "<div class='w3-rest w3-padding' style='min-width:100px;'>";
                             strOut += "<label class=''>" + ResourceKey("DNNrocketImages.alt") + "</label>&nbsp;" + EditFlag();
                             strOut += TextBox(info, xpathalt, " class='w3-input w3-border' autocomplete='off'", "", true, row);
                         strOut += "</div>";

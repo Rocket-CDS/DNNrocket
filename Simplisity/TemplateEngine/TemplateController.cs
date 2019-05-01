@@ -21,7 +21,11 @@ namespace Simplisity.TemplateEngine
             HomeMapPath = homeMapPath.TrimEnd('\\');
             ThemeFolder = themeFolder.TrimEnd('\\');
             TemplateMapPath = string.Format("{0}\\{1}\\", homeMapPath.TrimEnd('\\'), themeFolder.TrimEnd('\\'));
-            TemplateConfigMapPath = string.Format("{0}\\{1}\\", homeMapPath.TrimEnd('\\'), "Config");
+            TemplateConfigMapPath = string.Format("{0}\\{1}\\", homeMapPath.TrimEnd('\\'), "config-w3");
+            if (!Directory.Exists(TemplateConfigMapPath))
+            {
+                TemplateConfigMapPath = string.Format("{0}\\{1}\\", homeMapPath.TrimEnd('\\'), "config");
+            }
         }
 
         #region methods

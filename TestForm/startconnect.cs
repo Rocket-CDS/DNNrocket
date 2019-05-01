@@ -131,7 +131,7 @@ namespace DNNrocket.TestForm
         public static string AddImageToList(SimplisityInfo postInfo, string templateControlRelPath)
         {
 
-            var imageDirectory =  DNNrocketUtils.HomeDirectory() + "\\images";
+            var imageDirectory =  DNNrocketUtils.HomeDNNrocketDirectory() + "\\images";
             if (!Directory.Exists(imageDirectory))
             {
                 Directory.CreateDirectory(imageDirectory);
@@ -193,7 +193,7 @@ namespace DNNrocket.TestForm
 
         public static string AddDocToList(SimplisityInfo postInfo, string templateControlRelPath)
         {
-            var docDirectory = DNNrocketUtils.HomeDirectory() + "\\docs";
+            var docDirectory = DNNrocketUtils.HomeDNNrocketDirectory() + "\\docs";
             if (!Directory.Exists(docDirectory))
             {
                 Directory.CreateDirectory(docDirectory);

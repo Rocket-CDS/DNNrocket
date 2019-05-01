@@ -187,15 +187,11 @@ namespace RocketMod
             try
             {
                 var strOut = "";
-                var themeFolder = "";
-                var razortemplate = "edit.cshtml";
-                themeFolder = _moduleData.configData.AppTheme;
-
                 var passSettings = _postInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, "config-w3", DNNrocketUtils.GetEditCulture());
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, _moduleData, passSettings, _moduleData.HeaderInfo);
+                var appTheme = new AppTheme(_moduleData.configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
+                strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveEditTemplate, _moduleData, passSettings, _moduleData.HeaderInfo);
 
-                if (strOut == "") strOut = "ERROR: No data returned for " + _rocketModMapPath + "\\config-w3\\default\\" + razortemplate;
+                if (strOut == "") strOut = "ERROR: No data returned for " + _rocketModMapPath;
                 return strOut;
             }
             catch (Exception ex)
@@ -334,7 +330,7 @@ namespace RocketMod
                     
                     passSettings.Add("addeditscript", _commandSecurity.HasModuleEditRights().ToString());
 
-                    var appTheme = new AppTheme(apptheme);
+                    var appTheme = new AppTheme(apptheme,_configData.AppThemeVersion);
 
                     strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveViewTemplate, _moduleData.CurrentRecord, passSettings, _moduleData.HeaderInfo);
 

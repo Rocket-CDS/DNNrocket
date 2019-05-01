@@ -245,7 +245,7 @@ namespace DNNrocket.Category
         {
 
 
-                var imageDirectory = DNNrocketUtils.HomeDirectory() + "\\images";
+                var imageDirectory = DNNrocketUtils.HomeDNNrocketDirectory() + "\\images";
                 if (!Directory.Exists(imageDirectory))
                 {
                     Directory.CreateDirectory(imageDirectory);
