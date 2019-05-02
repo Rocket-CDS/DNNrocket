@@ -22,7 +22,9 @@
             var imagepath = Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath" + lp1);
             if (imagepath != "")
             {
-        <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@imagepath&w=@imagewidth&h=@imageheight" alt="@imagealt" /><br />
+                <div class="w3-padding">
+                    <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@imagepath&w=@imagewidth&h=@imageheight" alt="@imagealt" /><br />
+                </div>
             }
         }
     </div>

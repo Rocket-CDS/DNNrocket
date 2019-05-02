@@ -1488,10 +1488,19 @@ namespace DNNrocketAPI
             model.HeaderData.SetXmlProperty("genxml/hidden/documentselectautoreturn", autoreturn.ToString());
 
             var uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + uploadFolder;
+            var uploadRelFolderPath = DNNrocketUtils.HomeDNNrocketRelDirectory() + "/" + uploadFolder;
             var docList = new List<object>();
             foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
             {
-                docList.Add(i.Name);
+                var sInfo = new SimplisityInfo();
+                sInfo.SetXmlProperty("genxml/name",i.Name);
+                sInfo.SetXmlProperty("genxml/fullname", i.FullName);
+                sInfo.SetXmlProperty("genxml/extension", i.Extension );
+                sInfo.SetXmlProperty("genxml/directoryname", i.DirectoryName);
+                sInfo.SetXmlProperty("genxml/lastwritetime", i.LastWriteTime.ToShortDateString());
+                sInfo.SetXmlProperty("genxml/relfolder", uploadRelFolderPath);
+                sInfo.SetXmlProperty("genxml/relname", uploadRelFolderPath + "/" + i.Name);
+                docList.Add(sInfo);
             }
             model.List = docList;
 
@@ -1505,13 +1514,23 @@ namespace DNNrocketAPI
         {
             if (File.Exists(docFilePath) & !String.IsNullOrEmpty(fileName))
             {
-                response.AppendHeader("content-disposition", "attachment; filename=" + fileName);
-                response.ContentType = "application/octet-stream";
-                response.WriteFile(docFilePath);
-                response.End();
-            }
+                try
+                {
 
+                    response.AppendHeader("content-disposition", "attachment; filename=" + fileName);
+                    response.ContentType = "application/octet-stream";
+                    response.WriteFile(docFilePath);
+                    response.End();
+                }
+                catch (Exception ex)
+                {
+                    // will cause a exception on the respone.End.  Just ignore.
+                    var msg = ex.ToString();
+                }
         }
+
+
+    }
 
         public static void ForceStringDownload(HttpResponse response, string fileName, string fileData)
         {

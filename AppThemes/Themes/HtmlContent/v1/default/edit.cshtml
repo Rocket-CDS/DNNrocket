@@ -157,6 +157,9 @@
 
 </div>
 
+@RenderDocumentSelect(Model, true, false, moduleData.configData.DocumentFolder)
+@RenderImageSelect(Model,640, true, false, moduleData.configData.ImageFolder)
+
 <script>
     $(document).ready(function () {
         $(':checkbox').attr('class', 'w3-check');

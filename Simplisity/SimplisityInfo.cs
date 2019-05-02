@@ -102,6 +102,24 @@ namespace Simplisity
             return rtnList;
         }
 
+        public SimplisityInfo GetListItem(string listName, int index)
+        {
+            if (XMLDoc != null)
+            {
+
+                var list = GetList(listName);
+                var lp = 0;
+                foreach (var i in list)
+                {
+                    if (lp == index)
+                    {
+                        return i;
+                    }
+                    lp += 1;
+                }
+            }
+            return null;
+        }
 
         public SimplisityInfo GetListItem(string listName, string itemkeyxpath, string itemkey)
         {

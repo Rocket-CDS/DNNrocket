@@ -39,29 +39,34 @@ namespace DNNrocketAPI
 
                 if (paramCmd == "downloadfile")
                 {
+                    var msg = "";
                     var fileindex = context.Request.QueryString["fileindex"];
                     var itemid = context.Request.QueryString["itemid"];
-                    var filename = context.Request.QueryString["filename"];
-                    var downloadname = context.Request.QueryString["downloadname"];
-                    if (GeneralUtils.IsNumeric(itemid) && GeneralUtils.IsNumeric(fileindex))
+                    var fieldid = context.Request.QueryString["fieldid"];
+                    if (GeneralUtils.IsNumeric(itemid) && GeneralUtils.IsNumeric(fileindex) && !String.IsNullOrEmpty(fieldid))
                     {
-                        var nbi = objCtrl.GetInfo(Convert.ToInt32(itemid), DNNrocketUtils.GetCurrentCulture());
-                        var fpath = nbi.GetXmlProperty("genxml/docs/genxml[" + fileindex + "]/hidden/docpath");
-                        if (downloadname == "") downloadname = Path.GetFileName(fpath);
-                        DNNrocketUtils.ForceDocDownload(fpath, downloadname, context.Response);
-                    }
-                    else
-                    {
-                        if (filename != "")
+                        var downloadname = context.Request.QueryString["downloadname"];
+                        var listname = context.Request.QueryString["listname"];
+                        if (String.IsNullOrEmpty(listname)) listname = "settingsdata";
+                        var sInfo = objCtrl.GetInfo(Convert.ToInt32(itemid), DNNrocketUtils.GetCurrentCulture());
+                        var sInfoItem = sInfo.GetListItem(listname, Convert.ToInt32(fileindex));
+                        var fpath = sInfoItem.GetXmlProperty("genxml/lang/genxml/hidden/rel" + fieldid);
+                        if (fpath == "") fpath = sInfoItem.GetXmlProperty("genxml/hidden/rel" + fieldid);
+                        if (fpath != "")
                         {
-                            var fpath = PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\" + filename;
-                            if (downloadname == "") downloadname = Path.GetFileName(fpath);
+                            fpath = DNNrocketUtils.MapPath(fpath);
+                            if (String.IsNullOrEmpty(downloadname)) downloadname = sInfoItem.GetXmlProperty("genxml/lang/genxml/textbox/name" + fieldid);
+                            if (String.IsNullOrEmpty(downloadname)) downloadname = sInfoItem.GetXmlProperty("genxml/textbox/name" + fieldid);
+                            if (String.IsNullOrEmpty(downloadname)) downloadname = Path.GetFileName(fpath);
                             DNNrocketUtils.ForceDocDownload(fpath, downloadname, context.Response);
+                            msg = " - Cannot find: " + fpath;
+                        }
+                        else
+                        {
+                            strOut = "File Download Error, no data found for '" + fieldid + "'";
                         }
                     }
-                    strOut = "File Download Error, filename: " + filename + ", itemid: " + itemid + ", fileindex: " + fileindex + " ";
-
-
+                    strOut = "File Download Error, itemid: " + itemid + ", fileindex: " + fileindex + " ";
 
                     context.Response.ContentType = "text/plain";
                     context.Response.Write(strOut);

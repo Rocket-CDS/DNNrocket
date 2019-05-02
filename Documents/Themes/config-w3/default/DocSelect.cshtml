@@ -35,11 +35,11 @@
                         <table class="w3-table-all w3-hoverable" >
                             @{
                                 var lp = 1;
-                                foreach (string i in Model.List)
+                                foreach (SimplisityInfo sInfo in Model.List)
                                 {
-                                    <tr class='dnnrocket-documentselector' dnnrocket-documentname='@i' selectorcount='@(lp)'>
+                                    <tr class='dnnrocket-documentselector' dnnrocket-documentname='@sInfo.GetXmlProperty("genxml/name")' dnnrocket-documentrelname='@sInfo.GetXmlProperty("genxml/relname")' selectorcount='@(lp)'>
                                         <td style="width:40px;"><i style="display:none;" class="fas fa-check-circle dnnrocket-docselector "></i></td>
-                                        <td>@i</td>
+                                        <td>@sInfo.GetXmlProperty("genxml/name")</td>
                                     </tr>
                                     lp += 1;
                                 }
@@ -107,7 +107,7 @@
         $(element).find('.dnnrocket-docselector').show();
     }
 
-    @if (Model.HeaderData.GetXmlPropertyBool("genxml/hidden/imageselectautoreturn")) {
+    @if (Model.HeaderData.GetXmlPropertyBool("genxml/hidden/documentselectautoreturn")) {
         @: dnnrocketdocs_usedocument();
     }
 }
@@ -131,7 +131,9 @@
             if ($(this).hasClass('w3-theme')) {
                 var idx = simplisity_getCookieValue('dnnrocket-documentindex');
                 $('#name' + idx).val($(this).attr('dnnrocket-documentname'));
+                $('#rel' + idx).val($(this).attr('dnnrocket-documentrelname'));
                 $('#' + idx).val($(this).attr('dnnrocket-documentname'));
+                $('#name' + idx).removeAttr('disabled');
 
                 $('#' + idx).parent().find(".dnnrocket-documentchange").html('&times;');
                 $('#' + idx).parent().find(".dnnrocket-documentchange").addClass('dnnrocket-documentremove');

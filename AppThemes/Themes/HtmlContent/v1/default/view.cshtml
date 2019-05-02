@@ -24,13 +24,16 @@
     {
         info = (SimplisityInfo)Model.List.First();
     }
-
+    var lp1 = 0;
 }
 
 <div class="w3-display-container">
 
+
     @foreach (SimplisityInfo i in info.GetList("settingsdata"))
     {
+        i.SetXmlProperty("genxml/rowindex", lp1.ToString());
+        i.SetXmlProperty("genxml/rowitemid", info.ItemID.ToString());
         Model.Datainfo = i;
         var layout = i.GetXmlPropertyInt("genxml/hidden/layout");
         var layouttemplate = "displaytext" + layout + ".cshtml";
@@ -45,7 +48,18 @@
 
         @RenderTemplate(layouttemplate, "/DesktopModules/DNNrocket/AppThemes", "HtmlContent", Model)
 
+        if (i.GetXmlProperty("genxml/lang/genxml/hidden/document1") != "")
+        {
+            <div class="w3-row w3-center">
+                @DownloadDocument(info.ItemID, @lp1, "document1")
+            </div>
+        }
+
+
         <div style="clear: both;"></div>
+
+        lp1 += 1;
     }
+
 
 </div>

@@ -59,8 +59,8 @@
                                 <div class="w3-row">
                                     @foreach (string imageName in imageRow)
                                     {
-                                    <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@DNNrocketUtils.HomeRelDirectory()/@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
-                                        <img src="@ThumbnailImageUrl(DNNrocketUtils.HomeRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150)" class="w3-border w3-padding" style="width:100%" />
+                                    <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@DNNrocketUtils.HomeDNNrocketRelDirectory()/@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(DNNrocketUtils.HomeDNNrocketRelDirectory() + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
+                                        <img src="@ThumbnailImageUrl(DNNrocketUtils.HomeDNNrocketRelDirectory()  + "/" + Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150)" class="w3-border w3-padding" style="width:100%" />
                                         <span class="w3-display-topright dnnrocket-imageselected " title="" style="display:none;" ><i class="fas fa-check-circle"></i></span>
                                     </div>
                                         lp += 1;
@@ -71,7 +71,7 @@
                         }
                     </div>
                     <br/>
-                    <h1>@imagecount</h1>
+                    <p>@imagecount</p>
                 </div>
 
             </div>

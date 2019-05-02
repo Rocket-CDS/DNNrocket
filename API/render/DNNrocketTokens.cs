@@ -95,6 +95,17 @@ namespace DNNrocketAPI.render
             return new RawString(url);
         }
 
+        public IEncodedString DownloadDocument(int ItemId, int row, string fieldId, string text = "", string attributes = "")
+        {
+            if (text == "")
+            {
+                text = ResourceKey("DNNrocket.download").ToString();
+            }
+            var strOut = "<a " + attributes + " href='/DesktopModules/DNNrocket/api/api2.ashx?cmd=downloadfile&fileindex=" + row + "&itemid=" + ItemId + "&fieldid=" + fieldId + "'>" + text + "</a>";
+            return new RawString(strOut);
+        }
+
+
         public IEncodedString ImageEdit(SimplisityInfo info, string fieldId, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0)
         {
             var xpath = "genxml/hidden/" + fieldId;
@@ -212,8 +223,10 @@ namespace DNNrocketAPI.render
         {
             var xpath = "genxml/hidden/" + fieldId;
             var xpathname = "genxml/textbox/name" + fieldId;
+            var xpathrel = "genxml/hidden/rel" + fieldId;
             var value = info.GetXmlProperty(xpath);
             var valuename = info.GetXmlProperty(xpathname);
+            var valuerel = info.GetXmlProperty(xpathrel);
 
             var strOut = "<div class='w3-display-container' >";
 
@@ -225,10 +238,16 @@ namespace DNNrocketAPI.render
                 value = info.GetXmlProperty("genxml/lang/" + xpath);
             }
 
-            valuename = info.GetXmlProperty(xpath);
-            if (localized && !xpath.StartsWith("genxml/lang/"))
+            valuename = info.GetXmlProperty(xpathname);
+            if (localized && !xpathname.StartsWith("genxml/lang/"))
             {
                 valuename = info.GetXmlProperty("genxml/lang/" + xpathname);
+            }
+
+            valuerel = info.GetXmlProperty(xpathrel);
+            if (localized && !xpathname.StartsWith("genxml/lang/"))
+            {
+                valuerel = info.GetXmlProperty("genxml/lang/" + xpathrel);
             }
 
             var disabled = "";
@@ -237,7 +256,9 @@ namespace DNNrocketAPI.render
             var updname = getUpdateAttr(xpathname, "", localized);
             var id = getIdFromXpath(xpath, row);
             var idname = getIdFromXpath(xpathname, row);
+            var idrel =  getIdFromXpath(xpathrel, row);
             strOut += "<input value='" + value + "' id='" + id + "' s-xpath='" + xpath + "' " + upd + " type='hidden' />";
+            strOut += "<input value='" + valuerel + "' id='" + idrel + "' s-xpath='" + xpathrel + "' " + upd + " type='hidden' />";
             strOut += "<input value='" + valuename + "' id='" + idname + "' s-xpath='" + xpathname + "' " + updname + " " + disabled + " " + attributes + " type='text' />";
 
             if (value == "")
