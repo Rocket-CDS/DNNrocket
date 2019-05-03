@@ -130,10 +130,30 @@
 
                             <div class="w3-row w3-padding">
                                 <div class="w3-container">
-                                    <label class="">@ResourceKey("HtmlContent.internallink")</label>
-                                    @TabSelectListOnTabId(i, "genxml/select/internallink1", " class='w3-input w3-border' ", true, false, lp1)
-                                    <label class="">@ResourceKey("HtmlContent.externallink")</label>
-                                    @TextBox(i, "genxml/textbox/externallink1", " class='w3-input w3-border' autocomplete='off'", "", true, lp1)
+                                    <div class="w3-col m8">
+                                        <label class="">@ResourceKey("HtmlContent.internallink")</label>
+                                        @TabSelectListOnTabId(i, "genxml/select/internallink1", " class='w3-input w3-border' ", true, false, lp1)
+                                    </div>
+                                    <div class="w3-col m4">
+                                        @RadioButtonList(i, "genxml/hidden/layout", "0,1,2", "<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper0.png' style='width:24px;' />,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper1.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/img/Newspaper2.png' style='width:24px;'/>", "class=''", "0", "", false, lp1)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w3-row w3-padding">
+                                <div class="w3-container">
+                                    <div class="w3-col m8">
+                                        <label class="">@ResourceKey("HtmlContent.externallink")</label>
+                                        @TextBox(i, "genxml/textbox/externallink1", " class='w3-input w3-border' autocomplete='off'", "", true, lp1)
+                                    </div>
+                                    <div class="w3-col m2 w3-padding">
+                                        <label class="">@ResourceKey("HtmlContent.blank")</label>
+                                        @CheckBox(i, "genxml/checkbox/blank", "", "", false, false, lp1)
+                                    </div>
+                                    <div class="w3-col m2 w3-padding">
+                                        <label class="">@ResourceKey("HtmlContent.justify")</label>
+                                        @RadioButtonList(i, "genxml/hidden/layout", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, lp1)
+                                    </div>
                                 </div>
                             </div>
 

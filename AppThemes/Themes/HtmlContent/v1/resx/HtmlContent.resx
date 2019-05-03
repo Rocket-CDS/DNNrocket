@@ -138,4 +138,10 @@
   <data name="link.Text" xml:space="preserve">
     <value>Link</value>
   </data>
+  <data name="blank.Text" xml:space="preserve">
+    <value>New Page</value>
+  </data>
+  <data name="justify.Text" xml:space="preserve">
+    <value>Justify</value>
+  </data>
 </root>
