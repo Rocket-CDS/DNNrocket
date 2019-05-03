@@ -52,14 +52,14 @@
                 <td>
                     @TextBox(configinfo, "genxml/textbox/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
                 </td>
-                <td>@DNNrocketUtils.HomeRelDirectory()/@configinfo.GetXmlProperty("genxml/textbox/imagefolder")</td>
+                <td>@DNNrocketUtils.HomeRelDirectory()@configinfo.GetXmlProperty("genxml/textbox/imagefolder")</td>
             </tr>
             <tr>
                 <td class="w3-right-align"><b>@ResourceKey("RocketMod.documentfolder"):</b></td>
                 <td>
                     @TextBox(configinfo, "genxml/textbox/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
                 </td>
-                <td>@DNNrocketUtils.HomeRelDirectory()/@configinfo.GetXmlProperty("genxml/textbox/documentfolder")</td>
+                <td>@DNNrocketUtils.HomeRelDirectory()@configinfo.GetXmlProperty("genxml/textbox/documentfolder")</td>
             </tr>
             <tr>
                 <td class="w3-right-align"><b>@ResourceKey("RocketMod.manageremail"):</b></td>

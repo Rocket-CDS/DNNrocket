@@ -226,11 +226,19 @@ namespace DNNrocketAPI
             get
             {
                 var actions = new ModuleActionCollection();
-                if (_configInfo != null && _configInfo.XMLDoc.SelectNodes("genxml/*").Count > 1 &&  !_configInfo.GetXmlPropertyBool("genxml/checkbox/noiframeedit"))
+                if (_configInfo != null && _configInfo.XMLDoc.SelectNodes("genxml/*").Count > 1 && !_configInfo.GetXmlPropertyBool("genxml/checkbox/noiframeedit"))
                 {
                     actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.edit") , "", "", "register.gif", "javascript:" + _interfacekey + "editiframe_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
                 }
-                actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmin"), "", "", "icon_dashboard_16px.gif", "javascript:" + _interfacekey + "admin_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
+
+                var adminurl = _systemInfo.GetXmlProperty("genxml/textbox/adminurl");
+                adminurl = adminurl.ToLower().Replace("[moduleid]", ModuleId.ToString());
+                adminurl = adminurl.ToLower().Replace("[tabid]", TabId.ToString());
+                if (adminurl != "")
+                {
+                    actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmin"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
+                    actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmintab"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, true);
+                }
                 actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearmodcache"), "", "", "action_refresh.gif", "?clearmodcache=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);
                 actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearallcache"), "", "", "action_refresh.gif", "?clearallcache=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);
                 return actions;

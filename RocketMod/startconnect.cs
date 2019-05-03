@@ -330,6 +330,9 @@ namespace RocketMod
                     
                     passSettings.Add("addeditscript", _commandSecurity.HasModuleEditRights().ToString());
 
+                    var adminurl = "/DesktopModules/DNNrocket/RocketMod/admin.aspx?moduleid=" + _moduleid + "&tabid=" + _tabid;
+                    passSettings.Add("adminurl", adminurl);
+
                     var appTheme = new AppTheme(apptheme,_configData.AppThemeVersion);
 
                     strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveViewTemplate, _moduleData.CurrentRecord, passSettings, _moduleData.HeaderInfo);

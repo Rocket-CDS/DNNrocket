@@ -407,6 +407,45 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
+        public IEncodedString LinkPageURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = "", string attributes = "")
+        {
+            var tabid = info.GetXmlPropertyInt(xpath);
+            if (tabid == 0) return new RawString("");
+            var url = DNNrocketUtils.GetPageURL(tabid);
+
+            return GetLinkURL(url, openInNewWindow, text, attributes);
+        }
+
+        public IEncodedString LinkURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = "", string attributes = "")
+        {
+            var url = info.GetXmlProperty(xpath);
+            return GetLinkURL(url, openInNewWindow, text, attributes);
+        }
+
+        private IEncodedString GetLinkURL(string url, bool openInNewWindow = true, string text = "", string attributes = "")
+        {
+            var strOut = "";
+            if (url != "")
+            {
+                if (!url.ToLower().StartsWith("http"))
+                {
+                    url = url.Replace("//", "");
+                    url = "http://" + url;
+                }
+                Uri uriResult;
+                bool result = Uri.TryCreate(url, UriKind.Absolute, out uriResult);
+                if (result)
+                {
+                    System.Uri uri = new Uri(url);
+                    string uriWithoutScheme = uri.Host + uri.PathAndQuery + uri.Fragment;
+                    if (openInNewWindow) attributes = attributes + " target='_blank'";
+                    if (text == "") text = uriWithoutScheme;
+                    strOut = "<a " + attributes + " href='//" + uriWithoutScheme + "'>" + text.TrimEnd('/') + "</a>";
+                }
+            }
+            return new RawString(strOut);
+        }
+
 
     }
 }

@@ -26,6 +26,7 @@ using System.Web.UI;
 using System.Threading;
 using System.Globalization;
 using DNNrocketAPI.Componants;
+using DotNetNuke.Common;
 
 namespace DNNrocketAPI
 {
@@ -1155,6 +1156,11 @@ namespace DNNrocketAPI
         public static string Email()
         {
             return PortalSettings.Current.Email;
+        }
+
+        public static string GetPageURL(int tabId)
+        {
+            return Globals.NavigateURL(tabId);
         }
 
         public static string GetEntityTypeCode(SimplisityInfo interfaceInfo)

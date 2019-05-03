@@ -43,11 +43,6 @@
         document.getElementById('rocketmodIframe_@(Model.ModuleId)').src = "/desktopmodules/dnnrocket/RocketMod/admin.aspx?tabid=@(Model.GetSetting("tabid"))&moduleid=@(Model.ModuleId)&editmode=1"
         }
 
-    function rocketmodadmin_@(Model.ModuleId)() {
-        simplisity_setCookieValue('editlang', '@(DNNrocketUtils.GetCurrentCulture())');
-        window.location.href = '/desktopmodules/dnnrocket/RocketMod/admin.aspx?tabid=@(Model.GetSetting("tabid"))&moduleid=@(Model.ModuleId)';
-    }
-
     </script>
 
 }
