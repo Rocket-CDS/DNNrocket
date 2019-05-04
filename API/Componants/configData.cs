@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace RocketMod
+namespace DNNrocketAPI.Componants
 {
 
     public class ConfigData
@@ -79,7 +79,7 @@ namespace RocketMod
             }
         }
 
-        public void SaveConfig(SimplisityInfo postInfo)
+        public void SaveConfig(SimplisityInfo postInfo, string templateRelPath = "")
         {
             //remove any params
             postInfo.RemoveXmlNode("genxml/postform");
@@ -94,6 +94,7 @@ namespace RocketMod
                 postInfo.SetXmlProperty("genxml/dropdownlist/paymentprovider", ConfigInfo.GetXmlProperty("genxml/dropdownlist/paymentprovider"));
             }
             postInfo.SetXmlProperty("genxml/checkbox/noiframeedit", "False"); // we do not want iframe edit
+            postInfo.SetXmlProperty("genxml/hidden/templaterelpath", templateRelPath);
 
             ConfigInfo.XMLData = postInfo.XMLData;
 

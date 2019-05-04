@@ -91,7 +91,7 @@ namespace DNNrocketAPI
         }       
 
 
-        public static string RazorRender(Object info, string razorTempl, Boolean debugMode = false)
+        public static string RazorRender(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
         {
             var errorPath = "";
             var result = "";
@@ -115,7 +115,7 @@ namespace DNNrocketAPI
                 if (israzorCached == null || (string)israzorCached != razorTempl || debugMode)
                 {
                     errorPath += "RunCompile1>";
-                    result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
+                    result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
                     CacheUtils.SetCache(razorTempl, razorTempl);
                 }
                 else
@@ -123,13 +123,13 @@ namespace DNNrocketAPI
                     try
                     {
                         errorPath += "Run>";
-                        result = Engine.Razor.Run(hashCacheKey, null, info);
+                        result = Engine.Razor.Run(hashCacheKey, null, model);
                     }
                     catch (Exception ex)
                     {
                         errmsg = ex.ToString();
                         errorPath += "RunCompile2>";
-                        result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
+                        result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
                         CacheUtils.SetCache(razorTempl, razorTempl);
                     }
                 }
@@ -1346,31 +1346,51 @@ namespace DNNrocketAPI
             return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
         }
 
-
-        public static void IncludePageHeaders(int moduleid, Page page, String moduleName, string templateControlRelPath, String razortemplate = "", String theme = "")
+        public static void IncludePageHeaders(ConfigData configData, Page page, int tabId)
         {
             if (!page.Items.Contains("dnnrocketinject")) page.Items.Add("dnnrocketinject", "");
+            var appTheme = new AppTheme(configData.AppTheme, DNNrocketUtils.GetCurrentCulture(), configData.AppThemeVersion);
+            var fullTemplName = appTheme.AppName + ".pageheader.cshtml";
 
-            var settignInfo = DNNrocketUtils.GetModuleSettings(moduleid);
-
-            if (theme == "") theme = settignInfo.GetXmlProperty("genxml/dropdownlist/themefolder");
-            var fullTemplName = theme + ".pageheader.cshtml";
-
-            if (!page.Items["dnnrocketinject"].ToString().Contains(fullTemplName + "." + moduleName + ","))
+            if (!page.Items["dnnrocketinject"].ToString().Contains(fullTemplName + "." + appTheme.AppName + ","))
             {
-                var debug = settignInfo.GetXmlPropertyBool("genxml/checkbox/debugmode");
-                var nbi = new SimplisityInfo();
-                nbi.Lang = GetCurrentCulture();
-
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, theme, DNNrocketUtils.GetCurrentCulture());
-
-
-                var strOut = DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), settignInfo.ToDictionary());
-
-                if (razorTempl != "")
+                if (appTheme.ActivePageHeaderTemplate != "")
                 {
+                    var settings = new Dictionary<string, string>();
+                    var l = new List<object>();
+                    l.Add(configData);
+                    var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
+                    nbRazor.PageId = tabId;
+                    var strOut = RazorRender(nbRazor, appTheme.ActivePageHeaderTemplate, false);
                     PageIncludes.IncludeTextInHeader(page, strOut);
-                    page.Items["dnnrocketinject"] = page.Items["dnnrocketinject"] + fullTemplName + "." + moduleName + ",";
+                    page.Items["dnnrocketinject"] = page.Items["dnnrocketinject"] + fullTemplName + "." + appTheme.AppName + ",";
+
+
+                    // Inject pageheader css link, use Razor Token "AddCssLinkHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
+                    var injectCss = "";
+                    var csslist = (List<String>)CacheUtils.GetCache("csslinkdata" + tabId);
+                    if (csslist != null)
+                    {
+                        foreach (var cssRelPath in csslist)
+                        {
+                            injectCss += "<link rel='stylesheet' href='" + cssRelPath + "' />";
+                        }
+                        PageIncludes.IncludeTextInHeader(page, injectCss);
+                    }
+
+                    // Inject pageheader JS link, use Razor Token "AddJsScriptHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
+                    var injectJS = "";
+                    var jslist = (List<String>)CacheUtils.GetCache("jsscriptdata" + tabId);
+                    if (jslist != null)
+                    {
+                        foreach (var jsRelPath in jslist)
+                        {
+                            injectJS += "<script type='text/javascript' src='" + jsRelPath + "'></script>";
+                        }
+                        PageIncludes.IncludeTextInHeader(page, injectJS);
+                    }
+
+
                 }
             }
         }

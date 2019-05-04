@@ -4,10 +4,10 @@
 @using RocketSettings;
 @using RocketMod;
 
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/v1/resx/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/v1/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
 
 @{
     var moduleData = (ModuleData)Model.List.First();

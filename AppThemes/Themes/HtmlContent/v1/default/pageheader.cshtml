@@ -6,8 +6,11 @@
 @using Simplisity;
 @using DNNrocketAPI.Componants;
 
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/css/htmlcontent2.css">
+@AddCssLinkHeader("/DesktopModules/DNNrocket/css/w3.css", Model.PageId)
+@AddCssLinkHeader("/DesktopModules/DNNrocket/fa/css/all.min.css", Model.PageId)
+@AddCssLinkHeader("https://use.fontawesome.com/releases/v5.8.1/css/v4-shims.css", Model.PageId)
+
+@AddJsScriptHeader("/DesktopModules/DNNrocket/Simplisity/js/simplisity.js", Model.PageId)
+@AddJsScriptHeader("/DesktopModules/DNNrocket/Simplisity/js/jquery.fileupload.js", Model.PageId)
 

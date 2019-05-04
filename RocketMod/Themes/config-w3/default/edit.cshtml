@@ -4,9 +4,9 @@
 @using RocketSettings;
 @using RocketMod;
 
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocketModules/RocketPayForm/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketPayForm/App_LocalResources/")
 
 @{
     var moduleData = (ModuleData)Model.List.First();

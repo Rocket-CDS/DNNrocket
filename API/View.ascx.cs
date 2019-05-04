@@ -28,6 +28,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
 using Simplisity;
 using System.Collections.Specialized;
+using DNNrocketAPI.Componants;
 
 namespace DNNrocketAPI
 {
@@ -104,7 +105,9 @@ namespace DNNrocketAPI
                 _paramCmd = _rocketInterface.DefaultCommand;
                 if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we dont; define template path in the interface assume it's the control path.
 
-                DNNrocketUtils.IncludePageHeaders(base.ModuleId, this.Page, _systemprovider, _templateRelPath, "pageheader.cshtml", _rocketInterface.DefaultTheme);
+                var configData = new ConfigData(base.PortalId, _systemInfo.ItemID, TabId, ModuleId);
+                DNNrocketUtils.IncludePageHeaders(configData, this.Page, TabId);
+
             }
 
 

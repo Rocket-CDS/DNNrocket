@@ -10,48 +10,48 @@ namespace Simplisity
 {
     public class RazorEngineTokens<T> : TemplateBase<T>
     {
-        public Dictionary<String,List<String>> Metadata;
+        public Dictionary<String,List<String>> Processdata;
 
         public RazorEngineTokens()
         {
-            Metadata = new Dictionary<String, List<String>>();
+            Processdata = new Dictionary<String, List<String>>();
         }
 
         #region "token to add meta data for tokens"
 
-        public IEncodedString AddMetaData(String metaType, String metaValue)
+        public IEncodedString AddProcessData(String metaType, String metaValue)
         {
             var l = new List<String>();
-            if (Metadata.ContainsKey(metaType)) l = Metadata[metaType];                
+            if (Processdata.ContainsKey(metaType)) l = Processdata[metaType];                
             l.Add(metaValue);
 
-            if (Metadata.ContainsKey(metaType))
-                Metadata[metaType] = l;
+            if (Processdata.ContainsKey(metaType))
+                Processdata[metaType] = l;
             else
-                Metadata.Add(metaType,l);
+                Processdata.Add(metaType,l);
 
             return new RawString(""); //return nothing
         }
 
-        public IEncodedString AddMetaData(String metaKey, String metaValue, String templateFullName)
+        public IEncodedString AddProcessData(String metaKey, String metaValue, String templateFullName)
         {
             // if we have a templatename add to preprocess cache meta data.
-            return AddPreProcessMetaData(metaKey, metaValue, templateFullName,"");
+            return AddPreProcessData(metaKey, metaValue, templateFullName,"");
         }
 
         /// <summary>
         /// This method add the meta data to a specific cache list, so the we can use that data in the module code, before the razor template is rendered.
-        /// This allows use to use the metadata token to add data selection information, like search filters and sort before we get the data from the DB.
+        /// This allows us to use the metadata token to add data selection information, like search filters and sort before we get the data from the DB.
         /// </summary>
         /// <param name="metaKey"></param>
         /// <param name="metaValue"></param>
         /// <param name="templateFullName">This is the cache key that is used and MUST be {theme}.{templatename}.{templateExtension}  e.g. Classic.list.cshtml</param>
         /// <param name="moduleId">moduleid to identify individual modules (required for filters)</param>
         /// <returns></returns>
-        public IEncodedString AddPreProcessMetaData(String metaKey, String metaValue,String templateFullName,String moduleId)
+        public IEncodedString AddPreProcessData(String metaKey, String metaValue,String templateFullName,String moduleId)
         {
 
-            var cachedlist = (Dictionary<String, String>)CacheUtils.GetCache("preprocessmetadata" + templateFullName + moduleId);
+            var cachedlist = (Dictionary<String, String>)CacheUtils.GetCache("preprocessdata" + templateFullName + moduleId);
             if (cachedlist == null)
             {
                 cachedlist = new Dictionary<String, String>();
@@ -62,10 +62,38 @@ namespace Simplisity
             else
                 cachedlist.Add(metaKey, metaValue);
 
-            CacheUtils.SetCache("preprocessmetadata" + templateFullName + moduleId, cachedlist, "metadata");
+            CacheUtils.SetCache("preprocessdata" + templateFullName + moduleId, cachedlist, "preprocessdata");
 
             // add to internal metadata, so we can use it in the razor template if needed.
-            return AddMetaData(metaKey, metaValue);
+            return AddProcessData(metaKey, metaValue);
+        }
+
+        public IEncodedString AddCssLinkHeader(string cssRelPath, int tabId)
+        {
+            var cachedlist = (List<string>)CacheUtils.GetCache("csslinkdata" + tabId);
+            if (cachedlist == null)
+            {
+                cachedlist = new List<string>();
+            }
+
+            if (!cachedlist.Contains(cssRelPath)) cachedlist.Add(cssRelPath);
+
+            CacheUtils.SetCache("csslinkdata" + tabId, cachedlist, "csslinkdata");
+            return new RawString(""); //return nothing
+        }
+
+        public IEncodedString AddJsScriptHeader(string jsRelPath, int tabId)
+        {
+            var cachedlist = (List<string>)CacheUtils.GetCache("jsscriptdata" + tabId);
+            if (cachedlist == null)
+            {
+                cachedlist = new List<string>();
+            }
+
+            if (!cachedlist.Contains(jsRelPath)) cachedlist.Add(jsRelPath);
+
+            CacheUtils.SetCache("jsscriptdata" + tabId, cachedlist, "jsscriptdata");
+            return new RawString(""); //return nothing
         }
 
         #endregion

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Shared\" />
+    <Folder Include="Themes\HtmlContent\v1\css\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -116,7 +116,8 @@ namespace RocketMod
                     strOut = EditData();
                     break;
                 case "rocketmod_saveconfig":
-                    _moduleData.configData.SaveConfig(postInfo);
+                    var appTheme = new AppTheme(_moduleData.configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
+                    _moduleData.configData.SaveConfig(postInfo, _appthemeRelPath.TrimEnd('/') + "/" + postInfo.GetXmlProperty("genxml/hidden/apptheme") + "/" + postInfo.GetXmlProperty("genxml/select/versionfolder"));
                     strOut = GetDashBoard();
                     break;
                 case "rocketmod_getsetupmenu":

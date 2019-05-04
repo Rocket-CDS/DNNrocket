@@ -31,9 +31,9 @@ namespace DNNrocketAPI.render
         private string ResourceKeyString(String resourceFileKey, String lang = "", String resourceExtension = "Text")
         {
             var strOut = "";
-            if (Metadata.ContainsKey("resourcepath"))
+            if (Processdata.ContainsKey("resourcepath"))
             {
-                var l = Metadata["resourcepath"];
+                var l = Processdata["resourcepath"];
                 foreach (var r in l)
                 {
                     strOut = DNNrocketUtils.GetResourceString(r, resourceFileKey, resourceExtension, lang);

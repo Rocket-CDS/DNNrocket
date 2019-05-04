@@ -20,9 +20,9 @@ namespace DNNrocketAPI.Componants
         private Dictionary<string, string> _imgPath;
         private Dictionary<string, string> _resxPath;
 
-
         public string ActiveViewTemplate;
         public string ActiveEditTemplate;
+        public string ActivePageHeaderTemplate;        
 
         public AppTheme(string appName, string versionFolder)
         {
@@ -47,7 +47,6 @@ namespace DNNrocketAPI.Componants
             _appName = appName;
             _appFolder = appFolder;
             Populate();
-
         }
 
         public void Populate()
@@ -57,7 +56,7 @@ namespace DNNrocketAPI.Componants
             var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(DNNrocketUtils.HomeDirectory(), themeFolderPath, controlMapPath);
             ActiveViewTemplate = templCtrl.GetTemplateData("view.cshtml", _langRequired);
             ActiveEditTemplate = templCtrl.GetTemplateData("edit.cshtml", _langRequired);
-
+            ActivePageHeaderTemplate = templCtrl.GetTemplateData("pageheader.cshtml", _langRequired);
         }
 
 

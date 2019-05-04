@@ -8,14 +8,12 @@
 @using RazorEngine.Text;
 
 
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/resx/")
+
 
 @RenderTemplate("editiframe.cshtml", "/DesktopModules/DNNrocket/rocketmod", "config-w3", Model)
-
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/css/htmlcontent2.css">
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
 
 
 @{
@@ -61,7 +59,7 @@
             }
 
             <div class="w3-row @justify">
-                @DownloadDocument(info.ItemID, @lp1, "document1",i.GetXmlProperty("genxml/textbox/namedocument1"))
+                @DownloadDocument(info.ItemID, @lp1, "document1", i.GetXmlProperty("genxml/textbox/namedocument1"))
             </div>
         }
 
@@ -106,13 +104,13 @@
                 openInNewWindow = true;
             }
             <div class="w3-row @justify">
-                @LinkURL(info, "genxml/textbox/externallink1",openInNewWindow)
+                @LinkURL(info, "genxml/textbox/externallink1", openInNewWindow)
             </div>
         }
 
 
         <div style="clear: both;" class="w3-margin"></div>
-        
+
 
         lp1 += 1;
     }
