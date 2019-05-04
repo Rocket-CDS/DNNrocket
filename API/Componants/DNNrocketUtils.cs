@@ -973,6 +973,11 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
+        public static void ClearPortalCache()
+        {
+            DataCache.ClearPortalCache(PortalSettings.Current.PortalId, true);
+        }
+
         public static void ClearPortalCache(int portalId)
         {
             DataCache.ClearPortalCache(portalId, true);
@@ -1481,9 +1486,10 @@ namespace DNNrocketAPI
             }
             model.List = imgList;
 
-            var strOut = "";
+            var strOut = "<div id='dnnrocket_imageselectwrapper'>";
             var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut = DNNrocketUtils.RazorRender(model, razorTempl, false);
+            strOut += DNNrocketUtils.RazorRender(model, razorTempl, false);
+            strOut += "</div>";
             return strOut;
         }
 
@@ -1510,9 +1516,10 @@ namespace DNNrocketAPI
             }
             model.List = docList;
 
-            var strOut = "";
+            var strOut = "<div id='dnnrocket_documentselectwrapper'>";
             var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut = DNNrocketUtils.RazorRender(model, razorTempl, false);
+            strOut += DNNrocketUtils.RazorRender(model, razorTempl, false);
+            strOut += "</div>";
             return strOut;
         }
 

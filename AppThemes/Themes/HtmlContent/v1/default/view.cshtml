@@ -50,22 +50,63 @@
 
         if (i.GetXmlProperty("genxml/lang/genxml/hidden/document1") != "")
         {
-            <div class="w3-row w3-center">
+            var justify = "w3-left-align";
+            if (i.GetXmlPropertyInt("genxml/hidden/layoutdocument1") == 1)
+            {
+                justify = "w3-center";
+            }
+            if (i.GetXmlPropertyInt("genxml/hidden/layoutdocument1") == 2)
+            {
+                justify = "w3-right-align";
+            }
+
+            <div class="w3-row @justify">
                 @DownloadDocument(info.ItemID, @lp1, "document1",i.GetXmlProperty("genxml/textbox/namedocument1"))
             </div>
         }
 
         if (i.GetXmlProperty("genxml/select/internallink1") != "")
         {
-            <div class="w3-row w3-center">
+            var justify = "w3-left-align";
+            if (i.GetXmlPropertyInt("genxml/hidden/layoutinternallink1") == 1)
+            {
+                justify = "w3-center";
+            }
+            if (i.GetXmlPropertyInt("genxml/hidden/layoutinternallink1") == 2)
+            {
+                justify = "w3-right-align";
+            }
+
+            var openInNewWindow = false;
+            if (i.GetXmlPropertyBool("genxml/checkbox/blankinternallink1"))
+            {
+                openInNewWindow = true;
+            }
+            <div class="w3-row @justify">
                 @LinkPageURL(info, "genxml/select/internallink1")
             </div>
         }
 
         if (i.GetXmlProperty("genxml/textbox/externallink1") != "")
         {
-            <div class="w3-row w3-center">
-                @LinkURL(info, "genxml/textbox/externallink1")
+            var justify = "w3-left-align";
+            if (i.GetXmlPropertyInt("genxml/hidden/layoutexternallink1") == 1)
+            {
+                justify = "w3-center";
+            }
+
+            if (i.GetXmlPropertyInt("genxml/hidden/layoutexternallink1") == 2)
+            {
+                justify = "w3-right-align";
+            }
+
+            var openInNewWindow = false;
+            if (i.GetXmlPropertyBool("genxml/checkbox/blankexternallink1"))
+            {
+                openInNewWindow = true;
+            }
+            <div class="w3-row @justify">
+                @LinkURL(info, "genxml/textbox/externallink1",openInNewWindow)
             </div>
         }
 

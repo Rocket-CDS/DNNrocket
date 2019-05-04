@@ -140,6 +140,9 @@ namespace DNNrocket.Images
                 }
             }
 
+            CacheUtils.ClearAllCache();
+            DNNrocketUtils.ClearPortalCache();
+
         }
 
 
