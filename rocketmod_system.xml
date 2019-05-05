@@ -121,6 +121,38 @@
     </genxml>
     <genxml>
       <textbox>
+        <interfacekey>fieldeditor</interfacekey>
+        <entitytypecode>ROCKETFIELDS</entitytypecode>
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <defaulttemplate>fieldeditor.cshtml</defaulttemplate>
+        <defaultcommand>rocketsettings_edit</defaultcommand>
+        <namespaceclass>RocketSettings.startconnect</namespaceclass>
+        <assembly>RocketSettings</assembly>
+        <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>true</cache>
+        <onmenu>true</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
         <interfacekey>rocketsettings</interfacekey>
         <entitytypecode>ROCKETSETTINGS</entitytypecode>
         <interfaceicon />
@@ -179,6 +211,7 @@
         <genxml />
         <genxml />
         <genxml />
+        <genxml />
       </interfacedata>
       <groupsdata list="true">
         <genxml />
@@ -189,4 +222,3 @@
   </lang>
   <systemprovider>systemapi</systemprovider>
 </genxml>
-

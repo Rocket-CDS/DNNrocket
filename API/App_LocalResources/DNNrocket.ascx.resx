@@ -420,4 +420,10 @@
   <data name="localized.Text" xml:space="preserve">
     <value>Localized</value>
   </data>
+  <data name="type.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="label.Text" xml:space="preserve">
+    <value>Label</value>
+  </data>
 </root>

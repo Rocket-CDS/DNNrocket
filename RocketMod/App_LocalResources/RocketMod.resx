@@ -150,6 +150,9 @@
   <data name="edittitle.Text" xml:space="preserve">
     <value>DNNrocket - High Speed Integration</value>
   </data>
+  <data name="fieldeditor.Text" xml:space="preserve">
+    <value>Field Editor</value>
+  </data>
   <data name="iframesupport.Text" xml:space="preserve">
     <value>Your browser does not support iframes. Use the Rocket Admin option.</value>
   </data>
