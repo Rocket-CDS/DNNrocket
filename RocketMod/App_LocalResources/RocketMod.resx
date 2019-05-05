@@ -123,6 +123,9 @@
   <data name="apptheme.Text" xml:space="preserve">
     <value>App Theme</value>
   </data>
+  <data name="appthemeversion.Text" xml:space="preserve">
+    <value>App Theme Version</value>
+  </data>
   <data name="cmdResetButton.Text" xml:space="preserve">
     <value>&lt;i title="Reset" class="fas fa-redo fa-fw fa-lg"&gt;&lt;/i&gt; Reset Config.</value>
   </data>
@@ -134,6 +137,9 @@
   </data>
   <data name="dashboard.Text" xml:space="preserve">
     <value>DashBoard</value>
+  </data>
+  <data name="datasource.Text" xml:space="preserve">
+    <value>Data Source</value>
   </data>
   <data name="documentfolder.Text" xml:space="preserve">
     <value>Document Folder</value>
@@ -155,6 +161,9 @@
   </data>
   <data name="manageremail.Text" xml:space="preserve">
     <value>Manager Email</value>
+  </data>
+  <data name="name.Text" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="ref.Text" xml:space="preserve">
     <value>Ref.</value>

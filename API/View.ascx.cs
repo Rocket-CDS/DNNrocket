@@ -82,7 +82,8 @@ namespace DNNrocketAPI
 
             _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
 
-            _configInfo = objCtrl.GetData(_interfacekey + "_" + ModuleId, "CONFIG", DNNrocketUtils.GetEditCulture(), -1, ModuleId, true);
+            var configData = new ConfigData(PortalId, _systemInfo, TabId, ModuleId);
+            _configInfo = configData.ConfigInfo;
 
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
 
@@ -105,9 +106,7 @@ namespace DNNrocketAPI
                 _paramCmd = _rocketInterface.DefaultCommand;
                 if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we dont; define template path in the interface assume it's the control path.
 
-                var configData = new ConfigData(base.PortalId, _systemInfo.ItemID, TabId, ModuleId);
                 DNNrocketUtils.IncludePageHeaders(configData, this.Page, TabId);
-
             }
 
 

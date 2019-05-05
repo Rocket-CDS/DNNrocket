@@ -14,18 +14,25 @@ namespace DNNrocketAPI.Componants
         private bool _configExists;
         private int _tabid;
         private int _moduleid;
+        private int _dataModuleid;
         private int _systemid;
         private int _portalid;
-
+        private string _moduleref;
+        private string _moduletype;
+        private SimplisityInfo _systemInfo;
+        private string _requiredCultureCode;
 
         public SimplisityInfo ConfigInfo;
 
-        public ConfigData(int portalId, int systemId, int tabId, int moduleId)
+        public ConfigData(int portalId, SimplisityInfo systemInfo, int tabId, int moduleId, string requiredCultureCode = "")
         {
             _portalid = portalId;
             _tabid = tabId;
             _moduleid = moduleId;
-            _systemid = systemId;
+            _systemid = systemInfo.ItemID;
+            _systemInfo = systemInfo;
+            _requiredCultureCode = requiredCultureCode;
+            if (_requiredCultureCode == "") _requiredCultureCode = DNNrocketUtils.GetCurrentCulture();
 
             PopulateConfig();
         }
@@ -35,15 +42,24 @@ namespace DNNrocketAPI.Componants
         public void PopulateConfig()
         {
             var objCtrl = new DNNrocketController();
-            ConfigInfo = objCtrl.GetData("rocketmod_" + _moduleid, "CONFIG",DNNrocketUtils.GetCurrentCulture(), -1, _moduleid, true);
+
+            _moduletype = _systemInfo.GUIDKey;
+
+            ConfigInfo = objCtrl.GetByType(_portalid, _moduleid, "CONFIG" + _moduletype, "", _requiredCultureCode);
             if (ConfigInfo == null)
             {
                 _configExists = false;
                 ConfigInfo = new SimplisityInfo();
                 ConfigInfo.ModuleId = _moduleid;
+                ConfigInfo.Lang = _requiredCultureCode;
+                _dataModuleid = _moduleid;
+                _moduleref = GeneralUtils.GetUniqueKey();
             }
             else
             {
+                _moduleref = ConfigInfo.GUIDKey;
+                _dataModuleid = ConfigInfo.GetXmlPropertyInt("genxml/select/datamoduleid");
+                if (_dataModuleid == 0) _dataModuleid = _moduleid;
                 if (AppTheme == "")
                 {
                     _configExists = false;
@@ -53,12 +69,13 @@ namespace DNNrocketAPI.Componants
                     _configExists = true;
                 }
             }
+
         }
 
         public void DeleteConfig()
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("rocketmod_" + _moduleid, "CONFIG", DNNrocketUtils.GetCurrentCulture(), -1, _moduleid, true);
+            var info = objCtrl.GetByType(_portalid, _moduleid, "CONFIG" + _moduletype, "", _requiredCultureCode);
             if (info != null)
             {
                 objCtrl.Delete(info.ItemID);
@@ -73,7 +90,7 @@ namespace DNNrocketAPI.Componants
             {
                 ConfigInfo.SetXmlProperty("genxml/hidden/apptheme", appTheme);
                 var objCtrl = new DNNrocketController();
-                var info = objCtrl.SaveData("rocketmod_" + _moduleid, "CONFIG", ConfigInfo, _systemid, _moduleid);
+                var info = objCtrl.SaveData(_moduleref, "CONFIG" + _moduletype, ConfigInfo, _systemid, _moduleid);
                 CacheUtils.ClearCache("rocketmod" + ModuleId);
                 PopulateConfig();
             }
@@ -93,13 +110,13 @@ namespace DNNrocketAPI.Componants
             {
                 postInfo.SetXmlProperty("genxml/dropdownlist/paymentprovider", ConfigInfo.GetXmlProperty("genxml/dropdownlist/paymentprovider"));
             }
-            postInfo.SetXmlProperty("genxml/checkbox/noiframeedit", "False"); // we do not want iframe edit
+            postInfo.SetXmlProperty("genxml/checkbox/noiframeedit", "False"); // iframe edit
             postInfo.SetXmlProperty("genxml/hidden/templaterelpath", templateRelPath);
 
             ConfigInfo.XMLData = postInfo.XMLData;
 
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.SaveData("rocketmod_" + _moduleid, "CONFIG", ConfigInfo, _systemid, _moduleid);
+            var info = objCtrl.SaveData(_moduleref, "CONFIG" + _moduletype, ConfigInfo, _systemid, _moduleid);
             CacheUtils.ClearCache("rocketmod" + ModuleId);
             PopulateConfig();
         }
@@ -113,6 +130,8 @@ namespace DNNrocketAPI.Componants
         public string AppThemeVersion { get { return ConfigInfo.GetXmlProperty("genxml/select/versionfolder"); } }
         public string ImageFolderRel { get{ return DNNrocketUtils.HomeRelDirectory() + "/" + ImageFolder; } }
         public string DocumentFolderRel { get{ return DNNrocketUtils.HomeRelDirectory() + "/" + DocumentFolder;} }
+
+        public string SystemKey { get { return _systemInfo.GetXmlProperty("genxml/textbox/ctrlkey"); } }
 
         public string DocumentFolder
         {
@@ -149,6 +168,8 @@ namespace DNNrocketAPI.Componants
         public int ModuleId { get {return _moduleid;} }
         public int TabId { get { return _tabid; } }
         public int SystemId { get { return _systemid; } }
+        public int DataModuleId { get { return _dataModuleid; } }
+        public string ModuleRef { get { return _moduleref; } }
 
 
     }

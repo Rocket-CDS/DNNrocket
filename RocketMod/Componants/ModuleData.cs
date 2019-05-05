@@ -57,7 +57,7 @@ namespace RocketMod
         {
             if (_configData.Exists)
             {
-                _settingData = new SettingsData(configData.TabId, configData.ModuleId, _langRequired, _entityTypeCode);
+                _settingData = new SettingsData(configData.TabId, configData.DataModuleId, _langRequired, _entityTypeCode);
                 PopulateHeader();
                 _currentRecord = _settingData.Info;
             }
@@ -69,7 +69,7 @@ namespace RocketMod
         public void PopulateHeader()
         {
             var objCtrl = new DNNrocketController();
-            _headerInfo = objCtrl.GetData("rocketmod_" + ModuleId , "HEADER", _langRequired, -1, ModuleId, true);
+            _headerInfo = objCtrl.GetData(_configData.ModuleRef, "HEADER", _langRequired, -1, ModuleId, true);
             if (_headerInfo == null)
             {
                 _headerInfo = new SimplisityInfo();
@@ -80,7 +80,7 @@ namespace RocketMod
         public void DeleteHeader()
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("rocketmod_" + ModuleId, "HEADER", _langRequired, -1, ModuleId, true);
+            var info = objCtrl.GetData(_configData.ModuleRef, "HEADER", _langRequired, -1, ModuleId, true);
             if (info != null)
             {
                 objCtrl.Delete(info.ItemID);
@@ -100,7 +100,7 @@ namespace RocketMod
             postInfo.RemoveXmlNode("genxml/urlparams");
 
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.SaveData("rocketmod_" + ModuleId, "HEADER", postInfo, -1, ModuleId);
+            var info = objCtrl.SaveData(_configData.ModuleRef, "HEADER", postInfo, -1, ModuleId);
             ClearCache();
             if (_configData.Exists)
             {
@@ -163,6 +163,7 @@ namespace RocketMod
         #region "properties"
 
         public int ModuleId { get {return configData.ModuleId; } }
+        public int DataModuleId { get { return configData.DataModuleId; } }
         public int TabId { get { return configData.TabId; } }
         public int ItemId { get { return _settingData.Info.ItemID; } }
 

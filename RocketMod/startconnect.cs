@@ -44,7 +44,7 @@ namespace RocketMod
 
             var selecteditemid = _postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
 
-            _configData = new ConfigData(postInfo.PortalId, _systemInfo.ItemID, _tabid, _moduleid);
+            _configData = new ConfigData(postInfo.PortalId, _systemInfo, _tabid, _moduleid);
             _moduleData = new ModuleData(_configData, langRequired);
             _postInfo.ModuleId = _moduleData.ModuleId; // make sure we have correct moduleid.
 

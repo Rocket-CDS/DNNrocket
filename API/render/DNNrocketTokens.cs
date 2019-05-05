@@ -446,6 +446,44 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
+        public IEncodedString DataSourceList(SimplisityInfo info, string systemkey, string xpath, string attributes = "", bool allowEmpty = true, bool localized = false)
+        {
+            var strOut = "";
+            if (info != null)
+            {
+                var objCtrl = new DNNrocketController();
+                var filter = "";
+                var dirlist = objCtrl.GetList(info.PortalId,-1,"CONFIG" + systemkey, filter);
+                var tList = new Dictionary<int,string>();
+                foreach (var sInfo in dirlist)
+                {
+                    var displayname = sInfo.GetXmlProperty("genxml/textbox/name") + ": ";
+                    displayname += sInfo.GetXmlProperty("genxml/hidden/apptheme");
+                    displayname += " [" + sInfo.GetXmlProperty("genxml/hidden/apptheme") + "]";
+                    if (!tList.ContainsKey(sInfo.ModuleId)) tList.Add(sInfo.ModuleId, displayname);
+                }
+
+
+                var upd = getUpdateAttr(xpath, attributes, localized);
+                var id = getIdFromXpath(xpath, 0);
+                strOut = "<select id='" + id + "' " + upd + " " + attributes + "  s-xpath='" + xpath + "' >";
+                var s = "";
+                if (allowEmpty) strOut += "    <option value=''></option>";
+                foreach (var tItem in tList)
+                {
+                    if (info.GetXmlPropertyInt(xpath) == tItem.Key)
+                        s = "selected";
+                    else
+                        s = "";
+                    strOut += "    <option value='" + tItem.Key + "' " + s + ">" + tItem.Value + "</option>";
+                }
+                strOut += "</select>";
+            }
+
+            return new RawString(strOut);
+        }
+
+
 
     }
 }

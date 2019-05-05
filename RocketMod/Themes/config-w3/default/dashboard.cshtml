@@ -27,14 +27,22 @@
 <div id="configdata" class="w3-container simplisity_panel">
 
     @HiddenField(configinfo, "genxml/hidden/apptheme")
+    @HiddenField(configinfo, "genxml/hidden/moduletype","","rocketmod")
 
     <div class="w3-container">
         <h1>@ResourceKey("RocketMod.config")</h1>
 
         <table class="w3-table w3-responsive">
             <tr>
+                <td class="w3-right-align"><b>@ResourceKey("RocketMod.name"):</b></td>
+                <td>
+                    @TextBox(configinfo, "genxml/textbox/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
                 <td class="w3-right-align "><b>@ResourceKey("RocketMod.ref"):</b></td>
-                <td>@configinfo.ItemID</td>
+                <td>@configinfo.ItemID / @configinfo.GUIDKey</td>
                 <td></td>
             </tr>
             <tr>
@@ -43,8 +51,13 @@
                 <td></td>
             </tr>
             <tr>
-                <td class="w3-right-align"><b>@ResourceKey("RocketMod.apptheme"):</b></td>
-                <td>@FolderSelectList(configinfo, "genxml/select/versionfolder", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme), "class='w3-input w3-border'", false,false)</td>
+                <td class="w3-right-align"><b>@ResourceKey("RocketMod.appthemeversion"):</b></td>
+                <td>@FolderSelectList(configinfo, "genxml/select/versionfolder", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme), "class='w3-input w3-border'", false, false)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="w3-right-align"><b>@ResourceKey("RocketMod.datasource"):</b></td>
+                <td>@DataSourceList(configinfo, moduleData.configData.SystemKey, "genxml/select/datamoduleid", "class='w3-input w3-border'", true, false)</td>
                 <td></td>
             </tr>
             <tr>
