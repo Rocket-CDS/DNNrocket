@@ -417,4 +417,7 @@
   <data name="rocketadmintab.Text" xml:space="preserve">
     <value>Admin Window</value>
   </data>
+  <data name="localized.Text" xml:space="preserve">
+    <value>Localized</value>
+  </data>
 </root>

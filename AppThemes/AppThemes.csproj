@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Themes\HtmlContent\v1\css\**" />
+    <EmbeddedResource Remove="Themes\HtmlContent\v1\css\**" />
+    <None Remove="Themes\HtmlContent\v1\css\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
     <ProjectReference Include="..\Images\Images.csproj" />
     <ProjectReference Include="..\RocketMod\RocketMod.csproj" />
@@ -15,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Shared\" />
-    <Folder Include="Themes\HtmlContent\v1\css\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

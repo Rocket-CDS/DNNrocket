@@ -109,7 +109,7 @@
 
         <script>
             $(document).ready(function () {
-                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketmodule', usehistory: false });
+                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketmodule', usehistory: true });
             });
 
             // Get the Sidebar

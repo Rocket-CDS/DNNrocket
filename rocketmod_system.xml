@@ -5,7 +5,7 @@
     <activevalue />
     <pagesize>20</pagesize>
     <page>1</page>
-    <selecteditemid>371339</selecteditemid>
+    <selecteditemid>3</selecteditemid>
     <editlanguage />
     <index>99</index>
     <systemprovider>systemapi</systemprovider>
@@ -14,7 +14,7 @@
   <textbox>
     <ctrlkey>dnnrocketmodule</ctrlkey>
     <systemname>DNN Rocket Mod</systemname>
-    <adminurl>/DesktopModules/DNNrocket/RocketMod/admin.html</adminurl>
+    <adminurl>/DesktopModules/DNNrocket/RocketMod/admin.aspx?moduleid=[moduleid]&amp;tabid=[tabid]</adminurl>
     <apiurl>/DesktopModules/DNNrocket/API/api.ashx</apiurl>
     <licensekey />
     <encryptkey>12365498765454654222222222</encryptkey>
@@ -26,7 +26,7 @@
     <genxml>
       <textbox>
         <interfacekey>rocketmod</interfacekey>
-        <entitytypecode>DATA</entitytypecode>
+        <entitytypecode>ROCKETMOD</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>view.cshtml</defaulttemplate>
@@ -51,14 +51,14 @@
       </checkboxlist>
       <checkbox>
         <active>true</active>
-        <cache>true</cache>
+        <cache>false</cache>
         <onmenu>false</onmenu>
       </checkbox>
     </genxml>
     <genxml>
       <textbox>
         <interfacekey>dashboard</interfacekey>
-        <entitytypecode>ROCKETMODCONFIG</entitytypecode>
+        <entitytypecode>ROCKETMOD</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>dashboard.cshtml</defaulttemplate>
@@ -77,8 +77,8 @@
         <securityroles>
           <chk value="true" data="Administrators" />
           <chk value="true" data="Manager" />
-          <chk value="false" data="Editor" />
-          <chk value="false" data="ClientEditor" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
         </securityroles>
       </checkboxlist>
       <checkbox>
@@ -119,6 +119,38 @@
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>rocketsettings</interfacekey>
+        <entitytypecode>ROCKETSETTINGS</entitytypecode>
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <defaulttemplate>settings.cshtml</defaulttemplate>
+        <defaultcommand>rocketsettings_edit</defaultcommand>
+        <namespaceclass>RocketSettings.startconnect</namespaceclass>
+        <assembly>RocketSettings</assembly>
+        <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>true</cache>
+        <onmenu>true</onmenu>
+      </checkbox>
+    </genxml>
   </interfacedata>
   <groupsdata list="true">
     <genxml>
@@ -146,6 +178,7 @@
         <genxml />
         <genxml />
         <genxml />
+        <genxml />
       </interfacedata>
       <groupsdata list="true">
         <genxml />
@@ -156,3 +189,4 @@
   </lang>
   <systemprovider>systemapi</systemprovider>
 </genxml>
+

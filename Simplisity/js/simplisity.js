@@ -57,14 +57,16 @@
         }
         $('#simplisity_systemprovider').val(systemprovider);
 
+        var iframeedit = simplisity_getCookieValue('s-edit-iframeedit');
         var scmd = simplisity_getCookieValue('s-cmd-menu-' + systemprovider);
         var sfields = simplisity_getCookieValue('s-fields-menu-' + systemprovider);
-        if (scmd !== '' && settings.usehistory === true) {
+        if (scmd !== '' && settings.usehistory === true && iframeedit === '') {
             $('#simplisity_startpanel').removeAttr('s-cmd');
             $('#simplisity_startpanel').removeAttr('s-fields');
             $('#simplisity_startpanel').attr('s-cmd', scmd);
             $('#simplisity_startpanel').attr('s-fields', sfields);
         }
+        simplisity_setCookieValue('s-edit-iframeedit','');
 
         $('.simplisity_panel').each(function () {
             var sreturn = '#' + $(this).attr('id');

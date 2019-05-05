@@ -187,6 +187,12 @@ namespace RocketMod
         {
             try
             {
+                if (_moduleData.Data.List.Count == 0)
+                {
+                    // always have 1 row when editing.
+                    _moduleData.Data.AddRow();
+                }
+
                 var strOut = "";
                 var passSettings = _postInfo.ToDictionary();
                 var appTheme = new AppTheme(_moduleData.configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
