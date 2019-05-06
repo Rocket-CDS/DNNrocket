@@ -122,7 +122,7 @@
     <genxml>
       <textbox>
         <interfacekey>fieldeditor</interfacekey>
-        <entitytypecode>ROCKETFIELDS</entitytypecode>
+        <entitytypecode>ROCKETMODFIELDS</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>fieldeditor.cshtml</defaulttemplate>

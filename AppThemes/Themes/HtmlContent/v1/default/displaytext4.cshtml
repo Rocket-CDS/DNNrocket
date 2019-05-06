@@ -16,7 +16,7 @@
     var w3class = "";
 }
 
-@for(var lp1 = 1; lp1 <= 4; lp1++)
+@for (var lp1 = 1; lp1 <= 4; lp1++)
 {
     if (Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath" + lp1) != "")
     {
@@ -37,7 +37,7 @@
 }
 
 <div class="w3-row">
-    @for(var lp1 = 1; lp1 <= 4; lp1++)
+    @for (var lp1 = 1; lp1 <= 4; lp1++)
     {
         var imagewidth = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/widthimagepath" + lp1);
         var imageheight = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/heightimagepath" + lp1);
@@ -52,8 +52,6 @@
     }
 </div>
 
-<div class="w3-row">
-
+<div class="w3-row w3-padding">
     @HtmlOf(Model.Datainfo.GetXmlProperty("genxml/lang/genxml/textbox/richtext"))
-
 </div>

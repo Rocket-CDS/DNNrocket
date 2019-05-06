@@ -16,7 +16,7 @@
     var w3class = "";
 }
 
-@for(var lp1 = 1; lp1 <= 4; lp1++)
+@for (var lp1 = 1; lp1 <= 4; lp1++)
 {
     if (Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath" + lp1) != "")
     {
@@ -36,14 +36,12 @@
     w3class = "w3-quarter";
 }
 
-<div class="w3-row">
-
+<div class="w3-row w3-padding">
     @HtmlOf(Model.Datainfo.GetXmlProperty("genxml/lang/genxml/textbox/richtext"))
-
 </div>
 
 <div class="w3-row">
-    @for(var lp1 = 1; lp1 <= 4; lp1++)
+    @for (var lp1 = 1; lp1 <= 4; lp1++)
     {
         var imagewidth = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/widthimagepath" + lp1);
         var imageheight = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/heightimagepath" + lp1);
@@ -51,9 +49,9 @@
         var imagepath = Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath" + lp1);
         if (imagepath != "")
         {
-    <div class="@w3class">
-        <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@imagepath&w=@imagewidth&h=@imageheight" alt="@imagealt" />
-    </div>
+            <div class="@w3class">
+                <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@imagepath&w=@imagewidth&h=@imageheight" alt="@imagealt" />
+            </div>
         }
     }
 </div>

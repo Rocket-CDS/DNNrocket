@@ -426,4 +426,7 @@
   <data name="label.Text" xml:space="preserve">
     <value>Label</value>
   </data>
+  <data name="size.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
 </root>

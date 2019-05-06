@@ -26,18 +26,19 @@
 
     @if (imagepath != "")
     {
-    <div class="w3-padding" style="float: left">
-        <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@imagepath&w=@imagewidth&h=@imageheight" alt="@imagealt" />
-    </div>
+        <div class="w3-padding" style="float: left">
+            <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@imagepath&w=@imagewidth&h=@imageheight" alt="@imagealt" />
+        </div>
     }
     @if (imagepath2 != "")
     {
-    <div class="w3-padding" style="float: right">
-        <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@imagepath2&w=@imagewidth2&h=@imageheight2" alt="@imagealt2" />
-    </div>
+        <div class="w3-padding" style="float: right">
+            <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@imagepath2&w=@imagewidth2&h=@imageheight2" alt="@imagealt2" />
+        </div>
     }
 
-
-    @HtmlOf(Model.Datainfo.GetXmlProperty("genxml/lang/genxml/textbox/richtext"))
+    <div class="w3-padding">
+        @HtmlOf(Model.Datainfo.GetXmlProperty("genxml/lang/genxml/textbox/richtext"))
+    </div>
 
 </div>

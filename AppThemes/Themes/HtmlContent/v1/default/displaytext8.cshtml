@@ -22,9 +22,9 @@
             var imagepath = Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath" + lp1);
             if (imagepath != "" && ((lp1 % 2) != 0))
             {
-        <div class="w3-padding">
-            <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@imagepath&w=@imagewidth&h=@imageheight" alt="@imagealt" /><br />
-        </div>
+                <div class="w3-padding">
+                    <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@imagepath&w=@imagewidth&h=@imageheight" alt="@imagealt" /><br />
+                </div>
             }
         }
     </div>
@@ -45,7 +45,9 @@
         }
     </div>
 
-                @HtmlOf(Model.Datainfo.GetXmlProperty("genxml/lang/genxml/textbox/richtext"))
+    <div class="w3-padding">
+        @HtmlOf(Model.Datainfo.GetXmlProperty("genxml/lang/genxml/textbox/richtext"))
+    </div>
 
-            </div>
+</div>
 

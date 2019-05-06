@@ -162,11 +162,13 @@ namespace RocketMod
 
         #region "properties"
 
+        public int PortalId { get { return _settingData.Info.PortalId; } }
         public int ModuleId { get {return configData.ModuleId; } }
         public int DataModuleId { get { return configData.DataModuleId; } }
         public int TabId { get { return configData.TabId; } }
         public int ItemId { get { return _settingData.Info.ItemID; } }
-
+        public string CultureCode { get { return _langRequired; } }
+        
         public SimplisityInfo CurrentRecord { get { return _currentRecord; } }
         public SimplisityInfo HeaderInfo { get { return _headerInfo; } }
         public SettingsData Data { get { return _settingData; } }

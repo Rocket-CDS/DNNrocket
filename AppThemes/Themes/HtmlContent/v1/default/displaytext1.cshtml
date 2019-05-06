@@ -22,6 +22,8 @@
         <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath1")&w=@imagewidth&h=@imageheight" alt="" />
     </div>
 
-    @HtmlOf(Model.Datainfo.GetXmlProperty("genxml/lang/genxml/textbox/richtext"))
+    <div class="w3-padding">
+        @HtmlOf(Model.Datainfo.GetXmlProperty("genxml/lang/genxml/textbox/richtext"))
+    </div>
 
 </div>

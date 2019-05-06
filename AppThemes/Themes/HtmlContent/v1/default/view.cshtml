@@ -41,7 +41,9 @@
             var headerstyle = i.GetXmlProperty("genxml/select/headerstyle");
             var hstart = "<" + headerstyle + ">";
             var hend = "</" + headerstyle + ">";
-            @HtmlOf(hstart)@i.GetXmlProperty("genxml/lang/genxml/textbox/header")@HtmlOf(hend)
+    <div class="w3-padding">
+        @HtmlOf(hstart)@i.GetXmlProperty("genxml/lang/genxml/textbox/header")@HtmlOf(hend)
+    </div>
         }
 
         @RenderTemplate(layouttemplate, "/DesktopModules/DNNrocket/AppThemes", "HtmlContent", Model)

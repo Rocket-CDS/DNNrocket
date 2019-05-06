@@ -189,4 +189,7 @@
   <data name="system.Text" xml:space="preserve">
     <value>System</value>
   </data>
+  <data name="templatelevel.Text" xml:space="preserve">
+    <value>Template Level</value>
+  </data>
 </root>
