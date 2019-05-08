@@ -59,9 +59,9 @@ namespace RocketMod
                     foreach (var f in flines)
                     {
                         var localized = f.GetXmlPropertyBool("genxml/checkbox/localized");
-                        var xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                        var xpath = "";
                         if (localized) xpath = "genxml/lang/" + xpath;
-                        var size = f.GetXmlProperty("genxml/textbox/size");
+                        var size = f.GetXmlProperty("genxml/select/size");
                         var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
 
                         strOut += "<div class='w3-col m" + size + " w3-padding'>";
@@ -72,7 +72,18 @@ namespace RocketMod
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
                         {
+                            xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                             strOut += TextBox(info, xpath, "class='w3-input w3-border' ", "", localized, row).ToString();
+                        }
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
+                        {
+                            xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                            strOut += CheckBox(info, xpath, "", "class='w3-input w3-border' ",false, localized, row).ToString();
+                        }
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
+                        {
+                            xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                            strOut += DropDownList(info, xpath, "1,2,3","1,2,3", "class='w3-input w3-border' ", "1", localized, row).ToString();
                         }
                         strOut += "</div>";
                     }

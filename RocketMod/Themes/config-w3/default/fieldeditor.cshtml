@@ -35,7 +35,17 @@
 
 
             <li class="settingsdata w3-card w3-margin w3-display-container">
+
                 <div class="w3-container">
+
+                    <button id="deletebutton@(lp3)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin">
+                        <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
+                    </button>
+
+                    <button id="editbutton@(lp3)" onclick="dnnrocket_showdetail(@(lp3))" class="w3-button w3-display-topleft editbutton">
+                        <i class="fas fa-edit"></i>
+                    </button>
+
                     <div class="w3-col m2 w3-padding">
                         <label class="">@ResourceKey("system.name")</label>
                         @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border' maxlength='250' autocomplete='off' ", "", false, lp3)
@@ -50,17 +60,68 @@
                     </div>
                     <div class="w3-col m1 w3-padding">
                         <label class="">@ResourceKey("DNNrocket.size")</label>
-                        @TextBox(i, "genxml/textbox/size", "class='w3-input w3-border' maxlength='2' autocomplete='off' ", "2", false, lp3)
+                        @DropDownList(i,"genxml/select/size","1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12", "class='w3-input w3-border'", "",false,lp3)
                     </div>
                     <div class="w3-col m2 w3-padding">
                         <br />
                         <label class="">@ResourceKey("DNNrocket.localized")</label>
                         @CheckBox(i, "genxml/checkbox/localized", "", " class='localize' row='" + lp3 + "' ", false, false, lp3)
                     </div>
-                    <div class="w3-right">
-                        <a href="javascript:void(0)" class="simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
-                    </div>
                 </div>
+
+                <!-- The Detail-->
+                <div id="detailDisplay@(lp3)" class="w3-container" style="display:none;">
+
+                    <div class="w3-row">
+                        <div class="w3-half w3-padding">
+                            <label class="">@ResourceKey("DNNrocket.defaultvalue")</label>
+                            @TextBox(i, "genxml/textbox/defaultvalue", " class='w3-input w3-border' autocomplete='off'", "", true, lp3)
+                        </div>
+                        <div class="w3-half w3-padding">
+                            <label class="">@ResourceKey("DNNrocket.attributes")</label>
+                            @TextBox(i, "genxml/textbox/attributes", " class='w3-input w3-border' autocomplete='off'", " class='w3-input w3-border' autocomplete='off'", true, lp3)
+                        </div>
+                    </div>
+
+                    <div class="w3-row">
+                        <a row="@(lp3)" href="javascript:void(0);" class=" addvaluekey w3-button w3-teal w3-padding-8 ">@ResourceKey("DNNrocket.cmdAddButton")</a>
+                    </div>
+
+                    <div class="w3-row">
+                        <div class="w3-threequarter">
+
+                            <div class="w3-row w3-padding">
+                                <div class="w3-display-container w3-col m4 w3-center">
+                                    Key
+                                </div>
+                                <div class="w3-display-container w3-col m8 w3-center">
+                                    Value
+                                </div>
+                            </div>
+
+                            @{ 
+                                var selectlistclass = "dictionarylist" + lp3;
+                            }
+                            <ul class=" @selectlistclass w3-ul w3-padding">
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+
+
+                        <div class="w3-row w3-padding">
+                            <button onclick="dnnrocket_hidedetail(@(lp3))" class="w3-button w3-display-bottomleft">
+                                <i class="fas fa-caret-up"></i>
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+
             </li>
 
         }
@@ -69,16 +130,72 @@
 
 </div>
 
-    <script>
-        $(document).ready(function () {
-            $(':checkbox').addClass('w3-check');
+<script>
+    $(document).ready(function () {
+        $(':checkbox').addClass('w3-check');
 
-            $("#pluginsettings").sortable();
-            $("#pluginsettings").disableSelection();
+        $("#pluginsettings").sortable();
+        $("#pluginsettings").disableSelection();
 
+        $('.addvaluekey').unbind("click");
+        $('.addvaluekey').click(function () {
+            var row = $(this).attr('row');
+            dnnrocket_addtextli(row);
+        });        
+
+    });
+
+
+    function dnnrocket_showdetail(row) {
+        $('#detailDisplay' + row).show();
+        $("#pluginsettings").sortable("option", "disabled", true);
+        $('#editbutton' + row).html('<i class="fas fa-caret-up"></i>');
+        $('#editbutton' + row).attr('onclick', 'dnnrocket_hidedetail(' + row + ')');
+        $('#editbutton' + row).addClass('detailopen');
+    }
+
+    function dnnrocket_hidedetail(row) {
+        $('#detailDisplay' + row).hide();
+        $('#editbutton' + row).html('<i class="fas fa-edit"></i>');
+        $('#editbutton' + row).attr('onclick', 'dnnrocket_showdetail(' + row + ')');
+        $('#editbutton' + row).removeClass('detailopen');
+
+        var activatesort = true;
+        $('.editbutton').each(function (index) {
+            if ($(this).hasClass('detailopen')) {
+                activatesort = false;
+            }
         });
+        if (activatesort) {
+            $("#pluginsettings").sortable("option", "disabled", false);
+        }
+
+    }
+
+    function dnnrocket_addtextli(index) {
+
+        var addtext = '';
+        addtext += '<li class="dictionarydata@lp3 w3-card w3-margin-bottom w3-display-container">';
+        addtext += '	<div class="w3-row">';
+        addtext += '		<div class="w3-col w3-padding m4">';
+        addtext += '			<input value="" class=" dictionaryKey w3-input w3-border" autocomplete="off" type="text">';
+        addtext += '		</div>';
+        addtext += '		<div class="w3-col w3-padding m7">';
+        addtext += '			<input value="" class=" dictionaryValue w3-input w3-border" autocomplete="off" type="text">';
+        addtext += '		</div>';
+        addtext += '		<div class="w3-col w3-padding m1">';
+        addtext += '		<span onclick="this.parentElement.parentElement.parentElement.style.display=\'none\'" class="w3-button w3-transparent">&times;</span>';
+        addtext += '		</div>';
+        addtext += '	</div>';
+        addtext += '</li>';
+
+        $('.dictionarylist' + index).append(addtext);
+
+        $('.dictionarylist' + index).sortable();
+        $('.dictionarylist' + index).disableSelection();
 
 
-    </script>
+    }
 
+</script>
 
