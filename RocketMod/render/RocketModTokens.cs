@@ -15,17 +15,17 @@ namespace RocketMod
     public class RocketModTokens<T> : DNNrocketAPI.render.DNNrocketTokens<T>
     {
 
-        public IEncodedString RenderRocketModFields(SimplisityInfo info, int row)
+        public IEncodedString RenderRocketModFields(int portalid, int moduleid, SimplisityInfo info, int row)
         {
-            var strOut = BuidlRocketForm(info,row);
+            var strOut = BuidlRocketForm(portalid, moduleid, info, row);
             return new RawString(strOut);
         }
 
-        private string BuidlRocketForm(SimplisityInfo info, int row)
+        private string BuidlRocketForm(int portalid, int moduleid, SimplisityInfo info, int row)
         {
             var objCtrl = new DNNrocketController();
             var strOut = "";
-            var fieldInfo = objCtrl.GetByType(info.PortalId, info.ModuleId, "ROCKETMODFIELDS", "", info.Lang);
+            var fieldInfo = objCtrl.GetByType(portalid, moduleid, "ROCKETMODFIELDS", "", info.Lang);
             if (fieldInfo != null)
             {
                 var fl = fieldInfo.GetList("settingsdata");
