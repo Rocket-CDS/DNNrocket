@@ -90,20 +90,23 @@
                     <div class="w3-row">
                         <div class="w3-threequarter">
 
+                            @HiddenField(i, "genxml/hidden/dictionaryKey","","",false,lp3)
+                            @HiddenField(i, "genxml/hidden/dictionaryValue", "", "", false, lp3)
+                            @HiddenField(i, "genxml/lang/genxml/hidden/dictionaryLangValue", "", "", true, lp3)
+
                             <div class="w3-row w3-padding">
                                 <div class="w3-display-container w3-col m4 w3-center">
                                     Key
                                 </div>
                                 <div class="w3-display-container w3-col m8 w3-center">
-                                    Value
+                                    Value&nbsp;@EditFlag()
                                 </div>
                             </div>
 
-                            @{ 
+                            @{
                                 var selectlistclass = "dictionarylist" + lp3;
                             }
-                            <ul class=" @selectlistclass w3-ul w3-padding">
-                            </ul>
+                            <ul class=" @selectlistclass w3-ul w3-padding"></ul>
 
                         </div>
 
@@ -178,10 +181,10 @@
         addtext += '<li class="dictionarydata@lp3 w3-card w3-margin-bottom w3-display-container">';
         addtext += '	<div class="w3-row">';
         addtext += '		<div class="w3-col w3-padding m4">';
-        addtext += '			<input value="" class=" dictionaryKey w3-input w3-border" autocomplete="off" type="text">';
+        addtext += '			<input id="dictionarykey' + index + '" row="' + index + '" value="" class=" dictionaryKey w3-input w3-border" autocomplete="off" type="text">';
         addtext += '		</div>';
         addtext += '		<div class="w3-col w3-padding m7">';
-        addtext += '			<input value="" class=" dictionaryValue w3-input w3-border" autocomplete="off" type="text">';
+        addtext += '			<input id="dictionaryvalue' + index + '" row="' + index + '" value="" class=" dictionaryValue w3-input w3-border" autocomplete="off" type="text">';
         addtext += '		</div>';
         addtext += '		<div class="w3-col w3-padding m1">';
         addtext += '		<span onclick="this.parentElement.parentElement.parentElement.style.display=\'none\'" class="w3-button w3-transparent">&times;</span>';
