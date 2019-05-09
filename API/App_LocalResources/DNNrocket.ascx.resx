@@ -435,4 +435,10 @@
   <data name="defaultvalue.Text" xml:space="preserve">
     <value>Default Value</value>
   </data>
+  <data name="height.Text" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="width.Text" xml:space="preserve">
+    <value>Width</value>
+  </data>
 </root>

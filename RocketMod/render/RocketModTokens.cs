@@ -66,6 +66,7 @@ namespace RocketMod
                         var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
                         var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
                         var defaultBool = f.GetXmlPropertyBool("genxml/textbox/defaultvalue");
+                        var attributes = f.GetXmlProperty("genxml/textbox/attributes");
 
                         strOut += "<div class='w3-col m" + size + " w3-padding'>";
                         strOut += "<label>" + label + "</label>";
@@ -76,20 +77,58 @@ namespace RocketMod
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
                         {
                             xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                            strOut += TextBox(info, xpath, "class='w3-input w3-border' ", defaultValue, localized, row).ToString();
+                            strOut += TextBox(info, xpath, attributes, defaultValue, localized, row).ToString();
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
                         {
                             xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                            strOut += CheckBox(info, xpath, "", "class='w3-input w3-border' ", defaultBool, localized, row).ToString();
+                            strOut += CheckBox(info, xpath, "", attributes, defaultBool, localized, row).ToString();
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
                         {
                             xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                             var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
                             var datatext = f.GetXmlProperty("genxml/hidden/dictionaryvalue");
-                            strOut += DropDownList(info, xpath, datavalue, datatext, "class='w3-input w3-border' ", defaultValue, localized, row).ToString();
+                            strOut += DropDownList(info, xpath, datavalue, datatext, attributes, defaultValue, localized, row).ToString();
                         }
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
+                        {
+                            xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                            var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
+                            var datatext = f.GetXmlProperty("genxml/hidden/dictionaryvalue");
+                            strOut +=  RadioButtonList(info, xpath, datavalue, datatext, attributes, defaultValue, "", localized, row).ToString();
+                        }
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
+                        {
+                            xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                            var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
+                            var datatext = f.GetXmlProperty("genxml/hidden/dictionaryvalue");
+                            strOut += CheckBoxList(info, xpath, datavalue, datatext, attributes, defaultBool, localized, row).ToString();
+                        }
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "image")
+                        {
+                            var width = f.GetXmlPropertyInt("genxml/textbox/width");
+                            var height = f.GetXmlPropertyInt("genxml/textbox/height");
+                            if (width == 0 && height == 0)
+                            {
+                                width = 140;
+                                height = 140;
+                            }
+                            strOut += ImageEdit(info, f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower(),width, height, attributes, localized, row).ToString();
+                        }
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull")
+                        {
+                            var width = f.GetXmlPropertyInt("genxml/hidden/width");
+                            var height = f.GetXmlPropertyInt("genxml/hidden/height");
+                            if (width == 0 && height == 0)
+                            {
+                                width = 140;
+                                height = 140;
+                            }
+                            strOut += ImageEditFull(info, f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower(), width, height, attributes, localized, row).ToString();
+                        }
+
+
                         strOut += "</div>";
                     }
                     strOut += "</div>";

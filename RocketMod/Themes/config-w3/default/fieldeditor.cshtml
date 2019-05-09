@@ -34,6 +34,7 @@
             lp3 += 1;
 
             var settingsdataclassselect = "dictionarydata" + lp3;
+            var imagesizeclass = "imagesize" + lp3; 
 
             <li class="settingsdata w3-card w3-margin w3-display-container @settingsdataclassselect " >
 
@@ -57,16 +58,24 @@
                     </div>
                     <div class="w3-col m2 w3-padding">
                         <label class="">@ResourceKey("DNNrocket.type")</label>
-                        @DropDownList(i, "genxml/select/type", "TextBox,CheckBox,DropDown,RadioList,Image,InternalLink,ExternalLink,Document", "TextBox,CheckBox,DropDown,RadioList,Image,InternalLink,ExternalLink,Document", " class='w3-input w3-border inputtypefield' row='" + lp3 + "' ", "TextBox", false, lp3)
+                        @DropDownList(i, "genxml/select/type", "TextBox,CheckBox,DropDown,RadioList,checkboxlist,Image,ImageFull,InternalLink,Document", "TextBox,CheckBox,DropDown,RadioList,CheckBoxList,Image Edit,Full Image Edit,Internal Page,Document", " class='w3-input w3-border inputtypefield' row='" + lp3 + "' ", "TextBox", false, lp3)
                     </div>
                     <div class="w3-col m1 w3-padding">
                         <label class="">@ResourceKey("DNNrocket.size")</label>
-                        @DropDownList(i,"genxml/select/size","1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12", "class='w3-input w3-border'", "",false,lp3)
+                        @DropDownList(i, "genxml/select/size", "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12", "class='w3-input w3-border'", "", false, lp3)
                     </div>
                     <div class="w3-col m2 w3-padding">
                         <br />
                         <label class="">@ResourceKey("DNNrocket.localized")</label>
                         @CheckBox(i, "genxml/checkbox/localized", "", " class='localize' row='" + lp3 + "' ", false, false, lp3)
+                    </div>
+                    <div class="w3-col m1 w3-padding @imagesizeclass" style="display:none;">
+                        <label class="">@ResourceKey("DNNrocket.width")</label>&nbsp;@EditFlag()
+                        @TextBox(i, "genxml/textbox/width", "class='w3-input w3-border' autocomplete='off' ", "140", false, lp3)
+                    </div>
+                    <div class="w3-col m1 w3-padding @imagesizeclass" style="display:none;">
+                        <label class="">@ResourceKey("DNNrocket.height")</label>&nbsp;@EditFlag()
+                        @TextBox(i, "genxml/textbox/height", "class='w3-input w3-border' autocomplete='off' ", "140", false, lp3)
                     </div>
                 </div>
 
@@ -80,7 +89,7 @@
                         </div>
                         <div class="w3-half w3-padding">
                             <label class="">@ResourceKey("DNNrocket.attributes")</label>
-                            @TextBox(i, "genxml/textbox/attributes", " class='w3-input w3-border' autocomplete='off'", " class='w3-input w3-border' autocomplete='off'", true, lp3)
+                            @TextBox(i, "genxml/textbox/attributes", " class='w3-input w3-border' autocomplete='off'", "", true, lp3)
                         </div>
                     </div>
 
@@ -151,10 +160,44 @@
 
         $('.inputtypefield').unbind("change");
         $('.inputtypefield').change(function () {
-            if (($(this).val().toLowerCase() === 'dropdown') || ($(this).val().toLowerCase() === 'radiolist')) {
-                var row = $(this).attr('row');
+
+            var row = $(this).attr('row');
+            $('#dictionarydisplay' + row).hide();
+            $('.imagesize' + row).hide();
+            
+            if (($(this).val().toLowerCase() === 'dropdown') || ($(this).val().toLowerCase() === 'radiolist') || ($(this).val().toLowerCase() === 'checkboxlist')) {
                 $('#dictionarydisplay' + row).show();
             }
+
+            if (($(this).val().toLowerCase() === 'image') || ($(this).val().toLowerCase() === 'imagefull')) {
+                $('.imagesize' + row).show();
+            }            
+
+            if (($(this).val().toLowerCase() === 'textbox')) {
+                $('#attributes_' + row).val(" class='w3-input w3-border' autocomplete='off' ");
+            }
+
+            if (($(this).val().toLowerCase() === 'checkbox')) {
+                $('#attributes_' + row).val(" class='w3-check' ");
+            }
+
+            if (($(this).val().toLowerCase() === 'dropdown')) {
+                $('#attributes_' + row).val("class='w3-select w3-border' ");
+            }
+
+            if (($(this).val().toLowerCase() === 'radiolist')) {
+                $('#attributes_' + row).val("class='w3-input w3-border' ");
+            }
+
+            if (($(this).val().toLowerCase() === 'checkbox')) {
+                $('#attributes_' + row).val("class='w3-check' ");
+            }
+
+            if (($(this).val().toLowerCase() === 'checkboxlist')) {
+                $('#attributes_' + row).val("class='w3-input w3-border' ");
+            }
+
+
         });        
 
         
@@ -272,9 +315,15 @@
             }
         }
 
-        if (($('#type_' + row).val().toLowerCase() === 'dropdown') || ($('#type_' + row).val().toLowerCase() === 'radiolist')) {
+        $('#dictionarydisplay' + row).hide();
+
+        if (($('#type_' + row).val().toLowerCase() === 'dropdown') || ($('#type_' + row).val().toLowerCase() === 'radiolist') || ($('#type_' + row).val().toLowerCase() === 'checkboxlist')) {
             $('#dictionarydisplay' + row).show();
         }
+
+        if (($('#type_' + row).val().toLowerCase() === 'image') || ($('#type_' + row).val().toLowerCase() === 'imagefull')) {
+            $('.imagesize' + row).show();
+        }            
 
     }
 
