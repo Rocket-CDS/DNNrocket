@@ -15,17 +15,18 @@ namespace RocketMod
     public class RocketModTokens<T> : DNNrocketAPI.render.DNNrocketTokens<T>
     {
 
-        public IEncodedString RenderRocketModFields(int portalid, int moduleid, SimplisityInfo info, int row)
+        public IEncodedString RenderRocketModFields(int portalid, int moduleid, SimplisityInfo info, int row, string lang = "")
         {
-            var strOut = BuidlRocketForm(portalid, moduleid, info, row);
+            var strOut = BuidlRocketForm(portalid, moduleid, info, row, lang);
             return new RawString(strOut);
         }
 
-        private string BuidlRocketForm(int portalid, int moduleid, SimplisityInfo info, int row)
+        private string BuidlRocketForm(int portalid, int moduleid, SimplisityInfo info, int row, string lang = "")
         {
             var objCtrl = new DNNrocketController();
             var strOut = "";
-            var fieldInfo = objCtrl.GetByType(portalid, moduleid, "ROCKETMODFIELDS", "", info.Lang);
+            if (lang == "") lang = DNNrocketUtils.GetEditCulture();
+            var fieldInfo = objCtrl.GetByType(portalid, moduleid, "ROCKETMODFIELDS", "", lang);
             if (fieldInfo != null)
             {
                 var fl = fieldInfo.GetList("settingsdata");
@@ -36,7 +37,7 @@ namespace RocketMod
                 var col = 0;
                 foreach (var f in fl)
                 {
-                    var size = f.GetXmlPropertyInt("genxml/textbox/size");
+                    var size = f.GetXmlPropertyInt("genxml/select/size");
                     if (size == 0 || size > 12) size = 12;
                     col += size;
                     if (col > 12)
@@ -63,6 +64,8 @@ namespace RocketMod
                         if (localized) xpath = "genxml/lang/" + xpath;
                         var size = f.GetXmlProperty("genxml/select/size");
                         var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
+                        var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
+                        var defaultBool = f.GetXmlPropertyBool("genxml/textbox/defaultvalue");
 
                         strOut += "<div class='w3-col m" + size + " w3-padding'>";
                         strOut += "<label>" + label + "</label>";
@@ -73,17 +76,19 @@ namespace RocketMod
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
                         {
                             xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                            strOut += TextBox(info, xpath, "class='w3-input w3-border' ", "", localized, row).ToString();
+                            strOut += TextBox(info, xpath, "class='w3-input w3-border' ", defaultValue, localized, row).ToString();
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
                         {
                             xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                            strOut += CheckBox(info, xpath, "", "class='w3-input w3-border' ",false, localized, row).ToString();
+                            strOut += CheckBox(info, xpath, "", "class='w3-input w3-border' ", defaultBool, localized, row).ToString();
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
                         {
                             xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                            strOut += DropDownList(info, xpath, "1,2,3","1,2,3", "class='w3-input w3-border' ", "1", localized, row).ToString();
+                            var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
+                            var datatext = f.GetXmlProperty("genxml/hidden/dictionaryvalue");
+                            strOut += DropDownList(info, xpath, datavalue, datatext, "class='w3-input w3-border' ", defaultValue, localized, row).ToString();
                         }
                         strOut += "</div>";
                     }
