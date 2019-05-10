@@ -61,11 +61,11 @@
                             }
                         </div>
                         <div class="w3-rest">
-                            <div class="w3-threequarter w3-padding">
+                            <div class="w3-col m10 w3-padding">
                                 <label class="">@ResourceKey("HtmlContent.title")</label>&nbsp;@EditFlag()
                                 @TextBox(i, "genxml/lang/genxml/textbox/header", " class='w3-input w3-border' autocomplete='off'", "", true, lp1)
                             </div>
-                            <div class="w3-quarter w3-padding">
+                            <div class="w3-col m2  w3-padding">
                                 <label class="">@ResourceKey("HtmlContent.style")</label>
                                 @DropDownList(i, "genxml/select/headerstyle", "H1,H2,H3,H4", "H1,H2,H3,H4", " class='w3-input w3-border' style='width:100px;' ", "H1", false, lp1)
                             </div>
@@ -83,9 +83,17 @@
 
                         <div class="w3-container ">
 
+                            <div class="w3-padding w3-right">
+                                <label class="">@ResourceKey("HtmlContent.noheader")</label>
+                                @CheckBox(i, "genxml/checkbox/noheader", "", "", false, false, lp1)
+                                &nbsp;
+                                <label class="">@ResourceKey("HtmlContent.hide")</label>
+                                @CheckBox(i, "genxml/checkbox/hide", "", "", false, false, lp1)
+                            </div>
+
                             <div class="w3-row w3-margin">
                                 <div class="">
-                                    @RadioButtonList(i, "genxml/hidden/layout", "0,1,2,3,4,5,6,7,8", "<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion  + "/img/Newspaper0.png' style='width:24px;' />,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion  + "/img/Newspaper1.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion  + "/img/Newspaper2.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion  + "/img/Newspaper3.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion  + "/img/Newspaper4.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion  + "/img/Newspaper5.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion  + "/img/Newspaper6.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion  + "/img/Newspaper7.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion  + "/img/Newspaper8.png' style='width:24px;'/>", "class=''", "0", "", false, lp1)
+                                    @RadioButtonList(i, "genxml/hidden/layout", "0,1,2,3,4,5,6,7,8", "<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion + "/img/Newspaper0.png' style='width:24px;' />,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion + "/img/Newspaper1.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion + "/img/Newspaper2.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion + "/img/Newspaper3.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion + "/img/Newspaper4.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion + "/img/Newspaper5.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion + "/img/Newspaper6.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion + "/img/Newspaper7.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme + "/" + moduleData.configData.AppThemeVersion + "/img/Newspaper8.png' style='width:24px;'/>", "class=''", "0", "", false, lp1)
                                 </div>
                             </div>
 
@@ -109,7 +117,7 @@
                                 </div>
                             </div>
 
-                            <div class="w3-row w3-padding">
+                            <div class="w3-row">
                                 <div class="w3-container ">
                                     <div class="w3-col m8">
                                         <label class="">@ResourceKey("HtmlContent.document")</label>&nbsp;@EditFlag()
@@ -122,7 +130,7 @@
                                 </div>
                             </div>
 
-                            <div class="w3-row w3-padding">
+                            <div class="w3-row">
                                 <div class="w3-container">
                                     <div class="w3-col m8">
                                         <label class="">@ResourceKey("HtmlContent.internallink")</label>
@@ -139,7 +147,7 @@
                                 </div>
                             </div>
 
-                            <div class="w3-row w3-padding">
+                            <div class="w3-row">
                                 <div class="w3-container">
                                     <div class="w3-col m8">
                                         <label class="">@ResourceKey("HtmlContent.externallink")</label>

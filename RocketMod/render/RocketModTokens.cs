@@ -127,7 +127,17 @@ namespace RocketMod
                             }
                             strOut += ImageEditFull(info, f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower(), width, height, attributes, localized, row).ToString();
                         }
-
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "internalpage")
+                        {
+                            var allowEmpty = f.GetXmlPropertyBool("genxml/checkbox/allowempty");
+                            xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                            strOut += TabSelectListOnTabId(info, xpath, attributes, allowEmpty, localized, row).ToString();
+                        }
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "document")
+                        {
+                            var fieldid =  f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                            strOut += DocumentEdit(info, fieldid, attributes, localized, row).ToString();
+                        }
 
                         strOut += "</div>";
                     }

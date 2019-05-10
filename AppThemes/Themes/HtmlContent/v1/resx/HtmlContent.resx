@@ -144,4 +144,10 @@
   <data name="justify.Text" xml:space="preserve">
     <value>Justify</value>
   </data>
+  <data name="hide.Text" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="noheader.Text" xml:space="preserve">
+    <value>No Header</value>
+  </data>
 </root>

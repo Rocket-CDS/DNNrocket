@@ -133,7 +133,7 @@
     <value>Cancel</value>
   </data>
   <data name="cmdCancelButton.Text" xml:space="preserve">
-    <value>&lt;i title="Cancel" class="fas fa-reply fa-fw fa-lg"&gt;&lt;/i&gt; Cancel</value>
+    <value>&lt;i title="Cancel" class="fas fa-undo-alt fa-fw fa-lg"&gt;&lt;/i&gt; Cancel</value>
   </data>
   <data name="cmdClear.Text" xml:space="preserve">
     <value>Clear</value>
@@ -440,5 +440,14 @@
   </data>
   <data name="width.Text" xml:space="preserve">
     <value>Width</value>
+  </data>
+  <data name="allowempty.Text" xml:space="preserve">
+    <value>Allow Empty</value>
+  </data>
+  <data name="cmdClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="cmdCloseButton.Text" xml:space="preserve">
+    <value>&lt;i title="Close" class="far fa-window-close fa-fw fa-lg"&gt;&lt;/i&gt; Close</value>
   </data>
 </root>
