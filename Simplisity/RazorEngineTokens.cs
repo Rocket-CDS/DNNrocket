@@ -359,11 +359,11 @@ namespace Simplisity
             return new RawString(strOut.ToString());
         }
 
-        public IEncodedString FileSelectList(string selectedfilename, String relitiveRootFolder, String attributes = "", Boolean allowEmpty = true)
+        public IEncodedString FileSelectList(string selectedfilename, String mappathRootFolder, String attributes = "", Boolean allowEmpty = true)
         {
             var nbi = new SimplisityInfo();
             nbi.SetXmlProperty("genxml/selectedfilename", selectedfilename);
-            return FileSelectList(nbi, "genxml/selectedfilename", relitiveRootFolder, attributes, allowEmpty);
+            return FileSelectList(nbi, "genxml/selectedfilename", mappathRootFolder, attributes, allowEmpty);
         }
 
         public IEncodedString FileSelectList(SimplisityInfo info, String xpath, String mappathRootFolder, String attributes = "", Boolean allowEmpty = true, bool localized = false)

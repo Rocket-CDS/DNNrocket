@@ -12,6 +12,8 @@
     public string displaynone { get; set; }
     public string editlang { get; set; }
     public string username { get; set; }
+    public string interfacekey { get; set; }
+    public string cmd { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -19,6 +21,8 @@
         ModuleId = HttpContext.Current.Request.QueryString["moduleid"];
         TabId = HttpContext.Current.Request.QueryString["tabid"];
         editlang = HttpContext.Current.Request.QueryString["editlang"];
+        interfacekey = HttpContext.Current.Request.QueryString["interfacekey"];
+        cmd = HttpContext.Current.Request.QueryString["cmd"];
     }
 
 </script>
@@ -83,7 +87,7 @@
     </nav>
 
         <!-- !PAGE CONTENT! -->
-    <div class="w3-main" style="margin-left:300px;margin-top:60px; " id="base-panel">
+    <div class="w3-main" style="margin-left:270px;margin-top:60px; " id="base-panel">
 
         <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketapptheme_dashboard" s-track="true" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,theme:config-w3,template:dashboard.cshtml,interfacekey:dashboard"></div>
 

@@ -123,7 +123,7 @@
   <data name="dashboard.Text" xml:space="preserve">
     <value>DashBoard</value>
   </data>
-  <data name="edit.Text" xml:space="preserve">
-    <value>Edit</value>
+  <data name="editor.Text" xml:space="preserve">
+    <value>Editor</value>
   </data>
 </root>

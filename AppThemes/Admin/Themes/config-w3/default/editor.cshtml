@@ -1,0 +1,60 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using RocketMod;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+
+@{
+    var info = (SimplisityInfo)Model.List.First();
+    var appthemerelpath = "/DesktopModules/DNNrocket/AppThemes";
+    var appthememappath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes");
+    var appthemeversion = "v1";
+}
+
+<div id="editorpanel">
+
+    @HiddenField(info, "genxml/hidden/appthemerelpath", "", appthemerelpath)
+    @HiddenField(info, "genxml/hidden/appthemeversion", "", appthemeversion)
+
+    <div class="w3-row w3-padding ">
+        <div class="w3-col m3">
+            <label>Template</label>
+            @FileSelectList(info, "genxml/select/templatename", appthememappath + "/Themes/HtmlContent/v1/default", "class=' templateselect w3-input w3-border simplisity_change' s-return='#templatereturn' s-post='#editorpanel' s-cmd='rocketapptheme_gettemplate' s-fields='interfacekey:editor'  ")
+        </div>
+    </div>
+
+    <div id="templatereturn">
+
+    </div>
+
+    <div class="w3-row  w3-padding">
+
+        @TextArea(info, "genxml/textbox/razoreditor", " class='w3-input w3-border' style='' ")
+
+    </div>
+
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#razoreditor').height($('#razoreditor').prop('scrollHeight'));
+
+        $('#razoreditor').unbind("keyup");
+        $("#razoreditor").keyup(function (event) {
+            if (event.which == 13) {
+                $('#razoreditor').height($('#razoreditor').prop('scrollHeight'));
+            }
+        });        
+
+    });
+
+</script>

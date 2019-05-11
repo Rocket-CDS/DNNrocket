@@ -56,14 +56,21 @@ namespace DNNrocket.AppThemes
             }
 
             switch (paramCmd)
-                {
-                    case "rocketapptheme_dashboard":
-                        strOut = GetDashBoard();
-                        break;
-                    case "rocketapptheme_builder":
-                        strOut = GetDashBoard();
-                        break;
-                }
+            {
+                case "rocketapptheme_dashboard":
+                    strOut = GetDashBoard();
+                    break;
+                case "rocketapptheme_builder":
+                    strOut = GetDashBoard();
+                    break;
+                case "rocketapptheme_editor":
+                    strOut = GetEditor();
+                    break;
+                case "rocketapptheme_gettemplate":
+                    strOut = GetTemplate();
+                    break;
+                   
+            }
 
             return ReturnString(strOut);
         }
@@ -74,6 +81,43 @@ namespace DNNrocket.AppThemes
             rtnDic.Add("outputhtml", strOut);
             rtnDic.Add("outputjson", jsonOut);            
             return rtnDic;
+        }
+
+
+        public static String GetTemplate()
+        {
+            try
+            {
+                var templateName = _postInfo.GetXmlProperty("genxml/select/templatename");
+                var appthemeRelPath = _postInfo.GetXmlProperty("genxml/hidden/appthemerelpath");
+                var appthemeversion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
+
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, appthemeRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), appthemeversion);
+
+                return razorTempl;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+
+        public static String GetEditor()
+        {
+            try
+            {
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editor.cshtml", _adminAppthemeRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
+
+                var passSettings = _postInfo.ToDictionary();
+                passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
+
+                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData.Info, passSettings);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
         }
 
         public static String GetDashBoard()
