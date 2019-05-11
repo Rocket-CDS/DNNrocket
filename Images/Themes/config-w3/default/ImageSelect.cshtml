@@ -101,7 +101,7 @@
             simplisity_setCookieValue('dnnrocket-imageindex', $(this).parent().find("input:first").attr('id'));
             simplisity_setCookieValue('dnnrocket-imagewidth', $(this).parent().find("img:first").attr('imagewidth'));
             simplisity_setCookieValue('dnnrocket-imageheight', $(this).parent().find("img:first").attr('imageheight'));
-            document.getElementById('rocketimageselect').style.display = 'block';
+            $('#rocketimageselect').show();
             $(this).removeClass('dnnrocket-imagechange');
             $(this).addClass('dnnrocket-imageremove');
             $(this).html('&times;');
@@ -179,7 +179,7 @@ function dnnrocketimages_selectimage(element) {
 
             }
         });
-        document.getElementById('rocketimageselect').style.display = 'none';
+        $('#rocketimageselect').hide();
     }
 
 
@@ -193,7 +193,7 @@ function dnnrocketimages_selectimage(element) {
     }
 
     function dnnrocketimages_showthelist() {
-        document.getElementById('rocketimageselect').style.display = 'block';
+        $('#rocketimageselect').show();
     }
 
 </script>

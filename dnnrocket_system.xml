@@ -5,11 +5,11 @@
     <activevalue />
     <pagesize>20</pagesize>
     <page>1</page>
-    <selecteditemid>370486</selecteditemid>
+    <selecteditemid>1</selecteditemid>
     <editlanguage />
     <index>0</index>
     <systemprovider>systemapi</systemprovider>
-    <uilang1>fr-FR</uilang1>
+    <uilang1>en-US</uilang1>
   </hidden>
   <textbox>
     <ctrlkey>dnnrocket</ctrlkey>
@@ -139,10 +139,10 @@
           <chk value="false" data="api" />
         </providertype>
         <securityroles>
-          <chk value="false" data="Administrators" />
-          <chk value="false" data="Manager" />
-          <chk value="false" data="Editor" />
-          <chk value="false" data="ClientEditor" />
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
         </securityroles>
       </checkboxlist>
       <checkbox>
@@ -171,10 +171,10 @@
           <chk value="false" data="api" />
         </providertype>
         <securityroles>
-          <chk value="false" data="Administrators" />
-          <chk value="false" data="Manager" />
-          <chk value="false" data="Editor" />
-          <chk value="false" data="ClientEditor" />
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
         </securityroles>
       </checkboxlist>
       <checkbox>

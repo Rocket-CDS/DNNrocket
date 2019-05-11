@@ -49,11 +49,11 @@ namespace DNNrocketAPI
                                     nbi2.TypeCode = "SYSTEM";
 
                                     var s = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", nbi2.GUIDKey);
-                                    if (s == null)
-                                    {
-                                        objCtrl.Update(nbi2);
-                                        upd = true;
-                                    }
+
+                                    if (s != null) nbi2.ItemID = s.ItemID;
+
+                                    objCtrl.Update(nbi2);
+                                    upd = true;
                                 }
                             }
                         }
