@@ -12,25 +12,24 @@
 
 @{
     var info = (SimplisityInfo)Model.List.First();
-    var appthemerelpath = "/DesktopModules/DNNrocket/AppThemes";
-    var appthememappath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes");
+    var systemRelPath = "/DesktopModules/DNNrocket/AppThemes";
+    var systemMapPath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes");
     var appthemeversion = "v1";
 }
 
+<div id="templatereturn" style="display:none;"></div>
+
 <div id="editorpanel">
 
-    @HiddenField(info, "genxml/hidden/appthemerelpath", "", appthemerelpath)
+    @HiddenField(info, "genxml/hidden/systemrelpath", "", systemRelPath)
     @HiddenField(info, "genxml/hidden/appthemeversion", "", appthemeversion)
+    @HiddenField(info, "genxml/hidden/apptheme", "", "HtmlContent")
 
     <div class="w3-row w3-padding ">
         <div class="w3-col m3">
             <label>Template</label>
-            @FileSelectList(info, "genxml/select/templatename", appthememappath + "/Themes/HtmlContent/v1/default", "class=' templateselect w3-input w3-border simplisity_change' s-return='#templatereturn' s-post='#editorpanel' s-cmd='rocketapptheme_gettemplate' s-fields='interfacekey:editor'  ")
+            @FileSelectList(info, "genxml/select/templatename", systemMapPath + "/Themes/HtmlContent/v1/default", "class=' templateselect w3-input w3-border simplisity_change' s-return='#templatereturn' s-post='#editorpanel' s-cmd='rocketapptheme_gettemplate' s-fields='interfacekey:editor'  ")
         </div>
-    </div>
-
-    <div id="templatereturn">
-
     </div>
 
     <div class="w3-row  w3-padding">
@@ -53,6 +52,12 @@
             if (event.which == 13) {
                 $('#razoreditor').height($('#razoreditor').prop('scrollHeight'));
             }
+        });
+
+        $('#templatereturn').unbind("change");
+        $("#templatereturn").change(function (event) {
+            $('#razoreditor').val(simplisity_decode($(this).text()));
+            $('#razoreditor').height($('#razoreditor').prop('scrollHeight'));
         });        
 
     });

@@ -66,6 +66,20 @@ namespace Simplisity
             return strOut;
         }
 
+        public static string EnCode(string value)
+        {
+            var strOut = "";
+            var l = value.ToCharArray();
+            foreach (var c in l)
+            {
+                var bytes = Encoding.ASCII.GetBytes(c.ToString());
+                string binStr = string.Join("", bytes.Select(b => Convert.ToString(b, 2)));
+                int decimalEquivalent = Convert.ToInt32(binStr, 2);
+                strOut += decimalEquivalent.ToString() + '.';
+            }
+            return strOut.TrimEnd('.');
+        }
+
         public static void CreateFolder(string folderMapPath)
         {
             if (!Directory.Exists(folderMapPath))

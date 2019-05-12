@@ -89,12 +89,13 @@ namespace DNNrocket.AppThemes
             try
             {
                 var templateName = _postInfo.GetXmlProperty("genxml/select/templatename");
-                var appthemeRelPath = _postInfo.GetXmlProperty("genxml/hidden/appthemerelpath");
+                var appthemeRelPath = _postInfo.GetXmlProperty("genxml/hidden/systemrelpath");
                 var appthemeversion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
+                var apptheme = _postInfo.GetXmlProperty("genxml/hidden/apptheme");
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, appthemeRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), appthemeversion);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, appthemeRelPath, apptheme, DNNrocketUtils.GetCurrentCulture(), appthemeversion);
 
-                return razorTempl;
+                return GeneralUtils.EnCode(razorTempl);
             }
             catch (Exception ex)
             {
