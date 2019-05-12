@@ -48,12 +48,20 @@
     -->
     <!-- LOCAL -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
-    <link rel="stylesheet" href="/DesktopModules/DNNrocket/fa/css/all.min.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css" />
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/fa/css/all.min.css" />
     <script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
     <script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
+
+    <!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->    
+    <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/codemirror.js"></script>
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/AppThemes/CodeMirror/codemirror.css" />
+    <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/mode/javascript/javascript.js"></script>
+    <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/mode/xml/xml.js"></script>
+    <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/mode/htmlmixed/htmlmixed.js"></script>
+    <!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>

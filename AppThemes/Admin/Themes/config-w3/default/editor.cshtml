@@ -32,9 +32,7 @@
         </div>
     </div>
 
-    <div class="w3-row  w3-padding">
-
-        @TextArea(info, "genxml/textbox/razoreditor", " class='w3-input w3-border' style='' ")
+    <div id="editorwrapper" class="w3-row  w3-padding">
 
     </div>
 
@@ -56,9 +54,23 @@
 
         $('#templatereturn').unbind("change");
         $("#templatereturn").change(function (event) {
-            $('#razoreditor').val(simplisity_decode($(this).text()));
-            $('#razoreditor').height($('#razoreditor').prop('scrollHeight'));
+
+            $("#razoreditor").remove();
+            $(".CodeMirror").remove();
+
+            var textArea = $('<textarea id="razoreditor" style="w3-input w3-border" spellcheck="false" />');
+            $('#editorwrapper').append(textArea);
+
+            $(textArea).val(simplisity_decode($(this).text()));
+            $(textArea).height($('#razoreditor').prop('scrollHeight'));
+
+            var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("razoreditor"), {
+                lineNumbers: true,
+                mode: "htmlmixed"
+            });
+            myCodeMirror.setSize("100%", "100%");
         });        
+
 
     });
 
