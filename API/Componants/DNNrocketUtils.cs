@@ -208,7 +208,7 @@ namespace DNNrocketAPI
             {
                 themeFolderPath = "Themes\\" + themeFolder;
             }
-            var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, themeFolderPath, controlMapPath);
+            var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(DNNrocketThemesDirectory(), themeFolderPath, controlMapPath);
             var templ = templCtrl.GetTemplateData(templatename, lang);
             return templ;
         }
@@ -1142,6 +1142,15 @@ namespace DNNrocketAPI
         public static string HomeRelDirectory()
         {
             return PortalSettings.Current.HomeDirectory;
+        }
+
+        public static string DNNrocketThemesDirectory()
+        {
+            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketThemes";
+        }
+        public static string DNNrocketThemesRelDirectory()
+        {
+            return PortalSettings.Current.HomeDirectory + "DNNrocketThemes";
         }
 
         public static string HomeDNNrocketDirectory()

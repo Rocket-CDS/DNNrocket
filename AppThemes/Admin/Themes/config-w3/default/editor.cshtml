@@ -17,6 +17,11 @@
     var appthemeversion = "v1";
 }
 
+<span class="w3-section simplisity_buttons">
+    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click editorsavebutton" s-cmd="rocketapptheme_save" s-before="copyeditorcontent" s-fields="theme:@Model.GetSetting("theme"),interfacekey:editor" s-post="#editorpanel">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+</span>
+
+
 <div id="templatereturn" style="display:none;"></div>
 
 <div id="editorpanel">
@@ -24,6 +29,10 @@
     @HiddenField(info, "genxml/hidden/systemrelpath", "", systemRelPath)
     @HiddenField(info, "genxml/hidden/appthemeversion", "", appthemeversion)
     @HiddenField(info, "genxml/hidden/apptheme", "", "HtmlContent")
+    @HiddenField(info, "genxml/hidden/themelevel", "", "portal")
+    @HiddenField(info, "genxml/hidden/moduleref", "", "")
+    @HiddenField(info, "genxml/hidden/editorcode", "", "")    
+
 
     <div class="w3-row w3-padding ">
         <div class="w3-col m3">
@@ -40,6 +49,8 @@
 
 
 <script>
+
+    var myCodeMirror;
 
     $(document).ready(function () {
 
@@ -61,17 +72,19 @@
             var textArea = $('<textarea id="razoreditor" style="w3-input w3-border" spellcheck="false" />');
             $('#editorwrapper').append(textArea);
 
-            $(textArea).val(simplisity_decode($(this).text()));
-            $(textArea).height($('#razoreditor').prop('scrollHeight'));
-
-            var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("razoreditor"), {
-                lineNumbers: true,
+            myCodeMirror = CodeMirror.fromTextArea(document.getElementById("razoreditor"), {
+                lineNumbers: false,
                 mode: "htmlmixed"
             });
             myCodeMirror.setSize("100%", "100%");
-        });        
+            myCodeMirror.setValue(simplisity_decode($(this).text()));
+        });
 
 
     });
+
+    function copyeditorcontent() {
+        $('#editorcode').val(simplisity_encode(myCodeMirror.getValue()));
+    }
 
 </script>

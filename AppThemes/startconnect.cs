@@ -3,6 +3,7 @@ using DNNrocketAPI.Componants;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace DNNrocket.AppThemes
 {
@@ -69,7 +70,10 @@ namespace DNNrocket.AppThemes
                 case "rocketapptheme_gettemplate":
                     strOut = GetTemplate();
                     break;
-                   
+                case "rocketapptheme_save":
+                    strOut = SaveTemplate();
+                    break;
+
             }
 
             return ReturnString(strOut);
@@ -83,6 +87,50 @@ namespace DNNrocket.AppThemes
             return rtnDic;
         }
 
+        public static String SaveTemplate()
+        {
+            try
+            {
+                var templateName = _postInfo.GetXmlProperty("genxml/select/templatename");
+                var appthemeRelPath = _postInfo.GetXmlProperty("genxml/hidden/systemrelpath");
+                var appthemeversion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
+                var apptheme = _postInfo.GetXmlProperty("genxml/hidden/apptheme");
+                var themelevel = _postInfo.GetXmlProperty("genxml/hidden/themelevel"); // system, portal, module
+                var moduleref = _postInfo.GetXmlProperty("genxml/hidden/moduleref");
+
+                var editorContent = GeneralUtils.DeCode(_postInfo.GetXmlProperty("genxml/hidden/editorcode"));
+
+                var themeFolderPath = "Themes\\" + apptheme + "\\" + appthemeversion + "\\default";
+                var controlMapPath = (DNNrocketUtils.DNNrocketThemesDirectory() + "\\" + themeFolderPath).TrimEnd('\\'); 
+                if (!Directory.Exists(controlMapPath)) Directory.CreateDirectory(controlMapPath);
+
+                if (themelevel.ToLower() == "system")
+                {
+                    controlMapPath = (appthemeRelPath.TrimEnd('\\') + "\\" + themeFolderPath).TrimEnd('\\');
+                }
+
+                if (themelevel.ToLower() == "portal")
+                {
+                    controlMapPath = DNNrocketUtils.DNNrocketThemesDirectory() + "\\" + themeFolderPath.TrimEnd('\\');
+                }
+                var fileMapPath = controlMapPath + "\\" + templateName;
+
+                if (themelevel.ToLower() == "module")
+                {
+                    fileMapPath = controlMapPath + "\\" + moduleref + "_" + templateName;
+                }
+
+                if (!Directory.Exists(controlMapPath)) Directory.CreateDirectory(controlMapPath);
+
+                File.WriteAllText(fileMapPath,editorContent);
+
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
 
         public static String GetTemplate()
         {
