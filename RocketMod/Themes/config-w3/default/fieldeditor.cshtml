@@ -18,7 +18,7 @@
 <span class="w3-section simplisity_buttons">
     <a class="w3-button w3-pale-yellow w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdCancelButton")</a>
     <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:fieldeditor">@ResourceKey("DNNrocket.cmdAddButton")</a>
-    <button class="w3-button w3-green w3-padding-8 simplisity_click  simplisity_langchange" s-cmd="rocketsettings_save" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:fieldeditor" s-post="#datasection" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <button class="w3-button w3-green w3-padding-8 simplisity_click  simplisity_langchange" s-cmd="rocketsettings_save" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:fieldeditor" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
     <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#pluginsettings" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 
@@ -40,6 +40,8 @@
 
                 <div class="w3-container">
 
+                    @HiddenField(i, "genxml/recordkey", "", "", false, lp3)
+
                     <button id="deletebutton@(lp3)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin">
                         <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
                     </button>
@@ -50,7 +52,7 @@
 
                     <div class="w3-col m2 w3-padding">
                         <label class="">@ResourceKey("system.name")</label>
-                        @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border' maxlength='250' autocomplete='off' ", "", false, lp3)
+                        @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border' maxlength='250' autocomplete='off' s-datatype='xpath' ", "", false, lp3)
                     </div>
                     <div class="w3-col m2 w3-padding">
                         <label class="">@ResourceKey("DNNrocket.label")</label>&nbsp;@EditFlag()
@@ -58,7 +60,7 @@
                     </div>
                     <div class="w3-col m2 w3-padding">
                         <label class="">@ResourceKey("DNNrocket.type")</label>
-                        @DropDownList(i, "genxml/select/type", "TextBox,CheckBox,DropDown,RadioList,checkboxlist,Image,ImageFull,internalpage,Document", "TextBox,CheckBox,DropDown,RadioList,CheckBoxList,Image Edit,Full Image Edit,Internal Page,Document", " class='w3-input w3-border inputtypefield' row='" + lp3 + "' ", "TextBox", false, lp3)
+                        @DropDownList(i, "genxml/select/type", "TextBox,CheckBox,DropDown,RadioList,checkboxlist,Image,ImageFull,internalpage,Document,RichText", "TextBox,CheckBox,DropDown,RadioList,CheckBoxList,Image Edit,Full Image Edit,Internal Page,Document,RichText", " class='w3-input w3-border inputtypefield' row='" + lp3 + "' ", "TextBox", false, lp3)
                     </div>
                     <div class="w3-col m1 w3-padding">
                         <label class="">@ResourceKey("DNNrocket.size")</label>

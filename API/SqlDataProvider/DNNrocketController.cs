@@ -551,7 +551,7 @@ namespace DNNrocketAPI
                     Update(nbi2);
                 }
                 //CacheUtils.ClearAllCache(); // clear ALL cache.
-                info = GetByGuidKey(PortalSettings.Current.PortalId, systemId, typeCode, GuidKey);
+                info = GetData(GuidKey, typeCode, postInfo.Lang, systemId, moduleId);
             }
 
             return info;

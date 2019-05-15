@@ -548,7 +548,9 @@ namespace Simplisity
                 // check we don;t have a language node
                 if (xmlNod == null)
                 {
-                    xmlNod = xmlDoc.SelectSingleNode(xmlRootName + "/lang/" + xPath);
+                    //this leads to confusion.
+
+                    //xmlNod = xmlDoc.SelectSingleNode(xmlRootName + "/lang/" + xPath);
                 }
                 return xmlNod;
             }
