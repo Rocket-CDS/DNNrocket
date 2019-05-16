@@ -450,4 +450,7 @@
   <data name="cmdCloseButton.Text" xml:space="preserve">
     <value>&lt;i title="Close" class="far fa-window-close fa-fw fa-lg"&gt;&lt;/i&gt; Close</value>
   </data>
+  <data name="invalid.Text" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
 </root>

@@ -17,8 +17,8 @@
 
 <span class="w3-section simplisity_buttons">
     <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:rocketsettings">@ResourceKey("DNNrocket.cmdAddButton")</a>
-    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketsettings_save" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:rocketsettings" s-post="#pluginsettings" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
-    <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="rocketsettings_delete" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:rocketsettings">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
+    <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketsettings_save" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:rocketsettings" s-post="#pluginsettings" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="rocketsettings_delete" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:rocketsettings">@ResourceKey("DNNrocket.cmdDeleteButton")</span>
     <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#pluginsettings" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 

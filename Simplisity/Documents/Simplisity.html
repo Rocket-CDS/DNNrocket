@@ -169,8 +169,13 @@
                 </tr>
                 <tr>
                     <td><i>s-reload</i></td>
-                    <td>'true' or 'false'. By default an image or document upload will trigger a reload of the page.  In some situations this is not required (when ajax return updates the page), so the reload can be stopped by using s-reload='false'</td>
+                    <td>'true' or 'false'. By default an image or document upload will trigger a reload of the page.  In some situations this is not required (when ajax return updates the page), so the reload can be stopped by using s-reload='false'.  Default is 'false'.</td>
+                </tr>
+                <tr>
+                    <td><i>s-stop</i></td>
+                    <td>Stop Call.  If you want to stop the call to the server you can create an attribute with a value of 'stop' on the call element, using jQuery or JS.  This is usually used for validation, where the s-before function has found a problem and wants to stop the call to the server.  Simplisity will clear the s-stop when the call is cancelled.</td>
                 </tr>                
+
             </table>
         </div>
 

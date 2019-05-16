@@ -8,10 +8,10 @@
 <div class="w3-container">
 
     <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-        <button class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_adminaddnew" s-fields="theme:config-w3,template:Admin_SystemDetail.cshtml" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdAddButton")</button>
+        <span class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_adminaddnew" s-fields="theme:config-w3,template:Admin_SystemDetail.cshtml" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdAddButton")</span>
         <span class="w3-right">
-            <button class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-cmd="systemapi_clearallcache" s-confirm="@ResourceKey("DNNrocket.cmdClearCache","","confirm")"  s-fields="theme:config-w3,template:Admin_Systems.cshtml" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdClearCacheButton")</button>
-            <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="login_signout" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdSignOutButton")</button>
+            <span class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-cmd="systemapi_clearallcache" s-confirm="@ResourceKey("DNNrocket.cmdClearCache","","confirm")"  s-fields="theme:config-w3,template:Admin_Systems.cshtml" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdClearCacheButton")</span>
+            <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="login_signout" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdSignOutButton")</span>
         </span>
     </span>
 

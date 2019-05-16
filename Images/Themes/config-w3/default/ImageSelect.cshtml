@@ -20,9 +20,9 @@
             <div class="w3-container">
 
                 <span class="w3-section">
-                    <button class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</button>
-                    <button class="w3-button w3-green w3-padding-8" onclick="dnnrocketimages_useimages()">@ResourceKey("DNNrocket.cmdUseButton")</button>
-                    <button class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketimages_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist"  s-fields="theme:config-w3,template:imagelist.cshtml,systemprovider:dnnrocket,interfacekey:imageupload,imagefolder:@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder"),singleselect:true,autoreturn:false">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
+                    <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</span>
+                    <span class="w3-button w3-green w3-padding-8" onclick="dnnrocketimages_useimages()">@ResourceKey("DNNrocket.cmdUseButton")</span>
+                    <span class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketimages_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist"  s-fields="theme:config-w3,template:imagelist.cshtml,systemprovider:dnnrocket,interfacekey:imageupload,imagefolder:@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder"),singleselect:true,autoreturn:false">@ResourceKey("DNNrocket.cmdDeleteButton")</span>
                 </span>
 
                 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">

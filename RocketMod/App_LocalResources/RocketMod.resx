@@ -120,6 +120,9 @@
   <data name="admin.Text" xml:space="preserve">
     <value>Admin</value>
   </data>
+  <data name="alphanumeric.Error" xml:space="preserve">
+    <value>Alphanumeric required.</value>
+  </data>
   <data name="apptheme.Text" xml:space="preserve">
     <value>App Theme</value>
   </data>

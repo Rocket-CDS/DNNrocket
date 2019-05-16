@@ -25,7 +25,7 @@ namespace RocketMod
         {
             var objCtrl = new DNNrocketController();
             var strOut = "";
-            if (lang == "") lang = DNNrocketUtils.GetEditCulture();
+            if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
             var fieldInfo = objCtrl.GetByType(portalid, moduleid, "ROCKETMODFIELDS", "", lang);
             if (fieldInfo != null)
             {
@@ -88,21 +88,21 @@ namespace RocketMod
                         {
                             xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                             var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
-                            var datatext = f.GetXmlProperty("genxml/hidden/dictionaryvalue");
+                            var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
                             strOut += DropDownList(info, xpath, datavalue, datatext, attributes, defaultValue, localized, row).ToString();
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
                         {
                             xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                             var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
-                            var datatext = f.GetXmlProperty("genxml/hidden/dictionaryvalue");
+                            var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
                             strOut +=  RadioButtonList(info, xpath, datavalue, datatext, attributes, defaultValue, "", localized, row).ToString();
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
                         {
                             xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                             var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
-                            var datatext = f.GetXmlProperty("genxml/hidden/dictionaryvalue");
+                            var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
                             strOut += CheckBoxList(info, xpath, datavalue, datatext, attributes, defaultBool, localized, row).ToString();
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "image")
@@ -137,6 +137,11 @@ namespace RocketMod
                         {
                             var fieldid =  f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                             strOut += DocumentEdit(info, fieldid, attributes, localized, row).ToString();
+                        }
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext")
+                        {
+                            xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                            strOut += CKEditor(info,xpath,"","",localized,row).ToString();
                         }
 
                         strOut += "</div>";

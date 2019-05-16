@@ -16,7 +16,7 @@
 }
 
 <span class="w3-section simplisity_buttons">
-    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click rocketmodsavebutton" s-cmd="rocketmod_saveconfig" s-fields="tabid:@(moduleData.TabId),moduleid:@(moduleData.ModuleId),selecteditemid:@moduleData.ItemId,interfacekey:dashboard" s-post="#configdata" >@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click rocketmodsavebutton" s-cmd="rocketmod_saveconfig" s-fields="tabid:@(moduleData.TabId),moduleid:@(moduleData.ModuleId),selecteditemid:@moduleData.ItemId,interfacekey:dashboard" s-post="#configdata" >@ResourceKey("DNNrocket.cmdSaveButton")</span>
 
     <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetButton")</span>
     <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(moduleData.configData.ConfigInfo.ModuleId),interfacekey:rocketmod">@ResourceKey("RocketMod.cmdResetDataButton")</span>

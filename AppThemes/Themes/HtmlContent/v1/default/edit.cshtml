@@ -18,7 +18,7 @@
 <span class="w3-section simplisity_buttons">
     <a class="w3-button w3-pale-yellow w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdCancelButton")</a>
     <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmod_add" s-fields="tabid:@(moduleData.TabId),moduleid:@(moduleData.ModuleId),selecteditemid:@moduleData.ItemId,interfacekey:edit">@ResourceKey("DNNrocket.cmdAddButton")</a>
-    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click rocketmodsavebutton" s-cmd="rocketmod_save" s-fields="tabid:@(moduleData.TabId),moduleid:@(moduleData.ModuleId),selecteditemid:@moduleData.ItemId,interfacekey:edit" s-post="#datasection" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+    <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click rocketmodsavebutton" s-cmd="rocketmod_save" s-fields="tabid:@(moduleData.TabId),moduleid:@(moduleData.ModuleId),selecteditemid:@moduleData.ItemId,interfacekey:edit" s-post="#datasection" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
     <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="databin" s-return="#datalist" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 
@@ -39,12 +39,15 @@
             <li class="settingsdata w3-card w3-margin w3-display-container">
 
                 <div class="listrow">
-                    <button id="deletebutton@(lp1)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="databin">
+                    <span id="deletebutton@(lp1)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="databin">
                         <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
-                    </button>
-                    <button id="editbutton@(lp1)" onclick="dnnrocket_showdetail(@(lp1))" class="w3-button w3-display-topleft editbutton">
+                    </span>
+                    <span id="editbutton@(lp1)" row="@(lp1)" class="w3-button w3-display-topleft editbutton">
                         <i class="fas fa-edit"></i>
-                    </button>
+                    </span>
+                    <span id="editbuttonclosedown@(lp1)" row="@(lp1)" class="w3-button w3-display-topleft editbuttonclose" style="display:none;">
+                        <i class="fas fa-caret-down"></i>
+                    </span>
 
                     <div class="w3-row">
                         <div class="w3-col " style="width: 50px;">
@@ -165,10 +168,9 @@
                             </div>
 
                             <div class="w3-row w3-padding">
-                                <button onclick="dnnrocket_hidedetail(@(lp1))" class="w3-button w3-display-bottomleft">
+                                <a id="editbuttoncloseup@(lp1)" row="@(lp1)" class="w3-button w3-display-bottomleft editbuttonclose" style="display:none;">
                                     <i class="fas fa-caret-up"></i>
-                                </button>
-
+                                </a>
                             </div>
 
 
@@ -200,21 +202,36 @@
         $("#datalist").sortable();
         $("#datalist").disableSelection();
 
+        $('.editbutton').unbind("click");
+        $('.editbutton').click(function () {
+            var row = $(this).attr('row');
+            dnnrocket_showdetail(row);
+        });
+
+        $('.editbuttonclose').unbind("click");
+        $('.editbuttonclose').click(function () {
+            var row = $(this).attr('row');
+            dnnrocket_hidedetail(row);
+        });
+
     });
 
 
     function dnnrocket_showdetail(row) {
         $('#detailDisplay' + row).show();
         $("#datalist").sortable("option", "disabled", true);
-        $('#editbutton' + row).html('<i class="fas fa-caret-up"></i>');
-        $('#editbutton' + row).attr('onclick', 'dnnrocket_hidedetail(' + row + ')');
+        $('#editbutton' + row).hide();
+        $('#editbuttoncloseup' + row).show();
+        $('#editbuttonclosedown' + row).show();
         $('#editbutton' + row).addClass('detailopen');
     }
 
     function dnnrocket_hidedetail(row) {
         $('#detailDisplay' + row).hide();
-        $('#editbutton' + row).html('<i class="fas fa-edit"></i>');
-        $('#editbutton' + row).attr('onclick', 'dnnrocket_showdetail(' + row + ')');
+
+        $('#editbutton' + row).show();
+        $('#editbuttoncloseup' + row).hide();
+        $('#editbuttonclosedown' + row).hide();
         $('#editbutton' + row).removeClass('detailopen');
 
         var activatesort = true;
@@ -226,7 +243,6 @@
         if (activatesort) {
             $("#datalist").sortable("option", "disabled", false);
         }
-
     }
 
 </script>

@@ -19,10 +19,10 @@
 
     <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
         <i style="display:none;" class="fas fa-refresh simplisity_langchange simplisity_click" s-cmd="testlist_getlist" s-fields="theme:config-w3,template:TestList.cshtml,interfacekey:testlist"></i>
-        <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_add" s-fields="theme:config-w3,template:TestListForm.cshtml,interfacekey:testlist">@ResourceKey("DNNrocket.cmdAddButton")</button>
+        <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_add" s-fields="theme:config-w3,template:TestListForm.cshtml,interfacekey:testlist">@ResourceKey("DNNrocket.cmdAddButton")</span>
         @if (Model.List.Count() > 10)
         {
-            <button class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="Delete test rows?" s-cmd="testlist_deleterows" s-fields="selecteditemid:,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">Delete Test Rows</button>
+            <span class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="Delete test rows?" s-cmd="testlist_deleterows" s-fields="selecteditemid:,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">Delete Test Rows</span>
         }
     </span>
 
@@ -39,7 +39,7 @@
                     @TextBox(headerData, "genxml/textbox/searchtext", "class='w3-input w3-border simplisity_searchfield'")
                 </div>
                 <div class="w3-col m8 w3-padding">
-                    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_search" s-post=".searchdata" s-fields="theme:config-w3,template:TestList.cshtml,interfacekey:testlist">@ResourceKey("DNNrocket.cmdSearchButton")</button>
+                    <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_search" s-post=".searchdata" s-fields="theme:config-w3,template:TestList.cshtml,interfacekey:testlist">@ResourceKey("DNNrocket.cmdSearchButton")</span>
                 </div>
                 <div class="w3-col m2 w3-padding w3-right-align" style="width: 100px">
                     @DropDownList(headerData, "genxml/hidden/pagesize", "5,10,20,50,100", "5,10,20,50,100", "class='w3-input w3-border simplisity_pagesize ' title='Page Size'", "20")

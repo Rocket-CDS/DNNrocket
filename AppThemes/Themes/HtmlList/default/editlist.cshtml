@@ -21,7 +21,7 @@
 <div class="w3-container">
 
     <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-        <button class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmod_add" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdAddButton")</button>
+        <span class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmod_add" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.ModuleId),interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdAddButton")</span>
     </span>
 
 
@@ -39,7 +39,7 @@
                     @TextBox(headerData, "genxml/lang/genxml/textbox/testtext", "class='w3-input w3-border simplisity_searchfield'","",true)
                 </div>
                 <div class="w3-col m2 w3-padding w3-right-align" style="width: 100px">
-                    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="rocketmod_saveheader" s-post="#headerdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.ModuleId),selecteditemid:,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</button>
+                    <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="rocketmod_saveheader" s-post="#headerdata" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.ModuleId),selecteditemid:,interfacekey:rocketmod">@ResourceKey("DNNrocket.cmdSaveButton")</span>
                 </div>
             </div>
 

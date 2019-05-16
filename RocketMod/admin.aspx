@@ -59,6 +59,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     -->
+     
+
     <!-- LOCAL -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
@@ -66,6 +68,10 @@
     <script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
     <script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
+
 
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/jquery.fileupload.js"></script>
@@ -80,7 +86,7 @@
     <div class="w3-bar w3-top w3-theme-d3 w3-large w3-padding-small " id="menubar" style="z-index:2;height:55px">
         <div class="w3-container">
             <div class="w3-threequarter">
-                <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fas fa-bars"></i></button>
+                <span class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fas fa-bars"></i></span>
                 <span id="menubuttons" class="w3-margin-left simplisity_buttonpanel"></span>
             </div>
             <div class="w3-quarter w3-right-align">
@@ -102,7 +108,12 @@
         <!-- !PAGE CONTENT! -->
     <div class="w3-main" style="margin-left:<%= String.IsNullOrEmpty(IframeEdit) ? "270px" : "10px" %>;margin-top:60px; " id="base-panel">
 
-        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="<%= String.IsNullOrEmpty(cmd) ? "" : cmd %>" s-track="true" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,template:edit.cshtml,interfacekey:rocketmod"></div>
+        <form id="rocketmod_form">
+
+              <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="<%= String.IsNullOrEmpty(cmd) ? "" : cmd %>" s-track="true" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,template:edit.cshtml,interfacekey:rocketmod"></div>
+
+        </form>
+
 
         <!-- End page content -->
     </div>
