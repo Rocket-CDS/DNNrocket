@@ -35,22 +35,25 @@ namespace RocketSettings
         public void Populate()
         {
             var objCtrl = new DNNrocketController();
-            Info = objCtrl.GetData("moduleid" + _moduleid, _entityTypeCode, _langRequired, -1, _moduleid, true);
-            if (Info == null)
-            {
-                Info = new SimplisityInfo();
-                Info.ModuleId = _moduleid;
-            }
 
             // Load ALL langauge records, so we can update lists correctly
             var langList = DNNrocketUtils.GetCultureCodeList();
             foreach (var cultureCode in langList)
             {
-                var s = objCtrl.GetData("moduleid" + _moduleid, _entityTypeCode, cultureCode, -1, _moduleid, true);
+                var s = objCtrl.GetData("moduleid" + _moduleid, _entityTypeCode, cultureCode, -1, _moduleid, false);
                 if (s != null)
                 {
                     AddSimplisityInfo(s, cultureCode);
+                    if (_langRequired == cultureCode)
+                    {
+                        Info = s;
+                    }
                 }
+            }
+            if (Info == null)
+            {
+                Info = new SimplisityInfo();
+                Info.ModuleId = _moduleid;
             }
 
         }
@@ -87,44 +90,52 @@ namespace RocketSettings
             postInfo.RemoveXmlNode("genxml/urlparams");
 
 
-
             // get current data
             var dbInfo = objCtrl.GetData("moduleid" + _moduleid, _entityTypeCode, DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
 
             // check against new data and find removed list items.
-            var removeList = new Dictionary<int, string>();
+            var removeList = new Dictionary<string, string>();
             var keepList = new List<string>();
             var listNames = dbInfo.GetLists();
             foreach (var listName in listNames)
             {
-                var lp = 1;
                 var list = dbInfo.GetList(listName);
                 foreach (var s in list)
                 {
-                    if (postInfo.GetListItem(listName, "/genxml/recordkey", s.GetXmlProperty("genxml/recordkey")) == null)
+                    var keyref = s.GetXmlProperty("genxml/recordkey");
+                    if (postInfo.GetListItem(listName, "/genxml/recordkey", keyref) == null)
                     {
-                        removeList.Add(lp, listName);
+                        if (!removeList.ContainsKey(keyref))
+                        {
+                            removeList.Add(keyref, listName);
+                        }
                     }
-                    lp += 1;
                 }
             }
 
             foreach (var r in removeList)
             {
                 // delete removed list items from all langauges
-                foreach (var listItem in SimplisityInfoList)
-                {
-                    listItem.Value.RemoveListRow(r.Value, r.Key);
-                }
+                RemoveListRowByKey(r.Value, r.Key);
             }
 
-            var info = objCtrl.SaveData( "moduleid" + _moduleid, _entityTypeCode, postInfo, -1, _moduleid);            
-            Populate(); // reload SimplisityInfoList
+
+            foreach (var listName in listNames)
+            {
+                SortListByCultureCode(listName, postInfo.Lang);
+            }
 
             // Update ALL langauge records.
             foreach (var listItem in SimplisityInfoList)
             {
-                objCtrl.SaveData("moduleid" + _moduleid, _entityTypeCode, listItem.Value, -1, _moduleid);
+                var saveInfo = (SimplisityInfo)postInfo.Clone();
+                if (saveInfo.Lang != listItem.Value.Lang)
+                {
+                    // If it's not the same langauge, update the data with the listItem.
+                    saveInfo.RemoveLangRecord();
+                    saveInfo.SetLangRecord(listItem.Value.GetLangRecord());
+                }
+                objCtrl.SaveData("moduleid" + _moduleid, _entityTypeCode, saveInfo, -1, _moduleid);
             }
 
             ClearCache();

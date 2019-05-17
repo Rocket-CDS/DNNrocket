@@ -63,29 +63,54 @@ namespace Simplisity
             {
                 var listdata = s.Value.GetList(listName);
                 var lp = listdata.Count;
-                if (s.Value.GetXmlProperty("genxml/" + listName + "/genxml[" + lp + "]/recordkey") != recordkey)
+                if (s.Value.GetXmlProperty("genxml/" + listName + "/genxml[" + lp + "]/key1") != recordkey)
                 {
-                    s.Value.SetXmlProperty("genxml/" + listName + "/genxml[" + lp + "]/recordkey", recordkey);
+                    s.Value.SetXmlProperty("genxml/" + listName + "/genxml[" + lp + "]/key1", recordkey);
+                }
+                if (s.Value.GetXmlProperty("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]/key2") != recordkey)
+                {
+                    s.Value.SetXmlProperty("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]/key2", recordkey);
                 }
             }
 
-        }
-
-
-        public void RemoveListRow(string listName, int index)
-        {
-            foreach (var s in SimplisityInfoList)
-            {
-                s.Value.RemoveListRow(listName, index);
-            }
         }
 
         public void RemoveListRowByKey(string listName, string recordKey)
         {
             foreach (var s in SimplisityInfoList)
             {
-                s.Value.RemoveListRowByKey(listName, recordKey);
+                if (s.Value.XMLDoc != null)
+                {
+                    s.Value.RemoveXmlNode("genxml/" + listName + "/genxml[key1 = '" + recordKey + "']");
+                    s.Value.RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[key2 = '" + recordKey + "']");
+                }
             }
+
+        }
+
+        public void SortListByCultureCode(string listName, string cultureCode)
+        {
+            // get correct list order, but using "cultureCode"
+            var keyInfo = SimplisityInfoList[cultureCode];
+            var keyListOrder = keyInfo.GetList(listName);
+
+            foreach (var sPair in SimplisityInfoList)
+            {
+                if (sPair.Value.Lang != cultureCode)
+                {
+                    var storeList = (SimplisityInfo)sPair.Value.Clone();
+                    sPair.Value.RemoveList(listName);
+                    foreach (var keyRec in keyListOrder)
+                    {
+                        var listRowInfo = storeList.GetListItem(listName, "genxml/key1", keyRec.GetXmlProperty("genxml/key1"));
+                        if (listRowInfo != null)
+                        {
+                            sPair.Value.AddListRow(listName, listRowInfo);
+                        }
+                    }
+                }
+            }
+
         }
 
 

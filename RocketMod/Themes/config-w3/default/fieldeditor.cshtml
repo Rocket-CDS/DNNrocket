@@ -41,7 +41,9 @@
 
                 <div class="w3-container">
 
-                    @HiddenField(i, "genxml/recordkey", "", "", false, lp3)
+                    <!-- We need "recordkey" hidden fields so language list on the record can be updated/sorted in sync -->
+                    @HiddenField(i, "genxml/key1", "", "", false, lp3)
+                    @HiddenField(i, "genxml/lang/genxml/key2", "", "", true, lp3)
 
                     <span id="deletebutton@(lp3)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin">
                         <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>

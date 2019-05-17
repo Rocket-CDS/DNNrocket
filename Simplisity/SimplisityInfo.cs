@@ -112,12 +112,26 @@ namespace Simplisity
                     nbi.XMLData = i.OuterXml;
                     nbi.TypeCode = "LIST";
                     nbi.GUIDKey = listName;
-                    nbi.SetLangXml("<genxml>" + GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]") + "</genxml>");
+                    var listXmlNode = GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[key2 = '" +  nbi.GetXmlProperty("genxml/key1") + "']");
+                    if (listXmlNode == "")
+                    {
+                        listXmlNode = GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]");
+                    }
+                    nbi.SetLangXml("<genxml>" + listXmlNode + "</genxml>");
                     rtnList.Add(nbi);
                     lp += 1;
                 }
             }
             return rtnList;
+        }
+
+        public void RemoveList(string listName)
+        {
+            if (XMLDoc != null)
+            {
+                RemoveXmlNode("genxml/" + listName);
+                RemoveXmlNode("genxml/lang/genxml/" + listName);
+            }
         }
 
         public SimplisityInfo GetListItem(string listName, int index)
@@ -156,25 +170,6 @@ namespace Simplisity
             return null;
         }
 
-        public int GetListItemIndex(string listName, string itemkeyxpath, string itemkey)
-        {
-            var lp = 1;
-            if (XMLDoc != null)
-            {
-                var list = GetList(listName);
-                foreach (var i in list)
-                {
-                    if (itemkey == i.GetXmlProperty(itemkeyxpath))
-                    {
-                        return lp;
-                    }
-                    lp += 1;
-                }
-            }
-            return lp;
-        }
-
-
         public void AddListRow(string listName, SimplisityInfo sInfo)
         {
             if (XMLDoc != null)
@@ -209,24 +204,6 @@ namespace Simplisity
                 }
                 AddXmlNode("<genxml></genxml>", "genxml", "genxml/lang/genxml/" + listName);
 
-            }
-        }
-
-        public void RemoveListRow(string listName, int index)
-        {
-            if (XMLDoc != null)
-            {
-                RemoveXmlNode("genxml/" + listName + "/genxml[" + index + "]");
-                RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + index + "]");
-            }
-        }
-
-        public void RemoveListRowByKey(string listName, string recordKey)
-        {
-            if (XMLDoc != null)
-            {
-                var index = GetListItemIndex(listName, "genxml/recordkey", recordKey);
-                RemoveListRow(listName, index);
             }
         }
 
