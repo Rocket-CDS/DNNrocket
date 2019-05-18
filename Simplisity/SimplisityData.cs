@@ -55,10 +55,11 @@ namespace Simplisity
             AddRecordKey(listName);
         }
 
-        private void AddRecordKey(string listName)
+        private bool AddRecordKey(string listName)
         {
             // add recordkey
             var recordkey = GeneralUtils.GetUniqueKey();
+            var rtn = false;
             foreach (var s in SimplisityInfoList)
             {
                 var listdata = s.Value.GetList(listName);
@@ -66,14 +67,17 @@ namespace Simplisity
                 if (s.Value.GetXmlProperty("genxml/" + listName + "/genxml[" + lp + "]/key1") != recordkey)
                 {
                     s.Value.SetXmlProperty("genxml/" + listName + "/genxml[" + lp + "]/key1", recordkey);
+                    rtn = true;
                 }
                 if (s.Value.GetXmlProperty("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]/key2") != recordkey)
                 {
                     s.Value.SetXmlProperty("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]/key2", recordkey);
+                    rtn = true;
                 }
             }
-
+            return rtn;
         }
+
 
         public void RemoveListRowByKey(string listName, string recordKey)
         {
@@ -88,27 +92,27 @@ namespace Simplisity
 
         }
 
-        public void SortListByCultureCode(string listName, string cultureCode)
+        public void RemovedDeletedListRecords(string listName, SimplisityInfo databaseInfo, SimplisityInfo postInfo)
         {
-            // get correct list order, but using "cultureCode"
-            var keyInfo = SimplisityInfoList[cultureCode];
-            var keyListOrder = keyInfo.GetList(listName);
-
-            foreach (var sPair in SimplisityInfoList)
+            // check against new data and find removed list items.
+            var removeList = new Dictionary<string, string>();
+            var list = databaseInfo.GetList(listName);
+            foreach (var s in list)
             {
-                if (sPair.Value.Lang != cultureCode)
+                var keyref = s.GetXmlProperty("genxml/key1");
+                if (postInfo.GetListItem(listName, "/genxml/key1", keyref) == null)
                 {
-                    var storeList = (SimplisityInfo)sPair.Value.Clone();
-                    sPair.Value.RemoveList(listName);
-                    foreach (var keyRec in keyListOrder)
+                    if (!removeList.ContainsKey(keyref))
                     {
-                        var listRowInfo = storeList.GetListItem(listName, "genxml/key1", keyRec.GetXmlProperty("genxml/key1"));
-                        if (listRowInfo != null)
-                        {
-                            sPair.Value.AddListRow(listName, listRowInfo);
-                        }
+                        removeList.Add(keyref, listName);
                     }
                 }
+            }
+
+            foreach (var r in removeList)
+            {
+                // delete removed list items from all langauges
+                RemoveListRowByKey(r.Value, r.Key);
             }
 
         }

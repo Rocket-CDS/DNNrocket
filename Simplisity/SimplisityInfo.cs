@@ -178,18 +178,19 @@ namespace Simplisity
                 sInfo.RemoveLangRecord();
                 var xmldata = sInfo.XMLData;
 
-                AddListRow(listName, xmldata);
+                AddListRow(listName, xmldata, xmllangdata);
 
             }
         }
 
-        public void AddListRow(string listName, string xmldata = "<genxml></genxml>")
+        public void AddListRow(string listName, string xmldata = "<genxml></genxml>", string xmllangdata = "<genxml></genxml>")
         {
             if (XMLDoc != null)
             {
                 if (XMLDoc.SelectSingleNode("genxml/" + listName) == null)
                 {
                     SetXmlProperty("genxml/" + listName, "", System.TypeCode.String, false);
+                    SetXmlProperty("genxml/" + listName + "/@list", "true", System.TypeCode.String, false);
                 }
 
                 AddXmlNode(xmldata, "genxml", "genxml/" + listName);
@@ -201,8 +202,9 @@ namespace Simplisity
                 if (XMLDoc.SelectSingleNode("genxml/lang/genxml/" + listName) == null)
                 {
                     SetXmlProperty("genxml/lang/genxml/" + listName, "", System.TypeCode.String, false);
+                    SetXmlProperty("genxml/lang/genxml/" + listName + "/@list", "true", System.TypeCode.String, false);
                 }
-                AddXmlNode("<genxml></genxml>", "genxml", "genxml/lang/genxml/" + listName);
+                AddXmlNode(xmllangdata, "genxml", "genxml/lang/genxml/" + listName);
 
             }
         }

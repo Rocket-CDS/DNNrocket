@@ -16,6 +16,7 @@ namespace RocketSettings
         private int _moduleid;
         private string _langRequired;
         private string _entityTypeCode;
+        private string _listName;
 
         public SimplisityInfo Info;
 
@@ -24,12 +25,17 @@ namespace RocketSettings
         {
             _entityTypeCode = entityTypeCode;
             _langRequired = langRequired;
+            if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
             _tabid = tabId;
             _moduleid = moduleId;
             _dataList = new List<SimplisityInfo>();
+            _listName = "settingsdata";
 
-            Populate();
-            PopulateList();
+            if (_moduleid > 0)
+            {
+                Populate();
+                PopulateList();
+            }
         }
 
         public void Populate()
@@ -62,10 +68,10 @@ namespace RocketSettings
         {
             _dataList = new List<SimplisityInfo>();
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("moduleid" + _moduleid, _entityTypeCode, _langRequired, -1, _moduleid, true);
+            var info = SimplisityInfoList[_langRequired];
             if (info != null)
             {
-                _dataList = info.GetList("settingsdata");
+                _dataList = info.GetList(_listName);
             }
         }
 
@@ -89,41 +95,10 @@ namespace RocketSettings
             postInfo.RemoveXmlNode("genxml/postform");
             postInfo.RemoveXmlNode("genxml/urlparams");
 
-
             // get current data
             var dbInfo = objCtrl.GetData("moduleid" + _moduleid, _entityTypeCode, DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
 
-            // check against new data and find removed list items.
-            var removeList = new Dictionary<string, string>();
-            var keepList = new List<string>();
-            var listNames = dbInfo.GetLists();
-            foreach (var listName in listNames)
-            {
-                var list = dbInfo.GetList(listName);
-                foreach (var s in list)
-                {
-                    var keyref = s.GetXmlProperty("genxml/recordkey");
-                    if (postInfo.GetListItem(listName, "/genxml/recordkey", keyref) == null)
-                    {
-                        if (!removeList.ContainsKey(keyref))
-                        {
-                            removeList.Add(keyref, listName);
-                        }
-                    }
-                }
-            }
-
-            foreach (var r in removeList)
-            {
-                // delete removed list items from all langauges
-                RemoveListRowByKey(r.Value, r.Key);
-            }
-
-
-            foreach (var listName in listNames)
-            {
-                SortListByCultureCode(listName, postInfo.Lang);
-            }
+            RemovedDeletedListRecords(_listName, dbInfo, postInfo);
 
             // Update ALL langauge records.
             foreach (var listItem in SimplisityInfoList)
@@ -134,7 +109,16 @@ namespace RocketSettings
                     // If it's not the same langauge, update the data with the listItem.
                     saveInfo.RemoveLangRecord();
                     saveInfo.SetLangRecord(listItem.Value.GetLangRecord());
+
+                    // resequance the other language list, by rebuilding from sorted GetList.
+                    var l = saveInfo.GetList(_listName);
+                    saveInfo.RemoveList(_listName);
+                    foreach (var s in l)
+                    {
+                        saveInfo.AddListRow(_listName, s);
+                    }
                 }
+                
                 objCtrl.SaveData("moduleid" + _moduleid, _entityTypeCode, saveInfo, -1, _moduleid);
             }
 
@@ -146,7 +130,7 @@ namespace RocketSettings
 
         public void AddRow()
         {
-            AddListRow("settingsdata");
+            AddListRow(_listName);
 
             // Update ALL langauge records.
             var objCtrl = new DNNrocketController();

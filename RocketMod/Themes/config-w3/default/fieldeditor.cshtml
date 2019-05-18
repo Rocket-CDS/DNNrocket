@@ -8,7 +8,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 @{
-    var settingsData = new SettingsData(0, 0, "");
+    var settingsData = new SettingsData(0, 0, DNNrocketUtils.GetEditCulture());
     if (Model.List.Count > 0)
     {
         settingsData = (SettingsData)Model.List.First();
