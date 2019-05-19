@@ -118,12 +118,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="builder.Text" xml:space="preserve">
-    <value>Template Builder</value>
+    <value>AppTheme Builder</value>
   </data>
   <data name="dashboard.Text" xml:space="preserve">
     <value>DashBoard</value>
   </data>
+  <data name="download.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="editmsg.Text" xml:space="preserve">
+    <value>Edit an existing AppTheme.</value>
+  </data>
   <data name="editor.Text" xml:space="preserve">
     <value>Editor</value>
+  </data>
+  <data name="new.Text" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="newmsg.Text" xml:space="preserve">
+    <value>Create new AppTheme, based on an existing one or from a blank canvas.</value>
+  </data>
+  <data name="upload.Text" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="version.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="versionmsg.Text" xml:space="preserve">
+    <value>Create a new version of an existing AppTheme.</value>
   </data>
 </root>

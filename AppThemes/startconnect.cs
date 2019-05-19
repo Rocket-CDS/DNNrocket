@@ -59,10 +59,10 @@ namespace DNNrocket.AppThemes
             switch (paramCmd)
             {
                 case "rocketapptheme_dashboard":
-                    strOut = GetDashBoard();
+                    strOut = GetDisplay();
                     break;
                 case "rocketapptheme_builder":
-                    strOut = GetDashBoard();
+                    strOut = GetDisplay();
                     break;
                 case "rocketapptheme_editor":
                     strOut = GetEditor();
@@ -72,6 +72,15 @@ namespace DNNrocket.AppThemes
                     break;
                 case "rocketapptheme_save":
                     strOut = SaveTemplate();
+                    break;
+                case "rocketapptheme_upload":
+                    strOut = GetDisplay();
+                    break;
+                case "rocketapptheme_download":
+                    strOut = GetDisplay();
+                    break;
+                case "rocketapptheme_appthemes":
+                    strOut = GetAppThemes();
                     break;
 
             }
@@ -169,11 +178,11 @@ namespace DNNrocket.AppThemes
             }
         }
 
-        public static String GetDashBoard()
+        public static String GetDisplay()
         {
             try
             {
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("dashboard.cshtml", _adminAppthemeRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _adminAppthemeRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
 
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
@@ -184,6 +193,35 @@ namespace DNNrocket.AppThemes
             {
                 return ex.ToString();
             }
+        }
+
+        public static String GetAppThemes()
+        {
+            try
+            {
+                var strOut = "";
+                var editType = _postInfo.GetXmlProperty("genxml/hidden/edittype");
+                var objCtrl = new DNNrocketController();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeSelect.cshtml", _adminAppthemeRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
+                var passSettings = _postInfo.ToDictionary();
+                var appList = new List<Object>();
+                var dirlist = System.IO.Directory.GetDirectories(_appthemeMapPath + "\\Themes");
+                foreach (var d in dirlist)
+                {
+                    var dr = new System.IO.DirectoryInfo(d);
+                    var appTheme = new AppTheme(dr.Name);
+                    appList.Add(appTheme);
+                }
+
+                strOut = DNNrocketUtils.RazorList(razorTempl, appList, passSettings);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
         }
 
 

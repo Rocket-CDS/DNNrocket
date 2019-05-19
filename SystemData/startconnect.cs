@@ -78,6 +78,7 @@ namespace DNNrocket.SystemData
                         break;
                     case "systemapi_clearallcache":
                         CacheUtils.ClearAllCache();
+                        DNNrocketUtils.ClearPortalCache();
                         strOut = SystemAdminList(postInfo, controlRelPath);
                         break;
                 }
@@ -441,48 +442,43 @@ namespace DNNrocket.SystemData
                 {
                     var interfacekey = postInfo.GetXmlProperty("genxml/hidden/interfacekey");
                     var tosystemid = postInfo.GetXmlProperty("genxml/hidden/tosystemid");
-                    if (tosystemid == itemid)
-                    {
-                        info.SetXmlProperty("genxml/message", "Canont copy the interface to the same system.");
-                        info.SetXmlProperty("genxml/color", "w3-pale-red");
-                    }
-                    else
-                    {
 
-                        var sysInfoTo = objCtrl.GetInfo(Convert.ToInt32(tosystemid));
-                        if (sysInfoTo != null)
+                    var sysInfoTo = objCtrl.GetInfo(Convert.ToInt32(tosystemid));
+                    if (sysInfoTo != null)
+                    {
+                        var interfaceToCopy = sysInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
+                        if (interfaceToCopy != null)
                         {
-                            var interfaceToCopy = sysInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
-                            if (interfaceToCopy != null)
+                            var interfaceExists = sysInfoTo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
+                            if (interfaceExists == null)
                             {
-                                var interfaceExists = sysInfoTo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
-                                if (interfaceExists == null)
-                                {
-                                    sysInfoTo.AddListRow("interfacedata", interfaceToCopy);
-                                    objCtrl.Update(sysInfoTo);
-                                    info.SetXmlProperty("genxml/message", "Interface Copied");
-                                    info.SetXmlProperty("genxml/color", "w3-pale-green");
-                                    info.SetXmlProperty("genxml/delay", "750");
-                                }
-                                else
-                                {
-                                    info.SetXmlProperty("genxml/message", "Interface already exists in destination.  Delete the Interface in destination and try again.");
-                                    info.SetXmlProperty("genxml/color", "w3-pale-red");
-                                    info.SetXmlProperty("genxml/delay", "3000");
-                                }
-
+                                sysInfoTo.AddListRow("interfacedata", interfaceToCopy);
+                                objCtrl.Update(sysInfoTo);
+                                info.SetXmlProperty("genxml/message", "Interface Copied");
+                                info.SetXmlProperty("genxml/color", "w3-pale-green");
+                                info.SetXmlProperty("genxml/delay", "2000");
                             }
                             else
                             {
-                                info.SetXmlProperty("genxml/message", "Interface does not exists.");
-                                info.SetXmlProperty("genxml/color", "w3-pale-red");
+                                interfaceToCopy.SetXmlProperty("genxml/textbox/interfacekey", interfaceToCopy.GetXmlProperty("genxml/textbox/interfacekey") + "-copy");
+                                sysInfoTo.AddListRow("interfacedata", interfaceToCopy);
+                                objCtrl.Update(sysInfoTo);
+                                info.SetXmlProperty("genxml/message", "Interface Copied - Refresh page to View");
+                                info.SetXmlProperty("genxml/color", "w3-pale-green");
+                                info.SetXmlProperty("genxml/delay", "2000");
                             }
+
                         }
                         else
                         {
-                            info.SetXmlProperty("genxml/message", "System does not exists.");
+                            info.SetXmlProperty("genxml/message", "Interface does not exists.");
                             info.SetXmlProperty("genxml/color", "w3-pale-red");
                         }
+                    }
+                    else
+                    {
+                        info.SetXmlProperty("genxml/message", "System does not exists.");
+                        info.SetXmlProperty("genxml/color", "w3-pale-red");
                     }
                 }
                 CacheUtils.ClearCache();

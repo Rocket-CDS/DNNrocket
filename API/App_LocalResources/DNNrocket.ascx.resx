@@ -453,4 +453,22 @@
   <data name="invalid.Text" xml:space="preserve">
     <value>Invalid</value>
   </data>
+  <data name="cmdBack.Text" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="cmdBackButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Back" class="fas  fa-arrow-alt-circle-left fa-fw fa-lg"&gt;&lt;/i&gt; Back</value>
+  </data>
+  <data name="cmdBackIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="Back" class="fas  fa-arrow-alt-circle-left fa-fw fa-2x"&gt;&lt;/i&gt; Back</value>
+  </data>
+  <data name="cmdNext.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="cmdNextButton.Text" xml:space="preserve">
+    <value>&lt;i  title="Next" class="fas  fa-arrow-alt-circle-right fa-fw fa-lg"&gt;&lt;/i&gt; Next</value>
+  </data>
+  <data name="cmdNextIcon.Text" xml:space="preserve">
+    <value>&lt;i  title="Next" class="fas  fa-arrow-alt-circle-right fa-fw fa-2x"&gt;&lt;/i&gt; Next</value>
+  </data>
 </root>
