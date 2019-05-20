@@ -18,23 +18,86 @@
 <div class="w3-container">
 
 
-            <div class="w3-container">
-                <div class="w3-padding">
+    <div class="w3-container">
+        <h2>@ResourceKey("AppThemes.selectapptheme")</h2>
 
-                        @foreach (AppTheme apptheme in Model.List)
-                        {
-                    <div class="w3-row-padding">
-                        <div class="w3-col" style="width:100px;">
-                            <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=100&h=100" alt="" />
-                        </div>
-                        <div class="w3-col m2">
-                            @apptheme.AppName
-                        </div>
-                        <span class="w3-button w3-theme simplisity_click" s-cmd="" s-fields="apptheme:@apptheme.AppName,interfacekey:builder">@apptheme.AppName</span>
-                    </div>
-                        }         
-                </div>
+        <div id="searchsection" class="w3-row">
+            <div class="w3-half">
+                @if (Model.GetSetting("edittype").ToLower() == "new")
+                {
+                    <p>@ResourceKey("AppThemes.selectappthememsgnew")</p>
+                }
+                @if (Model.GetSetting("edittype").ToLower() == "version")
+                {
+                    <p>@ResourceKey("AppThemes.selectappthememsgversion")</p>
+                }
+                @if (Model.GetSetting("edittype").ToLower() == "edit")
+                {
+                    <p>@ResourceKey("AppThemes.selectappthememsgedit")</p>
+                }
             </div>
+            <div class="w3-half">
+                <div class="w3-twothird">
+                    &nbsp;
+                </div>
+                <div class="w3-third">
+                    <label>Search</label>
+                    @TextBox(Model.HeaderData, "genxml/textbox/searchtext", "class='w3-input w3-border' autocomplete='off'")
+                </div>
+
+            </div>
+        </div>
+        <br/>
+        <ul id="appthemelist" class="w3-ul w3-card-4">
+
+            @if (Model.GetSetting("edittype").ToLower() == "new")
+            {
+                <li class="w3-bar" appthemename="blank">
+                    <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right"><i class="fas fa-check"></i></span>
+                    <img class="w3-bar-item w3-hide-small" src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=100&h=100" alt="" />
+
+                    <div class="w3-bar-item">
+                        <span class="w3-large">
+                            BLANK
+                        </span><br>
+                        <span>This is a blank appTheme and will allow you to create a new AppTheme from a clear base.</span>
+                    </div>
+                </li>
+            }
+
+
+            @foreach (AppTheme apptheme in Model.List)
+            {
+
+                <li class="w3-bar" appthemename="@(apptheme.AppName)">
+                    <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right"><i class="fas fa-check"></i></span>
+
+                    @if (apptheme.Logo == "")
+                    {
+                        <img class="w3-bar-item w3-hide-small" src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=100&h=100" alt="" />
+                    }
+                    else
+                    {
+                        <img class="w3-bar-item w3-border w3-border-theme w3-hide-small" onclick="document.getElementById('modal@(apptheme.AppName)').style.display='block'" src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@(apptheme.Logo)&w=100&h=100" alt="" style="cursor: pointer" />
+
+                        <div id="modal@(apptheme.AppName)" class="w3-modal w3-animate-zoom w3-center" onclick="this.style.display='none'">
+                            <img class="w3-modal-content" src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@(apptheme.Logo)&w=800&h=-1" alt="" />
+                        </div>
+                    }
+
+                    <div class="w3-bar-item">
+                        <span class="w3-large">
+                            @apptheme.AppName
+                        </span><br>
+                        <span>@apptheme.Summary</span>
+                    </div>
+
+                </li>
+
+            }
+
+        </ul>
+    </div>
 
 </div>
 
@@ -42,6 +105,15 @@
 
     $(document).ready(function () {
 
+$('#searchtext').keyup(function(){
+   var valThis = $(this).val().toLowerCase();
+    $('#appthemelist>li').each(function(){
+     var text = $(this).attr('appthemename').toLowerCase();
+        (text.indexOf(valThis) >= 0) ? $(this).show() : $(this).hide();         
+   });
+});
+
     });
+
 
 </script>

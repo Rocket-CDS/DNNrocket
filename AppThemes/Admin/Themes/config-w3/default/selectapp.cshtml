@@ -1,0 +1,58 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketSettings;
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+
+@{
+}
+
+<span class="w3-section simplisity_buttons">
+    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),interfacekey:rocketsettings">@ResourceKey("DNNrocket.cmdAddButton")</a>
+    <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="rocketsettings_save" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),interfacekey:rocketsettings" s-post="#pluginsettings" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#pluginsettings" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+</span>
+
+
+<div class="w3-container">
+
+
+    <div id="selectapptheme_@(Model.GetSetting("moduleid"))" class="w3-modal">
+
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container w3-theme-d3">
+                <h2>@ResourceKey("RocketMod.selectapptheme")</h2>
+            </header>
+            <div class="w3-container">
+                @foreach (AppTheme apptheme in Model.List)
+                {
+                    <p>
+                        <span class="w3-button w3-block w3-theme simplisity_click" s-cmd="rocketmod_saveapptheme" s-fields="apptheme:@apptheme.AppName,tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),interfacekey:rocketmod">@apptheme.AppName</span>
+                    </p>
+                }
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#selectapptheme_@(Model.GetSetting("moduleid"))').show();
+
+    });
+
+    function hideconfigpopup() {
+        $('#selectapptheme_@(Model.GetSetting("moduleid"))').hide();
+    }
+
+</script>

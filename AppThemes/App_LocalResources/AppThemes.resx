@@ -141,6 +141,18 @@
   <data name="newmsg.Text" xml:space="preserve">
     <value>Create new AppTheme, based on an existing one or from a blank canvas.</value>
   </data>
+  <data name="selectapptheme.Text" xml:space="preserve">
+    <value>Select AppTheme</value>
+  </data>
+  <data name="selectappthememsgedit.Text" xml:space="preserve">
+    <value>Select the AppTheme you wish to edit.</value>
+  </data>
+  <data name="selectappthememsgnew.Text" xml:space="preserve">
+    <value>Select the AppTheme you wish to use as a base OR select "Blank" to start a new AppTheme from fresh.</value>
+  </data>
+  <data name="selectappthememsgversion.Text" xml:space="preserve">
+    <value>Select the AppTheme you wish to create a new version of.</value>
+  </data>
   <data name="upload.Text" xml:space="preserve">
     <value>Upload</value>
   </data>

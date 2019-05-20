@@ -211,7 +211,7 @@ namespace DNNrocket.AppThemes
                     var dr = new System.IO.DirectoryInfo(d);
                     var appTheme = new AppTheme(dr.Name);
                     appList.Add(appTheme);
-                }
+                }                
 
                 strOut = DNNrocketUtils.RazorList(razorTempl, appList, passSettings);
 
