@@ -153,6 +153,9 @@
   <data name="selectappthememsgversion.Text" xml:space="preserve">
     <value>Select the AppTheme you wish to create a new version of.</value>
   </data>
+  <data name="selectversion.Text" xml:space="preserve">
+    <value>Select Version</value>
+  </data>
   <data name="upload.Text" xml:space="preserve">
     <value>Upload</value>
   </data>

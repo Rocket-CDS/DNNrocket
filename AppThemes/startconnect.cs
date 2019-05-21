@@ -54,7 +54,9 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_appthemes":
                         strOut = GetAppThemes();
                         break;
-
+                    case "rocketapptheme_appversions":
+                        strOut = GetAppVersions();
+                        break;                        
                 }
             }
             else
@@ -177,7 +179,8 @@ namespace DNNrocket.AppThemes
             try
             {
                 var strOut = "";
-                var editType = _postInfo.GetXmlProperty("genxml/hidden/edittype");
+                _appThemeData.ActionType = _postInfo.GetXmlProperty("genxml/hidden/actiontype");
+                _appThemeData.Save();
                 var objCtrl = new DNNrocketController();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeSelect.cshtml", _appThemeData.AdminAppThemesRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
                 var passSettings = _postInfo.ToDictionary();
@@ -192,6 +195,29 @@ namespace DNNrocket.AppThemes
 
         }
 
+        public static String GetAppVersions()
+        {
+            try
+            {
+                var strOut = "";
+                var appThemeName = _postInfo.GetXmlProperty("genxml/hidden/apptheme");
+                _appThemeData.SelectedTheme = appThemeName;
+                _appThemeData.PopulateVersionList();
+                _appThemeData.Save();
+
+                var objCtrl = new DNNrocketController();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppVersionSelect.cshtml", _appThemeData.AdminAppThemesRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
+                var passSettings = _postInfo.ToDictionary();
+                strOut = DNNrocketUtils.RazorList(razorTempl, _appThemeData.VersionList, passSettings);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
 
 
 

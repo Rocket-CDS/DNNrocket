@@ -12,6 +12,7 @@ namespace DNNrocket.AppThemes
     public class AppThemeData
     {
         private List<Object> _dataList;
+        private List<Object> _versionList;
         private string _langRequired;
         private int _userId;
         public SimplisityInfo Info;
@@ -41,7 +42,8 @@ namespace DNNrocket.AppThemes
                 Info.SetXmlProperty("genxml/appthemesmappath", AppThemesMapPath);
                 Info.SetXmlProperty("genxml/appthemesrelpath", AppThemesRelPath);
             }
-
+            SelectedTheme = Info.GetXmlProperty("genxml/selectedtheme");
+            SelectedVersion = Info.GetXmlProperty("genxml/selectedversion");
         }
 
         public void PopulateList()
@@ -54,6 +56,23 @@ namespace DNNrocket.AppThemes
                 var dr = new System.IO.DirectoryInfo(d);
                 var appTheme = new AppTheme(dr.Name);
                 _dataList.Add(appTheme);
+            }
+
+
+        }
+
+        public void PopulateVersionList()
+        {
+            if (SelectedTheme != "")
+            {
+                _versionList = new List<Object>();
+
+                var dirlist = System.IO.Directory.GetDirectories(AppThemesMapPath + "\\Themes\\" + SelectedTheme);
+                foreach (var d in dirlist)
+                {
+                    var dr = new System.IO.DirectoryInfo(d);
+                    _versionList.Add(dr.Name);
+                }
             }
 
 
@@ -74,11 +93,14 @@ namespace DNNrocket.AppThemes
         public void Save()
         {
             var objCtrl = new DNNrocketController();
+            Info.SetXmlProperty("genxml/selectedtheme", SelectedTheme);
+            Info.SetXmlProperty("genxml/selectedversion", SelectedVersion);
+            Info.SetXmlProperty("genxml/actiontype", ActionType);
+
             var info = objCtrl.SaveData("apptheme_" + _userId, "APPTHEMECONFIG", Info, -1, -1);
             Populate();
             PopulateList();
         }
-
 
         #region "properties"
 
@@ -87,9 +109,18 @@ namespace DNNrocket.AppThemes
         public string AdminAppThemesRelPath { get; }
         public string AdminAppThemesMapPath { get; }
 
+        public string SelectedTheme { get; set; }
+        public string SelectedVersion { get; set; }
+        public string ActionType { get; set; }
+
         public List<Object> List
         {
             get { return _dataList; }
+        }
+
+        public List<Object> VersionList
+        {
+            get { return _versionList; }
         }
 
         #endregion

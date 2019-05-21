@@ -23,15 +23,15 @@
 
         <div id="searchsection" class="w3-row">
             <div class="w3-half">
-                @if (Model.GetSetting("edittype").ToLower() == "new")
+                @if (Model.GetSetting("actiontype").ToLower() == "new")
                 {
                     <p>@ResourceKey("AppThemes.selectappthememsgnew")</p>
                 }
-                @if (Model.GetSetting("edittype").ToLower() == "version")
+                @if (Model.GetSetting("actiontype").ToLower() == "version")
                 {
                     <p>@ResourceKey("AppThemes.selectappthememsgversion")</p>
                 }
-                @if (Model.GetSetting("edittype").ToLower() == "edit")
+                @if (Model.GetSetting("actiontype").ToLower() == "edit")
                 {
                     <p>@ResourceKey("AppThemes.selectappthememsgedit")</p>
                 }
@@ -50,7 +50,7 @@
         <br/>
         <ul id="appthemelist" class="w3-ul w3-card-4">
 
-            @if (Model.GetSetting("edittype").ToLower() == "new")
+            @if (Model.GetSetting("actiontype").ToLower() == "new")
             {
                 <li class="w3-bar" appthemename="blank">
                     <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right"><i class="fas fa-check"></i></span>
@@ -70,7 +70,7 @@
             {
 
                 <li class="w3-bar" appthemename="@(apptheme.AppName)">
-                    <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right"><i class="fas fa-check"></i></span>
+                    <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right simplisity_click " s-cmd="rocketapptheme_appversions" s-post="" s-fields="apptheme:@(apptheme.AppName),interfacekey:builder" ><i class="fas fa-check"></i></span>
 
                     @if (apptheme.Logo == "")
                     {
