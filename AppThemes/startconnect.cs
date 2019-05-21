@@ -9,10 +9,6 @@ namespace DNNrocket.AppThemes
 {
     public class startconnect : DNNrocketAPI.APInterface
     {
-        private static string _appthemeRelPath;
-        private static string _appthemeMapPath;
-        private static string _adminAppthemeRelPath;
-        private static string _adminAppthemeMapPath;
         private static SimplisityInfo _postInfo;
         private static CommandSecurity _commandSecurity;
         private static DNNrocketInterface _rocketInterface;
@@ -20,69 +16,50 @@ namespace DNNrocket.AppThemes
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string langRequired = "")
         {
-            var strOut = "ERROR"; // return ERROR if not matching commands.
+            var strOut = "ERROR - Must be SuperUser"; // return ERROR if not matching commands.
 
-            paramCmd = paramCmd.ToLower();
+            if (DNNrocketUtils.IsSuperUser())
+            {
 
-            _rocketInterface = new DNNrocketInterface(interfaceInfo);
-            _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
-            _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
-            _adminAppthemeRelPath = "/DesktopModules/DNNrocket/AppThemes/Admin";
-            _adminAppthemeMapPath = DNNrocketUtils.MapPath(_adminAppthemeRelPath);
-            _postInfo = postInfo;
+                paramCmd = paramCmd.ToLower();
 
-            // we should ALWAYS pass back the moduleid & tabid in the template post.
-            // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
-            var moduleid = _postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-            if (moduleid == 0) moduleid = _postInfo.ModuleId;
-            var tabid = _postInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
+                _rocketInterface = new DNNrocketInterface(interfaceInfo);
+                _postInfo = postInfo;
+                _appThemeData = new AppThemeData(DNNrocketUtils.GetCurrentUserId(), "/DesktopModules/DNNrocket/AppThemes", langRequired);
 
-            if (moduleid == 0) moduleid = -1;
-            if (tabid == 0) tabid = -1;
 
-            _appThemeData = new AppThemeData(tabid, moduleid, langRequired);
+                switch (paramCmd)
+                {
+                    case "rocketapptheme_dashboard":
+                        strOut = GetDisplay();
+                        break;
+                    case "rocketapptheme_builder":
+                        strOut = GetDisplay();
+                        break;
+                    case "rocketapptheme_editor":
+                        strOut = GetEditor();
+                        break;
+                    case "rocketapptheme_gettemplate":
+                        strOut = GetTemplate();
+                        break;
+                    case "rocketapptheme_save":
+                        strOut = SaveTemplate();
+                        break;
+                    case "rocketapptheme_upload":
+                        strOut = GetDisplay();
+                        break;
+                    case "rocketapptheme_download":
+                        strOut = GetDisplay();
+                        break;
+                    case "rocketapptheme_appthemes":
+                        strOut = GetAppThemes();
+                        break;
 
-            _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);
-            _commandSecurity.AddCommand("rocketapptheme_edit", true);
-            _commandSecurity.AddCommand("rocketapptheme_add", true);
-            _commandSecurity.AddCommand("rocketapptheme_save", true);
-            _commandSecurity.AddCommand("rocketapptheme_delete", true);
-            _commandSecurity.AddCommand("rocketapptheme_dashboard", true);
-            _commandSecurity.AddCommand("rocketapptheme_builder", true);
-
-            if (!_commandSecurity.HasSecurityAccess(paramCmd))
+                }
+            }
+            else
             {
                 strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
-                return ReturnString(strOut);
-            }
-
-            switch (paramCmd)
-            {
-                case "rocketapptheme_dashboard":
-                    strOut = GetDisplay();
-                    break;
-                case "rocketapptheme_builder":
-                    strOut = GetDisplay();
-                    break;
-                case "rocketapptheme_editor":
-                    strOut = GetEditor();
-                    break;
-                case "rocketapptheme_gettemplate":
-                    strOut = GetTemplate();
-                    break;
-                case "rocketapptheme_save":
-                    strOut = SaveTemplate();
-                    break;
-                case "rocketapptheme_upload":
-                    strOut = GetDisplay();
-                    break;
-                case "rocketapptheme_download":
-                    strOut = GetDisplay();
-                    break;
-                case "rocketapptheme_appthemes":
-                    strOut = GetAppThemes();
-                    break;
-
             }
 
             return ReturnString(strOut);
@@ -165,10 +142,10 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editor.cshtml", _adminAppthemeRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editor.cshtml", _appThemeData.AdminAppThemesRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
 
                 var passSettings = _postInfo.ToDictionary();
-                passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
+                passSettings.Add("AppThemesMapPath", _appThemeData.AppThemesMapPath);
 
                 return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData.Info, passSettings);
             }
@@ -182,10 +159,10 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _adminAppthemeRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _appThemeData.AdminAppThemesRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
 
                 var passSettings = _postInfo.ToDictionary();
-                passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
+                passSettings.Add("AppThemesMapPath", _appThemeData.AppThemesMapPath);
 
                 return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData.Info, passSettings);
             }
@@ -202,18 +179,9 @@ namespace DNNrocket.AppThemes
                 var strOut = "";
                 var editType = _postInfo.GetXmlProperty("genxml/hidden/edittype");
                 var objCtrl = new DNNrocketController();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeSelect.cshtml", _adminAppthemeRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeSelect.cshtml", _appThemeData.AdminAppThemesRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
                 var passSettings = _postInfo.ToDictionary();
-                var appList = new List<Object>();
-                var dirlist = System.IO.Directory.GetDirectories(_appthemeMapPath + "\\Themes");
-                foreach (var d in dirlist)
-                {
-                    var dr = new System.IO.DirectoryInfo(d);
-                    var appTheme = new AppTheme(dr.Name);
-                    appList.Add(appTheme);
-                }                
-
-                strOut = DNNrocketUtils.RazorList(razorTempl, appList, passSettings);
+                strOut = DNNrocketUtils.RazorList(razorTempl, _appThemeData.List, passSettings);
 
                 return strOut;
             }

@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI;
+using DNNrocketAPI.Componants;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,20 @@ namespace DNNrocket.AppThemes
 
     public class AppThemeData
     {
-        private List<SimplisityInfo> _dataList;
-        private int _tabid;
-        private int _moduleid;
+        private List<Object> _dataList;
         private string _langRequired;
-
+        private int _userId;
         public SimplisityInfo Info;
 
 
-        public AppThemeData(int tabId, int moduleId, string langRequired)
+        public AppThemeData(int userId, string appThemesRelPath, string langRequired)
         {
             _langRequired = langRequired;
-            _tabid = tabId;
-            _moduleid = moduleId;
-            _dataList = new List<SimplisityInfo>();
+            _userId = userId;
+            AppThemesRelPath = appThemesRelPath;
+            AppThemesMapPath = DNNrocketUtils.MapPath(AppThemesRelPath);
+            AdminAppThemesRelPath = appThemesRelPath + "/Admin";
+            AdminAppThemesMapPath = DNNrocketUtils.MapPath(AdminAppThemesRelPath);            
 
             Populate();
             PopulateList();
@@ -32,75 +33,66 @@ namespace DNNrocket.AppThemes
         public void Populate()
         {
             var objCtrl = new DNNrocketController();
-            Info = objCtrl.GetData("rocketsettings_" + _moduleid, "APPTHEME", _langRequired, -1, _moduleid, true);
+            Info = objCtrl.GetData("apptheme_" + _userId, "APPTHEMECONFIG", _langRequired, -1,-1, true);
             if (Info == null)
             {
                 Info = new SimplisityInfo();
-                Info.ModuleId = _moduleid;
+                Info.UserId = _userId;
+                Info.SetXmlProperty("genxml/appthemesmappath", AppThemesMapPath);
+                Info.SetXmlProperty("genxml/appthemesrelpath", AppThemesRelPath);
             }
+
         }
 
         public void PopulateList()
         {
-            _dataList = new List<SimplisityInfo>();
-            var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("rocketsettings_" + _moduleid, "APPTHEME", _langRequired, -1, _moduleid, true);
-            if (info != null)
+            _dataList = new List<Object>();
+
+            var dirlist = System.IO.Directory.GetDirectories(AppThemesMapPath + "\\Themes");
+            foreach (var d in dirlist)
             {
-                _dataList = info.GetList("settingsdata");
+                var dr = new System.IO.DirectoryInfo(d);
+                var appTheme = new AppTheme(dr.Name);
+                _dataList.Add(appTheme);
             }
+
+
         }
 
         public void Delete()
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("rocketsettings_" + _moduleid, "APPTHEME", DNNrocketUtils.GetEditCulture(), -1, _moduleid, true);
+            var info = objCtrl.GetData("apptheme_" + _userId, "APPTHEMECONFIG", _langRequired, -1, -1, true);
             if (info != null)
             {
                 objCtrl.Delete(info.ItemID);
-                ClearCache();
                 Populate();
                 PopulateList();
             }
         }
 
-        public void Save(SimplisityInfo postInfo)
+        public void Save()
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.SaveData("rocketsettings_" + _moduleid, "APPTHEME", postInfo, -1, _moduleid);
-            ClearCache();
+            var info = objCtrl.SaveData("apptheme_" + _userId, "APPTHEMECONFIG", Info, -1, -1);
             Populate();
             PopulateList();
         }
 
 
-        public void AddRow()
-        {
-            Info.AddListRow("settingsdata");
-            Save(Info);
-        }
-
-
         #region "properties"
 
-        public int ModuleId { get {return _moduleid;} }
-        public int TabId { get { return _tabid; } }
-      
-        public List<SimplisityInfo> List
+        public string AppThemesRelPath { get; }
+        public string AppThemesMapPath { get; }
+        public string AdminAppThemesRelPath { get; }
+        public string AdminAppThemesMapPath { get; }
+
+        public List<Object> List
         {
             get { return _dataList; }
         }
 
         #endregion
-
-
-        public void ClearCache()
-        {
-            CacheUtils.ClearCache("apptheme" + _moduleid);
-        }
-
-
-
 
     }
 

@@ -988,6 +988,11 @@ namespace DNNrocketAPI
             return UserController.Instance.GetCurrentUserInfo().IsInRole(role);
         }
 
+        public static bool IsSuperUser()
+        {
+            return UserController.Instance.GetCurrentUserInfo().IsSuperUser;
+        }
+
         public static Boolean IsClientOnly()
         {
             if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ClientEditor) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators)))
