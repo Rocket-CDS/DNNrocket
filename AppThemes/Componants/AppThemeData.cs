@@ -73,6 +73,7 @@ namespace DNNrocket.AppThemes
                     var dr = new System.IO.DirectoryInfo(d);
                     _versionList.Add(dr.Name);
                 }
+                if (_versionList.Count == 0) _versionList.Add("v1");
             }
 
 

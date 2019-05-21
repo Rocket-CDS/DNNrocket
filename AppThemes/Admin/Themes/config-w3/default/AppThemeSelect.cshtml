@@ -11,7 +11,7 @@
 }
 
 <span class="w3-section simplisity_buttons">
-    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_builder" s-fields="interfacekey:builder">@ResourceKey("DNNrocket.cmdBackButton")</a>
+    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_builder" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdBackButton")</a>
 </span>
 
 
@@ -53,7 +53,7 @@
             @if (Model.GetSetting("actiontype").ToLower() == "new")
             {
                 <li class="w3-bar" appthemename="blank">
-                    <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right"><i class="fas fa-check"></i></span>
+                    <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right simplisity_click " s-cmd="rocketapptheme_appversions" s-post="" s-fields="apptheme:blank,interfacekey:dashboard" ><i class="fas fa-check"></i></span>
                     <img class="w3-bar-item w3-hide-small" src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=100&h=100" alt="" />
 
                     <div class="w3-bar-item" style="width:70%">
@@ -70,7 +70,7 @@
             {
 
                 <li class="w3-bar" appthemename="@(apptheme.AppName)">
-                    <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right simplisity_click " s-cmd="rocketapptheme_appversions" s-post="" s-fields="apptheme:@(apptheme.AppName),interfacekey:builder" ><i class="fas fa-check"></i></span>
+                    <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right simplisity_click " s-cmd="rocketapptheme_appversions" s-post="" s-fields="apptheme:@(apptheme.AppName),interfacekey:dashboard" ><i class="fas fa-check"></i></span>
 
                     @if (apptheme.Logo == "")
                     {

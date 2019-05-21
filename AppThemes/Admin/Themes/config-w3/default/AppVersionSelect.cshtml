@@ -28,7 +28,7 @@
                 @foreach (var versionfolder in Model.List)
                 {
                     <p>
-                        <span class="w3-button w3-block w3-theme simplisity_click" s-cmd="" s-fields="version:@(versionfolder),interfacekey:builder">@versionfolder</span>
+                        <span class="w3-button w3-block w3-theme simplisity_click" s-cmd="rocketapptheme_saveversions" s-fields="version:@(versionfolder),interfacekey:dashboard,template:dashboard.cshtml">@versionfolder</span>
                     </p>
                 }
             </div>
