@@ -44,6 +44,7 @@ namespace DNNrocket.AppThemes
             }
             SelectedTheme = Info.GetXmlProperty("genxml/selectedtheme");
             SelectedVersion = Info.GetXmlProperty("genxml/selectedversion");
+            ActionType = Info.GetXmlProperty("genxml/actiontype");
         }
 
         public void PopulateList()

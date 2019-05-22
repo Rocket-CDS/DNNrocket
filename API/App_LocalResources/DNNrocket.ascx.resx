@@ -471,4 +471,7 @@
   <data name="cmdNextIcon.Text" xml:space="preserve">
     <value>&lt;i  title="Next" class="fas  fa-arrow-alt-circle-right fa-fw fa-2x"&gt;&lt;/i&gt; Next</value>
   </data>
+  <data name="cmdClose.confirm" xml:space="preserve">
+    <value>Close ?</value>
+  </data>
 </root>

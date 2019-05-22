@@ -5,36 +5,49 @@
 @using System.Xml
 @using Simplisity;
 @using DNNrocketAPI.Componants;
-@using RocketMod;
+@using DNNrocket.AppThemes;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 @{
-    var info = (SimplisityInfo)Model.List.First();
+    var appThemeData = (AppThemeData)Model.List.First();
 }
 
-<span class="w3-section simplisity_buttons">
-</span>
 
+@if (appThemeData.SelectedTheme == "")
+{
 
-<h2>@ResourceKey("AppThemes.builder")</h2>
+    <span class="w3-section simplisity_buttons">
+    </span>
 
-<div class="w3-row-padding">
-    <div class="w3-quarter w3-panel w3-leftbar w3-border-indigo w3-theme-l4 w3-margin w3-center w3-hover-shadow simplisity_click" s-cmd="rocketapptheme_appthemes" s-post="" s-fields="actiontype:new,interfacekey:dashboard" style="height:200px;cursor: pointer">
-        <h1 class="w3-theme">@ResourceKey("AppThemes.new")</h1>
-        <p>@ResourceKey("AppThemes.newmsg")</p>
+    <h2>@ResourceKey("AppThemes.builder")</h2>
+
+    <div class="w3-row-padding">
+        <div class="w3-quarter w3-panel w3-leftbar w3-border-indigo w3-theme-l4 w3-margin w3-center w3-hover-shadow simplisity_click" s-cmd="rocketapptheme_actiontype" s-post="" s-fields="actiontype:new,interfacekey:dashboard" style="height:200px;cursor: pointer">
+            <h1 class="w3-theme">@ResourceKey("AppThemes.new")</h1>
+            <p>@ResourceKey("AppThemes.newmsg")</p>
+        </div>
+        <div class="w3-quarter w3-panel w3-leftbar w3-border-indigo w3-theme-l4 w3-margin w3-center w3-hover-shadow simplisity_click" s-cmd="rocketapptheme_actiontype" s-post="" s-fields="actiontype:version,interfacekey:dashboard" style="height:200px;cursor: pointer">
+            <h1 class="w3-theme">@ResourceKey("AppThemes.version")</h1>
+            <p>@ResourceKey("AppThemes.versionmsg")</p>
+        </div>
+        <div class="w3-quarter w3-panel w3-leftbar w3-border-indigo w3-theme-l4 w3-margin w3-center w3-hover-shadow simplisity_click" s-cmd="rocketapptheme_actiontype" s-post="" s-fields="actiontype:edit,interfacekey:dashboard" style="height:200px;cursor: pointer">
+            <h1 class="w3-theme">@ResourceKey("AppThemes.edit")</h1>
+            <p>@ResourceKey("AppThemes.editmsg")</p>
+        </div>
+
     </div>
-    <div class="w3-quarter w3-panel w3-leftbar w3-border-indigo w3-theme-l4 w3-margin w3-center w3-hover-shadow simplisity_click" s-cmd="rocketapptheme_appthemes" s-post="" s-fields="actiontype:version,interfacekey:dashboard" style="height:200px;cursor: pointer">
-        <h1 class="w3-theme">@ResourceKey("AppThemes.version")</h1>
-        <p>@ResourceKey("AppThemes.versionmsg")</p>
-    </div>
-    <div class="w3-quarter w3-panel w3-leftbar w3-border-indigo w3-theme-l4 w3-margin w3-center w3-hover-shadow simplisity_click" s-cmd="rocketapptheme_appthemes" s-post="" s-fields="actiontype:edit,interfacekey:dashboard" style="height:200px;cursor: pointer">
-        <h1 class="w3-theme">@ResourceKey("AppThemes.edit")</h1>
-        <p>@ResourceKey("AppThemes.editmsg")</p>
-    </div>
 
-</div>
+}
+else
+{
+    <span class="w3-section simplisity_buttons">
+        <span class="w3-button w3-teal w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdClose","","confirm")" s-cmd="rocketapptheme_deleteconfig" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdCloseButton")</span>
+    </span>
+
+    <h1>@appThemeData.SelectedTheme</h1>
+}
 
 
 <script>

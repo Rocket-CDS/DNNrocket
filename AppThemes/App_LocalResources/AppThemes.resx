@@ -135,6 +135,9 @@
   <data name="editor.Text" xml:space="preserve">
     <value>Editor</value>
   </data>
+  <data name="entername.Text" xml:space="preserve">
+    <value>Enter Name of AppTheme</value>
+  </data>
   <data name="new.Text" xml:space="preserve">
     <value>New</value>
   </data>

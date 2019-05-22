@@ -33,9 +33,6 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_dashboard":
                         strOut = GetDisplay();
                         break;
-                    case "rocketapptheme_builder":
-                        strOut = GetDisplay();
-                        break;
                     case "rocketapptheme_editor":
                         strOut = GetEditor();
                         break;
@@ -51,8 +48,8 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_download":
                         strOut = GetDisplay();
                         break;
-                    case "rocketapptheme_appthemes":
-                        strOut = GetAppThemes();
+                    case "rocketapptheme_actiontype":
+                        strOut = GetActionType();
                         break;
                     case "rocketapptheme_appversions":
                         strOut = GetAppVersions();
@@ -60,6 +57,21 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_saveversions":
                         var version = _postInfo.GetXmlProperty("genxml/hidden/version");
                         _appThemeData.SelectedVersion = version;
+                        if (_appThemeData.ActionType == "new")
+                        {
+                            strOut = GetAppNewName();
+                        }
+                        else
+                        {
+                            strOut = GetDisplay();
+                        }
+                        break;
+                    case "rocketapptheme_savename":
+                        var newname = _postInfo.GetXmlProperty("genxml/textbox/name");
+                        strOut = GetDisplay();
+                        break;
+                    case "rocketapptheme_deleteconfig":
+                        _appThemeData.Delete();
                         strOut = GetDisplay();
                         break;
                 }
@@ -173,7 +185,7 @@ namespace DNNrocket.AppThemes
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("AppThemesMapPath", _appThemeData.AppThemesMapPath);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData.Info, passSettings);
+                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData, passSettings);
             }
             catch (Exception ex)
             {
@@ -181,13 +193,14 @@ namespace DNNrocket.AppThemes
             }
         }
 
-        public static String GetAppThemes()
+        public static String GetActionType()
         {
             try
             {
                 var strOut = "";
-                _appThemeData.ActionType = _postInfo.GetXmlProperty("genxml/hidden/actiontype");
+                _appThemeData.ActionType = _postInfo.GetXmlProperty("genxml/hidden/actiontype").ToLower();
                 _appThemeData.Save();
+
                 var objCtrl = new DNNrocketController();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeSelect.cshtml", _appThemeData.AdminAppThemesRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
                 var passSettings = _postInfo.ToDictionary();
@@ -226,6 +239,28 @@ namespace DNNrocket.AppThemes
 
         }
 
+
+        public static String GetAppNewName()
+        {
+            try
+            {
+                var strOut = "";
+                var appThemeName = _postInfo.GetXmlProperty("genxml/hidden/apptheme");
+                _appThemeData.SelectedTheme = appThemeName;
+                _appThemeData.PopulateVersionList();
+                _appThemeData.Save();
+
+                var objCtrl = new DNNrocketController();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeName.cshtml", _appThemeData.AdminAppThemesRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
+                var passSettings = _postInfo.ToDictionary();
+                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData, passSettings);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
 
 
     }
