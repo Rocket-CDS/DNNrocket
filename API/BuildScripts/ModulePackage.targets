@@ -44,7 +44,7 @@
       <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
     </CreateItem>
 
-    <CreateItem Include="..\dnnrocket.xml">
+    <CreateItem Include="..\dnnrocket_system.xml">
       <Output TaskParameter="Include" ItemName="PluginFiles" />
     </CreateItem>
     <CreateItem Include="..\rocket*.xml">
@@ -56,12 +56,11 @@
 
     <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketCountry.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketCategory.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
-    <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketLogin.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketSystemData.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Simplisity.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
-    <Copy SourceFiles="$(MSBuildDnnBinPath)\System.Drawing.Common.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
-    <Copy SourceFiles="$(MSBuildDnnBinPath)\netstandard.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
-    <Copy SourceFiles="$(MSBuildDnnBinPath)\RazorEngine.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(OutputPath)\System.Drawing.Common.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(OutputPath)\netstandard.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(OutputPath)\RazorEngine.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\RocketMod.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketImages.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\RocketSettings.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>

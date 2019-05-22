@@ -54,7 +54,7 @@
             {
                 <li class="w3-bar" appthemename="blank">
                     <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right simplisity_click " s-cmd="rocketapptheme_appversions" s-post="" s-fields="apptheme:blank,interfacekey:dashboard" ><i class="fas fa-check"></i></span>
-                    <img class="w3-bar-item w3-hide-small" src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=100&h=100" alt="" />
+                    <img class="w3-bar-item w3-hide-small" src="/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=100&h=100" alt="" />
 
                     <div class="w3-bar-item" style="width:70%">
                         <span class="w3-large">
@@ -69,30 +69,30 @@
             @foreach (AppTheme apptheme in Model.List)
             {
 
-                <li class="w3-bar" appthemename="@(apptheme.AppName)">
-                    <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right simplisity_click " s-cmd="rocketapptheme_appversions" s-post="" s-fields="apptheme:@(apptheme.AppName),interfacekey:dashboard" ><i class="fas fa-check"></i></span>
+        <li class="w3-bar" appthemename="@(apptheme.AppName)">
+            <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right simplisity_click " s-cmd="rocketapptheme_appversions" s-post="" s-fields="apptheme:@(apptheme.AppName),interfacekey:dashboard"><i class="fas fa-check"></i></span>
 
-                    @if (apptheme.Logo == "")
-                    {
-                        <img class="w3-bar-item w3-hide-small" src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=100&h=100" alt="" />
-                    }
-                    else
-                    {
-                        <img class="w3-bar-item w3-border w3-border-theme w3-hide-small" onclick="document.getElementById('modal@(apptheme.AppName)').style.display='block'" src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@(apptheme.Logo)&w=100&h=100" alt="" style="cursor: pointer" />
+            @if (apptheme.Logo == "")
+            {
+                <img class="w3-bar-item w3-hide-small" src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png",100,100)" alt="" />
+                            }
+            else
+            {
+                <img class="w3-bar-item w3-border w3-border-theme w3-hide-small" onclick="document.getElementById('modal@(apptheme.AppName)').style.display='block'" src="@ThumbnailImageUrl(apptheme.Logo,100,100)" alt="" style="cursor: pointer" />
 
-                        <div id="modal@(apptheme.AppName)" class="w3-modal w3-animate-zoom w3-center" onclick="this.style.display='none'">
-                            <img class="w3-modal-content" src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@(apptheme.Logo)&w=800&h=-1" alt="" />
-                        </div>
-                    }
+                <div id="modal@(apptheme.AppName)" class="w3-modal w3-animate-zoom w3-center" onclick="this.style.display='none'">
+                    <img class="w3-modal-content" src="@ThumbnailImageUrl(apptheme.Logo,800,-1)" alt="" />
+                </div>
+            }
 
-                    <div class="w3-bar-item" style="width:70%">
-                        <span class="w3-large">
-                            @apptheme.AppName
-                        </span><br>
-                        <span>@apptheme.Summary</span>
-                    </div>
+            <div class="w3-bar-item" style="width:70%">
+                <span class="w3-large">
+                    @apptheme.AppName
+                </span><br>
+                <span>@apptheme.Summary</span>
+            </div>
 
-                </li>
+        </li>
 
             }
 

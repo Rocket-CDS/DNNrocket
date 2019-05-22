@@ -20,13 +20,13 @@ using DotNetNuke.Entities.Modules;
 using System.Net;
 using System.IO;
 using DotNetNuke.Common.Lists;
-using ICSharpCode.SharpZipLib.Zip;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Threading;
 using System.Globalization;
 using DNNrocketAPI.Componants;
 using DotNetNuke.Common;
+using System.IO.Compression;
 
 namespace DNNrocketAPI
 {
@@ -214,95 +214,14 @@ namespace DNNrocketAPI
         }
 
 
-
-        public static void Zip(string zipFileMapPath, List<String> fileMapPathList)
+        public static void ZipFolder(string folderMapPath, string zipFileMapPath)
         {
-            // Zip up the files - From SharpZipLib Demo Code
-            using (var s = new ZipOutputStream(File.Create(zipFileMapPath)))
-            {
-                s.SetLevel(9); // 0-9, 9 being the highest compression
-
-                byte[] buffer = new byte[4096];
-
-                foreach (string file in fileMapPathList)
-                {
-
-                    ZipEntry entry = new
-                    ZipEntry(Path.GetFileName(file));
-
-                    entry.DateTime = DateTime.Now;
-                    s.PutNextEntry(entry);
-
-                    using (FileStream fs = File.OpenRead(file))
-                    {
-                        int sourceBytes;
-                        do
-                        {
-                            sourceBytes = fs.Read(buffer, 0,
-                            buffer.Length);
-
-                            s.Write(buffer, 0, sourceBytes);
-
-                        } while (sourceBytes > 0);
-                    }
-                }
-                s.Finish();
-                s.Close();
-            }
-
-
+            ZipFile.CreateFromDirectory(folderMapPath, zipFileMapPath);
         }
 
-        public static void ZipFolder(string folderName, String zipFileMapPath)
+        public static void ExtractZipFolder(string zipFileMapPath, string outFolderMapPath)
         {
-            var zipStream = new ZipOutputStream(File.Create(zipFileMapPath));
-            try
-            {
-                int folderOffset = folderName.Length + (folderName.EndsWith("\\") ? 0 : 1);
-                zipStream.SetLevel(3); //0-9, 9 being the highest level of compression
-                CompressFolder(folderName, zipStream, folderOffset);
-                zipStream.Close();
-            }
-            catch (Exception ex)
-            {
-                zipStream.Close();
-                throw ex;
-            }
-        }
-
-        private static void CompressFolder(string path, ZipOutputStream zipStream, int folderOffset)
-        {
-
-            string[] files = Directory.GetFiles(path);
-
-            foreach (string filename in files)
-            {
-
-                System.IO.FileInfo fi = new System.IO.FileInfo(filename);
-
-                string entryName = filename.Substring(folderOffset); // Makes the name in zip based on the folder
-                entryName = ZipEntry.CleanName(entryName); // Removes drive from name and fixes slash direction
-                ZipEntry newEntry = new ZipEntry(entryName);
-                newEntry.DateTime = fi.LastWriteTime; // Note the zip format stores 2 second granularity
-
-                newEntry.Size = fi.Length;
-
-                zipStream.PutNextEntry(newEntry);
-
-                // Zip the file in buffered chunks
-                // the "using" will close the stream even if an exception occurs
-                byte[] buffer = new byte[4096];
-                using (FileStream streamReader = File.OpenRead(filename))
-                {
-                    ZipUtilCopy(streamReader, zipStream, buffer);
-                }
-                zipStream.CloseEntry();
-            }
-            string[] folders = Directory.GetDirectories(path);
-            foreach (string folder in folders)
-            {
-                CompressFolder(folder, zipStream, folderOffset);
-            }
+            ZipFile.ExtractToDirectory(zipFileMapPath, outFolderMapPath);
         }
 
         /// <summary>
@@ -336,86 +255,6 @@ namespace DNNrocketAPI
                 }
             }
         }
-
-
-        public static void UnZip(string zipFileMapPath, string outputFolder)
-        {
-            var zipStream = new FileStream(zipFileMapPath, FileMode.Open, FileAccess.Read);
-            var zStream = new ZipInputStream(zipStream);
-            UnzipResources(zStream, outputFolder);
-            zipStream.Close();
-            zStream.Close();
-        }
-
-        public static void UnzipResources(ZipInputStream zipStream, string destPath)
-        {
-            try
-            {
-                ZipEntry objZipEntry;
-                string LocalFileName;
-                string RelativeDir;
-                string FileNamePath;
-                objZipEntry = zipStream.GetNextEntry();
-                while (objZipEntry != null)
-                {
-                    LocalFileName = objZipEntry.Name;
-                    RelativeDir = Path.GetDirectoryName(objZipEntry.Name);
-                    if ((RelativeDir != string.Empty) && (!Directory.Exists(Path.Combine(destPath, RelativeDir))))
-                    {
-                        Directory.CreateDirectory(Path.Combine(destPath, RelativeDir));
-                    }
-                    if ((!objZipEntry.IsDirectory) && (!String.IsNullOrEmpty(LocalFileName)))
-                    {
-                        FileNamePath = Path.Combine(destPath, LocalFileName).Replace("/", "\\");
-                        try
-                        {
-                            if (File.Exists(FileNamePath))
-                            {
-                                File.SetAttributes(FileNamePath, FileAttributes.Normal);
-                                File.Delete(FileNamePath);
-                            }
-                            FileStream objFileStream = null;
-                            try
-                            {
-                                objFileStream = File.Create(FileNamePath);
-                                int intSize = 2048;
-                                var arrData = new byte[2048];
-                                intSize = zipStream.Read(arrData, 0, arrData.Length);
-                                while (intSize > 0)
-                                {
-                                    objFileStream.Write(arrData, 0, intSize);
-                                    intSize = zipStream.Read(arrData, 0, arrData.Length);
-                                }
-                            }
-                            finally
-                            {
-                                if (objFileStream != null)
-                                {
-                                    objFileStream.Close();
-                                    objFileStream.Dispose();
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            var errmsg = ex.ToString();
-
-                            //   DnnLog.Error(ex);
-                        }
-                    }
-                    objZipEntry = zipStream.GetNextEntry();
-                }
-            }
-            finally
-            {
-                if (zipStream != null)
-                {
-                    zipStream.Close();
-                    zipStream.Dispose();
-                }
-            }
-        }
-
 
 
         public static List<System.IO.FileInfo> GetFiles(string FolderMapPath)

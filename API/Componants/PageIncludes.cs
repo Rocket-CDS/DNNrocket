@@ -20,7 +20,6 @@ using DotNetNuke.Entities.Modules;
 using System.Net;
 using System.IO;
 using DotNetNuke.Common.Lists;
-using ICSharpCode.SharpZipLib.Zip;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 

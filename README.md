@@ -1,6 +1,20 @@
 # DNNrocket
 
-#Create Project
+#Install Dev system
+
+1. Install DNN
+2. Create folder /DesktopModules/DNNrocket
+3. Clone GutHub repo to the DNNrocket folder
+4. Run SQL scripts from DNN SQL console. /DesktopModules/DNNrocket/API/Installation (01.00.00.SqlDataProvider)
+5. Use VS to compile.  Missing links and references could cause issue on inital setup.  (See below)
+
+- Use NuGet to link RazorEngine to RocketAPI.  
+- System.Drawing.Common.dll, required. .Net core does not support drawing yet.  This must be copied local from the reference properties, so the release build can put it in the install zip.
+- System.Drawing.Common.dll is used for image manipulation and resize on upload.
+
+- RazorEngine.dll & System.Drawing.Common.dll must be moved to the DNN bin folder, take from /DesktopModules/DNNrocket/API/bin
+
+#Create .Net Standard Project
 
 1. Create new project  "Class Library (.Net Standard)" under "~\DesktopModules\DNNrocket" folder.
 2. Set namespace and assembly name to appropriate naming convension.
