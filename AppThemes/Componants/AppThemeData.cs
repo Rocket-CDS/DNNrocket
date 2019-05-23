@@ -29,6 +29,7 @@ namespace DNNrocket.AppThemes
 
             Populate();
             PopulateList();
+            PopulateVersionList();
         }
 
         public void Populate()
@@ -42,9 +43,6 @@ namespace DNNrocket.AppThemes
                 Info.SetXmlProperty("genxml/appthemesmappath", AppThemesMapPath);
                 Info.SetXmlProperty("genxml/appthemesrelpath", AppThemesRelPath);
             }
-            SelectedTheme = Info.GetXmlProperty("genxml/selectedtheme");
-            SelectedVersion = Info.GetXmlProperty("genxml/selectedversion");
-            ActionType = Info.GetXmlProperty("genxml/actiontype");
         }
 
         public void PopulateList()
@@ -64,19 +62,22 @@ namespace DNNrocket.AppThemes
 
         public void PopulateVersionList()
         {
-            if (SelectedTheme != "")
+            var appThemeName = Name;
+            if (appThemeName == "") appThemeName = SelectedTheme;
+            if (appThemeName != "")
             {
                 _versionList = new List<Object>();
-
-                var dirlist = System.IO.Directory.GetDirectories(AppThemesMapPath + "\\Themes\\" + SelectedTheme);
-                foreach (var d in dirlist)
+                if (System.IO.Directory.Exists(AppThemesMapPath + "\\Themes\\" + appThemeName))
                 {
-                    var dr = new System.IO.DirectoryInfo(d);
-                    _versionList.Add(dr.Name);
+                    var dirlist = System.IO.Directory.GetDirectories(AppThemesMapPath + "\\Themes\\" + appThemeName);
+                    foreach (var d in dirlist)
+                    {
+                        var dr = new System.IO.DirectoryInfo(d);
+                        _versionList.Add(dr.Name);
+                    }
                 }
                 if (_versionList.Count == 0) _versionList.Add("v1");
             }
-
 
         }
 
@@ -89,15 +90,16 @@ namespace DNNrocket.AppThemes
                 objCtrl.Delete(info.ItemID);
                 Populate();
                 PopulateList();
+                PopulateVersionList();
             }
         }
 
         public void Save()
         {
             var objCtrl = new DNNrocketController();
-            Info.SetXmlProperty("genxml/selectedtheme", SelectedTheme);
-            Info.SetXmlProperty("genxml/selectedversion", SelectedVersion);
-            Info.SetXmlProperty("genxml/actiontype", ActionType);
+
+            if (Name == "" && ActionType != "new") Name = SelectedTheme;
+            Name = GeneralUtils.AlphaNumeric(Name);
 
             var info = objCtrl.SaveData("apptheme_" + _userId, "APPTHEMECONFIG", Info, -1, -1);
             Populate();
@@ -111,9 +113,80 @@ namespace DNNrocket.AppThemes
         public string AdminAppThemesRelPath { get; }
         public string AdminAppThemesMapPath { get; }
 
-        public string SelectedTheme { get; set; }
-        public string SelectedVersion { get; set; }
-        public string ActionType { get; set; }
+        public string SelectedTheme
+        {
+            get
+            {
+                return Info.GetXmlProperty("genxml/hidden/selectedtheme");
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/hidden/selectedtheme", value);
+            }
+        }
+        public string SelectedVersion
+        {
+            get
+            {
+                return Info.GetXmlProperty("genxml/hidden/selectedversion");
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/hidden/selectedversion", value);
+            }
+        }
+        public string ActionType
+        {
+            get
+            {
+                return Info.GetXmlProperty("genxml/hidden/ationtype");
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/hidden/ationtype", value);
+            }
+        }
+        public string Name
+        {
+            get
+            {
+                return Info.GetXmlProperty("genxml/textbox/name");
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/textbox/name", value);
+            }
+        }
+        public string DisplayName {
+            get {
+                return Info.GetXmlProperty("genxml/lang/genxml/textbox/displayname");
+            }
+            set {
+                Info.SetXmlProperty("genxml/lang/genxml/textbox/displayname", value);
+            }
+        }
+        public string Summary
+        {
+            get
+            {
+                return Info.GetXmlProperty("genxml/lang/genxml/textbox/summary");
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/lang/genxml/textbox/summary", value);
+            }
+        }
+        public string CultureCode
+        {
+            get
+            {
+                return Info.Lang;
+            }
+            set
+            {
+                Info.Lang = value;
+            }
+        }
 
         public List<Object> List
         {

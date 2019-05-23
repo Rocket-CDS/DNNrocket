@@ -387,7 +387,7 @@
     function validateform() {
 
         jQuery.validator.addMethod("alphanumeric", function (value, element) {
-            return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value) ;
+            return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
         }, '@ResourceKey("RocketMod.alphanumeric","", "Error")');
 
         jQuery.validator.addMethod("notnumeric", function (value, element) {

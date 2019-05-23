@@ -393,6 +393,19 @@ namespace Simplisity
             // Replace invalid characters with empty strings. 
             return Regex.Replace(strIn, regexpr, "", RegexOptions.None);
         }
+        /// <summary>
+        /// strips out all nonalphanumeric characters.
+        /// </summary>
+        /// <param name="strIn">Dirty String</param>
+        /// <param name="regexpr"></param>
+        /// <returns>Clean String</returns>
+        public static string AlphaNumeric(string strIn)
+        {
+            Regex rgx = new Regex("[^a-zA-Z0-9 -]");
+            var str = rgx.Replace(strIn, "");
+            return str.Replace(" ", "");
+        }
+
 
         /// <summary>
         /// Produces optional, URL-friendly version of a title, "like-this-one". 

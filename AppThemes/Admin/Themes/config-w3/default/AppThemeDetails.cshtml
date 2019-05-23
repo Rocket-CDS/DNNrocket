@@ -1,0 +1,74 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketSettings;
+@using DNNrocketAPI.Componants;
+@using DNNrocket.AppThemes;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+
+@{
+    var appThemeData = (AppThemeData)Model.List.First();
+}
+@{
+    var dataDic = new Dictionary<string, string>();
+    foreach (string i in appThemeData.VersionList)
+    {
+        dataDic.Add(i, i);
+    }
+}
+
+<span class="w3-section simplisity_buttons">
+    @if (appThemeData.Name == "")
+    {
+        <a class="w3-button w3-teal w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdBackButton")</a>
+    }
+    else
+    {
+        <span class="w3-button w3-teal w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdClose","","confirm")" s-cmd="rocketapptheme_deleteconfig" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdCloseButton")</span>
+    }
+
+    <span class="w3-button w3-green w3-padding-8 simplisity_click " s-cmd="rocketmod_savedetails" s-fields="interfacekey:dashboard" s-post="#appthemedetails">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+</span>
+
+<span class="w3-section simplisity_buttons">
+</span>
+
+<div class="w3-container">
+
+    <h2>@ResourceKey("AppThemes.details")</h2>
+
+    <div id="appthemedetails">
+
+        <div class="w3-container w3-padding">
+            <div class="w3-col m4 w3-padding">
+                <label>@ResourceKey("AppThemes.name")</label>
+                @{
+                    var disabled = "";
+                    if (appThemeData.Name != "")
+                    {
+                        disabled = " disabled='true' ";
+                    }
+                }
+                @TextBox(appThemeData.Info, "genxml/textbox/name", "class='w3-input w3-border' " + disabled)
+            </div>
+            <div class="w3-col m6 w3-padding">
+                <label>@ResourceKey("AppThemes.displayname")</label>
+                @TextBox(appThemeData.Info, "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'","",true)
+            </div>
+            <div class="w3-col m2 w3-padding">
+                <label>@ResourceKey("AppThemes.version")</label>
+                @DropDownList(appThemeData.Info, "genxml/select/version", dataDic, " class='w3-input w3-border'")
+            </div>
+            <div class="w3-col m12 w3-padding">
+                <label>@ResourceKey("AppThemes.summary")</label>
+                @TextArea(appThemeData.Info, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'","",true)
+            </div>
+        </div>
+    </div>
+
+</div>
+

@@ -14,8 +14,7 @@
     var appThemeData = (AppThemeData)Model.List.First();
 }
 
-
-@if (appThemeData.SelectedTheme == "")
+@if (appThemeData.Name == "")
 {
 
     <span class="w3-section simplisity_buttons">
@@ -42,11 +41,7 @@
 }
 else
 {
-    <span class="w3-section simplisity_buttons">
-        <span class="w3-button w3-teal w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdClose","","confirm")" s-cmd="rocketapptheme_deleteconfig" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdCloseButton")</span>
-    </span>
-
-    <h1>@appThemeData.SelectedTheme</h1>
+    @RenderTemplate("AppThemeDetails.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", Model)
 }
 
 
