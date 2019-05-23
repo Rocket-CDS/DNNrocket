@@ -21,21 +21,20 @@
     }
 }
 
-<span class="w3-section simplisity_buttons">
-    @if (appThemeData.Name == "")
-    {
-        <a class="w3-button w3-teal w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdBackButton")</a>
-    }
-    else
-    {
-        <span class="w3-button w3-teal w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdClose","","confirm")" s-cmd="rocketapptheme_deleteconfig" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdCloseButton")</span>
-    }
+    <span class="w3-section simplisity_buttons">
+        @if (appThemeData.AppName == "")
+        {
+            <a class="w3-button w3-teal w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdBackButton")</a>
+        }
+        else
+        {
+            <span class="w3-button w3-teal w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdClose","","confirm")" s-cmd="rocketapptheme_deleteconfig" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdCloseButton")</span>
+            <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</span>
+            <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-post="#appthemedetails" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</span>
+        }
 
-    <span class="w3-button w3-green w3-padding-8 simplisity_click " s-cmd="rocketmod_savedetails" s-fields="interfacekey:dashboard" s-post="#appthemedetails">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-</span>
-
-<span class="w3-section simplisity_buttons">
-</span>
+        <span class="w3-button w3-green w3-padding-8 simplisity_click " s-cmd="rocketmod_savedetails" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    </span>
 
 <div class="w3-container">
 
@@ -48,12 +47,12 @@
                 <label>@ResourceKey("AppThemes.name")</label>
                 @{
                     var disabled = "";
-                    if (appThemeData.Name != "")
+                    if (appThemeData.AppName != "")
                     {
                         disabled = " disabled='true' ";
                     }
                 }
-                @TextBox(appThemeData.Info, "genxml/textbox/name", "class='w3-input w3-border' " + disabled)
+                @TextBox(appThemeData.Info, "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
             </div>
             <div class="w3-col m6 w3-padding">
                 <label>@ResourceKey("AppThemes.displayname")</label>
@@ -61,7 +60,7 @@
             </div>
             <div class="w3-col m2 w3-padding">
                 <label>@ResourceKey("AppThemes.version")</label>
-                @DropDownList(appThemeData.Info, "genxml/select/version", dataDic, " class='w3-input w3-border'")
+                @DropDownList(appThemeData.Info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border'")
             </div>
             <div class="w3-col m12 w3-padding">
                 <label>@ResourceKey("AppThemes.summary")</label>

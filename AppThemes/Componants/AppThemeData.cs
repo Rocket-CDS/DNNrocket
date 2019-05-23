@@ -16,6 +16,7 @@ namespace DNNrocket.AppThemes
         private string _langRequired;
         private int _userId;
         public SimplisityInfo Info;
+        private AppTheme _appTheme;
 
 
         public AppThemeData(int userId, string appThemesRelPath, string langRequired)
@@ -43,6 +44,7 @@ namespace DNNrocket.AppThemes
                 Info.SetXmlProperty("genxml/appthemesmappath", AppThemesMapPath);
                 Info.SetXmlProperty("genxml/appthemesrelpath", AppThemesRelPath);
             }
+            _appTheme = new AppTheme(AppName, VersionFolder);
         }
 
         public void PopulateList()
@@ -62,14 +64,12 @@ namespace DNNrocket.AppThemes
 
         public void PopulateVersionList()
         {
-            var appThemeName = Name;
-            if (appThemeName == "") appThemeName = SelectedTheme;
-            if (appThemeName != "")
+            if (AppName != "")
             {
                 _versionList = new List<Object>();
-                if (System.IO.Directory.Exists(AppThemesMapPath + "\\Themes\\" + appThemeName))
+                if (System.IO.Directory.Exists(AppThemesMapPath + "\\Themes\\" + AppName))
                 {
-                    var dirlist = System.IO.Directory.GetDirectories(AppThemesMapPath + "\\Themes\\" + appThemeName);
+                    var dirlist = System.IO.Directory.GetDirectories(AppThemesMapPath + "\\Themes\\" + AppName);
                     foreach (var d in dirlist)
                     {
                         var dr = new System.IO.DirectoryInfo(d);
@@ -81,7 +81,7 @@ namespace DNNrocket.AppThemes
 
         }
 
-        public void Delete()
+        public void DeleteConfig()
         {
             var objCtrl = new DNNrocketController();
             var info = objCtrl.GetData("apptheme_" + _userId, "APPTHEMECONFIG", _langRequired, -1, -1, true);
@@ -98,12 +98,52 @@ namespace DNNrocket.AppThemes
         {
             var objCtrl = new DNNrocketController();
 
-            if (Name == "" && ActionType != "new") Name = SelectedTheme;
-            Name = GeneralUtils.AlphaNumeric(Name);
+            AppName = GeneralUtils.AlphaNumeric(AppName);
 
-            var info = objCtrl.SaveData("apptheme_" + _userId, "APPTHEMECONFIG", Info, -1, -1);
+            Info = objCtrl.SaveData("apptheme_" + _userId, "APPTHEMECONFIG", Info, -1, -1);
+            
             Populate();
             PopulateList();
+            PopulateVersionList();
+
+            if (AppName != "")
+            {
+                // save the theme xml to tthe theme folder
+                _appTheme = new AppTheme(AppName, VersionFolder);
+                _appTheme.UpdateLanguageData(Info);
+                _appTheme.SaveTheme();
+            }
+
+        }
+
+        public void DeleteTheme()
+        {
+            _appTheme.DeleteTheme();
+            DeleteConfig();
+        }
+
+        public void DeleteVersion()
+        {
+            _appTheme.DeleteVersion(VersionFolder);
+            VersionFolder = "v1";
+            Populate();
+            PopulateList();
+            PopulateVersionList();
+        }
+
+        public void SaveToDisk()
+        {
+
+            Populate();
+            PopulateList();
+            PopulateVersionList();
+        }
+        public void SaveAppTheme()
+        {
+
+            Populate();
+            PopulateList();
+            PopulateVersionList();
         }
 
         #region "properties"
@@ -113,26 +153,20 @@ namespace DNNrocket.AppThemes
         public string AdminAppThemesRelPath { get; }
         public string AdminAppThemesMapPath { get; }
 
-        public string SelectedTheme
+        public string VersionFolder
         {
             get
             {
-                return Info.GetXmlProperty("genxml/hidden/selectedtheme");
+                var rtnV = Info.GetXmlProperty("genxml/selected/versionfolder");
+                if (rtnV == "") rtnV = "v1";
+                return rtnV;
             }
             set
             {
-                Info.SetXmlProperty("genxml/hidden/selectedtheme", value);
-            }
-        }
-        public string SelectedVersion
-        {
-            get
-            {
-                return Info.GetXmlProperty("genxml/hidden/selectedversion");
-            }
-            set
-            {
-                Info.SetXmlProperty("genxml/hidden/selectedversion", value);
+                if (value != "")
+                {
+                    Info.SetXmlProperty("genxml/selected/versionfolder", value);
+                }
             }
         }
         public string ActionType
@@ -146,7 +180,7 @@ namespace DNNrocket.AppThemes
                 Info.SetXmlProperty("genxml/hidden/ationtype", value);
             }
         }
-        public string Name
+        public string AppName
         {
             get
             {

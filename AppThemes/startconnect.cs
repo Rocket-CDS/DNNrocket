@@ -31,6 +31,9 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_dashboard":
                         strOut = GetDisplay();
                         break;
+                    case "rocketapptheme_selecttheme":
+                        strOut = SelectAppTheme();
+                        break;
                     case "rocketapptheme_editor":
                         strOut = GetEditor();
                         break;
@@ -49,29 +52,24 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_actiontype":
                         strOut = GetActionType();
                         break;
-                    case "rocketapptheme_appversions":
-                        strOut = GetAppVersions();
-                        break;
-                    case "rocketapptheme_saveversions":
-                        var version = _postInfo.GetXmlProperty("genxml/hidden/version");
-                        _appThemeData.SelectedVersion = version;
-                        if (_appThemeData.ActionType == "new")
-                        {
-                            strOut = GetAppNewName();
-                        }
-                        else
-                        {
-                            strOut = GetDisplay();
-                        }
-                        break;
                     case "rocketmod_savedetails":
                         SaveDetails();
                         strOut = GetDisplay();
                         break;
                     case "rocketapptheme_deleteconfig":
-                        _appThemeData.Delete();
+                        _appThemeData.DeleteConfig();
                         strOut = GetDisplay();
                         break;
+                    case "rocketapptheme_deletetheme":
+                        _appThemeData.DeleteTheme();
+                        strOut = GetDisplay();
+                        break;
+                    case "rocketapptheme_deleteversion":
+                        _appThemeData.DeleteVersion();
+                        strOut = GetDisplay();
+                        break;
+
+                        
 
 
                 }
@@ -215,20 +213,17 @@ namespace DNNrocket.AppThemes
 
         }
 
-        public static String GetAppVersions()
+        public static String SelectAppTheme()
         {
             try
             {
                 var strOut = "";
                 var appThemeName = _postInfo.GetXmlProperty("genxml/hidden/apptheme");
-                _appThemeData.SelectedTheme = appThemeName;
+                _appThemeData.AppName = appThemeName;
                 _appThemeData.PopulateVersionList();
                 _appThemeData.Save();
 
-                var objCtrl = new DNNrocketController();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppVersionSelect.cshtml", _appThemeData.AdminAppThemesRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
-                var passSettings = _postInfo.ToDictionary();
-                strOut = DNNrocketUtils.RazorList(razorTempl, _appThemeData.VersionList, passSettings);
+                strOut = GetDisplay();
 
                 return strOut;
             }
@@ -246,7 +241,7 @@ namespace DNNrocket.AppThemes
             {
                 var strOut = "";
                 var appThemeName = _postInfo.GetXmlProperty("genxml/hidden/apptheme");
-                _appThemeData.SelectedTheme = appThemeName;
+                _appThemeData.AppName = appThemeName;
                 _appThemeData.PopulateVersionList();
                 _appThemeData.Save();
 
@@ -264,7 +259,7 @@ namespace DNNrocket.AppThemes
 
         public static void SaveDetails()
         {
-            _appThemeData.Name  = _postInfo.GetXmlProperty("genxml/textbox/name");
+            _appThemeData.AppName  = _postInfo.GetXmlProperty("genxml/textbox/appname");
             _appThemeData.DisplayName = _postInfo.GetXmlProperty("genxml/lang/genxml/textbox/displayname");
             _appThemeData.Summary = _postInfo.GetXmlProperty("genxml/lang/genxml/textbox/summary");
             _appThemeData.CultureCode = _postInfo.GetXmlProperty("genxml/hidden/culturecode");

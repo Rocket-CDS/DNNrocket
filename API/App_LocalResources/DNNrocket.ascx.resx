@@ -474,4 +474,7 @@
   <data name="cmdClose.confirm" xml:space="preserve">
     <value>Close ?</value>
   </data>
+  <data name="delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
 </root>

@@ -58,26 +58,62 @@ namespace DNNrocketAPI.Componants
             var logoMapPath = _themeFolderMapPath + "\\Logo.png";
             Logo = _themeFolder + "/Logo.png";
             if (!File.Exists(logoMapPath)) Logo = "";
-            var summaryTxt = FileUtils.ReadFile(_themeFolderMapPath + "\\summary-" + _langRequired + ".txt");
-            if (summaryTxt != null || summaryTxt == "")
+
+            var xmlMeta = FileUtils.ReadFile(_themeFolderMapPath + "\\Meta.xml");
+            MetaInfo = new SimplisityInfo(xmlMeta);
+            Summary = MetaInfo.GetXmlProperty("genxml/lang[lang='" + _langRequired + "']/genxml/textbox/summary");
+            if (Summary == "")
             {
-                summaryTxt = FileUtils.ReadFile(_themeFolderMapPath + "\\summary.txt");
+                Summary = MetaInfo.GetXmlProperty("genxml/lang[lang='en-US']/genxml/textbox/summary");
             }
-            Summary = summaryTxt;
         }
 
-        public void SaveMetaFile()
+        public void UpdateLanguageData(SimplisityInfo sInfo)
         {
-            var sRec = new SimplisityRecord();
-            sRec.SetXmlProperty("genxml/appname", AppName);
-            sRec.SetXmlProperty("genxml/summary", Summary);
-            sRec.SetXmlProperty("genxml/logo", Logo);
+            sInfo.SetXmlProperty("genxml/lang/@lang", sInfo.Lang);
+            var xmlLang = sInfo.GetLangRecord();
+            MetaInfo.RemoveXmlNode("genxml/lang[lang='" + sInfo.Lang + "']/genxml/textbox/summary");
+            MetaInfo.AddXmlNode(xmlLang.XMLData, "genxml", "genxml");
+        }
+
+        public List<SimplisityInfo> ListFields()
+        {
+            return MetaInfo.GetList("settingsdata");
+        }
+
+
+        public void SaveTheme()
+        {
+            MetaInfo.SetXmlProperty("genxml/textbox/appname", AppName);
+            MetaInfo.SetXmlProperty("genxml/textbox/summary", Summary);
+            MetaInfo.SetXmlProperty("genxml/hidden/logo", Logo);
+            if (!Directory.Exists(_themeFolderMapPath))
+            {
+                Directory.CreateDirectory(_themeFolderMapPath);
+            }
+            FileUtils.SaveFile(_themeFolderMapPath + "\\Meta.xml", MetaInfo.XMLData);
+        }
+
+        public void DeleteTheme()
+        {
+            if (Directory.Exists(_themeFolderMapPath))
+            {
+                Directory.Delete(_themeFolderMapPath,true);
+            }
+        }
+        public void DeleteVersion(string versionFolder)
+        {
+            if (Directory.Exists(_themeFolderMapPath + "\\" + versionFolder))
+            {
+                Directory.Delete(_themeFolderMapPath + "\\" + versionFolder, true);
+            }
         }
 
 
         #region "properties"
 
         public string AppName { get; private set; }
+        public SimplisityInfo MetaInfo { get; private set; }
         public string Summary { get; private set; }
         public string Logo { get; private set; }
 
