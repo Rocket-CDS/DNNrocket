@@ -1,0 +1,67 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketSettings;
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Country/App_LocalResources/")
+
+@{
+    var cList = new Dictionary<string, string>();
+    foreach (SimplisityInfo cultureInfo in Model.List)
+    {
+        cList.Add(cultureInfo.GetXmlProperty("genxml/code"), cultureInfo.GetXmlProperty("genxml/displayname"));
+    }
+}
+
+<span class="w3-section simplisity_buttons">
+</span>
+
+
+<div class="w3-container">
+
+
+    <div id="selectculturecode" class="w3-modal">
+
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container w3-theme-d3">
+                <h2>@ResourceKey("country.selectculturecode")</h2>
+            </header>
+            <div class="w3-row w3-padding">
+                <label>Search</label>
+                @TextBox(Model.HeaderData, "genxml/textbox/searchtext", "class='w3-input w3-border' autocomplete='off'")
+            </div>
+
+            <div class="w3-container">
+                @foreach (var c in cList)
+                {
+                <div class="w3-half culturecode-list" culturecode="@c.Key" culturename="@c.Value @c.Key">
+                    <span class="w3-button w3-block w3-theme-l2 rocketcountry_cultureselect simplisity_click " s-cmd="rocketapptheme_culturecodeselected" s-post="" s-fields="culturecode:@c.Key,interfacekey:dashboard">@c.Value: @c.Key  </span>
+                </div>
+                }
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('#selectculturecode').show();
+
+        $('#searchtext').keyup(function(){
+           var valThis = $(this).val().toLowerCase();
+            $('.culturecode-list').each(function(){
+                 var text = $(this).attr('culturename').toLowerCase();
+                (text.indexOf(valThis) >= 0) ? $(this).show() : $(this).hide();         
+           });
+        });
+
+    });
+
+</script>

@@ -65,13 +65,16 @@ namespace DNNrocket.AppThemes
                         strOut = GetDisplay();
                         break;
                     case "rocketapptheme_deleteversion":
+                        _appThemeData.VersionFolder = _postInfo.GetXmlProperty("genxml/select/versionfolder");
                         _appThemeData.DeleteVersion();
                         strOut = GetDisplay();
                         break;
-
-                        
-
-
+                    case "rocketapptheme_selectculturecode":
+                        strOut = CultureSelect();
+                        break;
+                    case "rocketapptheme_culturecodeselected":
+                        strOut = CultureCodeSelected();
+                        break;                        
                 }
             }
             else
@@ -89,6 +92,26 @@ namespace DNNrocket.AppThemes
             rtnDic.Add("outputjson", jsonOut);            
             return rtnDic;
         }
+
+        public static String CultureSelect()
+        {
+
+            try
+            {
+                var template = _postInfo.GetXmlProperty("genxml/hidden/template");
+                if (template == "") template = _rocketInterface.DefaultTemplate;
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, _appThemeData.AdminAppThemesRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
+                var passSettings = _postInfo.ToDictionary();
+
+                var l = DNNrocketUtils.GetAllCultureCodeList();
+                return DNNrocketUtils.RazorList(razorTempl, l, passSettings);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
 
         public static String SaveTemplate()
         {
@@ -223,6 +246,33 @@ namespace DNNrocket.AppThemes
                 _appThemeData.PopulateVersionList();
                 _appThemeData.Save();
 
+                if (_appThemeData.ActionType == "version")
+                {
+                    var versionincrement = _postInfo.GetXmlPropertyDouble("genxml/hidden/versionincrement");
+                    if (versionincrement <= 0) versionincrement = 1;
+                    _appThemeData.CreateNewVersion(versionincrement);
+                }
+
+                strOut = GetDisplay();
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        public static String CultureCodeSelected()
+        {
+            try
+            {
+                var strOut = "";
+                var cultureCode = _postInfo.GetXmlProperty("genxml/hidden/culturecode");
+                _appThemeData.AppCultureCode = cultureCode;
+                _appThemeData.Save();
+
                 strOut = GetDisplay();
 
                 return strOut;
@@ -262,7 +312,8 @@ namespace DNNrocket.AppThemes
             _appThemeData.AppName  = _postInfo.GetXmlProperty("genxml/textbox/appname");
             _appThemeData.DisplayName = _postInfo.GetXmlProperty("genxml/lang/genxml/textbox/displayname");
             _appThemeData.Summary = _postInfo.GetXmlProperty("genxml/lang/genxml/textbox/summary");
-            _appThemeData.CultureCode = _postInfo.GetXmlProperty("genxml/hidden/culturecode");
+            _appThemeData.AppCultureCode = _postInfo.GetXmlProperty("genxml/hidden/culturecode");
+            _appThemeData.VersionFolder = _postInfo.GetXmlProperty("genxml/select/versionfolder");
             _appThemeData.Save();
         }
 

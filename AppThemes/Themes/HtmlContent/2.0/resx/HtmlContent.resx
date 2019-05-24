@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,19 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="country.Text" xml:space="preserve">
-    <value>Country</value>
+  <data name="layout.Text" xml:space="preserve">
+    <value>Layout</value>
   </data>
-  <data name="countrysettings.Text" xml:space="preserve">
-    <value>Country Settings</value>
+  <data name="document.Text" xml:space="preserve">
+    <value>Document</value>
   </data>
-  <data name="selectcountry.Text" xml:space="preserve">
-    <value>Select Valid Countries</value>
+  <data name="internallink.Text" xml:space="preserve">
+    <value>Internal Link</value>
   </data>
-  <data name="selectculturecode.Text" xml:space="preserve">
-    <value>Select Culture Code</value>
+  <data name="style.Text" xml:space="preserve">
+    <value>Style</value>
   </data>
-  <data name="selectedcountries.Text" xml:space="preserve">
-    <value>Selected Countries (Drag to sort)</value>
+  <data name="title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="externallink.Text" xml:space="preserve">
+    <value>External Link</value>
+  </data>
+  <data name="link.Text" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="blank.Text" xml:space="preserve">
+    <value>New Page</value>
+  </data>
+  <data name="justify.Text" xml:space="preserve">
+    <value>Justify</value>
+  </data>
+  <data name="hide.Text" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="noheader.Text" xml:space="preserve">
+    <value>No Header</value>
   </data>
 </root>

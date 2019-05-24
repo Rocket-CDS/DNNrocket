@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Themes\HtmlContent\v1\css\**" />
-    <EmbeddedResource Remove="Themes\HtmlContent\v1\css\**" />
-    <None Remove="Themes\HtmlContent\v1\css\**" />
+    <Compile Remove="Themes\HtmlContent\1.0\css\**" />
+    <EmbeddedResource Remove="Themes\HtmlContent\1.0\css\**" />
+    <None Remove="Themes\HtmlContent\1.0\css\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Admin\Themes\blank\1.0\img\" />
+    <Folder Include="Admin\Themes\blank\1.0\css\" />
+    <Folder Include="Admin\Themes\blank\1.0\js\" />
     <Folder Include="Shared\" />
   </ItemGroup>
 

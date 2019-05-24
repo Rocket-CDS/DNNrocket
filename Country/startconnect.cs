@@ -41,10 +41,39 @@ namespace DNNrocket.Country
                         var regionlist = CountryUtils.RegionListCSV(GeneralUtils.DeCode(sInfo.GetXmlProperty("genxml/hidden/activevalue")), true);
                         rtnDic.Add("outputjson", "{listkey: [" + regionlist[0] + "], listvalue: [" + regionlist[1] + "] }");
                         break;
+                    case "settingcountry_selectculturecode":
+                        rtnDic.Add("outputhtml", CultureSelect(sInfo, controlRelPath, editlang));
+                        break;                        
                 }
             }
             return rtnDic;
         }
+
+        public static String CultureSelect(SimplisityInfo sInfo, string templateControlRelPath, string editlang)
+        {
+            try
+            {
+                var strOut = "";
+                var objCtrl = new DNNrocketController();
+                var passSettings = sInfo.ToDictionary();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("CultureCodeSelect.cshtml", templateControlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
+
+                var l = DNNrocketUtils.GetCultureCodeList();
+                var objl = new List<object>();
+                foreach (var s in l)
+                {
+                    objl.Add(s);
+                }
+                strOut = DNNrocketUtils.RazorList(razorTempl, objl, passSettings);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
 
         public static String CountryDetail(SimplisityInfo sInfo, string templateControlRelPath, string editlang)
         {

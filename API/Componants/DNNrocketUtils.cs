@@ -325,6 +325,21 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
+        public static List<SimplisityInfo> GetAllCultureCodeList()
+        {
+            var rtnList = new List<SimplisityInfo>();
+
+            CultureInfo[] cinfo = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.NeutralCultures);
+            foreach (CultureInfo cul in cinfo)
+            {
+                var sni = new SimplisityInfo();
+                sni.SetXmlProperty("genxml/displayname", cul.DisplayName);
+                sni.SetXmlProperty("genxml/code", cul.Name);
+                rtnList.Add(sni);
+            }
+            return rtnList;
+        }
+
 
         public static string GetDataResponseAsString(string dataurl, string headerFieldId = "", string headerFieldData = "")
         {

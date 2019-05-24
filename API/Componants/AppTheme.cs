@@ -11,7 +11,6 @@ namespace DNNrocketAPI.Componants
 
     public class AppTheme
     {
-        private string _langRequired;
         private string _themeFolderMapPath;
         private string _themeFolder;
         private string _controlMapPath;
@@ -39,9 +38,9 @@ namespace DNNrocketAPI.Componants
         {
             AppVersionFolder = versionFolder;
             if (langRequired == "") langRequired = DNNrocketUtils.GetCurrentCulture();
-            _langRequired = langRequired;
             AppName = appName;
             AppFolder = appFolder;
+            AppCultureCode = langRequired;
             _controlMapPath = DNNrocketUtils.MapPath(AppFolder);
             _themeFolderMapPath = _controlMapPath.TrimEnd('\\') + "\\Themes\\" + AppName;
             _themeFolder = AppFolder.TrimEnd('/') + "/Themes/" + AppName;
@@ -52,29 +51,21 @@ namespace DNNrocketAPI.Componants
         {
             var themeFolderPath = "Themes\\" + AppName + "\\" + AppVersionFolder;
             var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(DNNrocketUtils.HomeDirectory(), themeFolderPath, _controlMapPath);
-            ActiveViewTemplate = templCtrl.GetTemplateData("view.cshtml", _langRequired);
-            ActiveEditTemplate = templCtrl.GetTemplateData("edit.cshtml", _langRequired);
-            ActivePageHeaderTemplate = templCtrl.GetTemplateData("pageheader.cshtml", _langRequired);
+            ActiveViewTemplate = templCtrl.GetTemplateData("view.cshtml", AppCultureCode);
+            ActiveEditTemplate = templCtrl.GetTemplateData("edit.cshtml", AppCultureCode);
+            ActivePageHeaderTemplate = templCtrl.GetTemplateData("pageheader.cshtml", AppCultureCode);
             var logoMapPath = _themeFolderMapPath + "\\Logo.png";
             Logo = _themeFolder + "/Logo.png";
             if (!File.Exists(logoMapPath)) Logo = "";
 
             var xmlMeta = FileUtils.ReadFile(_themeFolderMapPath + "\\Meta.xml");
-            MetaInfo = new SimplisityInfo(xmlMeta);
-            Summary = MetaInfo.GetXmlProperty("genxml/lang[lang='" + _langRequired + "']/genxml/textbox/summary");
-            if (Summary == "")
-            {
-                Summary = MetaInfo.GetXmlProperty("genxml/lang[lang='en-US']/genxml/textbox/summary");
-            }
-        }
+            MetaInfo = new SimplisityInfo(AppCultureCode);
+            MetaInfo.XMLData = xmlMeta;
 
-        public void UpdateLanguageData(SimplisityInfo sInfo)
-        {
-            var strXml = "<lang lang='" + sInfo.Lang + "'>";
-            strXml += sInfo.GetLangRecord().XMLData;
-            strXml += "</lang>";
-            //MetaInfo.RemoveXmlNode("genxml/lang[@lang='" + sInfo.Lang + "']");
-            MetaInfo.AddXmlNode(strXml, "lang", "genxml");
+            Summary = MetaInfo.GetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/summary");
+            if (Summary == "") Summary = MetaInfo.GetXmlProperty("genxml/lang-en-US/genxml/textbox/summary");
+            DisplayName = MetaInfo.GetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/displayname");
+            if (DisplayName == "") DisplayName = MetaInfo.GetXmlProperty("genxml/lang-en-US/genxml/textbox/displayname");
         }
 
         public List<SimplisityInfo> ListFields()
@@ -85,14 +76,30 @@ namespace DNNrocketAPI.Componants
 
         public void SaveTheme()
         {
-            MetaInfo.SetXmlProperty("genxml/textbox/appname", AppName);
-            MetaInfo.SetXmlProperty("genxml/textbox/summary", Summary);
-            MetaInfo.SetXmlProperty("genxml/hidden/logo", Logo);
+            var strXml = "<lang-" + AppCultureCode  + ">";
+            strXml += MetaInfo.GetLangRecord().XMLData;
+            strXml += "</lang-" + AppCultureCode + ">";
+
+            var xmlMeta = FileUtils.ReadFile(_themeFolderMapPath + "\\Meta.xml");
+            var mInfo = new SimplisityInfo();
+            if (xmlMeta != "") mInfo.XMLData = xmlMeta;
+
+            mInfo.SetXmlProperty("genxml/textbox/appname", AppName);
+            mInfo.SetXmlProperty("genxml/hidden/logo", Logo);
+            mInfo.SetXmlProperty("genxml/select/versionfolder", AppVersionFolder);
+            mInfo.Lang = AppCultureCode;
+
+            if (AppCultureCode != "")
+            {
+                mInfo.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/summary", Summary);
+                mInfo.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/displayname", DisplayName);
+            }
+
             if (!Directory.Exists(_themeFolderMapPath))
             {
                 Directory.CreateDirectory(_themeFolderMapPath);
             }
-            FileUtils.SaveFile(_themeFolderMapPath + "\\Meta.xml", MetaInfo.XMLData);
+            FileUtils.SaveFile(_themeFolderMapPath + "\\Meta.xml", mInfo.XMLData);
         }
 
         public void DeleteTheme()
@@ -110,14 +117,47 @@ namespace DNNrocketAPI.Componants
             }
         }
 
+        public void CreateVersion(string versionFolder)
+        {
+            if (!Directory.Exists(_themeFolderMapPath + "\\" + versionFolder))
+            {
+                Directory.CreateDirectory(_themeFolderMapPath + "\\" + versionFolder);
+                Directory.CreateDirectory(_themeFolderMapPath + "\\" + versionFolder + "\\css");
+                Directory.CreateDirectory(_themeFolderMapPath + "\\" + versionFolder + "\\default");
+                Directory.CreateDirectory(_themeFolderMapPath + "\\" + versionFolder + "\\resx");
+                Directory.CreateDirectory(_themeFolderMapPath + "\\" + versionFolder + "\\js");
+                Directory.CreateDirectory(_themeFolderMapPath + "\\" + versionFolder + "\\img");
+            }
+        }
+
+        public void CopyVersion(string sourceVersionFolder, string destVersionFolder)
+        {
+            sourceVersionFolder = _themeFolderMapPath + "\\" + sourceVersionFolder;
+            destVersionFolder = _themeFolderMapPath + "\\" + destVersionFolder;
+
+            if (Directory.Exists(sourceVersionFolder))
+            {
+                //Now Create all of the directories
+                foreach (string dirPath in Directory.GetDirectories(sourceVersionFolder, "*",
+                    SearchOption.AllDirectories))
+                    Directory.CreateDirectory(dirPath.Replace(sourceVersionFolder, destVersionFolder));
+
+                //Copy all the files & Replaces any files with the same name
+                foreach (string newPath in Directory.GetFiles(sourceVersionFolder, "*.*",
+                    SearchOption.AllDirectories))
+                    File.Copy(newPath, newPath.Replace(sourceVersionFolder, destVersionFolder), true);
+            }
+        }
+
 
         #region "properties"
 
         public string AppName { get; private set; }
         public SimplisityInfo MetaInfo { get; private set; }
-        public string Summary { get; private set; }
         public string Logo { get; private set; }
-
+        public string DisplayName { get; set; }
+        public string Summary { get; set; }
+        public string AppCultureCode { get; set; }
         public string AppFolder { get; set; }
         public string AppVersionFolder { get; set; }
         public string ActiveViewTemplate { get; set; }

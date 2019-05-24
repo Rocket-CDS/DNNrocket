@@ -13,7 +13,6 @@ namespace DNNrocket.AppThemes
     {
         private List<Object> _dataList;
         private List<Object> _versionList;
-        private string _langRequired;
         private int _userId;
         public SimplisityInfo Info;
         private AppTheme _appTheme;
@@ -21,7 +20,8 @@ namespace DNNrocket.AppThemes
 
         public AppThemeData(int userId, string appThemesRelPath, string langRequired)
         {
-            _langRequired = langRequired;
+            CultureCode = langRequired;
+            AppCultureCode = CultureCode;
             _userId = userId;
             AppThemesRelPath = appThemesRelPath;
             AppThemesMapPath = DNNrocketUtils.MapPath(AppThemesRelPath);
@@ -36,7 +36,7 @@ namespace DNNrocket.AppThemes
         public void Populate()
         {
             var objCtrl = new DNNrocketController();
-            Info = objCtrl.GetData("apptheme_" + _userId, "APPTHEMECONFIG", _langRequired, -1,-1, true);
+            Info = objCtrl.GetData("apptheme_" + _userId, "APPTHEMECONFIG", CultureCode, -1,-1, true);
             if (Info == null)
             {
                 Info = new SimplisityInfo();
@@ -44,7 +44,7 @@ namespace DNNrocket.AppThemes
                 Info.SetXmlProperty("genxml/appthemesmappath", AppThemesMapPath);
                 Info.SetXmlProperty("genxml/appthemesrelpath", AppThemesRelPath);
             }
-            _appTheme = new AppTheme(AppName, VersionFolder);
+            _appTheme = new AppTheme(AppName, CultureCode, VersionFolder);
         }
 
         public void PopulateList()
@@ -66,7 +66,7 @@ namespace DNNrocket.AppThemes
         {
             if (AppName != "")
             {
-                _versionList = new List<Object>();
+                _versionList = new List<object>();
                 if (System.IO.Directory.Exists(AppThemesMapPath + "\\Themes\\" + AppName))
                 {
                     var dirlist = System.IO.Directory.GetDirectories(AppThemesMapPath + "\\Themes\\" + AppName);
@@ -76,15 +76,16 @@ namespace DNNrocket.AppThemes
                         _versionList.Add(dr.Name);
                     }
                 }
-                if (_versionList.Count == 0) _versionList.Add("v1");
+                if (_versionList.Count == 0) _versionList.Add("1.0");
+                _versionList.Reverse();
+                LatestVersionFolder = (string)_versionList.First();
             }
-
         }
 
         public void DeleteConfig()
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("apptheme_" + _userId, "APPTHEMECONFIG", _langRequired, -1, -1, true);
+            var info = objCtrl.GetData("apptheme_" + _userId, "APPTHEMECONFIG", CultureCode, -1, -1, true);
             if (info != null)
             {
                 objCtrl.Delete(info.ItemID);
@@ -110,7 +111,9 @@ namespace DNNrocket.AppThemes
             {
                 // save the theme xml to tthe theme folder
                 _appTheme = new AppTheme(AppName, VersionFolder);
-                _appTheme.UpdateLanguageData(Info);
+                _appTheme.DisplayName = DisplayName;
+                _appTheme.Summary = Summary;
+                _appTheme.AppCultureCode = AppCultureCode;
                 _appTheme.SaveTheme();
             }
 
@@ -125,10 +128,34 @@ namespace DNNrocket.AppThemes
         public void DeleteVersion()
         {
             _appTheme.DeleteVersion(VersionFolder);
+            PopulateVersionList();
             VersionFolder = "v1";
+            if (VersionList.Count() > 0)
+            {
+                VersionFolder = (string) VersionList.First();
+            }
             Populate();
             PopulateList();
             PopulateVersionList();
+        }
+
+        public void CreateNewVersion(double increment = 1)
+        {
+            PopulateVersionList();
+            if (GeneralUtils.IsNumeric(LatestVersionFolder))
+            {
+                var currentLatestVersionFolder = LatestVersionFolder;
+                LatestVersionFolder = (Convert.ToDouble(LatestVersionFolder) + increment).ToString("0.0");
+                _appTheme.CopyVersion(currentLatestVersionFolder, LatestVersionFolder);
+                PopulateVersionList();
+                VersionFolder = "1.0";
+                if (VersionList.Count() > 0)
+                {
+                    VersionFolder = (string)VersionList.First();
+                }
+            }
+            Populate();
+            PopulateList();
         }
 
         public void SaveToDisk()
@@ -158,7 +185,7 @@ namespace DNNrocket.AppThemes
             get
             {
                 var rtnV = Info.GetXmlProperty("genxml/selected/versionfolder");
-                if (rtnV == "") rtnV = "v1";
+                if (rtnV == "") rtnV = "1.0";
                 return rtnV;
             }
             set
@@ -210,18 +237,9 @@ namespace DNNrocket.AppThemes
                 Info.SetXmlProperty("genxml/lang/genxml/textbox/summary", value);
             }
         }
-        public string CultureCode
-        {
-            get
-            {
-                return Info.Lang;
-            }
-            set
-            {
-                Info.Lang = value;
-            }
-        }
-
+        public string LatestVersionFolder { get; set; }
+        public string CultureCode { get; set; }
+        public string AppCultureCode { get; set; }
         public List<Object> List
         {
             get { return _dataList; }
