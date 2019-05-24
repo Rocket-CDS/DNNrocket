@@ -184,11 +184,11 @@ namespace DNNrocket.AppThemes
         {
             get
             {
-                return Info.GetXmlProperty("genxml/textbox/name");
+                return Info.GetXmlProperty("genxml/textbox/appname");
             }
             set
             {
-                Info.SetXmlProperty("genxml/textbox/name", value);
+                Info.SetXmlProperty("genxml/textbox/appname", value);
             }
         }
         public string DisplayName {

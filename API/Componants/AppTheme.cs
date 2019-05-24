@@ -70,10 +70,11 @@ namespace DNNrocketAPI.Componants
 
         public void UpdateLanguageData(SimplisityInfo sInfo)
         {
-            sInfo.SetXmlProperty("genxml/lang/@lang", sInfo.Lang);
-            var xmlLang = sInfo.GetLangRecord();
-            MetaInfo.RemoveXmlNode("genxml/lang[lang='" + sInfo.Lang + "']/genxml/textbox/summary");
-            MetaInfo.AddXmlNode(xmlLang.XMLData, "genxml", "genxml");
+            var strXml = "<lang lang='" + sInfo.Lang + "'>";
+            strXml += sInfo.GetLangRecord().XMLData;
+            strXml += "</lang>";
+            //MetaInfo.RemoveXmlNode("genxml/lang[@lang='" + sInfo.Lang + "']");
+            MetaInfo.AddXmlNode(strXml, "lang", "genxml");
         }
 
         public List<SimplisityInfo> ListFields()
