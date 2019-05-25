@@ -29,7 +29,7 @@ namespace DNNrocketAPI.Componants
             InitClass(appName, "/DesktopModules/DNNrocket/AppThemes", langRequired, versionFolder);
         }
 
-        public AppTheme(string appName, string appFolder = "/DesktopModules/DNNrocket/AppThemes", string langRequired = "", string versionFolder = "v1")
+        public AppTheme(string appName, string appFolder = "/DesktopModules/DNNrocket/AppThemes", string langRequired = "", string versionFolder = "1.0")
         {
             InitClass(appName, appFolder, langRequired, versionFolder);
         }
@@ -77,14 +77,7 @@ namespace DNNrocketAPI.Componants
 
             mInfo.SetXmlProperty("genxml/textbox/appname", AppName);
             mInfo.SetXmlProperty("genxml/hidden/logo", Logo);
-            mInfo.SetXmlProperty("genxml/select/versionfolder", AppVersionFolder);
             mInfo.Lang = AppCultureCode;
-
-            if (AppCultureCode != "")
-            {
-                mInfo.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/summary", Summary);
-                mInfo.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/displayname", DisplayName);
-            }
 
             if (!Directory.Exists(_themeFolderMapPath))
             {
@@ -152,6 +145,7 @@ namespace DNNrocketAPI.Componants
         public string ActiveViewTemplate { get; set; }
         public string ActiveEditTemplate { get; set; }
         public string ActivePageHeaderTemplate { get; set; }
+
 
         public string DisplayName
         {

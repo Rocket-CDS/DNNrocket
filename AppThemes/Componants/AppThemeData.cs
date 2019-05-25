@@ -148,9 +148,8 @@ namespace DNNrocket.AppThemes
                 {
                     VersionFolder = (string)VersionList.First();
                 }
+                _appTheme .SaveTheme();
             }
-            Populate();
-            PopulateList();
         }
 
         public void SaveToDisk()
@@ -179,7 +178,7 @@ namespace DNNrocket.AppThemes
         {
             get
             {
-                var rtnV = userRecord.GetXmlProperty("genxml/selected/versionfolder");
+                var rtnV = userRecord.GetXmlProperty("genxml/select/versionfoler");
                 if (rtnV == "") rtnV = "1.0";
                 return rtnV;
             }
@@ -187,7 +186,7 @@ namespace DNNrocket.AppThemes
             {
                 if (value != "")
                 {
-                    userRecord.SetXmlProperty("genxml/selected/versionfolder", value);
+                    userRecord.SetXmlProperty("genxml/select/versionfoler", value);
                 }
             }
         }

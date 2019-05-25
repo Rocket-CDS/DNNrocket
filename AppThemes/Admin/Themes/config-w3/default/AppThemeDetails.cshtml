@@ -4,7 +4,7 @@
 @using RocketSettings;
 @using DNNrocketAPI.Componants;
 @using DNNrocket.AppThemes;
-
+@using System.IO;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
@@ -19,22 +19,35 @@
     {
         dataDic.Add(i, i);
     }
+
+    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + appThemeData.AppCultureCode + ".png";
+    if (!File.Exists(DNNrocketUtils.MapPath(flagurl)))
+    {
+        flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/none.png";
+    }
+
+    var disabled = "";
+    if (appThemeData.ActionType != "new")
+    {
+        disabled = " disabled='true' ";
+    }
+
 }
 
-    <span class="w3-section simplisity_buttons">
-        @if (appThemeData.AppName == "")
-        {
-            <a class="w3-button w3-teal w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdBackButton")</a>
-        }
-        else
-        {
-            <span class="w3-button w3-teal w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdClose","","confirm")" s-cmd="rocketapptheme_deleteconfig" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdCloseButton")</span>
-            <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</span>
-            <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-post="#appthemedetails" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</span>
-        }
+<span class="w3-section simplisity_buttons">
+    @if (appThemeData.AppName == "")
+    {
+        <a class="w3-button w3-teal w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdBackButton")</a>
+    }
+    else
+    {
+        <span class="w3-button w3-teal w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdClose","","confirm")" s-cmd="rocketapptheme_deleteconfig" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdCloseButton")</span>
+        <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</span>
+        <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-post="#appthemedetails" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</span>
+    }
 
-        <span class="w3-button w3-green w3-padding-8 simplisity_click simplisity_langchange " s-cmd="rocketmod_savedetails" s-post="#appthemedetails" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-    </span>
+    <span class="w3-button w3-green w3-padding-8 simplisity_click simplisity_langchange " s-cmd="rocketmod_savedetails" s-post="#appthemedetails" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+</span>
 
 <div class="w3-container">
 
@@ -45,24 +58,17 @@
         <input id="appculturecode" value="@appThemeData.AppCultureCode" type="hidden" />
 
         <div>
+            <span class="w3-button w3-blue w3-padding-8 simplisity_click " s-cmd="rocketapptheme_selectculturecode" s-post="" s-fields="interfacekey:culturecode"><i class="fas fa-globe" /></span>
             <b>@appThemeData.AppCultureCode</b>
-            <span class="w3-button w3-blue w3-padding-8 simplisity_click " s-cmd="rocketapptheme_selectculturecode" s-post="" s-fields="interfacekey:culturecode">Get Culture Code</span>
         </div>
 
         <div class="w3-container w3-padding">
             <div class="w3-col m4 w3-padding">
                 <label>@ResourceKey("AppThemes.name")</label>
-                @{
-                    var disabled = "";
-                    if (appThemeData.ActionType != "new")
-                    {
-                        disabled = " disabled='true' ";
-                    }
-                }
                 @TextBox(appThemeData.AppTheme.Info, "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
             </div>
             <div class="w3-col m6 w3-padding">
-                <label>@ResourceKey("AppThemes.displayname")</label>
+                <label>@ResourceKey("AppThemes.displayname")</label>&nbsp;<img class='' src='@flagurl' alt='' />
                 @TextBox(appThemeData.AppTheme.Info, "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", appThemeData.AppTheme.DisplayName, true)
             </div>
             <div class="w3-col m2 w3-padding">
@@ -70,8 +76,8 @@
                 @DropDownList(appThemeData.AppTheme.Info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border'")
             </div>
             <div class="w3-col m12 w3-padding">
-                <label>@ResourceKey("AppThemes.summary")</label>
-                @TextArea(appThemeData.AppTheme.Info, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'",  appThemeData.AppTheme.Summary, true)
+                <label>@ResourceKey("AppThemes.summary")</label>&nbsp;<img class='' src='@flagurl' alt='' />
+                @TextArea(appThemeData.AppTheme.Info, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", appThemeData.AppTheme.Summary, true)
             </div>
         </div>
     </div>
