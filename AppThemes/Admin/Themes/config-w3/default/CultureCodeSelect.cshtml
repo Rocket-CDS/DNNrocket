@@ -7,14 +7,6 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Country/App_LocalResources/")
 
-@{
-    var cList = new Dictionary<string, string>();
-    foreach (SimplisityInfo cultureInfo in Model.List)
-    {
-        cList.Add(cultureInfo.GetXmlProperty("genxml/code"), cultureInfo.GetXmlProperty("genxml/displayname"));
-    }
-}
-
 <span class="w3-section simplisity_buttons">
 </span>
 
@@ -24,9 +16,10 @@
 
     <div id="selectculturecode" class="w3-modal">
 
-        <div class="w3-modal-content w3-animate-top w3-card-4">
+        <div class="w3-modal-content w3-animate-top w3-card-4" style="width:60%">
             <header class="w3-container w3-theme-d3">
                 <h2>@ResourceKey("country.selectculturecode")</h2>
+                <span onclick="location.reload();" class="w3-button w3-display-topright closeiframe">@ResourceKey("DNNrocket.cmdCloseButton")</span>
             </header>
             <div class="w3-row w3-padding">
                 <label>Search</label>
@@ -34,11 +27,17 @@
             </div>
 
             <div class="w3-container">
-                @foreach (var c in cList)
+                @foreach (SimplisityInfo cultureInfo in Model.List)
                 {
-                <div class="w3-half culturecode-list" culturecode="@c.Key" culturename="@c.Value @c.Key">
-                    <span class="w3-button w3-block w3-theme-l2 rocketcountry_cultureselect simplisity_click " s-cmd="rocketapptheme_culturecodeselected" s-post="" s-fields="culturecode:@c.Key,interfacekey:dashboard">@c.Value: @c.Key  </span>
-                </div>
+                    if (cultureInfo.GetXmlProperty("genxml/code") != "")
+                    {
+                        <div class="w3-col m2 culturecode-list " title="@cultureInfo.GetXmlProperty("genxml/code") @cultureInfo.GetXmlProperty("genxml/displayname")" culturecode="@cultureInfo.GetXmlProperty("genxml/code")" culturename="@cultureInfo.GetXmlProperty("genxml/displayname") @cultureInfo.GetXmlProperty("genxml/code")">
+                            <div class="w3-left-align w3-button w3-block w3-theme-l2 rocketcountry_cultureselect simplisity_click " s-cmd="rocketapptheme_culturecodeselected" s-post="" s-fields="culturecode:@cultureInfo.GetXmlProperty("genxml/code"),interfacekey:dashboard">
+                                <img class='' src='@cultureInfo.GetXmlProperty("genxml/flagurl")' alt='' />
+                                @cultureInfo.GetXmlProperty("genxml/code")
+                            </div>
+                        </div>
+                    }
                 }
             </div>
         </div>

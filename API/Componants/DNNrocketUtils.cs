@@ -332,9 +332,15 @@ namespace DNNrocketAPI
             CultureInfo[] cinfo = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.NeutralCultures);
             foreach (CultureInfo cul in cinfo)
             {
+                var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + cul.Name + ".png";
+                if (!File.Exists(MapPath(flagurl)))
+                {
+                    flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/none.png";
+                }
                 var sni = new SimplisityInfo();
                 sni.SetXmlProperty("genxml/displayname", cul.DisplayName);
                 sni.SetXmlProperty("genxml/code", cul.Name);
+                sni.SetXmlProperty("genxml/flagurl", flagurl);
                 rtnList.Add(sni);
             }
             return rtnList;
