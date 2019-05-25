@@ -525,33 +525,43 @@ namespace DNNrocketAPI
             return nbi;
         }
 
-        public SimplisityInfo SaveData(string GuidKey, string typeCode, SimplisityInfo postInfo, int systemId = -1, int moduleId = -1)
+        public SimplisityInfo SaveData(string GuidKey, string typeCode, SimplisityInfo sInfo, int systemId = -1, int moduleId = -1)
         {
             var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey);
             if (info == null)
             {
                 // do read, so it creates the record and do a new read.
-                info = GetData(GuidKey, typeCode, postInfo.Lang, systemId, moduleId);
+                info = GetData(GuidKey, typeCode, sInfo.Lang, systemId, moduleId);
             }
             if (info != null)
             {
-                info.XMLData = postInfo.XMLData;
-                info.RemoveLangRecord();
-                info.Lang = "";
-                info.SystemId = systemId;
+                info.PortalId = sInfo.PortalId;
                 info.ModuleId = moduleId;
+                info.TypeCode = typeCode;
+                info.XMLData = sInfo.XMLData;
                 info.GUIDKey = GuidKey;
-                Update(info);
-                var nbi2 = GetRecordLang(info.ItemID, postInfo.Lang);
+                info.TextData = sInfo.TextData;
+                info.ParentItemId = sInfo.ParentItemId;
+                info.XrefItemId = sInfo.XrefItemId;
+                info.Lang = "";
+                info.UserId = sInfo.UserId;
+                info.SystemId = systemId;
+
+                info.RemoveLangRecord();
+                var itemId = Update(info);
+                var nbi2 = GetRecordLang(itemId, sInfo.Lang);
                 if (nbi2 != null)
                 {
-                    nbi2.XMLData = postInfo.GetLangXml();
+                    nbi2.XMLData = sInfo.GetLangXml();
+                    nbi2.TypeCode = info.TypeCode + "LANG";
+                    nbi2.GUIDKey = "";
                     nbi2.SystemId = systemId;
                     nbi2.ModuleId = moduleId;
+                    nbi2.ParentItemId = itemId;
                     Update(nbi2);
                 }
                 //CacheUtils.ClearAllCache(); // clear ALL cache.
-                info = GetData(GuidKey, typeCode, postInfo.Lang, systemId, moduleId);
+                info = GetData(GuidKey, typeCode, sInfo.Lang, systemId, moduleId);
             }
 
             return info;
@@ -610,31 +620,35 @@ namespace DNNrocketAPI
             }
             if (info != null)
             {
-                var smiLang = sInfo.GetLangRecord();
-                smiLang.Lang = sInfo.Lang;
+                info.PortalId = sInfo.PortalId;
+                info.ModuleId = sInfo.ModuleId;
+                info.TypeCode = sInfo.TypeCode;
                 info.XMLData = sInfo.XMLData;
-                info.RemoveLangRecord();
-                info.Lang = "";
-                info.XrefItemId = sInfo.XrefItemId;
-                info.ParentItemId = sInfo.ParentItemId;
                 info.GUIDKey = sInfo.GUIDKey;
+                info.TextData = sInfo.TextData;
+                info.ParentItemId = sInfo.ParentItemId;
+                info.XrefItemId = sInfo.XrefItemId;
+                info.Lang = "";
+                info.UserId = sInfo.UserId;
                 info.SystemId = systemId;
-                Update(info);
-                var nbi2 = GetRecordLang(info.ItemID, smiLang.Lang);
-                if (nbi2 == null)
+
+                info.RemoveLangRecord();
+                var itemId = Update(info);
+
+                var nbi2 = GetRecordLang(itemId, sInfo.Lang);
+                if (nbi2 != null)
                 {
-                    smiLang.ItemID = -1; // add if null (should not happen)
+                    nbi2.XMLData = sInfo.GetLangXml();
+                    nbi2.TypeCode = info.TypeCode + "LANG";
+                    nbi2.GUIDKey = "";
+                    nbi2.SystemId = systemId;
+                    nbi2.ModuleId = sInfo.ModuleId;
+                    nbi2.ParentItemId = itemId;
+                    Update(nbi2);
                 }
-                else
-                {
-                    smiLang.ItemID = nbi2.ItemID;
-                }
-                smiLang.ParentItemId = info.ItemID;
-                smiLang.TypeCode = info.TypeCode + "LANG";
-                smiLang.GUIDKey = "";
-                Update(smiLang);
+
                 //CacheUtils.ClearAllCache(); // clear ALL cache.
-                info = GetInfo(info.ItemID, smiLang.Lang);
+                info = GetInfo(info.ItemID, sInfo.Lang);
             }
 
             return info;
@@ -662,7 +676,7 @@ namespace DNNrocketAPI
             return info;
         }
 
-        public SimplisityRecord SaveRecord(string GuidKey, string typeCode, SimplisityInfo postInfo, int systemId = -1, int moduleId = -1)
+        public SimplisityRecord SaveRecord(string GuidKey, string typeCode, SimplisityRecord sRecord, int systemId = -1, int moduleId = -1)
         {
             var info = GetRecordByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey);
             if (info == null)
@@ -672,10 +686,17 @@ namespace DNNrocketAPI
             }
             if (info != null)
             {
-                info.XMLData = postInfo.XMLData;
-                info.Lang = "";
-                info.SystemId = systemId;
+                info.PortalId = sRecord.PortalId;
                 info.ModuleId = moduleId;
+                info.TypeCode = typeCode;
+                info.XMLData = sRecord.XMLData;
+                info.GUIDKey = GuidKey;
+                info.TextData = sRecord.TextData;
+                info.ParentItemId = sRecord.ParentItemId;
+                info.XrefItemId = sRecord.XrefItemId;
+                info.Lang = "";
+                info.UserId = sRecord.UserId;
+                info.SystemId = systemId;
                 Update(info);
             }
 
@@ -710,11 +731,16 @@ namespace DNNrocketAPI
             }
             if (info != null)
             {
+                info.PortalId = sRecord.PortalId;
+                info.ModuleId = sRecord.ModuleId;
+                info.TypeCode = sRecord.TypeCode;
                 info.XMLData = sRecord.XMLData;
-                info.Lang = "";
-                info.XrefItemId = sRecord.XrefItemId;
-                info.ParentItemId = sRecord.ParentItemId;
                 info.GUIDKey = sRecord.GUIDKey;
+                info.TextData = sRecord.TextData;
+                info.ParentItemId = sRecord.ParentItemId;
+                info.XrefItemId = sRecord.XrefItemId;
+                info.Lang = "";
+                info.UserId = sRecord.UserId;
                 info.SystemId = systemId;
                 Update(info);
                 //CacheUtils.ClearAllCache(); // clear ALL cache.

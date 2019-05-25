@@ -42,6 +42,8 @@
 
     <div id="appthemedetails">
 
+        <input id="appculturecode" value="@appThemeData.AppCultureCode" type="hidden" />
+
         <div>
             <b>@appThemeData.AppCultureCode</b>
             <span class="w3-button w3-blue w3-padding-8 simplisity_click " s-cmd="rocketapptheme_selectculturecode" s-post="" s-fields="interfacekey:culturecode">Get Culture Code</span>
@@ -57,19 +59,19 @@
                         disabled = " disabled='true' ";
                     }
                 }
-                @TextBox(appThemeData.Info, "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
+                @TextBox(appThemeData.AppTheme.Info, "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
             </div>
             <div class="w3-col m6 w3-padding">
                 <label>@ResourceKey("AppThemes.displayname")</label>
-                @TextBox(appThemeData.Info, "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", "", true)
+                @TextBox(appThemeData.AppTheme.Info, "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", appThemeData.AppTheme.DisplayName, true)
             </div>
             <div class="w3-col m2 w3-padding">
                 <label>@ResourceKey("AppThemes.version")</label>
-                @DropDownList(appThemeData.Info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border'")
+                @DropDownList(appThemeData.AppTheme.Info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border'")
             </div>
             <div class="w3-col m12 w3-padding">
                 <label>@ResourceKey("AppThemes.summary")</label>
-                @TextArea(appThemeData.Info, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
+                @TextArea(appThemeData.AppTheme.Info, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'",  appThemeData.AppTheme.Summary, true)
             </div>
         </div>
     </div>

@@ -58,28 +58,19 @@ namespace DNNrocketAPI.Componants
             Logo = _themeFolder + "/Logo.png";
             if (!File.Exists(logoMapPath)) Logo = "";
 
-            var xmlMeta = FileUtils.ReadFile(_themeFolderMapPath + "\\Meta.xml");
-            MetaInfo = new SimplisityInfo(AppCultureCode);
-            MetaInfo.XMLData = xmlMeta;
-
-            Summary = MetaInfo.GetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/summary");
-            if (Summary == "") Summary = MetaInfo.GetXmlProperty("genxml/lang-en-US/genxml/textbox/summary");
-            DisplayName = MetaInfo.GetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/displayname");
-            if (DisplayName == "") DisplayName = MetaInfo.GetXmlProperty("genxml/lang-en-US/genxml/textbox/displayname");
+            var xmlMeta = FileUtils.ReadFile(_themeFolderMapPath + "\\Meta.xml");            
+            Info = new SimplisityInfo(AppCultureCode);
+            Info.XMLData = xmlMeta;
         }
 
         public List<SimplisityInfo> ListFields()
         {
-            return MetaInfo.GetList("settingsdata");
+            return Info.GetList("settingsdata");
         }
 
 
         public void SaveTheme()
         {
-            var strXml = "<lang-" + AppCultureCode  + ">";
-            strXml += MetaInfo.GetLangRecord().XMLData;
-            strXml += "</lang-" + AppCultureCode + ">";
-
             var xmlMeta = FileUtils.ReadFile(_themeFolderMapPath + "\\Meta.xml");
             var mInfo = new SimplisityInfo();
             if (xmlMeta != "") mInfo.XMLData = xmlMeta;
@@ -153,16 +144,42 @@ namespace DNNrocketAPI.Componants
         #region "properties"
 
         public string AppName { get; private set; }
-        public SimplisityInfo MetaInfo { get; private set; }
+        public SimplisityInfo Info { get; private set; }
         public string Logo { get; private set; }
-        public string DisplayName { get; set; }
-        public string Summary { get; set; }
         public string AppCultureCode { get; set; }
         public string AppFolder { get; set; }
         public string AppVersionFolder { get; set; }
         public string ActiveViewTemplate { get; set; }
         public string ActiveEditTemplate { get; set; }
         public string ActivePageHeaderTemplate { get; set; }
+
+        public string DisplayName
+        {
+            get
+            {
+                var appCultureCode = AppCultureCode;
+                if (appCultureCode == "") appCultureCode = "en-US";
+                return Info.GetXmlProperty("genxml/lang-" + appCultureCode + "/genxml/textbox/displayname");
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/displayname", value);
+            }
+        }
+        public string Summary
+        {
+            get
+            {
+                var appCultureCode = AppCultureCode;
+                if (appCultureCode == "") appCultureCode = "en-US";
+                return Info.GetXmlProperty("genxml/lang-" + appCultureCode + "/genxml/textbox/summary");
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/summary", value);
+            }
+        }
+
 
         #endregion
 

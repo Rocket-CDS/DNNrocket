@@ -187,7 +187,7 @@ namespace DNNrocket.AppThemes
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("AppThemesMapPath", _appThemeData.AppThemesMapPath);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData.Info, passSettings);
+                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData.AppTheme.Info, passSettings);
             }
             catch (Exception ex)
             {
@@ -309,10 +309,10 @@ namespace DNNrocket.AppThemes
 
         public static void SaveDetails()
         {
+            _appThemeData.AppCultureCode = _postInfo.GetXmlProperty("genxml/hidden/appculturecode");
             _appThemeData.AppName  = _postInfo.GetXmlProperty("genxml/textbox/appname");
-            _appThemeData.DisplayName = _postInfo.GetXmlProperty("genxml/lang/genxml/textbox/displayname");
-            _appThemeData.Summary = _postInfo.GetXmlProperty("genxml/lang/genxml/textbox/summary");
-            _appThemeData.AppCultureCode = _postInfo.GetXmlProperty("genxml/hidden/culturecode");
+            _appThemeData.AppTheme.DisplayName = _postInfo.GetXmlProperty("genxml/lang/genxml/textbox/displayname");
+            _appThemeData.AppTheme.Summary = _postInfo.GetXmlProperty("genxml/lang/genxml/textbox/summary");
             _appThemeData.VersionFolder = _postInfo.GetXmlProperty("genxml/select/versionfolder");
             _appThemeData.Save();
         }
