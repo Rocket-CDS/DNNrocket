@@ -96,15 +96,15 @@
 
         <!-- !PAGE CONTENT! -->
     <div class="w3-main" style="margin-left:270px;margin-top:60px; " id="base-panel">
-
-        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketapptheme_dashboard" s-track="true" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,theme:config-w3,template:dashboard.cshtml,interfacekey:dashboard"></div>
-
+        <form id="rocketapptheme_form">
+                    <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketapptheme_dashboard" s-track="true" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,theme:config-w3,template:dashboard.cshtml,interfacekey:dashboard"></div>
+        </form>
         <!-- End page content -->
     </div>
 
         <script>
             $(document).ready(function () {
-                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketapptheme', usehistory: false });
+                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketapptheme', usehistory: true });
             });
 
             // Get the Sidebar
