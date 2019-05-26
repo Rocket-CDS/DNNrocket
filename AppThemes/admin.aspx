@@ -63,11 +63,11 @@
     <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/mode/htmlmixed/htmlmixed.js"></script>
     <!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
 
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/jquery.fileupload.js"></script>
-
-    <script src="https://cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
 
 </head>
 <body class="w3-light-grey">

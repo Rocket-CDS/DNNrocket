@@ -120,8 +120,11 @@
   <data name="builder.Text" xml:space="preserve">
     <value>AppTheme Builder</value>
   </data>
+  <data name="css.Text" xml:space="preserve">
+    <value>CSS</value>
+  </data>
   <data name="dashboard.Text" xml:space="preserve">
-    <value>DashBoard</value>
+    <value>AppTheme</value>
   </data>
   <data name="details.Text" xml:space="preserve">
     <value>AppTheme Details</value>
@@ -141,6 +144,15 @@
   <data name="editor.Text" xml:space="preserve">
     <value>Editor</value>
   </data>
+  <data name="fields.Text" xml:space="preserve">
+    <value>Fields</value>
+  </data>
+  <data name="images.Text" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="js.Text" xml:space="preserve">
+    <value>JS</value>
+  </data>
   <data name="name.Text" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -149,6 +161,9 @@
   </data>
   <data name="newmsg.Text" xml:space="preserve">
     <value>Create new AppTheme, based on an existing one or from a blank canvas.</value>
+  </data>
+  <data name="resx.Text" xml:space="preserve">
+    <value>RESX</value>
   </data>
   <data name="selectapptheme.Text" xml:space="preserve">
     <value>Select AppTheme</value>

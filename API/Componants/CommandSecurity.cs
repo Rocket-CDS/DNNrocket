@@ -138,6 +138,7 @@ namespace DNNrocketAPI.Componants
 
         public bool HasSecurityAccess(string commandKey)
         {
+            if (SecurityCheckIsSuperUser()) return true;
             if (!_commandSecurity.ContainsKey(commandKey) || !_commandSecurity[commandKey])
             {
                 return true;

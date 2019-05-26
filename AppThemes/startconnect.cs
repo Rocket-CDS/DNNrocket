@@ -52,7 +52,7 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_actiontype":
                         strOut = GetActionType();
                         break;
-                    case "rocketmod_savedetails":
+                    case "rocketapptheme_savedetails":
                         SaveDetails();
                         strOut = GetDisplay();
                         break;

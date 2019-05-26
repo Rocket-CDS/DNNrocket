@@ -46,7 +46,7 @@
         <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-post="#appthemedetails" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</span>
     }
 
-    <span class="w3-button w3-green w3-padding-8 simplisity_click simplisity_langchange " s-cmd="rocketmod_savedetails" s-post="#appthemedetails" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <span class="w3-button w3-green w3-padding-8 simplisity_click simplisity_langchange " s-cmd="rocketapptheme_savedetails" s-post="#appthemedetails" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdSaveButton")</span>
 </span>
 
 <div class="w3-container">
@@ -81,6 +81,18 @@
             </div>
         </div>
     </div>
+
+
+    <div class="w3-row-padding w3-padding">
+        <span class="w3-button w3-green w3-padding-8 simplisity_click " s-cmd="rocketsettings_edit" s-post="" s-fields="tabid:-1,moduleid:-1,interfacekey:fieldeditor">@ResourceKey("AppThemes.fields")</span>
+        <span class="w3-button w3-green w3-padding-8 simplisity_click " s-cmd="rocketapptheme_editor" s-post="" s-fields="interfacekey:editor">@ResourceKey("AppThemes.editor")</span>
+        <span class="w3-button w3-green w3-padding-8 simplisity_click " s-cmd="rocketapptheme_images" s-post="" s-fields="interfacekey:images">@ResourceKey("AppThemes.images")</span>
+        <span class="w3-button w3-green w3-padding-8 simplisity_click " s-cmd="rocketapptheme_resx" s-post="" s-fields="interfacekey:resx">@ResourceKey("AppThemes.resx")</span>
+        <span class="w3-button w3-green w3-padding-8 simplisity_click " s-cmd="rocketapptheme_css" s-post="" s-fields="interfacekey:css">@ResourceKey("AppThemes.css")</span>
+        <span class="w3-button w3-green w3-padding-8 simplisity_click " s-cmd="rocketapptheme_js" s-post="" s-fields="interfacekey:js">@ResourceKey("AppThemes.js")</span>
+    </div>
+
+
 
 </div>
 

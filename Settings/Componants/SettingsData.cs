@@ -28,10 +28,10 @@ namespace RocketSettings
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
             _tabid = tabId;
             _moduleid = moduleId;
-            _dataList = new List<SimplisityInfo>();
+            _dataList = new List<SimplisityInfo>();            
             _listName = "settingsdata";
 
-            if (_moduleid > 0)
+            if (_moduleid != 0)
             {
                 Populate();
                 PopulateList();
