@@ -100,13 +100,13 @@ namespace DNNrocket.AppThemes
 
         public void Save()
         {
-            var objCtrl = new DNNrocketController();
-
-            AppName = GeneralUtils.AlphaNumeric(AppName);
-
-            userRecord = objCtrl.SaveRecord("apptheme_" + _userId, "APPTHEMECONFIG", userRecord);
-            
-           _appTheme.SaveTheme();
+            if (userRecord.UserId > 0)
+            {
+                var objCtrl = new DNNrocketController();
+                AppName = GeneralUtils.AlphaNumeric(AppName);
+                userRecord = objCtrl.SaveRecord("apptheme_" + _userId, "APPTHEMECONFIG", userRecord);
+                _appTheme.SaveTheme();
+            }
 
             Populate();
             PopulateList();
@@ -178,7 +178,7 @@ namespace DNNrocket.AppThemes
         {
             get
             {
-                var rtnV = userRecord.GetXmlProperty("genxml/select/versionfoler");
+                var rtnV = userRecord.GetXmlProperty("genxml/select/versionfolder");
                 if (rtnV == "") rtnV = "1.0";
                 return rtnV;
             }
@@ -186,7 +186,7 @@ namespace DNNrocket.AppThemes
             {
                 if (value != "")
                 {
-                    userRecord.SetXmlProperty("genxml/select/versionfoler", value);
+                    userRecord.SetXmlProperty("genxml/select/versionfolder", value);
                 }
             }
         }

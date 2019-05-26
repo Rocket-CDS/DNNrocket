@@ -244,6 +244,7 @@ namespace DNNrocket.AppThemes
                 var appThemeName = _postInfo.GetXmlProperty("genxml/hidden/apptheme");
                 _appThemeData.AppName = appThemeName;
                 _appThemeData.PopulateVersionList();
+                _appThemeData.VersionFolder = _appThemeData.LatestVersionFolder;
                 _appThemeData.Save();
 
                 if (_appThemeData.ActionType == "version")

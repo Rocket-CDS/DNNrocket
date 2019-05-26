@@ -73,7 +73,7 @@
             </div>
             <div class="w3-col m2 w3-padding">
                 <label>@ResourceKey("AppThemes.version")</label>
-                @DropDownList(appThemeData.AppTheme.Info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border'")
+                @DropDownList(new SimplisityInfo(appThemeData.userRecord), "genxml/select/versionfolder", dataDic, " class='w3-input w3-border' onchange=\"$('.simplisity_langchange').trigger('click')\" ")
             </div>
             <div class="w3-col m12 w3-padding">
                 <label>@ResourceKey("AppThemes.summary")</label>&nbsp;<img class='' src='@flagurl' alt='' />

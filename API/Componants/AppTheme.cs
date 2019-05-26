@@ -78,6 +78,8 @@ namespace DNNrocketAPI.Componants
             mInfo.SetXmlProperty("genxml/textbox/appname", AppName);
             mInfo.SetXmlProperty("genxml/hidden/logo", Logo);
             mInfo.Lang = AppCultureCode;
+            mInfo.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/displayname", DisplayName);
+            mInfo.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/summary", Summary);
 
             if (!Directory.Exists(_themeFolderMapPath))
             {
