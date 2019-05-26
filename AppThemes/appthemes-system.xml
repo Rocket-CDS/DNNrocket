@@ -5,7 +5,7 @@
     <activevalue />
     <pagesize>20</pagesize>
     <page>1</page>
-    <selecteditemid>18</selecteditemid>
+    <selecteditemid>1</selecteditemid>
     <editlanguage />
     <index>99</index>
     <systemprovider>systemapi</systemprovider>
@@ -26,7 +26,7 @@
     <genxml>
       <textbox>
         <interfacekey>dashboard</interfacekey>
-        <entitytypecode />
+        <entitytypecode>APPTHEMECONFIG</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>dashboard.cshtml</defaulttemplate>
@@ -57,44 +57,12 @@
     </genxml>
     <genxml>
       <textbox>
-        <interfacekey>builder</interfacekey>
-        <entitytypecode>APPTHEME</entitytypecode>
+        <interfacekey>download</interfacekey>
+        <entitytypecode />
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
-        <defaulttemplate>editor.cshtml</defaulttemplate>
-        <defaultcommand>rocketapptheme_editor</defaultcommand>
-        <namespaceclass>DNNrocket.AppThemes.startconnect</namespaceclass>
-        <assembly>DNNrocketAppThemes</assembly>
-        <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
-      </textbox>
-      <dropdownlist>
-        <group />
-      </dropdownlist>
-      <checkboxlist>
-        <providertype>
-          <chk value="false" data="1" />
-        </providertype>
-        <securityroles>
-          <chk value="true" data="Administrators" />
-          <chk value="false" data="Manager" />
-          <chk value="false" data="Editor" />
-          <chk value="false" data="ClientEditor" />
-        </securityroles>
-      </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>false</cache>
-        <onmenu>true</onmenu>
-      </checkbox>
-    </genxml>
-    <genxml>
-      <textbox>
-        <interfacekey>editor</interfacekey>
-        <entitytypecode>TEMPLATE</entitytypecode>
-        <interfaceicon />
-        <defaulttheme>config-w3</defaulttheme>
-        <defaulttemplate>editor.cshtml</defaulttemplate>
-        <defaultcommand>rocketapptheme_editor</defaultcommand>
+        <defaulttemplate>download.cshtml</defaulttemplate>
+        <defaultcommand>rocketapptheme_download</defaultcommand>
         <namespaceclass>DNNrocket.AppThemes.startconnect</namespaceclass>
         <assembly>DNNrocketAppThemes</assembly>
         <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
@@ -119,10 +87,108 @@
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>culturecode</interfacekey>
+        <entitytypecode />
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <defaulttemplate>CultureCodeSelect.cshtml</defaulttemplate>
+        <defaultcommand>rocketapptheme_selectculturecode</defaultcommand>
+        <namespaceclass>DNNrocket.AppThemes.startconnect</namespaceclass>
+        <assembly>DNNrocketAppThemes</assembly>
+        <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
+        <onmenu>false</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>upload</interfacekey>
+        <entitytypecode />
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <defaulttemplate>upload.cshtml</defaulttemplate>
+        <defaultcommand>rocketapptheme_upload</defaultcommand>
+        <namespaceclass>DNNrocket.AppThemes.startconnect</namespaceclass>
+        <assembly>DNNrocketAppThemes</assembly>
+        <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
+        <onmenu>true</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>fieldeditor</interfacekey>
+        <entitytypecode>APPTHEMEFIELDS</entitytypecode>
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <defaulttemplate>fieldeditor.cshtml</defaulttemplate>
+        <defaultcommand>rocketsettings_edit</defaultcommand>
+        <namespaceclass>RocketSettings.startconnect</namespaceclass>
+        <assembly>RocketSettings</assembly>
+        <relpath>/DesktopModules/DNNrocket/AppThemes/Admin</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="false" data="Manager" />
+          <chk value="false" data="Editor" />
+          <chk value="false" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
+        <onmenu>false</onmenu>
+      </checkbox>
+    </genxml>
   </interfacedata>
   <lang>
     <genxml>
       <interfacedata list="true">
+        <genxml />
+        <genxml />
         <genxml />
         <genxml />
         <genxml />
