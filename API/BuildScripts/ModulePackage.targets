@@ -72,7 +72,6 @@
 
     <!-- create the INSTALL NBrightBuy_Resource.ZIP file -->
     <Copy SourceFiles="@(InstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\%(RecursiveDir)" />
-    <Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\Plugins" />
 
     <CreateItem Include="$(MSBuildProjectDirectory)\ResourcesZip\**\*.*">
       <Output TaskParameter="Include" ItemName="ResourcesContent" />
