@@ -11,33 +11,26 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 @{
-    var info = (SimplisityInfo)Model.List.First();
-    var systemRelPath = "/DesktopModules/DNNrocket/AppThemes";
-    var systemMapPath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes");
-    var appthemeversion = "v1";
+    var appTheme = (AppTheme)Model.List.First();
 }
 
-<span class="w3-section simplisity_buttons">
-    <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click editorsavebutton" s-cmd="rocketapptheme_save" s-before="copyeditorcontent" s-fields="theme:@Model.GetSetting("theme"),interfacekey:editor" s-post="#editorpanel">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-</span>
+    <span class="w3-section simplisity_buttons">
+        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_dashboard" s-track="true" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdBackButton")</a>
+        <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click editorsavebutton" s-cmd="rocketapptheme_save" s-before="copyeditorcontent" s-fields="theme:@Model.GetSetting("theme"),interfacekey:editor" s-post="#editorpanel">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    </span>
 
 
 <div id="templatereturn" style="display:none;"></div>
 
 <div id="editorpanel">
 
-    @HiddenField(info, "genxml/hidden/systemrelpath", "", systemRelPath)
-    @HiddenField(info, "genxml/hidden/appthemeversion", "", appthemeversion)
-    @HiddenField(info, "genxml/hidden/apptheme", "", "HtmlContent")
-    @HiddenField(info, "genxml/hidden/themelevel", "", "portal")
-    @HiddenField(info, "genxml/hidden/moduleref", "", "")
-    @HiddenField(info, "genxml/hidden/editorcode", "", "")    
-
+    @HiddenField(appTheme.Info, "genxml/hidden/editorcode", "", "")
+    @HiddenField(appTheme.Info, "genxml/hidden/filefolder", "", "default")
 
     <div class="w3-row w3-padding ">
         <div class="w3-col m3">
             <label>Template</label>
-            @FileSelectList(info, "genxml/select/templatename", systemMapPath + "/Themes/HtmlContent/v1/default", "class=' templateselect w3-input w3-border simplisity_change' s-return='#templatereturn' s-post='#editorpanel' s-cmd='rocketapptheme_gettemplate' s-fields='interfacekey:editor'  ")
+            @FileSelectList(appTheme.Info, "genxml/select/templatename", appTheme.AppThemeFolderMapPath + "/" + appTheme.AppVersionFolder + "/default", "class=' templateselect w3-input w3-border simplisity_change' s-return='#templatereturn' s-post='#editorpanel' s-cmd='rocketapptheme_gettemplate' s-fields='interfacekey:editor'  ")
         </div>
     </div>
 

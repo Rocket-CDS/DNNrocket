@@ -118,37 +118,13 @@ namespace DNNrocket.AppThemes
             try
             {
                 var templateName = _postInfo.GetXmlProperty("genxml/select/templatename");
-                var appthemeRelPath = _postInfo.GetXmlProperty("genxml/hidden/systemrelpath");
-                var appthemeversion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
-                var apptheme = _postInfo.GetXmlProperty("genxml/hidden/apptheme");
-                var themelevel = _postInfo.GetXmlProperty("genxml/hidden/themelevel"); // system, portal, module
-                var moduleref = _postInfo.GetXmlProperty("genxml/hidden/moduleref");
-
+                var filefolder = _postInfo.GetXmlProperty("genxml/hidden/filefolder");
                 var editorContent = GeneralUtils.DeCode(_postInfo.GetXmlProperty("genxml/hidden/editorcode"));
-
-                var themeFolderPath = "Themes\\" + apptheme + "\\" + appthemeversion + "\\default";
-                var controlMapPath = (DNNrocketUtils.DNNrocketThemesDirectory() + "\\" + themeFolderPath).TrimEnd('\\'); 
-                if (!Directory.Exists(controlMapPath)) Directory.CreateDirectory(controlMapPath);
-
-                if (themelevel.ToLower() == "system")
+                var fileMapPath = _appThemeData.AppTheme.AppThemeVersionFolderMapPath + "\\" + filefolder + "\\" + templateName;
+                if (!Directory.Exists(_appThemeData.AppTheme.AppThemeVersionFolderMapPath + "\\" + filefolder))
                 {
-                    controlMapPath = (appthemeRelPath.TrimEnd('\\') + "\\" + themeFolderPath).TrimEnd('\\');
+                    File.WriteAllText(fileMapPath, editorContent);
                 }
-
-                if (themelevel.ToLower() == "portal")
-                {
-                    controlMapPath = DNNrocketUtils.DNNrocketThemesDirectory() + "\\" + themeFolderPath.TrimEnd('\\');
-                }
-                var fileMapPath = controlMapPath + "\\" + templateName;
-
-                if (themelevel.ToLower() == "module")
-                {
-                    fileMapPath = controlMapPath + "\\" + moduleref + "_" + templateName;
-                }
-
-                if (!Directory.Exists(controlMapPath)) Directory.CreateDirectory(controlMapPath);
-
-                File.WriteAllText(fileMapPath,editorContent);
 
                 return "OK";
             }
@@ -163,12 +139,7 @@ namespace DNNrocket.AppThemes
             try
             {
                 var templateName = _postInfo.GetXmlProperty("genxml/select/templatename");
-                var appthemeRelPath = _postInfo.GetXmlProperty("genxml/hidden/systemrelpath");
-                var appthemeversion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
-                var apptheme = _postInfo.GetXmlProperty("genxml/hidden/apptheme");
-
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, appthemeRelPath, apptheme, DNNrocketUtils.GetCurrentCulture(), appthemeversion);
-
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, _appThemeData.AppTheme.AppFolder, _appThemeData.AppTheme.AppName, DNNrocketUtils.GetCurrentCulture(), _appThemeData.AppTheme.AppVersionFolder);
                 return GeneralUtils.EnCode(razorTempl);
             }
             catch (Exception ex)
@@ -187,7 +158,7 @@ namespace DNNrocket.AppThemes
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("AppThemesMapPath", _appThemeData.AppThemesMapPath);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData.AppTheme.Info, passSettings);
+                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData.AppTheme, passSettings);
             }
             catch (Exception ex)
             {
