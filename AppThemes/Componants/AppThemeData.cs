@@ -18,7 +18,7 @@ namespace DNNrocket.AppThemes
         private AppTheme _appTheme;
 
 
-        public AppThemeData(int userId, string appThemesRelPath, string langRequired)
+        public AppThemeData(int userId, string appThemesRelPath, string langRequired = "")
         {
             if (langRequired == "") langRequired = DNNrocketUtils.GetEditCulture();
             CultureCode = langRequired;
@@ -46,6 +46,7 @@ namespace DNNrocket.AppThemes
                 userRecord.SetXmlProperty("genxml/appthemesrelpath", AppThemesRelPath);
                 userRecord = objCtrl.SaveRecord("apptheme_" + _userId, "APPTHEMECONFIG", userRecord);
             }
+            AppCultureCode = userRecord.GetXmlProperty("genxml/hidden/appculturecode");
             if (AppCultureCode == "") AppCultureCode = CultureCode;  // default to current culture.
             _appTheme = new AppTheme(AppName, AppCultureCode, VersionFolder);
         }

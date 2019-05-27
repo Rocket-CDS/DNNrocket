@@ -33,15 +33,24 @@ namespace RocketSettings
             // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
             var moduleid = _postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (moduleid == 0) moduleid = _postInfo.ModuleId;
-            var tabid = _postInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
+            var parentitemid = _postInfo.GetXmlPropertyInt("genxml/hidden/parentitemid");
+            if (parentitemid == 0) parentitemid = _postInfo.ParentItemId;
 
-            if (tabid == 0 || moduleid == 0)
+            var tabid = _postInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
+            if ((tabid == 0 || moduleid == 0) && parentitemid <= 0)
             {
-                strOut = "Interface must be attached to a module.";
+                strOut = "Interface must be attached to a module or parent.";
             }
             else
             {
-                _settingsData = new SettingsData(tabid, moduleid, langRequired, _rocketInterface.EntityTypeCode);
+                if (parentitemid > 0)
+                {
+                    _settingsData = new SettingsData(parentitemid, langRequired, _rocketInterface.EntityTypeCode);
+                }
+                else
+                {
+                    _settingsData = new SettingsData(tabid, moduleid, langRequired, _rocketInterface.EntityTypeCode);
+                }
 
                 _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);
                 _commandSecurity.AddCommand("rocketsettings_edit", true);

@@ -32,7 +32,7 @@
                     if (cultureInfo.GetXmlProperty("genxml/code") != "")
                     {
                         <div class="w3-col m2 culturecode-list " title="@cultureInfo.GetXmlProperty("genxml/code") @cultureInfo.GetXmlProperty("genxml/displayname")" culturecode="@cultureInfo.GetXmlProperty("genxml/code")" culturename="@cultureInfo.GetXmlProperty("genxml/displayname") @cultureInfo.GetXmlProperty("genxml/code")">
-                            <div class="w3-left-align w3-button w3-block w3-theme-l2 rocketcountry_cultureselect simplisity_click " s-cmd="rocketapptheme_culturecodeselected" s-post="" s-fields="culturecode:@cultureInfo.GetXmlProperty("genxml/code"),interfacekey:dashboard">
+                            <div class="w3-left-align w3-button w3-block w3-theme-l2 rocket_cultureselect simplisity_click " s-reload="true" s-cmd="rocketapptheme_culturecodeselected" s-post="" s-fields="culturecode:@cultureInfo.GetXmlProperty("genxml/code"),interfacekey:dashboard" culturecode="@cultureInfo.GetXmlProperty("genxml/code")">
                                 <img class='' src='@cultureInfo.GetXmlProperty("genxml/flagurl")' alt='' />
                                 @cultureInfo.GetXmlProperty("genxml/code")
                             </div>
@@ -61,6 +61,6 @@
            });
         });
 
-    });
+    });      
 
 </script>

@@ -61,6 +61,7 @@
     <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/mode/javascript/javascript.js"></script>
     <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/mode/xml/xml.js"></script>
     <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/mode/css/css.js"></script>
     <!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
