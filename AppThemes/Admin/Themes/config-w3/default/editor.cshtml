@@ -8,16 +8,17 @@
 @using RocketMod;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 @{
     var appTheme = (AppTheme)Model.List.First();
 }
 
-    <span class="w3-section simplisity_buttons">
-        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_dashboard" s-track="true" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdBackButton")</a>
-        <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click editorsavebutton" s-cmd="rocketapptheme_save" s-before="copyeditorcontent" s-fields="theme:@Model.GetSetting("theme"),interfacekey:editor" s-post="#editorpanel">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-    </span>
+<span class="w3-section simplisity_buttons">
+    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_dashboard" s-track="true" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdBackButton")</a>
+    <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click editorsavebutton" s-cmd="rocketapptheme_save" s-before="copyeditorcontent" s-fields="theme:@Model.GetSetting("theme"),interfacekey:editor" s-post="#editorpanel">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <label>@appTheme.AppName (@appTheme.AppVersionFolder):  &nbsp;@ResourceKey("Appthemes.systemlevel")</label>
+</span>
 
 
 <div id="templatereturn" style="display:none;"></div>
@@ -28,18 +29,31 @@
     @HiddenField(appTheme.Info, "genxml/hidden/filefolder", "", "default")
 
     <div class="w3-row w3-padding ">
-        <div class="w3-col m3">
-            <label>Template</label>
-            @FileSelectList(appTheme.Info, "genxml/select/templatename", appTheme.AppThemeFolderMapPath + "/" + appTheme.AppVersionFolder + "/default", "class=' templateselect w3-input w3-border simplisity_change' s-return='#templatereturn' s-post='#editorpanel' s-cmd='rocketapptheme_gettemplate' s-fields='interfacekey:editor'  ")
+        <div class="w3-col m2 w3-padding">
+            @FileSelectList(appTheme.Info, "genxml/select/templatename", appTheme.AppThemeFolderMapPath + "/" + appTheme.AppVersionFolder + "/default", " class=' templateselect w3-input w3-border simplisity_change' s-return='#templatereturn' s-post='#editorpanel' s-cmd='rocketapptheme_gettemplate' s-fields='interfacekey:editor'  ", false)
+        </div>
+        <div class="w3-col m6 w3-padding">
+            <a class="w3-button w3-teal w3-padding-8">Snippits</a>
+            <a class="w3-button w3-teal w3-padding-8" onclick="showFieldSelect();" >Fields</a>
         </div>
     </div>
 
-    <div id="editorwrapper" class="w3-row  w3-padding">
+    <div id="editorwrapper" class="w3-row  w3-padding" style="overflow: scroll;">
 
     </div>
 
 </div>
 
+
+@RenderTemplate("FieldSelect.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", Model)
+
+
+<style>
+    .CodeMirror {
+        border: 1px solid #eee;
+        height: auto;
+    }
+</style>
 
 <script>
 
@@ -47,7 +61,9 @@
 
     $(document).ready(function () {
 
-        $('#razoreditor').height($('#razoreditor').prop('scrollHeight'));
+        // load view.cshtml
+        $('#templatename').val('view.cshtml');
+        $('#templatename').trigger('change');
 
         $('#razoreditor').unbind("keyup");
         $("#razoreditor").keyup(function (event) {
@@ -62,6 +78,9 @@
             $("#razoreditor").remove();
             $(".CodeMirror").remove();
 
+            var newHeight = $(window).height() - 160;
+            $('#editorwrapper').css("height", newHeight);;
+
             var textArea = $('<textarea id="razoreditor" style="w3-input w3-border" spellcheck="false" />');
             $('#editorwrapper').append(textArea);
 
@@ -69,7 +88,6 @@
                 lineNumbers: false,
                 mode: "htmlmixed"
             });
-            myCodeMirror.setSize("100%", "100%");
             myCodeMirror.setValue(simplisity_decode($(this).text()));
         });
 

@@ -183,6 +183,9 @@
   <data name="summary.Text" xml:space="preserve">
     <value>Summary</value>
   </data>
+  <data name="systemlevel.Text" xml:space="preserve">
+    <value>System Level</value>
+  </data>
   <data name="upload.Text" xml:space="preserve">
     <value>Upload</value>
   </data>
