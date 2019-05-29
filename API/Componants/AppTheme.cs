@@ -16,6 +16,8 @@ namespace DNNrocketAPI.Componants
         private Dictionary<string, string> _imgPath;
         private Dictionary<string, string> _resxPath;
 
+        private SimplisityInfo _fields;
+
         public AppTheme(string appName, string versionFolder)
         {
             InitClass(appName, "/DesktopModules/DNNrocket/AppThemes", "", versionFolder);
@@ -60,6 +62,7 @@ namespace DNNrocketAPI.Componants
             var xmlMeta = FileUtils.ReadFile(AppThemeFolderMapPath + "\\Meta.xml");            
             Info = new SimplisityInfo(AppCultureCode);
             Info.XMLData = xmlMeta;
+
         }
 
         public List<SimplisityInfo> ListFields()
@@ -76,16 +79,16 @@ namespace DNNrocketAPI.Componants
                 var mInfo = new SimplisityInfo();
                 if (xmlMeta != "") mInfo.XMLData = xmlMeta;
 
+                // Update detail fields
                 mInfo.SetXmlProperty("genxml/textbox/appname", AppName);
                 mInfo.SetXmlProperty("genxml/hidden/logo", Logo);
                 mInfo.Lang = AppCultureCode;
+
                 mInfo.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/displayname", DisplayName);
                 mInfo.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/summary", Summary);
 
-                if (!Directory.Exists(AppThemeFolderMapPath))
-                {
-                    Directory.CreateDirectory(AppThemeFolderMapPath);
-                }
+                // Save to XML file
+                if (!Directory.Exists(AppThemeFolderMapPath)) Directory.CreateDirectory(AppThemeFolderMapPath);
                 FileUtils.SaveFile(AppThemeFolderMapPath + "\\Meta.xml", mInfo.XMLData);
             }
         }
@@ -183,6 +186,18 @@ namespace DNNrocketAPI.Componants
             }
         }
 
+        public SimplisityInfo Fields { get; set; }
+        public SimplisityInfo Images { get; set; }
+        public SimplisityInfo Resx { get; set; }
+        public Dictionary<string,string> ResxDict {
+            get {
+                var rtnDict = new Dictionary<string, string>();
+                foreach (var r in Resx.GetList("settingsdata"))
+                {
+                    rtnDict.Add(r.GetXmlProperty("genxml/textbox/name"), r.GetXmlProperty("genxml/textbox/value"));
+                }
+                return rtnDict;
+            }; }
 
         #endregion
 

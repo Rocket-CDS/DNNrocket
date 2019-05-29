@@ -155,6 +155,32 @@ namespace DNNrocket.AppThemes
 
         public void SaveToDisk()
         {
+            if (AppName != "")
+            {
+                var xmlMeta = FileUtils.ReadFile(AppTheme.AppThemeFolderMapPath + "\\Meta.xml");
+                var mInfo = new SimplisityInfo();
+                if (xmlMeta != "") mInfo.XMLData = xmlMeta;
+
+                // Update detail fields
+                mInfo.SetXmlProperty("genxml/textbox/appname", AppTheme.AppName);
+                mInfo.SetXmlProperty("genxml/hidden/logo", AppTheme.Logo);
+                mInfo.Lang = AppTheme.AppCultureCode;
+
+                mInfo.SetXmlProperty("genxml/lang-" + AppTheme.AppCultureCode + "/genxml/textbox/displayname", AppTheme.DisplayName);
+                mInfo.SetXmlProperty("genxml/lang-" + AppTheme.AppCultureCode + "/genxml/textbox/summary", AppTheme.Summary);
+
+                // Update Fields
+                mInfo.SetXmlProperty("genxml/fields");
+
+                // Update Image
+
+                // Update RESX
+
+
+                // Save to XML file
+                if (!Directory.Exists(AppThemeFolderMapPath)) Directory.CreateDirectory(AppThemeFolderMapPath);
+                FileUtils.SaveFile(AppThemeFolderMapPath + "\\Meta.xml", mInfo.XMLData);
+            }
 
             Populate();
             PopulateList();
@@ -167,6 +193,7 @@ namespace DNNrocket.AppThemes
             PopulateList();
             PopulateVersionList();
         }
+
 
         #region "properties"
 

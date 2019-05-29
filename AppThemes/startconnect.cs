@@ -87,7 +87,11 @@ namespace DNNrocket.AppThemes
                         break;
                     case "rocketapptheme_culturecodeselected":
                         strOut = CultureCodeSelected();
-                        break;                        
+                        break;
+                    case "rocketapptheme_savemeta":
+                        strOut = "";
+                        _appThemeData.SaveToDisk();
+                        break;
                 }
             }
             else
