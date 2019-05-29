@@ -165,6 +165,26 @@ namespace RocketSettings
             PopulateList();
         }
 
+        public void ClearCache()
+        {
+            CacheUtils.ClearCache("rocketmod" + _moduleid);
+        }
+
+
+        public string ExportData()
+        {
+            var expInfo = (SimplisityInfo)Info.Clone();
+            expInfo.RemoveLangRecord();
+            var xmlOut = expInfo.ToXmlItem();
+
+            return "";
+        }
+
+        public string ImportData()
+        {
+            return "";
+        }
+
 
         #region "properties"
 
@@ -179,11 +199,7 @@ namespace RocketSettings
 
         #endregion
 
-
-        public void ClearCache()
-        {
-            CacheUtils.ClearCache("rocketmod" + _moduleid);
-        }
+        #region "private methods"
 
         private SimplisityInfo GetSettingData(string cultureCode)
         {
@@ -202,6 +218,8 @@ namespace RocketSettings
             sInfo.ModuleId = _moduleid;
             objCtrl.SaveData(guidkey, _entityTypeCode, sInfo, -1, _moduleid);
         }
+
+        #endregion
 
 
     }

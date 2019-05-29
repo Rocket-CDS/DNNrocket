@@ -1,5 +1,6 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Componants;
+using RocketSettings;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -157,6 +158,8 @@ namespace DNNrocket.AppThemes
         {
             if (AppName != "")
             {
+                var objCtrl = new DNNrocketController();
+
                 var xmlMeta = FileUtils.ReadFile(AppTheme.AppThemeFolderMapPath + "\\Meta.xml");
                 var mInfo = new SimplisityInfo();
                 if (xmlMeta != "") mInfo.XMLData = xmlMeta;
@@ -170,7 +173,9 @@ namespace DNNrocket.AppThemes
                 mInfo.SetXmlProperty("genxml/lang-" + AppTheme.AppCultureCode + "/genxml/textbox/summary", AppTheme.Summary);
 
                 // Update Fields
-                mInfo.SetXmlProperty("genxml/fields");
+                mInfo.SetXmlProperty("genxml/fields","");
+                var settingsData = new SettingsData(AppTheme.Info.ItemID, AppTheme.AppCultureCode, "APPTHEMEFIELDS");
+                mInfo.AddXmlNode(settingsData.)
 
                 // Update Image
 
