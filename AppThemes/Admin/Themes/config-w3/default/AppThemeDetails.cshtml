@@ -25,6 +25,11 @@
     {
         flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/none.png";
     }
+    var flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/" + appThemeData.AppCultureCode + ".png";
+    if (!File.Exists(DNNrocketUtils.MapPath(flagurl32)))
+    {
+        flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/none.png";
+    }
 
     var disabled = "";
     if (appThemeData.ActionType != "new")
@@ -51,16 +56,16 @@
 
 <div class="w3-container">
 
+    <div class="w3-right w3-padding">
+        <b>@appThemeData.AppCultureCode</b>&nbsp;<img class='' src='@flagurl32' alt='' />
+    </div>
+
     <h2>@ResourceKey("AppThemes.details")</h2>
 
     <div id="appthemedetails">
 
         <input id="appculturecode" value="@appThemeData.AppCultureCode" type="hidden" />
 
-        <div>
-            <span class="w3-button w3-blue w3-padding-8 simplisity_click " s-cmd="rocketapptheme_selectculturecode" s-post="" s-fields="interfacekey:culturecode"><i class="fas fa-globe" /></span>
-            <b>@appThemeData.AppCultureCode</b>
-        </div>
 
         <div class="w3-container w3-padding">
             <div class="w3-col m4 w3-padding">

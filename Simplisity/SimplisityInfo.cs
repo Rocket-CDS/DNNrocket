@@ -198,6 +198,7 @@ namespace Simplisity
                 if (XMLDoc.SelectSingleNode("genxml/lang") == null)
                 {
                     SetXmlProperty("genxml/lang", "", System.TypeCode.String, false);
+                    SetXmlProperty("genxml/lang/genxml", "", System.TypeCode.String, false);
                 }
                 if (XMLDoc.SelectSingleNode("genxml/lang/genxml/" + listName) == null)
                 {

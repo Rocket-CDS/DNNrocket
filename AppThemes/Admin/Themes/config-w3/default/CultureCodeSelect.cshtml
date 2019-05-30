@@ -32,7 +32,7 @@
                     if (cultureInfo.GetXmlProperty("genxml/code") != "")
                     {
                         <div class="w3-col m2 culturecode-list " title="@cultureInfo.GetXmlProperty("genxml/code") @cultureInfo.GetXmlProperty("genxml/displayname")" culturecode="@cultureInfo.GetXmlProperty("genxml/code")" culturename="@cultureInfo.GetXmlProperty("genxml/displayname") @cultureInfo.GetXmlProperty("genxml/code")">
-                            <div class="w3-left-align w3-button w3-block w3-theme-l2 rocket_cultureselect simplisity_click " s-reload="true" s-cmd="rocketapptheme_culturecodeselected" s-post="" s-fields="culturecode:@cultureInfo.GetXmlProperty("genxml/code"),interfacekey:dashboard" culturecode="@cultureInfo.GetXmlProperty("genxml/code")">
+                            <div class="w3-left-align w3-button w3-block w3-theme-l2 rocket_cultureselect " culturecode="@cultureInfo.GetXmlProperty("genxml/code")">
                                 <img class='' src='@cultureInfo.GetXmlProperty("genxml/flagurl")' alt='' />
                                 @cultureInfo.GetXmlProperty("genxml/code")
                             </div>
@@ -48,19 +48,31 @@
 
 </div>
 
+<span id="rocket_cultureselect" s-reload="true" s-cmd="rocketapptheme_culturecodeselected" s-post="" style="display:none;"></span>
+
+
 <script>
 
     $(document).ready(function () {
         $('#selectculturecode').show();
 
-        $('#searchtext').keyup(function(){
-           var valThis = $(this).val().toLowerCase();
-            $('.culturecode-list').each(function(){
-                 var text = $(this).attr('culturename').toLowerCase();
-                (text.indexOf(valThis) >= 0) ? $(this).show() : $(this).hide();         
-           });
+        $('#searchtext').keyup(function () {
+            var valThis = $(this).val().toLowerCase();
+            $('.culturecode-list').each(function () {
+                var text = $(this).attr('culturename').toLowerCase();
+                (text.indexOf(valThis) >= 0) ? $(this).show() : $(this).hide();
+            });
         });
 
-    });      
+        $('.rocket_cultureselect').unbind("click");
+        $('.rocket_cultureselect').click(function () {
+            simplisity_setCookieValue('editlang', $(this).attr('culturecode'));
+            $('#rocket_cultureselect').attr("s-fields", "culturecode:" + $(this).attr('culturecode') + ",interfacekey:dashboard");
+            simplisity_callserver($('#rocket_cultureselect'), '/DesktopModules/DNNrocket/API/api.ashx', '', false);
+        });
+
+
+    });
+
 
 </script>

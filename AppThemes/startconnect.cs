@@ -138,6 +138,7 @@ namespace DNNrocket.AppThemes
                 var templateName = _postInfo.GetXmlProperty("genxml/select/templatename");
                 var filefolder = _postInfo.GetXmlProperty("genxml/hidden/filefolder");
                 var editorContent = GeneralUtils.DeCode(_postInfo.GetXmlProperty("genxml/hidden/editorcode"));
+
                 var fileMapPath = _appThemeData.AppTheme.AppThemeVersionFolderMapPath + "\\" + filefolder + "\\" + templateName;
                 if (!Directory.Exists(_appThemeData.AppTheme.AppThemeVersionFolderMapPath + "\\" + filefolder))
                 {
@@ -305,7 +306,6 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                var strOut = "";
                 var cultureCode = _postInfo.GetXmlProperty("genxml/hidden/culturecode");
                 _appThemeData.AppCultureCode = cultureCode;
                 _appThemeData.Save();
@@ -323,7 +323,6 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                var strOut = "";
                 var appThemeName = _postInfo.GetXmlProperty("genxml/hidden/apptheme");
                 _appThemeData.AppName = appThemeName;
                 _appThemeData.PopulateVersionList();

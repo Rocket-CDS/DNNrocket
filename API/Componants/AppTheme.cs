@@ -197,7 +197,8 @@ namespace DNNrocketAPI.Componants
                     rtnDict.Add(r.GetXmlProperty("genxml/textbox/name"), r.GetXmlProperty("genxml/textbox/value"));
                 }
                 return rtnDict;
-            }; }
+            }
+        }
 
         #endregion
 

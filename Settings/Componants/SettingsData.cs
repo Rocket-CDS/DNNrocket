@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace RocketSettings
 {
@@ -18,6 +19,7 @@ namespace RocketSettings
         private string _langRequired;
         private string _entityTypeCode;
         private string _listName;
+        private List<string> _cultureList;
 
         public SimplisityInfo Info;
 
@@ -33,10 +35,14 @@ namespace RocketSettings
             _listName = listname;
             if (_parentitemid > 0)
             {
+                Info = GetSettingData(_langRequired);
+                Info.ParentItemId = _parentitemid;
+                _cultureList = GetCultureList();
                 Populate();
                 PopulateList();
             }
         }
+
 
 
         public SettingsData(int tabId, int moduleId, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata")
@@ -52,32 +58,17 @@ namespace RocketSettings
 
             if (_moduleid > 0)
             {
+                Info = GetSettingData(_langRequired);
+                _cultureList = GetCultureList();
                 Populate();
                 PopulateList();
             }
         }
 
-        public void Populate()
+        public List<string> GetCultureList()
         {
             var objCtrl = new DNNrocketController();
 
-            // Load ALL language records, so we can update lists correctly
-            var langList = DNNrocketUtils.GetCultureCodeList();
-            foreach (var cultureCode in langList)
-            {
-                var guidkey = "moduleid" + _moduleid;
-                if (_moduleid <= 0) guidkey = "parentitemid" + _parentitemid;
-                var s = GetSettingData(cultureCode);
-                if (s != null)
-                {
-                    AddSimplisityInfo(s, cultureCode);
-                    if (_langRequired == cultureCode)
-                    {
-                        Info = s;
-                        Info.ParentItemId = _parentitemid;
-                    }
-                }
-            }
             if (Info == null)
             {
                 Info = new SimplisityInfo();
@@ -85,12 +76,46 @@ namespace RocketSettings
                 Info.ParentItemId = _parentitemid;
             }
 
+            // Load ALL language records, so we can update lists correctly
+            var cultureList = new List<string>();
+            if (Info.ParentItemId > 0)
+            {
+                var l = objCtrl.GetList(-1, -1, _entityTypeCode + "LANG", " and ParentItemId = " + Info.ItemID);
+                foreach (var s in l)
+                {
+                    if (!cultureList.Contains(s.Lang)) cultureList.Add(s.Lang);
+                }
+            }
+
+            var ls = DNNrocketUtils.GetCultureCodeList();
+            foreach (var s in ls)
+            {
+                if (!cultureList.Contains(s)) cultureList.Add(s);
+            }
+
+            return cultureList;
+        }
+
+        public void Populate()
+        {
+            foreach (var cultureCode in _cultureList)
+            {
+                var s = GetSettingData(cultureCode);
+                if (s != null)
+                {
+                    AddSimplisityInfo(s, cultureCode);
+                }
+            }
         }
 
         public void PopulateList()
         {
             _dataList = new List<SimplisityInfo>();
             var objCtrl = new DNNrocketController();
+            if (!SimplisityInfoList.ContainsKey(_langRequired))
+            {
+                AddSimplisityInfo(new SimplisityInfo(_langRequired), _langRequired);  // new edit lang
+            }
             var info = SimplisityInfoList[_langRequired];
             if (info != null)
             {
@@ -117,8 +142,15 @@ namespace RocketSettings
             postInfo.RemoveXmlNode("genxml/postform");
             postInfo.RemoveXmlNode("genxml/urlparams");
 
-            // get current data
-            var dbInfo = GetSettingData(DNNrocketUtils.GetEditCulture());
+            var editlang = DNNrocketUtils.GetEditCulture();
+
+            var dbInfo = GetSettingData(editlang);
+
+            if (!SimplisityInfoList.ContainsKey("editlang"))
+            {
+                // new lang record, so add it to list
+                AddSimplisityInfo(dbInfo, editlang);
+            }
 
             RemovedDeletedListRecords(_listName, dbInfo, postInfo);
 
@@ -126,7 +158,7 @@ namespace RocketSettings
             foreach (var listItem in SimplisityInfoList)
             {
                 var saveInfo = (SimplisityInfo)postInfo.Clone();
-                if (saveInfo.Lang != listItem.Value.Lang)
+                if (editlang != listItem.Value.Lang)
                 {
                     // If it's not the same langauge, update the data with the listItem.
                     saveInfo.RemoveLangRecord();
@@ -171,18 +203,35 @@ namespace RocketSettings
         }
 
 
-        public string ExportData()
+        public string ExportData(bool withTextData = false)
         {
-            var expInfo = (SimplisityInfo)Info.Clone();
-            expInfo.RemoveLangRecord();
-            var xmlOut = expInfo.ToXmlItem();
+            var xmlOut = "<root>";
+            foreach (var listItem in SimplisityInfoList)
+            {
+                xmlOut += listItem.Value.ToXmlItem(withTextData);
+            }
+            xmlOut += "</root>";
 
-            return "";
+            return xmlOut;
         }
 
-        public string ImportData()
+        public void ImportData(string XmlIn)
         {
-            return "";
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(XmlIn);
+
+            var nodList = xmlDoc.SelectNodes("root/item");
+            foreach (XmlNode nod in nodList)
+            {
+                var s = new SimplisityInfo();
+                s.FromXmlItem(nod.OuterXml);
+                AddSimplisityInfo(s, s.Lang);
+                if (_langRequired == s.Lang)
+                {
+                    Info = s;
+                    Info.ParentItemId = _parentitemid;
+                }
+            }
         }
 
 

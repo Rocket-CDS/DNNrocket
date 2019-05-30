@@ -501,7 +501,26 @@ namespace DNNrocketAPI
                 var nbilang = GetRecordLang(info.ItemID, lang);
                 if (nbilang == null)
                 {
-                    // create lang records if not in DB
+                    //create in DB if lang is NOT in portal languages.
+                    var inPortal = false;
+                    foreach (var lg in DNNrocketUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
+                    {
+                        if (lg == lang) inPortal = true;
+                    }
+                    if (!inPortal)
+                    {
+                        nbilang = new SimplisityInfo();
+                        nbilang.GUIDKey = "";
+                        nbilang.TypeCode = typeCode + "LANG";
+                        nbilang.ParentItemId = info.ItemID;
+                        nbilang.Lang = lang;
+                        nbilang.SystemId = systemId;
+                        nbilang.ModuleId = moduleId;
+                        nbilang.PortalId = PortalSettings.Current.PortalId;
+                        nbilang.ItemID = Update(nbilang);
+                    }
+
+                    // create portal lang records if not in DB
                     foreach (var lg in DNNrocketUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
                     {
                         nbilang = GetRecordLang(info.ItemID, lg);

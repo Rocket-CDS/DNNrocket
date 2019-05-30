@@ -935,10 +935,10 @@ namespace DNNrocketAPI
         {
             if (HttpContext.Current.Request.Cookies["editlang"] != null)
             {
-                var l = GetCultureCodeList();
                 var rtnlang = HttpContext.Current.Request.Cookies["editlang"].Value;
-                if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
+                if (rtnlang == null || rtnlang == "")
                 {
+                    var l = GetCultureCodeList();
                     if (l.Count >= 1)
                     {
                         rtnlang = l.First();

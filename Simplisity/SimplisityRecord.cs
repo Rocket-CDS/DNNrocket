@@ -83,7 +83,7 @@ namespace Simplisity
 
         public SimplisityRecord()
         {
-            this.Lang = "en-US"; // we need a langauge for formating data, default to en-US, but we should the language shoudl be passed when we need formatted date.
+            this.Lang = "en-US"; // we need a langauge for formating data, default to en-US, but the language should be passed when we need formatted date.
             if (XMLDoc == null) XMLData = "<genxml></genxml>"; // if we don;t have anything, create an empty default to stop errors.
         }
 

@@ -2,6 +2,9 @@
 @using DNNrocketAPI;
 @using Simplisity;
 @using RocketSettings;
+@using System.IO;
+@using DNNrocket.AppThemes;
+
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
@@ -13,140 +16,149 @@
     {
         settingsData = (SettingsData)Model.List.First();
     }
+
+    var appThemeData = new AppThemeData(DNNrocketUtils.GetCurrentUserId(), "/DesktopModules/DNNrocket/AppThemes");
+
+    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + appThemeData.AppCultureCode + ".png";
+    if (!File.Exists(DNNrocketUtils.MapPath(flagurl)))
+    {
+        flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/none.png";
+    }
+
 }
 
-<div id="datasection" class="w3-container">
+    <div id="datasection" class="w3-container">
 
-    <ul id="datalist" class="w3-ul">
+        <ul id="datalist" class="w3-ul">
 
-        @{
-            var lp3 = 0;
-        }
-        @foreach (var i in settingsData.List)
-        {
-            lp3 += 1;
+            @{
+                var lp3 = 0;
+            }
+            @foreach (var i in settingsData.List)
+            {
+                lp3 += 1;
 
-            var settingsdataclassselect = "dictionarydata" + lp3;
-            var imagesizeclass = "imagesize" + lp3;
+                var settingsdataclassselect = "dictionarydata" + lp3;
+                var imagesizeclass = "imagesize" + lp3;
 
-            <li class="settingsdata w3-card w3-margin w3-display-container @settingsdataclassselect ">
+                <li class="settingsdata w3-card w3-margin-bottom w3-display-container @settingsdataclassselect ">
 
-                <div class="w3-container">
+                    <div class="w3-container">
 
-                    <!-- We need "recordkey" hidden fields so language list on the record can be updated/sorted in sync -->
-                    @HiddenField(i, "genxml/key1", "", "", false, lp3)
-                    @HiddenField(i, "genxml/lang/genxml/key2", "", "", true, lp3)
+                        <!-- We need "recordkey" hidden fields so language list on the record can be updated/sorted in sync -->
+                        @HiddenField(i, "genxml/key1", "", "", false, lp3)
+                        @HiddenField(i, "genxml/lang/genxml/key2", "", "", true, lp3)
 
-                    <span id="deletebutton@(lp3)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin">
-                        <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
-                    </span>
+                        <span id="deletebutton@(lp3)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin">
+                            <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
+                        </span>
 
 
-                    <span id="editbutton@(lp3)" row="@(lp3)" class="w3-button w3-display-topleft editbutton">
-                        <i class="fas fa-edit"></i>
-                    </span>
-                    <span id="editbuttonclosedown@(lp3)" row="@(lp3)" class="w3-button w3-display-topleft editbuttonclose" style="display:none;">
-                        <i class="fas fa-caret-down"></i>
-                    </span>
+                        <span id="editbutton@(lp3)" row="@(lp3)" class="w3-button w3-display-topleft editbutton">
+                            <i class="fas fa-edit"></i>
+                        </span>
+                        <span id="editbuttonclosedown@(lp3)" row="@(lp3)" class="w3-button w3-display-topleft editbuttonclose" style="display:none;">
+                            <i class="fas fa-caret-down"></i>
+                        </span>
 
-                    <div class="w3-col m2 w3-padding">
-                        <label class="">@ResourceKey("system.name")</label>
-                        @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border alphanumeric notstartnumeric' maxlength='250' autocomplete='off' s-datatype='xpath' required ", "", false, lp3)
-                    </div>
-                    <div class="w3-col m2 w3-padding">
-                        <label class="">@ResourceKey("DNNrocket.label")</label>&nbsp;@EditFlag()
-                        @TextBox(i, "genxml/lang/genxml/textbox/label", "class='w3-input w3-border ' maxlength='500' autocomplete='off'  ", "", true, lp3)
-                    </div>
-                    <div class="w3-col m2 w3-padding">
-                        <label class="">@ResourceKey("DNNrocket.type")</label>
-                        @DropDownList(i, "genxml/select/type", "TextBox,CheckBox,DropDown,RadioList,checkboxlist,Image,ImageFull,internalpage,Document,RichText", "TextBox,CheckBox,DropDown,RadioList,CheckBoxList,Image Edit,Full Image Edit,Internal Page,Document,RichText", " class='w3-input w3-border inputtypefield' row='" + lp3 + "' ", "TextBox", false, lp3)
-                    </div>
-                    <div class="w3-col m1 w3-padding">
-                        <label class="">@ResourceKey("DNNrocket.size")</label>
-                        @DropDownList(i, "genxml/select/size", "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12", "class='w3-input w3-border'", "", false, lp3)
-                    </div>
-                    <div class="w3-col m2 w3-padding">
-                        <label class="">@ResourceKey("DNNrocket.localized")</label><br />
-                        @CheckBox(i, "genxml/checkbox/localized", "", " class='localize' row='" + lp3 + "' ", false, false, lp3)
-                    </div>
-                </div>
-
-                <!-- The Detail-->
-                <div id="detailDisplay@(lp3)" class="w3-container" style="display:none;">
-
-                    <div class="w3-row">
-                        <div class="w3-half w3-padding defaulttextbox">
-                            <span class="defaulttextbox@(lp3)">
-                                <label class="">@ResourceKey("DNNrocket.defaultvalue")</label>
-                                @TextBox(i, "genxml/textbox/defaultvalue", " class='w3-input w3-border' autocomplete='off'", "", false, lp3)
-                            </span>
-                            <span class="allowempty@(lp3)" style="display:none;">
-                                <label class="">@ResourceKey("DNNrocket.allowempty")</label><br />
-                                @CheckBox(i, "genxml/checkbox/allowempty", "", " class='' row='" + lp3 + "' ", false, false, lp3)
-                            </span>
-                            <div class=" w3-col m5 @imagesizeclass" style="display:none;">
-                                <label class="">@ResourceKey("DNNrocket.width")</label>&nbsp;@EditFlag()
-                                @TextBox(i, "genxml/textbox/width", "class='w3-input w3-border' autocomplete='off' ", "140", false, lp3)
-                            </div>
-                            <div class=" w3-col m1 @imagesizeclass" style="display:none;">
-                                &nbsp;
-                            </div>
-                            <div class=" w3-col m5  @imagesizeclass" style="display:none;">
-                                <label class="">@ResourceKey("DNNrocket.height")</label>&nbsp;@EditFlag()
-                                @TextBox(i, "genxml/textbox/height", "class='w3-input w3-border' autocomplete='off' ", "140", false, lp3)
-                            </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("system.name")</label>
+                            @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border alphanumeric notstartnumeric' maxlength='250' autocomplete='off' s-datatype='xpath' required ", "", false, lp3)
                         </div>
-                        <div class="w3-half w3-padding">
-                            <label class="">@ResourceKey("DNNrocket.attributes")</label>
-                            @TextBox(i, "genxml/textbox/attributes", " class='w3-input w3-border' autocomplete='off'", " class='w3-input w3-border' autocomplete='off' ", false, lp3)
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("DNNrocket.label")</label>&nbsp;<img class='' src='@flagurl' alt='' />
+                            @TextBox(i, "genxml/lang/genxml/textbox/label", "class='w3-input w3-border ' maxlength='500' autocomplete='off'  ", "", true, lp3)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("DNNrocket.type")</label>
+                            @DropDownList(i, "genxml/select/type", "TextBox,CheckBox,DropDown,RadioList,checkboxlist,Image,ImageFull,internalpage,Document,RichText", "TextBox,CheckBox,DropDown,RadioList,CheckBoxList,Image Edit,Full Image Edit,Internal Page,Document,RichText", " class='w3-input w3-border inputtypefield' row='" + lp3 + "' ", "TextBox", false, lp3)
+                        </div>
+                        <div class="w3-col m1 w3-padding">
+                            <label class="">@ResourceKey("DNNrocket.size")</label>
+                            @DropDownList(i, "genxml/select/size", "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12", "class='w3-input w3-border'", "", false, lp3)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("DNNrocket.localized")</label><br />
+                            @CheckBox(i, "genxml/checkbox/localized", "", " class='localize' row='" + lp3 + "' ", false, false, lp3)
                         </div>
                     </div>
 
-                    <div id="dictionarydisplay@(lp3)" class="w3-row " style="display:none;">
-                        <div class="w3-container">
-                            <div class="w3-threequarter w3-display-container ">
-                                <a row="@(lp3)" href="javascript:void(0);" class=" addvaluekey w3-circle w3-display-left ">@ResourceKey("DNNrocket.cmdAddIcon")</a>
+                    <!-- The Detail-->
+                    <div id="detailDisplay@(lp3)" class="w3-container" style="display:none;">
 
-                                @HiddenField(i, "genxml/hidden/dictionarykey", " class='dictionarykeyvalue' row='" + lp3 + "' ", "", false, lp3)
-                                @HiddenField(i, "genxml/lang/genxml/hidden/dictionaryvalue", "", "", true, lp3)
-
-                                @{
-                                    var selectlistclass = "dictionarylist" + lp3;
-                                }
-
-                                <div class="w3-col m4 w3-center">
-                                    Key
+                        <div class="w3-row">
+                            <div class="w3-half w3-padding defaulttextbox">
+                                <span class="defaulttextbox@(lp3)">
+                                    <label class="">@ResourceKey("DNNrocket.defaultvalue")</label>
+                                    @TextBox(i, "genxml/textbox/defaultvalue", " class='w3-input w3-border' autocomplete='off'", "", false, lp3)
+                                </span>
+                                <span class="allowempty@(lp3)" style="display:none;">
+                                    <label class="">@ResourceKey("DNNrocket.allowempty")</label><br />
+                                    @CheckBox(i, "genxml/checkbox/allowempty", "", " class='' row='" + lp3 + "' ", false, false, lp3)
+                                </span>
+                                <div class=" w3-col m5 @imagesizeclass" style="display:none;">
+                                    <label class="">@ResourceKey("DNNrocket.width")</label>
+                                    @TextBox(i, "genxml/textbox/width", "class='w3-input w3-border' autocomplete='off' ", "140", false, lp3)
                                 </div>
-                                <div class="w3-col m8 w3-center">
-                                    Value&nbsp;@EditFlag()
+                                <div class=" w3-col m1 @imagesizeclass" style="display:none;">
+                                    &nbsp;
+                                </div>
+                                <div class=" w3-col m5  @imagesizeclass" style="display:none;">
+                                    <label class="">@ResourceKey("DNNrocket.height")</label>
+                                    @TextBox(i, "genxml/textbox/height", "class='w3-input w3-border' autocomplete='off' ", "140", false, lp3)
                                 </div>
                             </div>
-                        </div>
-                        <div class="w3-container">
-                            <div class="w3-threequarter ">
-                                <ul class=" @selectlistclass w3-ul w3-padding" row="@lp3"></ul>
+                            <div class="w3-half w3-padding">
+                                <label class="">@ResourceKey("DNNrocket.attributes")</label>
+                                @TextBox(i, "genxml/textbox/attributes", " class='w3-input w3-border' autocomplete='off'", " class='w3-input w3-border' autocomplete='off' ", false, lp3)
                             </div>
                         </div>
+
+                        <div id="dictionarydisplay@(lp3)" class="w3-row " style="display:none;">
+                            <div class="w3-container">
+                                <div class="w3-threequarter w3-display-container ">
+                                    <a row="@(lp3)" href="javascript:void(0);" class=" addvaluekey w3-circle w3-display-left ">@ResourceKey("DNNrocket.cmdAddIcon")</a>
+
+                                    @HiddenField(i, "genxml/hidden/dictionarykey", " class='dictionarykeyvalue' row='" + lp3 + "' ", "", false, lp3)
+                                    @HiddenField(i, "genxml/lang/genxml/hidden/dictionaryvalue", "", "", true, lp3)
+
+                                    @{
+                                        var selectlistclass = "dictionarylist" + lp3;
+                                    }
+
+                                    <div class="w3-col m4 w3-center">
+                                        Key
+                                    </div>
+                                    <div class="w3-col m8 w3-center">
+                                        Value&nbsp;<img class='' src='@flagurl' alt='' />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w3-container">
+                                <div class="w3-threequarter ">
+                                    <ul class=" @selectlistclass w3-ul w3-padding" row="@lp3"></ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="w3-row w3-padding">
+                            <a id="editbuttoncloseup@(lp3)" row="@(lp3)" class="w3-button w3-display-bottomleft editbuttonclose" style="display:none;">
+                                <i class="fas fa-caret-up"></i>
+                            </a>
+                        </div>
+
+
                     </div>
 
 
-                    <div class="w3-row w3-padding">
-                        <a id="editbuttoncloseup@(lp3)" row="@(lp3)" class="w3-button w3-display-bottomleft editbuttonclose" style="display:none;">
-                            <i class="fas fa-caret-up"></i>
-                        </a>
-                    </div>
+                </li>
 
+            }
 
-                </div>
+        </ul>
 
-
-            </li>
-
-        }
-
-    </ul>
-
-</div>
+    </div>
 
 <script>
     $(document).ready(function () {

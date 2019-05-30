@@ -109,6 +109,7 @@ namespace Simplisity
             // -------------------------------------------------------------
 
 
+            rtnInfo.Lang = editlang;
 
             return rtnInfo;
         }

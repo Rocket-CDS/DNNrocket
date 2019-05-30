@@ -4,6 +4,7 @@ using RocketSettings;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -45,7 +46,10 @@ namespace DNNrocket.AppThemes
                 userRecord.TypeCode = "APPTHEMECONFIG";
                 userRecord.SetXmlProperty("genxml/appthemesmappath", AppThemesMapPath);
                 userRecord.SetXmlProperty("genxml/appthemesrelpath", AppThemesRelPath);
-                userRecord = objCtrl.SaveRecord("apptheme_" + _userId, "APPTHEMECONFIG", userRecord);
+                if (_userId > 0)
+                {
+                    userRecord = objCtrl.SaveRecord("apptheme_" + _userId, "APPTHEMECONFIG", userRecord);
+                }
             }
             AppCultureCode = userRecord.GetXmlProperty("genxml/hidden/appculturecode");
             if (AppCultureCode == "") AppCultureCode = CultureCode;  // default to current culture.
@@ -102,7 +106,7 @@ namespace DNNrocket.AppThemes
 
         public void Save()
         {
-            if (userRecord.UserId > 0)
+            if (_userId > 0)
             {
                 var objCtrl = new DNNrocketController();
                 AppName = GeneralUtils.AlphaNumeric(AppName);
@@ -175,7 +179,7 @@ namespace DNNrocket.AppThemes
                 // Update Fields
                 mInfo.SetXmlProperty("genxml/fields","");
                 var settingsData = new SettingsData(AppTheme.Info.ItemID, AppTheme.AppCultureCode, "APPTHEMEFIELDS");
-                mInfo.AddXmlNode(settingsData.)
+                mInfo.AddXmlNode(settingsData.ExportData(), "root", "genxml/fields");
 
                 // Update Image
 
@@ -183,8 +187,8 @@ namespace DNNrocket.AppThemes
 
 
                 // Save to XML file
-                if (!Directory.Exists(AppThemeFolderMapPath)) Directory.CreateDirectory(AppThemeFolderMapPath);
-                FileUtils.SaveFile(AppThemeFolderMapPath + "\\Meta.xml", mInfo.XMLData);
+                if (!Directory.Exists(AppTheme.AppThemeFolderMapPath)) Directory.CreateDirectory(AppTheme.AppThemeFolderMapPath);
+                FileUtils.SaveFile(AppTheme.AppThemeFolderMapPath + "\\Meta.xml", mInfo.XMLData);
             }
 
             Populate();

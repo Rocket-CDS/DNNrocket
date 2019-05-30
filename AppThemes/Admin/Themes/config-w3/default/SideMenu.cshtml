@@ -80,25 +80,9 @@
 
 <span id="langflagrequired" style="display:none;" class="w3-display-right w3-right-align w3-padding">
 
-    @{
-
-        var strOut1 = "";
-
-        var enabledlanguages = DNNrocketUtils.GetEnabledLanguages();
-        foreach (var l in enabledlanguages)
-        {
-            var imageclass = "";
-            if (DNNrocketUtils.GetEditCulture() == l.Value.Code)
-            {
-                imageclass = "w3-border-top w3-border-theme";
-            }
-            strOut1 += "<a href='javascript:void(0)' class='w3-margin-right " + imageclass + " selectlang' editlang='" + l.Value.Code + "'>";
-            strOut1 += "<img class='' src='/DesktopModules/DNNrocket/API/images/flags/32/" + l.Value.Code + ".png' alt='" + l.Value.EnglishName + "' />";
-            strOut1 += "</a>";
-        }
-    }
-
-    @HtmlOf(strOut1)
+    <div class="w3-padding">
+        <span class="w3-button w3-blue w3-padding-8 simplisity_click " s-cmd="rocketapptheme_selectculturecode" s-post="" s-fields="interfacekey:culturecode"><i class="fas fa-globe" /></span>
+    </div>
 
 </span>
 
