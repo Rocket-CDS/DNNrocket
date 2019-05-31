@@ -61,6 +61,10 @@ namespace RocketMod
                 PopulateHeader();
                 _currentRecord = _settingData.Info;
             }
+            else
+            {
+                _currentRecord = new SimplisityInfo();
+            }
         }
 
 

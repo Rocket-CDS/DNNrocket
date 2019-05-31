@@ -43,7 +43,7 @@ namespace DNNrocketAPI.render
             return strOut;
         }
 
-        public IEncodedString RenderPagingTemplate(string scmd, string spost, string sfields, string sreturn, SimplisityRazor model)
+        public IEncodedString RenderPagingTemplate(string scmd, string spost, string sfields, string sreturn, SimplisityRazor model, string versionFolder = "1.0")
         {
             if (model.HeaderData == null)
             {
@@ -53,13 +53,13 @@ namespace DNNrocketAPI.render
             model.HeaderData.SetXmlProperty("genxml/s-paging-return", sreturn);
             model.HeaderData.SetXmlProperty("genxml/s-paging-cmd", scmd);
             model.HeaderData.SetXmlProperty("genxml/s-paging-post", spost);
-            return RenderTemplate("Paging.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model);
+            return RenderTemplate("Paging.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model, versionFolder);
         }
 
-        public IEncodedString RenderTemplate(string razorTemplateName, string templateControlRelPath, string themeFolder, SimplisityRazor model)
+        public IEncodedString RenderTemplate(string razorTemplateName, string templateControlRelPath, string themeFolder, SimplisityRazor model, string versionFolder = "1.0")
         {
             var strOut = "";
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), versionFolder);
             strOut = DNNrocketUtils.RazorRender(model, razorTempl, false);
             return new RawString(strOut);
         }

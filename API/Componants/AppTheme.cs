@@ -53,8 +53,11 @@ namespace DNNrocketAPI.Componants
             var themeFolderPath = "Themes\\" + AppName + "\\" + AppVersionFolder;
             var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(DNNrocketUtils.HomeDirectory(), themeFolderPath, AppFolderMapPath);
             ActiveViewTemplate = templCtrl.GetTemplateData("view.cshtml", AppCultureCode);
+            if (ActiveViewTemplate == null) ActiveViewTemplate = "";
             ActiveEditTemplate = templCtrl.GetTemplateData("edit.cshtml", AppCultureCode);
+            if (ActiveEditTemplate == null) ActiveEditTemplate = "";
             ActivePageHeaderTemplate = templCtrl.GetTemplateData("pageheader.cshtml", AppCultureCode);
+            if (ActivePageHeaderTemplate == null) ActivePageHeaderTemplate = "";
             var logoMapPath = AppThemeFolderMapPath + "\\Logo.png";
             Logo = AppThemeFolder + "/Logo.png";
             if (!File.Exists(logoMapPath)) Logo = "";

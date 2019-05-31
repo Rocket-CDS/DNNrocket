@@ -37,7 +37,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/css/ultravoilet-theme.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/ultravoilet-theme.css">
 
     <!-- CDN -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

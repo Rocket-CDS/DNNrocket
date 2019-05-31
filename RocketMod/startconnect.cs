@@ -34,6 +34,13 @@ namespace RocketMod
             _postInfo = postInfo;
             _systemInfo = systemInfo;
 
+
+            // Ensure we have a valid edit data cultueCode.  It may have been changed in a localization admin pages.
+            if (DNNrocketUtils.GetCultureCodeList().Count() > 0 && (!DNNrocketUtils.GetCultureCodeList().Contains(DNNrocketUtils.GetEditCulture())))
+            {
+                DNNrocketUtils.SetEditCulture(DNNrocketUtils.GetCultureCodeList().First());
+            }
+
             // we should ALWAYS pass back the moduleid & tabid in the template post.
             // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
             _moduleid = _postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");

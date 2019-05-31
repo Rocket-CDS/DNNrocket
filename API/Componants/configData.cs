@@ -171,7 +171,6 @@ namespace DNNrocketAPI.Componants
         public int DataModuleId { get { return _dataModuleid; } }
         public string ModuleRef { get { return _moduleref; } }
 
-
     }
 
 }

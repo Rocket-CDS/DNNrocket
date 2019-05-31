@@ -98,6 +98,7 @@ namespace DNNrocketAPI
             var errmsg = "";
             try
             {
+                if (razorTempl == null || razorTempl == "") return "";
                 var service = (IRazorEngineService)HttpContext.Current.Application.Get("DNNrocketIRazorEngineService");
                 if (service == null)
                 {
@@ -147,15 +148,19 @@ namespace DNNrocketAPI
 
         public static string GetMd5Hash(string input)
         {
-            var md5 = MD5.Create();
-            var inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-            var hash = md5.ComputeHash(inputBytes);
-            var sb = new StringBuilder();
-            foreach (byte t in hash)
+            if (input != "")
             {
-                sb.Append(t.ToString("X2"));
+                var md5 = MD5.Create();
+                var inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+                var hash = md5.ComputeHash(inputBytes);
+                var sb = new StringBuilder();
+                foreach (byte t in hash)
+                {
+                    sb.Append(t.ToString("X2"));
+                }
+                return sb.ToString();
             }
-            return sb.ToString();
+            return "";
         }
 
         public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
@@ -200,7 +205,7 @@ namespace DNNrocketAPI
         }
 
 
-        public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder, string lang, string versionFolder = "v1")
+        public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0")
         {
             var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
             var themeFolderPath = "Themes\\" + themeFolder + "\\" + versionFolder;
@@ -1228,7 +1233,7 @@ namespace DNNrocketAPI
 
             if (!page.Items["dnnrocketinject"].ToString().Contains(fullTemplName + "." + appTheme.AppName + ","))
             {
-                if (appTheme.ActivePageHeaderTemplate != "")
+                if (appTheme.ActivePageHeaderTemplate != null && appTheme.ActivePageHeaderTemplate != "")
                 {
                     var settings = new Dictionary<string, string>();
                     var l = new List<object>();

@@ -41,6 +41,10 @@ namespace RocketSettings
                 Populate();
                 PopulateList();
             }
+            else
+            {
+                Info = new SimplisityInfo();
+            }
         }
 
 
@@ -62,6 +66,10 @@ namespace RocketSettings
                 _cultureList = GetCultureList();
                 Populate();
                 PopulateList();
+            }
+            else
+            {
+                Info = new SimplisityInfo();
             }
         }
 
