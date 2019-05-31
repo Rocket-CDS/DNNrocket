@@ -1,0 +1,33 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketSettings;
+@using DNNrocketAPI.Componants;
+@using DNNrocket.AppThemes;
+@using System.IO;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+
+@{ 
+    var menunumber = ".menu" + Model.GetSetting("menunumber");
+}
+
+
+    <div class="w3-row">
+        <div class="w3-col w3-bottombar w3-hover-theme w3-padding simplisity_click menu1 " s-cmd="rocketapptheme_dashboard" s-track="true" s-post="" s-fields="interfacekey:dashboard" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.dashboard")</div>
+        <div class="w3-col w3-bottombar w3-hover-theme w3-padding simplisity_click menu2 " s-cmd="rocketsettings_edit" s-track="true" s-post="" s-fields="tabid:-1,moduleid:-1,parentitemid:@Model.GetSetting("parentitemid") ,interfacekey:fieldeditor" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.fields")</div>
+        <div class="w3-col w3-bottombar w3-hover-theme w3-padding simplisity_click menu3 " s-cmd="rocketapptheme_editor" s-track="true" s-post="" s-fields="interfacekey:editor" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.editor")</div>
+        <div class="w3-col w3-bottombar w3-hover-theme w3-padding simplisity_click menu4 " s-cmd="rocketsettings_edit" s-track="true" s-post="" s-fields="tabid:-1,moduleid:-1,parentitemid:@Model.GetSetting("parentitemid") ,interfacekey:fieldeditor" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.images")</div>
+        <div class="w3-col w3-bottombar w3-hover-theme w3-padding simplisity_click menu5 " s-cmd="rocketsettings_edit" s-track="true" s-post="" s-fields="tabid:-1,moduleid:-1,parentitemid:@Model.GetSetting("parentitemid") ,interfacekey:fieldeditor" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.resx")</div>
+        <div class="w3-col w3-bottombar w3-hover-theme w3-padding simplisity_click menu6 " s-cmd="rocketapptheme_editorcss" s-track="true" s-post="" s-fields="interfacekey:editorcss" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.css")</div>
+        <div class="w3-col w3-bottombar w3-hover-theme w3-padding simplisity_click menu7 " s-cmd="rocketapptheme_editorjs" s-track="true" s-post="" s-fields="interfacekey:editorjs" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.js")</div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('@menunumber').addClass("w3-theme");
+            $('@menunumber').addClass("w3-border-black");
+        });
+    </script>

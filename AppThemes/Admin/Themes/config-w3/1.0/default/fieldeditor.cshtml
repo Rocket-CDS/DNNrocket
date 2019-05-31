@@ -36,6 +36,13 @@
     <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#datalist" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 
+@{
+    Model.Settings.Remove("menunumber");
+    Model.Settings.Add("menunumber", "2");
+}
+
+@RenderTemplate("AppThemeMenu.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", Model, "1.0")
+
 <div class="w3-right w3-padding">
     <b>@appThemeData.AppCultureCode</b>&nbsp;<img class='' src='@flagurl32' alt='' />
 </div>

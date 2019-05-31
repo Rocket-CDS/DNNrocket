@@ -19,6 +19,7 @@
     <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click editorsavebutton" s-cmd="rocketapptheme_savecss" s-before="copyeditorcontent" s-fields="theme:@Model.GetSetting("theme"),interfacekey:editor" s-post="#editorpanel">@ResourceKey("DNNrocket.cmdSaveButton")</span>
 </span>
 
+@RenderTemplate("AppThemeMenu.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", Model, "1.0")
 
 <div id="templatereturn" style="display:none;"></div>
 

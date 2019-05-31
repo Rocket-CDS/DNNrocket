@@ -20,6 +20,8 @@
     <label>@appTheme.AppName (@appTheme.AppVersionFolder):  &nbsp;@ResourceKey("Appthemes.systemlevel")</label>
 </span>
 
+@RenderTemplate("AppThemeMenu.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", Model, "1.0")
+
 
 <div id="templatereturn" style="display:none;"></div>
 
@@ -34,7 +36,7 @@
         </div>
         <div class="w3-col m6 w3-padding">
             <a class="w3-button w3-teal w3-padding-8">Snippits</a>
-            <a class="w3-button w3-teal w3-padding-8" onclick="showFieldSelect();" >Fields</a>
+            <a class="w3-button w3-teal w3-padding-8" onclick="showFieldSelect();">Fields</a>
         </div>
     </div>
 
