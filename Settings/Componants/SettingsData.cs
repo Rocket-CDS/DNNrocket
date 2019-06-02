@@ -15,7 +15,7 @@ namespace RocketSettings
         private List<SimplisityInfo> _dataList;
         private int _tabid;
         private int _moduleid;
-        private int _parentitemid;
+        private string _guidKey;
         private string _langRequired;
         private string _entityTypeCode;
         private string _listName;
@@ -23,28 +23,20 @@ namespace RocketSettings
 
         public SimplisityInfo Info;
 
-        public SettingsData(int parentitemid, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata")
+        public SettingsData(string guidKey, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata")
         {
             _entityTypeCode = entityTypeCode;
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
             _tabid = -1;
             _moduleid = -1;
-            _parentitemid = parentitemid;
+            _guidKey = guidKey;
             _dataList = new List<SimplisityInfo>();
             _listName = listname;
-            if (_parentitemid > 0)
-            {
-                Info = GetSettingData(_langRequired);
-                Info.ParentItemId = _parentitemid;
-                _cultureList = GetCultureList();
-                Populate();
-                PopulateList();
-            }
-            else
-            {
-                Info = new SimplisityInfo();
-            }
+            Info = GetSettingData(guidKey, _langRequired);
+            _cultureList = GetCultureList();
+            Populate();
+            PopulateList();
         }
 
 
@@ -56,13 +48,12 @@ namespace RocketSettings
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
             _tabid = tabId;
             _moduleid = moduleId;
-            _parentitemid = -1;
             _dataList = new List<SimplisityInfo>();            
             _listName = listname;
-
+            _guidKey = "moduleid" + _moduleid;
             if (_moduleid > 0)
             {
-                Info = GetSettingData(_langRequired);
+                Info = GetSettingData(_guidKey, _langRequired);
                 _cultureList = GetCultureList();
                 Populate();
                 PopulateList();
@@ -81,7 +72,6 @@ namespace RocketSettings
             {
                 Info = new SimplisityInfo();
                 Info.ModuleId = _moduleid;
-                Info.ParentItemId = _parentitemid;
             }
 
             // Load ALL language records, so we can update lists correctly
@@ -108,7 +98,7 @@ namespace RocketSettings
         {
             foreach (var cultureCode in _cultureList)
             {
-                var s = GetSettingData(cultureCode);
+                var s = GetSettingData(_guidKey, cultureCode);
                 if (s != null)
                 {
                     AddSimplisityInfo(s, cultureCode);
@@ -133,7 +123,7 @@ namespace RocketSettings
 
         public void Delete()
         {
-            var info = GetSettingData(DNNrocketUtils.GetEditCulture());
+            var info = GetSettingData(_guidKey, DNNrocketUtils.GetEditCulture());
             if (info != null)
             {
                 var objCtrl = new DNNrocketController();
@@ -152,7 +142,7 @@ namespace RocketSettings
 
             var editlang = DNNrocketUtils.GetEditCulture();
 
-            var dbInfo = GetSettingData(editlang);
+            var dbInfo = GetSettingData(_guidKey, editlang);
 
             if (!SimplisityInfoList.ContainsKey("editlang"))
             {
@@ -181,7 +171,7 @@ namespace RocketSettings
                     }
                 }
 
-                SaveSettingData(saveInfo);
+                SaveSettingData(_guidKey, saveInfo);
             }
 
             ClearCache();
@@ -197,7 +187,7 @@ namespace RocketSettings
             // Update ALL langauge records.
             foreach (var listItem in SimplisityInfoList)
             {
-                SaveSettingData(listItem.Value);
+                SaveSettingData(_guidKey, listItem.Value);
             }
 
             ClearCache();
@@ -237,9 +227,14 @@ namespace RocketSettings
                 if (_langRequired == s.Lang)
                 {
                     Info = s;
-                    Info.ParentItemId = _parentitemid;
                 }
             }
+            // Update ALL langauge records.
+            foreach (var listItem in SimplisityInfoList)
+            {
+                SaveSettingData(_guidKey, listItem.Value);
+            }
+
         }
 
 
@@ -258,22 +253,17 @@ namespace RocketSettings
 
         #region "private methods"
 
-        private SimplisityInfo GetSettingData(string cultureCode)
+        private SimplisityInfo GetSettingData(string guidKey, string cultureCode)
         {
-            var guidkey = "moduleid" + _moduleid;
-            if (_moduleid <= 0) guidkey = "parentitemid" + _parentitemid;
             var objCtrl = new DNNrocketController();
-            return objCtrl.GetData(guidkey, _entityTypeCode, cultureCode, -1, _moduleid, false);
+            return objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, false);
         }
 
-        private void SaveSettingData(SimplisityInfo sInfo)
+        private void SaveSettingData(string guidKey, SimplisityInfo sInfo)
         {
-            var guidkey = "moduleid" + _moduleid;
-            if (_moduleid <= 0) guidkey = "parentitemid" + _parentitemid;
             var objCtrl = new DNNrocketController();
-            sInfo.ParentItemId = _parentitemid;
             sInfo.ModuleId = _moduleid;
-            objCtrl.SaveData(guidkey, _entityTypeCode, sInfo, -1, _moduleid);
+            objCtrl.SaveData(guidKey, _entityTypeCode, sInfo, -1, _moduleid);
         }
 
         #endregion

@@ -11,13 +11,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 @{
-    var settingsData = new SettingsData(0, 0, DNNrocketUtils.GetEditCulture());
-    if (Model.List.Count > 0)
-    {
-        settingsData = (SettingsData)Model.List.First();
-    }
-
-    var appThemeData = new AppThemeData(DNNrocketUtils.GetCurrentUserId(), "/DesktopModules/DNNrocket/AppThemes");
+    var appThemeData = (AppThemeData)Model.List.First();
 
     var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + appThemeData.AppCultureCode + ".png";
     if (!File.Exists(DNNrocketUtils.MapPath(flagurl)))
@@ -27,21 +21,21 @@
 
 }
 
-    <div id="datasection" class="w3-container">
+    <div id="fielddatasection" class="w3-container">
 
-        <ul id="datalist" class="w3-ul">
+        <ul id="fielddatalist" class="w3-ul">
 
             @{
                 var lp3 = 0;
             }
-            @foreach (var i in settingsData.List)
+            @foreach (SimplisityInfo i in appThemeData.Fields)
             {
                 lp3 += 1;
 
                 var settingsdataclassselect = "dictionarydata" + lp3;
                 var imagesizeclass = "imagesize" + lp3;
 
-                <li class="settingsdata w3-card w3-margin-bottom w3-display-container @settingsdataclassselect ">
+                <li class="fielddata w3-card w3-margin-bottom w3-display-container @settingsdataclassselect ">
 
                     <div class="w3-container">
 

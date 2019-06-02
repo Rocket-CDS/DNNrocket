@@ -1,67 +1,118 @@
 ﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
-@using System
-@using System.Linq
-@using System.Xml
 @using Simplisity;
+@using RocketSettings;
 @using DNNrocketAPI.Componants;
 @using DNNrocket.AppThemes;
+@using System.IO;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+
 
 @{
     var appThemeData = (AppThemeData)Model.List.First();
 }
 
-@if (appThemeData.AppName == "")
-{
 
-    <span class="w3-section simplisity_buttons">
-    </span>
+<div class="w3-row tabmenu">
+    <div class="w3-col w3-bottombar w3-hover-theme w3-padding tablink menu1 " onclick="openSection(event, 'menu1');" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.dashboard")</div>
+    <div class="w3-col w3-bottombar w3-hover-theme w3-padding tablink menu2 " onclick="openSection(event, 'menu2');" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.fields")</div>
+    <div class="w3-col w3-bottombar w3-hover-theme w3-padding tablink menu3 " onclick="openSection(event, 'menu3');" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.editor")</div>
+    <div class="w3-col w3-bottombar w3-hover-theme w3-padding tablink menu4 " onclick="openSection(event, 'menu4');" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.images")</div>
+    <div class="w3-col w3-bottombar w3-hover-theme w3-padding tablink menu5 " onclick="openSection(event, 'menu5');" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.resx")</div>
+    <div class="w3-col w3-bottombar w3-hover-theme w3-padding tablink menu6 " onclick="openSection(event, 'menu6');" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.css")</div>
+    <div class="w3-col w3-bottombar w3-hover-theme w3-padding tablink menu7 " onclick="openSection(event, 'menu7');" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.js")</div>
+</div>
 
-    <h2>@ResourceKey("AppThemes.builder")</h2>
 
-    <div class="w3-row-padding w3-padding">
-        <div class="w3-col m1">
-            &nbsp;
-        </div>
-        <div class="w3-col m3">
-            <div class="w3-panel w3-leftbar w3-border-indigo w3-theme-l4 w3-center w3-hover-shadow simplisity_click" s-cmd="rocketapptheme_actiontype" s-post="" s-fields="actiontype:new,interfacekey:dashboard" style="height:200px;cursor: pointer">
-                <h1 class="w3-theme">@ResourceKey("AppThemes.new")</h1>
-                <p>@ResourceKey("AppThemes.newmsg")</p>
-            </div>
-        </div>
-        <div class="w3-col m3">
-            <div class="w3-panel w3-leftbar w3-border-indigo w3-theme-l4 w3-center w3-hover-shadow simplisity_click" s-cmd="rocketapptheme_actiontype" s-post="" s-fields="actiontype:version,interfacekey:dashboard" style="height:200px;cursor: pointer">
-                <h1 class="w3-theme">@ResourceKey("AppThemes.version")</h1>
-                <p>@ResourceKey("AppThemes.versionmsg")</p>
-            </div>
-        </div>
-        <div class="w3-col m3">
-            <div class="w3-panel w3-leftbar w3-border-indigo w3-theme-l4 w3-center w3-hover-shadow simplisity_click" s-cmd="rocketapptheme_actiontype" s-post="" s-fields="actiontype:edit,interfacekey:dashboard" style="height:200px;cursor: pointer">
-                <h1 class="w3-theme">@ResourceKey("AppThemes.edit")</h1>
-                <p>@ResourceKey("AppThemes.editmsg")</p>
-            </div>
-        </div>
-        <div class="w3-col m2">
-            &nbsp;
-        </div>
-    </div>
+<div id="menu1" class="w3-container w3-margin tabsection" style="display:block;">
+    @RenderTemplate("details.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+</div>
 
-}
-else
-{
-    @RenderTemplate("AppThemeDetails.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", Model)
-}
+<div id="menu2" class="w3-container tabsection" style="display:none">
+    @RenderTemplate("fieldeditor.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+</div>
+
+<div id="menu3" class="w3-container tabsection" style="display:none">
+    <!--
+    RenderTemplate("editor.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+
+    -->
+</div>
+
+<div id="menu4" class="w3-container tabsection" style="display:none">
+    <!--
+    RenderTemplate("images.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+
+    -->
+</div>
+
+<div id="menu5" class="w3-container tabsection" style="display:none">
+    <!--
+    RenderTemplate("resx.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+
+    -->
+</div>
+
+<div id="menu6" class="w3-container tabsection" style="display:none">
+    <!--
+    RenderTemplate("editorcss.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+
+    -->
+</div>
+
+<div id="menu7" class="w3-container tabsection" style="display:none">
+    <!--
+    RenderTemplate("editorjs.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+    -->
+</div>
+
+
 
 
 <script>
+    $(document).ready(function () {
+        $('.menu1').addClass("w3-theme");
+        $('.menu1').addClass("w3-border-black");
 
-            $(document).ready(function () {
+        $('.simplisity_buttonpanel').empty();
 
-                simplisity_setCookieValue('editlang', '@appThemeData.AppCultureCode')
+        menu_buttons('menu1');
+    });
 
-            });
+    function menu_buttons(menuname) {        
+        $('.menu_buttons').each(function (index) {
+            $(this).hide();
+            $(this).appendTo('.simplisity_buttonpanel');
+        });
+
+        $('.' + menuname + '_buttons').show();
+    }
+
+
+    function openSection(evt, sectionName) {
+
+        var i, x, tablinks;
+        x = document.getElementsByClassName("tabsection");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-theme", "");
+            tablinks[i].className = tablinks[i].className.replace(" w3-border-black", "");
+        }
+        document.getElementById(sectionName).style.display = "block";
+
+        $(evt.currentTarget).addClass("w3-theme");
+        $(evt.currentTarget).addClass("w3-border-black");
+
+        menu_buttons(sectionName);
+
+    }
+
+
 
 </script>

@@ -45,7 +45,8 @@ namespace RocketSettings
             {
                 if (parentitemid > 0)
                 {
-                    _settingsData = new SettingsData(parentitemid, langRequired, _rocketInterface.EntityTypeCode);
+                    var guidkey = "parentitemid" + parentitemid;
+                    _settingsData = new SettingsData(guidkey, langRequired, _rocketInterface.EntityTypeCode);
                 }
                 else
                 {

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace DNNrocket.AppThemes
 {
@@ -15,10 +16,12 @@ namespace DNNrocket.AppThemes
     {
         private List<Object> _dataList;
         private List<Object> _versionList;
+        private List<Object> _fields;
+        private List<Object> _resxList;
+        
         private int _userId;
-        public SimplisityRecord userRecord;
+        public SimplisityInfo configInfo;
         private AppTheme _appTheme;
-
 
         public AppThemeData(int userId, string appThemesRelPath, string langRequired = "")
         {
@@ -28,35 +31,36 @@ namespace DNNrocket.AppThemes
             AppThemesRelPath = appThemesRelPath;
             AppThemesMapPath = DNNrocketUtils.MapPath(AppThemesRelPath);
             AdminAppThemesRelPath = appThemesRelPath + "/Admin";
-            AdminAppThemesMapPath = DNNrocketUtils.MapPath(AdminAppThemesRelPath);            
+            AdminAppThemesMapPath = DNNrocketUtils.MapPath(AdminAppThemesRelPath);
+
+            configInfo = new SimplisityInfo();
 
             Populate();
-            PopulateList();
-            PopulateVersionList();
         }
 
         public void Populate()
         {
-            var objCtrl = new DNNrocketController();
-            userRecord = objCtrl.GetRecordByGuidKey(-1,-1, "APPTHEMECONFIG", "apptheme_" + _userId, _userId.ToString());
-            if (userRecord == null)
-            {
-                userRecord = new SimplisityRecord();
-                userRecord.UserId = _userId;
-                userRecord.TypeCode = "APPTHEMECONFIG";
-                userRecord.SetXmlProperty("genxml/appthemesmappath", AppThemesMapPath);
-                userRecord.SetXmlProperty("genxml/appthemesrelpath", AppThemesRelPath);
-                if (_userId > 0)
-                {
-                    userRecord = objCtrl.SaveRecord("apptheme_" + _userId, "APPTHEMECONFIG", userRecord);
-                }
-            }
-            AppCultureCode = userRecord.GetXmlProperty("genxml/hidden/appculturecode");
-            if (AppCultureCode == "") AppCultureCode = CultureCode;  // default to current culture.
+              
+            if (AppCultureCode == "") AppCultureCode = CultureCode;  
             _appTheme = new AppTheme(AppName, AppCultureCode, VersionFolder);
+
+            PopulateFields();
+            PopulateResx();
+            PopulateAppThemeList();
+            PopulateVersionList();
+
         }
 
-        public void PopulateList()
+        public void PopulateFields()
+        {
+            _fields = new List<Object>();
+        }
+        public void PopulateResx()
+        {
+            _resxList = new List<Object>();
+        }
+
+        public void PopulateAppThemeList()
         {
             _dataList = new List<Object>();
 
@@ -67,7 +71,6 @@ namespace DNNrocket.AppThemes
                 var appTheme = new AppTheme(dr.Name);
                 _dataList.Add(appTheme);
             }
-
 
         }
 
@@ -91,39 +94,9 @@ namespace DNNrocket.AppThemes
             }
         }
 
-        public void DeleteConfig()
-        {
-            var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("apptheme_" + _userId, "APPTHEMECONFIG", CultureCode, -1, -1, true);
-            if (info != null)
-            {
-                objCtrl.Delete(info.ItemID);
-                Populate();
-                PopulateList();
-                PopulateVersionList();
-            }
-        }
-
-        public void Save()
-        {
-            if (_userId > 0)
-            {
-                var objCtrl = new DNNrocketController();
-                AppName = GeneralUtils.AlphaNumeric(AppName);
-                userRecord = objCtrl.SaveRecord("apptheme_" + _userId, "APPTHEMECONFIG", userRecord);
-                _appTheme.SaveTheme();
-            }
-
-            Populate();
-            PopulateList();
-            PopulateVersionList();
-
-        }
-
         public void DeleteTheme()
         {
             _appTheme.DeleteTheme();
-            DeleteConfig();
         }
 
         public void DeleteVersion()
@@ -136,8 +109,6 @@ namespace DNNrocket.AppThemes
                 VersionFolder = (string) VersionList.First();
             }
             Populate();
-            PopulateList();
-            PopulateVersionList();
         }
 
         public void CreateNewVersion(double increment = 1)
@@ -154,55 +125,8 @@ namespace DNNrocket.AppThemes
                 {
                     VersionFolder = (string)VersionList.First();
                 }
-                _appTheme .SaveTheme();
             }
         }
-
-        public void SaveToDisk()
-        {
-            if (AppName != "")
-            {
-                var objCtrl = new DNNrocketController();
-
-                var xmlMeta = FileUtils.ReadFile(AppTheme.AppThemeFolderMapPath + "\\Meta.xml");
-                var mInfo = new SimplisityInfo();
-                if (xmlMeta != "") mInfo.XMLData = xmlMeta;
-
-                // Update detail fields
-                mInfo.SetXmlProperty("genxml/textbox/appname", AppTheme.AppName);
-                mInfo.SetXmlProperty("genxml/hidden/logo", AppTheme.Logo);
-                mInfo.Lang = AppTheme.AppCultureCode;
-
-                mInfo.SetXmlProperty("genxml/lang-" + AppTheme.AppCultureCode + "/genxml/textbox/displayname", AppTheme.DisplayName);
-                mInfo.SetXmlProperty("genxml/lang-" + AppTheme.AppCultureCode + "/genxml/textbox/summary", AppTheme.Summary);
-
-                // Update Fields
-                mInfo.SetXmlProperty("genxml/fields","");
-                var settingsData = new SettingsData(AppTheme.Info.ItemID, AppTheme.AppCultureCode, "APPTHEMEFIELDS");
-                mInfo.AddXmlNode(settingsData.ExportData(), "root", "genxml/fields");
-
-                // Update Image
-
-                // Update RESX
-
-
-                // Save to XML file
-                if (!Directory.Exists(AppTheme.AppThemeFolderMapPath)) Directory.CreateDirectory(AppTheme.AppThemeFolderMapPath);
-                FileUtils.SaveFile(AppTheme.AppThemeFolderMapPath + "\\Meta.xml", mInfo.XMLData);
-            }
-
-            Populate();
-            PopulateList();
-            PopulateVersionList();
-        }
-        public void SaveAppTheme()
-        {
-
-            Populate();
-            PopulateList();
-            PopulateVersionList();
-        }
-
 
         #region "properties"
 
@@ -215,7 +139,7 @@ namespace DNNrocket.AppThemes
         {
             get
             {
-                var rtnV = userRecord.GetXmlProperty("genxml/select/versionfolder");
+                var rtnV = configInfo.GetXmlProperty("genxml/select/versionfolder");
                 if (rtnV == "") rtnV = "1.0";
                 return rtnV;
             }
@@ -223,7 +147,7 @@ namespace DNNrocket.AppThemes
             {
                 if (value != "")
                 {
-                    userRecord.SetXmlProperty("genxml/select/versionfolder", value);
+                    configInfo.SetXmlProperty("genxml/select/versionfolder", value);
                 }
             }
         }
@@ -231,33 +155,33 @@ namespace DNNrocket.AppThemes
         {
             get
             {
-                return userRecord.GetXmlProperty("genxml/hidden/ationtype");
+                return configInfo.GetXmlProperty("genxml/hidden/ationtype");
             }
             set
             {
-                userRecord.SetXmlProperty("genxml/hidden/ationtype", value);
+                configInfo.SetXmlProperty("genxml/hidden/ationtype", value);
             }
         }
         public string AppName
         {
             get
             {
-                return userRecord.GetXmlProperty("genxml/textbox/appname");
+                return configInfo.GetXmlProperty("genxml/textbox/appname");
             }
             set
             {
-                userRecord.SetXmlProperty("genxml/textbox/appname", value);
+                configInfo.SetXmlProperty("genxml/textbox/appname", value);
             }
         }
         public string AppCultureCode
         {
             get
             {
-                return userRecord.GetXmlProperty("genxml/hidden/appculturecode");
+                return configInfo.GetXmlProperty("genxml/hidden/appculturecode");
             }
             set
             {
-                userRecord.SetXmlProperty("genxml/hidden/appculturecode", value);
+                configInfo.SetXmlProperty("genxml/hidden/appculturecode", value);
             }
         }
 
@@ -277,6 +201,15 @@ namespace DNNrocket.AppThemes
         public AppTheme AppTheme
         {
             get { return _appTheme; }
+        }
+        public List<object> Fields
+        {
+            get { return _fields; }
+        }
+
+        public List<object> ResxList
+        {
+            get { return _resxList; }
         }        
 
         #endregion

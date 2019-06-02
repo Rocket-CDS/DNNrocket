@@ -22,7 +22,13 @@ namespace DNNrocket.AppThemes
             paramCmd = paramCmd.ToLower();
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _postInfo = postInfo;
-            _appThemeData = new AppThemeData(DNNrocketUtils.GetCurrentUserId(), "/DesktopModules/DNNrocket/AppThemes", langRequired);
+
+            var cacheKey = "appthemedata_" + DNNrocketUtils.GetCurrentUserId();
+            _appThemeData = (AppThemeData)CacheUtils.GetCache(cacheKey);
+            if (_appThemeData == null)
+            {
+                _appThemeData = new AppThemeData(DNNrocketUtils.GetCurrentUserId(), "/DesktopModules/DNNrocket/AppThemes", langRequired);
+            }
 
             if (DNNrocketUtils.IsSuperUser())
             {
@@ -69,10 +75,6 @@ namespace DNNrocket.AppThemes
                         SaveDetails();
                         strOut = GetDisplay();
                         break;
-                    case "rocketapptheme_deleteconfig":
-                        _appThemeData.DeleteConfig();
-                        strOut = GetDisplay();
-                        break;
                     case "rocketapptheme_deletetheme":
                         _appThemeData.DeleteTheme();
                         strOut = GetDisplay();
@@ -88,9 +90,9 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_culturecodeselected":
                         strOut = CultureCodeSelected();
                         break;
-                    case "rocketapptheme_savemeta":
-                        strOut = "";
-                        _appThemeData.SaveToDisk();
+                    case "rocketapptheme_addfield":
+                        _appThemeData.Fields.Add(new SimplisityInfo());
+                        strOut = GetDisplay();
                         break;
                 }
             }
@@ -98,6 +100,8 @@ namespace DNNrocket.AppThemes
             {
                 strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
             }
+
+            CacheUtils.SetCache(cacheKey, _appThemeData, "persist");
 
             return ReturnString(strOut);
         }
@@ -194,7 +198,7 @@ namespace DNNrocket.AppThemes
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("AppThemesMapPath", _appThemeData.AppThemesMapPath);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData.AppTheme, passSettings);
+                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData, passSettings);
             }
             catch (Exception ex)
             {
@@ -210,7 +214,7 @@ namespace DNNrocket.AppThemes
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("AppThemesMapPath", _appThemeData.AppThemesMapPath);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData.AppTheme, passSettings);
+                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData, passSettings);
             }
             catch (Exception ex)
             {
@@ -226,7 +230,7 @@ namespace DNNrocket.AppThemes
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("AppThemesMapPath", _appThemeData.AppThemesMapPath);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData.AppTheme, passSettings);
+                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData, passSettings);
             }
             catch (Exception ex)
             {
@@ -257,7 +261,6 @@ namespace DNNrocket.AppThemes
             {
                 var strOut = "";
                 _appThemeData.ActionType = _postInfo.GetXmlProperty("genxml/hidden/actiontype").ToLower();
-                _appThemeData.Save();
 
                 var objCtrl = new DNNrocketController();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeSelect.cshtml", _appThemeData.AdminAppThemesRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
@@ -282,7 +285,6 @@ namespace DNNrocket.AppThemes
                 _appThemeData.AppName = appThemeName;
                 _appThemeData.PopulateVersionList();
                 _appThemeData.VersionFolder = _appThemeData.LatestVersionFolder;
-                _appThemeData.Save();
 
                 if (_appThemeData.ActionType == "version")
                 {
@@ -308,7 +310,6 @@ namespace DNNrocket.AppThemes
             {
                 var cultureCode = _postInfo.GetXmlProperty("genxml/hidden/culturecode");
                 _appThemeData.AppCultureCode = cultureCode;
-                _appThemeData.Save();
                 return ""; // reload to return to correct page. (s-reload='true')
             }
             catch (Exception ex)
@@ -326,7 +327,6 @@ namespace DNNrocket.AppThemes
                 var appThemeName = _postInfo.GetXmlProperty("genxml/hidden/apptheme");
                 _appThemeData.AppName = appThemeName;
                 _appThemeData.PopulateVersionList();
-                _appThemeData.Save();
 
                 var objCtrl = new DNNrocketController();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeData.AdminAppThemesRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
@@ -344,10 +344,7 @@ namespace DNNrocket.AppThemes
         {
             _appThemeData.AppCultureCode = _postInfo.GetXmlProperty("genxml/hidden/appculturecode");
             _appThemeData.AppName  = _postInfo.GetXmlProperty("genxml/textbox/appname");
-            _appThemeData.AppTheme.DisplayName = _postInfo.GetXmlProperty("genxml/lang/genxml/textbox/displayname");
-            _appThemeData.AppTheme.Summary = _postInfo.GetXmlProperty("genxml/lang/genxml/textbox/summary");
             _appThemeData.VersionFolder = _postInfo.GetXmlProperty("genxml/select/versionfolder");
-            _appThemeData.Save();
         }
 
     }

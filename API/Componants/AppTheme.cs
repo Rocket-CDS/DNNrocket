@@ -11,12 +11,6 @@ namespace DNNrocketAPI.Componants
 
     public class AppTheme
     {
-        private Dictionary<string, string> _templates;
-        private Dictionary<string, string> _cssPath;
-        private Dictionary<string, string> _imgPath;
-        private Dictionary<string, string> _resxPath;
-
-        private SimplisityInfo _fields;
 
         public AppTheme(string appName, string versionFolder)
         {
@@ -61,39 +55,6 @@ namespace DNNrocketAPI.Componants
             var logoMapPath = AppThemeFolderMapPath + "\\Logo.png";
             Logo = AppThemeFolder + "/Logo.png";
             if (!File.Exists(logoMapPath)) Logo = "";
-
-            var xmlMeta = FileUtils.ReadFile(AppThemeFolderMapPath + "\\Meta.xml");            
-            Info = new SimplisityInfo(AppCultureCode);
-            Info.XMLData = xmlMeta;
-
-        }
-
-        public List<SimplisityInfo> ListFields()
-        {
-            return Info.GetList("settingsdata");
-        }
-
-
-        public void SaveTheme()
-        {
-            if (AppName != "")
-            {
-                var xmlMeta = FileUtils.ReadFile(AppThemeFolderMapPath + "\\Meta.xml");
-                var mInfo = new SimplisityInfo();
-                if (xmlMeta != "") mInfo.XMLData = xmlMeta;
-
-                // Update detail fields
-                mInfo.SetXmlProperty("genxml/textbox/appname", AppName);
-                mInfo.SetXmlProperty("genxml/hidden/logo", Logo);
-                mInfo.Lang = AppCultureCode;
-
-                mInfo.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/displayname", DisplayName);
-                mInfo.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/summary", Summary);
-
-                // Save to XML file
-                if (!Directory.Exists(AppThemeFolderMapPath)) Directory.CreateDirectory(AppThemeFolderMapPath);
-                FileUtils.SaveFile(AppThemeFolderMapPath + "\\Meta.xml", mInfo.XMLData);
-            }
         }
 
         public void DeleteTheme()
@@ -147,7 +108,7 @@ namespace DNNrocketAPI.Componants
         #region "properties"
 
         public string AppName { get; private set; }
-        public SimplisityInfo Info { get; private set; }
+        public SimplisityInfo DetailsInfo { get; set; }
         public string Logo { get; private set; }
         public string AppCultureCode { get; set; }
         public string AppFolder { get; set; }
@@ -161,47 +122,6 @@ namespace DNNrocketAPI.Componants
         public string ActiveEditTemplate { get; set; }
         public string ActivePageHeaderTemplate { get; set; }
 
-
-        public string DisplayName
-        {
-            get
-            {
-                var appCultureCode = AppCultureCode;
-                if (appCultureCode == "") appCultureCode = "en-US";
-                return Info.GetXmlProperty("genxml/lang-" + appCultureCode + "/genxml/textbox/displayname");
-            }
-            set
-            {
-                Info.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/displayname", value);
-            }
-        }
-        public string Summary
-        {
-            get
-            {
-                var appCultureCode = AppCultureCode;
-                if (appCultureCode == "") appCultureCode = "en-US";
-                return Info.GetXmlProperty("genxml/lang-" + appCultureCode + "/genxml/textbox/summary");
-            }
-            set
-            {
-                Info.SetXmlProperty("genxml/lang-" + AppCultureCode + "/genxml/textbox/summary", value);
-            }
-        }
-
-        public SimplisityInfo Fields { get; set; }
-        public SimplisityInfo Images { get; set; }
-        public SimplisityInfo Resx { get; set; }
-        public Dictionary<string,string> ResxDict {
-            get {
-                var rtnDict = new Dictionary<string, string>();
-                foreach (var r in Resx.GetList("settingsdata"))
-                {
-                    rtnDict.Add(r.GetXmlProperty("genxml/textbox/name"), r.GetXmlProperty("genxml/textbox/value"));
-                }
-                return rtnDict;
-            }
-        }
 
         #endregion
 

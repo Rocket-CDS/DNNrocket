@@ -1,24 +1,26 @@
 ﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
-@using DNNrocketAPI;
-@using System
 @using System.Linq
-@using System.Xml
-@using Simplisity;
-@using DNNrocketAPI.Componants;
-@using RocketMod;
+@using DNNrocket.AppThemes;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 @{
-    var appTheme = (AppTheme)Model.List.First();
+    var appThemeData = (AppThemeData)Model.List.First();
+    var appTheme = appThemeData.AppTheme;
 }
 
 <span class="w3-section simplisity_buttons">
-    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_dashboard" s-track="true" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdBackButton")</a>
     <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click editorsavebutton" s-cmd="rocketapptheme_save" s-before="copyeditorcontent" s-fields="theme:@Model.GetSetting("theme"),interfacekey:editor" s-post="#editorpanel">@ResourceKey("DNNrocket.cmdSaveButton")</span>
     <label>@appTheme.AppName (@appTheme.AppVersionFolder):  &nbsp;@ResourceKey("Appthemes.systemlevel")</label>
 </span>
+
+@{
+    Model.Settings.Remove("menunumber");
+    Model.Settings.Remove("parentitemid");
+    Model.Settings.Add("menunumber", "3");
+    Model.Settings.Add("parentitemid", appThemeData.configInfo.ItemID.ToString());
+}
 
 @RenderTemplate("AppThemeMenu.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", Model, "1.0")
 
