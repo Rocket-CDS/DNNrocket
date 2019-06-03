@@ -174,7 +174,7 @@
                 <tr>
                     <td><i>s-stop</i></td>
                     <td>Stop Call.  If you want to stop the call to the server you can create an attribute with a value of 'stop' on the call element, using jQuery or JS.  This is usually used for validation, where the s-before function has found a problem and wants to stop the call to the server.  Simplisity will clear the s-stop when the call is cancelled.</td>
-                </tr>                
+                </tr>
 
             </table>
         </div>
@@ -192,9 +192,9 @@
                 Options can also be passed.  {systemprovider: 'dnnrocket',usehistory: false,activatepanel: true, overlayclass: 'w3-overlay'}.<br />
                 <br />
                 <i>systemprovider:</i> You can pass a default systemprovider to use if non are specifiecd on the simplisity_panel.  Very often simplisity is used for a single systemprovider page, this stops the need to specify the systemprovider on each simplisity_panel.<br />
-<i>usehistory:</i> Do not use any history on page refresh.  Simplisity keeps a history of the last action, when the page is refreshed the last action is rerun to leave the users in the same position they refreshed the page in.<br />
-<i>activatepanel:</i> Activate the simplsity_panels.  Default:true<br />
-            <i>overlayclass:</i> Defines a overlayclass to use, for when the server is called. Default:'w3-overlay'<br />
+                <i>usehistory:</i> Do not use any history on page refresh.  Simplisity keeps a history of the last action, when the page is refreshed the last action is rerun to leave the users in the same position they refreshed the page in.<br />
+                <i>activatepanel:</i> Activate the simplsity_panels.  Default:true<br />
+                <i>overlayclass:</i> Defines a overlayclass to use, for when the server is called. Default:'w3-overlay'<br />
             </p>
             <i>Exmaple:</i>
             $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { usehistory: false });
@@ -258,7 +258,7 @@
                 <tr>
                     <td>simplisity_buttonpanel</td>
                     <td>The button menu element.  Content from the "simplisity_buttons" element will be moved into this html element when the html content is returned from the server.</td>
-                </tr>                
+                </tr>
                 <tr>
                     <td>simplisity_click</td>
                     <td>Apply a Simplisity click event onto an element.</td>
@@ -364,7 +364,7 @@
             </table>
 
         </div>
-        
+
         <div class="w3-container" id="fielddata" style="margin-top:75px">
             <h1 class="w3-xxxlarge w3-text-teal"><b>Field Data</b></h1>
             <hr style="width:50px;border:5px solid teal" class="w3-round">
@@ -394,6 +394,36 @@
                 <tr>
                     <td>simplisity_fileuploadlist</td>
                     <td>This field keeps a list of the fields which need to be uploaded.  They are then passed and processed server side.</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="w3-container" id="fielddata" style="margin-top:75px">
+            <h1 class="w3-xxxlarge w3-text-teal"><b>Utility Functions</b></h1>
+            <hr style="width:50px;border:5px solid teal" class="w3-round">
+            <p>Simplisity has some general functions which can be used.</p>
+
+            <table class="w3-table w3-bordered">
+                <tr class="w3-teal">
+                    <th>Function Name</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>simplisity_encode(value)</td>
+                    <td>Encode data into decimal format, this is used if you need to ensure special chars do not effect operation.  "decimalchar.decimalchar.decimalchar...."</td>
+                </tr>
+                <tr>
+                    <td>simplisity_decode(value)</td>
+                    <td>Decode value from decimal encode format back to normal string.</td>
+                </tr>
+                <tr>
+                    <td>simplisity_getCookieValue(cookiename)</td>
+                    <td>Get Cookie</td>
+                </tr>
+                <tr>
+                    <td>simplisity_setCookieValue(cookiename,cookievalue)</td>
+                    <td>Set Cookie</td>
                 </tr>
             </table>
 

@@ -16,42 +16,43 @@
 
 #Create .Net Standard Project
 
-1. Create new project  "Class Library (.Net Standard)" under "~\DesktopModules\DNNrocket" folder.
+1. Create new project  "Class Library (.Net Standard)" under "~\DesktopModules\<YourCompany>" folder.
 2. Set namespace and assembly name to appropriate naming convension.
 3. Set post build events:
 
-copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(ProjectDir)..\..\..\bin\$(TargetFileName)"
-copy "$(ProjectDir)$(OutDir)$(AssemblyName).pdb" "$(ProjectDir)..\..\..\bin\$(AssemblyName).pdb"
+copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(ProjectDir)..\\..\\..\bin\$(TargetFileName)"
+copy "$(ProjectDir)$(OutDir)$(AssemblyName).pdb" "$(ProjectDir)..\\..\\..\bin\$(AssemblyName).pdb"
 
-4. Rename first class to "startconnect" and rename the file to "startconnect.cs".  (by convension, not required.)
-5. startconnect should inherit from ": DNNrocketAPI.APInterface"
-6. Implement abstract class.
-7. Add process code: EXAMPLE
+4. Add reference to DNNrocketAPI and Simplisity.
+5. Rename first class to "startconnect" and rename the file to "startconnect.cs".  (by convension, not required.)
+6. startconnect should inherit from ": DNNrocketAPI.APInterface"
+7. Implement abstract class.
+8. Add process code: EXAMPLE
 
-
-        public override string ProcessCommand(string paramCmd, SimplisityInfo sInfo, string userHostAddress, string editlang = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string langRequired = "")
         {
-            //CacheUtils.ClearAllCache();
-
-            var controlRelPath = "/DesktopModules/DNNrocket/TestList";
+            var controlRelPath = "/DesktopModules/DNNrocketModules/RocketStuff";
 
             var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [testform]";
 
             switch (paramCmd)
             {
-                case "testlist_get":
-                    strOut = "get data";
+                case "rocketcommerce_getstuff":
+                    strOut = "get stuff";
                     break;
                 default:
                     strOut = "default path";
                     break;
             }
-            return strOut;
+
+
+            return DNNrocketUtils.ReturnString(strOut);
+
         }
 
 
-8. Add reference to DNNrocketAPI and Simplisity.
-9. Add folders "App_LocalResources" and "Themes\config-w3\default"
+
+9. Add folders "App_LocalResources" and "Themes\config-w3\1.0\default"
 10. Add resx file to "App_LocalResources"
 
 

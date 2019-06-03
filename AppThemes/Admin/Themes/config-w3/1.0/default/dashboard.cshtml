@@ -76,12 +76,19 @@
 
 <script>
     $(document).ready(function () {
-        $('.menu1').addClass("w3-theme");
-        $('.menu1').addClass("w3-border-black");
 
         $('.simplisity_buttonpanel').empty();
 
-        menu_buttons('menu1');
+        menuname = simplisity_getCookieValue('apptheme_menuname');
+        if (typeof menuname === 'undefined' || menuname === '') {
+            menuname = 'menu1';
+        }
+
+        $('.' + menuname).trigger("click");
+
+        $('.' + menuname).addClass("w3-theme");
+        $('.' + menuname).addClass("w3-border-black");
+
     });
 
     function menu_buttons(menuname) {
@@ -90,6 +97,7 @@
             $(this).appendTo('.simplisity_buttonpanel');
         });
 
+        simplisity_setCookieValue('apptheme_menuname', menuname);
         $('.' + menuname + '_buttons').show();
     }
 
