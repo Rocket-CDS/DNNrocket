@@ -26,49 +26,51 @@
     <div class="w3-col w3-bottombar w3-hover-theme w3-padding tablink menu7 " onclick="openSection(event, 'menu7');" style="width:12%;cursor: pointer"><i class="fab fa-readme"></i>&nbsp;@ResourceKey("AppThemes.js")</div>
 </div>
 
+<div id="apptheme_datasection">
 
-<div id="menu1" class="w3-container w3-margin tabsection" style="display:block;">
-    @RenderTemplate("details.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+    <div id="menu1" class="w3-container w3-margin tabsection" style="display:block;">
+        @RenderTemplate("details.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+    </div>
+
+    <div id="menu2" class="w3-container tabsection" style="display:none">
+        @RenderTemplate("fieldeditor.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+    </div>
+
+    <div id="menu3" class="w3-container tabsection" style="display:none">
+        <!--
+        RenderTemplate("editor.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+
+        -->
+    </div>
+
+    <div id="menu4" class="w3-container tabsection" style="display:none">
+        <!--
+        RenderTemplate("images.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+
+        -->
+    </div>
+
+    <div id="menu5" class="w3-container tabsection" style="display:none">
+        <!--
+        RenderTemplate("resx.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+
+        -->
+    </div>
+
+    <div id="menu6" class="w3-container tabsection" style="display:none">
+        <!--
+        RenderTemplate("editorcss.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+
+        -->
+    </div>
+
+    <div id="menu7" class="w3-container tabsection" style="display:none">
+        <!--
+        RenderTemplate("editorjs.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
+        -->
+    </div>
+
 </div>
-
-<div id="menu2" class="w3-container tabsection" style="display:none">
-    @RenderTemplate("fieldeditor.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
-</div>
-
-<div id="menu3" class="w3-container tabsection" style="display:none">
-    <!--
-    RenderTemplate("editor.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
-
-    -->
-</div>
-
-<div id="menu4" class="w3-container tabsection" style="display:none">
-    <!--
-    RenderTemplate("images.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
-
-    -->
-</div>
-
-<div id="menu5" class="w3-container tabsection" style="display:none">
-    <!--
-    RenderTemplate("resx.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
-
-    -->
-</div>
-
-<div id="menu6" class="w3-container tabsection" style="display:none">
-    <!--
-    RenderTemplate("editorcss.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
-
-    -->
-</div>
-
-<div id="menu7" class="w3-container tabsection" style="display:none">
-    <!--
-    RenderTemplate("editorjs.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes\\Admin", "config-w3", Model, "1.0")
-    -->
-</div>
-
 
 
 
@@ -82,7 +84,7 @@
         menu_buttons('menu1');
     });
 
-    function menu_buttons(menuname) {        
+    function menu_buttons(menuname) {
         $('.menu_buttons').each(function (index) {
             $(this).hide();
             $(this).appendTo('.simplisity_buttonpanel');

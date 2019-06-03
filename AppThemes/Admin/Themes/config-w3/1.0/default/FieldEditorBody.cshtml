@@ -28,7 +28,7 @@
             @{
                 var lp3 = 0;
             }
-            @foreach (SimplisityInfo i in appThemeData.Fields)
+            @foreach (SimplisityInfo i in appThemeData.GetFields(appThemeData.AppCultureCode))
             {
                 lp3 += 1;
 

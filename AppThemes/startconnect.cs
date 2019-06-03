@@ -13,7 +13,8 @@ namespace DNNrocket.AppThemes
         private static CommandSecurity _commandSecurity;
         private static DNNrocketInterface _rocketInterface;
         private static AppThemeData _appThemeData;
-        private static SimplisityInfo _systemInfo;        
+        private static SimplisityInfo _systemInfo;
+        private static string _editLang;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string langRequired = "")
         {
@@ -23,11 +24,14 @@ namespace DNNrocket.AppThemes
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _postInfo = postInfo;
 
+            _editLang = langRequired;
+            if (_editLang == "") _editLang = DNNrocketUtils.GetEditCulture();
+
             var cacheKey = "appthemedata_" + DNNrocketUtils.GetCurrentUserId();
             _appThemeData = (AppThemeData)CacheUtils.GetCache(cacheKey);
             if (_appThemeData == null)
             {
-                _appThemeData = new AppThemeData(DNNrocketUtils.GetCurrentUserId(), "/DesktopModules/DNNrocket/AppThemes", langRequired);
+                _appThemeData = new AppThemeData(DNNrocketUtils.GetCurrentUserId(), "/DesktopModules/DNNrocket/AppThemes", _editLang);
             }
 
             if (DNNrocketUtils.IsSuperUser())
@@ -41,6 +45,23 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_selecttheme":
                         strOut = SelectAppTheme();
                         break;
+
+                    case "rocketapptheme_addfield":
+                        _appThemeData.AddFieldRow();
+                        strOut = GetDisplay();
+                        break;
+                    case "rocketapptheme_resxfield":
+                        _appThemeData.AddResxRow();
+                        strOut = GetDisplay();
+                        break;
+                    case "rocketapptheme_save":                        
+                        _appThemeData.AddDataInfo(_postInfo, _editLang);
+                        _appThemeData.Save();
+                        strOut = GetDisplay();
+                        break;
+
+
+
                     case "rocketapptheme_editor":
                         strOut = GetEditor();
                         break;
@@ -59,7 +80,7 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_getjs":
                         strOut = GetEditorFile("js");
                         break;
-                    case "rocketapptheme_save":
+                    case "rocketapptheme_savetemplate":
                         strOut = SaveTemplate();
                         break;
                     case "rocketapptheme_upload":
@@ -89,10 +110,6 @@ namespace DNNrocket.AppThemes
                         break;
                     case "rocketapptheme_culturecodeselected":
                         strOut = CultureCodeSelected();
-                        break;
-                    case "rocketapptheme_addfield":
-                        _appThemeData.Fields.Add(new SimplisityInfo());
-                        strOut = GetDisplay();
                         break;
                 }
             }
@@ -265,7 +282,7 @@ namespace DNNrocket.AppThemes
                 var objCtrl = new DNNrocketController();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeSelect.cshtml", _appThemeData.AdminAppThemesRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
                 var passSettings = _postInfo.ToDictionary();
-                strOut = DNNrocketUtils.RazorList(razorTempl, _appThemeData.List, passSettings);
+                strOut = DNNrocketUtils.RazorList(razorTempl, _appThemeData.AppThemesList, passSettings);
 
                 return strOut;
             }

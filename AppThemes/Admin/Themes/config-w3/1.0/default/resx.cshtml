@@ -33,8 +33,8 @@
 <span class="w3-section simplisity_buttons">
     <a class="w3-button w3-pale-yellow w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdCancelButton")</a>
     <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="tabid:-1,moduleid:-1,parentitemid:@settingsData.Info.ParentItemId,selecteditemid:@settingsData.Info.ItemID,interfacekey:resx">@ResourceKey("DNNrocket.cmdAddButton")</a>
-    <span class="w3-button w3-green w3-padding-8 simplisity_click" s-after="SaveToMetaXml" s-cmd="rocketsettings_save" s-fields="tabid:-1,moduleid:-1,parentitemid:@settingsData.Info.ParentItemId,selecteditemid:@settingsData.Info.ItemID,interfacekey:resx" s-post="" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#pluginsettings" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    <span class="w3-button w3-green w3-padding-8 simplisity_click" s-after="SaveToMetaXml" s-cmd="rocketsettings_save" s-fields="tabid:-1,moduleid:-1,parentitemid:@settingsData.Info.ParentItemId,selecteditemid:@settingsData.Info.ItemID,interfacekey:resx" s-post="" s-list=".resxdata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#pluginresx" s-removelist=".resxdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 
 @{
@@ -54,7 +54,7 @@
 
     <div class="w3-row w3-margin">
 
-        <table id="pluginsettings" class="w3-table-all">
+        <table id="pluginresx" class="w3-table-all">
 
             <tr>
                 <th class="w3-quarter">@ResourceKey("system.name")&nbsp;(*.*)</th>
@@ -69,7 +69,7 @@
             {
                 lp3 += 1;
 
-                <tr class="settingsdata">
+                <tr class="resxdata">
                     <td class="w3-quarter">
                         @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border' maxlength='250' autocomplete='off' ", "", false, lp3)
                     </td>

@@ -14,11 +14,10 @@ namespace DNNrocket.AppThemes
 
     public class AppThemeData
     {
-        private List<Object> _dataList;
+        private SimplisityData _dataList;
+        private List<Object> _appThemesList;
         private List<Object> _versionList;
-        private List<Object> _fields;
-        private List<Object> _resxList;
-        
+
         private int _userId;
         public SimplisityInfo configInfo;
         private AppTheme _appTheme;
@@ -44,35 +43,84 @@ namespace DNNrocket.AppThemes
             if (AppCultureCode == "") AppCultureCode = CultureCode;  
             _appTheme = new AppTheme(AppName, AppCultureCode, VersionFolder);
 
-            PopulateFields();
-            PopulateResx();
+            PopulateDataList();
             PopulateAppThemeList();
             PopulateVersionList();
 
         }
 
-        public void PopulateFields()
+        public void PopulateDataList()
         {
-            _fields = new List<Object>();
-        }
-        public void PopulateResx()
-        {
-            _resxList = new List<Object>();
+            _dataList = new SimplisityData();
+
+            var xmlIn = FileUtils.ReadFile(_appTheme.AppThemeVersionFolderMapPath + "\\meta.xml");
+            var sInfo = new SimplisityInfo();
+            sInfo.XMLData = xmlIn;
+            if (sInfo.XMLDoc != null)
+            {
+                var nodList = sInfo.XMLDoc.SelectNodes("genxml/data/*");
+                foreach (XmlNode nod in nodList)
+                {
+                    var sInfo2 = new SimplisityInfo();
+                    sInfo2.FromXmlItem(nod.OuterXml);
+                    _dataList.AddSimplisityInfo(sInfo2, sInfo2.Lang);
+                }
+            }
+            if (_dataList.GetInfo(AppCultureCode) == null )
+            {
+                _dataList.AddSimplisityInfo(new SimplisityInfo(), AppCultureCode);
+            }
         }
 
         public void PopulateAppThemeList()
         {
-            _dataList = new List<Object>();
+            _appThemesList = new List<Object>();
 
             var dirlist = System.IO.Directory.GetDirectories(AppThemesMapPath + "\\Themes");
             foreach (var d in dirlist)
             {
                 var dr = new System.IO.DirectoryInfo(d);
                 var appTheme = new AppTheme(dr.Name);
-                _dataList.Add(appTheme);
+                _appThemesList.Add(appTheme);
             }
 
         }
+
+        public void AddFieldRow()
+        {
+            _dataList.AddListRow("fields");
+        }
+
+        public void AddResxRow()
+        {
+            _dataList.AddListRow("resx");
+        }
+
+        public void AddDataInfo(SimplisityInfo sInfo, string cultureCode)
+        {
+            //remove any params
+            sInfo.RemoveXmlNode("genxml/postform");
+            sInfo.RemoveXmlNode("genxml/urlparams");
+
+            _dataList.AddSimplisityInfo(sInfo, cultureCode);
+        }
+
+        public void Save()
+        {
+            var xmlOut = "<genxml>";
+            xmlOut += "<data>";
+
+            foreach (var sDic in _dataList.SimplisityInfoList )
+            {
+                xmlOut += sDic.Value.ToXmlItem();
+            }
+
+            xmlOut += "</data>";
+            xmlOut += "</genxml>";
+
+            FileUtils.SaveFile(_appTheme.AppThemeVersionFolderMapPath + "\\meta.xml", xmlOut);
+        }
+
 
         public void PopulateVersionList()
         {
@@ -127,6 +175,26 @@ namespace DNNrocket.AppThemes
                 }
             }
         }
+
+        public List<SimplisityInfo> GetFields(string cultureCode)
+        {
+            var info = _dataList.GetInfo(cultureCode);
+            if (info != null) return info.GetList("fields");
+            return new List<SimplisityInfo>();
+        }
+        public List<SimplisityInfo> GetResxList(string cultureCode)
+        {
+            var info = _dataList.GetInfo(cultureCode);
+            if (info != null) return info.GetList("resx");
+            return new List<SimplisityInfo>();
+        }
+        public List<SimplisityInfo> GetImageList(string cultureCode)
+        {
+            var info = _dataList.GetInfo(cultureCode);
+            if (info != null) return info.GetList("images");
+            return new List<SimplisityInfo>();
+        }
+
 
         #region "properties"
 
@@ -188,9 +256,9 @@ namespace DNNrocket.AppThemes
 
         public string LatestVersionFolder { get; set; }
         public string CultureCode { get; set; }
-        public List<Object> List
+        public List<Object> AppThemesList
         {
-            get { return _dataList; }
+            get { return _appThemesList; }
         }
 
         public List<Object> VersionList
@@ -202,15 +270,6 @@ namespace DNNrocket.AppThemes
         {
             get { return _appTheme; }
         }
-        public List<object> Fields
-        {
-            get { return _fields; }
-        }
-
-        public List<object> ResxList
-        {
-            get { return _resxList; }
-        }        
 
         #endregion
 
