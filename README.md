@@ -72,17 +72,17 @@ For each application in DNNrocket system we have a system record, which keeps es
 
 NOTE: Validation is not implemented.
 
-Interface Key*: Identificcation key, this is passed to the API. as part of the command or as a hidden field called "interfaceKey". (this is the system key, lowercase, no spaces)
-Entity Type Key : Data key to be used when we write data to the Database, this is the TypeCode column of the DNNrocket table.
-Group: menu Group, defined in the Group Tab.  There can be a 2 level menu, groups are the first level.
-Interface Icon Class : Font Awesome class. Example: <i class="fab fa-readme"></i> 
-Default Theme : Default theme folder to be used. Usually "config-w3".  This is where the interface will look for the Theme, under the Control path "Theme" folder.
-Default Template : Default razor template to be used.
-Default Command : Default API command to be used.  The command should be is 2 sections with an underscore used as the seperation. "interfacekey_cmd" - The 1 section will be used as the interface key, if the "interfacekey" is not passed to the server as a hidden field.
-NameSpace and Class*:  Namespace and class of the assembly which implements the "ProcessCommand" method.  By convention the "startconnect" class name is used.
-Assembly*: The name of The interface Assembly.
-Provider Type : The type of provider can be attached (Defined in the "Providers Types" tab), this is for advanced systems and not used in normal operations.
-Control Relative Path : This is the relative path to the "Themes" folder.  It is the parent of the "Themes" folder, usually the module path.
+- Interface Key*: Identificcation key, this is passed to the API. as part of the command or as a hidden field called "interfaceKey". (this is the system key, lowercase, no spaces)
+- Entity Type Key : Data key to be used when we write data to the Database, this is the TypeCode column of the DNNrocket table.
+- Group: menu Group, defined in the Group Tab.  There can be a 2 level menu, groups are the first level.
+- Interface Icon Class : Font Awesome class. Example: <i class="fab fa-readme"></i> 
+- Default Theme : Default theme folder to be used. Usually "config-w3".  This is where the interface will look for the Theme, under the Control path "Theme" folder.
+- Default Template : Default razor template to be used.
+- Default Command : Default API command to be used.  The command should be is 2 sections with an underscore used as the seperation. "interfacekey_cmd" - The 1 section will be used as the interface key, if the "interfacekey" is not passed to the server as a hidden field.
+- NameSpace and Class*:  Namespace and class of the assembly which implements the "ProcessCommand" method.  By convention the "startconnect" class name is used.
+- Assembly*: The name of The interface Assembly.
+- Provider Type : The type of provider can be attached (Defined in the "Providers Types" tab), this is for advanced systems and not used in normal operations.
+- Control Relative Path : This is the relative path to the "Themes" folder.  It is the parent of the "Themes" folder, usually the module path.
 
 - Active will give a option to identify is the interface is active, The logic should be defined in startconnect.
 - Cahced can be turned on by interface, logic should be defined in startconnect.
