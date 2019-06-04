@@ -89,7 +89,7 @@ NOTE: Validation is not implemented.
 - Security roles can be assigned to the interface so only those roles can use the interface.  The logic to prevent the access should be defined in the startconnect class.
 - Display on menu option.
 
-* = required
+(*) = required
 
 Optional
 --------
