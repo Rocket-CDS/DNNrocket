@@ -120,16 +120,9 @@ namespace DNNrocket.AppThemes
 
             CacheUtils.SetCache(cacheKey, _appThemeData, "persist");
 
-            return ReturnString(strOut);
+            return DNNrocketUtils.ReturnString(strOut);
         }
 
-        public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
-        {
-            var rtnDic = new Dictionary<string, string>();
-            rtnDic.Add("outputhtml", strOut);
-            rtnDic.Add("outputjson", jsonOut);            
-            return rtnDic;
-        }
 
         public static String CultureSelect()
         {

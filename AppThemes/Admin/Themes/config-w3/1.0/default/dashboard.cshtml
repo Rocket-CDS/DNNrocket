@@ -84,11 +84,13 @@
             menuname = 'menu1';
         }
 
-        $('.' + menuname).trigger("click");
+        @if (appThemeData.AppName != "")
+        {
+            @:$('.' + menuname).trigger("click");
 
-        $('.' + menuname).addClass("w3-theme");
-        $('.' + menuname).addClass("w3-border-black");
-
+            @:$('.' + menuname).addClass("w3-theme");
+            @:$('.' + menuname).addClass("w3-border-black");
+        }
     });
 
     function menu_buttons(menuname) {

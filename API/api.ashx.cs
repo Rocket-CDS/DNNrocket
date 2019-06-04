@@ -134,7 +134,7 @@ namespace DNNrocketAPI
                     else
                     {
                         switch (paramCmd)
-                    {
+                        {
                         case "getsidemenu":
                             strOut = GetSideMenu(postInfo, systemprovider);
                             break;
@@ -177,7 +177,7 @@ namespace DNNrocketAPI
 
                             }
                             break;
-                    }
+                        }
                     }
 
                 }
