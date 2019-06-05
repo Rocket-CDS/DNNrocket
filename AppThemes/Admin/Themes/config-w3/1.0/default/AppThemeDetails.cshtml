@@ -20,12 +20,12 @@
         dataDic.Add(i, i);
     }
 
-    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + appThemeData.AppCultureCode + ".png";
+    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + appThemeData.CultureCode + ".png";
     if (!File.Exists(DNNrocketUtils.MapPath(flagurl)))
     {
         flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/none.png";
     }
-    var flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/" + appThemeData.AppCultureCode + ".png";
+    var flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/" + appThemeData.CultureCode + ".png";
     if (!File.Exists(DNNrocketUtils.MapPath(flagurl32)))
     {
         flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/none.png";
@@ -57,32 +57,29 @@
 <div class="w3-container">
 
     <div class="w3-right w3-padding">
-        <b>@appThemeData.AppCultureCode</b>&nbsp;<img class='' src='@flagurl32' alt='' />
+        <b>@appThemeData.CultureCode</b>&nbsp;<img class='' src='@flagurl32' alt='' />
     </div>
 
     <h2>@ResourceKey("AppThemes.details")</h2>
 
     <div id="appthemedetails">
 
-        <input id="appculturecode" value="@appThemeData.AppCultureCode" type="hidden" />
-
-
         <div class="w3-container w3-padding">
             <div class="w3-col m4 w3-padding">
                 <label>@ResourceKey("AppThemes.name")</label>
-                @TextBox(appThemeData.configInfo, "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
+                @TextBox(appThemeData.CurrentInfo, "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
             </div>
             <div class="w3-col m6 w3-padding">
                 <label>@ResourceKey("AppThemes.displayname")</label>&nbsp;<img class='' src='@flagurl' alt='' />
-                @TextBox(appThemeData.configInfo, "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", "", true)
+                @TextBox(appThemeData.CurrentInfo, "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", "", true)
             </div>
             <div class="w3-col m2 w3-padding">
                 <label>@ResourceKey("AppThemes.version")</label>
-                @DropDownList(new SimplisityInfo(appThemeData.configInfo), "genxml/select/versionfolder", dataDic, " class='w3-input w3-border' onchange=\"$('.simplisity_langchange').trigger('click')\" ")
+                @DropDownList(appThemeData.CurrentInfo, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border' onchange=\"$('.simplisity_langchange').trigger('click')\" ")
             </div>
             <div class="w3-col m12 w3-padding">
                 <label>@ResourceKey("AppThemes.summary")</label>&nbsp;<img class='' src='@flagurl' alt='' />
-                @TextArea(appThemeData.configInfo, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
+                @TextArea(appThemeData.CurrentInfo, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
             </div>
         </div>
     </div>

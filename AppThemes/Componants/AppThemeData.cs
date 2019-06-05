@@ -17,13 +17,14 @@ namespace DNNrocket.AppThemes
         private SimplisityData _dataList;
         private List<Object> _appThemesList;
         private List<Object> _versionList;
+        private SimplisityInfo _currentAppTheme; 
 
         private int _userId;
-        public SimplisityInfo configInfo;
-        private AppTheme _appTheme;
 
         public AppThemeData(int userId, string appThemesRelPath, string langRequired = "")
         {
+            _currentAppTheme = new SimplisityInfo();
+
             if (langRequired == "") langRequired = DNNrocketUtils.GetEditCulture();
             CultureCode = langRequired;
             _userId = userId;
@@ -32,28 +33,35 @@ namespace DNNrocket.AppThemes
             AdminAppThemesRelPath = appThemesRelPath + "/Admin";
             AdminAppThemesMapPath = DNNrocketUtils.MapPath(AdminAppThemesRelPath);
 
-            configInfo = new SimplisityInfo();
+            AssignFolders();
 
-            Populate();
+            PopulateAppThemeList();  // we have no AppName selected, just get appTheme List.
         }
 
-        public void Populate()
+        private void AssignFolders()
         {
-              
-            if (AppCultureCode == "") AppCultureCode = CultureCode;  
-            _appTheme = new AppTheme(AppName, AppCultureCode, VersionFolder);
+            PopulateVersionList();
+            AppThemeFolder = AppThemesRelPath + "/Themes/" + AppName;
+            AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolder);
+            AppThemeVersionFolder = AppThemeFolder + "/" + VersionFolder;
+            AppThemeVersionFolderMapPath = DNNrocketUtils.MapPath(AppThemeVersionFolder);
+        }
 
-            PopulateDataList();
+
+        public void Populate()
+        {            
             PopulateAppThemeList();
             PopulateVersionList();
-
+            PopulateDataList(); //Can only be populated when we have the AppName and version.
         }
 
         public void PopulateDataList()
         {
+            AssignFolders();
+
             _dataList = new SimplisityData();
 
-            var xmlIn = FileUtils.ReadFile(_appTheme.AppThemeVersionFolderMapPath + "\\meta.xml");
+            var xmlIn = FileUtils.ReadFile(AppThemeVersionFolderMapPath + "\\meta.xml");
             var sInfo = new SimplisityInfo();
             sInfo.XMLData = xmlIn;
             if (sInfo.XMLDoc != null)
@@ -64,11 +72,20 @@ namespace DNNrocket.AppThemes
                     var sInfo2 = new SimplisityInfo();
                     sInfo2.FromXmlItem(nod.OuterXml);
                     _dataList.AddSimplisityInfo(sInfo2, sInfo2.Lang);
+                    if (sInfo2.Lang == CultureCode && AppName != "")
+                    {
+                        // App Theme needs to have been selected.
+                        var v = VersionFolder;
+                        var n = AppName;
+                        _currentAppTheme = sInfo2;
+                        VersionFolder = v;
+                        AppName = n;
+                    }
                 }
             }
-            if (_dataList.GetInfo(AppCultureCode) == null )
+            if (_dataList.GetInfo(CultureCode) == null )
             {
-                _dataList.AddSimplisityInfo(new SimplisityInfo(), AppCultureCode);
+                _dataList.AddSimplisityInfo(new SimplisityInfo(), CultureCode);
             }
         }
 
@@ -103,10 +120,21 @@ namespace DNNrocket.AppThemes
             sInfo.RemoveXmlNode("genxml/urlparams");
 
             _dataList.AddSimplisityInfo(sInfo, cultureCode);
+
+            var v = VersionFolder;
+            var n = AppName;
+            _currentAppTheme.XMLData = sInfo.XMLData;
+            VersionFolder = v;
+            AppName = n;
+
+            AssignFolders();
+
         }
 
         public void Save()
         {
+            AssignFolders();
+
             var xmlOut = "<genxml>";
             xmlOut += "<data>";
 
@@ -118,7 +146,9 @@ namespace DNNrocket.AppThemes
             xmlOut += "</data>";
             xmlOut += "</genxml>";
 
-            FileUtils.SaveFile(_appTheme.AppThemeVersionFolderMapPath + "\\meta.xml", xmlOut);
+            FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\meta.xml", xmlOut);
+
+            Populate();
         }
 
 
@@ -139,17 +169,20 @@ namespace DNNrocket.AppThemes
                 if (_versionList.Count == 0) _versionList.Add("1.0");
                 _versionList.Reverse();
                 LatestVersionFolder = (string)_versionList.First();
+                if (VersionFolder == "") VersionFolder = LatestVersionFolder;
             }
         }
 
         public void DeleteTheme()
         {
-            _appTheme.DeleteTheme();
+            var appTheme = new AppTheme(AppName, CultureCode, VersionFolder);
+            appTheme.DeleteTheme();
         }
 
         public void DeleteVersion()
         {
-            _appTheme.DeleteVersion(VersionFolder);
+            var appTheme = new AppTheme(AppName,CultureCode,VersionFolder);
+            appTheme.DeleteVersion(VersionFolder);
             PopulateVersionList();
             VersionFolder = "v1";
             if (VersionList.Count() > 0)
@@ -166,7 +199,8 @@ namespace DNNrocket.AppThemes
             {
                 var currentLatestVersionFolder = LatestVersionFolder;
                 LatestVersionFolder = (Convert.ToDouble(LatestVersionFolder) + increment).ToString("0.0");
-                _appTheme.CopyVersion(currentLatestVersionFolder, LatestVersionFolder);
+                var appTheme = new AppTheme(AppName, CultureCode, VersionFolder);
+                appTheme.CopyVersion(currentLatestVersionFolder, LatestVersionFolder);
                 PopulateVersionList();
                 VersionFolder = "1.0";
                 if (VersionList.Count() > 0)
@@ -179,7 +213,7 @@ namespace DNNrocket.AppThemes
         public List<SimplisityInfo> GetFields(string cultureCode)
         {
             var info = _dataList.GetInfo(cultureCode);
-            if (info != null) return info.GetList("fields");
+            if (info != null) return info.GetList("fielddata");
             return new List<SimplisityInfo>();
         }
         public List<SimplisityInfo> GetResxList(string cultureCode)
@@ -198,64 +232,58 @@ namespace DNNrocket.AppThemes
 
         #region "properties"
 
-        public string AppThemesRelPath { get; }
-        public string AppThemesMapPath { get; }
-        public string AdminAppThemesRelPath { get; }
-        public string AdminAppThemesMapPath { get; }
-
+        public string AppThemesRelPath { get; set; }
+        public string AppThemesMapPath { get; set; }
+        public string AdminAppThemesRelPath { get; set; }
+        public string AdminAppThemesMapPath { get; set; }
+        public string AppThemeFolder { get; set; }
+        public string AppThemeFolderMapPath { get; set; }
+        public string AppThemeVersionFolder { get; set; }
+        public string AppThemeVersionFolderMapPath { get; set; }
+        public string ActionType { get; set; }
         public string VersionFolder
         {
             get
             {
-                var rtnV = configInfo.GetXmlProperty("genxml/select/versionfolder");
-                if (rtnV == "") rtnV = "1.0";
-                return rtnV;
+                return _currentAppTheme.GetXmlProperty("genxml/select/versionfolder");
             }
             set
             {
-                if (value != "")
-                {
-                    configInfo.SetXmlProperty("genxml/select/versionfolder", value);
-                }
-            }
-        }
-        public string ActionType
-        {
-            get
-            {
-                return configInfo.GetXmlProperty("genxml/hidden/ationtype");
-            }
-            set
-            {
-                configInfo.SetXmlProperty("genxml/hidden/ationtype", value);
+                _currentAppTheme.SetXmlProperty("genxml/select/versionfolder", value);
             }
         }
         public string AppName
         {
             get
             {
-                return configInfo.GetXmlProperty("genxml/textbox/appname");
+                return _currentAppTheme.GetXmlProperty("genxml/textbox/appname");
             }
             set
             {
-                configInfo.SetXmlProperty("genxml/textbox/appname", value);
+                _currentAppTheme.SetXmlProperty("genxml/textbox/appname", value);
             }
         }
-        public string AppCultureCode
+        public string LatestVersionFolder { get; set; }
+
+        public SimplisityInfo CurrentInfo
         {
             get
             {
-                return configInfo.GetXmlProperty("genxml/hidden/appculturecode");
-            }
-            set
-            {
-                configInfo.SetXmlProperty("genxml/hidden/appculturecode", value);
+                return _currentAppTheme;
             }
         }
 
-
-        public string LatestVersionFolder { get; set; }
-        public string CultureCode { get; set; }
+        public string CultureCode
+        {
+            get
+            {
+                return _currentAppTheme.Lang;
+            }
+            set
+            {
+                _currentAppTheme.Lang = value;
+            }
+        }
         public List<Object> AppThemesList
         {
             get { return _appThemesList; }
@@ -264,11 +292,6 @@ namespace DNNrocket.AppThemes
         public List<Object> VersionList
         {
             get { return _versionList; }
-        }
-
-        public AppTheme AppTheme
-        {
-            get { return _appTheme; }
         }
 
         #endregion

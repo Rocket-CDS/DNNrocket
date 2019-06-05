@@ -27,7 +27,7 @@ namespace DNNrocketAPI.Componants
             InitClass(appName, appFolder, langRequired, versionFolder);
         }
 
-        private void InitClass(string appName, string appRelFolder, string langRequired, string versionFolder)
+        public void InitClass(string appName, string appRelFolder, string langRequired, string versionFolder)
         {
             AppVersionFolder = versionFolder;
             if (langRequired == "") langRequired = DNNrocketUtils.GetCurrentCulture();
@@ -107,8 +107,9 @@ namespace DNNrocketAPI.Componants
 
         #region "properties"
 
-        public string AppName { get; private set; }
-        public SimplisityInfo DetailsInfo { get; set; }
+        public string AppName { get; set; }
+        public string AppDisplayName { get; set; }
+        public string AppSummary { get; set; }
         public string Logo { get; private set; }
         public string AppCultureCode { get; set; }
         public string AppFolder { get; set; }

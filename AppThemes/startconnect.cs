@@ -153,8 +153,8 @@ namespace DNNrocket.AppThemes
                 var filefolder = _postInfo.GetXmlProperty("genxml/hidden/filefolder");
                 var editorContent = GeneralUtils.DeCode(_postInfo.GetXmlProperty("genxml/hidden/editorcode"));
 
-                var fileMapPath = _appThemeData.AppTheme.AppThemeVersionFolderMapPath + "\\" + filefolder + "\\" + templateName;
-                if (!Directory.Exists(_appThemeData.AppTheme.AppThemeVersionFolderMapPath + "\\" + filefolder))
+                var fileMapPath = _appThemeData.AppThemeVersionFolderMapPath + "\\" + filefolder + "\\" + templateName;
+                if (!Directory.Exists(_appThemeData.AppThemeVersionFolderMapPath + "\\" + filefolder))
                 {
                     File.WriteAllText(fileMapPath, editorContent);
                 }
@@ -172,7 +172,7 @@ namespace DNNrocket.AppThemes
             try
             {
                 var templateName = _postInfo.GetXmlProperty("genxml/select/templatename");
-                var filePath = _appThemeData.AppTheme.AppThemeVersionFolderMapPath + "\\" + subFolder + "\\" + templateName;
+                var filePath = _appThemeData.AppThemeVersionFolderMapPath + "\\" + subFolder + "\\" + templateName;
                 if (!File.Exists(filePath)) return "";
                 var rtnFile = FileUtils.ReadFile(filePath); 
                 return GeneralUtils.EnCode(rtnFile);
@@ -189,7 +189,7 @@ namespace DNNrocket.AppThemes
             try
             {
                 var templateName = _postInfo.GetXmlProperty("genxml/select/templatename");
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, _appThemeData.AppTheme.AppFolder, _appThemeData.AppTheme.AppName, DNNrocketUtils.GetCurrentCulture(), _appThemeData.AppTheme.AppVersionFolder);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, _appThemeData.AppThemesRelPath, _appThemeData.AppName, DNNrocketUtils.GetCurrentCulture(), _appThemeData.VersionFolder);
                 return GeneralUtils.EnCode(razorTempl);
             }
             catch (Exception ex)
@@ -290,11 +290,11 @@ namespace DNNrocket.AppThemes
         {
             try
             {
+                /// When we have the AppName we can populate the theme.
                 var strOut = "";
                 var appThemeName = _postInfo.GetXmlProperty("genxml/hidden/apptheme");
                 _appThemeData.AppName = appThemeName;
-                _appThemeData.PopulateVersionList();
-                _appThemeData.VersionFolder = _appThemeData.LatestVersionFolder;
+                _appThemeData.Populate();
 
                 if (_appThemeData.ActionType == "version")
                 {
@@ -319,7 +319,7 @@ namespace DNNrocket.AppThemes
             try
             {
                 var cultureCode = _postInfo.GetXmlProperty("genxml/hidden/culturecode");
-                _appThemeData.AppCultureCode = cultureCode;
+                _appThemeData.CultureCode = cultureCode;
                 return ""; // reload to return to correct page. (s-reload='true')
             }
             catch (Exception ex)
@@ -352,7 +352,7 @@ namespace DNNrocket.AppThemes
 
         public static void SaveDetails()
         {
-            _appThemeData.AppCultureCode = _postInfo.GetXmlProperty("genxml/hidden/appculturecode");
+            _appThemeData.CultureCode = _postInfo.GetXmlProperty("genxml/hidden/appculturecode");
             _appThemeData.AppName  = _postInfo.GetXmlProperty("genxml/textbox/appname");
             _appThemeData.VersionFolder = _postInfo.GetXmlProperty("genxml/select/versionfolder");
         }

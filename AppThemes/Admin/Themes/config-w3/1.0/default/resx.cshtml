@@ -17,12 +17,12 @@
 
     var appThemeData = new AppThemeData(DNNrocketUtils.GetCurrentUserId(), "/DesktopModules/DNNrocket/AppThemes");
 
-    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + appThemeData.AppCultureCode + ".png";
+    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + appThemeData.CultureCode + ".png";
     if (!File.Exists(DNNrocketUtils.MapPath(flagurl)))
     {
         flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/none.png";
     }
-    var flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/" + appThemeData.AppCultureCode + ".png";
+    var flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/" + appThemeData.CultureCode + ".png";
     if (!File.Exists(DNNrocketUtils.MapPath(flagurl32)))
     {
         flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/none.png";
@@ -49,7 +49,7 @@
 <div id="datasection" class="w3-container">
 
     <div class="w3-right w3-padding">
-        <b>@appThemeData.AppCultureCode</b>&nbsp;<img class='' src='@flagurl32' alt='' />
+        <b>@appThemeData.CultureCode</b>&nbsp;<img class='' src='@flagurl32' alt='' />
     </div>
 
     <div class="w3-row w3-margin">
