@@ -51,10 +51,10 @@ namespace RocketSettings
             _dataList = new List<SimplisityInfo>();            
             _listName = listname;
             _guidKey = "moduleid" + _moduleid;
+            _cultureList = GetCultureList();
             if (_moduleid > 0)
             {
                 Info = GetSettingData(_guidKey, _langRequired);
-                _cultureList = GetCultureList();
                 Populate();
                 PopulateList();
             }
