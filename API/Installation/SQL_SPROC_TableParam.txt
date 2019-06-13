@@ -1,0 +1,690 @@
+﻿USE [dev.ea.com]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_CleanData]    Script Date: 13/06/2019 16:44:42 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [dbo].[DNNrocket_CleanData]
+AS
+begin
+
+ Declare @TableName AS NVarchar(max) 
+ Declare @sql AS NVarchar(max)
+ Declare @ParamDefinition AS NVarchar(max) 
+
+ set @TableName = 'dbo.[DNNrocket]'
+
+/***  Clean ALL data that is not linked to a module.  i.e. modules that have been deleted. **/
+set @sql = 'delete from ' + @TableName + ' where moduleid not in (select moduleid from dbo.Modules) and moduleid > 0 ' 
+	
+	exec sp_executesql  @sql
+end
+GO
+
+
+
+
+USE [dev.ea.com]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_Delete]    Script Date: 13/06/2019 16:44:47 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [dbo].[DNNrocket_Delete]
+@ItemID int
+AS
+begin
+
+	if (@ItemId > 0)
+	begin
+
+	 Declare @TableName AS NVarchar(max) 
+	 Declare @sql AS NVarchar(max)
+	 Declare @ParamDefinition AS NVarchar(max) 
+
+	 set @TableName = 'dbo.[DNNrocket]'
+	
+set @sql = '		DECLARE @DelItemId int	'
+		-- Delete all linked child records.
+set @sql += '		DECLARE delete_cursor CURSOR LOCAL FOR '
+set @sql += '		select ItemId from ' + @TableName + ' where ParentItemId = ' + CONVERT(nvarchar(20), @ItemId)
+set @sql += '		OPEN delete_cursor'
+set @sql += '		FETCH NEXT FROM delete_cursor INTO @DelItemId'
+set @sql += '		WHILE @@FETCH_STATUS = 0'
+set @sql += '		BEGIN'
+set @sql += '			EXEC dbo.[DNNrocket_Delete] @DelItemId'
+set @sql += '			FETCH NEXT FROM delete_cursor INTO @DelItemId'
+set @sql += '		END'
+set @sql += '		CLOSE delete_cursor;'
+set @sql += '		DEALLOCATE delete_cursor;'
+		-- Delete all linked child records (xrefitemid).
+set @sql += '		DECLARE delete_cursor1 CURSOR LOCAL FOR '
+set @sql += '		select ItemId from ' + @TableName + ' where XrefItemId = ' + CONVERT(nvarchar(20), @ItemId)
+set @sql += '		OPEN delete_cursor1'
+set @sql += '		FETCH NEXT FROM delete_cursor1 INTO @DelItemId'
+set @sql += '		WHILE @@FETCH_STATUS = 0'
+set @sql += '		BEGIN'
+set @sql += '			EXEC dbo.[DNNrocket_Delete] @DelItemId'
+set @sql += '			FETCH NEXT FROM delete_cursor1 INTO @DelItemId'
+set @sql += '		END'
+set @sql += '		CLOSE delete_cursor1;'
+set @sql += '		DEALLOCATE delete_cursor1;'
+set @sql += '		delete from ' + @TableName + ' where ItemId = ' + CONVERT(nvarchar(20), @ItemId)
+	
+		exec sp_executesql  @sql
+	
+	end
+	
+end
+GO
+
+
+
+
+
+USE [dev.ea.com]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_Get]    Script Date: 13/06/2019 16:44:56 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE     PROCEDURE [dbo].[DNNrocket_Get]
+@ItemID int,
+@Lang nvarchar(10)
+AS
+begin
+
+ Declare @TableName AS NVarchar(max) 
+ Declare @sql AS NVarchar(max)
+ Declare @ParamDefinition AS NVarchar(max) 
+
+ set @TableName = 'dbo.[DNNrocket]'
+
+set @sql = '	select '
+set @sql += '	R1.[ItemId] '
+set @sql += '	,R1.[PortalId] '
+set @sql += '	,R1.[ModuleId] '
+set @sql += '	,R1.[TypeCode] '
+set @sql += '	,dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]) as [XMLData] '
+set @sql += '	,R1.[GUIDKey] '
+set @sql += '	,R1.[ModifiedDate] '
+set @sql += '	,R1.[TextData] '
+set @sql += '	,R1.[XrefItemId] '
+set @sql += '	,R1.[ParentItemId] '
+set @sql += '	,ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang]  '
+set @sql += '	,R1.[UserId] '
+set @sql += '	,R1.[SystemId] '
+set @sql += '	from dbo.[DNNrocket] as R1 '
+set @sql += '	left join ' + @TableName + ' as RLang1 on R1.Itemid = RLang1.ParentItemId and RLang1.Lang = ''' + @Lang + ''' and RLang1.TypeCode = [R1].[TypeCode] + ''LANG'' '
+set @sql += '	where R1.ItemId = ' + CONVERT(nvarchar(20), @ItemId)
+
+exec sp_executesql  @sql
+
+end
+GO
+
+USE [dev.ea.com]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetList]    Script Date: 13/06/2019 16:45:46 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE    PROCEDURE [dbo].[DNNrocket_GetList]
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@Filter nvarchar(1000),
+@OrderBy nvarchar(500),
+@ReturnLimit int = 0,
+@pageNum int = 0,
+@PageSize int = 0,
+@RecordCount int = 0,
+@Lang nvarchar(50) = '',
+@SystemId int
+
+AS
+begin
+
+ Declare @TableName AS NVarchar(max) 
+
+  set @TableName = 'dbo.[DNNrocket]'
+
+	SET NOCOUNT ON
+	 
+	if NOT(@Lang = '')
+	begin
+		SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL([RLangIdx].[XMLData],dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+	end
+
+------------------------------------------------------------------------------------
+--- Cursor for INDEX records.
+------------------------------------------------------------------------------------
+DECLARE @idxname nvarchar(250) = ''
+DECLARE @TCode nvarchar(250) = ''
+DECLARE @idxparentItemId int = 0
+DECLARE @systemlinkItemId int = 0
+DECLARE @JoinIndex nvarchar(max)
+
+select @systemlinkItemId = itemid from dbo.[DNNrocket] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
+
+--print '@systemlinkItemId: ' + convert(nvarchar(max),@systemlinkItemId)
+
+DECLARE idx_cursor CURSOR FOR 
+SELECT GUIDKey, ParentItemId, textdata
+FROM dbo.[DNNrocket]
+WHERE [TypeCode] like 'SYSTEMLINK%' and ParentItemId = @systemlinkItemId
+
+SET @JoinIndex = ''
+
+OPEN idx_cursor  
+FETCH NEXT FROM idx_cursor INTO @idxname, @idxparentItemId, @TCode
+
+WHILE @@FETCH_STATUS = 0  
+BEGIN  
+
+	if (CHARINDEX(@idxname, @Filter) > 0)
+	begin
+
+		set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [' + @idxname + '] on [' + @idxname + '].XrefItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
+
+	end
+
+	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId, @TCode
+END 
+
+if (CHARINDEX('CATXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as CATXREF on CATXREF.ParentItemId = R1.ItemId and CATXREF.TypeCode =  ''CATXREF'' '
+end
+if (CHARINDEX('CASCADE', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as CASCADE on CASCADE.ParentItemId = R1.ItemId and CASCADE.TypeCode =  ''CASCADE'' '
+end
+if (CHARINDEX('PROPXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as PROPXREF on PROPXREF.ParentItemId = R1.ItemId and PROPXREF.TypeCode =  ''PROPXREF'' '
+end
+if (CHARINDEX('ATTRXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as ATTRXREF on ATTRXREF.ParentItemId = R1.ItemId and ATTRXREF.TypeCode =  ''ATTRXREF'' '
+end
+
+
+
+
+CLOSE idx_cursor
+DEALLOCATE idx_cursor
+
+--print '@JoinIndex: ' + @JoinIndex
+
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+
+		IF (@PortalId  >= 0) BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or R1.PortalId = ''-1'') ' + @Filter
+		END 
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (R1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or R1.ModuleId = ''-1'') ' + @Filter
+		END 
+		IF (@SystemId >= 0) BEGIN
+			SET @Filter = ' and (R1.SystemId = ''' + Convert(nvarchar(10),@SystemId) + ''' or R1.SystemId = ''-1'') ' + @Filter
+		END 
+
+	 
+	 
+	 
+	 DECLARE
+		 @STMT nvarchar(max)         -- SQL to execute
+		,@rtnFields nvarchar(max)
+
+	IF (@PortalId >= 0) BEGIN
+
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or R1.PortalId = ''-1'') and (R1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or R1.ModuleId = ''-1'') ' + @Filter
+		END ELSE BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + '''  or R1.PortalId = ''-1'') ' + @Filter
+		END 
+
+	END 
+
+	if NOT(@Lang = '')
+	begin
+		SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','ISNULL([RLangIdx].[XMLData],dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+	end
+
+	set @rtnFields = ' R1.[ItemId] '
+
+	if NOT(@Lang = '')
+	begin
+		set @rtnFields = @rtnFields + ',ISNULL([RLangIdx].XMLData,dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
+		set @rtnFields = @rtnFields + ',ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang] '	 
+	end
+	if @Lang = ''
+	begin
+		set @rtnFields = @rtnFields + ',R1.[XMLData] '
+		set @rtnFields = @rtnFields + ',R1.[Lang] as [Lang] '	 
+	end
+	
+	set @rtnFields = @rtnFields + ',R1.[PortalId] '
+	set @rtnFields = @rtnFields + ',R1.[ModuleId] '
+	set @rtnFields = @rtnFields + ',R1.[TypeCode] '
+	set @rtnFields = @rtnFields + ',R1.[GUIDKey] '
+	set @rtnFields = @rtnFields + ',R1.[ModifiedDate] '
+	set @rtnFields = @rtnFields + ',R1.[TextData] '
+	set @rtnFields = @rtnFields + ',R1.[XrefItemId] '
+	set @rtnFields = @rtnFields + ',R1.[ParentItemId] '
+	set @rtnFields = @rtnFields + ',R1.[UserId] '
+	set @rtnFields = @rtnFields + ',R1.[SystemId] '		
+
+
+	IF (@PageSize > 0)
+	BEGIN
+			-- Do Paging
+		SET @STMT = 'DECLARE @recct int '
+		set @STMT = @STMT + ' SET @recct = ' + Convert(nvarchar(5),@RecordCount) 
+		
+		set @STMT = @STMT + '   DECLARE @lbound int, @ubound int '
+
+		SET @pageNum = ABS(@pageNum)
+		SET @pageSize = ABS(@pageSize)
+		IF @pageNum < 1 SET @pageNum = 1
+		IF @pageSize < 1 SET @pageSize = 1
+
+		set @STMT = @STMT + ' SET @lbound = ' + convert(nvarchar(50),((@pageNum - 1) * @pageSize))
+		set @STMT = @STMT + ' SET @ubound = @lbound + ' + convert(nvarchar(50),(@pageSize + 1))
+		set @STMT = @STMT + ' IF @lbound >= @recct BEGIN '
+		set @STMT = @STMT + '   SET @ubound = @recct + 1 '
+		set @STMT = @STMT + '   SET @lbound = @ubound - (' + convert(nvarchar(50),(@pageSize + 1)) + ') ' -- return the last page of records if no records would be on the specified page '
+		set @STMT = @STMT + ' END '
+		
+		-- Default order by clause
+		if @OrderBy = '' 
+		Begin
+			set @OrderBy = ' ORDER BY R1.ModifiedDate DESC '
+		End
+		
+		set @STMT = @STMT + ' SELECT '
+		if @ReturnLimit > 0 
+		begin
+			set @STMT = @STMT + ' top ' + convert(nvarchar(10),@ReturnLimit)
+		end
+		
+		set @STMT = @STMT + @rtnFields		
+
+		set @STMT = @STMT + ' FROM    (
+								SELECT  ROW_NUMBER() OVER(' + @orderBy + ') AS row, '
+		set @STMT = @STMT + @rtnFields		
+		set @STMT = @STMT + ' FROM dbo.[DNNrocket]  as R1 '
+
+		if NOT(@Lang = '')
+		begin
+			set @STMT = @STMT + ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+			set @STMT = @STMT + ' left join ' + @TableName + ' as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+		end
+		
+		set @STMT = @STMT + @JoinIndex
+
+				IF (RIGHT(@TypeCode,1) = '%')
+			BEGIN
+				set @STMT = @STMT + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+			END ELSE
+			BEGIN
+				IF (@TypeCode = '')
+				BEGIN
+					set @STMT = @STMT + 'WHERE R1.TypeCode != ''''' + @Filter  
+				END ELSE
+				BEGIN
+					set @STMT = @STMT + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+				END
+			END	                                                              
+			
+			set @STMT = @STMT + ' ) AS R1 '
+
+			if NOT(@Lang = '')
+			begin
+				set @STMT = @STMT + ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+				set @STMT = @STMT + ' left join ' + @TableName + ' as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+			end
+
+			set @STMT = @STMT + ' WHERE row > @lbound AND row < @ubound '
+
+			
+	END ELSE
+	BEGIN
+		-- DO NON-PAGING
+
+		set @STMT = ' SELECT '
+		if @ReturnLimit > 0 
+		begin
+			set @STMT = @STMT + ' top ' + convert(nvarchar(10),@ReturnLimit)
+		end
+		
+		set @STMT = @STMT + @rtnFields		
+
+		set @STMT = @STMT + ' FROM ' + @TableName + '  as R1 '
+
+		if NOT(@Lang = '')
+		begin
+			set @STMT = @STMT + ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+			set @STMT = @STMT + ' left join ' + @TableName + ' as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+		end
+		
+		set @STMT = @STMT + @JoinIndex
+
+		IF (RIGHT(@TypeCode,1) = '%')
+		BEGIN
+			set @STMT = @STMT + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+		END ELSE
+		BEGIN
+			IF (@TypeCode = '')
+			BEGIN
+				set @STMT = @STMT + 'WHERE R1.TypeCode != ''''' + @Filter  
+			END ELSE
+			BEGIN
+				set @STMT = @STMT + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+			END
+		END	                                                              	
+
+		set @STMT = @STMT + ' ' + @OrderBy                                                           	
+
+	END		
+
+
+
+	EXEC sp_executeSQL @STMT                 -- return requested records
+
+end
+GO
+
+USE [dev.ea.com]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetListCount]    Script Date: 13/06/2019 16:46:09 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE    PROCEDURE [dbo].[DNNrocket_GetListCount] 
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@Filter nvarchar(1000),
+@Lang nvarchar(50),
+@SystemId int,
+@RecordCount int OUTPUT
+AS
+begin
+
+ Declare @TableName AS NVarchar(max) 
+
+  set @TableName = 'dbo.[DNNrocket]'
+
+	SET @Filter = REPLACE(@Filter,'[XMLData]','dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
+
+
+------------------------------------------------------------------------------------
+--- Cursor for INDEX records.
+------------------------------------------------------------------------------------
+DECLARE @idxname nvarchar(250) = ''
+DECLARE @TCode nvarchar(250) = ''
+DECLARE @idxparentItemId int = 0
+DECLARE @systemlinkItemId int = 0
+DECLARE @JoinIndex nvarchar(max)
+
+select @systemlinkItemId = itemid from dbo.[DNNrocket] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
+
+--print '@systemlinkItemId: ' + convert(nvarchar(max),@systemlinkItemId)
+
+DECLARE idx_cursor CURSOR FOR 
+SELECT GUIDKey, ParentItemId, textdata
+FROM dbo.[DNNrocket]
+WHERE [TypeCode] like 'SYSTEMLINK%' and ParentItemId = @systemlinkItemId
+
+SET @JoinIndex = ''
+
+OPEN idx_cursor  
+FETCH NEXT FROM idx_cursor INTO @idxname, @idxparentItemId, @TCode
+
+WHILE @@FETCH_STATUS = 0  
+BEGIN  
+
+	if (CHARINDEX(@idxname, @Filter) > 0)
+	begin
+
+		set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [' + @idxname + '] on [' + @idxname + '].XrefItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
+
+	end
+
+	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId, @TCode
+END 
+
+if (CHARINDEX('CATXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as CATXREF on CATXREF.ParentItemId = R1.ItemId and CATXREF.TypeCode =  ''CATXREF'' '
+end
+if (CHARINDEX('CASCADE', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as CASCADE on CASCADE.ParentItemId = R1.ItemId and CASCADE.TypeCode =  ''CASCADE'' '
+end
+if (CHARINDEX('PROPXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as PROPXREF on PROPXREF.ParentItemId = R1.ItemId and PROPXREF.TypeCode =  ''PROPXREF'' '
+end
+if (CHARINDEX('ATTRXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as ATTRXREF on ATTRXREF.ParentItemId = R1.ItemId and ATTRXREF.TypeCode =  ''ATTRXREF'' '
+end
+
+
+CLOSE idx_cursor
+DEALLOCATE idx_cursor
+
+--print '@JoinIndex: ' + @JoinIndex
+
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+
+		IF (@PortalId  >= 0) BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or R1.PortalId = ''-1'') ' + @Filter
+		END 
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (R1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or R1.ModuleId = ''-1'') ' + @Filter
+		END 
+		IF (@SystemId >= 0) BEGIN
+			SET @Filter = ' and (R1.SystemId = ''' + Convert(nvarchar(10),@SystemId) + ''' or R1.SystemId = ''-1'') ' + @Filter
+		END 
+
+
+	--DECLARE @RecordCount int
+	DECLARE @countselect nvarchar(max)
+
+			set @countselect = ' SELECT '
+	
+			set @countselect = @countselect + ' @RecordCount=count(R1.ItemId) '	
+
+			set @countselect = @countselect + ' FROM ' + @TableName + '  as R1 '
+
+			if NOT(@Lang = '')
+			begin
+				set @countselect = @countselect + ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+			end
+	
+			set @countselect = @countselect + @JoinIndex
+
+			IF (RIGHT(@TypeCode,1) = '%')
+			BEGIN
+				set @countselect = @countselect + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+			END ELSE
+			BEGIN
+				IF (@TypeCode = '')
+				BEGIN
+					set @countselect = @countselect + 'WHERE R1.TypeCode != ''''' + @Filter  
+				END ELSE
+				BEGIN
+					set @countselect = @countselect + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+				END
+			END	                                                              	
+
+		exec sp_executesql @countselect, N'@RecordCount int output', @RecordCount output;
+
+		SELECT @RecordCount AS RecordCount       -- return the total # of records
+
+END
+GO
+
+USE [dev.ea.com]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecord]    Script Date: 13/06/2019 16:46:19 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE     PROCEDURE [dbo].[DNNrocket_GetRecord]
+@ItemID int
+AS
+begin
+
+
+ Declare @TableName AS NVarchar(max) 
+ Declare @sql AS NVarchar(max)
+ Declare @ParamDefinition AS NVarchar(max) 
+
+ set @TableName = 'dbo.[DNNrocket]'
+
+set @sql = '	select '
+set @sql += '	[ItemId] '
+set @sql += '	,[PortalId] '
+set @sql += '	,[ModuleId] '
+set @sql += '	,[TypeCode] '
+set @sql += '	,[XMLData] '
+set @sql += '	,[GUIDKey] '
+set @sql += '	,[ModifiedDate] '
+set @sql += '	,[TextData] '
+set @sql += '	,[XrefItemId] '
+set @sql += '	,[ParentItemId] '
+set @sql += '	,[Lang]  '
+set @sql += '	,[UserId] '
+set @sql += '	,[SystemId] '
+set @sql += '	from ' + @TableName + ' as R1 '
+set @sql += '	where R1.ItemId = ' + CONVERT(nvarchar(20), @ItemId)
+
+exec sp_executesql  @sql
+
+end
+GO
+
+USE [dev.ea.com]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecordLang]    Script Date: 13/06/2019 16:46:31 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE     PROCEDURE [dbo].[DNNrocket_GetRecordLang]
+@ParentItemId int,
+@Lang nvarchar(10)
+AS
+begin
+
+
+ Declare @TableName AS NVarchar(max) 
+ Declare @sql AS NVarchar(max)
+ Declare @ParamDefinition AS NVarchar(max) 
+
+ set @TableName = 'dbo.[DNNrocket]'
+
+set @sql = '	select '
+set @sql += '	[ItemId] '
+set @sql += '	,[PortalId] '
+set @sql += '	,[ModuleId] '
+set @sql += '	,[TypeCode] '
+set @sql += '	,[XMLData] '
+set @sql += '	,[GUIDKey] '
+set @sql += '	,[ModifiedDate] '
+set @sql += '	,[TextData] '
+set @sql += '	,[XrefItemId] '
+set @sql += '	,[ParentItemId] '
+set @sql += '	,[Lang]  '
+set @sql += '	,[UserId] '
+set @sql += '	,[SystemId] '
+set @sql += '	from ' + @TableName + ' as R1 '
+set @sql += '	where R1.ItemId = ' + CONVERT(nvarchar(20), @ParentItemId) + ' and R1.Lang = ''' + @Lang + ''' ' 
+
+print @sql
+
+exec sp_executesql  @sql
+
+end
+GO
+
+USE [dev.ea.com]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecordLang]    Script Date: 13/06/2019 16:46:31 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE     PROCEDURE [dbo].[DNNrocket_GetRecordLang]
+@ParentItemId int,
+@Lang nvarchar(10)
+AS
+begin
+
+
+ Declare @TableName AS NVarchar(max) 
+ Declare @sql AS NVarchar(max)
+ Declare @ParamDefinition AS NVarchar(max) 
+
+ set @TableName = 'dbo.[DNNrocket]'
+
+set @sql = '	select '
+set @sql += '	[ItemId] '
+set @sql += '	,[PortalId] '
+set @sql += '	,[ModuleId] '
+set @sql += '	,[TypeCode] '
+set @sql += '	,[XMLData] '
+set @sql += '	,[GUIDKey] '
+set @sql += '	,[ModifiedDate] '
+set @sql += '	,[TextData] '
+set @sql += '	,[XrefItemId] '
+set @sql += '	,[ParentItemId] '
+set @sql += '	,[Lang]  '
+set @sql += '	,[UserId] '
+set @sql += '	,[SystemId] '
+set @sql += '	from ' + @TableName + ' as R1 '
+set @sql += '	where R1.ItemId = ' + CONVERT(nvarchar(20), @ParentItemId) + ' and R1.Lang = ''' + @Lang + ''' ' 
+
+print @sql
+
+exec sp_executesql  @sql
+
+end
+GO
+
