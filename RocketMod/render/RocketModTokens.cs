@@ -29,7 +29,7 @@ namespace RocketMod
             var fieldInfo = objCtrl.GetByType(portalid, moduleid, "ROCKETMODFIELDS", "", lang);
             if (fieldInfo != null)
             {
-                var fl = fieldInfo.GetList("settingsdata");
+                var fl = fieldInfo.GetList("fielddata");
 
                 // calc rows
                 var frows = new List<List<SimplisityInfo>>();
