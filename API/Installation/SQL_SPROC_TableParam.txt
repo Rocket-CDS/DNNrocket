@@ -1,7 +1,11 @@
 ﻿USE [dev.ea.com]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_CleanData]    Script Date: 13/06/2019 16:44:42 ******/
+/****** Object:  StoredProcedure [dbo].[DNNrocket_CleanData]    Script Date: 14/06/2019 16:18:52 ******/
+DROP PROCEDURE [dbo].[DNNrocket_CleanData]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_CleanData]    Script Date: 14/06/2019 16:18:52 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -9,14 +13,13 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[DNNrocket_CleanData]
+@TableName nvarchar(100)
 AS
 begin
 
- Declare @TableName AS NVarchar(max) 
  Declare @sql AS NVarchar(max)
- Declare @ParamDefinition AS NVarchar(max) 
 
- set @TableName = 'dbo.[DNNrocket]'
+ set @TableName = '[dbo].' + @TableName
 
 /***  Clean ALL data that is not linked to a module.  i.e. modules that have been deleted. **/
 set @sql = 'delete from ' + @TableName + ' where moduleid not in (select moduleid from dbo.Modules) and moduleid > 0 ' 
@@ -25,13 +28,14 @@ set @sql = 'delete from ' + @TableName + ' where moduleid not in (select modulei
 end
 GO
 
-
-
-
 USE [dev.ea.com]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_Delete]    Script Date: 13/06/2019 16:44:47 ******/
+/****** Object:  StoredProcedure [dbo].[DNNrocket_Delete]    Script Date: 14/06/2019 16:19:02 ******/
+DROP PROCEDURE [dbo].[DNNrocket_Delete]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_Delete]    Script Date: 14/06/2019 16:19:02 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -39,18 +43,18 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[DNNrocket_Delete]
-@ItemID int
+@ItemID int,
+@TableName nvarchar(100)
 AS
 begin
 
 	if (@ItemId > 0)
 	begin
 
-	 Declare @TableName AS NVarchar(max) 
 	 Declare @sql AS NVarchar(max)
 	 Declare @ParamDefinition AS NVarchar(max) 
 
-	 set @TableName = 'dbo.[DNNrocket]'
+	 set @TableName = '[dbo].' + @TableName
 	
 set @sql = '		DECLARE @DelItemId int	'
 		-- Delete all linked child records.
@@ -86,14 +90,14 @@ set @sql += '		delete from ' + @TableName + ' where ItemId = ' + CONVERT(nvarcha
 end
 GO
 
-
-
-
-
 USE [dev.ea.com]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_Get]    Script Date: 13/06/2019 16:44:56 ******/
+/****** Object:  StoredProcedure [dbo].[DNNrocket_Get]    Script Date: 14/06/2019 16:19:13 ******/
+DROP PROCEDURE [dbo].[DNNrocket_Get]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_Get]    Script Date: 14/06/2019 16:19:13 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -102,15 +106,14 @@ GO
 
 CREATE     PROCEDURE [dbo].[DNNrocket_Get]
 @ItemID int,
-@Lang nvarchar(10)
+@Lang nvarchar(10),
+@TableName nvarchar(100)
 AS
 begin
 
- Declare @TableName AS NVarchar(max) 
  Declare @sql AS NVarchar(max)
- Declare @ParamDefinition AS NVarchar(max) 
 
- set @TableName = 'dbo.[DNNrocket]'
+ set @TableName = '[dbo].' + @TableName
 
 set @sql = '	select '
 set @sql += '	R1.[ItemId] '
@@ -138,7 +141,11 @@ GO
 USE [dev.ea.com]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetList]    Script Date: 13/06/2019 16:45:46 ******/
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetList]    Script Date: 14/06/2019 16:19:27 ******/
+DROP PROCEDURE [dbo].[DNNrocket_GetList]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetList]    Script Date: 14/06/2019 16:19:27 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -156,14 +163,12 @@ CREATE    PROCEDURE [dbo].[DNNrocket_GetList]
 @PageSize int = 0,
 @RecordCount int = 0,
 @Lang nvarchar(50) = '',
-@SystemId int
-
+@SystemId int,
+@TableName nvarchar(100)
 AS
 begin
 
- Declare @TableName AS NVarchar(max) 
-
-  set @TableName = 'dbo.[DNNrocket]'
+ set @TableName = '[dbo].' + @TableName
 
 	SET NOCOUNT ON
 	 
@@ -412,10 +417,18 @@ DEALLOCATE idx_cursor
 end
 GO
 
+
+
+
+
 USE [dev.ea.com]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetListCount]    Script Date: 13/06/2019 16:46:09 ******/
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetListCount]    Script Date: 14/06/2019 16:20:12 ******/
+DROP PROCEDURE [dbo].[DNNrocket_GetListCount]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetListCount]    Script Date: 14/06/2019 16:20:12 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -429,13 +442,12 @@ CREATE    PROCEDURE [dbo].[DNNrocket_GetListCount]
 @Filter nvarchar(1000),
 @Lang nvarchar(50),
 @SystemId int,
-@RecordCount int OUTPUT
+@RecordCount int OUTPUT,
+@TableName nvarchar(100)
 AS
 begin
 
- Declare @TableName AS NVarchar(max) 
-
-  set @TableName = 'dbo.[DNNrocket]'
+ set @TableName = '[dbo].' + @TableName
 
 	SET @Filter = REPLACE(@Filter,'[XMLData]','dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
 
@@ -550,10 +562,16 @@ DEALLOCATE idx_cursor
 END
 GO
 
+
+
 USE [dev.ea.com]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecord]    Script Date: 13/06/2019 16:46:19 ******/
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecord]    Script Date: 14/06/2019 16:20:22 ******/
+DROP PROCEDURE [dbo].[DNNrocket_GetRecord]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecord]    Script Date: 14/06/2019 16:20:22 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -561,16 +579,14 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE     PROCEDURE [dbo].[DNNrocket_GetRecord]
-@ItemID int
+@ItemID int,
+@TableName nvarchar(100)
 AS
 begin
 
-
- Declare @TableName AS NVarchar(max) 
  Declare @sql AS NVarchar(max)
- Declare @ParamDefinition AS NVarchar(max) 
 
- set @TableName = 'dbo.[DNNrocket]'
+ set @TableName = '[dbo].' + @TableName
 
 set @sql = '	select '
 set @sql += '	[ItemId] '
@@ -594,10 +610,17 @@ exec sp_executesql  @sql
 end
 GO
 
+
+
+
 USE [dev.ea.com]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecordLang]    Script Date: 13/06/2019 16:46:31 ******/
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecordLang]    Script Date: 14/06/2019 16:20:33 ******/
+DROP PROCEDURE [dbo].[DNNrocket_GetRecordLang]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecordLang]    Script Date: 14/06/2019 16:20:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -606,16 +629,15 @@ GO
 
 CREATE     PROCEDURE [dbo].[DNNrocket_GetRecordLang]
 @ParentItemId int,
-@Lang nvarchar(10)
+@Lang nvarchar(10),
+@TableName nvarchar(100)
 AS
 begin
 
 
- Declare @TableName AS NVarchar(max) 
  Declare @sql AS NVarchar(max)
- Declare @ParamDefinition AS NVarchar(max) 
 
- set @TableName = 'dbo.[DNNrocket]'
+ set @TableName = '[dbo].' + @TableName
 
 set @sql = '	select '
 set @sql += '	[ItemId] '
@@ -632,7 +654,7 @@ set @sql += '	,[Lang]  '
 set @sql += '	,[UserId] '
 set @sql += '	,[SystemId] '
 set @sql += '	from ' + @TableName + ' as R1 '
-set @sql += '	where R1.ItemId = ' + CONVERT(nvarchar(20), @ParentItemId) + ' and R1.Lang = ''' + @Lang + ''' ' 
+set @sql += '	where R1.ParentItemId = ' + CONVERT(nvarchar(20), @ParentItemId) + ' and R1.Lang = ''' + @Lang + ''' ' 
 
 print @sql
 
@@ -644,47 +666,135 @@ GO
 USE [dev.ea.com]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecordLang]    Script Date: 13/06/2019 16:46:31 ******/
+/****** Object:  StoredProcedure [dbo].[DNNrocket_Update]    Script Date: 14/06/2019 16:20:44 ******/
+DROP PROCEDURE [dbo].[DNNrocket_Update]
+GO
+
+/****** Object:  StoredProcedure [dbo].[DNNrocket_Update]    Script Date: 14/06/2019 16:20:44 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE     PROCEDURE [dbo].[DNNrocket_GetRecordLang]
+CREATE   PROCEDURE [dbo].[DNNrocket_Update]
+(
+@ItemId int,
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@XMLData xml,
+@GUIDKey nvarchar(250),
+@ModifiedDate datetime,
+@TextData nvarchar(MAX),
+@XrefItemId int,
 @ParentItemId int,
-@Lang nvarchar(10)
+@UserId int,
+@Lang nvarchar(10),
+@SystemId int,
+@TableName nvarchar(100)
+)
 AS
-begin
+BEGIN
 
-
- Declare @TableName AS NVarchar(max) 
  Declare @sql AS NVarchar(max)
  Declare @ParamDefinition AS NVarchar(max) 
 
- set @TableName = 'dbo.[DNNrocket]'
+ set @TableName = '[dbo].' + @TableName
 
-set @sql = '	select '
-set @sql += '	[ItemId] '
-set @sql += '	,[PortalId] '
-set @sql += '	,[ModuleId] '
-set @sql += '	,[TypeCode] '
-set @sql += '	,[XMLData] '
-set @sql += '	,[GUIDKey] '
-set @sql += '	,[ModifiedDate] '
-set @sql += '	,[TextData] '
-set @sql += '	,[XrefItemId] '
-set @sql += '	,[ParentItemId] '
-set @sql += '	,[Lang]  '
-set @sql += '	,[UserId] '
-set @sql += '	,[SystemId] '
-set @sql += '	from ' + @TableName + ' as R1 '
-set @sql += '	where R1.ItemId = ' + CONVERT(nvarchar(20), @ParentItemId) + ' and R1.Lang = ''' + @Lang + ''' ' 
+set @sql = 'if not exists (select ItemID from ' + @TableName + ' where ItemID = @ItemID ) '
+set @sql += '	begin '
+set @sql += '		insert into ' + @TableName + ' '
+set @sql += '		( '
+set @sql += 'PortalId,  '
+set @sql += 'ModuleId, '
+set @sql += 'TypeCode, '
+set @sql += 'XMLData, '
+set @sql += 'GUIDKey, '
+set @sql += 'ModifiedDate, '
+set @sql += 'TextData, '
+set @sql += 'XrefItemId, '
+set @sql += 'ParentItemId, '
+set @sql += 'UserId, '
+set @sql += 'Lang, '
+set @sql += 'SystemId '
+set @sql += '		) '
+set @sql += '		values '
+set @sql += '		( '
+set @sql += '@PortalId,  '
+set @sql += '@ModuleId, '
+set @sql += '@TypeCode, '
+set @sql += '@XMLData, '
+set @sql += '@GUIDKey, '
+set @sql += '@ModifiedDate, '
+set @sql += '@TextData, '
+set @sql += '@XrefItemId, '
+set @sql += '@ParentItemId, '
+set @sql += '@UserId, '
+set @sql += '@Lang, '
+set @sql += '@SystemId '
+set @sql += '		) '
+set @sql += '		 '
+set @sql += '		set @ItemID = @@IDENTITY '
+set @sql += ' '
+set @sql += '	end '
+set @sql += '	else '
+set @sql += '	begin '
+set @sql += '		Update ' + @TableName + ' '
+set @sql += '		set  '
+set @sql += 'PortalId = @PortalId,  '
+set @sql += 'ModuleId = @ModuleId, '
+set @sql += 'TypeCode = @TypeCode, '
+set @sql += 'XMLData = @XMLData, '
+set @sql += 'GUIDKey = @GUIDKey, '
+set @sql += 'ModifiedDate = @ModifiedDate, '
+set @sql += 'TextData = @TextData, '
+set @sql += 'XrefItemId = @XrefItemId, '
+set @sql += 'ParentItemId = @ParentItemId, '
+set @sql += 'UserId = @UserId, '
+set @sql += 'Lang = @Lang, '
+set @sql += 'SystemId = @SystemId '
+set @sql += '		where ItemId = @ItemId '
+set @sql += '  '
+set @sql += '	end '	
+set @sql += '	select @ItemID '		
 
-print @sql
+	Set @ParamDefinition =      '@ItemId int OUTPUT,
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@XMLData xml,
+@GUIDKey nvarchar(250),
+@ModifiedDate datetime,
+@TextData nvarchar(MAX),
+@XrefItemId int,
+@ParentItemId int,
+@UserId int,
+@Lang nvarchar(10),
+@SystemId int'
 
-exec sp_executesql  @sql
+ Execute sp_Executesql     @sql, 
+                @ParamDefinition, 
+@ItemId OUTPUT,
+@PortalId, 
+@ModuleId,
+@TypeCode,
+@XMLData,
+@GUIDKey,
+@ModifiedDate,
+@TextData,
+@XrefItemId,
+@ParentItemId,
+@UserId,
+@Lang,
+@SystemId
 
-end
+select @ItemId
+END
 GO
+
+
+
+
+
 

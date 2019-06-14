@@ -20,17 +20,17 @@ namespace DNNrocketAPI
         /// override for Database Function
         /// </summary>
         /// <param name="itemId"></param>
-        public override void Delete(int itemId)
+        public override void Delete(int itemId, string tableName = "DNNrocket")
         {
-            DataProvider.Instance().Delete(itemId);
+            DataProvider.Instance().Delete(itemId, tableName);
         }
 
         /// <summary>
         /// override for Database Function
         /// </summary>
-        public override void CleanData()
+        public override void CleanData(string tableName = "DNNrocket")
         {
-            DataProvider.Instance().CleanData();
+            DataProvider.Instance().CleanData(tableName);
         }
 
         /// <summary>
@@ -39,27 +39,27 @@ namespace DNNrocketAPI
         /// <param name="itemId">itmeid of base genxml</param>
         /// <param name="lang">Culturecode of data to be injected into base genxml</param>
         /// <returns></returns>
-        public override SimplisityInfo GetInfo(int itemId, string lang = "")
+        public override SimplisityInfo GetInfo(int itemId, string lang = "", string tableName = "DNNrocket")
         {
-            return CBO.FillObject<SimplisityInfo>(DataProvider.Instance().GetInfo(itemId, lang));
+            return CBO.FillObject<SimplisityInfo>(DataProvider.Instance().GetInfo(itemId, lang, tableName));
         }
 
-        public override SimplisityRecord GetRecord(int itemId)
+        public override SimplisityRecord GetRecord(int itemId, string tableName = "DNNrocket")
         {
-            return CBO.FillObject<SimplisityRecord>(DataProvider.Instance().GetRecord(itemId));
+            return CBO.FillObject<SimplisityRecord>(DataProvider.Instance().GetRecord(itemId, tableName));
         }
 
-        private SimplisityRecord GetRecordLang(int parentitemId, string lang = "", bool debugMode = false)
+        private SimplisityRecord GetRecordLang(int parentitemId, string lang = "", bool debugMode = false, string tableName = "DNNrocket")
         {
             if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
             SimplisityRecord rtnInfo = null;
-            rtnInfo = CBO.FillObject<SimplisityRecord>(DataProvider.Instance().GetRecordLang(parentitemId, lang));
+            rtnInfo = CBO.FillObject<SimplisityRecord>(DataProvider.Instance().GetRecordLang(parentitemId, lang, tableName));
             return rtnInfo;
         }
 
-        public override int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", int systemId = -1)
+        public override int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", int systemId = -1, string tableName = "DNNrocket")
         {
-            return DataProvider.Instance().GetListCount(portalId, moduleId, typeCode, sqlSearchFilter, lang, systemId);
+            return DataProvider.Instance().GetListCount(portalId, moduleId, typeCode, sqlSearchFilter, lang, systemId, tableName);
         }
 
 
@@ -78,9 +78,9 @@ namespace DNNrocketAPI
         /// <param name="typeCodeLang"></param>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public override List<SimplisityInfo> GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0,int systemId = -1)
+        public override List<SimplisityInfo> GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0,int systemId = -1, string tableName = "DNNrocket")
         {
-            return CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, typeCode, sqlSearchFilter, lang, sqlOrderBy, returnLimit, pageNumber, pageSize, recordCount, systemId));
+            return CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, typeCode, sqlSearchFilter, lang, sqlOrderBy, returnLimit, pageNumber, pageSize, recordCount, systemId, tableName));
         }
 
         /// <summary>
@@ -89,36 +89,36 @@ namespace DNNrocketAPI
         /// <param name="objInfo"></param>
         /// <param name="doindex"> if calling from the index function we don't want to index again.</param>
         /// <returns></returns>
-        public override int Update(SimplisityRecord objInfo, bool doindex = true)
+        public override int Update(SimplisityRecord objInfo, bool doindex = true, string tableName = "DNNrocket")
         {
             var itemid = -1;
             if (!String.IsNullOrEmpty(objInfo.TypeCode) && objInfo.TypeCode.ToUpper() != "LANG") // do not process non-data records.
             {
                 // save data
                 objInfo.ModifiedDate = DateTime.Now;
-                itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang, objInfo.SystemId);
+                itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang, objInfo.SystemId, tableName);
 
                 if (doindex)
                 {
                     if (objInfo.Lang == "")
                     {
-                        RebuildIndex(objInfo);
+                        RebuildIndex(objInfo, tableName);
                     }
                     else
                     {
-                        RebuildLangIndex(objInfo, itemid);
+                        RebuildLangIndex(objInfo, itemid, tableName);
                     }
                 }
             }
             return itemid;
         }
 
-        public void DeleteIndex(SimplisityRecord objInfo)
+        public void DeleteIndex(SimplisityRecord objInfo, string tableName = "DNNrocket")
         {
-            var l = GetList(-1, -1, "", " and (R1.typecode = '" + objInfo.TypeCode + "LANGIDX' or R1.typecode like 'IDX_%')  and R1.parentitemid = " + objInfo.ItemID);
+            var l = GetList(-1, -1, "", " and (R1.typecode = '" + objInfo.TypeCode + "LANGIDX' or R1.typecode like 'IDX_%')  and R1.parentitemid = " + objInfo.ItemID,"","",0,0,0,0,-1, tableName);
             foreach (var i in l)
             {
-                Delete(i.ItemID);
+                Delete(i.ItemID, tableName);
             }
         }
 
@@ -127,21 +127,21 @@ namespace DNNrocketAPI
         /// </summary>
         /// <param name="objInfo"></param>
         /// <param name="itemid"></param>
-        public void RebuildLangIndex(SimplisityRecord objInfo, int itemid)
+        public void RebuildLangIndex(SimplisityRecord objInfo, int itemid, string tableName = "DNNrocket")
         {
             if (!String.IsNullOrEmpty(objInfo.TypeCode) && objInfo.TypeCode.ToUpper() != "LANG") // do not process non-data records.
             {
                 if (!String.IsNullOrEmpty(objInfo.Lang))
                 {
                     // do langauge record.
-                    var baseRecord = GetRecord(objInfo.ParentItemId);
+                    var baseRecord = GetRecord(objInfo.ParentItemId, tableName);
                     var saveItemId = 0;
-                    var idxLang = GetByGuidKey(objInfo.PortalId, -1, objInfo.TypeCode + "IDX", objInfo.ParentItemId.ToString() + "_" + objInfo.Lang);
+                    var idxLang = GetByGuidKey(objInfo.PortalId, -1, objInfo.TypeCode + "IDX", objInfo.ParentItemId.ToString() + "_" + objInfo.Lang,"", tableName);
                     if (idxLang != null)
                     {
                         idxLang.XMLData = baseRecord.XMLData;
                         idxLang.SetLangXml(objInfo.XMLData);
-                        saveItemId = DataProvider.Instance().Update(idxLang.ItemID, idxLang.PortalId, idxLang.ModuleId, idxLang.TypeCode, idxLang.XMLData, idxLang.GUIDKey, idxLang.ModifiedDate, idxLang.TextData, idxLang.XrefItemId, idxLang.ParentItemId, idxLang.UserId, idxLang.Lang, idxLang.SystemId);
+                        saveItemId = DataProvider.Instance().Update(idxLang.ItemID, idxLang.PortalId, idxLang.ModuleId, idxLang.TypeCode, idxLang.XMLData, idxLang.GUIDKey, idxLang.ModifiedDate, idxLang.TextData, idxLang.XrefItemId, idxLang.ParentItemId, idxLang.UserId, idxLang.Lang, idxLang.SystemId, tableName);
                     }
                     else
                     {
@@ -158,7 +158,7 @@ namespace DNNrocketAPI
                             sRecord.Lang = objInfo.Lang;
                             sRecord.GUIDKey = objInfo.ParentItemId.ToString() + "_" + objInfo.Lang;
                             sRecord.SetLangXml(objInfo.XMLData);
-                            saveItemId = DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang, sRecord.SystemId);
+                            saveItemId = DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang, sRecord.SystemId, tableName);
                         }
 
                     }
@@ -166,21 +166,21 @@ namespace DNNrocketAPI
                     // This will call multiple times, once for each language.
                     if (saveItemId > 0)
                     {
-                        var langInfo = GetRecord(saveItemId);
-                        var baseInfo = GetRecord(langInfo.ParentItemId);
-                        RebuildIndex(baseInfo);
+                        var langInfo = GetRecord(saveItemId, tableName);
+                        var baseInfo = GetRecord(langInfo.ParentItemId, tableName);
+                        RebuildIndex(baseInfo, tableName);
                     }
                 }
                 else
                 {
                     // we have a base language, so we need to update all language LANGIDX records.
-                    var l = GetList(-1, -1, "", " and (R1.typecode = '" + objInfo.TypeCode + "LANGIDX')  and R1.parentitemid = " + objInfo.ItemID);
+                    var l = GetList(-1, -1, "", " and (R1.typecode = '" + objInfo.TypeCode + "LANGIDX')  and R1.parentitemid = " + objInfo.ItemID,"","",0,0,0,0,-1, tableName);
                     foreach (var i in l)
                     {
                         var langxml = i.GetLangXml();
                         i.XMLData = objInfo.XMLData;
                         i.SetLangXml(langxml);
-                        Update(i, false);
+                        Update(i, false, tableName);
                     }
                 }
             }
@@ -191,7 +191,7 @@ namespace DNNrocketAPI
         /// </summary>
         /// <param name="objInfo"></param>
         /// <param name="itemid"></param>
-        public void RebuildIndex(SimplisityRecord objInfo)
+        public void RebuildIndex(SimplisityRecord objInfo, string tableName = "DNNrocket")
         {
             if (!String.IsNullOrEmpty(objInfo.TypeCode) && objInfo.TypeCode.ToUpper() != "LANG") // do not process non-data records.
             {
@@ -207,19 +207,19 @@ namespace DNNrocketAPI
                     }
 
                     var systemId = objInfo.SystemId;
-                    var systemInfo = GetRecord(systemId);
+                    var systemInfo = GetRecord(systemId, tableName);
 
                     if (systemInfo != null)
                     {
-                        var systemLinkRec = GetByGuidKey(-1, -1, "SYSTEMLINK", objInfo.TypeCode);
+                        var systemLinkRec = GetByGuidKey(-1, -1, "SYSTEMLINK", objInfo.TypeCode,"", tableName);
                         if (systemLinkRec == null)
                         {
                             // might be a xref, search for xref typecode
-                            systemLinkRec = GetByGuidKey(-1, -1, "SYSTEMLINK", objInfo.GUIDKey);
+                            systemLinkRec = GetByGuidKey(-1, -1, "SYSTEMLINK", objInfo.GUIDKey,"", tableName);
                         }
                         if (systemLinkRec != null)
                         {
-                            var xrefTypeCodeList = GetList(-1, -1, "SYSTEMLINK" + objInfo.TypeCode, " and R1.ParentitemId = '" + systemLinkRec.ItemID + "' ");
+                            var xrefTypeCodeList = GetList(-1, -1, "SYSTEMLINK" + objInfo.TypeCode, " and R1.ParentitemId = '" + systemLinkRec.ItemID + "' ","","",0,0,0,0,-1, tableName);
                             foreach (var i in xrefTypeCodeList)
                             {
                                 var indexref = i.GUIDKey;
@@ -230,13 +230,13 @@ namespace DNNrocketAPI
                                     var langList = DNNrocketUtils.GetCultureCodeList(objInfo.PortalId);
                                     foreach (var lang in langList)
                                     {
-                                        var dataInfo = GetInfo(objInfo.ItemID, lang);
+                                        var dataInfo = GetInfo(objInfo.ItemID, lang, tableName);
                                         if (dataInfo != null)
                                         {
                                             var value = dataInfo.GetXmlProperty(xpath);
                                             if (!String.IsNullOrEmpty(value))
                                             {
-                                                CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.SystemId, indexref, xrefitemid, dataitemid, lang, value);
+                                                CreateSystemLinkIdx(dataInfo.PortalId, dataInfo.SystemId, indexref, xrefitemid, dataitemid, lang, value, tableName);
                                             }
                                         }
                                     }
@@ -247,7 +247,7 @@ namespace DNNrocketAPI
                                     var value = objInfo.GetXmlProperty(xpath);
                                     if (!String.IsNullOrEmpty(value))
                                     {
-                                        CreateSystemLinkIdx(objInfo.PortalId, objInfo.SystemId, indexref, xrefitemid, dataitemid, "", value);
+                                        CreateSystemLinkIdx(objInfo.PortalId, objInfo.SystemId, indexref, xrefitemid, dataitemid, "", value, tableName);
                                     }
                                 }
                             }
@@ -257,12 +257,12 @@ namespace DNNrocketAPI
             }
         }
 
-        private void CreateSystemLinkIdx(int portalId, int systemId, string indexref, int xrefitemid, int parentItemId, string lang, string value)
+        private void CreateSystemLinkIdx(int portalId, int systemId, string indexref, int xrefitemid, int parentItemId, string lang, string value, string tableName = "DNNrocket")
         {
             // read is index exists already
             var strFilter = "and R1.ParentItemId = '" + parentItemId + "' and R1.Lang = '" + lang + "'";
             SimplisityInfo sRecord = null;
-            var l = GetList(portalId, -1, "IDX_" + indexref, strFilter, "", "", 1,0,0,0, systemId);
+            var l = GetList(portalId, -1, "IDX_" + indexref, strFilter, "", "", 1,0,0,0, systemId, tableName);
             if (l.Count == 1)
             {
                 sRecord = l[0];
@@ -283,7 +283,7 @@ namespace DNNrocketAPI
             if (sRecord.GUIDKey != value)
             {
                 sRecord.GUIDKey = value;
-                DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang, sRecord.SystemId);
+                DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang, sRecord.SystemId, tableName);
             }
 
         }
@@ -298,7 +298,7 @@ namespace DNNrocketAPI
         /// <param name="entityTypeCodeLang"></param>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public SimplisityInfo GetByType(int portalId, int moduleId, string entityTypeCode, string selUserId = "", string lang = "")
+        public SimplisityInfo GetByType(int portalId, int moduleId, string entityTypeCode, string selUserId = "", string lang = "", string tableName = "DNNrocket")
         {
             var strFilter = "";
             if (selUserId != "")
@@ -306,7 +306,7 @@ namespace DNNrocketAPI
                 strFilter += " and R1.UserId = " + selUserId + " ";
             }
 
-            var l = CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, entityTypeCode, strFilter, lang, "", 1, 1, 1, 1));
+            var l = CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, entityTypeCode, strFilter, lang, "", 1, 1, 1, 1,-1, tableName));
             if (l.Count >= 1)
             {
                 SimplisityInfo nbi = l[0];
@@ -325,7 +325,7 @@ namespace DNNrocketAPI
         /// <param name="guidKey"></param>
         /// <param name="selUserId"></param>
         /// <returns></returns>
-        public SimplisityInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "")
+        public SimplisityInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "", string tableName = "DNNrocket")
         {
             var strFilter = " and R1.GUIDKey = '" + guidKey + "' ";
             if (selUserId != "")
@@ -333,20 +333,20 @@ namespace DNNrocketAPI
                 strFilter += " and R1.UserId = " + selUserId + " ";
             }
 
-            var l = GetList(portalId, moduleId, entityTypeCode, strFilter,"", "", 1);
+            var l = GetList(portalId, moduleId, entityTypeCode, strFilter,"", "", 1,0,0,0,-1, tableName);
             if (l.Count == 0) return null;
             if (l.Count > 1)
             {
                 for (int i = 1; i < l.Count; i++)
                 {
                     // remove invalid DB entries
-                    Delete(l[i].ItemID);
+                    Delete(l[i].ItemID, tableName);
                 }
             }
             return l[0];
         }
 
-        public SimplisityRecord GetRecordByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "")
+        public SimplisityRecord GetRecordByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "", string tableName = "DNNrocket")
         {
             var strFilter = " and R1.GUIDKey = '" + guidKey + "' ";
             if (selUserId != "")
@@ -354,25 +354,25 @@ namespace DNNrocketAPI
                 strFilter += " and R1.UserId = " + selUserId + " ";
             }
 
-            var l = GetList(portalId, moduleId, entityTypeCode, strFilter, "", "", 1);
+            var l = GetList(portalId, moduleId, entityTypeCode, strFilter, "", "", 1,0,0,0,-1, tableName);
             if (l.Count == 0) return null;
             if (l.Count > 1)
             {
                 for (int i = 1; i < l.Count; i++)
                 {
                     // remove invalid DB entries
-                    Delete(l[i].ItemID);
+                    Delete(l[i].ItemID, tableName);
                 }
             }
             if (l[0] == null) return null;
-            var rtn = GetRecord(l[0].ItemID);
+            var rtn = GetRecord(l[0].ItemID, tableName);
             return rtn;
         }
 
 
-        public void FillEmptyLanguageFields(int baseParentItemId, String baseLang)
+        public void FillEmptyLanguageFields(int baseParentItemId, String baseLang, string tableName = "DNNrocket")
         {
-            var baseInfo = GetRecordLang(baseParentItemId, baseLang, true); // do NOT take cache
+            var baseInfo = GetRecordLang(baseParentItemId, baseLang, true, tableName); // do NOT take cache
             if (baseInfo != null)
             {              
                 foreach (var toLang in DNNrocketUtils.GetCultureCodeList(baseInfo.PortalId))
@@ -380,7 +380,7 @@ namespace DNNrocketAPI
                     if (toLang != baseInfo.Lang)
                     {
                         var updatedata = false;
-                        var dlang = GetRecordLang(baseParentItemId, toLang, true); // do NOT take cache
+                        var dlang = GetRecordLang(baseParentItemId, toLang, true, tableName); // do NOT take cache
                         if (dlang != null)
                         {
                             var nodList = baseInfo.XMLDoc.SelectNodes("genxml/textbox/*");
@@ -472,17 +472,17 @@ namespace DNNrocketAPI
                         }
                         if (updatedata)
                         {
-                            Update(dlang);
+                            Update(dlang,true, tableName);
                         }
                     }
                 }
             }
         }
 
-        public SimplisityInfo GetData(string GuidKey, string typeCode, string lang, int systemId = -1, int moduleId = -1, bool readOnly = false)
+        public SimplisityInfo GetData(string GuidKey, string typeCode, string lang, int systemId = -1, int moduleId = -1, bool readOnly = false, string tableName = "DNNrocket")
         {
             SimplisityInfo nbi = null;
-            var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey);
+            var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey,"", tableName);
             if (info == null && !readOnly)
             {
                 // create record if not in DB
@@ -493,12 +493,12 @@ namespace DNNrocketAPI
                 info.ModuleId = moduleId;
                 info.Lang = "";
                 info.PortalId = PortalSettings.Current.PortalId;
-                info.ItemID = Update(info);
+                info.ItemID = Update(info,true, tableName);
             }
 
             if (info != null)
             {
-                var nbilang = GetRecordLang(info.ItemID, lang);
+                var nbilang = GetRecordLang(info.ItemID, lang,false, tableName);
                 if (nbilang == null && !readOnly)
                 {
                     //create in DB if lang is NOT in portal languages.
@@ -517,7 +517,7 @@ namespace DNNrocketAPI
                         nbilang.SystemId = systemId;
                         nbilang.ModuleId = moduleId;
                         nbilang.PortalId = PortalSettings.Current.PortalId;
-                        nbilang.ItemID = Update(nbilang);
+                        nbilang.ItemID = Update(nbilang, true, tableName);
                     }
 
                     // create portal lang records if not in DB
@@ -534,23 +534,23 @@ namespace DNNrocketAPI
                             nbilang.SystemId = systemId;
                             nbilang.ModuleId = moduleId;
                             nbilang.PortalId = PortalSettings.Current.PortalId;
-                            nbilang.ItemID = Update(nbilang);
+                            nbilang.ItemID = Update(nbilang,true, tableName);
                         }
                     }
                 }
-                nbi = GetInfo(info.ItemID, lang);
+                nbi = GetInfo(info.ItemID, lang, tableName);
             }
 
             return nbi;
         }
 
-        public SimplisityInfo SaveData(string GuidKey, string typeCode, SimplisityInfo sInfo, int systemId = -1, int moduleId = -1)
+        public SimplisityInfo SaveData(string GuidKey, string typeCode, SimplisityInfo sInfo, int systemId = -1, int moduleId = -1, string tableName = "DNNrocket")
         {
-            var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey);
+            var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey,"", tableName);
             if (info == null)
             {
                 // do read, so it creates the record and do a new read.
-                info = GetData(GuidKey, typeCode, sInfo.Lang, systemId, moduleId);
+                info = GetData(GuidKey, typeCode, sInfo.Lang, systemId, moduleId,false, tableName);
             }
             if (info != null)
             {
@@ -577,15 +577,15 @@ namespace DNNrocketAPI
                     nbi2.SystemId = systemId;
                     nbi2.ModuleId = moduleId;
                     nbi2.ParentItemId = itemId;
-                    Update(nbi2);
+                    Update(nbi2,true, tableName);
                 }
-                info = GetData(GuidKey, typeCode, sInfo.Lang, systemId, moduleId);
+                info = GetData(GuidKey, typeCode, sInfo.Lang, systemId, moduleId, false, tableName);
             }
 
             return info;
         }
 
-        public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int systemId = -1, int moduleId = -1, bool readOnly = false)
+        public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int systemId = -1, int moduleId = -1, bool readOnly = false, string tableName = "DNNrocket")
         {
             SimplisityInfo nbi = null;
             var info = GetInfo(ItemId, lang);
@@ -598,11 +598,11 @@ namespace DNNrocketAPI
                 info.SystemId = systemId;
                 info.ModuleId = moduleId;
                 info.PortalId = PortalSettings.Current.PortalId;
-                info.ItemID = Update(info);
+                info.ItemID = Update(info,true, tableName);
             }
             if (info != null)
             {
-                var nbilang = GetRecordLang(info.ItemID, lang);
+                var nbilang = GetRecordLang(info.ItemID, lang,false, tableName);
                 if (nbilang == null)
                 {
                     // create lang records if not in DB
@@ -619,22 +619,22 @@ namespace DNNrocketAPI
                             info.SystemId = systemId;
                             info.ModuleId = moduleId;
                             nbilang.PortalId = PortalSettings.Current.PortalId;
-                            nbilang.ItemID = Update(nbilang);
+                            nbilang.ItemID = Update(nbilang,true, tableName);
                         }
                     }
                 }
-                nbi = GetInfo(info.ItemID, lang);
+                nbi = GetInfo(info.ItemID, lang, tableName);
             }
             return nbi;
         }
 
-        public SimplisityInfo SaveData(SimplisityInfo sInfo, int systemId)
+        public SimplisityInfo SaveData(SimplisityInfo sInfo, int systemId, string tableName = "DNNrocket")
         {
-            var info = GetInfo(sInfo.ItemID, sInfo.Lang);
+            var info = GetInfo(sInfo.ItemID, sInfo.Lang, tableName);
             if (info == null)
             {
                 // do read, so it creates the record and do a new read.
-                info = GetData(sInfo.TypeCode, sInfo.ItemID, sInfo.Lang, systemId, sInfo.ModuleId);
+                info = GetData(sInfo.TypeCode, sInfo.ItemID, sInfo.Lang, systemId, sInfo.ModuleId,false, tableName);
             }
             if (info != null)
             {
@@ -651,9 +651,9 @@ namespace DNNrocketAPI
                 info.SystemId = systemId;
 
                 info.RemoveLangRecord();
-                var itemId = Update(info);
+                var itemId = Update(info,true, tableName);
 
-                var nbi2 = GetRecordLang(itemId, sInfo.Lang);
+                var nbi2 = GetRecordLang(itemId, sInfo.Lang, false, tableName);
                 if (nbi2 != null)
                 {
                     nbi2.XMLData = sInfo.GetLangXml();
@@ -662,11 +662,11 @@ namespace DNNrocketAPI
                     nbi2.SystemId = systemId;
                     nbi2.ModuleId = sInfo.ModuleId;
                     nbi2.ParentItemId = itemId;
-                    Update(nbi2);
+                    Update(nbi2,true, tableName);
                 }
 
                 //CacheUtils.ClearAllCache(); // clear ALL cache.
-                info = GetInfo(info.ItemID, sInfo.Lang);
+                info = GetInfo(info.ItemID, sInfo.Lang, tableName);
             }
 
             return info;
@@ -676,10 +676,10 @@ namespace DNNrocketAPI
 
         #region "Get Save Record"
 
-        public SimplisityRecord GetRecord(string GuidKey, string typeCode, int systemId = -1, int moduleId = -1, bool readOnly = false)
+        public SimplisityRecord GetRecord(string GuidKey, string typeCode, int systemId = -1, int moduleId = -1, bool readOnly = false, string tableName = "DNNrocket")
         {
             //CacheUtils.ClearAllCache(); // clear ALL cache.
-            var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey);
+            var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey,"", tableName);
             if (info == null && !readOnly)
             {
                 // create record if not in DB
@@ -689,18 +689,18 @@ namespace DNNrocketAPI
                 info.SystemId = systemId;
                 info.ModuleId = moduleId;
                 info.PortalId = PortalSettings.Current.PortalId;
-                info.ItemID = Update(info);
+                info.ItemID = Update(info,true, tableName);
             }
             return info;
         }
 
-        public SimplisityRecord SaveRecord(string GuidKey, string typeCode, SimplisityRecord sRecord, int systemId = -1, int moduleId = -1)
+        public SimplisityRecord SaveRecord(string GuidKey, string typeCode, SimplisityRecord sRecord, int systemId = -1, int moduleId = -1, string tableName = "DNNrocket")
         {
-            var info = GetRecordByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey);
+            var info = GetRecordByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey,"", tableName);
             if (info == null)
             {
                 // do read, so it creates the record and do a new read.
-                info = GetRecord(GuidKey, typeCode, systemId, moduleId);
+                info = GetRecord(GuidKey, typeCode, systemId, moduleId,false, tableName);
             }
             if (info != null)
             {
@@ -715,16 +715,16 @@ namespace DNNrocketAPI
                 info.Lang = "";
                 info.UserId = sRecord.UserId;
                 info.SystemId = systemId;
-                Update(info);
+                Update(info,true, tableName);
             }
 
             return info;
         }
 
 
-        public SimplisityRecord GetRecord(string typeCode, int ItemId, int systemId = -1, int moduleId = -1, bool readOnly = false)
+        public SimplisityRecord GetRecord(string typeCode, int ItemId, int systemId = -1, int moduleId = -1, bool readOnly = false, string tableName = "DNNrocket")
         {
-            var info = GetRecord(ItemId);
+            var info = GetRecord(ItemId, tableName);
             if (info == null && !readOnly)
             {
                 // create record if not in DB
@@ -734,18 +734,18 @@ namespace DNNrocketAPI
                 info.SystemId = systemId;
                 info.ModuleId = moduleId;
                 info.PortalId = PortalSettings.Current.PortalId;
-                info.ItemID = Update(info);
+                info.ItemID = Update(info,true, tableName);
             }
-            return GetRecord(info.ItemID);
+            return GetRecord(info.ItemID, tableName);
         }
 
-        public SimplisityRecord SaveRecord(SimplisityRecord sRecord, int systemId)
+        public SimplisityRecord SaveRecord(SimplisityRecord sRecord, int systemId, string tableName = "DNNrocket")
         {
-            var info = GetRecord(sRecord.ItemID);
+            var info = GetRecord(sRecord.ItemID, tableName);
             if (info == null)
             {
                 // do read, so it creates the record and do a new read.
-                info = GetRecord(sRecord.TypeCode, sRecord.ItemID, systemId, sRecord.ModuleId);
+                info = GetRecord(sRecord.TypeCode, sRecord.ItemID, systemId, sRecord.ModuleId,false, tableName);
             }
             if (info != null)
             {
@@ -760,9 +760,9 @@ namespace DNNrocketAPI
                 info.Lang = "";
                 info.UserId = sRecord.UserId;
                 info.SystemId = systemId;
-                Update(info);
+                Update(info,true, tableName);
                 //CacheUtils.ClearAllCache(); // clear ALL cache.
-                info = GetRecord(info.ItemID);
+                info = GetRecord(info.ItemID, tableName);
             }
 
             return info;

@@ -63,14 +63,14 @@ namespace DNNrocketAPI
 
         #region "Abstract Methods"
 
-        public abstract int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", int systemId = -1);
-        public abstract IDataReader GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0, int systemId = -1);
-        public abstract IDataReader GetInfo(int itemId, string lang = "");
-        public abstract int Update(int ItemId, int PortalId, int ModuleId, String TypeCode, String XMLData, String GUIDKey, DateTime ModifiedDate, String TextData, int XrefItemId, int ParentItemId, int UserId, string lang, int systemId);
-        public abstract void Delete(int itemId);
-        public abstract void CleanData();
-        public abstract IDataReader GetRecord(int itemId);
-        public abstract IDataReader GetRecordLang(int parentitemId,String lang);
+        public abstract int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", int systemId = -1, string tableName = "DNNrocket");
+        public abstract IDataReader GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0, int systemId = -1, string tableName = "DNNrocket");
+        public abstract IDataReader GetInfo(int itemId, string lang = "", string tableName = "DNNrocket");
+        public abstract int Update(int ItemId, int PortalId, int ModuleId, String TypeCode, String XMLData, String GUIDKey, DateTime ModifiedDate, String TextData, int XrefItemId, int ParentItemId, int UserId, string lang, int systemId, string tableName = "DNNrocket");
+        public abstract void Delete(int itemId, string tableName = "DNNrocket");
+        public abstract void CleanData(string tableName = "DNNrocket");
+        public abstract IDataReader GetRecord(int itemId, string tableName = "DNNrocket");
+        public abstract IDataReader GetRecordLang(int parentitemId,String lang, string tableName = "DNNrocket");
         
 		#endregion
 
