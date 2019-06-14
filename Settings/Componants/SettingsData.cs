@@ -144,7 +144,7 @@ namespace RocketSettings
 
             var dbInfo = GetSettingData(_guidKey, editlang);
 
-            if (!SimplisityInfoList.ContainsKey("editlang"))
+            if (!SimplisityInfoList.ContainsKey(editlang))
             {
                 // new lang record, so add it to list
                 AddSimplisityInfo(dbInfo, editlang);
@@ -152,26 +152,12 @@ namespace RocketSettings
 
             RemovedDeletedListRecords(_listName, dbInfo, postInfo);
 
+            SortListRecordsOnSave(_listName, postInfo, editlang);
+
             // Update ALL langauge records.
             foreach (var listItem in SimplisityInfoList)
             {
-                var saveInfo = (SimplisityInfo)postInfo.Clone();
-                if (editlang != listItem.Value.Lang)
-                {
-                    // If it's not the same langauge, update the data with the listItem.
-                    saveInfo.RemoveLangRecord();
-                    saveInfo.SetLangRecord(listItem.Value.GetLangRecord());
-
-                    // resequance the other language list, by rebuilding from sorted GetList.
-                    var l = saveInfo.GetList(_listName);
-                    saveInfo.RemoveList(_listName);
-                    foreach (var s in l)
-                    {
-                        saveInfo.AddListRow(_listName, s);
-                    }
-                }
-
-                SaveSettingData(_guidKey, saveInfo);
+                SaveSettingData(_guidKey, listItem.Value);
             }
 
             ClearCache();

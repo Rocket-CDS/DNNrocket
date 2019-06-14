@@ -574,6 +574,7 @@
     <Content Include="images\flags\32\zh-TW.png" />
     <Content Include="images\noimage.png" />
     <Content Include="images\noimage2.png" />
+    <Content Include="Installation\SQL_SPROC_TableParam.txt" />
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
     <None Include="Themes\config-w3\1.0\css\green-theme.css" />
     <Content Include="View.ascx">

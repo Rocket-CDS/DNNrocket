@@ -43,14 +43,16 @@ namespace RocketSettings
             }
             else
             {
+                var listname = _postInfo.GetXmlProperty("genxml/hidden/listname");
+                if (listname == "") listname = "settingsdata";
                 if (parentitemid > 0)
                 {
                     var guidkey = "parentitemid" + parentitemid;
-                    _settingsData = new SettingsData(guidkey, langRequired, _rocketInterface.EntityTypeCode);
+                    _settingsData = new SettingsData(guidkey, langRequired, _rocketInterface.EntityTypeCode, listname);
                 }
                 else
                 {
-                    _settingsData = new SettingsData(tabid, moduleid, langRequired, _rocketInterface.EntityTypeCode);
+                    _settingsData = new SettingsData(tabid, moduleid, langRequired, _rocketInterface.EntityTypeCode, listname);
                 }
 
                 _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);

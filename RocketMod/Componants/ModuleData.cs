@@ -40,16 +40,14 @@ namespace RocketMod
         public void DeleteData()
         {
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData("moduleid" + ModuleId, _entityTypeCode, _langRequired, -1, ModuleId, true);
-            if (info != null)
+            var info = objCtrl.GetData("moduleid" + ModuleId, "ROCKETMOD", _langRequired, -1, ModuleId, true);
+            if (info != null) objCtrl.Delete(info.ItemID);
+
+            ClearCache();
+            if (_configData.Exists)
             {
-                objCtrl.Delete(info.ItemID);
-                ClearCache();
-                if (_configData.Exists)
-                {
-                    PopulateHeader();
-                    _settingData.PopulateList();
-                }
+                PopulateHeader();
+                _settingData.PopulateList();
             }
         }
 

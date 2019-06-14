@@ -18,9 +18,22 @@
 
 <span class="w3-section simplisity_buttons">
     <a class="w3-button w3-pale-yellow w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdCancelButton")</a>
-    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:fieldeditor">@ResourceKey("DNNrocket.cmdAddButton")</a>
-    <span class="w3-button w3-green w3-padding-8 simplisity_click  simplisity_langchange activatevalidation" s-before="validateform" s-cmd="rocketsettings_save" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:fieldeditor" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#datalist" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:fieldeditor,listname:fielddata">@ResourceKey("DNNrocket.cmdAddButton")</a>
+    <span class="w3-button w3-green w3-padding-8 simplisity_click  simplisity_langchange activatevalidation" s-before="validateform" s-cmd="rocketsettings_save" s-fields="tabid:@(Model.GetSetting("tabid")),moduleid:@(Model.GetSetting("moduleid")),selecteditemid:@settingsData.Info.ItemID,interfacekey:fieldeditor,listname:fielddata" s-list=".fielddata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="fieldbin" s-return="#datalist" s-removelist=".fielddata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 
-@RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", Model)
+<div class="w3-row section_fieldeditor">
+    @{
+        var m = new SimplisityRazor();
+        var l = new List<object>();
+        foreach (object i in settingsData.List)
+        {
+           l.Add(i);
+        }
+        m.List = l;
+    }
+
+    @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", m)
+
+</div>

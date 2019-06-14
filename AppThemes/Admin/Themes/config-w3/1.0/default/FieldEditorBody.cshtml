@@ -11,9 +11,8 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 @{
-    var appThemeData = (AppThemeData)Model.List.First();
 
-    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + appThemeData.CultureCode + ".png";
+    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + DNNrocketUtils.GetEditCulture() + ".png";
     if (!File.Exists(DNNrocketUtils.MapPath(flagurl)))
     {
         flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/none.png";
@@ -28,7 +27,7 @@
             @{
                 var lp3 = 0;
             }
-            @foreach (SimplisityInfo i in appThemeData.GetFields(appThemeData.CultureCode))
+            @foreach (SimplisityInfo i in Model.List)
             {
                 lp3 += 1;
 
@@ -158,8 +157,8 @@
     $(document).ready(function () {
         $(':checkbox').addClass('w3-check');
 
-        $("#datalist").sortable();
-        $("#datalist").disableSelection();
+        $("#fielddatalist").sortable();
+        $("#fielddatalist").disableSelection();
 
         $('.addvaluekey').unbind("click");
         $('.addvaluekey').click(function () {
@@ -246,7 +245,7 @@
 
     function dnnrocket_showdetail(row) {
         $('#detailDisplay' + row).show();
-        $("#datalist").sortable("option", "disabled", true);
+        $("#fielddatalist").sortable("option", "disabled", true);
         $('#editbutton' + row).hide();
         $('#editbuttoncloseup' + row).show();
         $('#editbuttonclosedown' + row).show();
@@ -268,7 +267,7 @@
             }
         });
         if (activatesort) {
-            $("#datalist").sortable("option", "disabled", false);
+            $("#fielddatalist").sortable("option", "disabled", false);
         }
     }
 
@@ -397,7 +396,7 @@
         }, '@ResourceKey("RocketMod.alphanumeric", "", "Error")');
 
 
-        $("#datasection input[type=text]").each(function () {
+        $("#fielddatasection input[type=text]").each(function () {
             if (!$(this).valid()) {
                 $(this).css({ 'background-color': '#ffe6e6' });
                 $('.activatevalidation').attr('s-stop', 'stop')

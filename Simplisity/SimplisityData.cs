@@ -117,6 +117,32 @@ namespace Simplisity
 
         }
 
+        public void SortListRecordsOnSave(string listName, SimplisityInfo postInfo, string editlang)
+        {
+
+            // Update ALL langauge records.
+            foreach (var listItem in SimplisityInfoList)
+            {
+                var saveInfo = (SimplisityInfo)postInfo.Clone();
+                if (editlang != listItem.Value.Lang)
+                {
+                    // If it's not the same langauge, update the data with the listItem.
+                    saveInfo.RemoveLangRecord();
+                    saveInfo.SetLangRecord(listItem.Value.GetLangRecord());
+
+                    // resequance the other language list, by rebuilding from sorted GetList.
+                    var l = saveInfo.GetList(listName);
+                    saveInfo.RemoveList(listName);
+                    foreach (var s in l)
+                    {
+                        saveInfo.AddListRow(listName, s);
+                    }
+                }
+                AddSimplisityInfo(saveInfo, saveInfo.Lang);
+            }
+
+        }
+
 
         public ConcurrentDictionary<string, SimplisityInfo> SimplisityInfoList { get; }
 

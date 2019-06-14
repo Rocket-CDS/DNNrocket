@@ -87,6 +87,11 @@ namespace RocketMod
                 }
             }
 
+            if (_configData.AppTheme == "" && paramCmd != "rocketmod_saveapptheme" && paramCmd != "rocketmod_getsidemenu")
+            {
+                paramCmd = "rocketmod_selectapptheme";  //we must have an apptheme to work on.
+            }
+
 
             switch (paramCmd)
             {
@@ -219,6 +224,16 @@ namespace RocketMod
             try
             {
                 _moduleData.configData.DeleteConfig();
+
+                var objCtrl = new DNNrocketController();
+                var info = objCtrl.GetData("moduleid" + _moduleData.ModuleId, "ROCKETMODFIELDS", "", -1, _moduleData.ModuleId, true);
+                if (info != null) objCtrl.Delete(info.ItemID);
+                info = objCtrl.GetData("moduleid" + _moduleData.ModuleId, "ROCKETSETTINGS", "", -1, _moduleData.ModuleId, true);
+                if (info != null) objCtrl.Delete(info.ItemID);
+
+                CacheUtils.ClearCache("rocketmod" + _moduleData.ModuleId);
+                _moduleData.configData.PopulateConfig();
+
                 return GetDashBoard();
             }
             catch (Exception ex)

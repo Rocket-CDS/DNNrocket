@@ -482,7 +482,6 @@ namespace DNNrocketAPI
         public SimplisityInfo GetData(string GuidKey, string typeCode, string lang, int systemId = -1, int moduleId = -1, bool readOnly = false)
         {
             SimplisityInfo nbi = null;
-            //CacheUtils.ClearAllCache(); // clear ALL cache.
             var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey);
             if (info == null && !readOnly)
             {
@@ -491,7 +490,8 @@ namespace DNNrocketAPI
                 info.GUIDKey = GuidKey;
                 info.TypeCode = typeCode;
                 info.SystemId = systemId;
-                info.ModuleId = moduleId;                
+                info.ModuleId = moduleId;
+                info.Lang = "";
                 info.PortalId = PortalSettings.Current.PortalId;
                 info.ItemID = Update(info);
             }
@@ -499,7 +499,7 @@ namespace DNNrocketAPI
             if (info != null)
             {
                 var nbilang = GetRecordLang(info.ItemID, lang);
-                if (nbilang == null)
+                if (nbilang == null && !readOnly)
                 {
                     //create in DB if lang is NOT in portal languages.
                     var inPortal = false;
@@ -579,7 +579,6 @@ namespace DNNrocketAPI
                     nbi2.ParentItemId = itemId;
                     Update(nbi2);
                 }
-                //CacheUtils.ClearAllCache(); // clear ALL cache.
                 info = GetData(GuidKey, typeCode, sInfo.Lang, systemId, moduleId);
             }
 

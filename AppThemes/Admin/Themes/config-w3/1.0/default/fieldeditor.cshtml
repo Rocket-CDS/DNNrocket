@@ -35,6 +35,16 @@
 
 <div class="w3-row section_fieldeditor">
 
+    @{
+        var m = new SimplisityRazor();
+        var l = new List<object>();
+        foreach (object i in appThemeData.GetFields(appThemeData.CultureCode))
+        {
+            l.Add(i);
+        }
+        m.List = l;
+    }    
+
     @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", Model)
 
 </div>

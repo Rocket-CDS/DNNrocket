@@ -34,9 +34,9 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
+                var cmdfields = i.GetXmlProperty("genxml/textbox/cmdfields");
 
-
-                    menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketMod." + interfacekey) + "</div>";
+                    menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "," + cmdfields + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketMod." + interfacekey) + "</div>";
 
             }
         }
@@ -60,6 +60,7 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
+                var cmdfields = i.GetXmlProperty("genxml/textbox/cmdfields");
 
                 if (interfacekey == "edit")
                 {
