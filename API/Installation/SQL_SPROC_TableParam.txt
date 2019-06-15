@@ -1,5 +1,4 @@
-﻿USE [dev.ea.com]
-GO
+﻿
 
 /****** Object:  StoredProcedure [dbo].[DNNrocket_CleanData]    Script Date: 14/06/2019 16:18:52 ******/
 DROP PROCEDURE [dbo].[DNNrocket_CleanData]
@@ -28,19 +27,18 @@ set @sql = 'delete from ' + @TableName + ' where moduleid not in (select modulei
 end
 GO
 
-USE [dev.ea.com]
-GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_Delete]    Script Date: 14/06/2019 16:19:02 ******/
+/****** Object:  StoredProcedure [dbo].[DNNrocket_Delete]    Script Date: 15/06/2019 08:20:57 ******/
 DROP PROCEDURE [dbo].[DNNrocket_Delete]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_Delete]    Script Date: 14/06/2019 16:19:02 ******/
+/****** Object:  StoredProcedure [dbo].[DNNrocket_Delete]    Script Date: 15/06/2019 08:20:57 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE   PROCEDURE [dbo].[DNNrocket_Delete]
 @ItemID int,
@@ -55,16 +53,21 @@ begin
 	 Declare @ParamDefinition AS NVarchar(max) 
 
 	 set @TableName = '[dbo].' + @TableName
-	
+
 set @sql = '		DECLARE @DelItemId int	'
+set @sql += '	 Declare @TableName2 AS NVarchar(max) '
+
+set @sql += '		set @TableName2 =  replace(@TableName,''[dbo].'','''') '
+
 		-- Delete all linked child records.
 set @sql += '		DECLARE delete_cursor CURSOR LOCAL FOR '
+
 set @sql += '		select ItemId from ' + @TableName + ' where ParentItemId = ' + CONVERT(nvarchar(20), @ItemId)
 set @sql += '		OPEN delete_cursor'
 set @sql += '		FETCH NEXT FROM delete_cursor INTO @DelItemId'
 set @sql += '		WHILE @@FETCH_STATUS = 0'
 set @sql += '		BEGIN'
-set @sql += '			EXEC dbo.[DNNrocket_Delete] @DelItemId'
+set @sql += '			EXEC dbo.[DNNrocket_Delete] @DelItemId, @TableName2 '
 set @sql += '			FETCH NEXT FROM delete_cursor INTO @DelItemId'
 set @sql += '		END'
 set @sql += '		CLOSE delete_cursor;'
@@ -76,22 +79,22 @@ set @sql += '		OPEN delete_cursor1'
 set @sql += '		FETCH NEXT FROM delete_cursor1 INTO @DelItemId'
 set @sql += '		WHILE @@FETCH_STATUS = 0'
 set @sql += '		BEGIN'
-set @sql += '			EXEC dbo.[DNNrocket_Delete] @DelItemId'
+set @sql += '			EXEC dbo.[DNNrocket_Delete] @DelItemId, @TableName '
 set @sql += '			FETCH NEXT FROM delete_cursor1 INTO @DelItemId'
 set @sql += '		END'
 set @sql += '		CLOSE delete_cursor1;'
 set @sql += '		DEALLOCATE delete_cursor1;'
 set @sql += '		delete from ' + @TableName + ' where ItemId = ' + CONVERT(nvarchar(20), @ItemId)
 	
-		exec sp_executesql  @sql
-	
+
+		Set @ParamDefinition =      '@TableName nvarchar(100)'		
+		exec sp_executesql  @sql, @ParamDefinition, @TableName
 	end
 	
 end
 GO
 
-USE [dev.ea.com]
-GO
+
 
 /****** Object:  StoredProcedure [dbo].[DNNrocket_Get]    Script Date: 14/06/2019 16:19:13 ******/
 DROP PROCEDURE [dbo].[DNNrocket_Get]
@@ -138,7 +141,7 @@ exec sp_executesql  @sql
 end
 GO
 
-USE [dev.ea.com]
+
 GO
 
 /****** Object:  StoredProcedure [dbo].[DNNrocket_GetList]    Script Date: 14/06/2019 16:19:27 ******/
@@ -421,7 +424,7 @@ GO
 
 
 
-USE [dev.ea.com]
+
 GO
 
 /****** Object:  StoredProcedure [dbo].[DNNrocket_GetListCount]    Script Date: 14/06/2019 16:20:12 ******/
@@ -564,7 +567,7 @@ GO
 
 
 
-USE [dev.ea.com]
+
 GO
 
 /****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecord]    Script Date: 14/06/2019 16:20:22 ******/
@@ -613,7 +616,7 @@ GO
 
 
 
-USE [dev.ea.com]
+
 GO
 
 /****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecordLang]    Script Date: 14/06/2019 16:20:33 ******/
@@ -663,7 +666,7 @@ exec sp_executesql  @sql
 end
 GO
 
-USE [dev.ea.com]
+
 GO
 
 /****** Object:  StoredProcedure [dbo].[DNNrocket_Update]    Script Date: 14/06/2019 16:20:44 ******/
