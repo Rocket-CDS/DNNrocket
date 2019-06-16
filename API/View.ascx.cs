@@ -239,6 +239,14 @@ namespace DNNrocketAPI
                 if (adminurl != "")
                 {
                     actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmin"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
+                    if (adminurl.Contains("?"))
+                    {
+                        adminurl += "&newpage=1";
+                    }
+                    else
+                    {
+                        adminurl += "?newpage=1";
+                    }
                     actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmintab"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, true);
                 }
                 actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearmodcache"), "", "", "action_refresh.gif", "?clearmodcache=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);

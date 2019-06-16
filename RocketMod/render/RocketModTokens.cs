@@ -17,11 +17,11 @@ namespace RocketMod
 
         public IEncodedString RenderRocketModFields(int portalid, int moduleid, SimplisityInfo info, int row, string lang = "")
         {
-            var strOut = BuidlRocketForm(portalid, moduleid, info, row, lang);
+            var strOut = BuildRocketForm(portalid, moduleid, info, row, lang);
             return new RawString(strOut);
         }
 
-        private string BuidlRocketForm(int portalid, int moduleid, SimplisityInfo info, int row, string lang = "")
+        private string BuildRocketForm(int portalid, int moduleid, SimplisityInfo info, int row, string lang = "")
         {
             var objCtrl = new DNNrocketController();
             var strOut = "";
