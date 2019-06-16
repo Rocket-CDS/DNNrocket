@@ -10,7 +10,7 @@ namespace DNNrocket.SystemData
     public class startconnect : DNNrocketAPI.APInterface
     {
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo,string userHostAddress, string editlang = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string editlang = "")
         {
 
             var rocketInterface = new DNNrocketInterface(interfaceInfo);

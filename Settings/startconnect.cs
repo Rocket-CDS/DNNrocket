@@ -11,11 +11,12 @@ namespace RocketSettings
         private static string _appthemeRelPath;
         private static string _appthemeMapPath;
         private static SimplisityInfo _postInfo;
+        private static SimplisityInfo _paramInfo;
         private static CommandSecurity _commandSecurity;
         private static DNNrocketInterface _rocketInterface;
         private static SettingsData _settingsData;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string langRequired = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string langRequired = "")
         {
             var strOut = "ERROR"; // return ERROR if not matching commands.
 
@@ -28,22 +29,23 @@ namespace RocketSettings
             _appthemeRelPath = appPath;
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _postInfo = postInfo;
+            _paramInfo = paramInfo;
 
             // we should ALWAYS pass back the moduleid & tabid in the template post.
             // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
-            var moduleid = _postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-            if (moduleid == 0) moduleid = _postInfo.ModuleId;
-            var parentitemid = _postInfo.GetXmlPropertyInt("genxml/hidden/parentitemid");
-            if (parentitemid == 0) parentitemid = _postInfo.ParentItemId;
+            var moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            if (moduleid == 0) moduleid = _paramInfo.ModuleId;
+            var parentitemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/parentitemid");
+            if (parentitemid == 0) parentitemid = _paramInfo.ParentItemId;
 
-            var tabid = _postInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
+            var tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
             if ((tabid == 0 || moduleid == 0) && parentitemid <= 0)
             {
                 strOut = "Interface must be attached to a module or parent.";
             }
             else
             {
-                var listname = _postInfo.GetXmlProperty("genxml/hidden/listname");
+                var listname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
                 if (listname == "") listname = "settingsdata";
                 if (parentitemid > 0)
                 {
@@ -110,14 +112,14 @@ namespace RocketSettings
             try
             {
                 var strOut = "";
-                var theme = _postInfo.GetXmlProperty("genxml/hidden/theme");
+                var theme = _paramInfo.GetXmlProperty("genxml/hidden/theme");
                 if (theme == "") theme = _rocketInterface.DefaultTheme;
                 if (theme == "") theme = "config-w3";
-                var razortemplate = _postInfo.GetXmlProperty("genxml/hidden/template");
+                var razortemplate = _paramInfo.GetXmlProperty("genxml/hidden/template");
                 if (razortemplate == "") razortemplate = _rocketInterface.DefaultTemplate;                
                 if (razortemplate == "") razortemplate = "settings.cshtml";
 
-                var passSettings = _postInfo.ToDictionary();
+                var passSettings = _paramInfo.ToDictionary();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, theme, DNNrocketUtils.GetEditCulture());
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, _settingsData, passSettings);
 

@@ -1306,7 +1306,7 @@ namespace DNNrocketAPI
             }
         }
 
-        public static Dictionary<string,string> GetProviderReturn(string paramCmd,SimplisityInfo systemInfo, DNNrocketInterface rocketInterface, SimplisityInfo postInfo, string templateRelPath, string editlang)
+        public static Dictionary<string,string> GetProviderReturn(string paramCmd,SimplisityInfo systemInfo, DNNrocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
         {
             var rtnDic = new Dictionary<string, string>();
             var systemprovider = "";
@@ -1317,7 +1317,7 @@ namespace DNNrocketAPI
             if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
             {
                 var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", templateRelPath);
-                rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, editlang);
+                rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, HttpContext.Current.Request.UserHostAddress, editlang);
             }
             else
             {
@@ -1345,7 +1345,7 @@ namespace DNNrocketAPI
                                         postInfo.SystemId = systemInfo.ItemID;  // systemid is required for index, always add to postdata so it gets passed to the razor templates.
                                     }
                                     var ajaxprov = APInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass, controlRelPath);
-                                    rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, HttpContext.Current.Request.UserHostAddress, editlang);
+                                    rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, paramInfo, HttpContext.Current.Request.UserHostAddress, editlang);
                                 }
                                 catch (Exception ex)
                                 {

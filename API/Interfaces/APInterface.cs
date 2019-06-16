@@ -28,7 +28,7 @@ namespace DNNrocketAPI
 
         #endregion
 
-        public abstract Dictionary<string,string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo,string userHostAddress, string langRequired = "");
+        public abstract Dictionary<string,string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string langRequired = "");
 
     }
 

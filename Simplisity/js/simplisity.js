@@ -141,7 +141,8 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
 
     var cmdupdate = scmdurl + '?cmd=' + scmd + '&systemprovider=' + simplisity_encode(systemprovider);
 
-    var jsonData = ConvertFormToJSON(spost, slist, sfields);
+    var jsonData = ConvertFormToJSON(spost, slist);
+    var jsonParam = ConvertParamToJSON(sfields);
 
     if ((typeof sdropdownlist !== 'undefined') && sdropdownlist !== '') {
         $.ajax({
@@ -150,7 +151,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             cache: false,
             dataType: 'json',
             timeout: 90000,
-            data: { inputjson: encodeURI(jsonData), simplisity_cmd: scmd },
+            data: { inputjson: encodeURI(jsonData), paramjson: encodeURI(jsonParam), simplisity_cmd: scmd },
             success: function (json) {
                 var jsontest = JSON.stringify(eval("(" + json + ")"));
                 var obj = JSON.parse(jsontest);
@@ -171,7 +172,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             url: cmdupdate,
             cache: false,
             timeout: 90000,
-            data: { inputjson: encodeURI(jsonData), simplisity_cmd: scmd }
+            data: { inputjson: encodeURI(jsonData), paramjson: encodeURI(jsonParam), simplisity_cmd: scmd }
         });
 
         request.done(function (data) {
@@ -291,11 +292,63 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
     return;
 }
 
-function ConvertFormToJSON(spost, slist, sfields) {
+function ConvertParamToJSON(sfields) {
+    var viewData = {
+        sfield: []
+    };
+
+    // Put s-fields into the json object.
+    if (typeof sfields !== 'undefined' && sfields !== '') {
+        sfields.replace(',,', '{comma}');
+        sfields.replace('::', '{colon}');
+        var sfieldlist = sfields.split(',');
+
+        var jsonDataF = {};
+        sfieldlist.forEach((field, index) => {
+            if (field !== '') {
+                fieldsplit = field.split(':');
+                if (fieldsplit.length >= 2) {
+                    jsonDataF[fieldsplit[0].replace('{comma}', ',').replace('{colon}', ':')] = simplisity_encode(fieldsplit[1].replace('{comma}', ',').replace('{colon}', ':')) || '';
+                }
+            }
+        });
+
+        // add any search fields
+        var searchfields = simplisity_getCookieValue('s-searchfields');
+        var searchList = searchfields.split(',');
+        searchList.forEach((field, index) => {
+            if (typeof field !== 'undefined') {
+                fieldsplit = field.split(':');
+                if (typeof fieldsplit[0] !== 'undefined' && fieldsplit[0] !== '') {
+                    jsonDataF[simplisity_decode(fieldsplit[0])] = fieldsplit[1] || '';
+                }
+            }
+        });
+
+        // Add paging data
+        var pagesize = simplisity_getCookieValue('s-pagesize');
+        if (typeof pagesize !== 'undefined') {
+            jsonDataF['pagesize'] = simplisity_encode(pagesize) || '';
+        }
+        var page = simplisity_getCookieValue('s-page');
+        if (typeof page !== 'undefined') {
+            jsonDataF['page'] = simplisity_encode(page) || '';
+        }
+
+
+        viewData.sfield.push(jsonDataF);
+    }
+
+    //console.log('json: ' + JSON.stringify(viewData));
+
+    return JSON.stringify(viewData);
+}
+
+
+function ConvertFormToJSON(spost, slist) {
     var viewData = {
         postdata: [],
-        listdata: [],        
-        sfield: []
+        listdata: []        
     };
 
     // put input fields into the json object
@@ -368,49 +421,6 @@ function ConvertFormToJSON(spost, slist, sfields) {
             });
 
         });
-    }
-
-
-    // Put s-fields into the json object.
-    if (typeof sfields !== 'undefined' && sfields !== '') {
-        sfields.replace(',,', '{comma}');
-        sfields.replace('::', '{colon}');
-        var sfieldlist = sfields.split(',');
-
-        var jsonDataF = {};
-        sfieldlist.forEach((field, index) => {
-            if (field !== '') {
-                fieldsplit = field.split(':');
-                if (fieldsplit.length >= 2) {
-                    jsonDataF[fieldsplit[0].replace('{comma}', ',').replace('{colon}', ':')] = simplisity_encode(fieldsplit[1].replace('{comma}', ',').replace('{colon}', ':')) || '';
-                }
-            }
-        });
-
-        // add any search fields
-        var searchfields = simplisity_getCookieValue('s-searchfields');
-        var searchList = searchfields.split(',');
-        searchList.forEach((field, index) => {
-            if (typeof field !== 'undefined') {
-                fieldsplit = field.split(':');
-                if (typeof fieldsplit[0] !== 'undefined' && fieldsplit[0] !== '') {
-                    jsonDataF[simplisity_decode(fieldsplit[0])] = fieldsplit[1] || '';
-                }
-            }
-        });
-
-        // Add paging data
-        var pagesize = simplisity_getCookieValue('s-pagesize');
-        if (typeof pagesize !== 'undefined') {
-            jsonDataF['pagesize'] = simplisity_encode(pagesize) || '';
-        }
-        var page = simplisity_getCookieValue('s-page');
-        if (typeof page !== 'undefined') {
-            jsonDataF['page'] = simplisity_encode(page) || '';
-        }
-
-
-        viewData.sfield.push(jsonDataF);
     }
 
     //console.log('json: ' + JSON.stringify(viewData));

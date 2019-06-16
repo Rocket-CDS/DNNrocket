@@ -38,7 +38,6 @@ namespace DNNrocketAPI
                 {
                     _editlang = DNNrocketUtils.GetEditCulture();
 
-
                     var paramCmd = context.Request.QueryString["cmd"];
 
                     if (paramCmd == "login_signout")
@@ -52,9 +51,17 @@ namespace DNNrocketAPI
                     }
 
                     var requestJson = "";
+                    var paramJson = "";
+
+                    var paramInfo = new SimplisityInfo(DNNrocketUtils.GetEditCulture());
+                    if (DNNrocketUtils.RequestParam(context, "paramjson") != "")
+                    {
+                        paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
+                        paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, _editlang);
+                        paramInfo.PortalId = DNNrocketUtils.GetPortalId();
+                    }
+
                     var postInfo = new SimplisityInfo(DNNrocketUtils.GetEditCulture());
-                    postInfo.PortalId = PortalSettings.Current.PortalId;
-                    postInfo.SetXmlProperty("genxml/hidden", "");
                     if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
                     {
                         requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
@@ -69,6 +76,7 @@ namespace DNNrocketAPI
                         // ---- END: DEBUG POST ------
 
                         postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
+                        postInfo.PortalId = DNNrocketUtils.GetPortalId();
 
                         // ---- START: DEBUG POST ------
                         if (debugSystemInfo != null && debugSystemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
@@ -79,52 +87,35 @@ namespace DNNrocketAPI
 
                     }
 
-                    // Add any url params (coded)
-                    foreach (string key in context.Request.QueryString.Keys)
-                    {
-                        if (key != "cmd")
-                        {
-                            var values = context.Request.QueryString.GetValues(key);
-                            foreach (string value in values)
-                            {
-                                try
-                                {
-                                    postInfo.SetXmlProperty("genxml/hidden/" + key.Replace("_","-"), GeneralUtils.DeCode(value));
-                                }
-                                catch (Exception ex)
-                                {
-                                    var msg = ex;
-                                    // it might not be coded. (ignore and use genxml/urlparams/* xpath)
-                                }
-
-                            }
-
-                        }
-                    }
-
                     // Add any url params (uncoded)
                     foreach (String key in context.Request.QueryString.Keys)
                     {
-                        postInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_","-"), context.Request.QueryString[key]);
+                        try
+                        {
+                            paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), GeneralUtils.DeCode(context.Request.QueryString[key]));
+                        }
+                        catch (Exception ex)
+                        {
+                            // it might not be coded. (ignore and use genxml/urlparams/* xpath)
+                            paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), context.Request.QueryString[key]);
+                        }
                     }
                     foreach (string key in context.Request.Form)
                     {
-                        postInfo.SetXmlProperty("genxml/postform/" + key.Replace("_","-"), context.Request.Form[key]); // remove '_' from xpath
+                        paramInfo.SetXmlProperty("genxml/postform/" + key.Replace("_","-"), context.Request.Form[key]); // remove '_' from xpath
                     }
 
-
-
-                    var systemprovider = postInfo.GetXmlProperty("genxml/hidden/systemprovider").Trim(' ');
-                    if (systemprovider == "") systemprovider = postInfo.GetXmlProperty("genxml/urlparams/systemprovider").Trim(' ');
-                    if (systemprovider == "") systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
+                    var systemprovider = paramInfo.GetXmlProperty("genxml/hidden/systemprovider").Trim(' ');
+                    if (systemprovider == "") systemprovider = paramInfo.GetXmlProperty("genxml/urlparams/systemprovider").Trim(' ');
+                    if (systemprovider == "") systemprovider = paramInfo.GetXmlProperty("genxml/systemprovider");
                     if (systemprovider == "") systemprovider = "dnnrocket";
                     var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
 
-                    var interfacekey = postInfo.GetXmlProperty("genxml/hidden/interfacekey");
-                    if (interfacekey == "") interfacekey = postInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
+                    var interfacekey = paramInfo.GetXmlProperty("genxml/hidden/interfacekey");
+                    if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
                     if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
-                    postInfo.SetXmlProperty("genxml/systemprovider", systemprovider);
+                    paramInfo.SetXmlProperty("genxml/systemprovider", systemprovider);
 
                     if (paramCmd == "login_login")
                     {
@@ -136,14 +127,14 @@ namespace DNNrocketAPI
                         switch (paramCmd)
                         {
                         case "getsidemenu":
-                            strOut = GetSideMenu(postInfo, systemprovider);
+                            strOut = GetSideMenu(paramInfo, systemprovider);
                             break;
                         default:
                             var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
 
                             if (rocketInterface.Exists)
                             {
-                                var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, TemplateRelPath, _editlang);
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, paramInfo, TemplateRelPath, _editlang);
 
                                 if (returnDictionary.ContainsKey("outputhtml"))
                                 {
@@ -167,7 +158,7 @@ namespace DNNrocketAPI
                                 if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
                                 {
                                     var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
-                                    var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
+                                    var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
                                     strOut = returnDictionary["outputhtml"];
                                 }
                                 else

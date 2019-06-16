@@ -163,10 +163,11 @@ namespace DNNrocketAPI
             }
 
             var postInfo = new SimplisityInfo();
-            postInfo.PortalId = PortalSettings.Current.PortalId;
-            postInfo.ModuleId = ModuleId;
-            postInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
-            postInfo.SetXmlProperty("genxml/hidden/tabid", PortalSettings.Current.ActiveTab.TabID.ToString());
+            var paramInfo = new SimplisityInfo();
+            paramInfo.PortalId = PortalSettings.Current.PortalId;
+            paramInfo.ModuleId = ModuleId;
+            paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
+            paramInfo.SetXmlProperty("genxml/hidden/tabid", PortalSettings.Current.ActiveTab.TabID.ToString());
 
             if (_rocketInterface.Exists)
             {
@@ -176,11 +177,11 @@ namespace DNNrocketAPI
                 {
                     paramString += key + "=" + Request.QueryString[key];
                     // we need this if we need to process url parmas on the APInterface.  In the cshtml we can use (Model.GetUrlParam("????"))
-                    postInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_","-"), Request.QueryString[key]);
+                    paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_","-"), Request.QueryString[key]);
                 }
                 foreach (string key in Request.Form)
                 {
-                    postInfo.SetXmlProperty("genxml/postform/" + key.Replace("_","-"), Request.Form[key]); // remove '_' from xpath
+                    paramInfo.SetXmlProperty("genxml/postform/" + key.Replace("_","-"), Request.Form[key]); // remove '_' from xpath
                 }
 
                 var strOut = "No Interface Found.";
@@ -190,7 +191,7 @@ namespace DNNrocketAPI
 
                 if (cacheOutPut == null || cacheOutPut == "")
                 {
-                    var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
+                    var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, paramInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
 
                     if (returnDictionary.ContainsKey("outputhtml"))
                     {

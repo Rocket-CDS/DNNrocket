@@ -15,6 +15,7 @@ namespace RocketMod
         private static string _rocketModRelPath;
         private static string _rocketModMapPath;
         private static SimplisityInfo _postInfo;
+        private static SimplisityInfo _paramInfo;
         private static CommandSecurity _commandSecurity;
         private static DNNrocketInterface _rocketInterface;
         private static SimplisityInfo _systemInfo;
@@ -22,7 +23,7 @@ namespace RocketMod
         private static int _tabid;
         private static int _moduleid;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string langRequired = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string langRequired = "")
         {
             var strOut = ""; // return nothing if not matching commands.
 
@@ -32,6 +33,7 @@ namespace RocketMod
             _rocketModRelPath = "/DesktopModules/DNNrocket/RocketMod";
             _rocketModMapPath = DNNrocketUtils.MapPath(_rocketModRelPath);
             _postInfo = postInfo;
+            _paramInfo = paramInfo;
             _systemInfo = systemInfo;
 
 
@@ -43,15 +45,15 @@ namespace RocketMod
 
             // we should ALWAYS pass back the moduleid & tabid in the template post.
             // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
-            _moduleid = _postInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-            if (_moduleid == 0) _moduleid = _postInfo.GetXmlPropertyInt("genxml/urlparams/moduleid"); // IPN           
-            if (_moduleid == 0) _moduleid = _postInfo.ModuleId;
-            _tabid = _postInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
-            if (_tabid == 0) _tabid = _postInfo.GetXmlPropertyInt("genxml/urlparams/tabid"); // IPN
+            _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid"); // IPN           
+            if (_moduleid == 0) _moduleid = _paramInfo.ModuleId;
+            _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
+            if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid"); // IPN
 
-            var selecteditemid = _postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            var selecteditemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
 
-            _configData = new ConfigData(postInfo.PortalId, _systemInfo, _tabid, _moduleid);
+            _configData = new ConfigData(paramInfo.PortalId, _systemInfo, _tabid, _moduleid);
             _moduleData = new ModuleData(_configData, langRequired);
             _postInfo.ModuleId = _moduleData.ModuleId; // make sure we have correct moduleid.
 
@@ -96,7 +98,7 @@ namespace RocketMod
             switch (paramCmd)
             {
                 case "rocketmod_getsidemenu":
-                    strOut = GetSideMenu(postInfo, systemInfo);
+                    strOut = GetSideMenu(paramInfo, systemInfo);
                     break;
                 case "rocketmod_selectapptheme":
                     strOut = GetSelectApp();

@@ -76,29 +76,30 @@ namespace DNNrocketAPI
 
 
                 var postInfo = new SimplisityInfo();
-                postInfo.PortalId = PortalSettings.Current.PortalId;
-                postInfo.SetXmlProperty("genxml/hidden", "");
+                var paramInfo = new SimplisityInfo();
+                paramInfo.PortalId = PortalSettings.Current.PortalId;
+                paramInfo.SetXmlProperty("genxml/hidden", "");
 
-                postInfo.SetXmlProperty("genxml/hidden/url", context.Request.Url.ToString());
+                paramInfo.SetXmlProperty("genxml/hidden/url", context.Request.Url.ToString());
 
                 // Add any url params (uncoded)
                 foreach (String key in context.Request.QueryString.Keys)
                 {
-                    postInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), context.Request.QueryString[key]);
+                    paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), context.Request.QueryString[key]);
                 }
                 foreach (string key in context.Request.Form)
                 {
-                    postInfo.SetXmlProperty("genxml/postform/" + key.Replace("_", "-"), context.Request.Form[key]); // remove '_' from xpath
+                    paramInfo.SetXmlProperty("genxml/postform/" + key.Replace("_", "-"), context.Request.Form[key]); // remove '_' from xpath
                 }
 
 
                 var param = context.Request.BinaryRead(context.Request.ContentLength);
                 var strRequest = Encoding.ASCII.GetString(param);
-                postInfo.SetXmlProperty("genxml/requestcontent", strRequest);
+                paramInfo.SetXmlProperty("genxml/requestcontent", strRequest);
 
                 var interfacekey = "";
                 var systemprovider = "";
-                var dataid = postInfo.GetXmlPropertyInt("genxml/urlparams/ref");
+                var dataid = paramInfo.GetXmlPropertyInt("genxml/urlparams/ref");
                 if (String.IsNullOrEmpty(paramCmd) && dataid > 0)
                 {
                     // use the dataid to get the systemprovider, interface, tabid, moduleid.
@@ -106,27 +107,27 @@ namespace DNNrocketAPI
                     paramCmd = dataRecord.GetXmlProperty("genxml/hidden/cmd");
                     systemprovider = dataRecord.GetXmlProperty("genxml/hidden/systemprovider");
                     interfacekey = dataRecord.GetXmlProperty("genxml/hidden/interfacekey");
-                    postInfo.SetXmlProperty("genxml/hidden/moduleid", dataRecord.GetXmlProperty("genxml/hidden/moduleid"));
-                    postInfo.SetXmlProperty("genxml/hidden/tabid", dataRecord.GetXmlProperty("genxml/hidden/tabid"));
+                    paramInfo.SetXmlProperty("genxml/hidden/moduleid", dataRecord.GetXmlProperty("genxml/hidden/moduleid"));
+                    paramInfo.SetXmlProperty("genxml/hidden/tabid", dataRecord.GetXmlProperty("genxml/hidden/tabid"));
                 }
                 else
                 {
-                    systemprovider = postInfo.GetXmlProperty("genxml/urlparams/systemprovider").Trim(' ');
-                    interfacekey = postInfo.GetXmlProperty("genxml/urlparams/interfacekey");
+                    systemprovider = paramInfo.GetXmlProperty("genxml/urlparams/systemprovider").Trim(' ');
+                    interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey");
                 }
-                if (systemprovider == "") systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
+                if (systemprovider == "") systemprovider = paramInfo.GetXmlProperty("genxml/systemprovider");
                 if (systemprovider == "") systemprovider = "dnnrocket";
                 if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
 
-                postInfo.SetXmlProperty("genxml/systemprovider", systemprovider);
+                paramInfo.SetXmlProperty("genxml/systemprovider", systemprovider);
 
                 var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
                 var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
 
                 if (rocketInterface.Exists)
                 {
-                    var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, TemplateRelPath, _editlang);
+                    var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, paramInfo, TemplateRelPath, _editlang);
 
                     if (returnDictionary.ContainsKey("outputhtml"))
                     {
