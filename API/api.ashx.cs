@@ -58,6 +58,8 @@ namespace DNNrocketAPI
                     {
                         paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
                         paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, _editlang);
+                        paramInfo.RemoveXmlNode("genxml/postform/paramjson");
+                        paramInfo.RemoveXmlNode("genxml/postform/inputjson");
                         paramInfo.PortalId = DNNrocketUtils.GetPortalId();
                     }
 

@@ -29,57 +29,57 @@ namespace DNNrocket.SystemData
                 switch (paramCmd)
                 {
                     case "systemapi_admin_getsystemlist":
-                        strOut = SystemAdminList(postInfo, controlRelPath);
+                        strOut = SystemAdminList(paramInfo, controlRelPath);
                         break;
                     case "systemapi_admin_getdetail":
-                        strOut = SystemAdminDetail(postInfo, controlRelPath);
+                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
                         break;
                     case "systemapi_adminaddnew":
-                        strOut = SystemAddNew(postInfo, controlRelPath);
+                        strOut = SystemAddNew(paramInfo, controlRelPath);
                         break;
                     case "systemapi_addinterface":
-                        SystemAddListRow(postInfo, "interfacedata");
-                        strOut = SystemAdminDetail(postInfo, controlRelPath);
+                        SystemAddListRow(paramInfo, "interfacedata");
+                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
                         break;
                     case "systemapi_admin_save":
-                        SystemSave(postInfo);
-                        strOut = SystemAdminDetail(postInfo, controlRelPath);
+                        SystemSave(postInfo, paramInfo);
+                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
                         break;
                     case "systemapi_admin_delete":
-                        SystemDelete(postInfo);
-                        strOut = SystemAdminList(postInfo, controlRelPath);
+                        SystemDelete(paramInfo);
+                        strOut = SystemAdminList(paramInfo, controlRelPath);
                         break;
                     case "systemapi_addparam":
-                        SystemAddListRow(postInfo, "idxfielddata");
-                        strOut = SystemAdminDetail(postInfo, controlRelPath);
+                        SystemAddListRow(paramInfo, "idxfielddata");
+                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
                         break;
                     case "systemapi_addsetting":
-                        SystemAddListRow(postInfo, "settingsdata");
-                        strOut = SystemAdminDetail(postInfo, controlRelPath);
+                        SystemAddListRow(paramInfo, "settingsdata");
+                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
                         break;
                     case "systemapi_addgroup":
-                        SystemAddListRow(postInfo, "groupsdata");
-                        strOut = SystemAdminDetail(postInfo, controlRelPath);
+                        SystemAddListRow(paramInfo, "groupsdata");
+                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
                         break;
                     case "systemapi_addprovtype":
-                        SystemAddListRow(postInfo, "provtypesdata");
-                        strOut = SystemAdminDetail(postInfo, controlRelPath);
+                        SystemAddListRow(paramInfo, "provtypesdata");
+                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
                         break;
                     case "systemapi_rebuildindex":
-                        RebuildIndex(postInfo, false);
+                        RebuildIndex(paramInfo, false);
                         strOut = "<h1>Rebuilding Index</h1>";
                         break;
                     case "systemapi_deleterebuildindex":
-                        RebuildIndex(postInfo, true);
+                        RebuildIndex(paramInfo, true);
                         strOut = "<h1>Deleting and Rebuilding Index</h1>";
                         break;
                     case "systemapi_copyinterface":
-                        strOut = CopyInterface(postInfo, controlRelPath);
+                        strOut = CopyInterface(paramInfo, controlRelPath);
                         break;
                     case "systemapi_clearallcache":
                         CacheUtils.ClearAllCache();
                         DNNrocketUtils.ClearPortalCache();
-                        strOut = SystemAdminList(postInfo, controlRelPath);
+                        strOut = SystemAdminList(paramInfo, controlRelPath);
                         break;
                 }
             }
@@ -232,13 +232,13 @@ namespace DNNrocket.SystemData
         }
 
 
-        public static void SystemSave(SimplisityInfo postInfo)
+        public static void SystemSave(SimplisityInfo postInfo, SimplisityInfo paramInfo)
         {
             //remove any params
             postInfo.RemoveXmlNode("genxml/postform");
             postInfo.RemoveXmlNode("genxml/urlparams");
 
-            var selecteditemid = postInfo.GetXmlProperty("genxml/hidden/selecteditemid");
+            var selecteditemid = paramInfo.GetXmlProperty("genxml/hidden/selecteditemid");
             if (GeneralUtils.IsNumeric(selecteditemid))
             {
                 var objCtrl = new DNNrocketController();
