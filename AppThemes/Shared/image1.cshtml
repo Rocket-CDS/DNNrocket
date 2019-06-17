@@ -56,7 +56,7 @@
                                 @HiddenField(info, "genxml/imgs/genxml[" + imglp + "]/hidden/filename", " update='imgsave' ")
                                 @HiddenField(info, "genxml/imgs/genxml[" + imglp + "]/hidden/imageurl", " update='imgsave' ")
                                 @HiddenField(info, "genxml/imgs/genxml[" + imglp + "]/hidden/imagepath", " update='imgsave' ")
-                                <img src="/DesktopModules/NBright/NBrightData/NBrightThumb.ashx?src=@(imageurl)&w=100&h=50" />
+                                <img src="/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=@(imageurl)&w=100&h=50" />
                             </td>
                             <td>@NBrightTextBox(info, "genxml/lang/genxml/imgs/genxml[" + imglp + "]/textbox/imgcaption", " update='imglang' ")</td>
                             @if (Model.GetSetting("imglistcolumns").Contains("w"))

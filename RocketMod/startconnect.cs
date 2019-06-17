@@ -89,7 +89,7 @@ namespace RocketMod
                 }
             }
 
-            if (_configData.AppTheme == "" && paramCmd != "rocketmod_saveapptheme" && paramCmd != "rocketmod_getsidemenu")
+            if (_configData.AppTheme == "" && paramCmd != "rocketmod_saveapptheme" && paramCmd != "rocketmod_getsidemenu" && paramCmd != "rocketmod_getdata")
             {
                 paramCmd = "rocketmod_selectapptheme";  //we must have an apptheme to work on.
             }
@@ -104,7 +104,7 @@ namespace RocketMod
                     strOut = GetSelectApp();
                     break;
                 case "rocketmod_saveapptheme":                    
-                    _moduleData.configData.SaveAppTheme(postInfo.GetXmlProperty("genxml/hidden/apptheme"));
+                    _moduleData.configData.SaveAppTheme(paramInfo.GetXmlProperty("genxml/hidden/apptheme"));
                     _moduleData.Populate();
                     strOut = GetDashBoard();
                     break;
