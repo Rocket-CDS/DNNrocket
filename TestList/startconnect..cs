@@ -39,35 +39,35 @@ namespace DNNrocket.TestList
                     case "testlist_add":
                         var newInfo = AddNew();
                         postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
-                        strOut = GetDetail(postInfo, ControlRelPath);
+                        strOut = GetDetail(paramInfo, ControlRelPath);
                         break;
                     case "testlist_save":
-                        Save(postInfo);
-                        strOut = GetDetail(postInfo, ControlRelPath);
+                        Save(postInfo, paramInfo);
+                        strOut = GetDetail(paramInfo, ControlRelPath);
                         break;
                     case "testlist_delete":
-                        Delete(postInfo);
-                        strOut = GetList(postInfo, ControlRelPath);
+                        Delete(paramInfo);
+                        strOut = GetList(postInfo, paramInfo, ControlRelPath);
                         break;
                     case "testlist_createrows":
-                        CreateRows(postInfo);
-                        strOut = GetList(postInfo, ControlRelPath);
+                        CreateRows(paramInfo);
+                        strOut = GetList(postInfo, paramInfo, ControlRelPath);
                         break;
                     case "testlist_deleterows":
                         DeleteRows();
-                        strOut = GetList(postInfo, ControlRelPath);
+                        strOut = GetList(postInfo, paramInfo, ControlRelPath);
                         break;
                     case "testlist_getlist":
-                        strOut = GetList(postInfo, ControlRelPath);
+                        strOut = GetList(postInfo, paramInfo, ControlRelPath);
                         break;
                     case "testlist_getdetail":
-                        strOut = GetDetail(postInfo, ControlRelPath);
+                        strOut = GetDetail(paramInfo, ControlRelPath);
                         break;
                     case "testlist_sort":
-                        strOut = GetList(postInfo, ControlRelPath);
+                        strOut = GetList(postInfo, paramInfo, ControlRelPath);
                         break;
                     case "testlist_search":
-                        strOut = GetList(postInfo, ControlRelPath);
+                        strOut = GetList(postInfo, paramInfo, ControlRelPath);
                         break;
                 }
             }
@@ -84,20 +84,20 @@ var rtnDic = new Dictionary<string, string>();
             return rtnDic;
         }
 
-        public static String GetList(SimplisityInfo postInfo, string templateControlRelPath)
+        public static String GetList(SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateControlRelPath)
         {
             try
             {
 
-                var page = postInfo.GetXmlPropertyInt("genxml/hidden/page");
-                var pagesize = postInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
+                var page = paramInfo.GetXmlPropertyInt("genxml/hidden/page");
+                var pagesize = paramInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
 
                 var searchtext = postInfo.GetXmlProperty("genxml/textbox/searchtext");
 
                 var filter = "";
                 if (searchtext != "")
                 {
-                    filter = " and inputlang1.GuidKey like '%" + searchtext + "%'";
+                   // filter = " and inputlang1.GuidKey like '%" + searchtext + "%'";
                 }
 
 
@@ -111,7 +111,7 @@ var rtnDic = new Dictionary<string, string>();
                 headerData.SetXmlProperty("genxml/hidden/pagesize", pagesize.ToString());
                 headerData.SetXmlProperty("genxml/textbox/searchtext", searchtext);
 
-                return RenderList(list, postInfo, 0, templateControlRelPath, headerData);
+                return RenderList(list, paramInfo, 0, templateControlRelPath, headerData);
             }
             catch (Exception ex)
             {
@@ -184,9 +184,9 @@ var rtnDic = new Dictionary<string, string>();
             return objCtrl.SaveData(info, _systemInfo.ItemID);
         }
 
-        public static void Save(SimplisityInfo postInfo)
+        public static void Save(SimplisityInfo postInfo, SimplisityInfo paramInfo)
         {
-            var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            var selecteditemid = paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (selecteditemid > 0)
             {
                 var objCtrl = new DNNrocketController();

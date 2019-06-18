@@ -34,23 +34,23 @@ namespace DNNrocket.TestForm
                 {
                     case "testform_save":
                         TestFormSave(postInfo);
-                        strOut = TestFormDetail(postInfo, ControlRelPath);
+                        strOut = TestFormDetail(paramInfo, ControlRelPath);
                         break;
                     case "testform_add":
-                        strOut = AddToList(postInfo, ControlRelPath);
+                        strOut = AddToList(paramInfo, ControlRelPath);
                         break;
                     case "testform_delete":
-                        Delete(postInfo);
-                        strOut = TestFormDetail(postInfo, ControlRelPath);
+                        Delete(paramInfo);
+                        strOut = TestFormDetail(paramInfo, ControlRelPath);
                         break;
                     case "testform_addimage":
-                        strOut = AddImageToList(postInfo, ControlRelPath);
+                        strOut = AddImageToList(paramInfo, ControlRelPath);
                         break;
                     case "testform_adddoc":
-                        strOut = AddDocToList(postInfo, ControlRelPath);
+                        strOut = AddDocToList(paramInfo, ControlRelPath);
                         break;
                     case "testform_get":
-                        strOut = TestFormDetail(postInfo, ControlRelPath);
+                        strOut = TestFormDetail(paramInfo, ControlRelPath);
                         break;
                     case "testform_download":
                         rtnDic.Add("filenamepath", postInfo.GetXmlProperty("genxml/hidden/filerelpath"));
