@@ -477,4 +477,7 @@
   <data name="delete.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>

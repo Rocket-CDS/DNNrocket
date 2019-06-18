@@ -588,7 +588,7 @@ namespace DNNrocketAPI
         public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int systemId = -1, int moduleId = -1, bool readOnly = false, string tableName = "DNNrocket")
         {
             SimplisityInfo nbi = null;
-            var info = GetInfo(ItemId, lang);
+            var info = GetInfo(ItemId, lang, tableName);
             if (info == null && !readOnly)
             {
                 // create record if not in DB
@@ -608,7 +608,7 @@ namespace DNNrocketAPI
                     // create lang records if not in DB
                     foreach (var lg in DNNrocketUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
                     {
-                        nbilang = GetRecordLang(info.ItemID, lg);
+                        nbilang = GetRecordLang(info.ItemID, lg, false, tableName);
                         if (nbilang == null)
                         {
                             nbilang = new SimplisityInfo();
