@@ -12,7 +12,7 @@
     <div class="w3-modal-content">
 
         <header class="w3-theme-d5 w3-center" style="height: 38px;">
-            <span onclick="document.getElementById('rocketimageselect').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <span onclick="dnnrocketimages_closethelist();" class="w3-button w3-display-topright">&times;</span>
             <h4>@ResourceKey("DNNrocket.imagesfolder"):&nbsp; @Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")</h4>
         </header>
         <div class="" style="">
@@ -104,8 +104,9 @@
             $('#rocketimageselect').show();
             $(this).removeClass('dnnrocket-imagechange');
             $(this).addClass('dnnrocket-imageremove');
-            $(this).html('&times;');
+            $(this).addClass('dnnrocket-imageaction');
             dnnrocketimages_removeevent();
+
         });
     }
 
@@ -118,6 +119,7 @@
             $(this).html("<i class='fas fa-edit'></i>");
             $(this).removeClass('dnnrocket-imageremove');
             $(this).addClass('dnnrocket-imagechange');
+            $(this).removeClass('dnnrocket-imageaction');
             dnnrocketimages_changeevent();
         });
     }
@@ -163,7 +165,7 @@ function dnnrocketimages_selectimage(element) {
                 var idx = simplisity_getCookieValue('dnnrocket-imageindex');
                 var w = simplisity_getCookieValue('dnnrocket-imagewidth');
                 var h = simplisity_getCookieValue('dnnrocket-imageheight');
-                
+
                 if (w === '') w = 100;
                 if (h === '') h = 100;
                 $('#' + idx).parent().children('img').attr('src', $(this).attr('dnnrocket-imagethumburl') + "&w=" + w + "&h=" + h);
@@ -171,9 +173,9 @@ function dnnrocketimages_selectimage(element) {
                 $(this).removeClass('w3-pale-green');
                 $(this).find('.dnnrocket-imageselected').hide();        
 
-                $('#' + idx).parent().find(".dnnrocket-imagechange").html('&times;');
-                $('#' + idx).parent().find(".dnnrocket-imagechange").addClass('dnnrocket-imageremove');
-                $('#' + idx).parent().find(".dnnrocket-imagechange").removeClass('dnnrocket-imagechange');
+                $('#' + idx).parent().find(".dnnrocket-imageaction").html('&times;');
+                $('#' + idx).parent().find(".dnnrocket-imageaction").addClass('dnnrocket-imageremove');
+                $('#' + idx).parent().find(".dnnrocket-imageaction").removeClass('dnnrocket-imagechange');
 
             }
         });
@@ -192,6 +194,14 @@ function dnnrocketimages_selectimage(element) {
 
     function dnnrocketimages_showthelist() {
         $('#rocketimageselect').show();
+    }
+
+    function dnnrocketimages_closethelist() {
+        $('.dnnrocket-imageaction').addClass('dnnrocket-imagechange');
+        $('.dnnrocket-imageaction').removeClass('dnnrocket-imageremove');
+        $('.dnnrocket-imageaction').removeClass('dnnrocket-imageaction');
+        $('#rocketimageselect').hide();
+        dnnrocketimages_changeevent();
     }
 
 </script>

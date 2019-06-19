@@ -95,17 +95,17 @@ end
 GO
 
 
-
-/****** Object:  StoredProcedure [dbo].[DNNrocket_Get]    Script Date: 14/06/2019 16:19:13 ******/
+/****** Object:  StoredProcedure [dbo].[DNNrocket_Get]    Script Date: 19/06/2019 04:20:38 ******/
 DROP PROCEDURE [dbo].[DNNrocket_Get]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_Get]    Script Date: 14/06/2019 16:19:13 ******/
+/****** Object:  StoredProcedure [dbo].[DNNrocket_Get]    Script Date: 19/06/2019 04:20:38 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE     PROCEDURE [dbo].[DNNrocket_Get]
 @ItemID int,
@@ -123,17 +123,33 @@ set @sql += '	R1.[ItemId] '
 set @sql += '	,R1.[PortalId] '
 set @sql += '	,R1.[ModuleId] '
 set @sql += '	,R1.[TypeCode] '
-set @sql += '	,dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]) as [XMLData] '
+
+if NOT(@Lang = '')
+begin
+	set @sql += ',ISNULL([RLangIdx].XMLData,dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
+	set @sql += ',ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang] '	 
+end
+if @Lang = ''
+begin
+	set @sql += ',R1.[XMLData] '
+	set @sql += ',R1.[Lang] as [Lang] '	 
+end
+
 set @sql += '	,R1.[GUIDKey] '
 set @sql += '	,R1.[ModifiedDate] '
 set @sql += '	,R1.[TextData] '
 set @sql += '	,R1.[XrefItemId] '
 set @sql += '	,R1.[ParentItemId] '
-set @sql += '	,ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang]  '
 set @sql += '	,R1.[UserId] '
 set @sql += '	,R1.[SystemId] '
-set @sql += '	from dbo.[DNNrocket] as R1 '
-set @sql += '	left join ' + @TableName + ' as RLang1 on R1.Itemid = RLang1.ParentItemId and RLang1.Lang = ''' + @Lang + ''' and RLang1.TypeCode = [R1].[TypeCode] + ''LANG'' '
+set @sql += '	from ' + @TableName + ' as R1 '
+
+if NOT(@Lang = '')
+begin
+	set @sql += ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+	set @sql += ' left join ' + @TableName + ' as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+end
+
 set @sql += '	where R1.ItemId = ' + CONVERT(nvarchar(20), @ItemId)
 
 exec sp_executesql  @sql
@@ -142,7 +158,7 @@ end
 GO
 
 
-GO
+
 
 /****** Object:  StoredProcedure [dbo].[DNNrocket_GetList]    Script Date: 14/06/2019 16:19:27 ******/
 DROP PROCEDURE [dbo].[DNNrocket_GetList]
@@ -338,7 +354,7 @@ DEALLOCATE idx_cursor
 		set @STMT = @STMT + ' FROM    (
 								SELECT  ROW_NUMBER() OVER(' + @orderBy + ') AS row, '
 		set @STMT = @STMT + @rtnFields		
-		set @STMT = @STMT + ' FROM dbo.[DNNrocket]  as R1 '
+		set @STMT = @STMT + ' FROM ' + @TableName + '  as R1 '
 
 		if NOT(@Lang = '')
 		begin

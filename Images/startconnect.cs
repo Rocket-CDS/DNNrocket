@@ -12,6 +12,7 @@ namespace DNNrocket.Images
         private static string _appthemeRelPath;
         private static string _appthemeMapPath;
         private static SimplisityInfo _postInfo;
+        private static SimplisityInfo _paramInfo;
         private static CommandSecurity _commandSecurity;
         private static DNNrocketInterface _rocketInterface;
 
@@ -28,6 +29,7 @@ namespace DNNrocket.Images
             _appthemeRelPath = appPath;
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _postInfo = postInfo;
+            _paramInfo = paramInfo;
 
             _commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
             _commandSecurity.AddCommand("rocketimages_upload", true);
@@ -71,7 +73,7 @@ namespace DNNrocket.Images
         {
             try
             {
-                return DNNrocketUtils.RenderImageSelect(new SimplisityRazor(), 100, _postInfo.GetXmlPropertyBool("genxml/hidden/singleselect"), _postInfo.GetXmlPropertyBool("genxml/hidden/autoreturn"), _postInfo.GetXmlProperty("genxml/hidden/imagefolder"));
+                return DNNrocketUtils.RenderImageSelect(new SimplisityRazor(), 100, _paramInfo.GetXmlPropertyBool("genxml/hidden/singleselect"), _paramInfo.GetXmlPropertyBool("genxml/hidden/autoreturn"), _paramInfo.GetXmlProperty("genxml/hidden/imagefolder"));
             }
             catch (Exception ex)
             {
@@ -83,17 +85,17 @@ namespace DNNrocket.Images
         {
             var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
 
-            var imagefolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
+            var imagefolder = _paramInfo.GetXmlProperty("genxml/hidden/imagefolder");
             if (imagefolder == "") imagefolder = "images";
 
             var imageDirectory = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + imagefolder;
             if (!Directory.Exists(imageDirectory)) Directory.CreateDirectory(imageDirectory);
 
             var strOut = "";
-            var createseo = _postInfo.GetXmlPropertyBool("genxml/hidden/createseo");
-            var resize = _postInfo.GetXmlPropertyInt("genxml/hidden/imageresize");
+            var createseo = _paramInfo.GetXmlPropertyBool("genxml/hidden/createseo");
+            var resize = _paramInfo.GetXmlPropertyInt("genxml/hidden/imageresize");
             if (resize == 0) resize = 640;
-            var fileuploadlist = _postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+            var fileuploadlist = _paramInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
             if (fileuploadlist != "")
             {
                 foreach (var f in fileuploadlist.Split(';'))
@@ -123,10 +125,10 @@ namespace DNNrocket.Images
 
         public static void DeleteImages()
         {
-            var imagefolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
+            var imagefolder = _paramInfo.GetXmlProperty("genxml/hidden/imagefolder");
             if (imagefolder == "") imagefolder = "images";
             var imageDirectory = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + imagefolder;
-            var imageList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-imagelist").Split(';');
+            var imageList = _paramInfo.GetXmlProperty("genxml/hidden/dnnrocket-imagelist").Split(';');
             foreach (var i in imageList)
             {
                 if (i != "")
