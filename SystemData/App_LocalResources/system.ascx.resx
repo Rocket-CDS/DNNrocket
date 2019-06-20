@@ -261,4 +261,7 @@
   <data name="cache.Text" xml:space="preserve">
     <value>Cached</value>
   </data>
+  <data name="themeversion.Text" xml:space="preserve">
+    <value>Theme Version</value>
+  </data>
 </root>

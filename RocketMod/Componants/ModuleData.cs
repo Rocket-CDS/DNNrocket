@@ -132,7 +132,7 @@ namespace RocketMod
                     _auditInfo.PortalId = _currentRecord.PortalId;
                     _auditInfo.ParentItemId = _currentRecord.ItemID;
                     _auditInfo.SystemId = _currentRecord.SystemId;
-                    objCtrl.Update(_auditInfo);
+                    objCtrl.SaveRecord(_auditInfo);
                 }
                 else
                 {
@@ -150,7 +150,7 @@ namespace RocketMod
                 var objCtrl = new DNNrocketController();
                 _currentRecord.SetXmlProperty("genxml/hidden/auditdate", DateTime.Now.ToString("s"));
                 _auditInfo.AddListRow("audit", _currentRecord);
-                objCtrl.Update(_auditInfo);
+                objCtrl.SaveRecord(_auditInfo);
                 PopulateAudit();
             }
         }

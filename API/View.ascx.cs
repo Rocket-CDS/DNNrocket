@@ -106,7 +106,17 @@ namespace DNNrocketAPI
                 _paramCmd = _rocketInterface.DefaultCommand;
                 if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we dont; define template path in the interface assume it's the control path.
 
-                DNNrocketUtils.IncludePageHeaders(configData, this.Page, TabId);
+                if (configData.Exists)
+                {
+                    DNNrocketUtils.IncludePageHeaders(configData.AppTheme, configData.AppThemeVersion, "", this.Page, TabId);
+                }
+                else
+                {
+                    var themeVersion = _rocketInterface.ThemeVersion;
+                    if (themeVersion == "") themeVersion = "1.0";
+                    DNNrocketUtils.IncludePageHeaders(_rocketInterface.DefaultTheme, themeVersion, _templateRelPath, this.Page, TabId);
+                }
+
             }
 
 

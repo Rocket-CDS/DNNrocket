@@ -94,6 +94,11 @@ namespace DNNrocketAPI
             get { return base.GetXmlProperty("genxml/textbox/defaulttheme"); }
             set { base.SetXmlProperty("genxml/textbox/defaulttheme", value.ToString()); }
         }
+        public string ThemeVersion
+        {
+            get { return base.GetXmlProperty("genxml/textbox/themeversion"); }
+            set { base.SetXmlProperty("genxml/textbox/themeversion", value.ToString()); }
+        }
         public string DefaultTemplate
         {
             get { return base.GetXmlProperty("genxml/textbox/defaulttemplate"); }

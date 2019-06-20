@@ -52,7 +52,7 @@ namespace DNNrocketAPI
 
                                     if (s != null) nbi2.ItemID = s.ItemID;
 
-                                    objCtrl.Update(nbi2);
+                                    objCtrl.SaveRecord(nbi2);
                                     upd = true;
                                 }
                             }

@@ -363,7 +363,7 @@ namespace DNNrocket.Category
                         catRecord.SetXmlProperty("genxml/level", levelstatic.ToString());
                         catRecord.XrefItemId = index;
                         catRecord.GUIDKey = _systemprovider;
-                        objCtrl.Update(catRecord);
+                        objCtrl.SaveRecord(catRecord);
                         index += 100;  // so we can insert rows on parentid change for detail save.
                         lastItemId = catRecord.ItemID;
                     }

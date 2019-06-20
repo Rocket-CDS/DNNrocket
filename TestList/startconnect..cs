@@ -228,7 +228,7 @@ var rtnDic = new Dictionary<string, string>();
 
                 var rec = objCtrl.GetRecord(newInfo.ItemID);
                 rec.GUIDKey = "testrecord";
-                objCtrl.Update(rec);
+                objCtrl.SaveRecord(rec);
             }
              CacheUtils.ClearAllCache();
         }

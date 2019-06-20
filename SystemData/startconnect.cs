@@ -198,7 +198,7 @@ namespace DNNrocket.SystemData
                 info.TypeCode = "SYSTEM";
                 info.GUIDKey = GeneralUtils.GetUniqueKey(12);
                 var objCtrl = new DNNrocketController();
-                info.ItemID = objCtrl.Update(info);
+                info.ItemID = objCtrl.SaveRecord(info).ItemID;
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
@@ -222,7 +222,7 @@ namespace DNNrocket.SystemData
                     var objCtrl = new DNNrocketController();
                     var info = objCtrl.GetInfo(Convert.ToInt32(selecteditemid));
                     info.AddListRow(listname);
-                    objCtrl.Update(info);
+                    objCtrl.SaveRecord(info);
                 }
             }
             catch (Exception ex)
@@ -245,7 +245,7 @@ namespace DNNrocket.SystemData
                 var info = objCtrl.GetInfo(Convert.ToInt32(selecteditemid));
                 info.XMLData = postInfo.XMLData;
                 info.GUIDKey = postInfo.GetXmlProperty("genxml/textbox/ctrlkey");
-                objCtrl.Update(info);
+                objCtrl.SaveRecord(info);
 
                 // Capture existing SYSTEMLINK records, so we can selectivly delete. To protect the system during operation, so records are always there.
                 var systemlinklist = objCtrl.GetList(info.PortalId, -1, "SYSTEMLINK");
@@ -281,14 +281,14 @@ namespace DNNrocket.SystemData
                             idxinfo.XMLData = xmldata;
                             idxinfo.ParentItemId = info.ItemID;
                             idxinfo.ModuleId = info.ItemID;
-                            var itemid = objCtrl.Update(idxinfo);
+                            var itemid = objCtrl.SaveRecord(idxinfo).ItemID;
                             idxinfo.ItemID = itemid;
                         }
                         else
                         {
                             idxinfo.ParentItemId = info.ItemID;
                             idxinfo.XMLData = xmldata;
-                            objCtrl.Update(idxinfo);
+                            objCtrl.SaveRecord(idxinfo);
                         }
                         newsystemlinklist.Add(idxinfo.ItemID);
                         entityList.Add(entityguidkey);
@@ -316,7 +316,7 @@ namespace DNNrocket.SystemData
                                 idxinfo2.ModuleId = info.ItemID;
                                 idxinfo2.XMLData = i2.XMLData;
                                 idxinfo2.TextData = typecodeIdx;
-                                var itemid = objCtrl.Update(idxinfo2);
+                                var itemid = objCtrl.SaveRecord(idxinfo2).ItemID;
                                 idxinfo2.ItemID = itemid;
                             }
                             else
@@ -324,7 +324,7 @@ namespace DNNrocket.SystemData
                                 idxinfo2.ParentItemId = idxinfo.ItemID;
                                 idxinfo2.XMLData = i2.XMLData;
                                 idxinfo2.TextData = typecodeIdx;
-                                objCtrl.Update(idxinfo2);
+                                objCtrl.SaveRecord(idxinfo2);
                             }
                             newsystemlinkidxlist.Add(idxinfo2.ItemID);
                         }
@@ -417,7 +417,7 @@ namespace DNNrocket.SystemData
                     {
                         foreach (var sInfo in l)
                         {
-                            objCtrl.RebuildLangIndex(sInfo, sInfo.ItemID);
+                            objCtrl.RebuildLangIndex(sInfo.PortalId, sInfo.ItemID);
                         }
                     }
                 }
@@ -453,7 +453,7 @@ namespace DNNrocket.SystemData
                             if (interfaceExists == null)
                             {
                                 sysInfoTo.AddListRow("interfacedata", interfaceToCopy);
-                                objCtrl.Update(sysInfoTo);
+                                objCtrl.SaveRecord(sysInfoTo);
                                 info.SetXmlProperty("genxml/message", "Interface Copied");
                                 info.SetXmlProperty("genxml/color", "w3-pale-green");
                                 info.SetXmlProperty("genxml/delay", "2000");
@@ -462,7 +462,7 @@ namespace DNNrocket.SystemData
                             {
                                 interfaceToCopy.SetXmlProperty("genxml/textbox/interfacekey", interfaceToCopy.GetXmlProperty("genxml/textbox/interfacekey") + "-copy");
                                 sysInfoTo.AddListRow("interfacedata", interfaceToCopy);
-                                objCtrl.Update(sysInfoTo);
+                                objCtrl.SaveRecord(sysInfoTo);
                                 info.SetXmlProperty("genxml/message", "Interface Copied - Refresh page to View");
                                 info.SetXmlProperty("genxml/color", "w3-pale-green");
                                 info.SetXmlProperty("genxml/delay", "2000");

@@ -1225,10 +1225,10 @@ namespace DNNrocketAPI
             return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
         }
 
-        public static void IncludePageHeaders(ConfigData configData, Page page, int tabId)
+        public static void IncludePageHeaders(string appThemeFolder, string appThemeVersion, string templateRelPath, Page page, int tabId)
         {
             if (!page.Items.Contains("dnnrocketinject")) page.Items.Add("dnnrocketinject", "");
-            var appTheme = new AppTheme(configData.AppTheme, DNNrocketUtils.GetCurrentCulture(), configData.AppThemeVersion);
+            var appTheme = new AppTheme(appThemeFolder, templateRelPath, DNNrocketUtils.GetCurrentCulture(), appThemeVersion);
             var fullTemplName = appTheme.AppName + ".pageheader.cshtml";
 
             if (!page.Items["dnnrocketinject"].ToString().Contains(fullTemplName + "." + appTheme.AppName + ","))
@@ -1237,7 +1237,7 @@ namespace DNNrocketAPI
                 {
                     var settings = new Dictionary<string, string>();
                     var l = new List<object>();
-                    l.Add(configData);
+                    l.Add(new SimplisityInfo());
                     var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
                     nbRazor.PageId = tabId;
                     var strOut = RazorRender(nbRazor, appTheme.ActivePageHeaderTemplate, false);
@@ -1301,7 +1301,7 @@ namespace DNNrocketAPI
             {
                 var objCtrl = new DNNrocketController();
 
-                objCtrl.Update(settings);
+                objCtrl.SaveRecord(settings);
                 CacheUtils.RemoveCache("dnnrocketmodsettings*" + settings.ModuleId);
             }
         }
