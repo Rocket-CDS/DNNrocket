@@ -522,12 +522,18 @@ var simplisity_isSelect = function (element) {
 function simplisity_searchfields() {
     // save and search fields to cookie.
     var searchfields = '{';
+    var found = false;
     $('.simplisity_searchfield').each(function (index) {
         searchfields = searchfields + '"' + $(this).attr('id') + '":"' + $(this).val() + '",';
+        found = true;
     });
     searchfields = searchfields.substring(0, searchfields.length - 1) + '}';
-    $('#simplisity_searchfields').val(searchfields);
-    return searchfields;
+
+    if (found) {
+        $('#simplisity_searchfields').val(searchfields);
+        return searchfields;
+    }
+    return '';
 }
 
 function simplisity_encode(value) {
