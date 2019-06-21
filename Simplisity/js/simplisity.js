@@ -38,24 +38,24 @@
         }, options);
 
         $('#simplisity_loader').remove();
-        $('#simplisity_systemprovider').remove();
         $('#simplisity_fileuploadlist').remove();
+        $('#simplisity_params').remove();
+        $('#simplisity_searchfields').remove();
 
         var elementstr = '<div class="' + settings.overlayclass + '" style="" id="simplisity_loader"></div>';
-        elementstr += '<input id="simplisity_systemprovider" type="hidden" value="" />';
         elementstr += '<input id="simplisity_fileuploadlist" type="hidden" value="" />';
+        elementstr += '<input id="simplisity_params" type="hidden" value="" />';
+        elementstr += '<input id="simplisity_searchfields" type="hidden" value="" />';
 
         var elem = document.createElement('span');
         elem.innerHTML = elementstr;
         document.body.appendChild(elem);
 
-        $('#simplisity_systemprovider').val('');
-
         var systemprovider = simplisity_getSystemProvider($('#simplisity_startpanel').attr('s-fields'));  // use systemprovider so we can have multiple cookie for Different systems.
         if (systemprovider === '' || typeof systemprovider === 'undefined') {
             systemprovider = settings.systemprovider;
         }
-        $('#simplisity_systemprovider').val(systemprovider);
+        simplisity_setParamField('systemprovider', systemprovider);
 
         var iframeedit = simplisity_getCookieValue('s-edit-iframeedit');
         var scmd = simplisity_getCookieValue('s-cmd-menu-' + systemprovider);
@@ -267,17 +267,14 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
             if (typeof sfields === 'undefined') {
                 sfields = '';
             }
-            if (sfields.indexOf("activevalue") === -1) {
-                sfields = sfields + ',activevalue:' + simplisity_encode($(element).val().toString());
-            }
             if (typeof shideloader === 'undefined') {
                 shideloader = true;
             }
             if ($('input[id*="simplisity_fileuploadlist"]').val() !== '') {
                 if (typeof sfields === 'undefined') {
-                    sfields = 'fileuploadlist:' + $('input[id*="simplisity_fileuploadlist"]').val();
+                    sfields = '{"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
                 } else {
-                    sfields = sfields + ',fileuploadlist:' + $('input[id*="simplisity_fileuploadlist"]').val();
+                    sfields = sfields.substring(0, sfields.length - 1) + ',"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
                 }
             }
             //console.log('scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist:--->    ', scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist);
@@ -293,53 +290,35 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
 }
 
 function ConvertParamToJSON(sfields) {
+
     var viewData = {
         sfield: []
     };
 
     // Put s-fields into the json object.
+    var jsonDataF = {};
     if (typeof sfields !== 'undefined' && sfields !== '') {
-        sfields.replace(',,', '{comma}');
-        sfields.replace('::', '{colon}');
-        var sfieldlist = sfields.split(',');
-
-        var jsonDataF = {};
-        sfieldlist.forEach((field, index) => {
-            if (field !== '') {
-                fieldsplit = field.split(':');
-                if (fieldsplit.length >= 2) {
-                    jsonDataF[fieldsplit[0].replace('{comma}', ',').replace('{colon}', ':')] = simplisity_encode(fieldsplit[1].replace('{comma}', ',').replace('{colon}', ':')) || '';
-                }
-            }
-        });
-
-        // add any search fields
-        var searchfields = simplisity_getCookieValue('s-searchfields');
-        var searchList = searchfields.split(',');
-        searchList.forEach((field, index) => {
-            if (typeof field !== 'undefined') {
-                fieldsplit = field.split(':');
-                if (typeof fieldsplit[0] !== 'undefined' && fieldsplit[0] !== '') {
-                    jsonDataF[simplisity_decode(fieldsplit[0])] = fieldsplit[1] || '';
-                }
-            }
-        });
-
-        // Add paging data
-        var pagesize = simplisity_getCookieValue('s-pagesize');
-        if (typeof pagesize !== 'undefined') {
-            jsonDataF['pagesize'] = simplisity_encode(pagesize) || '';
-        }
-        var page = simplisity_getCookieValue('s-page');
-        if (typeof page !== 'undefined') {
-            jsonDataF['page'] = simplisity_encode(page) || '';
-        }
-
-
-        viewData.sfield.push(jsonDataF);
+        var obj = JSON.parse(sfields);
+        jsonDataF = mergeJson({}, jsonDataF, obj);
     }
 
-    //console.log('json: ' + JSON.stringify(viewData));
+    // add any search fields
+    var searchfields = $('#simplisity_searchfields').val();
+    if (typeof searchfields !== 'undefined' && searchfields !== '') {
+        var obj1 = JSON.parse(searchfields);
+        jsonDataF = mergeJson({}, jsonDataF, obj1);
+    }
+
+    // add param fields
+    var paramfields = $('#simplisity_params').val();
+    if (typeof paramfields !== 'undefined' && paramfields !== '') {
+        var obj2 = JSON.parse(paramfields);
+        jsonDataF = mergeJson({}, jsonDataF, obj2);
+    }
+
+    viewData.sfield.push(jsonDataF);
+
+    //console.log('stringify json: ' + JSON.stringify(viewData));
 
     return JSON.stringify(viewData);
 }
@@ -429,6 +408,16 @@ function ConvertFormToJSON(spost, slist) {
 }
 
 
+function mergeJson(target) {
+    for (var argi = 1; argi < arguments.length; argi++) {
+        var source = arguments[argi];
+        for (var key in source) {
+            target[key] = source[key];
+        }
+    }
+    return target;
+}
+
 function simplisity_removetablerow(item) {
     simplisity_remove(item, 'tr');
 }
@@ -477,40 +466,30 @@ function simplisity_replaceAll(target, search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 }
 
-function simplisity_getDictionary(sfields) {
-    var dict = [];
-    if (typeof sfields !== 'undefined' && sfields !== '') {
-        sfields.replace(',,', '{comma}');
-        sfields.replace('::', '{colon}');
-        var sfieldlist = sfields.split(',');
-        sfieldlist.forEach((field, index) => {
-            field.replace('{comma}', ',');
-            fieldsplit = field.split(':');
-                dict.push({
-                    key: fieldsplit[0],
-                    value: fieldsplit[1]
-                });
-        });
+function simplisity_setParamField(fieldkey, fieldvalue) {
+    if (typeof fieldvalue !== 'undefined' && typeof fieldkey !== 'undefined') {
+        var jsonParams = $('#simplisity_params').val();
+        var obj = {};
+        if (typeof jsonParams !== 'undefined' && jsonParams !== '') {
+            obj = JSON.parse(jsonParams);
+        }
+        obj[fieldkey] = fieldvalue;
+        $('#simplisity_params').val(JSON.stringify(obj));
     }
-    return dict;
 }
 
+function simplisity_getParamField(fieldkey) {
+    return simplisity_getField($('#simplisity_params').val(), fieldkey);
+}
 
-function simplisity_getField(sfields, fieldname) {
-    var fieldvalue = '';
+function simplisity_getField(sfields, fieldkey) {
     if (typeof sfields !== 'undefined' && sfields !== '') {
-        sfields.replace(',,', '{comma}');
-        sfields.replace('::', '{colon}');
-        var sfieldlist = sfields.split(',');
-        sfieldlist.forEach((field, index) => {
-            field.replace('{comma}', ',');
-            fieldsplit = field.split(':');
-            if (fieldsplit[0] === fieldname) {
-                fieldvalue = fieldsplit[1];
-            }
-        });
+        if (typeof fieldkey !== 'undefined' && fieldkey !== '') {
+            var obj = JSON.parse(sfields);
+            return obj[fieldkey];
+        }
     }
-    return fieldvalue;
+    return '';
 }
 
 function simplisity_getSystemProvider(sfields) {
@@ -542,28 +521,33 @@ var simplisity_isSelect = function (element) {
 
 function simplisity_searchfields() {
     // save and search fields to cookie.
-    var searchfields = '';
+    var searchfields = '{';
     $('.simplisity_searchfield').each(function (index) {
-        searchfields = searchfields + simplisity_encode($(this).attr('id')) + ':' + simplisity_encode($(this).val()) + ',';
+        searchfields = searchfields + '"' + $(this).attr('id') + '":"' + $(this).val() + '",';
     });
-    simplisity_setCookieValue('s-searchfields', searchfields);
+    searchfields = searchfields.substring(0, searchfields.length - 1) + '}';
+    $('#simplisity_searchfields').val(searchfields);
     return searchfields;
 }
 
 function simplisity_encode(value) {
     var rtn = '';
-    for (var i = 0; i < value.length; i++) {
-       rtn += value.charCodeAt(i) + '.';
+    if (typeof value !== 'undefined' && value !== '') {
+        for (var i = 0; i < value.length; i++) {
+            rtn += value.charCodeAt(i) + '.';
+        }
     }
     return rtn;
 }
 
 function simplisity_decode(value) {
     var rtn = '';
-    var valuelist = value.split('.');
-    for (var i = 0; i < valuelist.length; i++) {
-        if (valuelist[i] !== '') {
-            rtn += String.fromCharCode(valuelist[i]);
+    if (typeof value !== 'undefined' && value !== '') {
+        var valuelist = value.split('.');
+        for (var i = 0; i < valuelist.length; i++) {
+            if (valuelist[i] !== '') {
+                rtn += String.fromCharCode(valuelist[i]);
+            }
         }
     }
     return rtn;
@@ -640,7 +624,7 @@ function simplisity_assignevents(cmdurl) {
 
             $(this).attr("s-index", index);
 
-            simplisity_setCookieValue('s-page', '1');
+            simplisity_setParamField('page', '1');
 
             $(this).unbind("change");
             $(this).change(function () {
@@ -656,7 +640,7 @@ function simplisity_assignevents(cmdurl) {
 
         $(this).attr("s-index", index);
 
-        simplisity_setCookieValue('s-page', '1');
+        simplisity_setParamField('page', '1');
 
         $(this).unbind("click");
         $(this).click(function () {
@@ -670,7 +654,7 @@ function simplisity_assignevents(cmdurl) {
 
             $(this).attr("s-index", index);
 
-            simplisity_setCookieValue('s-page', '1');
+            simplisity_setParamField('page', '1');
 
             $(this).unbind("click");
             $(this).click(function () {
@@ -737,8 +721,7 @@ function simplisity_assignevents(cmdurl) {
 
             $(this).unbind("click");
             $(this).click(function () {
-                var p = $(this).attr("s-page");
-                simplisity_setCookieValue('s-page', p);
+                simplisity_setParamField('page', $(this).attr("s-page"));
                 simplisity_pagechange(this, cmdurl);
             });
 
@@ -749,7 +732,7 @@ function simplisity_assignevents(cmdurl) {
             if (simplisity_isSelect(this)) {
                 $(this).unbind("change");
                 $(this).change(function () {
-                    simplisity_setCookieValue('s-pagesize', $(this).val());
+                    simplisity_setParamField('pagesize', $(this).val());
                     simplisity_pagechange(this, cmdurl);
                 });
             }
@@ -757,7 +740,7 @@ function simplisity_assignevents(cmdurl) {
             if (simplisity_isTextInput(this)) {
                 $(this).unbind("click");
                 $(this).click(function () {
-                    simplisity_setCookieValue('s-pagesize', $(this).val());
+                    simplisity_setParamField('pagesize', $(this).val());
                     simplisity_pagechange(this, cmdurl);
                 });
             }

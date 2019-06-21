@@ -125,7 +125,7 @@ namespace Simplisity
                 foreach (XmlNode nod in sfieldList)
                 {
                     var xpath = "genxml/hidden/" + nod.Name;
-                    xmlOut.SetXmlProperty(xpath, GeneralUtils.DeCode(nod.InnerText));
+                    xmlOut.SetXmlProperty(xpath, nod.InnerText);
                 }
             }
 
