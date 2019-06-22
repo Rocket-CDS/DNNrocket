@@ -9,13 +9,7 @@
     var sInfo = (SimplisityInfo)Model.List.First();
 }
 
-
-
-<input id="editlanguage" type="hidden" value="@sInfo.Lang" />
 <input id="index" type="hidden" value="@sInfo.GetXmlPropertyInt("genxml/hidden/index").ToString()" />
-<input id="systemprovider" type="hidden" value="systemapi" />
-
-<input id="uilang1" type="hidden" value="@DNNrocketUtils.GetCurrentCulture()" />
 
 <div id="plugins" class="">
 

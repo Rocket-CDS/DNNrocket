@@ -289,14 +289,6 @@
                     <td>Undo Remove item from html li list</td>
                 </tr>
                 <tr>
-                    <td>simplisity_pageclick</td>
-                    <td>This class will activate the paging function. the attribute "s-page" needs to be specified on the element which is page link.The new page number is saved as a cookie. (s-page)</td>
-                </tr>
-                <tr>
-                    <td>simplisity_pagesize</td>
-                    <td>Enables a "change" or "click" event for the change of pagesize.  The new pagesize is saved as a cookie. (s-pagesize)</td>
-                </tr>
-                <tr>
                     <td>simplisity_searchfield</td>
                     <td>Identifies fields used for searching.  Simplisity will make a cookie from the fields identified, the data will then be sent to the search by being added automatically to the "s-field" param.</td>
                 </tr>
@@ -386,11 +378,19 @@
                 </tr>
                 <tr>
                     <td>simplisity_loader</td>
-                    <td>This is a an eleent with a class which will be displayed when a call to the server is made.  By default this is "overlayclass: 'w3-overlay'"  but this call can be overwritten on the "simplisity_startup" function.</td>
+                    <td>This is a an element with a class which will be displayed when a call to the server is made.  By default this is "overlayclass: 'w3-overlay'"  but this call can be overwritten on the "simplisity_startup" function.  If required it can be used with JQuery or JS.  $('#simplisity_loader').show();</td>
                 </tr>
                 <tr>
                     <td>simplisity_fileuploadlist</td>
                     <td>This field keeps a list of the fields which need to be uploaded.  They are then passed and processed server side.</td>
+                </tr>
+                <tr>
+                    <td>simplisity_params</td>
+                    <td>List of the params that need to be passed to server side.  These are passed in the "paramjson" form fields.</td>
+                </tr>
+                <tr>
+                    <td>simplisity_searchfields</td>
+                    <td>List of the search fields and data that needs to be passed to server side for a search operation.  These are passed in the "paramjson" form fields.</td>
                 </tr>
             </table>
 

@@ -17,7 +17,7 @@
 
             @foreach (SimplisityInfo nbi in Model.List)
 {
-            <li class="selectsystem simplisity_click" s-cmd="systemapi_copyinterface" s-return="#messagecontainer" s-fields="theme:config-w3,template:Admin_Message.cshtml,fromsystemid:@Model.GetSetting("systemid"),tosystemid:@nbi.ItemID,interfacekey:@Model.GetSetting("interfacekey")" onclick="document.getElementById('systemselect').style.display='none'" ctrlkey="@nbi.GetXmlProperty("genxml/textbox/ctrlkey")">
+            <li class="selectsystem simplisity_click" s-cmd="systemapi_copyinterface" s-return="#messagecontainer" s-fields='{"theme":"config-w3","template":"Admin_Message.cshtml","fromsystemid":"@Model.GetSetting("systemid")","tosystemid":"@nbi.ItemID","interfacekey":"@Model.GetSetting("interfacekey")"}' onclick="document.getElementById('systemselect').style.display='none'" ctrlkey="@nbi.GetXmlProperty("genxml/textbox/ctrlkey")">
                 @nbi.GetXmlProperty("genxml/textbox/systemname")
             </li>
 }

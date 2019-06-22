@@ -88,16 +88,17 @@ function simplisity_nbxgetCompleted(e) {
         }
     }
 
+    if (e.sloader === true) {
+        $('#simplisity_loader').hide();
+    }
+
     // a change of langauge has been triggered.
     var nextlang = simplisity_getCookieValue('nextlang');
     if (nextlang !== '') {
         simplisity_setCookieValue('editlang', nextlang);
         simplisity_setCookieValue('nextlang', '');
+        $('#simplisity_loader').show();
         location.reload();
-    }
-
-    if (e.sloader === true) {
-        $('#simplisity_loader').hide();
     }
 
     // show any button menus defined.
@@ -622,8 +623,6 @@ function simplisity_assignevents(cmdurl) {
 
             $(this).attr("s-index", index);
 
-            simplisity_setParamField('page', '1');
-
             $(this).unbind("change");
             $(this).change(function () {
 
@@ -638,8 +637,6 @@ function simplisity_assignevents(cmdurl) {
 
         $(this).attr("s-index", index);
 
-        simplisity_setParamField('page', '1');
-
         $(this).unbind("click");
         $(this).click(function () {
             simplisity_setCookieValue('s-lastmenuindex', index);
@@ -651,8 +648,6 @@ function simplisity_assignevents(cmdurl) {
         $('.simplisity_click').each(function (index) {
 
             $(this).attr("s-index", index);
-
-            simplisity_setParamField('page', '1');
 
             $(this).unbind("click");
             $(this).click(function () {

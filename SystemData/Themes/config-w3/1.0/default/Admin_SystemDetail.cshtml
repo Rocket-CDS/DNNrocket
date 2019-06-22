@@ -10,9 +10,9 @@
 }
 
 <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-    <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_admin_save" s-fields="selecteditemid:@(sInfo.ItemID),theme:config-w3,template:Admin_SystemDetail.cshtml"  s-post="#pluginsdatasection" s-list=".interfacedata,.idxfielddata,.settingsdata,.groupsdata,.provtypesdata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="systemapi_admin_delete" s-fields="selecteditemid:@(sInfo.ItemID)"   s-post="#pluginsdatasection" s-return="#simplisity_startpanel" s-after="reloadpluginlist">@ResourceKey("DNNrocket.cmdDeleteButton")</span>
-    <span class="w3-button w3-sand w3-padding-8 simplisity_click" s-cmd="systemapi_admin_getsystemlist" s-fields="theme:config-w3,template:Admin_Systems.cshtml" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdReturnButton")</span>
+    <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_admin_save" s-fields='{"selecteditemid":"@(sInfo.ItemID)","theme":"config-w3","template":"Admin_SystemDetail.cshtml"}'  s-post="#pluginsdatasection" s-list=".interfacedata,.idxfielddata,.settingsdata,.groupsdata,.provtypesdata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="systemapi_admin_delete" s-fields='{"selecteditemid":"@(sInfo.ItemID)"}'   s-post="#pluginsdatasection" s-return="#simplisity_startpanel" s-after="reloadpluginlist">@ResourceKey("DNNrocket.cmdDeleteButton")</span>
+    <span class="w3-button w3-sand w3-padding-8 simplisity_click" s-cmd="systemapi_admin_getsystemlist" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdReturnButton")</span>
 </span>
 
 
@@ -85,7 +85,7 @@
     }
 
     function reloadpluginlist() {
-        $('#simplisity_startpanel').getSimplisity('/DesktopModules/DNNrocket/api/api.ashx', 'systemapi_admin_getsystemlist', 'theme:config-w3,template:Admin_Systems.cshtml');
+        $('#simplisity_startpanel').getSimplisity('/DesktopModules/DNNrocket/api/api.ashx', 'systemapi_admin_getsystemlist', '{"theme":"config-w3","template":"Admin_Systems.cshtml"}');
     };
 
     function openSection(evt, sectionName) {
