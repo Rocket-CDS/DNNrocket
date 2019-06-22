@@ -41,25 +41,21 @@
         $('#simplisity_fileuploadlist').remove();
         $('#simplisity_params').remove();
         $('#simplisity_searchfields').remove();
+        $('#simplisity_systemprovider').remove();
 
         var elementstr = '<div class="' + settings.overlayclass + '" style="" id="simplisity_loader"></div>';
         elementstr += '<input id="simplisity_fileuploadlist" type="hidden" value="" />';
         elementstr += '<input id="simplisity_params" type="hidden" value="" />';
         elementstr += '<input id="simplisity_searchfields" type="hidden" value="" />';
+        elementstr += '<input id="simplisity_systemprovider" type="hidden" value="' + settings.systemprovider + '" />';
 
         var elem = document.createElement('span');
         elem.innerHTML = elementstr;
         document.body.appendChild(elem);
 
-        var systemprovider = simplisity_getSystemProvider($('#simplisity_startpanel').attr('s-fields'));  // use systemprovider so we can have multiple cookie for Different systems.
-        if (systemprovider === '' || typeof systemprovider === 'undefined') {
-            systemprovider = settings.systemprovider;
-        }
-        simplisity_setParamField('systemprovider', systemprovider);
-
         var iframeedit = simplisity_getCookieValue('s-edit-iframeedit');
-        var scmd = simplisity_getCookieValue('s-cmd-menu-' + systemprovider);
-        var sfields = simplisity_getCookieValue('s-fields-menu-' + systemprovider);
+        var scmd = simplisity_getCookieValue('s-cmd-menu-' + settings.systemprovider);
+        var sfields = simplisity_getCookieValue('s-fields-menu-' + settings.systemprovider);
         if (scmd !== '' && settings.usehistory === true && iframeedit === '') {
             $('#simplisity_startpanel').removeAttr('s-cmd');
             $('#simplisity_startpanel').removeAttr('s-fields');
@@ -292,7 +288,8 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
 function ConvertParamToJSON(sfields) {
 
     var viewData = {
-        sfield: []
+        sfield: [],
+        system: []
     };
 
     // Put s-fields into the json object.
@@ -318,7 +315,11 @@ function ConvertParamToJSON(sfields) {
 
     viewData.sfield.push(jsonDataF);
 
-    //console.log('stringify json: ' + JSON.stringify(viewData));
+    var system = '{"systemprovider":"' + simplisity_getSystemProvider(sfields) + '"}';
+    var systemobj = JSON.parse(system);
+    viewData.system.push(systemobj);
+
+    console.log('stringify json: ' + JSON.stringify(viewData));
 
     return JSON.stringify(viewData);
 }
@@ -494,19 +495,10 @@ function simplisity_getField(sfields, fieldkey) {
 
 function simplisity_getSystemProvider(sfields) {
     var systemprovider = simplisity_getField(sfields, 'systemprovider');
-    if (systemprovider === '') {
+    if (typeof systemprovider === 'undefined' || systemprovider === '') {
         systemprovider = $('#simplisity_systemprovider').val();
     }
     return systemprovider;
-}
-
-function simplisity_pagechange(element, cmdurl) {
-    var scmd = $(element).attr('s-cmd');
-    if (typeof scmd !== 'undefined' && scmd !== '') {
-        simplisity_callserver(element, cmdurl);
-    } else {
-        location.reload();
-    }
 }
 
 var simplisity_isTextInput = function (element) {
@@ -719,38 +711,6 @@ function simplisity_assignevents(cmdurl) {
             $(this).click(function () {
                 simplisity_undoremovelistitem(this);
             });
-        });
-
-        $('.simplisity_pageclick').each(function (index) {
-
-            $(this).attr("s-index", index);
-
-            $(this).unbind("click");
-            $(this).click(function () {
-                simplisity_setParamField('page', $(this).attr("s-page"));
-                simplisity_pagechange(this, cmdurl);
-            });
-
-        });
-
-        $('.simplisity_pagesize').each(function (index) {
-
-            if (simplisity_isSelect(this)) {
-                $(this).unbind("change");
-                $(this).change(function () {
-                    simplisity_setParamField('pagesize', $(this).val());
-                    simplisity_pagechange(this, cmdurl);
-                });
-            }
-
-            if (simplisity_isTextInput(this)) {
-                $(this).unbind("click");
-                $(this).click(function () {
-                    simplisity_setParamField('pagesize', $(this).val());
-                    simplisity_pagechange(this, cmdurl);
-                });
-            }
-
         });
 
         $('.simplisity_fileupload').each(function (index) {

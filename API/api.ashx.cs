@@ -63,14 +63,17 @@ namespace DNNrocketAPI
                         paramInfo.PortalId = DNNrocketUtils.GetPortalId();
                     }
 
+                    var systemprovider = paramInfo.GetXmlProperty("genxml/hidden/systemprovider").Trim(' ');
+                    if (systemprovider == "") systemprovider = "dnnrocket";
+                    var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
+
                     var postInfo = new SimplisityInfo(DNNrocketUtils.GetEditCulture());
                     if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
                     {
                         requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
 
                         // ---- START: DEBUG POST ------
-                        var debugSystemProvider = DNNrocketUtils.GetCookieValue("s-current-systemprovider");
-                        var debugSystemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", debugSystemProvider);
+                        var debugSystemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
                         if (debugSystemInfo != null && debugSystemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
                         {
                             FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + "\\debug_requestJson.json", requestJson);
@@ -107,11 +110,6 @@ namespace DNNrocketAPI
                         paramInfo.SetXmlProperty("genxml/postform/" + key.Replace("_","-"), context.Request.Form[key]); // remove '_' from xpath
                     }
 
-                    var systemprovider = paramInfo.GetXmlProperty("genxml/hidden/systemprovider").Trim(' ');
-                    if (systemprovider == "") systemprovider = paramInfo.GetXmlProperty("genxml/urlparams/systemprovider").Trim(' ');
-                    if (systemprovider == "") systemprovider = paramInfo.GetXmlProperty("genxml/systemprovider");
-                    if (systemprovider == "") systemprovider = "dnnrocket";
-                    var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
 
                     var interfacekey = paramInfo.GetXmlProperty("genxml/hidden/interfacekey");
                     if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');

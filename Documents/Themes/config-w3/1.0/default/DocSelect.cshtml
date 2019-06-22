@@ -22,11 +22,11 @@
                 <span class="w3-section">
                     <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#documentfileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</span>
                     <span class="w3-button w3-green w3-padding-8" onclick="dnnrocketdocs_usedocument()">@ResourceKey("DNNrocket.cmdUseButton")</span>
-                    <span class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketdocs_delete" s-before="dnnrocketdocs_deletedocument" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-post="#dnnrocket_deletedocumentlist"  s-fields="theme:config-w3,systemprovider:dnnrocket,interfacekey:documentupload,documentfolder:@Model.HeaderData.GetXmlProperty("genxml/hidden/documentselectfolder"),singleselect:true,autoreturn:false">@ResourceKey("DNNrocket.cmdDeleteButton")</span>
+                    <span class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketdocs_delete" s-before="dnnrocketdocs_deletedocument" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-post="#dnnrocket_deletedocumentlist"  s-fields='{"theme":"config-w3","interfacekey":"documentupload","documentfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/documentselectfolder")","singleselect":"true","autoreturn":"false"}'>@ResourceKey("DNNrocket.cmdDeleteButton")</span>
                 </span>
 
                 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
-                    <input id="documentfileupload" class="simplisity_fileupload" s-cmd="rocketdocs_upload" s-reload="false" s-after="dnnrocketdocs_showthelist"  s-return="#dnnrocket_documentselectwrapper" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields="theme:config-w3,systemprovider:dnnrocket,interfacekey:documentupload,documentfolder:@Model.HeaderData.GetXmlProperty("genxml/hidden/documentselectfolder"),singleselect:true,autoreturn:false" type="file" name="files[]" multiple style="display:none;">
+                    <input id="documentfileupload" class="simplisity_fileupload" s-cmd="rocketdocs_upload" s-reload="false" s-after="dnnrocketdocs_showthelist"  s-return="#dnnrocket_documentselectwrapper" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields='{"theme":"config-w3","interfacekey":"documentupload","documentfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/documentselectfolder")","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
                     <p><i>@ResourceKey("DNNrocket.drophere")...</i></p>
                 </div>
 

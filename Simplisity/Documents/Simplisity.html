@@ -90,7 +90,7 @@
                 </tr>
                 <tr>
                     <td>s-fields</td>
-                    <td>paramater fields that can be passed to the API.  This is a csv string in the format of "name:value,name:value,name:value". Any number of parameters can be passed. </td>
+                    <td>Paramater fields that can be passed to the API.  This is a json string in the format of '{"name":"value","name":"value","name":"value"}'. Any number of parameters can be passed. </td>
                 </tr>
                 <tr>
                     <td>s-itemid</td>
@@ -375,7 +375,7 @@
                 <tr>
                     <td>simplisity_systemprovider</td>
                     <td>
-                        This is usually set by the "simplisity_startup" function (see below).  It keeps track of the default systemprovider being used by the page.  Multiple systemproviders can be used on the same page by providing the field "systemprovider:<i>MySystemProvider</i>" on the s-field attribute of the simplisity html element.
+                        This is set by the "simplisity_startup" function (see below).  It keeps track of the default systemprovider being used by the page.
                         <hr />
                         <div>
                             $(document).ready(function () {<br />

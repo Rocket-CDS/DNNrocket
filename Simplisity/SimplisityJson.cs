@@ -50,7 +50,7 @@ namespace Simplisity
 
 
 
-            var rtnInfo = ConvertJsonToSimplisityInfo(sInfo, editlang,"postdata",false);
+            var rtnInfo = ConvertJsonToSimplisityInfo(sInfo, editlang, "postdata",false);
             var langInfo = ConvertJsonToSimplisityInfo(sInfo, editlang, "postdata", true);
 
 
@@ -123,6 +123,12 @@ namespace Simplisity
                 // ------------------- S-FIELDS ------------------------------------
                 var sfieldList = requestJsonXml.XMLDoc.SelectNodes("root/sfield/*");
                 foreach (XmlNode nod in sfieldList)
+                {
+                    var xpath = "genxml/hidden/" + nod.Name;
+                    xmlOut.SetXmlProperty(xpath, nod.InnerText);
+                }
+                var systemList = requestJsonXml.XMLDoc.SelectNodes("root/system/*");
+                foreach (XmlNode nod in systemList)
                 {
                     var xpath = "genxml/hidden/" + nod.Name;
                     xmlOut.SetXmlProperty(xpath, nod.InnerText);
