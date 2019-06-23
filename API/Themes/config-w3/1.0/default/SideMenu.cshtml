@@ -142,14 +142,6 @@
             location.reload();
         });
 
-
-        //reset paging
-        simplisity_setCookieValue('s-page', '1');
-
-        if (simplisity_getCookieValue('s-pagesize') === '') {
-            simplisity_setCookieValue('s-pagesize', '20');
-        }
-
         $('#dnnrocket_usernameplaceholder').text('@(username)');
 
     });

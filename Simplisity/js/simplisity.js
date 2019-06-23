@@ -42,12 +42,14 @@
         $('#simplisity_params').remove();
         $('#simplisity_searchfields').remove();
         $('#simplisity_systemprovider').remove();
+        $('#simplisity_cmdurl').remove();
 
         var elementstr = '<div class="' + settings.overlayclass + '" style="" id="simplisity_loader"></div>';
         elementstr += '<input id="simplisity_fileuploadlist" type="hidden" value="" />';
         elementstr += '<input id="simplisity_params" type="hidden" value="" />';
         elementstr += '<input id="simplisity_searchfields" type="hidden" value="" />';
         elementstr += '<input id="simplisity_systemprovider" type="hidden" value="' + settings.systemprovider + '" />';
+        elementstr += '<input id="simplisity_cmdurl" type="hidden" value="' + cmdurl + '" />';
 
         var elem = document.createElement('span');
         elem.innerHTML = elementstr;
@@ -119,8 +121,6 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
     //console.log('scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist:--->    ', scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist);
 
     var systemprovider = simplisity_getSystemProvider(sfields);
-    simplisity_setCookieValue('s-cmdurl-' + systemprovider, scmdurl);
-    simplisity_setCookieValue('s-current-systemprovider', systemprovider);
 
     if (typeof reload === 'undefined' || reload === '') {
         reload = 'false';
@@ -255,8 +255,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
         var sdropdownlist = $(element).attr("s-dropdownlist");
 
         if (typeof scmdurl === 'undefined' || scmdurl === '') {
-            var systemprovider = simplisity_getSystemProvider(sfields);
-            scmdurl = simplisity_getCookieValue('s-cmdurl-' + systemprovider);
+            scmdurl = $('#simplisity_cmdurl').val();
         }
 
         if (typeof scmd !== 'undefined' && scmd !== '') {
@@ -652,7 +651,6 @@ function simplisity_assignevents(cmdurl) {
             $(this).unbind("click");
             $(this).click(function () {
                 simplisity_searchfields();
-                simplisity_setCookieValue('s-lastindex', index);
                 simplisity_callserver(this, cmdurl);
             });
 
@@ -665,7 +663,6 @@ function simplisity_assignevents(cmdurl) {
             $(this).unbind("click");
             $(this).click(function () {
                 if (confirm($(this).attr("s-confirm"))) {
-                    simplisity_setCookieValue('s-lastindex', index);
                     simplisity_callserver(this, cmdurl);
                 }
             });

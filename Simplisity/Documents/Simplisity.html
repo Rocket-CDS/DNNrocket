@@ -165,10 +165,6 @@
                     <td>INPUT FIELD: Datatype of the field data. "email","date","double","html","coded".  All other data type are dealt with as string. </td>
                 </tr>
                 <tr>
-                    <td><i>s-page</i></td>
-                    <td>Page Number</td>
-                </tr>
-                <tr>
                     <td><i>s-reload</i></td>
                     <td>'true' or 'false'. By default an image or document upload will trigger a reload of the page.  In some situations this is not required (when ajax return updates the page), so the reload can be stopped by using s-reload='false'.  Default is 'false'.</td>
                 </tr>
@@ -266,7 +262,7 @@
                 </tr>
                 <tr>
                     <td>simplisity_menulink</td>
-                    <td>Apply a Simplisity click event onto an menu element.  This is like "simplisity_click", but simplisity places the s-index of the cliecked item into the 's-lastmenuindex' cookie.  Which can then be used to highlight the menu item.</td>
+                    <td>Apply a Simplisity click event onto an menu element.  This is like "simplisity_click", but simplisity places the s-index of the clicked item into the 's-lastmenuindex' cookie.  Which can then be used to highlight the menu item.</td>
                 </tr>
                 <tr>
                     <td>simplisity_confirmclick</td>
@@ -331,25 +327,25 @@
                     <td>Is the last s-field to be tracked when using the s-track attribute.  This then used to call the last tracked command on page refresh.</td>
                 </tr>
                 <tr>
-                    <td>s-cmdurl-<i>systemprovider</i></td>
-                    <td>The last API url called for this system provider.</td>
-                </tr>
-                <tr>
-                    <td>s-lastindex</td>
-                    <td>Tracks the last menu index button, this identifies the last menu item clicked.  This is used to activate the menu item that should be selected on a page refresh.</td>
-                </tr>
-                <tr>
                     <td>s-tabname</td>
                     <td>Tracks the last tab used, so a refresh of page displays the last tab.</td>
                 </tr>
                 <tr>
-                    <td>s-page</td>
-                    <td>Current Page Number.</td>
-                </tr>
-                <tr>
-                    <td>s-pagesize</td>
-                    <td>Current Page Size.</td>
-                </tr>
+                    <td>s-lastmenuindex</td>
+                    <td>
+                        Tracks the last menu clicked. This is usally used to highlight the menu on page refresh.
+                        <hr/>
+                        <div class="w3-code ">
+                            function sidemenuchange() {<br />
+                            &nbsp;&nbsp;$('.simplisity_menulink').addClass('w3-light-grey');<br />
+                            &nbsp;&nbsp;$('.simplisity_menulink').removeClass('w3-theme-l2');<br />
+                            &nbsp;&nbsp;var index = simplisity_getCookieValue('s-lastmenuindex');<br />
+                            &nbsp;&nbsp;$('.simplisity_menulink[s-index=' + index + ']').removeClass('w3-light-grey');<br />
+                            &nbsp;&nbsp;$('.simplisity_menulink[s-index=' + index + ']').addClass('w3-theme-l2');<br />
+                            }<br />
+                        </div>
+                    </td>
+                </tr>                
             </table>
 
         </div>
@@ -369,7 +365,7 @@
                     <td>
                         This is set by the "simplisity_startup" function (see below).  It keeps track of the default systemprovider being used by the page.
                         <hr />
-                        <div>
+                        <div class="w3-code ">
                             $(document).ready(function () {<br />
                             $(document).simplisityStartUp('/<i>My API call url</i>', { systemprovider: 'amylisbusiness'});<br />
                             });<br />
@@ -392,6 +388,10 @@
                     <td>simplisity_searchfields</td>
                     <td>List of the search fields and data that needs to be passed to server side for a search operation.  These are passed in the "paramjson" form fields.</td>
                 </tr>
+                <tr>
+                    <td>simplisity_cmdurl</td>
+                    <td>The current page API url endpoint.  All commands that do not have a 'cmdurl' (API endpoint) specified will use this as the API endpoint.  This is set by the "$(document).simplisityStartUp(string apiurl)" method, which will be on the starting page.</td>
+                </tr>                
             </table>
 
         </div>

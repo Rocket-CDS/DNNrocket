@@ -576,9 +576,7 @@
     <Content Include="Installation\SQL_SPROC_TableParam.txt" />
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
     <None Include="Themes\config-w3\1.0\css\green-theme.css" />
-    <Content Include="View.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="View.ascx" />
     <None Include="Themes\config-w3\1.0\css\dnnrocket-theme.css" />
     <Content Include="Themes\config-w3\1.0\css\sailorblue-theme.css" />
     <Content Include="Themes\config-w3\1.0\css\ultravoilet-theme.css" />
