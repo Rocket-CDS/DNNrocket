@@ -182,6 +182,10 @@ namespace DNNrocketAPI
             #region "return results"
 
             context.Response.Clear();
+
+            context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            context.Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
             if (strJson != "")
             {
                 //send back xml as plain text

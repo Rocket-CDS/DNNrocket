@@ -1452,6 +1452,11 @@ namespace DNNrocketAPI
             response.End();
         }
 
+        public static string GetCurrentWebsiteDomainUrl()
+        {
+            return PortalSettings.Current.DefaultPortalAlias;
+        }        
+
 
     }
 }

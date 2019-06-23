@@ -319,7 +319,7 @@ function ConvertParamToJSON(sfields) {
     var systemobj = JSON.parse(system);
     viewData.system.push(systemobj);
 
-    console.log('stringify json: ' + JSON.stringify(viewData));
+    //console.log('stringify json: ' + JSON.stringify(viewData));
 
     return JSON.stringify(viewData);
 }

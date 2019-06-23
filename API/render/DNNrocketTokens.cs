@@ -86,11 +86,11 @@ namespace DNNrocketAPI.render
         {
             if (width > 0 || height > 0)
             {
-                url = "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams;
+                url = "//" + DNNrocketUtils.GetCurrentWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams;
             }
             else
             {
-                url = "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams;
+                url = "//" + DNNrocketUtils.GetCurrentWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams;
             }
             return new RawString(url);
         }
