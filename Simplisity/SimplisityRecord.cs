@@ -494,6 +494,142 @@ namespace Simplisity
         }
 
 
+        #region "Lists"
+
+        public List<string> GetLists()
+        {
+            var rtnList = new List<string>();
+
+            if (XMLDoc != null)
+            {
+                var lp = 1;
+                var listNames = XMLDoc.SelectNodes("genxml/*[@list]");
+                foreach (XmlNode i in listNames)
+                {
+                    rtnList.Add(i.Name);
+                    lp += 1;
+                }
+            }
+            return rtnList;
+        }
+
+
+        public List<SimplisityInfo> GetList(string listName)
+        {
+            var rtnList = new List<SimplisityInfo>();
+
+            if (XMLDoc != null)
+            {
+                var lp = 1;
+                var listRecords = XMLDoc.SelectNodes("genxml/" + listName + "/*");
+                foreach (XmlNode i in listRecords)
+                {
+                    var nbi = new SimplisityInfo();
+                    nbi.XMLData = i.OuterXml;
+                    nbi.TypeCode = "LIST";
+                    nbi.GUIDKey = listName;
+                    var listXmlNode = GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[key2 = '" + nbi.GetXmlProperty("genxml/key1") + "']");
+                    if (listXmlNode == "")
+                    {
+                        listXmlNode = GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]");
+                    }
+                    nbi.SetLangXml("<genxml>" + listXmlNode + "</genxml>");
+                    rtnList.Add(nbi);
+                    lp += 1;
+                }
+            }
+            return rtnList;
+        }
+
+        public void RemoveList(string listName)
+        {
+            if (XMLDoc != null)
+            {
+                RemoveXmlNode("genxml/" + listName);
+                RemoveXmlNode("genxml/lang/genxml/" + listName);
+            }
+        }
+
+        public SimplisityInfo GetListItem(string listName, int index)
+        {
+            if (XMLDoc != null)
+            {
+
+                var list = GetList(listName);
+                var lp = 0;
+                foreach (var i in list)
+                {
+                    if (lp == index)
+                    {
+                        return i;
+                    }
+                    lp += 1;
+                }
+            }
+            return null;
+        }
+
+        public SimplisityInfo GetListItem(string listName, string itemkeyxpath, string itemkey)
+        {
+            if (XMLDoc != null)
+            {
+
+                var list = GetList(listName);
+                foreach (var i in list)
+                {
+                    if (itemkey == i.GetXmlProperty(itemkeyxpath))
+                    {
+                        return i;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void AddListRow(string listName, SimplisityInfo sInfo)
+        {
+            if (XMLDoc != null)
+            {
+                var xmllangdata = sInfo.GetLangXml();
+                sInfo.RemoveLangRecord();
+                var xmldata = sInfo.XMLData;
+
+                AddListRow(listName, xmldata, xmllangdata);
+
+            }
+        }
+
+        public void AddListRow(string listName, string xmldata = "<genxml></genxml>", string xmllangdata = "<genxml></genxml>")
+        {
+            if (XMLDoc != null)
+            {
+                if (XMLDoc.SelectSingleNode("genxml/" + listName) == null)
+                {
+                    SetXmlProperty("genxml/" + listName, "", System.TypeCode.String, false);
+                    SetXmlProperty("genxml/" + listName + "/@list", "true", System.TypeCode.String, false);
+                }
+
+                AddXmlNode(xmldata, "genxml", "genxml/" + listName);
+
+                if (XMLDoc.SelectSingleNode("genxml/lang") == null)
+                {
+                    SetXmlProperty("genxml/lang", "", System.TypeCode.String, false);
+                    SetXmlProperty("genxml/lang/genxml", "", System.TypeCode.String, false);
+                }
+                if (XMLDoc.SelectSingleNode("genxml/lang/genxml/" + listName) == null)
+                {
+                    SetXmlProperty("genxml/lang/genxml/" + listName, "", System.TypeCode.String, false);
+                    SetXmlProperty("genxml/lang/genxml/" + listName + "/@list", "true", System.TypeCode.String, false);
+                }
+                AddXmlNode(xmllangdata, "genxml", "genxml/lang/genxml/" + listName);
+
+            }
+        }
+
+
+
+        #endregion 
+
         #region "private functions"
 
         public static string GetGenXmlValueFormat(string dataXml, string xPath, string lang)
