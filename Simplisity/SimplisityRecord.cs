@@ -550,6 +550,15 @@ namespace Simplisity
             }
         }
 
+        public void RemoveListItem(string listName, int index)
+        {
+            if (XMLDoc != null && index > 0)
+            {
+                RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + index + "]");
+                RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + index + "]");
+            }
+        }
+
         public SimplisityInfo GetListItem(string listName, int index)
         {
             if (XMLDoc != null)

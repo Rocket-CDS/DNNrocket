@@ -382,7 +382,7 @@
                 </tr>
                 <tr>
                     <td>simplisity_params</td>
-                    <td>List of the params that need to be passed to server side.  These are passed in the "paramjson" form fields.</td>
+                    <td>List of the params that need to be passed to server side (use 'simplisity_setParamField'  function).  These are found on the server in the "paramjson" form fields.</td>
                 </tr>
                 <tr>
                     <td>simplisity_searchfields</td>
@@ -422,6 +422,22 @@
                     <td>simplisity_setCookieValue(cookiename,cookievalue)</td>
                     <td>Set Cookie</td>
                 </tr>
+                <tr>
+                    <td>simplisity_setCookieValue(cookiename,cookievalue)</td>
+                    <td>Set Cookie</td>
+                </tr>
+                <tr>
+                    <td>simplisity_setParamField(fieldkey, fieldvalue)</td>
+                    <td>Sets a value to the "#simplisity_params" field, to be passed to the server.</td>
+                </tr>
+                <tr>
+                    <td>simplisity_getParamField(fieldkey)</td>
+                    <td>Gets a value from the "#simplisity_params" field</td>
+                </tr>
+                <tr>
+                    <td>simplisity_getField(sfields, fieldkey)</td>
+                    <td>Gets a value from the sfield json passed to it.</td>
+                </tr>                
             </table>
 
         </div>
@@ -451,7 +467,7 @@
                     &lt;/div&gt;<br>
                 </div>
             </div>
-            <p>The client side code is a razor template.  The country dropdown is created by a razor token "@DropDownList" and the initial load populates the dropdown by using the server side "CountryListCSV" function.</p>
+            <p>The client side display is a server razor template.  The country dropdown is created by a razor token "@DropDownList" and the initial load populates the dropdown by using the server side "CountryListCSV" function.</p>
             <p>The "simplisity_change" class on the country dropdown identifies that a simplisity change event will be triggered when a country is selected.  The "s-dropdownllist" command attribute is defined as the jQuery selector for the region dropdownlist, this identifies the dropdownlist that will be populated by ajax.</p>
             <p>On inital load we populated the region dropdownlist with the regions for the selected country dropdownlist and the razor token "@DropDownList" deals with the selected value.</p>
             <p>The "s-dropdownlist" command attribute requires a json object to be returned by the server.  The server returns a json string and this is converted into a json object, by simplisity, which is used to populate the region dropdownlist.</p>
