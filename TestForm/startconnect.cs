@@ -81,7 +81,7 @@ namespace DNNrocket.TestForm
             var objCtrl = new DNNrocketController();
             var info = objCtrl.GetData("testform", "TEST", DNNrocketUtils.GetEditCulture());
 
-            info.AddListRow(listname);
+            info.AddListItem(listname);
 
             objCtrl.SaveData("testform", "TEST", info);  //TestFormSave so if we add multiple it works correct.
 
@@ -175,7 +175,7 @@ namespace DNNrocket.TestForm
                         imgInfo.SetXmlProperty("genxml/hidden/friendlyfilename", friendlyname);
                         imgInfo.SetXmlProperty("genxml/hidden/ext", Path.GetExtension(friendlyname));
 
-                        info.AddListRow(listname, imgInfo);
+                        info.AddListItem(listname, imgInfo);
                     }
                 }
 
@@ -237,7 +237,7 @@ namespace DNNrocket.TestForm
                         docInfo.SetXmlProperty("genxml/hidden/friendlyfilename", friendlyname);
                         docInfo.SetXmlProperty("genxml/hidden/ext", Path.GetExtension(friendlyname));
 
-                        info.AddListRow(listname, docInfo);
+                        info.AddListItem(listname, docInfo);
                     }
 
                 }

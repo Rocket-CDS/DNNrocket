@@ -37,20 +37,20 @@ namespace Simplisity
             }
         }
 
-        public void AddListRow(string listName, SimplisityInfo simplisityInfo)
+        public void AddListItem(string listName, SimplisityInfo simplisityInfo)
         {
             foreach (var s in SimplisityInfoList)
             {
-                s.Value.AddListRow(listName, simplisityInfo);
+                s.Value.AddListItem(listName, simplisityInfo);
             }
             AddRecordKey(listName);
         }
 
-        public void AddListRow(string listName)
+        public void AddListItem(string listName)
         {
             foreach (var s in SimplisityInfoList)
             {
-                s.Value.AddListRow(listName);
+                s.Value.AddListItem(listName);
             }
             AddRecordKey(listName);
         }
@@ -135,7 +135,7 @@ namespace Simplisity
                     saveInfo.RemoveList(listName);
                     foreach (var s in l)
                     {
-                        saveInfo.AddListRow(listName, s);
+                        saveInfo.AddListItem(listName, s);
                     }
                 }
                 AddSimplisityInfo(saveInfo, saveInfo.Lang);

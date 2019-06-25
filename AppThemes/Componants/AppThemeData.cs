@@ -105,12 +105,12 @@ namespace DNNrocket.AppThemes
 
         public void AddFieldRow()
         {
-            _dataList.AddListRow("fielddata");
+            _dataList.AddListItem("fielddata");
         }
 
         public void AddResxRow()
         {
-            _dataList.AddListRow("resxdata");
+            _dataList.AddListItem("resxdata");
         }
 
         public void AddDataInfo(SimplisityInfo sInfo, string cultureCode)

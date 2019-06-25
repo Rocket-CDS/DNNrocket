@@ -595,7 +595,7 @@ namespace Simplisity
             return null;
         }
 
-        public void AddListRow(string listName, SimplisityInfo sInfo)
+        public void AddListItem(string listName, SimplisityInfo sInfo)
         {
             if (XMLDoc != null)
             {
@@ -603,12 +603,12 @@ namespace Simplisity
                 sInfo.RemoveLangRecord();
                 var xmldata = sInfo.XMLData;
 
-                AddListRow(listName, xmldata, xmllangdata);
+                AddListItem(listName, xmldata, xmllangdata);
 
             }
         }
 
-        public void AddListRow(string listName, string xmldata = "<genxml></genxml>", string xmllangdata = "<genxml></genxml>")
+        public void AddListItem(string listName, string xmldata = "<genxml></genxml>", string xmllangdata = "<genxml></genxml>")
         {
             if (XMLDoc != null)
             {
@@ -634,8 +634,6 @@ namespace Simplisity
 
             }
         }
-
-
 
         #endregion 
 

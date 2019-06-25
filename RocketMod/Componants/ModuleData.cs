@@ -149,7 +149,7 @@ namespace RocketMod
             {
                 var objCtrl = new DNNrocketController();
                 _currentRecord.SetXmlProperty("genxml/hidden/auditdate", DateTime.Now.ToString("s"));
-                _auditInfo.AddListRow("audit", _currentRecord);
+                _auditInfo.AddListItem("audit", _currentRecord);
                 objCtrl.SaveRecord(_auditInfo);
                 PopulateAudit();
             }

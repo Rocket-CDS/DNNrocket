@@ -168,7 +168,7 @@ namespace RocketSettings
 
         public void AddRow()
         {
-            AddListRow(_listName);
+            AddListItem(_listName);
 
             // Update ALL langauge records.
             foreach (var listItem in SimplisityInfoList)

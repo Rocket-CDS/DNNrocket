@@ -38,7 +38,7 @@ namespace DNNrocket.SystemData
                         strOut = SystemAddNew(paramInfo, controlRelPath);
                         break;
                     case "systemapi_addinterface":
-                        SystemAddListRow(paramInfo, "interfacedata");
+                        SystemAddListItem(paramInfo, "interfacedata");
                         strOut = SystemAdminDetail(paramInfo, controlRelPath);
                         break;
                     case "systemapi_admin_save":
@@ -50,19 +50,19 @@ namespace DNNrocket.SystemData
                         strOut = SystemAdminList(paramInfo, controlRelPath);
                         break;
                     case "systemapi_addparam":
-                        SystemAddListRow(paramInfo, "idxfielddata");
+                        SystemAddListItem(paramInfo, "idxfielddata");
                         strOut = SystemAdminDetail(paramInfo, controlRelPath);
                         break;
                     case "systemapi_addsetting":
-                        SystemAddListRow(paramInfo, "settingsdata");
+                        SystemAddListItem(paramInfo, "settingsdata");
                         strOut = SystemAdminDetail(paramInfo, controlRelPath);
                         break;
                     case "systemapi_addgroup":
-                        SystemAddListRow(paramInfo, "groupsdata");
+                        SystemAddListItem(paramInfo, "groupsdata");
                         strOut = SystemAdminDetail(paramInfo, controlRelPath);
                         break;
                     case "systemapi_addprovtype":
-                        SystemAddListRow(paramInfo, "provtypesdata");
+                        SystemAddListItem(paramInfo, "provtypesdata");
                         strOut = SystemAdminDetail(paramInfo, controlRelPath);
                         break;
                     case "systemapi_rebuildindex":
@@ -212,7 +212,7 @@ namespace DNNrocket.SystemData
             }
         }
 
-        public static void SystemAddListRow(SimplisityInfo sInfo, string listname)
+        public static void SystemAddListItem(SimplisityInfo sInfo, string listname)
         {
             try
             {
@@ -221,7 +221,7 @@ namespace DNNrocket.SystemData
                 {
                     var objCtrl = new DNNrocketController();
                     var info = objCtrl.GetInfo(Convert.ToInt32(selecteditemid));
-                    info.AddListRow(listname);
+                    info.AddListItem(listname);
                     objCtrl.SaveRecord(info);
                 }
             }
@@ -452,7 +452,7 @@ namespace DNNrocket.SystemData
                             var interfaceExists = sysInfoTo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfacekey);
                             if (interfaceExists == null)
                             {
-                                sysInfoTo.AddListRow("interfacedata", interfaceToCopy);
+                                sysInfoTo.AddListItem("interfacedata", interfaceToCopy);
                                 objCtrl.SaveRecord(sysInfoTo);
                                 info.SetXmlProperty("genxml/message", "Interface Copied");
                                 info.SetXmlProperty("genxml/color", "w3-pale-green");
@@ -461,7 +461,7 @@ namespace DNNrocket.SystemData
                             else
                             {
                                 interfaceToCopy.SetXmlProperty("genxml/textbox/interfacekey", interfaceToCopy.GetXmlProperty("genxml/textbox/interfacekey") + "-copy");
-                                sysInfoTo.AddListRow("interfacedata", interfaceToCopy);
+                                sysInfoTo.AddListItem("interfacedata", interfaceToCopy);
                                 objCtrl.SaveRecord(sysInfoTo);
                                 info.SetXmlProperty("genxml/message", "Interface Copied - Refresh page to View");
                                 info.SetXmlProperty("genxml/color", "w3-pale-green");

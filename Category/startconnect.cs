@@ -296,7 +296,7 @@ namespace DNNrocket.Category
                                 imgInfo.SetXmlProperty("genxml/hidden/friendlyfilename", friendlyname);
                                 imgInfo.SetXmlProperty("genxml/hidden/ext", Path.GetExtension(friendlyname));
 
-                                info.AddListRow(listname, imgInfo);
+                                info.AddListItem(listname, imgInfo);
                             }
                         }
                     }
