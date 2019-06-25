@@ -554,7 +554,7 @@ namespace Simplisity
         {
             if (XMLDoc != null && index > 0)
             {
-                RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + index + "]");
+                RemoveXmlNode("genxml/" + listName + "/genxml[" + index + "]");
                 RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + index + "]");
             }
         }
