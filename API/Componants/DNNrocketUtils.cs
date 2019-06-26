@@ -315,6 +315,28 @@ namespace DNNrocketAPI
             return l[CountryCode]; ;
         }
 
+
+        public static string GetRegionName(string countryRegionCodeKey, string dnnlistname = "Region")
+        {
+            var codes = countryRegionCodeKey.Split(':');
+            if (codes.Length == 2)
+            {
+                var countrycodesplit = codes[0].Split('.'); 
+                if (countrycodesplit.Length == 3)
+                {
+                    var l = GetRegionList(countrycodesplit[1], dnnlistname);
+                    if (l.ContainsKey(countryRegionCodeKey))
+                    {
+                        return l[countryRegionCodeKey];
+                    }
+                    return "";
+                }
+            }
+            return "";
+        }
+
+
+
         public static List<string> GetCultureCodeList(int portalId = -1)
         {
             var rtnList = new List<string>();
