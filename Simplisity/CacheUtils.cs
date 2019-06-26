@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Caching;
 using System.Security.Cryptography;
 using System.Text;
@@ -89,29 +91,39 @@ namespace Simplisity
 
         public static void ClearCache(string groupkey = "default")
         {
-            ObjectCache cache = MemoryCache.Default;
-            var l = GetCacheKeys(groupkey);
-            foreach (var c in l)
+            try
             {
-                cache.Remove(c);
+                ObjectCache cache = MemoryCache.Default;
+                var l = GetCacheKeys(groupkey);
+                foreach (var c in l)
+                {
+                    cache.Remove(c);
+                }
+                RemoveCache("dnnrocketcache" + groupkey);
             }
-            RemoveCache("dnnrocketcache" + groupkey);
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+            }
         }
 
         public static void ClearAllCache()
         {
-            ObjectCache cache = MemoryCache.Default;
-            var gl = GetCacheGroups();
-            foreach (var g in gl)
+            try
             {
-                var l = GetCacheKeys(g);
-                foreach (var c in l)
+                ObjectCache cache = MemoryCache.Default;
+                List<string> cacheKeys = cache.Select(kvp => kvp.Key).ToList();
+                foreach (string cacheKey in cacheKeys)
                 {
-                    if (c != null) cache.Remove(c);
+                    cache.Remove(cacheKey);
                 }
-                RemoveCache("dnnrocketcache" + g);
+
+                RemoveCache("group_dnnrocketcache");
             }
-            RemoveCache("group_dnnrocketcache");
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+            }
         }
 
         private static string GetMd5Hash(string input)
