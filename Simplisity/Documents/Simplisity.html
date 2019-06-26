@@ -385,7 +385,9 @@
                 </tr>
                 <tr>
                     <td>simplisity_params</td>
-                    <td>List of the params that need to be passed to server side (use 'simplisity_setParamField'  function).  These are found on the server in the "paramjson" form fields.</td>
+                    <td>List of the params that need to be passed to server side (use 'simplisity_setParamField'  function).  These are found on the server in the "paramjson" form fields.
+                        <p>This field will also save the "activevalue" paramater.  The "activevalue" is the current element value.  It can be used by server side code: <b>paramInfo.GetXmlProperty("genxml/hidden/activevalue")</b> </p>
+                    </td>
                 </tr>
                 <tr>
                     <td>simplisity_searchfields</td>
@@ -481,7 +483,7 @@
                 </div>
             </div>
             <p>The json return data should have 2 lists, "listkey" and "listvalue", The server side code should place the json string into the return dictionary with a key value of "outputjson"</p>
-
+            <p>This functionality uses the "activevalue" param pasted to the server by simplisity.</p>
         </div>
 
         <!-- End page content -->

@@ -263,6 +263,9 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
             if (typeof sfields === 'undefined') {
                 sfields = '';
             }
+
+            simplisity_setParamField('activevalue',$(element).val());
+
             if (typeof shideloader === 'undefined') {
                 shideloader = true;
             }

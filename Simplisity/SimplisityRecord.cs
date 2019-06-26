@@ -165,6 +165,11 @@ namespace Simplisity
             xmlDocNew.LoadXml(strXml);
 
             var xmlTarget = XMLDoc.SelectSingleNode(xPathRootDestination);
+            if (xmlTarget == null)
+            {
+                SetXmlProperty(xPathRootDestination, "");
+                xmlTarget = XMLDoc.SelectSingleNode(xPathRootDestination);
+            }
             if (xmlTarget != null)
             {
                 var xmlNod2 = xmlDocNew.SelectSingleNode(xPathSource);
@@ -197,6 +202,11 @@ namespace Simplisity
                 {
                     var newNod = XMLDoc.ImportNode(xmlNod2, true);
                     var selectSingleNode = XMLDoc.SelectSingleNode(xPathRootDestination);
+                    if (selectSingleNode == null)
+                    {
+                        SetXmlProperty(xPathRootDestination, "");
+                        selectSingleNode = XMLDoc.SelectSingleNode(xPathRootDestination);
+                    }
                     if (selectSingleNode != null)
                     {
                         selectSingleNode.ReplaceChild(newNod, xmlNod);

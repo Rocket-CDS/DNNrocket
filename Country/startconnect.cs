@@ -10,11 +10,11 @@ namespace DNNrocket.Country
     public class startconnect : DNNrocketAPI.APInterface
     {
         private static SimplisityInfo _systemInfo;
-
+        private static DNNrocketInterface _rocketInterface;
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo sInfo, SimplisityInfo paramInfo, string userHostAddress, string editlang = "")
         {
-            var rocketInterface = new DNNrocketInterface(interfaceInfo);
-            var commandSecurity = new CommandSecurity(-1,-1,rocketInterface);
+            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            var commandSecurity = new CommandSecurity(-1,-1, _rocketInterface);
             commandSecurity.AddCommand("settingcountry_save", true);
             commandSecurity.AddCommand("settingcountry_get", true);
             commandSecurity.AddCommand("settingcountry_getregion", false);
@@ -38,7 +38,7 @@ namespace DNNrocket.Country
                         break;
                     case "settingcountry_getregion":
                         rtnDic.Add("outputhtml", "");
-                        var regionlist = CountryUtils.RegionListCSV(GeneralUtils.DeCode(sInfo.GetXmlProperty("genxml/hidden/activevalue")), true);
+                        var regionlist = CountryUtils.RegionListCSV(paramInfo.GetXmlProperty("genxml/hidden/activevalue"), true);
                         rtnDic.Add("outputjson", "{listkey: [" + regionlist[0] + "], listvalue: [" + regionlist[1] + "] }");
                         break;
                     case "settingcountry_selectculturecode":
@@ -84,10 +84,10 @@ namespace DNNrocket.Country
                 var smi = objCtrl.GetData("countrysettings", "SETTINGS", editlang, _systemInfo.ItemID);
                 if (smi != null)
                 {
-
-                    var selecteditemid = sInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
                     var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
+                    if (themeFolder == "") themeFolder = _rocketInterface.DefaultTheme;
                     var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
+                    if (razortemplate == "") razortemplate = _rocketInterface.DefaultTemplate;
 
                     var passSettings = sInfo.ToDictionary();
 

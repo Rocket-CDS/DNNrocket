@@ -289,7 +289,10 @@ namespace Simplisity
                 var c = 0;
                 foreach (var v in datav)
                 {
-                    dataDictionary.Add(v, datat[c]);
+                    if (!dataDictionary.ContainsKey(v))
+                    {
+                        dataDictionary.Add(v, datat[c]);
+                    }
                     c += 1;
                 }
                 return DropDownList(info, xpath, dataDictionary, attributes, defaultValue, localized, row);
