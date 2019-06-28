@@ -28,6 +28,8 @@ using DNNrocketAPI.Componants;
 using DotNetNuke.Common;
 using System.IO.Compression;
 
+
+
 namespace DNNrocketAPI
 {
     public static class DNNrocketUtils
@@ -1477,7 +1479,28 @@ namespace DNNrocketAPI
         public static string GetCurrentWebsiteDomainUrl()
         {
             return PortalSettings.Current.DefaultPortalAlias;
-        }        
+        }
+
+
+        public static string GetPortalAlias(string lang)
+        {
+            var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
+
+            var portalalias = PortalSettings.Current.DefaultPortalAlias;
+            foreach (var pa in padic)
+            {
+                if (pa.Value.PortalID == PortalSettings.Current.PortalId)
+                {
+                    if (lang == pa.Value.CultureCode)
+                    {
+                        portalalias = pa.Key;
+                    }
+                }
+            }
+            return portalalias;
+        }
+
+
 
 
     }

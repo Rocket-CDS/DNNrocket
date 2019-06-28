@@ -112,6 +112,13 @@
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\DataInterface.cs" />
     <Compile Include="Componants\DNNrocketUtils.cs" />
+    <Compile Include="Meta.ascx.cs">
+      <DependentUpon>Meta.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Meta.ascx.designer.cs">
+      <DependentUpon>Meta.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="render\DNNrocketTokens.cs" />
     <Compile Include="SqlDataProvider\DataProvider.cs" />
     <Compile Include="SqlDataProvider\DNNrocketController.cs" />
@@ -574,6 +581,9 @@
     <Content Include="images\noimage.png" />
     <Content Include="images\noimage2.png" />
     <Content Include="Installation\SQL_SPROC_TableParam.txt" />
+    <Content Include="Meta.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
     <None Include="Themes\config-w3\1.0\css\green-theme.css" />
     <Content Include="View.ascx" />
