@@ -188,36 +188,11 @@ namespace Simplisity
         /// <param name="strXml">New XML, must be in NBright Strucutre (genxml/...)</param>
         /// <param name="xPathSource">Source path of the xml, this is for the new node and the old existing node</param>
         /// <param name="xPathRootDestination">parent node to place the new node onto</param>
-        /// <param name="addNode">add if the node doesn;t already exists.</param>
-        public void ReplaceXmlNode(string strXml, string xPathSource, string xPathRootDestination, bool addNode = true)
+        public void ReplaceXmlNode(string strXml, string xPathSource, string xPathRootDestination)
         {
-            var xmlDocNew = new XmlDocument();
-            xmlDocNew.LoadXml(strXml);
-
-            var xmlNod = XMLDoc.SelectSingleNode(xPathSource);
-            if (xmlNod != null)
-            {
-                var xmlNod2 = xmlDocNew.SelectSingleNode(xPathSource);
-                if (xmlNod2 != null)
-                {
-                    var newNod = XMLDoc.ImportNode(xmlNod2, true);
-                    var selectSingleNode = XMLDoc.SelectSingleNode(xPathRootDestination);
-                    if (selectSingleNode == null)
-                    {
-                        SetXmlProperty(xPathRootDestination, "");
-                        selectSingleNode = XMLDoc.SelectSingleNode(xPathRootDestination);
-                    }
-                    if (selectSingleNode != null)
-                    {
-                        selectSingleNode.ReplaceChild(newNod, xmlNod);
-                        XMLData = XMLDoc.OuterXml;
-                    }
-                }
-            }
-            else
-            {
-                if (addNode) AddXmlNode(strXml, xPathSource, xPathRootDestination);
-            }
+            RemoveXmlNode(xPathRootDestination);
+            SetXmlProperty(xPathRootDestination, "");
+            AddXmlNode(strXml, xPathSource, xPathRootDestination);
         }
 
         /// <summary>

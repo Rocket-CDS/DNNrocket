@@ -7,11 +7,11 @@ using System.Collections.Generic;
 
 namespace DNNrocket.Country
 {
-    public class startconnect : DNNrocketAPI.APInterface
+    public class startconnect : APInterface
     {
         private static SimplisityInfo _systemInfo;
         private static DNNrocketInterface _rocketInterface;
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo sInfo, SimplisityInfo paramInfo, string userHostAddress, string editlang = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string langRequired = "")
         {
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             var commandSecurity = new CommandSecurity(-1,-1, _rocketInterface);
@@ -30,11 +30,11 @@ namespace DNNrocket.Country
                 switch (paramCmd)
                 {
                     case "settingcountry_save":
-                        CountrySave(sInfo);
-                        rtnDic.Add("outputhtml", CountryDetail(sInfo, controlRelPath, editlang));
+                        CountrySave(postInfo);
+                        rtnDic.Add("outputhtml", CountryDetail(postInfo, controlRelPath, langRequired));
                         break;
                     case "settingcountry_get":
-                        rtnDic.Add("outputhtml", CountryDetail(sInfo, controlRelPath, editlang));
+                        rtnDic.Add("outputhtml", CountryDetail(postInfo, controlRelPath, langRequired));
                         break;
                     case "settingcountry_getregion":
                         rtnDic.Add("outputhtml", "");
@@ -42,7 +42,7 @@ namespace DNNrocket.Country
                         rtnDic.Add("outputjson", "{listkey: [" + regionlist[0] + "], listvalue: [" + regionlist[1] + "] }");
                         break;
                     case "settingcountry_selectculturecode":
-                        rtnDic.Add("outputhtml", CultureSelect(sInfo, controlRelPath, editlang));
+                        rtnDic.Add("outputhtml", CultureSelect(postInfo, controlRelPath, langRequired));
                         break;                        
                 }
             }
