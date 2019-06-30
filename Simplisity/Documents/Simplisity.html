@@ -141,6 +141,10 @@
                     <td>(Optional: true, false or clear. Default: false) If this attribute is added to a command click, the command is remembered as a cookie.  When a page refresh is made, like for language change, it is the last s-track command that will activate first. "clear" will remove the s-track cookies.</td>
                 </tr>
                 <tr>
+                    <td>s-track-cmd</td>
+                    <td>(Optional: the default is the "s-cmd" command attribute.) If the "s-track" command attribute has been set, you use this command attribute to define which command is saved in the track history.  This is used when we save data and a refresh with the same command will result in the same save being actioned again, but the data will not be in the post and hence data may be overwritten and set to blank.</td>
+                </tr>
+                <tr>
                     <td>s-regexpr</td>
                     <td>Regular Expression used to limit file type upload.  This is used only on the "simplisity_fileupload" class element. If not specified the default is used.  '/(\.|\/)(gif|jpe?g|png|pdf)$/i'</td>
                 </tr>
@@ -175,7 +179,7 @@
                 <tr>
                     <td><i>s-xpath</i></td>
                     <td>Sets the xpath for data in the XML.  This is usually only used if you have a html input which saves data back to the server.</td>
-                </tr>                
+                </tr>
             </table>
         </div>
 

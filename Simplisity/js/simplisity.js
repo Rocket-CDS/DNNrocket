@@ -3,7 +3,7 @@
 
     $.fn.getSimplisity = function (cmdurl, scmd, sfields, safter, strack) {
         //console.log('$.fn.getSimplisity: ', cmdurl, scmd, '#' + this.attr('id'), sfields);
-        simplisityPost(cmdurl, scmd, '', '#' + this.attr('id'), '', false, 0, sfields, true, safter, strack);
+        simplisityPost(cmdurl, scmd, '', '#' + this.attr('id'), '', false, 0, sfields, true, safter, strack, scmd);
     };
 
 }(jQuery));
@@ -116,7 +116,7 @@ function simplisity_nbxgetCompleted(e) {
 
 }
 
-function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist, reload) {
+function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist, reload, strackcmd) {
 
     //console.log('scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist:--->    ', scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist);
 
@@ -127,7 +127,10 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
     }
 
     if (typeof strack !== 'undefined' && strack === 'true') {
-        simplisity_setCookieValue('s-cmd-menu-' + systemprovider, scmd);
+        if (typeof strackcmd === 'undefined' || strackcmd === '') {
+            strackcmd = scmd;
+        }
+        simplisity_setCookieValue('s-cmd-menu-' + systemprovider, strackcmd);
         simplisity_setCookieValue('s-fields-menu-' + systemprovider, sfields);
     }
 
@@ -251,6 +254,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
         var sfields = $(element).attr("s-fields");
         var safter = $(element).attr("s-after");
         var strack = $(element).attr("s-track");
+        var strackcmd = $(element).attr("s-track-cmd");
         var shideloader = $(element).attr("s-hideloader");
         var sdropdownlist = $(element).attr("s-dropdownlist");
 
@@ -277,7 +281,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
                 }
             }
             //console.log('scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist:--->    ', scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist);
-            simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist, reload);
+            simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist, reload, strackcmd);
         }
     }
     else {
