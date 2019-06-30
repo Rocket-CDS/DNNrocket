@@ -38,7 +38,7 @@ namespace DNNrocket.Country
                         break;
                     case "settingcountry_getregion":
                         rtnDic.Add("outputhtml", "");
-                        var regionlist = CountryUtils.RegionListCSV(paramInfo.GetXmlProperty("genxml/hidden/activevalue"), true);
+                        var regionlist = CountryUtils.RegionListCSV(paramInfo.GetXmlProperty("genxml/hidden/activevalue"), paramInfo.GetXmlPropertyBool("genxml/hidden/allowempty"));
                         rtnDic.Add("outputjson", "{listkey: [" + regionlist[0] + "], listvalue: [" + regionlist[1] + "] }");
                         break;
                     case "settingcountry_selectculturecode":

@@ -472,6 +472,9 @@
                     &lt;/div&gt;<br>
                 </div>
             </div>
+            <div>
+                NOTE: use s-fields='{"allowempty":"true"}' to allow an empty selection in the dropdown.
+            </div>
             <p>The client side display is a server razor template.  The country dropdown is created by a razor token "@DropDownList" and the initial load populates the dropdown by using the server side "CountryListCSV" function.</p>
             <p>The "simplisity_change" class on the country dropdown identifies that a simplisity change event will be triggered when a country is selected.  The "s-dropdownllist" command attribute is defined as the jQuery selector for the region dropdownlist, this identifies the dropdownlist that will be populated by ajax.</p>
             <p>On inital load we populated the region dropdownlist with the regions for the selected country dropdownlist and the razor token "@DropDownList" deals with the selected value.</p>
