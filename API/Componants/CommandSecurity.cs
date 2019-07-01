@@ -112,6 +112,16 @@ namespace DNNrocketAPI.Componants
             ps.SignOut();
         }
 
+        public void AddCommandList(string commandKeyCSV, bool requiresSecurity)
+        {
+            var clist = commandKeyCSV.Split(',');
+            foreach (var c in clist)
+            {
+                AddCommand(c, requiresSecurity);
+            }
+        }
+
+
         public void AddCommand(string commandKey,bool requiresSecurity)
         {
             if (!_commandSecurity.ContainsKey(commandKey))
