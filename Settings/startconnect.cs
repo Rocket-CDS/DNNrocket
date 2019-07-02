@@ -31,69 +31,72 @@ namespace RocketSettings
             _postInfo = postInfo;
             _paramInfo = paramInfo;
 
-            // we should ALWAYS pass back the moduleid & tabid in the template post.
+            // -------------------------------------------------------------------------------------
+            // For Modules Level data we should ALWAYS pass back the moduleid & tabid in the template post.
+            // Pass ParentItemId for data linked to other Rockeyt record.
+            // Use system and interface key for all others (Install level)
             // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
-            var moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-            if (moduleid == 0) moduleid = _paramInfo.ModuleId;
+            var guidkey = "";
             var parentitemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/parentitemid");
             if (parentitemid == 0) parentitemid = _paramInfo.ParentItemId;
-
+            var moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            if (moduleid == 0) moduleid = _paramInfo.ModuleId;
             var tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
-            if ((tabid == 0 || moduleid == 0) && parentitemid <= 0)
+
+            if (tabid <= 0) tabid = -1;
+            if (moduleid <= 0) moduleid = -1;
+            if (parentitemid <= 0) parentitemid = -1;
+
+            if (tabid == -1 && moduleid == -1 && parentitemid == -1) guidkey = systemInfo.GUIDKey + "." +  _rocketInterface.InterfaceKey;
+            if (parentitemid > 0 ) guidkey = "parentitemid" + parentitemid;
+            // -------------------------------------------------------------------------------------
+
+            var listname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
+            if (listname == "") listname = "settingsdata";
+            if (guidkey == "")
             {
-                strOut = "Interface must be attached to a module or parent.";
+                _settingsData = new SettingsData(tabid, moduleid, langRequired, _rocketInterface.EntityTypeCode, listname);
             }
             else
             {
-                var listname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
-                if (listname == "") listname = "settingsdata";
-                if (parentitemid > 0)
-                {
-                    var guidkey = "parentitemid" + parentitemid;
-                    _settingsData = new SettingsData(guidkey, langRequired, _rocketInterface.EntityTypeCode, listname);
-                }
-                else
-                {
-                    _settingsData = new SettingsData(tabid, moduleid, langRequired, _rocketInterface.EntityTypeCode, listname);
-                }
+                _settingsData = new SettingsData(guidkey, langRequired, _rocketInterface.EntityTypeCode, listname);
+            }
 
-                _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);
-                _commandSecurity.AddCommand("rocketsettings_edit", true);
-                _commandSecurity.AddCommand("rocketsettings_add", true);
-                _commandSecurity.AddCommand("rocketsettings_save", true);
-                _commandSecurity.AddCommand("rocketsettings_delete", true);
+            _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);
+            _commandSecurity.AddCommand("rocketsettings_edit", true);
+            _commandSecurity.AddCommand("rocketsettings_add", true);
+            _commandSecurity.AddCommand("rocketsettings_save", true);
+            _commandSecurity.AddCommand("rocketsettings_delete", true);
 
-                _commandSecurity.AddCommand("rocketsettings_getdata", false);
-                _commandSecurity.AddCommand("rocketsettings_login", false);
+            _commandSecurity.AddCommand("rocketsettings_getdata", false);
+            _commandSecurity.AddCommand("rocketsettings_login", false);
 
-                if (!_commandSecurity.HasSecurityAccess(paramCmd))
-                {
-                    strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
-                    return ReturnString(strOut);
-                }
+            if (!_commandSecurity.HasSecurityAccess(paramCmd))
+            {
+                strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                return ReturnString(strOut);
+            }
 
-                    switch (paramCmd)
-                    {
-                        case "rocketsettings_edit":
-                            strOut = EditData();
-                            break;
-                        case "rocketsettings_add":
-                            _settingsData.AddRow();
-                            strOut = EditData();
-                            break;
-                        case "rocketsettings_save":
-                            _settingsData.Save(postInfo);
-                            strOut = EditData();
-                            break;
-                        case "rocketsettings_delete":
-                            _settingsData.Delete();
-                            strOut = EditData();
-                            break;
-                        case "rocketsettings_login":
-                            strOut = LoginUtils.DoLogin(systemInfo, postInfo, userHostAddress);
-                            break;
-                    }
-
+            switch (paramCmd)
+            {
+                case "rocketsettings_edit":
+                    strOut = EditData();
+                    break;
+                case "rocketsettings_add":
+                    _settingsData.AddRow();
+                    strOut = EditData();
+                    break;
+                case "rocketsettings_save":
+                    _settingsData.Save(postInfo);
+                    strOut = EditData();
+                    break;
+                case "rocketsettings_delete":
+                    _settingsData.Delete();
+                    strOut = EditData();
+                    break;
+                case "rocketsettings_login":
+                    strOut = LoginUtils.DoLogin(systemInfo, postInfo, userHostAddress);
+                    break;
             }
 
             return ReturnString(strOut);
