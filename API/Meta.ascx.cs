@@ -92,7 +92,6 @@ namespace DNNrocketAPI
 
                 var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalSettings.Current.PortalId).ToList();
 
-                //var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DataProvider.Instance().GetPortalAliasesByPortalId(PortalSettings.Current.PortalId));
 
                 foreach (var l in enabledlanguages)
                 {
