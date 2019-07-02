@@ -3,7 +3,7 @@
 
     $.fn.getSimplisity = function (cmdurl, scmd, sfields, safter, strack) {
         //console.log('$.fn.getSimplisity: ', cmdurl, scmd, '#' + this.attr('id'), sfields);
-        simplisityPost(cmdurl, scmd, '', '#' + this.attr('id'), '', false, 0, sfields, true, safter, strack, scmd);
+        simplisityPost(cmdurl, scmd, '', '#' + this.attr('id'), '', false, 0, sfields, true, safter, strack);
     };
 
 }(jQuery));
