@@ -22,6 +22,7 @@ using Simplisity;
 using DNNrocketAPI;
 using DataProvider = DotNetNuke.Data.DataProvider;
 using DotNetNuke.Framework;
+using System.Linq;
 
 namespace DNNrocketAPI
 {
@@ -78,41 +79,43 @@ namespace DNNrocketAPI
         public static string AlternateUrls(bool _debugmode)
         {
             var hreflangtext = "";
-            //var cachekey = "rocketPL*hreflang*" + PortalSettings.Current.PortalId + "*" + DNNrocketUtils.GetCurrentCulture() + "*" + PortalSettings.Current.ActiveTab.TabID; // use nodeTablist incase the DDRMenu has a selector.
-            //var pagename = "";
-            //var canonicalurl = "";
-            //var hreflangobj = CacheUtils.GetCache(cachekey);
-            //if (hreflangobj != null) hreflangtext = hreflangobj.ToString();
-            //if (hreflangtext == "" || _debugmode)
-            //{
-            //    hreflangtext = "";  // clear so we don't produce multiple hreflang with cache.
-            //    var enabledlanguages = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
+            var cachekey = "rocketPL*hreflang*" + PortalSettings.Current.PortalId + "*" + DNNrocketUtils.GetCurrentCulture() + "*" + PortalSettings.Current.ActiveTab.TabID; // use nodeTablist incase the DDRMenu has a selector.
+            var pagename = "";
+            var canonicalurl = "";
+            var hreflangobj = CacheUtils.GetCache(cachekey);
+            if (hreflangobj != null) hreflangtext = hreflangobj.ToString();
+            if (hreflangtext == "" || _debugmode)
+            {
+                hreflangtext = "";  // clear so we don't produce multiple hreflang with cache.
+                var enabledlanguages = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
 
 
-            //    var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DataProvider.Instance().GetPortalAliases());
+                var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalSettings.Current.PortalId).ToList();
 
-            //    foreach (var l in enabledlanguages)
-            //    {
-            //        var urldata = "";
-            //        if (_dataRecord != null)
-            //        {
-            //            var defaultPageName = _dnnTab.TabName;
-            //            var portalalias = DNNrocketUtils.GetPortalAlias(l.Key);
-            //            pagename = _dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/pagename");
-            //            if (pagename == "") pagename = defaultPageName;
-            //            urldata = "//" + portalalias + "/" + GeneralUtils.UrlFriendly(pagename);
-            //        }
+                //var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DataProvider.Instance().GetPortalAliasesByPortalId(PortalSettings.Current.PortalId));
 
-            //        hreflangtext += "<link rel='alternative' href='" + urldata + "' hreflang='" + l.Key.ToLower() + "' />";
-            //        if (DNNrocketUtils.GetCurrentCulture() == l.Key)
-            //        {
-            //            canonicalurl = urldata;
-            //        }
+                foreach (var l in enabledlanguages)
+                {
+                    var urldata = "";
+                    if (_dataRecord != null)
+                    {
+                        var defaultPageName = _dnnTab.TabName;
+                        var portalalias = DNNrocketUtils.GetPortalAlias(l.Key);
+                        pagename = _dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/pagename");
+                        if (pagename == "") pagename = defaultPageName;
+                        urldata = "//" + portalalias + "/" + GeneralUtils.UrlFriendly(pagename);
+                    }
+
+                    hreflangtext += "<link rel='alternative' href='" + urldata + "' hreflang='" + l.Key.ToLower() + "' />";
+                    if (DNNrocketUtils.GetCurrentCulture() == l.Key)
+                    {
+                        canonicalurl = urldata;
+                    }
 
 
-            //    }
-            //    CacheUtils.SetCache(cachekey, hreflangtext);
-            //}
+                }
+                CacheUtils.SetCache(cachekey, hreflangtext);
+            }
 
             return hreflangtext;
 
