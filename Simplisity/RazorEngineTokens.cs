@@ -205,7 +205,7 @@ namespace Simplisity
                     {
                         supdate = " s-update='lang' ";
                     }
-                    strOut += "    <input id='" + id + "_" + c.ToString("") + "' " + supdate + " s-xpath='" + xpath + "' name='" + id + "$" + c.ToString("") + "' type='checkbox' value='" + v + "' " + value + " /><label for='" + id + "_" + c.ToString("") + "'>" + datat[c] + "</label>";
+                    strOut += "    <input id='" + id + "_" + c.ToString("") + "' " + supdate + " s-xpath='" + xpath + "' name='" + id + "$" + c.ToString("") + "' type='checkbox' value='" + v + "' " + value + " /><label for='" + id + "_" + c.ToString("") + "'>&nbsp;" + datat[c] + "</label>";
                     c += 1;
                 }
                 strOut += "</div>";
@@ -239,7 +239,7 @@ namespace Simplisity
                         s = "checked='checked'";
                     else
                         s = "";
-                    strOut += "    <label " + labelattributes + "><input id='" + id + "_" + c.ToString("") + "' s-xpath='" + xpath + "' " + upd + " name='" + id + "radio' type='radio' value='" + v + "'  " + s + "/>" + datat[c] + "</label>";
+                    strOut += "    <input id='" + id + "_" + c.ToString("") + "' class='css-styleradio' s-xpath='" + xpath + "' " + upd + " name='" + id + "radio' type='radio' value='" + v + "'  " + s + "/><label class='css-stylelabel' " + labelattributes + " for='" + id + "_" + c.ToString("") + "'>&nbsp;" + datat[c] + "</label>";
                     c += 1;
                 }
                 strOut += "</div>";
