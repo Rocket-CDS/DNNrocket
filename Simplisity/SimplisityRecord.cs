@@ -473,7 +473,7 @@ namespace Simplisity
 
         public object Clone()
         {
-            var obj = (SimplisityInfo)this.MemberwiseClone();
+            var obj = (SimplisityRecord)this.MemberwiseClone();
             obj.XMLData = this.XMLData;
             return obj;
         }

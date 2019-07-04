@@ -7,8 +7,14 @@ using System.Xml;
 namespace Simplisity
 {
 
-    public class SimplisityInfo : SimplisityRecord
+    public class SimplisityInfo : SimplisityRecord, ICloneable 
     {
+        public object CloneInfo()
+        {
+            var obj = (SimplisityInfo)this.MemberwiseClone();
+            obj.XMLData = this.XMLData;
+            return obj;
+        }
 
         public SimplisityInfo()
         {

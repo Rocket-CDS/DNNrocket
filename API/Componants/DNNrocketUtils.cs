@@ -756,6 +756,19 @@ namespace DNNrocketAPI
             }
         }
 
+        public static string GetCurrentUsername()
+        {
+            try
+            {
+                return UserController.Instance.GetCurrentUserInfo().Username;
+            }
+            catch (Exception ex)
+            {
+                var ms = ex.ToString();
+                return ""; // use zero;
+            }
+        }
+
 
         public static Dictionary<string, string> GetUserProfileProperties(String userId)
         {
