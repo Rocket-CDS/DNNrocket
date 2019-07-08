@@ -120,6 +120,7 @@ namespace DNNrocketAPI
                 foreach (var l in DNNrocketUtils.GetCultureCodeList(portalId))
                 {
                     var objRecLang = GetRecordLang(itemId, l, true, tableName);
+                    if (objRecLang == null) objRecLang = new SimplisityInfo();
                     var info = new SimplisityInfo(objRec);
                     info.SetLangRecord(objRecLang);
                     var objIdx = GetRecordByGuidKey(-1, -1, info.TypeCode + "LANGIDX", itemId + "_" + l, "", tableName);
