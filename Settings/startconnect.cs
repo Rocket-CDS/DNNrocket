@@ -15,6 +15,7 @@ namespace RocketSettings
         private static CommandSecurity _commandSecurity;
         private static DNNrocketInterface _rocketInterface;
         private static SettingsData _settingsData;
+        private static string _tableName;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string langRequired = "")
         {
@@ -51,16 +52,19 @@ namespace RocketSettings
             if (parentitemid > 0 ) guidkey = "parentitemid" + parentitemid;
             // -------------------------------------------------------------------------------------
 
+            _tableName = _paramInfo.GetXmlProperty("genxml/hidden/tablename");
+
             var listname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
             if (listname == "") listname = "settingsdata";
             if (guidkey == "")
             {
-                _settingsData = new SettingsData(tabid, moduleid, langRequired, _rocketInterface.EntityTypeCode, listname);
+                _settingsData = new SettingsData(tabid, moduleid, langRequired, _rocketInterface.EntityTypeCode, listname, false, _tableName);
             }
             else
             {
-                _settingsData = new SettingsData(guidkey, langRequired, _rocketInterface.EntityTypeCode, listname);
+                _settingsData = new SettingsData(guidkey, langRequired, _rocketInterface.EntityTypeCode, listname, false, _tableName);
             }
+
 
             _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);
             _commandSecurity.AddCommand("rocketsettings_edit", true);

@@ -21,11 +21,14 @@ namespace RocketSettings
         private string _listName;
         private List<string> _cultureList;
         private bool _onlyRead;
+        private string _tableName;
+        private string _cacheKey;
 
         public SimplisityInfo Info;
 
-        public SettingsData(string guidKey, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false)
+        public SettingsData(string guidKey, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket")
         {
+            _tableName = tableName;
             _onlyRead = onlyRead;
             _entityTypeCode = entityTypeCode;
             _langRequired = langRequired;
@@ -35,7 +38,10 @@ namespace RocketSettings
             _guidKey = guidKey;
             _dataList = new List<SimplisityInfo>();
             _listName = listname;
-            Info = GetSettingData(guidKey, _langRequired, _onlyRead);
+
+            _cacheKey = guidKey + "*" + langRequired + "*" + entityTypeCode + "*" + tableName + "*" + DNNrocketUtils.GetPortalId() + "*" + _moduleid;
+
+            Info = GetSettingData(guidKey, _langRequired);
             _cultureList = GetCultureList();
             Populate();
             PopulateList();
@@ -43,8 +49,9 @@ namespace RocketSettings
 
 
 
-        public SettingsData(int tabId, int moduleId, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false)
+        public SettingsData(int tabId, int moduleId, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket")
         {
+            _tableName = tableName;
             _onlyRead = onlyRead;
             _entityTypeCode = entityTypeCode;
             _langRequired = langRequired;
@@ -55,9 +62,12 @@ namespace RocketSettings
             _listName = listname;
             _guidKey = "moduleid" + _moduleid;
             _cultureList = GetCultureList();
+
+            _cacheKey = tabId + "*" + langRequired + "*" + entityTypeCode + "*" + tableName + "*" + DNNrocketUtils.GetPortalId() + "*" + _moduleid;
+
             if (_moduleid > 0)
             {
-                Info = GetSettingData(_guidKey, _langRequired, _onlyRead);
+                Info = GetSettingData(_guidKey, _langRequired);
                 Populate();
                 PopulateList();
             }
@@ -101,7 +111,7 @@ namespace RocketSettings
         {
             foreach (var cultureCode in _cultureList)
             {
-                var s = GetSettingData(_guidKey, cultureCode, _onlyRead);
+                var s = GetSettingData(_guidKey, cultureCode);
                 if (s != null)
                 {
                     AddSimplisityInfo(s, cultureCode);
@@ -126,7 +136,7 @@ namespace RocketSettings
 
         public void Delete()
         {
-            var info = GetSettingData(_guidKey, DNNrocketUtils.GetEditCulture(), _onlyRead);
+            var info = GetSettingData(_guidKey, DNNrocketUtils.GetEditCulture());
             if (info != null)
             {
                 var objCtrl = new DNNrocketController();
@@ -145,7 +155,7 @@ namespace RocketSettings
 
             var editlang = DNNrocketUtils.GetEditCulture();
 
-            var dbInfo = GetSettingData(_guidKey, editlang, _onlyRead);
+            var dbInfo = GetSettingData(_guidKey, editlang);
 
             if (!SimplisityInfoList.ContainsKey(editlang))
             {
@@ -186,7 +196,7 @@ namespace RocketSettings
 
         public void ClearCache()
         {
-            CacheUtils.ClearCache("rocketmod" + _moduleid);
+            CacheUtils.RemoveCache(_cacheKey);
         }
 
 
@@ -242,17 +252,22 @@ namespace RocketSettings
 
         #region "private methods"
 
-        private SimplisityInfo GetSettingData(string guidKey, string cultureCode, bool onlyRead)
+        private SimplisityInfo GetSettingData(string guidKey, string cultureCode)
         {
-            var objCtrl = new DNNrocketController();
-            return objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, onlyRead);
+            //var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
+            //if (info == null)
+            //{
+                var objCtrl = new DNNrocketController();
+                var info = objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, _onlyRead, _tableName);
+            //}
+            return info;
         }
 
         private void SaveSettingData(string guidKey, SimplisityInfo sInfo)
         {
             var objCtrl = new DNNrocketController();
             sInfo.ModuleId = _moduleid;
-            objCtrl.SaveData(guidKey, _entityTypeCode, sInfo, -1, _moduleid);
+            objCtrl.SaveData(guidKey, _entityTypeCode, sInfo, -1, _moduleid, _tableName);
         }
 
         #endregion
