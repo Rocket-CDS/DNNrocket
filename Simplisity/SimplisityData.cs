@@ -138,7 +138,7 @@ namespace Simplisity
                         saveInfo.AddListItem(listName, s);
                     }
                 }
-                AddSimplisityInfo(saveInfo, saveInfo.Lang);
+                AddSimplisityInfo(saveInfo, listItem.Value.Lang);
             }
 
         }

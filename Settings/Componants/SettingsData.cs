@@ -22,28 +22,25 @@ namespace RocketSettings
         private List<string> _cultureList;
         private bool _onlyRead;
         private string _tableName;
-        private string _cacheKey;
-        private bool _debugMode;
 
         public SimplisityInfo Info;
 
-        public SettingsData(string guidKey, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket", bool debugMode = false)
+        public SettingsData(string guidKey, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket")
         {
-            InitSettingsData(-1, -1, guidKey, langRequired, entityTypeCode, listname, onlyRead, tableName, debugMode);
+            InitSettingsData(-1, -1, guidKey, langRequired, entityTypeCode, listname, onlyRead, tableName);
         }
 
 
-        public SettingsData(int tabId, int moduleId, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket", bool debugMode = false)
+        public SettingsData(int tabId, int moduleId, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket")
         {
             var guidKey = "moduleid" + moduleId;
-            InitSettingsData(tabId, moduleId, guidKey, langRequired, entityTypeCode, listname, onlyRead, tableName, debugMode);
-
+            InitSettingsData(tabId, moduleId, guidKey, langRequired, entityTypeCode, listname, onlyRead, tableName);
         }
 
 
-        private void InitSettingsData(int tabId, int moduleId, string guidKey, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket", bool debugMode = false)
+        private void InitSettingsData(int tabId, int moduleId, string guidKey, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket")
         {
-            _debugMode = debugMode;
+            InvalidKeyValues = false;
             _tableName = tableName;
             _onlyRead = onlyRead;
             _entityTypeCode = entityTypeCode;
@@ -56,19 +53,11 @@ namespace RocketSettings
             _listName = listname;
             _cultureList = GetCultureList();
 
-            _cacheKey = guidKey + "*" + langRequired + "*" + entityTypeCode + "*" + tableName + "*" + DNNrocketUtils.GetPortalId() + "*" + _moduleid + "*" + tabId;
+            Info = GetSettingData(_guidKey, _langRequired);
+            if (Info == null) Info = new SimplisityInfo();
 
-            if (_moduleid > 0)
-            {
-                Info = GetSettingData(guidKey, _langRequired);
-                Populate();
-                PopulateList();
-            }
-            else
-            {
-                Info = new SimplisityInfo();
-            }
-
+            Populate();
+            PopulateList();
         }
 
 
@@ -136,7 +125,6 @@ namespace RocketSettings
             {
                 var objCtrl = new DNNrocketController();
                 objCtrl.Delete(info.ItemID);
-                ClearCache();
                 Populate();
                 PopulateList();
             }
@@ -144,56 +132,51 @@ namespace RocketSettings
 
         public void Save(SimplisityInfo postInfo)
         {
-            //remove any params
-            postInfo.RemoveXmlNode("genxml/postform");
-            postInfo.RemoveXmlNode("genxml/urlparams");
-
-            var editlang = DNNrocketUtils.GetEditCulture();
-
-            var dbInfo = GetSettingData(_guidKey, editlang);
-
-            if (!SimplisityInfoList.ContainsKey(editlang))
+            if (postInfo.GetXmlProperty("genxml/key1") != "" && postInfo.GetXmlProperty("genxml/lang/genxml/key2") != "")
             {
-                // new lang record, so add it to list
-                AddSimplisityInfo(dbInfo, editlang);
+
+                var editlang = DNNrocketUtils.GetEditCulture();
+
+                var dbInfo = GetSettingData(_guidKey, editlang);
+
+                if (!SimplisityInfoList.ContainsKey(editlang))
+                {
+                    // new lang record, so add it to list
+                    AddSimplisityInfo(dbInfo, editlang);
+                }
+
+                RemovedDeletedListRecords(_listName, dbInfo, postInfo);
+
+                SortListRecordsOnSave(_listName, postInfo, editlang);
+
+                // Update ALL langauge records.
+                foreach (var listItem in SimplisityInfoList)
+                {
+                    SaveSettingData(_guidKey, listItem.Value);
+                }
+
+                Populate();
+                PopulateList();
             }
-
-            RemovedDeletedListRecords(_listName, dbInfo, postInfo);
-
-            SortListRecordsOnSave(_listName, postInfo, editlang);
-
-            // Update ALL langauge records.
-            foreach (var listItem in SimplisityInfoList)
+            else
             {
-                SaveSettingData(_guidKey, listItem.Value);
+                InvalidKeyValues = true;
             }
-
-            ClearCache();
-            Populate();
-            PopulateList();
         }
 
 
         public void AddRow()
         {
             AddListItem(_listName);
-
             // Update ALL langauge records.
             foreach (var listItem in SimplisityInfoList)
             {
                 SaveSettingData(_guidKey, listItem.Value);
             }
 
-            ClearCache();
             Populate();
             PopulateList();
         }
-
-        public void ClearCache()
-        {
-            CacheUtils.RemoveCache(_cacheKey);
-        }
-
 
         public string ExportData(bool withTextData = false)
         {
@@ -236,7 +219,8 @@ namespace RocketSettings
 
         public int ModuleId { get {return _moduleid;} }
         public int TabId { get { return _tabid; } }
-        public string EntityTypeCode { get { return _entityTypeCode; } set { _entityTypeCode = value; } }        
+        public string EntityTypeCode { get { return _entityTypeCode; } set { _entityTypeCode = value; } }
+        public bool InvalidKeyValues { get; set; }
 
         public List<SimplisityInfo> List
         {
@@ -249,13 +233,8 @@ namespace RocketSettings
 
         private SimplisityInfo GetSettingData(string guidKey, string cultureCode)
         {
-            var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
-            if (info == null || _debugMode)
-            {
-                var objCtrl = new DNNrocketController();
-                info = objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, _onlyRead, _tableName);
-                CacheUtils.SetCache(_cacheKey, info);
-            }
+            var objCtrl = new DNNrocketController();
+            var info = objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, _onlyRead, _tableName);
             return info;
         }
 
@@ -264,7 +243,6 @@ namespace RocketSettings
             var objCtrl = new DNNrocketController();
             sInfo.ModuleId = _moduleid;
             objCtrl.SaveData(guidKey, _entityTypeCode, sInfo, -1, _moduleid, _tableName);
-            CacheUtils.SetCache(_cacheKey, sInfo);
         }
 
         #endregion

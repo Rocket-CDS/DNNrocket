@@ -483,7 +483,7 @@ namespace DNNrocketAPI
                     // create portal lang records if not in DB
                     foreach (var lg in DNNrocketUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
                     {
-                        nbilang = GetRecordLang(info.ItemID, lg);
+                        nbilang = GetRecordLang(info.ItemID, lg, false, tableName);
                         if (nbilang == null)
                         {
                             nbilang = new SimplisityInfo();
@@ -528,7 +528,7 @@ namespace DNNrocketAPI
                 info.SystemId = systemId;
 
                 info.RemoveLangRecord();
-                var itemId = Update(info);
+                var itemId = Update(info, tableName);
                 var nbi2 = GetRecordLang(itemId, sInfo.Lang, false, tableName);
                 if (nbi2 != null)
                 {
