@@ -83,7 +83,7 @@
                         <label class="">@ResourceKey("system.assembly")</label>
                         @TextBox(i, "genxml/textbox/assembly", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
                     </div>
-                    <div class="w3-padding w3-half">
+                    <div class="w3-padding w3-quarter">
                         <label class="">@ResourceKey("system.providertype")</label>
                         @{
                             var providertyperef = "";
@@ -98,8 +98,10 @@
                         <!-- DropDownList(i, "genxml/dropdownlist/providertype", providertyperef, providertypelist, "class='w3-input w3-border'", "", false, lp1)  -->
                             @CheckBoxList(i, "genxml/checkboxlist/providertype", providertyperef.TrimEnd(','), providertypelist.TrimEnd(','), "", false, false, lp1)
                         </div>
-                        <div class="w3-padding w3-quarter">
-                        </div>
+                    <div class="w3-padding w3-quarter">
+                        <label class="">@ResourceKey("system.databasetable")</label>
+                        @TextBox(i, "genxml/textbox/databasetable", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                    </div>
                     </div>
                 <div class="w3-row">
                     <div class="w3-padding w3-half">

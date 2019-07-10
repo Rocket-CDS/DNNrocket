@@ -104,6 +104,7 @@
     <Compile Include="Componants\SystemData.cs" />
     <Compile Include="Componants\PageIncludes.cs" />
     <Compile Include="Componants\EmailUtils.cs" />
+    <Compile Include="Componants\SystemInfo.cs" />
     <Compile Include="Componants\UserUtils.cs" />
     <Compile Include="Componants\SideMenu.cs" />
     <Compile Include="Componants\DNNrocketInterface.cs" />

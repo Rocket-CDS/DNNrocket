@@ -11,7 +11,7 @@ using System.Text;
 namespace DNNrocketAPI
 {
 
-    public class DNNrocketInterface : SimplisityInfo 
+    public class DNNrocketInterface  
     {
         public DNNrocketInterface(SimplisityInfo systemInfo, string interfaceKey)
         {
@@ -29,7 +29,7 @@ namespace DNNrocketAPI
                 }
                 else
                 {
-                    base.FromXmlItem(interfaceInfo.ToXmlItem());
+                    Info = interfaceInfo;
                 }
             }
         }
@@ -43,83 +43,83 @@ namespace DNNrocketAPI
             }
             else
             {
-                base.FromXmlItem(interfaceInfo.ToXmlItem());
+                Info = interfaceInfo;
             }
         }
 
-        public SimplisityInfo Info
-        {
-            get {
-                var info = new SimplisityInfo();
-                info.FromXmlItem(base.ToXmlItem());
-                return info;
-            }
-
-        }
+        public SimplisityInfo Info { get; }
 
         public bool Exists { get; }
 
         
         public string InterfaceKey
         {
-            get { return base.GetXmlProperty("genxml/textbox/interfacekey"); }
-            set { base.SetXmlProperty("genxml/textbox/interfacekey", value.ToString()); }
+            get { return Info.GetXmlProperty("genxml/textbox/interfacekey"); }
+            set { Info.SetXmlProperty("genxml/textbox/interfacekey", value.ToString()); }
         }
 
         public string EntityTypeCode
         {
-            get { return base.GetXmlProperty("genxml/textbox/entitytypecode"); }
-            set { base.SetXmlProperty("genxml/textbox/entitytypecode", value.ToString()); }
+            get { return Info.GetXmlProperty("genxml/textbox/entitytypecode"); }
+            set { Info.SetXmlProperty("genxml/textbox/entitytypecode", value.ToString()); }
         }
 
         public string TemplateRelPath
         {
-            get { return base.GetXmlProperty("genxml/textbox/relpath"); }
-            set { base.SetXmlProperty("genxml/textbox/relpath", value.ToString()); }
+            get { return Info.GetXmlProperty("genxml/textbox/relpath"); }
+            set { Info.SetXmlProperty("genxml/textbox/relpath", value.ToString()); }
         }
 
         public string NameSpaceClass
         {
-            get { return base.GetXmlProperty("genxml/textbox/namespaceclass"); }
-            set { base.SetXmlProperty("genxml/textbox/namespaceclass", value.ToString()); }
+            get { return Info.GetXmlProperty("genxml/textbox/namespaceclass"); }
+            set { Info.SetXmlProperty("genxml/textbox/namespaceclass", value.ToString()); }
         }
         public string Assembly
         {
-            get { return base.GetXmlProperty("genxml/textbox/assembly"); }
-            set { base.SetXmlProperty("genxml/textbox/assembly", value.ToString()); }
+            get { return Info.GetXmlProperty("genxml/textbox/assembly"); }
+            set { Info.SetXmlProperty("genxml/textbox/assembly", value.ToString()); }
         }
 
         public string DefaultTheme
         {
-            get { return base.GetXmlProperty("genxml/textbox/defaulttheme"); }
-            set { base.SetXmlProperty("genxml/textbox/defaulttheme", value.ToString()); }
+            get { return Info.GetXmlProperty("genxml/textbox/defaulttheme"); }
+            set { Info.SetXmlProperty("genxml/textbox/defaulttheme", value.ToString()); }
         }
         public string ThemeVersion
         {
-            get { return base.GetXmlProperty("genxml/textbox/themeversion"); }
-            set { base.SetXmlProperty("genxml/textbox/themeversion", value.ToString()); }
+            get { return Info.GetXmlProperty("genxml/textbox/themeversion"); }
+            set { Info.SetXmlProperty("genxml/textbox/themeversion", value.ToString()); }
         }
         public string DefaultTemplate
         {
-            get { return base.GetXmlProperty("genxml/textbox/defaulttemplate"); }
-            set { base.SetXmlProperty("genxml/textbox/defaulttemplate", value.ToString()); }
+            get { return Info.GetXmlProperty("genxml/textbox/defaulttemplate"); }
+            set { Info.SetXmlProperty("genxml/textbox/defaulttemplate", value.ToString()); }
         }
         public string DefaultCommand
         {
-            get { return base.GetXmlProperty("genxml/textbox/defaultcommand"); }
-            set { base.SetXmlProperty("genxml/textbox/defaultcommand", value.ToString()); }
+            get { return Info.GetXmlProperty("genxml/textbox/defaultcommand"); }
+            set { Info.SetXmlProperty("genxml/textbox/defaultcommand", value.ToString()); }
         }
         public bool IsActive
         {
-            get { return base.GetXmlPropertyBool("genxml/checkbox/active"); }
-            set { base.SetXmlProperty("genxml/checkbox/active", value.ToString()); }
+            get { return Info.GetXmlPropertyBool("genxml/checkbox/active"); }
+            set { Info.SetXmlProperty("genxml/checkbox/active", value.ToString()); }
         }
         public bool IsCached
         {
-            get { return base.GetXmlPropertyBool("genxml/checkbox/cache"); }
-            set { base.SetXmlProperty("genxml/checkbox/cache", value.ToString()); }
+            get { return Info.GetXmlPropertyBool("genxml/checkbox/cache"); }
+            set { Info.SetXmlProperty("genxml/checkbox/cache", value.ToString()); }
         }
-
+        public string DatabaseTable
+        {
+            get {
+                var i = Info.GetXmlProperty("genxml/textbox/databasetable");
+                if (i == "") return "DNNrocket";
+                return i;
+            }
+            set {Info.SetXmlProperty("genxml/textbox/databasetable", value.ToString());}
+        }
 
 
     }

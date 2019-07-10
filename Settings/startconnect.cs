@@ -52,17 +52,15 @@ namespace RocketSettings
             if (parentitemid > 0 ) guidkey = "parentitemid" + parentitemid;
             // -------------------------------------------------------------------------------------
 
-            _tableName = _paramInfo.GetXmlProperty("genxml/hidden/tablename");
-
             var listname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
             if (listname == "") listname = "settingsdata";
             if (guidkey == "")
             {
-                _settingsData = new SettingsData(tabid, moduleid, langRequired, _rocketInterface.EntityTypeCode, listname, false, _tableName);
+                _settingsData = new SettingsData(tabid, moduleid, langRequired, _rocketInterface.EntityTypeCode, listname, false, _rocketInterface.DatabaseTable);
             }
             else
             {
-                _settingsData = new SettingsData(guidkey, langRequired, _rocketInterface.EntityTypeCode, listname, false, _tableName);
+                _settingsData = new SettingsData(guidkey, langRequired, _rocketInterface.EntityTypeCode, listname, false, _rocketInterface.DatabaseTable);
             }
 
 

@@ -387,7 +387,7 @@ namespace RocketMod
         {
             try
             {
-                _rocketInterface.ModuleId = _moduleData.ModuleId;
+                _rocketInterface.Info.ModuleId = _moduleData.ModuleId;
                 var strOut = "";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
                 return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_postInfo.ToDictionary());

@@ -23,34 +23,27 @@ namespace RocketSettings
         private bool _onlyRead;
         private string _tableName;
         private string _cacheKey;
+        private bool _debugMode;
 
         public SimplisityInfo Info;
 
-        public SettingsData(string guidKey, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket")
+        public SettingsData(string guidKey, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket", bool debugMode = false)
         {
-            _tableName = tableName;
-            _onlyRead = onlyRead;
-            _entityTypeCode = entityTypeCode;
-            _langRequired = langRequired;
-            if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
-            _tabid = -1;
-            _moduleid = -1;
-            _guidKey = guidKey;
-            _dataList = new List<SimplisityInfo>();
-            _listName = listname;
-
-            _cacheKey = guidKey + "*" + langRequired + "*" + entityTypeCode + "*" + tableName + "*" + DNNrocketUtils.GetPortalId() + "*" + _moduleid;
-
-            Info = GetSettingData(guidKey, _langRequired);
-            _cultureList = GetCultureList();
-            Populate();
-            PopulateList();
+            InitSettingsData(-1, -1, guidKey, langRequired, entityTypeCode, listname, onlyRead, tableName, debugMode);
         }
 
 
-
-        public SettingsData(int tabId, int moduleId, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket")
+        public SettingsData(int tabId, int moduleId, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket", bool debugMode = false)
         {
+            var guidKey = "moduleid" + moduleId;
+            InitSettingsData(tabId, moduleId, guidKey, langRequired, entityTypeCode, listname, onlyRead, tableName, debugMode);
+
+        }
+
+
+        private void InitSettingsData(int tabId, int moduleId, string guidKey, string langRequired, string entityTypeCode = "ROCKETSETTINGS", string listname = "settingsdata", bool onlyRead = false, string tableName = "DNNrocket", bool debugMode = false)
+        {
+            _debugMode = debugMode;
             _tableName = tableName;
             _onlyRead = onlyRead;
             _entityTypeCode = entityTypeCode;
@@ -58,16 +51,16 @@ namespace RocketSettings
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
             _tabid = tabId;
             _moduleid = moduleId;
-            _dataList = new List<SimplisityInfo>();            
+            _guidKey = guidKey;
+            _dataList = new List<SimplisityInfo>();
             _listName = listname;
-            _guidKey = "moduleid" + _moduleid;
             _cultureList = GetCultureList();
 
-            _cacheKey = tabId + "*" + langRequired + "*" + entityTypeCode + "*" + tableName + "*" + DNNrocketUtils.GetPortalId() + "*" + _moduleid;
+            _cacheKey = guidKey + "*" + langRequired + "*" + entityTypeCode + "*" + tableName + "*" + DNNrocketUtils.GetPortalId() + "*" + _moduleid + "*" + tabId;
 
             if (_moduleid > 0)
             {
-                Info = GetSettingData(_guidKey, _langRequired);
+                Info = GetSettingData(guidKey, _langRequired);
                 Populate();
                 PopulateList();
             }
@@ -75,7 +68,9 @@ namespace RocketSettings
             {
                 Info = new SimplisityInfo();
             }
+
         }
+
 
         public List<string> GetCultureList()
         {
@@ -254,12 +249,13 @@ namespace RocketSettings
 
         private SimplisityInfo GetSettingData(string guidKey, string cultureCode)
         {
-            //var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
-            //if (info == null)
-            //{
+            var info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
+            if (info == null || _debugMode)
+            {
                 var objCtrl = new DNNrocketController();
-                var info = objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, _onlyRead, _tableName);
-            //}
+                info = objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, _onlyRead, _tableName);
+                CacheUtils.SetCache(_cacheKey, info);
+            }
             return info;
         }
 
@@ -268,6 +264,7 @@ namespace RocketSettings
             var objCtrl = new DNNrocketController();
             sInfo.ModuleId = _moduleid;
             objCtrl.SaveData(guidKey, _entityTypeCode, sInfo, -1, _moduleid, _tableName);
+            CacheUtils.SetCache(_cacheKey, sInfo);
         }
 
         #endregion

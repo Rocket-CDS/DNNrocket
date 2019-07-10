@@ -85,19 +85,19 @@ namespace DNNrocketAPI.Componants
             if (SecurityCheckIsSuperUser()) return true;
             if (_interfaceInfo != null)
             {
-                if (_interfaceInfo.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Administrators']/@value"))
+                if (_interfaceInfo.Info.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Administrators']/@value"))
                 {
                     if (_userInfo.IsInRole("Administrators")) return true;
                 }
-                if (_interfaceInfo.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Manager']/@value"))
+                if (_interfaceInfo.Info.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Manager']/@value"))
                 {
                     if (_userInfo.IsInRole("Manager")) return true;
                 }
-                if (_interfaceInfo.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Editor']/@value"))
+                if (_interfaceInfo.Info.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='Editor']/@value"))
                 {
                     if (_userInfo.IsInRole("Editor")) return true;
                 }
-                if (_interfaceInfo.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='ClientEditor']/@value"))
+                if (_interfaceInfo.Info.GetXmlPropertyBool("genxml/checkboxlist/securityroles/chk[@data='ClientEditor']/@value"))
                 {
                     if (_userInfo.IsInRole("ClientEditor")) return true;
                 }

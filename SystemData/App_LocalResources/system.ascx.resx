@@ -267,4 +267,7 @@
   <data name="defaultvalue.Text" xml:space="preserve">
     <value>Default Value</value>
   </data>
+  <data name="databasetable.Text" xml:space="preserve">
+    <value>Database Table</value>
+  </data>
 </root>
