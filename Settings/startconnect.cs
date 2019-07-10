@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace RocketSettings
 {
-    public class startconnect : DNNrocketAPI.APInterface
+    public class StartConnect : DNNrocketAPI.APInterface
     {
         private static string _appthemeRelPath;
         private static string _appthemeMapPath;
@@ -17,7 +17,7 @@ namespace RocketSettings
         private static SettingsData _settingsData;
         private static string _tableName;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string langRequired = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = "ERROR"; // return ERROR if not matching commands.
 
@@ -102,9 +102,6 @@ namespace RocketSettings
                 case "rocketsettings_delete":
                     _settingsData.Delete();
                     strOut = EditData();
-                    break;
-                case "rocketsettings_login":
-                    strOut = LoginUtils.DoLogin(systemInfo, postInfo, userHostAddress);
                     break;
             }
 

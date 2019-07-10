@@ -11,14 +11,14 @@ using System.Xml;
 
 namespace DNNrocket.Category
 {
-    public class startconnect : DNNrocketAPI.APInterface
+    public class StartConnect : DNNrocketAPI.APInterface
     {
         private static string _EntityTypeCode;
         private static string _editlang;
         private static string _systemprovider;
         private static SimplisityInfo _systemInfo;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string editlang = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
             var commandSecurity = new CommandSecurity(-1,-1,rocketInterface);
@@ -49,40 +49,40 @@ namespace DNNrocket.Category
                     case "category_add":
                         var newInfo = AddNew(systemInfo);
                         postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
-                        strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
+                        strOut = GetDetail(postInfo, rocketInterface.TemplateRelPath, systemInfo);
                         break;
                     case "category_save":
                         Save(postInfo, systemInfo);
-                        strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
+                        strOut = GetDetail(postInfo, rocketInterface.TemplateRelPath, systemInfo);
                         break;
                     case "category_savelist":
                         SaveList(postInfo, systemInfo);
-                        strOut = GetList(postInfo, ControlRelPath, systemInfo);
+                        strOut = GetList(postInfo, rocketInterface.TemplateRelPath, systemInfo);
                         break;
                     case "category_delete":
                         Delete(postInfo);
-                        strOut = GetList(postInfo, ControlRelPath, systemInfo);
+                        strOut = GetList(postInfo, rocketInterface.TemplateRelPath, systemInfo);
                         break;
                     case "category_sort":
-                        strOut = GetList(postInfo, ControlRelPath, systemInfo);
+                        strOut = GetList(postInfo, rocketInterface.TemplateRelPath, systemInfo);
                         break;
                     case "category_addimage":
-                        strOut = AddImageToList(postInfo, ControlRelPath);
+                        strOut = AddImageToList(postInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "category_visible":
-                        strOut = ToggleHidden(postInfo, ControlRelPath, systemInfo);
+                        strOut = ToggleHidden(postInfo, rocketInterface.TemplateRelPath, systemInfo);
                         break;
                     case "category_disable":
-                        strOut = ToggleDisable(postInfo, ControlRelPath, systemInfo);
+                        strOut = ToggleDisable(postInfo, rocketInterface.TemplateRelPath, systemInfo);
                         break;
                     case "category_getlist":
-                        strOut = GetList(postInfo, ControlRelPath, systemInfo);
+                        strOut = GetList(postInfo, rocketInterface.TemplateRelPath, systemInfo);
                         break;
                     case "category_getdetail":
-                        strOut = GetDetail(postInfo, ControlRelPath, systemInfo);
+                        strOut = GetDetail(postInfo, rocketInterface.TemplateRelPath, systemInfo);
                         break;
                     case "category_search":
-                        strOut = GetList(postInfo, ControlRelPath, systemInfo);
+                        strOut = GetList(postInfo, rocketInterface.TemplateRelPath, systemInfo);
                         break;
                 }
             }

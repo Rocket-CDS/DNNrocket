@@ -1353,8 +1353,8 @@ namespace DNNrocketAPI
             }
             if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
             {
-                var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", templateRelPath);
-                rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, HttpContext.Current.Request.UserHostAddress, editlang);
+                var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.StartConnect");
+                rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, editlang);
             }
             else
             {
@@ -1381,8 +1381,8 @@ namespace DNNrocketAPI
                                     {
                                         postInfo.SystemId = systemInfo.ItemID;  // systemid is required for index, always add to postdata so it gets passed to the razor templates.
                                     }
-                                    var ajaxprov = APInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass, controlRelPath);
-                                    rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, paramInfo, HttpContext.Current.Request.UserHostAddress, editlang);
+                                    var ajaxprov = APInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                                    rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, paramInfo, editlang);
                                 }
                                 catch (Exception ex)
                                 {
@@ -1406,6 +1406,63 @@ namespace DNNrocketAPI
             }
             return rtnDic;
         }
+
+        public static Dictionary<string, SimplisityInfo> EventProviderBefore(string paramCmd, SystemInfoData systemInfoData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
+        {
+            var rtnDic = new Dictionary<string, SimplisityInfo>();
+            if (!systemInfoData.Exists) return rtnDic;  // for systemadmin this may be null
+            foreach (var rocketInterface in systemInfoData.EventList)
+            {
+                if (rocketInterface.IsProvider && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                {
+                    try
+                    {
+                        var cacheKey = rocketInterface.Assembly + "," +  rocketInterface.NameSpaceClass;
+                        var ajaxprov = (EventInterface)CacheUtils.GetCache(cacheKey);
+                        if (ajaxprov == null)
+                        {
+                            ajaxprov = EventInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                            CacheUtils.SetCache(cacheKey, ajaxprov);
+                        }
+                        rtnDic = ajaxprov.BeforeEvent(paramCmd, systemInfoData, rocketInterface.Info, postInfo, paramInfo, editlang);
+                    }
+                    catch (Exception ex)
+                    {
+                        var err = ex.ToString();  // ignore event provider errors.  The error trap should be in the provider.
+                    }
+                }
+            }
+            return rtnDic;
+        }
+
+        public static Dictionary<string, string> EventProviderAfter(string paramCmd, SystemInfoData systemInfoData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
+        {
+            var rtnDic = new Dictionary<string, string>();
+            if (!systemInfoData.Exists) return rtnDic;  // for systemadmin this may be null
+            foreach (var rocketInterface in systemInfoData.EventList)
+            {
+                if (rocketInterface.IsProvider && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                {
+                    try
+                    {
+                        var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
+                        var ajaxprov = (EventInterface)CacheUtils.GetCache(cacheKey);
+                        if (ajaxprov == null)
+                        {
+                            ajaxprov = EventInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                            CacheUtils.SetCache(cacheKey, ajaxprov);
+                        }
+                        rtnDic = ajaxprov.AfterEvent(paramCmd, systemInfoData, rocketInterface.Info, postInfo, paramInfo, editlang);
+                    }
+                    catch (Exception ex)
+                    {
+                        var err = ex.ToString();  // ignore event provider errors.  The error trap should be in the provider.
+                    }
+                }
+            }
+            return rtnDic;
+        }
+
 
         public static string RenderImageSelect(SimplisityRazor model, int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
         {

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace DNNrocket.Documents
 {
-    public class startconnect : DNNrocketAPI.APInterface
+    public class StartConnect : DNNrocketAPI.APInterface
     {
         private static string _appthemeRelPath;
         private static string _appthemeMapPath;
@@ -15,7 +15,7 @@ namespace DNNrocket.Documents
         private static CommandSecurity _commandSecurity;
         private static DNNrocketInterface _rocketInterface;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string langRequired = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = "ERROR"; // return ERROR if not matching commands.
 

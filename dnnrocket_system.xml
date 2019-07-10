@@ -31,7 +31,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>CountrySettings.cshtml</defaulttemplate>
         <defaultcommand>settingcountry_get</defaultcommand>
-        <namespaceclass>DNNrocket.Country.startconnect</namespaceclass>
+        <namespaceclass>DNNrocket.Country.StartConnect</namespaceclass>
         <assembly>DNNrocketCountry</assembly>
         <relpath />
       </textbox>
@@ -63,7 +63,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>testform.cshtml</defaulttemplate>
         <defaultcommand>testform_get</defaultcommand>
-        <namespaceclass>DNNrocket.TestForm.startconnect</namespaceclass>
+        <namespaceclass>DNNrocket.TestForm.StartConnect</namespaceclass>
         <assembly>DNNrocketTestForm</assembly>
         <relpath>/DesktopModules/DNNrocket/TestForm/</relpath>
       </textbox>
@@ -95,7 +95,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>testlist.cshtml</defaulttemplate>
         <defaultcommand>testlist_getlist</defaultcommand>
-        <namespaceclass>DNNrocket.TestList.startconnect</namespaceclass>
+        <namespaceclass>DNNrocket.TestList.StartConnect</namespaceclass>
         <assembly>DNNrocketTestList</assembly>
         <relpath>/DesktopModules/DNNrocket/TestList/</relpath>
       </textbox>
@@ -127,7 +127,7 @@
         <defaulttheme />
         <defaulttemplate />
         <defaultcommand />
-        <namespaceclass>DNNrocket.Images.startconnect</namespaceclass>
+        <namespaceclass>DNNrocket.Images.StartConnect</namespaceclass>
         <assembly>DNNrocketImages</assembly>
         <relpath>/DesktopModules/DNNrocket/Images/</relpath>
       </textbox>
@@ -159,7 +159,7 @@
         <defaulttheme />
         <defaulttemplate />
         <defaultcommand />
-        <namespaceclass>DNNrocket.Documents.startconnect</namespaceclass>
+        <namespaceclass>DNNrocket.Documents.StartConnect</namespaceclass>
         <assembly>DNNrocketDocuments</assembly>
         <relpath>/DesktopModules/DNNrocket/Documents/</relpath>
       </textbox>

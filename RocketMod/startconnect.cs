@@ -7,7 +7,7 @@ using Simplisity;
 
 namespace RocketMod
 {
-    public class startconnect : DNNrocketAPI.APInterface
+    public class StartConnect : DNNrocketAPI.APInterface
     {
         private static ModuleData _moduleData;
         private static string _appthemeRelPath;
@@ -23,7 +23,7 @@ namespace RocketMod
         private static int _tabid;
         private static int _moduleid;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string langRequired = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = ""; // return nothing if not matching commands.
 
@@ -262,7 +262,6 @@ namespace RocketMod
             try
             {
                 var controlRelPath = _rocketInterface.TemplateRelPath;
-                if (controlRelPath == "") controlRelPath = ControlRelPath;
 
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "dashboard.cshtml";
@@ -284,7 +283,6 @@ namespace RocketMod
             try
             {
                 var controlRelPath = _rocketInterface.TemplateRelPath;
-                if (controlRelPath == "") controlRelPath = ControlRelPath;
 
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "config.cshtml";

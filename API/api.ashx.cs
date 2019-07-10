@@ -66,6 +66,7 @@ namespace DNNrocketAPI
                     var systemprovider = paramInfo.GetXmlProperty("genxml/hidden/systemprovider").Trim(' ');
                     if (systemprovider == "") systemprovider = "dnnrocket";
                     var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
+                    var systemInfoData = new SystemInfoData(systemInfo); 
 
                     var postInfo = new SimplisityInfo(DNNrocketUtils.GetEditCulture());
                     if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
@@ -131,10 +132,17 @@ namespace DNNrocketAPI
                             break;
                         default:
                             var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
+                            var returnDictionary = new Dictionary<string, string>();
+                                
+                            // before event
+                            var rtnDictInfo = DNNrocketUtils.EventProviderBefore(paramCmd, systemInfoData, postInfo, paramInfo, _editlang);
+                            if (rtnDictInfo.ContainsKey("post")) postInfo = rtnDictInfo["post"];
+                            if (rtnDictInfo.ContainsKey("param")) paramInfo = rtnDictInfo["param"];
 
+                            // command action
                             if (rocketInterface.Exists)
                             {
-                                var returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, paramInfo, TemplateRelPath, _editlang);
+                                returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, paramInfo, TemplateRelPath, _editlang);
 
                                 if (returnDictionary.ContainsKey("outputhtml"))
                                 {
@@ -157,16 +165,21 @@ namespace DNNrocketAPI
                                 // check for systemspi, does not exist.  It's used to create the systemprovders 
                                 if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
                                 {
-                                    var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.startconnect", TemplateRelPath);
-                                    var returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, HttpContext.Current.Request.UserHostAddress, _editlang);
+                                    var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.StartConnect");
+                                    returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, _editlang);
                                     strOut = returnDictionary["outputhtml"];
                                 }
                                 else
                                 {
                                     strOut = "ERROR: Invalid SystemProvider: " + systemprovider + "  interfacekey: " + interfacekey + " - Check Database for SYSTEM,'" + systemprovider + "' (No spaces)";
                                 }
-
                             }
+
+                            // after Event
+                            returnDictionary = DNNrocketUtils.EventProviderAfter(paramCmd, systemInfoData, postInfo, paramInfo, _editlang);
+                            if (returnDictionary.ContainsKey("outputhtml")) strOut = returnDictionary["outputhtml"];
+                            if (returnDictionary.ContainsKey("outputjson")) strJson = returnDictionary["outputjson"];
+
                             break;
                         }
                     }

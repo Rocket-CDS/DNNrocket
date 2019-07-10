@@ -6,13 +6,13 @@ using Simplisity;
 
 namespace DNNrocket.TestList
 {
-    public class startconnect : DNNrocketAPI.APInterface
+    public class StartConnect : DNNrocketAPI.APInterface
     {
         private static string _EntityTypeCode;
         private static string _editlang;
         private static SimplisityInfo _systemInfo;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string editlang = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
             var commandSecurity = new CommandSecurity(-1,-1,rocketInterface);
@@ -39,35 +39,35 @@ namespace DNNrocket.TestList
                     case "testlist_add":
                         var newInfo = AddNew();
                         postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
-                        strOut = GetDetail(paramInfo, ControlRelPath);
+                        strOut = GetDetail(paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testlist_save":
                         Save(postInfo, paramInfo);
-                        strOut = GetDetail(paramInfo, ControlRelPath);
+                        strOut = GetDetail(paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testlist_delete":
                         Delete(paramInfo);
-                        strOut = GetList(postInfo, paramInfo, ControlRelPath);
+                        strOut = GetList(postInfo, paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testlist_createrows":
                         CreateRows(paramInfo);
-                        strOut = GetList(postInfo, paramInfo, ControlRelPath);
+                        strOut = GetList(postInfo, paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testlist_deleterows":
                         DeleteRows();
-                        strOut = GetList(postInfo, paramInfo, ControlRelPath);
+                        strOut = GetList(postInfo, paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testlist_getlist":
-                        strOut = GetList(postInfo, paramInfo, ControlRelPath);
+                        strOut = GetList(postInfo, paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testlist_getdetail":
-                        strOut = GetDetail(paramInfo, ControlRelPath);
+                        strOut = GetDetail(paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testlist_sort":
-                        strOut = GetList(postInfo, paramInfo, ControlRelPath);
+                        strOut = GetList(postInfo, paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testlist_search":
-                        strOut = GetList(postInfo, paramInfo, ControlRelPath);
+                        strOut = GetList(postInfo, paramInfo, rocketInterface.TemplateRelPath);
                         break;
                 }
             }
@@ -84,7 +84,7 @@ var rtnDic = new Dictionary<string, string>();
             return rtnDic;
         }
 
-        public static String GetList(SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateControlRelPath)
+        public static String GetList(SimplisityInfo postInfo, SimplisityInfo paramInfo, string template)
         {
             try
             {
@@ -111,7 +111,7 @@ var rtnDic = new Dictionary<string, string>();
                 headerData.SetXmlProperty("genxml/hidden/pagesize", pagesize.ToString());
                 headerData.SetXmlProperty("genxml/textbox/searchtext", searchtext);
 
-                return RenderList(list, paramInfo, 0, templateControlRelPath, headerData);
+                return RenderList(list, paramInfo, 0, template, headerData);
             }
             catch (Exception ex)
             {
@@ -119,7 +119,7 @@ var rtnDic = new Dictionary<string, string>();
             }
         }
 
-        public static String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath, SimplisityInfo headerData)
+        public static String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string template, SimplisityInfo headerData)
         {
             try
             {
@@ -133,7 +133,7 @@ var rtnDic = new Dictionary<string, string>();
 
                 var passSettings = sInfo.ToDictionary();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, template, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
                 strOut = DNNrocketUtils.RazorList(razorTempl, list, passSettings,headerData);
 
@@ -146,7 +146,7 @@ var rtnDic = new Dictionary<string, string>();
 
         }
 
-        public static String GetDetail(SimplisityInfo postInfo, string templateControlRelPath)
+        public static String GetDetail(SimplisityInfo postInfo, string template)
         {
             try
             {
@@ -157,7 +157,7 @@ var rtnDic = new Dictionary<string, string>();
 
                 var passSettings = postInfo.ToDictionary();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, template, themeFolder, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);

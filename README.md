@@ -24,15 +24,15 @@ copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(ProjectDir)..\\..\\..\bin\$(Ta
 copy "$(ProjectDir)$(OutDir)$(AssemblyName).pdb" "$(ProjectDir)..\\..\\..\bin\$(AssemblyName).pdb"
 
 4. Add reference to DNNrocketAPI and Simplisity.
-5. Rename first class to "startconnect" and rename the file to "startconnect.cs".  (by convension, not required.)
-6. startconnect should inherit from ": DNNrocketAPI.APInterface"
+5. Rename first class to "StartConnect" and rename the file to "StartConnect.cs".  (by convension, not required.)
+6. StartConnect should inherit from ": DNNrocketAPI.APInterface"
 7. Implement abstract class.
 8. Add process code: EXAMPLE
 
         private static DNNrocketInterface _rocketInterface;
         private static string _editLang;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string langRequired = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string langRequired = "")
         {
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
 
@@ -79,14 +79,14 @@ NOTE: Validation is not implemented.
 - Default Theme : Default theme folder to be used. Usually "config-w3".  This is where the interface will look for the Theme, under the Control path "Theme" folder.
 - Default Template : Default razor template to be used.
 - Default Command : Default API command to be used.  The command should be is 2 sections with an underscore used as the seperation. "interfacekey_cmd" - The 1 section will be used as the interface key, if the "interfacekey" is not passed to the server as a hidden field.
-- NameSpace and Class*:  Namespace and class of the assembly which implements the "ProcessCommand" method.  By convention the "startconnect" class name is used.
+- NameSpace and Class*:  Namespace and class of the assembly which implements the "ProcessCommand" method.  By convention the "StartConnect" class name is used.
 - Assembly*: The name of The interface Assembly.
 - Provider Type : The type of provider can be attached (Defined in the "Providers Types" tab), this is for advanced systems and not used in normal operations.
 - Control Relative Path : This is the relative path to the "Themes" folder.  It is the parent of the "Themes" folder, usually the module path.
 
-- Active will give a option to identify is the interface is active, The logic should be defined in startconnect.
-- Cahced can be turned on by interface, logic should be defined in startconnect.
-- Security roles can be assigned to the interface so only those roles can use the interface.  The logic to prevent the access should be defined in the startconnect class.
+- Active will give a option to identify is the interface is active, The logic should be defined in StartConnect.
+- Cahced can be turned on by interface, logic should be defined in StartConnect.
+- Security roles can be assigned to the interface so only those roles can use the interface.  The logic to prevent the access should be defined in the StartConnect class.
 - Display on menu option.
 
 (*) = required

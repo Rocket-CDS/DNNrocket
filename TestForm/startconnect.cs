@@ -7,10 +7,10 @@ using System.IO;
 
 namespace DNNrocket.TestForm
 {
-    public class startconnect : DNNrocketAPI.APInterface
+    public class StartConnect : DNNrocketAPI.APInterface
     {
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string editlang = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
             var commandSecurity = new CommandSecurity(-1,-1, rocketInterface);
@@ -34,23 +34,23 @@ namespace DNNrocket.TestForm
                 {
                     case "testform_save":
                         TestFormSave(postInfo);
-                        strOut = TestFormDetail(paramInfo, ControlRelPath);
+                        strOut = TestFormDetail(paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testform_add":
-                        strOut = AddToList(paramInfo, ControlRelPath);
+                        strOut = AddToList(paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testform_delete":
                         Delete(paramInfo);
-                        strOut = TestFormDetail(paramInfo, ControlRelPath);
+                        strOut = TestFormDetail(paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testform_addimage":
-                        strOut = AddImageToList(paramInfo, ControlRelPath);
+                        strOut = AddImageToList(paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testform_adddoc":
-                        strOut = AddDocToList(paramInfo, ControlRelPath);
+                        strOut = AddDocToList(paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testform_get":
-                        strOut = TestFormDetail(paramInfo, ControlRelPath);
+                        strOut = TestFormDetail(paramInfo, rocketInterface.TemplateRelPath);
                         break;
                     case "testform_download":
                         rtnDic.Add("filenamepath", postInfo.GetXmlProperty("genxml/hidden/filerelpath"));

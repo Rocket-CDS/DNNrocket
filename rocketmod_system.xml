@@ -31,7 +31,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>view.cshtml</defaulttemplate>
         <defaultcommand>rocketmod_getdata</defaultcommand>
-        <namespaceclass>RocketMod.startconnect</namespaceclass>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
         <assembly>RocketMod</assembly>
         <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
       </textbox>
@@ -63,7 +63,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>dashboard.cshtml</defaulttemplate>
         <defaultcommand>rocketmod_dashboard</defaultcommand>
-        <namespaceclass>RocketMod.startconnect</namespaceclass>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
         <assembly>RocketMod</assembly>
         <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
       </textbox>
@@ -95,7 +95,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>edit.cshtml</defaulttemplate>
         <defaultcommand>rocketmod_edit</defaultcommand>
-        <namespaceclass>RocketMod.startconnect</namespaceclass>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
         <assembly>RocketMod</assembly>
         <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
       </textbox>
@@ -127,7 +127,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>fieldeditor.cshtml</defaulttemplate>
         <defaultcommand>rocketsettings_edit</defaultcommand>
-        <namespaceclass>RocketSettings.startconnect</namespaceclass>
+        <namespaceclass>RocketSettings.StartConnect</namespaceclass>
         <assembly>RocketSettings</assembly>
         <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
       </textbox>
@@ -159,7 +159,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>settings.cshtml</defaulttemplate>
         <defaultcommand>rocketsettings_edit</defaultcommand>
-        <namespaceclass>RocketSettings.startconnect</namespaceclass>
+        <namespaceclass>RocketSettings.StartConnect</namespaceclass>
         <assembly>RocketSettings</assembly>
         <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
       </textbox>

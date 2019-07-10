@@ -7,7 +7,7 @@ using System.IO;
 
 namespace DNNrocket.AppThemes
 {
-    public class startconnect : DNNrocketAPI.APInterface
+    public class StartConnect : DNNrocketAPI.APInterface
     {
         private static SimplisityInfo _postInfo;
         private static CommandSecurity _commandSecurity;
@@ -16,7 +16,7 @@ namespace DNNrocket.AppThemes
         private static SimplisityInfo _systemInfo;
         private static string _editLang;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string userHostAddress, string langRequired = "")
+        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = "ERROR - Must be SuperUser"; // return ERROR if not matching commands.
 

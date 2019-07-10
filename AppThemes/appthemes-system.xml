@@ -31,7 +31,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>dashboard.cshtml</defaulttemplate>
         <defaultcommand>rocketapptheme_dashboard</defaultcommand>
-        <namespaceclass>DNNrocket.AppThemes.startconnect</namespaceclass>
+        <namespaceclass>DNNrocket.AppThemes.StartConnect</namespaceclass>
         <assembly>DNNrocketAppThemes</assembly>
         <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
       </textbox>
@@ -63,7 +63,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>download.cshtml</defaulttemplate>
         <defaultcommand>rocketapptheme_download</defaultcommand>
-        <namespaceclass>DNNrocket.AppThemes.startconnect</namespaceclass>
+        <namespaceclass>DNNrocket.AppThemes.StartConnect</namespaceclass>
         <assembly>DNNrocketAppThemes</assembly>
         <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
       </textbox>
@@ -95,7 +95,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>CultureCodeSelect.cshtml</defaulttemplate>
         <defaultcommand>rocketapptheme_selectculturecode</defaultcommand>
-        <namespaceclass>DNNrocket.AppThemes.startconnect</namespaceclass>
+        <namespaceclass>DNNrocket.AppThemes.StartConnect</namespaceclass>
         <assembly>DNNrocketAppThemes</assembly>
         <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
       </textbox>
@@ -127,7 +127,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>upload.cshtml</defaulttemplate>
         <defaultcommand>rocketapptheme_upload</defaultcommand>
-        <namespaceclass>DNNrocket.AppThemes.startconnect</namespaceclass>
+        <namespaceclass>DNNrocket.AppThemes.StartConnect</namespaceclass>
         <assembly>DNNrocketAppThemes</assembly>
         <relpath>/DesktopModules/DNNrocket/AppThemes</relpath>
       </textbox>
@@ -159,7 +159,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <defaulttemplate>fieldeditor.cshtml</defaulttemplate>
         <defaultcommand>rocketsettings_edit</defaultcommand>
-        <namespaceclass>RocketSettings.startconnect</namespaceclass>
+        <namespaceclass>RocketSettings.StartConnect</namespaceclass>
         <assembly>RocketSettings</assembly>
         <relpath>/DesktopModules/DNNrocket/AppThemes/Admin</relpath>
       </textbox>

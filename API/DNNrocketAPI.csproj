@@ -104,13 +104,14 @@
     <Compile Include="Componants\SystemData.cs" />
     <Compile Include="Componants\PageIncludes.cs" />
     <Compile Include="Componants\EmailUtils.cs" />
-    <Compile Include="Componants\SystemInfo.cs" />
+    <Compile Include="Componants\SystemInfoData.cs" />
     <Compile Include="Componants\UserUtils.cs" />
     <Compile Include="Componants\SideMenu.cs" />
     <Compile Include="Componants\DNNrocketInterface.cs" />
     <Compile Include="DNNrocketThumb.ashx.cs">
       <DependentUpon>DNNrocketThumb.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\EventInterface.cs" />
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\DataInterface.cs" />
     <Compile Include="Componants\DNNrocketUtils.cs" />

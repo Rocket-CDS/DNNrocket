@@ -2,7 +2,7 @@
 
 namespace FormBuilder
 {
-    public class startconnect
+    public class StartConnect
     {
     }
 }
