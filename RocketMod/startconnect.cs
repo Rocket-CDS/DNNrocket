@@ -208,7 +208,7 @@ namespace RocketMod
                 }
 
                 var strOut = "";
-                var passSettings = _postInfo.ToDictionary();
+                var passSettings = _paramInfo.ToDictionary();
                 var appTheme = new AppTheme(_moduleData.configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
                 strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveEditTemplate, _moduleData, passSettings, _moduleData.HeaderInfo);
 
@@ -267,7 +267,7 @@ namespace RocketMod
                 var razortemplate = "dashboard.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
-                var passSettings = _postInfo.ToDictionary();
+                var passSettings = _paramInfo.ToDictionary();
                 passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
 
                 return DNNrocketUtils.RazorDetail(razorTempl, _moduleData, passSettings);
@@ -277,6 +277,7 @@ namespace RocketMod
                 return ex.ToString();
             }
         }
+
 
         public static String GetConfig()
         {
@@ -288,7 +289,8 @@ namespace RocketMod
                 var razortemplate = "config.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
-                var passSettings = _postInfo.ToDictionary();
+
+                var passSettings = _paramInfo.ToDictionary();
                 passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
 
                 return DNNrocketUtils.RazorDetail(razorTempl, _moduleData, passSettings);
@@ -312,7 +314,7 @@ namespace RocketMod
                     var razortemplate = "selectapp.cshtml";
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
 
-                    var passSettings = _postInfo.ToDictionary();
+                    var passSettings = _paramInfo.ToDictionary();
 
                     var appList = new List<Object>();
                     var dirlist = System.IO.Directory.GetDirectories(_appthemeMapPath + "\\Themes");
@@ -355,7 +357,7 @@ namespace RocketMod
                     var apptheme = _moduleData.configData.ConfigInfo.GetXmlProperty("genxml/hidden/apptheme");
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, apptheme, DNNrocketUtils.GetCurrentCulture());
 
-                    var passSettings = _postInfo.ToDictionary();
+                    var passSettings = _paramInfo.ToDictionary();
                     
                     passSettings.Add("addeditscript", _commandSecurity.HasModuleEditRights().ToString());
 

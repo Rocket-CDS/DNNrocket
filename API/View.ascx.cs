@@ -108,7 +108,7 @@ namespace DNNrocketAPI
 
                 if (configData.Exists)
                 {
-                    DNNrocketUtils.IncludePageHeaders(configData.AppTheme, configData.AppThemeVersion, "", this.Page, TabId);
+                    DNNrocketUtils.IncludePageHeaders(configData.AppTheme, configData.AppThemeVersion, _templateRelPath, this.Page, TabId);
                 }
                 else
                 {
