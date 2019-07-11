@@ -101,7 +101,7 @@
 
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-theme-d3 w3-text-black w3-animate-left w3-card" style="z-index:3;width:260px;top: 55px;" id="mySidebar">
         <img src="/DesktopModules/DNNrocket/API/images/dnnrocket.jpg" alt="Avatar" style="width:20%" class="w3-circle w3-margin">
-        <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="rocketmod_getsidemenu" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,iframeedit:<%= String.IsNullOrEmpty(IframeEdit) ? "" : IframeEdit %>,theme:config-w3,template:SideMenu.cshtml,interfacekey:rocketmod,relpath:/DesktopModules/DNNrocket/rocketmod/"></div>
+        <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="rocketmod_getsidemenu" s-fields='{"tabid":"<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>","moduleid":"<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>","iframeedit":"<%= String.IsNullOrEmpty(IframeEdit) ? "" : IframeEdit %>","theme":"config-w3","template":"SideMenu.cshtml","interfacekey":"rocketmod","relpath":"/DesktopModules/DNNrocket/rocketmod/"}'></div>
     </nav>
     </div>
 
@@ -109,7 +109,7 @@
     <div class="w3-main" style="margin-left:<%= String.IsNullOrEmpty(IframeEdit) ? "270px" : "10px" %>;margin-top:60px; " id="base-panel">
 
         <form id="rocketmod_form">
-              <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="<%= String.IsNullOrEmpty(cmd) ? "" : cmd %>" s-track="true" s-fields="tabid:<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>,moduleid:<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>,template:edit.cshtml,interfacekey:rocketmod"></div>
+              <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="<%= String.IsNullOrEmpty(cmd) ? "" : cmd %>" s-track="true" s-fields='{"tabid":"<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>","moduleid":"<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>","template":"edit.cshtml","interfacekey":"rocketmod"}'></div>
         </form>
 
 

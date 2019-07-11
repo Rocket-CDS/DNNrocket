@@ -7,6 +7,8 @@
 @using Simplisity;
 @using DNNrocketAPI.Componants;
 
+
+
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
@@ -15,7 +17,6 @@
 @{
     var username = UserUtils.GetCurrentUserName();
     var sidemenu = (SideMenu)Model.List.First();
-    var headerInfo = Model.HeaderData;
 
     var menuOut = "";
     // get action interfaces. (no group)
@@ -32,16 +33,20 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                var cmdfields = i.GetXmlProperty("genxml/textbox/cmdfields");
-
-                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "," + cmdfields + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketMod." + interfacekey) + "</div>";
-
+                var interfaceName = ResourceKey("RocketCommerce." + interfacekey).ToString();
+                if (interfaceName == "")
+                {
+                    interfaceName = interfacekey;
+                }
+                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='{\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemprovider\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfaceName + "</div>";
             }
         }
         lp += 1;
     }
 
 
+    // get sub group interfaces
+    lp = 0;
     foreach (SimplisityRecord g in sidemenu.GetGroups())
     {
         var groupref = g.GetXmlProperty("genxml/textbox/groupref");
@@ -49,7 +54,7 @@
         interfacelist = sidemenu.GetInterfaces(groupref);
         if (interfacelist.Count() > 0)
         {
-            menuOut += "<div class='w3-bar-item w3-button w3-theme-l4 w3-hover-theme menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + groupref + "&nbsp;<i class='fas fa-caret-down'></i></div>";
+            menuOut += "<div class='w3-bar-item w3-button w3-theme-l4 w3-hover-theme menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey("RocketCommerce." + groupref) + "&nbsp;<i class='fas fa-caret-down'></i></div>";
             menuOut += "<div id='" + groupref + "' class='w3-hide w3-theme-l4'>";
             foreach (var i in interfacelist)
             {
@@ -58,17 +63,7 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                var cmdfields = i.GetXmlProperty("genxml/textbox/cmdfields");
-
-                if (interfacekey == "edit")
-                {
-                    menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink ' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + headerInfo.GetXmlProperty("genxml/hidden/apptheme") + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketMod." + interfacekey) + "</div>";
-                }
-                else
-                {
-                    menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketMod." + interfacekey) + "</div>";
-                }
-
+                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink ' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='{\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemprovider\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketCommerce." + interfacekey) + "</div>";
             }
             menuOut += "</div>";
             lp += 1;
@@ -78,8 +73,9 @@
 
 <div class="w3-sidebar w3-bar-block w3-card w3-theme-l4" style="width:260px;">
     @HtmlOf(menuOut)
+
     <hr />
-    @if (Model.ModuleId == 0)
+    @if (sidemenu.ModuleId == 0 || Model.GetSettingBool("newpage"))
     {
         <div class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme simplisity_click " s-cmd="login_signout" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdSignOutButton")</div>
     }
@@ -105,7 +101,7 @@
             {
                 imageclass = "w3-border-top w3-border-theme";
             }
-            strOut1 += "<a href='javascript:void(0)' class='w3-margin-right " + imageclass + " selectlang' editlang='" + l + "'>";
+            strOut1 += "<a href='javascript:void(0);' class='w3-margin-right " + imageclass + " selectlang' editlang='" + l + "'>";
             strOut1 += "<img class='' src='/DesktopModules/DNNrocket/API/images/flags/32/" + l + ".png' alt='" + l + "' />";
             strOut1 += "</a>";
         }
@@ -146,23 +142,14 @@
         $('.selectlang').click(function () {
             // change langauge by setting "nextlang" cookie and then trigger the save with "simplisity_langchange" class on the save button.
             // the ajax return with switch the editlang cookie to the nextlang cookie and delete the nextlang cookie, it will then reload the page.
-            simplisity_setCookieValue('nextlang', $(this).attr('editlang'))
-            $('.simplisity_langchange').trigger('click');
+            simplisity_setCookieValue('nextlang', $(this).attr('editlang'));
+            // We need to save and reload or just reload on the list page.  So call a function in each template
+            languageChange();
         });
 
-        $('.selectlangreload').unbind('click');
-        $('.selectlangreload').click(function () {
-            simplisity_setCookieValue('nextlang', $(this).attr('editlang'))
-            location.reload();
-        });
+        $('#dnnrocket_usernameplaceholder').text('@(username)');
 
-        //reset paging
-        simplisity_setCookieValue('s-page', '1');
-
-        if (simplisity_getCookieValue('s-pagesize') == '') {
-            simplisity_setCookieValue('s-pagesize', '20');
-        }
-
+        sidemenuchange();
 
     });
 
@@ -184,4 +171,6 @@
         }
     }
 
+
 </script>
+
