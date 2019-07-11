@@ -37,6 +37,9 @@
     <Reference Include="DotNetNuke">
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.Web.DDRMenu">
+      <HintPath>..\..\..\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
@@ -96,6 +99,7 @@
     <Compile Include="Componants\AppTheme.cs" />
     <Compile Include="Componants\CommandSecurity.cs" />
     <Compile Include="Componants\configData.cs" />
+    <Compile Include="Componants\DDRMenuInterface.cs" />
     <Compile Include="Componants\DNNrocketConst.cs" />
     <Compile Include="Componants\DNNUpdatePageUrls.cs" />
     <Compile Include="Componants\FileStatus.cs" />
