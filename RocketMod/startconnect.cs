@@ -233,7 +233,7 @@ namespace RocketMod
                 info = objCtrl.GetData("moduleid" + _moduleData.ModuleId, "ROCKETSETTINGS", "", -1, _moduleData.ModuleId, true);
                 if (info != null) objCtrl.Delete(info.ItemID);
 
-                CacheUtils.ClearCache("rocketmod" + _moduleData.ModuleId);
+                CacheUtils.ClearAllCache();
                 _moduleData.configData.PopulateConfig();
 
                 return GetDashBoard();

@@ -62,7 +62,7 @@ namespace Simplisity
             else
                 cachedlist.Add(metaKey, metaValue);
 
-            CacheUtils.SetCache("preprocessdata" + templateFullName + moduleId, cachedlist, "preprocessdata");
+            CacheUtils.SetCache("preprocessdata" + templateFullName + moduleId, cachedlist);
 
             // add to internal metadata, so we can use it in the razor template if needed.
             return AddProcessData(metaKey, metaValue);
@@ -78,7 +78,7 @@ namespace Simplisity
 
             if (!cachedlist.Contains(cssRelPath)) cachedlist.Add(cssRelPath);
 
-            CacheUtils.SetCache("csslinkdata" + tabId, cachedlist, "csslinkdata");
+            CacheUtils.SetCache("csslinkdata" + tabId, cachedlist);
             return new RawString(""); //return nothing
         }
 
@@ -92,7 +92,7 @@ namespace Simplisity
 
             if (!cachedlist.Contains(jsRelPath)) cachedlist.Add(jsRelPath);
 
-            CacheUtils.SetCache("jsscriptdata" + tabId, cachedlist, "jsscriptdata");
+            CacheUtils.SetCache("jsscriptdata" + tabId, cachedlist);
             return new RawString(""); //return nothing
         }
 

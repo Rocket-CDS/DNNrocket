@@ -188,7 +188,7 @@ namespace RocketMod
 
         public void ClearCache()
         {
-            CacheUtils.ClearCache("rocketmod" + _settingData.ModuleId);
+            CacheUtils.ClearAllCache();
         }
 
 

@@ -79,7 +79,7 @@ namespace DNNrocketAPI.Componants
             if (info != null)
             {
                 objCtrl.Delete(info.ItemID);
-                CacheUtils.ClearCache("rocketmod" + ModuleId);
+                CacheUtils.ClearAllCache();
                 PopulateConfig();
             }
         }
@@ -91,7 +91,7 @@ namespace DNNrocketAPI.Componants
                 ConfigInfo.SetXmlProperty("genxml/hidden/apptheme", appTheme);
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.SaveData(_moduleref, "CONFIG" + _moduletype, ConfigInfo, _systemid, _moduleid);
-                CacheUtils.ClearCache("rocketmod" + ModuleId);
+                CacheUtils.ClearAllCache();
                 PopulateConfig();
             }
         }
@@ -117,7 +117,7 @@ namespace DNNrocketAPI.Componants
 
             var objCtrl = new DNNrocketController();
             var info = objCtrl.SaveData(_moduleref, "CONFIG" + _moduletype, ConfigInfo, _systemid, _moduleid);
-            CacheUtils.ClearCache("rocketmod" + ModuleId);
+            CacheUtils.ClearAllCache();
             PopulateConfig();
         }
 

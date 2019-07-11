@@ -118,7 +118,7 @@ namespace DNNrocket.AppThemes
                 strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
             }
 
-            CacheUtils.SetCache(cacheKey, _appThemeData, "persist");
+            CacheUtils.SetCache(cacheKey, _appThemeData);
 
             return DNNrocketUtils.ReturnString(strOut);
         }

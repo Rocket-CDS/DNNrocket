@@ -362,7 +362,7 @@ namespace DNNrocket.SystemData
                 var objCtrl = new DNNrocketController();
                 objCtrl.Delete(Convert.ToInt32(itemid));
 
-                CacheUtils.ClearCache();
+                CacheUtils.ClearAllCache();
             }
         }
 
@@ -422,7 +422,7 @@ namespace DNNrocket.SystemData
                     }
                 }
 
-                CacheUtils.ClearCache();
+                CacheUtils.ClearAllCache();
             }
 
         }
@@ -481,7 +481,7 @@ namespace DNNrocket.SystemData
                         info.SetXmlProperty("genxml/color", "w3-pale-red");
                     }
                 }
-                CacheUtils.ClearCache();
+                CacheUtils.ClearAllCache();
                 var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
                 var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());

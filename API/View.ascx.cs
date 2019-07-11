@@ -90,7 +90,7 @@ namespace DNNrocketAPI
             var clearmodcache = DNNrocketUtils.RequestParam(Context, "clearmodcache");
             if (clearmodcache != "")
             {
-                CacheUtils.ClearCache(_interfacekey + clearmodcache);
+                CacheUtils.ClearAllCache();
             }
             var clearallcache = DNNrocketUtils.RequestParam(Context, "clearallcache");
             if (clearallcache != "")
@@ -206,7 +206,7 @@ namespace DNNrocketAPI
                     if (returnDictionary.ContainsKey("outputhtml"))
                     {
                         strOut = returnDictionary["outputhtml"];
-                        if (_rocketInterface.IsCached) CacheUtils.SetCache(cacheKey, strOut, _interfacekey + ModuleId);
+                        if (_rocketInterface.IsCached) CacheUtils.SetCache(cacheKey, strOut);
                     }
                 }
                 else

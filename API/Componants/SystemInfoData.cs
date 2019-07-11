@@ -19,6 +19,7 @@ namespace DNNrocketAPI
                 Exists = true;
             }
             Info = systemInfo;
+            EventList = new List<DNNrocketInterface>();
             var l = Info.GetList("interfacedata");
             foreach (var r in l)
             {

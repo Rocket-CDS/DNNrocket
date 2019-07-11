@@ -24,33 +24,11 @@ namespace Simplisity
             return cache.GetCacheItem(cacheKey).Value;
         }
 
-        public static List<string> GetCacheKeys(string groupkey)
-        {
-            ObjectCache cache = MemoryCache.Default;
-            var rtnList = new List<string>();
-            var v = GetCache("dnnrocketcache" + groupkey);
-            if (v != null)
-            {
-                rtnList = (List<string>)v;
-            }
-            return rtnList;
-        }
-        public static List<string> GetCacheGroups()
-        {
-            ObjectCache cache = MemoryCache.Default;
-            var rtnList = new List<string>();
-            var v = GetCache("group_dnnrocketcache");
-            if (v != null)
-            {
-                rtnList = (List<string>)v;
-            }
-            return rtnList;
-        }
-
-        public static void SetCache(string cacheKey, object objObject, string groupkey = "default")
+        public static void SetCache(string cacheKey, object objObject)
         {
             if (objObject != null)
             {
+                RemoveCache(cacheKey);
 
                 cacheKey = GetMd5Hash(cacheKey);
 
@@ -59,25 +37,6 @@ namespace Simplisity
                 var cacheData = new CacheItem(cacheKey, objObject);
                 cache.Set(cacheData, policy);
 
-                if (groupkey == "") groupkey = "default";
-
-                var l1 = GetCacheKeys(groupkey);
-                if (!l1.Contains(cacheKey))
-                {
-                    l1.Add(cacheKey);
-                    cacheKey = GetMd5Hash("dnnrocketcache" + groupkey);
-                    cacheData = new CacheItem(cacheKey, l1);
-                    cache.Set(cacheData, policy);
-                }
-
-                var gl = GetCacheGroups();
-                if (!gl.Contains(groupkey))
-                {
-                    gl.Add(groupkey);
-                    cacheKey = GetMd5Hash("group_dnnrocketcache");
-                    cacheData = new CacheItem(cacheKey, gl);
-                    cache.Set(cacheData, policy);
-                }
             }
         }
 
@@ -87,24 +46,6 @@ namespace Simplisity
 
             ObjectCache cache = MemoryCache.Default;
             cache.Remove(cacheKey);
-        }
-
-        public static void ClearCache(string groupkey = "default")
-        {
-            try
-            {
-                ObjectCache cache = MemoryCache.Default;
-                var l = GetCacheKeys(groupkey);
-                foreach (var c in l)
-                {
-                    cache.Remove(c);
-                }
-                RemoveCache("dnnrocketcache" + groupkey);
-            }
-            catch (Exception ex)
-            {
-                var msg = ex.Message;
-            }
         }
 
         public static void ClearAllCache()
@@ -117,8 +58,6 @@ namespace Simplisity
                 {
                     cache.Remove(cacheKey);
                 }
-
-                RemoveCache("group_dnnrocketcache");
             }
             catch (Exception ex)
             {

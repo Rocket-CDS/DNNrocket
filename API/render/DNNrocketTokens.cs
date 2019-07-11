@@ -111,16 +111,18 @@ namespace DNNrocketAPI.render
             var xpath = "genxml/hidden/" + fieldId;
             var xpathwidth = "genxml/hidden/width" + fieldId;
             var xpathheight = "genxml/hidden/height" + fieldId;
+            if (localized && !xpath.StartsWith("genxml/lang/"))
+            {
+                xpath = "genxml/lang/" + xpath;
+                xpathwidth = "genxml/lang/" + xpathwidth;
+                xpathheight = "genxml/lang/" + xpathheight;
+            }
             if (width == 0) width = 200;
-            var imgurl = info.GetXmlProperty(xpath);
             var strOut = "<div class='w3-display-container' style='width: " + width + "px'>";
 
             if (info == null) info = new SimplisityInfo();
             var value = info.GetXmlProperty(xpath);
-            if (localized && !xpath.StartsWith("genxml/lang/"))
-            {
-                value = info.GetXmlProperty("genxml/lang/" + xpath);
-            }
+            var imgurl = info.GetXmlProperty(xpath);
             var valuewidth = info.GetXmlPropertyInt(xpathwidth);
             var valueheight = info.GetXmlPropertyInt(xpathheight);
 
@@ -147,9 +149,14 @@ namespace DNNrocketAPI.render
         {
             var xpath = "genxml/hidden/" + fieldId;
             var xpathwidth = "genxml/textbox/width" + fieldId;
-            var xpathheight = "genxml/textbox/height" + fieldId;            
+            var xpathheight = "genxml/textbox/height" + fieldId;
+            if (localized && !xpath.StartsWith("genxml/lang/"))
+            {
+                xpath = "genxml/lang/" + xpath;
+                xpathwidth = "genxml/lang/" + xpathwidth;
+                xpathheight = "genxml/lang/" + xpathheight;
+            }
             if (width == 0) width = 200;
-            var imgurl = info.GetXmlProperty(xpath);
             var xpathalt = "genxml/lang/genxml/textbox/alt" + fieldId;
             var xpathname = "genxml/lang/genxml/textbox/name" + fieldId;
 
@@ -157,60 +164,57 @@ namespace DNNrocketAPI.render
             var strOut = "<div class='w3-row'>";
 
 
-                strOut += "<div class='w3-col w3-padding' style='width:" + (width + 20) + "px;'>";
+            strOut += "<div class='w3-col w3-padding' style='width:" + (width + 20) + "px;'>";
 
-                // Image section
-                    strOut += "<div class='w3-display-container' style='width: " + width + "px'>";
+            // Image section
+            strOut += "<div class='w3-display-container' style='width: " + width + "px'>";
 
-                    if (info == null) info = new SimplisityInfo();
-                    var value = info.GetXmlProperty(xpath);
-                    if (localized && !xpath.StartsWith("genxml/lang/"))
-                    {
-                        value = info.GetXmlProperty("genxml/lang/" + xpath);
-                    }
-                    var valuewidth = info.GetXmlPropertyInt(xpathwidth);
-                    var valueheight = info.GetXmlPropertyInt(xpathheight);
+            if (info == null) info = new SimplisityInfo();
+            var value = info.GetXmlProperty(xpath);
+            var imgurl = info.GetXmlProperty(xpath);
+            var valuewidth = info.GetXmlPropertyInt(xpathwidth);
+            var valueheight = info.GetXmlPropertyInt(xpathheight);
 
-                    var upd = getUpdateAttr(xpath, "", localized);
-                    var id = getIdFromXpath(xpath, row);
-                    strOut += "<input value='" + value + "' id='" + id + "' s-xpath='" + xpath + "' " + upd + " type='hidden' />";
+            var upd = getUpdateAttr(xpath, "", localized);
+            var id = getIdFromXpath(xpath, row);
+            strOut += "<input value='" + value + "' id='" + id + "' s-xpath='" + xpath + "' " + upd + " type='hidden' />";
 
-                    if (imgurl == "")
-                    {
-                        strOut += "<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=" + width + "&h=" + height + "' imageheight='" + height + "' imagewidth='" + width + "'  " + attributes + ">";
-                        strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-imagechange' title=''><i class='fas fa-edit'></i></span>";
-                    }
-                    else
-                    {
-                        strOut += "<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + imgurl + "&w=" + width + "&h=" + height + "' imageheight='" + height + "' imagewidth='" + width + "' " + attributes + ">";
-                        strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-imageremove ' title=''>&times;</span>";
-                    }
+            if (imgurl == "")
+            {
+                strOut += "<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=" + width + "&h=" + height + "' imageheight='" + height + "' imagewidth='" + width + "'  " + attributes + ">";
+                strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-imagechange' title=''><i class='fas fa-edit'></i></span>";
+            }
+            else
+            {
+                strOut += "<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + imgurl + "&w=" + width + "&h=" + height + "' imageheight='" + height + "' imagewidth='" + width + "' " + attributes + ">";
+                strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-imageremove ' title=''>&times;</span>";
+            }
 
-                    strOut += "</div>";
+            strOut += "</div>";
 
-                strOut += "</div>";
+            strOut += "</div>";
 
             //Text seciton
-                strOut += "<div class='w3-rest'>";
-                    strOut += "<div class='w3-row'>";
+            strOut += "<div class='w3-rest'>";
+            strOut += "<div class='w3-row'>";
 
-                        strOut += "<div class='w3-col w3-padding' style='width:100px;'>";
-                            strOut += "<label class=''>" + ResourceKey("DNNrocketImages.width") + "</label>";
-                            strOut += TextBox(info, xpathwidth, " class='w3-input w3-border' autocomplete='off'", "200", false, row);
-                        strOut += "</div>";
-                        strOut += "<div class='w3-col w3-padding' style='width:100px;'>";
-                            strOut += "<label class=''>" + ResourceKey("DNNrocketImages.height") + "</label>";
-                            strOut += TextBox(info, xpathheight, " class='w3-input w3-border' autocomplete='off' datatype='int'", "0", false, row);
-                        strOut += "</div>";
+            strOut += "<div class='w3-col w3-padding' style='width:100px;'>";
+            strOut += "<label class=''>" + ResourceKey("DNNrocketImages.width") + "</label>";
+            strOut += TextBox(info, xpathwidth, " class='w3-input w3-border' autocomplete='off'", "200", false, row);
+            strOut += "</div>";
+            strOut += "<div class='w3-col w3-padding' style='width:100px;'>";
+            strOut += "<label class=''>" + ResourceKey("DNNrocketImages.height") + "</label>";
+            strOut += TextBox(info, xpathheight, " class='w3-input w3-border' autocomplete='off' datatype='int'", "0", false, row);
+            strOut += "</div>";
 
-                        strOut += "<div class='w3-rest w3-padding' style='min-width:100px;'>";
-                            strOut += "<label class=''>" + ResourceKey("DNNrocketImages.alt") + "</label>&nbsp;" + EditFlag();
-                            strOut += TextBox(info, xpathalt, " class='w3-input w3-border' autocomplete='off'", "", true, row);
-                        strOut += "</div>";
+            strOut += "<div class='w3-rest w3-padding' style='min-width:100px;'>";
+            strOut += "<label class=''>" + ResourceKey("DNNrocketImages.alt") + "</label>&nbsp;" + EditFlag();
+            strOut += TextBox(info, xpathalt, " class='w3-input w3-border' autocomplete='off'", "", true, row);
+            strOut += "</div>";
 
 
-                    strOut += "</div>";
-                strOut += "</div>";
+            strOut += "</div>";
+            strOut += "</div>";
 
             strOut += "</div>";
 
