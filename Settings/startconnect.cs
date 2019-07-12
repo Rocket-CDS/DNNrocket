@@ -40,8 +40,16 @@ namespace RocketSettings
             var guidkey = "";
             var parentitemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/parentitemid");
             if (parentitemid == 0) parentitemid = _paramInfo.ParentItemId;
+
             var moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            if (moduleid == 0) moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid"); // IPN           
             if (moduleid == 0) moduleid = _paramInfo.ModuleId;
+            if (moduleid == 0)
+            {
+                var cookie_moduleid = DNNrocketUtils.GetCookieValue("rocketmod_moduleid");
+                if (GeneralUtils.IsNumeric(cookie_moduleid)) moduleid = Convert.ToInt32(cookie_moduleid);
+            }
+
             var tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
 
             if (tabid <= 0) tabid = -1;

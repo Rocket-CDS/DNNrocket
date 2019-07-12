@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DNNrocketAPI;
 using DNNrocketAPI.Componants;
+using RocketSettings;
 using Simplisity;
 
 namespace RocketMod
@@ -22,11 +23,13 @@ namespace RocketMod
         private static ConfigData _configData;
         private static int _tabid;
         private static int _moduleid;
+        private static string _langRequired;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = ""; // return nothing if not matching commands.
 
+            _langRequired = langRequired;
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
@@ -38,7 +41,7 @@ namespace RocketMod
 
 
             // Ensure we have a valid edit data cultueCode.  It may have been changed in a localization admin pages.
-            if (DNNrocketUtils.GetCultureCodeList().Count() > 0 && (!DNNrocketUtils.GetCultureCodeList().Contains(DNNrocketUtils.GetEditCulture())))
+            if (_langRequired == "" && DNNrocketUtils.GetCultureCodeList().Count() > 0 && (!DNNrocketUtils.GetCultureCodeList().Contains(DNNrocketUtils.GetEditCulture())))
             {
                 DNNrocketUtils.SetEditCulture(DNNrocketUtils.GetCultureCodeList().First());
             }
@@ -144,6 +147,21 @@ namespace RocketMod
                 case "rocketmod_resetdata":
                     strOut = ResetDataRocketMod();
                     break;
+
+                case "rocketmodsettings_edit":
+                    strOut = EditSettingsData();
+                    break;
+                case "rocketmodsettings_add":
+                    strOut = AddSettingsRow();
+                    break;
+                case "rocketmodsettings_save":
+                    strOut = SettingsSave();
+                    break;
+                case "rocketmodsettings_delete":
+                    strOut = SettingsDelete();
+                    break;
+
+
             }
 
             if (strOut == "" && !_moduleData.configData.Exists)
@@ -155,6 +173,61 @@ namespace RocketMod
             return DNNrocketUtils.ReturnString(strOut);
         }
 
+        #region "Settings"
+
+        private static SettingsData GetSettingsData()
+        {
+            return new SettingsData(_tabid, _moduleid, _langRequired, _rocketInterface.EntityTypeCode, "rocketmodsettings", false, _rocketInterface.DatabaseTable);
+        }
+
+        private static String EditSettingsData()
+        {
+            try
+            {
+                var settingsData = GetSettingsData();
+                var strOut = "";
+                var passSettings = _paramInfo.ToDictionary();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetEditCulture());
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, settingsData, passSettings);
+
+                if (strOut == "") strOut = "ERROR: No data returned for " + _rocketInterface.TemplateRelPath + "\\Themes\\" + _rocketInterface.DefaultTheme + "\\default\\" + _rocketInterface.DefaultTemplate;
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        private static string SettingsDelete()
+        {
+            var settingsData = GetSettingsData();
+            settingsData.Delete();
+            return EditSettingsData();
+        }
+
+        private static string AddSettingsRow()
+        {
+             var settingsData = GetSettingsData();
+            settingsData.AddRow();
+            return EditSettingsData();
+        }
+
+        private static String SettingsSave()
+        {
+            var settingsData = GetSettingsData();
+            settingsData.Save(_postInfo);
+            if (settingsData.InvalidKeyValues)
+            {
+                return "Invalid Key Values in Template.  '@HiddenField(i, \"genxml/key1\", \"\", \"\", false, lp3)' and '@HiddenField(i, \"genxml/lang/genxml/key2\", \"\", \"\", true, lp3)' must be in the template for each setting row.";
+            }
+            else
+            {
+                return EditSettingsData();
+            }
+
+        }
+
+        #endregion
 
         public static bool CheckSecurity(string paramCmd)
         {

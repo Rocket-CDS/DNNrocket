@@ -150,7 +150,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             url: cmdupdate,
             cache: false,
             dataType: 'json',
-            timeout: 90000,
+            timeout: 120000,
             data: { inputjson: encodeURI(jsonData), paramjson: encodeURI(jsonParam), simplisity_cmd: scmd },
             success: function (json) {
                 var jsontest = JSON.stringify(eval("(" + json + ")"));

@@ -17,15 +17,15 @@
 
 <span class="w3-section simplisity_buttons">
     <a class="w3-button w3-pale-yellow w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdCancelButton")</a>
-    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.GetSetting("moduleid"))","selecteditemid":"@settingsData.Info.ItemID","interfacekey":"rocketsettings"}'>@ResourceKey("DNNrocket.cmdAddButton")</a>
-    <span class="w3-button w3-green w3-padding-8 simplisity_click  simplisity_langchange" s-cmd="rocketsettings_save" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.GetSetting("moduleid"))","selecteditemid":"@settingsData.Info.ItemID","interfacekey":"rocketsettings"}' s-post="#settingsdata" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#settingsdata" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodsettings_add" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}'>@ResourceKey("DNNrocket.cmdAddButton")</a>
+    <span class="w3-button w3-green w3-padding-8 simplisity_click  simplisity_langchange" s-cmd="rocketmodsettings_save" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}' s-post="#rocketmodsettingsdata" s-list=".rocketmodsettings">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#rocketmodsettingsdata" s-removelist=".rocketmodsettings" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 
 
 <div class="w3-container">
 
-    <ul id="settingsdata" class="w3-ul">
+    <ul id="rocketmodsettingsdata" class="w3-ul">
 
         @{
             var lp3 = 0;
@@ -35,7 +35,7 @@
             lp3 += 1;
 
 
-        <li class="settingsdata w3-card w3-margin w3-display-container">
+        <li class="rocketmodsettings w3-card w3-margin w3-display-container">
 
             <!-- We need "recordkey" hidden fields so language list on the record can be updated/sorted in sync -->
             @HiddenField(i, "genxml/key1", "", "", false, lp3)
