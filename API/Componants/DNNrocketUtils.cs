@@ -1264,49 +1264,51 @@ namespace DNNrocketAPI
 
         public static void IncludePageHeaders(string appThemeFolder, string appThemeVersion, string templateRelPath, Page page, int tabId)
         {
+            if (!String.IsNullOrEmpty(templateRelPath))
+            {
+
             if (!page.Items.Contains("dnnrocketinject")) page.Items.Add("dnnrocketinject", "");
             var appTheme = new AppTheme(appThemeFolder, templateRelPath, DNNrocketUtils.GetCurrentCulture(), appThemeVersion);
             var fullTemplName = appTheme.AppName + ".pageheader.cshtml";
 
-            if (!page.Items["dnnrocketinject"].ToString().Contains(fullTemplName + "." + appTheme.AppName + ","))
-            {
-                if (appTheme.ActivePageHeaderTemplate != null && appTheme.ActivePageHeaderTemplate != "")
+                if (!page.Items["dnnrocketinject"].ToString().Contains(fullTemplName + "." + appTheme.AppName + ","))
                 {
-                    var settings = new Dictionary<string, string>();
-                    var l = new List<object>();
-                    l.Add(new SimplisityInfo());
-                    var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
-                    nbRazor.PageId = tabId;
-                    var strOut = RazorRender(nbRazor, appTheme.ActivePageHeaderTemplate, false);
-                    PageIncludes.IncludeTextInHeader(page, strOut);
-                    page.Items["dnnrocketinject"] = page.Items["dnnrocketinject"] + fullTemplName + "." + appTheme.AppName + ",";
-
-
-                    // Inject pageheader css link, use Razor Token "AddCssLinkHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
-                    var injectCss = "";
-                    var csslist = (List<String>)CacheUtils.GetCache("csslinkdata" + tabId);
-                    if (csslist != null)
+                    if (appTheme.ActivePageHeaderTemplate != null && appTheme.ActivePageHeaderTemplate != "")
                     {
-                        foreach (var cssRelPath in csslist)
+                        var settings = new Dictionary<string, string>();
+                        var l = new List<object>();
+                        l.Add(new SimplisityInfo());
+                        var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
+                        nbRazor.PageId = tabId;
+                        var strOut = RazorRender(nbRazor, appTheme.ActivePageHeaderTemplate, false);
+                        PageIncludes.IncludeTextInHeader(page, strOut);
+                        page.Items["dnnrocketinject"] = page.Items["dnnrocketinject"] + fullTemplName + "." + appTheme.AppName + ",";
+
+
+                        // Inject pageheader css link, use Razor Token "AddCssLinkHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
+                        var injectCss = "";
+                        var csslist = (List<String>)CacheUtils.GetCache("csslinkdata" + tabId);
+                        if (csslist != null)
                         {
-                            injectCss += "<link rel='stylesheet' href='" + cssRelPath + "' />";
+                            foreach (var cssRelPath in csslist)
+                            {
+                                injectCss += "<link rel='stylesheet' href='" + cssRelPath + "' />";
+                            }
+                            PageIncludes.IncludeTextInHeader(page, injectCss);
                         }
-                        PageIncludes.IncludeTextInHeader(page, injectCss);
-                    }
 
-                    // Inject pageheader JS link, use Razor Token "AddJsScriptHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
-                    var injectJS = "";
-                    var jslist = (List<String>)CacheUtils.GetCache("jsscriptdata" + tabId);
-                    if (jslist != null)
-                    {
-                        foreach (var jsRelPath in jslist)
+                        // Inject pageheader JS link, use Razor Token "AddJsScriptHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
+                        var injectJS = "";
+                        var jslist = (List<String>)CacheUtils.GetCache("jsscriptdata" + tabId);
+                        if (jslist != null)
                         {
-                            injectJS += "<script type='text/javascript' src='" + jsRelPath + "'></script>";
+                            foreach (var jsRelPath in jslist)
+                            {
+                                injectJS += "<script type='text/javascript' src='" + jsRelPath + "'></script>";
+                            }
+                            PageIncludes.IncludeTextInHeader(page, injectJS);
                         }
-                        PageIncludes.IncludeTextInHeader(page, injectJS);
                     }
-
-
                 }
             }
         }

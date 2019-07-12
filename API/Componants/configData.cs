@@ -96,7 +96,7 @@ namespace DNNrocketAPI.Componants
             }
         }
 
-        public void SaveConfig(SimplisityInfo postInfo, string templateRelPath = "")
+        public void SaveConfig(SimplisityInfo postInfo, string templateRelPath = "", string appThemeRelPath = "")
         {
             //remove any params
             postInfo.RemoveXmlNode("genxml/postform");
@@ -112,6 +112,7 @@ namespace DNNrocketAPI.Componants
             }
             postInfo.SetXmlProperty("genxml/checkbox/noiframeedit", "False"); // iframe edit
             postInfo.SetXmlProperty("genxml/hidden/templaterelpath", templateRelPath);
+            postInfo.SetXmlProperty("genxml/hidden/appthemerelpath", appThemeRelPath);
 
             ConfigInfo.XMLData = postInfo.XMLData;
 
@@ -128,6 +129,8 @@ namespace DNNrocketAPI.Componants
         public string ManagerEmail { get { return ConfigInfo.GetXmlProperty("genxml/textbox/manageremail"); } }
         public string AppTheme { get { return ConfigInfo.GetXmlProperty("genxml/hidden/apptheme"); } }
         public string AppThemeVersion { get { return ConfigInfo.GetXmlProperty("genxml/select/versionfolder"); } }
+        public string TemplateRelPath { get { return ConfigInfo.GetXmlProperty("genxml/hidden/templaterelpath"); } }
+        public string AppThemeRelPath { get { return ConfigInfo.GetXmlProperty("genxml/hidden/appthemerelpath"); } }
         public string ImageFolderRel { get{ return DNNrocketUtils.HomeRelDirectory() + "/" + ImageFolder; } }
         public string DocumentFolderRel { get{ return DNNrocketUtils.HomeRelDirectory() + "/" + DocumentFolder;} }
 
@@ -170,7 +173,6 @@ namespace DNNrocketAPI.Componants
         public int SystemId { get { return _systemid; } }
         public int DataModuleId { get { return _dataModuleid; } }
         public string ModuleRef { get { return _moduleref; } }
-
     }
 
 }

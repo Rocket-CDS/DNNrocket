@@ -87,11 +87,6 @@ namespace DNNrocketAPI
 
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
 
-            var clearmodcache = DNNrocketUtils.RequestParam(Context, "clearmodcache");
-            if (clearmodcache != "")
-            {
-                CacheUtils.ClearAllCache();
-            }
             var clearallcache = DNNrocketUtils.RequestParam(Context, "clearallcache");
             if (clearallcache != "")
             {
@@ -108,7 +103,7 @@ namespace DNNrocketAPI
 
                 if (configData.Exists)
                 {
-                    DNNrocketUtils.IncludePageHeaders(configData.AppTheme, configData.AppThemeVersion, _templateRelPath, this.Page, TabId);
+                    DNNrocketUtils.IncludePageHeaders(configData.AppTheme, configData.AppThemeVersion, configData.AppThemeRelPath, this.Page, TabId);
                 }
                 else
                 {
@@ -260,7 +255,6 @@ namespace DNNrocketAPI
                     }
                     actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmintab"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, true);
                 }
-                actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearmodcache"), "", "", "action_refresh.gif", "?clearmodcache=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);
                 actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearallcache"), "", "", "action_refresh.gif", "?clearallcache=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);
                 return actions;
             }

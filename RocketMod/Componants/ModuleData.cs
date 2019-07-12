@@ -62,7 +62,7 @@ namespace RocketMod
             else
             {
                 _currentRecord = new SimplisityInfo();
-                _settingData = new SettingsData(-1,-1,DNNrocketUtils.GetCurrentCulture());
+                _settingData = new SettingsData(configData.TabId, configData.DataModuleId, DNNrocketUtils.GetCurrentCulture(), _entityTypeCode, "settingsdata",true);
             }
         }
 

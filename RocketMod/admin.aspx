@@ -109,7 +109,7 @@
     <div class="w3-main" style="margin-left:<%= String.IsNullOrEmpty(IframeEdit) ? "270px" : "10px" %>;margin-top:60px; " id="base-panel">
 
         <form id="rocketmod_form">
-              <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="<%= String.IsNullOrEmpty(cmd) ? "" : cmd %>" s-track="clear" s-fields='{"tabid":"<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>","moduleid":"<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>","template":"edit.cshtml","interfacekey":"rocketmod"}'></div>
+              <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketmod_selectapptheme" s-track="true" s-fields='{"tabid":"<%= String.IsNullOrEmpty(TabId) ? "" : TabId %>","moduleid":"<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>","interfacekey":"edit"}'></div>
         </form>
 
 
@@ -118,6 +118,7 @@
 
         <script>
             $(document).ready(function () {
+                simplisity_setCookieValue('rocketmod_moduleid','<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>') // save cookie of moduleid, so we can get it server side.
                 $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketmodule', usehistory: true });
             });
 

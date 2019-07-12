@@ -48,6 +48,12 @@ namespace RocketMod
             _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid"); // IPN           
             if (_moduleid == 0) _moduleid = _paramInfo.ModuleId;
+            if (_moduleid == 0)
+            {
+                var cookie_moduleid = DNNrocketUtils.GetCookieValue("rocketmod_moduleid");
+                if (GeneralUtils.IsNumeric(cookie_moduleid)) _moduleid =  Convert.ToInt32(cookie_moduleid);
+            }
+
             _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
             if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid"); // IPN
 
@@ -57,23 +63,7 @@ namespace RocketMod
             _moduleData = new ModuleData(_configData, langRequired);
             _postInfo.ModuleId = _moduleData.ModuleId; // make sure we have correct moduleid.
 
-            _commandSecurity = new CommandSecurity(_moduleData.TabId, _moduleData.ModuleId, _rocketInterface);
-            _commandSecurity.AddCommand("rocketmod_edit", true);
-            _commandSecurity.AddCommand("rocketmod_save", true);
-            _commandSecurity.AddCommand("rocketmod_delete", true);
-            _commandSecurity.AddCommand("rocketmod_saveconfig", true);
-            _commandSecurity.AddCommand("rocketmod_saveheader", true);
-            _commandSecurity.AddCommand("rocketmod_getsetupmenu", true);
-            _commandSecurity.AddCommand("rocketmod_dashboard", true);
-            _commandSecurity.AddCommand("rocketmod_reset", true);
-            _commandSecurity.AddCommand("rocketmod_resetdata", true);
-            _commandSecurity.AddCommand("rocketmod_add", true);
-            _commandSecurity.AddCommand("rocketmod_selectapptheme", true);
-            _commandSecurity.AddCommand("rocketmod_saveapptheme", true);
-            _commandSecurity.AddCommand("rocketmod_getsidemenu", true);            
-
-            _commandSecurity.AddCommand("rocketmod_getdata", false);
-            _commandSecurity.AddCommand("rocketmod_login", false);
+            if (!CheckSecurity(paramCmd)) paramCmd = "rocketmod_login";
 
             if (!_commandSecurity.HasSecurityAccess(paramCmd))
             {
@@ -97,6 +87,14 @@ namespace RocketMod
 
             switch (paramCmd)
             {
+                case "rocketmod_login":
+                    strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                    break;
+
+                case "dashboard_get":
+                    strOut = GetDashBoard();
+                    break;
+
                 case "rocketmod_getsidemenu":
                     strOut = GetSideMenu(paramInfo, systemInfo);
                     break;
@@ -131,14 +129,11 @@ namespace RocketMod
                     break;
                 case "rocketmod_saveconfig":
                     var appTheme = new AppTheme(_moduleData.configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
-                    _moduleData.configData.SaveConfig(postInfo, _appthemeRelPath.TrimEnd('/') + "/" + postInfo.GetXmlProperty("genxml/hidden/apptheme") + "/" + postInfo.GetXmlProperty("genxml/select/versionfolder"));
+                    _moduleData.configData.SaveConfig(postInfo, _appthemeRelPath.TrimEnd('/') + "/" + postInfo.GetXmlProperty("genxml/hidden/apptheme") + "/" + postInfo.GetXmlProperty("genxml/select/versionfolder"), _appthemeRelPath.TrimEnd('/'));
                     strOut = GetDashBoard();
                     break;
                 case "rocketmod_getsetupmenu":
                     strOut = GetSetup();
-                    break;
-                case "rocketmod_dashboard":
-                    strOut = GetDashBoard();
                     break;
                 case "rocketmod_config":
                     strOut = GetConfig();
@@ -159,6 +154,36 @@ namespace RocketMod
 
             return DNNrocketUtils.ReturnString(strOut);
         }
+
+
+        public static bool CheckSecurity(string paramCmd)
+        {
+            _commandSecurity = new CommandSecurity(_moduleData.TabId, _moduleData.ModuleId, _rocketInterface);
+
+            _commandSecurity.AddCommand("dashboard_get", true);
+
+            _commandSecurity.AddCommand("rocketmod_edit", true);
+            _commandSecurity.AddCommand("rocketmod_save", true);
+            _commandSecurity.AddCommand("rocketmod_delete", true);
+            _commandSecurity.AddCommand("rocketmod_saveconfig", true);
+            _commandSecurity.AddCommand("rocketmod_saveheader", true);
+            _commandSecurity.AddCommand("rocketmod_getsetupmenu", true);
+            _commandSecurity.AddCommand("rocketmod_reset", true);
+            _commandSecurity.AddCommand("rocketmod_resetdata", true);
+            _commandSecurity.AddCommand("rocketmod_add", true);
+            _commandSecurity.AddCommand("rocketmod_selectapptheme", true);
+            _commandSecurity.AddCommand("rocketmod_saveapptheme", true);
+            _commandSecurity.AddCommand("rocketmod_getsidemenu", true);
+
+            _commandSecurity.AddCommand("rocketmod_getdata", false);
+            _commandSecurity.AddCommand("rocketmod_login", false);
+
+            var hasAccess = false;
+            hasAccess = _commandSecurity.HasSecurityAccess(paramCmd);
+
+            return hasAccess;
+        }
+
 
         public static string GetSideMenu(SimplisityInfo sInfo, SimplisityInfo systemInfo)
         {
