@@ -1,4 +1,6 @@
 ﻿
+var ajaxPostCmd = [];
+
 (function ($) {
 
     $.fn.getSimplisity = function (cmdurl, scmd, sfields, safter, strack) {
@@ -11,10 +13,7 @@
 
 (function ($) {
 
-    $.fn.activateSimplisityPanel = function (cmdurl, options) {
-
-        var settings = $.extend({
-        }, options);
+    $.fn.activateSimplisityPanel = function (cmdurl) {
 
         simplisity_assignevents(cmdurl);
 
@@ -67,17 +66,35 @@
         simplisity_setCookieValue('s-edit-iframeedit','');
 
         $('.simplisity_panel').each(function () {
-            var sreturn = '#' + $(this).attr('id');
-            simplisity_callserver(this, cmdurl, sreturn);
-            if (settings.activatepanel) {
-                $(this).activateSimplisityPanel(cmdurl, options);
-            }
+            $(this).attr('s-activepanel', settings.activatepanel);
+            ajaxPostCmd.push(this);
         });
+
+        panelAjaxFunction(ajaxPostCmd[ajaxPostCmd.length - 1]);
 
         $('#simplisity_loader').hide();
 
     };
 }(jQuery));
+
+function panelAjaxFunction(panelelement) {
+    if ((typeof panelelement !== 'undefined') && panelelement !== '') {
+        ajaxPostCmd.pop();
+
+        var sreturn = '#' + $(panelelement).attr('id');
+        var activepanel = $(panelelement).attr('s-activepanel');
+        var cmdurl = $('simplisity_cmdurl').val();
+
+        if (activepanel) {
+            $(panelelement).activateSimplisityPanel(cmdurl);
+        }
+
+        simplisity_callserver(panelelement, cmdurl, sreturn);
+
+       // alert($(panelelement).attr('s-cmd'));
+    }
+}
+
 
 $(document).on("simplisityposytgetcompleted", simplisity_nbxgetCompleted); // assign a completed event for the ajax calls
 
@@ -114,7 +131,9 @@ function simplisity_nbxgetCompleted(e) {
     // clear any uploaded files after completed call
     $('input[id*="simplisity_fileuploadlist"]').val('');
 
-}
+    panelAjaxFunction(ajaxPostCmd[ajaxPostCmd.length - 1]);
+
+ }
 
 function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist, reload, strackcmd) {
 
@@ -171,7 +190,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             type: "POST",
             url: cmdupdate,
             cache: false,
-            timeout: 90000,
+            timeout: 120000,
             data: { inputjson: encodeURI(jsonData), paramjson: encodeURI(jsonParam), simplisity_cmd: scmd }
         });
 

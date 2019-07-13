@@ -27,8 +27,7 @@ using System.Globalization;
 using DNNrocketAPI.Componants;
 using DotNetNuke.Common;
 using System.IO.Compression;
-
-
+using Simplisity.TemplateEngine;
 
 namespace DNNrocketAPI
 {
@@ -207,15 +206,28 @@ namespace DNNrocketAPI
         }
 
 
-        public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0")
+        public static TemplateGetter GetTemplateEngine(string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
         {
-            var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
-            var themeFolderPath = "Themes\\" + themeFolder + "\\" + versionFolder;
-            if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath))
+            var cacheKey = templateControlPath + "*" + themeFolder + "*" + lang + "*" + versionFolder + "*" + debugMode;
+            var templCtrl = CacheUtils.GetCache(cacheKey);
+            if (templCtrl == null)
             {
-                themeFolderPath = "Themes\\" + themeFolder;
+                var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
+                var themeFolderPath = "Themes\\" + themeFolder + "\\" + versionFolder;
+                if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath))
+                {
+                    themeFolderPath = "Themes\\" + themeFolder;
+                }
+                var RocketThemes = DNNrocketThemesDirectory();
+                templCtrl = new TemplateGetter(RocketThemes, themeFolderPath, controlMapPath, debugMode);
+                CacheUtils.SetCache(cacheKey, templCtrl);
             }
-            var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(DNNrocketThemesDirectory(), themeFolderPath, controlMapPath);
+            return (TemplateGetter)templCtrl;
+        }
+
+        public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
+        {
+            var templCtrl = GetTemplateEngine(templateControlPath, themeFolder, lang, versionFolder, debugMode);
             var templ = templCtrl.GetTemplateData(templatename, lang);
             return templ;
         }

@@ -24,11 +24,13 @@ namespace RocketMod
         private static int _tabid;
         private static int _moduleid;
         private static string _langRequired;
+        private static SystemInfoData _systemInfoData;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = ""; // return nothing if not matching commands.
 
+            _systemInfoData = new SystemInfoData(systemInfo);
             _langRequired = langRequired;
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
@@ -66,27 +68,17 @@ namespace RocketMod
             _moduleData = new ModuleData(_configData, langRequired);
             _postInfo.ModuleId = _moduleData.ModuleId; // make sure we have correct moduleid.
 
-            if (!CheckSecurity(paramCmd)) paramCmd = "rocketmod_login";
-
-            if (!_commandSecurity.HasSecurityAccess(paramCmd))
+            if (!CheckSecurity(paramCmd))
             {
-                if (paramCmd != "rocketmod_getsidemenu")
+                paramCmd = "rocketmod_login";
+            }
+            else
+            {
+                if (_configData.AppTheme == "" && paramCmd != "rocketmod_saveapptheme" && paramCmd != "rocketmod_getsidemenu" && paramCmd != "rocketmod_getdata")
                 {
-                    // 2 calls are mode to the server at startup, we only want to return 1 login form.
-                    return DNNrocketUtils.ReturnString(""); 
-                }
-                else
-                {
-                    strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
-                    return DNNrocketUtils.ReturnString(strOut);
+                    paramCmd = "rocketmod_selectapptheme";  //we must have an apptheme to work on.
                 }
             }
-
-            if (_configData.AppTheme == "" && paramCmd != "rocketmod_saveapptheme" && paramCmd != "rocketmod_getsidemenu" && paramCmd != "rocketmod_getdata")
-            {
-                paramCmd = "rocketmod_selectapptheme";  //we must have an apptheme to work on.
-            }
-
 
             switch (paramCmd)
             {
@@ -173,6 +165,40 @@ namespace RocketMod
             return DNNrocketUtils.ReturnString(strOut);
         }
 
+        public static bool CheckSecurity(string paramCmd)
+        {
+            _commandSecurity = new CommandSecurity(_moduleData.TabId, _moduleData.ModuleId, _rocketInterface);
+
+            _commandSecurity.AddCommand("dashboard_get", true);
+
+            _commandSecurity.AddCommand("rocketmod_edit", true);
+            _commandSecurity.AddCommand("rocketmod_save", true);
+            _commandSecurity.AddCommand("rocketmod_delete", true);
+            _commandSecurity.AddCommand("rocketmod_saveconfig", true);
+            _commandSecurity.AddCommand("rocketmod_saveheader", true);
+            _commandSecurity.AddCommand("rocketmod_getsetupmenu", true);
+            _commandSecurity.AddCommand("rocketmod_reset", true);
+            _commandSecurity.AddCommand("rocketmod_resetdata", true);
+            _commandSecurity.AddCommand("rocketmod_add", true);
+            _commandSecurity.AddCommand("rocketmod_selectapptheme", true);
+            _commandSecurity.AddCommand("rocketmod_saveapptheme", true);
+            _commandSecurity.AddCommand("rocketmod_getsidemenu", true);
+
+            _commandSecurity.AddCommand("rocketmod_getdata", false);
+            _commandSecurity.AddCommand("rocketmod_login", false);
+
+            _commandSecurity.AddCommand("rocketmodsettings_edit", true);
+            _commandSecurity.AddCommand("rocketmodsettings_add", true);
+            _commandSecurity.AddCommand("rocketmodsettings_save", true);
+            _commandSecurity.AddCommand("rocketmodsettings_delete", true);
+
+            var hasAccess = false;
+            hasAccess = _commandSecurity.HasSecurityAccess(paramCmd);
+
+            return hasAccess;
+        }
+
+
         #region "Settings"
 
         private static SettingsData GetSettingsData()
@@ -187,10 +213,10 @@ namespace RocketMod
                 var settingsData = GetSettingsData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetEditCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetEditCulture(), "1.0", _systemInfoData.DebugMode);
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, settingsData, passSettings);
 
-                if (strOut == "") strOut = "ERROR: No data returned for " + _rocketInterface.TemplateRelPath + "\\Themes\\" + _rocketInterface.DefaultTheme + "\\default\\" + _rocketInterface.DefaultTemplate;
+                if (strOut == "") strOut = "ERROR: No data returned for EditSettingsData() : " + _rocketInterface.TemplateRelPath + "/Themes/" + _rocketInterface.DefaultTheme + "/default/" + _rocketInterface.DefaultTemplate;
                 return strOut;
             }
             catch (Exception ex)
@@ -229,34 +255,6 @@ namespace RocketMod
 
         #endregion
 
-        public static bool CheckSecurity(string paramCmd)
-        {
-            _commandSecurity = new CommandSecurity(_moduleData.TabId, _moduleData.ModuleId, _rocketInterface);
-
-            _commandSecurity.AddCommand("dashboard_get", true);
-
-            _commandSecurity.AddCommand("rocketmod_edit", true);
-            _commandSecurity.AddCommand("rocketmod_save", true);
-            _commandSecurity.AddCommand("rocketmod_delete", true);
-            _commandSecurity.AddCommand("rocketmod_saveconfig", true);
-            _commandSecurity.AddCommand("rocketmod_saveheader", true);
-            _commandSecurity.AddCommand("rocketmod_getsetupmenu", true);
-            _commandSecurity.AddCommand("rocketmod_reset", true);
-            _commandSecurity.AddCommand("rocketmod_resetdata", true);
-            _commandSecurity.AddCommand("rocketmod_add", true);
-            _commandSecurity.AddCommand("rocketmod_selectapptheme", true);
-            _commandSecurity.AddCommand("rocketmod_saveapptheme", true);
-            _commandSecurity.AddCommand("rocketmod_getsidemenu", true);
-
-            _commandSecurity.AddCommand("rocketmod_getdata", false);
-            _commandSecurity.AddCommand("rocketmod_login", false);
-
-            var hasAccess = false;
-            hasAccess = _commandSecurity.HasSecurityAccess(paramCmd);
-
-            return hasAccess;
-        }
-
 
         public static string GetSideMenu(SimplisityInfo sInfo, SimplisityInfo systemInfo)
         {
@@ -272,7 +270,7 @@ namespace RocketMod
 
                 var systemData = new SystemData();
                 var sidemenu = new SideMenu(systemInfo);
-                var templateControlRelPath = sInfo.GetXmlProperty("genxml/hidden/relpath");
+                var templateControlRelPath = _rocketModRelPath;
                 sidemenu.ModuleId = moduleid;
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
@@ -310,7 +308,7 @@ namespace RocketMod
                 var appTheme = new AppTheme(_moduleData.configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
                 strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveEditTemplate, _moduleData, passSettings, _moduleData.HeaderInfo);
 
-                if (strOut == "") strOut = "ERROR: No data returned for " + _rocketModMapPath;
+                if (strOut == "") strOut = "ERROR: No data returned for EditData() : " + _rocketModMapPath;
                 return strOut;
             }
             catch (Exception ex)

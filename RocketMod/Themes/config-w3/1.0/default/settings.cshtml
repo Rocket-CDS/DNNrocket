@@ -7,12 +7,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 
 @{
-    var settingsData = new SettingsData(0, 0, "");
-    if (Model.List.Count > 0)
-    {
-        settingsData = (SettingsData)Model.List.First();
-    }
-
+    var settingsData = (SettingsData)Model.List.First();
 }
 
 <span class="w3-section simplisity_buttons">

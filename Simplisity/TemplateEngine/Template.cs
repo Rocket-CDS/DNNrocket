@@ -7,6 +7,7 @@ namespace Simplisity.TemplateEngine
     public class Template
     {
         public string FolderPath { get; set; }
+        public bool DebugMode { get; private set; }
         public string TemplateName { get; set; }
         public string TemplateData { get; private set; }
         public bool IsTemplateFound { get; private set; }
@@ -14,8 +15,9 @@ namespace Simplisity.TemplateEngine
         private readonly string _templatePath;
        
         // Constructor
-        public Template(string templatepath)
+        public Template(string templatepath, bool debugMode)
         {
+            DebugMode = debugMode;
             TemplateData = "";
             IsTemplateFound = false;
             _templatePath = templatepath;
@@ -59,7 +61,10 @@ namespace Simplisity.TemplateEngine
                 {
                     TemplateData = "";
 
-                    if (File.Exists(_templatePath))
+                    var TemplateDataStr = "";
+                    if (!DebugMode) TemplateDataStr = (string)CacheUtils.GetCache(_templatePath);
+
+                    if (String.IsNullOrEmpty(TemplateDataStr) && File.Exists(_templatePath))
                     {
                         string inputLine;
                         var inputStream = new FileStream(_templatePath, FileMode.Open, FileAccess.Read);
@@ -67,23 +72,21 @@ namespace Simplisity.TemplateEngine
 
                         while ((inputLine = streamReader.ReadLine()) != null)
                         {
-                            TemplateData += inputLine + Environment.NewLine;
+                            TemplateDataStr += inputLine + Environment.NewLine;
                         }
                         streamReader.Close();
                         inputStream.Close();
 
-                        if (TemplateData.Contains("**CDATASTART**"))
+                        if (TemplateDataStr.Contains("**CDATASTART**"))
                         {
                             //convert back cdata marks converted so it saves OK into XML 
-                            TemplateData = TemplateData.Replace("**CDATASTART**", "<![CDATA[");
-                            TemplateData = TemplateData.Replace("**CDATAEND**", "]]>");
+                            TemplateDataStr = TemplateDataStr.Replace("**CDATASTART**", "<![CDATA[");
+                            TemplateDataStr = TemplateDataStr.Replace("**CDATAEND**", "]]>");
                         }
                         IsTemplateFound = true;
+                        CacheUtils.SetCache(_templatePath, TemplateDataStr);
                     }
-                    else
-                    {
-                        TemplateData = "";
-                    }
+                    TemplateData = TemplateDataStr;
                 }
                 catch (Exception)
                 {

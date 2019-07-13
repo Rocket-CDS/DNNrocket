@@ -6,6 +6,7 @@ namespace Simplisity.TemplateEngine
     public class TemplateGetter
     {
 
+        private bool _debugMode;
         private TemplateController TemplCtrl1;
         private TemplateController TemplCtrl2;
 
@@ -16,10 +17,11 @@ namespace Simplisity.TemplateEngine
         /// <param name="secondaryMapPath">fallback folder to look for a themes if not found in primary (Usually the module admin folder, where default installed templates are saved)</param>
         /// <param name="themeFolder">custom theme folder name to look for, if no template is found here the system theme, then the default theme will be searched.</param>
         /// <param name="systemThemeFolder">system theme folder, will search themefolder, systemThemefolder and then defaultThemeFolder</param>
-        public TemplateGetter(string primaryBaseFolderMapPath, string themeFolder, string secondaryBaseFolderMapPath = "")
+        public TemplateGetter(string primaryBaseFolderMapPath, string themeFolder, string secondaryBaseFolderMapPath = "", bool debugMode = false)
         {
-            TemplCtrl1 = new TemplateController(primaryBaseFolderMapPath, themeFolder);
-            TemplCtrl2 = new TemplateController(secondaryBaseFolderMapPath, themeFolder);                
+            _debugMode = debugMode;
+            TemplCtrl1 = new TemplateController(primaryBaseFolderMapPath, themeFolder, debugMode);
+            TemplCtrl2 = new TemplateController(secondaryBaseFolderMapPath, themeFolder, debugMode);                
         }
 
 
@@ -36,7 +38,7 @@ namespace Simplisity.TemplateEngine
         public string GetTemplateData(string templatename, string lang)
         {
             var templateData = "";
-            var objT = new Template("");
+            var objT = new Template("", _debugMode);
             if (TemplCtrl1 != null)
             {
                 objT = TemplCtrl1.GetTemplate(templatename, lang);

@@ -9,6 +9,7 @@ namespace Simplisity.TemplateEngine
     {
 
         public string TemplateMapPath { get; private set; }
+        public bool DebugMode { get; private set; }
         public string ThemeFolder { get; private set; }
         public string HomeMapPath { get; private set; }
 
@@ -16,8 +17,9 @@ namespace Simplisity.TemplateEngine
         public string TemplateConfigMapPath { get; private set; }
 
         // Constructor
-        public TemplateController(string homeMapPath, string themeFolder)
+        public TemplateController(string homeMapPath, string themeFolder, bool debugMode)
         {
+            DebugMode = debugMode;
             HomeMapPath = homeMapPath.TrimEnd('\\');
             ThemeFolder = themeFolder.TrimEnd('\\');
             TemplateMapPath = string.Format("{0}\\{1}\\", homeMapPath.TrimEnd('\\'), themeFolder.TrimEnd('\\'));
@@ -200,7 +202,7 @@ namespace Simplisity.TemplateEngine
             foreach (var kvp in l)
             {
                 var objTi = new TemplateInfo();
-                var objT = new Template(kvp.Value);
+                var objT = new Template(kvp.Value, DebugMode);
 
                 objTi.FullFolderPath = kvp.Value;
                 objTi.ThemeFolderPath = string.Format("{0}\\{1}", ThemeFolder, kvp.Value.Replace(TemplateMapPath, ""));
@@ -225,7 +227,7 @@ namespace Simplisity.TemplateEngine
         public Template GetTemplate(string templatename)
         {
             var templatepath = string.Format("{0}\\{1}\\{2}", TemplateMapPath.TrimEnd('\\'), "Default", templatename);
-            var objT = new Template(templatepath);
+            var objT = new Template(templatepath, DebugMode);
             return objT;
         }
 
@@ -244,16 +246,16 @@ namespace Simplisity.TemplateEngine
         public Template GetTemplate(string templatename, string lang, string themesubfolder)
         {
             var templatepath = string.Format("{0}\\{1}\\{2}", TemplateMapPath.TrimEnd('\\'), lang, templatename);
-            var objT = new Template(templatepath);
+            var objT = new Template(templatepath, DebugMode);
             if (objT.Exists() == false)
             {
                 templatepath = string.Format("{0}\\{1}\\{2}", TemplateMapPath.TrimEnd('\\'), themesubfolder, templatename);
-                objT = new Template(templatepath);
+                objT = new Template(templatepath, DebugMode);
             }
             if (objT.Exists() == false)
             {
                 templatepath = string.Format("{0}\\{1}\\{2}", TemplateConfigMapPath.TrimEnd('\\'), themesubfolder, templatename);
-                objT = new Template(templatepath);
+                objT = new Template(templatepath, DebugMode);
             }
             return objT;
         }
@@ -270,7 +272,7 @@ namespace Simplisity.TemplateEngine
                 Directory.CreateDirectory(langpath);
             }
             var templatepath = string.Format("{0}\\{1}\\{2}", TemplateMapPath.TrimEnd('\\'), lang, templatename);
-            var objT = new Template(templatepath);
+            var objT = new Template(templatepath, DebugMode);
             objT.Save(templatedata);
         }
 
@@ -304,7 +306,7 @@ namespace Simplisity.TemplateEngine
         public void DeleteTemplate(string templatename, string lang)
         {
             var templatepath = string.Format("{0}\\{1}\\{2}", TemplateMapPath, lang, templatename);
-            var objT = new Template(templatepath);
+            var objT = new Template(templatepath, DebugMode);
             objT.Delete();
         }
 
