@@ -153,6 +153,19 @@ namespace RocketMod
                     strOut = SettingsDelete();
                     break;
 
+                case "rocketmodfields_edit":
+                    strOut = EditFieldsData();
+                    break;
+                case "rocketmodfields_add":
+                    strOut = AddFieldsRow();
+                    break;
+                case "rocketmodfields_save":
+                    strOut = FieldsSave();
+                    break;
+                case "rocketmodfields_delete":
+                    strOut = FieldsDelete();
+                    break;
+
 
             }
 
@@ -192,12 +205,72 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmodsettings_save", true);
             _commandSecurity.AddCommand("rocketmodsettings_delete", true);
 
+            _commandSecurity.AddCommand("rocketmodfields_edit", true);
+            _commandSecurity.AddCommand("rocketmodfields_add", true);
+            _commandSecurity.AddCommand("rocketmodfields_save", true);
+            _commandSecurity.AddCommand("rocketmodfields_delete", true);
+
             var hasAccess = false;
             hasAccess = _commandSecurity.HasSecurityAccess(paramCmd);
 
             return hasAccess;
         }
 
+        #region "Fields"
+
+        private static SettingsData GetFieldsData()
+        {
+            return new SettingsData(_tabid, _moduleid, _langRequired, _rocketInterface.EntityTypeCode, "rocketmodfields", false, _rocketInterface.DatabaseTable);
+        }
+
+        private static String EditFieldsData()
+        {
+            try
+            {
+                var settingsData = GetFieldsData();
+                var strOut = "";
+                var passSettings = _paramInfo.ToDictionary();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetEditCulture(), "1.0", _systemInfoData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, settingsData, passSettings);
+
+                if (strOut == "") strOut = "ERROR: No data returned for EditSettingsData() : " + _rocketInterface.TemplateRelPath + "/Themes/" + _rocketInterface.DefaultTheme + "/default/" + _rocketInterface.DefaultTemplate;
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        private static string FieldsDelete()
+        {
+            var settingsData = GetFieldsData();
+            settingsData.Delete();
+            return EditSettingsData();
+        }
+
+        private static string AddFieldsRow()
+        {
+            var settingsData = GetFieldsData();
+            settingsData.AddRow();
+            return EditSettingsData();
+        }
+
+        private static String FieldsSave()
+        {
+            var settingsData = GetFieldsData();
+            settingsData.Save(_postInfo);
+            if (settingsData.InvalidKeyValues)
+            {
+                return "Invalid Key Values in Template.  '@HiddenField(i, \"genxml/key1\", \"\", \"\", false, lp3)' and '@HiddenField(i, \"genxml/lang/genxml/key2\", \"\", \"\", true, lp3)' must be in the template for each setting row.";
+            }
+            else
+            {
+                return EditSettingsData();
+            }
+
+        }
+
+        #endregion
 
         #region "Settings"
 
@@ -205,7 +278,6 @@ namespace RocketMod
         {
             return new SettingsData(_tabid, _moduleid, _langRequired, _rocketInterface.EntityTypeCode, "rocketmodsettings", false, _rocketInterface.DatabaseTable);
         }
-
         private static String EditSettingsData()
         {
             try
@@ -233,7 +305,7 @@ namespace RocketMod
 
         private static string AddSettingsRow()
         {
-             var settingsData = GetSettingsData();
+            var settingsData = GetSettingsData();
             settingsData.AddRow();
             return EditSettingsData();
         }

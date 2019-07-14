@@ -13,8 +13,8 @@
 <span class="w3-section simplisity_buttons">
     <a class="w3-button w3-pale-yellow w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdCancelButton")</a>
     <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodsettings_add" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}'>@ResourceKey("DNNrocket.cmdAddButton")</a>
-    <span class="w3-button w3-green w3-padding-8 simplisity_click  simplisity_langchange" s-cmd="rocketmodsettings_save" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}' s-post="#rocketmodsettingsdata" s-list=".rocketmodsettings">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#rocketmodsettingsdata" s-removelist=".rocketmodsettings" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    <span class="w3-button w3-green w3-padding-8 simplisity_click simplisity_langchange" s-cmd="rocketmodsettings_save" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}' s-post="#rocketmodsettingsdata" s-list=".rocketmodsettings">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="rocketmodsettingsbin" s-return="#rocketmodsettingsdata" s-removelist=".rocketmodsettings" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 
 
@@ -57,7 +57,7 @@
                     @CheckBox(i, "genxml/checkbox/localized", "", " class='localize' row='" + lp3 + "' ", false, false, lp3)
                 </div>
                 <div class="w3-right">
-                    <a href="javascript:void(0)" class="simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
+                    <a href="javascript:void(0)" class="simplisity_removelistitem" s-removelist=".rocketmodsettings" s-recylebin="rocketmodsettingsbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
                 </div>
             </div>
         </li>

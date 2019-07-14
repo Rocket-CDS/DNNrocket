@@ -117,6 +117,7 @@
 
 <script type="text/javascript">
 
+    
     $(document).ready(function () {
         $("#menulangflags").empty();
         $("#langflagrequired").appendTo("#menulangflags");
@@ -170,6 +171,16 @@
             window.location = returnurl;
         }
     }
+
+    function languageChange() {
+        var langselect_systemprovider = $('#simplisity_systemprovider').val();
+        var langselect_cmdurl = $('#simplisity_cmdurl').val();
+        var langselectcmd = simplisity_getCookieValue('s-cmd-menu-' + langselect_systemprovider);
+        var langselectfields = simplisity_getCookieValue('s-cmd-fields-' + simplisity_systemprovider);
+        $('#simplisity_startpanel').getSimplisity(langselect_cmdurl, langselectcmd, langselectfields)
+    }
+
+
 
 
 </script>

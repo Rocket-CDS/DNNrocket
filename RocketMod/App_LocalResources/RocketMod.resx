@@ -180,7 +180,7 @@
   <data name="resetmsg.Text" xml:space="preserve">
     <value>Reset this module config?  (Data NOT deleted)</value>
   </data>
-  <data name="rocketsettings.Text" xml:space="preserve">
+  <data name="rocketmodsettings.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="search.Text" xml:space="preserve">
