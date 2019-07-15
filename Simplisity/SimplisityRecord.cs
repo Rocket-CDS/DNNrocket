@@ -369,14 +369,23 @@ namespace Simplisity
                         Value = "";
                     }
                 }
-                XMLData = SetGenXmlValue(XMLData, xpath, Value, cdata, ignoresecurityfilter, filterlinks);
+                try
+                {
+                    XMLData = SetGenXmlValue(XMLData, xpath, Value, cdata, ignoresecurityfilter, filterlinks);
 
-                // do the datatype after the node is created
-                if (DataTyp == System.TypeCode.DateTime)
-                    XMLData = SetGenXmlValue(XMLData, xpath + "/@datatype", "date", cdata);
+                    // do the datatype after the node is created
+                    if (DataTyp == System.TypeCode.DateTime)
+                        XMLData = SetGenXmlValue(XMLData, xpath + "/@datatype", "date", cdata);
 
-                if (DataTyp == System.TypeCode.Double)
-                    XMLData = SetGenXmlValue(XMLData, xpath + "/@datatype", "double", cdata);
+                    if (DataTyp == System.TypeCode.Double)
+                        XMLData = SetGenXmlValue(XMLData, xpath + "/@datatype", "double", cdata);
+
+                }
+                catch
+                {
+                    // the XMLData may be invalid to the xpath, ignore and do nothing. 
+                }
+
             }
         }
 
@@ -507,20 +516,19 @@ namespace Simplisity
             {
                 var lp = 1;
                 var listRecords = XMLDoc.SelectNodes("genxml/" + listName + "/*");
-                foreach (XmlNode i in listRecords)
+                if (listRecords != null)
                 {
-                    var nbi = new SimplisityInfo();
-                    nbi.XMLData = i.OuterXml;
-                    nbi.TypeCode = "LIST";
-                    nbi.GUIDKey = listName;
-                    var listXmlNode = GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[key2 = '" + nbi.GetXmlProperty("genxml/key1") + "']");
-                    if (listXmlNode == "")
+                    foreach (XmlNode i in listRecords)
                     {
-                        listXmlNode = GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]");
+                        var nbi = new SimplisityInfo();
+                        nbi.XMLData = i.OuterXml;
+                        nbi.TypeCode = "LIST";
+                        nbi.GUIDKey = listName;
+                        var listXmlNode = GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]");
+                        nbi.SetLangXml("<genxml>" + listXmlNode + "</genxml>");
+                        rtnList.Add(nbi);
+                        lp += 1;
                     }
-                    nbi.SetLangXml("<genxml>" + listXmlNode + "</genxml>");
-                    rtnList.Add(nbi);
-                    lp += 1;
                 }
             }
             return rtnList;
@@ -597,6 +605,10 @@ namespace Simplisity
         {
             if (XMLDoc != null)
             {
+                // get listcount, so we can add a sort value
+                var l = GetList(listName);
+                var sortcount = l.Count;
+
                 if (XMLDoc.SelectSingleNode("genxml/" + listName) == null)
                 {
                     SetXmlProperty("genxml/" + listName, "", System.TypeCode.String, false);
@@ -604,6 +616,7 @@ namespace Simplisity
                 }
 
                 AddXmlNode(xmldata, "genxml", "genxml/" + listName);
+                SetXmlProperty("genxml/" + listName + "/genxml[position() = last()]/index", sortcount.ToString(), System.TypeCode.String, false);
 
                 if (XMLDoc.SelectSingleNode("genxml/lang") == null)
                 {
@@ -615,6 +628,7 @@ namespace Simplisity
                     SetXmlProperty("genxml/lang/genxml/" + listName, "", System.TypeCode.String, false);
                     SetXmlProperty("genxml/lang/genxml/" + listName + "/@list", "true", System.TypeCode.String, false);
                 }
+
                 AddXmlNode(xmllangdata, "genxml", "genxml/lang/genxml/" + listName);
 
             }

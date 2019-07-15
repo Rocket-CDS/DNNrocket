@@ -132,9 +132,6 @@ namespace RocketSettings
 
         public void Save(SimplisityInfo postInfo)
         {
-            if (postInfo.GetXmlProperty("genxml/key1") != "" && postInfo.GetXmlProperty("genxml/lang/genxml/key2") != "")
-            {
-
                 var editlang = DNNrocketUtils.GetEditCulture();
 
                 var dbInfo = GetSettingData(_guidKey, editlang);
@@ -157,11 +154,6 @@ namespace RocketSettings
 
                 Populate();
                 PopulateList();
-            }
-            else
-            {
-                InvalidKeyValues = true;
-            }
         }
 
 

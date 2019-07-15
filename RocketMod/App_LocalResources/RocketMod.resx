@@ -153,9 +153,6 @@
   <data name="edittitle.Text" xml:space="preserve">
     <value>DNNrocket - High Speed Integration</value>
   </data>
-  <data name="fieldeditor.Text" xml:space="preserve">
-    <value>Field Editor</value>
-  </data>
   <data name="iframesupport.Text" xml:space="preserve">
     <value>Your browser does not support iframes. Use the Rocket Admin option.</value>
   </data>
@@ -179,6 +176,9 @@
   </data>
   <data name="resetmsg.Text" xml:space="preserve">
     <value>Reset this module config?  (Data NOT deleted)</value>
+  </data>
+  <data name="rocketmodfields.Text" xml:space="preserve">
+    <value>Field Editor</value>
   </data>
   <data name="rocketmodsettings.Text" xml:space="preserve">
     <value>Settings</value>

@@ -118,8 +118,8 @@
 
         <script>
             $(document).ready(function () {
-                simplisity_setCookieValue('rocketmod_moduleid','<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>') // save cookie of moduleid, so we can get it server side.
-                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketmodule', usehistory: true });
+                simplisity_setCookieValue('rocketmod_moduleid', '<%= String.IsNullOrEmpty(ModuleId) ? "" : ModuleId %>') // save cookie of moduleid, so we can get it server side.
+                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketmodule', usehistory: true, debug: false });
             });
 
             // Get the Sidebar

@@ -220,20 +220,20 @@ namespace RocketMod
 
         private static SettingsData GetFieldsData()
         {
-            return new SettingsData(_tabid, _moduleid, _langRequired, _rocketInterface.EntityTypeCode, "rocketmodfields", false, _rocketInterface.DatabaseTable);
+            return new SettingsData(_tabid, _moduleid, _langRequired, _rocketInterface.EntityTypeCode, "fielddata", false, _rocketInterface.DatabaseTable);
         }
 
         private static String EditFieldsData()
         {
             try
             {
-                var settingsData = GetFieldsData();
+                var fieldsData = GetFieldsData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetEditCulture(), "1.0", _systemInfoData.DebugMode);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, settingsData, passSettings);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, fieldsData, passSettings);
 
-                if (strOut == "") strOut = "ERROR: No data returned for EditSettingsData() : " + _rocketInterface.TemplateRelPath + "/Themes/" + _rocketInterface.DefaultTheme + "/default/" + _rocketInterface.DefaultTemplate;
+                if (strOut == "") strOut = "ERROR: No data returned for EditfieldsData() : " + _rocketInterface.TemplateRelPath + "/Themes/" + _rocketInterface.DefaultTheme + "/default/" + _rocketInterface.DefaultTemplate;
                 return strOut;
             }
             catch (Exception ex)
@@ -243,31 +243,23 @@ namespace RocketMod
         }
         private static string FieldsDelete()
         {
-            var settingsData = GetFieldsData();
-            settingsData.Delete();
-            return EditSettingsData();
+            var fieldsData = GetFieldsData();
+            fieldsData.Delete();
+            return EditFieldsData();
         }
 
         private static string AddFieldsRow()
         {
-            var settingsData = GetFieldsData();
-            settingsData.AddRow();
-            return EditSettingsData();
+            var fieldsData = GetFieldsData();
+            fieldsData.AddRow();
+            return EditFieldsData();
         }
 
         private static String FieldsSave()
         {
-            var settingsData = GetFieldsData();
-            settingsData.Save(_postInfo);
-            if (settingsData.InvalidKeyValues)
-            {
-                return "Invalid Key Values in Template.  '@HiddenField(i, \"genxml/key1\", \"\", \"\", false, lp3)' and '@HiddenField(i, \"genxml/lang/genxml/key2\", \"\", \"\", true, lp3)' must be in the template for each setting row.";
-            }
-            else
-            {
-                return EditSettingsData();
-            }
-
+            var fieldsData = GetFieldsData();
+            fieldsData.Save(_postInfo);
+            return EditFieldsData();
         }
 
         #endregion

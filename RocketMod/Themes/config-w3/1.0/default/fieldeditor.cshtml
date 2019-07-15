@@ -13,8 +13,8 @@
 
 <span class="w3-section simplisity_buttons">
     <a class="w3-button w3-pale-yellow w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdCancelButton")</a>
-    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodfields_add" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.GetSetting("moduleid"))","selecteditemid":"@settingsData.Info.ItemID","interfacekey":"fieldeditor","listname":"fielddata"}'>@ResourceKey("DNNrocket.cmdAddButton")</a>
-    <span class="w3-button w3-green w3-padding-8 simplisity_click  simplisity_langchange activatevalidation" s-before="validateform" s-cmd="rocketmodfields_save" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.GetSetting("moduleid"))","selecteditemid":"@settingsData.Info.ItemID","interfacekey":"fieldeditor","listname":"fielddata"}' s-post="#fielddatalist" s-list=".fielddata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodfields_add" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.GetSetting("moduleid"))","selecteditemid":"@settingsData.Info.ItemID"}'>@ResourceKey("DNNrocket.cmdAddButton")</a>
+    <span class="w3-button w3-green w3-padding-8 simplisity_click  simplisity_langchange activatevalidation" s-before="validateform" s-cmd="rocketmodfields_save" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.GetSetting("moduleid"))","selecteditemid":"@settingsData.Info.ItemID"}' s-post="#fielddatalist" s-list=".fielddata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
     <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="fieldbin" s-return="#fielddatalist" s-removelist=".fielddata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 

@@ -43,7 +43,6 @@ namespace Simplisity
             {
                 s.Value.AddListItem(listName, simplisityInfo);
             }
-            AddRecordKey(listName);
         }
 
         public void AddListItem(string listName)
@@ -52,41 +51,15 @@ namespace Simplisity
             {
                 s.Value.AddListItem(listName);
             }
-            AddRecordKey(listName);
         }
 
-        private bool AddRecordKey(string listName)
-        {
-            // add recordkey
-            var recordkey = GeneralUtils.GetUniqueKey();
-            var rtn = false;
-            foreach (var s in SimplisityInfoList)
-            {
-                var listdata = s.Value.GetList(listName);
-                var lp = listdata.Count;
-                if (s.Value.GetXmlProperty("genxml/" + listName + "/genxml[" + lp + "]/key1") != recordkey)
-                {
-                    s.Value.SetXmlProperty("genxml/" + listName + "/genxml[" + lp + "]/key1", recordkey);
-                    rtn = true;
-                }
-                if (s.Value.GetXmlProperty("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]/key2") != recordkey)
-                {
-                    s.Value.SetXmlProperty("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]/key2", recordkey);
-                    rtn = true;
-                }
-            }
-            return rtn;
-        }
-
-
-        public void RemoveListRowByKey(string listName, string recordKey)
+        public void RemoveListRowByIndex(string listName, int index)
         {
             foreach (var s in SimplisityInfoList)
             {
                 if (s.Value.XMLDoc != null)
                 {
-                    s.Value.RemoveXmlNode("genxml/" + listName + "/genxml[key1 = '" + recordKey + "']");
-                    s.Value.RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[key2 = '" + recordKey + "']");
+                    s.Value.RemoveListItem(listName, index);
                 }
             }
 
@@ -95,12 +68,12 @@ namespace Simplisity
         public void RemovedDeletedListRecords(string listName, SimplisityInfo databaseInfo, SimplisityInfo postInfo)
         {
             // check against new data and find removed list items.
-            var removeList = new Dictionary<string, string>();
+            var removeList = new Dictionary<int, string>();
             var list = databaseInfo.GetList(listName);
             foreach (var s in list)
             {
-                var keyref = s.GetXmlProperty("genxml/key1");
-                if (postInfo.GetListItem(listName, "/genxml/key1", keyref) == null)
+                var keyref = s.GetXmlPropertyInt("genxml/index");
+                if (postInfo.GetListItem(listName, "/genxml/index", keyref.ToString()) == null)
                 {
                     if (!removeList.ContainsKey(keyref))
                     {
@@ -112,33 +85,41 @@ namespace Simplisity
             foreach (var r in removeList)
             {
                 // delete removed list items from all langauges
-                RemoveListRowByKey(r.Value, r.Key);
+                RemoveListRowByIndex(r.Value, r.Key);
             }
 
         }
 
         public void SortListRecordsOnSave(string listName, SimplisityInfo postInfo, string editlang)
         {
+            // find new sort list
+            var newsortorder = new Dictionary<int, SimplisityInfo>();
+            var l = postInfo.GetList(listName);
+            foreach (var s in l)
+            {
+                var index = s.GetXmlPropertyInt("genxml/index");
+                if (!newsortorder.ContainsKey(index)) newsortorder.Add(index, s);
+            }
 
             // Update ALL langauge records.
-            foreach (var listItem in SimplisityInfoList)
+            foreach (var listInfoItem in SimplisityInfoList)
             {
                 var saveInfo = (SimplisityInfo)postInfo.Clone();
-                if (editlang != listItem.Value.Lang)
+                if (editlang != listInfoItem.Value.Lang)
                 {
                     // If it's not the same langauge, update the data with the listItem.
                     saveInfo.RemoveLangRecord();
-                    saveInfo.SetLangRecord(listItem.Value.GetLangRecord());
+                    saveInfo.SetLangRecord(listInfoItem.Value.GetLangRecord());
 
                     // resequance the other language list, by rebuilding from sorted GetList.
-                    var l = saveInfo.GetList(listName);
                     saveInfo.RemoveList(listName);
-                    foreach (var s in l)
+                    foreach (var s in newsortorder)
                     {
-                        saveInfo.AddListItem(listName, s);
+                        var sInfo = listInfoItem.Value.GetListItem(listName, s.Key);
+                        saveInfo.AddListItem(listName, sInfo);
                     }
                 }
-                AddSimplisityInfo(saveInfo, listItem.Value.Lang);
+                AddSimplisityInfo(saveInfo, listInfoItem.Value.Lang);
             }
 
         }

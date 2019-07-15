@@ -1,10 +1,14 @@
 ﻿
 var ajaxPostCmd = [];
+var debugmode = false;
 
 (function ($) {
 
     $.fn.getSimplisity = function (cmdurl, scmd, sfields, safter, strack) {
-        //console.log('$.fn.getSimplisity: ', cmdurl, scmd, '#' + this.attr('id'), sfields);
+        if (debugmode) {
+            // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+            console.log('[$.fn.getSimplisity] ', cmdurl, scmd, '#' + this.attr('id'), sfields);
+        }
         simplisityPost(cmdurl, scmd, '', '#' + this.attr('id'), '', false, 0, sfields, true, safter, strack);
     };
 
@@ -33,8 +37,11 @@ var ajaxPostCmd = [];
         var settings = $.extend({
             activatepanel: true,
             overlayclass: 'w3-overlay',
-            usehistory: true
+            usehistory: true,
+            debug: false
         }, options);
+
+        debugmode = settings.debug;
 
         $('#simplisity_loader').remove();
         $('#simplisity_fileuploadlist').remove();
@@ -91,7 +98,10 @@ function panelAjaxFunction(panelelement) {
 
         simplisity_callserver(panelelement, cmdurl, sreturn);
 
-       // alert($(panelelement).attr('s-cmd'));
+        if (debugmode) {
+            // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+            console.log('[panelAjaxFunction()] s-cmd: ', $(panelelement).attr('s-cmd'));
+        }
     }
 }
 
@@ -99,6 +109,7 @@ function panelAjaxFunction(panelelement) {
 $(document).on("simplisityposytgetcompleted", simplisity_nbxgetCompleted); // assign a completed event for the ajax calls
 
 function simplisity_nbxgetCompleted(e) {
+
 
     if ((typeof e.safter !== 'undefined') && e.safter !== '') {
         var funclist = e.safter.split(',');
@@ -131,13 +142,23 @@ function simplisity_nbxgetCompleted(e) {
     // clear any uploaded files after completed call
     $('input[id*="simplisity_fileuploadlist"]').val('');
 
+
+
+    if (debugmode) {
+        // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+        console.log('-------END AJAX CALL------- ');
+    }
+
     panelAjaxFunction(ajaxPostCmd[ajaxPostCmd.length - 1]);
 
  }
 
 function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist, reload, strackcmd) {
 
-    //console.log('scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist:--->    ', scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist);
+    if (debugmode) {
+        // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+        console.log('[simplisityPost()] scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist:--->    ', scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist);
+    }
 
     var systemprovider = simplisity_getSystemProvider(sfields);
 
@@ -164,6 +185,12 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
     var jsonParam = ConvertParamToJSON(sfields);
 
     if ((typeof sdropdownlist !== 'undefined') && sdropdownlist !== '') {
+
+        if (debugmode) {
+            // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+            console.log('------- START AJAX CALL [dropdown] ------- ' + scmd);
+        }
+
         $.ajax({
             type: "POST",
             url: cmdupdate,
@@ -186,6 +213,11 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
     }
     else {
 
+        if (debugmode) {
+            // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+            console.log('------- START AJAX CALL------- ' + scmd);
+        }
+
         var request = $.ajax({
             type: "POST",
             url: cmdupdate,
@@ -202,6 +234,11 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                         $(sreturn).html(data).trigger('change');
                     } else
                         $(sreturn).append(data).trigger('change');
+                }
+
+                if (debugmode) {
+                    // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+                    //console.log('returned data: ' + data);
                 }
 
                 if (reload === 'true') {
@@ -299,7 +336,11 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
                     sfields = sfields.substring(0, sfields.length - 1) + ',"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
                 }
             }
-            //console.log('scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist:--->    ', scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist);
+            if (debugmode) {
+                // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+                //console.log('[simplisity_callserver()] scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist:--->    ', scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist);
+            }
+
             simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist, reload, strackcmd);
         }
     }
@@ -345,7 +386,10 @@ function ConvertParamToJSON(sfields) {
     var systemobj = JSON.parse(system);
     viewData.system.push(systemobj);
 
-    //console.log('stringify json: ' + JSON.stringify(viewData));
+    if (debugmode) {
+        // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+        console.log('[ConvertParamToJSON(sfields)] stringify json: ' + JSON.stringify(viewData));
+    }
 
     return JSON.stringify(viewData);
 }
@@ -429,7 +473,10 @@ function ConvertFormToJSON(spost, slist) {
         });
     }
 
-    //console.log('json: ' + JSON.stringify(viewData));
+    if (debugmode) {
+        // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+        console.log('json: ' + JSON.stringify(viewData));
+    }
 
     return JSON.stringify(viewData);
 }
