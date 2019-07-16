@@ -60,10 +60,10 @@ namespace Simplisity
             {
                 if (s.Value.XMLDoc != null)
                 {
-                    s.Value.RemoveListItem(listName, index);
+                    s.Value.RemoveXmlNode("genxml/" + listName + "/genxml[index = " + index + "]");
+                    s.Value.RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[index = " + index + "]");
                 }
             }
-
         }
 
         public void RemovedDeletedListRecords(string listName, SimplisityInfo databaseInfo, SimplisityInfo postInfo)
@@ -74,7 +74,7 @@ namespace Simplisity
             foreach (var s in list)
             {
                 var keyref = s.GetXmlPropertyInt("genxml/index");
-                if (postInfo.GetListItem(listName, "/genxml/index", keyref.ToString()) == null)
+                if (GetListItemByIndex(postInfo, listName, keyref.ToString())  == null)
                 {
                     if (!removeList.ContainsKey(keyref))
                     {
