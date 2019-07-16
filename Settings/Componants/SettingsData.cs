@@ -141,8 +141,8 @@ namespace RocketSettings
                     // new lang record, so add it to list
                     AddSimplisityInfo(dbInfo, editlang);
                 }
-
-                RemovedDeletedListRecords(_listName, dbInfo, postInfo);
+                
+                //RemovedDeletedListRecords(_listName, dbInfo, postInfo);
 
                 SortListRecordsOnSave(_listName, postInfo, editlang);
 

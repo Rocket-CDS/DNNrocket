@@ -96,16 +96,10 @@ namespace Simplisity
                 var index = s.GetXmlPropertyInt("genxml/index");
                 if (!newsortorder.ContainsKey(index)) newsortorder.Add(index, s);
             }
-            // save editlang data
-            saveInfo.RemoveList(listName);
-            foreach (var s in newsortorder)
-            {
-                var sInfo = GetListItemByIndex(postInfo, listName, s.Key.ToString());
-                saveInfo.AddListItem(listName, sInfo);
-            }
+
             AddSimplisityInfo(saveInfo, editlang);
 
-            // base record for all langauges.
+            // all langauges.
             foreach (var listInfoItem in SimplisityInfoList)
             {
                 saveInfo = (SimplisityInfo)postInfo.Clone();
@@ -116,49 +110,25 @@ namespace Simplisity
                 foreach (var s in newsortorder)
                 {
                     var sInfo = GetListItemByIndex(listInfoItem.Value, listName, s.Key.ToString());
+                    if (sInfo == null) sInfo = s.Value;
                     saveInfo.AddListItem(listName, sInfo);
                 }
-
                 AddSimplisityInfo(saveInfo, listInfoItem.Value.Lang);
             }
         }
 
         public SimplisityInfo GetListItemByIndex(SimplisityInfo sInfo, string listName, string index)
         {
-            var rtnList = new List<SimplisityInfo>();
-
             if (sInfo.XMLDoc != null)
             {
-                var lp = 1;
-                var listRecords = sInfo.XMLDoc.SelectNodes("genxml/" + listName + "/*");
-                if (listRecords != null)
-                {
-                    foreach (XmlNode i in listRecords)
-                    {
-                        var baseindex = i.SelectSingleNode("index");
-                        if (baseindex != null)
-                        {
-                            var nbi = new SimplisityInfo();
-                            nbi.XMLData = i.OuterXml;
-                            nbi.TypeCode = "LIST";
-                            nbi.GUIDKey = listName;
-                            var listXmlNode = sInfo.GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[index = " + baseindex.InnerText + "]");
-                            nbi.SetLangXml("<genxml>" + listXmlNode + "</genxml>");
-                            rtnList.Add(nbi);
-                            lp += 1;
-                        }
-                    }
-                }
+                var nbi = new SimplisityInfo();
+                nbi.XMLData = "<genxml>" + sInfo.GetXmlNode("genxml/" + listName + "/genxml[index = " + index + "]") + "</genxml>";
+                nbi.TypeCode = "LIST";
+                nbi.GUIDKey = listName;
+                var listXmlNode = sInfo.GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[index = " + index + "]");
+                nbi.SetLangXml("<genxml>" + listXmlNode + "</genxml>");
+                return nbi;
             }
-
-            foreach (var i in rtnList)
-            {
-                if (index == i.GetXmlProperty("genxml/index"))
-                {
-                    return i;
-                }
-            }
-
             return null;
         }
 
