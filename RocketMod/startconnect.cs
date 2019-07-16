@@ -306,15 +306,7 @@ namespace RocketMod
         {
             var settingsData = GetSettingsData();
             settingsData.Save(_postInfo);
-            if (settingsData.InvalidKeyValues)
-            {
-                return "Invalid Key Values in Template.  '@HiddenField(i, \"genxml/key1\", \"\", \"\", false, lp3)' and '@HiddenField(i, \"genxml/lang/genxml/key2\", \"\", \"\", true, lp3)' must be in the template for each setting row.";
-            }
-            else
-            {
-                return EditSettingsData();
-            }
-
+            return EditSettingsData();
         }
 
         #endregion

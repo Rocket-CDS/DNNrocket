@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml;
 
 namespace Simplisity
 {
@@ -90,6 +91,7 @@ namespace Simplisity
 
         }
 
+
         public void SortListRecordsOnSave(string listName, SimplisityInfo postInfo, string editlang)
         {
             // find new sort list
@@ -105,8 +107,10 @@ namespace Simplisity
             foreach (var listInfoItem in SimplisityInfoList)
             {
                 var saveInfo = (SimplisityInfo)postInfo.Clone();
+
                 if (editlang != listInfoItem.Value.Lang)
                 {
+                   
                     // If it's not the same langauge, update the data with the listItem.
                     saveInfo.RemoveLangRecord();
                     saveInfo.SetLangRecord(listInfoItem.Value.GetLangRecord());
@@ -115,14 +119,55 @@ namespace Simplisity
                     saveInfo.RemoveList(listName);
                     foreach (var s in newsortorder)
                     {
-                        var sInfo = listInfoItem.Value.GetListItem(listName, s.Key);
+                        var sInfo = GetListItemByIndex(listInfoItem.Value, listName, s.Key.ToString());
                         saveInfo.AddListItem(listName, sInfo);
                     }
+
                 }
                 AddSimplisityInfo(saveInfo, listInfoItem.Value.Lang);
             }
 
         }
+
+        public SimplisityInfo GetListItemByIndex(SimplisityInfo sInfo, string listName, string index)
+        {
+            var rtnList = new List<SimplisityInfo>();
+
+            if (sInfo.XMLDoc != null)
+            {
+                var lp = 1;
+                var listRecords = sInfo.XMLDoc.SelectNodes("genxml/" + listName + "/*");
+                if (listRecords != null)
+                {
+                    foreach (XmlNode i in listRecords)
+                    {
+                        var baseindex = i.SelectSingleNode("index");
+                        if (baseindex != null)
+                        {
+                            var nbi = new SimplisityInfo();
+                            nbi.XMLData = i.OuterXml;
+                            nbi.TypeCode = "LIST";
+                            nbi.GUIDKey = listName;
+                            var listXmlNode = sInfo.GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[index = " + baseindex.InnerText + "]");
+                            nbi.SetLangXml("<genxml>" + listXmlNode + "</genxml>");
+                            rtnList.Add(nbi);
+                            lp += 1;
+                        }
+                    }
+                }
+            }
+
+            foreach (var i in rtnList)
+            {
+                if (index == i.GetXmlProperty("genxml/index"))
+                {
+                    return i;
+                }
+            }
+
+            return null;
+        }
+
 
 
         public ConcurrentDictionary<string, SimplisityInfo> SimplisityInfoList { get; }
