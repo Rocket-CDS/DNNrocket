@@ -54,47 +54,9 @@ namespace Simplisity
             }
         }
 
-        public void RemoveListRowByIndex(string listName, int index)
-        {
-            foreach (var s in SimplisityInfoList)
-            {
-                if (s.Value.XMLDoc != null)
-                {
-                    s.Value.RemoveXmlNode("genxml/" + listName + "/genxml[index = " + index + "]");
-                    s.Value.RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[index = " + index + "]");
-                }
-            }
-        }
-
         public void RemovedDeletedListRecords(string listName, SimplisityInfo databaseInfo, SimplisityInfo postInfo)
         {
-            // check against new data and find removed list items.
-            var removeList = new Dictionary<int, string>();
-            var list = databaseInfo.GetList(listName);
-            foreach (var s in list)
-            {
-                var keyref = s.GetXmlPropertyInt("genxml/index");
-                if (GetListItemByIndex(postInfo, listName, keyref.ToString())  == null)
-                {
-                    if (!removeList.ContainsKey(keyref))
-                    {
-                        removeList.Add(keyref, listName);
-                    }
-                }
-            }
 
-            foreach (var r in removeList)
-            {
-                // delete removed list items from all langauges
-                RemoveListRowByIndex(r.Value, r.Key);
-            }
-
-        }
-
-
-        public void SortListRecordsOnSave(string listName, SimplisityInfo postInfo, string editlang)
-        {
-            // find new sort list
             var newsortorder = new Dictionary<int, SimplisityInfo>();
             var l = postInfo.GetList(listName);
             foreach (var s in l)
@@ -103,29 +65,62 @@ namespace Simplisity
                 if (!newsortorder.ContainsKey(index)) newsortorder.Add(index, s);
             }
 
-            // Update ALL langauge records.
             foreach (var listInfoItem in SimplisityInfoList)
             {
-                var saveInfo = (SimplisityInfo)postInfo.Clone();
-                if (editlang != listInfoItem.Value.Lang)
+                if (postInfo.Lang != listInfoItem.Value.Lang)
                 {
-                    // If it's not the same langauge, update the data with the listItem.
-                    saveInfo.RemoveLangRecord();
-                    saveInfo.SetLangRecord(listInfoItem.Value.GetLangRecord());
-                    var saveInfoTemp = (SimplisityInfo)saveInfo.Clone();
-
-                    // resequance the other language list, by rebuilding from sorted GetList.
-                    saveInfo.RemoveList(listName);
-                    foreach (var s in newsortorder)
+                    var l2 = listInfoItem.Value.GetList(listName);
+                    foreach (var sInfo in l2)
                     {
-                        var sInfo = GetListItemByIndex(saveInfoTemp, listName, s.Key.ToString());
-                        saveInfo.AddListItem(listName, sInfo);
+                        var index = sInfo.GetXmlPropertyInt("genxml/index");
+                        if (!newsortorder.ContainsKey(index))
+                        {
+                            listInfoItem.Value.RemoveXmlNode("genxml/" + listName + "/genxml[index = " + index + "]");
+                            listInfoItem.Value.RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[index = " + index + "]");
+                        }
                     }
-
                 }
+            }
+        }
+
+
+        public void SortListRecordsOnSave(string listName, SimplisityInfo postInfo, string editlang)
+        {
+            var saveInfo = (SimplisityInfo)postInfo.Clone();
+
+            // find new sort list
+            var newsortorder = new Dictionary<int, SimplisityInfo>();
+            var l = postInfo.GetList(listName);
+            foreach (var s in l)
+            {
+                var index = s.GetXmlPropertyInt("genxml/index");
+                if (!newsortorder.ContainsKey(index)) newsortorder.Add(index, s);
+            }
+            // save editlang data
+            saveInfo.RemoveList(listName);
+            foreach (var s in newsortorder)
+            {
+                var sInfo = GetListItemByIndex(postInfo, listName, s.Key.ToString());
+                saveInfo.AddListItem(listName, sInfo);
+            }
+            AddSimplisityInfo(saveInfo, editlang);
+
+            // base record for all langauges.
+            foreach (var listInfoItem in SimplisityInfoList)
+            {
+                saveInfo = (SimplisityInfo)postInfo.Clone();
+                saveInfo.RemoveLangRecord();
+                saveInfo.SetLangRecord(listInfoItem.Value.GetLangRecord());
+
+                saveInfo.RemoveList(listName);
+                foreach (var s in newsortorder)
+                {
+                    var sInfo = GetListItemByIndex(listInfoItem.Value, listName, s.Key.ToString());
+                    saveInfo.AddListItem(listName, sInfo);
+                }
+
                 AddSimplisityInfo(saveInfo, listInfoItem.Value.Lang);
             }
-
         }
 
         public SimplisityInfo GetListItemByIndex(SimplisityInfo sInfo, string listName, string index)
