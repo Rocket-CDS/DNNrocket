@@ -107,19 +107,18 @@ namespace Simplisity
             foreach (var listInfoItem in SimplisityInfoList)
             {
                 var saveInfo = (SimplisityInfo)postInfo.Clone();
-
                 if (editlang != listInfoItem.Value.Lang)
                 {
-                   
                     // If it's not the same langauge, update the data with the listItem.
                     saveInfo.RemoveLangRecord();
                     saveInfo.SetLangRecord(listInfoItem.Value.GetLangRecord());
+                    var saveInfoTemp = (SimplisityInfo)saveInfo.Clone();
 
                     // resequance the other language list, by rebuilding from sorted GetList.
                     saveInfo.RemoveList(listName);
                     foreach (var s in newsortorder)
                     {
-                        var sInfo = GetListItemByIndex(listInfoItem.Value, listName, s.Key.ToString());
+                        var sInfo = GetListItemByIndex(saveInfoTemp, listName, s.Key.ToString());
                         saveInfo.AddListItem(listName, sInfo);
                     }
 
