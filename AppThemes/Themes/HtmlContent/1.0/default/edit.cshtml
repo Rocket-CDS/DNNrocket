@@ -34,9 +34,8 @@
             lp1 += 1;
         <li class="settingsdata w3-card w3-margin w3-display-container">
 
-            <!-- We need "recordkey" hidden fields so language list on the record can be updated/sorted in sync -->
-            @HiddenField(i, "genxml/key1", "", "", false, lp1)
-            @HiddenField(i, "genxml/lang/genxml/key2", "", "", true, lp1)
+            <!-- Required to sort items in list -->
+            @SortableList(i, lp1)
 
             <div class="listrow">
                 <span id="deletebutton@(lp1)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="databin">
