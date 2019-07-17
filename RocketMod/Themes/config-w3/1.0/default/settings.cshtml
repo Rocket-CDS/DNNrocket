@@ -13,7 +13,7 @@
 <span class="w3-section simplisity_buttons">
     <a class="w3-button w3-pale-yellow w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdCancelButton")</a>
     <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodsettings_add" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}'>@ResourceKey("DNNrocket.cmdAddButton")</a>
-    <span class="w3-button w3-green w3-padding-8 simplisity_click simplisity_langchange" s-cmd="rocketmodsettings_save" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}' s-post="#rocketmodsettingsdata" s-list=".rocketmodsettings">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <span class="w3-button w3-green w3-padding-8 simplisity_click simplisity_langchange" s-cmd="rocketmodsettings_save" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}' s-post="" s-list=".rocketmodsettings">@ResourceKey("DNNrocket.cmdSaveButton")</span>
     <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="rocketmodsettingsbin" s-return="#rocketmodsettingsdata" s-removelist=".rocketmodsettings" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 
@@ -32,9 +32,8 @@
 
         <li class="rocketmodsettings w3-card w3-margin w3-display-container">
 
-            <!-- We need "recordkey" hidden fields so language list on the record can be updated/sorted in sync -->
-            @HiddenField(i, "genxml/key1", "", "", false, lp3)
-            @HiddenField(i, "genxml/lang/genxml/key2", "", "", true, lp3)
+            <!-- Required to sort items in list -->
+            @SortableList(i, lp3)
 
             <div class="w3-container">
                 <div class="w3-col m2 w3-padding">
@@ -42,7 +41,7 @@
                     @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border' maxlength='250' autocomplete='off' ", "", false, lp3)
                 </div>
                 <div class="w3-col m8 w3-padding">
-                    <div class=' notlocalizedfield@(lp3)'>
+                    <div style='display:none;' class=' notlocalizedfield@(lp3)'>
                         <label class="">@ResourceKey("system.value")</label>
                         @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' autocomplete='off' ", "", false, lp3)
                     </div>
@@ -72,8 +71,8 @@
     $(document).ready(function () {
         $(':checkbox').addClass('w3-check');
 
-        $("#pluginsettings").sortable();
-        $("#pluginsettings").disableSelection();
+        $("#rocketmodsettingsdata").sortable();
+        $("#rocketmodsettingsdata").disableSelection();
 
         dnnrocket_checklocalization();
 

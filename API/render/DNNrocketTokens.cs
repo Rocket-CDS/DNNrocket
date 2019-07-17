@@ -487,7 +487,19 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-
+        /// <summary>
+        /// outputs the index fields required for a list, so we can process a sort order correctly.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        public IEncodedString SortableList(SimplisityInfo info, int row)
+        {
+            var strOut = "";
+            strOut += HiddenField(info, "genxml/index", "", "", false, row);
+            strOut += HiddenField(info, "genxml/lang/genxml/index", "", "", false, row);
+            return new RawString(strOut);
+        }
 
     }
 }

@@ -56,8 +56,9 @@ namespace Simplisity
 
         public void RemovedDeletedListRecords(string listName, SimplisityInfo databaseInfo, SimplisityInfo postInfo)
         {
-
             var newsortorder = new Dictionary<int, SimplisityInfo>();
+            var newupdate = new List<SimplisityInfo>();
+
             var l = postInfo.GetList(listName);
             foreach (var s in l)
             {
@@ -75,21 +76,29 @@ namespace Simplisity
                         var index = sInfo.GetXmlPropertyInt("genxml/index");
                         if (!newsortorder.ContainsKey(index))
                         {
-                            listInfoItem.Value.RemoveXmlNode("genxml/" + listName + "/genxml[index = " + index + "]");
-                            listInfoItem.Value.RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[index = " + index + "]");
+                            sInfo.RemoveXmlNode("genxml/" + listName + "/genxml[index = " + index + "]");
+                            sInfo.RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[index = " + index + "]");
                         }
+                        newupdate.Add(sInfo);
                     }
                 }
+
+                //update
+                foreach (var sInfo in newupdate)
+                {
+                    AddSimplisityInfo(sInfo, sInfo.Lang);
+                }
+
             }
         }
 
 
         public void SortListRecordsOnSave(string listName, SimplisityInfo postInfo, string editlang)
         {
-            var saveInfo = (SimplisityInfo)postInfo.Clone();
-
             // find new sort list
             var newsortorder = new Dictionary<int, SimplisityInfo>();
+            var newupdate = new List<SimplisityInfo>();
+
             var l = postInfo.GetList(listName);
             foreach (var s in l)
             {
@@ -97,32 +106,40 @@ namespace Simplisity
                 if (!newsortorder.ContainsKey(index)) newsortorder.Add(index, s);
             }
 
-            AddSimplisityInfo(saveInfo, editlang);
-
-            // all langauges.
+            // calc all languages.
             foreach (var listInfoItem in SimplisityInfoList)
             {
-                saveInfo = (SimplisityInfo)postInfo.Clone();
+                var readInfo = listInfoItem.Value;
+                if (editlang == readInfo.Lang) readInfo = (SimplisityInfo)postInfo.Clone();
+
+                var saveInfo = (SimplisityInfo)postInfo.Clone();
                 saveInfo.RemoveLangRecord();
                 saveInfo.SetLangRecord(listInfoItem.Value.GetLangRecord());
 
                 saveInfo.RemoveList(listName);
                 foreach (var s in newsortorder)
                 {
-                    var sInfo = GetListItemByIndex(listInfoItem.Value, listName, s.Key.ToString());
+                    var sInfo = GetListItemByIndex(postInfo, readInfo, listName, s.Key.ToString());
                     if (sInfo == null) sInfo = s.Value;
                     saveInfo.AddListItem(listName, sInfo);
                 }
-                AddSimplisityInfo(saveInfo, listInfoItem.Value.Lang);
+                newupdate.Add(saveInfo);
             }
+
+            //update
+            foreach (var sInfo in newupdate)
+            {
+                AddSimplisityInfo(sInfo, sInfo.Lang);
+            }
+
         }
 
-        public SimplisityInfo GetListItemByIndex(SimplisityInfo sInfo, string listName, string index)
+        public SimplisityInfo GetListItemByIndex(SimplisityInfo postInfo, SimplisityInfo sInfo, string listName, string index)
         {
-            if (sInfo.XMLDoc != null)
+            if (sInfo.XMLDoc != null && postInfo.XMLDoc != null)
             {
                 var nbi = new SimplisityInfo();
-                nbi.XMLData = "<genxml>" + sInfo.GetXmlNode("genxml/" + listName + "/genxml[index = " + index + "]") + "</genxml>";
+                nbi.XMLData = "<genxml>" + postInfo.GetXmlNode("genxml/" + listName + "/genxml[index = " + index + "]") + "</genxml>";
                 nbi.TypeCode = "LIST";
                 nbi.GUIDKey = listName;
                 var listXmlNode = sInfo.GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[index = " + index + "]");
