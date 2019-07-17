@@ -727,6 +727,123 @@ namespace Simplisity
 
         #endregion
 
+        #region "Lists"
+
+        public List<string> GetRecordLists()
+        {
+            var rtnList = new List<string>();
+
+            if (XMLDoc != null)
+            {
+                var lp = 1;
+                var listNames = XMLDoc.SelectNodes("genxml/*[@list]");
+                foreach (XmlNode i in listNames)
+                {
+                    rtnList.Add(i.Name);
+                    lp += 1;
+                }
+            }
+            return rtnList;
+        }
+
+
+        public List<SimplisityRecord> GetRecordList(string listName)
+        {
+            var rtnList = new List<SimplisityRecord>();
+
+            if (XMLDoc != null)
+            {
+                var lp = 1;
+                var listRecords = XMLDoc.SelectNodes("genxml/" + listName + "/*");
+                if (listRecords != null)
+                {
+                    foreach (XmlNode i in listRecords)
+                    {
+                        var nbi = new SimplisityRecord();
+                        nbi.XMLData = i.OuterXml;
+                        nbi.TypeCode = "LIST";
+                        nbi.GUIDKey = listName;
+                        rtnList.Add(nbi);
+                        lp += 1;
+                    }
+                }
+            }
+            return rtnList;
+        }
+
+        public void RemoveRecordList(string listName)
+        {
+            if (XMLDoc != null)
+            {
+                RemoveXmlNode("genxml/" + listName);
+            }
+        }
+
+        public void RemoveRecordListItem(string listName, int index)
+        {
+            if (XMLDoc != null && index > 0)
+            {
+                RemoveXmlNode("genxml/" + listName + "/genxml[" + index + "]");
+            }
+        }
+
+        public SimplisityRecord GetRecordListItem(string listName, int index)
+        {
+            if (XMLDoc != null)
+            {
+                var list = GetRecordList(listName);
+                return list[index];
+            }
+            return null;
+        }
+
+        public SimplisityRecord GetRecordListItem(string listName, string itemkeyxpath, string itemkey)
+        {
+            if (XMLDoc != null)
+            {
+
+                var list = GetRecordList(listName);
+                foreach (var i in list)
+                {
+                    if (itemkey == i.GetXmlProperty(itemkeyxpath))
+                    {
+                        return i;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void AddRecordListItem(string listName, SimplisityRecord sInfo)
+        {
+            if (XMLDoc != null)
+            {
+                AddListItem(listName, sInfo.XMLData);
+            }
+        }
+
+        public void AddListItem(string listName, string xmldata = "<genxml></genxml>", string xmllangdata = "<genxml></genxml>")
+        {
+            if (XMLDoc != null)
+            {
+                // get listcount, so we can add a sort value
+                var l = GetRecordList(listName);
+                var sortcount = l.Count;
+
+                if (XMLDoc.SelectSingleNode("genxml/" + listName) == null)
+                {
+                    SetXmlProperty("genxml/" + listName, "", System.TypeCode.String, false);
+                    SetXmlProperty("genxml/" + listName + "/@list", "true", System.TypeCode.String, false);
+                }
+
+                AddXmlNode(xmldata, "genxml", "genxml/" + listName);
+                SetXmlProperty("genxml/" + listName + "/genxml[position() = last()]/index", sortcount.ToString(), System.TypeCode.String, false);
+            }
+        }
+
+        #endregion 
+
+
     }
 
 }
