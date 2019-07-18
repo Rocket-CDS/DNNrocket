@@ -1,15 +1,6 @@
 ﻿<genxml>
   <hidden>
-    <theme>config-w3</theme>
-    <template>Admin_SystemDetail.cshtml</template>
-    <activevalue />
-    <pagesize>20</pagesize>
-    <page>1</page>
-    <selecteditemid>3</selecteditemid>
-    <editlanguage />
     <index>99</index>
-    <systemprovider>systemapi</systemprovider>
-    <uilang1>fr-FR</uilang1>
   </hidden>
   <textbox>
     <ctrlkey>dnnrocketmodule</ctrlkey>
@@ -29,11 +20,14 @@
         <entitytypecode>ROCKETMOD</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
+        <themeversion>1.0</themeversion>
         <defaulttemplate>view.cshtml</defaulttemplate>
         <defaultcommand>rocketmod_getdata</defaultcommand>
         <namespaceclass>RocketMod.StartConnect</namespaceclass>
         <assembly>RocketMod</assembly>
+        <databasetable />
         <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
+        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
@@ -61,11 +55,14 @@
         <entitytypecode>ROCKETMOD</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
+        <themeversion>1.0</themeversion>
         <defaulttemplate>dashboard.cshtml</defaulttemplate>
-        <defaultcommand>rocketmod_dashboard</defaultcommand>
+        <defaultcommand>dashboard_get</defaultcommand>
         <namespaceclass>RocketMod.StartConnect</namespaceclass>
         <assembly>RocketMod</assembly>
+        <databasetable />
         <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
+        <cmdfields>moduleid:[moduleid]</cmdfields>
       </textbox>
       <dropdownlist>
         <group />
@@ -93,11 +90,14 @@
         <entitytypecode>ROCKETMOD</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
+        <themeversion>1.0</themeversion>
         <defaulttemplate>edit.cshtml</defaulttemplate>
         <defaultcommand>rocketmod_edit</defaultcommand>
         <namespaceclass>RocketMod.StartConnect</namespaceclass>
         <assembly>RocketMod</assembly>
+        <databasetable />
         <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
+        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
@@ -121,15 +121,18 @@
     </genxml>
     <genxml>
       <textbox>
-        <interfacekey>fieldeditor</interfacekey>
+        <interfacekey>rocketmodfields</interfacekey>
         <entitytypecode>ROCKETMODFIELDS</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
+        <themeversion>1.0</themeversion>
         <defaulttemplate>fieldeditor.cshtml</defaulttemplate>
-        <defaultcommand>rocketsettings_edit</defaultcommand>
-        <namespaceclass>RocketSettings.StartConnect</namespaceclass>
-        <assembly>RocketSettings</assembly>
+        <defaultcommand>rocketmodfields_edit</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
         <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
+        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
@@ -153,15 +156,18 @@
     </genxml>
     <genxml>
       <textbox>
-        <interfacekey>rocketsettings</interfacekey>
-        <entitytypecode>ROCKETSETTINGS</entitytypecode>
+        <interfacekey>rocketmodsettings</interfacekey>
+        <entitytypecode>ROCKETMODSETTINGS</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
+        <themeversion>1.0</themeversion>
         <defaulttemplate>settings.cshtml</defaulttemplate>
-        <defaultcommand>rocketsettings_edit</defaultcommand>
-        <namespaceclass>RocketSettings.StartConnect</namespaceclass>
-        <assembly>RocketSettings</assembly>
+        <defaultcommand>rocketmodsettings_edit</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
         <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
+        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
@@ -220,5 +226,4 @@
       </groupsdata>
     </genxml>
   </lang>
-  <systemprovider>systemapi</systemprovider>
 </genxml>
