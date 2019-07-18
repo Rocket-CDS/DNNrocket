@@ -20,6 +20,7 @@ namespace DNNrocketAPI
             }
             Info = systemInfo;
             EventList = new List<DNNrocketInterface>();
+            InterfaceList = new Dictionary<string, DNNrocketInterface>();
             var l = Info.GetList("interfacedata");
             foreach (var r in l)
             {
@@ -28,12 +29,19 @@ namespace DNNrocketAPI
                 {
                     EventList.Add(rocketInterface);
                 }
+                InterfaceList.Add(rocketInterface.InterfaceKey, rocketInterface);
             }
         }
 
         public SimplisityInfo Info { get; }
         public List<DNNrocketInterface> EventList { get; }
         public bool Exists { get; }
+        public Dictionary<string, DNNrocketInterface> InterfaceList { get; }
+
+        public bool HasInterface(string interfaceKey)
+        {
+            return InterfaceList.ContainsKey(interfaceKey);
+        }
 
         public string SystemKey
         {
