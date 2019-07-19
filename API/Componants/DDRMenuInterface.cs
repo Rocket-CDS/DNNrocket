@@ -24,53 +24,14 @@ namespace DNNrocketAPI.Componants
                 nodeTabList += n.Text + n.TabId + "*" + n.Breadcrumb + "*";
             }
             var cachekey = "RocketPL*" + portalSettings.PortalId + "*" + DNNrocketUtils.GetCurrentCulture() + "*" + nodeTabList; // use nodeTablist incase the DDRMenu has a selector.
-            //var rtnnodes = (List<MenuNode>)CacheUtils.GetCache(cachekey);
 
-            //var debugMode = false;
-            //if (settingRecord != null)
-            //{
-            //    debugMode = settingRecord.GetXmlPropertyBool("genxml/checkbox/debugmode");
-            //}
-            //if (rtnnodes != null && !debugMode) return rtnnodes;
 
             nodes = BuildNodes(nodes, portalSettings);
-
-            //if (settingRecord != null)
-            //{
-            //    var menuproviders = settingRecord.GetXmlProperty("genxml/textbox/menuproviders");
-            //    var provlist = menuproviders.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
-            //    foreach (var p in provlist)
-            //    {
-            //        var prov = CreateProvider(p);
-            //        if (prov != null)
-            //        {
-            //            nodes = prov.ManipulateNodes(nodes, portalSettings);
-            //        }
-            //    }
-            //}
-
             CacheUtils.SetCache(cachekey, nodes);
             return nodes;
         }
 
-        //private static INodeManipulator CreateProvider(string providerAssembyClass)
-        //{
-        //    if (!string.IsNullOrEmpty(providerAssembyClass))
-        //    {
-        //        var prov = providerAssembyClass.Split(Convert.ToChar(","));
-        //        try
-        //        {
-        //            var handle = Activator.CreateInstance(prov[1], prov[0]);
-        //            return (INodeManipulator)handle.Unwrap();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            // Error in provider is invalid provider, so remove from providerlist.
-        //            return null;
-        //        }
-        //    }
-        //    return null;
-        //}
+
 
         private List<MenuNode> BuildNodes(List<MenuNode> nodes, PortalSettings portalSettings)
         {
@@ -84,10 +45,15 @@ namespace DNNrocketAPI.Componants
                     var dataRecordLang =  DNNrocketUtils.GetCurrentCulture();
                     if (dataRecordLang != null)
                     {
-                        n.Text = dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/pagename");
-                        n.Keywords = dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/tagwords");
-                        n.Title = dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/pagetitle");
-                        n.Description = dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/description");
+                        
+                        if(dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/pagename") != "")
+                            n.Text = dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/pagename");
+                        if (dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/tagwords") != "")
+                            n.Keywords = dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/tagwords");
+                        if (dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/pagetitle") != "")
+                            n.Title = dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/pagetitle");
+                        if (dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/description") != "")
+                            n.Description = dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/description");
 
                         if (n.Children.Count > 0) BuildNodes(n.Children, portalSettings);
                     }

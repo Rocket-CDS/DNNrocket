@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dnn.Modules.Tabs">
+      <HintPath>..\..\..\..\rocketestarea\bin\Dnn.Modules.Tabs.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke">
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
