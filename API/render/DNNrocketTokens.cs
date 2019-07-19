@@ -101,7 +101,7 @@ namespace DNNrocketAPI.render
             {
                 text = ResourceKey("DNNrocket.download").ToString();
             }
-            var strOut = "<a " + attributes + " href='/DesktopModules/DNNrocket/api/api2.ashx?cmd=downloadfile&fileindex=" + row + "&itemid=" + ItemId + "&fieldid=" + fieldId + "'>" + text + "</a>";
+            var strOut = "<a " + attributes + " href='/DesktopModules/DNNrocket/api/downloadfile.ashx?fileindex=" + row + "&itemid=" + ItemId + "&fieldid=" + fieldId + "'>" + text + "</a>";
             return new RawString(strOut);
         }
 
