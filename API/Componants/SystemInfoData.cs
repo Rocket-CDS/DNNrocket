@@ -7,7 +7,23 @@ namespace DNNrocketAPI
 {
     public class SystemInfoData
     {
+        public SystemInfoData(string systemKey)
+        {
+            var objCtrl = new DNNrocketController();
+            var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemKey);
+            InitSystem(systemInfo);
+        }
+        public SystemInfoData(int systemId)
+        {
+            var objCtrl = new DNNrocketController();
+            var systemInfo = objCtrl.GetInfo(systemId);
+            InitSystem(systemInfo);
+        }
         public SystemInfoData(SimplisityInfo systemInfo)
+        {
+            InitSystem(systemInfo);
+        }
+        private void InitSystem(SimplisityInfo systemInfo)
         {
             if (systemInfo == null)
             {
@@ -20,6 +36,8 @@ namespace DNNrocketAPI
             }
             Info = systemInfo;
             EventList = new List<DNNrocketInterface>();
+            InterfaceList = new Dictionary<string, DNNrocketInterface>();
+            Settings = new Dictionary<string, string>();
             var l = Info.GetList("interfacedata");
             foreach (var r in l)
             {
@@ -28,12 +46,31 @@ namespace DNNrocketAPI
                 {
                     EventList.Add(rocketInterface);
                 }
+                InterfaceList.Add(rocketInterface.InterfaceKey, rocketInterface);
+            }
+            var l2 = Info.GetList("settingsdata");
+            foreach (var s in l2)
+            {
+                var key = s.GetXmlProperty("genxml/textbox/name");
+                if (key != "" && !Settings.ContainsKey(key)) Settings.Add(key, s.GetXmlProperty("genxml/textbox/value"));
             }
         }
 
-        public SimplisityInfo Info { get; }
-        public List<DNNrocketInterface> EventList { get; }
-        public bool Exists { get; }
+        public SimplisityInfo Info { get; set; }
+        public List<DNNrocketInterface> EventList { get; set;}
+        public bool Exists { get; set; }
+        public Dictionary<string, DNNrocketInterface> InterfaceList { get; set; }
+        public Dictionary<string, string> Settings { get; set; }
+        public string GetSetting(string key)
+        {
+            if (Settings.ContainsKey(key)) return Settings[key];
+            return "";
+        }
+
+        public bool HasInterface(string interfaceKey)
+        {
+            return InterfaceList.ContainsKey(interfaceKey);
+        }
 
         public string SystemKey
         {

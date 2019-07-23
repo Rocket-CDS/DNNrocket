@@ -96,8 +96,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="api2.ashx.cs">
-      <DependentUpon>api2.ashx</DependentUpon>
+    <Compile Include="downloadfile.ashx.cs">
+      <DependentUpon>downloadfile.ashx</DependentUpon>
     </Compile>
     <Compile Include="Componants\AppTheme.cs" />
     <Compile Include="Componants\CommandSecurity.cs" />
@@ -146,7 +146,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="api2.ashx" />
+    <None Include="downloadfile.ashx" />
     <None Include="api.ashx" />
     <None Include="BuildScripts\build.bat" />
     <None Include="BuildScripts\ModulePackage.targets">
