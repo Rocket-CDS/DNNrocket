@@ -195,12 +195,13 @@
             <p>
                 Options can also be passed.  {systemprovider: 'dnnrocket',usehistory: false,activatepanel: true, overlayclass: 'w3-overlay'}.<br />
                 <br />
-                <i>systemprovider:</i> You can pass a default systemprovider to use if non are specifiecd on the simplisity_panel.  Very often simplisity is used for a single systemprovider page, this stops the need to specify the systemprovider on each simplisity_panel.<br />
-                <i>usehistory:</i> Do not use any history on page refresh.  Simplisity keeps a history of the last action, when the page is refreshed the last action is rerun to leave the users in the same position they refreshed the page in.<br />
-                <i>activatepanel:</i> Activate the simplsity_panels.  Default:true<br />
-                <i>overlayclass:</i> Defines a overlayclass to use, for when the server is called. Default:'w3-overlay'<br />
+                <b>systemprovider:</b> You can pass a default systemprovider to use if non are specifiecd on the simplisity_panel.  This stops the need to specify the systemprovider on each simplisity_panel.<br />
+                <b>usehistory:</b> Use history on page refresh.  Simplisity keeps a history of the last action, when the page is refreshed the last action is rerun to leave the users in the same position they refreshed the page in.<br />
+                <b>trackgroup:</b> When using history, the tracking can be grouped by using this setting.  This helps if a user has admin access and is also using the front office.  We do not want the admin commands to be displayed on the front office page, we can use this setting to seperate admin commands and frontoffice commands.<br />
+                <b>activatepanel:</b> Activate the simplsity_panels.  Default:true<br />
+                <b>overlayclass:</b> Defines a overlayclass to use, for when the server is called. Default:'w3-overlay'<br />
             </p>
-            <i>Exmaple:</i>
+            <i>Example:</i><br/>
             $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { usehistory: false });
             <hr />
 
@@ -326,12 +327,12 @@
                     <td>Identifies the next edit langauge to be activated.  This is set before an edit langauge changed, the data is saved in the current edit langauge and then the edit language is changed to the nextlang cookie and the nextlang cookie is cleared.</td>
                 </tr>
                 <tr>
-                    <td>s-cmd-menu-<i>systemprovider</i></td>
-                    <td>Is the last s-cmd to be tracked when using the s-track attribute.  This then used to call the last tracked command on page refresh.</td>
+                    <td>s-cmd-menu-<i>trackgroup</i></td>
+                    <td>Is the last s-cmd to be tracked when using the s-track attribute.  This is then used to call the last tracked command on page refresh.</td>
                 </tr>
                 <tr>
-                    <td>s-fields-menu-<i>systemprovider</i></td>
-                    <td>Is the last s-field to be tracked when using the s-track attribute.  This then used to call the last tracked command on page refresh.</td>
+                    <td>s-fields-menu-<i>trackgroup</i></td>
+                    <td>Is the last s-field to be tracked when using the s-track attribute.  This is then used to call the last tracked command on page refresh.</td>
                 </tr>
                 <tr>
                     <td>s-tabname</td>

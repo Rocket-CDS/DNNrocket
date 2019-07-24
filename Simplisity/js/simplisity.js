@@ -1,6 +1,7 @@
 ﻿
 var ajaxPostCmd = [];
 var debugmode = false;
+var trackgroup = '';
 
 (function ($) {
 
@@ -38,10 +39,12 @@ var debugmode = false;
             activatepanel: true,
             overlayclass: 'w3-overlay',
             usehistory: true,
-            debug: false
+            debug: false,
+            trackgroup: ''
         }, options);
 
         debugmode = settings.debug;
+        trackgroup = settings.trackgroup + settings.systemprovider;
 
         $('#simplisity_loader').remove();
         $('#simplisity_fileuploadlist').remove();
@@ -62,9 +65,9 @@ var debugmode = false;
         document.body.appendChild(elem);
 
         var iframeedit = simplisity_getCookieValue('s-edit-iframeedit');
-        var scmd = simplisity_getCookieValue('s-cmd-menu-' + settings.systemprovider);
-        var sfields = simplisity_getCookieValue('s-fields-menu-' + settings.systemprovider);
-        if (scmd !== '' && settings.usehistory === true && iframeedit === '') {
+        var scmd = simplisity_getCookieValue('s-cmd-menu-' + trackgroup);
+        var sfields = simplisity_getCookieValue('s-fields-menu-' + trackgroup);
+        if ((typeof strack !== 'undefined' || scmd !== '') && settings.usehistory === true && iframeedit === '') {
             $('#simplisity_startpanel').removeAttr('s-cmd');
             $('#simplisity_startpanel').removeAttr('s-fields');
             $('#simplisity_startpanel').attr('s-cmd', scmd);
@@ -103,6 +106,17 @@ function panelAjaxFunction(panelelement) {
             console.log('[panelAjaxFunction()] s-cmd: ', $(panelelement).attr('s-cmd'));
         }
     }
+}
+
+function IsValidTrackCmd(cmd) {
+    var tcmd = $('#simplisity_validtrackcmd').val();
+    if (tcmd === ',,') {
+        return true;
+    }
+    if (tcmd.includes(',' + cmd + ',')) {
+        return true;
+    }
+    return false;
 }
 
 
@@ -166,23 +180,29 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
         reload = 'false';
     }
 
-    if (typeof strack !== 'undefined' && strack === 'true') {
-        if (typeof strackcmd === 'undefined' || strackcmd === '') {
-            strackcmd = scmd;
-        }
-        simplisity_setCookieValue('s-cmd-menu-' + systemprovider, strackcmd);
-        simplisity_setCookieValue('s-fields-menu-' + systemprovider, sfields);
-    }
-
-    if (typeof strack !== 'undefined' && strack === 'clear') {
-        simplisity_setCookieValue('s-cmd-menu-' + systemprovider, '');
-        simplisity_setCookieValue('s-fields-menu-' + systemprovider, '');
-    }
-
     var cmdupdate = scmdurl + '?cmd=' + scmd + '&systemprovider=' + simplisity_encode(systemprovider);
 
     var jsonData = ConvertFormToJSON(spost, slist);
     var jsonParam = ConvertParamToJSON(sfields);
+
+    if (typeof strack !== 'undefined' && strack === 'true') {
+        if (typeof strackcmd === 'undefined' || strackcmd === '') {
+            strackcmd = scmd;
+        }
+        simplisity_setCookieValue('s-cmd-menu-' + trackgroup, strackcmd);
+        sfieldjson = JSON.parse(jsonParam);
+        dataArray = sfieldjson['sfield'].map(function (e) {
+            return JSON.stringify(e);
+        });
+        dataString = dataArray.join(",");
+        simplisity_setCookieValue('s-fields-menu-' + trackgroup, dataString);
+    }
+
+    if (typeof strack !== 'undefined' && strack === 'clear') {
+        simplisity_setCookieValue('s-cmd-menu-' + trackgroup, '');
+        simplisity_setCookieValue('s-fields-menu-' + trackgroup, '');
+    }
+
 
     if ((typeof sdropdownlist !== 'undefined') && sdropdownlist !== '') {
 
@@ -289,6 +309,9 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
         if (typeof scmdurl === 'undefined' || scmdurl === '') {
             scmdurl = cmdurl;
         }
+        if (typeof scmdurl === 'undefined' || scmdurl === '') {
+            scmdurl = $('#simplisity_cmdurl').val();
+        }
 
         var sreturn = $(element).attr("s-return");
         if (typeof sreturn === 'undefined') {
@@ -313,10 +336,6 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
         var strackcmd = $(element).attr("s-track-cmd");
         var shideloader = $(element).attr("s-hideloader");
         var sdropdownlist = $(element).attr("s-dropdownlist");
-
-        if (typeof scmdurl === 'undefined' || scmdurl === '') {
-            scmdurl = $('#simplisity_cmdurl').val();
-        }
 
         if (typeof scmd !== 'undefined' && scmd !== '') {
 
