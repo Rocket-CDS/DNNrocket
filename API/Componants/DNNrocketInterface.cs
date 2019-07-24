@@ -47,6 +47,11 @@ namespace DNNrocketAPI
             }
         }
 
+        public bool HasProvider(string providerType)
+        {
+            return Info.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[data='"+ providerType + "']/@value");
+        }
+
         public SimplisityInfo Info { get; }
 
         public bool Exists { get; }
@@ -110,11 +115,6 @@ namespace DNNrocketAPI
         {
             get { return Info.GetXmlPropertyBool("genxml/checkbox/cache"); }
             set { Info.SetXmlProperty("genxml/checkbox/cache", value.ToString()); }
-        }
-        public bool IsProvider
-        {
-            get { return Info.GetXmlPropertyBool("genxml/checkbox/providertype"); }
-            set { Info.SetXmlProperty("genxml/checkbox/providertype", value.ToString()); }
         }
         public string DatabaseTable
         {

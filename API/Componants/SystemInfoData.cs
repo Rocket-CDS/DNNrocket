@@ -42,7 +42,7 @@ namespace DNNrocketAPI
             foreach (var r in l)
             {
                 var rocketInterface = new DNNrocketInterface(r);
-                if (rocketInterface.IsProvider && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                if (rocketInterface.HasProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
                 {
                     EventList.Add(rocketInterface);
                 }
