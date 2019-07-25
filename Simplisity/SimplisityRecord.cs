@@ -822,7 +822,7 @@ namespace Simplisity
             }
         }
 
-        public void AddListItem(string listName, string xmldata = "<genxml></genxml>", string xmllangdata = "<genxml></genxml>")
+        public void AddListItem(string listName, string xmldata = "<genxml></genxml>")
         {
             if (XMLDoc != null)
             {

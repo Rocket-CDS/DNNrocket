@@ -42,7 +42,7 @@ namespace DNNrocketAPI
             foreach (var r in l)
             {
                 var rocketInterface = new DNNrocketInterface(r);
-                if (rocketInterface.HasProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                if (rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
                 {
                     EventList.Add(rocketInterface);
                 }
@@ -70,6 +70,13 @@ namespace DNNrocketAPI
         public bool HasInterface(string interfaceKey)
         {
             return InterfaceList.ContainsKey(interfaceKey);
+        }
+
+        public DNNrocketInterface GetInterface(string interfaceKey)
+        {
+            var s = Info.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfaceKey);
+            if (s == null) return null;
+            return new DNNrocketInterface(s);
         }
 
         public string SystemKey

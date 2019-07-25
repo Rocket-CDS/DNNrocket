@@ -47,9 +47,9 @@ namespace DNNrocketAPI
             }
         }
 
-        public bool HasProvider(string providerType)
+        public bool IsProvider(string providerType)
         {
-            return Info.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[data='"+ providerType + "']/@value");
+            return Info.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='"+ providerType + "']/@value");
         }
 
         public SimplisityInfo Info { get; }
