@@ -42,13 +42,19 @@ namespace DNNrocketAPI
             return rtnDic;
         }
 
-        public static Dictionary<string,Locale> GetEnabledLanguages()
+        public static List<string> GetEnabledLanguages()
         {
             if (PortalSettings.Current == null)
             {
-                return new Dictionary<string, Locale>();
+                return new List<string>();
             }
-            return LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
+            var rtnList = new List<string>();
+            var l = LocaleController.Instance.GetLocales(PortalSettings.Current.PortalId);
+            foreach (var i in l )
+            {
+                rtnList.Add(i.Key);
+            }
+            return rtnList;
         }
 
 
