@@ -145,19 +145,9 @@ function simplisity_nbxgetCompleted(e) {
         location.reload();
     }
 
-    // show any button menus defined.
-    if ($('.simplisity_buttons').length >= 1) {
-        $('.simplisity_buttonpanel').empty();
-        $('.simplisity_buttons').appendTo('.simplisity_buttonpanel');
-        $('.simplisity_buttons').show();
-        $('.simplisity_buttonpanel > .simplisity_buttons').removeClass('simplisity_buttons');
-    }
-
     // clear any uploaded files after completed call
     $('input[id*="simplisity_fileuploadlist"]').val('');
-
-
-
+       
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
         console.log('-------END AJAX CALL------- ');
