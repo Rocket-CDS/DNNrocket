@@ -241,19 +241,20 @@ namespace DNNrocketAPI
 
                 var systemData = new SystemData();
                 var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+                var systemInfoData = new SystemInfoData(sInfoSystem);
                 var sidemenu = new Componants.SideMenu(sInfoSystem);
                 var templateControlRelPath = sInfo.GetXmlProperty("genxml/hidden/relpath");
                 sidemenu.ModuleId = moduleid;
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(),"1.0", systemInfoData.DebugMode);
 
                 if (razorTempl == "")
                 {
                     // no razor template for sidemenu, so use default.
-                    razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                    razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", systemInfoData.DebugMode);
                 }
 
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, sidemenu, passSettings);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, sidemenu, passSettings, null, systemInfoData.DebugMode);
 
                 return strOut;
             }

@@ -297,8 +297,8 @@
   <data name="cmdStartButton.Text" xml:space="preserve">
     <value>&lt;i  title="Start" class="fas fa-play fa-fw fa-lg"&gt;&lt;/i&gt; Start</value>
   </data>
-  <data name="cmdSignOutButton.Text" xml:space="preserve">
-    <value>&lt;i title="Sign Out" class="fas fa-sign-out-alt fa-fw fa-lg"&gt;&lt;/i&gt; SignOut</value>
+  <data name="signout.Text" xml:space="preserve">
+    <value>SignOut</value>
   </data>
   <data name="cmdAdmin.Text" xml:space="preserve">
     <value>Admin</value>
