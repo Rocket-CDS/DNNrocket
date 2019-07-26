@@ -1,0 +1,42 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+<div id="languageselect" class="w3-modal">
+    <div class="w3-modal-content">
+
+        <header class="w3-theme-d5 w3-center" style="height: 38px;">
+            <span onclick="dnnrocketimages_closethelist();" class="w3-button w3-display-topright">&times;</span>
+            <h4>@ResourceKey("DNNrocket.imagesfolder"):&nbsp; @Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")</h4>
+        </header>
+               <div id="languageselectlist" class="w3-container">
+                @{
+                    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+                    foreach (var l in enabledlanguages)
+                    {
+                        var imageclass = "";
+                        if (DNNrocketUtils.GetEditCulture() == l)
+                        {
+                            imageclass = "w3-border-top w3-border-theme";
+                        }
+                        <a href='javascript:void(0);' class='w3-margin-right " + @imageclass + " selectlang' editlang='" + l + "'>
+                        <img class='' src='/DesktopModules/DNNrocket/API/images/flags/32/" + @l + ".png' alt='" + l + "' />
+                        </a>
+                    }
+                }
+            </div>
+    </div>
+</div>
+
+<script>
+
+
+    $(document).ready(function () {
+
+
+    });
+
+
+</script>
