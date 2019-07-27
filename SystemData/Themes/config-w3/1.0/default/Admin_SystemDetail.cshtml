@@ -9,68 +9,66 @@
     var sInfo = (SimplisityInfo)Model.List.First();
 }
 
-<span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-    <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_admin_save" s-fields='{"selecteditemid":"@(sInfo.ItemID)","theme":"config-w3","template":"Admin_SystemDetail.cshtml"}'  s-post="#pluginsdatasection" s-list=".interfacedata,.idxfielddata,.settingsdata,.groupsdata,.provtypesdata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="systemapi_admin_delete" s-fields='{"selecteditemid":"@(sInfo.ItemID)"}'   s-post="#pluginsdatasection" s-return="#simplisity_startpanel" s-after="reloadpluginlist">@ResourceKey("DNNrocket.cmdDeleteButton")</span>
-    <span class="w3-button w3-sand w3-padding-8 simplisity_click" s-cmd="systemapi_admin_getsystemlist" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdReturnButton")</span>
-</span>
-
-
-
-<div class="w3-container">
-
     <div class="w3-container">
-        <h2>@sInfo.GetXmlProperty("genxml/textbox/systemname")</h2>
 
-        <div class="w3-row">
-            <a href="javascript:void(0)" onclick="openSection(event, 'pluginsdatasection');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding w3-border-blue w3-light-blue " style="width:15%"><i class="fas fa-home"></i>&nbsp;@ResourceKey("system.systemdata")</div>
-            </a>
-            <a href="javascript:void(0)" onclick="openSection(event, 'Groups');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-cubes"></i>&nbsp;@ResourceKey("system.menugroups")</div>
-            </a>
-            <a href="javascript:void(0)" onclick="openSection(event, 'provtypes');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-handshake-o"></i>&nbsp;@ResourceKey("system.provtypes")</div>
-            </a>
-            <a href="javascript:void(0)" onclick="openSection(event, 'Interface');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-link"></i>&nbsp;@ResourceKey("system.interfaces")</div>
-            </a>
-            <a href="javascript:void(0)" onclick="openSection(event, 'parameters');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-indent"></i>&nbsp;@ResourceKey("system.idxfield")</div>
-            </a>
-            <a href="javascript:void(0)" onclick="openSection(event, 'settings');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-cog"></i>&nbsp;@ResourceKey("system.settings")</div>
-            </a>
+        <div class="w3-row w3-border w3-theme-l5 w3-padding">
+            <div class="w3-col m2 w3-button w3-green w3-margin-left simplisity_click" s-cmd="systemapi_admin_save" s-fields='{"selecteditemid":"@(sInfo.ItemID)","theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-post="#pluginsdatasection" s-list=".interfacedata,.idxfielddata,.settingsdata,.groupsdata,.provtypesdata">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+            <div class="w3-col m2 w3-button w3-red w3-margin-left simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="systemapi_admin_delete" s-fields='{"selecteditemid":"@(sInfo.ItemID)"}' s-post="#pluginsdatasection" s-return="#simplisity_startpanel" s-after="reloadpluginlist">@ResourceKey("DNNrocket.cmdDeleteButton")</div>
+            <div class="w3-col m2 w3-button w3-sand w3-margin-left simplisity_click" s-cmd="systemapi_admin_getsystemlist" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdReturnButton")</div>
         </div>
 
-        <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
-        <div id="pluginsdatasection" class="w3-container w3-margin tabsection" style="display:block;">
-            @RenderTemplate("Admin_SystemDetailData.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model)
-        </div>
+        <div class="w3-container w3-margin-top">
+            <h2>@sInfo.GetXmlProperty("genxml/textbox/systemname")</h2>
 
-        <div id="Groups" class="w3-container tabsection" style="display:none">
-            @RenderTemplate("Admin_SystemDetailGroups.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model)
-        </div>
+            <div class="w3-row">
+                <a href="javascript:void(0)" onclick="openSection(event, 'pluginsdatasection');">
+                    <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding w3-border-blue w3-light-blue " style="width:15%"><i class="fas fa-home"></i>&nbsp;@ResourceKey("system.systemdata")</div>
+                </a>
+                <a href="javascript:void(0)" onclick="openSection(event, 'Groups');">
+                    <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-cubes"></i>&nbsp;@ResourceKey("system.menugroups")</div>
+                </a>
+                <a href="javascript:void(0)" onclick="openSection(event, 'provtypes');">
+                    <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-handshake-o"></i>&nbsp;@ResourceKey("system.provtypes")</div>
+                </a>
+                <a href="javascript:void(0)" onclick="openSection(event, 'Interface');">
+                    <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-link"></i>&nbsp;@ResourceKey("system.interfaces")</div>
+                </a>
+                <a href="javascript:void(0)" onclick="openSection(event, 'parameters');">
+                    <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-indent"></i>&nbsp;@ResourceKey("system.idxfield")</div>
+                </a>
+                <a href="javascript:void(0)" onclick="openSection(event, 'settings');">
+                    <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-cog"></i>&nbsp;@ResourceKey("system.settings")</div>
+                </a>
+            </div>
 
-        <div id="provtypes" class="w3-container tabsection" style="display:none">
-            @RenderTemplate("Admin_SystemDetailProvType.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model)
-        </div>
+            <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+            <div id="pluginsdatasection" class="w3-container w3-margin tabsection" style="display:block;">
+                @RenderTemplate("Admin_SystemDetailData.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model)
+            </div>
 
-        <div id="Interface" class="w3-container tabsection" style="display:none">
-            @RenderTemplate("Admin_SystemDetailInterfaces.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model)
-        </div>
+            <div id="Groups" class="w3-container tabsection" style="display:none">
+                @RenderTemplate("Admin_SystemDetailGroups.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model)
+            </div>
 
-        <div id="parameters" class="w3-container tabsection" style="display:none">
-            @RenderTemplate("Admin_SystemDetailIdxFields.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model)
-        </div>
+            <div id="provtypes" class="w3-container tabsection" style="display:none">
+                @RenderTemplate("Admin_SystemDetailProvType.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model)
+            </div>
 
-        <div id="settings" class="w3-container tabsection" style="display:none">
-            @RenderTemplate("Admin_SystemDetailSettings.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model)
+            <div id="Interface" class="w3-container tabsection" style="display:none">
+                @RenderTemplate("Admin_SystemDetailInterfaces.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model)
+            </div>
+
+            <div id="parameters" class="w3-container tabsection" style="display:none">
+                @RenderTemplate("Admin_SystemDetailIdxFields.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model)
+            </div>
+
+            <div id="settings" class="w3-container tabsection" style="display:none">
+                @RenderTemplate("Admin_SystemDetailSettings.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model)
+            </div>
+
         </div>
 
     </div>
-
-</div>
 
 
 <script type="text/javascript">

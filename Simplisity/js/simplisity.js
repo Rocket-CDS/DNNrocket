@@ -158,6 +158,8 @@ function simplisity_nbxgetCompleted(e) {
 
     panelAjaxFunction(ajaxPostCmd[ajaxPostCmd.length - 1]);
 
+    $('.simplisity_fadeout').fadeOut(2000);
+
  }
 
 function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, strack, sdropdownlist, reload, strackcmd) {

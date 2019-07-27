@@ -339,6 +339,26 @@ namespace DNNrocketAPI
         }
 
 
+        public static Dictionary<string,string> GetCultureCodeNameList(int portalId = -1)
+        {
+            var rtnList = new Dictionary<string, string>();
+            if (portalId == -1 && PortalSettings.Current != null) portalId = PortalSettings.Current.PortalId;
+            if (portalId != -1)
+            {
+                var enabledLanguages = LocaleController.Instance.GetLocales(portalId);
+                foreach (KeyValuePair<string, Locale> kvp in enabledLanguages)
+                {
+                    rtnList.Add(kvp.Value.Code, kvp.Value.NativeName);
+                }
+            }
+            return rtnList;
+        }
+        public static string GetCultureCodeName(string cultureCode)
+        {
+            var d = GetCultureCodeNameList();
+            if (!d.ContainsKey(cultureCode)) return "";
+            return d[cultureCode];
+        }
 
         public static List<string> GetCultureCodeList(int portalId = -1)
         {

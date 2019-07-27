@@ -5,47 +5,45 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 
 
-<div class="w3-container">
+    <div class="w3-container">
 
-    <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-        <span class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_adminaddnew" s-fields='{"theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdAddButton")</span>
-        <span class="w3-right">
-            <span class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-cmd="systemapi_clearallcache" s-confirm="@ResourceKey("DNNrocket.cmdClearCache","","confirm")"  s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdClearCacheButton")</span>
-            <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="login_signout" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdSignOutButton")</span>
-        </span>
-    </span>
-
-    <div class="w3-row-padding plugins">
-
-        <div class="w3-card">
-            <header class="w3-container w3-blue">
-                <h5>@ResourceKey("system.systems")</h5>
-            </header>
-
-            <table class="w3-table w3-table-all">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach (SimplisityInfo nbi in Model.List)
-                    {
-                        <tr>
-                            <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/systemname")</td>
-                            <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/ctrlkey")</td>
-                            <td>
-                                <a class="simplisity_click" s-cmd="systemapi_admin_getdetail" s-fields='{"selecteditemid":"@nbi.ItemID","theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
-                            </td><!-- editlink class added to show processing -->
-                        </tr>
-                    }
-
-                </tbody>
-            </table>
+        <div class="w3-row w3-border w3-theme-l5 w3-padding">
+            <div class="w3-col m2 w3-button w3-teal w3-margin-left simplisity_click" s-cmd="systemapi_adminaddnew" s-fields='{"theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdAddButton")</div>
+            <div class="w3-col m2 w3-button w3-orange w3-margin-left simplisity_confirmclick" s-cmd="systemapi_clearallcache" s-confirm="@ResourceKey("DNNrocket.cmdClearCache","","confirm")" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdClearCacheButton")</div>
+            <div class="w3-col m2 w3-button w3-green w3-margin-left simplisity_click" s-cmd="login_signout" s-return="#simplisity_startpanel"><i class="fas fa-sign-out-alt"></i>&nbsp;@ResourceKey("DNNrocket.signout")</div>
         </div>
 
+        <div class="w3-row-padding plugins w3-margin-top">
+
+            <div class="w3-card">
+                <header class="w3-container w3-blue">
+                    <h5>@ResourceKey("system.systems")</h5>
+                </header>
+
+                <table class="w3-table w3-table-all">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (SimplisityInfo nbi in Model.List)
+                        {
+                            <tr>
+                                <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/systemname")</td>
+                                <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/ctrlkey")</td>
+                                <td>
+                                    <a class="simplisity_click" s-cmd="systemapi_admin_getdetail" s-fields='{"selecteditemid":"@nbi.ItemID","theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
+                                </td><!-- editlink class added to show processing -->
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
-</div>
