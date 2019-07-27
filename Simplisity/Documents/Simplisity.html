@@ -199,10 +199,11 @@
                 <b>usehistory:</b> Use history on page refresh.  Simplisity keeps a history of the last action, when the page is refreshed the last action is rerun to leave the users in the same position they refreshed the page in.<br />
                 <b>trackgroup:</b> When using history, the tracking can be grouped by using this setting.  This helps if a user has admin access and is also using the front office.  We do not want the admin commands to be displayed on the front office page, we can use this setting to seperate admin commands and frontoffice commands.<br />
                 <b>activatepanel:</b> Activate the simplsity_panels.  Default:true<br />
-                <b>overlayclass:</b> Defines a overlayclass to use, for when the server is called. Default:'w3-overlay'<br />
+                <b>overlayclass:</b> Defines a overlayclass to use, for when the server is called. Default: w3-overlay<br />
+                <b>debug:</b> Puts the JS in debug mode.  The browser console log will contain data to help debuging.<br />                
             </p>
-            <i>Example:</i><br/>
-            $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { usehistory: false });
+            <i>Example:</i><br />
+            $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'rocketexample', usehistory: true, overlayclass:'w3-overlay w3-theme' });;
             <hr />
 
             <p><b>$('#mycontainer').activateSimplisityPanel()</b></p>

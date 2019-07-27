@@ -12,105 +12,114 @@
     {
         clist.Add(i.GetXmlProperty("genxml/hidden/countrycode"));
     }
+    var animate = "w3-animate-bottom";
+    if (Model.GetSettingBool("stopanimate"))
+    {
+        animate = "";
+    }
 }
 
-    <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-        <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="settingcountry_save" s-list=".countrylist" s-fields='{"theme":"config-w3","template":"CountrySettings.cshtml","interfacekey":"settingcountry"}'>@ResourceKey("DNNrocket.cmdSaveButton")</span>
-    </span>
+    <div class="w3-row w3-border w3-theme-l5 w3-padding">
+        <div class="w3-col m2 w3-button w3-green w3-margin-left simplisity_click" s-cmd="settingcountry_save" s-list=".countrylist" s-track="false" s-fields='{"stopanimate":"true"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+        @if (Model.GetSettingBool("saved"))
+        {
+            <i class='fas fa-save w3-right'></i>
+        }
+    </div>
 
 
-    <div class="w3-container w3-animate-bottom">
+<div class="w3-container @animate">
 
-        <div class="w3-container">
-            <h2>@ResourceKey("country.countrysettings")</h2>
+    <div class="w3-container">
+        <h2>@ResourceKey("country.countrysettings")</h2>
 
-            <div class="w3-row">
-                <a href="javascript:void(0)" onclick="">
-                    <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding w3-border-blue w3-light-blue " style="width:20%"><i class="fas fa-home"></i>&nbsp;@ResourceKey("country.country")</div>
-                </a>
-            </div>
+        <div class="w3-row">
+            <a href="javascript:void(0)" onclick="">
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding w3-border-blue w3-light-blue " style="width:20%"><i class="fas fa-home"></i>&nbsp;@ResourceKey("country.country")</div>
+            </a>
+        </div>
 
-            <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
-            <div id="countrydata" class="w3-container w3-margin tabsection" style="display:block;">
+        <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+        <div id="countrydata" class="w3-container w3-margin tabsection" style="display:block;">
 
-                <div class="w3-row wrapperheight">
-                    <div class="w3-threequarter">
-                        <b>@ResourceKey("country.selectcountry")</b>
-                        <input class="w3-check  checkall" type="checkbox" value="ALL">
-                        <div class="w3-row">
-                            @{
-                                var llist = DNNrocketUtils.GetCountryCodeList();
-                            }
-                            @foreach (var l in llist)
+            <div class="w3-row wrapperheight">
+                <div class="w3-threequarter">
+                    <b>@ResourceKey("country.selectcountry")</b>
+                    <input class="w3-check  checkall" type="checkbox" value="ALL">
+                    <div class="w3-row">
+                        @{
+                            var llist = DNNrocketUtils.GetCountryCodeList();
+                        }
+                        @foreach (var l in llist)
+                        {
+                            var checkvar = "";
+                            if (clist.Contains(l.Key))
                             {
-                                var checkvar = "";
-                                if (clist.Contains(l.Key))
-                                {
-                                    checkvar = "checked='checked'";
-                                }
-                                <div class="w3-col m4">
-                                    <input class="w3-check countrycheckbox" s-update="save" type="checkbox" @checkvar value="@l.Key" name="@l.Value">
-                                    <label>@l.Value</label>
-                                </div>
+                                checkvar = "checked='checked'";
                             }
-                        </div>
-                    </div>
-                    <div class="w3-quarter countrydata">
-                        <b>@ResourceKey("country.selectedcountries")</b>
-                        <ul id="sortable" class="w3-ul w3-border w3-theme-l3">
-                            @foreach (var i in info.GetList("countrylist"))
-                            {
-                                <li class="countrylist" countrycode="@i.GetXmlProperty("genxml/hidden/countrycode")">@DNNrocketUtils.GetCountryName(i.GetXmlProperty("genxml/hidden/countrycode"))<input id="countrycode" type="hidden" value="@i.GetXmlProperty("genxml/hidden/countrycode")"></li>
-                            }
-                        </ul>
-
+                            <div class="w3-col m4">
+                                <input class="w3-check countrycheckbox" s-update="save" type="checkbox" @checkvar value="@l.Key" name="@l.Value">
+                                <label>@l.Value</label>
+                            </div>
+                        }
                     </div>
                 </div>
+                <div class="w3-quarter countrydata">
+                    <b>@ResourceKey("country.selectedcountries")</b>
+                    <ul id="sortable" class="w3-ul w3-border w3-theme-l3">
+                        @foreach (var i in info.GetList("countrylist"))
+                        {
+                            <li class="countrylist" countrycode="@i.GetXmlProperty("genxml/hidden/countrycode")">@DNNrocketUtils.GetCountryName(i.GetXmlProperty("genxml/hidden/countrycode"))<input id="countrycode" type="hidden" value="@i.GetXmlProperty("genxml/hidden/countrycode")"></li>
+                        }
+                    </ul>
 
-
+                </div>
             </div>
+
 
         </div>
 
     </div>
 
+</div>
 
-    <script type="text/javascript">
 
-        $(document).ready(function () {
+<script type="text/javascript">
 
-            $("#sortable").sortable();
-            $("#sortable").disableSelection();
+    $(document).ready(function () {
 
-            $('.countrycheckbox').unbind('click');
-            $('.countrycheckbox').click(function () {
-                if ($(this).is(':checked')) {
-                    $('#sortable').append("<li class='countrylist' countrycode='" + $(this).val() + "'>" + $(this).attr('name') + "<input id='countrycode' type='hidden' value='" + $(this).val() + "' /></li>")
-                }
-                else {
-                    $('#sortable li[countrycode="' + $(this).val() + '"]').remove();
-                }
-            });
+        $("#sortable").sortable();
+        $("#sortable").disableSelection();
 
-            $('.checkall').unbind('click');
-            $('.checkall').click(function () {
-                if ($(this).is(':checked')) {
-                    $('.countrycheckbox').each(function (index) {
-                        if ($(this).prop('checked') == false) {
-                            $(this).trigger("click")
-                        }
-                    });
-                } else {
-                    $('.countrycheckbox').each(function (index) {
-                        if ($(this).prop('checked') == true) {
-                            $(this).trigger("click")
-                        }
-                    });
-                }
-            });
-
+        $('.countrycheckbox').unbind('click');
+        $('.countrycheckbox').click(function () {
+            if ($(this).is(':checked')) {
+                $('#sortable').append("<li class='countrylist' countrycode='" + $(this).val() + "'>" + $(this).attr('name') + "<input id='countrycode' type='hidden' value='" + $(this).val() + "' /></li>")
+            }
+            else {
+                $('#sortable li[countrycode="' + $(this).val() + '"]').remove();
+            }
         });
 
+        $('.checkall').unbind('click');
+        $('.checkall').click(function () {
+            if ($(this).is(':checked')) {
+                $('.countrycheckbox').each(function (index) {
+                    if ($(this).prop('checked') == false) {
+                        $(this).trigger("click")
+                    }
+                });
+            } else {
+                $('.countrycheckbox').each(function (index) {
+                    if ($(this).prop('checked') == true) {
+                        $(this).trigger("click")
+                    }
+                });
+            }
+        });
+
+    });
 
 
-    </script>
+
+</script>

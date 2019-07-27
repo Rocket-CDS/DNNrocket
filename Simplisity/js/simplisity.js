@@ -53,7 +53,10 @@ var trackgroup = '';
         $('#simplisity_systemprovider').remove();
         $('#simplisity_cmdurl').remove();
 
-        var elementstr = '<div class="' + settings.overlayclass + '" style="" id="simplisity_loader"></div>';
+        var elementstr = '<div class="' + settings.overlayclass + ' w3-animate-fading " style="" id="simplisity_loader">';
+        elementstr += '<i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i>';
+        elementstr += '</div>';
+
         elementstr += '<input id="simplisity_fileuploadlist" type="hidden" value="" />';
         elementstr += '<input id="simplisity_params" type="hidden" value="" />';
         elementstr += '<input id="simplisity_searchfields" type="hidden" value="" />';

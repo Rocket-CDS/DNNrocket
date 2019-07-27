@@ -11,6 +11,7 @@ namespace DNNrocket.Country
     {
         private static SimplisityInfo _systemInfo;
         private static DNNrocketInterface _rocketInterface;
+        private static Dictionary<string,string> _passSettings; 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
@@ -27,6 +28,7 @@ namespace DNNrocket.Country
 
             if (commandSecurity.HasSecurityAccess(paramCmd))
             {
+                _passSettings = paramInfo.ToDictionary();
                 switch (paramCmd)
                 {
                     case "settingcountry_save":
@@ -89,11 +91,10 @@ namespace DNNrocket.Country
                     var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
                     if (razortemplate == "") razortemplate = _rocketInterface.DefaultTemplate;
 
-                    var passSettings = sInfo.ToDictionary();
 
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
-                    strOut = DNNrocketUtils.RazorDetail(razorTempl, smi, passSettings);
+                    strOut = DNNrocketUtils.RazorDetail(razorTempl, smi, _passSettings);
                 }
                 return strOut;
             }
@@ -105,6 +106,7 @@ namespace DNNrocket.Country
 
         public static void CountrySave(SimplisityInfo postInfo)
         {
+            _passSettings.Add("saved", "true");
             var objCtrl = new DNNrocketController();
             objCtrl.SaveData("countrysettings", "SETTINGS", postInfo, _systemInfo.ItemID, -1, _rocketInterface.DatabaseTable);
         }

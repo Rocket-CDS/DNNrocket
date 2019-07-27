@@ -16,6 +16,7 @@ namespace RocketSettings
         private static DNNrocketInterface _rocketInterface;
         private static SettingsData _settingsData;
         private static string _tableName;
+        private static Dictionary<string, string> _passSettings;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -71,6 +72,8 @@ namespace RocketSettings
                 _settingsData = new SettingsData(guidkey, langRequired, _rocketInterface.EntityTypeCode, listname, false, _rocketInterface.DatabaseTable);
             }
 
+            _passSettings = _paramInfo.ToDictionary();
+            _passSettings.Add("stopanimate", _paramInfo.GetXmlProperty("genxml/hidden/stopanimate"));
 
             _commandSecurity = new CommandSecurity(tabid, moduleid, _rocketInterface);
             _commandSecurity.AddCommand("rocketsettings_edit", true);
@@ -97,6 +100,7 @@ namespace RocketSettings
                     strOut = EditData();
                     break;
                 case "rocketsettings_save":
+                    _passSettings.Add("saved", "true");
                     _settingsData.Save(postInfo);
                     if (_settingsData.InvalidKeyValues)
                     {
@@ -136,9 +140,8 @@ namespace RocketSettings
                 if (razortemplate == "") razortemplate = _rocketInterface.DefaultTemplate;                
                 if (razortemplate == "") razortemplate = "settings.cshtml";
 
-                var passSettings = _paramInfo.ToDictionary();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, theme, DNNrocketUtils.GetEditCulture());
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, _settingsData, passSettings);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, _settingsData, _passSettings);
 
                 if (strOut == "") strOut = "ERROR: No data returned for " + _appthemeMapPath + "\\Themes\\" + theme + "\\default\\" + razortemplate;
                 return strOut;
