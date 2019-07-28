@@ -36,9 +36,9 @@ namespace DNNrocketAPI
                 }
                 else
                 {
-                    _editlang = DNNrocketUtils.GetEditCulture();
-
                     var paramCmd = context.Request.QueryString["cmd"];
+
+                    _editlang = DNNrocketUtils.GetEditCulture();
 
                     if (paramCmd == "login_signout")
                     {
@@ -53,7 +53,7 @@ namespace DNNrocketAPI
                     var requestJson = "";
                     var paramJson = "";
 
-                    var paramInfo = new SimplisityInfo(DNNrocketUtils.GetEditCulture());
+                    var paramInfo = new SimplisityInfo(_editlang);
                     if (DNNrocketUtils.RequestParam(context, "paramjson") != "")
                     {
                         paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
@@ -68,7 +68,8 @@ namespace DNNrocketAPI
                     var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
                     var systemInfoData = new SystemInfoData(systemInfo); 
 
-                    var postInfo = new SimplisityInfo(DNNrocketUtils.GetEditCulture());
+
+                    var postInfo = new SimplisityInfo(_editlang);
                     if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
                     {
                         requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));

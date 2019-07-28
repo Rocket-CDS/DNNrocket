@@ -57,6 +57,8 @@ var trackgroup = '';
         elementstr += '<i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i>';
         elementstr += '</div>';
 
+        elementstr += '<div class="' + settings.overlayclass + '" style="" id="simplisity_fullloader"></div>';
+
         elementstr += '<input id="simplisity_fileuploadlist" type="hidden" value="" />';
         elementstr += '<input id="simplisity_params" type="hidden" value="" />';
         elementstr += '<input id="simplisity_searchfields" type="hidden" value="" />';
@@ -140,12 +142,9 @@ function simplisity_nbxgetCompleted(e) {
     }
 
     // a change of langauge has been triggered.
-    var nextlang = simplisity_getCookieValue('nextlang');
-    if (nextlang !== '') {
-        simplisity_setCookieValue('editlang', nextlang);
-        simplisity_setCookieValue('nextlang', '');
-        $('#simplisity_loader').show();
-        location.reload();
+    var nextlang = simplisity_getParamField('nextlang')
+    if ((typeof nextlang !== 'undefined') && nextlang !== '') {
+        simplisity_setParamField('nextlang', '');
     }
 
     // clear any uploaded files after completed call
@@ -244,11 +243,12 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
         request.done(function (data) {
             if (data !== 'noaction') {
                 if ((typeof sreturn !== 'undefined') && sreturn !== '') {
-                    if (typeof sappend === 'undefined' || sappend === '' || sappend === false) {
+                    if ((typeof sappend === 'undefined') || sappend === '' || sappend === false) {
                         $(sreturn).children().remove();
                         $(sreturn).html(data).trigger('change');
-                    } else
+                    } else {
                         $(sreturn).append(data).trigger('change');
+                    }
                 }
 
                 if (debugmode) {

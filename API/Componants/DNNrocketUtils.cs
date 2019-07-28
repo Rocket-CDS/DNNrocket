@@ -984,33 +984,26 @@ namespace DNNrocketAPI
         }
 
 
-        public static void SetEditCulture(string editlang)
+        public static string SetEditCulture(string editlang)
         {
-            if (editlang != null)
-            {
-                HttpCookie MyCookie = new HttpCookie("editlang");
-                MyCookie.Value = editlang;
-                HttpContext.Current.Response.Cookies.Add(MyCookie);
-            }
+            var cachekey = "editlang*" + DNNrocketUtils.GetCurrentUserId();
+            if (String.IsNullOrEmpty(editlang)) editlang = GetCurrentCulture();
+            CacheUtils.SetCache(cachekey, editlang);
+            return editlang;
         }
 
         public static string GetEditCulture()
         {
-            if (HttpContext.Current.Request.Cookies["editlang"] != null)
+            var cachekey = "editlang*" + DNNrocketUtils.GetCurrentUserId();
+            var rtnLang = HttpContext.Current.Request.QueryString["editlang"];
+            if (String.IsNullOrEmpty(rtnLang))
             {
-                var rtnlang = HttpContext.Current.Request.Cookies["editlang"].Value;
-                if (rtnlang == null || rtnlang == "")
-                {
-                    var l = GetCultureCodeList();
-                    if (l.Count >= 1)
-                    {
-                        rtnlang = l.First();
-                    }
-                }
-                return rtnlang;
-
+                var obj = CacheUtils.GetCache(cachekey);
+                if (obj != null) rtnLang = obj.ToString();
+                if (String.IsNullOrEmpty(rtnLang)) rtnLang = GetCurrentCulture();
             }
-            return GetCurrentCulture();
+            SetEditCulture(rtnLang);
+            return rtnLang;
         }
 
 
