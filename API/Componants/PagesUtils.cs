@@ -11,12 +11,11 @@ using DotNetNuke.Services.FileSystem;
 using System.IO.Compression;
 using DataProvider = DotNetNuke.Data.DataProvider;
 using DotNetNuke.Services.Exceptions;
-
-
+using DotNetNuke.Common;
 
 namespace DNNrocketAPI
 {
-    public class DNNTabUrls
+    public class PagesUtils
     {
 
         public static void SaveTabUrls(int tabId, string pageUrl, int portalId, string Lang)
@@ -233,9 +232,57 @@ namespace DNNrocketAPI
                     seq += 1;
                 }
             }
-
-
         }
+
+        public static string GetPageURL(int tabId)
+        {
+            return Globals.NavigateURL(tabId);
+        }
+
+        public static string GetPageName(int tabId, int portalId)
+        {
+            var objTabs = new TabController();
+            var tabInfo = objTabs.GetTab(tabId, portalId);
+            if (tabInfo != null)
+            {
+                return tabInfo.TabName;
+            }
+            return "";
+        }
+
+        public static string GetPageTitle(int tabId, int portalId)
+        {
+            var objTabs = new TabController();
+            var tabInfo = objTabs.GetTab(tabId, portalId);
+            if (tabInfo != null)
+            {
+                return tabInfo.Title;
+            }
+            return "";
+        }
+
+        public static string GetPageKeyWord(int tabId, int portalId)
+        {
+            var objTabs = new TabController();
+            var tabInfo = objTabs.GetTab(tabId, portalId);
+            if (tabInfo != null)
+            {
+                return tabInfo.KeyWords;
+            }
+            return "";
+        }
+
+        public static string GetPageDescription(int tabId, int portalId)
+        {
+            var objTabs = new TabController();
+            var tabInfo = objTabs.GetTab(tabId, portalId);
+            if (tabInfo != null)
+            {
+                return tabInfo.Description;
+            }
+            return "";
+        }
+
 
     }
 }

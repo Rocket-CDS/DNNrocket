@@ -1093,11 +1093,6 @@ namespace DNNrocketAPI
             return PortalSettings.Current.Email;
         }
 
-        public static string GetPageURL(int tabId)
-        {
-            return Globals.NavigateURL(tabId);
-        }
-
         public static string GetEntityTypeCode(SimplisityInfo interfaceInfo)
         {
             var rtn = "";

@@ -414,7 +414,7 @@ namespace DNNrocketAPI.render
         {
             var tabid = info.GetXmlPropertyInt(xpath);
             if (tabid == 0) return new RawString("");
-            var url = DNNrocketUtils.GetPageURL(tabid);
+            var url = PagesUtils.GetPageURL(tabid);
 
             return GetLinkURL(url, openInNewWindow, text, attributes);
         }
