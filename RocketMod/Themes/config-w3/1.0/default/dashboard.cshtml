@@ -11,23 +11,27 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 @{
-    var moduleData = (ModuleData)Model.List.First();
-    var configinfo = moduleData.configData.ConfigInfo;
+    var configData = (ConfigData)Model.List.First();
+    var configinfo = configData.ConfigInfo;
 }
 
-<span class="w3-section simplisity_buttons">
-    <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click rocketmodsavebutton" s-cmd="rocketmod_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(moduleData.configData.ConfigInfo.ModuleId)","selecteditemid":"@moduleData.ItemId","interfacekey":"dashboard"}' s-post="#configdata" >@ResourceKey("DNNrocket.cmdSaveButton")</span>
 
-    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(moduleData.configData.ConfigInfo.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.cmdResetButton")</span>
-    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(moduleData.configData.ConfigInfo.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.cmdResetDataButton")</span>
-
-</span>
-
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click rocketmodsavebutton" s-cmd="rocketmod_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","selecteditemid":"@configinfo.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.cmdResetButton")</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.cmdResetDataButton")</div>
+        @if (Model.GetSettingBool("saved"))
+        {
+            <i class='fas fa-save w3-right simplisity_fadeout' style="font-size:24px"></i>
+        }
+    </div>
 
 <div id="configdata" class="w3-container simplisity_panel">
 
     @HiddenField(configinfo, "genxml/hidden/apptheme")
-    @HiddenField(configinfo, "genxml/hidden/moduletype","","rocketmod")
+    @HiddenField(configinfo, "genxml/hidden/moduletype", "", "rocketmod")
 
     <div class="w3-container">
         <h1>@ResourceKey("RocketMod.config")</h1>
@@ -47,17 +51,17 @@
             </tr>
             <tr>
                 <td class="w3-right-align"><b>@ResourceKey("RocketMod.apptheme"):</b></td>
-                <td>@moduleData.configData.AppTheme</td>
+                <td>@configData.AppTheme</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="w3-right-align"><b>@ResourceKey("RocketMod.appthemeversion"):</b></td>
-                <td>@FolderSelectList(configinfo, "genxml/select/versionfolder", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes/Themes/" + moduleData.configData.AppTheme), "class='w3-input w3-border'", false, false)</td>
+                <td>@FolderSelectList(configinfo, "genxml/select/versionfolder", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes/Themes/" + configData.AppTheme), "class='w3-input w3-border'", false, false)</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="w3-right-align"><b>@ResourceKey("RocketMod.datasource"):</b></td>
-                <td>@DataSourceList(configinfo, moduleData.configData.SystemKey, "genxml/select/datamoduleid", "class='w3-input w3-border'", true, false)</td>
+                <td>@DataSourceList(configinfo, configData.SystemKey, "genxml/select/datamoduleid", "class='w3-input w3-border'", true, false)</td>
                 <td></td>
             </tr>
             <tr>

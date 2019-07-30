@@ -10,7 +10,7 @@ namespace RocketMod
 {
     public class StartConnect : DNNrocketAPI.APInterface
     {
-        private static ModuleData _moduleData;
+        //private static ModuleData _moduleData;
         private static string _appthemeRelPath;
         private static string _appthemeMapPath;
         private static string _rocketModRelPath;
@@ -25,6 +25,9 @@ namespace RocketMod
         private static int _moduleid;
         private static string _langRequired;
         private static SystemInfoData _systemInfoData;
+        private static Dictionary<string, string> _passSettings;
+        private static SettingsData _settingsData;
+        private static string _editLang;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -42,11 +45,8 @@ namespace RocketMod
             _systemInfo = systemInfo;
 
 
-            // Ensure we have a valid edit data cultueCode.  It may have been changed in a localization admin pages.
-            if (_langRequired == "" && DNNrocketUtils.GetCultureCodeList().Count() > 0 && (!DNNrocketUtils.GetCultureCodeList().Contains(DNNrocketUtils.GetEditCulture())))
-            {
-                DNNrocketUtils.SetEditCulture(DNNrocketUtils.GetCultureCodeList().First());
-            }
+            _editLang = langRequired;
+            if (_editLang == "") _editLang = DNNrocketUtils.GetEditCulture();
 
             // we should ALWAYS pass back the moduleid & tabid in the template post.
             // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
@@ -65,8 +65,13 @@ namespace RocketMod
             var selecteditemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
 
             _configData = new ConfigData(paramInfo.PortalId, _systemInfo, _tabid, _moduleid);
-            _moduleData = new ModuleData(_configData, langRequired);
-            _postInfo.ModuleId = _moduleData.ModuleId; // make sure we have correct moduleid.
+            //_moduleData = new ModuleData(_configData, langRequired);
+            //_postInfo.ModuleId = _moduleid; // make sure we have correct moduleid.
+
+            _settingsData = GetSettingsData();
+            _passSettings = LocalUtils.SettingsToDictionary(_settingsData);
+            _passSettings.Add("stopanimate", _paramInfo.GetXmlProperty("genxml/hidden/stopanimate"));
+
 
             if (!CheckSecurity(paramCmd))
             {
@@ -90,41 +95,41 @@ namespace RocketMod
                     strOut = GetDashBoard();
                     break;
 
-                case "rocketmod_getsidemenu":
-                    strOut = GetSideMenu(paramInfo, systemInfo);
-                    break;
                 case "rocketmod_selectapptheme":
                     strOut = GetSelectApp();
                     break;
-                case "rocketmod_saveapptheme":                    
-                    _moduleData.configData.SaveAppTheme(paramInfo.GetXmlProperty("genxml/hidden/apptheme"));
-                    _moduleData.Populate();
+                case "rocketmod_saveapptheme":
+                    SaveAppTheme();
                     strOut = GetDashBoard();
                     break;
+
                 case "rocketmod_getdata":
                     strOut = GetDisplay();
                     break;
-                case "rocketmod_edit":
-                    strOut = EditData();
+
+                case "edit_editarticlelist":
+                    strOut = GetArticleList("editlist.cshtml", true);
                     break;
-                case "rocketmod_save":
-                    _moduleData.Data.Save(postInfo);
-                    strOut = EditData();
+                case "edit_articlesearch":
+                    strOut = GetArticleList("editlist.cshtml", false);
                     break;
-                case "rocketmod_saveheader":
-                    _moduleData.SaveHeader(postInfo);
-                    strOut = EditData();
+                case "edit_editarticle":
+                    strOut = GetArticle("editdetail.cshtml");
                     break;
-                case "rocketmod_add":
-                    _moduleData.Data.AddRow();
-                    strOut = EditData();
+                case "edit_addarticle":
+                    strOut = AddArticle("editdetail.cshtml");
                     break;
-                case "rocketmod_delete":
-                    strOut = EditData();
+                case "edit_savearticle":
+                    SaveArticle();
+                    strOut = GetArticle("editdetail.cshtml");
                     break;
+                case "edit_deletearticle":
+                    DeleteArticle();
+                    strOut = GetArticleList("editlist.cshtml", true);
+                    break;
+
                 case "rocketmod_saveconfig":
-                    var appTheme = new AppTheme(_moduleData.configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
-                    _moduleData.configData.SaveConfig(postInfo, _appthemeRelPath.TrimEnd('/') + "/" + postInfo.GetXmlProperty("genxml/hidden/apptheme") + "/" + postInfo.GetXmlProperty("genxml/select/versionfolder"), _appthemeRelPath.TrimEnd('/'));
+                    SaveConfig();
                     strOut = GetDashBoard();
                     break;
                 case "rocketmod_getsetupmenu":
@@ -169,7 +174,7 @@ namespace RocketMod
 
             }
 
-            if (strOut == "" && !_moduleData.configData.Exists)
+            if (strOut == "" && !_configData.Exists)
             {
                 return DNNrocketUtils.ReturnString(GetSetup());
             }
@@ -180,22 +185,26 @@ namespace RocketMod
 
         public static bool CheckSecurity(string paramCmd)
         {
-            _commandSecurity = new CommandSecurity(_moduleData.TabId, _moduleData.ModuleId, _rocketInterface);
+            _commandSecurity = new CommandSecurity(_tabid, _moduleid, _rocketInterface);
 
             _commandSecurity.AddCommand("dashboard_get", true);
 
-            _commandSecurity.AddCommand("rocketmod_edit", true);
-            _commandSecurity.AddCommand("rocketmod_save", true);
-            _commandSecurity.AddCommand("rocketmod_delete", true);
             _commandSecurity.AddCommand("rocketmod_saveconfig", true);
             _commandSecurity.AddCommand("rocketmod_saveheader", true);
             _commandSecurity.AddCommand("rocketmod_getsetupmenu", true);
             _commandSecurity.AddCommand("rocketmod_reset", true);
             _commandSecurity.AddCommand("rocketmod_resetdata", true);
-            _commandSecurity.AddCommand("rocketmod_add", true);
             _commandSecurity.AddCommand("rocketmod_selectapptheme", true);
             _commandSecurity.AddCommand("rocketmod_saveapptheme", true);
             _commandSecurity.AddCommand("rocketmod_getsidemenu", true);
+
+            _commandSecurity.AddCommand("rocketmod_editarticlelist", true);
+            _commandSecurity.AddCommand("rocketmod_articlesearch", true);
+            _commandSecurity.AddCommand("rocketmod_editarticle", true);
+            _commandSecurity.AddCommand("rocketmod_addarticle", true);
+            _commandSecurity.AddCommand("rocketmod_savedata", true);
+            _commandSecurity.AddCommand("rocketmod_delete", true);
+
 
             _commandSecurity.AddCommand("rocketmod_getdata", false);
             _commandSecurity.AddCommand("rocketmod_login", false);
@@ -215,6 +224,106 @@ namespace RocketMod
 
             return hasAccess;
         }
+
+
+        private static void SaveConfig()
+        {
+            var appTheme = new AppTheme(_configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
+            _configData.SaveConfig(_postInfo, _appthemeRelPath.TrimEnd('/') + "/" + _postInfo.GetXmlProperty("genxml/hidden/apptheme") + "/" + _postInfo.GetXmlProperty("genxml/select/versionfolder"), _appthemeRelPath.TrimEnd('/'));
+            _passSettings.Add("saved", "true");
+        }
+
+        private static void SaveAppTheme()
+        {
+            _configData.SaveAppTheme(_paramInfo.GetXmlProperty("genxml/hidden/apptheme"));
+            _passSettings.Add("saved", "true");
+        }
+
+        #region "Articles"
+
+        public static void SaveArticle()
+        {
+            var articleData = new ArticleData(_paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid"), _editLang);
+            _passSettings.Add("saved", "true");
+            articleData.Save(_postInfo);
+        }
+
+        public static void DeleteArticle()
+        {
+            var articleData = new ArticleData(_paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid"), _editLang);
+            articleData.Delete();
+        }
+
+        public static String AddArticle(string templateName)
+        {
+            try
+            {
+                var articleData = new ArticleData(-1, _editLang);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, _appthemeRelPath, "config-w3", _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        public static String GetArticle(string templateName)
+        {
+            try
+            {
+                AssignEditLang();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, _appthemeRelPath, "config-w3", _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var selecteditemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var articleData = new ArticleData(selecteditemid, _editLang);
+                var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        public static String GetArticleList(string templateName, bool loadCachedHeader)
+        {
+
+            try
+            {
+                AssignEditLang();
+                var articleDataList = new ArticleDataList(_editLang);
+                if (loadCachedHeader)
+                {
+                    articleDataList.LoadCacheHeader();
+                }
+                else
+                {
+                    articleDataList.PageSize = _postInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
+                    articleDataList.Page = _paramInfo.GetXmlPropertyInt("genxml/hidden/page");
+                    articleDataList.SearchText = _postInfo.GetXmlProperty("genxml/textbox/searchtext");
+                    articleDataList.SaveCacheHeader();
+                }
+                articleDataList.Populate();
+
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, _appthemeRelPath, _configData.AppTheme, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, _passSettings, articleDataList.Header, _systemInfoData.DebugMode);
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        #endregion
+
+
 
         #region "Fields"
 
@@ -311,82 +420,20 @@ namespace RocketMod
 
         #endregion
 
-
-        public static string GetSideMenu(SimplisityInfo sInfo, SimplisityInfo systemInfo)
-        {
-            try
-            {
-                var strOut = "";
-                var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
-                var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
-                var moduleid = sInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-                if (moduleid == 0) moduleid = -1;
-
-                var passSettings = sInfo.ToDictionary();
-
-                var systemData = new SystemData();
-                var sidemenu = new SideMenu(systemInfo);
-                var templateControlRelPath = _rocketModRelPath;
-                sidemenu.ModuleId = moduleid;
-
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-
-                if (razorTempl == "")
-                {
-                    // no razor template for sidemenu, so use default.
-                    razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-                }
-
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, sidemenu, passSettings, _configData.ConfigInfo);
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
-
-
-
-        public static String EditData()
-        {
-            try
-            {
-                if (_moduleData.Data.List.Count == 0)
-                {
-                    // always have 1 row when editing.
-                    _moduleData.Data.AddRow();
-                }
-
-                var strOut = "";
-                var passSettings = _paramInfo.ToDictionary();
-                var appTheme = new AppTheme(_moduleData.configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
-                strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveEditTemplate, _moduleData, passSettings, _moduleData.HeaderInfo);
-
-                if (strOut == "") strOut = "ERROR: No data returned for EditData() : " + _rocketModMapPath;
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
-
         public static String ResetRocketMod()
         {
             try
             {
-                _moduleData.configData.DeleteConfig();
+                _configData.DeleteConfig();
 
                 var objCtrl = new DNNrocketController();
-                var info = objCtrl.GetData("moduleid" + _moduleData.ModuleId, "ROCKETMODFIELDS", "", -1, _moduleData.ModuleId, true);
+                var info = objCtrl.GetData("moduleid" + _moduleid, "ROCKETMODFIELDS", "", -1, _moduleid, true);
                 if (info != null) objCtrl.Delete(info.ItemID);
-                info = objCtrl.GetData("moduleid" + _moduleData.ModuleId, "ROCKETSETTINGS", "", -1, _moduleData.ModuleId, true);
+                info = objCtrl.GetData("moduleid" + _moduleid, "ROCKETSETTINGS", "", -1, _moduleid, true);
                 if (info != null) objCtrl.Delete(info.ItemID);
 
                 CacheUtils.ClearAllCache();
-                _moduleData.configData.PopulateConfig();
+                _configData.PopulateConfig();
 
                 return GetDashBoard();
             }
@@ -400,7 +447,7 @@ namespace RocketMod
         {
             try
             {
-                _moduleData.DeleteData();
+                //_moduleData.DeleteData();
                 return GetDashBoard();
             }
             catch (Exception ex)
@@ -413,16 +460,15 @@ namespace RocketMod
         {
             try
             {
+                AssignEditLang();
                 var controlRelPath = _rocketInterface.TemplateRelPath;
-
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "dashboard.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
-                var passSettings = _paramInfo.ToDictionary();
-                passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
+                _passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, _moduleData, passSettings);
+                return DNNrocketUtils.RazorDetail(razorTempl, _configData, _passSettings);
             }
             catch (Exception ex)
             {
@@ -445,7 +491,8 @@ namespace RocketMod
                 var passSettings = _paramInfo.ToDictionary();
                 passSettings.Add("mappathAppThemeFolder", _appthemeMapPath);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, _moduleData, passSettings);
+                //return DNNrocketUtils.RazorDetail(razorTempl, _moduleData, passSettings);
+                return "";
             }
             catch (Exception ex)
             {
@@ -459,7 +506,7 @@ namespace RocketMod
             try
             {
                 var strOut = "";
-                if (!_moduleData.configData.Exists)
+                if (!_configData.Exists)
                 {
                     var objCtrl = new DNNrocketController();
 
@@ -477,12 +524,12 @@ namespace RocketMod
                         appList.Add(appTheme);
                     }
 
-                    strOut = DNNrocketUtils.RazorList(razorTempl, appList, passSettings, _moduleData.HeaderInfo);
+                   // strOut = DNNrocketUtils.RazorList(razorTempl, appList, passSettings, _moduleData.HeaderInfo);
 
                 }
                 else
                 {
-                    strOut = EditData();
+                    //strOut = EditData();
                 }
 
                 return strOut;
@@ -501,12 +548,12 @@ namespace RocketMod
             try
             {
                 var strOut = "";
-                if (_moduleData.configData.Exists)
+                if (_configData.Exists)
                 {
                     var objCtrl = new DNNrocketController();
 
                     var razortemplate = "view.cshtml";
-                    var apptheme = _moduleData.configData.ConfigInfo.GetXmlProperty("genxml/hidden/apptheme");
+                    var apptheme = _configData.ConfigInfo.GetXmlProperty("genxml/hidden/apptheme");
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, apptheme, DNNrocketUtils.GetCurrentCulture());
 
                     var passSettings = _paramInfo.ToDictionary();
@@ -518,7 +565,7 @@ namespace RocketMod
 
                     var appTheme = new AppTheme(apptheme,_configData.AppThemeVersion);
 
-                    strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveViewTemplate, _moduleData.CurrentRecord, passSettings, _moduleData.HeaderInfo);
+                    //strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveViewTemplate, _moduleData.CurrentRecord, passSettings, _moduleData.HeaderInfo);
 
                 }
                 else
@@ -539,10 +586,10 @@ namespace RocketMod
         {
             try
             {
-                _rocketInterface.Info.ModuleId = _moduleData.ModuleId;
+                _rocketInterface.Info.ModuleId = _moduleid;
                 var strOut = "";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture());
-                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_postInfo.ToDictionary());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",_systemInfoData.DebugMode);
+                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_postInfo.ToDictionary(), new SimplisityInfo(), _systemInfoData.DebugMode);
             }
             catch (Exception ex)
             {
@@ -554,9 +601,9 @@ namespace RocketMod
         {
             try
             {
-                if (_moduleData.configData.Exists)
+                if (_configData.Exists)
                 {
-                    var themeFolder = _moduleData.configData.ConfigInfo.GetXmlProperty("genxml/select/apptheme");
+                    var themeFolder = _configData.ConfigInfo.GetXmlProperty("genxml/select/apptheme");
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", _appthemeRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
                     if (razorTempl != "") return true;
                 }
@@ -568,6 +615,12 @@ namespace RocketMod
                 return false;
             }
 
+        }
+
+        private static void AssignEditLang()
+        {
+            var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
+            _editLang = DNNrocketUtils.SetEditCulture(nextLang);
         }
 
 

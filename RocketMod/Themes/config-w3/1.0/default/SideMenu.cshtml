@@ -10,13 +10,13 @@
 
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketCommerce/App_LocalResources/")
 
 
 @{
     var username = UserUtils.GetCurrentUserName();
     var sidemenu = (SideMenu)Model.List.First();
+    var systemInfoData = new SystemInfoData(sidemenu.SystemKey);
 
     var menuOut = "";
     // get action interfaces. (no group)
@@ -33,12 +33,16 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                var interfaceName = ResourceKey("RocketMod." + interfacekey).ToString();
+                var interfaceName = ResourceKey("RocketCommerce." + interfacekey).ToString();
                 if (interfaceName == "")
                 {
-                    interfaceName = interfacekey;
+                    interfaceName = systemInfoData.GetSetting(interfacekey + "MenuName");
+                    if (interfaceName == "")
+                    {
+                        interfaceName = interfacekey;
+                    }
                 }
-                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='{\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemprovider\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfaceName + "</div>";
+                menuOut += "<div class='w3-bar-item w3-button w3-padding simplisity_menulink' s-before='sidebarloader' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='{\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemprovider\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\"}' ><i class='" + interfaceicon + "' style='width:20px;'></i>&nbsp;" + interfaceName + "</div>";
             }
         }
         lp += 1;
@@ -54,8 +58,8 @@
         interfacelist = sidemenu.GetInterfaces(groupref);
         if (interfacelist.Count() > 0)
         {
-            menuOut += "<div class='w3-bar-item w3-button w3-theme-l4 w3-hover-theme menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey("RocketCommerce." + groupref) + "&nbsp;<i class='fas fa-caret-down'></i></div>";
-            menuOut += "<div id='" + groupref + "' class='w3-hide w3-theme-l4'>";
+            menuOut += "<div class='w3-bar-item w3-button w3-padding menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey("RocketCommerce." + groupref) + "&nbsp;<i class='fas fa-caret-down'></i></div>";
+            menuOut += "<div id='" + groupref + "' class='w3-hide'>";
             foreach (var i in interfacelist)
             {
                 var defaulttheme = i.GetXmlProperty("genxml/textbox/defaulttheme");
@@ -63,7 +67,16 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink ' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='{\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemprovider\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + ResourceKey("RocketCommerce." + interfacekey) + "</div>";
+                var interfaceName = ResourceKey("RocketCommerce." + interfacekey).ToString();
+                if (interfaceName == "")
+                {
+                    interfaceName = systemInfoData.GetSetting(interfacekey + "MenuName");
+                    if (interfaceName == "")
+                    {
+                        interfaceName = interfacekey;
+                    }
+                }
+                menuOut += "<div class='w3-bar-item w3-button w3-padding simplisity_menulink ' s-before='sidebarloader' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='{\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemprovider\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfaceName + "</div>";
             }
             menuOut += "</div>";
             lp += 1;
@@ -71,58 +84,30 @@
     }
 }
 
-<div class="w3-sidebar w3-bar-block w3-card w3-theme-l4" style="width:260px;">
-    @HtmlOf(menuOut)
-
-    <hr />
-    @if (sidemenu.ModuleId == 0 || Model.GetSettingBool("newpage"))
-    {
-        <div class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme simplisity_click " s-cmd="login_signout" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdSignOutButton")</div>
-    }
-    else
-    {
-        <div onclick="returnclick();" class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme">@ResourceKey("DNNrocket.cmdReturnButton")</div>
-    }
-
+<div class="w3-row w3-padding-small w3-white w3-border-bottom">
+    <img src="/DesktopModules/DNNrocket/RocketMod/Themes/config-w3/1.0/img/rocketmod.png" style="" class="">
+    <button class="w3-hide-large w3-button w3-right" onclick="w3_close()" style="cursor:pointer" title=""><i class='fas fa-caret-left' style='font-size:36px'></i></button>
 </div>
 
+<div class="w3-bar-block w3-theme">
 
-<span id="langflagrequired" style="display:none;" class="w3-display-right w3-right-align w3-padding">
+    @RenderTemplate("LanguageSelect.cshtml", "\\DesktopModules\\DNNrocket\\Country", "config-w3", Model, "1.0", systemInfoData.DebugMode)
 
-    @{
+    <div class="w3-overlay w3-white w3-animate-fading " style="display:none;" id="sidebar_loader"><i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i></div>
 
-        var strOut1 = "";
-
-        var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
-        foreach (var l in enabledlanguages)
-        {
-            var imageclass = "";
-            if (DNNrocketUtils.GetEditCulture() == l)
-            {
-                imageclass = "w3-border-top w3-border-theme";
-            }
-            strOut1 += "<a href='javascript:void(0);' class='w3-margin-right " + imageclass + " selectlang' editlang='" + l + "'>";
-            strOut1 += "<img class='' src='/DesktopModules/DNNrocket/API/images/flags/32/" + l + ".png' alt='" + l + "' />";
-            strOut1 += "</a>";
-        }
+    <div class="w3-margin-top w3-margin-bottom">
+        @HtmlOf(menuOut)
+    </div>
+    @if (DNNrocketUtils.IsSuperUser())
+    {
+        <a class="w3-bar-item w3-button w3-padding w3-theme " href="/desktopmodules/dnnrocket/adminsystem.html" target="_blank"><i title="System" class='fas fa-chess' style='width:20px;'></i>&nbsp;System</a>
     }
-
-    @HtmlOf(strOut1)
-
-</span>
-
-<!-- Overlay effect when opening the side navigation on small screens -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="Close Sidemenu" id="myOverlay"></div>
-
+    <div class="w3-bar-item w3-button w3-padding w3-theme simplisity_click " s-cmd="login_signout" s-return="#simplisity_startpanel"><i title="@ResourceKey("DNNrocket.signout")" class="fas fa-sign-out-alt" style='width:20px;'></i>&nbsp;@ResourceKey("DNNrocket.signout")</div>
+</div>
 
 <script type="text/javascript">
 
-    
     $(document).ready(function () {
-        $("#menulangflags").empty();
-        $("#langflagrequired").appendTo("#menulangflags");
-        $('#langflagrequired').show();
-
 
         $('.menuaccordian').unbind('click');
         $('.menuaccordian').click(function () {
@@ -130,58 +115,61 @@
             if ($('#' + actionid).hasClass('w3-show')) {
                 $('#' + actionid).addClass('w3-hide');
                 $('#' + actionid).removeClass('w3-show');
-                $(this).removeClass('w3-theme-d4');
+                $(this).removeClass('w3-theme-d3');
             }
             else {
                 $('#' + actionid).addClass('w3-show');
                 $('#' + actionid).removeClass('w3-hide');
-                $(this).addClass('w3-theme-d4');
+                $(this).addClass('w3-theme-d3');
             }
         });
 
-        $('.selectlang').unbind('click');
-        $('.selectlang').click(function () {
-            // change langauge by setting "nextlang" cookie and then trigger the save with "simplisity_langchange" class on the save button.
-            // the ajax return with switch the editlang cookie to the nextlang cookie and delete the nextlang cookie, it will then reload the page.
-            simplisity_setCookieValue('nextlang', $(this).attr('editlang'));
-            // We need to save and reload or just reload on the list page.  So call a function in each template
-            languageChange();
+        $(window).resize(function () {
+            if ($('#simplisity_fullloader').is(':visible')) {
+                $('#mySidebar').width($('#mySidebar').parent().width());
+            }
         });
-
-        $('#dnnrocket_usernameplaceholder').text('@(username)');
 
         sidemenuchange();
 
     });
 
-    function sidemenuchange() {
-        $('.simplisity_menulink').addClass('w3-light-grey');
-        $('.simplisity_menulink').removeClass('w3-theme-l2');
-        var index = simplisity_getCookieValue('s-lastmenuindex');
-        $('.simplisity_menulink[s-index=' + index + ']').removeClass('w3-light-grey');
-        $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-theme-l2');
+    // Get the Sidebar
+    var mySidebar = document.getElementById("mySidebar");
+
+    // Toggle between showing and hiding the sidebar, and add overlay effect
+    function w3_open() {
+        if (mySidebar.style.display === 'block') {
+            mySidebar.style.display = 'none';
+        } else {
+            mySidebar.style.display = 'block';
+        }
+        $('#mySidebar').width($('#mySidebar').parent().width());
+        $('#simplisity_fullloader').show();
     }
 
-    function returnclick() {
-        $('#simplisity_loader').show();
-        var returnurl = simplisity_getCookieValue('rocketmod_return');
-        if (typeof returnurl === 'undefined' || returnurl === '') {
-            window.history.back();
-        } else {
-            window.location = returnurl;
+    // Close the sidebar with the close button
+    function w3_close() {
+        if ($('#simplisity_fullloader').is(':visible')) {
+            mySidebar.style.display = 'none';
+            $('#mySidebar').width(270)
+            $('#simplisity_fullloader').hide();
         }
     }
 
-    function languageChange() {
-        var langselect_systemprovider = $('#simplisity_systemprovider').val();
-        var langselect_cmdurl = $('#simplisity_cmdurl').val();
-        var langselectcmd = simplisity_getCookieValue('s-cmd-menu-' + langselect_systemprovider);
-        var langselectfields = simplisity_getCookieValue('s-cmd-fields-' + simplisity_systemprovider);
-        $('#simplisity_startpanel').getSimplisity(langselect_cmdurl, langselectcmd, langselectfields)
+    function sidebarloader() {
+        $('#sidebar_loader').show();
+    }
+
+    function sidemenuchange() {
+        $('.simplisity_menulink').removeClass('w3-white');
+        $('.simplisity_menulink').removeClass('w3-text-blue-grey');
+        var index = simplisity_getCookieValue('s-lastmenuindex');
+        $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-white');
+        $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-text-blue-grey');
+        w3_close();
+        $('#sidebar_loader').hide();
     }
 
 
-
-
 </script>
-
