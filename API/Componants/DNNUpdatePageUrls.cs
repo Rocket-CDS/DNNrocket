@@ -103,7 +103,21 @@ namespace DNNrocketAPI
             }
             return dictPages;
         }
-        
+
+        public static Dictionary<int, string> GetChildrenPageName(int portalId, int tabId, Dictionary<int, string> childDict)
+        {
+            var tabCollection = TabController.Instance.GetTabsByPortal(portalId).WithParentId(tabId);
+            foreach (var tabInfo2 in tabCollection)
+            {
+                if (!childDict.ContainsKey(tabInfo2.TabID)) childDict.Add(tabInfo2.TabID, tabInfo2.TabName);
+                childDict = GetChildrenPageName(portalId, tabInfo2.TabID, childDict);
+            }
+            return childDict;
+        }
+
+
+
+
         private static void ValidateTabUrls(int tabId, string pageUrl)
         {
             try

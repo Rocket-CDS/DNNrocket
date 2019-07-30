@@ -1,38 +1,137 @@
-﻿
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_CleanData]    Script Date: 14/06/2019 16:18:52 ******/
-DROP PROCEDURE [dbo].[DNNrocket_CleanData]
+-------------------------------------------------------------------------------
+--------------                       TABLES                        ------------
+-------------------------------------------------------------------------------
+-- CREATE DNNrocket
+if NOT exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+CREATE TABLE {databaseOwner}[{objectQualifier}DNNrocket] (
+	[ItemId] [int] IDENTITY (1, 1) NOT NULL ,
+	[PortalId] [int] NULL CONSTRAINT [DF_DNNrocket_PortalId]  DEFAULT ((-1)),
+	[ModuleId] [int] NULL CONSTRAINT [DF_DNNrocket_ModuleId]  DEFAULT ((-1)),
+	[TypeCode] [nvarchar](50) NULL ,
+	[XMLData] [xml] NULL ,
+	[GUIDKey] [nvarchar](250) NULL ,
+	[ModifiedDate] [datetime] NULL ,
+	[TextData] [nvarchar](MAX) NULL ,
+	[XrefItemId] [int] NULL ,
+	[ParentItemId] [int] NULL ,
+	[Lang] [nvarchar] (50) NULL ,
+	[UserId] [int] NOT NULL CONSTRAINT [DF_DNNrocket_UserId] DEFAULT ((-1)),
+	[SystemId] [int] NULL CONSTRAINT [DF_DNNrocket_SystemId]  DEFAULT ((-1)),	
+	CONSTRAINT [PK_DNNrocket] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemId]
+	)  ON [PRIMARY] 
+) ON [PRIMARY]
+
+-- Index DNNrocket
+ CREATE NONCLUSTERED INDEX IX_DNNrocketXref ON {databaseOwner}[{objectQualifier}DNNrocket] (  XrefItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ]  
+ CREATE NONCLUSTERED INDEX IX_DNNrocketMod ON {databaseOwner}[{objectQualifier}DNNrocket] (  ModuleId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketParent ON {databaseOwner}[{objectQualifier}DNNrocket] (  ParentItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketPortal ON {databaseOwner}[{objectQualifier}DNNrocket] (  PortalId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketType ON {databaseOwner}[{objectQualifier}DNNrocket] (  TypeCode ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketUserId ON {databaseOwner}[{objectQualifier}DNNrocket] (  UserId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketLang ON {databaseOwner}[{objectQualifier}DNNrocket] (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketGuidKey ON {databaseOwner}[{objectQualifier}DNNrocket] (  GuidKey ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketSystemId ON {databaseOwner}[{objectQualifier}DNNrocket] (  SystemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+
+END
+
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_CleanData]    Script Date: 14/06/2019 16:18:52 ******/
+
+-------------------------------------------------------------------------------
+--------------                       FUNCTIONS                     ------------
+------------------------------------------------------------------------
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocketLangMerge]') and OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
+drop function {databaseOwner}[{objectQualifier}DNNrocketLangMerge]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}DNNrocketLangMerge](@xmllangdata AS XML,@xmlbasedata AS XML)
+RETURNS XML
+BEGIN
+
+DECLARE @rtndata AS XML
+
+IF NOT @xmlbasedata IS NULL
+BEGIN
+	IF NOT @xmllangdata IS NULL
+	BEGIN
+		SET @xmlbasedata.modify('insert <lang/> as last into /genxml[1]')
+		SET @xmlbasedata.modify('insert sql:variable("@xmllangdata") as last into /genxml[1]/lang[1]')
+	END
+	SET @rtndata = @xmlbasedata
+END
+ELSE
+BEGIN
+	-- is not a language record so just return the language data
+	SET @rtndata = ISNULL(@xmllangdata,'')
+END
+
+RETURN @rtndata
+
+END
+
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+-------------------------------------------------------------------------------
+--------------                       SPROCS                        ------------
+-------------------------------------------------------------------------------
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_CleanData]    Script Date: 14/06/2019 16:18:52 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_CleanData]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_CleanData]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_CleanData]    Script Date: 14/06/2019 16:18:52 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE   PROCEDURE [dbo].[DNNrocket_CleanData]
+CREATE   PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_CleanData]
 @TableName nvarchar(100)
 AS
 begin
 
  Declare @sql AS NVarchar(max)
 
- set @TableName = '[dbo].' + @TableName
+ set @TableName = '{databaseOwner}' + @TableName
+
 
 /***  Clean ALL data that is not linked to a module.  i.e. modules that have been deleted. **/
-set @sql = 'delete from ' + @TableName + ' where moduleid not in (select moduleid from dbo.Modules) and moduleid > 0 ' 
+set @sql = 'delete from ' + @TableName + ' where moduleid not in (select moduleid from {databaseOwner}Modules) and moduleid > 0 ' 
 	
 	exec sp_executesql  @sql
 end
 GO
 
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_Delete]    Script Date: 15/06/2019 08:20:57 ******/
-DROP PROCEDURE [dbo].[DNNrocket_Delete]
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_Delete]    Script Date: 15/06/2019 08:20:57 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_Delete]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_Delete]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_Delete]    Script Date: 15/06/2019 08:20:57 ******/
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_Delete]    Script Date: 15/06/2019 08:20:57 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -40,7 +139,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE   PROCEDURE [dbo].[DNNrocket_Delete]
+CREATE   PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_Delete]
 @ItemID int,
 @TableName nvarchar(100)
 AS
@@ -52,12 +151,12 @@ begin
 	 Declare @sql AS NVarchar(max)
 	 Declare @ParamDefinition AS NVarchar(max) 
 
-	 set @TableName = '[dbo].' + @TableName
+	 set @TableName = '{databaseOwner}' + @TableName
 
 set @sql = '		DECLARE @DelItemId int	'
 set @sql += '	 Declare @TableName2 AS NVarchar(max) '
 
-set @sql += '		set @TableName2 =  replace(@TableName,''[dbo].'','''') '
+set @sql += '		set @TableName2 =  replace(@TableName,''{databaseOwner}'','''') '
 
 		-- Delete all linked child records.
 set @sql += '		DECLARE delete_cursor CURSOR LOCAL FOR '
@@ -67,7 +166,7 @@ set @sql += '		OPEN delete_cursor'
 set @sql += '		FETCH NEXT FROM delete_cursor INTO @DelItemId'
 set @sql += '		WHILE @@FETCH_STATUS = 0'
 set @sql += '		BEGIN'
-set @sql += '			EXEC dbo.[DNNrocket_Delete] @DelItemId, @TableName2 '
+set @sql += '			EXEC {databaseOwner}[{objectQualifier}DNNrocket_Delete] @DelItemId, @TableName2 '
 set @sql += '			FETCH NEXT FROM delete_cursor INTO @DelItemId'
 set @sql += '		END'
 set @sql += '		CLOSE delete_cursor;'
@@ -79,7 +178,7 @@ set @sql += '		OPEN delete_cursor1'
 set @sql += '		FETCH NEXT FROM delete_cursor1 INTO @DelItemId'
 set @sql += '		WHILE @@FETCH_STATUS = 0'
 set @sql += '		BEGIN'
-set @sql += '			EXEC dbo.[DNNrocket_Delete] @DelItemId, @TableName '
+set @sql += '			EXEC {databaseOwner}[{objectQualifier}DNNrocket_Delete] @DelItemId, @TableName '
 set @sql += '			FETCH NEXT FROM delete_cursor1 INTO @DelItemId'
 set @sql += '		END'
 set @sql += '		CLOSE delete_cursor1;'
@@ -95,11 +194,12 @@ end
 GO
 
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_Get]    Script Date: 19/06/2019 16:21:53 ******/
-DROP PROCEDURE [dbo].[DNNrocket_Get]
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_Get]    Script Date: 19/06/2019 16:21:53 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_Get]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_Get]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_Get]    Script Date: 19/06/2019 16:21:53 ******/
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_Get]    Script Date: 19/06/2019 16:21:53 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -108,7 +208,7 @@ GO
 
 
 
-CREATE     PROCEDURE [dbo].[DNNrocket_Get]
+CREATE     PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_Get]
 @ItemID int,
 @Lang nvarchar(10),
 @TableName nvarchar(100)
@@ -117,7 +217,7 @@ begin
 
  Declare @sql AS NVarchar(max)
 
- set @TableName = '[dbo].' + @TableName
+ set @TableName = '{databaseOwner}' + @TableName
 
 set @sql = '	select '
 set @sql += '	R1.[ItemId] '
@@ -126,7 +226,7 @@ set @sql += '	,R1.[ModuleId] '
 set @sql += '	,R1.[TypeCode] '
 
 -- Use Function to merge, so save langauge works correctly.
-set @sql += '	,dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]) as [XMLData] '				
+set @sql += '	,{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]) as [XMLData] '				
 
 set @sql += '	,R1.[GUIDKey] '
 set @sql += '	,R1.[ModifiedDate] '
@@ -151,18 +251,19 @@ GO
 
 
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetList]    Script Date: 14/06/2019 16:19:27 ******/
-DROP PROCEDURE [dbo].[DNNrocket_GetList]
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_GetList]    Script Date: 14/06/2019 16:19:27 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetList]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetList]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetList]    Script Date: 14/06/2019 16:19:27 ******/
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_GetList]    Script Date: 14/06/2019 16:19:27 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE    PROCEDURE [dbo].[DNNrocket_GetList]
+CREATE    PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetList]
 @PortalId int, 
 @ModuleId int,
 @TypeCode nvarchar(50),
@@ -178,13 +279,13 @@ CREATE    PROCEDURE [dbo].[DNNrocket_GetList]
 AS
 begin
 
- set @TableName = '[dbo].' + @TableName
+ set @TableName = '{databaseOwner}' + @TableName
 
 	SET NOCOUNT ON
 	 
 	if NOT(@Lang = '')
 	begin
-		SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL([RLangIdx].[XMLData],dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+		SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
 	end
 
 ------------------------------------------------------------------------------------
@@ -196,13 +297,13 @@ DECLARE @idxparentItemId int = 0
 DECLARE @systemlinkItemId int = 0
 DECLARE @JoinIndex nvarchar(max)
 
-select @systemlinkItemId = itemid from dbo.[DNNrocket] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
+select @systemlinkItemId = itemid from {databaseOwner}[{objectQualifier}DNNrocket] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
 
 --print '@systemlinkItemId: ' + convert(nvarchar(max),@systemlinkItemId)
 
 DECLARE idx_cursor CURSOR FOR 
 SELECT GUIDKey, ParentItemId, textdata
-FROM dbo.[DNNrocket]
+FROM {databaseOwner}[{objectQualifier}DNNrocket]
 WHERE [TypeCode] like 'SYSTEMLINK%' and ParentItemId = @systemlinkItemId
 
 SET @JoinIndex = ''
@@ -280,14 +381,14 @@ DEALLOCATE idx_cursor
 
 	if NOT(@Lang = '')
 	begin
-		SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','ISNULL([RLangIdx].[XMLData],dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+		SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
 	end
 
 	set @rtnFields = ' R1.[ItemId] '
 
 	if NOT(@Lang = '')
 	begin
-		set @rtnFields = @rtnFields + ',ISNULL([RLangIdx].XMLData,dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
+		set @rtnFields = @rtnFields + ',ISNULL([RLangIdx].XMLData{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
 		set @rtnFields = @rtnFields + ',ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang] '	 
 	end
 	if @Lang = ''
@@ -429,23 +530,19 @@ GO
 
 
 
-
-
-
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_GetListCount]    Script Date: 14/06/2019 16:20:12 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetListCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetListCount]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetListCount]    Script Date: 14/06/2019 16:20:12 ******/
-DROP PROCEDURE [dbo].[DNNrocket_GetListCount]
-GO
-
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetListCount]    Script Date: 14/06/2019 16:20:12 ******/
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_GetListCount]    Script Date: 14/06/2019 16:20:12 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE    PROCEDURE [dbo].[DNNrocket_GetListCount] 
+CREATE    PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetListCount] 
 @PortalId int, 
 @ModuleId int,
 @TypeCode nvarchar(50),
@@ -457,9 +554,9 @@ CREATE    PROCEDURE [dbo].[DNNrocket_GetListCount]
 AS
 begin
 
- set @TableName = '[dbo].' + @TableName
+ set @TableName = '{databaseOwner}' + @TableName
 
-	SET @Filter = REPLACE(@Filter,'[XMLData]','dbo.[DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
+	SET @Filter = REPLACE(@Filter,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
 
 
 ------------------------------------------------------------------------------------
@@ -471,13 +568,13 @@ DECLARE @idxparentItemId int = 0
 DECLARE @systemlinkItemId int = 0
 DECLARE @JoinIndex nvarchar(max)
 
-select @systemlinkItemId = itemid from dbo.[DNNrocket] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
+select @systemlinkItemId = itemid from {databaseOwner}[{objectQualifier}DNNrocket] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
 
 --print '@systemlinkItemId: ' + convert(nvarchar(max),@systemlinkItemId)
 
 DECLARE idx_cursor CURSOR FOR 
 SELECT GUIDKey, ParentItemId, textdata
-FROM dbo.[DNNrocket]
+FROM {databaseOwner}[{objectQualifier}DNNrocket]
 WHERE [TypeCode] like 'SYSTEMLINK%' and ParentItemId = @systemlinkItemId
 
 SET @JoinIndex = ''
@@ -573,22 +670,19 @@ END
 GO
 
 
-
-
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_GetRecord]    Script Date: 14/06/2019 16:20:22 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetRecord]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetRecord]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecord]    Script Date: 14/06/2019 16:20:22 ******/
-DROP PROCEDURE [dbo].[DNNrocket_GetRecord]
-GO
-
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecord]    Script Date: 14/06/2019 16:20:22 ******/
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_GetRecord]    Script Date: 14/06/2019 16:20:22 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE     PROCEDURE [dbo].[DNNrocket_GetRecord]
+CREATE     PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetRecord]
 @ItemID int,
 @TableName nvarchar(100)
 AS
@@ -596,7 +690,7 @@ begin
 
  Declare @sql AS NVarchar(max)
 
- set @TableName = '[dbo].' + @TableName
+ set @TableName = '{databaseOwner}' + @TableName
 
 set @sql = '	select '
 set @sql += '	[ItemId] '
@@ -620,24 +714,19 @@ exec sp_executesql  @sql
 end
 GO
 
-
-
-
-
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]    Script Date: 14/06/2019 16:20:33 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecordLang]    Script Date: 14/06/2019 16:20:33 ******/
-DROP PROCEDURE [dbo].[DNNrocket_GetRecordLang]
-GO
-
-/****** Object:  StoredProcedure [dbo].[DNNrocket_GetRecordLang]    Script Date: 14/06/2019 16:20:33 ******/
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]    Script Date: 14/06/2019 16:20:33 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE     PROCEDURE [dbo].[DNNrocket_GetRecordLang]
+CREATE     PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetRecordLang]
 @ParentItemId int,
 @Lang nvarchar(10),
 @TableName nvarchar(100)
@@ -647,7 +736,7 @@ begin
 
  Declare @sql AS NVarchar(max)
 
- set @TableName = '[dbo].' + @TableName
+ set @TableName = '{databaseOwner}' + @TableName
 
 set @sql = '	select '
 set @sql += '	[ItemId] '
@@ -674,20 +763,19 @@ end
 GO
 
 
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_Update]    Script Date: 14/06/2019 16:20:44 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_Update]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_Update]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DNNrocket_Update]    Script Date: 14/06/2019 16:20:44 ******/
-DROP PROCEDURE [dbo].[DNNrocket_Update]
-GO
-
-/****** Object:  StoredProcedure [dbo].[DNNrocket_Update]    Script Date: 14/06/2019 16:20:44 ******/
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_Update]    Script Date: 14/06/2019 16:20:44 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE   PROCEDURE [dbo].[DNNrocket_Update]
+CREATE   PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_Update]
 (
 @ItemId int,
 @PortalId int, 
@@ -710,7 +798,7 @@ BEGIN
  Declare @sql AS NVarchar(max)
  Declare @ParamDefinition AS NVarchar(max) 
 
- set @TableName = '[dbo].' + @TableName
+ set @TableName = '{databaseOwner}' + @TableName
 
 set @sql = 'if not exists (select ItemID from ' + @TableName + ' where ItemID = @ItemID ) '
 set @sql += '	begin '
