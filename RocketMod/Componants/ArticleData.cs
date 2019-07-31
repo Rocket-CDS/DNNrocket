@@ -12,13 +12,15 @@ namespace RocketMod
 
     public class ArticleData
     {
+        private int _moduleid;
         private string _langRequired;
         private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "ROCKETMOD";
         private DNNrocketController _objCtrl;
 
-        public ArticleData(int itemId, string langRequired)
+        public ArticleData(int itemId, int moduleid, string langRequired)
         {
+            _moduleid = moduleid;
             _objCtrl = new DNNrocketController();
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
@@ -39,7 +41,7 @@ namespace RocketMod
 
         public void Save(SimplisityInfo postInfo)
         {
-            var dbInfo = _objCtrl.GetData( _entityTypeCode, Info.ItemID, _langRequired, -1,-1, true, _tableName);
+            var dbInfo = _objCtrl.GetData( _entityTypeCode, Info.ItemID, _langRequired, -1, _moduleid, true, _tableName);
             if (dbInfo != null)
             {
                 dbInfo.XMLData = postInfo.XMLData;
@@ -54,7 +56,7 @@ namespace RocketMod
                     var nodList = dbRecord.XMLDoc.SelectNodes("genxml/*");
                     if (nodList.Count == 0)
                     {
-                        dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, l, -1, -1, true, _tableName);
+                        dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, l, -1, _moduleid, true, _tableName);
                         if (dbInfo != null)
                         {
                             dbInfo.XMLData = postInfo.XMLData;
@@ -67,12 +69,12 @@ namespace RocketMod
 
         private void AddArticle()
         {
-            Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, -1, -1, false, _tableName);    
+            Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, -1, _moduleid, false, _tableName);    
         }
 
         public void Populate(int ItemId)
         {
-            Info = _objCtrl.GetData(_entityTypeCode, ItemId, _langRequired, -1, -1, true, _tableName);
+            Info = _objCtrl.GetData(_entityTypeCode, ItemId, _langRequired, -1, _moduleid, true, _tableName);
         }
 
         public string EntityTypeCode { get { return _entityTypeCode; } }
@@ -83,6 +85,9 @@ namespace RocketMod
         public int XrefItemId { get { return Info.XrefItemId; } set { Info.XrefItemId = value; } }
         public int ParentItemId { get { return Info.ParentItemId; } set { Info.ParentItemId = value; } }
         public int SystemId { get { return Info.SystemId; } set { Info.SystemId = value; } }
+        public int ItemId { get { return Info.ItemID; } }
+        public string ImageFolder { get; set; }
+        public string DocumentFolder { get; set; }
     }
 
 }

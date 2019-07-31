@@ -33,6 +33,13 @@
 
     <script src="https://cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
 
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Sarabun:200,400,400i,700&display=swap');
+        html, body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Sarabun", cursive, sans-serif;
+        }
+    </style>
+
 </head>
 <body class="w3-white">
 
@@ -63,12 +70,10 @@
 
         <script>
             $(document).ready(function () {
+                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketmodule', usehistory: true, debug: false, trackgroup: 'admin' });
                 var urlParams = new URLSearchParams(window.location.search);
                 simplisity_setParamField("moduleid", urlParams.get('moduleid'))
                 simplisity_setParamField("tabid", urlParams.get('tabid'))
-                simplisity_setParamField("selecteditemid", urlParams.get('itemid'))
-                simplisity_setParamField("cmd", urlParams.get('cmd'))
-                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketmodule', usehistory: true, debug: false });
             });
         </script>
 

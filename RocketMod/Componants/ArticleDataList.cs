@@ -56,7 +56,7 @@ namespace RocketMod
             _articleList = new List<ArticleData>();
             foreach (var o in _dataList)
             {
-                var articleData = new ArticleData(o.ItemID, _langRequired);
+                var articleData = new ArticleData(o.ItemID, _moduleid, _langRequired);
                 _articleList.Add(articleData);
             }
             return _articleList;

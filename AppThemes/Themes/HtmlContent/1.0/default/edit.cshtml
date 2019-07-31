@@ -25,161 +25,151 @@
 }
 
 
-<span class="w3-section simplisity_buttons">
-    <a class="w3-button w3-pale-yellow w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdCancelButton")</a>
-    <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click rocketmodsavebutton" s-cmd="rocketmod_save" s-fields='{"tabid":"@Model.GetSettingInt("tabid")","moduleid":"@Model.ModuleId","selecteditemid":"@i.ItemID","interfacekey":"edit"}' s-post="#datalist" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="databin" s-return="#datalist" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
-</span>
+<div class="w3-row w3-padding">
+    <div class="w3-col m2 w3-button w3-green simplisity_langchange simplisity_click" s-cmd="edit_savearticle" s-fields='{"selecteditemid":"@i.ItemID"}' s-post="#datasection">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="edit_deletearticle" s-fields='{"selecteditemid":"@i.ItemID"}'>@ResourceKey("DNNrocket.cmdDeleteButton")</div>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="edit_editarticlelist" s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+
+    @if (Model.GetSettingBool("saved"))
+    {
+        <i class='fas fa-save w3-right simplisity_fadeout' style="font-size:24px"></i>
+    }
+</div>
+
+
+<div class="w3-row w3-padding">
+
+
+
+</div>
 
 <div id="datasection">
 
-            <!-- The Detail-->
-            <div id="detailDisplay" class="w3-container" style="display:none;">
-                <div class="" style="">
+    <!-- The Detail-->
+    <div id="detailDisplay" class="w3-container">
+        <div class="" style="">
 
-                    <div class="w3-container ">
+            <div class="w3-row">
+                <div class="w3-col m8 w3-padding">
+                    <label class="">@ResourceKey("HtmlContent.title")</label>&nbsp;@EditFlag()
+                    @TextBox(i, "genxml/lang/genxml/textbox/header", " class='w3-input w3-border' class='w3-check' autocomplete='off'", "", true)
+                </div>
+                <div class="w3-col m2  w3-padding">
+                    <label class="">@ResourceKey("HtmlContent.style")</label>
+                    @DropDownList(i, "genxml/select/headerstyle", "H1,H2,H3,H4", "H1,H2,H3,H4", " class='w3-input w3-border' class='w3-check' style='width:100px;' ", "H1", false)
+                </div>
+                <div class="w3-col m2 w3-padding w3-right">
+                    <label class="">@ResourceKey("HtmlContent.noheader")</label>
+                    @CheckBox(i, "genxml/checkbox/noheader", "", "", false, false)
+                    &nbsp;
+                    <label class="">@ResourceKey("HtmlContent.hide")</label>
+                    @CheckBox(i, "genxml/checkbox/hide", "", "", false, false)
+                </div>
+            </div>
 
-                        <div class="w3-padding w3-right">
-                            <label class="">@ResourceKey("HtmlContent.noheader")</label>
-                            @CheckBox(i, "genxml/checkbox/noheader", "", "", false, false)
-                            &nbsp;
-                            <label class="">@ResourceKey("HtmlContent.hide")</label>
-                            @CheckBox(i, "genxml/checkbox/hide", "", "", false, false)
-                        </div>
+            <div class="w3-container ">
 
-                        <div class="w3-row w3-margin">
-                            <div class="">
-                                @RadioButtonList(i, "genxml/hidden/layout", "0,1,2,3,4,5,6,7,8", "<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper0.png' style='width:24px;' />,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper1.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper2.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper3.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper4.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper5.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper6.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper7.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper8.png' style='width:24px;'/>", "class=''", "0", "", false)
-                            </div>
-                        </div>
+                <div class="w3-row w3-margin">
+                    <div class="">
+                        @RadioButtonList(i, "genxml/hidden/layout", "0,1,2,3,4,5,6,7,8", "<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper0.png' style='width:24px;' />,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper1.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper2.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper3.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper4.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper5.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper6.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper7.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper8.png' style='width:24px;'/>", "class=''", "0", "", false)
+                    </div>
+                </div>
 
-                        <div class="w3-row w3-padding">
-                            @CKEditor(i, "genxml/lang/genxml/textbox/richtext", "", "", true)
-                        </div>
-                        <div class="w3-row">
-                            <div class="w3-half">
-                                @ImageEditFull(i, "imagepath1", 100, 100, "", false)
-                            </div>
-                            <div class="w3-half">
-                                @ImageEditFull(i, "imagepath2", 100, 100, "", false)
-                            </div>
-                        </div>
-                        <div class="w3-row">
-                            <div class="w3-half">
-                                @ImageEditFull(i, "imagepath3", 100, 100, "", false)
-                            </div>
-                            <div class="w3-half">
-                                @ImageEditFull(i, "imagepath4", 100, 100, "", false)
-                            </div>
-                        </div>
-
-                        <div class="w3-row">
-                            <div class="w3-container ">
-                                <div class="w3-col m8">
-                                    <label class="">@ResourceKey("HtmlContent.document")</label>&nbsp;@EditFlag()
-                                    @DocumentEdit(i, "document1", " class='w3-input w3-border' ", true)
-                                </div>
-                                <div class="w3-col m2 w3-padding">
-                                    <label class="">@ResourceKey("HtmlContent.justify")</label>
-                                    @RadioButtonList(i, "genxml/hidden/layoutdocument1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="w3-row">
-                            <div class="w3-container">
-                                <div class="w3-col m8">
-                                    <label class="">@ResourceKey("HtmlContent.internallink")</label>
-                                    @TabSelectListOnTabId(i, "genxml/select/internallink1", " class='w3-input w3-border' ", true, false)
-                                </div>
-                                <div class="w3-col m2 w3-padding">
-                                    <label class="">@ResourceKey("HtmlContent.justify")</label>
-                                    @RadioButtonList(i, "genxml/hidden/layoutinternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
-                                </div>
-                                <div class="w3-col m2 w3-padding">
-                                    <label class="">@ResourceKey("HtmlContent.blank")</label><br />
-                                    @CheckBox(i, "genxml/checkbox/blankinternallink1", "", "", false, false)
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="w3-row">
-                            <div class="w3-container">
-                                <div class="w3-col m8">
-                                    <label class="">@ResourceKey("HtmlContent.externallink")</label>
-                                    @TextBox(i, "genxml/textbox/externallink1", " class='w3-input w3-border' autocomplete='off'", "", true)
-                                </div>
-                                <div class="w3-col m2 w3-padding">
-                                    <label class="">@ResourceKey("HtmlContent.justify")</label>
-                                    @RadioButtonList(i, "genxml/hidden/layoutexternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
-                                </div>
-                                <div class="w3-col m2 w3-padding">
-                                    <label class="">@ResourceKey("HtmlContent.blank")</label><br />
-                                    @CheckBox(i, "genxml/checkbox/blankexternallink1", "", "", false, false)
-                                </div>
-                            </div>
-                        </div>
-
+                <div class="w3-row w3-padding">
+                    @CKEditor(i, "genxml/lang/genxml/textbox/richtext", "", "", true)
+                </div>
+                <div class="w3-row">
+                    <div class="w3-half">
+                        @ImageEditFull(i, "imagepath1", 100, 100, "", false)
+                    </div>
+                    <div class="w3-half">
+                        @ImageEditFull(i, "imagepath2", 100, 100, "", false)
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-half">
+                        @ImageEditFull(i, "imagepath3", 100, 100, "", false)
+                    </div>
+                    <div class="w3-half">
+                        @ImageEditFull(i, "imagepath4", 100, 100, "", false)
                     </div>
                 </div>
 
                 <div class="w3-row">
-                    @RenderRocketModFields(i.PortalId, Model.ModuleId, i, 1);
+                    <div class="w3-container ">
+                        <div class="w3-col m8">
+                            <label class="">@ResourceKey("HtmlContent.document")</label>&nbsp;@EditFlag()
+                            @DocumentEdit(i, "document1", " class='w3-input w3-border' ", true)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("HtmlContent.justify")</label>
+                            @RadioButtonList(i, "genxml/hidden/layoutdocument1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-container">
+                        <div class="w3-col m8">
+                            <label class="">@ResourceKey("HtmlContent.internallink")</label>
+                            @TabSelectListOnTabId(i, "genxml/select/internallink1", " class='w3-input w3-border' ", true, false)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("HtmlContent.justify")</label>
+                            @RadioButtonList(i, "genxml/hidden/layoutinternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("HtmlContent.blank")</label><br />
+                            @CheckBox(i, "genxml/checkbox/blankinternallink1", "", "", false, false)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-container">
+                        <div class="w3-col m8">
+                            <label class="">@ResourceKey("HtmlContent.externallink")</label>
+                            @TextBox(i, "genxml/textbox/externallink1", " class='w3-input w3-border' autocomplete='off'", "", true)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("HtmlContent.justify")</label>
+                            @RadioButtonList(i, "genxml/hidden/layoutexternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("HtmlContent.blank")</label><br />
+                            @CheckBox(i, "genxml/checkbox/blankexternallink1", "", "", false, false)
+                        </div>
+                    </div>
                 </div>
 
             </div>
+        </div>
+
+        <div class="w3-row">
+            @RenderRocketModFields(i.PortalId, Model.ModuleId, i, 1);
+        </div>
+
+    </div>
 
 </div>
 
+<div id="dnnrocket_imageselectwrapper">
+    @RenderImageSelect(Model, 100, true, false, articleData.ImageFolder)
+</div>
+
+<div id="dnnrocket_documentselectwrapper">
+    @RenderDocumentSelect(Model, true, false, articleData.DocumentFolder)
+</div>
+
+
 <script>
     $(document).ready(function () {
-        $(':checkbox').attr('class', 'w3-check');
-
-        $("#datalist").sortable();
-        $("#datalist").disableSelection();
-
-        $('.editbutton').unbind("click");
-        $('.editbutton').click(function () {
-            var row = $(this).attr('row');
-            dnnrocket_showdetail(row);
-        });
-
-        $('.editbuttonclose').unbind("click");
-        $('.editbuttonclose').click(function () {
-            var row = $(this).attr('row');
-            dnnrocket_hidedetail(row);
-        });
 
     });
 
 
-    function dnnrocket_showdetail(row) {
-        $('#detailDisplay' + row).show();
-        $("#datalist").sortable("option", "disabled", true);
-        $('#editbutton' + row).hide();
-        $('#editbuttoncloseup' + row).show();
-        $('#editbuttonclosedown' + row).show();
-        $('#editbutton' + row).addClass('detailopen');
-    }
-
-    function dnnrocket_hidedetail(row) {
-        $('#detailDisplay' + row).hide();
-
-        $('#editbutton' + row).show();
-        $('#editbuttoncloseup' + row).hide();
-        $('#editbuttonclosedown' + row).hide();
-        $('#editbutton' + row).removeClass('detailopen');
-
-        var activatesort = true;
-        $('.editbutton').each(function (index) {
-            if ($(this).hasClass('detailopen')) {
-                activatesort = false;
-            }
-        });
-        if (activatesort) {
-            $("#datalist").sortable("option", "disabled", false);
-        }
-    }
 
 </script>
 

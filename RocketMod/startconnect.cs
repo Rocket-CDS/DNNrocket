@@ -28,6 +28,7 @@ namespace RocketMod
         private static Dictionary<string, string> _passSettings;
         private static SettingsData _settingsData;
         private static string _editLang;
+        private static int _selectedItemId;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -44,27 +45,27 @@ namespace RocketMod
             _paramInfo = paramInfo;
             _systemInfo = systemInfo;
 
+            _selectedItemId = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
 
             _editLang = langRequired;
             if (_editLang == "") _editLang = DNNrocketUtils.GetEditCulture();
+
+            _settingsData = GetSettingsData();
+            _passSettings = LocalUtils.SettingsToDictionary(_settingsData);
+            _passSettings.Add("stopanimate", _paramInfo.GetXmlProperty("genxml/hidden/stopanimate"));
 
             // we should ALWAYS pass back the moduleid & tabid in the template post.
             // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
             _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid"); // IPN           
-
+            _passSettings.Add("moduleid", _moduleid.ToString());
             _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
             if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid"); // IPN
-
-            var selecteditemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            _passSettings.Add("tabid", _tabid.ToString());
 
             _configData = new ConfigData(paramInfo.PortalId, _systemInfo, _tabid, _moduleid);
             //_moduleData = new ModuleData(_configData, langRequired);
             //_postInfo.ModuleId = _moduleid; // make sure we have correct moduleid.
-
-            _settingsData = GetSettingsData();
-            _passSettings = LocalUtils.SettingsToDictionary(_settingsData);
-            _passSettings.Add("stopanimate", _paramInfo.GetXmlProperty("genxml/hidden/stopanimate"));
 
 
             if (!CheckSecurity(paramCmd))
@@ -237,14 +238,14 @@ namespace RocketMod
 
         public static void SaveArticle()
         {
-            var articleData = new ArticleData(_paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid"), _editLang);
+            var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
             _passSettings.Add("saved", "true");
             articleData.Save(_postInfo);
         }
 
         public static void DeleteArticle()
         {
-            var articleData = new ArticleData(_paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid"), _editLang);
+            var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
             articleData.Delete();
         }
 
@@ -252,8 +253,8 @@ namespace RocketMod
         {
             try
             {
-                var articleData = new ArticleData(-1, _editLang);
-                articleData.ModuleId = _moduleid;
+                var articleData = new ArticleData(-1, _moduleid, _editLang);
+                _selectedItemId = articleData.ItemId;
                 var strOut = GetArticle();
 
                 return strOut;
@@ -270,9 +271,10 @@ namespace RocketMod
             try
             {
                 AssignEditLang();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("edit.cshtml", _appthemeRelPath, "config-w3", _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
-                var selecteditemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-                var articleData = new ArticleData(selecteditemid, _editLang);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("edit.cshtml", _appthemeRelPath, _configData.AppTheme, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
+                articleData.ImageFolder = _configData.ImageFolder;
+                articleData.DocumentFolder = _configData.DocumentFolder;
                 var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
 
                 return strOut;

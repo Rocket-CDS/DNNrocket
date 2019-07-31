@@ -13,10 +13,9 @@
     var articleDataList = (ArticleDataList)Model.List.First();
 }
 
-
-<span class="w3-section simplisity_buttons">
-    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addarticle" s-fields='{"tabid":"@Model.GetSettingInt("tabid")","moduleid":"@Model.ModuleId",}'>@ResourceKey("DNNrocket.cmdAddButton")</a>
-</span>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addarticle" s-fields='{"tabid":"@Model.GetSettingInt("tabid")","moduleid":"@Model.ModuleId"}'>@ResourceKey("DNNrocket.cmdAddButton")</div>
+    </div>
 
 <div id="datasection">
 
@@ -30,19 +29,13 @@
             lp1 += 1;
             <li class="settingsdata w3-card w3-margin w3-display-container">
 
-                <!-- Required to sort items in list -->
-                @SortableList(i, lp1)
-
                 <div class="listrow">
-                    <span id="deletebutton@(lp1)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="databin">
-                        <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
-                    </span>
-                    <span id="editbutton@(lp1)" row="@(lp1)" class="w3-button w3-display-topleft editbutton">
+                    <div class="w3-button w3-display-topright simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="edit_deletearticle" s-fields='{"selecteditemid":"@i.ItemID"}'>
+                        <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                    </div>
+                    <div class="w3-button w3-display-topleft simplisity_click" s-cmd="edit_editarticle" s-track="true" s-fields='{"selecteditemid":"@i.ItemID"}'>
                         <i class="fas fa-edit"></i>
-                    </span>
-                    <span id="editbuttonclosedown@(lp1)" row="@(lp1)" class="w3-button w3-display-topleft editbuttonclose" style="display:none;">
-                        <i class="fas fa-caret-down"></i>
-                    </span>
+                    </div>
 
                     <div class="w3-row">
                         <div class="w3-col " style="width: 50px;">
@@ -80,9 +73,6 @@
     </ul>
 
 </div>
-
-@RenderDocumentSelect(Model, true, false, Model.GetSetting("DocumentFolder"))
-@RenderImageSelect(Model, 640, true, false, Model.GetSetting("ImageFolder"))
 
 <script>
     $(document).ready(function () {
