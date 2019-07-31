@@ -12,6 +12,7 @@ namespace RocketMod
 
     public class ArticleDataList : BaseHeaderData
     {
+        private int _moduleid;
         private string _langRequired;
         private List<SimplisityInfo> _dataList;
         private List<ArticleData> _articleList;
@@ -20,8 +21,9 @@ namespace RocketMod
         private DNNrocketController _objCtrl;
         private string _headerCacheKey;
 
-        public ArticleDataList(string langRequired)
+        public ArticleDataList(int moduleid, string langRequired)
         {
+            _moduleid = moduleid;
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetCurrentCulture();
             _objCtrl = new DNNrocketController();
@@ -30,13 +32,13 @@ namespace RocketMod
         }
         public void Populate()
         {
-            var searchFilter = "";
+            var searchFilter = " and R1.ModuleId = " + _moduleid + " ";
             if (Header.GetXmlProperty("genxml/textbox/searchtext") != "")
             {
-                searchFilter = " and ([XMLData].value('(genxml/textbox/ref)[1]', 'nvarchar(100)') like '%" + Header.GetXmlProperty("genxml/textbox/searchtext") + "%' ";
-                searchFilter += " or [XMLData].value('(genxml/lang/genxml/textbox/name)[1]', 'nvarchar(100)') like '%" + Header.GetXmlProperty("genxml/textbox/searchtext") + "%') ";
+                searchFilter += " and ( [XMLData].value('(genxml/textbox/ref)[1]', 'nvarchar(100)') like '%" + Header.GetXmlProperty("genxml/textbox/searchtext") + "%' ";
+                searchFilter += " or [XMLData].value('(genxml/lang/genxml/textbox/name)[1]', 'nvarchar(100)') like '%" + Header.GetXmlProperty("genxml/textbox/searchtext") + "%' ) ";
             }
-            var searchOrderBy = " order by R1.ModifiedDate desc";
+            var searchOrderBy = " order by [XMLData].value('(genxml/hidden/sortorder)[1]', 'int')";
 
             var rowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, -1, _tableName);
             _dataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, 0, Page, PageSize, rowCount, -1, _tableName);

@@ -79,6 +79,10 @@ namespace RocketMod
 
         public SimplisityInfo Info { get; private set; }
 
+        public int ModuleId { get { return Info.ModuleId; } set { Info.ModuleId = value; } }
+        public int XrefItemId { get { return Info.XrefItemId; } set { Info.XrefItemId = value; } }
+        public int ParentItemId { get { return Info.ParentItemId; } set { Info.ParentItemId = value; } }
+        public int SystemId { get { return Info.SystemId; } set { Info.SystemId = value; } }
     }
 
 }

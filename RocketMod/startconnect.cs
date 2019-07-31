@@ -52,12 +52,6 @@ namespace RocketMod
             // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
             _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid"); // IPN           
-            if (_moduleid == 0) _moduleid = _paramInfo.ModuleId;
-            if (_moduleid == 0)
-            {
-                var cookie_moduleid = DNNrocketUtils.GetCookieValue("rocketmod_moduleid");
-                if (GeneralUtils.IsNumeric(cookie_moduleid)) _moduleid =  Convert.ToInt32(cookie_moduleid);
-            }
 
             _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
             if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid"); // IPN
@@ -108,24 +102,24 @@ namespace RocketMod
                     break;
 
                 case "edit_editarticlelist":
-                    strOut = GetArticleList("editlist.cshtml", true);
+                    strOut = GetArticleList(true);
                     break;
                 case "edit_articlesearch":
-                    strOut = GetArticleList("editlist.cshtml", false);
+                    strOut = GetArticleList(false);
                     break;
                 case "edit_editarticle":
-                    strOut = GetArticle("editdetail.cshtml");
+                    strOut = GetArticle();
                     break;
                 case "edit_addarticle":
-                    strOut = AddArticle("editdetail.cshtml");
+                    strOut = AddArticle();
                     break;
                 case "edit_savearticle":
                     SaveArticle();
-                    strOut = GetArticle("editdetail.cshtml");
+                    strOut = GetArticle();
                     break;
                 case "edit_deletearticle":
                     DeleteArticle();
-                    strOut = GetArticleList("editlist.cshtml", true);
+                    strOut = GetArticleList(true);
                     break;
 
                 case "rocketmod_saveconfig":
@@ -254,13 +248,13 @@ namespace RocketMod
             articleData.Delete();
         }
 
-        public static String AddArticle(string templateName)
+        public static String AddArticle()
         {
             try
             {
                 var articleData = new ArticleData(-1, _editLang);
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, _appthemeRelPath, "config-w3", _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
-                var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
+                articleData.ModuleId = _moduleid;
+                var strOut = GetArticle();
 
                 return strOut;
             }
@@ -271,12 +265,12 @@ namespace RocketMod
 
         }
 
-        public static String GetArticle(string templateName)
+        public static String GetArticle()
         {
             try
             {
                 AssignEditLang();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, _appthemeRelPath, "config-w3", _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("edit.cshtml", _appthemeRelPath, "config-w3", _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
                 var selecteditemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
                 var articleData = new ArticleData(selecteditemid, _editLang);
                 var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
@@ -290,13 +284,13 @@ namespace RocketMod
 
         }
 
-        public static String GetArticleList(string templateName, bool loadCachedHeader)
+        public static String GetArticleList(bool loadCachedHeader)
         {
 
             try
             {
                 AssignEditLang();
-                var articleDataList = new ArticleDataList(_editLang);
+                var articleDataList = new ArticleDataList(_moduleid, _editLang);
                 if (loadCachedHeader)
                 {
                     articleDataList.LoadCacheHeader();
@@ -310,7 +304,7 @@ namespace RocketMod
                 }
                 articleDataList.Populate();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(templateName, _appthemeRelPath, _configData.AppTheme, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", _appthemeRelPath, _configData.AppTheme, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
                 var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, _passSettings, articleDataList.Header, _systemInfoData.DebugMode);
                 return strOut;
             }
@@ -377,7 +371,7 @@ namespace RocketMod
 
         private static SettingsData GetSettingsData()
         {
-            return new SettingsData(_tabid, _moduleid, _langRequired, _rocketInterface.EntityTypeCode, "rocketmodsettings", false, _rocketInterface.DatabaseTable);
+            return new SettingsData(_tabid, _moduleid, _langRequired, "ROCKETMODSETTINGS", "rocketmodsettings", true, _rocketInterface.DatabaseTable);
         }
         private static String EditSettingsData()
         {
@@ -513,8 +507,6 @@ namespace RocketMod
                     var razortemplate = "selectapp.cshtml";
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
 
-                    var passSettings = _paramInfo.ToDictionary();
-
                     var appList = new List<Object>();
                     var dirlist = System.IO.Directory.GetDirectories(_appthemeMapPath + "\\Themes");
                     foreach (var d in dirlist)
@@ -524,7 +516,7 @@ namespace RocketMod
                         appList.Add(appTheme);
                     }
 
-                   // strOut = DNNrocketUtils.RazorList(razorTempl, appList, passSettings, _moduleData.HeaderInfo);
+                   strOut = DNNrocketUtils.RazorList(razorTempl, appList, _passSettings, null, _systemInfoData.DebugMode);
 
                 }
                 else
@@ -587,9 +579,10 @@ namespace RocketMod
             try
             {
                 _rocketInterface.Info.ModuleId = _moduleid;
+                _passSettings.Add("tabid", _tabid.ToString());
                 var strOut = "";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",_systemInfoData.DebugMode);
-                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_postInfo.ToDictionary(), new SimplisityInfo(), _systemInfoData.DebugMode);
+                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
             }
             catch (Exception ex)
             {

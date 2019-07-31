@@ -10,7 +10,7 @@
 
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketCommerce/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
 
 
 @{
@@ -33,7 +33,7 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                var interfaceName = ResourceKey("RocketCommerce." + interfacekey).ToString();
+                var interfaceName = ResourceKey("RocketMod." + interfacekey).ToString();
                 if (interfaceName == "")
                 {
                     interfaceName = systemInfoData.GetSetting(interfacekey + "MenuName");
@@ -58,7 +58,7 @@
         interfacelist = sidemenu.GetInterfaces(groupref);
         if (interfacelist.Count() > 0)
         {
-            menuOut += "<div class='w3-bar-item w3-button w3-padding menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey("RocketCommerce." + groupref) + "&nbsp;<i class='fas fa-caret-down'></i></div>";
+            menuOut += "<div class='w3-bar-item w3-button w3-padding menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey("RocketMod." + groupref) + "&nbsp;<i class='fas fa-caret-down'></i></div>";
             menuOut += "<div id='" + groupref + "' class='w3-hide'>";
             foreach (var i in interfacelist)
             {
@@ -67,7 +67,7 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                var interfaceName = ResourceKey("RocketCommerce." + interfacekey).ToString();
+                var interfaceName = ResourceKey("RocketMod." + interfacekey).ToString();
                 if (interfaceName == "")
                 {
                     interfaceName = systemInfoData.GetSetting(interfacekey + "MenuName");
@@ -102,7 +102,7 @@
     {
         <a class="w3-bar-item w3-button w3-padding w3-theme " href="/desktopmodules/dnnrocket/adminsystem.html" target="_blank"><i title="System" class='fas fa-chess' style='width:20px;'></i>&nbsp;System</a>
     }
-    <div class="w3-bar-item w3-button w3-padding w3-theme simplisity_click " s-cmd="login_signout" s-return="#simplisity_startpanel"><i title="@ResourceKey("DNNrocket.signout")" class="fas fa-sign-out-alt" style='width:20px;'></i>&nbsp;@ResourceKey("DNNrocket.signout")</div>
+    <div onclick="returnclick();" class="w3-bar-item w3-button w3-theme w3-hover-theme">@ResourceKey("DNNrocket.cmdReturnButton")</div>
 </div>
 
 <script type="text/javascript">
@@ -171,5 +171,15 @@
         $('#sidebar_loader').hide();
     }
 
+    function returnclick() {
+        $('#simplisity_loader').show();
+        var returnurl = simplisity_getCookieValue('rocketmod_return');
+        if (typeof returnurl === 'undefined' || returnurl === '') {
+            window.history.back();
+        }
+        else {
+            window.location = returnurl;
+        }
+    }
 
 </script>
