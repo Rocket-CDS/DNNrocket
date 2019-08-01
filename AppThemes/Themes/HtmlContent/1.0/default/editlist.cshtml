@@ -42,13 +42,13 @@
                             <span>&nbsp;</span>
                         </div>
                         <div class="w3-col " style="width: 100px;">
-                            @if (i.GetXmlProperty("genxml/hidden/imagepath1") != "")
+                            @if (i.GetListItem("imagelist", 0).GetXmlProperty("genxml/hidden/imagepath") != "")
                             {
-                                <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagepath1"),75,75)" />
+                                <img src="@ThumbnailImageUrl(i.GetListItem("imagelist", 0).GetXmlProperty("genxml/hidden/imagepath"),75,75)" />
                             }
                             else
                             {
-                                <span>&nbsp;</span>
+                                <img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=75&h=75' imageheight='75' imagewidth='75'>
                             }
                         </div>
                         <div class="w3-rest">

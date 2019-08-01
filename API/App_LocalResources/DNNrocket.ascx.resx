@@ -483,4 +483,7 @@
   <data name="cmdPrintButton" xml:space="preserve">
     <value>&lt;i  title="Print" class="fas fa-print fa-fw fa-lg"&gt;&lt;/i&gt; Print</value>
   </data>
+  <data name="image.Text" xml:space="preserve">
+    <value>Image</value>
+  </data>
 </root>

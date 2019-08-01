@@ -107,8 +107,8 @@
 
                     <div id="dictionarydisplay@(lp3)" class="w3-row " style="display:none;">
                         <div class="w3-container">
-                            <div class="w3-threequarter w3-display-container ">
-                                <a row="@(lp3)" href="javascript:void(0);" class=" addvaluekey w3-circle w3-display-left ">@ResourceKey("DNNrocket.cmdAddIcon")</a>
+                            <div class="w3-display-container ">
+                                <div row="@(lp3)" class=" addvaluekey w3-circle w3-display-left w3-margin ">@ResourceKey("DNNrocket.cmdAddIcon")</div>
 
                                 @HiddenField(i, "genxml/hidden/dictionarykey", " class='dictionarykeyvalue' row='" + lp3 + "' ", "", false, lp3)
                                 @HiddenField(i, "genxml/lang/genxml/hidden/dictionaryvalue", "", "", true, lp3)
@@ -126,7 +126,7 @@
                             </div>
                         </div>
                         <div class="w3-container">
-                            <div class="w3-threequarter ">
+                            <div class=" ">
                                 <ul class=" @selectlistclass w3-ul w3-padding" row="@lp3"></ul>
                             </div>
                         </div>
@@ -277,8 +277,8 @@
         }
 
         var addtext = '';
-        addtext += '<li class="dictionarydata' + index + ' w3-card w3-margin-bottom w3-display-container">';
-        addtext += '	<div class="w3-row">';
+        addtext += '<li class="dictionarydata' + index + ' w3-card w3-margin-bottom w3-display-container"> ';
+        addtext += ' <div class="w3-row">';
         addtext += '		<div class="w3-col w3-padding m4">';
         addtext += '			<input value="' + key + '" row="' + index + '" value="" class=" dictionaryInput dictionaryKey' + index + ' w3-input w3-border" autocomplete="off" type="text">';
         addtext += '		</div>';

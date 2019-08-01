@@ -154,6 +154,7 @@ namespace Simplisity
             if (XMLDoc != null)
             {
                 var list = GetList(listName);
+                if (index > (list.Count - 1)) return new SimplisityInfo();
                 return list[index];
             }
             return null;

@@ -88,6 +88,9 @@ namespace RocketMod
         public int ItemId { get { return Info.ItemID; } }
         public string ImageFolder { get; set; }
         public string DocumentFolder { get; set; }
+        public string AppTheme { get; set; }
+        public string AppThemeVersion { get; set; }
+        public string AppThemeRelPath { get; set; }
     }
 
 }

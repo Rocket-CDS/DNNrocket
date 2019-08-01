@@ -26,7 +26,7 @@
 
 
 <div class="w3-row w3-padding">
-    <div class="w3-col m2 w3-button w3-green simplisity_langchange simplisity_click" s-cmd="edit_savearticle" s-fields='{"selecteditemid":"@i.ItemID"}' s-post="#datasection">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+    <div class="w3-col m2 w3-button w3-green langchangesave simplisity_click" s-cmd="edit_savearticle" s-fields='{"selecteditemid":"@i.ItemID"}' s-post="#datasection" s-list=".imagelist">@ResourceKey("DNNrocket.cmdSaveButton")</div>
     @ButtonGap()
     <div class="w3-col m2 w3-button w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="edit_deletearticle" s-fields='{"selecteditemid":"@i.ItemID"}'>@ResourceKey("DNNrocket.cmdDeleteButton")</div>
     @ButtonGap()
@@ -38,12 +38,6 @@
     }
 </div>
 
-
-<div class="w3-row w3-padding">
-
-
-
-</div>
 
 <div id="datasection">
 
@@ -80,22 +74,9 @@
                 <div class="w3-row w3-padding">
                     @CKEditor(i, "genxml/lang/genxml/textbox/richtext", "", "", true)
                 </div>
-                <div class="w3-row">
-                    <div class="w3-half">
-                        @ImageEditFull(i, "imagepath1", 100, 100, "", false)
-                    </div>
-                    <div class="w3-half">
-                        @ImageEditFull(i, "imagepath2", 100, 100, "", false)
-                    </div>
-                </div>
-                <div class="w3-row">
-                    <div class="w3-half">
-                        @ImageEditFull(i, "imagepath3", 100, 100, "", false)
-                    </div>
-                    <div class="w3-half">
-                        @ImageEditFull(i, "imagepath4", 100, 100, "", false)
-                    </div>
-                </div>
+
+
+                @RenderTemplate("editimages.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", Model, "1.0", true)
 
                 <div class="w3-row">
                     <div class="w3-container ">
@@ -109,6 +90,7 @@
                         </div>
                     </div>
                 </div>
+
 
                 <div class="w3-row">
                     <div class="w3-container">

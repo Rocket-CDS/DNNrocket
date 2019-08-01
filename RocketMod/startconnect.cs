@@ -64,8 +64,9 @@ namespace RocketMod
             _passSettings.Add("tabid", _tabid.ToString());
 
             _configData = new ConfigData(paramInfo.PortalId, _systemInfo, _tabid, _moduleid);
-            //_moduleData = new ModuleData(_configData, langRequired);
-            //_postInfo.ModuleId = _moduleid; // make sure we have correct moduleid.
+            _passSettings.Add("AppTheme", _configData.AppTheme);
+            _passSettings.Add("AppThemeVersion", _configData.AppThemeVersion);
+            _passSettings.Add("AppThemeRelPath", _configData.AppThemeRelPath);
 
 
             if (!CheckSecurity(paramCmd))
@@ -121,6 +122,10 @@ namespace RocketMod
                 case "edit_deletearticle":
                     DeleteArticle();
                     strOut = GetArticleList(true);
+                    break;
+                case "edit_addimage":
+                    RocketModAddListItem(paramInfo, "imagelist");
+                    strOut = GetArticleImages();
                     break;
 
                 case "rocketmod_saveconfig":
@@ -220,6 +225,24 @@ namespace RocketMod
             return hasAccess;
         }
 
+        public static void RocketModAddListItem(SimplisityInfo sInfo, string listname)
+        {
+            try
+            {
+                var selecteditemid = sInfo.GetXmlProperty("genxml/hidden/selecteditemid");
+                if (GeneralUtils.IsNumeric(selecteditemid))
+                {
+                    var objCtrl = new DNNrocketController();
+                    var info = objCtrl.GetInfo(Convert.ToInt32(selecteditemid));
+                    info.AddListItem(listname);
+                    objCtrl.SaveRecord(info);
+                }
+            }
+            catch (Exception ex)
+            {
+                // ignore
+            }
+        }
 
         private static void SaveConfig()
         {
@@ -275,6 +298,32 @@ namespace RocketMod
                 var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
                 articleData.ImageFolder = _configData.ImageFolder;
                 articleData.DocumentFolder = _configData.DocumentFolder;
+                articleData.AppTheme = _configData.AppTheme;
+                articleData.AppThemeVersion = _configData.AppThemeVersion;
+                articleData.AppThemeRelPath = _configData.AppThemeRelPath;
+                var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        public static String GetArticleImages()
+        {
+            try
+            {
+                AssignEditLang();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editimages.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
+                articleData.ImageFolder = _configData.ImageFolder;
+                articleData.DocumentFolder = _configData.DocumentFolder;
+                articleData.AppTheme = _configData.AppTheme;
+                articleData.AppThemeVersion = _configData.AppThemeVersion;
+                articleData.AppThemeRelPath = _configData.AppThemeRelPath;
                 var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
 
                 return strOut;
@@ -325,18 +374,19 @@ namespace RocketMod
 
         private static SettingsData GetFieldsData()
         {
-            return new SettingsData(_tabid, _moduleid, _langRequired, _rocketInterface.EntityTypeCode, "fielddata", false, _rocketInterface.DatabaseTable);
+            return new SettingsData(_tabid, _moduleid, _editLang, _rocketInterface.EntityTypeCode, "fielddata", false, _rocketInterface.DatabaseTable);
         }
 
         private static String EditFieldsData()
         {
             try
             {
+                AssignEditLang();
                 var fieldsData = GetFieldsData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetEditCulture(), "1.0", _systemInfoData.DebugMode);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, fieldsData, passSettings);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, _editLang, "1.0", _systemInfoData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, fieldsData, passSettings,null, _systemInfoData.DebugMode);
 
                 if (strOut == "") strOut = "ERROR: No data returned for EditfieldsData() : " + _rocketInterface.TemplateRelPath + "/Themes/" + _rocketInterface.DefaultTheme + "/default/" + _rocketInterface.DefaultTemplate;
                 return strOut;
@@ -364,6 +414,7 @@ namespace RocketMod
         {
             var fieldsData = GetFieldsData();
             fieldsData.Save(_postInfo);
+            _passSettings.Add("saved", "true");
             return EditFieldsData();
         }
 
@@ -615,7 +666,7 @@ namespace RocketMod
         private static void AssignEditLang()
         {
             var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
-            _editLang = DNNrocketUtils.SetEditCulture(nextLang);
+            if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
         }
 
 
