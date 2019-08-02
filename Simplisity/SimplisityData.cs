@@ -92,46 +92,59 @@ namespace Simplisity
             }
         }
 
-
-        public void SortListRecordsOnSave(string listName, SimplisityInfo postInfo, string editlang)
+        public Dictionary<int, SimplisityInfo> GetListInOrder(SimplisityInfo sInfo, string listName)
         {
-            // find new sort list
-            var newsortorder = new Dictionary<int, SimplisityInfo>();
-            var newupdate = new List<SimplisityInfo>();
-
-            var l = postInfo.GetList(listName);
+            var rtnsortorder = new Dictionary<int, SimplisityInfo>();
+            var l = sInfo.GetList(listName);
             foreach (var s in l)
             {
                 var index = s.GetXmlPropertyInt("genxml/index");
-                if (!newsortorder.ContainsKey(index)) newsortorder.Add(index, s);
+                if (!rtnsortorder.ContainsKey(index)) rtnsortorder.Add(index, s);
             }
+            return rtnsortorder;
+        }
 
-            // calc all languages.
-            foreach (var listInfoItem in SimplisityInfoList)
+
+        public void SortListRecordsOnSave(string listName, SimplisityInfo postInfo, string editlang)
+        {
+            if (SimplisityInfoList.Count >= 2) // no sort needed for 1 langauge
             {
-                var readInfo = listInfoItem.Value;
-                if (editlang == readInfo.Lang) readInfo = (SimplisityInfo)postInfo.Clone();
+                // find new sort list
+                var newsortorder = GetListInOrder(postInfo, listName);
 
-                var saveInfo = (SimplisityInfo)postInfo.Clone();
-                saveInfo.RemoveLangRecord();
-                saveInfo.SetLangRecord(readInfo.GetLangRecord());
-
-                saveInfo.RemoveList(listName);
-                foreach (var s in newsortorder)
+                var newupdate = new List<SimplisityInfo>();
+                // calc all languages.
+                foreach (var listInfoItem in SimplisityInfoList)
                 {
-                    var sInfo = GetListItemByIndex(postInfo, readInfo, listName, s.Key.ToString());
-                    if (sInfo == null) sInfo = s.Value;
-                    saveInfo.AddListItem(listName, sInfo);
+                    var saveInfo = (SimplisityInfo)postInfo.Clone();
+                    saveInfo.Lang = listInfoItem.Key; // make sure we get the correct langauge on the record.
+
+                    saveInfo.RemoveLangRecord();
+                    if (editlang == listInfoItem.Key)
+                    {
+                        saveInfo.SetLangRecord(postInfo.GetLangRecord());
+                    }
+                    else
+                    {
+                        var oldsortorder = GetListInOrder(listInfoItem.Value, listName);
+                        saveInfo.SetLangRecord(listInfoItem.Value.GetLangRecord());
+                        saveInfo.RemoveList(listName);
+                        foreach (var s in newsortorder)
+                        {
+                            var sInfo = s.Value;
+                            if (oldsortorder.ContainsKey(s.Key)) sInfo = oldsortorder[s.Key];
+                            saveInfo.AddListItem(listName, sInfo);
+                        }
+                    }
+                    newupdate.Add(saveInfo);
                 }
-                newupdate.Add(saveInfo);
-            }
 
-            //update
-            foreach (var sInfo in newupdate)
-            {
-                AddSimplisityInfo(sInfo, sInfo.Lang);
+                //update
+                foreach (var sInfo in newupdate)
+                {
+                    AddSimplisityInfo(sInfo, sInfo.Lang);
+                }
             }
-
         }
 
         public SimplisityInfo GetListItemByIndex(SimplisityInfo postInfo, SimplisityInfo sInfo, string listName, string index)

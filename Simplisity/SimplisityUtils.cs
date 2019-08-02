@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Simplisity
 {
-    public class SimplisityUtils
+    public static class SimplisityUtils
     {
 
 

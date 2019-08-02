@@ -263,6 +263,7 @@ namespace RocketMod
         {
             var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
             _passSettings.Add("saved", "true");
+            articleData.DebugMode = _systemInfoData.DebugMode;
             articleData.Save(_postInfo);
         }
 

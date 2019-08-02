@@ -46,9 +46,6 @@ namespace RocketMod
             {
                 dbInfo.XMLData = postInfo.XMLData;
 
-                var sortLists = new DNNrocketAPI.Componants.SortLists(dbInfo, _tableName);
-                sortLists.Save();
-
                 // update all langauge record which are empty.
                 var cc = DNNrocketUtils.GetCultureCodeList();
                 foreach (var l in cc)
@@ -65,6 +62,10 @@ namespace RocketMod
                         }
                     }
                 }
+
+                var sortLists = new DNNrocketAPI.Componants.SortLists(dbInfo, _tableName, DebugMode);
+                sortLists.Save();
+
             }
         }
 
@@ -92,6 +93,7 @@ namespace RocketMod
         public string AppTheme { get; set; }
         public string AppThemeVersion { get; set; }
         public string AppThemeRelPath { get; set; }
+        public bool DebugMode { get; set; }
     }
 
 }

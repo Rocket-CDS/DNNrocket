@@ -204,7 +204,6 @@ namespace Simplisity
                 }
 
                 AddXmlNode(xmldata, "genxml", "genxml/" + listName);
-                SetXmlProperty("genxml/" + listName + "/genxml[position() = last()]/@index", sortcount.ToString(), System.TypeCode.String, false);
 
                 if (XMLDoc.SelectSingleNode("genxml/lang") == null)
                 {
