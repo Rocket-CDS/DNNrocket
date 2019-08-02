@@ -124,7 +124,7 @@ namespace RocketMod
                     strOut = GetArticleList(true);
                     break;
                 case "edit_addimage":
-                    RocketModAddListItem(paramInfo, "imagelist");
+                    RocketModAddListItem("imagelist");
                     strOut = GetArticleImages();
                     break;
 
@@ -225,17 +225,17 @@ namespace RocketMod
             return hasAccess;
         }
 
-        public static void RocketModAddListItem(SimplisityInfo sInfo, string listname)
+        public static void RocketModAddListItem(string listname)
         {
             try
             {
-                var selecteditemid = sInfo.GetXmlProperty("genxml/hidden/selecteditemid");
+                var selecteditemid = _paramInfo.GetXmlProperty("genxml/hidden/selecteditemid");
                 if (GeneralUtils.IsNumeric(selecteditemid))
                 {
                     var objCtrl = new DNNrocketController();
-                    var info = objCtrl.GetInfo(Convert.ToInt32(selecteditemid));
+                    var info = objCtrl.GetData(_rocketInterface.EntityTypeCode, Convert.ToInt32(selecteditemid), _editLang);
                     info.AddListItem(listname);
-                    objCtrl.SaveRecord(info);
+                    objCtrl.SaveData(info,-1);
                 }
             }
             catch (Exception ex)

@@ -46,7 +46,8 @@ namespace RocketMod
             {
                 dbInfo.XMLData = postInfo.XMLData;
 
-                _objCtrl.SaveData(dbInfo, Info.ItemID, _tableName);
+                var sortLists = new DNNrocketAPI.Componants.SortLists(dbInfo, _tableName);
+                sortLists.Save();
 
                 // update all langauge record which are empty.
                 var cc = DNNrocketUtils.GetCultureCodeList();

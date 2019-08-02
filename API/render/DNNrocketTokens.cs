@@ -492,11 +492,9 @@ namespace DNNrocketAPI.render
         /// <param name="info"></param>
         /// <param name="row"></param>
         /// <returns></returns>
-        public IEncodedString SortableList(SimplisityInfo info, int row)
+        public IEncodedString SortableListIndex(int row)
         {
-            var strOut = "";
-            strOut += HiddenField(info, "genxml/index", "", "", false, row);
-            strOut += HiddenField(info, "genxml/lang/genxml/index", "", "", false, row);
+            var strOut = "<input value='" + row + "' id='index' s-xpath='genxml/index' s-update='save' type='hidden'>";
             return new RawString(strOut);
         }
 

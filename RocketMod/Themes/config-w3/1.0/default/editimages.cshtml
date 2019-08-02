@@ -26,26 +26,34 @@
 <div class="w3-container">
     <div class="w3-col w3-padding" style="width:160px;">
         <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addimage" s-fields='{"selecteditemid":"@i.ItemID"}' s-return=".imagereturn"><i class='fas fa-plus-circle'></i></div>
-        <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelistbin" s-return=".imagereturn" s-removelist=".imagelist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+        <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".imagelist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
     </div>
 </div>
-<div class="w3-display-container imagereturn">
+
+<ul id="imagelistdata" class="w3-ul">
 
     @foreach (var imgInfo in i.GetList("imagelist"))
     {
-        <div class="w3-half imagelist">
-            <div class="w3-display-container">
+        <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
+            @SortableListIndex(imgLP)
+            <div class="w3-display-container  w3-card">
                 @ImageEditFull(imgInfo, "imagepath", 100, 100, "", false, @imgLP)
                 <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
                     <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
                 </div>
             </div>
-        </div>
+        </li>
         imgLP += 1;
     }
-
-</div>
+</ul>
 
 <div id="dnnrocket_imageselectwrapper">
     @RenderImageSelect(Model, 100, true, false, articleData.ImageFolder)
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#imagelistdata").sortable();
+        $("#imagelistdata").disableSelection();
+    });
+</script>

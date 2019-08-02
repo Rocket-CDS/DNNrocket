@@ -201,11 +201,10 @@ namespace Simplisity
                 if (XMLDoc.SelectSingleNode("genxml/" + listName) == null)
                 {
                     SetXmlProperty("genxml/" + listName, "", System.TypeCode.String, false);
-                    SetXmlProperty("genxml/" + listName + "/@list", "true", System.TypeCode.String, false);
                 }
 
                 AddXmlNode(xmldata, "genxml", "genxml/" + listName);
-                SetXmlProperty("genxml/" + listName + "/genxml[position() = last()]/index", sortcount.ToString(), System.TypeCode.String, false);
+                SetXmlProperty("genxml/" + listName + "/genxml[position() = last()]/@index", sortcount.ToString(), System.TypeCode.String, false);
 
                 if (XMLDoc.SelectSingleNode("genxml/lang") == null)
                 {
@@ -215,11 +214,9 @@ namespace Simplisity
                 if (XMLDoc.SelectSingleNode("genxml/lang/genxml/" + listName) == null)
                 {
                     SetXmlProperty("genxml/lang/genxml/" + listName, "", System.TypeCode.String, false);
-                    SetXmlProperty("genxml/lang/genxml/" + listName + "/@list", "true", System.TypeCode.String, false);
                 }
 
                 AddXmlNode(xmllangdata, "genxml", "genxml/lang/genxml/" + listName);
-                SetXmlProperty("genxml/lang/genxml/" + listName + "/genxml[position() = last()]/index", sortcount.ToString(), System.TypeCode.String, false);
 
             }
         }

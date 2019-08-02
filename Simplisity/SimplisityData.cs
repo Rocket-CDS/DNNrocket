@@ -114,7 +114,7 @@ namespace Simplisity
 
                 var saveInfo = (SimplisityInfo)postInfo.Clone();
                 saveInfo.RemoveLangRecord();
-                saveInfo.SetLangRecord(listInfoItem.Value.GetLangRecord());
+                saveInfo.SetLangRecord(readInfo.GetLangRecord());
 
                 saveInfo.RemoveList(listName);
                 foreach (var s in newsortorder)
@@ -138,12 +138,23 @@ namespace Simplisity
         {
             if (sInfo.XMLDoc != null && postInfo.XMLDoc != null)
             {
+                var indexlang = 0;
                 var nbi = new SimplisityInfo();
-                nbi.XMLData = "<genxml>" + postInfo.GetXmlNode("genxml/" + listName + "/genxml[index = " + index + "]") + "</genxml>";
+
+                var nodList = postInfo.XMLDoc.SelectNodes("genxml/" + listName + "/genxml");
+                foreach (XmlNode nod in nodList)
+                {
+                    indexlang += 1;
+                    if (nod.SelectSingleNode("index") != null && nod.SelectSingleNode("index").InnerText == index)
+                    {
+                        nbi.XMLData = nod.OuterXml;
+                        var listXmlNode = sInfo.GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + indexlang + "]");
+                        nbi.SetLangXml("<genxml>" + listXmlNode + "</genxml>");
+                    }
+                }
+
                 nbi.TypeCode = "LIST";
                 nbi.GUIDKey = listName;
-                var listXmlNode = sInfo.GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[index = " + index + "]");
-                nbi.SetLangXml("<genxml>" + listXmlNode + "</genxml>");
                 return nbi;
             }
             return null;
