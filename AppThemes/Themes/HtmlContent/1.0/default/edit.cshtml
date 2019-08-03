@@ -75,8 +75,9 @@
                     @CKEditor(i, "genxml/lang/genxml/textbox/richtext", "", "", true)
                 </div>
 
-
-                @RenderTemplate("editimages.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", Model, "1.0", true)
+                <div id="imagelistcontainer">
+                    @RenderTemplate("editimages.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", Model, "1.0", true)
+                </div>
 
                 <div class="w3-row">
                     <div class="w3-container ">

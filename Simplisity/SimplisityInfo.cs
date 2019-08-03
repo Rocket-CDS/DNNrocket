@@ -196,7 +196,7 @@ namespace Simplisity
             {
                 // get listcount, so we can add a sort value
                 var l = GetList(listName);
-                var sortcount = l.Count;
+                var sortcount = l.Count + 1;
 
                 if (XMLDoc.SelectSingleNode("genxml/" + listName) == null)
                 {
@@ -204,6 +204,8 @@ namespace Simplisity
                 }
 
                 AddXmlNode(xmldata, "genxml", "genxml/" + listName);
+
+                SetXmlProperty("genxml/" + listName + "/genxml[last()]/index", sortcount.ToString(), System.TypeCode.String, false);
 
                 if (XMLDoc.SelectSingleNode("genxml/lang") == null)
                 {

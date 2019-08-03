@@ -198,13 +198,13 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmod_saveapptheme", true);
             _commandSecurity.AddCommand("rocketmod_getsidemenu", true);
 
-            _commandSecurity.AddCommand("rocketmod_editarticlelist", true);
-            _commandSecurity.AddCommand("rocketmod_articlesearch", true);
-            _commandSecurity.AddCommand("rocketmod_editarticle", true);
-            _commandSecurity.AddCommand("rocketmod_addarticle", true);
-            _commandSecurity.AddCommand("rocketmod_savedata", true);
-            _commandSecurity.AddCommand("rocketmod_delete", true);
-
+            _commandSecurity.AddCommand("edit_editarticlelist", true);
+            _commandSecurity.AddCommand("edit_articlesearch", true);
+            _commandSecurity.AddCommand("edit_editarticle", true);
+            _commandSecurity.AddCommand("edit_addarticle", true);
+            _commandSecurity.AddCommand("edit_savearticle", true);
+            _commandSecurity.AddCommand("edit_deletearticle", true);
+            _commandSecurity.AddCommand("edit_addimage", true);
 
             _commandSecurity.AddCommand("rocketmod_getdata", false);
             _commandSecurity.AddCommand("rocketmod_login", false);

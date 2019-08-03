@@ -494,7 +494,7 @@ namespace DNNrocketAPI.render
         /// <returns></returns>
         public IEncodedString SortableListIndex(int row)
         {
-            var strOut = "<input value='" + row + "' id='index' s-xpath='genxml/index' s-update='save' type='hidden'>";
+            var strOut = "<input value='" + row + "' id='index_" + row + "' s-xpath='genxml/index' s-update='save' type='hidden'>";
             return new RawString(strOut);
         }
 
