@@ -77,57 +77,53 @@ namespace DNNrocketAPI.Componants
             {
                 // find new sort list
                 var newsortorder = GetListInOrder(postInfo, listName);
-
                 var newupdate = new List<SimplisityInfo>();
                 // calc all languages.
 
-                //var debugStr = "";
-                //if (_debugmode)
-                //{
-                //    debugStr = FileUtils.ReadFile(DNNrocketUtils.HomeDirectory() + "\\debug_SortListRecordsOnSave.xml");
-                //}
-                //debugStr += "######------ start SortListRecordsOnSave() ----------" + Environment.NewLine;  // *** DEBUG ***
-                //debugStr += "editlang: " + editlang + Environment.NewLine;  // *** DEBUG ***
+                var debugStr = "";
+                if (_debugmode)
+                {
+                    debugStr = FileUtils.ReadFile(DNNrocketUtils.HomeDirectory() + "\\debug_SortListRecordsOnSave.txt");
+                }
+                debugStr += "######------ start SortListRecordsOnSave() ----------" + Environment.NewLine;  // *** DEBUG ***
+                debugStr += "editlang: " + editlang + Environment.NewLine;  // *** DEBUG ***
 
                 foreach (var listInfoItem in simplisityData.SimplisityInfoList)
                 {
                     var saveInfo = (SimplisityInfo)postInfo.Clone();
-                    saveInfo.Lang = listInfoItem.Key; // make sure we get the correct langauge on the record.
 
                     //debugStr += listInfoItem.Value.Lang + Environment.NewLine;  // *** DEBUG ***
 
-                    if (editlang == listInfoItem.Key)
-                    {
-                        //debugStr += "Edit Language " + editlang + "==" + listInfoItem.Key + Environment.NewLine;  // *** DEBUG ***
-                        var lp = 1;
-                        foreach (var l in saveInfo.GetList(listName))
-                        {
-                            saveInfo.SetXmlProperty("genxml/" + listName + "/genxml[" + lp + "]/index", lp.ToString());
-                        }
-                    }
-                    else
+                    if (editlang != listInfoItem.Key)
                     {
                         //debugStr += "Other Language " + editlang + "==" + listInfoItem.Key + Environment.NewLine;  // *** DEBUG ***
-
-                        saveInfo.RemoveLangRecord();
                         var oldsortorder = GetListInOrder(listInfoItem.Value, listName);
-                        saveInfo.SetLangRecord(listInfoItem.Value.GetLangRecord()); 
+
+                        var oldLangRecord = listInfoItem.Value.GetLangRecord();
+                        saveInfo.RemoveLangRecord();
+                        saveInfo.SetLangRecord(oldLangRecord);
+
                         saveInfo.RemoveList(listName);
                         foreach (var s in newsortorder)
                         {
                             var sInfo = s.Value;
-                            if (oldsortorder.ContainsKey(s.Key))
-                            {
-                                var lRecord = oldsortorder[s.Key].GetLangRecord();
-                                sInfo.RemoveLangRecord();
-                                sInfo.SetLangRecord(lRecord);
-                            }
+                            if (oldsortorder.ContainsKey(s.Key)) sInfo = oldsortorder[s.Key];
 
-                            //debugStr += " key:" + s.Key + " altimagepath:" + sInfo.GetXmlProperty("genxml/lang/genxml/textbox/altimagepath") + Environment.NewLine;  // *** DEBUG ***
+                            debugStr += " key:" + s.Key + " altimagepath:" + sInfo.GetXmlProperty("genxml/lang/genxml/textbox/altimagepath") + Environment.NewLine;  // *** DEBUG ***
 
                             saveInfo.AddListItem(listName, sInfo);
                         }
+
                     }
+
+                    var lp = 1;
+                    foreach (var l in saveInfo.GetList(listName))
+                    {
+                        saveInfo.SetXmlProperty("genxml/" + listName + "/genxml[" + lp + "]/index", lp.ToString());
+                        lp += 1;
+                    }
+
+                    saveInfo.Lang = listInfoItem.Key; // make sure we get the correct langauge on the record.
                     newupdate.Add(saveInfo);
                     //debugStr += "-- SAVEINFO START " + saveInfo.Lang + " ---------------------------------------" + Environment.NewLine;  // *** DEBUG ***
                     //debugStr += " altimagepath[1]:" + saveInfo.GetXmlProperty("genxml/lang/genxml/imagelist/genxml[1]/textbox/altimagepath") + Environment.NewLine;  // *** DEBUG ***
@@ -145,10 +141,10 @@ namespace DNNrocketAPI.Componants
                     simplisityData.AddSimplisityInfo(sInfo, sInfo.Lang);
                 }
 
-                //if (_debugmode)
-                //{
-                //    FileUtils.SaveFile(DNNrocketUtils.HomeDirectory() + "\\debug_SortListRecordsOnSave.xml", debugStr);
-                //}
+                if (_debugmode)
+                {
+                    FileUtils.SaveFile(DNNrocketUtils.HomeDirectory() + "\\debug_SortListRecordsOnSave.txt", debugStr);
+                }
             }
             return simplisityData;
         }

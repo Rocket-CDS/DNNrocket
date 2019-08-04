@@ -229,11 +229,11 @@ namespace RocketMod
         {
             try
             {
-                var selecteditemid = _paramInfo.GetXmlProperty("genxml/hidden/selecteditemid");
-                if (GeneralUtils.IsNumeric(selecteditemid))
+                var selecteditemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                if (selecteditemid > 0)
                 {
                     var objCtrl = new DNNrocketController();
-                    var info = objCtrl.GetData(_rocketInterface.EntityTypeCode, Convert.ToInt32(selecteditemid), _editLang);
+                    var info = objCtrl.GetData(_rocketInterface.EntityTypeCode, selecteditemid, _editLang);
                     info.AddListItem(listname);
                     objCtrl.SaveData(info,-1);
                 }
