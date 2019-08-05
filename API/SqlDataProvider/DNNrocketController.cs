@@ -94,7 +94,7 @@ namespace DNNrocketAPI
             var itemid = -1;
             // save data
             objInfo.ModifiedDate = DateTime.Now;
-            itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang, objInfo.SystemId, tableName);
+            itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang, objInfo.SystemId, objInfo.SortOrder, tableName);
             return itemid;
         }
 
@@ -243,7 +243,7 @@ namespace DNNrocketAPI
             if (sRecord.GUIDKey != value)
             {
                 sRecord.GUIDKey = value;
-                DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang, sRecord.SystemId, tableName);
+                DataProvider.Instance().Update(sRecord.ItemID, sRecord.PortalId, sRecord.ModuleId, sRecord.TypeCode, sRecord.XMLData, sRecord.GUIDKey, sRecord.ModifiedDate, sRecord.TextData, sRecord.XrefItemId, sRecord.ParentItemId, sRecord.UserId, sRecord.Lang, sRecord.SystemId, sRecord.SortOrder, tableName);
             }
 
         }

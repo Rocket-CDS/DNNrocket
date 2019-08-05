@@ -47,7 +47,6 @@ namespace RocketMod
             if (_configData.Exists)
             {
                 PopulateHeader();
-                _settingData.PopulateList();
             }
         }
 
@@ -91,7 +90,6 @@ namespace RocketMod
                 if (_configData.Exists)
                 {
                     PopulateHeader();
-                    _settingData.PopulateList();
                 }
             }
         }
@@ -108,7 +106,6 @@ namespace RocketMod
             if (_configData.Exists)
             {
                 PopulateHeader();
-                _settingData.PopulateList();
             }
         }
 

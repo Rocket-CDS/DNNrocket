@@ -25,6 +25,7 @@ namespace Simplisity
         public int RowCount { get; set; }
         public string EncodingKey { get; set; }
         public int SystemId { get; set; }
+        public int SortOrder { get; set; }
 
         private string _xmlData;
 

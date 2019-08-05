@@ -10,18 +10,17 @@ using System.Xml;
 namespace RocketSettings
 {
 
-    public class SettingsData : SimplisityData
+    public class SettingsData
     {
-        private List<SimplisityInfo> _dataList;
         private int _tabid;
         private int _moduleid;
         private string _guidKey;
         private string _langRequired;
         private string _entityTypeCode;
         private string _listName;
-        private List<string> _cultureList;
         private bool _onlyRead;
         private string _tableName;
+        private DNNrocketController _objCtrl;
 
         public SimplisityInfo Info;
 
@@ -49,134 +48,80 @@ namespace RocketSettings
             _tabid = tabId;
             _moduleid = moduleId;
             _guidKey = guidKey;
-            _dataList = new List<SimplisityInfo>();
             _listName = listname;
-            _cultureList = GetCultureList();
+            _objCtrl = new DNNrocketController();
 
             Info = GetSettingData(_guidKey, _langRequired);
             if (Info == null) Info = new SimplisityInfo();
 
-            Populate();
-            PopulateList();
-        }
-
-
-        public List<string> GetCultureList()
-        {
-            var objCtrl = new DNNrocketController();
-
-            if (Info == null)
-            {
-                Info = new SimplisityInfo();
-                Info.ModuleId = _moduleid;
-            }
-
-            // Load ALL language records, so we can update lists correctly
-            var cultureList = new List<string>();
-            if (Info.ParentItemId > 0)
-            {
-                var l = objCtrl.GetList(-1, -1, _entityTypeCode + "LANG", " and ParentItemId = " + Info.ItemID);
-                foreach (var s in l)
-                {
-                    if (!cultureList.Contains(s.Lang)) cultureList.Add(s.Lang);
-                }
-            }
-
-            var ls = DNNrocketUtils.GetCultureCodeList();
-            foreach (var s in ls)
-            {
-                if (!cultureList.Contains(s)) cultureList.Add(s);
-            }
-
-            return cultureList;
-        }
-
-        public void Populate()
-        {
-            foreach (var cultureCode in _cultureList)
-            {
-                var s = GetSettingData(_guidKey, cultureCode);
-                if (s != null)
-                {
-                    AddSimplisityInfo(s, cultureCode);
-                }
-            }
-        }
-
-        public void PopulateList()
-        {
-            _dataList = new List<SimplisityInfo>();
-            var objCtrl = new DNNrocketController();
-            if (!SimplisityInfoList.ContainsKey(_langRequired))
-            {
-                AddSimplisityInfo(new SimplisityInfo(_langRequired), _langRequired);  // new edit lang
-            }
-            var info = SimplisityInfoList[_langRequired];
-            if (info != null)
-            {
-                _dataList = info.GetList(_listName);
-            }
+            Info.Lang = _langRequired;
+            Info.GUIDKey = _guidKey;
+            Info.TypeCode = _entityTypeCode;
+            Info.ModuleId = _moduleid;
         }
 
         public void Delete()
         {
-            var info = GetSettingData(_guidKey, DNNrocketUtils.GetEditCulture());
-            if (info != null)
+            if (Info != null)
             {
-                var objCtrl = new DNNrocketController();
-                objCtrl.Delete(info.ItemID);
-                Populate();
-                PopulateList();
+                _objCtrl.Delete(Info.ItemID);
+                Info = null;
             }
         }
 
         public void Save(SimplisityInfo postInfo)
         {
-                var editlang = DNNrocketUtils.GetEditCulture();
+            var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, _langRequired, -1, _moduleid, true, _tableName);
+            if (dbInfo != null)
+            {
+                dbInfo.XMLData = postInfo.XMLData;
+                CreateMissingLanguageRecords(postInfo.XMLData);   
+                var sortLists = new DNNrocketAPI.Componants.SortLists(dbInfo, _tableName);
+                sortLists.Save();
+            }
 
-                var dbInfo = GetSettingData(_guidKey, editlang);
+        }
 
-                if (!SimplisityInfoList.ContainsKey(editlang))
+        /// <summary>
+        /// update all langauge records which are empty.
+        /// </summary>
+        private void CreateMissingLanguageRecords(string xmlData = "<genxml></genxml>")
+        {
+            var cc = DNNrocketUtils.GetCultureCodeList();
+            foreach (var l in cc)
+            {
+                var dbRecord = _objCtrl.GetRecordLang(Info.ItemID, l, false, _tableName);
+                var nodcount = 0;
+                if (dbRecord != null)
                 {
-                    // new lang record, so add it to list
-                    AddSimplisityInfo(dbInfo, editlang);
+                    var nodList = dbRecord.XMLDoc.SelectNodes("genxml/*");
+                    nodcount = nodList.Count;
                 }
-                
-                //RemovedDeletedListRecords(_listName, dbInfo, postInfo);
-
-                SortListRecordsOnSave(_listName, postInfo, editlang);
-
-                // Update ALL langauge records.
-                foreach (var listItem in SimplisityInfoList)
+                if (nodcount == 0)
                 {
-                    SaveSettingData(_guidKey, listItem.Value);
+                    var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, l, -1, _moduleid, true, _tableName);
+                    if (dbInfo != null)
+                    {
+                        dbInfo.XMLData = xmlData;
+                        dbInfo.ModuleId = _moduleid;
+                        _objCtrl.SaveData(dbInfo, Info.ItemID, _tableName);
+                    }
                 }
-
-                Populate();
-                PopulateList();
+            }
         }
 
 
         public void AddRow()
         {
-            AddListItem(_listName);
-            // Update ALL langauge records.
-            foreach (var listItem in SimplisityInfoList)
-            {
-                SaveSettingData(_guidKey, listItem.Value);
-            }
-
-            Populate();
-            PopulateList();
+            Info.AddListItem(_listName);
+            _objCtrl.SaveData(Info, Info.ItemID, _tableName);
+            CreateMissingLanguageRecords();
         }
 
         public string ExportData(bool withTextData = false)
         {
             var xmlOut = "<root>";
-            foreach (var listItem in SimplisityInfoList)
-            {
-                xmlOut += listItem.Value.ToXmlItem(withTextData);
-            }
+            xmlOut += Info.ToXmlItem(withTextData);
             xmlOut += "</root>";
 
             return xmlOut;
@@ -191,19 +136,8 @@ namespace RocketSettings
             foreach (XmlNode nod in nodList)
             {
                 var s = new SimplisityInfo();
-                s.FromXmlItem(nod.OuterXml);
-                AddSimplisityInfo(s, s.Lang);
-                if (_langRequired == s.Lang)
-                {
-                    Info = s;
-                }
+                Info.FromXmlItem(nod.OuterXml);
             }
-            // Update ALL langauge records.
-            foreach (var listItem in SimplisityInfoList)
-            {
-                SaveSettingData(_guidKey, listItem.Value);
-            }
-
         }
 
 
@@ -216,7 +150,7 @@ namespace RocketSettings
 
         public List<SimplisityInfo> List
         {
-            get { return _dataList; }
+            get { return Info.GetList(_listName); }
         }
 
         #endregion
@@ -225,16 +159,14 @@ namespace RocketSettings
 
         private SimplisityInfo GetSettingData(string guidKey, string cultureCode)
         {
-            var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, _onlyRead, _tableName);
+            var info = _objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, _onlyRead, _tableName);
             return info;
         }
 
         private void SaveSettingData(string guidKey, SimplisityInfo sInfo)
         {
-            var objCtrl = new DNNrocketController();
             sInfo.ModuleId = _moduleid;
-            objCtrl.SaveData(guidKey, _entityTypeCode, sInfo, -1, _moduleid, _tableName);
+            _objCtrl.SaveData(guidKey, _entityTypeCode, sInfo, -1, _moduleid, _tableName);
         }
 
         #endregion

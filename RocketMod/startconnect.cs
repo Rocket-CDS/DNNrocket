@@ -23,7 +23,6 @@ namespace RocketMod
         private static ConfigData _configData;
         private static int _tabid;
         private static int _moduleid;
-        private static string _langRequired;
         private static SystemInfoData _systemInfoData;
         private static Dictionary<string, string> _passSettings;
         private static SettingsData _settingsData;
@@ -35,7 +34,6 @@ namespace RocketMod
             var strOut = ""; // return nothing if not matching commands.
 
             _systemInfoData = new SystemInfoData(systemInfo);
-            _langRequired = langRequired;
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
@@ -117,7 +115,11 @@ namespace RocketMod
                     break;
                 case "edit_savearticle":
                     SaveArticle();
-                    strOut = GetArticle();
+                    strOut = GetArticle();                    
+                    break;
+                case "edit_savearticlelist":
+                    SaveArticleList();
+                    strOut = GetArticleList(true);
                     break;
                 case "edit_deletearticle":
                     DeleteArticle();
@@ -265,6 +267,9 @@ namespace RocketMod
             _passSettings.Add("saved", "true");
             articleData.DebugMode = _systemInfoData.DebugMode;
             articleData.Save(_postInfo);
+        }
+        public static void SaveArticleList()
+        {
         }
 
         public static void DeleteArticle()
@@ -425,12 +430,13 @@ namespace RocketMod
 
         private static SettingsData GetSettingsData()
         {
-            return new SettingsData(_tabid, _moduleid, _langRequired, "ROCKETMODSETTINGS", "rocketmodsettings", true, _rocketInterface.DatabaseTable);
+            return new SettingsData(_tabid, _moduleid, _editLang, "ROCKETMODSETTINGS", "rocketmodsettings", true, _rocketInterface.DatabaseTable);
         }
         private static String EditSettingsData()
         {
             try
             {
+                AssignEditLang();
                 var settingsData = GetSettingsData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();

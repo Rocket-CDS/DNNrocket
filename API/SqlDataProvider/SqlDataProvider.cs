@@ -133,9 +133,9 @@ namespace DNNrocketAPI
             return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "Get", itemId, lang, tableName);
         }
 
-        public override int Update(int ItemId, int PortalId, int ModuleId, string TypeCode, string XMLData, string GUIDKey, DateTime ModifiedDate, string TextData, int XrefItemId, int ParentItemId, int UserId, string Lang, int systemId, string tableName = "DNNrocket")
+        public override int Update(int ItemId, int PortalId, int ModuleId, string TypeCode, string XMLData, string GUIDKey, DateTime ModifiedDate, string TextData, int XrefItemId, int ParentItemId, int UserId, string Lang, int systemId, int sortOrder, string tableName = "DNNrocket")
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "Update", ItemId, PortalId, ModuleId, TypeCode, XMLData, GUIDKey, ModifiedDate, TextData, XrefItemId, ParentItemId, UserId, Lang, systemId, tableName));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "Update", ItemId, PortalId, ModuleId, TypeCode, XMLData, GUIDKey, ModifiedDate, TextData, XrefItemId, ParentItemId, UserId, Lang, systemId, sortOrder, tableName));
         }
 
         public override void Delete(int ItemID, string tableName = "DNNrocket")

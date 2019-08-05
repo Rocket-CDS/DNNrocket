@@ -15,6 +15,8 @@
 
     <div class="w3-row w3-padding">
         <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addarticle" s-fields='{"tabid":"@Model.GetSettingInt("tabid")","moduleid":"@Model.ModuleId"}'>@ResourceKey("DNNrocket.cmdAddButton")</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-green langchangesave simplisity_click" s-cmd="edit_savearticlelist" s-fields='' s-post="#datasection" s-list=".datalistitem">@ResourceKey("DNNrocket.cmdSaveButton")</div>
     </div>
 
 <div id="datasection">
@@ -27,7 +29,7 @@
         @foreach (SimplisityInfo i in articleDataList.DataList)
         {
             lp1 += 1;
-            <li class="settingsdata w3-card w3-margin w3-display-container">
+            <li class="datalistitem w3-card w3-margin w3-display-container">
 
                 <div class="listrow">
                     <div class="w3-button w3-display-topright simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="edit_deletearticle" s-fields='{"selecteditemid":"@i.ItemID"}'>
@@ -76,53 +78,14 @@
 
 <script>
     $(document).ready(function () {
-        $(':checkbox').attr('class', 'w3-check');
-
         $("#datalist").sortable();
         $("#datalist").disableSelection();
-
-        $('.editbutton').unbind("click");
-        $('.editbutton').click(function () {
-            var row = $(this).attr('row');
-            dnnrocket_showdetail(row);
-        });
-
-        $('.editbuttonclose').unbind("click");
-        $('.editbuttonclose').click(function () {
-            var row = $(this).attr('row');
-            dnnrocket_hidedetail(row);
-        });
-
     });
 
-
-    function dnnrocket_showdetail(row) {
-        $('#detailDisplay' + row).show();
-        $("#datalist").sortable("option", "disabled", true);
-        $('#editbutton' + row).hide();
-        $('#editbuttoncloseup' + row).show();
-        $('#editbuttonclosedown' + row).show();
-        $('#editbutton' + row).addClass('detailopen');
+    function languageChange() {
+        $('.langchangesave').trigger("click");
     }
 
-    function dnnrocket_hidedetail(row) {
-        $('#detailDisplay' + row).hide();
-
-        $('#editbutton' + row).show();
-        $('#editbuttoncloseup' + row).hide();
-        $('#editbuttonclosedown' + row).hide();
-        $('#editbutton' + row).removeClass('detailopen');
-
-        var activatesort = true;
-        $('.editbutton').each(function (index) {
-            if ($(this).hasClass('detailopen')) {
-                activatesort = false;
-            }
-        });
-        if (activatesort) {
-            $("#datalist").sortable("option", "disabled", false);
-        }
-    }
 
 </script>
 

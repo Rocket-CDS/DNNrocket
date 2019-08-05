@@ -80,25 +80,13 @@ namespace DNNrocketAPI.Componants
                 var newupdate = new List<SimplisityInfo>();
                 // calc all languages.
 
-                var debugStr = "";
-                if (_debugmode)
-                {
-                    debugStr = FileUtils.ReadFile(DNNrocketUtils.HomeDirectory() + "\\debug_SortListRecordsOnSave.txt");
-                }
-                debugStr += "######------ start SortListRecordsOnSave() ----------" + Environment.NewLine;  // *** DEBUG ***
-                debugStr += "editlang: " + editlang + Environment.NewLine;  // *** DEBUG ***
-
                 foreach (var listInfoItem in simplisityData.SimplisityInfoList)
                 {
                     var saveInfo = (SimplisityInfo)postInfo.Clone();
 
-                    //debugStr += listInfoItem.Value.Lang + Environment.NewLine;  // *** DEBUG ***
-
                     if (editlang != listInfoItem.Key)
                     {
-                        //debugStr += "Other Language " + editlang + "==" + listInfoItem.Key + Environment.NewLine;  // *** DEBUG ***
                         var oldsortorder = GetListInOrder(listInfoItem.Value, listName);
-
                         var oldLangRecord = listInfoItem.Value.GetLangRecord();
                         saveInfo.RemoveLangRecord();
                         saveInfo.SetLangRecord(oldLangRecord);
@@ -109,8 +97,10 @@ namespace DNNrocketAPI.Componants
                             var sInfo = s.Value;
                             if (oldsortorder.ContainsKey(s.Key)) sInfo = oldsortorder[s.Key];
 
-                            debugStr += " key:" + s.Key + " altimagepath:" + sInfo.GetXmlProperty("genxml/lang/genxml/textbox/altimagepath") + Environment.NewLine;  // *** DEBUG ***
-
+                            var storeInfo  = s.Value;
+                            storeInfo.RemoveLangRecord();
+                            storeInfo.SetLangRecord(sInfo.GetLangRecord());
+                            sInfo = storeInfo;
                             saveInfo.AddListItem(listName, sInfo);
                         }
 
@@ -125,25 +115,12 @@ namespace DNNrocketAPI.Componants
 
                     saveInfo.Lang = listInfoItem.Key; // make sure we get the correct langauge on the record.
                     newupdate.Add(saveInfo);
-                    //debugStr += "-- SAVEINFO START " + saveInfo.Lang + " ---------------------------------------" + Environment.NewLine;  // *** DEBUG ***
-                    //debugStr += " altimagepath[1]:" + saveInfo.GetXmlProperty("genxml/lang/genxml/imagelist/genxml[1]/textbox/altimagepath") + Environment.NewLine;  // *** DEBUG ***
-                    //debugStr += " altimagepath[2]:" + saveInfo.GetXmlProperty("genxml/lang/genxml/imagelist/genxml[2]/textbox/altimagepath") + Environment.NewLine;  // *** DEBUG ***
-                    //debugStr += "-- SAVEINFO END ---------------------------------------" + Environment.NewLine;  // *** DEBUG ***
                 }
 
                 //update
                 foreach (var sInfo in newupdate)
                 {
-                    //debugStr += "-- Add AddSimplisityInfo START " + sInfo.Lang + "---------------------------------------" + Environment.NewLine;  // *** DEBUG ***
-                    //debugStr += " altimagepath[1]:" + sInfo.GetXmlProperty("genxml/lang/genxml/imagelist/genxml[1]/textbox/altimagepath") + Environment.NewLine;  // *** DEBUG ***
-                    //debugStr += " altimagepath[2]:" + sInfo.GetXmlProperty("genxml/lang/genxml/imagelist/genxml[2]/textbox/altimagepath") + Environment.NewLine;  // *** DEBUG ***
-                    //debugStr += "-- Add AddSimplisityInfo END ---------------------------------------" + Environment.NewLine;  // *** DEBUG ***
                     simplisityData.AddSimplisityInfo(sInfo, sInfo.Lang);
-                }
-
-                if (_debugmode)
-                {
-                    FileUtils.SaveFile(DNNrocketUtils.HomeDirectory() + "\\debug_SortListRecordsOnSave.txt", debugStr);
                 }
             }
             return simplisityData;

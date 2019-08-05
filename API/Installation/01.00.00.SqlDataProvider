@@ -23,6 +23,7 @@ CREATE TABLE {databaseOwner}[{objectQualifier}DNNrocket] (
 	[Lang] [nvarchar] (50) NULL ,
 	[UserId] [int] NOT NULL CONSTRAINT [DF_DNNrocket_UserId] DEFAULT ((-1)),
 	[SystemId] [int] NULL CONSTRAINT [DF_DNNrocket_SystemId]  DEFAULT ((-1)),	
+	[SortOrder] [int] NULL CONSTRAINT [DF_DNNrocket_SortOrder]  DEFAULT ((-1)),	
 	CONSTRAINT [PK_DNNrocket] PRIMARY KEY  CLUSTERED 
 	(
 		[ItemId]
@@ -39,6 +40,7 @@ CREATE TABLE {databaseOwner}[{objectQualifier}DNNrocket] (
  CREATE NONCLUSTERED INDEX IX_DNNrocketLang ON {databaseOwner}[{objectQualifier}DNNrocket] (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
  CREATE NONCLUSTERED INDEX IX_DNNrocketGuidKey ON {databaseOwner}[{objectQualifier}DNNrocket] (  GuidKey ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
  CREATE NONCLUSTERED INDEX IX_DNNrocketSystemId ON {databaseOwner}[{objectQualifier}DNNrocket] (  SystemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketSortOrder ON {databaseOwner}[{objectQualifier}DNNrocket] (  SortOrder ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
 
 END
 
@@ -388,7 +390,7 @@ DEALLOCATE idx_cursor
 
 	if NOT(@Lang = '')
 	begin
-		set @rtnFields = @rtnFields + ',ISNULL([RLangIdx].XMLData{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
+		set @rtnFields = @rtnFields + ',ISNULL([RLangIdx].XMLData{databaseOwner},[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
 		set @rtnFields = @rtnFields + ',ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang] '	 
 	end
 	if @Lang = ''
@@ -407,7 +409,7 @@ DEALLOCATE idx_cursor
 	set @rtnFields = @rtnFields + ',R1.[ParentItemId] '
 	set @rtnFields = @rtnFields + ',R1.[UserId] '
 	set @rtnFields = @rtnFields + ',R1.[SystemId] '		
-
+	set @rtnFields = @rtnFields + ',R1.[SortOrder] '		
 
 	IF (@PageSize > 0)
 	BEGIN
@@ -706,6 +708,7 @@ set @sql += '	,[ParentItemId] '
 set @sql += '	,[Lang]  '
 set @sql += '	,[UserId] '
 set @sql += '	,[SystemId] '
+set @sql += '	,[SortOrder] '
 set @sql += '	from ' + @TableName + ' as R1 '
 set @sql += '	where R1.ItemId = ' + CONVERT(nvarchar(20), @ItemId)
 
@@ -752,6 +755,7 @@ set @sql += '	,[ParentItemId] '
 set @sql += '	,[Lang]  '
 set @sql += '	,[UserId] '
 set @sql += '	,[SystemId] '
+set @sql += '	,[SortOrder] '
 set @sql += '	from ' + @TableName + ' as R1 '
 set @sql += '	where R1.ParentItemId = ' + CONVERT(nvarchar(20), @ParentItemId) + ' and R1.Lang = ''' + @Lang + ''' ' 
 
@@ -790,6 +794,7 @@ CREATE   PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_Update]
 @UserId int,
 @Lang nvarchar(10),
 @SystemId int,
+@SortOrder int,
 @TableName nvarchar(100)
 )
 AS
@@ -815,7 +820,8 @@ set @sql += 'XrefItemId, '
 set @sql += 'ParentItemId, '
 set @sql += 'UserId, '
 set @sql += 'Lang, '
-set @sql += 'SystemId '
+set @sql += 'SystemId, '
+set @sql += 'SortOrder '
 set @sql += '		) '
 set @sql += '		values '
 set @sql += '		( '
@@ -830,7 +836,8 @@ set @sql += '@XrefItemId, '
 set @sql += '@ParentItemId, '
 set @sql += '@UserId, '
 set @sql += '@Lang, '
-set @sql += '@SystemId '
+set @sql += '@SystemId, '
+set @sql += '@SortOrder '
 set @sql += '		) '
 set @sql += '		 '
 set @sql += '		set @ItemID = @@IDENTITY '
@@ -851,7 +858,8 @@ set @sql += 'XrefItemId = @XrefItemId, '
 set @sql += 'ParentItemId = @ParentItemId, '
 set @sql += 'UserId = @UserId, '
 set @sql += 'Lang = @Lang, '
-set @sql += 'SystemId = @SystemId '
+set @sql += 'SystemId = @SystemId, '
+set @sql += 'SortOrder = @SortOrder '
 set @sql += '		where ItemId = @ItemId '
 set @sql += '  '
 set @sql += '	end '	
@@ -869,7 +877,8 @@ set @sql += '	select @ItemID '
 @ParentItemId int,
 @UserId int,
 @Lang nvarchar(10),
-@SystemId int'
+@SystemId int,
+@SortOrder int'
 
  Execute sp_Executesql     @sql, 
                 @ParamDefinition, 
@@ -885,7 +894,8 @@ set @sql += '	select @ItemID '
 @ParentItemId,
 @UserId,
 @Lang,
-@SystemId
+@SystemId,
+@SortOrder
 
 select @ItemId
 END
