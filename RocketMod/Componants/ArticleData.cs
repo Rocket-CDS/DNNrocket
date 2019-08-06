@@ -44,7 +44,11 @@ namespace RocketMod
             var dbInfo = _objCtrl.GetData( _entityTypeCode, Info.ItemID, _langRequired, -1, _moduleid, true, _tableName);
             if (dbInfo != null)
             {
-                dbInfo.XMLData = postInfo.XMLData;
+                // NOTE: Be careful of the order for saving.  The sort list is a PAIN and required speciifc data.
+                // 1 - Create any empty record. (Must be done, so on first save we get the data in the DB)
+                // 2 - Apply new XML strcuture 
+                // 3 - Do sort list.
+                // 4 - Save the new list data to the DB.
 
                 // update all langauge record which are empty.
                 var cc = DNNrocketUtils.GetCultureCodeList();
@@ -54,19 +58,27 @@ namespace RocketMod
                     var nodList = dbRecord.XMLDoc.SelectNodes("genxml/*");
                     if (nodList.Count == 0)
                     {
-                        dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, l, -1, _moduleid, true, _tableName);
-                        if (dbInfo != null)
+                        var dbInfo2 = _objCtrl.GetData(_entityTypeCode, Info.ItemID, l, -1, _moduleid, true, _tableName);
+                        if (dbInfo2 != null)
                         {
-                            dbInfo.XMLData = postInfo.XMLData;
-                            _objCtrl.SaveData(dbInfo, Info.ItemID, _tableName);
+                            dbInfo2.XMLData = postInfo.XMLData;
+                            _objCtrl.SaveData(dbInfo2, Info.ItemID, _tableName);
                         }
                     }
                 }
 
+                dbInfo.XMLData = postInfo.XMLData;
+                //_objCtrl.SaveData(dbInfo, Info.ItemID, _tableName); // save before list sort, so we have hte data in DB.
+
+                // sort lists from DB and post data
                 var sortLists = new DNNrocketAPI.Componants.SortLists(dbInfo, _tableName, DebugMode);
                 sortLists.Save();
 
             }
+        }
+        public void Update()
+        {
+            _objCtrl.SaveData(Info, SystemId, _tableName);
         }
 
         private void AddArticle()
@@ -88,6 +100,7 @@ namespace RocketMod
         public int ParentItemId { get { return Info.ParentItemId; } set { Info.ParentItemId = value; } }
         public int SystemId { get { return Info.SystemId; } set { Info.SystemId = value; } }
         public int ItemId { get { return Info.ItemID; } }
+        public int SortOrder { get { return Info.SortOrder; } set { Info.SortOrder = value; } }
         public string ImageFolder { get; set; }
         public string DocumentFolder { get; set; }
         public string AppTheme { get; set; }

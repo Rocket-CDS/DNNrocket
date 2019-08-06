@@ -6,7 +6,6 @@
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/1.0/resx/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
 
 @{
@@ -17,6 +16,7 @@
         i = articleData.Info;
     }
     var imgLP = 1;
+    var datalist = i.GetList("imagelist");
 }
 
 <div class="w3-container w3-theme w3-padding">
@@ -30,25 +30,29 @@
     </div>
 </div>
 
-<ul id="imagelistdata" class="w3-ul">
+<div class="w3-row">
 
-    @foreach (var imgInfo in i.GetList("imagelist"))
-    {
-        <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
-            @SortableListIndex(imgLP)
-            <div class="w3-display-container  w3-card">
-                @ImageEditFull(imgInfo, "imagepath", 100, 100, "", false, @imgLP)
-                <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
-                    <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+    <ul id="imagelistdata" class="w3-ul">
+
+        @foreach (var imgInfo in datalist)
+        {
+            <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
+                @SortableListIndex(imgLP)
+                <div class="w3-display-container  w3-card">
+                    @ImageEditFull(imgInfo, "imagepath", 100, 100, "", false, @imgLP)
+                    <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
+                        <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                    </div>
                 </div>
-            </div>
-        </li>
-        imgLP += 1;
-    }
-</ul>
+            </li>
+            imgLP += 1;
+        }
+    </ul>
+
+</div>
 
 <div id="dnnrocket_imageselectwrapper">
-    @RenderImageSelect(Model, 100, true, false, articleData.ImageFolder)
+    @RenderImageSelect(100, true, false, articleData.ImageFolder)
 </div>
 
 <script>

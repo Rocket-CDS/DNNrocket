@@ -238,6 +238,7 @@ set @sql += '	,R1.[ParentItemId] '
 set @sql += '	,ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang]  '	 
 set @sql += '	,R1.[UserId] '
 set @sql += '	,R1.[SystemId] '
+set @sql += '	,R1.[SortOrder] '
 set @sql += '	from ' + @TableName + ' as R1 '
 
 set @sql += '	left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
@@ -383,14 +384,14 @@ DEALLOCATE idx_cursor
 
 	if NOT(@Lang = '')
 	begin
-		SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+		SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','ISNULL([RLangIdx].[XMLData], {databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
 	end
 
 	set @rtnFields = ' R1.[ItemId] '
 
 	if NOT(@Lang = '')
 	begin
-		set @rtnFields = @rtnFields + ',ISNULL([RLangIdx].XMLData{databaseOwner},[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
+		set @rtnFields = @rtnFields + ',ISNULL([RLangIdx].[XMLData], {databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
 		set @rtnFields = @rtnFields + ',ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang] '	 
 	end
 	if @Lang = ''

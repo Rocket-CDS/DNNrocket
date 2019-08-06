@@ -1475,12 +1475,14 @@ namespace DNNrocketAPI
         }
 
 
-        public static string RenderImageSelect(SimplisityRazor model, int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
+        public static string RenderImageSelect(int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
         {
-            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectfolder", uploadFolder);
-            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectsingle", selectsingle.ToString());
-            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectautoreturn", autoreturn.ToString());
-            model.HeaderData.SetXmlProperty("genxml/hidden/imageselectsize", imagesize.ToString());
+            var imageModel = new SimplisityRazor();
+
+            imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectfolder", uploadFolder);
+            imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectsingle", selectsingle.ToString());
+            imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectautoreturn", autoreturn.ToString());
+            imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectsize", imagesize.ToString());
 
             var uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + uploadFolder;
             var imgList = new List<object>();
@@ -1488,20 +1490,22 @@ namespace DNNrocketAPI
             {
                 imgList.Add(i.Name);
             }
-            model.List = imgList;
+            imageModel.List = imgList;
 
             var strOut = "<div id='dnnrocket_imageselectwrapper'>";
             var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut += DNNrocketUtils.RazorRender(model, razorTempl, false);
+            strOut += DNNrocketUtils.RazorRender(imageModel, razorTempl, false);
             strOut += "</div>";
             return strOut;
         }
 
-        public static string RenderDocumentSelect(SimplisityRazor model, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "docs", string razorTemplateName = "DocSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/documents/", string themeFolder = "config-w3")
+        public static string RenderDocumentSelect(bool selectsingle = true, bool autoreturn = false, string uploadFolder = "docs", string razorTemplateName = "DocSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/documents/", string themeFolder = "config-w3")
         {
-            model.HeaderData.SetXmlProperty("genxml/hidden/documentselectfolder", uploadFolder);
-            model.HeaderData.SetXmlProperty("genxml/hidden/documentselectsingle", selectsingle.ToString());
-            model.HeaderData.SetXmlProperty("genxml/hidden/documentselectautoreturn", autoreturn.ToString());
+            var docModel = new SimplisityRazor();
+
+            docModel.HeaderData.SetXmlProperty("genxml/hidden/documentselectfolder", uploadFolder);
+            docModel.HeaderData.SetXmlProperty("genxml/hidden/documentselectsingle", selectsingle.ToString());
+            docModel.HeaderData.SetXmlProperty("genxml/hidden/documentselectautoreturn", autoreturn.ToString());
 
             var uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + uploadFolder;
             var uploadRelFolderPath = DNNrocketUtils.HomeDNNrocketRelDirectory() + "/" + uploadFolder;
@@ -1518,11 +1522,11 @@ namespace DNNrocketAPI
                 sInfo.SetXmlProperty("genxml/relname", uploadRelFolderPath + "/" + i.Name);
                 docList.Add(sInfo);
             }
-            model.List = docList;
+            docModel.List = docList;
 
             var strOut = "<div id='dnnrocket_documentselectwrapper'>";
             var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut += DNNrocketUtils.RazorRender(model, razorTempl, false);
+            strOut += DNNrocketUtils.RazorRender(docModel, razorTempl, false);
             strOut += "</div>";
             return strOut;
         }

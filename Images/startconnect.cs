@@ -73,7 +73,7 @@ namespace DNNrocket.Images
         {
             try
             {
-                return DNNrocketUtils.RenderImageSelect(new SimplisityRazor(), 100, _paramInfo.GetXmlPropertyBool("genxml/hidden/singleselect"), _paramInfo.GetXmlPropertyBool("genxml/hidden/autoreturn"), _paramInfo.GetXmlProperty("genxml/hidden/imagefolder"));
+                return DNNrocketUtils.RenderImageSelect(100, _paramInfo.GetXmlPropertyBool("genxml/hidden/singleselect"), _paramInfo.GetXmlPropertyBool("genxml/hidden/autoreturn"), _paramInfo.GetXmlProperty("genxml/hidden/imagefolder"));
             }
             catch (Exception ex)
             {
@@ -125,10 +125,10 @@ namespace DNNrocket.Images
 
         public static void DeleteImages()
         {
-            var imagefolder = _paramInfo.GetXmlProperty("genxml/hidden/imagefolder");
+            var imagefolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
             if (imagefolder == "") imagefolder = "images";
             var imageDirectory = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + imagefolder;
-            var imageList = _paramInfo.GetXmlProperty("genxml/hidden/dnnrocket-imagelist").Split(';');
+            var imageList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-imagelist").Split(';');
             foreach (var i in imageList)
             {
                 if (i != "")

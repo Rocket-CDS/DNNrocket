@@ -1,0 +1,72 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketSettings;
+@using RocketMod;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/documents/App_LocalResources/")
+
+@{
+    var i = new SimplisityInfo();
+    var articleData = (ArticleData)Model.List.First();
+    if (articleData.Info != null)
+    {
+        i = articleData.Info;
+    }
+    var docLP = 1;
+}
+
+<div class="w3-container w3-theme w3-padding">
+    <label>@ResourceKey("DNNrocket.documents")</label>
+</div>
+
+<div class="w3-container">
+    <div class="w3-col w3-padding" style="width:160px;">
+        <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_adddocument" s-fields='{"selecteditemid":"@i.ItemID"}' s-return="#documentlistcontainer"><i class='fas fa-plus-circle'></i></div>
+        <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="documentlistbin" s-return="#documentlistdata" s-removelist=".documentlist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+    </div>
+</div>
+
+<div class="w3-row">
+
+    <ul id="documentlistdata" class="w3-ul">
+
+        @foreach (var docInfo in i.GetList("documentlist"))
+        {
+        <li class="documentlist w3-half w3-display-container w3-padding w3-border-0">
+            @SortableListIndex(docLP)
+
+            <div class="w3-display-container w3-padding w3-card">
+                <div class="w3-row">
+                    <div class="w3-col m8">
+                        <label class="">@ResourceKey("HtmlContent.document")</label>&nbsp;@EditFlag()
+                        @DocumentEdit(docInfo, "document", " class='w3-input w3-border' ", true, docLP)
+                    </div>
+                    <div class="w3-col w3-padding" style="width:160px">
+                        <label class="">@ResourceKey("HtmlContent.justify")</label>
+                        @RadioButtonList(docInfo, "genxml/hidden/layoutdocument", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, docLP)
+                    </div>
+                    <div class="simplisity_removelistitem w3-right" s-removelist=".documentlist" s-recylebin="documentlistbin" style="cursor: pointer;">
+                        <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
+                    </div>
+                </div>
+            </div>
+        </li>
+            docLP += 1;
+        }
+    </ul>
+
+</div>
+
+<div id="dnnrocket_documentselectwrapper">
+    @RenderDocumentSelect(true, false, articleData.DocumentFolder)
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#documentlistdata").sortable();
+        $("#documentlistdata").disableSelection();
+    });
+</script>

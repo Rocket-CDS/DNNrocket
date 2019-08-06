@@ -1,0 +1,93 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketSettings;
+@using RocketMod;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/links/App_LocalResources/")
+
+@{
+    var i = new SimplisityInfo();
+    var articleData = (ArticleData)Model.List.First();
+    if (articleData.Info != null)
+    {
+        i = articleData.Info;
+    }
+    var linkLP = 1;
+}
+
+<div class="w3-container w3-theme w3-padding">
+    <label>@ResourceKey("DNNrocket.links")</label>
+</div>
+
+<div class="w3-container">
+    <div class="w3-col w3-padding" style="width:160px;">
+        <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addlink" s-fields='{"selecteditemid":"@i.ItemID"}' s-return="#linklistcontainer"><i class='fas fa-plus-circle'></i></div>
+        <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="linklistbin" s-return="#linklistdata" s-removelist=".linklist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+    </div>
+</div>
+
+<div class="w3-row">
+
+    <ul id="linklistdata" class="w3-ul">
+
+        @foreach (var linkInfo in i.GetList("linklist"))
+        {
+        <li class="linklist w3-half w3-display-container w3-padding w3-border-0">
+            @SortableListIndex(linkLP)
+
+            <div class="w3-display-container w3-padding w3-card">
+                <div class="w3-row">
+
+                    <div class="w3-container">
+                        <div class="w3-col m8">
+                            <label class="">@ResourceKey("HtmlContent.internallink")</label>
+                            @TabSelectListOnTabId(i, "genxml/select/internallink1", " class='w3-input w3-border' ", true, false)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("HtmlContent.justify")</label>
+                            @RadioButtonList(i, "genxml/hidden/layoutinternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("HtmlContent.blank")</label><br />
+                            @CheckBox(i, "genxml/checkbox/blankinternallink1", "", "", false, false)
+                        </div>
+                    </div>
+
+
+                    <div class="w3-container">
+                        <div class="w3-col m8">
+                            <label class="">@ResourceKey("HtmlContent.externallink")</label>
+                            @TextBox(i, "genxml/textbox/externallink1", " class='w3-input w3-border' autocomplete='off'", "", true)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("HtmlContent.justify")</label>
+                            @RadioButtonList(i, "genxml/hidden/layoutexternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("HtmlContent.blank")</label><br />
+                            @CheckBox(i, "genxml/checkbox/blankexternallink1", "", "", false, false)
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </li>
+            linkLP += 1;
+        }
+    </ul>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#linklistdata").sortable();
+        $("#linklistdata").disableSelection();
+    });
+</script>

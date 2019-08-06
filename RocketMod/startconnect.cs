@@ -129,6 +129,14 @@ namespace RocketMod
                     RocketModAddListItem("imagelist");
                     strOut = GetArticleImages();
                     break;
+                case "edit_adddocument":
+                    RocketModAddListItem("documentlist");
+                    strOut = GetArticleDocuments();
+                    break;
+                case "edit_addlink":
+                    RocketModAddListItem("linklist");
+                    strOut = GetArticleLinks();
+                    break;
 
                 case "rocketmod_saveconfig":
                     SaveConfig();
@@ -270,6 +278,23 @@ namespace RocketMod
         }
         public static void SaveArticleList()
         {
+            var listNames = _postInfo.GetLists();
+            foreach (var listName in listNames)
+            {
+                var lp = 1;
+                var list = _postInfo.GetList(listName); 
+                foreach (var info in list)
+                {
+                    var selectitemid = info.GetXmlPropertyInt("genxml/hidden/itemid");
+                    if (selectitemid > 0)
+                    {
+                        var art = new ArticleData(selectitemid, _moduleid, _editLang);
+                        art.SortOrder = lp;
+                        art.Update();
+                        lp += 1;
+                    }
+                }
+            }
         }
 
         public static void DeleteArticle()
@@ -340,6 +365,53 @@ namespace RocketMod
             }
 
         }
+
+        public static String GetArticleDocuments()
+        {
+            try
+            {
+                AssignEditLang();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editdocuments.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
+                articleData.ImageFolder = _configData.ImageFolder;
+                articleData.DocumentFolder = _configData.DocumentFolder;
+                articleData.AppTheme = _configData.AppTheme;
+                articleData.AppThemeVersion = _configData.AppThemeVersion;
+                articleData.AppThemeRelPath = _configData.AppThemeRelPath;
+                var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        public static String GetArticleLinks()
+        {
+            try
+            {
+                AssignEditLang();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlinks.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
+                articleData.ImageFolder = _configData.ImageFolder;
+                articleData.DocumentFolder = _configData.DocumentFolder;
+                articleData.AppTheme = _configData.AppTheme;
+                articleData.AppThemeVersion = _configData.AppThemeVersion;
+                articleData.AppThemeRelPath = _configData.AppThemeRelPath;
+                var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
 
         public static String GetArticleList(bool loadCachedHeader)
         {

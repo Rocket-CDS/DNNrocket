@@ -12,6 +12,7 @@ namespace DNNrocket.Documents
         private static string _appthemeRelPath;
         private static string _appthemeMapPath;
         private static SimplisityInfo _postInfo;
+        private static SimplisityInfo _paramInfo;
         private static CommandSecurity _commandSecurity;
         private static DNNrocketInterface _rocketInterface;
 
@@ -28,6 +29,7 @@ namespace DNNrocket.Documents
             _appthemeRelPath = appPath;
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _postInfo = postInfo;
+            _paramInfo = paramInfo;
             _commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
             _commandSecurity.AddCommand("rocketdocs_upload", true);
             _commandSecurity.AddCommand("rocketdocs_delete", true);
@@ -46,7 +48,7 @@ namespace DNNrocket.Documents
                     strOut = ListData();
                     break;
                 case "rocketdocs_delete":
-                    DeleteImages();
+                    DeleteDocs();
                     strOut = ListData();
                     break;
                 case "rocketdocs_list":
@@ -70,7 +72,7 @@ namespace DNNrocket.Documents
         {
             try
             {
-                return DNNrocketUtils.RenderDocumentSelect(new SimplisityRazor(), _postInfo.GetXmlPropertyBool("genxml/hidden/singleselect"), _postInfo.GetXmlPropertyBool("genxml/hidden/autoreturn"), _postInfo.GetXmlProperty("genxml/hidden/documentfolder"));
+                return DNNrocketUtils.RenderDocumentSelect(_paramInfo.GetXmlPropertyBool("genxml/hidden/singleselect"), _paramInfo.GetXmlPropertyBool("genxml/hidden/autoreturn"), _paramInfo.GetXmlProperty("genxml/hidden/documentfolder"));
             }
             catch (Exception ex)
             {
@@ -82,13 +84,13 @@ namespace DNNrocket.Documents
         {
             var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
 
-            var documentfolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
+            var documentfolder = _paramInfo.GetXmlProperty("genxml/hidden/documentfolder");
             if (documentfolder == "") documentfolder = "docs";
             var docDirectory = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + documentfolder;
             if (!Directory.Exists(docDirectory)) Directory.CreateDirectory(docDirectory);
 
             var strOut = "";
-            var fileuploadlist = _postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+            var fileuploadlist = _paramInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
             if (fileuploadlist != "")
             {
                 foreach (var f in fileuploadlist.Split(';'))
@@ -107,7 +109,7 @@ namespace DNNrocket.Documents
             return strOut;
         }
 
-        public static void DeleteImages()
+        public static void DeleteDocs()
         {
             var docfolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
             if (docfolder == "") docfolder = "docs";

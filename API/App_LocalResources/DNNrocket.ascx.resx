@@ -486,4 +486,7 @@
   <data name="image.Text" xml:space="preserve">
     <value>Image</value>
   </data>
+  <data name="links.Text" xml:space="preserve">
+    <value>Links</value>
+  </data>
 </root>

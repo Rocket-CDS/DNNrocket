@@ -526,6 +526,7 @@ namespace DNNrocketAPI
                 info.Lang = "";
                 info.UserId = sInfo.UserId;
                 info.SystemId = systemId;
+                info.SortOrder = sInfo.SortOrder;
 
                 info.RemoveLangRecord();
                 var itemId = Update(info, tableName);
@@ -571,6 +572,7 @@ namespace DNNrocketAPI
                 info.Lang = "";
                 info.UserId = sInfo.UserId;
                 info.SystemId = systemId;
+                info.SortOrder = sInfo.SortOrder;
 
                 info.RemoveLangRecord();
                 var itemId = Update(info, tableName);

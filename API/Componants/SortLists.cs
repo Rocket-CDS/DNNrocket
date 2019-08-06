@@ -73,7 +73,7 @@ namespace DNNrocketAPI.Componants
 
         private SimplisityData SortListRecordsOnSave(SimplisityData simplisityData, string listName, SimplisityInfo postInfo, string editlang)
         {
-            if (simplisityData.SimplisityInfoList.Count >= 2) // no sort needed for 1 langauge
+            if (simplisityData.SimplisityInfoList.Count >= 2) // no sort needed for 1 language
             {
                 // find new sort list
                 var newsortorder = GetListInOrder(postInfo, listName);

@@ -673,6 +673,7 @@ async function initFileUpload(fileuploadselector) {
                 $('#progress .progress-bar').css('width', progress + '%');
             })
             .bind('fileuploadadd', function (e, data) {
+                $('input[id*="simplisity_fileuploadlist"]').val('');
                 $.each(data.files, function (index, file) {
                     $('input[id*="simplisity_fileuploadlist"]').val($('input[id*="simplisity_fileuploadlist"]').val() + simplisity_encode(file.name) + ';');
                     filesdone = filesdone + 1;

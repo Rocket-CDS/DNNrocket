@@ -16,12 +16,12 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addarticle" s-fields='{"tabid":"@Model.GetSettingInt("tabid")","moduleid":"@Model.ModuleId"}'>@ResourceKey("DNNrocket.cmdAddButton")</div>
         @ButtonGap()
-        <div class="w3-col m2 w3-button w3-green langchangesave simplisity_click" s-cmd="edit_savearticlelist" s-fields='' s-post="#datasection" s-list=".datalistitem">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+        <div class="w3-col m2 w3-button w3-green langchangesave simplisity_click" s-cmd="edit_savearticlelist" s-fields='' s-post="#datasection" s-list=".datalistitem" style="display:none;">@ResourceKey("DNNrocket.cmdSaveButton")</div>
     </div>
 
 <div id="datasection">
 
-    <ul id="datalist" class="w3-ul">
+    <ul id="datalist" class="w3-ul w3-border">
 
         @{
             var lp1 = 0;
@@ -29,39 +29,35 @@
         @foreach (SimplisityInfo i in articleDataList.DataList)
         {
             lp1 += 1;
-            <li class="datalistitem w3-card w3-margin w3-display-container">
+            <li class="datalistitem w3-display-container">
 
                 <div class="listrow">
-                    <div class="w3-button w3-display-topright simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="edit_deletearticle" s-fields='{"selecteditemid":"@i.ItemID"}'>
-                        <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                    <div class="w3-button w3-display-right simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="edit_deletearticle" s-fields='{"selecteditemid":"@i.ItemID"}'>
+                        <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"  style='font-size:32px'></i>
                     </div>
-                    <div class="w3-button w3-display-topleft simplisity_click" s-cmd="edit_editarticle" s-track="true" s-fields='{"selecteditemid":"@i.ItemID"}'>
-                        <i class="fas fa-edit"></i>
+                    <div class="w3-button w3-display-left simplisity_click" s-cmd="edit_editarticle" s-track="true" s-fields='{"selecteditemid":"@i.ItemID"}'>
+                        <i class="fas fa-edit" style='font-size:32px'></i>
                     </div>
 
+                    <!-- Use hidden field to pass ItemID back for sorting. -->
+                    @HiddenField(i,"genxml/hidden/itemid","", i.ItemID.ToString(),false, lp1)
+
                     <div class="w3-row">
-                        <div class="w3-col " style="width: 50px;">
+                        <div class="w3-col " style="width: 72px;">
                             <span>&nbsp;</span>
                         </div>
                         <div class="w3-col " style="width: 100px;">
                             @if (i.GetListItem("imagelist", 0).GetXmlProperty("genxml/hidden/imagepath") != "")
                             {
-                                <img src="@ThumbnailImageUrl(i.GetListItem("imagelist", 0).GetXmlProperty("genxml/hidden/imagepath"),75,75)" />
+                                <img src="@ThumbnailImageUrl(i.GetListItem("imagelist", 0).GetXmlProperty("genxml/hidden/imagepath"),60,60)" />
                             }
                             else
                             {
-                                <img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=75&h=75' imageheight='75' imagewidth='75'>
+                                <img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>
                             }
                         </div>
                         <div class="w3-rest">
-                            <div class="w3-col m10 w3-padding">
-                                <label class="">@ResourceKey("HtmlContent.title")</label>&nbsp;@EditFlag()
-                                @TextBox(i, "genxml/lang/genxml/textbox/header", " class='w3-input w3-border' autocomplete='off'", "", true, lp1)
-                            </div>
-                            <div class="w3-col m2  w3-padding">
-                                <label class="">@ResourceKey("HtmlContent.style")</label>
-                                @DropDownList(i, "genxml/select/headerstyle", "H1,H2,H3,H4", "H1,H2,H3,H4", " class='w3-input w3-border' style='width:100px;' ", "H1", false, lp1)
-                            </div>
+                            @i.GetXmlProperty("genxml/lang/genxml/textbox/header");
                         </div>
                         <div class="w3-col " style="width: 50px;">
                             <span>&nbsp;</span>
@@ -78,8 +74,11 @@
 
 <script>
     $(document).ready(function () {
-        $("#datalist").sortable();
+        $("#datalist").sortable({
+            stop: function (event, ui) { $('.langchangesave').show(); }
+        });
         $("#datalist").disableSelection();
+
     });
 
     function languageChange() {

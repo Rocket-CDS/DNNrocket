@@ -26,7 +26,7 @@
 
 
 <div class="w3-row w3-padding">
-    <div class="w3-col m2 w3-button w3-green langchangesave simplisity_click" s-cmd="edit_savearticle" s-fields='{"selecteditemid":"@i.ItemID"}' s-post="#datasection" s-list=".imagelist">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+    <div class="w3-col m2 w3-button w3-green langchangesave simplisity_click" s-cmd="edit_savearticle" s-fields='{"selecteditemid":"@i.ItemID"}' s-post="#datasection" s-list=".imagelist,.documentlist,.linklist">@ResourceKey("DNNrocket.cmdSaveButton")</div>
     @ButtonGap()
     <div class="w3-col m2 w3-button w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="edit_deletearticle" s-fields='{"selecteditemid":"@i.ItemID"}'>@ResourceKey("DNNrocket.cmdDeleteButton")</div>
     @ButtonGap()
@@ -56,10 +56,10 @@
                 </div>
                 <div class="w3-col m2 w3-padding w3-right">
                     <label class="">@ResourceKey("HtmlContent.noheader")</label>
-                    @CheckBox(i, "genxml/checkbox/noheader", "", "", false, false)
+                    @CheckBox(i, "genxml/checkbox/noheader", "", " class='w3-check' ", false, false)
                     &nbsp;
                     <label class="">@ResourceKey("HtmlContent.hide")</label>
-                    @CheckBox(i, "genxml/checkbox/hide", "", "", false, false)
+                    @CheckBox(i, "genxml/checkbox/hide", "", " class='w3-check' ", false, false)
                 </div>
             </div>
 
@@ -72,80 +72,37 @@
                 </div>
 
                 <div class="w3-row w3-padding">
-                    @CKEditor(i, "genxml/lang/genxml/textbox/richtext", "", "", true)
+                    <div class="w3-col m12">
+                        @CKEditor(i, "genxml/lang/genxml/textbox/richtext", " style='display:none'", "", true)
+                    </div>
+                    <div class="w3-col" style="width:0px;height:300px;">
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    @RenderRocketModFields(i.PortalId, Model.ModuleId, i, 1)
                 </div>
 
                 <div id="imagelistcontainer">
                     @RenderTemplate("editimages.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", Model, "1.0", true)
                 </div>
 
-                <div class="w3-row">
-                    <div class="w3-container ">
-                        <div class="w3-col m8">
-                            <label class="">@ResourceKey("HtmlContent.document")</label>&nbsp;@EditFlag()
-                            @DocumentEdit(i, "document1", " class='w3-input w3-border' ", true)
-                        </div>
-                        <div class="w3-col m2 w3-padding">
-                            <label class="">@ResourceKey("HtmlContent.justify")</label>
-                            @RadioButtonList(i, "genxml/hidden/layoutdocument1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
-                        </div>
-                    </div>
+                <div id="documentlistcontainer">
+                    @RenderTemplate("editdocuments.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", Model, "1.0", true)
+                </div>
+
+                <div id="linklistcontainer">
+                    @RenderTemplate("editlinks.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", Model, "1.0", true)
                 </div>
 
 
-                <div class="w3-row">
-                    <div class="w3-container">
-                        <div class="w3-col m8">
-                            <label class="">@ResourceKey("HtmlContent.internallink")</label>
-                            @TabSelectListOnTabId(i, "genxml/select/internallink1", " class='w3-input w3-border' ", true, false)
-                        </div>
-                        <div class="w3-col m2 w3-padding">
-                            <label class="">@ResourceKey("HtmlContent.justify")</label>
-                            @RadioButtonList(i, "genxml/hidden/layoutinternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
-                        </div>
-                        <div class="w3-col m2 w3-padding">
-                            <label class="">@ResourceKey("HtmlContent.blank")</label><br />
-                            @CheckBox(i, "genxml/checkbox/blankinternallink1", "", "", false, false)
-                        </div>
-                    </div>
-                </div>
-
-                <div class="w3-row">
-                    <div class="w3-container">
-                        <div class="w3-col m8">
-                            <label class="">@ResourceKey("HtmlContent.externallink")</label>
-                            @TextBox(i, "genxml/textbox/externallink1", " class='w3-input w3-border' autocomplete='off'", "", true)
-                        </div>
-                        <div class="w3-col m2 w3-padding">
-                            <label class="">@ResourceKey("HtmlContent.justify")</label>
-                            @RadioButtonList(i, "genxml/hidden/layoutexternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
-                        </div>
-                        <div class="w3-col m2 w3-padding">
-                            <label class="">@ResourceKey("HtmlContent.blank")</label><br />
-                            @CheckBox(i, "genxml/checkbox/blankexternallink1", "", "", false, false)
-                        </div>
-                    </div>
-                </div>
 
             </div>
-        </div>
-
-        <div class="w3-row">
-            @RenderRocketModFields(i.PortalId, Model.ModuleId, i, 1);
         </div>
 
     </div>
 
 </div>
-
-<div id="dnnrocket_imageselectwrapper">
-    @RenderImageSelect(Model, 100, true, false, articleData.ImageFolder)
-</div>
-
-<div id="dnnrocket_documentselectwrapper">
-    @RenderDocumentSelect(Model, true, false, articleData.DocumentFolder)
-</div>
-
 
 <script>
     $(document).ready(function () {
