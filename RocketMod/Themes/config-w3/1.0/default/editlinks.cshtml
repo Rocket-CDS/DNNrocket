@@ -18,74 +18,75 @@
     var linkLP = 1;
 }
 
-<div class="w3-container w3-theme w3-padding">
+<div class="w3-container w3-theme w3-padding linkheader">
     <label>@ResourceKey("DNNrocket.links")</label>
 </div>
 
-<div class="w3-container">
-    <div class="w3-col w3-padding" style="width:160px;">
-        <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addlink" s-fields='{"selecteditemid":"@i.ItemID"}' s-return="#linklistcontainer"><i class='fas fa-plus-circle'></i></div>
-        <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="linklistbin" s-return="#linklistdata" s-removelist=".linklist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
-    </div>
-</div>
 
-<div class="w3-row">
+<div class="w3-row linklistdatasection">
+
+    <div class="w3-container">
+        <div class="w3-col w3-padding" style="width:160px;">
+            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addlink" s-fields='{"selecteditemid":"@i.ItemID"}' s-return="#linklistcontainer"><i class='fas fa-plus-circle'></i></div>
+            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="linklistbin" s-return="#linklistdata" s-removelist=".linklist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+        </div>
+    </div>
 
     <ul id="linklistdata" class="w3-ul">
 
         @foreach (var linkInfo in i.GetList("linklist"))
         {
-        <li class="linklist w3-half w3-display-container w3-padding w3-border-0">
-            @SortableListIndex(linkLP)
+            <li class="linklist w3-half w3-display-container w3-padding w3-border-0">
+                @SortableListIndex(linkLP)
 
-            <div class="w3-display-container w3-padding w3-card">
-                <div class="w3-row">
+                <div class="w3-display-container w3-padding w3-card">
+                    <div class="w3-row">
 
-                    @RadioButtonList(linkInfo, "genxml/radio/linktype", "0,1", ResourceKey("RocketMod.internallink") + "," + ResourceKey("RocketMod.externallink"), " class='linktypeclick' linkrow='" + linkLP + "' ", "0", "", false, linkLP)
+                        @RadioButtonList(linkInfo, "genxml/radio/linktype", "0,1", ResourceKey("RocketMod.internallink") + "," + ResourceKey("RocketMod.externallink"), " class='linktypeclick' linkrow='" + linkLP + "' ", "0", "", false, linkLP)
 
-                    @{ 
-                        var linktype = linkInfo.GetXmlPropertyInt("genxml/radio/linktype");
-                        var internaldisplay = "";
-                        var externaldisplay = "display:none;";
-                        if (linktype == 1)
-                        {
-                            internaldisplay = "display:none;";
-                            externaldisplay = "";
+                        @{
+                            var linktype = linkInfo.GetXmlPropertyInt("genxml/radio/linktype");
+                            var internaldisplay = "";
+                            var externaldisplay = "display:none;";
+                            if (linktype == 1)
+                            {
+                                internaldisplay = "display:none;";
+                                externaldisplay = "";
+                            }
                         }
-                    }
 
-                    <div class="w3-container internallink@(linkLP)" style="@(internaldisplay)" >
-                        <div class="w3-col m12">
-                            @TabSelectListOnTabId(linkInfo, "genxml/select/internallink1", " class='w3-input w3-border' ", true, false, linkLP)
+                        <div class="w3-container internallink@(linkLP)" style="@(internaldisplay)">
+                            <div class="w3-col m12">
+                                @TabSelectListOnTabId(linkInfo, "genxml/select/internallink1", " class='w3-input w3-border' ", true, false, linkLP)
+                            </div>
+                            <div class="w3-col m6 w3-padding" style="width:160px">
+                                <label class="">@ResourceKey("RocketMod.justify")</label>
+                                @RadioButtonList(linkInfo, "genxml/hidden/layoutinternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, linkLP)
+                            </div>
+                            <div class="w3-col m6 w3-padding">
+                                @CheckBox(linkInfo, "genxml/checkbox/blankinternallink1", "&nbsp;" + ResourceKey("RocketMod.blank").ToString(), " class='w3-check' ", false, false, linkLP)
+                            </div>
                         </div>
-                        <div class="w3-col m6 w3-padding" style="width:160px">
-                            <label class="">@ResourceKey("RocketMod.justify")</label>
-                            @RadioButtonList(linkInfo, "genxml/hidden/layoutinternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, linkLP)
+
+                        <div class="w3-container externallink@(linkLP)" style="@(externaldisplay)">
+                            <div class="w3-col m12">
+                                @TextBox(linkInfo, "genxml/textbox/externallink1", " class='w3-input w3-border' autocomplete='off'", "https://", true, linkLP)
+                            </div>
+                            <div class="w3-col m6 w3-padding" style="width:160px">
+                                <label class="">@ResourceKey("RocketMod.justify")</label>
+                                @RadioButtonList(linkInfo, "genxml/hidden/layoutexternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, linkLP)
+                            </div>
+                            <div class="w3-col m6 w3-padding">
+                                @CheckBox(linkInfo, "genxml/checkbox/blankexternallink1", "&nbsp;" + ResourceKey("RocketMod.blank").ToString(), " class='w3-check' ", false, false, linkLP)
+                            </div>
                         </div>
-                        <div class="w3-col m6 w3-padding">
-                            @CheckBox(linkInfo, "genxml/checkbox/blankinternallink1", "&nbsp;" + ResourceKey("RocketMod.blank").ToString(), " class='w3-check' ", false, false, linkLP)
-                        </div>
+
                     </div>
-
-                    <div class="w3-container externallink@(linkLP)" style="@(externaldisplay)">
-                        <div class="w3-col m12">
-                            @TextBox(linkInfo, "genxml/textbox/externallink1", " class='w3-input w3-border' autocomplete='off'", "https://", true, linkLP)
-                        </div>
-                        <div class="w3-col m6 w3-padding" style="width:160px">
-                            <label class="">@ResourceKey("RocketMod.justify")</label>
-                            @RadioButtonList(linkInfo, "genxml/hidden/layoutexternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false,linkLP)
-                        </div>
-                        <div class="w3-col m6 w3-padding">
-                            @CheckBox(linkInfo, "genxml/checkbox/blankexternallink1", "&nbsp;" + ResourceKey("RocketMod.blank").ToString(), " class='w3-check' ", false, false, linkLP)
-                        </div>
+                    <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
+                        <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
                     </div>
-
                 </div>
-                <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
-                    <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
-                </div>
-            </div>
-        </li>
+            </li>
             linkLP += 1;
         }
     </ul>

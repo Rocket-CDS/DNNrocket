@@ -149,7 +149,7 @@
     function sidemenuchange() {
         $('.simplisity_menulink').addClass('w3-light-grey');
         $('.simplisity_menulink').removeClass('w3-theme-l2');
-        var index = simplisity_getCookieValue('s-lastmenuindex');
+        var index = simplisity_lastmenuindex();
         $('.simplisity_menulink[s-index=' + index + ']').removeClass('w3-light-grey');
         $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-theme-l2');
     }

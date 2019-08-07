@@ -164,7 +164,7 @@
     function sidemenuchange() {
         $('.simplisity_menulink').removeClass('w3-white');
         $('.simplisity_menulink').removeClass('w3-text-blue-grey');
-        var index = simplisity_getCookieValue('s-lastmenuindex');
+        var index = simplisity_lastmenuindex();
         $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-white');
         $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-text-blue-grey');
         w3_close();

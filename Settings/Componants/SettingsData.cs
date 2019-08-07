@@ -99,13 +99,9 @@ namespace RocketSettings
                 }
                 if (nodcount == 0)
                 {
-                    var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, l, -1, _moduleid, true, _tableName);
-                    if (dbInfo != null)
-                    {
-                        dbInfo.XMLData = xmlData;
-                        dbInfo.ModuleId = _moduleid;
-                        _objCtrl.SaveData(dbInfo, Info.ItemID, _tableName);
-                    }
+                    var newInfo = Info;                    
+                    newInfo.Lang = l;
+                    _objCtrl.SaveData(newInfo, Info.ItemID, _tableName);
                 }
             }
         }

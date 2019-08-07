@@ -15,13 +15,13 @@ namespace RocketMod
     public class RocketModTokens<T> : DNNrocketAPI.render.DNNrocketTokens<T>
     {
 
-        public IEncodedString RenderRocketModFields(int portalid, int moduleid, SimplisityInfo info, int row, string lang = "")
+        public IEncodedString RenderRocketModFields(SimplisityRazor model, int portalid, int moduleid, SimplisityInfo info, int row, string lang = "")
         {
-            var strOut = BuildRocketForm(portalid, moduleid, info, row, lang);
+            var strOut = BuildRocketForm(model, portalid, moduleid, info, row, lang);
             return new RawString(strOut);
         }
 
-        private string BuildRocketForm(int portalid, int moduleid, SimplisityInfo info, int row, string lang = "")
+        private string BuildRocketForm(SimplisityRazor model, int portalid, int moduleid, SimplisityInfo info, int row, string lang = "")
         {
             var objCtrl = new DNNrocketController();
             var strOut = "";
@@ -141,7 +141,29 @@ namespace RocketMod
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext")
                         {
                             xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                            strOut += "<div class='w3-col m12'>";
                             strOut += CKEditor(info,xpath,"","",localized,row).ToString();
+                            strOut += "</div>";
+                            strOut += "<div class='w3-col' style='width:0px;height:300px;'></div>";
+                        }
+
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
+                        {
+                            strOut += "<div id='imagelistcontainer'>";
+                            strOut += RenderTemplate("editimages.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", model, "1.0", true);
+                            strOut += "</div>";
+                        }
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "documentgallery")
+                        {
+                            strOut += "<div id='documentlistcontainer'>";
+                            strOut += RenderTemplate("editdocuments.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", model, "1.0", true);
+                            strOut += "</div>";
+                        }
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "linkgallery")
+                        {
+                            strOut += "<div id='linklistcontainer'>";
+                            strOut += RenderTemplate("editlinks.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", model, "1.0", true);
+                            strOut += "</div>";
                         }
 
                         strOut += "</div>";

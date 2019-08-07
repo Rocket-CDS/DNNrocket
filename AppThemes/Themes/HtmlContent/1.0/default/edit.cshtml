@@ -40,67 +40,10 @@
 
 
 <div id="datasection">
-
     <!-- The Detail-->
     <div id="detailDisplay" class="w3-container">
-        <div class="" style="">
-
-            <div class="w3-row">
-                <div class="w3-col m8 w3-padding">
-                    <label class="">@ResourceKey("HtmlContent.title")</label>&nbsp;@EditFlag()
-                    @TextBox(i, "genxml/lang/genxml/textbox/header", " class='w3-input w3-border' class='w3-check' autocomplete='off'", "", true)
-                </div>
-                <div class="w3-col m2  w3-padding">
-                    <label class="">@ResourceKey("HtmlContent.style")</label>
-                    @DropDownList(i, "genxml/select/headerstyle", "H1,H2,H3,H4", "H1,H2,H3,H4", " class='w3-input w3-border' class='w3-check' style='width:100px;' ", "H1", false)
-                </div>
-                <div class="w3-col m2 w3-padding w3-right">
-                    <label class="">@ResourceKey("HtmlContent.noheader")</label>
-                    @CheckBox(i, "genxml/checkbox/noheader", "", " class='w3-check' ", false, false)
-                    &nbsp;
-                    <label class="">@ResourceKey("HtmlContent.hide")</label>
-                    @CheckBox(i, "genxml/checkbox/hide", "", " class='w3-check' ", false, false)
-                </div>
-            </div>
-
-            <div class="w3-container ">
-
-                <div class="w3-row w3-margin">
-                    <div class="">
-                        @RadioButtonList(i, "genxml/hidden/layout", "0,1,2,3,4,5,6,7,8", "<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper0.png' style='width:24px;' />,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper1.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper2.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper3.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper4.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper5.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper6.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper7.png' style='width:24px;'/>,<img src='/DesktopModules/DNNrocket/AppThemes/Themes/" + Model.GetSetting("AppTheme") + "/" + Model.GetSetting("AppThemeVersion") + "/img/Newspaper8.png' style='width:24px;'/>", "class=''", "0", "", false)
-                    </div>
-                </div>
-
-                <div class="w3-row w3-padding">
-                    <div class="w3-col m12">
-                        @CKEditor(i, "genxml/lang/genxml/textbox/richtext", " style='display:none'", "", true)
-                    </div>
-                    <div class="w3-col" style="width:0px;height:300px;">
-                    </div>
-                </div>
-
-                <div class="w3-row">
-                    @RenderRocketModFields(i.PortalId, Model.ModuleId, i, 1)
-                </div>
-
-                <div id="imagelistcontainer">
-                    @RenderTemplate("editimages.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", Model, "1.0", true)
-                </div>
-
-                <div id="documentlistcontainer">
-                    @RenderTemplate("editdocuments.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", Model, "1.0", true)
-                </div>
-
-                <div id="linklistcontainer">
-                    @RenderTemplate("editlinks.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", Model, "1.0", true)
-                </div>
-
-
-            </div>
-        </div>
-
+                @RenderRocketModFields(Model, i.PortalId, Model.ModuleId, i, 1)
     </div>
-
 </div>
 
 <script>
