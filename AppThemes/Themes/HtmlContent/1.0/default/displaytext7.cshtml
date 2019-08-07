@@ -14,12 +14,12 @@
 <div class="w3-row">
 
     <div class="w3-padding" style="float: right">
-        @for (var lp1 = 1; lp1 <= 4; lp1++)
+        @foreach(var i in  Model.Datainfo.GetList("imagelist"))
         {
-            var imagewidth = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/widthimagepath" + lp1);
-            var imageheight = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/heightimagepath" + lp1);
-            var imagealt = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/altimagepath" + lp1);
-            var imagepath = Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath" + lp1);
+            var imagewidth = i.GetXmlPropertyInt("genxml/textbox/widthimagepath");
+            var imageheight = i.GetXmlPropertyInt("genxml/textbox/heightimagepath");
+            var imagealt = i.GetXmlPropertyInt("genxml/textbox/altimagepath");
+            var imagepath = i.GetXmlProperty("genxml/hidden/imagepath");
             if (imagepath != "")
             {
                 <div class="w3-padding">

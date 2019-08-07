@@ -74,7 +74,7 @@ var trackgroup = '';
         elem.innerHTML = elementstr;
         document.body.appendChild(elem);
 
-        var iframeedit = simplisity_getCookieValue('s-edit-iframeedit');
+        var iframeedit = sessionStorage.iframeedit;
         var scmd = simplisity_getCookieValue('s-cmd-menu-' + trackgroup);
         var sfields = simplisity_getCookieValue('s-fields-menu-' + trackgroup);
         if ((typeof strack !== 'undefined' || scmd !== '') && settings.usehistory === true && iframeedit === '') {
@@ -83,7 +83,7 @@ var trackgroup = '';
             $('#simplisity_startpanel').attr('s-cmd', scmd);
             $('#simplisity_startpanel').attr('s-fields', sfields);
         }
-        simplisity_setCookieValue('s-edit-iframeedit','');
+        sessionStorage.iframeedit = '';
 
         $('.simplisity_panel').each(function () {
             $(this).attr('s-activepanel', settings.activatepanel);

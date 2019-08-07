@@ -684,12 +684,15 @@ namespace RocketMod
                     
                     passSettings.Add("addeditscript", _commandSecurity.HasModuleEditRights().ToString());
 
-                    var adminurl = "/DesktopModules/DNNrocket/RocketMod/admin.aspx?moduleid=" + _moduleid + "&tabid=" + _tabid;
+                    var adminurl = "/DesktopModules/DNNrocket/RocketMod/admin.html?moduleid=" + _moduleid + "&tabid=" + _tabid;
                     passSettings.Add("adminurl", adminurl);
 
                     var appTheme = new AppTheme(apptheme,_configData.AppThemeVersion);
 
-                    //strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveViewTemplate, _moduleData.CurrentRecord, passSettings, _moduleData.HeaderInfo);
+                    var articleDataList = new ArticleDataList(_moduleid, DNNrocketUtils.GetCurrentCulture());
+                    articleDataList.Populate();
+
+                    strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveViewTemplate, articleDataList, passSettings, articleDataList.Header);
 
                 }
                 else

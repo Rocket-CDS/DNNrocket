@@ -45,7 +45,7 @@
 
 
     <!-- Side Navigation (use mask div if in iframe editmode)-->
-    <nav class="w3-sidebar w3-collapse w3-theme w3-animate-left w3-border-right" style="z-index:3;width:270px;top:0px" id="mySidebar">
+    <nav class="w3-sidebar w3-collapse w3-theme w3-animate-left w3-border-right" style="z-index:3;width:270px;top:0px;" id="mySidebar">
         <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="getsidemenu" s-fields='{"theme":"config-w3","template":"SideMenu.cshtml","relpath":"/DesktopModules/DNNrocket/RocketMod/"}'></div>
     </nav>
     <div class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-grey" onclick="w3_open();"><i class="fas fa-bars"></i></div>
@@ -74,6 +74,11 @@
                 var urlParams = new URLSearchParams(window.location.search);
                 simplisity_setParamField("moduleid", urlParams.get('moduleid'))
                 simplisity_setParamField("tabid", urlParams.get('tabid'))
+                simplisity_setParamField("editmode", urlParams.get('editmode'))
+                if (urlParams.get('editmode') === '1') {
+                    $('#base-panel').css('margin-left','0px');
+                    $('#mySidebar').css('width','0px');
+                }
             });
         </script>
 

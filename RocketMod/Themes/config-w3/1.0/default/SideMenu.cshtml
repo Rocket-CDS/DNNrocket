@@ -165,15 +165,18 @@
         $('.simplisity_menulink').removeClass('w3-white');
         $('.simplisity_menulink').removeClass('w3-text-blue-grey');
         var index = simplisity_lastmenuindex();
-        $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-white');
-        $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-text-blue-grey');
+        if (index != '') {
+            $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-white');
+            $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-text-blue-grey');
+        }
         w3_close();
         $('#sidebar_loader').hide();
     }
 
     function returnclick() {
         $('#simplisity_loader').show();
-        var returnurl = simplisity_getCookieValue('rocketmod_return');
+
+        var returnurl = sessionStorage.RocketModReturn;
         if (typeof returnurl === 'undefined' || returnurl === '') {
             window.history.back();
         }

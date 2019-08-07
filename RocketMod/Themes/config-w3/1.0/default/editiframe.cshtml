@@ -10,39 +10,30 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
-@{
-    var info = new SimplisityInfo();
-    if (Model.List.Count > 0)
-    {
-        info = (SimplisityInfo)Model.List.First();
-    }
-}
-
 @if (Model.GetSettingBool("addeditscript"))
 {
 
 
-<div id="rocketmodmodel_@(Model.ModuleId)" class="w3-modal">
-    <div class="w3-modal-content w3-card-4 w3-grey " style="width: 90%;height: 90%;">
-        <span onclick="location.reload();" class="w3-button w3-right closeiframe">@ResourceKey("DNNrocket.cmdCloseButton")</span>
-        <div class="w3-row" style="height: 100%">
-            <iframe id="rocketmodIframe_@(Model.ModuleId)" style="width: 100%; height: 100%;">@ResourceKey("RocketMod.iframesupport")</iframe>
+    <div id="rocketmodmodel_@(Model.ModuleId)" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 w3-grey " style="width: 90%;height: 90%;">
+            <span onclick="location.reload();" class="w3-button w3-right closeiframe">@ResourceKey("DNNrocket.cmdCloseButton")</span>
+            <div class="w3-row" style="height: 100%">
+                <iframe id="rocketmodIframe_@(Model.ModuleId)" style="width: 100%; height: 100%;">@ResourceKey("RocketMod.iframesupport")</iframe>
+            </div>
         </div>
     </div>
-</div>
 
     <script>
     $(document).ready(function () {
-        simplisity_setCookieValue('rocketmod_return', window.location.href);
+        sessionStorage.RocketModReturn = window.location.href;
     });
 
         function rocketmodeditiframe_@(Model.ModuleId)() {
-            simplisity_setCookieValue('s-edit-iframeedit', 'true');
             simplisity_setCookieValue('editlang', '@(DNNrocketUtils.GetCurrentCulture())');
             $('#rocketmodmodel_@(Model.ModuleId)').show();
             $('.actionMenu').hide();
             hidePersonaBar();
-            document.getElementById('rocketmodIframe_@(Model.ModuleId)').src = "/desktopmodules/dnnrocket/RocketMod/admin.aspx?tabid=@(Model.GetSetting("tabid"))&moduleid=@(Model.ModuleId)&editmode=1"
+            document.getElementById('rocketmodIframe_@(Model.ModuleId)').src = "/desktopmodules/dnnrocket/RocketMod/admin.html?tabid=@(Model.GetSetting("tabid"))&moduleid=@(Model.ModuleId)&editmode=1"
         }
 
     function hidePersonaBar() {

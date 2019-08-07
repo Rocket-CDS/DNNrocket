@@ -12,14 +12,16 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/resx/")
 
 @{
-    var imagewidth = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/widthimagepath1");
-    var imageheight = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/heightimagepath1");
-    var imagealt = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/altimagepath1");
-    var imagepath = Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath1");
-    var imagewidth2 = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/widthimagepath2");
-    var imageheight2 = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/heightimagepath2");
-    var imagealt2 = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/altimagepath2");
-    var imagepath2 = Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath2");
+    var imagewidth = Model.Datainfo.GetXmlPropertyInt("genxml/imagelist/genxml[1]/textbox/widthimagepath");
+    var imageheight = Model.Datainfo.GetXmlPropertyInt("genxml/imagelist/genxml[1]/textbox/heightimagepath");
+    var imagealt = Model.Datainfo.GetXmlProperty("genxml/imagelist/genxml[1]/textbox/altimagepath");
+    var imagepath = Model.Datainfo.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/imagepath");
+
+    var imagewidth2 = Model.Datainfo.GetXmlPropertyInt("genxml/imagelist/genxml[2]/textbox/widthimagepath");
+    var imageheight2 = Model.Datainfo.GetXmlPropertyInt("genxml/imagelist/genxml[2]/textbox/heightimagepath");
+    var imagealt2 = Model.Datainfo.GetXmlProperty("genxml/imagelist/genxml[2]/textbox/altimagepath");
+    var imagepath2 = Model.Datainfo.GetXmlProperty("genxml/imagelist/genxml[2]/hidden/imagepath");
+
 }
 
 <div class="w3-row">

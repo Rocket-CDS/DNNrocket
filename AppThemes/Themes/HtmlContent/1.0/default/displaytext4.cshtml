@@ -36,21 +36,21 @@
     w3class = "w3-quarter";
 }
 
-<div class="w3-row">
-    @for (var lp1 = 1; lp1 <= 4; lp1++)
-    {
-        var imagewidth = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/widthimagepath" + lp1);
-        var imageheight = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/heightimagepath" + lp1);
-        var imagealt = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/altimagepath" + lp1);
-        var imagepath = Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath" + lp1);
-        if (imagepath != "")
+    <div class="w3-row">
+        @foreach (var i in Model.Datainfo.GetList("imagelist"))
         {
-            <div class="@w3class">
-                <img src="/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=@imagepath&w=@imagewidth&h=@imageheight" alt="@imagealt" />
-            </div>
+            var imagewidth = i.GetXmlPropertyInt("genxml/textbox/widthimagepath");
+            var imageheight = i.GetXmlPropertyInt("genxml/textbox/heightimagepath");
+            var imagealt = i.GetXmlPropertyInt("genxml/textbox/altimagepath");
+            var imagepath = i.GetXmlProperty("genxml/hidden/imagepath");
+            if (imagepath != "")
+            {
+                <div class="@w3class">
+                    <img src="/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=@imagepath&w=@imagewidth&h=@imageheight" alt="@imagealt" />
+                </div>
+            }
         }
-    }
-</div>
+    </div>
 
 <div class="w3-row w3-padding">
     @HtmlOf(Model.Datainfo.GetXmlProperty("genxml/lang/genxml/textbox/richtext"))

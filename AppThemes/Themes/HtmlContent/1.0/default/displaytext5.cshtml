@@ -16,9 +16,9 @@
     var w3class = "";
 }
 
-@for (var lp1 = 1; lp1 <= 4; lp1++)
+@foreach (var i in Model.Datainfo.GetList("imagelist"))
 {
-    if (Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath" + lp1) != "")
+    if (i.GetXmlProperty("genxml/hidden/imagepath") != "")
     {
         imagecount += 1;
     }
@@ -31,7 +31,7 @@
 {
     w3class = "w3-third";
 }
-@if (imagecount == 4)
+@if (imagecount >= 4)
 {
     w3class = "w3-quarter";
 }
@@ -41,12 +41,12 @@
 </div>
 
 <div class="w3-row">
-    @for (var lp1 = 1; lp1 <= 4; lp1++)
+    @foreach (var i in Model.Datainfo.GetList("imagelist"))
     {
-        var imagewidth = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/widthimagepath" + lp1);
-        var imageheight = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/heightimagepath" + lp1);
-        var imagealt = Model.Datainfo.GetXmlPropertyInt("genxml/textbox/altimagepath" + lp1);
-        var imagepath = Model.Datainfo.GetXmlProperty("genxml/hidden/imagepath" + lp1);
+        var imagewidth = i.GetXmlPropertyInt("genxml/textbox/widthimagepath");
+        var imageheight = i.GetXmlPropertyInt("genxml/textbox/heightimagepath");
+        var imagealt = i.GetXmlPropertyInt("genxml/textbox/altimagepath");
+        var imagepath = i.GetXmlProperty("genxml/hidden/imagepath");
         if (imagepath != "")
         {
             <div class="@w3class">

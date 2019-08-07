@@ -313,7 +313,13 @@ namespace DNNrocketAPI.render
             var upd = getUpdateAttr(xpath, attributes, localized);
             var id = getIdFromXpath(xpath, row);
 
-            var strOut = " <textarea id='" + id + "' s-datatype='coded' s-xpath='" + xpath + "' type='text'  name='editor" + id + "' " + attributes + " " + upd + " >" + info.GetXmlProperty(xpath) + "</textarea>";
+            var value = info.GetXmlProperty(xpath);
+            if (localized && !xpath.StartsWith("genxml/lang/"))
+            {
+                value = info.GetXmlProperty("genxml/lang/" + xpath);
+            }
+
+            var strOut = " <textarea id='" + id + "' s-datatype='coded' s-xpath='" + xpath + "' type='text'  name='editor" + id + "' " + attributes + " " + upd + " >" + value + "</textarea>";
             strOut += GetCKEditorStartup(id, startupfile);
             return new RawString(strOut);
         }
