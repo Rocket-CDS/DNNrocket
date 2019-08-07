@@ -42,11 +42,7 @@ var trackgroup = '';
             debug: false
         }, options);
 
-        trackgroup = (sessionStorage.trackgroup && sessionStorage.closedLastTab !== '2' ? sessionStorage.trackgroup : sessionStorage.trackgroup = Math.random()).toString();
-        sessionStorage.closedLastTab = '2';
-        $(window).on('unload beforeunload', function () {
-            sessionStorage.closedLastTab = '1';
-        });
+        trackgroup = sessionStorage.trackgroup ? sessionStorage.trackgroup : sessionStorage.trackgroup = Math.random();
         trackgroup = trackgroup + '_' + settings.systemprovider;
 
         debugmode = settings.debug;
