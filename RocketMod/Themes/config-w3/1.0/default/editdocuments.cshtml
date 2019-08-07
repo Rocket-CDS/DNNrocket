@@ -6,7 +6,8 @@
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/documents/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Documents/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 @{
     var i = new SimplisityInfo();
@@ -35,25 +36,25 @@
 
         @foreach (var docInfo in i.GetList("documentlist"))
         {
-        <li class="documentlist w3-half w3-display-container w3-padding w3-border-0">
-            @SortableListIndex(docLP)
+            <li class="documentlist w3-half w3-display-container w3-padding w3-border-0">
+                @SortableListIndex(docLP)
 
-            <div class="w3-display-container w3-padding w3-card">
-                <div class="w3-row">
-                    <div class="w3-col m8">
-                        <label class="">@ResourceKey("HtmlContent.document")</label>&nbsp;@EditFlag()
-                        @DocumentEdit(docInfo, "document", " class='w3-input w3-border' ", true, docLP)
-                    </div>
-                    <div class="w3-col w3-padding" style="width:160px">
-                        <label class="">@ResourceKey("HtmlContent.justify")</label>
-                        @RadioButtonList(docInfo, "genxml/hidden/layoutdocument", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, docLP)
-                    </div>
-                    <div class="simplisity_removelistitem w3-right" s-removelist=".documentlist" s-recylebin="documentlistbin" style="cursor: pointer;">
-                        <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
+                <div class="w3-display-container w3-padding w3-card">
+                    <div class="w3-row">
+                        <div class="w3-col m8">
+                            <label class="">@ResourceKey("HtmlContent.document")</label>&nbsp;@EditFlag()
+                            @DocumentEdit(docInfo, "document", " class='w3-input w3-border' ", true, docLP)
+                        </div>
+                        <div class="w3-col w3-padding" style="width:160px">
+                            <label class="">@ResourceKey("HtmlContent.justify")</label>
+                            @RadioButtonList(docInfo, "genxml/hidden/layoutdocument", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, docLP)
+                        </div>
+                        <div class="simplisity_removelistitem w3-right" s-removelist=".documentlist" s-recylebin="documentlistbin" style="cursor: pointer;">
+                            <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </li>
+            </li>
             docLP += 1;
         }
     </ul>

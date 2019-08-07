@@ -129,6 +129,9 @@
   <data name="appthemeversion.Text" xml:space="preserve">
     <value>App Theme Version</value>
   </data>
+  <data name="blank.Text" xml:space="preserve">
+    <value>New Page</value>
+  </data>
   <data name="cmdResetButton.Text" xml:space="preserve">
     <value>&lt;i title="Reset" class="fas fa-redo fa-fw fa-lg"&gt;&lt;/i&gt; Reset Config.</value>
   </data>
@@ -153,6 +156,9 @@
   <data name="edittitle.Text" xml:space="preserve">
     <value>DNNrocket - High Speed Integration</value>
   </data>
+  <data name="externallink.Text" xml:space="preserve">
+    <value>External Link</value>
+  </data>
   <data name="iframesupport.Text" xml:space="preserve">
     <value>Your browser does not support iframes. Use the Rocket Admin option.</value>
   </data>
@@ -161,6 +167,12 @@
   </data>
   <data name="interfacekey.Text" xml:space="preserve">
     <value>Interface</value>
+  </data>
+  <data name="internallink.Text" xml:space="preserve">
+    <value>Internal Link</value>
+  </data>
+  <data name="justify.Text" xml:space="preserve">
+    <value>Justify</value>
   </data>
   <data name="manageremail.Text" xml:space="preserve">
     <value>Manager Email</value>

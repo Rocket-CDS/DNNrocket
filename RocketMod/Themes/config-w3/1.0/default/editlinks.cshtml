@@ -6,7 +6,7 @@
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/links/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 @{
     var i = new SimplisityInfo();
@@ -41,41 +41,48 @@
             <div class="w3-display-container w3-padding w3-card">
                 <div class="w3-row">
 
-                    <div class="w3-container">
-                        <div class="w3-col m8">
-                            <label class="">@ResourceKey("HtmlContent.internallink")</label>
-                            @TabSelectListOnTabId(i, "genxml/select/internallink1", " class='w3-input w3-border' ", true, false)
-                        </div>
-                        <div class="w3-col m2 w3-padding">
-                            <label class="">@ResourceKey("HtmlContent.justify")</label>
-                            @RadioButtonList(i, "genxml/hidden/layoutinternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
-                        </div>
-                        <div class="w3-col m2 w3-padding">
-                            <label class="">@ResourceKey("HtmlContent.blank")</label><br />
-                            @CheckBox(i, "genxml/checkbox/blankinternallink1", "", "", false, false)
-                        </div>
-                    </div>
+                    @RadioButtonList(linkInfo, "genxml/radio/linktype", "0,1", ResourceKey("RocketMod.internallink") + "," + ResourceKey("RocketMod.externallink"), " class='linktypeclick' linkrow='" + linkLP + "' ", "0", "", false, linkLP)
 
+                    @{ 
+                        var linktype = linkInfo.GetXmlPropertyInt("genxml/radio/linktype");
+                        var internaldisplay = "";
+                        var externaldisplay = "display:none;";
+                        if (linktype == 1)
+                        {
+                            internaldisplay = "display:none;";
+                            externaldisplay = "";
+                        }
+                    }
 
-                    <div class="w3-container">
-                        <div class="w3-col m8">
-                            <label class="">@ResourceKey("HtmlContent.externallink")</label>
-                            @TextBox(i, "genxml/textbox/externallink1", " class='w3-input w3-border' autocomplete='off'", "", true)
+                    <div class="w3-container internallink@(linkLP)" style="@(internaldisplay)" >
+                        <div class="w3-col m12">
+                            @TabSelectListOnTabId(linkInfo, "genxml/select/internallink1", " class='w3-input w3-border' ", true, false, linkLP)
                         </div>
-                        <div class="w3-col m2 w3-padding">
-                            <label class="">@ResourceKey("HtmlContent.justify")</label>
-                            @RadioButtonList(i, "genxml/hidden/layoutexternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false)
+                        <div class="w3-col m6 w3-padding" style="width:160px">
+                            <label class="">@ResourceKey("RocketMod.justify")</label>
+                            @RadioButtonList(linkInfo, "genxml/hidden/layoutinternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, linkLP)
                         </div>
-                        <div class="w3-col m2 w3-padding">
-                            <label class="">@ResourceKey("HtmlContent.blank")</label><br />
-                            @CheckBox(i, "genxml/checkbox/blankexternallink1", "", "", false, false)
+                        <div class="w3-col m6 w3-padding">
+                            @CheckBox(linkInfo, "genxml/checkbox/blankinternallink1", "&nbsp;" + ResourceKey("RocketMod.blank").ToString(), " class='w3-check' ", false, false, linkLP)
                         </div>
                     </div>
 
+                    <div class="w3-container externallink@(linkLP)" style="@(externaldisplay)">
+                        <div class="w3-col m12">
+                            @TextBox(linkInfo, "genxml/textbox/externallink1", " class='w3-input w3-border' autocomplete='off'", "https://", true, linkLP)
+                        </div>
+                        <div class="w3-col m6 w3-padding" style="width:160px">
+                            <label class="">@ResourceKey("RocketMod.justify")</label>
+                            @RadioButtonList(linkInfo, "genxml/hidden/layoutexternallink1", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false,linkLP)
+                        </div>
+                        <div class="w3-col m6 w3-padding">
+                            @CheckBox(linkInfo, "genxml/checkbox/blankexternallink1", "&nbsp;" + ResourceKey("RocketMod.blank").ToString(), " class='w3-check' ", false, false, linkLP)
+                        </div>
+                    </div>
 
-
-
-
+                </div>
+                <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
+                    <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
                 </div>
             </div>
         </li>
@@ -89,5 +96,22 @@
     $(document).ready(function () {
         $("#linklistdata").sortable();
         $("#linklistdata").disableSelection();
+
+        $('.linktypeclick').unbind('click');
+        $('.linktypeclick').click(function () {
+            var linkrow = $(this).attr("linkrow");
+            var selectedval = $('input[name="linktype_' + linkrow + 'radio"]:checked').val();
+            if (selectedval === '1') {
+                $('.internallink' + linkrow).hide();
+                $('.externallink' + linkrow).show();
+            }
+            else {
+                $('.internallink' + linkrow).show();
+                $('.externallink' + linkrow).hide();
+            }
+        });
+
+
     });
+
 </script>
