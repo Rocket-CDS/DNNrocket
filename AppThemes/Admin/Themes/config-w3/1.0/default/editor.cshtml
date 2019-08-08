@@ -7,34 +7,31 @@
 
 @{
     var appThemeData = (AppThemeData)Model.List.First();
-    var appTheme = appThemeData.AppTheme;
 }
 
 <span class="w3-section simplisity_buttons">
     <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click editorsavebutton" s-cmd="rocketapptheme_save" s-before="copyeditorcontent" s-fields="theme:@Model.GetSetting("theme"),interfacekey:editor" s-post="#editorpanel">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-    <label>@appTheme.AppName (@appTheme.AppVersionFolder):  &nbsp;@ResourceKey("Appthemes.systemlevel")</label>
+    <label>@appThemeData.AppName  (@appThemeData.AppThemeVersionFolder):  &nbsp;@ResourceKey("Appthemes.systemlevel")</label>
 </span>
 
 @{
     Model.Settings.Remove("menunumber");
     Model.Settings.Remove("parentitemid");
     Model.Settings.Add("menunumber", "3");
-    Model.Settings.Add("parentitemid", appThemeData.configInfo.ItemID.ToString());
+    Model.Settings.Add("parentitemid", appThemeData.CurrentInfo.ItemID.ToString());
 }
-
-@RenderTemplate("AppThemeMenu.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", Model, "1.0")
 
 
 <div id="templatereturn" style="display:none;"></div>
 
 <div id="editorpanel">
 
-    @HiddenField(appTheme.Info, "genxml/hidden/editorcode", "", "")
-    @HiddenField(appTheme.Info, "genxml/hidden/filefolder", "", "default")
+    @HiddenField(appThemeData.CurrentInfo, "genxml/hidden/editorcode", "", "")
+    @HiddenField(appThemeData.CurrentInfo, "genxml/hidden/filefolder", "", "default")
 
     <div class="w3-row w3-padding ">
         <div class="w3-col m2 w3-padding">
-            @FileSelectList(appTheme.Info, "genxml/select/templatename", appTheme.AppThemeFolderMapPath + "/" + appTheme.AppVersionFolder + "/default", " class=' templateselect w3-input w3-border simplisity_change' s-return='#templatereturn' s-post='#editorpanel' s-cmd='rocketapptheme_gettemplate' s-fields='interfacekey:editor'  ", false)
+            @FileSelectList(appThemeData.CurrentInfo, "genxml/select/templatename", appThemeData.AppThemeFolderMapPath + "\\htmlContent\\1.0\\default", " class=' templateselect w3-input w3-border simplisity_change' s-return='#templatereturn' s-post='#editorpanel' s-cmd='rocketapptheme_gettemplate' s-fields='interfacekey:editor'  ", false)
         </div>
         <div class="w3-col m6 w3-padding">
             <a class="w3-button w3-teal w3-padding-8">Snippits</a>
@@ -49,7 +46,6 @@
 </div>
 
 
-@RenderTemplate("FieldSelect.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", Model)
 
 
 <style>
@@ -67,7 +63,7 @@
 
         // load view.cshtml
         $('#templatename').val('view.cshtml');
-        $('#templatename').trigger('change');
+        //$('#templatename').trigger('change');
 
         $('#razoreditor').unbind("keyup");
         $("#razoreditor").keyup(function (event) {

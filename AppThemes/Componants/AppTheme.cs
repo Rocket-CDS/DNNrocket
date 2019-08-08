@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace DNNrocketAPI.Componants
+namespace Rocket.AppThemes.Componants
 {
 
     public class AppTheme

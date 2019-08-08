@@ -29,6 +29,7 @@ using DotNetNuke.Common;
 using System.IO.Compression;
 using Simplisity.TemplateEngine;
 
+
 namespace DNNrocketAPI
 {
     public static class DNNrocketUtils
@@ -1278,6 +1279,7 @@ namespace DNNrocketAPI
 
             if (!page.Items.Contains("dnnrocketinject")) page.Items.Add("dnnrocketinject", "");
             var appTheme = new AppTheme(appThemeFolder, templateRelPath, DNNrocketUtils.GetCurrentCulture(), appThemeVersion);
+                var pageHeaderText = AppThemeUtils.GetAppThemePageHeader();
             var fullTemplName = appTheme.AppName + ".pageheader.cshtml";
 
                 if (!page.Items["dnnrocketinject"].ToString().Contains(fullTemplName + "." + appTheme.AppName + ","))

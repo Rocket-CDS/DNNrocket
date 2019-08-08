@@ -153,6 +153,9 @@
   <data name="edit.Text" xml:space="preserve">
     <value>Edit Data</value>
   </data>
+  <data name="editor.Text" xml:space="preserve">
+    <value>Editor</value>
+  </data>
   <data name="edittitle.Text" xml:space="preserve">
     <value>DNNrocket - High Speed Integration</value>
   </data>

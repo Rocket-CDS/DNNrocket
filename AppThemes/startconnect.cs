@@ -15,12 +15,15 @@ namespace DNNrocket.AppThemes
         private static AppThemeData _appThemeData;
         private static SimplisityInfo _systemInfo;
         private static string _editLang;
+        private static SystemInfoData _systemInfoData;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = "ERROR - Must be SuperUser"; // return ERROR if not matching commands.
 
             paramCmd = paramCmd.ToLower();
+
+            _systemInfoData = new SystemInfoData(systemInfo);
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _postInfo = postInfo;
 
@@ -32,6 +35,7 @@ namespace DNNrocket.AppThemes
             if (_appThemeData == null)
             {
                 _appThemeData = new AppThemeData(DNNrocketUtils.GetCurrentUserId(), "/DesktopModules/DNNrocket/AppThemes", _editLang);
+                _appThemeData.VersionFolder = "1.0";
             }
 
             if (DNNrocketUtils.IsSuperUser())
@@ -203,12 +207,12 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editor.cshtml", _appThemeData.AdminAppThemesRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editor.cshtml", _appThemeData.AdminAppThemesRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), _appThemeData.VersionFolder,_systemInfoData.DebugMode);
 
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("AppThemesMapPath", _appThemeData.AppThemesMapPath);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData, passSettings);
+                return DNNrocketUtils.RazorDetail(razorTempl, _appThemeData, passSettings,null, _systemInfoData.DebugMode);
             }
             catch (Exception ex)
             {

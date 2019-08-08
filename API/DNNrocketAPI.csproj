@@ -100,7 +100,6 @@
     <Compile Include="downloadfile.ashx.cs">
       <DependentUpon>downloadfile.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Componants\AppTheme.cs" />
     <Compile Include="Componants\CommandSecurity.cs" />
     <Compile Include="Componants\configData.cs" />
     <Compile Include="Componants\DDRMenuInterface.cs" />
