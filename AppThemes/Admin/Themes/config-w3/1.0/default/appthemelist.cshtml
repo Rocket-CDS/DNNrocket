@@ -1,0 +1,85 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using Rocket.AppThemes.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/Themes/HtmlContent/1.0/resx/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+
+@{
+    var appThemeDataList = (AppThemeDataList)Model.List.First();
+}
+
+<div class="w3-row w3-padding">
+    <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addapptheme" s-fields=''>@ResourceKey("DNNrocket.cmdAddButton")</div>
+</div>
+
+<div id="datasection">
+
+    <ul id="datalist" class="w3-ul w3-border">
+
+        @{
+            var lp1 = 0;
+        }
+        @foreach (AppTheme appTheme in appThemeDataList.List)
+        {
+            lp1 += 1;
+            <li class="datalistitem w3-display-container">
+
+                <div class="listrow">
+                    <div class="w3-button w3-display-right simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="rocketapptheme_deleteapptheme" s-fields='{"appfolder":"@appTheme.AppFolder"}'>
+                        <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg" style='font-size:32px'></i>
+                    </div>
+                    <div class="w3-button w3-display-left simplisity_click" s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appfolder":"@appTheme.AppFolder"}'>
+                        <i class="fas fa-edit" style='font-size:32px'></i>
+                    </div>
+
+                    <div class="w3-row">
+                        <div class="w3-col " style="width: 72px;">
+                            <span>&nbsp;</span>
+                        </div>
+                        <div class="w3-col " style="width: 100px;">
+                            @if (appTheme.Logo != "")
+                            {
+                                <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" />
+                            }
+                            else
+                            {
+                                <img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>
+                            }
+                        </div>
+                        <div class="w3-rest">
+                            @appTheme.AppFolder
+                        </div>
+                        <div class="w3-col " style="width: 50px;">
+                            <span>&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+
+            </li>
+
+        }
+    </ul>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#datalist").sortable({
+            stop: function (event, ui) { $('.langchangesave').show(); }
+        });
+        $("#datalist").disableSelection();
+
+    });
+
+    function languageChange() {
+        $('.langchangesave').trigger("click");
+    }
+
+
+</script>
+
+

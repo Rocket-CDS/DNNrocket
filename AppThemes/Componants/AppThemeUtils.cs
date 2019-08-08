@@ -15,7 +15,7 @@ namespace Rocket.AppThemes.Componants
             var rtn = "";
             if (!String.IsNullOrEmpty(templateRelPath))
             {
-                var appTheme = new AppTheme(appThemeFolder, templateRelPath, DNNrocketUtils.GetCurrentCulture(), appThemeVersion);
+                var appTheme = new AppTheme(appThemeFolder);
                 if (appTheme.ActivePageHeaderTemplate != null && appTheme.ActivePageHeaderTemplate != "")
                 {
                     var settings = new Dictionary<string, string>();

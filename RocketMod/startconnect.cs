@@ -5,6 +5,7 @@ using DNNrocketAPI;
 using DNNrocketAPI.Componants;
 using RocketSettings;
 using Simplisity;
+using Rocket.AppThemes.Componants;
 
 namespace RocketMod
 {

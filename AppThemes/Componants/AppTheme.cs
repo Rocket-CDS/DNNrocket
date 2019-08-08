@@ -12,40 +12,41 @@ namespace Rocket.AppThemes.Componants
     public class AppTheme
     {
 
-        public AppTheme(string appName, string versionFolder)
+        public const string AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
+
+        public AppTheme(string appFolder, string langRequired = "", string versionFolder = "")
         {
-            InitClass(appName, "/DesktopModules/DNNrocket/AppThemes", "", versionFolder);
+            InitClass(appFolder, langRequired, versionFolder);
         }
 
-        public AppTheme(string appName, string langRequired, string versionFolder)
+        public void InitClass(string appFolder, string langRequired, string versionFolder = "")
         {
-            InitClass(appName, "/DesktopModules/DNNrocket/AppThemes", langRequired, versionFolder);
-        }
+            PopulateVersionList();
 
-        public AppTheme(string appName, string appFolder = "/DesktopModules/DNNrocket/AppThemes", string langRequired = "", string versionFolder = "1.0")
-        {
-            InitClass(appName, appFolder, langRequired, versionFolder);
-        }
-
-        public void InitClass(string appName, string appRelFolder, string langRequired, string versionFolder)
-        {
             AppVersionFolder = versionFolder;
+            if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
+
             if (langRequired == "") langRequired = DNNrocketUtils.GetCurrentCulture();
-            AppName = appName;
-            AppFolder = appRelFolder;
-            AppThemeFolder = appRelFolder + "/Themes/" + appName;
+            AppFolder = appFolder;
+
+            AppProjectThemesFolderRel = AppProjectFolderRel + "/Themes";
+            AppProjectThemesFolderMapPath = DNNrocketUtils.MapPath(AppProjectThemesFolderRel);
+
+            AppThemeFolderRel = AppProjectThemesFolderRel + "/" + AppFolder;
+            AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolderRel);
+
             AppCultureCode = langRequired;
-            AppFolderMapPath = DNNrocketUtils.MapPath(AppFolder);
-            AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolder);
-            AppThemeVersionFolder = AppThemeFolder + "/" + AppVersionFolder;
-            AppThemeVersionFolderMapPath = DNNrocketUtils.MapPath(AppThemeVersionFolder);
-            if (AppName != "") Populate();
+
+            AppThemeVersionFolderRel = AppThemeFolderRel + "/" + AppVersionFolder;
+            AppThemeVersionFolderMapPath = DNNrocketUtils.MapPath(AppThemeVersionFolderRel);
+
+            if (AppFolder != "") Populate();
         }
 
         public void Populate()
         {
-            var themeFolderPath = "Themes\\" + AppName + "\\" + AppVersionFolder;
-            var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(DNNrocketUtils.HomeDirectory(), themeFolderPath, AppFolderMapPath);
+            var themeFolderPath = "Themes\\" + AppFolder + "\\" + AppVersionFolder;
+            var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(DNNrocketUtils.HomeDirectory(), themeFolderPath, AppProjectFolderRel);
             ActiveViewTemplate = templCtrl.GetTemplateData("view.cshtml", AppCultureCode);
             if (ActiveViewTemplate == null) ActiveViewTemplate = "";
             ActiveEditTemplate = templCtrl.GetTemplateData("edit.cshtml", AppCultureCode);
@@ -53,7 +54,7 @@ namespace Rocket.AppThemes.Componants
             ActivePageHeaderTemplate = templCtrl.GetTemplateData("pageheader.cshtml", AppCultureCode);
             if (ActivePageHeaderTemplate == null) ActivePageHeaderTemplate = "";
             var logoMapPath = AppThemeFolderMapPath + "\\Logo.png";
-            Logo = AppThemeFolder + "/Logo.png";
+            Logo = AppThemeFolderRel + "/Logo.png";
             if (!File.Exists(logoMapPath)) Logo = "";
         }
 
@@ -105,8 +106,32 @@ namespace Rocket.AppThemes.Componants
         }
 
 
+        public void PopulateVersionList()
+        {
+            LatestVersionFolder = "1.0";
+            if (AppFolder != "")
+            {
+                VersionList = new List<string>();
+                if (System.IO.Directory.Exists(AppThemeFolderMapPath))
+                {
+                    var dirlist = System.IO.Directory.GetDirectories(AppThemeFolderMapPath);
+                    foreach (var d in dirlist)
+                    {
+                        var dr = new System.IO.DirectoryInfo(d);
+                        VersionList.Add(dr.Name);
+                    }
+                }
+                if (VersionList.Count == 0) VersionList.Add("1.0");
+                VersionList.Reverse();
+                LatestVersionFolder = (string)VersionList.First();
+            }
+        }
+
+
         #region "properties"
 
+        public string AppProjectThemesFolderRel { get; set; }
+        public string AppProjectThemesFolderMapPath { get; set; }
         public string AppName { get; set; }
         public string AppDisplayName { get; set; }
         public string AppSummary { get; set; }
@@ -114,18 +139,18 @@ namespace Rocket.AppThemes.Componants
         public string AppCultureCode { get; set; }
         public string AppFolder { get; set; }
         public string AppFolderMapPath { get; set; }
-        public string AppThemeFolder { get; set; }
+        public string AppThemeFolderRel { get; set; }
         public string AppThemeFolderMapPath { get; set; }
         public string AppVersionFolder { get; set; }
-        public string AppThemeVersionFolder { get; set; }
+        public string AppThemeVersionFolderRel { get; set; }
         public string AppThemeVersionFolderMapPath { get; set; }
         public string ActiveViewTemplate { get; set; }
         public string ActiveEditTemplate { get; set; }
         public string ActivePageHeaderTemplate { get; set; }
-
+        public List<string> VersionList { get; set; }
+        public string LatestVersionFolder { get; set; }
 
         #endregion
-
 
     }
 

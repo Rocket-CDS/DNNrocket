@@ -1278,22 +1278,25 @@ namespace DNNrocketAPI
             {
 
             if (!page.Items.Contains("dnnrocketinject")) page.Items.Add("dnnrocketinject", "");
-            var appTheme = new AppTheme(appThemeFolder, templateRelPath, DNNrocketUtils.GetCurrentCulture(), appThemeVersion);
-                var pageHeaderText = AppThemeUtils.GetAppThemePageHeader();
-            var fullTemplName = appTheme.AppName + ".pageheader.cshtml";
+            var fullTemplName = appThemeFolder + "." + appThemeVersion + ".pageheader.cshtml";
 
-                if (!page.Items["dnnrocketinject"].ToString().Contains(fullTemplName + "." + appTheme.AppName + ","))
+                if (!page.Items["dnnrocketinject"].ToString().Contains(fullTemplName + ","))
                 {
-                    if (appTheme.ActivePageHeaderTemplate != null && appTheme.ActivePageHeaderTemplate != "")
+                    var themeFolderPath = "Themes\\" + appThemeFolder + "\\" + appThemeVersion;
+                    var templCtrl = new TemplateGetter(DNNrocketUtils.HomeDirectory(), themeFolderPath, DNNrocketUtils.MapPath(templateRelPath));
+                    var activePageHeaderTemplate = templCtrl.GetTemplateData("pageheader.cshtml", DNNrocketUtils.GetCurrentCulture());
+                    if (activePageHeaderTemplate == null) activePageHeaderTemplate = "";
+
+                    if (activePageHeaderTemplate != null && activePageHeaderTemplate != "")
                     {
                         var settings = new Dictionary<string, string>();
                         var l = new List<object>();
                         l.Add(new SimplisityInfo());
                         var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
                         nbRazor.PageId = tabId;
-                        var strOut = RazorRender(nbRazor, appTheme.ActivePageHeaderTemplate, false);
+                        var strOut = RazorRender(nbRazor, activePageHeaderTemplate, false);
                         PageIncludes.IncludeTextInHeader(page, strOut);
-                        page.Items["dnnrocketinject"] = page.Items["dnnrocketinject"] + fullTemplName + "." + appTheme.AppName + ",";
+                        page.Items["dnnrocketinject"] = page.Items["dnnrocketinject"] + fullTemplName + ",";
 
 
                         // Inject pageheader css link, use Razor Token "AddCssLinkHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]

@@ -1,9 +1,7 @@
-﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
 @using Simplisity;
-@using RocketSettings;
-@using DNNrocketAPI.Componants;
-@using DNNrocket.AppThemes;
+@using Rocket.AppThemes.Componants;
 @using System.IO;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
@@ -11,36 +9,32 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 @{
-    var appThemeData = (AppThemeData)Model.List.First();
+    var appTheme = (AppTheme)Model.List.First();
 }
 @{
     var dataDic = new Dictionary<string, string>();
-    foreach (string i in appThemeData.VersionList)
+    foreach (string i in appTheme.VersionList)
     {
         dataDic.Add(i, i);
     }
 
-    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + appThemeData.CultureCode + ".png";
+    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + DNNrocketUtils.GetEditCulture() + ".png";
     if (!File.Exists(DNNrocketUtils.MapPath(flagurl)))
     {
         flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/none.png";
     }
-    var flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/" + appThemeData.CultureCode + ".png";
+    var flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/" + DNNrocketUtils.GetEditCulture() + ".png";
     if (!File.Exists(DNNrocketUtils.MapPath(flagurl32)))
     {
         flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/none.png";
     }
 
     var disabled = "";
-    if (appThemeData.ActionType != "new")
-    {
-        disabled = " disabled='true' ";
-    }
 
 }
 
 <span class="w3-section menu1_buttons menu_buttons">
-    @if (appThemeData.AppName == "")
+    @if (appTheme.AppFolder == "")
     {
         <a class="w3-button w3-teal w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdBackButton")</a>
     }
@@ -57,7 +51,7 @@
 <div class="w3-container">
 
     <div class="w3-right w3-padding">
-        <b>@appThemeData.CultureCode</b>&nbsp;<img class='' src='@flagurl32' alt='' />
+        <b>@DNNrocketUtils.GetEditCulture()</b>&nbsp;<img class='' src='@flagurl32' alt='' />
     </div>
 
     <h2>@ResourceKey("AppThemes.details")</h2>
@@ -67,19 +61,19 @@
         <div class="w3-container w3-padding">
             <div class="w3-col m4 w3-padding">
                 <label>@ResourceKey("AppThemes.name")</label>
-                @TextBox(appThemeData.CurrentInfo, "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
+                @TextBox(new SimplisityInfo(), "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
             </div>
             <div class="w3-col m6 w3-padding">
                 <label>@ResourceKey("AppThemes.displayname")</label>&nbsp;<img class='' src='@flagurl' alt='' />
-                @TextBox(appThemeData.CurrentInfo, "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", "", true)
+                @TextBox(new SimplisityInfo(), "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", "", true)
             </div>
             <div class="w3-col m2 w3-padding">
                 <label>@ResourceKey("AppThemes.version")</label>
-                @DropDownList(appThemeData.CurrentInfo, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border' onchange=\"$('.simplisity_langchange').trigger('click')\" ")
+                @DropDownList(new SimplisityInfo(), "genxml/select/versionfolder", dataDic, " class='w3-input w3-border' onchange=\"$('.simplisity_langchange').trigger('click')\" ")
             </div>
             <div class="w3-col m12 w3-padding">
                 <label>@ResourceKey("AppThemes.summary")</label>&nbsp;<img class='' src='@flagurl' alt='' />
-                @TextArea(appThemeData.CurrentInfo, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
+                @TextArea(new SimplisityInfo(), "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
             </div>
         </div>
     </div>
