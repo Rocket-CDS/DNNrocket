@@ -7,9 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Themes\HtmlContent\1.0\css\**" />
-    <EmbeddedResource Remove="Themes\HtmlContent\1.0\css\**" />
-    <None Remove="Themes\HtmlContent\1.0\css\**" />
+    <Compile Remove="SystemThemes\dnnrocketmodule\NewNameHtmlContent\**" />
+    <Compile Remove="SystemThemes\dnnrocketmodule\HtmlContent\1.0\css\**" />
+    <Compile Remove="SystemThemes\dnnrocketmodule\NewNameHtmlContent\**" />
+    <EmbeddedResource Remove="SystemThemes\dnnrocketmodule\NewNameHtmlContent\**" />
+    <EmbeddedResource Remove="SystemThemes\dnnrocketmodule\HtmlContent\1.0\css\**" />
+    <EmbeddedResource Remove="SystemThemes\dnnrocketmodule\NewNameHtmlContent\**" />
+    <None Remove="SystemThemes\dnnrocketmodule\NewNameHtmlContent\**" />
+    <None Remove="SystemThemes\dnnrocketmodule\HtmlContent\1.0\css\**" />
+    <None Remove="SystemThemes\dnnrocketmodule\NewNameHtmlContent\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,9 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Admin\Themes\blank\1.0\img\" />
-    <Folder Include="Admin\Themes\blank\1.0\css\" />
-    <Folder Include="Admin\Themes\blank\1.0\js\" />
+    <Folder Include="SystemThemes\rocketcommerce\" />
+    <Folder Include="Themes\blank\1.0\img\" />
+    <Folder Include="Themes\blank\1.0\css\" />
+    <Folder Include="Themes\blank\1.0\js\" />
     <Folder Include="Shared\" />
   </ItemGroup>
 

@@ -257,7 +257,7 @@ namespace RocketMod
 
         private static void SaveConfig()
         {
-            var appTheme = new AppTheme(_configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
+            var appTheme = new AppTheme(_systemInfoData, _configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
             _configData.SaveConfig(_postInfo, _appthemeRelPath.TrimEnd('/') + "/" + _postInfo.GetXmlProperty("genxml/hidden/apptheme") + "/" + _postInfo.GetXmlProperty("genxml/select/versionfolder"), _appthemeRelPath.TrimEnd('/'));
             _passSettings.Add("saved", "true");
         }
@@ -645,7 +645,7 @@ namespace RocketMod
                     foreach (var d in dirlist)
                     {
                         var dr = new System.IO.DirectoryInfo(d);
-                        var appTheme = new AppTheme(dr.Name);
+                        var appTheme = new AppTheme(_systemInfoData, dr.Name);
                         appList.Add(appTheme);
                     }
 
@@ -688,7 +688,7 @@ namespace RocketMod
                     var adminurl = "/DesktopModules/DNNrocket/RocketMod/admin.html?moduleid=" + _moduleid + "&tabid=" + _tabid;
                     passSettings.Add("adminurl", adminurl);
 
-                    var appTheme = new AppTheme(apptheme,_configData.AppThemeVersion);
+                    var appTheme = new AppTheme(_systemInfoData, apptheme, _configData.AppThemeVersion);
 
                     var articleDataList = new ArticleDataList(_moduleid, DNNrocketUtils.GetCurrentCulture());
                     articleDataList.Populate();

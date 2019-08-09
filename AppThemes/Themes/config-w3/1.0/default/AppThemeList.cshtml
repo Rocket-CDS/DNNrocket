@@ -1,0 +1,136 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using Rocket.AppThemes.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+
+@{
+    var appThemeDataList = (AppThemeDataList)Model.List.First();
+    var systemInfoData2 = new SystemInfoData(appThemeDataList.SelectedSystemKey);
+}
+
+@if (appThemeDataList.SelectedSystemKey == "" )
+{
+
+    <div class="w3-modal-content w3-border w3-card">
+
+        <header class="w3-container w3-theme">
+            <h2>@ResourceKey("Appthemes.selectsystem")</h2>
+        </header>
+
+        <div class="w3-row-padding w3-margin">
+            <ul class="w3-ul w3-border w3-hoverable w-margin">
+
+                @foreach (SystemInfoData systemInfoData in appThemeDataList.SystemFolderList)
+                {
+                    <li class="simplisity_click" s-cmd="rocketapptheme_selectsystemkey" s-fields='{"systemkey":"@systemInfoData.SystemKey"}' onclick="document.getElementById('systemselect').style.display='none'">
+                        @systemInfoData.SystemName
+                    </li>
+                }
+
+            </ul>
+        </div>
+
+        <footer class="w3-container w3-theme"></footer>
+
+    </div>
+
+}
+else
+{
+
+<div class="w3-row w3-padding">
+    <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addapptheme" s-fields=''>@ResourceKey("DNNrocket.cmdAddButton")</div>
+    @if (appThemeDataList.SystemFolderList.Count() > 1)
+    {
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" s-track="false">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+    }
+</div>
+<h2>@systemInfoData2.SystemName</h2>
+    <div class="w3-row w3-card searchdata w3-margin-top">
+
+        <div class="">
+            <div class="w3-row w3-padding">
+               <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.search")..." id="searchtext" onkeyup="searchFunction()">
+            </div>
+        </div>
+
+    </div>
+
+
+    <div id="datasection" class="w3-row w3-margin-top">
+
+        <ul id="datalist" class="w3-ul w3-border">
+
+            @{
+                var lp1 = 0;
+            }
+            @foreach (AppTheme appTheme in appThemeDataList.List)
+            {
+                lp1 += 1;
+                <li class="datalistitem w3-display-container">
+
+                    <div class="listrow">
+                        <div class="w3-button w3-display-left simplisity_click" s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appfolder":"@appTheme.AppThemeFolder"}'>
+                            <i class="fas fa-edit" style='font-size:32px'></i>
+                        </div>
+
+                        <div class="w3-row">
+                            <div class="w3-col " style="width: 72px;">
+                                <span>&nbsp;</span>
+                            </div>
+                            <div class="w3-col " style="width: 100px;">
+                                @if (appTheme.Logo != "")
+                                {
+                                    <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" />
+                                }
+                                else
+                                {
+                                    <img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>
+                                }
+                            </div>
+                            <div class="w3-rest">
+                                @appTheme.AppThemeFolder
+                            </div>
+                            <div class="w3-col " style="width: 50px;">
+                                <span>&nbsp;</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+
+            }
+        </ul>
+
+    </div>
+
+<script>
+    $(document).ready(function () {
+        $("#datalist").disableSelection();
+    });
+
+    function searchFunction() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("searchtext");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("datalist");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            txtValue = li[i].textContent || li[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
+
+</script>
+
+}
+

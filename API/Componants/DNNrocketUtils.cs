@@ -1590,8 +1590,5 @@ namespace DNNrocketAPI
             return portalalias;
         }
 
-
-
-
     }
 }

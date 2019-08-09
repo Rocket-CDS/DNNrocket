@@ -33,28 +33,20 @@
 
 }
 
-<span class="w3-section menu1_buttons menu_buttons">
-    @if (appTheme.AppFolder == "")
-    {
-        <a class="w3-button w3-teal w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdBackButton")</a>
-    }
-    else
-    {
-        <span class="w3-button w3-teal w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdClose","","confirm")" s-cmd="rocketapptheme_deleteconfig" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdCloseButton")</span>
-        <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</span>
-        <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-post="#appthemedetails" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</span>
-    }
 
-    <span class="w3-button w3-green w3-padding-8 simplisity_click simplisity_langchange " s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-</span>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click " s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_delete" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+    </div>
 
 <div class="w3-container">
 
-    <div class="w3-right w3-padding">
-        <b>@DNNrocketUtils.GetEditCulture()</b>&nbsp;<img class='' src='@flagurl32' alt='' />
-    </div>
-
-    <h2>@ResourceKey("AppThemes.details")</h2>
+    <h2>@appTheme.AppThemeFolder</h2>
 
     <div id="appthemedetails">
 

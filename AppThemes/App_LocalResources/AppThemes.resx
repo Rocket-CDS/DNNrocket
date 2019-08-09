@@ -165,6 +165,9 @@
   <data name="resx.Text" xml:space="preserve">
     <value>RESX</value>
   </data>
+  <data name="search.Text" xml:space="preserve">
+    <value>Search for AppThemes</value>
+  </data>
   <data name="selectapptheme.Text" xml:space="preserve">
     <value>Select AppTheme</value>
   </data>
@@ -176,6 +179,9 @@
   </data>
   <data name="selectappthememsgversion.Text" xml:space="preserve">
     <value>Select the AppTheme you wish to create a new version of.</value>
+  </data>
+  <data name="selectsystem.Text" xml:space="preserve">
+    <value>Select System Application</value>
   </data>
   <data name="selectversion.Text" xml:space="preserve">
     <value>Select Version</value>
