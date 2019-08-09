@@ -11,13 +11,13 @@ namespace Rocket.AppThemes.Componants
 
     public class AppTheme
     {
-        private static SystemInfoData _systemInfoData;
+        private static string _systemKey;
 
-        public AppTheme(SystemInfoData systemInfoData, string appThemeFolder, string langRequired = "", string versionFolder = "")
+        public AppTheme(string systemKey, string appThemeFolder, string langRequired = "", string versionFolder = "")
         {
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
 
-            _systemInfoData = systemInfoData;
+            _systemKey = systemKey;
 
             PopulateVersionList();
 
@@ -26,7 +26,7 @@ namespace Rocket.AppThemes.Componants
             AppVersionFolder = versionFolder;
             if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
 
-            AppSystemThemeFolderRel = AppProjectFolderRel + "/SystemThemes/" + _systemInfoData.SystemKey;
+            AppSystemThemeFolderRel = AppProjectFolderRel + "/SystemThemes/" + _systemKey;
             AppSystemThemeFolderMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRel);
 
             AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
@@ -42,7 +42,7 @@ namespace Rocket.AppThemes.Componants
 
         public void Populate()
         {
-            var themeFolderPath = "SystemThemes\\" + _systemInfoData.SystemKey + "\\" + AppThemeFolder + "\\" + AppVersionFolder;
+            var themeFolderPath = "SystemThemes\\" + _systemKey + "\\" + AppThemeFolder + "\\" + AppVersionFolder;
 
             var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(DNNrocketUtils.HomeDirectory(), themeFolderPath, AppProjectFolderRel);
             ActiveViewTemplate = templCtrl.GetTemplateData("view.cshtml", AppCultureCode);

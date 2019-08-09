@@ -36,7 +36,7 @@ namespace DNNrocket.AppThemes
             if (DNNrocketUtils.IsSuperUser())
             {
 
-                _appThemeDataList = new AppThemeDataList(_systemInfoData);
+                _appThemeDataList = new AppThemeDataList();
 
                 switch (paramCmd)
                 {
@@ -73,7 +73,7 @@ namespace DNNrocket.AppThemes
             {
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",true);
                 var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appfolder");
-                var appTheme = new AppTheme(_systemInfoData, appFolder);
+                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder);
 
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("AppThemeFolderMapPath", appTheme.AppThemeFolderMapPath);
@@ -120,7 +120,7 @@ namespace DNNrocket.AppThemes
         public static void SaveData()
         {
             var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            var appTheme = new AppTheme(_systemInfoData, appFolder);
+            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder);
             appTheme.Save(_postInfo);
 
         }

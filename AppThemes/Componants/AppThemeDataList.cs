@@ -13,12 +13,10 @@ namespace Rocket.AppThemes.Componants
 
     public class AppThemeDataList
     {
-        private static SystemInfoData _systemInfoData;
 
-        public AppThemeDataList(SystemInfoData systemInfoData)
+        public AppThemeDataList()
         {
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
-            _systemInfoData = systemInfoData;
 
             AssignFolders();
 
@@ -42,7 +40,7 @@ namespace Rocket.AppThemes.Componants
             foreach (var d in dirlist)
             {
                 var dr = new System.IO.DirectoryInfo(d);
-                var appTheme = new AppTheme(_systemInfoData, dr.Name);
+                var appTheme = new AppTheme(SelectedSystemKey, dr.Name);
                 List.Add(appTheme);
             }
 
