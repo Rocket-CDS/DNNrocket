@@ -130,12 +130,16 @@ namespace Rocket.AppThemes.Componants
                 // sort lists from DB and post data
                 var sortLists = new DNNrocketAPI.Componants.SortLists(dbInfo, _tableName, false);
                 sortLists.Save();
-
             }
         }
         public void Update()
         {
             _objCtrl.SaveData(Info, -1, _tableName);
+        }
+        public void AddListImage()
+        {
+            Info.AddListItem("imagelist");
+            Update();
         }
 
         public void Export(SimplisityInfo _postInfo)

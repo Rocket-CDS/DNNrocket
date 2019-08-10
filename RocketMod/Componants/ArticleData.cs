@@ -81,6 +81,12 @@ namespace RocketMod
             _objCtrl.SaveData(Info, SystemId, _tableName);
         }
 
+        public void AddListItem(string listname)
+        {
+            Info.AddListItem(listname);
+            Update();
+        }
+
         private void AddArticle()
         {
             Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, -1, _moduleid, false, _tableName);    

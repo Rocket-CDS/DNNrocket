@@ -55,6 +55,10 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_save":
                         SaveData();
                         strOut = GetDetail();
+                        break;
+                    case "rocketapptheme_addimage":
+                        AddListImage();
+                        strOut = GetDetail();
                         break;                        
                 }
             }
@@ -127,6 +131,14 @@ namespace DNNrocket.AppThemes
 
         }
 
+        public static void AddListImage()
+        {
+            var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
+            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
+            appTheme.AddListImage();
+        }
+
+
         private static void AssignEditLang()
         {
             var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
@@ -134,7 +146,7 @@ namespace DNNrocket.AppThemes
         }
 
 
-
+        
         //----------------------------------------------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------------------------------------------
