@@ -38,6 +38,8 @@ namespace DNNrocket.AppThemes
 
                 _appThemeDataList = new AppThemeDataList();
 
+                if (paramCmd != "rocketapptheme_selectsystemkey" && _appThemeDataList.SelectedSystemKey == "") paramCmd = "rocketapptheme_getlist";
+
                 switch (paramCmd)
                 {
                     case "rocketapptheme_getlist":
@@ -71,14 +73,15 @@ namespace DNNrocket.AppThemes
         }
 
 
-        public static String GetDetail()
+        public static String GetDetail(string versionFolder = "")
         {
             try
             {
                 AssignEditLang();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",true);
                 var appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appThemeFolder);
+                if (versionFolder == "") versionFolder = appTheme.LatestVersionFolder;
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), versionFolder, true);
 
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("AppThemeFolderMapPath", appTheme.AppThemeFolderMapPath);

@@ -645,7 +645,7 @@ namespace RocketMod
                     foreach (var d in dirlist)
                     {
                         var dr = new System.IO.DirectoryInfo(d);
-                        var appTheme = new AppTheme(_systemInfoData, dr.Name);
+                        var appTheme = new AppTheme(_systemInfoData.SystemKey, dr.Name);
                         appList.Add(appTheme);
                     }
 
@@ -688,7 +688,7 @@ namespace RocketMod
                     var adminurl = "/DesktopModules/DNNrocket/RocketMod/admin.html?moduleid=" + _moduleid + "&tabid=" + _tabid;
                     passSettings.Add("adminurl", adminurl);
 
-                    var appTheme = new AppTheme(_systemInfoData, apptheme, _configData.AppThemeVersion);
+                    var appTheme = new AppTheme(_systemInfoData.SystemKey, apptheme, _configData.AppThemeVersion);
 
                     var articleDataList = new ArticleDataList(_moduleid, DNNrocketUtils.GetCurrentCulture());
                     articleDataList.Populate();

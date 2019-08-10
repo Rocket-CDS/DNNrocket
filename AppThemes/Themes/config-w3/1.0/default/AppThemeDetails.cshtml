@@ -4,6 +4,7 @@
 @using Rocket.AppThemes.Componants;
 @using System.IO;
 
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/images/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
@@ -35,92 +36,138 @@
     var imgLP = 1;
     var imgdatalist = info.GetList("imagelist");
 
+    var templateLP = 1;
+    var templatedatalist = info.GetList("templatelist");
+
 }
 
 
-    <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click " s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_delete" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</div>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</div>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+<div class="w3-row w3-padding">
+    <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click " s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list=".imagelist" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_delete" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</div>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</div>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+</div>
+
+<div class="w3-container">
+
+    <h2>@appTheme.AppThemeFolder</h2>
+
+    <div id="appthemedetails">
+
+        <div class="w3-container w3-padding">
+            <div class="w3-col m4 w3-padding">
+                <label>@ResourceKey("AppThemes.name")</label>
+                @TextBox(info, "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
+            </div>
+            <div class="w3-col m6 w3-padding">
+                <label>@ResourceKey("AppThemes.displayname")</label>&nbsp;<img class='' src='@flagurl' alt='' />
+                @TextBox(info, "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", "", true)
+            </div>
+            <div class="w3-col m2 w3-padding">
+                <label>@ResourceKey("AppThemes.version")</label>
+                @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border' onchange=\"$('.simplisity_langchange').trigger('click')\" ")
+            </div>
+            <div class="w3-col m12 w3-padding">
+                <label>@ResourceKey("AppThemes.summary")</label>&nbsp;<img class='' src='@flagurl' alt='' />
+                @TextArea(info, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
+            </div>
+        </div>
     </div>
 
-    <div class="w3-container">
 
-        <h2>@appTheme.AppThemeFolder</h2>
 
-        <div id="appthemedetails">
+    <div class="w3-container w3-theme w3-padding">
+        <label>@ResourceKey("DNNrocket.images")</label>
+    </div>
 
-            <div class="w3-container w3-padding">
-                <div class="w3-col m4 w3-padding">
-                    <label>@ResourceKey("AppThemes.name")</label>
-                    @TextBox(info, "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
-                </div>
-                <div class="w3-col m6 w3-padding">
-                    <label>@ResourceKey("AppThemes.displayname")</label>&nbsp;<img class='' src='@flagurl' alt='' />
-                    @TextBox(info, "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", "", true)
-                </div>
-                <div class="w3-col m2 w3-padding">
-                    <label>@ResourceKey("AppThemes.version")</label>
-                    @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border' onchange=\"$('.simplisity_langchange').trigger('click')\" ")
-                </div>
-                <div class="w3-col m12 w3-padding">
-                    <label>@ResourceKey("AppThemes.summary")</label>&nbsp;<img class='' src='@flagurl' alt='' />
-                    @TextArea(info, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
-                </div>
+    <div class="w3-row imagelistdatasection">
+
+        <div class="w3-container">
+            <div class="w3-col w3-padding" style="width:160px;">
+                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addimage" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".imagelist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
             </div>
         </div>
 
+        <ul id="imagelistdata" class="w3-ul">
 
-
-        <div class="w3-container w3-theme w3-padding">
-            <label>@ResourceKey("DNNrocket.images")</label>
-        </div>
-
-        <div class="w3-row imagelistdatasection">
-
-            <div class="w3-container">
-                <div class="w3-col w3-padding" style="width:160px;">
-                    <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addimage" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}' ><i class='fas fa-plus-circle'></i></div>
-                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".imagelist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
-                </div>
-            </div>
-
-            <ul id="imagelistdata" class="w3-ul">
-
-                @foreach (var imgInfo in imgdatalist)
-                {
-                    <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
-                        @SortableListIndex(imgLP)
-                        <div class="w3-display-container  w3-card">
-                            @ImageEditFull(imgInfo, "imagepath", 100, 100, "", false, @imgLP)
-                            <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
-                                <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
-                            </div>
+            @foreach (var imgInfo in imgdatalist)
+            {
+                <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
+                    @SortableListIndex(imgLP)
+                    <div class="w3-display-container  w3-card">
+                        @ImageEditFullName(imgInfo, "imagepath", 150, 150, "", false, @imgLP)
+                        <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
+                            <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
                         </div>
-                    </li>
-                    imgLP += 1;
-                }
-            </ul>
+                    </div>
+                </li>
 
-        </div>
-
-        <div id="dnnrocket_imageselectwrapper">
-            @RenderImageSelect(100, true, false, appTheme.AppSystemThemeFolderRel)
-        </div>
-
-        <script>
-            $(document).ready(function () {
-                $("#imagelistdata").sortable();
-                $("#imagelistdata").disableSelection();
-            });
-        </script>
-
+                imgLP += 1;
+            }
+        </ul>
 
     </div>
+
+
+    <div class="w3-container w3-theme w3-padding">
+        <label>@ResourceKey("AppThemes.templates")</label>
+    </div>
+
+    <div class="w3-row templatelistdatasection">
+
+        <div class="w3-container">
+            <div class="w3-col w3-padding" style="width:160px;">
+                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addtemplate" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="templatelistbin" s-return="#templatelistdata" s-removelist=".templatelist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+            </div>
+        </div>
+
+        <ul id="templatelistdata" class="w3-ul">
+
+            @foreach (var templateInfo in templatedatalist)
+            {
+                <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
+                    @SortableListIndex(templateLP)
+                    <div class="w3-display-container  w3-card">
+
+
+
+
+
+
+
+
+                        <div class="w3-display-topright simplisity_removelistitem" s-removelist=".templatelist" s-recylebin="templatelistbin" style="cursor: pointer;">
+                            <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </li>
+
+                templateLP += 1;
+            }
+        </ul>
+
+    </div>
+
+
+    <div id="dnnrocket_imageselectwrapper">
+        @RenderImageSelect(100, true, false, appTheme.ImageFolderRel)
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#imagelistdata").sortable();
+            $("#imagelistdata").disableSelection();
+        });
+    </script>
+
+
+</div>
 
 <script>
     $(document).ready(function () {

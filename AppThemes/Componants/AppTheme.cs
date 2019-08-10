@@ -46,6 +46,20 @@ namespace Rocket.AppThemes.Componants
             AppThemeVersionFolderRel = AppThemeFolderRel + "/" + AppVersionFolder;
             AppThemeVersionFolderMapPath = DNNrocketUtils.MapPath(AppThemeVersionFolderRel);
 
+            ImageFolderMapPath = AppThemeFolderMapPath + "\\" + AppVersionFolder + "\\img";
+            DocumentFolderMapPath = AppThemeFolderMapPath + "\\" + AppVersionFolder + "\\doc";
+            CssFolderMapPath = AppThemeFolderMapPath + "\\" + AppVersionFolder + "\\css";
+            TempFolderMapPath = AppThemeFolderMapPath + "\\" + AppVersionFolder + "\\temp";
+            JsFolderMapPath = AppThemeFolderMapPath + "\\" + AppVersionFolder + "\\js";
+            ResxFolderMapPath = AppThemeFolderMapPath + "\\" + AppVersionFolder + "\\resx";
+
+            ImageFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/img";
+            DocumentFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/doc";
+            CssFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/css";
+            TempFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/temp";
+            JsFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/js";
+            ResxFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/resx";
+
             if (AppThemeFolder != "" && _systemKey != "") Populate();
         }
 
@@ -79,6 +93,7 @@ namespace Rocket.AppThemes.Componants
                 Directory.CreateDirectory(AppThemeFolderMapPath + "\\" + versionFolder + "\\js");
                 Directory.CreateDirectory(AppThemeFolderMapPath + "\\" + versionFolder + "\\img");
                 Directory.CreateDirectory(AppThemeFolderMapPath + "\\" + versionFolder + "\\temp");
+                Directory.CreateDirectory(AppThemeFolderMapPath + "\\" + versionFolder + "\\doc");
             }
         }
 
@@ -223,6 +238,18 @@ namespace Rocket.AppThemes.Componants
         public string ActivePageHeaderTemplate { get; set; }
         public List<string> VersionList { get; set; }
         public string LatestVersionFolder { get; set; }
+        public string ImageFolderMapPath { get; set; }
+        public string DocumentFolderMapPath { get; set; }
+        public string CssFolderMapPath { get; set; }
+        public string TempFolderMapPath { get; set; }
+        public string JsFolderMapPath { get; set; }
+        public string ResxFolderMapPath { get; set; }
+        public string ImageFolderRel { get; set; }
+        public string DocumentFolderRel { get; set; }
+        public string CssFolderRel { get; set; }
+        public string TempFolderRel { get; set; }
+        public string JsFolderRel { get; set; }
+        public string ResxFolderRel { get; set; }
         public SimplisityInfo Info { get; set; }
 
         #endregion

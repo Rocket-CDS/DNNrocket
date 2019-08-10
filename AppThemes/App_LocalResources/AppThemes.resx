@@ -192,6 +192,9 @@
   <data name="systemlevel.Text" xml:space="preserve">
     <value>System Level</value>
   </data>
+  <data name="templates.Text" xml:space="preserve">
+    <value>Templates</value>
+  </data>
   <data name="upload.Text" xml:space="preserve">
     <value>Upload</value>
   </data>

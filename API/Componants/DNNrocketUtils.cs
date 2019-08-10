@@ -1479,7 +1479,17 @@ namespace DNNrocketAPI
             return rtnDic;
         }
 
-
+        /// <summary>
+        /// Render the image select template
+        /// </summary>
+        /// <param name="imagesize"></param>
+        /// <param name="selectsingle"></param>
+        /// <param name="autoreturn"></param>
+        /// <param name="uploadFolder">this can be a full relitive path or a single folder name at portal level in DNNrocket folder "/Portals/<portal>/DNNrocket/<uploadFolder>"</param>
+        /// <param name="razorTemplateName"></param>
+        /// <param name="templateControlRelPath"></param>
+        /// <param name="themeFolder"></param>
+        /// <returns></returns>
         public static string RenderImageSelect(int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
         {
             var imageModel = new SimplisityRazor();
@@ -1490,6 +1500,8 @@ namespace DNNrocketAPI
             imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectsize", imagesize.ToString());
 
             var uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + uploadFolder;
+            if (uploadFolder.Contains("//")) uploadFolderPath = DNNrocketUtils.MapPath(uploadFolder);
+
             var imgList = new List<object>();
             foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
             {
@@ -1513,7 +1525,10 @@ namespace DNNrocketAPI
             docModel.HeaderData.SetXmlProperty("genxml/hidden/documentselectautoreturn", autoreturn.ToString());
 
             var uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + uploadFolder;
+            if (uploadFolder.Contains("//")) uploadFolderPath = uploadFolder;
             var uploadRelFolderPath = DNNrocketUtils.HomeDNNrocketRelDirectory() + "/" + uploadFolder;
+            if (uploadFolder.Contains("//")) uploadRelFolderPath = DNNrocketUtils.MapPath(uploadFolder);
+
             var docList = new List<object>();
             foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
             {
