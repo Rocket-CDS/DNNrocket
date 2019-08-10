@@ -131,22 +131,36 @@
 
             @foreach (var templateInfo in templatedatalist)
             {
-                <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
-                    @SortableListIndex(templateLP)
-                    <div class="w3-display-container  w3-card">
+            <li class="templatelist w3-display-container w3-padding w3-border-0">
+                @SortableListIndex(templateLP)
 
 
+                <div id="editorpanel">
 
+                    @HiddenField(templateInfo, "genxml/hidden/editorcode", "", "")
+                    @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default")
 
-
-
-
-
-                        <div class="w3-display-topright simplisity_removelistitem" s-removelist=".templatelist" s-recylebin="templatelistbin" style="cursor: pointer;">
-                            <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                    <div class="w3-row w3-padding ">
+                        <div class="w3-col m2 w3-padding">
+                            @FileSelectList(templateInfo, "genxml/select/templatename", appTheme.AppSystemThemeFolderMapPath, " class=' templateselect w3-input w3-border simplisity_change' s-return='#templatereturn' s-post='#editorpanel' s-cmd='rocketapptheme_gettemplate' s-fields='interfacekey:editor'  ", false)
+                        </div>
+                        <div class="w3-col m6 w3-padding">
+                            <a class="w3-button w3-teal w3-padding-8">Snippits</a>
+                            <a class="w3-button w3-teal w3-padding-8" onclick="showFieldSelect();">Fields</a>
                         </div>
                     </div>
-                </li>
+
+                    <div id="editorwrapper" class="w3-row  w3-padding" style="overflow: scroll;">
+
+                    </div>
+
+                </div>
+
+
+                <div class="w3-display-topright simplisity_removelistitem" s-removelist=".templatelist" s-recylebin="templatelistbin" style="cursor: pointer;">
+                    <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                </div>
+            </li>
 
                 templateLP += 1;
             }

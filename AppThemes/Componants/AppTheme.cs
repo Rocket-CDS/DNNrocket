@@ -156,6 +156,11 @@ namespace Rocket.AppThemes.Componants
             Info.AddListItem("imagelist");
             Update();
         }
+        public void AddListTemplate()
+        {
+            Info.AddListItem("templatelist");
+            Update();
+        }
 
         public void Export(SimplisityInfo _postInfo)
         {

@@ -399,6 +399,41 @@
         <onmenu>false</onmenu>
       </checkbox>
     </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>imageupload</interfacekey>
+        <entitytypecode>IMG</entitytypecode>
+        <interfaceicon />
+        <defaulttheme />
+        <themeversion>1.0</themeversion>
+        <defaulttemplate />
+        <defaultcommand />
+        <namespaceclass>DNNrocket.Images.StartConnect</namespaceclass>
+        <assembly>DNNrocketImages</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/Images/</relpath>
+        <cmdfields />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
+        <onmenu>false</onmenu>
+      </checkbox>
+    </genxml>
   </interfacedata>
   <settingsdata list="true">
     <genxml>
@@ -417,6 +452,7 @@
   <lang>
     <genxml>
       <interfacedata list="true">
+        <genxml />
         <genxml />
         <genxml />
         <genxml />
