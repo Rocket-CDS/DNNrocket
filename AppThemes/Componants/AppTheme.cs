@@ -12,9 +12,15 @@ namespace Rocket.AppThemes.Componants
     public class AppTheme
     {
         private static string _systemKey;
+        private static string _guidKey;        
+        private const string _tableName = "DNNRocket";
+        private const string _entityTypeCode = "APPTHEME";
+        private DNNrocketController _objCtrl;
 
         public AppTheme(string systemKey, string appThemeFolder, string langRequired = "", string versionFolder = "")
         {
+            _objCtrl = new DNNrocketController();
+
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
 
             _systemKey = systemKey;
@@ -26,6 +32,8 @@ namespace Rocket.AppThemes.Componants
             AppVersionFolder = versionFolder;
             if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
 
+            _guidKey = "appTheme*" + _systemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
+
             AppSystemThemeFolderRel = AppProjectFolderRel + "/SystemThemes/" + _systemKey;
             AppSystemThemeFolderMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRel);
 
@@ -33,11 +41,12 @@ namespace Rocket.AppThemes.Componants
             AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolderRel);
 
             AppCultureCode = langRequired;
+            if (AppCultureCode == "") AppCultureCode = DNNrocketUtils.GetEditCulture();
 
             AppThemeVersionFolderRel = AppThemeFolderRel + "/" + AppVersionFolder;
             AppThemeVersionFolderMapPath = DNNrocketUtils.MapPath(AppThemeVersionFolderRel);
 
-            if (AppThemeFolder != "") Populate();
+            if (AppThemeFolder != "" && _systemKey != "") Populate();
         }
 
         public void Populate()
@@ -51,11 +60,13 @@ namespace Rocket.AppThemes.Componants
             if (ActiveEditTemplate == null) ActiveEditTemplate = "";
             ActivePageHeaderTemplate = templCtrl.GetTemplateData("pageheader.cshtml", AppCultureCode);
             if (ActivePageHeaderTemplate == null) ActivePageHeaderTemplate = "";
+
             var logoMapPath = AppThemeFolderMapPath + "\\Logo.png";
             Logo = AppThemeFolderRel + "/Logo.png";
             if (!File.Exists(logoMapPath)) Logo = "";
-            Info = new SimplisityInfo();
-            Load();
+
+            Info = _objCtrl.GetData(_guidKey, _entityTypeCode, AppCultureCode, -1, -1, false, _tableName);
+
         }
         private void CreateVersionFolders(string versionFolder)
         {
@@ -85,22 +96,63 @@ namespace Rocket.AppThemes.Componants
                 Directory.Delete(AppThemeFolderMapPath + "\\" + versionFolder, true);
             }
         }
-        public void Save(SimplisityInfo _postInfo)
+        public void Save(SimplisityInfo postInfo)
+        {
+            var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, AppCultureCode, -1, -1, true, _tableName);
+            if (dbInfo != null)
+            {
+                // NOTE: Be careful of the order for saving.  The sort list is a PAIN and required speciifc data.
+                // 1 - Create any empty record. (Must be done, so on first save we get the data in the DB)
+                // 2 - Apply new XML strcuture 
+                // 3 - Do sort list.
+                // 4 - Save the new list data to the DB.
+
+                // update all langauge record which are empty.
+                var cc = DNNrocketUtils.GetCultureCodeList();
+                foreach (var l in cc)
+                {
+                    var dbRecord = _objCtrl.GetRecordLang(Info.ItemID, l, false, _tableName);
+                    var nodList = dbRecord.XMLDoc.SelectNodes("genxml/*");
+                    if (nodList.Count == 0)
+                    {
+                        var dbInfo2 = _objCtrl.GetData(_entityTypeCode, Info.ItemID, l, -1, -1, true, _tableName);
+                        if (dbInfo2 != null)
+                        {
+                            dbInfo2.XMLData = postInfo.XMLData;
+                            _objCtrl.SaveData(dbInfo2, Info.ItemID, _tableName);
+                        }
+                    }
+                }
+
+                dbInfo.XMLData = postInfo.XMLData;
+                //_objCtrl.SaveData(dbInfo, Info.ItemID, _tableName); // save before list sort, so we have hte data in DB.
+
+                // sort lists from DB and post data
+                var sortLists = new DNNrocketAPI.Componants.SortLists(dbInfo, _tableName, false);
+                sortLists.Save();
+
+            }
+        }
+        public void Update()
+        {
+            _objCtrl.SaveData(Info, -1, _tableName);
+        }
+
+        public void Export(SimplisityInfo _postInfo)
         {
             if (AppThemeFolder != "")
             {
-                var fileMapPath = AppThemeFolderMapPath + "\\meta.xml";
-                File.WriteAllText(fileMapPath, _postInfo.ToXmlItem());
+                var fileMapPath = AppThemeFolderMapPath + "\\meta_" + AppCultureCode + ".xml";
+                File.WriteAllText(fileMapPath,  _postInfo.ToXmlItem());
             }
         }
-
-        public void Load()
+        public void Import()
         {
-            var fileMapPath = AppThemeFolderMapPath + "\\" + AppThemeFolder + "\\meta.xml";
+            var fileMapPath = AppThemeFolderMapPath + "\\meta_" + AppCultureCode + ".xml";
             if (File.Exists(fileMapPath))
             {
-                var xmlImport = File.ReadAllText(fileMapPath);
-                Info.FromXmlItem(xmlImport);
+                var fileImport = File.ReadAllText(fileMapPath);
+                Info.FromXmlItem(fileImport);
             }
         }
 

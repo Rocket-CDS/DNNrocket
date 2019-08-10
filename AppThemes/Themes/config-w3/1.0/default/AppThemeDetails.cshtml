@@ -10,6 +10,7 @@
 
 @{
     var appTheme = (AppTheme)Model.List.First();
+    var info = appTheme.Info;
 }
 @{
     var dataDic = new Dictionary<string, string>();
@@ -35,7 +36,7 @@
 
 
     <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click " s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+        <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click " s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
         @ButtonGap()
         <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_delete" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</div>
         @ButtonGap()
@@ -53,19 +54,19 @@
         <div class="w3-container w3-padding">
             <div class="w3-col m4 w3-padding">
                 <label>@ResourceKey("AppThemes.name")</label>
-                @TextBox(new SimplisityInfo(), "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
+                @TextBox(info, "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
             </div>
             <div class="w3-col m6 w3-padding">
                 <label>@ResourceKey("AppThemes.displayname")</label>&nbsp;<img class='' src='@flagurl' alt='' />
-                @TextBox(new SimplisityInfo(), "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", "", true)
+                @TextBox(info, "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", "", true)
             </div>
             <div class="w3-col m2 w3-padding">
                 <label>@ResourceKey("AppThemes.version")</label>
-                @DropDownList(new SimplisityInfo(), "genxml/select/versionfolder", dataDic, " class='w3-input w3-border' onchange=\"$('.simplisity_langchange').trigger('click')\" ")
+                @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border' onchange=\"$('.simplisity_langchange').trigger('click')\" ")
             </div>
             <div class="w3-col m12 w3-padding">
                 <label>@ResourceKey("AppThemes.summary")</label>&nbsp;<img class='' src='@flagurl' alt='' />
-                @TextArea(new SimplisityInfo(), "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
+                @TextArea(info, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
             </div>
         </div>
     </div>
@@ -77,5 +78,9 @@
 <script>
     $(document).ready(function () {
     });
+
+    function languageChange() {
+        $('.langchangesave').trigger("click");
+    }
 
 </script>

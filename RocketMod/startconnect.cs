@@ -257,7 +257,7 @@ namespace RocketMod
 
         private static void SaveConfig()
         {
-            var appTheme = new AppTheme(_systemInfoData, _configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
+            var appTheme = new AppTheme(_systemInfoData.SystemKey, _configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
             _configData.SaveConfig(_postInfo, _appthemeRelPath.TrimEnd('/') + "/" + _postInfo.GetXmlProperty("genxml/hidden/apptheme") + "/" + _postInfo.GetXmlProperty("genxml/select/versionfolder"), _appthemeRelPath.TrimEnd('/'));
             _passSettings.Add("saved", "true");
         }

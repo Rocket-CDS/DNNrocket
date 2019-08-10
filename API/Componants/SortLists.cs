@@ -46,9 +46,17 @@ namespace DNNrocketAPI.Componants
 
             // loop on all lists
             var allLists = sInfo.GetLists();
-            foreach (var listName in allLists)
+            if (allLists.Count() >= 1)
             {
-                _simplisityData = SortListRecordsOnSave(_simplisityData, listName, sInfo, sInfo.Lang);
+                foreach (var listName in allLists)
+                {
+                    _simplisityData = SortListRecordsOnSave(_simplisityData, listName, sInfo, sInfo.Lang);
+                }
+            }
+            else
+            {
+                // no lists to sort, so just update data.
+                _simplisityData.AddSimplisityInfo(sInfo, sInfo.Lang);
             }
 
         }
