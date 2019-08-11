@@ -466,14 +466,14 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        public IEncodedString DataSourceList(SimplisityInfo info, string systemkey, string xpath, string attributes = "", bool allowEmpty = true, bool localized = false)
+        public IEncodedString DataSourceList(SimplisityInfo info, int systemid, string xpath, string attributes = "", bool allowEmpty = true, bool localized = false)
         {
             var strOut = "";
             if (info != null)
             {
                 var objCtrl = new DNNrocketController();
-                var filter = "";
-                var dirlist = objCtrl.GetList(info.PortalId,-1,"CONFIG" + systemkey, filter);
+                var filter = "and systemId = " + systemid + " ";
+                var dirlist = objCtrl.GetList(info.PortalId,-1, "MODULEPARAMS", filter);
                 var tList = new Dictionary<int,string>();
                 foreach (var sInfo in dirlist)
                 {

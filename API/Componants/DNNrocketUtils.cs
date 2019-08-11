@@ -1327,38 +1327,6 @@ namespace DNNrocketAPI
             }
         }
 
-        public static SimplisityInfo GetModuleSettings(int moduleid, Boolean useCache = true)
-        {
-            var rtnCache =  CacheUtils.GetCache("dnnrocketmodsettings*" + moduleid);
-            if (rtnCache != null && useCache) return (SimplisityInfo)rtnCache;
-            // get template
-            if (GeneralUtils.IsNumeric(moduleid) && Convert.ToInt32(moduleid) > 0)
-            {
-                var objCtrl = new DNNrocketController();
-                var dataRecord = objCtrl.GetByType(PortalSettings.Current.PortalId, Convert.ToInt32(moduleid), "MODULESETTINGS");
-                if (dataRecord == null) dataRecord = new SimplisityInfo();
-                if (dataRecord.TypeCode == "MODULESETTINGS")
-                {
-                    // only add to cache if we have a valid settings record, LocalUtils.IncludePageHeaders may be called before the creation of the settings.
-                    CacheUtils.SetCache("dnnrocketmodsettings*" + moduleid, dataRecord);
-                }
-                return dataRecord;
-            }
-            return new SimplisityInfo();
-        }
-
-        public static void UpdateModuleSettings(SimplisityInfo settings)
-        {
-            // get template
-            if (settings.ModuleId > 0)
-            {
-                var objCtrl = new DNNrocketController();
-
-                objCtrl.SaveRecord(settings);
-                CacheUtils.RemoveCache("dnnrocketmodsettings*" + settings.ModuleId);
-            }
-        }
-
         public static Dictionary<string,string> GetProviderReturn(string paramCmd,SimplisityInfo systemInfo, DNNrocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
         {
             var rtnDic = new Dictionary<string, string>();

@@ -3,6 +3,8 @@
 @using Simplisity;
 @using RocketSettings;
 @using DNNrocketAPI.Componants;
+@using Rocket.AppThemes.Componants;
+
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
@@ -31,7 +33,7 @@
                 @foreach (AppTheme apptheme in Model.List)
                 {
                     <p>
-                        <span class="w3-button w3-block w3-theme simplisity_click" s-cmd="rocketmod_saveapptheme" s-fields='{"apptheme":"@apptheme.AppName","tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.GetSetting("moduleid"))","interfacekey":"rocketmod"}'>@apptheme.AppName</span>
+                        <span class="w3-button w3-block w3-theme simplisity_click" s-cmd="rocketmod_saveapptheme" s-fields='{"apptheme":"@apptheme.AppThemeFolder","tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.GetSetting("moduleid"))","interfacekey":"rocketmod"}'>@apptheme.AppThemeFolder</span>
                     </p>
                 }
             </div>

@@ -55,9 +55,9 @@ namespace DNNrocketAPI
 
         private DNNrocketInterface _rocketInterface;
 
-        private SimplisityInfo _settingsInfo;
-        private SimplisityInfo _configInfo;
+        private ModuleParams _moduleParams;
         private SimplisityInfo _systemInfo;
+
 
 
         protected override void OnInit(EventArgs e)
@@ -67,10 +67,11 @@ namespace DNNrocketAPI
 
             var objCtrl = new DNNrocketController();
 
-            _settingsInfo = DNNrocketUtils.GetModuleSettings(ModuleId);
-            _activatedetail = _settingsInfo.GetXmlPropertyBool("genxml/checkbox/activatedetail");
-            _paramCmd = _settingsInfo.GetXmlProperty("genxml/hidden/command");
-            _debugmode = _settingsInfo.GetXmlPropertyBool("genxml/checkbox/debugmode");
+
+            _activatedetail = _moduleParams.GetValueBool("activatedetail");
+            _paramCmd = _moduleParams.GetValue("command");
+
+            var appThemeFolder = _moduleParams.AppThemeFolder;
 
 
             var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
@@ -82,10 +83,11 @@ namespace DNNrocketAPI
 
             _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
 
-            var configData = new ConfigData(PortalId, _systemInfo, TabId, ModuleId);
-            _configInfo = configData.ConfigInfo;
+            _moduleParams = new ModuleParams(ModuleId, _systemInfo.SystemId, DNNrocketUtils.GetCurrentCulture());
 
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
+            var systemInfoData = new SystemInfoData(_systemInfo);
+            _debugmode = systemInfoData.DebugMode;
 
             var clearallcache = DNNrocketUtils.RequestParam(Context, "clearallcache");
             if (clearallcache != "")
@@ -101,9 +103,9 @@ namespace DNNrocketAPI
                 _paramCmd = _rocketInterface.DefaultCommand;
                 if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we dont; define template path in the interface assume it's the control path.
 
-                if (configData.Exists)
+                if (_moduleParams.Exists)
                 {
-                    DNNrocketUtils.IncludePageHeaders(configData.AppTheme, configData.AppThemeVersion, configData.AppThemeRelPath, this.Page, TabId);
+                    DNNrocketUtils.IncludePageHeaders(_moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion, _moduleParams.AppThemeFolderRel, this.Page, TabId);
                 }
                 else
                 {
@@ -234,7 +236,7 @@ namespace DNNrocketAPI
             get
             {
                 var actions = new ModuleActionCollection();
-                if (_configInfo != null && _configInfo.XMLDoc.SelectNodes("genxml/*").Count > 1 && !_configInfo.GetXmlPropertyBool("genxml/checkbox/noiframeedit"))
+                if (!_moduleParams.GetValueBool("noiframeedit"))
                 {
                     actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.edit") , "", "", "register.gif", "javascript:" + _interfacekey + "editiframe_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
                 }

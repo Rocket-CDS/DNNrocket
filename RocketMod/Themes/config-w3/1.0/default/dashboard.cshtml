@@ -11,8 +11,8 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 @{
-    var configData = (ConfigData)Model.List.First();
-    var configinfo = configData.ConfigInfo;
+    var moduleParams = (ModuleParams)Model.List.First();
+    var configinfo = moduleParams.Info;
 }
 
 
@@ -51,17 +51,17 @@
             </tr>
             <tr>
                 <td class="w3-right-align"><b>@ResourceKey("RocketMod.apptheme"):</b></td>
-                <td>@configData.AppTheme</td>
+                <td>@moduleParams.AppThemeFolder</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="w3-right-align"><b>@ResourceKey("RocketMod.appthemeversion"):</b></td>
-                <td>@FolderSelectList(configinfo, "genxml/select/versionfolder", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes/Themes/" + configData.AppTheme), "class='w3-input w3-border'", false, false)</td>
+                <td>@FolderSelectList(configinfo, "genxml/select/versionfolder", moduleParams.AppThemeFolderMapPath, "class='w3-input w3-border'", false, false)</td>
                 <td></td>
             </tr>
             <tr>
                 <td class="w3-right-align"><b>@ResourceKey("RocketMod.datasource"):</b></td>
-                <td>@DataSourceList(configinfo, configData.SystemKey, "genxml/select/datamoduleid", "class='w3-input w3-border'", true, false)</td>
+                <td>@DataSourceList(configinfo, moduleParams.SystemId, "genxml/select/datamoduleid", "class='w3-input w3-border'", true, false)</td>
                 <td></td>
             </tr>
             <tr>

@@ -114,6 +114,10 @@ namespace DNNrocketAPI
             get { return Info.GetXmlProperty("genxml/textbox/encryptkey"); }
             set { Info.SetXmlProperty("genxml/textbox/encryptkey", value); }
         }
+        public int SystemId
+        {
+            get { return Info.ItemID; }
+        }
 
 
 
