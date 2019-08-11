@@ -43,11 +43,11 @@
 
 
 <div class="w3-row w3-padding">
-    <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click " s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list=".imagelist" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+    <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click " s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list=".imagelist,.templatelist" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
     @ButtonGap()
-    <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_delete" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</div>
+    <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_delete" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</div>
     @ButtonGap()
-    <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</div>
+    <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</div>
     @ButtonGap()
     <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
 </div>
@@ -131,35 +131,40 @@
 
             @foreach (var templateInfo in templatedatalist)
             {
-            <li class="templatelist w3-display-container w3-padding w3-border-0">
+            <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                 @SortableListIndex(templateLP)
+                @HiddenField(templateInfo, "genxml/hidden/templatetext", "", "222222222222222222222222222222222222222222222", false, templateLP)
+                @HiddenField(templateInfo, "genxml/hidden/editorcode", "", "", false, templateLP)
+                <div class="w3-row w3-display-container w3-padding  w3-card">
 
+                    <div class="">
+                        @{
+                            var disabledfilename = "";
+                            var hideicon = "display:none;";
+                        }
+                        @if (templateInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                        {
+                            disabledfilename = "disabled";
+                            hideicon = "";
+                        }
 
-                <div id="editorpanel">
-
-                    @HiddenField(templateInfo, "genxml/hidden/editorcode", "", "")
-                    @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default")
-
-                    <div class="w3-row w3-padding ">
-                        <div class="w3-col m2 w3-padding">
-                            @FileSelectList(templateInfo, "genxml/select/templatename", appTheme.AppSystemThemeFolderMapPath, " class=' templateselect w3-input w3-border simplisity_change' s-return='#templatereturn' s-post='#editorpanel' s-cmd='rocketapptheme_gettemplate' s-fields='interfacekey:editor'  ", false)
+                        <div class="w3-col m8">
+                            <div>
+                                @TextBox(templateInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + templateLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, templateLP)
+                            </div>
                         </div>
-                        <div class="w3-col m6 w3-padding">
-                            <a class="w3-button w3-teal w3-padding-8">Snippits</a>
-                            <a class="w3-button w3-teal w3-padding-8" onclick="showFieldSelect();">Fields</a>
+                        <div class="w3-col w3-margin-left" style="width:62px;">
+                            <div class="w3-button filenameicon@(templateLP)" onclick="edittemplate(@(templateLP))" style="@(hideicon)">
+                                <i class="fas fa-edit " style='font-size:24px'></i>
+                            </div>
                         </div>
-                    </div>
-
-                    <div id="editorwrapper" class="w3-row  w3-padding" style="overflow: scroll;">
-
+                        <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".templatelist" s-recylebin="templatelistbin" style="cursor: pointer;width:42px;">
+                            <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                        </div>
                     </div>
 
                 </div>
 
-
-                <div class="w3-display-topright simplisity_removelistitem" s-removelist=".templatelist" s-recylebin="templatelistbin" style="cursor: pointer;">
-                    <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
-                </div>
             </li>
 
                 templateLP += 1;
@@ -169,23 +174,78 @@
     </div>
 
 
-    <div id="dnnrocket_imageselectwrapper">
-        @RenderImageSelect(100, true, false, appTheme.ImageFolderRel)
+    <!-- The Modal -->
+    <div id="editorpopup" class="w3-modal">
+        <div class="w3-modal-content w3-grey w3-animate-zoom" style="width: 90%;">
+            <header class="w3-container w3-theme">
+                <span onclick="document.getElementById('editorpopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2 id="filename">123</h2>
+            </header>
+            <div class="w3-row">
+
+                <div id="editorwrapper" class="w3-row " style="">
+
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            $("#imagelistdata").sortable();
-            $("#imagelistdata").disableSelection();
-        });
-    </script>
+
+        <div id="dnnrocket_imageselectwrapper">
+            @RenderImageSelect(100, true, false, appTheme.ImageFolderRel)
+        </div>
+
+    </div>
 
 
-</div>
+<style>
+    .CodeMirror {
+        border: 1px solid #eee;
+        height: auto;
+    }
+</style>
 
 <script>
     $(document).ready(function () {
+
+        $("#imagelistdata").sortable();
+        $("#imagelistdata").disableSelection();
+
+        $('.filenametext').unbind("keyup");
+        $(".filenametext").keyup(function (event) {
+            var idx = $(this).attr('index');
+            if ($(this).val() == '') {
+                $('.filenameicon' + idx).hide();
+            }
+            else {
+                $('.filenameicon' + idx).show();
+            }
+        });
+
     });
+
+    function edittemplate(idx) {
+
+        $('#editorpopup').show();
+
+        $("#razoreditor").remove();
+        $(".CodeMirror").remove();
+
+        var newHeight = $(window).height() - 200;
+        $('#editorwrapper').css("height", newHeight);;
+
+        var textArea = $('<textarea id="razoreditor" class="w3-input w3-border" spellcheck="false" />');
+        $('#editorwrapper').append(textArea);
+
+        myCodeMirror = CodeMirror.fromTextArea(document.getElementById("razoreditor"), {
+            lineNumbers: false,
+            mode: "htmlmixed"
+        });
+        var templatetext = $('#templatetext_' + idx).val();
+        myCodeMirror.setValue(templatetext);
+
+        myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
+    }
 
     function languageChange() {
         $('.langchangesave').trigger("click");

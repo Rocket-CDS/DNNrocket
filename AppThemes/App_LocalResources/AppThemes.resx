@@ -147,6 +147,9 @@
   <data name="fields.Text" xml:space="preserve">
     <value>Fields</value>
   </data>
+  <data name="filename.Text" xml:space="preserve">
+    <value>File Name</value>
+  </data>
   <data name="images.Text" xml:space="preserve">
     <value>Images</value>
   </data>
