@@ -66,8 +66,12 @@ namespace DNNrocket.AppThemes
                         AddListTemplate();
                         strOut = GetDetail();
                         break;
+                    case "rocketapptheme_savetemplate":
+                        SaveTemplate();
+                        strOut = GetDetail();
+                        break;
 
-                        
+
 
                 }
             }
@@ -162,28 +166,24 @@ namespace DNNrocket.AppThemes
             if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
         }
 
-
-        
-        //----------------------------------------------------------------------------------------------------------------------------------------------------
-        //----------------------------------------------------------------------------------------------------------------------------------------------------
-        //----------------------------------------------------------------------------------------------------------------------------------------------------
-        //----------------------------------------------------------------------------------------------------------------------------------------------------
-        //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-
         public static String SaveTemplate()
         {
             try
             {
-                //var templateName = _postInfo.GetXmlProperty("genxml/select/templatename");
-                //var filefolder = _postInfo.GetXmlProperty("genxml/hidden/filefolder");
-                //var editorContent = GeneralUtils.DeCode(_postInfo.GetXmlProperty("genxml/hidden/editorcode"));
+                var appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
+                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appThemeFolder);
 
-                //var fileMapPath = _appThemeData.AppThemeVersionFolderMapPath + "\\" + filefolder + "\\" + templateName;
-                //if (!Directory.Exists(_appThemeData.AppThemeVersionFolderMapPath + "\\" + filefolder))
-                //{
-                //    File.WriteAllText(fileMapPath, editorContent);
-                //}
+                var templateName = _postInfo.GetXmlProperty("genxml/hidden/filename");
+                var filefolder = _postInfo.GetXmlProperty("genxml/hidden/filefolder");
+                var editorContent = GeneralUtils.DeCode(_postInfo.GetXmlProperty("genxml/hidden/editorcode"));
+
+                if (!templateName.ToLower().EndsWith(".cshtml")) templateName += ".cshtml";
+
+                var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\" + filefolder + "\\" + templateName;
+                if (Directory.Exists(appTheme.AppThemeVersionFolderMapPath + "\\" + filefolder))
+                {
+                    File.WriteAllText(fileMapPath, editorContent);
+                }
 
                 return "OK";
             }
@@ -192,6 +192,16 @@ namespace DNNrocket.AppThemes
                 return ex.ToString();
             }
         }
+
+
+
+        //----------------------------------------------------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
         public static String GetEditorFile(string subFolder)
         {

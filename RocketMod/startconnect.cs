@@ -258,9 +258,18 @@ namespace RocketMod
 
         private static void SaveConfig()
         {
-            //var appTheme = new AppTheme(_systemInfoData.SystemKey, _configData.AppTheme, DNNrocketUtils.GetEditCulture(), _configData.AppThemeVersion);
-            //_configData.SaveConfig(_postInfo, _appthemeRelPath.TrimEnd('/') + "/" + _postInfo.GetXmlProperty("genxml/hidden/apptheme") + "/" + _postInfo.GetXmlProperty("genxml/select/versionfolder"), _appthemeRelPath.TrimEnd('/'));
-            //_passSettings.Add("saved", "true");
+
+            var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, DNNrocketUtils.GetEditCulture(), _moduleParams.AppThemeVersion);
+
+            _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
+            _moduleParams.DataModuleId = _postInfo.GetXmlPropertyInt("genxml/hidden/datamoduleid");
+            _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
+            _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
+            _moduleParams.ModuleType = "RocketMod";
+            if (_moduleParams.ModuleRef == "") _moduleParams.ModuleRef = GeneralUtils.GetUniqueKey();
+            _moduleParams.Save();
+
+            _passSettings.Add("saved", "true");
         }
 
         private static void SaveAppTheme()
@@ -272,12 +281,9 @@ namespace RocketMod
 
             _moduleParams.AppThemeFolderRel = appTheme.AppThemeFolderRel;
 
-            _moduleParams.AppThemeFolderMapPath = appTheme.AppThemeFolderMapPath;
             _moduleParams.AppThemeVersionFolderRel = appTheme.AppThemeVersionFolderRel;
-            _moduleParams.AppThemeVersionFolderMapPath = appTheme.AppThemeVersionFolderMapPath;
             _moduleParams.AppProjectFolderRel = appTheme.AppProjectFolderRel;
             _moduleParams.AppSystemThemeFolderRel = appTheme.AppSystemThemeFolderRel;
-            _moduleParams.AppSystemThemeFolderMapPath = appTheme.AppSystemThemeFolderMapPath;
 
             _moduleParams.Save();
 
@@ -567,7 +573,7 @@ namespace RocketMod
         {
             try
             {
-                //_configData.DeleteConfig();
+                _moduleParams.Delete();
 
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetData("moduleid" + _moduleid, "ROCKETMODFIELDS", "", -1, _moduleid, true);
@@ -576,7 +582,6 @@ namespace RocketMod
                 if (info != null) objCtrl.Delete(info.ItemID);
 
                 CacheUtils.ClearAllCache();
-                //_configData.PopulateConfig();
 
                 return GetDashBoard();
             }
@@ -611,9 +616,6 @@ namespace RocketMod
                 var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _editLang);
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-
-                _passSettings.Add("AppSystemThemeFolderMapPath", appTheme.AppSystemThemeFolderMapPath);
-                _passSettings.Add("AppThemeFolderMapPath", appTheme.AppThemeFolderMapPath);                
 
                 return DNNrocketUtils.RazorDetail(razorTempl, _moduleParams, _passSettings,null,true);
             }

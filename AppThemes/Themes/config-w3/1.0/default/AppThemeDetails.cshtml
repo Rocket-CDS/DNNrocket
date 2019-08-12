@@ -133,8 +133,8 @@
             {
             <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                 @SortableListIndex(templateLP)
-                @HiddenField(templateInfo, "genxml/hidden/templatetext", "", "222222222222222222222222222222222222222222222", false, templateLP)
                 @HiddenField(templateInfo, "genxml/hidden/editorcode", "", "", false, templateLP)
+                @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default", false, templateLP)
                 <div class="w3-row w3-display-container w3-padding  w3-card">
 
                     <div class="">
@@ -171,6 +171,7 @@
             }
         </ul>
 
+
     </div>
 
 
@@ -179,14 +180,22 @@
         <div class="w3-modal-content w3-grey w3-animate-zoom" style="width: 90%;">
             <header class="w3-container w3-theme">
                 <span onclick="document.getElementById('editorpopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <h2 id="filename">123</h2>
+
+                <div class="w3-row w3-padding">
+                    <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click " id="savetemplate" s-before="savetemplate" s-post="#templatedata" s-track="false" s-cmd="rocketapptheme_savetemplate" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+                    @ButtonGap()
+                    <div class="w3-col m2 w3-button w3-khaki " onclick="document.getElementById('editorpopup').style.display='none'">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+                </div>
+
             </header>
             <div class="w3-row">
-
-                <div id="editorwrapper" class="w3-row " style="">
-
-                </div>
+                <div id="editorwrapper" class="w3-row " style=""></div>
             </div>
+        </div>
+        <div id="templatedata">
+            <input id="editorcode" type="hidden" value="" s-xpath="genxml/hidden/editorcode" />
+            <input id="filefolder" type="hidden" value="" s-xpath="genxml/hidden/filefolder" />
+            <input id="filename" type="hidden" value="" s-xpath="genxml/hidden/filename" />            
         </div>
     </div>
 
@@ -206,6 +215,9 @@
 </style>
 
 <script>
+
+    var myCodeMirror;
+
     $(document).ready(function () {
 
         $("#imagelistdata").sortable();
@@ -241,11 +253,22 @@
             lineNumbers: false,
             mode: "htmlmixed"
         });
-        var templatetext = $('#templatetext_' + idx).val();
-        myCodeMirror.setValue(templatetext);
+        var editorcode = $('#editorcode_' + idx).val();
+        myCodeMirror.setValue(simplisity_encode(editorcode));
 
         myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
+
+        $('#editorwrapper').attr("index", idx);
     }
+
+    function savetemplate() {
+        var idx = $('#editorwrapper').attr("index");
+        $('#editorpopup').hide();
+        $('#editorcode').val(simplisity_encode(myCodeMirror.getValue()));
+        $('#filefolder').val("default");
+        $('#filename').val($('#filename_' + idx).val());
+    }
+
 
     function languageChange() {
         $('.langchangesave').trigger("click");
