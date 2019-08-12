@@ -28,7 +28,6 @@ namespace Rocket.AppThemes.Componants
             PopulateVersionList();
 
             AppThemeFolder = appThemeFolder;
-
             AppVersionFolder = versionFolder;
             if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
 
@@ -80,6 +79,10 @@ namespace Rocket.AppThemes.Componants
             if (!File.Exists(logoMapPath)) Logo = "";
 
             Info = _objCtrl.GetData(_guidKey, _entityTypeCode, AppCultureCode, -1, -1, false, _tableName);
+
+            AppName = Info.GetXmlProperty("genxml/textbox/appname");
+            AppDisplayName = Info.GetXmlProperty("genxml/lang/genxml/textbox/displayname");
+            AppSummary = Info.GetXmlProperty("genxml/lang/genxml/textbox/summary");            
 
         }
         private void CreateVersionFolders(string versionFolder)
@@ -145,6 +148,8 @@ namespace Rocket.AppThemes.Componants
                 // sort lists from DB and post data
                 var sortLists = new DNNrocketAPI.Componants.SortLists(dbInfo, _tableName, false);
                 sortLists.Save();
+
+                Populate();
             }
         }
         public void Update()
@@ -227,9 +232,9 @@ namespace Rocket.AppThemes.Componants
         public string AppProjectFolderRel { get; set; }
         public string AppSystemThemeFolderRel { get; set; }
         public string AppSystemThemeFolderMapPath { get; set; }
-        public string AppName { get; set; }
-        public string AppDisplayName { get; set; }
-        public string AppSummary { get; set; }
+        public string AppName { get; private set; }
+        public string AppDisplayName { get; private set; }
+        public string AppSummary { get; private set; }
         public string Logo { get; private set; }
         public string AppCultureCode { get; set; }
         public string AppThemeFolder { get; set; }

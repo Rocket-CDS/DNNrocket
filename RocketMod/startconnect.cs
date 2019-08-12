@@ -265,8 +265,22 @@ namespace RocketMod
 
         private static void SaveAppTheme()
         {
-            //_configData.SaveAppTheme(_paramInfo.GetXmlProperty("genxml/hidden/apptheme"));
-            //_passSettings.Add("saved", "true");
+            _moduleParams.AppThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
+            _moduleParams.AppThemeVersion = _paramInfo.GetXmlProperty("genxml/hidden/latestversionfolder");
+
+            var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, DNNrocketUtils.GetEditCulture(), _moduleParams.AppThemeVersion);
+
+            _moduleParams.AppThemeFolderRel = appTheme.AppThemeFolderRel;
+
+            _moduleParams.AppThemeFolderMapPath = appTheme.AppThemeFolderMapPath;
+            _moduleParams.AppThemeVersionFolderRel = appTheme.AppThemeVersionFolderRel;
+            _moduleParams.AppThemeVersionFolderMapPath = appTheme.AppThemeVersionFolderMapPath;
+            _moduleParams.AppProjectFolderRel = appTheme.AppProjectFolderRel;
+            _moduleParams.AppSystemThemeFolderRel = appTheme.AppSystemThemeFolderRel;
+            _moduleParams.AppSystemThemeFolderMapPath = appTheme.AppSystemThemeFolderMapPath;
+
+            _moduleParams.Save();
+
         }
 
         #region "Articles"
@@ -627,7 +641,7 @@ namespace RocketMod
                     foreach (var d in dirlist)
                     {
                         var dr = new System.IO.DirectoryInfo(d);
-                        var appTheme = new AppTheme(_systemInfoData.SystemKey, dr.Name);
+                        var appTheme = new AppTheme(_systemInfoData.SystemKey, dr.Name, DNNrocketUtils.GetCurrentCulture());
                         appList.Add(appTheme);
                     }
 

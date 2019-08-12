@@ -76,7 +76,6 @@ namespace DNNrocketAPI.Componants
         public string AppThemeFolder { get { return GetValue("AppThemeFolder"); } set { SetValue("AppThemeFolder", value); } } 
         public string AppThemeFolderRel { get { return GetValue("AppThemeFolderRel"); } set { SetValue("AppThemeFolderRel", value); } }
         public string AppThemeFolderMapPath { get { return GetValue("AppThemeFolderMapPath"); } set { SetValue("AppThemeFolderMapPath", value); } } 
-        public string AppVersionFolder { get { return GetValue("AppVersionFolder"); } set { SetValue("AppVersionFolder", value); } } 
         public string AppThemeVersionFolderRel { get { return GetValue("AppThemeVersionFolderRel"); } set { SetValue("AppThemeVersionFolderRel", value); } } 
         public string AppThemeVersionFolderMapPath { get { return GetValue("AppThemeVersionFolderMapPath"); } set { SetValue("AppThemeVersionFolderMapPath", value); } }
         public string AppProjectFolderRel { get { return GetValue("AppProjectFolderRel"); } set { SetValue("AppProjectFolderRel", value); } }

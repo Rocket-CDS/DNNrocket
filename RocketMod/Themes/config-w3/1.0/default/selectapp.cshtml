@@ -32,8 +32,17 @@
             <div class="w3-container">
                 @foreach (AppTheme apptheme in Model.List)
                 {
+                    var appname = apptheme.AppDisplayName;
+                    if (string.IsNullOrWhiteSpace(appname))
+                    {
+                        appname = apptheme.AppName;
+                    }
+                    if (string.IsNullOrWhiteSpace(appname))
+                    {
+                        appname = apptheme.AppThemeFolder;
+                    }
                     <p>
-                        <span class="w3-button w3-block w3-theme simplisity_click" s-cmd="rocketmod_saveapptheme" s-fields='{"apptheme":"@apptheme.AppThemeFolder","tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.GetSetting("moduleid"))","interfacekey":"rocketmod"}'>@apptheme.AppThemeFolder</span>
+                        <span class="w3-button w3-block w3-theme simplisity_click" s-cmd="rocketmod_saveapptheme" s-fields='{"latestversionfolder":"@apptheme.LatestVersionFolder","appthemefolder":"@apptheme.AppThemeFolder","tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.GetSetting("moduleid"))","interfacekey":"rocketmod"}'>@appname</span>
                     </p>
                 }
             </div>
