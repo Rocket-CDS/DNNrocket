@@ -18,6 +18,7 @@ namespace DNNrocket.AppThemes
         private static SimplisityInfo _systemInfo;
         private static string _editLang;
         private static SystemInfoData _systemInfoData;
+        private static Dictionary<string, string> _passSettings;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -25,6 +26,7 @@ namespace DNNrocket.AppThemes
 
             paramCmd = paramCmd.ToLower();
 
+            _passSettings = new Dictionary<string, string>(); 
             _systemInfoData = new SystemInfoData(systemInfo);
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _postInfo = postInfo;
@@ -90,17 +92,11 @@ namespace DNNrocket.AppThemes
             {
                 AssignEditLang();
                 var appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appThemeFolder);
+                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appThemeFolder,"","",true);
                 if (versionFolder == "") versionFolder = appTheme.LatestVersionFolder;
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), versionFolder, true);
 
-                var passSettings = _postInfo.ToDictionary();
-                passSettings.Add("AppThemeFolderMapPath", appTheme.AppThemeFolderMapPath);
-                passSettings.Add("AppThemeFolderRel", appTheme.AppThemeFolderRel);
-                passSettings.Add("AppSystemThemeFolderMapPath", appTheme.AppSystemThemeFolderMapPath);
-                passSettings.Add("AppSystemThemeFolderRel", appTheme.AppSystemThemeFolderRel);
-
-                return DNNrocketUtils.RazorDetail(razorTempl, appTheme, passSettings,null,true);
+                return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings,null,true);
             }
             catch (Exception ex)
             {
@@ -177,7 +173,7 @@ namespace DNNrocket.AppThemes
                 var filefolder = _postInfo.GetXmlProperty("genxml/hidden/filefolder");
                 var editorContent = GeneralUtils.DeCode(_postInfo.GetXmlProperty("genxml/hidden/editorcode"));
 
-                if (!templateName.ToLower().EndsWith(".cshtml")) templateName += ".cshtml";
+                if (Path.GetExtension(templateName) == "") templateName += ".cshtml";
 
                 var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\" + filefolder + "\\" + templateName;
                 if (Directory.Exists(appTheme.AppThemeVersionFolderMapPath + "\\" + filefolder))

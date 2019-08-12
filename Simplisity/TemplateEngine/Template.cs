@@ -11,6 +11,7 @@ namespace Simplisity.TemplateEngine
         public string TemplateName { get; set; }
         public string TemplateData { get; private set; }
         public bool IsTemplateFound { get; private set; }
+        public string TemplateLevel { get; set; }
 
         private readonly string _templatePath;
        

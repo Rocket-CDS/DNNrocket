@@ -179,8 +179,6 @@
     <div id="editorpopup" class="w3-modal">
         <div class="w3-modal-content w3-grey w3-animate-zoom" style="width: 90%;">
             <header class="w3-container w3-theme">
-                <span onclick="document.getElementById('editorpopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-
                 <div class="w3-row w3-padding">
                     <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click " id="savetemplate" s-before="savetemplate" s-post="#templatedata" s-track="false" s-cmd="rocketapptheme_savetemplate" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
                     @ButtonGap()
@@ -188,9 +186,7 @@
                 </div>
 
             </header>
-            <div class="w3-row">
-                <div id="editorwrapper" class="w3-row " style=""></div>
-            </div>
+            <div id="editorwrapper" class="w3-row " style=""></div>
         </div>
         <div id="templatedata">
             <input id="editorcode" type="hidden" value="" s-xpath="genxml/hidden/editorcode" />
@@ -234,6 +230,9 @@
             }
         });
 
+        window.onresize = function(event) {
+            myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
+        };
     });
 
     function edittemplate(idx) {
@@ -254,7 +253,7 @@
             mode: "htmlmixed"
         });
         var editorcode = $('#editorcode_' + idx).val();
-        myCodeMirror.setValue(simplisity_encode(editorcode));
+        myCodeMirror.setValue(simplisity_decode(editorcode));
 
         myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
 

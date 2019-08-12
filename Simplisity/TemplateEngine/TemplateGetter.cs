@@ -53,6 +53,23 @@ namespace Simplisity.TemplateEngine
             return templateData;
         }
 
+        public Template GetTemplate(string templatename, string lang, string themesubfolder = "default")
+        {
+            var objT = new Template("", _debugMode);
+            if (TemplCtrl1 != null)
+            {
+                objT = TemplCtrl1.GetTemplate(templatename, lang);
+                objT.TemplateLevel = "portal";
+                if (!objT.IsTemplateFound)
+                {
+                    objT = TemplCtrl2.GetTemplate(templatename, lang);
+                    objT.TemplateLevel = "system";
+                }
+            }
+            if (templatename.StartsWith("_")) objT.TemplateLevel = "module";
+            return objT;
+        }
+
 
     }
 }
