@@ -16,14 +16,13 @@ namespace Rocket.AppThemes.Componants
         private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "APPTHEME";
         private DNNrocketController _objCtrl;
-        private Dictionary<string, string> _templateDict;
+        private List<string> _templateFileName;
         private bool _debugMode;
 
         public AppTheme(string systemKey, string appThemeFolder, string langRequired = "", string versionFolder = "", bool debugMode = false)
         {
             _debugMode = debugMode;
             _objCtrl = new DNNrocketController();
-            _templateDict = new Dictionary<string, string>();
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
             _systemKey = systemKey;
 
@@ -62,20 +61,19 @@ namespace Rocket.AppThemes.Componants
             AppDisplayName = Info.GetXmlProperty("genxml/lang/genxml/textbox/displayname");
             AppSummary = Info.GetXmlProperty("genxml/lang/genxml/textbox/summary");
 
-            // only edit system level template.
-            // get file data for each template file
-            _templateDict = new Dictionary<string, string>();
-            var templatelist = Info.GetList("templatelist");            
-            foreach (var t in templatelist)
+            _templateFileName = new List<string>();
+
+            // sync filesystem
+            if (Directory.Exists(AppThemeVersionFolderMapPath + "\\default"))
             {
-                var templateName = t.GetXmlProperty("genxml/hidden/filename");
-                if (Path.GetExtension(templateName) == "") templateName += ".cshtml";
-                var templateText = FileUtils.ReadFile(AppThemeVersionFolderMapPath + "\\default\\" + templateName);
-                if (!_templateDict.ContainsKey(templateName)) _templateDict.Add(templateName, templateText);
-                Info.SetXmlProperty("genxml/templatelist/genxml[" + t.GetXmlProperty("genxml/index") + "]/hidden/editorcode", GeneralUtils.EnCode(templateText));
+                foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\default", "*.cshtml", SearchOption.TopDirectoryOnly))
+                {
+                    var templateName = Path.GetFileName(newPath);
+                    var templateText = FileUtils.ReadFile(newPath);
+                    AddListTemplate(Path.GetFileNameWithoutExtension(templateName), templateText);
+                    _templateFileName.Add(templateName);
+                }
             }
-
-
 
             // logo, take first image
             var imageList = Info.GetList("imagelist");
@@ -87,7 +85,6 @@ namespace Rocket.AppThemes.Componants
                 Logo = i.GetXmlProperty("genxml/hidden/imagepath");
                 if (!File.Exists(logoMapPath)) Logo = "";
             }
-
         }
         private void CreateVersionFolders(string versionFolder)
         {
@@ -104,15 +101,12 @@ namespace Rocket.AppThemes.Componants
             }
         }
 
-        public void DeleteTemplateFile(string templateName)
-        {
-        }
-
         public string GetTemplate(string templateName)
         {
             if (Path.GetExtension(templateName) == "") templateName += ".cshtml";
-            if (!_templateDict.ContainsKey(templateName)) return "";
-            return _templateDict[templateName];
+            if (!_templateFileName.Contains(templateName)) return "";
+            var rtnItem = Info.GetListItem("templatelist", "genxml/hidden/filename", templateName);
+            return rtnItem.GetXmlProperty("genxml/hidden/editorcode");
         }
 
         public void DeleteTheme()
@@ -132,7 +126,24 @@ namespace Rocket.AppThemes.Componants
         public void Save(SimplisityInfo postInfo)
         {
             //get removed templates (To be deleted)
-            var templateDict2 = _templateDict;
+
+            // delete removed templates
+            foreach (var t in _templateFileName)
+            {
+                var filename = Path.GetFileNameWithoutExtension(t);
+                var delItem = postInfo.GetListItem("templatelist", "genxml/hidden/filename", filename);
+                if (delItem == null && File.Exists(AppThemeVersionFolderMapPath + "\\default\\" + t)) File.Delete(AppThemeVersionFolderMapPath + "\\default\\" + t);
+            }
+
+            //create any new files. (will be added to template list when populate syncs files)
+            var tList = postInfo.GetList("templatelist");
+            foreach (SimplisityInfo templateInfo in tList)
+            {
+                var fname = templateInfo.GetXmlProperty("genxml/hidden/filename");
+                var filename = Path.GetFileNameWithoutExtension(fname);
+                fname = filename + ".cshtml";
+                FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\default\\" + fname, GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcode")));
+            }
 
             var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, AppCultureCode, -1, -1, true, _tableName);
             if (dbInfo != null)
@@ -161,28 +172,12 @@ namespace Rocket.AppThemes.Componants
                 }
 
                 dbInfo.XMLData = postInfo.XMLData;
-                //_objCtrl.SaveData(dbInfo, Info.ItemID, _tableName); // save before list sort, so we have hte data in DB.
 
                 // sort lists from DB and post data
                 var sortLists = new DNNrocketAPI.Componants.SortLists(dbInfo, _tableName, false);
                 sortLists.Save();
 
                 Populate();
-
-                // delete removed templates
-                var deleteList = new List<string>();
-                foreach (var t in templateDict2)
-                {
-                    if (!_templateDict.ContainsKey(t.Key))
-                    {
-                        deleteList.Add(t.Key);
-                    }
-                }
-
-                foreach (var d in deleteList)
-                {
-                    File.Delete(AppThemeVersionFolderMapPath + "\\default\\" + d);
-                }
 
             }
         }
@@ -195,9 +190,32 @@ namespace Rocket.AppThemes.Componants
             Info.AddListItem("imagelist");
             Update();
         }
-        public void AddListTemplate()
+        public void AddListTemplate(string filename = "", string templateText = "")
         {
-            Info.AddListItem("templatelist");
+            filename = Path.GetFileNameWithoutExtension(filename);
+            if (filename != "")
+            {
+                var rtnItem = Info.GetListItem("templatelist", "genxml/hidden/filename", filename);
+                if (rtnItem != null)
+                {
+                    // update
+                    var idx = rtnItem.GetXmlPropertyInt("genxml/index");
+                    Info.SetXmlProperty("genxml/templatelist/genxml[" + idx + "]/hidden/filename", filename);
+                    Info.SetXmlProperty("genxml/templatelist/genxml[" + idx + "]/hidden/editorcode", GeneralUtils.EnCode(templateText));
+                }
+                else
+                {
+                    // add
+                    var nbi = new SimplisityRecord();
+                    nbi.SetXmlProperty("genxml/hidden/filename", filename);
+                    nbi.SetXmlProperty("genxml/hidden/editorcode", GeneralUtils.EnCode(templateText));
+                    Info.AddListItem("templatelist",nbi.XMLData);
+                }
+            }
+            else
+            {
+                Info.AddListItem("templatelist");
+            }
             Update();
         }
 
@@ -227,13 +245,11 @@ namespace Rocket.AppThemes.Componants
             if (Directory.Exists(sourceVersionFolder))
             {
                 //Now Create all of the directories
-                foreach (string dirPath in Directory.GetDirectories(sourceVersionFolder, "*",
-                    SearchOption.AllDirectories))
+                foreach (string dirPath in Directory.GetDirectories(sourceVersionFolder, "*", SearchOption.AllDirectories))
                     Directory.CreateDirectory(dirPath.Replace(sourceVersionFolder, destVersionFolder));
 
                 //Copy all the files & Replaces any files with the same name
-                foreach (string newPath in Directory.GetFiles(sourceVersionFolder, "*.*",
-                    SearchOption.AllDirectories))
+                foreach (string newPath in Directory.GetFiles(sourceVersionFolder, "*.*", SearchOption.AllDirectories))
                     File.Copy(newPath, newPath.Replace(sourceVersionFolder, destVersionFolder), true);
             }
         }

@@ -65,16 +65,9 @@ namespace DNNrocket.AppThemes
                         strOut = GetDetail();
                         break;
                     case "rocketapptheme_addtemplate":
-                        AddListTemplate();
-                        strOut = GetDetail();
+                        SaveData();
+                        strOut = AddListTemplate();
                         break;
-                    case "rocketapptheme_savetemplate":
-                        SaveTemplate();
-                        strOut = GetDetail();
-                        break;
-
-
-
                 }
             }
             else
@@ -138,11 +131,6 @@ namespace DNNrocket.AppThemes
             var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
             var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
             appTheme.Save(_postInfo);
-            if (appTheme.Info.GetXmlPropertyInt("genxml/hidden/edittemplatenumber") > 0)
-            {
-                _passSettings.Add("edittemplatenumber", appTheme.Info.GetXmlProperty("genxml/hidden/edittemplatenumber"));
-            }
-
         }
 
         public static void AddListImage()
@@ -152,11 +140,13 @@ namespace DNNrocket.AppThemes
             appTheme.AddListImage();
         }
 
-        public static void AddListTemplate()
+        public static string AddListTemplate()
         {
             var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
             var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
             appTheme.AddListTemplate();
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), appTheme.AppVersionFolder, true);
+            return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
         }
 
 
@@ -165,34 +155,6 @@ namespace DNNrocket.AppThemes
             var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
             if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
         }
-
-        public static String SaveTemplate()
-        {
-            try
-            {
-                var appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appThemeFolder);
-
-                var templateName = _postInfo.GetXmlProperty("genxml/hidden/filename");
-                var filefolder = _postInfo.GetXmlProperty("genxml/hidden/filefolder");
-                var editorContent = GeneralUtils.DeCode(_postInfo.GetXmlProperty("genxml/hidden/editorcode"));
-
-                if (Path.GetExtension(templateName) == "") templateName += ".cshtml";
-
-                var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\" + filefolder + "\\" + templateName;
-                if (Directory.Exists(appTheme.AppThemeVersionFolderMapPath + "\\" + filefolder))
-                {
-                    File.WriteAllText(fileMapPath, editorContent);
-                }
-
-                return "OK";
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
-
 
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------
