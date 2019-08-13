@@ -138,6 +138,10 @@ namespace DNNrocket.AppThemes
             var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
             var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
             appTheme.Save(_postInfo);
+            if (appTheme.Info.GetXmlPropertyInt("genxml/hidden/edittemplatenumber") > 0)
+            {
+                _passSettings.Add("edittemplatenumber", appTheme.Info.GetXmlProperty("genxml/hidden/edittemplatenumber"));
+            }
 
         }
 

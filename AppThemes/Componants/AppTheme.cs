@@ -68,7 +68,8 @@ namespace Rocket.AppThemes.Componants
 
             // only edit system level template.
             // get file data for each template file
-            var templatelist = Info.GetList("templatelist");
+            _templateDict = new Dictionary<string, string>();
+            var templatelist = Info.GetList("templatelist");            
             foreach (var t in templatelist)
             {
                 var templateName = t.GetXmlProperty("genxml/hidden/filename");

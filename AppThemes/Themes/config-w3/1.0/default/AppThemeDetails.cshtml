@@ -58,6 +58,8 @@
 
     <div id="appthemedetails">
 
+        <input id="edittemplatenumber" type="hidden" value="" s-xpath="genxml/hidden/edittemplatenumber" />
+
         <div class="w3-container w3-padding">
             <div class="w3-col m4 w3-padding">
                 <label>@ResourceKey("AppThemes.name")</label>
@@ -140,6 +142,7 @@
                     <div class="">
                         @{
                             var disabledfilename = "";
+                            var hidesaveicon = "display:none;";
                             var hideicon = "display:none;";
                         }
                         @if (templateInfo.GetXmlProperty("genxml/hidden/filename") != "")
@@ -154,7 +157,10 @@
                             </div>
                         </div>
                         <div class="w3-col w3-margin-left" style="width:62px;">
-                            <div class="w3-button filenameicon@(templateLP)" onclick="edittemplate(@(templateLP))" style="@(hideicon)">
+                            <div class="w3-button saveicon@(templateLP)" onclick="savetemplateforedit(@(templateLP));" style="@(hidesaveicon)">
+                                <i class="fas fa-edit " style='font-size:24px'></i>
+                            </div>
+                            <div class="w3-button filenameicon@(templateLP)" onclick="edittemplate(@(templateLP));" style="@(hideicon)">
                                 <i class="fas fa-edit " style='font-size:24px'></i>
                             </div>
                         </div>
@@ -223,17 +229,32 @@
         $(".filenametext").keyup(function (event) {
             var idx = $(this).attr('index');
             if ($(this).val() == '') {
-                $('.filenameicon' + idx).hide();
+                //$('.filenameicon' + idx).hide();
+                $('.saveicon' + idx).hide();
             }
             else {
-                $('.filenameicon' + idx).show();
+                //$('.filenameicon' + idx).show();
+                $('.saveicon' + idx).show();
             }
         });
 
-        window.onresize = function(event) {
-            myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
-        };
+        if (typeof myCodeMirror !== 'undefined') {
+            window.onresize = function (event) {
+                myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
+            };
+        }
+
+        @if (Model.GetSettingInt("edittemplatenumber") > 0)
+        {
+            @:edittemplate(@(Model.GetSettingInt("edittemplatenumber")));
+        }
+
     });
+
+    function savetemplateforedit(idx) {
+        $('#edittemplatenumber').val(idx);
+        $('.langchangesave').trigger("click");
+    }
 
     function edittemplate(idx) {
 
@@ -267,7 +288,6 @@
         $('#filefolder').val("default");
         $('#filename').val($('#filename_' + idx).val());
     }
-
 
     function languageChange() {
         $('.langchangesave').trigger("click");

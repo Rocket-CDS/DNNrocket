@@ -691,7 +691,7 @@ namespace RocketMod
                     var articleDataList = new ArticleDataList(_moduleid, DNNrocketUtils.GetCurrentCulture());
                     articleDataList.Populate();
 
-                    strOut = DNNrocketUtils.RazorDetail(appTheme.ActiveViewTemplate, articleDataList, passSettings, articleDataList.Header);
+                    strOut = DNNrocketUtils.RazorDetail("view.cshtml", articleDataList, passSettings, articleDataList.Header);
 
                 }
                 else
