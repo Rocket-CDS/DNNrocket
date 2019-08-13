@@ -56,10 +56,6 @@ namespace Rocket.AppThemes.Componants
 
         public void Populate()
         {
-            var logoMapPath = AppThemeFolderMapPath + "\\Logo.png";
-            Logo = AppThemeFolderRel + "/Logo.png";
-            if (!File.Exists(logoMapPath)) Logo = "";
-
             Info = _objCtrl.GetData(_guidKey, _entityTypeCode, AppCultureCode, -1, -1, false, _tableName);
 
             AppName = Info.GetXmlProperty("genxml/textbox/appname");
@@ -80,6 +76,17 @@ namespace Rocket.AppThemes.Componants
             }
 
 
+
+            // logo, take first image
+            var imageList = Info.GetList("imagelist");
+            Logo = "";
+            if (imageList.Count > 0)
+            {
+                var i = Info.GetListItem("imagelist", 0);
+                var logoMapPath = DNNrocketUtils.MapPath(i.GetXmlProperty("genxml/hidden/imagepath"));
+                Logo = i.GetXmlProperty("genxml/hidden/imagepath");
+                if (!File.Exists(logoMapPath)) Logo = "";
+            }
 
         }
         private void CreateVersionFolders(string versionFolder)
