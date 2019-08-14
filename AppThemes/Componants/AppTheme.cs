@@ -17,6 +17,8 @@ namespace Rocket.AppThemes.Componants
         private const string _entityTypeCode = "APPTHEME";
         private DNNrocketController _objCtrl;
         private List<string> _templateFileName;
+        private List<string> _cssFileName;
+        private List<string> _jsFileName;
         private bool _debugMode;
 
         public AppTheme(string systemKey, string appThemeFolder, string langRequired = "", string versionFolder = "", bool debugMode = false)
@@ -62,7 +64,26 @@ namespace Rocket.AppThemes.Componants
             AppSummary = Info.GetXmlProperty("genxml/lang/genxml/textbox/summary");
 
             _templateFileName = new List<string>();
+            _cssFileName = new List<string>();
+            _jsFileName = new List<string>();
 
+
+            // sync filesystem
+            SyncFiles();
+
+            // logo, take first image
+            var imageList = Info.GetList("imagelist");
+            Logo = "";
+            if (imageList.Count > 0)
+            {
+                var i = Info.GetListItem("imagelist", 0);
+                var logoMapPath = DNNrocketUtils.MapPath(i.GetXmlProperty("genxml/hidden/imagepath"));
+                Logo = i.GetXmlProperty("genxml/hidden/imagepath");
+                if (!File.Exists(logoMapPath)) Logo = "";
+            }
+        }
+        private void SyncFiles()
+        {
             // sync filesystem
             if (Directory.Exists(AppThemeVersionFolderMapPath + "\\default"))
             {
@@ -74,16 +95,25 @@ namespace Rocket.AppThemes.Componants
                     _templateFileName.Add(templateName);
                 }
             }
-
-            // logo, take first image
-            var imageList = Info.GetList("imagelist");
-            Logo = "";
-            if (imageList.Count > 0)
+            if (Directory.Exists(AppThemeVersionFolderMapPath + "\\css"))
             {
-                var i = Info.GetListItem("imagelist", 0);
-                var logoMapPath = DNNrocketUtils.MapPath(i.GetXmlProperty("genxml/hidden/imagepath"));
-                Logo = i.GetXmlProperty("genxml/hidden/imagepath");
-                if (!File.Exists(logoMapPath)) Logo = "";
+                foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\css", "*.css", SearchOption.TopDirectoryOnly))
+                {
+                    var templateName = Path.GetFileName(newPath);
+                    var templateText = FileUtils.ReadFile(newPath);
+                    AddListCss(Path.GetFileNameWithoutExtension(templateName), templateText);
+                    _cssFileName.Add(templateName);
+                }
+            }
+            if (Directory.Exists(AppThemeVersionFolderMapPath + "\\js"))
+            {
+                foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\js", "*.js", SearchOption.TopDirectoryOnly))
+                {
+                    var templateName = Path.GetFileName(newPath);
+                    var templateText = FileUtils.ReadFile(newPath);
+                    AddListJs(Path.GetFileNameWithoutExtension(templateName), templateText);
+                    _jsFileName.Add(templateName);
+                }
             }
         }
         private void CreateVersionFolders(string versionFolder)
@@ -125,25 +155,10 @@ namespace Rocket.AppThemes.Componants
         }
         public void Save(SimplisityInfo postInfo)
         {
-            //get removed templates (To be deleted)
+            ActionListTemplateFiles(postInfo);
+            ActionListCssFiles(postInfo);
+            ActionListJsFiles(postInfo);
 
-            // delete removed templates
-            foreach (var t in _templateFileName)
-            {
-                var filename = Path.GetFileNameWithoutExtension(t);
-                var delItem = postInfo.GetListItem("templatelist", "genxml/hidden/filename", filename);
-                if (delItem == null && File.Exists(AppThemeVersionFolderMapPath + "\\default\\" + t)) File.Delete(AppThemeVersionFolderMapPath + "\\default\\" + t);
-            }
-
-            //create any new files. (will be added to template list when populate syncs files)
-            var tList = postInfo.GetList("templatelist");
-            foreach (SimplisityInfo templateInfo in tList)
-            {
-                var fname = templateInfo.GetXmlProperty("genxml/hidden/filename");
-                var filename = Path.GetFileNameWithoutExtension(fname);
-                fname = filename + ".cshtml";
-                FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\default\\" + fname, GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcode")));
-            }
 
             var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, AppCultureCode, -1, -1, true, _tableName);
             if (dbInfo != null)
@@ -181,6 +196,64 @@ namespace Rocket.AppThemes.Componants
 
             }
         }
+        private void ActionListTemplateFiles(SimplisityInfo postInfo)
+        {
+            foreach (var t in _templateFileName)
+            {
+                var filename = Path.GetFileNameWithoutExtension(t);
+                var delItem = postInfo.GetListItem("templatelist", "genxml/hidden/filename", filename);
+                if (delItem == null && File.Exists(AppThemeVersionFolderMapPath + "\\default\\" + t)) File.Delete(AppThemeVersionFolderMapPath + "\\default\\" + t);
+            }
+
+            //create any new files. (will be added to template list when populate syncs files)
+            var tList = postInfo.GetList("templatelist");
+            foreach (SimplisityInfo templateInfo in tList)
+            {
+                var fname = templateInfo.GetXmlProperty("genxml/hidden/filename");
+                var filename = Path.GetFileNameWithoutExtension(fname);
+                fname = filename + ".cshtml";
+                FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\default\\" + fname, GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodehtmlmixed")));
+            }
+        }
+        private void ActionListCssFiles(SimplisityInfo postInfo)
+        {
+            foreach (var t in _cssFileName)
+            {
+                var filename = Path.GetFileNameWithoutExtension(t);
+                var delItem = postInfo.GetListItem("csslist", "genxml/hidden/filename", filename);
+                if (delItem == null && File.Exists(AppThemeVersionFolderMapPath + "\\css\\" + t)) File.Delete(AppThemeVersionFolderMapPath + "\\css\\" + t);
+            }
+
+            //create any new files. (will be added to template list when populate syncs files)
+            var tList = postInfo.GetList("csslist");
+            foreach (SimplisityInfo templateInfo in tList)
+            {
+                var fname = templateInfo.GetXmlProperty("genxml/hidden/filename");
+                var filename = Path.GetFileNameWithoutExtension(fname);
+                fname = filename + ".cshtml";
+                FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\css\\" + fname, GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodecss")));
+            }
+        }
+        private void ActionListJsFiles(SimplisityInfo postInfo)
+        {
+            foreach (var t in _jsFileName)
+            {
+                var filename = Path.GetFileNameWithoutExtension(t);
+                var delItem = postInfo.GetListItem("jslist", "genxml/hidden/filename", filename);
+                if (delItem == null && File.Exists(AppThemeVersionFolderMapPath + "\\js\\" + t)) File.Delete(AppThemeVersionFolderMapPath + "\\js\\" + t);
+            }
+
+            //create any new files. (will be added to template list when populate syncs files)
+            var tList = postInfo.GetList("jslist");
+            foreach (SimplisityInfo templateInfo in tList)
+            {
+                var fname = templateInfo.GetXmlProperty("genxml/hidden/filename");
+                var filename = Path.GetFileNameWithoutExtension(fname);
+                fname = filename + ".cshtml";
+                FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\js\\" + fname, GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodejavascript")));
+            }
+        }
+
         public void Update()
         {
             _objCtrl.SaveData(Info, -1, _tableName);
@@ -192,32 +265,45 @@ namespace Rocket.AppThemes.Componants
         }
         public void AddListTemplate(string filename = "", string templateText = "")
         {
+            AddListFile("templatelist", filename, templateText,"htmlmixed");
+        }
+        public void AddListCss(string filename = "", string templateText = "")
+        {
+            AddListFile("csslist", filename, templateText, "css");
+        }
+        public void AddListJs(string filename = "", string templateText = "")
+        {
+            AddListFile("jslist", filename, templateText,"javascript");
+        }
+        private void AddListFile(string listname, string filename = "", string templateText = "", string modeType = "")
+        {
             filename = Path.GetFileNameWithoutExtension(filename);
             if (filename != "")
             {
-                var rtnItem = Info.GetListItem("templatelist", "genxml/hidden/filename", filename);
+                var rtnItem = Info.GetListItem(listname, "genxml/hidden/filename", filename);
                 if (rtnItem != null)
                 {
                     // update
                     var idx = rtnItem.GetXmlPropertyInt("genxml/index");
-                    Info.SetXmlProperty("genxml/templatelist/genxml[" + idx + "]/hidden/filename", filename);
-                    Info.SetXmlProperty("genxml/templatelist/genxml[" + idx + "]/hidden/editorcode", GeneralUtils.EnCode(templateText));
+                    Info.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/filename", filename);
+                    Info.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/editorcode" + modeType, GeneralUtils.EnCode(templateText));
                 }
                 else
                 {
                     // add
                     var nbi = new SimplisityRecord();
                     nbi.SetXmlProperty("genxml/hidden/filename", filename);
-                    nbi.SetXmlProperty("genxml/hidden/editorcode", GeneralUtils.EnCode(templateText));
-                    Info.AddListItem("templatelist",nbi.XMLData);
+                    nbi.SetXmlProperty("genxml/hidden/editorcode" + modeType, GeneralUtils.EnCode(templateText));
+                    Info.AddListItem(listname, nbi.XMLData);
                 }
             }
             else
             {
-                Info.AddListItem("templatelist");
+                Info.AddListItem(listname);
             }
             Update();
         }
+
 
         public void Export(SimplisityInfo _postInfo)
         {

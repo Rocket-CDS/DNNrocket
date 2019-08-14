@@ -68,6 +68,10 @@ namespace DNNrocket.AppThemes
                         SaveData();
                         strOut = AddListTemplate();
                         break;
+                    case "rocketapptheme_addcss":
+                        SaveData();
+                        strOut = AddListCss();
+                        break;
                 }
             }
             else
@@ -145,6 +149,14 @@ namespace DNNrocket.AppThemes
             var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
             var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
             appTheme.AddListTemplate();
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), appTheme.AppVersionFolder, true);
+            return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
+        }
+        public static string AddListCss()
+        {
+            var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
+            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
+            appTheme.AddListCss();
             var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), appTheme.AppVersionFolder, true);
             return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
         }
