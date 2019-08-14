@@ -28,6 +28,10 @@ namespace Rocket.AppThemes.Componants
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
             _systemKey = systemKey;
 
+            _templateFileName = new List<string>();
+            _cssFileName = new List<string>();
+            _jsFileName = new List<string>();
+
             PopulateVersionList();
 
             AppThemeFolder = appThemeFolder;
@@ -63,11 +67,6 @@ namespace Rocket.AppThemes.Componants
             AppDisplayName = Info.GetXmlProperty("genxml/lang/genxml/textbox/displayname");
             AppSummary = Info.GetXmlProperty("genxml/lang/genxml/textbox/summary");
 
-            _templateFileName = new List<string>();
-            _cssFileName = new List<string>();
-            _jsFileName = new List<string>();
-
-
             // sync filesystem
             SyncFiles();
 
@@ -85,36 +84,33 @@ namespace Rocket.AppThemes.Componants
         private void SyncFiles()
         {
             // sync filesystem
-            if (Directory.Exists(AppThemeVersionFolderMapPath + "\\default"))
+            if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\default")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\default");
+            foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\default", "*.cshtml", SearchOption.TopDirectoryOnly))
             {
-                foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\default", "*.cshtml", SearchOption.TopDirectoryOnly))
-                {
-                    var templateName = Path.GetFileName(newPath);
-                    var templateText = FileUtils.ReadFile(newPath);
-                    AddListTemplate(Path.GetFileNameWithoutExtension(templateName), templateText);
-                    _templateFileName.Add(templateName);
-                }
+                var templateName = Path.GetFileName(newPath);
+                var templateText = FileUtils.ReadFile(newPath);
+                AddListTemplate(Path.GetFileNameWithoutExtension(templateName), templateText);
+                _templateFileName.Add(templateName);
             }
-            if (Directory.Exists(AppThemeVersionFolderMapPath + "\\css"))
+
+            if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\css")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\css");
+            foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\css", "*.css", SearchOption.TopDirectoryOnly))
             {
-                foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\css", "*.css", SearchOption.TopDirectoryOnly))
-                {
-                    var templateName = Path.GetFileName(newPath);
-                    var templateText = FileUtils.ReadFile(newPath);
-                    AddListCss(Path.GetFileNameWithoutExtension(templateName), templateText);
-                    _cssFileName.Add(templateName);
-                }
+                var templateName = Path.GetFileName(newPath);
+                var templateText = FileUtils.ReadFile(newPath);
+                AddListCss(Path.GetFileNameWithoutExtension(templateName), templateText);
+                _cssFileName.Add(templateName);
             }
-            if (Directory.Exists(AppThemeVersionFolderMapPath + "\\js"))
+
+            if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\js")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\js");
+            foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\js", "*.js", SearchOption.TopDirectoryOnly))
             {
-                foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\js", "*.js", SearchOption.TopDirectoryOnly))
-                {
-                    var templateName = Path.GetFileName(newPath);
-                    var templateText = FileUtils.ReadFile(newPath);
-                    AddListJs(Path.GetFileNameWithoutExtension(templateName), templateText);
-                    _jsFileName.Add(templateName);
-                }
+                var templateName = Path.GetFileName(newPath);
+                var templateText = FileUtils.ReadFile(newPath);
+                AddListJs(Path.GetFileNameWithoutExtension(templateName), templateText);
+                _jsFileName.Add(templateName);
             }
+
         }
         private void CreateVersionFolders(string versionFolder)
         {
@@ -230,7 +226,7 @@ namespace Rocket.AppThemes.Componants
             {
                 var fname = templateInfo.GetXmlProperty("genxml/hidden/filename");
                 var filename = Path.GetFileNameWithoutExtension(fname);
-                fname = filename + ".cshtml";
+                fname = filename + ".css";
                 FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\css\\" + fname, GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodecss")));
             }
         }
@@ -249,7 +245,7 @@ namespace Rocket.AppThemes.Componants
             {
                 var fname = templateInfo.GetXmlProperty("genxml/hidden/filename");
                 var filename = Path.GetFileNameWithoutExtension(fname);
-                fname = filename + ".cshtml";
+                fname = filename + ".js";
                 FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\js\\" + fname, GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodejavascript")));
             }
         }
