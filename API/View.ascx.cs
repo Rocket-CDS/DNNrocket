@@ -42,7 +42,6 @@ namespace DNNrocketAPI
     {
         #region Event Handlers
 
-
         private bool _debugmode = false;
         private bool _activatedetail = false;
 
@@ -65,30 +64,6 @@ namespace DNNrocketAPI
 
             base.OnInit(e);
 
-            var objCtrl = new DNNrocketController();
-
-
-            _activatedetail = _moduleParams.GetValueBool("activatedetail");
-            _paramCmd = _moduleParams.GetValue("command");
-
-            var appThemeFolder = _moduleParams.AppThemeFolder;
-
-
-            var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
-            var desktopModule = moduleInfo.DesktopModule;
-
-            _systemprovider = desktopModule.ModuleDefinitions.First().Key.ToLower(); // Use the First DNN Module definition as the DNNrocket systemprovider
-
-            _interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
-
-            _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
-
-            _moduleParams = new ModuleParams(ModuleId, _systemInfo.SystemId, DNNrocketUtils.GetCurrentCulture());
-
-            _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
-            var systemInfoData = new SystemInfoData(_systemInfo);
-            _debugmode = systemInfoData.DebugMode;
-
             var clearallcache = DNNrocketUtils.RequestParam(Context, "clearallcache");
             if (clearallcache != "")
             {
@@ -96,7 +71,22 @@ namespace DNNrocketAPI
                 CacheUtils.ClearAllCache();
             }
 
-            if (_rocketInterface.Exists)
+            var objCtrl = new DNNrocketController();
+
+            var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
+            var desktopModule = moduleInfo.DesktopModule;
+
+            _systemprovider = desktopModule.ModuleDefinitions.First().Key.ToLower(); // Use the First DNN Module definition as the DNNrocket systemprovider
+            _interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
+            _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
+            _moduleParams = new ModuleParams(ModuleId, _systemInfo.SystemId, DNNrocketUtils.GetCurrentCulture());
+            _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
+            var systemInfoData = new SystemInfoData(_systemInfo);
+            _debugmode = systemInfoData.DebugMode;
+            _activatedetail = _moduleParams.GetValueBool("activatedetail");
+            _paramCmd = _moduleParams.GetValue("command");
+
+            if (_rocketInterface != null && _rocketInterface.Exists)
             {
                 _templateRelPath = _rocketInterface.TemplateRelPath;
                 _entiytypecode = _rocketInterface.EntityTypeCode;
@@ -176,7 +166,7 @@ namespace DNNrocketAPI
             paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
             paramInfo.SetXmlProperty("genxml/hidden/tabid", PortalSettings.Current.ActiveTab.TabID.ToString());
 
-            if (_rocketInterface.Exists)
+            if (_rocketInterface != null && _rocketInterface.Exists)
             {
                 // add parameters to postInfo and cachekey
                 var paramString = "";

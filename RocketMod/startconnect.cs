@@ -267,8 +267,8 @@ namespace RocketMod
             _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
             _moduleParams.ModuleType = "RocketMod";
             if (_moduleParams.ModuleRef == "") _moduleParams.ModuleRef = GeneralUtils.GetUniqueKey();
+            _moduleParams.Exists = true;
             _moduleParams.Save();
-
             _passSettings.Add("saved", "true");
         }
 
@@ -713,7 +713,7 @@ namespace RocketMod
             try
             {
                 _rocketInterface.Info.ModuleId = _moduleid;
-                _passSettings.Add("tabid", _tabid.ToString());
+                if (!_passSettings.ContainsKey("tabid")) _passSettings.Add("tabid", _tabid.ToString());
                 var strOut = "";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",_systemInfoData.DebugMode);
                 return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
