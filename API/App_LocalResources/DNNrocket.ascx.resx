@@ -489,4 +489,7 @@
   <data name="links.Text" xml:space="preserve">
     <value>Links</value>
   </data>
+  <data name="cmdOKButton.Text" xml:space="preserve">
+    <value>&lt;i  title="OK" class="fas fa-check-circle fa-fw fa-lg"&gt;&lt;/i&gt; OK</value>
+  </data>
 </root>
