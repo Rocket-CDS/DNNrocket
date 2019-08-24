@@ -354,9 +354,22 @@ namespace DNNrocketAPI
             }
             return rtnList;
         }
+
+        public static Dictionary<string, string> GetAllCultureCodeNameList()
+        {
+            var rtnList = new Dictionary<string, string>();
+
+            CultureInfo[] cinfo = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.SpecificCultures);
+            foreach (CultureInfo cul in cinfo)
+            {
+                rtnList.Add(cul.Name, cul.DisplayName);
+            }
+            return rtnList;
+        }
+
         public static string GetCultureCodeName(string cultureCode)
         {
-            var d = GetCultureCodeNameList();
+            var d = GetAllCultureCodeNameList();
             if (!d.ContainsKey(cultureCode)) return "";
             return d[cultureCode];
         }
@@ -380,7 +393,7 @@ namespace DNNrocketAPI
         {
             var rtnList = new List<SimplisityInfo>();
 
-            CultureInfo[] cinfo = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.NeutralCultures);
+            CultureInfo[] cinfo = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.SpecificCultures);
             foreach (CultureInfo cul in cinfo)
             {
                 var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + cul.Name + ".png";
@@ -897,6 +910,10 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
+        public static void ClearAllCache()
+        {
+            DataCache.ClearCache(); 
+        }
         public static void ClearPortalCache()
         {
             DataCache.ClearPortalCache(PortalSettings.Current.PortalId, true);

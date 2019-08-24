@@ -45,7 +45,7 @@
     var resxLP = 1;
     var resxdatalist = info.GetList("resxlist");
 
-    
+
     var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist";
 }
 
@@ -201,7 +201,7 @@
                     <li class="csslist w3-col m4 w3-display-container w3-padding w3-border-0">
                         @SortableListIndex(cssLP)
                         @HiddenField(cssInfo, "genxml/hidden/editorcodecss", "", "", false, cssLP)
-                        @HiddenField(cssInfo, "genxml/hidden/filefolder", "", "default", false, cssLP)
+                        @HiddenField(cssInfo, "genxml/hidden/filefolder", "", "css", false, cssLP)
                         @HiddenField(cssInfo, "genxml/hidden/filenamecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/filename"), false, cssLP)
                         <div class="w3-row w3-display-container w3-padding  w3-card">
 
@@ -243,7 +243,7 @@
         </div>
 
         <div class="w3-button w3-theme w3-block w3-padding  w3-left-align " onclick="accordianFunction('jsdatasection')">
-            <label>@ResourceKey("AppThemes.js")</label>
+            <label>@ResourceKey("AppThemes.javascript")</label>
         </div>
 
         <div id="jsdatasection" class="w3-row w3-hide jslistdatasection">
@@ -262,7 +262,7 @@
                     <li class="jslist w3-col m4 w3-display-container w3-padding w3-border-0">
                         @SortableListIndex(jsLP)
                         @HiddenField(jsInfo, "genxml/hidden/editorcodejavascript", "", "", false, jsLP)
-                        @HiddenField(jsInfo, "genxml/hidden/filefolder", "", "default", false, jsLP)
+                        @HiddenField(jsInfo, "genxml/hidden/filefolder", "", "js", false, jsLP)
                         @HiddenField(jsInfo, "genxml/hidden/filenamejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/filename"), false, jsLP)
 
                         <div class="w3-row w3-display-container w3-padding  w3-card">
@@ -303,7 +303,7 @@
         </div>
 
         <div class="w3-button w3-theme w3-block w3-padding  w3-left-align " onclick="accordianFunction('resxdatasection')">
-            <label>@ResourceKey("AppThemes.resx")</label>
+            <label>@ResourceKey("AppThemes.resources")</label>
         </div>
 
         <div id="resxdatasection" class="w3-row w3-hide resxlistdatasection">
@@ -311,6 +311,7 @@
             <div class="w3-container">
                 <div class="w3-col w3-padding" style="width:160px;">
                     <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addresx" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                    <div class="w3-button w3-blue w3-padding-8 " onclick="selectlanguage()"><i class='fas fa-plus-circle'></i></div>
                     <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistbin" s-return="#resxlistdata" s-removelist=".resxlist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
                 </div>
             </div>
@@ -319,32 +320,38 @@
 
                 @foreach (var resxInfo in resxdatalist)
                 {
-                    <li class="resxlist w3-col m4 w3-display-container w3-padding w3-border-0">
-                        @SortableListIndex(jsLP)
-                        @HiddenField(resxInfo, "genxml/hidden/editorcodejavascript", "", "", false, resxLP)
-                        @HiddenField(resxInfo, "genxml/hidden/filefolder", "", "default", false, resxLP)
-                        @HiddenField(resxInfo, "genxml/hidden/filenamejavascript", "s-update='ignore'", resxInfo.GetXmlProperty("genxml/hidden/filename"), false, resxLP)
+                    <li class="resxlist w3-col m6 w3-display-container w3-padding w3-border-0">
+                        @SortableListIndex(resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/editorcoderesx", "", "", false, resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/filefolder", "", "resx", false, resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/filenameresx", "s-update='ignore'", resxInfo.GetXmlProperty("genxml/hidden/filename"), false, resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/culturecode", "", "", false, resxLP)
 
                         <div class="w3-row w3-display-container w3-padding  w3-card">
 
                             <div class="">
-                                @{
-                                    var disabledfilename = "";
-                                    var hideicon = "display:none;";
-                                }
-                                @if (resxInfo.GetXmlProperty("genxml/hidden/filename") != "")
-                                {
-                                    disabledfilename = "disabled";
-                                    hideicon = "";
-                                }
-
                                 <div class="w3-col m8">
                                     <div>
-                                        @TextBox(resxInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + resxLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, resxLP)
+                                        @{
+                                            var flag = resxInfo.GetXmlProperty("genxml/hidden/culturecode");
+                                            var displayname = "";
+                                            if (flag == "")
+                                            {
+                                                flag = "none";
+                                                displayname = ResourceKey("AppThemes.default").ToString();
+                                            }
+                                            else
+                                            {
+                                                displayname = DNNrocketUtils.GetCultureCodeName(flag);
+                                            }
+                                        }
+                                        <img class="" src="/DesktopModules/DNNrocket/API/images/flags/16/@(flag).png" alt="">
+                                        <span>@(displayname)</span>
+                                        <span>[@(flag)]</span>
                                     </div>
                                 </div>
-                                <div class="w3-col w3-margin-left" style="width:62px;">
-                                    <div class="w3-button filenameicon@(resxLP)" onclick="editjs(@(resxLP));" style="@(hideicon)">
+                                <div class="w3-col w3-margin-left " style="width:62px;">
+                                    <div class="w3-button filenameicon@(resxLP)" onclick="editresx(@(resxLP));" style="">
                                         <i class="fas fa-edit " style='font-size:24px'></i>
                                     </div>
                                 </div>
@@ -358,7 +365,7 @@
                     </li>
 
                     resxLP += 1;
-                                    }
+                }
             </ul>
         </div>
 
@@ -373,7 +380,7 @@
         <div class="w3-col m2 w3-button w3-khaki " onclick="cancelleditor();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
         @ButtonGap()
         <div class="w3-col m4 w3-right">
-         <h5 id="editorfilename" class="" style=""></h5>
+            <h5 id="editorfilename" class="" style=""></h5>
         </div>
     </div>
     <div id="editorwrapper" class="w3-row " style=""></div>
@@ -382,6 +389,29 @@
 
 <div id="dnnrocket_imageselectwrapper">
     @RenderImageSelect(100, true, false, appTheme.ImageFolderRel)
+</div>
+
+<!-- The Modal -->
+<div id="languageselector" class="w3-modal">
+    <div class="w3-modal-content">
+        <header class="w3-container w3-theme-d3">
+            <span onclick="document.getElementById('languageselector').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <div class="w3-col m4 ">
+                <input class="w3-margin w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchlanguage")..." id="searchtext" onkeyup="searchFunction()">
+            </div>
+        </header>
+        <div class="w3-container">
+            @{
+                var enabledlanguages = DNNrocketUtils.GetAllCultureCodeList();
+                foreach (var l in enabledlanguages)
+                {
+                    <div class="w3-col m4 w3-padding" style="cursor: pointer;" editlang='@(l.GetXmlProperty("genxml/code"))' onclick="actionlanguageselect('@(l.GetXmlProperty("genxml/code"))')"><img class='searchlanguagebutton ' src='@(l.GetXmlProperty("genxml/flagurl"))' alt='@(l.GetXmlProperty("genxml/displayname")  + " " + l.GetXmlProperty("genxml/code"))' /><span class="w3-small">&nbsp;@l.GetXmlProperty("genxml/displayname")</span></div>
+                }
+            }
+        </div>
+        <footer class="w3-container w3-theme-d3">
+        </footer>
+    </div>
 </div>
 
 
@@ -418,14 +448,34 @@
             };
         }
 
+        accordianSetup('imagedatasection');
+        accordianSetup('cssdatasection');
+        accordianSetup('jsdatasection');
+        accordianSetup('templatedatasection');
+        accordianSetup('resxdatasection');
+
     });
 
+    function accordianSetup(id) {
+        if (typeof id !== 'undefined' && id !== '') {
+            var accordianstate = simplisity_getCookieValue('appthemedetails_' + id);
+            var x = document.getElementById(id);
+            if (accordianstate === 'show') {
+                x.className += " w3-show";
+            }
+        }
+    }
+
     function accordianFunction(id) {
-        var x = document.getElementById(id);
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-        } else {
-            x.className = x.className.replace(" w3-show", "");
+        if (typeof id !== 'undefined' && id !== '') {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                simplisity_setCookieValue('appthemedetails_' + id, 'show');
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                simplisity_setCookieValue('appthemedetails_' + id, '');
+            }
         }
     }
 
@@ -437,6 +487,9 @@
     }
     function editjs(idx) {
         editeditor(idx, 'javascript');
+    }
+    function editresx(idx) {
+        editeditor(idx, 'resx');
     }
 
     function savetemplate() {
@@ -488,6 +541,27 @@
 
     function languageChange() {
         $('.langchangesave').trigger("click");
+    }
+
+    function selectlanguage() {
+        $('#languageselector').show();
+    }
+
+    function searchFunction() {
+        var filter = $('#searchtext').val().toUpperCase();
+        $('.searchlanguagebutton ').each(function (i, obj) {
+            txtValue = $(this).attr('alt');
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                $(this).parent().show();
+            } else {
+                $(this).parent().hide();
+            }
+        });
+
+    }
+
+    function actionlanguageselect(culturecode) {
+        alert('lang select ' + culturecode);
     }
 
 </script>

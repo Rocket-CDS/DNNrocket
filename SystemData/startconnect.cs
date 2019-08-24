@@ -78,7 +78,7 @@ namespace DNNrocket.SystemData
                         break;
                     case "systemapi_clearallcache":
                         CacheUtils.ClearAllCache();
-                        DNNrocketUtils.ClearPortalCache();
+                        DNNrocketUtils.ClearAllCache();
                         strOut = SystemAdminList(paramInfo, controlRelPath);
                         break;
                 }
