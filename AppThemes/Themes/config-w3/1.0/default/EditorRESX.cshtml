@@ -1,0 +1,60 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using Rocket.AppThemes.Componants;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
+@{
+    var appTheme = (AppTheme)Model.List.First();
+    var sInfo = appTheme.Info;
+}
+
+<div class="w3-container">
+    <div class="w3-margin">
+        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addresxvalue" s-return="#dnnrocket_resxvaluelist">@ResourceKey("DNNrocket.cmdAddButton")</a>
+        <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#pluginsettings" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    </div>
+
+    <div class="w3-row w3-margin">
+
+        <table id="pluginsettings" class="w3-table-all">
+
+            <tr>
+                <th class="w3-half">@ResourceKey("system.name")</th>
+                <th class="w3-quarter">@ResourceKey("system.value")</th>
+                <th style="width:20px;"></th>
+            </tr>
+
+            @{
+                var lp3 = 0;
+            }
+            @foreach (var i in sInfo.GetList("resxdata"))
+            {
+                lp3 += 1;
+
+            <tr class="settingsdata">
+                <td class="w3-half">
+                    @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
+                </td>
+                <td class="w3-quarter">
+                    @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' ", "", false, lp3)
+                </td>
+                <td style="width:20px;">
+                    <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".settingsdata" s-recylebin="settingsbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
+                </td>
+            </tr>
+
+            }
+        </table>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+    });
+</script>

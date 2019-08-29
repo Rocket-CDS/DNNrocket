@@ -373,7 +373,13 @@ namespace Rocket.AppThemes.Componants
                 Info.AddListItem(listname, nbi.XMLData);
             }
             Update();
-
+        }
+        public void AddListResxValue(string culturecode, string name, string value)
+        {
+            var listname = "resxlist" + culturecode;
+            var valueInfo = new SimplisityInfo();
+            valueInfo.SetXmlProperty("genxml/textbox/name", value);
+            Info.AddListItem(listname,valueInfo);
         }
 
 

@@ -320,51 +320,51 @@
 
                 @foreach (var resxInfo in resxdatalist)
                 {
-                <li class="resxlist w3-col m6 w3-display-container w3-padding w3-border-0">
-                    @SortableListIndex(resxLP)
-                    @HiddenField(resxInfo, "genxml/hidden/editorcoderesx", "", "", false, resxLP)
-                    @HiddenField(resxInfo, "genxml/hidden/filefolder", "", "resx", false, resxLP)
-                    @HiddenField(resxInfo, "genxml/hidden/filenameresx", "s-update='ignore'", resxInfo.GetXmlProperty("genxml/hidden/filename"), false, resxLP)
-                    @HiddenField(resxInfo, "genxml/hidden/culturecode", "", "", false, resxLP)
-                    @HiddenField(resxInfo, "genxml/hidden/fullfilename", "", "", false, resxLP)
+                    <li class="resxlist w3-col m6 w3-display-container w3-padding w3-border-0">
+                        @SortableListIndex(resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/editorcoderesx", "", "", false, resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/filefolder", "", "resx", false, resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/filenameresx", "s-update='ignore'", resxInfo.GetXmlProperty("genxml/hidden/filename"), false, resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/culturecode", "", "", false, resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/fullfilename", "", "", false, resxLP)
 
 
-                    <div class="w3-row w3-display-container w3-padding  w3-card">
+                        <div class="w3-row w3-display-container w3-padding  w3-card">
 
-                        <div class="">
-                            <div class="w3-col m8">
-                                <div>
-                                    @{
-                                        var flag = resxInfo.GetXmlProperty("genxml/hidden/culturecode");
-                                        var displayname = "";
-                                        if (flag == "")
-                                        {
-                                            flag = "none";
-                                            displayname = ResourceKey("AppThemes.default").ToString();
+                            <div class="">
+                                <div class="w3-col m8">
+                                    <div>
+                                        @{
+                                            var flag = resxInfo.GetXmlProperty("genxml/hidden/culturecode");
+                                            var displayname = "";
+                                            if (flag == "")
+                                            {
+                                                flag = "none";
+                                                displayname = ResourceKey("AppThemes.default").ToString();
+                                            }
+                                            else
+                                            {
+                                                displayname = DNNrocketUtils.GetCultureCodeName(flag);
+                                            }
                                         }
-                                        else
-                                        {
-                                            displayname = DNNrocketUtils.GetCultureCodeName(flag);
-                                        }
-                                    }
-                                    <img class="" src="/DesktopModules/DNNrocket/API/images/flags/16/@(flag).png" alt="">
-                                    <span>@(displayname)</span>
-                                    <span>[@(flag)]</span>
+                                        <img class="" src="/DesktopModules/DNNrocket/API/images/flags/16/@(flag).png" alt="">
+                                        <span>@(displayname)</span>
+                                        <span>[@(flag)]</span>
+                                    </div>
+                                </div>
+                                <div class="w3-col w3-margin-left " style="width:62px;">
+                                    <div class="w3-button filenameicon@(resxLP)" onclick="editresx(@(resxLP));" style="">
+                                        <i class="fas fa-edit " style='font-size:24px'></i>
+                                    </div>
+                                </div>
+                                <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".resxlist" s-recylebin="resxlistbin" style="cursor: pointer;width:42px;">
+                                    <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
                                 </div>
                             </div>
-                            <div class="w3-col w3-margin-left " style="width:62px;">
-                                <div class="w3-button filenameicon@(resxLP)" onclick="editresx(@(resxLP));" style="">
-                                    <i class="fas fa-edit " style='font-size:24px'></i>
-                                </div>
-                            </div>
-                            <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".resxlist" s-recylebin="resxlistbin" style="cursor: pointer;width:42px;">
-                                <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
-                            </div>
+
                         </div>
 
-                    </div>
-
-                </li>
+                    </li>
 
                     resxLP += 1;
                 }
@@ -388,9 +388,23 @@
     <div id="editorwrapper" class="w3-row " style=""></div>
 </div>
 
-
 <div id="dnnrocket_imageselectwrapper">
     @RenderImageSelect(100, true, false, appTheme.ImageFolderRel)
+</div>
+
+<div id="dnnrocket_resxeditwrapper" style="display:none;">
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="saveresx()">@ResourceKey("DNNrocket.cmdOKButton")</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-khaki " onclick="cancellresx();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
+        @ButtonGap()
+        <div class="w3-col m4 w3-right">
+            <h5 id="resxfilename" class="" style=""></h5>
+        </div>
+    </div>
+    <div id="dnnrocket_resxvaluelist">
+        @RenderTemplate("EditorRESX.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", Model, "1.0", true)
+    </div>
 </div>
 
 <!-- The Modal -->
@@ -411,8 +425,7 @@
                 }
             }
         </div>
-        <footer class="w3-container w3-theme-d3">
-        </footer>
+        <footer class="w3-container w3-theme-d3"></footer>
     </div>
 </div>
 
@@ -491,12 +504,24 @@
         editeditor(idx, 'javascript');
     }
     function editresx(idx) {
-        editeditor(idx, 'resx');
+        $('#detailsection').hide();
+        $('#dnnrocket_resxeditwrapper').show();
+
+        var editorcode = $('#editorcoderesx_' + idx).val();
+
+        $('#resxfilename').text($('#filenameresx_' + idx).val());
+        $('#editorwrapper').attr("index", idx);
+
+        alert($('#culturecode_' + idx).val());
     }
 
     function savetemplate() {
         var modetype = $('#razoreditor').attr('modetype');
         saveeditor(modetype);
+    }
+
+    function saveresx() {
+        alert('save');
     }
 
     function editeditor(idx, modetype) {
@@ -537,6 +562,10 @@
     }
     function cancelleditor() {
         $('#editorpopup').hide();
+        $('#detailsection').show();
+    }
+    function cancellresx() {
+        $('#dnnrocket_resxeditwrapper').hide();
         $('#detailsection').show();
     }
 
