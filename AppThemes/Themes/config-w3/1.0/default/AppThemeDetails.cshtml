@@ -310,8 +310,9 @@
 
             <div class="w3-container">
                 <div class="w3-col w3-padding" style="width:160px;">
-                    <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addresx" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                    <div class="w3-button w3-blue w3-padding-8 " onclick="selectlanguage()"><i class='fas fa-plus-circle'></i></div>
+                    <div id="resxaddbutton" class="w3-hide w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addresx" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+
+                    <div class="w3-button w3-teal w3-padding-8 " onclick="selectlanguage()"><i class='fas fa-plus-circle'></i></div>
                     <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistbin" s-return="#resxlistdata" s-removelist=".resxlist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
                 </div>
             </div>
@@ -322,7 +323,7 @@
                 {
                     <li class="resxlist w3-col m6 w3-display-container w3-padding w3-border-0">
                         @SortableListIndex(resxLP)
-                        @HiddenField(resxInfo, "genxml/hidden/editorcoderesx", "", "", false, resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/jsonresx", "", "", false, resxLP)
                         @HiddenField(resxInfo, "genxml/hidden/filefolder", "", "resx", false, resxLP)
                         @HiddenField(resxInfo, "genxml/hidden/filenameresx", "s-update='ignore'", resxInfo.GetXmlProperty("genxml/hidden/filename"), false, resxLP)
                         @HiddenField(resxInfo, "genxml/hidden/culturecode", "", "", false, resxLP)
@@ -405,7 +406,7 @@
     <div id="dnnrocket_resxvaluelist">
 
         <div class="w3-margin">
-            <a class="w3-button w3-teal w3-padding-8" onclick="addresxvalue()">@ResourceKey("DNNrocket.cmdAddButton")</a>
+            <a class="w3-button w3-teal w3-padding-8" onclick="addresxvalue('','')">@ResourceKey("DNNrocket.cmdAddButton")</a>
             <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistvaluesbin"  s-return="#resxvalues" s-removelist=".resxlistvalues" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
         </div>
 
@@ -528,12 +529,35 @@
         $('#detailsection').hide();
         $('#dnnrocket_resxeditwrapper').show();
 
-        var editorcode = $('#editorcoderesx_' + idx).val();
+        var jsonstr = $('#jsonresx_' + idx).val();
+        jsonstr = simplisity_decode(jsonstr);
+
+        if (jsonstr !== '') {
+
+            var namedata = [];
+            var valuedata = [];        
+            var obj = JSON.parse(jsonstr);
+            var len = obj.listdata.length;
+            for (var i = 0; i < len; i++) {
+                var itemobj = obj.listdata[i];
+                if (itemobj.id.startsWith("name")) {
+                    namedata.push(itemobj.value);
+                }
+                if (itemobj.id.startsWith("value")) {
+                    valuedata.push(itemobj.value);
+                }
+            }
+            len = namedata.length;
+            for (var i = 0; i < len; i++) {
+                addresxvalue(namedata[i],valuedata[i]);
+            }
+        }
 
         $('#resxfilename').text($('#filenameresx_' + idx).val());
-        $('#editorwrapper').attr("index", idx);
+        $('#dnnrocket_resxeditwrapper').attr("index", idx);
 
         simplisity_setParamField('culturecoderesx', $('#culturecode_' + idx).val());  // send culture code to server when we add resx value. 
+
     }
 
     function savetemplate() {
@@ -543,8 +567,11 @@
 
     function saveresx() {
         var jsonListData = simplisity_encode(simplisity_getlistjson('.resxlistvalues'));
-        alert('save: ' + jsonListData);
-
+        var idx = $('#dnnrocket_resxeditwrapper').attr("index");
+        $('#jsonresx_' + idx).val(jsonListData);
+        $('#dnnrocket_resxeditwrapper').hide();
+        $('#detailsection').show();
+        $("#resxvalues").find("tr:gt(0)").remove();
     }
 
     function editeditor(idx, modetype) {
@@ -617,17 +644,18 @@
     }
 
     function actionlanguageselect(culturecode) {
-        alert('lang select ' + culturecode);
+        simplisity_setParamField('resxculturecode',culturecode);
+        simplisity_callserver($('#resxaddbutton'))         
     }
 
-    function addresxvalue() {
+    function addresxvalue(name, value) {
 
         var rowCount = $('#resxvalues tr').length;
 
         var tblrow = '<tr class="resxlistvalues">';
-        tblrow += '	<td class="w3-half"> <input id="name' + rowCount + '" class="w3-input w3-border" type="text" value=""/>';
+        tblrow += '	<td class="w3-half"> <input id="name' + rowCount + '" class="w3-input w3-border resxnameinput" type="text" value="' + name + '"/>';
         tblrow += '	</td>';
-        tblrow += '	<td class="w3-quarter">  <input id="value' + rowCount + '" class="w3-input w3-border" type="text" value=""/>';
+        tblrow += '	<td class="w3-quarter">  <input id="value' + rowCount + '" class="w3-input w3-border" type="text" value="' + value + '"/>';
         tblrow += '	</td>';
         tblrow += '	<td style="width:20px;">';
         tblrow += '		<a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".resxlistvalues" s-recylebin="resxlistvaluesbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>';
@@ -637,6 +665,15 @@
         $('#resxvalues tr:last').after(tblrow);
 
         $('#simplisity_startpanel').activateSimplisityPanel()
+
+        $('.resxnameinput').unbind("focusout");
+        $('.resxnameinput').focusout(function () {
+            if ($(this).val().indexOf(".") === -1) {
+                $(this).val($(this).val() + '.Text');
+            }
+        });
+
+
     }    
 
 </script>

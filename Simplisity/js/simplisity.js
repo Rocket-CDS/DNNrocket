@@ -500,7 +500,7 @@ function ConvertFormToJSON(spost, slist) {
 
 function simplisity_getpostjson(spost) {
     var viewData = {
-        postdata: [],
+        postdata: []
     };
 
     // put input fields into the json object

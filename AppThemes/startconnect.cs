@@ -179,9 +179,9 @@ namespace DNNrocket.AppThemes
         public static string AddListResx()
         {
             var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            var culturecode = _paramInfo.GetXmlProperty("genxml/hidden/culturecode");
+            var culturecode = _paramInfo.GetXmlProperty("genxml/hidden/resxculturecode");
             var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
-            appTheme.AddListResx("", culturecode);
+            appTheme.AddListResx("", culturecode, _postInfo);
             var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), appTheme.AppVersionFolder, true);
             return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
         }

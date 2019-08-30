@@ -122,8 +122,7 @@ namespace Rocket.AppThemes.Componants
                 {
                     culturecode = templateName.Replace(AppThemeFolder + ".", "");
                 }
-                var templateText = FileUtils.ReadFile(newPath);
-                AddListResx(Path.GetFileName(newPath), culturecode, templateText);
+                AddListResx(Path.GetFileName(newPath), culturecode);
                 _resxFileName.Add(Path.GetFileName(newPath));
             }
 
@@ -335,10 +334,12 @@ namespace Rocket.AppThemes.Componants
         }
 
 
-        public void AddListResx(string filename = "", string culturecode = "", string templateText = "")
+        public void AddListResx(string filename = "", string culturecode = "", SimplisityInfo postInfo = null)
         {
             var listname = "resxlist";
-            var modeType = "resx";
+            var jsonResx = "";
+            if (postInfo != null) jsonResx = postInfo.GetXmlProperty("genxml/" + listname + "/genxml[hidden/culturecode == '']/hidden/jsonresx");
+
             filename = Path.GetFileNameWithoutExtension(filename);
             var fullfilename = Path.GetFileName(filename);
             if (filename != "")
@@ -351,7 +352,7 @@ namespace Rocket.AppThemes.Componants
                     Info.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/filename", filename);
                     Info.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/fullfilename", fullfilename);
                     Info.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/culturecode", culturecode);
-                    Info.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/editorcode" + modeType, GeneralUtils.EnCode(templateText));
+                    Info.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/jsonresx", jsonResx);
                 }
                 else
                 {
@@ -360,7 +361,7 @@ namespace Rocket.AppThemes.Componants
                     nbi.SetXmlProperty("genxml/hidden/filename", filename);
                     nbi.SetXmlProperty("genxml/hidden/fullfilename", fullfilename);
                     nbi.SetXmlProperty("genxml/hidden/culturecode", culturecode);
-                    nbi.SetXmlProperty("genxml/hidden/editorcode" + modeType, GeneralUtils.EnCode(templateText));
+                    nbi.SetXmlProperty("genxml/hidden/jsonresx", jsonResx);
                     Info.AddListItem(listname, nbi.XMLData);
                 }
             }
@@ -370,6 +371,7 @@ namespace Rocket.AppThemes.Componants
                 nbi.SetXmlProperty("genxml/hidden/filename", AppThemeFolder + "." + culturecode + ".resx");
                 nbi.SetXmlProperty("genxml/hidden/fullfilename", AppThemeFolder + "." + culturecode + ".resx");
                 nbi.SetXmlProperty("genxml/hidden/culturecode", culturecode);
+                nbi.SetXmlProperty("genxml/hidden/jsonresx", jsonResx);
                 Info.AddListItem(listname, nbi.XMLData);
             }
             Update();
