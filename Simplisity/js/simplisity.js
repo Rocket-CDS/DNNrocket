@@ -498,6 +498,107 @@ function ConvertFormToJSON(spost, slist) {
 }
 
 
+function simplisity_getpostjson(spost) {
+    var viewData = {
+        postdata: [],
+    };
+
+    // put input fields into the json object
+    if (typeof spost !== 'undefined' && spost !== '') {
+        var sposts = spost.split(',');
+        sposts.forEach((post) => {
+            $(post).find('input, textarea, select').each(function () {
+
+                if (this.getAttribute("s-update") !== 'ignore' && this.id !== '') {
+
+                    if (this.getAttribute("s-datatype") === 'coded') {
+                        postvalue = this.value || '';
+                        postvalue = simplisity_encode(postvalue);
+                    }
+                    else {
+                        postvalue = this.value || '';
+                    }
+
+                    var jsonData = {};
+                    jsonData['id'] = this.id || '';
+                    jsonData['value'] = postvalue;
+                    jsonData['s-post'] = post || '';
+                    jsonData['s-update'] = this.getAttribute("s-update") || '';
+                    jsonData['s-datatype'] = this.getAttribute("s-datatype") || '';
+                    jsonData['s-xpath'] = this.getAttribute("s-xpath") || '';
+                    jsonData['type'] = this.getAttribute("type") || 'select';
+                    jsonData['checked'] = $(this).prop('checked') || '';
+                    jsonData['name'] = this.getAttribute("name") || '';
+                    viewData.postdata.push(jsonData);
+                }
+
+            });
+        });
+    }
+
+    if (debugmode) {
+        // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+        console.log('json: ' + JSON.stringify(viewData));
+    }
+
+    return JSON.stringify(viewData);
+}
+
+
+function simplisity_getlistjson(slist) {
+    var viewData = {
+        listdata: []
+    };
+
+    // crate any lists required.
+    if (typeof slist !== 'undefined' && slist !== '') {
+        var slists = slist.split(',');
+        slists.forEach((list) => {
+
+            var lp2 = 1;
+            $(list).each(function () {
+                $(this).find('input, textarea, select').each(function () {
+
+                    if (this.getAttribute("s-update") !== 'ignore' && this.id !== '') {
+
+                        if (this.getAttribute("s-datatype") === 'coded') {
+                            postvalue = this.value || '';
+                            postvalue = simplisity_encode(postvalue);
+                        }
+                        else {
+                            postvalue = this.value || '';
+                        }
+
+                        var jsonDataL = {};
+                        jsonDataL['id'] = this.id || '';
+                        jsonDataL['value'] = postvalue || '';
+                        jsonDataL['row'] = lp2.toString() || '';
+                        jsonDataL['listname'] = list || '';
+                        jsonDataL['s-update'] = this.getAttribute("s-update") || '';
+                        jsonDataL['s-datatype'] = this.getAttribute("s-datatype") || '';
+                        jsonDataL['s-xpath'] = this.getAttribute("s-xpath") || '';
+                        jsonDataL['type'] = this.getAttribute("type") || 'select';
+                        jsonDataL['checked'] = $(this).prop('checked') || '';
+                        jsonDataL['name'] = this.getAttribute("name") || '';
+                        viewData.listdata.push(jsonDataL);
+                    }
+                });
+                lp2 += 1;
+            });
+
+        });
+    }
+
+    if (debugmode) {
+        // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+        console.log('json: ' + JSON.stringify(viewData));
+    }
+
+    return JSON.stringify(viewData);
+}
+
+
+
 function mergeJson(target) {
     for (var argi = 1; argi < arguments.length; argi++) {
         var source = arguments[argi];
@@ -542,6 +643,12 @@ function simplisity_undoremovelistitem(item) {
     }
 
 }
+
+function simplisity_emptyrecyclebin(recyclebin) {
+    $('#simplisity_recyclebin_' + recyclebin).remove();
+    $('.simplisity_itemundo[s-recylebin="' + recyclebin + '"]').hide();
+}
+
 
 function simplisity_getCookieValue(cookiename) {
     var b = document.cookie.match('(^|;)\\s*' + cookiename + '\\s*=\\s*([^;]+)');

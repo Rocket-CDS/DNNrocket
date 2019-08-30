@@ -80,10 +80,6 @@ namespace DNNrocket.AppThemes
                         SaveData();
                         strOut = AddListResx();
                         break;
-                    case "rocketapptheme_addresxvalue":
-                        SaveData();
-                        strOut = AddListResxValue();
-                        break;
                 }
             }
             else
@@ -189,16 +185,6 @@ namespace DNNrocket.AppThemes
             var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), appTheme.AppVersionFolder, true);
             return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
         }
-        public static string AddListResxValue()
-        {
-            var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            var culturecode = _paramInfo.GetXmlProperty("genxml/hidden/culturecode");
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
-            appTheme.AddListResxValue(culturecode,"","");
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData("EditorRESX.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), appTheme.AppVersionFolder, true);
-            return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
-        }
-
 
         private static void AssignEditLang()
         {

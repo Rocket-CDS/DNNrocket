@@ -374,13 +374,6 @@ namespace Rocket.AppThemes.Componants
             }
             Update();
         }
-        public void AddListResxValue(string culturecode, string name, string value)
-        {
-            var listname = "resxlist" + culturecode;
-            var valueInfo = new SimplisityInfo();
-            valueInfo.SetXmlProperty("genxml/textbox/name", value);
-            Info.AddListItem(listname,valueInfo);
-        }
 
 
         public void Export(SimplisityInfo _postInfo)

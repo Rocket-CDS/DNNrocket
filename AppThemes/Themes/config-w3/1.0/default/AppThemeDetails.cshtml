@@ -46,7 +46,7 @@
     var resxdatalist = info.GetList("resxlist");
 
 
-    var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist";
+    var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist,.resxlistvalues";
 }
 
 <div id="detailsection">
@@ -87,7 +87,7 @@
             </div>
         </div>
 
-        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align " onclick="accordianFunction('imagedatasection')">
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('imagedatasection')">
             <label>@ResourceKey("DNNrocket.images")</label>
         </div>
 
@@ -121,7 +121,7 @@
         </div>
 
 
-        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align " onclick="accordianFunction('templatedatasection')">
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('templatedatasection')">
             <label>@ResourceKey("AppThemes.templates")</label>
         </div>
 
@@ -180,7 +180,7 @@
             </ul>
         </div>
 
-        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align " onclick="accordianFunction('cssdatasection')">
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align w3-border " onclick="accordianFunction('cssdatasection')">
             <label>@ResourceKey("AppThemes.css")</label>
         </div>
 
@@ -242,7 +242,7 @@
 
         </div>
 
-        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align " onclick="accordianFunction('jsdatasection')">
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('jsdatasection')">
             <label>@ResourceKey("AppThemes.javascript")</label>
         </div>
 
@@ -302,7 +302,7 @@
             </ul>
         </div>
 
-        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align " onclick="accordianFunction('resxdatasection')">
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align w3-border" onclick="accordianFunction('resxdatasection')">
             <label>@ResourceKey("AppThemes.resources")</label>
         </div>
 
@@ -396,14 +396,35 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="saveresx()">@ResourceKey("DNNrocket.cmdOKButton")</div>
         @ButtonGap()
-        <div class="w3-col m2 w3-button w3-khaki " onclick="cancellresx();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
+        <div class="w3-col m2 w3-button w3-khaki " onclick="cancelresx();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
         @ButtonGap()
         <div class="w3-col m4 w3-right">
             <h5 id="resxfilename" class="" style=""></h5>
         </div>
     </div>
     <div id="dnnrocket_resxvaluelist">
-        @RenderTemplate("EditorRESX.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", Model, "1.0", true)
+
+        <div class="w3-margin">
+            <a class="w3-button w3-teal w3-padding-8" onclick="addresxvalue()">@ResourceKey("DNNrocket.cmdAddButton")</a>
+            <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistvaluesbin"  s-return="#resxvalues" s-removelist=".resxlistvalues" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+        </div>
+
+        <div class="w3-row w3-margin">
+
+            <table id="resxvalues" class="w3-table-all">
+
+                <tr>
+                    <th class="w3-half">@ResourceKey("system.name")</th>
+                    <th class="w3-quarter">@ResourceKey("system.value")</th>
+                    <th style="width:20px;"></th>
+                </tr>
+
+            </table>
+
+        </div>
+
+
+
     </div>
 </div>
 
@@ -512,7 +533,7 @@
         $('#resxfilename').text($('#filenameresx_' + idx).val());
         $('#editorwrapper').attr("index", idx);
 
-        alert($('#culturecode_' + idx).val());
+        simplisity_setParamField('culturecoderesx', $('#culturecode_' + idx).val());  // send culture code to server when we add resx value. 
     }
 
     function savetemplate() {
@@ -521,7 +542,9 @@
     }
 
     function saveresx() {
-        alert('save');
+        var jsonListData = simplisity_encode(simplisity_getlistjson('.resxlistvalues'));
+        alert('save: ' + jsonListData);
+
     }
 
     function editeditor(idx, modetype) {
@@ -564,9 +587,11 @@
         $('#editorpopup').hide();
         $('#detailsection').show();
     }
-    function cancellresx() {
+    function cancelresx() {
         $('#dnnrocket_resxeditwrapper').hide();
         $('#detailsection').show();
+        $("#resxvalues").find("tr:gt(0)").remove();
+        simplisity_emptyrecyclebin('resxlistvaluesbin');
     }
 
 
@@ -594,5 +619,24 @@
     function actionlanguageselect(culturecode) {
         alert('lang select ' + culturecode);
     }
+
+    function addresxvalue() {
+
+        var rowCount = $('#resxvalues tr').length;
+
+        var tblrow = '<tr class="resxlistvalues">';
+        tblrow += '	<td class="w3-half"> <input id="name' + rowCount + '" class="w3-input w3-border" type="text" value=""/>';
+        tblrow += '	</td>';
+        tblrow += '	<td class="w3-quarter">  <input id="value' + rowCount + '" class="w3-input w3-border" type="text" value=""/>';
+        tblrow += '	</td>';
+        tblrow += '	<td style="width:20px;">';
+        tblrow += '		<a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".resxlistvalues" s-recylebin="resxlistvaluesbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>';
+        tblrow += '	</td>';
+        tblrow += '</tr>';
+
+        $('#resxvalues tr:last').after(tblrow);
+
+        $('#simplisity_startpanel').activateSimplisityPanel()
+    }    
 
 </script>
