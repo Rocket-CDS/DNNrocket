@@ -117,37 +117,5 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="layout.Text" xml:space="preserve">
-    <value>Layout</value>
-  </data>
-  <data name="document.Text" xml:space="preserve">
-    <value>Document</value>
-  </data>
-  <data name="internallink.Text" xml:space="preserve">
-    <value>Internal Link</value>
-  </data>
-  <data name="style.Text" xml:space="preserve">
-    <value>Style</value>
-  </data>
-  <data name="title.Text" xml:space="preserve">
-    <value>Title</value>
-  </data>
-  <data name="externallink.Text" xml:space="preserve">
-    <value>External Link</value>
-  </data>
-  <data name="link.Text" xml:space="preserve">
-    <value>Link</value>
-  </data>
-  <data name="blank.Text" xml:space="preserve">
-    <value>New Page</value>
-  </data>
-  <data name="justify.Text" xml:space="preserve">
-    <value>Justify</value>
-  </data>
-  <data name="hide.Text" xml:space="preserve">
-    <value>Hide</value>
-  </data>
-  <data name="noheader.Text" xml:space="preserve">
-    <value>No Header</value>
-  </data>
+  <data name="1.Text" xml:space="preserve"><value>x</value></data>  <data name="2.Text" xml:space="preserve"><value>c</value></data>
 </root>

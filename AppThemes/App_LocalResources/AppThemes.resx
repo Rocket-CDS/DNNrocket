@@ -147,6 +147,12 @@
   <data name="editor.Text" xml:space="preserve">
     <value>Editor</value>
   </data>
+  <data name="enterkey.Text" xml:space="preserve">
+    <value>Entyer Key... </value>
+  </data>
+  <data name="entervalue.Text" xml:space="preserve">
+    <value>Enter Value...</value>
+  </data>
   <data name="fields.Text" xml:space="preserve">
     <value>Fields</value>
   </data>
