@@ -46,7 +46,7 @@
     var resxdatalist = info.GetList("resxlist");
 
 
-    var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist";
+    var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist,.fielddata";
 }
 
 <div id="detailsection">
@@ -119,6 +119,32 @@
             </ul>
 
         </div>
+
+
+
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('fieldsdatasection')">
+            <label>@ResourceKey("AppThemes.fields")</label>
+        </div>
+        <div id="fieldsdatasection" class="w3-row w3-hide fieldslistdatasection">
+
+            <span class="w3-container">
+                <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addfield" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdAddButton")</a>
+                <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="fieldbin" s-return="#fielddatalist" s-removelist=".fielddata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+            </span>
+
+
+            @{
+                var m = new SimplisityRazor();
+                var l2 = new List<object>();
+                foreach (object i in info.GetList("fielddata"))
+                {
+                    l2.Add(i);
+                }
+                m.List = l2;
+            }
+            @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", m, "1.0", true)
+        </div>
+
 
 
         <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('templatedatasection')">
