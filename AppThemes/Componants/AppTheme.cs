@@ -212,10 +212,9 @@ namespace Rocket.AppThemes.Componants
         private void ActionListTemplateFiles(SimplisityInfo postInfo)
         {
             // create default templates
-            var editmappath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml");
+            var editmappath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
             if (!_templateFileName.Contains(editmappath))
             {                
-                var text = AppThemeUtils.
                 FileUtils.SaveFile(editmappath, "");
                 _templateFileName.Add(editmappath);
             }

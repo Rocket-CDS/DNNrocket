@@ -11,7 +11,7 @@ namespace Rocket.AppThemes.Componants
     public static class AppThemeUtils
     {
 
-        public string BuildDynamicForm(List<SimplisityInfo> fieldList, int row)
+        public static string GeneraateEditForm(List<SimplisityInfo> fieldList, int row)
         {
             var strOut = "";
             // calc rows
@@ -65,28 +65,28 @@ namespace Rocket.AppThemes.Componants
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
                     {
                         xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strOut += CheckBox(info, xpath, "", attributes, defaultBool, localized, row).ToString();
+                        strOut += "@CheckBox(info,\"" + xpath + "\", \"\", \"" + attributes + "\", \"" + defaultBool + "\"," + localized + "," + row + ")";
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
                     {
                         xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                         var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
                         var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
-                        strOut += DropDownList(info, xpath, datavalue, datatext, attributes, defaultValue, localized, row).ToString();
+                        strOut += "@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\",\"" + datatext + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + ",\"" + row + "\")";
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
                     {
                         xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                         var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
                         var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
-                        strOut += RadioButtonList(info, xpath, datavalue, datatext, attributes, defaultValue, "", localized, row).ToString();
+                        strOut += "@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue + "\",\"" +datatext + "\",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + ",\"" + row + "\")";
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
                     {
                         xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                         var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
                         var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
-                        strOut += CheckBoxList(info, xpath, datavalue, datatext, attributes, defaultBool, localized, row).ToString();
+                        strOut += "@CheckBoxList(info,\"" +  xpath + "\",\"" + datavalue + "\",\"" + datatext+ "\",\"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")";
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "image")
                     {
@@ -97,7 +97,7 @@ namespace Rocket.AppThemes.Componants
                             width = 140;
                             height = 140;
                         }
-                        strOut += ImageEdit(info, f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower(), width, height, attributes, localized, row).ToString();
+                        strOut += "@ImageEdit(info,\"" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower() + "\"," + width + "," + height + ",\"" + attributes + "\"," + localized + "," + row + ")";
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull")
                     {
@@ -108,13 +108,13 @@ namespace Rocket.AppThemes.Componants
                             width = 140;
                             height = 140;
                         }
-                        strOut += ImageEditFull(info, f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower(), width, height, attributes, localized, row).ToString();
+                        strOut += "@ImageEditFul(info,\"" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower() + "\"," + width + "," + height + ",\"" + attributes + "\"," + localized + "," + row + ")";
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "internalpage")
                     {
                         var allowEmpty = f.GetXmlPropertyBool("genxml/checkbox/allowempty");
                         xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strOut += TabSelectListOnTabId(info, xpath, attributes, allowEmpty, localized, row).ToString();
+                        strOut += "@TabSelectListOnTabId(info,\"" + xpath + "\",\"" + attributes + "\"," + allowEmpty + "," + localized + "," + row + ")";
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "document")
                     {
