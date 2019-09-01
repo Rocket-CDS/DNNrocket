@@ -55,12 +55,12 @@ namespace Rocket.AppThemes.Componants
                     strOut += "<label>" + label + "</label>";
                     if (localized)
                     {
-                        strOut += "&nbsp;" + EditFlag().ToString();
+                        strOut += "&nbsp;@EditFlag()";
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
                     {
                         xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strOut += TextBox(info, xpath, attributes, defaultValue, localized, row).ToString();
+                        strOut += "@TextBox(info,\"" + xpath + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")";
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
                     {
