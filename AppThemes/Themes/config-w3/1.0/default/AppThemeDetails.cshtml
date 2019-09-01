@@ -84,8 +84,37 @@
                     <label>@ResourceKey("AppThemes.summary")</label>&nbsp;<img class='' src='@flagurl' alt='' />
                     @TextArea(info, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
                 </div>
+                <div class="w3-col m12 w3-padding">
+                    @RadioButtonList(info,"genxml/radio/themetype","1,2",ResourceKey("AppThemes.themetype").ToString(),"","1")
+               </div>
+
             </div>
         </div>
+
+
+
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('fieldsdatasectiontab')">
+            <label>@ResourceKey("AppThemes.fields")</label>
+        </div>
+        <div id="fieldsdatasectiontab" class="w3-row w3-hide fieldslistdatasection">
+
+            <span class="w3-container">
+                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addfield" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="fielddatalistbin" s-return="#fielddatalist" s-removelist=".fielddata" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+            </span>
+
+            @{
+                var m = new SimplisityRazor();
+                var l2 = new List<object>();
+                foreach (object i in info.GetList("fielddata"))
+                {
+                    l2.Add(i);
+                }
+                m.List = l2;
+            }
+            @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", m, "1.0", true)
+        </div>
+
 
         <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('imagedatasection')">
             <label>@ResourceKey("DNNrocket.images")</label>
@@ -96,7 +125,7 @@
             <div class="w3-container">
                 <div class="w3-col w3-padding" style="width:160px;">
                     <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addimage" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".imagelist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".imagelist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
                 </div>
             </div>
 
@@ -122,31 +151,6 @@
 
 
 
-        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('fieldsdatasection')">
-            <label>@ResourceKey("AppThemes.fields")</label>
-        </div>
-        <div id="fieldsdatasection" class="w3-row w3-hide fieldslistdatasection">
-
-            <span class="w3-container">
-                <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addfield" s-fields="interfacekey:dashboard">@ResourceKey("DNNrocket.cmdAddButton")</a>
-                <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="fieldbin" s-return="#fielddatalist" s-removelist=".fielddata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
-            </span>
-
-
-            @{
-                var m = new SimplisityRazor();
-                var l2 = new List<object>();
-                foreach (object i in info.GetList("fielddata"))
-                {
-                    l2.Add(i);
-                }
-                m.List = l2;
-            }
-            @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes/Admin", "config-w3", m, "1.0", true)
-        </div>
-
-
-
         <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('templatedatasection')">
             <label>@ResourceKey("AppThemes.templates")</label>
         </div>
@@ -156,7 +160,7 @@
             <div class="w3-container">
                 <div class="w3-col w3-padding" style="width:160px;">
                     <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addtemplate" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="templatelistbin" s-return="#templatelistdata" s-removelist=".templatelist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="templatelistbin" s-return="#templatelistdata" s-removelist=".templatelist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
                 </div>
             </div>
 
@@ -215,7 +219,7 @@
             <div class="w3-container">
                 <div class="w3-col w3-padding" style="width:160px;">
                     <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addcss" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="csslistbin" s-return="#csslistdata" s-removelist=".csslist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="csslistbin" s-return="#csslistdata" s-removelist=".csslist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
                 </div>
             </div>
 
@@ -277,7 +281,7 @@
             <div class="w3-container">
                 <div class="w3-col w3-padding" style="width:160px;">
                     <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addjs" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="jslistbin" s-return="#jslistdata" s-removelist=".jslist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="jslistbin" s-return="#jslistdata" s-removelist=".jslist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
                 </div>
             </div>
 
@@ -339,7 +343,7 @@
                     <div id="resxaddbutton" class="w3-hide w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addresx" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
 
                     <div class="w3-button w3-teal w3-padding-8 " onclick="selectlanguage()"><i class='fas fa-plus-circle'></i></div>
-                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistbin" s-return="#resxlistdata" s-removelist=".resxlist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistbin" s-return="#resxlistdata" s-removelist=".resxlist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
                 </div>
             </div>
 
@@ -520,6 +524,7 @@
         accordianSetup('jsdatasection');
         accordianSetup('templatedatasection');
         accordianSetup('resxdatasection');
+        accordianSetup('fieldsdatasectiontab');
 
     });
 

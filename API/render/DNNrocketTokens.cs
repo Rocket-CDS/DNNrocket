@@ -520,6 +520,5 @@ namespace DNNrocketAPI.render
             var strOut = "<div class='w3-hide-small w3-col' style='width:" + gapSize + "px'>&nbsp;</div><div class='w3-hide-medium w3-hide-large'>&nbsp;</div>";
             return new RawString(strOut);
         }
-
     }
 }

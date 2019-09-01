@@ -211,6 +211,15 @@ namespace Rocket.AppThemes.Componants
         }
         private void ActionListTemplateFiles(SimplisityInfo postInfo)
         {
+            // create default templates
+            var editmappath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml");
+            if (!_templateFileName.Contains(editmappath))
+            {                
+                var text = AppThemeUtils.
+                FileUtils.SaveFile(editmappath, "");
+                _templateFileName.Add(editmappath);
+            }
+
             foreach (var t in _templateFileName)
             {
                 var filename = Path.GetFileNameWithoutExtension(t);
@@ -379,7 +388,12 @@ namespace Rocket.AppThemes.Componants
             Update();
         }
 
-
+        public void AddListField()
+        {
+            var listname = "fielddata";
+            Info.AddListItem(listname);
+            Update();
+        }
         public void Export(SimplisityInfo _postInfo)
         {
             if (AppThemeFolder != "")

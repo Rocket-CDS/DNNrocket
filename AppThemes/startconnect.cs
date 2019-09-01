@@ -80,6 +80,10 @@ namespace DNNrocket.AppThemes
                         SaveData();
                         strOut = AddListResx();
                         break;
+                    case "rocketapptheme_addfield":
+                        SaveData();
+                        strOut = AddListField();
+                        break;
                 }
             }
             else
@@ -191,14 +195,19 @@ namespace DNNrocket.AppThemes
             var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), appTheme.AppVersionFolder, true);
             return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
         }
-
+        private static string AddListField()
+        {
+            var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
+            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
+            appTheme.AddListField();
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), appTheme.AppVersionFolder, true);
+            return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
+        }
         private static void AssignEditLang()
         {
             var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
             if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
         }
-
-
         //----------------------------------------------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------------------------------------------

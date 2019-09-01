@@ -9,6 +9,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 @{
 
@@ -20,19 +21,19 @@
 
 }
 
-    <div id="fielddatasection" class="w3-container">
+<div id="fielddatasection" class="w3-container">
 
-        <ul id="fielddatalist" class="w3-ul">
+    <ul id="fielddatalist" class="w3-ul">
 
-            @{
-                var lp3 = 0;
-            }
-            @foreach (SimplisityInfo i in Model.List)
-            {
-                lp3 += 1;
+        @{
+            var lp3 = 0;
+        }
+        @foreach (SimplisityInfo i in Model.List)
+        {
+            lp3 += 1;
 
-                var settingsdataclassselect = "dictionarydata" + lp3;
-                var imagesizeclass = "imagesize" + lp3;
+            var settingsdataclassselect = "dictionarydata" + lp3;
+            var imagesizeclass = "imagesize" + lp3;
 
             <li class="fielddata w3-card w3-margin-bottom w3-display-container @settingsdataclassselect ">
 
@@ -68,9 +69,13 @@
                         <label class="">@ResourceKey("DNNrocket.size")</label>
                         @DropDownList(i, "genxml/select/size", "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12", "class='w3-input w3-border'", "", false, lp3)
                     </div>
-                    <div class="w3-col m2 w3-padding">
+                    <div class="w3-col m1 w3-padding">
                         <label class="">@ResourceKey("DNNrocket.localized")</label><br />
                         @CheckBox(i, "genxml/checkbox/localized", "", " class='localize' row='" + lp3 + "' ", false, false, lp3)
+                    </div>
+                    <div class="w3-col m1 w3-padding isonlist">
+                        <label class="">@ResourceKey("AppThemes.isonlist")</label><br />
+                        @CheckBox(i, "genxml/checkbox/isonlist", "", " class='isonlist' row='" + lp3 + "' ", false, false, lp3)
                     </div>
                 </div>
 
@@ -145,11 +150,11 @@
 
             </li>
 
-            }
+        }
 
-        </ul>
+    </ul>
 
-    </div>
+</div>
 
 <script>
     $(document).ready(function () {

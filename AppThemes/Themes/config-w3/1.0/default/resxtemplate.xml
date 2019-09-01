@@ -117,5 +117,5 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="1.Text" xml:space="preserve"><value>33333333333333</value></data>  <data name="2.Text" xml:space="preserve"><value>4444444444</value></data>
+<injectdatanodes/>
 </root>

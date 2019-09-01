@@ -162,6 +162,9 @@
   <data name="images.Text" xml:space="preserve">
     <value>Images</value>
   </data>
+  <data name="isonlist.Text" xml:space="preserve">
+    <value>On List</value>
+  </data>
   <data name="javascript.Text" xml:space="preserve">
     <value>Javascript</value>
   </data>
@@ -215,6 +218,9 @@
   </data>
   <data name="templates.Text" xml:space="preserve">
     <value>Templates</value>
+  </data>
+  <data name="themetype.Text" xml:space="preserve">
+    <value>Single Form,List and Detail</value>
   </data>
   <data name="upload.Text" xml:space="preserve">
     <value>Upload</value>
