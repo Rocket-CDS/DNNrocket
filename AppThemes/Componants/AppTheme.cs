@@ -83,6 +83,7 @@ namespace Rocket.AppThemes.Componants
                 if (!File.Exists(logoMapPath)) Logo = "";
             }
 
+            // RESX Default
             var resxList = Info.GetList("resxlist");
             if (resxList.Count == 0) // create default
             {
@@ -95,7 +96,44 @@ namespace Rocket.AppThemes.Componants
                 _resxFileName.Add(r.GetXmlProperty("genxml/hidden/fullfilename"));
             }
 
+            TemplateDefaults();
+
         }
+
+        private void TemplateDefaults()
+        {
+            // Tempalte Defaults
+            var tempMapPath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
+            if (!_templateFileName.Contains(tempMapPath))
+            {
+                var formHtml = AppThemeUtils.GeneraateEditForm(this,0);
+                FileUtils.SaveFile(tempMapPath, formHtml);
+                _templateFileName.Add(tempMapPath);
+            }
+            tempMapPath = AppThemeVersionFolderMapPath + "\\default\\editlist.cshtml";
+            if (!_templateFileName.Contains(tempMapPath))
+            {
+                //var formHtml = AppThemeUtils.GeneraateEditForm(Info.GetList("fielddata"), 0);
+                FileUtils.SaveFile(tempMapPath, "");
+                _templateFileName.Add(tempMapPath);
+            }
+            tempMapPath = AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
+            if (!_templateFileName.Contains(tempMapPath))
+            {
+                //var formHtml = AppThemeUtils.GeneraateEditForm(Info.GetList("fielddata"), 0);
+                FileUtils.SaveFile(tempMapPath, "");
+                _templateFileName.Add(tempMapPath);
+            }
+            tempMapPath = AppThemeVersionFolderMapPath + "\\default\\pageheader.cshtml";
+            if (!_templateFileName.Contains(tempMapPath))
+            {
+                //var formHtml = AppThemeUtils.GeneraateEditForm(Info.GetList("fielddata"), 0);
+                FileUtils.SaveFile(tempMapPath, "");
+                _templateFileName.Add(tempMapPath);
+            }
+
+        }
+
         private void SyncFiles()
         {
             // sync filesystem
@@ -211,13 +249,6 @@ namespace Rocket.AppThemes.Componants
         }
         private void ActionListTemplateFiles(SimplisityInfo postInfo)
         {
-            // create default templates
-            var editmappath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
-            if (!_templateFileName.Contains(editmappath))
-            {                
-                FileUtils.SaveFile(editmappath, "");
-                _templateFileName.Add(editmappath);
-            }
 
             foreach (var t in _templateFileName)
             {

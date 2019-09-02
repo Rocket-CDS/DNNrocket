@@ -697,9 +697,9 @@
         var rowCount = $('#resxvalues tr').length;
 
         var tblrow = '<tr class="resxlistvalues">';
-        tblrow += '	<td class="w3-third"> <input id="name' + rowCount + '" placeholder="@ResourceKey("AppThemes.enterkey")" class="w3-input w3-border resxnameinput" type="text" value="' + name + '"/>';
+        tblrow += '	<td class="w3-third"> <input id="name_' + rowCount + '" s-xpath="genxml/text/name" placeholder="@ResourceKey("AppThemes.enterkey")" class="w3-input w3-border resxnameinput" type="text" value="' + name + '"/>';
         tblrow += '	</td>';
-        tblrow += '	<td class="w3-half">  <input id="value' + rowCount + '" placeholder="@ResourceKey("AppThemes.entervalue")" class="w3-input w3-border" type="text" value="' + value + '"/>';
+        tblrow += '	<td class="w3-half">  <input id="value_' + rowCount + '" s-xpath="genxml/text/value" placeholder="@ResourceKey("AppThemes.entervalue")" class="w3-input w3-border" type="text" value="' + value + '"/>';
         tblrow += '	</td>';
         tblrow += '	<td style="width:20px;">';
         tblrow += '		<a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".resxlistvalues" s-recylebin="resxlistvaluesbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>';

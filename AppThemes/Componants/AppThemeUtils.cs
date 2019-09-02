@@ -4,6 +4,7 @@ using Rocket.AppThemes.Componants;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Rocket.AppThemes.Componants
@@ -11,8 +12,18 @@ namespace Rocket.AppThemes.Componants
     public static class AppThemeUtils
     {
 
-        public static string GeneraateEditForm(List<SimplisityInfo> fieldList, int row)
+        public static string GeneraateEditForm(AppTheme appTheme, int row)
         {
+
+            List<SimplisityInfo> fieldList = appTheme.Info.GetList("fielddata");
+            var resxItem = appTheme.Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
+            var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
+            var jasonInfo = new SimplisityInfo();
+            if (jsondata != "")
+            {
+                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, appTheme.AppCultureCode);
+            }
+
             var strOut = "";
             // calc rows
             var frows = new List<List<SimplisityInfo>>();
@@ -39,7 +50,7 @@ namespace Rocket.AppThemes.Componants
 
             foreach (var flines in frows)
             {
-                strOut += "<div class='w3-row'>";
+                strOut += "<div class='w3-row'>" + Environment.NewLine;
                 foreach (var f in flines)
                 {
                     var localized = f.GetXmlPropertyBool("genxml/checkbox/localized");
@@ -51,42 +62,56 @@ namespace Rocket.AppThemes.Componants
                     var defaultBool = f.GetXmlPropertyBool("genxml/textbox/defaultvalue");
                     var attributes = f.GetXmlProperty("genxml/textbox/attributes");
 
-                    strOut += "<div class='w3-col m" + size + " w3-padding'>";
-                    strOut += "<label>" + label + "</label>";
-                    if (localized)
+                    strOut +=  "\t<div class='w3-col m" + size + " w3-padding'>" + Environment.NewLine;
+
+                    if (Path.GetExtension(label) == "") label = label + ".Text";
+                    var resxLabelItem = jasonInfo.GetListItem("resxlistvalues", "genxml/text/name", label);
+                    if (resxLabelItem != null)
                     {
-                        strOut += "&nbsp;@EditFlag()";
+                        strOut += "\t\t<label>@ResourceKey(\"" + appTheme.AppThemeFolder + "." + label + "\")</label>";
+                    }
+                    else
+                    {
+                        strOut += "\t\t<label>" + label + "</label>";
+                    }
+                    if (!localized)
+                    {
+                        strOut += Environment.NewLine;
+                    }
+                    else
+                    {
+                        strOut += "\t\t&nbsp;@EditFlag()" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
                     {
                         xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strOut += "@TextBox(info,\"" + xpath + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")";
+                        strOut += "\t\t@TextBox(info,\"" + xpath + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
                     {
                         xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strOut += "@CheckBox(info,\"" + xpath + "\", \"\", \"" + attributes + "\", \"" + defaultBool + "\"," + localized + "," + row + ")";
+                        strOut += "\t\t@CheckBox(info,\"" + xpath + "\", \"\", \"" + attributes + "\", \"" + defaultBool + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
                     {
                         xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                         var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
                         var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
-                        strOut += "@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\",\"" + datatext + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + ",\"" + row + "\")";
+                        strOut += "\t\t@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\",\"" + datatext + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + ",\"" + row + "\")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
                     {
                         xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                         var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
                         var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
-                        strOut += "@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue + "\",\"" +datatext + "\",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + ",\"" + row + "\")";
+                        strOut += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue + "\",\"" +datatext + "\",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + ",\"" + row + "\")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
                     {
                         xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                         var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
                         var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
-                        strOut += "@CheckBoxList(info,\"" +  xpath + "\",\"" + datavalue + "\",\"" + datatext+ "\",\"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")";
+                        strOut += "\t\t@CheckBoxList(info,\"" +  xpath + "\",\"" + datavalue + "\",\"" + datatext+ "\",\"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "image")
                     {
@@ -97,7 +122,7 @@ namespace Rocket.AppThemes.Componants
                             width = 140;
                             height = 140;
                         }
-                        strOut += "@ImageEdit(info,\"" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower() + "\"," + width + "," + height + ",\"" + attributes + "\"," + localized + "," + row + ")";
+                        strOut += "\t\t@ImageEdit(info,\"" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower() + "\"," + width + "," + height + ",\"" + attributes + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull")
                     {
@@ -108,50 +133,50 @@ namespace Rocket.AppThemes.Componants
                             width = 140;
                             height = 140;
                         }
-                        strOut += "@ImageEditFul(info,\"" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower() + "\"," + width + "," + height + ",\"" + attributes + "\"," + localized + "," + row + ")";
+                        strOut += "\t\t@ImageEditFul(info,\"" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower() + "\"," + width + "," + height + ",\"" + attributes + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "internalpage")
                     {
                         var allowEmpty = f.GetXmlPropertyBool("genxml/checkbox/allowempty");
                         xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strOut += "@TabSelectListOnTabId(info,\"" + xpath + "\",\"" + attributes + "\"," + allowEmpty + "," + localized + "," + row + ")";
+                        strOut += "\t\t@TabSelectListOnTabId(info,\"" + xpath + "\",\"" + attributes + "\"," + allowEmpty + "," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "document")
                     {
                         var fieldid = f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strOut += DocumentEdit(info, fieldid, attributes, localized, row).ToString();
+                        strOut += "\t\t@DocumentEdit(info,\"" +  fieldid + "\",\"" + attributes + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext")
                     {
                         xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strOut += "<div class='w3-col m12'>";
-                        strOut += CKEditor(info, xpath, "", "", localized, row).ToString();
-                        strOut += "</div>";
-                        strOut += "<div class='w3-col' style='width:0px;height:300px;'></div>";
+                        strOut += "\t\t<div class='w3-col m12'>" + Environment.NewLine;
+                        strOut += "\t\t\t@CKEditor(info,\"" + xpath + "\",\"\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
+                        strOut += "\t\t</div>" + Environment.NewLine;
+                        strOut += "\t\t<div class='w3-col' style='width:0px;height:300px;'></div>" + Environment.NewLine;
                     }
 
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
                     {
-                        strOut += "<div id='imagelistcontainer'>";
-                        strOut += RenderTemplate("editimages.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", model, "1.0", true);
-                        strOut += "</div>";
+                        strOut += "\t\t<div id='imagelistcontainer'>" + Environment.NewLine;
+                        strOut += "\t\t\t@RenderTemplate(\"editimages.cshtml\", \"/DesktopModules/DNNrocket/RocketMod/\", \"config-w3\", model, \"1.0\", true)" + Environment.NewLine;
+                        strOut += "\t\t</div>" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "documentgallery")
                     {
-                        strOut += "<div id='documentlistcontainer'>";
-                        strOut += RenderTemplate("editdocuments.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", model, "1.0", true);
-                        strOut += "</div>";
+                        strOut += "\t\t<div id='documentlistcontainer'>" + Environment.NewLine;
+                        strOut += "\t\t\t@RenderTemplate(\"editdocuments.cshtml\", \"/DesktopModules/DNNrocket/RocketMod/\", \"config-w3\", model, \"1.0\", true)" + Environment.NewLine;
+                        strOut += "\t\t</div>" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "linkgallery")
                     {
-                        strOut += "<div id='linklistcontainer'>";
-                        strOut += RenderTemplate("editlinks.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", model, "1.0", true);
-                        strOut += "</div>";
+                        strOut += "\t\t<div id='linklistcontainer'>" + Environment.NewLine;
+                        strOut += "\t\t\t@RenderTemplate(\"editlinks.cshtml\", \"/DesktopModules/DNNrocket/RocketMod/\", \"config-w3\", model, \"1.0\", true)" + Environment.NewLine;
+                        strOut += "\t\t</div>" + Environment.NewLine;
                     }
 
-                    strOut += "</div>";
+                    strOut += "\t</div>" + Environment.NewLine;
                 }
-                strOut += "</div>";
+                strOut += "</div>" + Environment.NewLine;
             }
             return strOut;
         }
