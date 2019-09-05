@@ -492,4 +492,7 @@
   <data name="cmdOKButton.Text" xml:space="preserve">
     <value>&lt;i  title="OK" class="fas fa-check-circle fa-fw fa-lg"&gt;&lt;/i&gt; OK</value>
   </data>
+  <data name="column.Text" xml:space="preserve">
+    <value>Column</value>
+  </data>
 </root>

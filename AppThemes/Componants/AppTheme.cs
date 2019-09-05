@@ -104,14 +104,14 @@ namespace Rocket.AppThemes.Componants
         {
             // Tempalte Defaults
             var tempMapPath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
-            if (!_templateFileName.Contains(tempMapPath))
+            if (!_templateFileName.Contains(tempMapPath) || RegenerateEdit)
             {
                 var formHtml = AppThemeUtils.GeneraateEditForm(this,0);
                 FileUtils.SaveFile(tempMapPath, formHtml);
                 _templateFileName.Add(tempMapPath);
             }
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\editlist.cshtml";
-            if (!_templateFileName.Contains(tempMapPath))
+            if (!_templateFileName.Contains(tempMapPath) || RegenerateEditList)
             {
                 //var formHtml = AppThemeUtils.GeneraateEditForm(Info.GetList("fielddata"), 0);
                 FileUtils.SaveFile(tempMapPath, "");
@@ -214,7 +214,7 @@ namespace Rocket.AppThemes.Componants
             var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, AppCultureCode, -1, -1, true, _tableName);
             if (dbInfo != null)
             {
-                // NOTE: Be careful of the order for saving.  The sort list is a PAIN and required speciifc data.
+                // NOTE: Be careful of the order for saving.  The sort list is a PAIN and requires speciifc data.
                 // 1 - Create any empty record. (Must be done, so on first save we get the data in the DB)
                 // 2 - Apply new XML strcuture 
                 // 3 - Do sort list.
@@ -513,6 +513,9 @@ namespace Rocket.AppThemes.Componants
         public string JsFolderRel { get; set; }
         public string ResxFolderRel { get; set; }
         public SimplisityInfo Info { get; set; }
+        public bool RegenerateEditList { get { return Info.GetXmlPropertyBool("genxml/checkbox/regenerateeditlist"); } }
+        public bool RegenerateEdit { get { return Info.GetXmlPropertyBool("genxml/checkbox/regenerateedit"); } }
+
 
         #endregion
 

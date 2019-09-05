@@ -61,11 +61,11 @@
                         <label class="">@ResourceKey("DNNrocket.label")</label>&nbsp;<img class='' src='@flagurl' alt='' />
                         @TextBox(i, "genxml/lang/genxml/textbox/label", "class='w3-input w3-border ' maxlength='500' autocomplete='off'  ", "", true, lp3)
                     </div>
-                    <div class="w3-col m2 w3-padding">
+                    <div class="w3-col m2 w3-padding" style="min-width: 140px;">
                         <label class="">@ResourceKey("DNNrocket.type")</label>
                         @DropDownList(i, "genxml/select/type", ",TextBox,CheckBox,DropDown,RadioList,checkboxlist,Image,ImageFull,internalpage,Document,RichText,imagegallery,documentgallery,linkgallery", ",TextBox,CheckBox,DropDown,RadioList,CheckBoxList,Image Edit,Full Image Edit,Internal Page,Document,RichText,Image Gallery,Document Gallery,Link Gallery", " class='w3-input w3-border inputtypefield' row='" + lp3 + "' ", "", false, lp3)
                     </div>
-                    <div class="w3-col m1 w3-padding">
+                    <div class="w3-col m1 w3-padding" style="width: 80px;">
                         <label class="">@ResourceKey("DNNrocket.size")</label>
                         @DropDownList(i, "genxml/select/size", "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12", "class='w3-input w3-border'", "", false, lp3)
                     </div>
@@ -73,9 +73,13 @@
                         <label class="">@ResourceKey("DNNrocket.localized")</label><br />
                         @CheckBox(i, "genxml/checkbox/localized", "", " class='w3-check localize' row='" + lp3 + "' ", false, false, lp3)
                     </div>
-                    <div class="w3-col m1 w3-padding isonlist">
+                    <div class="w3-col m1 w3-padding isonlist listtemplatedata" style="display:none;">
                         <label class="">@ResourceKey("AppThemes.isonlist")</label><br />
                         @CheckBox(i, "genxml/checkbox/isonlist", "", " class='w3-check isonlist' row='" + lp3 + "' ", false, false, lp3)
+                    </div>
+                    <div class="w3-col m1 w3-padding listtemplatedata " style="display:none;width: 80px;">
+                        <label class="">@ResourceKey("DNNrocket.column")</label>
+                        @DropDownList(i, "genxml/select/listcol", "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12", "class='w3-input w3-border'", "", false, lp3)
                     </div>
                 </div>
 
@@ -241,8 +245,6 @@
             var row = $(this).attr('row');
             dnnrocket_hidedetail(row);
         });
-
-
 
     });
 
