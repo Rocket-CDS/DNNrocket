@@ -181,7 +181,81 @@ namespace Rocket.AppThemes.Componants
             return strOut;
         }
 
+        public static string GeneraateEditList(AppTheme appTheme, int row)
+        {
 
+            List<SimplisityInfo> fieldList = appTheme.Info.GetList("fielddata");
+            var resxItem = appTheme.Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
+            var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
+            var jasonInfo = new SimplisityInfo();
+            if (jsondata != "")
+            {
+                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, appTheme.AppCultureCode);
+            }
+
+            var strFieldList = "";
+
+            foreach (var f in fieldList)
+            {
+                var localized = f.GetXmlPropertyBool("genxml/checkbox/localized");
+                var xpath = "";
+                if (localized) xpath = "genxml/lang/" + xpath;
+                var size = f.GetXmlProperty("genxml/select/size");
+                var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
+                var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
+                var defaultBool = f.GetXmlPropertyBool("genxml/textbox/defaultvalue");
+                var attributes = f.GetXmlProperty("genxml/textbox/attributes");
+                var isonlist = f.GetXmlPropertyBool("genxml/checkbox/isonlist");
+
+                if (isonlist)
+                {
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
+                    {
+                        xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                    }
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
+                    {
+                        xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                    }
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
+                    {
+                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                    }
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
+                    {
+                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                    }
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
+                    {
+                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                    }
+
+                    if (xpath != "")
+                    {
+                        strFieldList += "\t<div class='w3-col m2 w3-padding'>" + Environment.NewLine;
+                        strFieldList += "\t\t@info.GenXmlProperty(" + xpath + ")" + Environment.NewLine;
+                        strFieldList += "\t</div>" + Environment.NewLine;
+                    }
+                }
+            }
+
+            // merge to template
+            var strOut = FileUtils.ReadFile(appTheme.AppProjectFolderMapPath  + "\\AppThemeBase\\editlist.cshtml");
+            if (strOut == "")
+            {
+                return strFieldList;
+            }
+            else
+            {
+                strOut = strOut.Replace("[Token:List]", strFieldList);
+                strOut = strOut.Replace("[Token:DisplayName]", appTheme.AppDisplayName);
+                strOut = strOut.Replace("[Token:SystemKey]", appTheme.SystemKey);
+                strOut = strOut.Replace("[Token:systemresx]", appTheme.AppProjectFolderRel + "/App_LocalResources/");
+                strOut = strOut.Replace("[Token:appthemeresx]", appTheme.AppThemeVersionFolderRel  + "/App_LocalResources/");
+                return strOut;
+            }
+
+        }
 
     }
 }

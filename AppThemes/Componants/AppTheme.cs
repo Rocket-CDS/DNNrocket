@@ -11,7 +11,6 @@ namespace Rocket.AppThemes.Componants
 
     public class AppTheme
     {
-        private string _systemKey;
         private string _guidKey;        
         private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "APPTHEME";
@@ -27,7 +26,7 @@ namespace Rocket.AppThemes.Componants
             _debugMode = debugMode;
             _objCtrl = new DNNrocketController();
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
-            _systemKey = systemKey;
+            SystemKey = systemKey;
 
             _templateFileName = new List<string>();
             _cssFileName = new List<string>();
@@ -40,9 +39,9 @@ namespace Rocket.AppThemes.Componants
             AppVersionFolder = versionFolder;
             if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
 
-            _guidKey = "appTheme*" + _systemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
+            _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
 
-            AppSystemThemeFolderRel = AppProjectFolderRel + "/SystemThemes/" + _systemKey;
+            AppSystemThemeFolderRel = AppProjectFolderRel + "/SystemThemes/" + SystemKey;
 
             AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
 
@@ -58,7 +57,7 @@ namespace Rocket.AppThemes.Componants
             JsFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/js";
             ResxFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/resx";
 
-            if (AppThemeFolder != "" && _systemKey != "") Populate();
+            if (AppThemeFolder != "" && SystemKey != "") Populate();
         }
 
         public void Populate()
@@ -113,8 +112,8 @@ namespace Rocket.AppThemes.Componants
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\editlist.cshtml";
             if (!_templateFileName.Contains(tempMapPath) || RegenerateEditList)
             {
-                //var formHtml = AppThemeUtils.GeneraateEditForm(Info.GetList("fielddata"), 0);
-                FileUtils.SaveFile(tempMapPath, "");
+                var listHtml = AppThemeUtils.GeneraateEditList(this, 0);
+                FileUtils.SaveFile(tempMapPath, listHtml);
                 _templateFileName.Add(tempMapPath);
             }
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
@@ -516,6 +515,7 @@ namespace Rocket.AppThemes.Componants
         public bool RegenerateEditList { get { return Info.GetXmlPropertyBool("genxml/checkbox/regenerateeditlist"); } }
         public bool RegenerateEdit { get { return Info.GetXmlPropertyBool("genxml/checkbox/regenerateedit"); } }
 
+        public string SystemKey { get; set; }
 
         #endregion
 

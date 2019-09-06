@@ -1,0 +1,751 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using Rocket.AppThemes.Componants;
+@using System.IO;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+
+@{
+    var appTheme = (AppTheme)Model.List.First();
+    var info = appTheme.Info;
+}
+@{
+    var dataDic = new Dictionary<string, string>();
+    foreach (string i in appTheme.VersionList)
+    {
+        dataDic.Add(i, i);
+    }
+
+    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + DNNrocketUtils.GetEditCulture() + ".png";
+    if (!File.Exists(DNNrocketUtils.MapPath(flagurl)))
+    {
+        flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/none.png";
+    }
+    var flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/" + DNNrocketUtils.GetEditCulture() + ".png";
+    if (!File.Exists(DNNrocketUtils.MapPath(flagurl32)))
+    {
+        flagurl32 = "/DesktopModules/DNNrocket/API/images/flags/32/none.png";
+    }
+
+    var disabled = "";
+
+    var imgLP = 1;
+    var imgdatalist = info.GetList("imagelist");
+
+    var templateLP = 1;
+    var templatedatalist = info.GetList("templatelist");
+    var cssLP = 1;
+    var cssdatalist = info.GetList("csslist");
+    var jsLP = 1;
+    var jsdatalist = info.GetList("jslist");
+    var resxLP = 1;
+    var resxdatalist = info.GetList("resxlist");
+
+
+    var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist,.fielddata";
+}
+
+<div id="detailsection">
+
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click " s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_delete" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+    </div>
+
+    <div class="w3-container">
+
+        <h2>@appTheme.AppThemeFolder</h2>
+
+        <div id="appthemedetails">
+
+            <div class="w3-container w3-padding">
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("AppThemes.name")</label>
+                    @TextBox(info, "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
+                </div>
+                <div class="w3-col m6 w3-padding">
+                    <label>@ResourceKey("AppThemes.displayname")</label>&nbsp;<img class='' src='@flagurl' alt='' />
+                    @TextBox(info, "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", "", true)
+                </div>
+                <div class="w3-col m2 w3-padding">
+                    <label>@ResourceKey("AppThemes.version")</label>
+                    @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border' onchange=\"$('.simplisity_langchange').trigger('click')\" ")
+                </div>
+                <div class="w3-col m12 w3-padding">
+                    <label>@ResourceKey("AppThemes.summary")</label>&nbsp;<img class='' src='@flagurl' alt='' />
+                    @TextArea(info, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
+                </div>
+                <div class="w3-col m6 w3-padding">
+                    @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
+                </div>
+                <div class="w3-col m3 w3-padding ">
+                    @CheckBox(info, "genxml/checkbox/regenerateedit", ResourceKey("AppThemes.autoregenerateedit").ToString(), "", true)
+                </div>
+                <div class="w3-col m3 w3-padding regenerateeditlist" style="display:none;">
+                    @CheckBox(info, "genxml/checkbox/regenerateeditlist", ResourceKey("AppThemes.autoregenerateeditlist").ToString(), "", true)
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('fieldsdatasectiontab')">
+            <label>@ResourceKey("AppThemes.fields")</label>
+        </div>
+        <div id="fieldsdatasectiontab" class="w3-row w3-hide fieldslistdatasection">
+
+            <span class="w3-container">
+                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addfield" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="fielddatalistbin" s-return="#fielddatalist" s-removelist=".fielddata" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+            </span>
+
+            @{
+                var m = new SimplisityRazor();
+                var l2 = new List<object>();
+                foreach (object i in info.GetList("fielddata"))
+                {
+                    l2.Add(i);
+                }
+                m.List = l2;
+            }
+            @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", m, "1.0", true)
+        </div>
+
+
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('imagedatasection')">
+            <label>@ResourceKey("DNNrocket.images")</label>
+        </div>
+
+        <div id="imagedatasection" class="w3-row w3-hide imagelistdatasection">
+
+            <div class="w3-container">
+                <div class="w3-col w3-padding" style="width:160px;">
+                    <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addimage" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".imagelist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                </div>
+            </div>
+
+            <ul id="imagelistdata" class="w3-ul">
+
+                @foreach (var imgInfo in imgdatalist)
+                {
+                    <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
+                        @SortableListIndex(imgLP)
+                        <div class="w3-display-container  w3-card">
+                            @ImageEditFullName(imgInfo, "imagepath", 150, 150, "", false, @imgLP)
+                            <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
+                                <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                            </div>
+                        </div>
+                    </li>
+
+                    imgLP += 1;
+                }
+            </ul>
+
+        </div>
+
+
+
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('templatedatasection')">
+            <label>@ResourceKey("AppThemes.templates")</label>
+        </div>
+
+        <div id="templatedatasection" class="w3-row w3-hide templatelistdatasection">
+
+            <div class="w3-container">
+                <div class="w3-col w3-padding" style="width:160px;">
+                    <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addtemplate" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="templatelistbin" s-return="#templatelistdata" s-removelist=".templatelist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                </div>
+            </div>
+
+            <ul id="templatelistdata" class="w3-ul">
+
+                @foreach (var templateInfo in templatedatalist)
+                {
+                    <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
+                        @SortableListIndex(templateLP)
+                        @HiddenField(templateInfo, "genxml/hidden/editorcodehtmlmixed", "", "", false, templateLP)
+                        @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default", false, templateLP)
+                        @HiddenField(templateInfo, "genxml/hidden/filenamehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/filename"), false, templateLP)
+                        <div class="w3-row w3-display-container w3-padding  w3-card">
+
+                            <div class="">
+                                @{
+                                    var disabledfilename = "";
+                                    var hideicon = "display:none;";
+                                }
+                                @if (templateInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                {
+                                    disabledfilename = "disabled";
+                                    hideicon = "";
+                                }
+
+                                <div class="w3-col m8">
+                                    <div>
+                                        @TextBox(templateInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + templateLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, templateLP)
+                                    </div>
+                                </div>
+                                <div class="w3-col w3-margin-left" style="width:62px;">
+                                    <div class="w3-button filenameicon@(templateLP)" onclick="edittemplate(@(templateLP));" style="@(hideicon)">
+                                        <i class="fas fa-edit " style='font-size:24px'></i>
+                                    </div>
+                                </div>
+                                <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".templatelist" s-recylebin="templatelistbin" style="cursor: pointer;width:42px;">
+                                    <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </li>
+
+                    templateLP += 1;
+                }
+            </ul>
+        </div>
+
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align w3-border " onclick="accordianFunction('cssdatasection')">
+            <label>@ResourceKey("AppThemes.css")</label>
+        </div>
+
+        <div id="cssdatasection" class="w3-row w3-hide csslistdatasection">
+
+            <div class="w3-container">
+                <div class="w3-col w3-padding" style="width:160px;">
+                    <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addcss" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="csslistbin" s-return="#csslistdata" s-removelist=".csslist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                </div>
+            </div>
+
+
+            <ul id="csslistdata" class="w3-ul">
+
+                @foreach (var cssInfo in cssdatalist)
+                {
+                    <li class="csslist w3-col m4 w3-display-container w3-padding w3-border-0">
+                        @SortableListIndex(cssLP)
+                        @HiddenField(cssInfo, "genxml/hidden/editorcodecss", "", "", false, cssLP)
+                        @HiddenField(cssInfo, "genxml/hidden/filefolder", "", "css", false, cssLP)
+                        @HiddenField(cssInfo, "genxml/hidden/filenamecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/filename"), false, cssLP)
+                        <div class="w3-row w3-display-container w3-padding  w3-card">
+
+                            <div class="">
+                                @{
+                                    var disabledfilename = "";
+                                    var hideicon = "display:none;";
+                                }
+                                @if (cssInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                {
+                                    disabledfilename = "disabled";
+                                    hideicon = "";
+                                }
+
+                                <div class="w3-col m8">
+                                    <div>
+                                        @TextBox(cssInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + cssLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, cssLP)
+                                    </div>
+                                </div>
+                                <div class="w3-col w3-margin-left" style="width:62px;">
+                                    <div class="w3-button filenameicon@(cssLP)" onclick="editcss(@(cssLP));" style="@(hideicon)">
+                                        <i class="fas fa-edit " style='font-size:24px'></i>
+                                    </div>
+                                </div>
+                                <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".csslist" s-recylebin="csslistbin" style="cursor: pointer;width:42px;">
+                                    <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </li>
+
+                    cssLP += 1;
+                }
+            </ul>
+
+
+        </div>
+
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align  w3-border" onclick="accordianFunction('jsdatasection')">
+            <label>@ResourceKey("AppThemes.javascript")</label>
+        </div>
+
+        <div id="jsdatasection" class="w3-row w3-hide jslistdatasection">
+
+            <div class="w3-container">
+                <div class="w3-col w3-padding" style="width:160px;">
+                    <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addjs" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="jslistbin" s-return="#jslistdata" s-removelist=".jslist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                </div>
+            </div>
+
+            <ul id="jslistdata" class="w3-ul">
+
+                @foreach (var jsInfo in jsdatalist)
+                {
+                    <li class="jslist w3-col m4 w3-display-container w3-padding w3-border-0">
+                        @SortableListIndex(jsLP)
+                        @HiddenField(jsInfo, "genxml/hidden/editorcodejavascript", "", "", false, jsLP)
+                        @HiddenField(jsInfo, "genxml/hidden/filefolder", "", "js", false, jsLP)
+                        @HiddenField(jsInfo, "genxml/hidden/filenamejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/filename"), false, jsLP)
+
+                        <div class="w3-row w3-display-container w3-padding  w3-card">
+
+                            <div class="">
+                                @{
+                                    var disabledfilename = "";
+                                    var hideicon = "display:none;";
+                                }
+                                @if (jsInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                {
+                                    disabledfilename = "disabled";
+                                    hideicon = "";
+                                }
+
+                                <div class="w3-col m8">
+                                    <div>
+                                        @TextBox(jsInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + jsLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, jsLP)
+                                    </div>
+                                </div>
+                                <div class="w3-col w3-margin-left" style="width:62px;">
+                                    <div class="w3-button filenameicon@(jsLP)" onclick="editjs(@(jsLP));" style="@(hideicon)">
+                                        <i class="fas fa-edit " style='font-size:24px'></i>
+                                    </div>
+                                </div>
+                                <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".jslist" s-recylebin="jslistbin" style="cursor: pointer;width:42px;">
+                                    <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </li>
+
+                    jsLP += 1;
+                }
+            </ul>
+        </div>
+
+        <div class="w3-button w3-theme w3-block w3-padding  w3-left-align w3-border" onclick="accordianFunction('resxdatasection')">
+            <label>@ResourceKey("AppThemes.resources")</label>
+        </div>
+
+        <div id="resxdatasection" class="w3-row w3-hide resxlistdatasection">
+
+            <div class="w3-container">
+                <div class="w3-col w3-padding" style="width:160px;">
+                    <div id="resxaddbutton" class="w3-hide w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addresx" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+
+                    <div class="w3-button w3-teal w3-padding-8 " onclick="selectlanguage()"><i class='fas fa-plus-circle'></i></div>
+                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistbin" s-return="#resxlistdata" s-removelist=".resxlist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                </div>
+            </div>
+
+            <ul id="resxlistdata" class="w3-ul">
+
+                @foreach (var resxInfo in resxdatalist)
+                {
+                    <li class="resxlist w3-col m6 w3-display-container w3-padding w3-border-0">
+                        @SortableListIndex(resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/jsonresx", "", "", false, resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/filefolder", "", "resx", false, resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/filenameresx", "s-update='ignore'", resxInfo.GetXmlProperty("genxml/hidden/filename"), false, resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/culturecode", "", "", false, resxLP)
+                        @HiddenField(resxInfo, "genxml/hidden/fullfilename", "", "", false, resxLP)
+
+
+                        <div class="w3-row w3-display-container w3-padding  w3-card">
+
+                            <div class="">
+                                <div class="w3-col m8">
+                                    <div>
+                                        @{
+                                            var flag = resxInfo.GetXmlProperty("genxml/hidden/culturecode");
+                                            var displayname = "";
+                                            if (flag == "")
+                                            {
+                                                flag = "none";
+                                                displayname = ResourceKey("AppThemes.default").ToString();
+                                            }
+                                            else
+                                            {
+                                                displayname = DNNrocketUtils.GetCultureCodeName(flag);
+                                            }
+                                        }
+                                        <img class="" src="/DesktopModules/DNNrocket/API/images/flags/16/@(flag).png" alt="">
+                                        <span id="culturecodedisplayname@(resxLP)">@(displayname)&nbsp;[@(flag)]</span>
+                                    </div>
+                                </div>
+                                <div class="w3-col w3-margin-left " style="width:62px;">
+                                    <div class="w3-button filenameicon@(resxLP)" onclick="editresx(@(resxLP));" style="">
+                                        <i class="fas fa-edit " style='font-size:24px'></i>
+                                    </div>
+                                </div>
+                                <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".resxlist" s-recylebin="resxlistbin" style="cursor: pointer;width:42px;">
+                                    <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </li>
+
+                    resxLP += 1;
+                }
+            </ul>
+        </div>
+
+
+    </div>
+</div>
+
+<div id="editorpopup" style="display:none;">
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="savetemplate()">@ResourceKey("DNNrocket.cmdOKButton")</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-khaki " onclick="cancelleditor();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
+        @ButtonGap()
+        <div class="w3-col m4 w3-right">
+            <h5 id="editorfilename" class="" style=""></h5>
+        </div>
+    </div>
+    <div id="editorwrapper" class="w3-row " style=""></div>
+</div>
+
+<div id="dnnrocket_imageselectwrapper">
+    @RenderImageSelect(100, true, false, appTheme.ImageFolderRel)
+</div>
+
+<div id="dnnrocket_resxeditwrapper" style="display:none;">
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="saveresx()">@ResourceKey("DNNrocket.cmdOKButton")</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-khaki " onclick="cancelresx();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
+        @ButtonGap()
+        <div class="w3-col m3 w3-center">
+            <image id="resxflag" src="/DesktopModules/DNNrocket/API/images/flags/32/none.png"></image>
+            <span id="resxculturecode"></span>
+        </div>
+        @ButtonGap()
+        <div class="w3-col m4 w3-center">
+            <h5 id="resxfilename" class="" style=""></h5>
+        </div>
+    </div>
+    <div id="dnnrocket_resxvaluelist">
+
+        <div class="w3-margin">
+            <a class="w3-button w3-teal w3-padding-8" onclick="addresxvalue('','')">@ResourceKey("DNNrocket.cmdAddButton")</a>
+            <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistvaluesbin"  s-return="#resxvalues" s-removelist=".resxlistvalues" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+        </div>
+
+        <div class="w3-row w3-margin">
+
+            <table id="resxvalues" class="w3-table-all">
+
+                <tr class="w3-theme">
+                    <th class="w3-half"></th>
+                    <th class="w3-quarter"></th>
+                    <th style="width:20px;"></th>
+                </tr>
+
+            </table>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="languageselector" class="w3-modal">
+    <div class="w3-modal-content">
+        <header class="w3-container w3-theme-d3">
+            <span onclick="document.getElementById('languageselector').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <div class="w3-col m4 ">
+                <input class="w3-margin w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchlanguage")..." id="searchtext" onkeyup="searchFunction()">
+            </div>
+        </header>
+        <div class="w3-container">
+            @{
+                var enabledlanguages = DNNrocketUtils.GetAllCultureCodeList();
+                foreach (var l in enabledlanguages)
+                {
+                    <div class="w3-col m4 w3-padding" style="cursor: pointer;" editlang='@(l.GetXmlProperty("genxml/code"))' onclick="actionlanguageselect('@(l.GetXmlProperty("genxml/code"))')"><img class='searchlanguagebutton ' src='@(l.GetXmlProperty("genxml/flagurl"))' alt='@(l.GetXmlProperty("genxml/displayname")  + " " + l.GetXmlProperty("genxml/code"))' /><span class="w3-small">&nbsp;@l.GetXmlProperty("genxml/displayname")</span></div>
+                }
+            }
+        </div>
+        <footer class="w3-container w3-theme-d3"></footer>
+    </div>
+</div>
+
+
+<style>
+    .CodeMirror {
+        border: 1px solid #eee;
+        height: auto;
+    }
+</style>
+
+<script>
+
+    var myCodeMirror;
+
+    $(document).ready(function () {
+
+        $("#imagelistdata").sortable();
+        $("#imagelistdata").disableSelection();
+
+        $('.filenametext').unbind("keyup");
+        $(".filenametext").keyup(function (event) {
+            var idx = $(this).attr('index');
+            if ($(this).val() == '') {
+                $('.filenameicon' + idx).hide();
+            }
+            else {
+                $('.filenameicon' + idx).show();
+            }
+        });
+
+        $('input[type=radio][name=themetyperadio]').unbind("change");
+        $('input[type=radio][name=themetyperadio]').change(function () {
+            if (this.value === '2') {
+                $('.listtemplatedata').show();
+                $('.regenerateeditlist').show();
+            }
+            else {
+                $('.listtemplatedata').hide();
+                $('.regenerateeditlist').hide();
+            }
+        });
+
+        if ($('input[type=radio][name=themetyperadio]:checked').val() === '2') {
+            $('.listtemplatedata').show();
+            $('.regenerateeditlist').show();
+        }
+        else {
+            $('.listtemplatedata').hide();
+            $('.regenerateeditlist').hide();
+        }
+
+
+        if (typeof myCodeMirror !== 'undefined') {
+            window.onresize = function (event) {
+                myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
+            };
+        }
+
+        accordianSetup('imagedatasection');
+        accordianSetup('cssdatasection');
+        accordianSetup('jsdatasection');
+        accordianSetup('templatedatasection');
+        accordianSetup('resxdatasection');
+        accordianSetup('fieldsdatasectiontab');
+
+    });
+
+    function accordianSetup(id) {
+        if (typeof id !== 'undefined' && id !== '') {
+            var accordianstate = simplisity_getCookieValue('appthemedetails_' + id);
+            var x = document.getElementById(id);
+            if (accordianstate === 'show') {
+                x.className += " w3-show";
+            }
+        }
+    }
+
+    function accordianFunction(id) {
+        if (typeof id !== 'undefined' && id !== '') {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                simplisity_setCookieValue('appthemedetails_' + id, 'show');
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                simplisity_setCookieValue('appthemedetails_' + id, '');
+            }
+        }
+    }
+
+    function edittemplate(idx) {
+        editeditor(idx, 'htmlmixed');
+    }
+    function editcss(idx) {
+        editeditor(idx, 'css');
+    }
+    function editjs(idx) {
+        editeditor(idx, 'javascript');
+    }
+    function editresx(idx) {
+        $('#detailsection').hide();
+        $('#dnnrocket_resxeditwrapper').show();
+
+        var jsonstr = $('#jsonresx_' + idx).val();
+        jsonstr = simplisity_decode(jsonstr);
+
+        if (jsonstr !== '') {
+
+            //console.log('jsonstr:', jsonstr);
+
+            var namedata = [];
+            var valuedata = [];        
+            var obj = JSON.parse(jsonstr);
+            var len = obj.listdata.length;
+            for (var i = 0; i < len; i++) {
+                var itemobj = obj.listdata[i];
+                if (itemobj.id.startsWith("name")) {
+                    namedata.push(itemobj.value);
+                }
+                if (itemobj.id.startsWith("value")) {
+                    valuedata.push(itemobj.value);
+                }
+            }
+            len = namedata.length;
+            for (var i = 0; i < len; i++) {
+                addresxvalue(namedata[i],valuedata[i]);
+            }
+        }
+
+        $('#resxfilename').text($('#fullfilename_' + idx).val());
+        $('#dnnrocket_resxeditwrapper').attr("index", idx);
+        var culturecode = $('#culturecode_' + idx).val();
+        if (culturecode === '') {
+            culturecode = 'none'
+        }
+        $('#resxflag').attr("src", "/DesktopModules/DNNrocket/API/images/flags/32/" + culturecode + ".png");        
+        $('#resxculturecode').text($('#culturecodedisplayname' + idx).text());        
+
+        simplisity_setParamField('culturecoderesx', $('#culturecode_' + idx).val());  // send culture code to server when we add resx value. 
+
+    }
+
+    function savetemplate() {
+        var modetype = $('#razoreditor').attr('modetype');
+        saveeditor(modetype);
+    }
+
+    function saveresx() {
+        var jsonListData = simplisity_encode(simplisity_getlistjson('.resxlistvalues'));
+        var idx = $('#dnnrocket_resxeditwrapper').attr("index");
+        $('#jsonresx_' + idx).val(jsonListData);
+        $('#dnnrocket_resxeditwrapper').hide();
+        $('#detailsection').show();
+        $("#resxvalues").find("tr:gt(0)").remove();
+    }
+
+    function editeditor(idx, modetype) {
+
+        $('#detailsection').hide();
+        $('#editorpopup').show();
+
+        $("#razoreditor").remove();
+        $(".CodeMirror").remove();
+
+        var newHeight = $(window).height() - 100;
+        $('#editorwrapper').css("height", newHeight);;
+
+        var textArea = $('<textarea id="razoreditor" class="w3-input w3-border" modetype="' + modetype + '" spellcheck="false" />');
+        $('#editorwrapper').append(textArea);
+
+        myCodeMirror = CodeMirror.fromTextArea(document.getElementById("razoreditor"), {
+            lineNumbers: true,
+            mode: modetype,
+            theme: "night"
+        });
+        var editorcode = $('#editorcode' + modetype + '_' + idx).val();
+        myCodeMirror.setValue(simplisity_decode(editorcode));
+
+        myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
+
+        $('#editorfilename').text($('#filename' + modetype + '_' + idx).val());
+        $('#editorwrapper').attr("index", idx);
+
+        $('#razoreditor').focus();
+    }
+
+    function saveeditor(modetype) {
+        var idx = $('#editorwrapper').attr("index");
+        $('#editorpopup').hide();
+        $('#detailsection').show();
+        $('#editorcode' + modetype + '_' + idx).val(simplisity_encode(myCodeMirror.getValue()));
+    }
+    function cancelleditor() {
+        $('#editorpopup').hide();
+        $('#detailsection').show();
+    }
+    function cancelresx() {
+        $('#dnnrocket_resxeditwrapper').hide();
+        $('#detailsection').show();
+        $("#resxvalues").find("tr:gt(0)").remove();
+        simplisity_emptyrecyclebin('resxlistvaluesbin');
+    }
+
+
+    function languageChange() {
+        $('.langchangesave').trigger("click");
+    }
+
+    function selectlanguage() {
+        $('#languageselector').show();
+        $('#searchtext').focus();
+    }
+
+    function searchFunction() {
+        var filter = $('#searchtext').val().toUpperCase();
+        $('.searchlanguagebutton ').each(function (i, obj) {
+            txtValue = $(this).attr('alt');
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                $(this).parent().show();
+            } else {
+                $(this).parent().hide();
+            }
+        });
+    }
+
+    function actionlanguageselect(culturecode) {
+        $('#languageselector').hide();
+        simplisity_setParamField('resxculturecode',culturecode);
+        simplisity_callserver($('#resxaddbutton'))         
+    }
+
+    function addresxvalue(name, value) {
+
+        var rowCount = $('#resxvalues tr').length;
+
+        var tblrow = '<tr class="resxlistvalues">';
+        tblrow += '	<td class="w3-third"> <input id="name_' + rowCount + '" s-xpath="genxml/text/name" placeholder="@ResourceKey("AppThemes.enterkey")" class="w3-input w3-border resxnameinput" type="text" value="' + name + '"/>';
+        tblrow += '	</td>';
+        tblrow += '	<td class="w3-half">  <input id="value_' + rowCount + '" s-xpath="genxml/text/value" placeholder="@ResourceKey("AppThemes.entervalue")" class="w3-input w3-border" type="text" value="' + value + '"/>';
+        tblrow += '	</td>';
+        tblrow += '	<td style="width:20px;">';
+        tblrow += '		<a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".resxlistvalues" s-recylebin="resxlistvaluesbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>';
+        tblrow += '	</td>';
+        tblrow += '</tr>';
+
+        $('#resxvalues tr:last').after(tblrow);
+
+        $('#simplisity_startpanel').activateSimplisityPanel()
+
+        $('.resxnameinput').unbind("focusout");
+        $('.resxnameinput').focusout(function () {
+            if ($(this).val().indexOf(".") === -1) {
+                $(this).val($(this).val() + '.Text');
+            }
+        });
+
+
+    }    
+
+</script>
