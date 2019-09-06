@@ -250,8 +250,7 @@ namespace Rocket.AppThemes.Componants
                 strOut = strOut.Replace("[Token:List]", strFieldList);
                 strOut = strOut.Replace("[Token:DisplayName]", appTheme.AppDisplayName);
                 strOut = strOut.Replace("[Token:SystemKey]", appTheme.SystemKey);
-                strOut = strOut.Replace("[Token:systemresx]", appTheme.AppProjectFolderRel + "/App_LocalResources/");
-                strOut = strOut.Replace("[Token:appthemeresx]", appTheme.AppThemeVersionFolderRel  + "/App_LocalResources/");
+                strOut = strOut.Replace("[Token:appthemeresx]", appTheme.AppThemeVersionFolderRel  + "/resx/");
                 return strOut;
             }
 
