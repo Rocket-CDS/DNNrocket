@@ -1,4 +1,39 @@
-<div class='w3-row'>
+@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/SystemThemes/dnnrocketmodule/HtmlContent/1.0/resx/")
+
+@{
+    var info = (SimplisityInfo)Model.List.First();
+
+    var animate = "w3-animate-right";
+    if (Model.GetSettingBool("stopanimate"))
+    {
+        animate = "";
+    }
+}
+
+
+<div class="w3-row w3-padding ">
+    <div class="w3-col m2 w3-button w3-green langchangesave simplisity_click" s-cmd="dnnrocketmodule_save" s-fields='{"selecteditemid":"@info.ItemID"}' s-post="#datasection" s-list=".imagelist,.documentlist,.linklist">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="dnnrocketmodule_delete" s-fields='{"selecteditemid":"@info.ItemID"}'>@ResourceKey("DNNrocket.cmdDeleteButton")</div>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="dnnrocketmodule_getlist" s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+
+    @if (Model.GetSettingBool("saved"))
+    {
+        <i class='fas fa-save w3-right simplisity_fadeout' style="font-size:24px"></i>
+    }
+</div>
+
+
+<div id="datasection" class="">
+    <!-- The Detail-->
+    <div id="detailDisplay" class="w3-container">
+        <div class='w3-row'>
 	<div class='w3-col m3 w3-padding'>
 		<label>44444444.Text</label>
 		@ImageEditFul(info,"444444",140,140,"",False,0)
@@ -16,3 +51,22 @@
 		@TextBox(info,"genxml/textbox/3333"," class='w3-input w3-border' autocomplete='off' ","",False,0)
 	</div>
 </div>
+
+        @RenderRocketModFields(Model, info.PortalId, Model.ModuleId, info, 1)
+    </div>
+</div>
+<div>
+    <i>ID: </i> @info.ItemID
+</div>
+<script>
+    $(document).ready(function () {
+
+    });
+
+    function languageChange() {
+        $('.langchangesave').trigger("click");
+    }
+
+</script>
+
+
