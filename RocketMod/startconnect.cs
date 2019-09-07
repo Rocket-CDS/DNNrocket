@@ -101,7 +101,6 @@ namespace RocketMod
                     SaveAppTheme();
                     strOut = GetDashBoard();
                     break;
-
                 case "rocketmod_getdata":
                     strOut = GetDisplay();
                     break;
@@ -112,11 +111,11 @@ namespace RocketMod
                 case "edit_articlesearch":
                     strOut = GetArticleList(false);
                     break;
-                case "edit_editarticle":
-                    strOut = GetArticle();
-                    break;
                 case "edit_addarticle":
                     strOut = AddArticle();
+                    break;
+                case "edit_editarticle":
+                    strOut = GetArticle();
                     break;
                 case "edit_savearticle":
                     SaveArticle();
@@ -347,7 +346,8 @@ namespace RocketMod
             try
             {
                 AssignEditLang();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("edit.cshtml", _appthemeRelPath, _moduleParams.AppThemeFolder, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("edit.cshtml", _appthemeRelPath + "/SystemThemes/" + _systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+
                 var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
                 articleData.ImageFolder = _moduleParams.ImageFolder;
                 articleData.DocumentFolder = _moduleParams.DocumentFolder;
@@ -456,7 +456,7 @@ namespace RocketMod
                 }
                 articleDataList.Populate();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", _appthemeRelPath, _moduleParams.AppThemeFolder, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", _appthemeRelPath + "/SystemThemes/" + _systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
                 var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, _passSettings, articleDataList.Header, _systemInfoData.DebugMode);
                 return strOut;
             }

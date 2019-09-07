@@ -118,7 +118,14 @@ namespace DNNrocketAPI
         {
             get { return Info.ItemID; }
         }
-
+        public string SystemRelPath
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/systemrelpath"); }
+        }
+        public string SystemMapPath
+        {
+            get { return DNNrocketUtils.MapPath(Info.GetXmlProperty("genxml/textbox/systemrelpath")); }
+        }
 
 
     }

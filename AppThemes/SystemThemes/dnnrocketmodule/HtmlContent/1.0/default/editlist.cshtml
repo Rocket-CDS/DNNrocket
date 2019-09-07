@@ -1,15 +1,16 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using Simplisity;
+@using RocketMod;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/SystemThemes/dnnrocketmodule/HtmlContent/1.0/resx/")
 
 @{
-
+    var articleDataList = (ArticleDataList)Model.List.First();
 }
 
 <div class="w3-row w3-padding">
-    <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="dnnrocketmodule_addrow" s-fields=''>@ResourceKey("DNNrocket.cmdAddButton")</div>
+    <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addarticle" s-fields=''>@ResourceKey("DNNrocket.cmdAddButton")</div>
 </div>
 
 <h2>111111111111111111</h2>
@@ -31,19 +32,22 @@
         @{
             var lp1 = 0;
         }
-        @foreach (SimplisityInfo nbi in Model.List)
+        @foreach (SimplisityInfo info in articleDataList.DataList)
         {
             lp1 += 1;
             <li class="datalistitem w3-display-container">
                 <div class="listrow w3-row w3-padding">
-                    <div class="w3-col w3-button simplisity_click w3-margin-right " s-cmd="dnnrocketmodule_getdetail" s-track="true" s-fields='{"selecteditemid":"@nbi.ItemID"}' style="width: 64px;">
+                    <div class="w3-col w3-button simplisity_click w3-margin-right " s-cmd="edit_editarticle" s-track="true" s-fields='{"selecteditemid":"@info.ItemID"}' style="width: 64px;">
                         <i class="fas fa-edit w3-center" style='font-size:32px'></i>
                     </div>
                     	<div class='w3-col m2 w3-padding'>
-		@info.GenXmlProperty(genxml/textbox/11111)
+		@info.GetXmlProperty("genxml/textbox/aaaaaaa")
 	</div>
 	<div class='w3-col m2 w3-padding'>
-		@info.GenXmlProperty(genxml/textbox/222222)
+		@info.GetXmlProperty("genxml/textbox/bbbbb")
+	</div>
+	<div class='w3-col m2 w3-padding'>
+		@info.GetXmlProperty("genxml/textbox/ccccccc")
 	</div>
 
                 </div>

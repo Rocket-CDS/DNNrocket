@@ -203,11 +203,9 @@ namespace DNNrocketAPI
             if (templCtrl == null)
             {
                 var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
-                var themeFolderPath = "Themes\\" + themeFolder + "\\" + versionFolder;
-                if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath))
-                {
-                    themeFolderPath = "Themes\\" + themeFolder;
-                }
+                var themeFolderPath = themeFolder + "\\" + versionFolder;
+                if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder + "\\" + versionFolder;
+                if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder;
                 var RocketThemes = DNNrocketThemesDirectory();
                 templCtrl = new TemplateGetter(RocketThemes, themeFolderPath, controlMapPath, debugMode);
                 CacheUtils.SetCache(cacheKey, templCtrl);
@@ -1095,11 +1093,11 @@ namespace DNNrocketAPI
 
         public static string DNNrocketThemesDirectory()
         {
-            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketThemes";
+            return PortalSettings.Current.HomeDirectoryMapPath + "AppThemes";
         }
         public static string DNNrocketThemesRelDirectory()
         {
-            return PortalSettings.Current.HomeDirectory + "DNNrocketThemes";
+            return PortalSettings.Current.HomeDirectory + "AppThemes";
         }
 
         public static string HomeDNNrocketDirectory()
