@@ -503,18 +503,6 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        /// <summary>
-        /// outputs the index fields required for a list, so we can process a sort order correctly.
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="row"></param>
-        /// <returns></returns>
-        public IEncodedString SortableListIndex(int row)
-        {
-            var strOut = "<input value='" + row + "' id='index_" + row + "' s-xpath='genxml/index' s-update='save' type='hidden'>";
-            return new RawString(strOut);
-        }
-
         public IEncodedString ButtonGap(int gapSize = 10)
         {
             var strOut = "<div class='w3-hide-small w3-col' style='width:" + gapSize + "px'>&nbsp;</div><div class='w3-hide-medium w3-hide-large'>&nbsp;</div>";

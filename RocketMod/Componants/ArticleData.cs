@@ -44,12 +44,6 @@ namespace RocketMod
             var dbInfo = _objCtrl.GetData( _entityTypeCode, Info.ItemID, _langRequired, -1, _moduleid, true, _tableName);
             if (dbInfo != null)
             {
-                // NOTE: Be careful of the order for saving.  The sort list is a PAIN and required speciifc data.
-                // 1 - Create any empty record. (Must be done, so on first save we get the data in the DB)
-                // 2 - Apply new XML strcuture 
-                // 3 - Do sort list.
-                // 4 - Save the new list data to the DB.
-
                 // update all langauge record which are empty.
                 var cc = DNNrocketUtils.GetCultureCodeList();
                 foreach (var l in cc)
@@ -68,11 +62,7 @@ namespace RocketMod
                 }
 
                 dbInfo.XMLData = postInfo.XMLData;
-                //_objCtrl.SaveData(dbInfo, Info.ItemID, _tableName); // save before list sort, so we have hte data in DB.
-
-                // sort lists from DB and post data
-                var sortLists = new DNNrocketAPI.Componants.SortLists(dbInfo, _tableName, DebugMode);
-                sortLists.Save();
+                _objCtrl.SaveData(dbInfo, Info.ItemID, _tableName); // save before list sort, so we have hte data in DB.
 
             }
         }

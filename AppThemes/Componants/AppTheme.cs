@@ -213,11 +213,6 @@ namespace Rocket.AppThemes.Componants
             var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, AppCultureCode, -1, -1, true, _tableName);
             if (dbInfo != null)
             {
-                // NOTE: Be careful of the order for saving.  The sort list is a PAIN and requires speciifc data.
-                // 1 - Create any empty record. (Must be done, so on first save we get the data in the DB)
-                // 2 - Apply new XML strcuture 
-                // 3 - Do sort list.
-                // 4 - Save the new list data to the DB.
 
                 // update all langauge record which are empty.
                 var cc = DNNrocketUtils.GetCultureCodeList();
@@ -237,10 +232,7 @@ namespace Rocket.AppThemes.Componants
                 }
 
                 dbInfo.XMLData = postInfo.XMLData;
-
-                // sort lists from DB and post data
-                var sortLists = new DNNrocketAPI.Componants.SortLists(dbInfo, _tableName, false);
-                sortLists.Save();
+                _objCtrl.SaveData(dbInfo, Info.ItemID, _tableName);
 
                 Populate();
 

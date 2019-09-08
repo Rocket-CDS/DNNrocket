@@ -140,7 +140,7 @@
                 @foreach (var imgInfo in imgdatalist)
                 {
                     <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
-                        @SortableListIndex(imgLP)
+                        @SortableListIndex(imgInfo, imgLP)
                         <div class="w3-display-container  w3-card">
                             @ImageEditFullName(imgInfo, "imagepath", 150, 150, "", false, @imgLP)
                             <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
@@ -174,42 +174,42 @@
 
                 @foreach (var templateInfo in templatedatalist)
                 {
-                    <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
-                        @SortableListIndex(templateLP)
-                        @HiddenField(templateInfo, "genxml/hidden/editorcodehtmlmixed", "", "", false, templateLP)
-                        @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default", false, templateLP)
-                        @HiddenField(templateInfo, "genxml/hidden/filenamehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/filename"), false, templateLP)
-                        <div class="w3-row w3-display-container w3-padding  w3-card">
+                <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
+                    @SortableListIndex(templateInfo, templateLP)
+                    @HiddenField(templateInfo, "genxml/hidden/editorcodehtmlmixed", "", "", false, templateLP)
+                    @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default", false, templateLP)
+                    @HiddenField(templateInfo, "genxml/hidden/filenamehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/filename"), false, templateLP)
+                    <div class="w3-row w3-display-container w3-padding  w3-card">
 
-                            <div class="">
-                                @{
-                                    var disabledfilename = "";
-                                    var hideicon = "display:none;";
-                                }
-                                @if (templateInfo.GetXmlProperty("genxml/hidden/filename") != "")
-                                {
-                                    disabledfilename = "disabled";
-                                    hideicon = "";
-                                }
+                        <div class="">
+                            @{
+                                var disabledfilename = "";
+                                var hideicon = "display:none;";
+                            }
+                            @if (templateInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                            {
+                                disabledfilename = "disabled";
+                                hideicon = "";
+                            }
 
-                                <div class="w3-col m8">
-                                    <div>
-                                        @TextBox(templateInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + templateLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, templateLP)
-                                    </div>
-                                </div>
-                                <div class="w3-col w3-margin-left" style="width:62px;">
-                                    <div class="w3-button filenameicon@(templateLP)" onclick="edittemplate(@(templateLP));" style="@(hideicon)">
-                                        <i class="fas fa-edit " style='font-size:24px'></i>
-                                    </div>
-                                </div>
-                                <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".templatelist" s-recylebin="templatelistbin" style="cursor: pointer;width:42px;">
-                                    <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                            <div class="w3-col m8">
+                                <div>
+                                    @TextBox(templateInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + templateLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, templateLP)
                                 </div>
                             </div>
-
+                            <div class="w3-col w3-margin-left" style="width:62px;">
+                                <div class="w3-button filenameicon@(templateLP)" onclick="edittemplate(@(templateLP));" style="@(hideicon)">
+                                    <i class="fas fa-edit " style='font-size:24px'></i>
+                                </div>
+                            </div>
+                            <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".templatelist" s-recylebin="templatelistbin" style="cursor: pointer;width:42px;">
+                                <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                            </div>
                         </div>
 
-                    </li>
+                    </div>
+
+                </li>
 
                     templateLP += 1;
                 }
@@ -235,7 +235,7 @@
                 @foreach (var cssInfo in cssdatalist)
                 {
                     <li class="csslist w3-col m4 w3-display-container w3-padding w3-border-0">
-                        @SortableListIndex(cssLP)
+                        @SortableListIndex(cssInfo, cssLP)
                         @HiddenField(cssInfo, "genxml/hidden/editorcodecss", "", "", false, cssLP)
                         @HiddenField(cssInfo, "genxml/hidden/filefolder", "", "css", false, cssLP)
                         @HiddenField(cssInfo, "genxml/hidden/filenamecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/filename"), false, cssLP)
@@ -296,7 +296,7 @@
                 @foreach (var jsInfo in jsdatalist)
                 {
                     <li class="jslist w3-col m4 w3-display-container w3-padding w3-border-0">
-                        @SortableListIndex(jsLP)
+                        @SortableListIndex(jsInfo, jsLP)
                         @HiddenField(jsInfo, "genxml/hidden/editorcodejavascript", "", "", false, jsLP)
                         @HiddenField(jsInfo, "genxml/hidden/filefolder", "", "js", false, jsLP)
                         @HiddenField(jsInfo, "genxml/hidden/filenamejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/filename"), false, jsLP)
@@ -358,7 +358,7 @@
                 @foreach (var resxInfo in resxdatalist)
                 {
                     <li class="resxlist w3-col m6 w3-display-container w3-padding w3-border-0">
-                        @SortableListIndex(resxLP)
+                        @SortableListIndex(resxInfo, resxLP)
                         @HiddenField(resxInfo, "genxml/hidden/jsonresx", "", "", false, resxLP)
                         @HiddenField(resxInfo, "genxml/hidden/filefolder", "", "resx", false, resxLP)
                         @HiddenField(resxInfo, "genxml/hidden/filenameresx", "s-update='ignore'", resxInfo.GetXmlProperty("genxml/hidden/filename"), false, resxLP)

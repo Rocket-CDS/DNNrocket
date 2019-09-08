@@ -121,7 +121,18 @@ namespace Simplisity
                         nbi.XMLData = i.OuterXml;
                         nbi.TypeCode = "LIST";
                         nbi.GUIDKey = listName;
-                        var listXmlNode = GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]");
+
+                        var listXmlNode = "";
+                        var listitemref = nbi.GetXmlProperty("genxml/hidden/simplisity-listitemref");
+                        if (listitemref == "")
+                        {
+                            listXmlNode = GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]");
+                        }
+                        else
+                        {
+                            listXmlNode = GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[hidden/simplisity-listitemreflang='" + listitemref + "']");
+                        }
+
                         nbi.SetLangXml("<genxml>" + listXmlNode + "</genxml>");
                         rtnList.Add(nbi);
                         lp += 1;

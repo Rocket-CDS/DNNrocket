@@ -300,6 +300,24 @@ namespace Simplisity
             return new RawString("");
         }
 
+
+        /// <summary>
+        /// outputs the index fields required for a list, so we can process a sort order correctly.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        public IEncodedString SortableListIndex(SimplisityInfo info, int row)
+        {
+            var listitemref = info.GetXmlProperty("genxml/hidden/simplisity-listitemref");
+            if (listitemref == "") listitemref = GeneralUtils.GetUniqueKey();
+            var strOut = "<input value='" + listitemref + "' id='simplisity-listitemref_" + row + "' s-xpath='genxml/hidden/simplisity-listitemref' s-update='save' type='hidden'>";
+            strOut += "<input value='" + listitemref + "' id='simplisity-listitemreflang_" + row + "' s-xpath='genxml/lang/genxml/hidden/simplisity-listitemreflang' s-update='lang' type='hidden'>";
+            strOut += "<input value='" + row + "' id='index_" + row + "' s-xpath='genxml/index' s-update='save' type='hidden'>";
+            return new RawString(strOut);
+        }
+
+
         #endregion
 
         #region "extra tokens"

@@ -75,9 +75,8 @@ namespace RocketSettings
             if (dbInfo != null)
             {
                 dbInfo.XMLData = postInfo.XMLData;
-                CreateMissingLanguageRecords(postInfo.XMLData);   
-                var sortLists = new DNNrocketAPI.Componants.SortLists(dbInfo, _tableName);
-                sortLists.Save();
+                CreateMissingLanguageRecords(postInfo.XMLData);
+                _objCtrl.SaveData(dbInfo, Info.ItemID, _tableName);
             }
 
         }
