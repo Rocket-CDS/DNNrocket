@@ -14,6 +14,7 @@ namespace Rocket.AppThemes.Componants
 
         public static string GeneraateEditForm(AppTheme appTheme, int row)
         {
+            var systemInfoData = new SystemInfoData(appTheme.SystemKey);
 
             List<SimplisityInfo> fieldList = appTheme.Info.GetList("fielddata");
             var resxItem = appTheme.Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
@@ -173,20 +174,20 @@ namespace Rocket.AppThemes.Componants
                     {
                         imagegallery = true;
                         strFieldList += "\t\t<div id='imagelistcontainer'>" + Environment.NewLine;
-                        strFieldList += "\t\t\t@RenderTemplate(\"editimages.cshtml\", \"/DesktopModules/DNNrocket/AppThemes/\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
+                        strFieldList += "\t\t\t@RenderTemplate(\"editimages.cshtml\", \"" + systemInfoData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "documentgallery")
                     {
                         docgallery = true;
                         strFieldList += "\t\t<div id='documentlistcontainer'>" + Environment.NewLine;
-                        strFieldList += "\t\t\t@RenderTemplate(\"editdocuments.cshtml\", \"/DesktopModules/DNNrocket/AppThemes/\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
+                        strFieldList += "\t\t\t@RenderTemplate(\"editdocuments.cshtml\", \"" + systemInfoData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "linkgallery")
                     {
                         strFieldList += "\t\t<div id='linklistcontainer'>" + Environment.NewLine;
-                        strFieldList += "\t\t\t@RenderTemplate(\"editlinks.cshtml\", \"/DesktopModules/DNNrocket/AppThemes/\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
+                        strFieldList += "\t\t\t@RenderTemplate(\"editlinks.cshtml\", \"" + systemInfoData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
                     }
 
@@ -195,18 +196,17 @@ namespace Rocket.AppThemes.Componants
                 strFieldList += "</div>" + Environment.NewLine;
             }
 
-            if (!imagegallery && imageselect)
+            if (imagegallery || imageselect)
             {
                 strFieldList += "<div id=\"dnnrocket_imageselectwrapper\">@RenderImageSelect(100, true, false, articleData.ImageFolder)</div>";
             }
-            if (!docgallery && docselect)
+            if (docgallery || docselect)
             {
                 strFieldList += "<div id=\"dnnrocket_documentselectwrapper\">@RenderDocumentSelect(true, false, articleData.DocumentFolder)</div>";
             }
 
 
             // merge to template            
-            var systemInfoData = new SystemInfoData(appTheme.SystemKey);
             var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\edit.cshtml");
             if (strOut == "") strOut = FileUtils.ReadFile(appTheme.AppProjectFolderMapPath + "\\AppThemeBase\\edit.cshtml");
             if (strOut == "")

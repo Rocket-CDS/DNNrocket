@@ -27,7 +27,7 @@
 
     <div class="w3-container">
         <div class="w3-col w3-padding" style="width:160px;">
-            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addlink" s-fields='{"selecteditemid":"@i.ItemID"}' s-return="#linklistcontainer"><i class='fas fa-plus-circle'></i></div>
+            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addlink" s-fields='{"selecteditemid":"@i.ItemID"}'><i class='fas fa-plus-circle'></i></div>
             <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="linklistbin" s-return="#linklistdata" s-removelist=".linklist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
         </div>
     </div>
@@ -37,7 +37,7 @@
         @foreach (var linkInfo in i.GetList("linklist"))
         {
             <li class="linklist w3-half w3-display-container w3-padding w3-border-0">
-                @SortableListIndex(i, linkLP)
+                @SortableListIndex(linkInfo, linkLP)
 
                 <div class="w3-display-container w3-padding w3-card">
                     <div class="w3-row">

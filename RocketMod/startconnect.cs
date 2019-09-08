@@ -131,15 +131,15 @@ namespace RocketMod
                     break;
                 case "edit_addimage":
                     RocketModAddListItem("imagelist");
-                    strOut = GetArticleImages();
+                    strOut = GetArticle();
                     break;
                 case "edit_adddocument":
                     RocketModAddListItem("documentlist");
-                    strOut = GetArticleDocuments();
+                    strOut = GetArticle();
                     break;
                 case "edit_addlink":
                     RocketModAddListItem("linklist");
-                    strOut = GetArticleLinks();
+                    strOut = GetArticle();
                     break;
 
                 case "rocketmod_saveconfig":
@@ -364,77 +364,6 @@ namespace RocketMod
             }
 
         }
-
-        public static String GetArticleImages()
-        {
-            try
-            {
-                AssignEditLang();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editimages.cshtml", _appthemeRelPath, _rocketInterface.DefaultTheme, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
-                var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
-                articleData.ImageFolder = _moduleParams.ImageFolder;
-                articleData.DocumentFolder = _moduleParams.DocumentFolder;
-                articleData.AppTheme = _moduleParams.AppThemeFolder;
-                articleData.AppThemeVersion = _moduleParams.AppThemeVersion;
-                articleData.AppThemeRelPath = _moduleParams.AppThemeFolderRel;
-
-                var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-        }
-
-        public static String GetArticleDocuments()
-        {
-            try
-            {
-                AssignEditLang();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editdocuments.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
-                var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
-                articleData.ImageFolder = _moduleParams.ImageFolder;
-                articleData.DocumentFolder = _moduleParams.DocumentFolder;
-                articleData.AppTheme = _moduleParams.AppThemeFolder;
-                articleData.AppThemeVersion = _moduleParams.AppThemeVersion;
-                articleData.AppThemeRelPath = _moduleParams.AppThemeFolderRel;
-                var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-        }
-
-        public static String GetArticleLinks()
-        {
-            try
-            {
-                AssignEditLang();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlinks.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
-                var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
-                articleData.ImageFolder = _moduleParams.ImageFolder;
-                articleData.DocumentFolder = _moduleParams.DocumentFolder;
-                articleData.AppTheme = _moduleParams.AppThemeFolder;
-                articleData.AppThemeVersion = _moduleParams.AppThemeVersion;
-                articleData.AppThemeRelPath = _moduleParams.AppThemeFolderRel;
-                var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-        }
-
 
         public static String GetArticleList(bool loadCachedHeader)
         {
