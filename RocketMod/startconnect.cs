@@ -370,7 +370,7 @@ namespace RocketMod
             try
             {
                 AssignEditLang();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editimages.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editimages.cshtml", _appthemeRelPath, _rocketInterface.DefaultTheme, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
                 var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
                 articleData.ImageFolder = _moduleParams.ImageFolder;
                 articleData.DocumentFolder = _moduleParams.DocumentFolder;

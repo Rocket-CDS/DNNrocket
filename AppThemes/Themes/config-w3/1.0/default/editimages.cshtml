@@ -1,0 +1,71 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketSettings;
+@using RocketMod;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+
+@{
+    var i = new SimplisityInfo();
+    var articleData = (ArticleData)Model.List.First();
+    if (articleData.Info != null)
+    {
+        i = articleData.Info;
+    }
+    var imgLP = 1;
+    var datalist = i.GetList("imagelist");
+}
+
+@if (!Model.GetSettingBool("HideImageHeader"))
+{
+    <div class="w3-container w3-theme w3-padding">
+        <label>@ResourceKey("DNNrocket.images")</label>
+    </div>
+}
+
+    <div class="w3-row imagelistdatasection">
+
+        <div class="w3-container">
+            <div class="w3-col w3-padding" style="width:160px;">
+                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addimage" s-fields='{"selecteditemid":"@i.ItemID"}' s-return="#imagelistcontainer"><i class='fas fa-plus-circle'></i></div>
+                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".imagelist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+            </div>
+        </div>
+
+        <ul id="imagelistdata" class="w3-ul">
+
+            @foreach (var imgInfo in datalist)
+            {
+                <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
+                    @SortableListIndex(i, imgLP)
+                    <div class="w3-display-container  w3-card">
+                        @ImageEditFull(imgInfo, "imagepath", 100, 100, "", false, @imgLP)
+                        <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
+                            <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </li>
+                imgLP += 1;
+            }
+        </ul>
+
+    </div>
+
+    @if (!Model.GetSettingBool("HideImageSelect"))
+    {
+        <h1>AAAAAAAAAAA @Model.GetSetting("HideImageSelect")</h1>
+        <div id="dnnrocket_imageselectwrapper">
+            @RenderImageSelect(100, true, false, articleData.ImageFolder)
+        </div>
+    }
+
+    <script>
+        $(document).ready(function () {
+            $("#imagelistdata").sortable();
+            $("#imagelistdata").disableSelection();
+        });
+    </script>

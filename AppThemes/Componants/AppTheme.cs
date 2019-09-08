@@ -103,32 +103,32 @@ namespace Rocket.AppThemes.Componants
         {
             // Tempalte Defaults
             var tempMapPath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
-            if (!_templateFileName.Contains(tempMapPath) || RegenerateEdit)
+            if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
             {
                 var formHtml = AppThemeUtils.GeneraateEditForm(this,0);
                 FileUtils.SaveFile(tempMapPath, formHtml);
-                _templateFileName.Add(tempMapPath);
+                _templateFileName.Add(Path.GetFileName(tempMapPath));
             }
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\editlist.cshtml";
-            if (!_templateFileName.Contains(tempMapPath) || RegenerateEditList)
+            if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
             {
                 var listHtml = AppThemeUtils.GeneraateEditList(this, 0);
                 FileUtils.SaveFile(tempMapPath, listHtml);
-                _templateFileName.Add(tempMapPath);
+                _templateFileName.Add(Path.GetFileName(tempMapPath));
             }
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
-            if (!_templateFileName.Contains(tempMapPath))
+            if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
             {
                 //var formHtml = AppThemeUtils.GeneraateEditForm(Info.GetList("fielddata"), 0);
                 FileUtils.SaveFile(tempMapPath, "");
-                _templateFileName.Add(tempMapPath);
+                _templateFileName.Add(Path.GetFileName(tempMapPath));
             }
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\pageheader.cshtml";
-            if (!_templateFileName.Contains(tempMapPath))
+            if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
             {
                 //var formHtml = AppThemeUtils.GeneraateEditForm(Info.GetList("fielddata"), 0);
                 FileUtils.SaveFile(tempMapPath, "");
-                _templateFileName.Add(tempMapPath);
+                _templateFileName.Add(Path.GetFileName(tempMapPath));
             }
 
         }
@@ -182,10 +182,11 @@ namespace Rocket.AppThemes.Componants
 
         public string GetTemplate(string templateName)
         {
-            if (Path.GetExtension(templateName) == "") templateName += ".cshtml";
-            if (!_templateFileName.Contains(templateName)) return "";
+            if (Path.GetExtension(templateName) != "") templateName += Path.GetFileNameWithoutExtension(templateName);
+            if (!_templateFileName.Contains(templateName + ".cshtml")) return "";
             var rtnItem = Info.GetListItem("templatelist", "genxml/hidden/filename", templateName);
-            return rtnItem.GetXmlProperty("genxml/hidden/editorcode");
+            if (rtnItem == null) return "";
+            return GeneralUtils.DeCode(rtnItem.GetXmlProperty("genxml/hidden/editorcodehtmlmixed"));
         }
 
         public void DeleteTheme()
@@ -235,6 +236,18 @@ namespace Rocket.AppThemes.Componants
                 _objCtrl.SaveData(dbInfo, Info.ItemID, _tableName);
 
                 Populate();
+
+                // output generated template.
+                var formHtml = GetTemplate("edit");
+                if (RegenerateEdit) formHtml = AppThemeUtils.GeneraateEditForm(this, 0);
+                var tempMapPath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
+                if (formHtml != "") FileUtils.SaveFile(tempMapPath, formHtml);
+
+                var listHtml = GetTemplate("editlist");
+                if (RegenerateEditList) listHtml = AppThemeUtils.GeneraateEditList(this, 0);
+                tempMapPath = AppThemeVersionFolderMapPath + "\\default\\editlist.cshtml";
+                if (listHtml != "") FileUtils.SaveFile(tempMapPath, listHtml);
+
 
             }
         }

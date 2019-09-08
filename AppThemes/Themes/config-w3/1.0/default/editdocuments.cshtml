@@ -37,7 +37,7 @@
         @foreach (var docInfo in i.GetList("documentlist"))
         {
             <li class="documentlist w3-half w3-display-container w3-padding w3-border-0">
-                @SortableListIndex(docLP)
+                @SortableListIndex(i, docLP)
 
                 <div class="w3-display-container w3-padding w3-card">
                     <div class="w3-row">

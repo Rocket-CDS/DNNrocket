@@ -173,20 +173,20 @@ namespace Rocket.AppThemes.Componants
                     {
                         imagegallery = true;
                         strFieldList += "\t\t<div id='imagelistcontainer'>" + Environment.NewLine;
-                        strFieldList += "\t\t\t@RenderTemplate(\"editimages.cshtml\", \"/DesktopModules/DNNrocket/RocketMod/\", \"config-w3\", model, \"1.0\", true)" + Environment.NewLine;
+                        strFieldList += "\t\t\t@RenderTemplate(\"editimages.cshtml\", \"/DesktopModules/DNNrocket/AppThemes/\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "documentgallery")
                     {
                         docgallery = true;
                         strFieldList += "\t\t<div id='documentlistcontainer'>" + Environment.NewLine;
-                        strFieldList += "\t\t\t@RenderTemplate(\"editdocuments.cshtml\", \"/DesktopModules/DNNrocket/RocketMod/\", \"config-w3\", model, \"1.0\", true)" + Environment.NewLine;
+                        strFieldList += "\t\t\t@RenderTemplate(\"editdocuments.cshtml\", \"/DesktopModules/DNNrocket/AppThemes/\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "linkgallery")
                     {
                         strFieldList += "\t\t<div id='linklistcontainer'>" + Environment.NewLine;
-                        strFieldList += "\t\t\t@RenderTemplate(\"editlinks.cshtml\", \"/DesktopModules/DNNrocket/RocketMod/\", \"config-w3\", model, \"1.0\", true)" + Environment.NewLine;
+                        strFieldList += "\t\t\t@RenderTemplate(\"editlinks.cshtml\", \"/DesktopModules/DNNrocket/AppThemes/\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
                     }
 
@@ -275,10 +275,38 @@ namespace Rocket.AppThemes.Componants
 
                     if (xpath != "")
                     {
-                        strFieldList += "\t<div class='w3-col m2 w3-padding'>" + Environment.NewLine;
-                        strFieldList += "\t\t@info.GetXmlProperty(\"" + xpath + "\")" + Environment.NewLine;
-                        strFieldList += "\t</div>" + Environment.NewLine;
+                            strFieldList += "\t<div class='w3-col m2 w3-padding'>" + Environment.NewLine;
+                            strFieldList += "\t\t@info.GetXmlProperty(\"" + xpath + "\")" + Environment.NewLine;
+                            strFieldList += "\t</div>" + Environment.NewLine;
                     }
+
+
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull" || f.GetXmlProperty("genxml/select/type").ToLower() == "image")
+                    {
+                        xpath = "genxml/hidden/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                        strFieldList += "@if (info.GetXmlProperty(\"" + xpath + "\") != \"\")" + Environment.NewLine;
+                        strFieldList += "{" + Environment.NewLine;
+                        strFieldList += "	<img src=\"@ThumbnailImageUrl(info.GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
+                        strFieldList += "}" + Environment.NewLine;
+                        strFieldList += "else" + Environment.NewLine;
+                        strFieldList += "{" + Environment.NewLine;
+                        strFieldList += "	<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>" + Environment.NewLine;
+                        strFieldList += "}" + Environment.NewLine;
+                    }
+
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
+                    {
+                        xpath = "genxml/hidden/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                        strFieldList += "@if (info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"" + xpath + "\") != \"\")" + Environment.NewLine;
+                        strFieldList += "{" + Environment.NewLine;
+                        strFieldList += "	<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
+                        strFieldList += "}" + Environment.NewLine;
+                        strFieldList += "else" + Environment.NewLine;
+                        strFieldList += "{" + Environment.NewLine;
+                        strFieldList += "	<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>" + Environment.NewLine;
+                        strFieldList += "}" + Environment.NewLine;
+                    }
+
                 }
             }
 
