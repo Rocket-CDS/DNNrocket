@@ -126,7 +126,7 @@ function IsValidTrackCmd(cmd) {
 }
 
 
-$(document).on("simplisityposytgetcompleted", simplisity_nbxgetCompleted); // assign a completed event for the ajax calls
+$(document).on("simplisitypostgetcompleted", simplisity_nbxgetCompleted); // assign a completed event for the ajax calls
 
 function simplisity_nbxgetCompleted(e) {
 
@@ -263,7 +263,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                 } else {
                     // trigger completed.
                     $.event.trigger({
-                        type: "simplisityposytgetcompleted",
+                        type: "simplisitypostgetcompleted",
                         cmd: scmd,
                         sindex: sindex,
                         sloader: shideloader,

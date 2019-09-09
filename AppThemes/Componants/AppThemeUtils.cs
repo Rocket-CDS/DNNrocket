@@ -70,15 +70,18 @@ namespace Rocket.AppThemes.Componants
 
                     strFieldList +=  "\t<div class='w3-col m" + size + " w3-padding'>" + Environment.NewLine;
 
-                    if (Path.GetExtension(label) == "") label = label + ".Text";
-                    var resxLabelItem = jasonInfo.GetListItem("resxlistvalues", "genxml/text/name", label);
-                    if (resxLabelItem != null)
+                    if (label != "")
                     {
-                        strFieldList += "\t\t<label>@ResourceKey(\"" + appTheme.AppThemeFolder + "." + label + "\")</label>";
-                    }
-                    else
-                    {
-                        strFieldList += "\t\t<label>" + label + "</label>";
+                        if (Path.GetExtension(label) == "") label = label + ".Text";
+                        var resxLabelItem = jasonInfo.GetListItem("resxlistvalues", "genxml/text/name", label);
+                        if (resxLabelItem != null)
+                        {
+                            strFieldList += "\t\t<label>@ResourceKey(\"" + appTheme.AppThemeFolder + "." + label + "\")</label>";
+                        }
+                        else
+                        {
+                            strFieldList += "\t\t<label>" + label + "</label>";
+                        }
                     }
                     if (!localizedbool)
                     {
