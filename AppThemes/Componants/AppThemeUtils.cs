@@ -83,6 +83,10 @@ namespace Rocket.AppThemes.Componants
                             strFieldList += "\t\t<label>" + label + "</label>";
                         }
                     }
+                    else
+                    {
+                        strFieldList += "\t\t<label>&nbsp;</label>";
+                    }
                     if (!localizedbool)
                     {
                         strFieldList += Environment.NewLine;

@@ -606,7 +606,7 @@ namespace RocketMod
 
                     var razortemplate = "view.cshtml";
                     var apptheme = _moduleParams.AppThemeFolder;
-                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, apptheme, DNNrocketUtils.GetCurrentCulture());
+                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _moduleParams.AppProjectFolderRel, "SystemThemes/dnnrocketmodule/" + apptheme, DNNrocketUtils.GetCurrentCulture(), _moduleParams.AppThemeVersion);
 
                     var passSettings = _paramInfo.ToDictionary();
                     
@@ -620,7 +620,7 @@ namespace RocketMod
                     var articleDataList = new ArticleDataList(_moduleid, DNNrocketUtils.GetCurrentCulture());
                     articleDataList.Populate();
 
-                    strOut = DNNrocketUtils.RazorDetail("view.cshtml", articleDataList, passSettings, articleDataList.Header);
+                    strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings, articleDataList.Header);
 
                 }
                 else
