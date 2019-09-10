@@ -101,12 +101,12 @@
         <div class="w3-container">
 
             <div class="w3-bar w3-theme">
-                <div class="w3-bar-item w3-button tablink w3-red" onclick="openDataTab(event,'Fields')">@ResourceKey("AppThemes.fields")</div>
-                <div class="w3-bar-item w3-button tablink" onclick="openDataTab(event,'Templates')">@ResourceKey("AppThemes.templates")</div>
-                <div class="w3-bar-item w3-button tablink" onclick="openDataTab(event,'Images')">@ResourceKey("DNNrocket.images")</div>
-                <div class="w3-bar-item w3-button tablink" onclick="openDataTab(event,'CSS')">@ResourceKey("AppThemes.css")</div>
-                <div class="w3-bar-item w3-button tablink" onclick="openDataTab(event,'Javascript')">@ResourceKey("AppThemes.javascript")</div>
-                <div class="w3-bar-item w3-button tablink" onclick="openDataTab(event,'Resources')">@ResourceKey("AppThemes.resources")</div>
+                <div class="w3-bar-item w3-button tablink w3-red tabFields" onclick="openDataTab('tabFields','Fields')">@ResourceKey("AppThemes.fields")</div>
+                <div class="w3-bar-item w3-button tablink tabTemplates" onclick="openDataTab('tabTemplates','Templates')">@ResourceKey("AppThemes.templates")</div>
+                <div class="w3-bar-item w3-button tablink tabImages" onclick="openDataTab('tabImages','Images')">@ResourceKey("DNNrocket.images")</div>
+                <div class="w3-bar-item w3-button tablink tabCSS" onclick="openDataTab('tabCSS','CSS')">@ResourceKey("AppThemes.css")</div>
+                <div class="w3-bar-item w3-button tablink tabJavascript" onclick="openDataTab('tabJavascript','Javascript')">@ResourceKey("AppThemes.javascript")</div>
+                <div class="w3-bar-item w3-button tablink tabResources" onclick="openDataTab('tabResources','Resources')">@ResourceKey("AppThemes.resources")</div>
             </div>
 
             <div id="Fields" class="w3-container w3-border city">
@@ -545,37 +545,8 @@
             };
         }
 
-        accordianSetup('imagedatasection');
-        accordianSetup('cssdatasection');
-        accordianSetup('jsdatasection');
-        accordianSetup('templatedatasection');
-        accordianSetup('resxdatasection');
-        accordianSetup('fieldsdatasectiontab');
-
+        showDataTab();
     });
-
-    function accordianSetup(id) {
-        if (typeof id !== 'undefined' && id !== '') {
-            var accordianstate = simplisity_getCookieValue('appthemedetails_' + id);
-            var x = document.getElementById(id);
-            if (accordianstate === 'show') {
-                x.className += " w3-show";
-            }
-        }
-    }
-
-    function accordianFunction(id) {
-        if (typeof id !== 'undefined' && id !== '') {
-            var x = document.getElementById(id);
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className += " w3-show";
-                simplisity_setCookieValue('appthemedetails_' + id, 'show');
-            } else {
-                x.className = x.className.replace(" w3-show", "");
-                simplisity_setCookieValue('appthemedetails_' + id, '');
-            }
-        }
-    }
 
     function edittemplate(idx) {
         editeditor(idx, 'htmlmixed');
@@ -741,24 +712,34 @@
             if ($(this).val().indexOf(".") === -1) {
                 $(this).val($(this).val() + '.Text');
             }
+
         });
 
 
     }    
 
 
-function openDataTab(evt, cityName) {
-  var i, x, tablinks;
-  x = document.getElementsByClassName("city");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < x.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
-  }
-  document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " w3-red";
-}
+    function openDataTab(target, tabName) {
+      var i, x, tablinks;
+      x = document.getElementsByClassName("city");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < x.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+        $('.' + target).addClass('w3-red');
+        simplisity_setCookieValue('tabName', tabName);
+    }
+
+    function showDataTab() {
+        var tabName = simplisity_getCookieValue('tabName');
+        if (typeof tabName === 'undefined' || tabName === '') {
+            tabName = "Fields";
+        }
+        openDataTab('tab' + tabName, tabName);
+    }
 
 </script>
