@@ -52,7 +52,7 @@
 <div id="detailsection">
 
     <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click " s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+        <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform" s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
         @ButtonGap()
         <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_delete" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</div>
         @ButtonGap()
@@ -63,7 +63,7 @@
 
     <div class="w3-container">
 
-        <h2>@appTheme.AppThemeFolder</h2>
+        <h2>@appTheme.AppThemeFolder<span class="validationfail w3-margin-left " style="display:none;"><i class='fas fa-exclamation-triangle' style='font-size:24px;color:red;'></i></span></h2>
 
         <div id="appthemedetails">
 
@@ -127,7 +127,7 @@
                         }
                         m.List = l2;
                     }
-                    @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", m, "1.0", true)
+                    @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", m, info.GetXmlProperty("genxml/select/versionfolder"), true)
                 </div>
 
             </div>

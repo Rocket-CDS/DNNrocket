@@ -78,8 +78,8 @@
                         @CheckBox(i, "genxml/checkbox/isonlist", "", " class='w3-check isonlist' row='" + lp3 + "' ", false, false, lp3)
                     </div>
                     <div class="w3-col m1 w3-padding listtemplatedata " style="display:none;width: 100px;">
-                        <label class="">@ResourceKey("DNNrocket.column")</label>
-                        @DropDownList(i, "genxml/select/listcol", "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12", "class='w3-input w3-border'", "", false, lp3)
+                        <label class="listcolclass@(lp3)">@ResourceKey("DNNrocket.column")</label>
+                        @DropDownList(i, "genxml/select/listcol", "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12", "class='w3-input w3-border listcol listcolclass" + lp3 + "'", "", false, lp3)
                     </div>
                 </div>
 
@@ -233,7 +233,7 @@
 
 
         });
-
+        
         $('.editbutton').unbind("click");
         $('.editbutton').click(function () {
             var row = $(this).attr('row');
@@ -244,6 +244,32 @@
         $('.editbuttonclose').click(function () {
             var row = $(this).attr('row');
             dnnrocket_hidedetail(row);
+        });
+
+        $('.isonlist').unbind("click");
+        $('.isonlist').click(function () {
+            var row = $(this).attr('row');
+            if ($(this).prop('checked')) {
+                var listcolval = 1;
+                $('.listcol:visible').each(function(i, obj) {
+                     listcolval = listcolval + 1;
+                });
+                $('#listcol_' + row).val(listcolval);
+                $('.listcolclass' + row).show();
+            }
+            else {
+                $('.listcolclass' + row).hide();
+            }
+        });
+
+        $('.isonlist').each(function(i, obj) {
+            var row = $(this).attr('row');
+            if ($(this).prop('checked')) {
+                $('.listcolclass' + row).show();
+            }
+            else {
+                $('.listcolclass' + row).hide();
+            }
         });
 
     });
@@ -388,6 +414,8 @@
 
     function validateform() {
 
+        $('.validationfail').hide();
+
         jQuery.validator.addMethod("alphanumeric", function (value, element) {
             return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
         }, '@ResourceKey("RocketMod.alphanumeric","", "Error")');
@@ -405,6 +433,7 @@
             if (!$(this).valid()) {
                 $(this).css({ 'background-color': '#ffe6e6' });
                 $('.activatevalidation').attr('s-stop', 'stop')
+                $('.validationfail').show();
             }
         });
     }
