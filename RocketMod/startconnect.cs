@@ -618,7 +618,7 @@ namespace RocketMod
                     var appTheme = new AppTheme(_systemInfoData.SystemKey, apptheme, _moduleParams.AppThemeVersion);
 
                     var articleDataList = new ArticleDataList(_moduleid, DNNrocketUtils.GetCurrentCulture());
-                    articleDataList.Populate();
+                    articleDataList.Populate(appTheme.DataType);
 
                     strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings, articleDataList.Header);
 

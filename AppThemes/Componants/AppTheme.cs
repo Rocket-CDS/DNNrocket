@@ -105,21 +105,21 @@ namespace Rocket.AppThemes.Componants
             var tempMapPath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
             if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
             {
-                var formHtml = GenerateEditForm(this,0);
+                var formHtml = GenerateEditForm(0);
                 FileUtils.SaveFile(tempMapPath, formHtml);
                 _templateFileName.Add(Path.GetFileName(tempMapPath));
             }
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\editlist.cshtml";
             if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
             {
-                var listHtml = GenerateEditList(this, 0);
+                var listHtml = GenerateEditList(0);
                 FileUtils.SaveFile(tempMapPath, listHtml);
                 _templateFileName.Add(Path.GetFileName(tempMapPath));
             }
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
             if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
             {
-                var viewHtml = GenerateView(this, 0);
+                var viewHtml = GenerateView(0);
                 FileUtils.SaveFile(tempMapPath, "");
                 _templateFileName.Add(Path.GetFileName(tempMapPath));
             }
@@ -239,17 +239,17 @@ namespace Rocket.AppThemes.Componants
 
                 // output generated template.
                 var formHtml = GetTemplate("edit");
-                if (RegenerateEdit) formHtml = GenerateEditForm(this, 0);
+                if (RegenerateEdit) formHtml = GenerateEditForm(0);
                 var tempMapPath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
                 if (formHtml != "") FileUtils.SaveFile(tempMapPath, formHtml);
 
                 var listHtml = GetTemplate("editlist");
-                if (RegenerateEditList) listHtml = GenerateEditList(this, 0);
+                if (RegenerateEditList) listHtml = GenerateEditList(0);
                 tempMapPath = AppThemeVersionFolderMapPath + "\\default\\editlist.cshtml";
                 if (listHtml != "") FileUtils.SaveFile(tempMapPath, listHtml);
 
                 var viewHtml = GetTemplate("view");
-                if (RegenerateView) viewHtml = GenerateView(this, 0);
+                if (RegenerateView) viewHtml = GenerateView(0);
                 tempMapPath = AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
                 if (viewHtml != "") FileUtils.SaveFile(tempMapPath, viewHtml);
 
@@ -488,17 +488,17 @@ namespace Rocket.AppThemes.Componants
             }
         }
 
-        private string GenerateEditForm(AppTheme appTheme, int row)
+        private string GenerateEditForm(int row)
         {
-            var systemInfoData = new SystemInfoData(appTheme.SystemKey);
+            var systemInfoData = new SystemInfoData(SystemKey);
 
-            List<SimplisityInfo> fieldList = appTheme.Info.GetList("fielddata");
-            var resxItem = appTheme.Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
+            List<SimplisityInfo> fieldList = Info.GetList("fielddata");
+            var resxItem = Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
             var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
             var jasonInfo = new SimplisityInfo();
             if (jsondata != "")
             {
-                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, appTheme.AppCultureCode);
+                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, AppCultureCode);
             }
 
             var strFieldList = "";
@@ -552,7 +552,7 @@ namespace Rocket.AppThemes.Componants
                         var resxLabelItem = jasonInfo.GetListItem("resxlistvalues", "genxml/text/name", label);
                         if (resxLabelItem != null)
                         {
-                            strFieldList += "\t\t<label>@ResourceKey(\"" + appTheme.AppThemeFolder + "." + label + "\")</label>";
+                            strFieldList += "\t\t<label>@ResourceKey(\"" + AppThemeFolder + "." + label + "\")</label>";
                         }
                         else
                         {
@@ -691,7 +691,7 @@ namespace Rocket.AppThemes.Componants
 
             // merge to template            
             var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\edit.cshtml");
-            if (strOut == "") strOut = FileUtils.ReadFile(appTheme.AppProjectFolderMapPath + "\\AppThemeBase\\edit.cshtml");
+            if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\edit.cshtml");
             if (strOut == "")
             {
                 return strFieldList;
@@ -699,24 +699,24 @@ namespace Rocket.AppThemes.Componants
             else
             {
                 strOut = strOut.Replace("[Token:AppThemeFields]", strFieldList);
-                strOut = strOut.Replace("[Token:DisplayName]", appTheme.AppDisplayName);
-                strOut = strOut.Replace("[Token:SystemKey]", appTheme.SystemKey);
-                strOut = strOut.Replace("[Token:appthemeresx]", appTheme.AppThemeVersionFolderRel + "/resx/");
+                strOut = strOut.Replace("[Token:DisplayName]", AppDisplayName);
+                strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
+                strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
                 return strOut;
             }
 
         }
 
-        private string GenerateEditList(AppTheme appTheme, int row)
+        private string GenerateEditList(int row)
         {
 
-            List<SimplisityInfo> fieldList = appTheme.Info.GetList("fielddata");
-            var resxItem = appTheme.Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
+            List<SimplisityInfo> fieldList = Info.GetList("fielddata");
+            var resxItem = Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
             var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
             var jasonInfo = new SimplisityInfo();
             if (jsondata != "")
             {
-                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, appTheme.AppCultureCode);
+                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, AppCultureCode);
             }
 
             var strFieldList = "";
@@ -811,9 +811,9 @@ namespace Rocket.AppThemes.Componants
             }
 
             // merge to template
-            var systemInfoData = new SystemInfoData(appTheme.SystemKey);
+            var systemInfoData = new SystemInfoData(SystemKey);
             var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\editlist.cshtml");
-            if (strOut == "") strOut = FileUtils.ReadFile(appTheme.AppProjectFolderMapPath + "\\AppThemeBase\\editlist.cshtml");
+            if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\editlist.cshtml");
             if (strOut == "")
             {
                 return strFieldList;
@@ -821,24 +821,24 @@ namespace Rocket.AppThemes.Componants
             else
             {
                 strOut = strOut.Replace("[Token:List]", strFieldList);
-                strOut = strOut.Replace("[Token:DisplayName]", appTheme.AppDisplayName);
-                strOut = strOut.Replace("[Token:SystemKey]", appTheme.SystemKey);
-                strOut = strOut.Replace("[Token:appthemeresx]", appTheme.AppThemeVersionFolderRel + "/resx/");
+                strOut = strOut.Replace("[Token:DisplayName]", AppDisplayName);
+                strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
+                strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
                 return strOut;
             }
 
         }
 
-        private string GenerateView(AppTheme appTheme, int row)
+        private string GenerateView(int row)
         {
 
-            List<SimplisityInfo> fieldList = appTheme.Info.GetList("fielddata");
-            var resxItem = appTheme.Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
+            List<SimplisityInfo> fieldList = Info.GetList("fielddata");
+            var resxItem = Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
             var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
             var jasonInfo = new SimplisityInfo();
             if (jsondata != "")
             {
-                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, appTheme.AppCultureCode);
+                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, AppCultureCode);
             }
 
             var strFieldList = "";
@@ -920,9 +920,9 @@ namespace Rocket.AppThemes.Componants
             }
 
             // merge to template
-            var systemInfoData = new SystemInfoData(appTheme.SystemKey);
+            var systemInfoData = new SystemInfoData(SystemKey);
             var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\view.cshtml");
-            if (strOut == "") strOut = FileUtils.ReadFile(appTheme.AppProjectFolderMapPath + "\\AppThemeBase\\view.cshtml");
+            if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\view.cshtml");
             if (strOut == "")
             {
                 return strFieldList;
@@ -930,9 +930,9 @@ namespace Rocket.AppThemes.Componants
             else
             {
                 strOut = strOut.Replace("[Token:List]", strFieldList);
-                strOut = strOut.Replace("[Token:DisplayName]", appTheme.AppDisplayName);
-                strOut = strOut.Replace("[Token:SystemKey]", appTheme.SystemKey);
-                strOut = strOut.Replace("[Token:appthemeresx]", appTheme.AppThemeVersionFolderRel + "/resx/");
+                strOut = strOut.Replace("[Token:DisplayName]", AppDisplayName);
+                strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
+                strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
                 return strOut;
             }
 
@@ -974,6 +974,8 @@ namespace Rocket.AppThemes.Componants
         public bool RegenerateEditList { get { return Info.GetXmlPropertyBool("genxml/checkbox/regenerateeditlist"); } }
         public bool RegenerateEdit { get { return Info.GetXmlPropertyBool("genxml/checkbox/regenerateedit"); } }
         public bool RegenerateView { get { return Info.GetXmlPropertyBool("genxml/checkbox/regenerateview"); } }
+
+        public int DataType { get { return Info.GetXmlPropertyInt("genxml/radio/themetype"); } }
 
         public string SystemKey { get; set; }
 

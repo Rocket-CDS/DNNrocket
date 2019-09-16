@@ -30,8 +30,11 @@ namespace RocketMod
             Header = new SimplisityInfo();
             _headerCacheKey = "rocketmodArtcleHEADER" + DNNrocketUtils.GetCurrentUserId();
         }
-        public void Populate()
+        public void Populate(int dataType = 2)
         {
+            var returnLimit = 0; // form
+            if (dataType == 1) returnLimit = 1; // list
+
             var searchFilter = " and R1.ModuleId = " + _moduleid + " ";
             if (Header.GetXmlProperty("genxml/textbox/searchtext") != "")
             {
@@ -41,7 +44,7 @@ namespace RocketMod
             var searchOrderBy = " order by R1.[SortOrder] ";
 
             var rowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, -1, _tableName);
-            _dataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, 0, Page, PageSize, rowCount, -1, _tableName);
+            _dataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, returnLimit, Page, PageSize, rowCount, -1, _tableName);
             RowCount = rowCount;
 
         }
