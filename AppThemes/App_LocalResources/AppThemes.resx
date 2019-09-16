@@ -123,6 +123,9 @@
   <data name="autoregenerateeditlist.Text" xml:space="preserve">
     <value>Regenerate "editlist.cshtml"</value>
   </data>
+  <data name="autoregenerateview.Text" xml:space="preserve">
+    <value>Regenerate view.cshtml"</value>
+  </data>
   <data name="builder.Text" xml:space="preserve">
     <value>AppTheme Builder</value>
   </data>
