@@ -31,6 +31,7 @@ namespace RocketMod
         private static SettingsData _settingsData;
         private static string _editLang;
         private static int _selectedItemId;
+        private static AppTheme _appTheme;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -84,6 +85,9 @@ namespace RocketMod
                 }
             }
 
+            _appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, DNNrocketUtils.GetEditCulture(), _moduleParams.AppThemeVersion);
+
+
             switch (paramCmd)
             {
                 case "rocketmod_login":
@@ -106,7 +110,10 @@ namespace RocketMod
                     break;
 
                 case "edit_editarticlelist":
-                    strOut = GetArticleList(true);
+                    if (_appTheme.DataType == 1)
+                        strOut = GetArticle();
+                    else
+                        strOut = GetArticleList(true);
                     break;
                 case "edit_articlesearch":
                     strOut = GetArticleList(false);
@@ -258,8 +265,6 @@ namespace RocketMod
         private static void SaveConfig()
         {
 
-            var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, DNNrocketUtils.GetEditCulture(), _moduleParams.AppThemeVersion);
-
             _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
             _moduleParams.DataModuleId = _postInfo.GetXmlPropertyInt("genxml/hidden/datamoduleid");
             _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
@@ -345,6 +350,19 @@ namespace RocketMod
         {
             try
             {
+                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
+                if (appTheme.DataType == 1)
+                {
+                    _selectedItemId = _settingsData.Info.GetXmlPropertyInt("genxml/selecteditemid");
+                    if (_selectedItemId == 0)
+                    {
+                        var articleDataNew = new ArticleData(-1, _moduleid, _editLang);
+                        _selectedItemId = articleDataNew.ItemId;
+                        _settingsData.Info.SetXmlProperty("genxml/selecteditemid", _selectedItemId.ToString());
+                        _settingsData.Update();
+                    }
+                }
+
                 AssignEditLang();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("edit.cshtml", _appthemeRelPath + "/SystemThemes/" + _systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
 
@@ -616,7 +634,7 @@ namespace RocketMod
                     passSettings.Add("adminurl", adminurl);
 
                     var appTheme = new AppTheme(_systemInfoData.SystemKey, apptheme, _moduleParams.AppThemeVersion);
-
+                    passSettings.Add("datatype", appTheme.DataType.ToString());
                     var articleDataList = new ArticleDataList(_moduleid, DNNrocketUtils.GetCurrentCulture());
                     articleDataList.Populate(appTheme.DataType);
 

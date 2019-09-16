@@ -81,6 +81,11 @@ namespace RocketSettings
 
         }
 
+        public void Update()
+        {
+            _objCtrl.SaveData(Info, -1, _tableName);
+        }
+
         /// <summary>
         /// update all langauge records which are empty.
         /// </summary>
