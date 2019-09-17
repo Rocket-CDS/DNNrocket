@@ -32,6 +32,7 @@ namespace RocketMod
         private static string _editLang;
         private static int _selectedItemId;
         private static AppTheme _appTheme;
+        private static ArticleData _articleData;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -48,8 +49,6 @@ namespace RocketMod
             _postInfo = postInfo;
             _paramInfo = paramInfo;
             _systemInfo = systemInfo;
-
-            _selectedItemId = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
 
             _editLang = langRequired;
             if (_editLang == "") _editLang = DNNrocketUtils.GetEditCulture();
@@ -85,8 +84,7 @@ namespace RocketMod
                 }
             }
 
-            _appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, DNNrocketUtils.GetEditCulture(), _moduleParams.AppThemeVersion);
-
+            AssignSelecteditemId();
 
             switch (paramCmd)
             {
@@ -110,43 +108,40 @@ namespace RocketMod
                     break;
 
                 case "edit_editarticlelist":
-                    if (_appTheme.DataType == 1)
-                        strOut = GetArticle();
-                    else
-                        strOut = GetArticleList(true);
+                    strOut = GetArticleEdit(true);
                     break;
                 case "edit_articlesearch":
-                    strOut = GetArticleList(false);
+                    strOut = GetArticleEdit(false);
                     break;
                 case "edit_addarticle":
                     strOut = AddArticle();
                     break;
                 case "edit_editarticle":
-                    strOut = GetArticle();
+                    strOut = GetArticleEdit();
                     break;
                 case "edit_savearticle":
                     SaveArticle();
-                    strOut = GetArticle();                    
+                    strOut = GetArticleEdit();                    
                     break;
                 case "edit_savearticlelist":
                     SaveArticleList();
-                    strOut = GetArticleList(true);
+                    strOut = GetArticleEdit(true);
                     break;
                 case "edit_deletearticle":
                     DeleteArticle();
-                    strOut = GetArticleList(true);
+                    strOut = GetArticleEdit(true);
                     break;
                 case "edit_addimage":
                     RocketModAddListItem("imagelist");
-                    strOut = GetArticle();
+                    strOut = GetArticleEdit();
                     break;
                 case "edit_adddocument":
                     RocketModAddListItem("documentlist");
-                    strOut = GetArticle();
+                    strOut = GetArticleEdit();
                     break;
                 case "edit_addlink":
                     RocketModAddListItem("linklist");
-                    strOut = GetArticle();
+                    strOut = GetArticleEdit();
                     break;
 
                 case "rocketmod_saveconfig":
@@ -346,33 +341,55 @@ namespace RocketMod
 
         }
 
+        public static String GetArticleEdit(bool loadCachedHeader = true)
+        {
+            try
+            {
+                if (_selectedItemId <= 0)
+                {
+                    return GetArticleList(loadCachedHeader);
+                }
+                
+                _articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
+                if (_articleData.Exists)
+                {
+                    return GetArticle();
+                }
+                else
+                {
+                    return GetArticleList(loadCachedHeader);
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+
         public static String GetArticle()
         {
             try
             {
-                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
-                if (appTheme.DataType == 1)
-                {
-                    _selectedItemId = _settingsData.Info.GetXmlPropertyInt("genxml/selecteditemid");
-                    if (_selectedItemId == 0)
-                    {
-                        var articleDataNew = new ArticleData(-1, _moduleid, _editLang);
-                        _selectedItemId = articleDataNew.ItemId;
-                        _settingsData.Info.SetXmlProperty("genxml/selecteditemid", _selectedItemId.ToString());
-                        _settingsData.Update();
-                    }
-                }
-
                 AssignEditLang();
+
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("edit.cshtml", _appthemeRelPath + "/SystemThemes/" + _systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
 
-                var articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
-                articleData.ImageFolder = _moduleParams.ImageFolder;
-                articleData.DocumentFolder = _moduleParams.DocumentFolder;
-                articleData.AppTheme = _moduleParams.AppThemeFolder ;
-                articleData.AppThemeVersion = _moduleParams.AppThemeVersion;
-                articleData.AppThemeRelPath = _moduleParams.AppThemeFolderRel;
-                var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
+                var strOut = "-- NO DATA -- Itemid: " + _selectedItemId;
+                _articleData.ImageFolder = _moduleParams.ImageFolder;
+                _articleData.DocumentFolder = _moduleParams.DocumentFolder;
+                _articleData.AppTheme = _moduleParams.AppThemeFolder;
+                _articleData.AppThemeVersion = _moduleParams.AppThemeVersion;
+                _articleData.AppThemeRelPath = _moduleParams.AppThemeFolderRel;
+
+                _passSettings.Add("datatype", _appTheme.DataType.ToString());
+
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
+
+                // if the module settings change to a single form, use the last edited record.
+                _settingsData.Info.SetXmlProperty("genxml/selecteditemid", _selectedItemId.ToString());
+                _settingsData.Update();
 
                 return strOut;
             }
@@ -388,6 +405,7 @@ namespace RocketMod
 
             try
             {
+                var strOut = "";
                 AssignEditLang();
                 var articleDataList = new ArticleDataList(_moduleid, _editLang);
                 if (loadCachedHeader)
@@ -404,14 +422,13 @@ namespace RocketMod
                 articleDataList.Populate();
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", _appthemeRelPath + "/SystemThemes/" + _systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
-                var strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, _passSettings, articleDataList.Header, _systemInfoData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, _passSettings, articleDataList.Header, _systemInfoData.DebugMode);
                 return strOut;
             }
             catch (Exception ex)
             {
                 return ex.ToString();
             }
-
         }
 
         #endregion
@@ -695,6 +712,25 @@ namespace RocketMod
         {
             var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
             if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
+        }
+
+        private static void AssignSelecteditemId()
+        {
+            _appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, DNNrocketUtils.GetEditCulture(), _moduleParams.AppThemeVersion);
+            _selectedItemId = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            if (_appTheme.DataType == 1)
+            {
+                // form ony, create article and save itemid
+                _selectedItemId = _settingsData.Info.GetXmlPropertyInt("genxml/selecteditemid");
+                var articleDataNew = new ArticleData(_selectedItemId, _moduleid, _editLang);
+                if (!articleDataNew.Exists)
+                {
+                    articleDataNew = new ArticleData(-1, _moduleid, _editLang);
+                    _selectedItemId = articleDataNew.ItemId;
+                    _settingsData.Info.SetXmlProperty("genxml/selecteditemid", _selectedItemId.ToString());
+                    _settingsData.Update();
+                }
+            }
         }
 
 

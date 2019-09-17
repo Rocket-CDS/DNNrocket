@@ -103,6 +103,7 @@ namespace RocketMod
         public string AppThemeVersion { get; set; }
         public string AppThemeRelPath { get; set; }
         public bool DebugMode { get; set; }
+        public bool Exists { get {if (Info == null) { return false; } else { return true; }; } }
     }
 
 }
