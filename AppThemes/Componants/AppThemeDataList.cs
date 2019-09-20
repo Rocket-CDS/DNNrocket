@@ -14,14 +14,15 @@ namespace Rocket.AppThemes.Componants
     public class AppThemeDataList
     {
 
-        public AppThemeDataList()
+        public AppThemeDataList(string selectedsystemkey = "")
         {
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
 
             AssignFolders();
 
             if (List.Count == 0) Populate();
-            if (SystemFolderList.Count == 1) SelectedSystemKey = SystemFolderList.First().SystemKey;
+            SelectedSystemKey = selectedsystemkey;
+            if (SystemFolderList.Count == 1 && SelectedSystemKey == "") SelectedSystemKey = SystemFolderList.First().SystemKey;
         }
         private void AssignFolders()
         {

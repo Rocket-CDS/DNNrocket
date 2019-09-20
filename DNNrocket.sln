@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNNrocketAPI", "API\DNNrocketAPI.csproj", "{2200F6C3-7D4B-4CDF-908F-DCA37ADFB121}"
 EndProject
@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		admin.html = admin.html
 		adminsystem.html = adminsystem.html
 		dnnrocket_system.xml = dnnrocket_system.xml
+		AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\1.0\default\edit.cshtml = AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\1.0\default\edit.cshtml
 		README.md = README.md
 		rocketmod_system.xml = rocketmod_system.xml
 	EndProjectSection
@@ -36,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormBuilder", "FormBuilder\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Images", "Images\Images.csproj", "{96571E03-7FE8-48EB-B3F0-61299BF31C95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Documents", "Documents\Documents.csproj", "{4948C11A-2933-4DA9-B457-54D9B02DB9FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Documents", "Documents\Documents.csproj", "{4948C11A-2933-4DA9-B457-54D9B02DB9FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

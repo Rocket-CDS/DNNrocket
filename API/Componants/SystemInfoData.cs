@@ -126,7 +126,10 @@ namespace DNNrocketAPI
         {
             get { return DNNrocketUtils.MapPath(Info.GetXmlProperty("genxml/textbox/systemrelpath")); }
         }
-
+        public string DefaultInterface
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/defaultinterface"); }
+        }
 
     }
 }

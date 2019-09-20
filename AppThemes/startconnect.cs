@@ -38,7 +38,7 @@ namespace DNNrocket.AppThemes
             if (DNNrocketUtils.IsSuperUser())
             {
 
-                _appThemeDataList = new AppThemeDataList();
+                _appThemeDataList = new AppThemeDataList(postInfo.GetXmlProperty("genxml/hidden/selectedsystemkey"));
 
                 if (paramCmd != "rocketapptheme_selectsystemkey" && _appThemeDataList.SelectedSystemKey == "") paramCmd = "rocketapptheme_getlist";
 

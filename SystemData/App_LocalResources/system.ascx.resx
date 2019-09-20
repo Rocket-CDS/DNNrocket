@@ -270,4 +270,7 @@
   <data name="databasetable.Text" xml:space="preserve">
     <value>Database Table</value>
   </data>
+  <data name="defaultinterface.Text" xml:space="preserve">
+    <value>Default Interface</value>
+  </data>
 </root>

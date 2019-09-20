@@ -67,6 +67,8 @@
 
         <div id="appthemedetails">
 
+            @HiddenField(info, "genxml/hidden/selectedsystemkey","",appTheme.SystemKey)
+
             <div class="w3-container w3-padding">
                 <div class="w3-col m4 w3-padding">
                     <label>@ResourceKey("AppThemes.name")</label>
@@ -106,7 +108,7 @@
         <div class="w3-container">
 
             <div class="w3-bar w3-theme">
-                <div class="w3-bar-item w3-button tablink w3-red tabFields" onclick="openDataTab('tabFields','Fields')">@ResourceKey("AppThemes.fields")</div>
+                <div class="w3-bar-item w3-button tablink w3-theme-d5 tabFields" onclick="openDataTab('tabFields','Fields')">@ResourceKey("AppThemes.fields")</div>
                 <div class="w3-bar-item w3-button tablink tabTemplates" onclick="openDataTab('tabTemplates','Templates')">@ResourceKey("AppThemes.templates")</div>
                 <div class="w3-bar-item w3-button tablink tabImages" onclick="openDataTab('tabImages','Images')">@ResourceKey("DNNrocket.images")</div>
                 <div class="w3-bar-item w3-button tablink tabCSS" onclick="openDataTab('tabCSS','CSS')">@ResourceKey("AppThemes.css")</div>
@@ -732,10 +734,10 @@
       }
       tablinks = document.getElementsByClassName("tablink");
       for (i = 0; i < x.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+        tablinks[i].className = tablinks[i].className.replace(" w3-theme-d5", "");
       }
       document.getElementById(tabName).style.display = "block";
-        $('.' + target).addClass('w3-red');
+        $('.' + target).addClass('w3-theme-d5');
         simplisity_setCookieValue('tabName', tabName);
     }
 

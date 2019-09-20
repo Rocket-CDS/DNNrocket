@@ -15,33 +15,7 @@
 @foreach (var info in articleDataList.DataList)
 {
     	<div class='w3-col m2 w3-padding'>
-		@info.GetXmlProperty("genxml/textbox/aaaaaaa")
-	</div>
-	<div class='w3-col m2 w3-padding'>
-		@info.GetXmlProperty("genxml/textbox/tesfield2")
-	</div>
-	<div class='w3-col m2 w3-padding'>
-		@info.GetXmlProperty("genxml/lang/genxml/textbox/ccccccc")
-	</div>
-	<div class='w3-col w3-padding' style='width:80px;'>
-@if (info.GetXmlProperty("genxml/hidden/img") != "")
-{
-	<img src="@ThumbnailImageUrl(info.GetXmlProperty("genxml/hidden/img"), 60 , 60)" />
-}
-else
-{
-	<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>
-}
-	</div>
-	<div class='w3-col w3-padding' style='width:80px;'>
-@if (info.GetListItem("imagelist", 0).GetXmlProperty("genxml/hidden/imagepath") != "")
-{
-	<img src="@ThumbnailImageUrl(info.GetListItem("imagelist", 0).GetXmlProperty("genxml/hidden/imagepath"), 60 , 60)" />
-}
-else
-{
-	<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>
-}
+		@info.GetXmlProperty("genxml/textbox/a222222222")
 	</div>
 
 }

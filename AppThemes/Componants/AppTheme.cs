@@ -542,6 +542,7 @@ namespace Rocket.AppThemes.Componants
                     var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
                     var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
                     var defaultBool = f.GetXmlProperty("genxml/textbox/defaultvalue").ToLower();
+                    if (defaultBool == "") defaultBool = "false";
                     var attributes = f.GetXmlProperty("genxml/textbox/attributes");
 
                     strFieldList += "\t<div class='w3-col m" + size + " w3-padding'>" + Environment.NewLine;
@@ -701,6 +702,7 @@ namespace Rocket.AppThemes.Componants
                 strOut = strOut.Replace("[Token:AppThemeFields]", strFieldList);
                 strOut = strOut.Replace("[Token:DisplayName]", AppDisplayName);
                 strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
+                strOut = strOut.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
                 strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
                 return strOut;
             }
@@ -823,6 +825,7 @@ namespace Rocket.AppThemes.Componants
                 strOut = strOut.Replace("[Token:List]", strFieldList);
                 strOut = strOut.Replace("[Token:DisplayName]", AppDisplayName);
                 strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
+                strOut = strOut.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
                 strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
                 return strOut;
             }
@@ -932,12 +935,12 @@ namespace Rocket.AppThemes.Componants
                 strOut = strOut.Replace("[Token:List]", strFieldList);
                 strOut = strOut.Replace("[Token:DisplayName]", AppDisplayName);
                 strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
+                strOut = strOut.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
                 strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
                 return strOut;
             }
 
         }
-
 
         #region "properties"
 

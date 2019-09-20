@@ -245,6 +245,12 @@ namespace DNNrocket.SystemData
                 var info = objCtrl.GetInfo(Convert.ToInt32(selecteditemid));
                 info.XMLData = postInfo.XMLData;
                 info.GUIDKey = postInfo.GetXmlProperty("genxml/textbox/ctrlkey");
+
+                if (info.GetXmlProperty("genxml/textbox/defaultinterface") == "")
+                {
+                    info.SetXmlProperty("genxml/textbox/defaultinterface", info.GetXmlProperty("genxml/interfacedata/genxml[1]/textbox/interfacekey"));
+                }
+
                 objCtrl.SaveRecord(info);
 
                 // Capture existing SYSTEMLINK records, so we can selectivly delete. To protect the system during operation, so records are always there.
