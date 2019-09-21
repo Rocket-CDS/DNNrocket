@@ -87,6 +87,9 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_createversion":
                         strOut = CreateNewVersion();
                         break;
+                    case "rocketapptheme_changeversion":
+                        strOut = GetDetail(postInfo.GetXmlProperty("genxml/select/versionfolder"));
+                        break;                        
                 }
             }
             else
@@ -116,14 +119,13 @@ namespace DNNrocket.AppThemes
             }
         }
 
-        public static String GetDetail(string versionFolder = "")
+        public static String GetDetail(string versionFolder = "1.0")
         {
             try
             {
                 AssignEditLang();
                 var appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appThemeFolder,"","",true);
-                if (versionFolder == "") versionFolder = appTheme.LatestVersionFolder;
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), versionFolder, true);
 
                 return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings,null,true);

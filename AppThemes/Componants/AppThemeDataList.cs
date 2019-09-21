@@ -14,15 +14,16 @@ namespace Rocket.AppThemes.Componants
     public class AppThemeDataList
     {
 
-        public AppThemeDataList(string selectedsystemkey = "")
+        public AppThemeDataList(string selectedsystemkey)
         {
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
-
             AssignFolders();
 
-            if (List.Count == 0) Populate();
+            PopulateSystemFolderList();
+
             SelectedSystemKey = selectedsystemkey;
-            if (SystemFolderList.Count == 1 && SelectedSystemKey == "") SelectedSystemKey = SystemFolderList.First().SystemKey;
+            
+            if (List.Count == 0) PopulateAppThemeList();
         }
         private void AssignFolders()
         {
@@ -34,7 +35,7 @@ namespace Rocket.AppThemes.Componants
             AppSystemThemeFolderRootRel = AppProjectFolderRel + "/SystemThemes";
             AppSystemThemeFolderRootMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRootRel);
         }
-        public void Populate()
+        public void PopulateAppThemeList()
         {
             List = new List<AppTheme>();
             var dirlist = System.IO.Directory.GetDirectories(AppSystemThemeFolderRootMapPath + "\\" + SelectedSystemKey);
@@ -44,7 +45,9 @@ namespace Rocket.AppThemes.Componants
                 var appTheme = new AppTheme(SelectedSystemKey, dr.Name);
                 List.Add(appTheme);
             }
-
+        }
+        public void PopulateSystemFolderList()
+        {
             SystemFolderList = new List<SystemInfoData>();
             var dirlist2 = System.IO.Directory.GetDirectories(AppSystemThemeFolderRootMapPath);
             foreach (var d in dirlist2)
@@ -53,7 +56,6 @@ namespace Rocket.AppThemes.Componants
                 var systemInfoData = new SystemInfoData(dr.Name);
                 if (systemInfoData.Exists) SystemFolderList.Add(systemInfoData);
             }
-
         }
 
         public void ClearCache()
@@ -64,7 +66,8 @@ namespace Rocket.AppThemes.Componants
             CacheUtils.RemoveCache(cachekey);
             cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
             CacheUtils.RemoveCache(cachekey);
-            Populate();
+            PopulateSystemFolderList();
+            PopulateAppThemeList();
         }
 
         public void RemoveSelectedSystemKey()
@@ -90,7 +93,8 @@ namespace Rocket.AppThemes.Componants
                 {
                     var cachekey = "SelectedSystemKey*" + DNNrocketUtils.GetCurrentUserId();
                     CacheUtils.SetCache(cachekey, value);
-                    Populate();
+                    PopulateSystemFolderList();
+                    PopulateAppThemeList();
                 }
             }
         }

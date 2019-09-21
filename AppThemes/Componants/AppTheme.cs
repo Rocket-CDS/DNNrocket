@@ -35,9 +35,6 @@ namespace Rocket.AppThemes.Componants
 
             AppThemeFolder = appThemeFolder;
             AppVersionFolder = versionFolder;
-            if (AppVersionFolder == "") AppVersionFolder = "1.0";
-
-            _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
 
             AppSystemThemeFolderRel = AppProjectFolderRel + "/SystemThemes/" + SystemKey;
 
@@ -49,13 +46,10 @@ namespace Rocket.AppThemes.Componants
             AssignVersionFolders();
 
             PopulateVersionList();
-            if (Convert.ToDouble(AppVersionFolder) < Convert.ToDouble(LatestVersionFolder))
-            {
-                // chicken and egg with version folder and MapPath.
-                AppVersionFolder = LatestVersionFolder;
-                AssignVersionFolders();
-            }
+            if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder; ;
+            _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
 
+            AssignVersionFolders();
 
             if (AppThemeFolder != "" && SystemKey != "") Populate();
         }
@@ -493,6 +487,24 @@ namespace Rocket.AppThemes.Componants
 
                 AppVersionFolder = destVersionFolder;
 
+                // copy DB record
+                var versionCopyRecord = _objCtrl.GetRecordByGuidKey(Info.PortalId,-1, _entityTypeCode, _guidKey,"", _tableName);
+                _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
+                versionCopyRecord.GUIDKey = _guidKey;
+                versionCopyRecord.ItemID = -1;
+                versionCopyRecord.SetXmlProperty("genxml/select/versionfolder", AppVersionFolder);
+
+                versionCopyRecord = _objCtrl.SaveRecord(versionCopyRecord, -1, _tableName);
+
+                var l = _objCtrl.GetList(Info.PortalId, -1, _entityTypeCode + "LANG", " and R1.ParentItemId = " + Info.ItemID + " ", "", "", 0, 0, 0, 0, -1, _tableName);
+                foreach (var i in l)
+                {
+                    i.ParentItemId = versionCopyRecord.ItemID;
+                    i.ItemID = -1;
+                    _objCtrl.Update(i, _tableName);
+                }
+
+                // repopulate
                 AssignVersionFolders();
 
                 PopulateVersionList();
@@ -524,7 +536,7 @@ namespace Rocket.AppThemes.Componants
                     foreach (var d in dirlist)
                     {
                         var dr = new System.IO.DirectoryInfo(d);
-                        VersionList.Add(dr.Name);
+                        if (GeneralUtils.IsNumeric(dr.Name)) VersionList.Add(dr.Name); // only load version numbers.
                     }
                 }
                 if (VersionList.Count == 0) VersionList.Add("1.0");

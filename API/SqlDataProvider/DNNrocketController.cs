@@ -89,13 +89,11 @@ namespace DNNrocketAPI
         /// <param name="objInfo"></param>
         /// <param name="doindex"> if calling from the index function we don't want to index again.</param>
         /// <returns></returns>
-        private int Update(SimplisityRecord objInfo, string tableName = "DNNrocket")
+        public int Update(SimplisityRecord objInfo, string tableName = "DNNrocket")
         {
-            var itemid = -1;
             // save data
             objInfo.ModifiedDate = DateTime.Now;
-            itemid = DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang, objInfo.SystemId, objInfo.SortOrder, tableName);
-            return itemid;
+            return DataProvider.Instance().Update(objInfo.ItemID, objInfo.PortalId, objInfo.ModuleId, objInfo.TypeCode, objInfo.XMLData, objInfo.GUIDKey, objInfo.ModifiedDate, objInfo.TextData, objInfo.XrefItemId, objInfo.ParentItemId, objInfo.UserId, objInfo.Lang, objInfo.SystemId, objInfo.SortOrder, tableName);
         }
 
         public void DeleteIndex(SimplisityRecord objInfo, string tableName = "DNNrocket")
