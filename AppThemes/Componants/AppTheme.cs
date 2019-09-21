@@ -33,11 +33,9 @@ namespace Rocket.AppThemes.Componants
             _jsFileName = new List<string>();
             _resxFileName = new List<string>();
 
-            PopulateVersionList();
-
             AppThemeFolder = appThemeFolder;
             AppVersionFolder = versionFolder;
-            if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
+            if (AppVersionFolder == "") AppVersionFolder = "1.0";
 
             _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
 
@@ -48,6 +46,22 @@ namespace Rocket.AppThemes.Componants
             AppCultureCode = langRequired;
             if (AppCultureCode == "") AppCultureCode = DNNrocketUtils.GetEditCulture();
 
+            AssignVersionFolders();
+
+            PopulateVersionList();
+            if (Convert.ToDouble(AppVersionFolder) < Convert.ToDouble(LatestVersionFolder))
+            {
+                // chicken and egg with version folder and MapPath.
+                AppVersionFolder = LatestVersionFolder;
+                AssignVersionFolders();
+            }
+
+
+            if (AppThemeFolder != "" && SystemKey != "") Populate();
+        }
+
+        private void AssignVersionFolders()
+        {
             AppThemeVersionFolderRel = AppThemeFolderRel + "/" + AppVersionFolder;
 
             ImageFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/img";
@@ -57,7 +71,19 @@ namespace Rocket.AppThemes.Componants
             JsFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/js";
             ResxFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/resx";
 
-            if (AppThemeFolder != "" && SystemKey != "") Populate();
+            AppThemeVersionFolderMapPath = DNNrocketUtils.MapPath(AppThemeVersionFolderRel);
+
+
+            AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolderRel);
+            ImageFolderMapPath = DNNrocketUtils.MapPath(ImageFolderRel);
+            DocumentFolderMapPath = DNNrocketUtils.MapPath(DocumentFolderRel);
+            CssFolderMapPath = DNNrocketUtils.MapPath(CssFolderRel);
+            TempFolderMapPath = DNNrocketUtils.MapPath(TempFolderRel);
+            JsFolderMapPath = DNNrocketUtils.MapPath(JsFolderRel);
+            ResxFolderMapPath = DNNrocketUtils.MapPath(ResxFolderRel);
+            AppProjectFolderMapPath = DNNrocketUtils.MapPath(AppProjectFolderRel);
+            AppSystemThemeFolderMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRel);
+
         }
 
         public void Populate()
@@ -450,21 +476,40 @@ namespace Rocket.AppThemes.Componants
             }
         }
 
-        public void CopyVersion(string sourceVersionFolder, string destVersionFolder)
+        public string CopyVersion(string sourceVersionFolder, string destVersionFolder)
         {
-            sourceVersionFolder = AppThemeFolderMapPath + "\\" + sourceVersionFolder;
-            destVersionFolder = AppThemeFolderMapPath + "\\" + destVersionFolder;
-
-            if (Directory.Exists(sourceVersionFolder))
+            var sourceVersionFolderMapPath = AppThemeFolderMapPath + "\\" + sourceVersionFolder;
+            var destVersionFolderMapPath = AppThemeFolderMapPath + "\\" + destVersionFolder;
+            if (!Directory.Exists(destVersionFolderMapPath)) Directory.CreateDirectory(destVersionFolderMapPath);
+            if (Directory.Exists(sourceVersionFolderMapPath) && !Directory.EnumerateFileSystemEntries(destVersionFolderMapPath).Any())
             {
                 //Now Create all of the directories
-                foreach (string dirPath in Directory.GetDirectories(sourceVersionFolder, "*", SearchOption.AllDirectories))
-                    Directory.CreateDirectory(dirPath.Replace(sourceVersionFolder, destVersionFolder));
+                foreach (string dirPath in Directory.GetDirectories(sourceVersionFolderMapPath, "*", SearchOption.AllDirectories))
+                    Directory.CreateDirectory(dirPath.Replace(sourceVersionFolderMapPath, destVersionFolderMapPath));
 
                 //Copy all the files & Replaces any files with the same name
-                foreach (string newPath in Directory.GetFiles(sourceVersionFolder, "*.*", SearchOption.AllDirectories))
-                    File.Copy(newPath, newPath.Replace(sourceVersionFolder, destVersionFolder), true);
+                foreach (string newPath in Directory.GetFiles(sourceVersionFolderMapPath, "*.*", SearchOption.AllDirectories))
+                    File.Copy(newPath, newPath.Replace(sourceVersionFolderMapPath, destVersionFolderMapPath), true);
+
+                AppVersionFolder = destVersionFolder;
+
+                AssignVersionFolders();
+
+                PopulateVersionList();
+                Populate();
             }
+            else
+            {
+                if (!Directory.Exists(sourceVersionFolderMapPath))
+                {
+                    return "<h1>ERROR: Invalid Source Directory</h1>";
+                }
+                if (Directory.EnumerateFileSystemEntries(destVersionFolderMapPath).Any())
+                {
+                    return "<h1>ERROR: Destination Directory not empty</h1>";
+                }
+            }
+            return "";
         }
 
         public void PopulateVersionList()
@@ -945,9 +990,9 @@ namespace Rocket.AppThemes.Componants
         #region "properties"
 
         public string AppProjectFolderRel { get; set; }
-        public string AppProjectFolderMapPath { get { return DNNrocketUtils.MapPath(AppProjectFolderRel); }  }
+        public string AppProjectFolderMapPath { get; set; }
         public string AppSystemThemeFolderRel { get; set; }
-        public string AppSystemThemeFolderMapPath { get { return DNNrocketUtils.MapPath(AppSystemThemeFolderRel); } }
+        public string AppSystemThemeFolderMapPath { get; set; }
         public string AppName { get; private set; }
         public string AppDisplayName { get; private set; }
         public string AppSummary { get; private set; }
@@ -955,18 +1000,18 @@ namespace Rocket.AppThemes.Componants
         public string AppCultureCode { get; set; }
         public string AppThemeFolder { get; set; }
         public string AppThemeFolderRel { get; set; }
-        public string AppThemeFolderMapPath { get { return DNNrocketUtils.MapPath(AppThemeFolderRel); } }
+        public string AppThemeFolderMapPath { get; set; }
         public string AppVersionFolder { get; set; }
         public string AppThemeVersionFolderRel { get; set; }
-        public string AppThemeVersionFolderMapPath { get { return DNNrocketUtils.MapPath(AppThemeVersionFolderRel); } }
+        public string AppThemeVersionFolderMapPath { get; set; }
         public List<string> VersionList { get; set; }
         public string LatestVersionFolder { get; set; }
-        public string ImageFolderMapPath { get { return DNNrocketUtils.MapPath(ImageFolderRel); } }
-        public string DocumentFolderMapPath { get { return DNNrocketUtils.MapPath(DocumentFolderRel); } }
-        public string CssFolderMapPath { get { return DNNrocketUtils.MapPath(CssFolderRel); } }
-        public string TempFolderMapPath { get { return DNNrocketUtils.MapPath(TempFolderRel); } }
-        public string JsFolderMapPath { get { return DNNrocketUtils.MapPath(JsFolderRel); } }
-        public string ResxFolderMapPath { get { return DNNrocketUtils.MapPath(ResxFolderRel); } }
+        public string ImageFolderMapPath { get; set; }
+        public string DocumentFolderMapPath { get; set; }
+        public string CssFolderMapPath { get; set; }
+        public string TempFolderMapPath { get; set; }
+        public string JsFolderMapPath { get; set; }
+        public string ResxFolderMapPath { get; set; }
         public string ImageFolderRel { get; set; }
         public string DocumentFolderRel { get; set; }
         public string CssFolderRel { get; set; }

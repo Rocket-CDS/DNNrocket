@@ -129,6 +129,9 @@
   <data name="builder.Text" xml:space="preserve">
     <value>AppTheme Builder</value>
   </data>
+  <data name="createversion.Text" xml:space="preserve">
+    <value>Create Version</value>
+  </data>
   <data name="css.Text" xml:space="preserve">
     <value>CSS</value>
   </data>
@@ -238,6 +241,6 @@
     <value>Version</value>
   </data>
   <data name="versionmsg.Text" xml:space="preserve">
-    <value>Create a new version of an existing AppTheme.</value>
+    <value>Create a new version of this AppTheme.</value>
   </data>
 </root>

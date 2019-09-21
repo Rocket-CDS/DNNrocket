@@ -84,6 +84,9 @@ namespace DNNrocket.AppThemes
                         SaveData();
                         strOut = AddListField();
                         break;
+                    case "rocketapptheme_createversion":
+                        strOut = CreateNewVersion();
+                        break;
                 }
             }
             else
@@ -94,6 +97,24 @@ namespace DNNrocket.AppThemes
             return DNNrocketUtils.ReturnString(strOut);
         }
 
+
+        public static string CreateNewVersion()
+        {
+            try
+            {
+                AssignEditLang();
+                var appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
+
+                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appThemeFolder, "", "", true);
+                var rtn = appTheme.CopyVersion(appTheme.AppVersionFolder, (Convert.ToDouble(appTheme.LatestVersionFolder) + 1).ToString("0.0"));
+                if (rtn != "") return rtn;
+                return GetDetail();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
 
         public static String GetDetail(string versionFolder = "")
         {
