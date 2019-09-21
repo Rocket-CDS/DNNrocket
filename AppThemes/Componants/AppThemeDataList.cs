@@ -42,7 +42,7 @@ namespace Rocket.AppThemes.Componants
             foreach (var d in dirlist)
             {
                 var dr = new System.IO.DirectoryInfo(d);
-                var appTheme = new AppTheme(SelectedSystemKey, dr.Name);
+                var appTheme = new AppTheme(SelectedSystemKey, dr.Name, "");
                 List.Add(appTheme);
             }
         }

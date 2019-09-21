@@ -52,16 +52,16 @@
     <div id="detailsection">
 
         <div class="w3-row w3-padding">
-            <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="" s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+            <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="" s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
             @ButtonGap()
             <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
         </div>
         <div class="w3-row w3-padding">
-            <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class="fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
+            <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
             @ButtonGap()
-            <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_delete" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</div>
+            <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_delete" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</div>
             @ButtonGap()
-            <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</div>
+            <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</div>
         </div>
 
         <div class="w3-container">
@@ -137,7 +137,7 @@
                             }
                             m.List = l2;
                         }
-                        @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", m, info.GetXmlProperty("genxml/select/versionfolder"), true)
+                        @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", m, "1.0", true)
                     </div>
 
                 </div>

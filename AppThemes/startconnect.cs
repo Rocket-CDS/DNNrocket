@@ -19,6 +19,8 @@ namespace DNNrocket.AppThemes
         private static string _editLang;
         private static SystemInfoData _systemInfoData;
         private static Dictionary<string, string> _passSettings;
+        private static string _appThemeFolder;
+        private static string _appVersionFolder;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -37,6 +39,8 @@ namespace DNNrocket.AppThemes
 
             if (DNNrocketUtils.IsSuperUser())
             {
+                _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
+                _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
 
                 _appThemeDataList = new AppThemeDataList(postInfo.GetXmlProperty("genxml/hidden/selectedsystemkey"));
 
@@ -88,8 +92,12 @@ namespace DNNrocket.AppThemes
                         strOut = CreateNewVersion();
                         break;
                     case "rocketapptheme_changeversion":
-                        strOut = GetDetail(postInfo.GetXmlProperty("genxml/select/versionfolder"));
-                        break;                        
+                        _appVersionFolder = _postInfo.GetXmlProperty("genxml/select/versionfolder");
+                        strOut = GetDetail();
+                        break;
+                    case "rocketapptheme_deleteversion":
+                        strOut = DeleteVersion();
+                        break;
                 }
             }
             else
@@ -106,9 +114,7 @@ namespace DNNrocket.AppThemes
             try
             {
                 AssignEditLang();
-                var appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-
-                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appThemeFolder, "", "", true);
+                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, "", true);
                 var rtn = appTheme.CopyVersion(appTheme.AppVersionFolder, (Convert.ToDouble(appTheme.LatestVersionFolder) + 1).ToString("0.0"));
                 if (rtn != "") return rtn;
                 return GetDetail();
@@ -118,15 +124,29 @@ namespace DNNrocket.AppThemes
                 return ex.ToString();
             }
         }
-
-        public static String GetDetail(string versionFolder = "1.0")
+        public static string DeleteVersion()
         {
             try
             {
                 AssignEditLang();
-                var appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appThemeFolder,"","",true);
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), versionFolder, true);
+                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, "", true);
+                appTheme.DeleteVersion();
+                _appVersionFolder = appTheme.AppVersionFolder;
+                return GetDetail();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public static String GetDetail()
+        {
+            try
+            {
+                AssignEditLang();
+                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, "", true);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
                 return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings,null,true);
             }
@@ -167,47 +187,41 @@ namespace DNNrocket.AppThemes
 
         public static void SaveData()
         {
-            var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
+            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
             appTheme.Save(_postInfo);
         }
 
         public static void AddListImage()
         {
-            var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
+            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
             appTheme.AddListImage();
         }
 
         public static string AddListTemplate()
         {
-            var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
+            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
             appTheme.AddListTemplate();
             var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), appTheme.AppVersionFolder, true);
             return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
         }
         public static string AddListCss()
         {
-            var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
+            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
             appTheme.AddListCss();
             var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), appTheme.AppVersionFolder, true);
             return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
         }
         public static string AddListJs()
         {
-            var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
+            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
             appTheme.AddListJs();
             var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), appTheme.AppVersionFolder, true);
             return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
         }
         public static string AddListResx()
         {
-            var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
             var culturecode = _paramInfo.GetXmlProperty("genxml/hidden/resxculturecode");
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
+            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
 
             // get default data
             var jsonResx = "";
@@ -220,8 +234,7 @@ namespace DNNrocket.AppThemes
         }
         private static string AddListField()
         {
-            var appFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appFolder, _editLang);
+            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
             appTheme.AddListField();
             var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), appTheme.AppVersionFolder, true);
             return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);

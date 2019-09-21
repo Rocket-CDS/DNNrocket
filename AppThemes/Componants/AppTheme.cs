@@ -21,7 +21,7 @@ namespace Rocket.AppThemes.Componants
         private List<string> _resxFileName;
         private bool _debugMode;
 
-        public AppTheme(string systemKey, string appThemeFolder, string langRequired = "", string versionFolder = "", bool debugMode = false)
+        public AppTheme(string systemKey, string appThemeFolder, string versionFolder, string langRequired = "", bool debugMode = false)
         {
             _debugMode = debugMode;
             _objCtrl = new DNNrocketController();
@@ -216,12 +216,19 @@ namespace Rocket.AppThemes.Componants
                 Directory.Delete(AppThemeFolderMapPath, true);
             }
         }
-        public void DeleteVersion(string versionFolder)
+        public void DeleteVersion()
         {
-            if (Directory.Exists(AppThemeFolderMapPath + "\\" + versionFolder))
+
+            if (Directory.Exists(AppThemeVersionFolderMapPath))
             {
-                Directory.Delete(AppThemeFolderMapPath + "\\" + versionFolder, true);
+                Directory.Delete(AppThemeVersionFolderMapPath, true);
             }
+
+            var versionRecord = _objCtrl.GetRecordByGuidKey(Info.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
+            _objCtrl.Delete(versionRecord.ItemID, _tableName); // cascade delete
+
+            PopulateVersionList();
+            AppVersionFolder = LatestVersionFolder;
         }
         public void Save(SimplisityInfo postInfo)
         {
