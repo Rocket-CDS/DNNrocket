@@ -138,6 +138,7 @@ namespace DNNrocket.AppThemes
                 var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, "", true);
                 appTheme.DeleteVersion();
                 _appVersionFolder = appTheme.AppVersionFolder;
+                _appThemeDataList = new AppThemeDataList(_appThemeDataList.SelectedSystemKey); // rebuild list without verison.
                 return GetDetail();
             }
             catch (Exception ex)

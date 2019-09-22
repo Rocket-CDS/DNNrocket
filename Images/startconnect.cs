@@ -88,7 +88,10 @@ namespace DNNrocket.Images
             var imagefolder = _paramInfo.GetXmlProperty("genxml/hidden/imagefolder");
             if (imagefolder == "") imagefolder = "images";
 
-            var imageDirectory = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + imagefolder;
+            var uploadFolderPath = imagefolder;
+            if (!uploadFolderPath.Contains("/")) uploadFolderPath = DNNrocketUtils.HomeDNNrocketRelDirectory() + "/" + imagefolder;
+            var imageDirectory = DNNrocketUtils.MapPath(uploadFolderPath);
+
             if (!Directory.Exists(imageDirectory)) Directory.CreateDirectory(imageDirectory);
 
             var strOut = "";
@@ -109,7 +112,7 @@ namespace DNNrocket.Images
 
                         if (createseo)
                         {
-                            var imageDirectorySEO = DNNrocketUtils.HomeDNNrocketDirectory() + "\\images\\seo";
+                            var imageDirectorySEO = imageDirectory + "\\seo";
                             if (!Directory.Exists(imageDirectorySEO)) Directory.CreateDirectory(imageDirectorySEO);
                             ImgUtils.CopyImageForSEO(DNNrocketUtils.TempDirectory() + "\\" + userfilename, imageDirectorySEO, unqName);
                         }

@@ -1479,22 +1479,23 @@ namespace DNNrocketAPI
         /// <param name="imagesize"></param>
         /// <param name="selectsingle"></param>
         /// <param name="autoreturn"></param>
-        /// <param name="uploadFolder">this can be a full relitive path or a single folder name at portal level in DNNrocket folder "/Portals/<portal>/DNNrocket/<uploadFolder>"</param>
+        /// <param name="uploadFolder">this can be a full relative path or a single folder name at portal level in DNNrocket folder "/Portals/<portal>/DNNrocket/<uploadFolder>"</param>
         /// <param name="razorTemplateName"></param>
         /// <param name="templateControlRelPath"></param>
         /// <param name="themeFolder"></param>
         /// <returns></returns>
-        public static string RenderImageSelect(int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
+        public static string RenderImageSelect(int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadRelFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
         {
             var imageModel = new SimplisityRazor();
 
-            imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectfolder", uploadFolder);
+            imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectfolder", uploadRelFolder);
             imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectsingle", selectsingle.ToString());
             imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectautoreturn", autoreturn.ToString());
             imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectsize", imagesize.ToString());
 
-            var uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + uploadFolder;
-            if (uploadFolder.Contains("//")) uploadFolderPath = DNNrocketUtils.MapPath(uploadFolder);
+            var uploadFolderPath = uploadRelFolder;
+            if (!uploadFolderPath.Contains("/")) uploadFolderPath = DNNrocketUtils.HomeDNNrocketRelDirectory() + "/" + uploadRelFolder;
+            uploadFolderPath = DNNrocketUtils.MapPath(uploadFolderPath);
 
             var imgList = new List<object>();
             foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
@@ -1520,6 +1521,7 @@ namespace DNNrocketAPI
 
             var uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + uploadFolder;
             if (uploadFolder.Contains("//")) uploadFolderPath = uploadFolder;
+
             var uploadRelFolderPath = DNNrocketUtils.HomeDNNrocketRelDirectory() + "/" + uploadFolder;
             if (uploadFolder.Contains("//")) uploadRelFolderPath = DNNrocketUtils.MapPath(uploadFolder);
 
