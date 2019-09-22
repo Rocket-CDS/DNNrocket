@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="appthemeexists.Text" xml:space="preserve">
+    <value>AppTheme already exists. Choose a different name or prefix.</value>
+  </data>
+  <data name="appthemename.Text" xml:space="preserve">
+    <value>AppTheme Name</value>
+  </data>
   <data name="autoregenerateedit.Text" xml:space="preserve">
     <value>Regenerate "edit.cshtml"</value>
   </data>
@@ -128,6 +134,9 @@
   </data>
   <data name="builder.Text" xml:space="preserve">
     <value>AppTheme Builder</value>
+  </data>
+  <data name="createnewapptheme.Text" xml:space="preserve">
+    <value>Create New AppTheme</value>
   </data>
   <data name="createversion.Text" xml:space="preserve">
     <value>Create Version</value>
@@ -191,6 +200,9 @@
   </data>
   <data name="newmsg.Text" xml:space="preserve">
     <value>Create new AppTheme, based on an existing one or from a blank canvas.</value>
+  </data>
+  <data name="prefix.Text" xml:space="preserve">
+    <value>Prefix</value>
   </data>
   <data name="resources.Text" xml:space="preserve">
     <value>Resources</value>

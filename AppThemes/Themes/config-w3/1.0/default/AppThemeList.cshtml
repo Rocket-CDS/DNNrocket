@@ -12,7 +12,7 @@
     var systemInfoData2 = new SystemInfoData(appThemeDataList.SelectedSystemKey);
 }
 
-@if (appThemeDataList.SelectedSystemKey == "" )
+@if (appThemeDataList.SelectedSystemKey == "")
 {
 
     <div class="w3-modal-content w3-border w3-card">
@@ -42,20 +42,44 @@
 else
 {
 
-<div class="w3-row w3-padding">
-    <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addapptheme" s-fields=''>@ResourceKey("DNNrocket.cmdAddButton")</div>
-    @if (appThemeDataList.SystemFolderList.Count() > 1)
-    {
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" s-track="false">@ResourceKey("DNNrocket.cmdReturnButton")</div>
-    }
-</div>
-<h2>@systemInfoData2.SystemName</h2>
+    <div id="createnewapptheme" class="w3-modal">
+        <div class="w3-modal-content w3-card w3-animate-zoom">
+
+            <header class="w3-container  w3-theme">
+                <span onclick="document.getElementById('createnewapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>@ResourceKey("Appthemes.createnewapptheme")</h2>
+            </header>
+
+            <div class="w3-row-padding">
+                <div class="w3-col m4 w3-padding">
+                    <input value="" id="appthemeprefix" s-xpath="genxml/textbox/appthemeprefix" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.prefix")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                </div>
+                <div class="w3-col m5 w3-padding">
+                    <input value="" id="appthemename" s-xpath="genxml/textbox/appthemename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.appthemename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                </div>
+                <div class="w3-col m3 w3-padding">
+                    <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addapptheme" s-post="#createnewapptheme" s-return=".createnewappthemereturn" s-fields=''>@ResourceKey("DNNrocket.cmdAddButton")</div>
+                </div>
+            </div>
+            <div class="w3-row w3-panel w3-red createnewappthemereturn">
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'" >@ResourceKey("DNNrocket.cmdAddButton")</div>
+        @if (appThemeDataList.SystemFolderList.Count() > 1)
+        {
+            @ButtonGap()
+            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" s-track="false">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+        }
+    </div>
+    <h2>@systemInfoData2.SystemName</h2>
     <div class="w3-row w3-card searchdata w3-margin-top">
 
         <div class="">
             <div class="w3-row w3-padding">
-               <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.search")..." id="searchtext" onkeyup="searchFunction()">
+                <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.search")..." id="searchtext" onkeyup="searchFunction()">
             </div>
         </div>
 
@@ -75,25 +99,25 @@ else
                 <li class="datalistitem w3-display-container">
 
                     <div class="listrow w3-row w3-padding">
-                            <div class="w3-col w3-button simplisity_click w3-margin-right " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
-                                <i class="fas fa-edit w3-center" style='font-size:32px'></i>
-                            </div>
-                            <div class="w3-col " style="width: 100px;">
-                                @if (appTheme.Logo != "")
-                                {
-                                    <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" />
-                                }
-                                else
-                                {
-                                    <img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>
-                                }
-                            </div>
-                            <div class="w3-rest">
-                                @appTheme.AppThemeFolder
-                            </div>
-                            <div class="w3-col " style="width: 50px;">
-                                <span>&nbsp;</span>
-                            </div>
+                        <div class="w3-col w3-button simplisity_click w3-margin-right " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
+                            <i class="fas fa-edit w3-center" style='font-size:32px'></i>
+                        </div>
+                        <div class="w3-col " style="width: 100px;">
+                            @if (appTheme.Logo != "")
+                            {
+                                <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" />
+                            }
+                            else
+                            {
+                                <img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>
+                            }
+                        </div>
+                        <div class="w3-rest">
+                            @appTheme.AppThemeFolder
+                        </div>
+                        <div class="w3-col " style="width: 50px;">
+                            <span>&nbsp;</span>
+                        </div>
                     </div>
 
                 </li>
@@ -103,28 +127,28 @@ else
 
     </div>
 
-<script>
-    $(document).ready(function () {
-        $("#datalist").disableSelection();
-    });
+    <script>
+        $(document).ready(function () {
+            $("#datalist").disableSelection();
+        });
 
-    function searchFunction() {
-        var input, filter, ul, li, a, i;
-        input = document.getElementById("searchtext");
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("datalist");
-        li = ul.getElementsByTagName("li");
-        for (i = 0; i < li.length; i++) {
-            txtValue = li[i].textContent || li[i].innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
+        function searchFunction() {
+            var input, filter, ul, li, a, i;
+            input = document.getElementById("searchtext");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("datalist");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                txtValue = li[i].textContent || li[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
             }
         }
-    }
 
-</script>
+    </script>
 
 }
 

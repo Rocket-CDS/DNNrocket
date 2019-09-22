@@ -67,7 +67,6 @@ namespace Rocket.AppThemes.Componants
 
             AppThemeVersionFolderMapPath = DNNrocketUtils.MapPath(AppThemeVersionFolderRel);
 
-
             AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolderRel);
             ImageFolderMapPath = DNNrocketUtils.MapPath(ImageFolderRel);
             DocumentFolderMapPath = DNNrocketUtils.MapPath(DocumentFolderRel);
@@ -77,6 +76,8 @@ namespace Rocket.AppThemes.Componants
             ResxFolderMapPath = DNNrocketUtils.MapPath(ResxFolderRel);
             AppProjectFolderMapPath = DNNrocketUtils.MapPath(AppProjectFolderRel);
             AppSystemThemeFolderMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRel);
+
+            CreateNewAppTheme();
 
         }
 
@@ -214,6 +215,10 @@ namespace Rocket.AppThemes.Componants
             if (Directory.Exists(AppThemeFolderMapPath))
             {
                 Directory.Delete(AppThemeFolderMapPath, true);
+
+                var versionRecord = _objCtrl.GetRecordByGuidKey(Info.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
+                _objCtrl.Delete(versionRecord.ItemID, _tableName); // cascade delete
+
             }
         }
         public void DeleteVersion()
@@ -229,6 +234,9 @@ namespace Rocket.AppThemes.Componants
 
             PopulateVersionList();
             AppVersionFolder = LatestVersionFolder;
+            _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
+            AssignVersionFolders();
+            Populate();
         }
         public void Save(SimplisityInfo postInfo)
         {
@@ -474,6 +482,16 @@ namespace Rocket.AppThemes.Componants
             {
                 var fileImport = File.ReadAllText(fileMapPath);
                 Info.FromXmlItem(fileImport);
+            }
+        }
+
+        public void CreateNewAppTheme()
+        {
+            // create new appTheme
+            if (!Directory.Exists(AppThemeFolderMapPath))
+            {
+                Directory.CreateDirectory(AppThemeFolderMapPath);
+                if (!Directory.Exists(AppThemeVersionFolderMapPath)) CreateVersionFolders(AppVersionFolder);
             }
         }
 

@@ -98,6 +98,12 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_deleteversion":
                         strOut = DeleteVersion();
                         break;
+                    case "rocketapptheme_deletetheme":
+                        strOut = DeleteTheme();
+                        break;
+                    case "rocketapptheme_addapptheme":
+                        strOut = AddNewAppTheme();
+                        break;
                 }
             }
             else
@@ -133,6 +139,53 @@ namespace DNNrocket.AppThemes
                 appTheme.DeleteVersion();
                 _appVersionFolder = appTheme.AppVersionFolder;
                 return GetDetail();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        public static string DeleteTheme()
+        {
+            try
+            {
+                AssignEditLang();
+                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, "", true);
+                appTheme.DeleteTheme();
+                _appThemeDataList = new AppThemeDataList(_appThemeDataList.SelectedSystemKey);
+                return GetList();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public static string AddNewAppTheme()
+        {
+            try
+            {
+                var appthemeprefix = _postInfo.GetXmlProperty("genxml/textbox/appthemeprefix");
+                var appthemename = _postInfo.GetXmlProperty("genxml/textbox/appthemename");
+
+                var newAppThemeName = appthemename;
+                if (appthemeprefix != "") newAppThemeName = appthemeprefix + "_" + newAppThemeName;
+
+                var appProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
+                var appSystemThemeFolderRel = appProjectFolderRel + "/SystemThemes/" + _appThemeDataList.SelectedSystemKey;
+                var appThemeFolderRel = appSystemThemeFolderRel + "/" + newAppThemeName;
+                var appThemeFolderMapPath = DNNrocketUtils.MapPath(appThemeFolderRel);
+
+                if (Directory.Exists(appThemeFolderMapPath))
+                {
+                    return DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/AppThemes/App_LocalResources/", "AppThemes.appthemeexists");
+                }
+
+                AssignEditLang();
+                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, newAppThemeName, "1.0", "", true);
+                _appVersionFolder = appTheme.AppVersionFolder;
+                _appThemeDataList.PopulateAppThemeList();
+                return GetList();
             }
             catch (Exception ex)
             {
