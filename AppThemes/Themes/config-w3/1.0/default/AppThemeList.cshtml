@@ -58,21 +58,22 @@ else
                     <input value="" id="appthemename" s-xpath="genxml/textbox/appthemename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.appthemename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
                 </div>
                 <div class="w3-col m3 w3-padding">
-                    <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addapptheme" s-post="#createnewapptheme" s-return=".createnewappthemereturn" s-fields=''>@ResourceKey("DNNrocket.cmdAddButton")</div>
+                    <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addapptheme" s-post="#createnewapptheme" s-return=".createnewappthemereturn" s-after="redisplaylist" s-fields=''>@ResourceKey("DNNrocket.cmdAddButton")</div>
                 </div>
             </div>
-            <div class="w3-row w3-panel w3-red createnewappthemereturn">
+            <div class="w3-row w3-panel w3-red createnewappthemereturn" style="display:none;">
             </div>
         </div>
     </div>
 
     <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'" >@ResourceKey("DNNrocket.cmdAddButton")</div>
+        <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'">@ResourceKey("DNNrocket.cmdAddButton")</div>
         @if (appThemeDataList.SystemFolderList.Count() > 1)
         {
             @ButtonGap()
             <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" s-track="false">@ResourceKey("DNNrocket.cmdReturnButton")</div>
         }
+        <div class="refreshlist w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-track="true" s-cmd="rocketapptheme_getlist" s-fields='' style="display:none;"></div>
     </div>
     <h2>@systemInfoData2.SystemName</h2>
     <div class="w3-row w3-card searchdata w3-margin-top">
@@ -145,6 +146,15 @@ else
                 } else {
                     li[i].style.display = "none";
                 }
+            }
+        }
+
+        function redisplaylist() {
+            if ($('.createnewappthemereturn').text() == '') {
+                simplisity_callserver($('.refreshlist'));
+            }
+            else {
+                $('.createnewappthemereturn').show();
             }
         }
 
