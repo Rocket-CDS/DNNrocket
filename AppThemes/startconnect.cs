@@ -123,6 +123,7 @@ namespace DNNrocket.AppThemes
                 AssignEditLang();
                 var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, "", true);
                 var rtn = appTheme.CopyVersion(appTheme.AppVersionFolder, (Convert.ToDouble(appTheme.LatestVersionFolder) + 1).ToString("0.0"));
+                _appVersionFolder = appTheme.AppVersionFolder;
                 if (rtn != "") return rtn;
                 return GetDetail();
             }

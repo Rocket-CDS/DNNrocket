@@ -34,16 +34,9 @@
                 <label class="">@ResourceKey("system.apiurl")</label>
                 @TextBox(sInfo, "genxml/textbox/apiurl", "class='w3-input w3-border'  ", "")
             </div>
-            <div class="w3-quarter">
-                @if (sInfo.GetXmlProperty("genxml/textbox/adminurl") != "")
-                {
-                    <a class="w3-button w3-teal w3-padding-8 w3-margin-top" href="@sInfo.GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ResourceKey("DNNrocket.cmdAdminButton")</a>
-                }
-
-            </div>
-            <div class="w3-quarter">
-                <label class="">@ResourceKey("system.debugmode")</label><br />
-                @CheckBox(sInfo, "genxml/checkbox/debugmode", "")
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.defaultinterface")</label>
+                @TextBox(sInfo, "genxml/textbox/defaultinterface", "class='w3-input w3-border' maxlength='350'")
             </div>
         </div>
         <div class="w3-row-padding">
@@ -62,9 +55,16 @@
                 <label class="">@ResourceKey("system.systemrelpath")</label>
                 @TextBox(sInfo, "genxml/textbox/systemrelpath", "class='w3-input w3-border' maxlength='350'")
             </div>
-            <div class="w3-half">
-                <label class="">@ResourceKey("system.defaultinterface")</label>
-                @TextBox(sInfo, "genxml/textbox/defaultinterface", "class='w3-input w3-border' maxlength='350'")
+            <div class="w3-quarter">
+                <label class="">@ResourceKey("system.debugmode")</label><br />
+                @CheckBox(sInfo, "genxml/checkbox/debugmode", "")
+            </div>
+            <div class="w3-quarter">
+                @if (sInfo.GetXmlProperty("genxml/textbox/adminurl") != "")
+                {
+                    <a class="w3-button w3-teal w3-padding-8 w3-margin-top" href="@sInfo.GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ResourceKey("DNNrocket.cmdAdminButton")</a>
+                }
+
             </div>
         </div>
 

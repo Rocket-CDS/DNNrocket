@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
 <style>
     body, h1, h2, h3, h4, h5 {
@@ -199,7 +200,7 @@
                 <b>usehistory:</b> Use history on page refresh.  Simplisity keeps a history of the last action, when the page is refreshed the last action is rerun to leave the users in the same position they refreshed the page in.<br />
                 <b>activatepanel:</b> Activate the simplsity_panels.  Default:true<br />
                 <b>overlayclass:</b> Defines a overlayclass to use, for when the server is called. Default: w3-overlay<br />
-                <b>debug:</b> Puts the JS in debug mode.  The browser console log will contain data to help debuging.<br />                
+                <b>debug:</b> Puts the JS in debug mode.  The browser console log will contain data to help debuging.<br />
             </p>
             <i>Example:</i><br />
             $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'rocketexample', usehistory: true, overlayclass:'w3-overlay w3-theme' });;
@@ -299,7 +300,7 @@
                 <tr>
                     <td>simplisity_fadeout</td>
                     <td>Any element with this event will fade out in 2 seconds, after the return from the server.  Often used to display messages after a save and then fade them out.</td>
-                </tr>                
+                </tr>
             </table>
         </div>
 
@@ -338,7 +339,7 @@
                     <td>s-lastmenuindex-<i>[Browser Tab Number]-[System Name]</i></td>
                     <td>
                         Tracks the last menu clicked. This is usally used to highlight the menu on page refresh.
-                        <hr/>
+                        <hr />
                         <div class="w3-code ">
                             function sidemenuchange() {<br />
                             &nbsp;&nbsp;$('.simplisity_menulink').addClass('w3-light-grey');<br />
@@ -349,7 +350,7 @@
                             }<br />
                         </div>
                     </td>
-                </tr>                
+                </tr>
             </table>
 
         </div>
@@ -386,7 +387,8 @@
                 </tr>
                 <tr>
                     <td>simplisity_params</td>
-                    <td>List of the params that need to be passed to server side (use 'simplisity_setParamField'  function).  These are found on the server in the "paramjson" form fields.
+                    <td>
+                        List of the params that need to be passed to server side (use 'simplisity_setParamField'  function).  These are found on the server in the "paramjson" form fields.
                         <p>This field will also save the "activevalue" paramater.  The "activevalue" is the current element value.  It can be used by server side code: <b>paramInfo.GetXmlProperty("genxml/hidden/activevalue")</b> </p>
                     </td>
                 </tr>
@@ -397,7 +399,7 @@
                 <tr>
                     <td>simplisity_cmdurl</td>
                     <td>The current page API url endpoint.  All commands that do not have a 'cmdurl' (API endpoint) specified will use this as the API endpoint.  This is set by the "$(document).simplisityStartUp(string apiurl)" method, which will be on the starting page.</td>
-                </tr>                
+                </tr>
             </table>
 
         </div>

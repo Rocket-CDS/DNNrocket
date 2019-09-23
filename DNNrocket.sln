@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\1.0\default\edit.cshtml = AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\1.0\default\edit.cshtml
 		README.md = README.md
 		rocketmod_system.xml = rocketmod_system.xml
+		css\w3.css = css\w3.css
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Country", "Country\Country.csproj", "{6E1D0083-655A-4E7F-8408-84526EE67708}"
