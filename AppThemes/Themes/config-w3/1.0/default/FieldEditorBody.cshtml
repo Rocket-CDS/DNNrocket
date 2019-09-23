@@ -414,6 +414,8 @@
 
     function validateform() {
 
+        //$('#Fields').show();
+
         $('.validationfail').hide();
 
         jQuery.validator.addMethod("alphanumeric", function (value, element) {
@@ -428,6 +430,9 @@
             return this.optional(element) || !$.isNumeric(value.substring(0, 1));
         }, '@ResourceKey("RocketMod.alphanumeric", "", "Error")');
 
+        jQuery.validator.setDefaults({ 
+            ignore: ":hidden:not(#fielddatasection input[type=text])",
+        });
 
         $("#fielddatasection input[type=text]").each(function () {
             if (!$(this).valid()) {
