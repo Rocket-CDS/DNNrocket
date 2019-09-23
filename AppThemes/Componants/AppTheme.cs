@@ -276,6 +276,19 @@ namespace Rocket.AppThemes.Componants
                     }
                 }
 
+                // ensure we have validate field names.
+                var lp = 1;
+                foreach (var f in postInfo.GetList("fielddata"))
+                {
+                    var newfieldname = f.GetXmlProperty("genxml/textbox/name");
+                    if (GeneralUtils.IsNumeric(newfieldname) || newfieldname == "")
+                    {
+                        newfieldname = "field" + newfieldname + lp;
+                        postInfo.SetXmlProperty("genxml/fielddata/genxml[" + lp + "]/textbox/name", newfieldname);
+                    }
+                    lp += 1;
+                }
+
                 dbInfo.XMLData = postInfo.XMLData;
                 _objCtrl.SaveData(dbInfo, Info.ItemID, _tableName);
 
