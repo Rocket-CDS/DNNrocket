@@ -167,6 +167,8 @@ namespace RocketMod
             _paramInfo = paramInfo;
             _systemInfo = systemInfo;
 
+            _selectedItemId = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+
             _editLang = langRequired;
             if (_editLang == "") _editLang = DNNrocketUtils.GetEditCulture();
 
