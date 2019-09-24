@@ -944,6 +944,7 @@ namespace Rocket.AppThemes.Componants
             var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
             var jasonInfo = new SimplisityInfo();
             if (jsondata != "")
+
             {
                 jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, AppCultureCode);
             }
@@ -960,69 +961,65 @@ namespace Rocket.AppThemes.Componants
                 var attributes = f.GetXmlProperty("genxml/textbox/attributes");
                 var isonlist = f.GetXmlPropertyBool("genxml/checkbox/isonlist");
 
-                if (isonlist)
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
                 {
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
-                    {
-                        xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
-                    {
-                        xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
-                    {
-                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
-                    {
-                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
-                    {
-                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                    }
+                    xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
+                {
+                    xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
+                {
+                    xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
+                {
+                    xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
+                {
+                    xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
 
-                    if (localized) xpath = "genxml/lang/" + xpath;
+                if (localized) xpath = "genxml/lang/" + xpath;
 
-                    if (xpath != "")
-                    {
-                        strFieldList += "\t<div class='w3-col m2 w3-padding'>" + Environment.NewLine;
-                        strFieldList += "\t\t@info.GetXmlProperty(\"" + xpath + "\")" + Environment.NewLine;
-                        strFieldList += "\t</div>" + Environment.NewLine;
-                    }
+                if (xpath != "")
+                {
+                    strFieldList += "\t<div class='w3-col m2 w3-padding'>" + Environment.NewLine;
+                    strFieldList += "\t\t@info.GetXmlProperty(\"" + xpath + "\")" + Environment.NewLine;
+                    strFieldList += "\t</div>" + Environment.NewLine;
+                }
 
 
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull" || f.GetXmlProperty("genxml/select/type").ToLower() == "image")
-                    {
-                        xpath = "genxml/hidden/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
-                        strFieldList += "@if (info.GetXmlProperty(\"" + xpath + "\") != \"\")" + Environment.NewLine;
-                        strFieldList += "{" + Environment.NewLine;
-                        strFieldList += "	<img src=\"@ThumbnailImageUrl(info.GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
-                        strFieldList += "}" + Environment.NewLine;
-                        strFieldList += "else" + Environment.NewLine;
-                        strFieldList += "{" + Environment.NewLine;
-                        strFieldList += "	<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>" + Environment.NewLine;
-                        strFieldList += "}" + Environment.NewLine;
-                        strFieldList += "\t</div>" + Environment.NewLine;
-                    }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull" || f.GetXmlProperty("genxml/select/type").ToLower() == "image")
+                {
+                    xpath = "genxml/hidden/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                    strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
+                    strFieldList += "@if (info.GetXmlProperty(\"" + xpath + "\") != \"\")" + Environment.NewLine;
+                    strFieldList += "{" + Environment.NewLine;
+                    strFieldList += "	<img src=\"@ThumbnailImageUrl(info.GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
+                    strFieldList += "}" + Environment.NewLine;
+                    strFieldList += "else" + Environment.NewLine;
+                    strFieldList += "{" + Environment.NewLine;
+                    strFieldList += "	<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>" + Environment.NewLine;
+                    strFieldList += "}" + Environment.NewLine;
+                    strFieldList += "\t</div>" + Environment.NewLine;
+                }
 
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
-                    {
-                        xpath = "genxml/hidden/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
-                        strFieldList += "@if (info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"genxml/hidden/imagepath\") != \"\")" + Environment.NewLine;
-                        strFieldList += "{" + Environment.NewLine;
-                        strFieldList += "	<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"genxml/hidden/imagepath\"), 60 , 60)\" />" + Environment.NewLine;
-                        strFieldList += "}" + Environment.NewLine;
-                        strFieldList += "else" + Environment.NewLine;
-                        strFieldList += "{" + Environment.NewLine;
-                        strFieldList += "	<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>" + Environment.NewLine;
-                        strFieldList += "}" + Environment.NewLine;
-                        strFieldList += "\t</div>" + Environment.NewLine;
-                    }
-
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
+                {
+                    xpath = "genxml/hidden/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                    strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
+                    strFieldList += "@if (info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"genxml/hidden/imagepath\") != \"\")" + Environment.NewLine;
+                    strFieldList += "{" + Environment.NewLine;
+                    strFieldList += "	<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"genxml/hidden/imagepath\"), 60 , 60)\" />" + Environment.NewLine;
+                    strFieldList += "}" + Environment.NewLine;
+                    strFieldList += "else" + Environment.NewLine;
+                    strFieldList += "{" + Environment.NewLine;
+                    strFieldList += "	<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>" + Environment.NewLine;
+                    strFieldList += "}" + Environment.NewLine;
+                    strFieldList += "\t</div>" + Environment.NewLine;
                 }
             }
 

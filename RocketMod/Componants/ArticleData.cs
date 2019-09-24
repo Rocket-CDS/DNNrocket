@@ -24,13 +24,22 @@ namespace RocketMod
             _objCtrl = new DNNrocketController();
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
-            if (itemId <= 0)
+            if (Populate(itemId))
             {
                 AddArticle();
             }
-            else
+        }
+        public ArticleData(int moduleid, string langRequired)
+        {
+            _moduleid = moduleid;
+            _objCtrl = new DNNrocketController();
+            _langRequired = langRequired;
+            if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
+
+            var guidkey = "rocketdata*" + moduleid;
+            if (!Populate(guidkey))
             {
-                Populate(itemId);
+                AddArticle(guidkey);
             }
         }
 
@@ -81,10 +90,25 @@ namespace RocketMod
         {
             Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, -1, _moduleid, false, _tableName);    
         }
+        private void AddArticle(string guidkey)
+        {
+            Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, -1, _moduleid, false, _tableName);
+            Info.GUIDKey = guidkey;
+            _objCtrl.SaveData(Info, -1, _tableName);
+        }
 
-        public void Populate(int ItemId)
+        public bool Populate(int ItemId)
         {
             Info = _objCtrl.GetData(_entityTypeCode, ItemId, _langRequired, -1, _moduleid, true, _tableName);
+            if (Info == null) return false;
+            return true;
+        }
+        public bool Populate(string guidkey)
+        {
+            var tempInfo = _objCtrl.GetByGuidKey(-1, _moduleid, _entityTypeCode, guidkey, "", _tableName);
+            if (tempInfo == null) return false;
+            Info = _objCtrl.GetData(_entityTypeCode, tempInfo.ItemID, _langRequired, -1, _moduleid, true, _tableName);
+            return true;
         }
 
         public string EntityTypeCode { get { return _entityTypeCode; } }

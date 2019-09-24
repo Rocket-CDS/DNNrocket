@@ -1486,16 +1486,15 @@ namespace DNNrocketAPI
         /// <returns></returns>
         public static string RenderImageSelect(int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadRelFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
         {
+            if (!uploadRelFolder.Contains("/")) uploadRelFolder = DNNrocketUtils.HomeDNNrocketRelDirectory() + "/" + uploadRelFolder;
+            var uploadFolderPath = DNNrocketUtils.MapPath(uploadRelFolder);
+
             var imageModel = new SimplisityRazor();
 
             imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectfolder", uploadRelFolder);
             imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectsingle", selectsingle.ToString());
             imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectautoreturn", autoreturn.ToString());
             imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectsize", imagesize.ToString());
-
-            var uploadFolderPath = uploadRelFolder;
-            if (!uploadFolderPath.Contains("/")) uploadFolderPath = DNNrocketUtils.HomeDNNrocketRelDirectory() + "/" + uploadRelFolder;
-            uploadFolderPath = DNNrocketUtils.MapPath(uploadFolderPath);
 
             var imgList = new List<object>();
             foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
