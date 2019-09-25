@@ -24,10 +24,7 @@ namespace RocketMod
             _objCtrl = new DNNrocketController();
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
-            if (Populate(itemId))
-            {
-                AddArticle();
-            }
+            if (!Populate(itemId)) AddArticle();
         }
         public ArticleData(int moduleid, string langRequired)
         {
@@ -37,10 +34,7 @@ namespace RocketMod
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
 
             var guidkey = "rocketdata*" + moduleid;
-            if (!Populate(guidkey))
-            {
-                AddArticle(guidkey);
-            }
+            if (!Populate(guidkey)) AddArticle(guidkey);
         }
 
         public void Delete()

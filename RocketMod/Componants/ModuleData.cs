@@ -28,7 +28,7 @@ namespace RocketMod
 
         public ModuleData(int moduleId,int systemid, string langRequired = "")
         {
-            _moduleParams = new ModuleParams(ModuleId, systemid, langRequired);
+            _moduleParams = new ModuleParams(ModuleId, systemid);
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired =  DNNrocketUtils.GetCurrentCulture();
             _entityTypeCode = "ROCKETMOD";

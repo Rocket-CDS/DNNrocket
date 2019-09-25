@@ -694,7 +694,7 @@ namespace Rocket.AppThemes.Componants
                         if (localizedbool) xpath = "genxml/lang/" + xpath;
                         var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
                         var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
-                        strFieldList += "\t\t@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\",\"" + datatext + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + ",\"" + row + "\")" + Environment.NewLine;
+                        strFieldList += "\t\t@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\",\"" + datatext + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
                     {
@@ -702,7 +702,7 @@ namespace Rocket.AppThemes.Componants
                         if (localizedbool) xpath = "genxml/lang/" + xpath;
                         var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
                         var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
-                        strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue + "\",\"" + datatext + "\",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + ",\"" + row + "\")" + Environment.NewLine;
+                        strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue.Replace("\"","\\\"") + "\",\"" + datatext.Replace("\"", "\\\"") + "\",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
                     {

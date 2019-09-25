@@ -79,7 +79,7 @@ namespace DNNrocketAPI
             _systemprovider = desktopModule.ModuleDefinitions.First().Key.ToLower(); // Use the First DNN Module definition as the DNNrocket systemprovider
             _interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
             _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
-            _moduleParams = new ModuleParams(ModuleId, _systemInfo.SystemId, DNNrocketUtils.GetCurrentCulture());
+            _moduleParams = new ModuleParams(ModuleId, _systemInfo.SystemId);
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
             var systemInfoData = new SystemInfoData(_systemInfo);
             _debugmode = systemInfoData.DebugMode;

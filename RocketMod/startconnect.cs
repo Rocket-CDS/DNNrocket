@@ -186,7 +186,7 @@ namespace RocketMod
             if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid"); // IPN
             _passSettings.Add("tabid", _tabid.ToString());
 
-            _moduleParams = new ModuleParams(_moduleid, _systemInfoData.SystemId, DNNrocketUtils.GetCurrentCulture());
+            _moduleParams = new ModuleParams(_moduleid, _systemInfoData.SystemId);
 
             if (!CheckSecurity(paramCmd))
             {
@@ -273,11 +273,11 @@ namespace RocketMod
 
         private static void SaveConfig()
         {
-
             _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
             _moduleParams.DataModuleId = _postInfo.GetXmlPropertyInt("genxml/hidden/datamoduleid");
             _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
             _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
+            _moduleParams.AppThemeVersion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
             _moduleParams.ModuleType = "RocketMod";
             if (_moduleParams.ModuleRef == "") _moduleParams.ModuleRef = GeneralUtils.GetUniqueKey();
             _moduleParams.Exists = true;
@@ -402,7 +402,7 @@ namespace RocketMod
             {
                 AssignEditLang();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("edit.cshtml", _appthemeRelPath + "/SystemThemes/" + _systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("edit.cshtml", _appthemeRelPath + "/SystemThemes/" + _systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _editLang, _moduleParams.AppThemeVersion, _systemInfoData.DebugMode);
 
                 var strOut = "-- NO DATA -- Itemid: " + _selectedItemId;
 
@@ -597,7 +597,9 @@ namespace RocketMod
         {
             try
             {
-                //_moduleData.DeleteData();
+                AssignEditLang();
+                var articleDataList = new ArticleDataList(_moduleid, _editLang);
+                articleDataList.DeleteAll();
                 return GetDashBoard();
             }
             catch (Exception ex)

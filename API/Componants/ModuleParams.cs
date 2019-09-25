@@ -17,64 +17,74 @@ namespace DNNrocketAPI.Componants
     public class ModuleParams
     {
 
-        private SimplisityInfo _moduleParamsInfo;
+        private SimplisityRecord _moduleParamsRec;
         private string _cacheKey;
         private string _tableName;
         private int _moduleid;
         private int _systemid;
 
-        public ModuleParams(int moduleId,int systemid, string requiredCultureCode, bool useCache = true, string tableName = "DNNrocket")
+        public ModuleParams(int moduleId,int systemid, bool useCache = true, string tableName = "DNNrocket")
         {
             _tableName = tableName;
             _systemid = systemid;
             _moduleid = moduleId;
-            _moduleParamsInfo = new SimplisityInfo();
-            _cacheKey = "moduleparams*" + moduleId + "*" + requiredCultureCode;
-            _moduleParamsInfo = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
-            if ((_moduleParamsInfo == null || !useCache) && moduleId > 0)
+            _moduleParamsRec = new SimplisityRecord();
+            _cacheKey = "moduleparams*" + moduleId;
+            _moduleParamsRec = (SimplisityRecord)CacheUtils.GetCache(_cacheKey);
+            if ((_moduleParamsRec == null || !useCache) && moduleId > 0)
             {
                 var objCtrl = new DNNrocketController();
-                _moduleParamsInfo = objCtrl.GetData(_cacheKey, "MODULEPARAMS", requiredCultureCode, _systemid, _moduleid,false, _tableName);
-                CacheUtils.SetCache(_cacheKey, _moduleParamsInfo);
+                _moduleParamsRec = objCtrl.GetRecordByGuidKey(-1, _moduleid, "MODULEPARAMS", _cacheKey, "", _tableName);
+                if (_moduleParamsRec == null)
+                {
+                    _moduleParamsRec = new SimplisityRecord();
+                    _moduleParamsRec.PortalId = -1;
+                    _moduleParamsRec.TypeCode = "MODULEPARAMS";
+                    _moduleParamsRec.GUIDKey = _cacheKey;
+                    _moduleParamsRec.ModuleId = _moduleid;
+                    objCtrl.SaveRecord(_moduleParamsRec);
+                }
+
+                CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
             }
         }
         public void Save()
         {
             var objCtrl = new DNNrocketController();
-            objCtrl.SaveData(_cacheKey, "MODULEPARAMS", _moduleParamsInfo, _systemid, _moduleid, _tableName);
+            objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _systemid, _moduleid, _tableName);
         }
         public void Delete()
         {
             var objCtrl = new DNNrocketController();
-            objCtrl.Delete(Info.ItemID, _tableName);
+            objCtrl.Delete(Record.ItemID, _tableName);
         }
         public string GetValue(string key, string defaultValue = "")
         {
-            var rtn = _moduleParamsInfo.GetXmlProperty("genxml/hidden/" + key.ToLower());
+            var rtn = _moduleParamsRec.GetXmlProperty("genxml/hidden/" + key.ToLower());
             if (rtn == "") return defaultValue;
             return rtn;
         }
         public int GetValueInt(string key)
         {
-            return _moduleParamsInfo.GetXmlPropertyInt("genxml/hidden/" + key.ToLower());
+            return _moduleParamsRec.GetXmlPropertyInt("genxml/hidden/" + key.ToLower());
         }
         public double GetValueDouble(string key)
         {
-            return _moduleParamsInfo.GetXmlPropertyDouble("genxml/hidden/" + key.ToLower());
+            return _moduleParamsRec.GetXmlPropertyDouble("genxml/hidden/" + key.ToLower());
         }
         public bool GetValueBool(string key)
         {
-            return _moduleParamsInfo.GetXmlPropertyBool("genxml/hidden/" + key.ToLower());
+            return _moduleParamsRec.GetXmlPropertyBool("genxml/hidden/" + key.ToLower());
         }
         public void SetValue(string key, string value)
         {
-            _moduleParamsInfo.SetXmlProperty("genxml/hidden/" + key.ToLower(), value);
+            _moduleParamsRec.SetXmlProperty("genxml/hidden/" + key.ToLower(), value);
         }
 
-        public SimplisityInfo Info { get { return _moduleParamsInfo; } }
+        public SimplisityRecord Record { get { return _moduleParamsRec; } }
 
-        public string ProviderAssembly { get { return _moduleParamsInfo.GetXmlProperty("genxml/textbox/assembly"); } }
-        public string ProviderClass { get { return _moduleParamsInfo.GetXmlProperty("genxml/textbox/namespaceclass"); } }
+        public string ProviderAssembly { get { return _moduleParamsRec.GetXmlProperty("genxml/textbox/assembly"); } }
+        public string ProviderClass { get { return _moduleParamsRec.GetXmlProperty("genxml/textbox/namespaceclass"); } }
 
 
         public string AppThemeFolder { get { return GetValue("AppThemeFolder"); } set { SetValue("AppThemeFolder", value); } } 
@@ -87,9 +97,8 @@ namespace DNNrocketAPI.Componants
         public string AppSystemThemeFolderMapPath { get { return DNNrocketUtils.MapPath(AppSystemThemeFolderRel); } }
         public string AppThemeVersion { get { return GetValue("AppThemeVersion"); } set { SetValue("AppThemeVersion", value); } }
 
-        public string ImageFolderRel { get{ return DNNrocketUtils.HomeRelDirectory() + "/" + ImageFolder; } }
-        public string DocumentFolderRel { get{ return DNNrocketUtils.HomeRelDirectory() + "/" + DocumentFolder;} }
-
+        public string ImageFolderRel { get{ return DNNrocketUtils.HomeDirectoryRel() + "/" + ImageFolder; } }
+        public string DocumentFolderRel { get{ return DNNrocketUtils.HomeDirectoryRel() + "/" + DocumentFolder;} }
 
         public string DocumentFolder { get { return GetValue("DocumentFolder","docs"); } set { SetValue("DocumentFolder", value); } }
         public string ImageFolder { get { return GetValue("ImageFolder", "images"); } set { SetValue("ImageFolder", value); } }
