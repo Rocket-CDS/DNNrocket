@@ -249,11 +249,24 @@ namespace Rocket.AppThemes.Componants
         }
         public void Save(SimplisityInfo postInfo)
         {
+
+            // ensure we have validate field names.
+            var lp = 1;
+            foreach (var f in postInfo.GetList("fielddata"))
+            {
+                var newfieldname = f.GetXmlProperty("genxml/textbox/name");
+                if (GeneralUtils.IsNumeric(newfieldname) || newfieldname == "")
+                {
+                    newfieldname = "field" + newfieldname + lp;
+                    postInfo.SetXmlProperty("genxml/fielddata/genxml[" + lp + "]/textbox/name", newfieldname);
+                }
+                lp += 1;
+            }
+
             ActionListTemplateFiles(postInfo);
             ActionListCssFiles(postInfo);
             ActionListJsFiles(postInfo);
-            ActionListResxFiles(postInfo);
-
+            postInfo = ActionListResxFiles(postInfo);
 
             var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, AppCultureCode, -1, -1, true, _tableName);
             if (dbInfo != null)
@@ -274,19 +287,6 @@ namespace Rocket.AppThemes.Componants
                             _objCtrl.SaveData(dbInfo2, Info.ItemID, _tableName);
                         }
                     }
-                }
-
-                // ensure we have validate field names.
-                var lp = 1;
-                foreach (var f in postInfo.GetList("fielddata"))
-                {
-                    var newfieldname = f.GetXmlProperty("genxml/textbox/name");
-                    if (GeneralUtils.IsNumeric(newfieldname) || newfieldname == "")
-                    {
-                        newfieldname = "field" + newfieldname + lp;
-                        postInfo.SetXmlProperty("genxml/fielddata/genxml[" + lp + "]/textbox/name", newfieldname);
-                    }
-                    lp += 1;
                 }
 
                 dbInfo.XMLData = postInfo.XMLData;
@@ -370,7 +370,7 @@ namespace Rocket.AppThemes.Componants
                 FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\js\\" + fname, GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodejavascript")));
             }
         }
-        private void ActionListResxFiles(SimplisityInfo postInfo)
+        private SimplisityInfo ActionListResxFiles(SimplisityInfo postInfo)
         {
             foreach (var t in _resxFileName)
             {
@@ -379,13 +379,27 @@ namespace Rocket.AppThemes.Componants
                 if (delItem == null && File.Exists(AppThemeVersionFolderMapPath + "\\resx\\" + filename)) File.Delete(AppThemeVersionFolderMapPath + "\\resx\\" + filename);
             }
 
+            // get fields
+            var fieldNames = new Dictionary<string, string>();
+            foreach (var f in postInfo.GetList("fielddata"))
+            {
+                if (f.GetXmlProperty("genxml/textbox/name") != "")
+                {
+                    var newfieldname = f.GetXmlProperty("genxml/textbox/name").Split('_')[0];
+                    var labelvalue = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
+                    fieldNames.Add(newfieldname, labelvalue);
+                }
+            }
+
             //Write files.
             var tList = postInfo.GetList("resxlist");
+            var idx = 1;
             foreach (SimplisityInfo templateInfo in tList)
             {
                 var fileFields = "";
                 var jsonDict = new Dictionary<string, string>();
                 var fname = templateInfo.GetXmlProperty("genxml/hidden/fullfilename");
+                var culturecode = templateInfo.GetXmlProperty("genxml/hidden/culturecode");
                 var jsondata = GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/jsonresx"));
                 if (jsondata != "")
                 {
@@ -393,9 +407,9 @@ namespace Rocket.AppThemes.Componants
                     var row = 1;
                     foreach (var i in jasonInfo.GetList("resxlistvalues"))
                     {
-                        if (i.GetXmlProperty("genxml/text/name" + row) != "" && !jsonDict.ContainsKey(i.GetXmlProperty("genxml/text/name" + row)))
+                        if (i.GetXmlProperty("genxml/text/name") != "" && !jsonDict.ContainsKey(i.GetXmlProperty("genxml/text/name")))
                         {
-                            jsonDict.Add(i.GetXmlProperty("genxml/text/name" + row), i.GetXmlProperty("genxml/text/value" + row));
+                            jsonDict.Add(i.GetXmlProperty("genxml/text/name"), i.GetXmlProperty("genxml/text/value"));
                         }
                         row += 1;
                     }
@@ -405,13 +419,43 @@ namespace Rocket.AppThemes.Componants
                     }
                 }
 
+                if (culturecode == "" || culturecode == DNNrocketUtils.GetEditCulture())
+                {
+
+                    foreach (var f in fieldNames)
+                    {
+                        if (!jsonDict.ContainsKey(f.Key + ".Text"))
+                        {
+                            jsonDict.Add(f.Key + ".Text", f.Value);
+                            fileFields += "  <data name=\"" + f.Key + ".Text\" xml:space=\"preserve\"><value>" + f.Value + "</value></data>";
+                        }
+                    }
+
+                    // build json and save.
+                    var jsonStr = "{\"listdata\":[";
+                    var lp = 1;
+                    foreach (var j in jsonDict)
+                    {
+                        jsonStr += "{\"id\":\"name\",\"value\":\"" + j.Key + "\"},";
+                        jsonStr += "{\"id\":\"value\",\"value\":\"" + j.Value + "\"},";
+                        lp += 1;
+
+                    }
+                    jsonStr = jsonStr.TrimEnd(',') + "]}";
+                    postInfo.SetXmlProperty("genxml/resxlist/genxml[" + idx + "]/hidden/jsonresx", GeneralUtils.EnCode(jsonStr));
+
+                }
+
+
                 var resxtemplate = FileUtils.ReadFile(AppProjectFolderMapPath + @"\Themes\config-w3\1.0\default\resxtemplate.xml");
                 if (resxtemplate != "")
                 {
                     resxtemplate = resxtemplate.Replace("<injectdatanodes/>", fileFields);
                     FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\resx\\" + fname, resxtemplate);
                 }
+                idx += 1;
             }
+            return postInfo;
         }
 
         public void Update()
@@ -686,7 +730,7 @@ namespace Rocket.AppThemes.Componants
                     {
                         xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                         if (localizedbool) xpath = "genxml/lang/" + xpath;
-                        strFieldList += "\t\t@CheckBox(info,\"" + xpath + "\", \"\", \"" + attributes + "\", \"" + defaultBool + "\"," + localized + "," + row + ")" + Environment.NewLine;
+                        strFieldList += "\t\t@CheckBox(info,\"" + xpath + "\", \"\", \"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
                     {
@@ -992,13 +1036,24 @@ namespace Rocket.AppThemes.Componants
                 {
                     xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                 }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext")
+                {
+                    xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
 
                 if (localized) xpath = "genxml/lang/" + xpath;
 
                 if (xpath != "")
                 {
                     strFieldList += "\t<div class='w3-col m2 w3-padding'>" + Environment.NewLine;
-                    strFieldList += "\t\t@info.GetXmlProperty(\"" + xpath + "\")" + Environment.NewLine;
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext")
+                    {
+                        strFieldList += "\t\t@HtmlOf(info.GetXmlProperty(\"" + xpath + "\"))" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        strFieldList += "\t\t@info.GetXmlProperty(\"" + xpath + "\")" + Environment.NewLine;
+                    }
                     strFieldList += "\t</div>" + Environment.NewLine;
                 }
 

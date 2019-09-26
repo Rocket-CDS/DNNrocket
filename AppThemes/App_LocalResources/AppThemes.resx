@@ -150,6 +150,9 @@
   <data name="default.Text" xml:space="preserve">
     <value>Default</value>
   </data>
+  <data name="defaultvalues.Text" xml:space="preserve">
+    <value>Default Values</value>
+  </data>
   <data name="details.Text" xml:space="preserve">
     <value>AppTheme Details</value>
   </data>
