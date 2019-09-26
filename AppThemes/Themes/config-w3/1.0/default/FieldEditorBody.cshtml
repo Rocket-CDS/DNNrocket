@@ -354,14 +354,14 @@
         var valueList = '';
         $('.dictionaryKey' + row).each(function (index) {
             if ($(this).is(':visible')) {
-                keyList += $(this).val().replace(",", ".") + ',';
+                keyList += simplisity_encode($(this).val().replace(/"/g,"'")) + ',';
             }
         });
         keyList = keyList.slice(0, -1);
 
         $('.dictionaryValue' + row).each(function (index) {
             if ($(this).is(':visible')) {
-                valueList += $(this).val().replace(",", ".") + ',';
+                valueList += simplisity_encode($(this).val().replace(/"/g,"'")) + ',';
             }
         });
         valueList = valueList.slice(0, -1);
@@ -378,9 +378,9 @@
 
         var arrayLength = keyList.length;
         for (var i = 0; i < arrayLength; i++) {
-            var key = keyList[i];
+            var key = simplisity_decode(keyList[i]);
             if (key !== '') {
-                var value = valueList[i];
+                var value = simplisity_decode(valueList[i]);
                 dnnrocket_addtextli(row, key, value)
             }
         }
