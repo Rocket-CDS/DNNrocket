@@ -688,6 +688,7 @@ namespace Rocket.AppThemes.Componants
                     var xpath = "";
                     var size = f.GetXmlProperty("genxml/select/size");
                     var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
+                    var labelname = f.GetXmlProperty("genxml/textbox/name");                    
                     var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
                     var defaultBool = f.GetXmlProperty("genxml/textbox/defaultvalue").ToLower();
                     if (defaultBool == "") defaultBool = "false";
@@ -695,13 +696,12 @@ namespace Rocket.AppThemes.Componants
 
                     strFieldList += "\t<div class='w3-col m" + size + " w3-padding'>" + Environment.NewLine;
 
-                    if (label != "")
+                    if (labelname != "")
                     {
-                        if (Path.GetExtension(label) == "") label = label + ".Text";
-                        var resxLabelItem = jasonInfo.GetListItem("resxlistvalues", "genxml/text/name", label);
+                        var resxLabelItem = jasonInfo.GetListItem("resxlist", "genxml/textbox/name", labelname);
                         if (resxLabelItem != null)
                         {
-                            strFieldList += "\t\t<label>@ResourceKey(\"" + AppThemeFolder + "." + label + "\")</label>";
+                            strFieldList += "\t\t<label>@ResourceKey(\"" + AppThemeFolder + "." + labelname.Replace(".Text","") + "\")</label>";
                         }
                         else
                         {
@@ -999,7 +999,6 @@ namespace Rocket.AppThemes.Componants
             var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
             var jasonInfo = new SimplisityInfo();
             if (jsondata != "")
-
             {
                 jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, AppCultureCode);
             }
