@@ -446,7 +446,7 @@
         @ButtonGap()
         <div class="w3-col m3 w3-center">
             <image id="resxflag" src="/DesktopModules/DNNrocket/API/images/flags/32/none.png"></image>
-            <span id="resxculturecode"></span>
+            <span id="culturecoderesx"></span>
         </div>
         @ButtonGap()
         <div class="w3-col m4 w3-center">
@@ -634,7 +634,7 @@
             $('.addresxdefaults').show();
         }
         $('#resxflag').attr("src", "/DesktopModules/DNNrocket/API/images/flags/32/" + culturecode + ".png");
-        $('#resxculturecode').text($('#culturecodedisplayname' + idx).text());
+        $('#culturecoderesx').text($('#culturecodedisplayname' + idx).text());
 
         simplisity_setParamField('culturecoderesx', $('#culturecode_' + idx).val());  // send culture code to server when we add resx value.
 
@@ -735,7 +735,7 @@
 
     function actionlanguageselect(culturecode) {
         $('#languageselector').hide();
-        simplisity_setParamField('resxculturecode',culturecode);
+        simplisity_setParamField('culturecoderesx',culturecode);
         simplisity_callserver($('#resxaddbutton'))
     }
 
