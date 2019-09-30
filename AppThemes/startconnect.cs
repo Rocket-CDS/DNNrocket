@@ -105,6 +105,12 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_addapptheme":
                         strOut = AddNewAppTheme();
                         break;
+                    case "rocketapptheme_export":
+                        strOut = ExportAppTheme();
+                        break;
+                    case "rocketapptheme_import":
+                        strOut = ImportAppTheme();
+                        break;
                 }
             }
             else
@@ -237,6 +243,40 @@ namespace DNNrocket.AppThemes
             {
                 return ex.ToString();
             }
+        }
+
+        private static string ExportAppTheme()
+        {
+            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
+            appTheme.Export();
+            return GetList();
+        }
+
+        private static string ImportAppTheme()
+        {
+            var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
+
+            var documentfolder = "import";
+            var docDirectory = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + documentfolder;
+            if (!Directory.Exists(docDirectory)) Directory.CreateDirectory(docDirectory);
+
+            var fileuploadlist = _paramInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+            if (fileuploadlist != "")
+            {
+                foreach (var f in fileuploadlist.Split(';'))
+                {
+                    if (f != "")
+                    {
+                        var friendlyname = GeneralUtils.DeCode(f);
+                        var userfilename = userid + "_" + friendlyname;
+                        File.Copy(DNNrocketUtils.TempDirectory() + "\\" + userfilename, docDirectory + "\\" + friendlyname, true);
+                        File.Delete(DNNrocketUtils.TempDirectory() + "\\" + userfilename);
+                    }
+                }
+
+            }
+
+            return GetList();
         }
 
         public static void SaveData()

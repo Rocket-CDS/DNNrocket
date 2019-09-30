@@ -533,23 +533,6 @@ namespace Rocket.AppThemes.Componants
             Info.AddListItem(listname);
             Update();
         }
-        public void Export(SimplisityInfo _postInfo)
-        {
-            if (AppThemeFolder != "")
-            {
-                var fileMapPath = AppThemeFolderMapPath + "\\meta_" + AppCultureCode + ".xml";
-                File.WriteAllText(fileMapPath,  _postInfo.ToXmlItem());
-            }
-        }
-        public void Import()
-        {
-            var fileMapPath = AppThemeFolderMapPath + "\\meta_" + AppCultureCode + ".xml";
-            if (File.Exists(fileMapPath))
-            {
-                var fileImport = File.ReadAllText(fileMapPath);
-                Info.FromXmlItem(fileImport);
-            }
-        }
 
         public void CreateNewAppTheme()
         {
@@ -1107,6 +1090,48 @@ namespace Rocket.AppThemes.Componants
             }
 
         }
+
+        public void Export()
+        {
+            var exportData = "<apptheme>";
+            exportData += "<versions>";
+            foreach (var v in VersionList)
+            {
+                var guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + v;
+                var vInfo = _objCtrl.GetData(guidKey, _entityTypeCode, AppCultureCode, -1, -1, false, _tableName);
+                if (vInfo != null)
+                {
+                    exportData += "<version>";
+                    exportData += vInfo.ToXmlItem();
+                    exportData += "</version>";
+                }
+            }
+            exportData += "</versions>";
+            exportData += "<images>";
+            var imageList = Info.GetList("imagelist");
+            foreach (var i in imageList)
+            {
+                var logoMapPath = DNNrocketUtils.MapPath(i.GetXmlProperty("genxml/hidden/imagepath"));
+                if (File.Exists(logoMapPath))
+                {
+                    exportData += "<img>";
+                    var imgBytes = File.ReadAllBytes(logoMapPath);
+                    var imgByteString = Convert.ToBase64String(imgBytes, Base64FormattingOptions.None);
+                    exportData += imgByteString;
+                    exportData += "</img>";
+                }
+            }
+            exportData += "</images>";
+            exportData += "</apptheme>";
+
+            var userFolder = DNNrocketUtils.TempDirectory() + "\\user" + DNNrocketUtils.GetCurrentUserId();
+
+            if (!Directory.Exists(userFolder)) Directory.CreateDirectory(userFolder);
+
+            FileUtils.SaveFile(userFolder + "\\exportapptheme.xml", exportData);
+
+        }
+
 
         #region "properties"
 
