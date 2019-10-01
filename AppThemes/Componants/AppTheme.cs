@@ -85,8 +85,6 @@ namespace Rocket.AppThemes.Componants
         {
             Info = _objCtrl.GetData(_guidKey, _entityTypeCode, AppCultureCode, -1, -1, false, _tableName);
 
-            AppName = Info.GetXmlProperty("genxml/textbox/appname");
-            AppDisplayName = Info.GetXmlProperty("genxml/lang/genxml/textbox/displayname");
             AppSummary = Info.GetXmlProperty("genxml/lang/genxml/textbox/summary");
 
             // sync filesystem
@@ -831,7 +829,6 @@ namespace Rocket.AppThemes.Componants
             else
             {
                 strOut = strOut.Replace("[Token:AppThemeFields]", strFieldList);
-                strOut = strOut.Replace("[Token:DisplayName]", AppDisplayName);
                 strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
                 strOut = strOut.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
                 strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
@@ -965,7 +962,6 @@ namespace Rocket.AppThemes.Componants
             else
             {
                 strOut = strOut.Replace("[Token:List]", strFieldList);
-                strOut = strOut.Replace("[Token:DisplayName]", AppDisplayName);
                 strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
                 strOut = strOut.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
                 strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
@@ -1082,7 +1078,6 @@ namespace Rocket.AppThemes.Componants
             else
             {
                 strOut = strOut.Replace("[Token:List]", strFieldList);
-                strOut = strOut.Replace("[Token:DisplayName]", AppDisplayName);
                 strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
                 strOut = strOut.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
                 strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
@@ -1139,8 +1134,6 @@ namespace Rocket.AppThemes.Componants
         public string AppProjectFolderMapPath { get; set; }
         public string AppSystemThemeFolderRel { get; set; }
         public string AppSystemThemeFolderMapPath { get; set; }
-        public string AppName { get; private set; }
-        public string AppDisplayName { get; private set; }
         public string AppSummary { get; private set; }
         public string Logo { get; private set; }
         public string AppCultureCode { get; set; }

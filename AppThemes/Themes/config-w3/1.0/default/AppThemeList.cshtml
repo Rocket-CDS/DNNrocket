@@ -66,8 +66,34 @@ else
         </div>
     </div>
 
+    <div id="importapptheme" class="w3-modal">
+        <div class="w3-modal-content w3-card w3-animate-zoom">
+
+            <header class="w3-theme-d5 w3-center" style="height: 39px;">
+                <span onclick="document.getElementById('importapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h4>@ResourceKey("DNNrocket.import")</h4>
+            </header>
+
+            <div class="w3-container">
+                <br/>
+                <span class="w3-section">
+                    <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#importfileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</span>
+                </span>
+
+                <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
+                    <input id="importfileupload" class="simplisity_fileupload" s-cmd="rocketapptheme_import" s-reload="false" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields='{"theme":"config-w3","interfacekey":"documentupload","documentfolder":"import","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
+                    <p><i>@ResourceKey("DNNrocket.drophere")...</i></p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
     <div class="w3-row w3-padding">
         <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'">@ResourceKey("DNNrocket.cmdAddButton")</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-blue w3-padding-8 " onclick="document.getElementById('importapptheme').style.display='block'"><i class="fas fa-file-import fa-fw fa-lg"></i>@ResourceKey("DNNrocket.import")</div>
         @if (appThemeDataList.SystemFolderList.Count() > 1)
         {
             @ButtonGap()
@@ -99,11 +125,12 @@ else
                 lp1 += 1;
                 <li class="datalistitem w3-display-container">
 
-                    <div class="listrow w3-row w3-padding">
-                        <div class="w3-col w3-button simplisity_click w3-margin-right " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
+                    <div class="listrow w3-cell-row">
+
+                        <div class=" w3-cell w3-padding w3-button simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
                             <i class="fas fa-edit w3-center" title="@ResourceKey("DNNRocket.cmdEdit")" style='font-size:32px'></i>
                         </div>
-                        <div class="w3-col " style="width: 100px;">
+                        <div class=" w3-cell w3-padding  w3-hide-small " style="width: 100px;">
                             @if (appTheme.Logo != "")
                             {
                                 <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" />
@@ -113,28 +140,38 @@ else
                                 <img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>
                             }
                         </div>
-                        <div class="w3-col m7">
-                            @appTheme.AppThemeFolder&nbsp;-&nbsp;@appTheme.AppDisplayName <br/>
-                            @{ 
-                                var summary = appTheme.AppSummary;
-                                if (summary.Length > 160)
-                                {
-                                    summary = summary.Substring(0, 160) + "...";
+                        <div class=" w3-cell w3-padding">
+                            <div class="">
+                                <b>
+                                    @appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder
+                                </b>
+                            </div>
+                            <div class="w3-hide-small ">
+
+                                @{
+                                    var summary = appTheme.AppSummary;
+                                    if (summary.Length > 160)
+                                    {
+                                        summary = summary.Substring(0, 160) + "...";
+                                    }
                                 }
-                            }
-                            @summary
+                                @summary
+                            </div>
                         </div>
-                        <div class="w3-col w3-button simplisity_click w3-margin-right w3-right" s-cmd="rocketapptheme_download" s-track="true" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
-                            <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
-                        </div>
-                        <div class="w3-col w3-button simplisity_click w3-margin-right w3-right" s-cmd="rocketapptheme_upload" s-track="true" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
-                            <i class='fas fa-upload' title="@ResourceKey("DNNRocket.cmdUpload")" style='font-size:32px'></i>
-                        </div>
-                        <div class="w3-col w3-button simplisity_click w3-margin-right w3-right" s-cmd="rocketapptheme_export" s-track="true" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
-                            <i class='fas fa-file-export' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i>
+                        <div class=" w3-cell w3-right w3-hide-small" style="width: 240px;">
+                            <div class="w3-row">
+                                <div class="w3-button simplisity_confirmclick  " s-cmd="rocketapptheme_download" s-confirm="@ResourceKey("AppThemes.downloadmsg")&nbsp;?" s-track="false" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
+                                    <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
+                                </div>
+                                <div class="w3-button simplisity_confirmclick " s-cmd="rocketapptheme_upload" s-confirm="@ResourceKey("AppThemes.uploadmsg")&nbsp;?" s-track="false" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
+                                    <i class='fas fa-upload' title="@ResourceKey("DNNRocket.cmdUpload")" style='font-size:32px'></i>
+                                </div>
+                                <div class="w3-button simplisity_confirmclick " s-cmd="rocketapptheme_export" s-confirm="@ResourceKey("AppThemes.exportmsg")&nbsp;?" s-track="false" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
+                                    <i class='fas fa-file-export' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </li>
 
             }

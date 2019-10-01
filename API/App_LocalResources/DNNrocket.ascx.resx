@@ -495,4 +495,7 @@
   <data name="column.Text" xml:space="preserve">
     <value>Column</value>
   </data>
+  <data name="import.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
 </root>

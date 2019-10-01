@@ -73,21 +73,13 @@
             @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appTheme.SystemKey)
 
             <div class="w3-container w3-padding">
-                <div class="w3-col m4 w3-padding">
-                    <label>@ResourceKey("AppThemes.name")</label>
-                    @TextBox(info, "genxml/textbox/appname", "class='w3-input w3-border' " + disabled)
-                </div>
-                <div class="w3-col m6 w3-padding">
-                    <label>@ResourceKey("AppThemes.displayname")</label>&nbsp;<img class='' src='@flagurl' alt='' />
-                    @TextBox(info, "genxml/lang/genxml/textbox/displayname", "class='w3-input w3-border'", "", true)
-                </div>
-                <div class="w3-col m2 w3-padding">
-                    <label>@ResourceKey("AppThemes.version")</label>
-                    @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border simplisity_change' s-cmd='rocketapptheme_changeversion' s-post='#appthemedetails' s-track='false' s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
-                </div>
-                <div class="w3-col m12 w3-padding">
+                <div class="w3-col m9 w3-padding">
                     <label>@ResourceKey("AppThemes.summary")</label>&nbsp;<img class='' src='@flagurl' alt='' />
                     @TextArea(info, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
+                </div>
+                <div class="w3-col m3 w3-padding" style="width:200px">
+                    <label>@ResourceKey("AppThemes.version")</label>
+                    @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border simplisity_change' s-cmd='rocketapptheme_changeversion' s-post='#appthemedetails' s-track='false' s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
                 </div>
                 <div class="w3-col m6 w3-padding">
                     @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")

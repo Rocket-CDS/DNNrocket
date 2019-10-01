@@ -162,6 +162,9 @@
   <data name="download.Text" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="downloadmsg.Text" xml:space="preserve">
+    <value>Download AppTheme</value>
+  </data>
   <data name="edit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
@@ -176,6 +179,9 @@
   </data>
   <data name="entervalue.Text" xml:space="preserve">
     <value>Enter Value...</value>
+  </data>
+  <data name="exportmsg.Text" xml:space="preserve">
+    <value>Export AppTheme</value>
   </data>
   <data name="fields.Text" xml:space="preserve">
     <value>Fields</value>
@@ -251,6 +257,9 @@
   </data>
   <data name="upload.Text" xml:space="preserve">
     <value>Upload</value>
+  </data>
+  <data name="uploadmsg.Text" xml:space="preserve">
+    <value>Upload AppTheme</value>
   </data>
   <data name="version.Text" xml:space="preserve">
     <value>Version</value>
