@@ -459,7 +459,7 @@ namespace RocketMod
                 }
                 articleDataList.Populate();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", _appthemeRelPath + "/SystemThemes/" + _systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _editLang, _rocketInterface.ThemeVersion, _systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", _appthemeRelPath + "/SystemThemes/" + _systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _editLang, _moduleParams.AppThemeVersion, _systemInfoData.DebugMode);
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, _passSettings, articleDataList.Header, _systemInfoData.DebugMode);
                 return strOut;
             }

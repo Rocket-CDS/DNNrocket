@@ -1092,12 +1092,13 @@ namespace Rocket.AppThemes.Componants
             exportData += "<versions>";
             foreach (var v in VersionList)
             {
+
                 var guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + v;
-                var vInfo = _objCtrl.GetData(guidKey, _entityTypeCode, AppCultureCode, -1, -1, false, _tableName);
-                if (vInfo != null)
+                var vRecord = _objCtrl.GetRecordByGuidKey(DNNrocketUtils.GetPortalId(),-1, _entityTypeCode, guidKey, "", _tableName);
+                if (vRecord != null)
                 {
                     exportData += "<version>";
-                    exportData += vInfo.ToXmlItem();
+                    exportData += vRecord.ToXmlItem();
                     exportData += "</version>";
                 }
             }
@@ -1125,6 +1126,7 @@ namespace Rocket.AppThemes.Componants
 
             FileUtils.SaveFile(userFolder + "\\exportapptheme.xml", exportData);
 
+            ExportFileMapPath = userFolder + "\\exportapptheme.xml";
         }
 
 
@@ -1165,6 +1167,8 @@ namespace Rocket.AppThemes.Componants
         public int DataType { get { return Info.GetXmlPropertyInt("genxml/radio/themetype"); } }
 
         public string SystemKey { get; set; }
+
+        public string ExportFileMapPath { get; set; }
 
         #endregion
 

@@ -579,21 +579,28 @@ namespace Simplisity
         }
 
 
-        public static string GetUniqueKey(int maxSize = 8)
+        public static string GetUniqueKey(int maxSize = 0)
         {
-            var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            var chars = a.ToCharArray();
-            var data = new byte[1];
-            var crypto = new RNGCryptoServiceProvider();
-            crypto.GetNonZeroBytes(data);
-            data = new byte[maxSize];
-            crypto.GetNonZeroBytes(data);
-            var result = new StringBuilder(maxSize);
-            foreach (byte b in data)
+            if (maxSize == 0)
             {
-                result.Append(chars[b % (chars.Length - 1)]);
+                return Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
             }
-            return result.ToString();
+            else
+            {
+                var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+                var chars = a.ToCharArray();
+                var data = new byte[1];
+                var crypto = new RNGCryptoServiceProvider();
+                crypto.GetNonZeroBytes(data);
+                data = new byte[maxSize];
+                crypto.GetNonZeroBytes(data);
+                var result = new StringBuilder(maxSize);
+                foreach (byte b in data)
+                {
+                    result.Append(chars[b % (chars.Length - 1)]);
+                }
+                return result.ToString();
+            }
         }
 
         public static string ReplaceFirstOccurrence(string source, string find, string replace)

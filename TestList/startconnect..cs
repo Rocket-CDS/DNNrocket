@@ -178,7 +178,7 @@ var rtnDic = new Dictionary<string, string>();
             info.PortalId = DNNrocketUtils.GetPortalId();
             info.Lang = DNNrocketUtils.GetEditCulture();
             info.TypeCode = "TESTLIST";
-            info.GUIDKey = GeneralUtils.GetUniqueKey(12);
+            info.GUIDKey = GeneralUtils.GetUniqueKey();
             
             var objCtrl = new DNNrocketController();
             return objCtrl.SaveData(info, _systemInfo.ItemID);

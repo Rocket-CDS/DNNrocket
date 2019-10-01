@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using DNNrocketAPI.Componants;
+using System.Net;
 
 namespace DNNrocketAPI
 {
@@ -153,8 +154,8 @@ namespace DNNrocketAPI
                                 {
                                     if (!returnDictionary.ContainsKey("downloadname")) returnDictionary["downloadname"] = "";
                                     if (!returnDictionary.ContainsKey("fileext")) returnDictionary["fileext"] = "";
-                                    DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
-                                }
+                                        DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
+                                    }
                                 if (returnDictionary.ContainsKey("outputjson"))
                                 {
                                     strJson = returnDictionary["outputjson"];
@@ -274,11 +275,14 @@ namespace DNNrocketAPI
                 if (downloadname == "") downloadname = Path.GetFileNameWithoutExtension(filenamepath) + fileext;
                 try
                 {
-                    context.Response.Clear();
-                    context.Response.AppendHeader("content-disposition", "attachment; filename=" + downloadname);
-                    context.Response.ContentType = "application/octet-stream";
-                    context.Response.WriteFile(filenamepath);
-                    context.Response.End();
+                    HttpResponse response = HttpContext.Current.Response;
+                    response.ClearContent();
+                    response.Clear();
+                    response.ContentType = "text/plain";
+                    response.AppendHeader("content-disposition", "attachment; filename=" + downloadname);
+                    response.TransmitFile(filenamepath);
+                    response.Flush();
+                    response.End();
                 }
                 catch (Exception ex)
                 {

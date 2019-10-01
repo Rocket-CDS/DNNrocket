@@ -160,7 +160,7 @@ namespace DNNrocket.TestForm
                     {
                         var friendlyname = GeneralUtils.DeCode(f);
                         var encryptName = DNNrocketUtils.EncryptFileName(encryptkey, friendlyname);
-                        var newfilename = GeneralUtils.GetUniqueKey(12);
+                        var newfilename = GeneralUtils.GetUniqueKey();
 
                         var imgInfo = new SimplisityInfo();
                         var imagerelpath = DNNrocketUtils.HomeRelDirectory() + "/images/" + newfilename;
@@ -222,7 +222,7 @@ namespace DNNrocket.TestForm
                     {
                         var friendlyname = GeneralUtils.DeCode(f);
                         var encryptName = DNNrocketUtils.EncryptFileName(encryptkey, friendlyname);
-                        var newfilename = GeneralUtils.GetUniqueKey(12);
+                        var newfilename = GeneralUtils.GetUniqueKey();
 
                         var docInfo = new SimplisityInfo();
                         var docrelpath = DNNrocketUtils.HomeRelDirectory() + "/docs/" + newfilename;

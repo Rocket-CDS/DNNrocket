@@ -74,8 +74,8 @@
 
             <div class="w3-container w3-padding">
                 <div class="w3-col m9 w3-padding">
-                    <label>@ResourceKey("AppThemes.summary")</label>&nbsp;<img class='' src='@flagurl' alt='' />
-                    @TextArea(info, "genxml/lang/genxml/textbox/summary", "class='w3-input w3-border'", "", true)
+                    <label>@ResourceKey("AppThemes.summary")</label>
+                    @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border'", "", false)
                 </div>
                 <div class="w3-col m3 w3-padding" style="width:200px">
                     <label>@ResourceKey("AppThemes.version")</label>
@@ -204,24 +204,26 @@
 
                     <ul id="imagelistdata" class="w3-ul">
 
-                        @foreach (var imgInfo in imgdatalist)
-                        {
-                            <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
-                                @SortableListIndex(imgInfo, imgLP)
-                                <div class="w3-display-container  w3-card">
-                                    @ImageEditFullName(imgInfo, "imagepath", 150, 150, "", false, @imgLP)
+                    @foreach (var imgInfo in imgdatalist)
+                    {
+                        <li class="imagelist w3-padding w3-col m2 ">
+                            <div class="w3-display-container"style="min-width:150px;">
+                                <div class="w3-row w3-card" style="height:150px;">
+                                    <div class="w3-display-middle ">
+                                        @SortableListIndex(imgInfo, imgLP)
+                                        @ImageEdit(imgInfo, "imagepath", 120, 120, " ", false, @imgLP)
+                                    </div>
                                     <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
                                         <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
                                     </div>
                                 </div>
-                            </li>
+                            </div>
+                        </li>
 
-                            imgLP += 1;
-                        }
+                    imgLP += 1;
+                    }
                     </ul>
-
                 </div>
-
             </div>
 
             <div id="CSS" class="w3-container w3-border city" style="display:none">

@@ -143,7 +143,7 @@ function simplisity_nbxgetCompleted(e) {
     }
 
     // a change of langauge has been triggered.
-    var nextlang = simplisity_getParamField('nextlang')
+    var nextlang = simplisity_getParamField('nextlang');
     if ((typeof nextlang !== 'undefined') && nextlang !== '') {
         simplisity_setParamField('nextlang', '');
     }
@@ -765,7 +765,7 @@ async function initFileUpload(fileuploadselector) {
 
     var rexpr = $(fileuploadselector).attr('s-regexpr');
     if (rexpr === '') {
-        rexpr = '/(\.|\/)(gif|jpe?g|png|pdf|zip)$/i';
+        rexpr = '/(\.|\/)(gif|jpe?g|png|pdf|zip|xml|json)$/i';
     }
     var maxFileSize = $(fileuploadselector).attr('s-maxfilesize');
     if (maxFileSize === '') {

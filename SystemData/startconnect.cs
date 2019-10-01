@@ -196,7 +196,7 @@ namespace DNNrocket.SystemData
                 info.Lang = DNNrocketUtils.GetCurrentCulture();
                 info.SetXmlProperty("genxml/hidden/index", "99");
                 info.TypeCode = "SYSTEM";
-                info.GUIDKey = GeneralUtils.GetUniqueKey(12);
+                info.GUIDKey = GeneralUtils.GetUniqueKey();
                 var objCtrl = new DNNrocketController();
                 info.ItemID = objCtrl.SaveRecord(info).ItemID;
 

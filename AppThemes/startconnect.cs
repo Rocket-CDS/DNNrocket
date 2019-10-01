@@ -5,6 +5,7 @@ using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 
 namespace DNNrocket.AppThemes
 {
@@ -21,6 +22,7 @@ namespace DNNrocket.AppThemes
         private static Dictionary<string, string> _passSettings;
         private static string _appThemeFolder;
         private static string _appVersionFolder;
+        private const string _tableName = "DNNRocket";
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -249,28 +251,62 @@ namespace DNNrocket.AppThemes
         {
             var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
             appTheme.Export();
-            return GetList();
+            return appTheme.ExportFileMapPath;
         }
 
         private static string ImportAppTheme()
         {
-            var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
-
-            var documentfolder = "import";
-            var docDirectory = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + documentfolder;
-            if (!Directory.Exists(docDirectory)) Directory.CreateDirectory(docDirectory);
-
             var fileuploadlist = _paramInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
             if (fileuploadlist != "")
             {
+                var userid = DNNrocketUtils.GetCurrentUserId();
+                var userFolder = DNNrocketUtils.TempDirectory() + "\\user" + userid;
+                var objCtrl = new DNNrocketController();
+
                 foreach (var f in fileuploadlist.Split(';'))
                 {
                     if (f != "")
                     {
                         var friendlyname = GeneralUtils.DeCode(f);
-                        var userfilename = userid + "_" + friendlyname;
-                        File.Copy(DNNrocketUtils.TempDirectory() + "\\" + userfilename, docDirectory + "\\" + friendlyname, true);
-                        File.Delete(DNNrocketUtils.TempDirectory() + "\\" + userfilename);
+
+                        // get import data 
+                        var xmlData = FileUtils.ReadFile(userFolder + "\\" + friendlyname);
+                        var importInfo = new SimplisityInfo();
+                        importInfo.XMLData = xmlData;
+
+                        // import DB records.
+                        var versionList = new List<SimplisityInfo>();
+                        var nodList = importInfo.XMLDoc.SelectNodes("genxml/versions/version");
+                        foreach (XmlNode nod in nodList)
+                        {
+                            var s = new SimplisityInfo();
+                            s.XMLData = nod.InnerXml;
+                            versionList.Add(s);
+                        }
+                        foreach (var vItem in versionList)
+                        {
+                            var v = vItem.GetXmlProperty("item/genxml/select/versionfolder");
+                            var guidKey = vItem.GetXmlProperty("item/guidkey");
+                            var entityTypeCode = vItem.GetXmlProperty("item/typecode");
+
+                            var newInfo = new SimplisityInfo();
+                            newInfo.FromXmlItem(vItem.XMLData);
+
+                            newInfo.PortalId = DNNrocketUtils.GetPortalId();
+                            var itemid = -1;
+                            var gInfo = objCtrl.GetByGuidKey(DNNrocketUtils.GetPortalId(), -1, entityTypeCode, guidKey, "", _tableName);
+                            if (gInfo != null) itemid = gInfo.ItemID;
+                            var vInfo = objCtrl.GetData(entityTypeCode, itemid, vItem.Lang);
+                            newInfo.ItemID = itemid;
+
+                            objCtrl.Update(newInfo,_tableName);
+                        }
+
+                        // import Images
+
+
+                        // delete import file
+                        //File.Delete(userFolder + "\\" + friendlyname);
                     }
                 }
 

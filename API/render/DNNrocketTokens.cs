@@ -167,6 +167,8 @@ namespace DNNrocketAPI.render
 
             strOut += "</div>";
 
+            strOut += "</div>";
+
             //Text seciton
 
             if (uiType == "full")
@@ -178,6 +180,7 @@ namespace DNNrocketAPI.render
                 strOut += "<label class=''>" + ResourceKey("DNNrocketImages.width") + "</label>";
                 strOut += TextBox(info, xpathwidth, " class='w3-input w3-border' autocomplete='off'", "200", false, row);
                 strOut += "</div>";
+
                 strOut += "<div class='w3-col w3-padding' style='width:100px;'>";
                 strOut += "<label class=''>" + ResourceKey("DNNrocketImages.height") + "</label>";
                 strOut += TextBox(info, xpathheight, " class='w3-input w3-border' autocomplete='off' datatype='int'", "0", false, row);
@@ -190,7 +193,6 @@ namespace DNNrocketAPI.render
 
                 strOut += "</div>";
                 strOut += "</div>";
-                strOut += "</div>";
             }
 
             if (uiType == "name")
@@ -198,10 +200,12 @@ namespace DNNrocketAPI.render
                 strOut += "<div class='w3-rest'>";
 
                 strOut += "<div class='w3-row'>";
+
                 strOut += "<div class='w3-rest w3-padding' style='min-width:100px;'>";
                 strOut += "<label class=''>" + ResourceKey("DNNrocketImages.alt") + "</label>&nbsp;" + EditFlag();
                 strOut += TextBox(info, xpathalt, " class='w3-input w3-border' autocomplete='off'", "", true, row);
                 strOut += "</div>";
+
                 strOut += "</div>";
 
                 strOut += "<div class='w3-row'>";
@@ -210,6 +214,7 @@ namespace DNNrocketAPI.render
                 strOut += "<label class=''>" + ResourceKey("DNNrocketImages.width") + "</label>";
                 strOut += TextBox(info, xpathwidth, " class='w3-input w3-border' autocomplete='off'", "200", false, row);
                 strOut += "</div>";
+
                 strOut += "<div class='w3-col w3-padding' style='width:100px;'>";
                 strOut += "<label class=''>" + ResourceKey("DNNrocketImages.height") + "</label>";
                 strOut += TextBox(info, xpathheight, " class='w3-input w3-border' autocomplete='off' datatype='int'", "0", false, row);
@@ -222,7 +227,6 @@ namespace DNNrocketAPI.render
 
                 strOut += "</div>";
 
-                strOut += "</div>";
                 strOut += "</div>";
             }
 
