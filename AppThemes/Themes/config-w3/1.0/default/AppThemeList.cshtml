@@ -168,9 +168,8 @@ else
                                 <div class="w3-button simplisity_confirmclick " s-cmd="rocketapptheme_upload" s-confirm="@ResourceKey("AppThemes.uploadmsg")&nbsp;?" s-track="false" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
                                     <i class='fas fa-upload' title="@ResourceKey("DNNRocket.cmdUpload")" style='font-size:32px'></i>
                                 </div>
-                                <div class="w3-button simplisity_confirmclick " s-cmd="rocketapptheme_export" s-after="downloadExportFile" s-return="#exportdownloadedurl" s-confirm="@ResourceKey("AppThemes.exportmsg")&nbsp;?" s-track="false" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
-                                    <i class='fas fa-file-export' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i>
-                                </div>
+
+                                <a class="w3-button simplisity_filedownload" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;"><i class='fas fa-file-export' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></a>
                             </div>
                         </div>
                     </div>
@@ -187,15 +186,6 @@ else
         $(document).ready(function () {
             $("#datalist").disableSelection();
         });
-
-
-    function downloadExportFile() {
-        if ($('#exportdownloadedurl').text() !== '') {
-            $.fileDownload($('#exportdownloadedurl').text())
-            .done(function () { alert('File download a success!'); })
-            .fail(function () { alert('File download failed!'); });
-        }
-    }
 
         function searchFunction() {
             var input, filter, ul, li, a, i;

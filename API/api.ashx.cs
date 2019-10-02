@@ -64,7 +64,27 @@ namespace DNNrocketAPI
                         paramInfo.PortalId = DNNrocketUtils.GetPortalId();
                     }
 
-                    var systemprovider = paramInfo.GetXmlProperty("genxml/hidden/systemprovider").Trim(' ');
+                    // Add any url params (uncoded)
+                    foreach (String key in context.Request.QueryString.Keys)
+                    {
+                        try
+                        {
+                            paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), GeneralUtils.DeCode(context.Request.QueryString[key]));
+                        }
+                        catch (Exception ex)
+                        {
+                            // it might not be coded. (ignore and use genxml/urlparams/* xpath)
+                            paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), context.Request.QueryString[key]);
+                        }
+                    }
+                    foreach (string key in context.Request.Form)
+                    {
+                        paramInfo.SetXmlProperty("genxml/postform/" + key.Replace("_", "-"), context.Request.Form[key]); // remove '_' from xpath
+                    }
+
+
+                    var systemprovider = paramInfo.GetXmlProperty("genxml/urlparams/systemprovider").Trim(' ');
+                    if (systemprovider == "") systemprovider = paramInfo.GetXmlProperty("genxml/hidden/systemprovider").Trim(' ');
                     if (systemprovider == "") systemprovider = "dnnrocket";
                     var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
                     var systemInfoData = new SystemInfoData(systemInfo); 
@@ -95,23 +115,6 @@ namespace DNNrocketAPI
 
                     }
 
-                    // Add any url params (uncoded)
-                    foreach (String key in context.Request.QueryString.Keys)
-                    {
-                        try
-                        {
-                            paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), GeneralUtils.DeCode(context.Request.QueryString[key]));
-                        }
-                        catch (Exception ex)
-                        {
-                            // it might not be coded. (ignore and use genxml/urlparams/* xpath)
-                            paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), context.Request.QueryString[key]);
-                        }
-                    }
-                    foreach (string key in context.Request.Form)
-                    {
-                        paramInfo.SetXmlProperty("genxml/postform/" + key.Replace("_","-"), context.Request.Form[key]); // remove '_' from xpath
-                    }
 
 
                     var interfacekey = paramInfo.GetXmlProperty("genxml/hidden/interfacekey");
@@ -152,10 +155,12 @@ namespace DNNrocketAPI
                                 }
                                 if (returnDictionary.ContainsKey("filenamepath"))
                                 {
-                                    if (!returnDictionary.ContainsKey("downloadname")) returnDictionary["downloadname"] = "";
-                                    if (!returnDictionary.ContainsKey("fileext")) returnDictionary["fileext"] = "";
-                                        DownloadFile(context, returnDictionary["filenamepath"], returnDictionary["downloadname"], returnDictionary["fileext"]);
-                                    }
+                                    DownloadFile(returnDictionary["filenamepath"], returnDictionary["downloadname"]);
+                                }
+                                if (returnDictionary.ContainsKey("downloadfiledata"))
+                                {
+                                    DownloadStringAsFile(returnDictionary["downloadfiledata"], returnDictionary["downloadname"]);
+                                }
                                 if (returnDictionary.ContainsKey("outputjson"))
                                 {
                                     strJson = returnDictionary["outputjson"];
@@ -266,13 +271,13 @@ namespace DNNrocketAPI
             }
         }
 
-        public static string DownloadFile(HttpContext context, string filenamepath, string downloadname, string fileext)
+        public static string DownloadFile(string filenamepath, string downloadname)
         {
             var strOut = "";
             if (filenamepath != "")
             {
                 strOut = filenamepath; // return this is error.
-                if (downloadname == "") downloadname = Path.GetFileNameWithoutExtension(filenamepath) + fileext;
+                if (downloadname == "") downloadname = Path.GetFileName(filenamepath);
                 try
                 {
                     HttpResponse response = HttpContext.Current.Response;
@@ -281,6 +286,32 @@ namespace DNNrocketAPI
                     response.ContentType = "text/plain";
                     response.AppendHeader("content-disposition", "attachment; filename=" + downloadname);
                     response.TransmitFile(filenamepath);
+                    response.Flush();
+                    response.End();
+                }
+                catch (Exception ex)
+                {
+                    var errmsg = ex.ToString();
+                    // ignore, robots can cause error on thread abort.
+                }
+            }
+            return strOut;
+        }
+
+        public static string DownloadStringAsFile(string filedata, string downloadname = "")
+        {
+            var strOut = "";
+            if (filedata != "")
+            {
+                if (downloadname == "") downloadname = "downloadfile.txt";
+                try
+                {
+                    HttpResponse response = HttpContext.Current.Response;
+                    response.ClearContent();
+                    response.Clear();
+                    response.ContentType = "text/plain";
+                    response.AppendHeader("content-disposition", "attachment; filename=" + downloadname);                    
+                    response.Write(filedata);
                     response.Flush();
                     response.End();
                 }

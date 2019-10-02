@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace Rocket.AppThemes.Componants
 {
@@ -21,7 +22,16 @@ namespace Rocket.AppThemes.Componants
         private List<string> _resxFileName;
         private bool _debugMode;
 
+        public AppTheme(string importXml, bool overwrite = true, string langRequired = "", bool debugMode = false)
+        {
+            ImportXmlData(importXml, overwrite, langRequired, debugMode);
+        }
         public AppTheme(string systemKey, string appThemeFolder, string versionFolder, string langRequired = "", bool debugMode = false)
+        {
+            InitAppTheme(systemKey, appThemeFolder, versionFolder, langRequired, debugMode);
+        }
+
+        private void InitAppTheme(string systemKey, string appThemeFolder, string versionFolder, string langRequired = "", bool debugMode = false)
         {
             _debugMode = debugMode;
             _objCtrl = new DNNrocketController();
@@ -1085,16 +1095,22 @@ namespace Rocket.AppThemes.Componants
             }
 
         }
-
-        public void Export()
+        public string Export()
         {
             var exportData = "<apptheme>";
+            exportData += "<data>";
+
+            exportData += "<systemkey>" + SystemKey + "</systemkey>";
+            exportData += "<appthemefolder>" + AppThemeFolder + "</appthemefolder>";
+            exportData += "<appversionfolder>" + LatestVersionFolder + "</appversionfolder>";
+
+            exportData += "</data>";
             exportData += "<versions>";
             foreach (var v in VersionList)
             {
 
                 var guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + v;
-                var vRecord = _objCtrl.GetRecordByGuidKey(DNNrocketUtils.GetPortalId(),-1, _entityTypeCode, guidKey, "", _tableName);
+                var vRecord = _objCtrl.GetRecordByGuidKey(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, guidKey, "", _tableName);
                 if (vRecord != null)
                 {
                     exportData += "<version>";
@@ -1120,16 +1136,52 @@ namespace Rocket.AppThemes.Componants
             exportData += "</images>";
             exportData += "</apptheme>";
 
-            var userFolder = DNNrocketUtils.TempDirectory() + "\\user" + DNNrocketUtils.GetCurrentUserId();
+            return exportData;
 
-            if (!Directory.Exists(userFolder)) Directory.CreateDirectory(userFolder);
-
-            FileUtils.SaveFile(userFolder + "\\exportapptheme.xml", exportData);
-
-            ExportFileMapPath = userFolder + "\\exportapptheme.xml";
         }
+        private void ImportXmlData(string xmlImport, bool overwrite = true, string langRequired = "", bool debugMode = false)
+        {
+            var iRec = new SimplisityRecord();
+            iRec.XMLData = xmlImport;
 
+            // import DB records.
+            var versionList = new List<SimplisityInfo>();
+            var nodList = iRec.XMLDoc.SelectNodes("genxml/versions/version");
+            foreach (XmlNode nod in nodList)
+            {
+                var s = new SimplisityInfo();
+                s.XMLData = nod.InnerXml;
+                versionList.Add(s);
+            }
+            foreach (var vItem in versionList)
+            {
+                var v = vItem.GetXmlProperty("item/genxml/select/versionfolder");
+                var guidKey = vItem.GetXmlProperty("item/guidkey");
+                var entityTypeCode = vItem.GetXmlProperty("item/typecode");
 
+                var newInfo = new SimplisityRecord();
+                newInfo.FromXmlItem(vItem.XMLData);
+
+                newInfo.PortalId = DNNrocketUtils.GetPortalId();
+                var itemid = -1;
+                var gInfo = _objCtrl.GetRecordByGuidKey(DNNrocketUtils.GetPortalId(), -1, entityTypeCode, guidKey, "", _tableName);
+                if (gInfo != null)
+                {
+                    if (overwrite)
+                        itemid = gInfo.ItemID;
+                    else
+                    {
+                        //var appTheme
+                        //newInfo.SetXmlProperty("",  + " - copy");
+                    }
+                }
+                newInfo.ItemID = itemid;
+
+                _objCtrl.Update(newInfo, _tableName);
+            }
+
+            InitAppTheme(iRec.GetXmlProperty("apptheme/data/systemkey"), iRec.GetXmlProperty("apptheme/data/appthemefolder"), iRec.GetXmlProperty("apptheme/data/appversionfolder"), langRequired, debugMode);
+        }
         #region "properties"
 
         public string AppProjectFolderRel { get; set; }

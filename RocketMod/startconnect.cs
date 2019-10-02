@@ -200,7 +200,7 @@ namespace RocketMod
                 }
                 else
                 {
-                    _appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion, "");
+                    _appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
 
                     _passSettings.Add("AppTheme", _moduleParams.AppThemeFolder);
                     _passSettings.Add("AppThemeVersion", _moduleParams.AppThemeVersion);
@@ -290,7 +290,7 @@ namespace RocketMod
             _moduleParams.AppThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
             _moduleParams.AppThemeVersion = _paramInfo.GetXmlProperty("genxml/hidden/latestversionfolder");
 
-            var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion, DNNrocketUtils.GetEditCulture());
+            var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
 
             _moduleParams.AppThemeFolderRel = appTheme.AppThemeFolderRel;
 
@@ -617,7 +617,7 @@ namespace RocketMod
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "dashboard.cshtml";
 
-                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeFolder, _editLang);
+                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeFolder);
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
@@ -647,7 +647,7 @@ namespace RocketMod
                     foreach (var d in dirlist)
                     {
                         var dr = new System.IO.DirectoryInfo(d);
-                        var appTheme = new AppTheme(_systemInfoData.SystemKey, dr.Name, "", DNNrocketUtils.GetCurrentCulture());
+                        var appTheme = new AppTheme(_systemInfoData.SystemKey, dr.Name, "");
                         appList.Add(appTheme);
                     }
 
@@ -756,7 +756,7 @@ namespace RocketMod
 
         private static void AssignSelecteditemId()
         {
-            _appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion, DNNrocketUtils.GetEditCulture());
+            _appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
             _selectedItemId = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (_appTheme.DataType != null &&_appTheme.DataType == 1)
             {

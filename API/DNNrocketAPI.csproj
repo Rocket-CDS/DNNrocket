@@ -145,6 +145,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Documents\DNNrocket-File-Download.docx" />
     <None Include="downloadfile.ashx" />
     <None Include="api.ashx" />
     <None Include="BuildScripts\build.bat" />

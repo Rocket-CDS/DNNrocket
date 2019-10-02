@@ -23,6 +23,7 @@ namespace DNNrocket.AppThemes
         private static string _appThemeFolder;
         private static string _appVersionFolder;
         private const string _tableName = "DNNRocket";
+        private static AppTheme _appTheme;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -48,6 +49,9 @@ namespace DNNrocket.AppThemes
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/clearlistcache")) _appThemeDataList.PopulateAppThemeList();
 
                 if (paramCmd != "rocketapptheme_selectsystemkey" && _appThemeDataList.SelectedSystemKey == "") paramCmd = "rocketapptheme_getlist";
+
+                _appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, DNNrocketUtils.GetEditCulture(), true);
+                AssignEditLang();
 
                 switch (paramCmd)
                 {
@@ -108,8 +112,7 @@ namespace DNNrocket.AppThemes
                         strOut = AddNewAppTheme();
                         break;
                     case "rocketapptheme_export":
-                        strOut = ExportAppTheme();
-                        break;
+                        return ExportAppTheme();
                     case "rocketapptheme_import":
                         strOut = ImportAppTheme();
                         break;
@@ -128,10 +131,8 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                AssignEditLang();
-                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, "", true);
-                var rtn = appTheme.CopyVersion(appTheme.AppVersionFolder, (Convert.ToDouble(appTheme.LatestVersionFolder) + 1).ToString("0.0"));
-                _appVersionFolder = appTheme.AppVersionFolder;
+                var rtn = _appTheme.CopyVersion(_appTheme.AppVersionFolder, (Convert.ToDouble(_appTheme.LatestVersionFolder) + 1).ToString("0.0"));
+                _appVersionFolder = _appTheme.AppVersionFolder;
                 if (rtn != "") return rtn;
                 return GetDetail();
             }
@@ -144,10 +145,8 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                AssignEditLang();
-                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, "", true);
-                appTheme.DeleteVersion();
-                _appVersionFolder = appTheme.AppVersionFolder;
+                _appTheme.DeleteVersion();
+                _appVersionFolder = _appTheme.AppVersionFolder;
                 _appThemeDataList = new AppThemeDataList(_appThemeDataList.SelectedSystemKey); // rebuild list without verison.
                 return GetDetail();
             }
@@ -160,9 +159,7 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                AssignEditLang();
-                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, "", true);
-                appTheme.DeleteTheme();
+                _appTheme.DeleteTheme();
                 _appThemeDataList = new AppThemeDataList(_appThemeDataList.SelectedSystemKey);
                 return GetList();
             }
@@ -192,9 +189,7 @@ namespace DNNrocket.AppThemes
                     return DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/AppThemes/App_LocalResources/", "AppThemes.appthemeexists");
                 }
 
-                AssignEditLang();
-                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, newAppThemeName, "1.0", "", true);
-                _appVersionFolder = appTheme.AppVersionFolder;
+                _appVersionFolder = _appTheme.AppVersionFolder;
                 _appThemeDataList.PopulateAppThemeList();
                 return "";
             }
@@ -208,9 +203,7 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                AssignEditLang();
-                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, "", true);
-                return GetEditTemplate(appTheme);
+                return GetEditTemplate(_appTheme);
             }
             catch (Exception ex)
             {
@@ -232,7 +225,6 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                AssignEditLang();
                 var template = _rocketInterface.DefaultTemplate;
                 if (template == "") template = "appthemelist.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",true);
@@ -244,15 +236,23 @@ namespace DNNrocket.AppThemes
             catch (Exception ex)
             {
                 return ex.ToString();
+
             }
         }
 
-        private static string ExportAppTheme()
-        {
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
-            appTheme.Export();
-            return appTheme.ExportFileMapPath;
-        }
+private static Dictionary<string, string> ExportAppTheme()
+{
+    var appThemeFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appthemefolder");
+    var appVersionFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder");
+    var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appThemeFolder, appVersionFolder, DNNrocketUtils.GetEditCulture(), true);
+
+    var rtnDic = new Dictionary<string, string>();
+
+    rtnDic.Add("downloadfiledata", appTheme.Export());
+    rtnDic.Add("downloadname", appTheme.AppThemeFolder + ".xml");
+
+    return rtnDic;
+}
 
         private static string ImportAppTheme()
         {
@@ -271,40 +271,7 @@ namespace DNNrocket.AppThemes
 
                         // get import data 
                         var xmlData = FileUtils.ReadFile(userFolder + "\\" + friendlyname);
-                        var importInfo = new SimplisityInfo();
-                        importInfo.XMLData = xmlData;
-
-                        // import DB records.
-                        var versionList = new List<SimplisityInfo>();
-                        var nodList = importInfo.XMLDoc.SelectNodes("genxml/versions/version");
-                        foreach (XmlNode nod in nodList)
-                        {
-                            var s = new SimplisityInfo();
-                            s.XMLData = nod.InnerXml;
-                            versionList.Add(s);
-                        }
-                        foreach (var vItem in versionList)
-                        {
-                            var v = vItem.GetXmlProperty("item/genxml/select/versionfolder");
-                            var guidKey = vItem.GetXmlProperty("item/guidkey");
-                            var entityTypeCode = vItem.GetXmlProperty("item/typecode");
-
-                            var newInfo = new SimplisityInfo();
-                            newInfo.FromXmlItem(vItem.XMLData);
-
-                            newInfo.PortalId = DNNrocketUtils.GetPortalId();
-                            var itemid = -1;
-                            var gInfo = objCtrl.GetByGuidKey(DNNrocketUtils.GetPortalId(), -1, entityTypeCode, guidKey, "", _tableName);
-                            if (gInfo != null) itemid = gInfo.ItemID;
-                            var vInfo = objCtrl.GetData(entityTypeCode, itemid, vItem.Lang);
-                            newInfo.ItemID = itemid;
-
-                            objCtrl.Update(newInfo,_tableName);
-                        }
-
-                        // import Images
-
-
+                        var _appTheme = new AppTheme(xmlData, true, DNNrocketUtils.GetEditCulture(), _systemInfoData.DebugMode);
                         // delete import file
                         //File.Delete(userFolder + "\\" + friendlyname);
                     }
@@ -317,52 +284,45 @@ namespace DNNrocket.AppThemes
 
         public static void SaveData()
         {
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
-            appTheme.Save(_postInfo);
+            _appTheme.Save(_postInfo);
         }
 
         public static void AddListImage()
         {
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
-            appTheme.AddListImage();
+            _appTheme.AddListImage();
         }
 
         public static string AddListTemplate()
         {
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
-            appTheme.AddListTemplate();
-            return GetEditTemplate(appTheme);
+            _appTheme.AddListTemplate();
+            return GetEditTemplate(_appTheme);
         }
         public static string AddListCss()
         {
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
-            appTheme.AddListCss();
-            return GetEditTemplate(appTheme);
+            _appTheme.AddListCss();
+            return GetEditTemplate(_appTheme);
         }
         public static string AddListJs()
         {
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
-            appTheme.AddListJs();
-            return GetEditTemplate(appTheme);
+            _appTheme.AddListJs();
+            return GetEditTemplate(_appTheme);
         }
         public static string AddListResx()
         {
             var culturecoderesx = _paramInfo.GetXmlProperty("genxml/hidden/culturecoderesx");
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
 
             // get default data
             var jsonResx = "";
-            var resxItem = appTheme.Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
+            var resxItem = _appTheme.Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
             if (resxItem != null) jsonResx = resxItem.GetXmlProperty("genxml/hidden/jsonresx");
 
-            appTheme.AddListResx(culturecoderesx, jsonResx);
-            return GetEditTemplate(appTheme);
+            _appTheme.AddListResx(culturecoderesx, jsonResx);
+            return GetEditTemplate(_appTheme);
         }
         private static string AddListField()
         {
-            var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, _editLang, true);
-            appTheme.AddListField();
-            return GetEditTemplate(appTheme);
+            _appTheme.AddListField();
+            return GetEditTemplate(_appTheme);
         }
         private static void AssignEditLang()
         {

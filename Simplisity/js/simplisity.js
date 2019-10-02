@@ -918,17 +918,16 @@ function simplisity_assignevents(cmdurl) {
             var sfields = $(this).attr('s-fields');
 
             if (typeof sfields !== 'undefined' && sfields !== '') {
-                sfields.replace(',,', '{comma}');
-                sfields.replace('::', '{colon}');
-                var sfieldlist = sfields.split(',');
-                sfieldlist.forEach((field, index) => {
-                    fieldsplit = field.split(':');
-                    params = params + '&' + fieldsplit[0].replace('{comma}', ',').replace('{colon}', ':') + '=' + simplisity_encode(fieldsplit[1].replace('{comma}', ',').replace('{colon}', ':'));
-                });
+
+                var obj = JSON.parse(sfields);
+                for (x in obj) {
+                    params = params + '&' + x + '=' + simplisity_encode(simplisity_getField(sfields, x));
+                }
+
                 var systemprovider = simplisity_getSystemProvider(sfields);  // use systemprovider so we can have multiple cookie for Different systems.
                 params = params + '&systemprovider=' + simplisity_encode(systemprovider);
             }
-
+            var cmdurl = $("#simplisity_cmdurl").val();
             $(this).attr({
                 href: cmdurl + '?' + params
             });
