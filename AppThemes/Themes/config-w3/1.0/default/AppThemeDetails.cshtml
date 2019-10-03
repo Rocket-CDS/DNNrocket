@@ -11,7 +11,7 @@
 
 @{
     var appTheme = (AppTheme)Model.List.First();
-    var info = appTheme.Info;
+    var info = new SimplisityInfo(appTheme.Record);
 }
 @{
     var dataDic = new Dictionary<string, string>();
@@ -34,20 +34,22 @@
     var disabled = "";
 
     var imgLP = 1;
-    var imgdatalist = info.GetList("imagelist");
+    var imgdatalist = info.GetRecordList("imagelist");
 
     var templateLP = 1;
-    var templatedatalist = info.GetList("templatelist");
+    var templatedatalist = info.GetRecordList("templatelist");
     var cssLP = 1;
-    var cssdatalist = info.GetList("csslist");
+    var cssdatalist = info.GetRecordList("csslist");
     var jsLP = 1;
-    var jsdatalist = info.GetList("jslist");
+    var jsdatalist = info.GetRecordList("jslist");
     var resxLP = 1;
-    var resxdatalist = info.GetList("resxlist");
+    var resxdatalist = info.GetRecordList("resxlist");
 
 
     var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist,.fielddata";
 }
+
+@HiddenField(info,"genxml/hidden/fieldlocalizedlist"," s-update='ignore' ")
 
 <div id="detailsection">
 
@@ -123,7 +125,7 @@
                     @{
                         var m = new SimplisityRazor();
                         var l2 = new List<object>();
-                        foreach (object i in info.GetList("fielddata"))
+                        foreach (object i in info.GetRecordList("fielddata"))
                         {
                             l2.Add(i);
                         }
@@ -146,10 +148,10 @@
 
                     <ul id="templatelistdata" class="w3-ul">
 
-                        @foreach (var templateInfo in templatedatalist)
+                        @foreach (var templateRecord in templatedatalist)
                         {
+                            var templateInfo = new SimplisityInfo(templateRecord);
                             <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
-                                @SortableListIndex(templateInfo, templateLP)
                                 @HiddenField(templateInfo, "genxml/hidden/editorcodehtmlmixed", "", "", false, templateLP)
                                 @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default", false, templateLP)
                                 @HiddenField(templateInfo, "genxml/hidden/filenamehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/filename"), false, templateLP)
@@ -204,13 +206,13 @@
 
                     <ul id="imagelistdata" class="w3-ul">
 
-                    @foreach (var imgInfo in imgdatalist)
+                    @foreach (var imgRecord in imgdatalist)
                     {
+                        var imgInfo = new SimplisityInfo(imgRecord);
                         <li class="imagelist w3-padding w3-col m2 ">
                             <div class="w3-display-container"style="min-width:150px;">
                                 <div class="w3-row w3-card" style="height:150px;">
                                     <div class="w3-display-middle ">
-                                        @SortableListIndex(imgInfo, imgLP)
                                         @ImageEdit(imgInfo, "imagepath", 120, 120, " ", false, @imgLP)
                                     </div>
                                     <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
@@ -239,10 +241,10 @@
 
                     <ul id="csslistdata" class="w3-ul">
 
-                        @foreach (var cssInfo in cssdatalist)
+                        @foreach (var cssRecord in cssdatalist)
                         {
+                            var cssInfo = new SimplisityInfo(cssRecord);
                             <li class="csslist w3-col m4 w3-display-container w3-padding w3-border-0">
-                                @SortableListIndex(cssInfo, cssLP)
                                 @HiddenField(cssInfo, "genxml/hidden/editorcodecss", "", "", false, cssLP)
                                 @HiddenField(cssInfo, "genxml/hidden/filefolder", "", "css", false, cssLP)
                                 @HiddenField(cssInfo, "genxml/hidden/filenamecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/filename"), false, cssLP)
@@ -297,10 +299,10 @@
 
                     <ul id="jslistdata" class="w3-ul">
 
-                        @foreach (var jsInfo in jsdatalist)
+                        @foreach (var jsRecord in jsdatalist)
                         {
+                            var jsInfo = new SimplisityInfo(jsRecord);
                             <li class="jslist w3-col m4 w3-display-container w3-padding w3-border-0">
-                                @SortableListIndex(jsInfo, jsLP)
                                 @HiddenField(jsInfo, "genxml/hidden/editorcodejavascript", "", "", false, jsLP)
                                 @HiddenField(jsInfo, "genxml/hidden/filefolder", "", "js", false, jsLP)
                                 @HiddenField(jsInfo, "genxml/hidden/filenamejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/filename"), false, jsLP)
@@ -358,10 +360,10 @@
 
                     <ul id="resxlistdata" class="w3-ul">
 
-                        @foreach (var resxInfo in resxdatalist)
+                        @foreach (var resxRecord in resxdatalist)
                         {
+                            var resxInfo = new SimplisityInfo(resxRecord);
                             <li class="resxlist w3-col m6 w3-display-container w3-padding w3-border-0">
-                                @SortableListIndex(resxInfo, resxLP)
                                 @HiddenField(resxInfo, "genxml/hidden/jsonresx", "", "", false, resxLP)
                                 @HiddenField(resxInfo, "genxml/hidden/filefolder", "", "resx", false, resxLP)
                                 @HiddenField(resxInfo, "genxml/hidden/filenameresx", "s-update='ignore'", resxInfo.GetXmlProperty("genxml/hidden/filename"), false, resxLP)

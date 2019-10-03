@@ -50,7 +50,7 @@ namespace DNNrocket.AppThemes
 
                 if (paramCmd != "rocketapptheme_selectsystemkey" && _appThemeDataList.SelectedSystemKey == "") paramCmd = "rocketapptheme_getlist";
 
-                _appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, DNNrocketUtils.GetEditCulture(), true);
+                _appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, _appThemeFolder, _appVersionFolder, true);
                 AssignEditLang();
 
                 switch (paramCmd)
@@ -244,7 +244,7 @@ private static Dictionary<string, string> ExportAppTheme()
 {
     var appThemeFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appthemefolder");
     var appVersionFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder");
-    var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appThemeFolder, appVersionFolder, DNNrocketUtils.GetEditCulture(), true);
+    var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, appThemeFolder, appVersionFolder, true);
 
     var rtnDic = new Dictionary<string, string>();
 
@@ -271,7 +271,7 @@ private static Dictionary<string, string> ExportAppTheme()
 
                         // get import data 
                         var xmlData = FileUtils.ReadFile(userFolder + "\\" + friendlyname);
-                        var _appTheme = new AppTheme(xmlData, true, DNNrocketUtils.GetEditCulture(), _systemInfoData.DebugMode);
+                        var _appTheme = new AppTheme(xmlData, true, _systemInfoData.DebugMode);
                         // delete import file
                         //File.Delete(userFolder + "\\" + friendlyname);
                     }
@@ -313,7 +313,7 @@ private static Dictionary<string, string> ExportAppTheme()
 
             // get default data
             var jsonResx = "";
-            var resxItem = _appTheme.Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
+            var resxItem = _appTheme.Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
             if (resxItem != null) jsonResx = resxItem.GetXmlProperty("genxml/hidden/jsonresx");
 
             _appTheme.AddListResx(culturecoderesx, jsonResx);
@@ -331,7 +331,7 @@ private static Dictionary<string, string> ExportAppTheme()
         }
         private static string GetEditTemplate(AppTheme appTheme)
         {
-            var defaultjsonresxItem = appTheme.Info.GetListItem("resxlist", "genxml/resxlist/genxml/hidden/culturecode", "");
+            var defaultjsonresxItem = appTheme.Record.GetRecordListItem("resxlist", "genxml/resxlist/genxml/hidden/culturecode", "");
             var defaultjsonresx = defaultjsonresxItem.GetXmlProperty("genxml/hidden/jsonresx");
             if (!_passSettings.ContainsKey("defaultjsonresx")) _passSettings.Add("defaultjsonresx", defaultjsonresx);
 

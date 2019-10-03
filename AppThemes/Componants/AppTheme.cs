@@ -12,7 +12,7 @@ namespace Rocket.AppThemes.Componants
 
     public class AppTheme
     {
-        private string _guidKey;        
+        private string _guidKey;
         private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "APPTHEME";
         private DNNrocketController _objCtrl;
@@ -22,16 +22,16 @@ namespace Rocket.AppThemes.Componants
         private List<string> _resxFileName;
         private bool _debugMode;
 
-        public AppTheme(string importXml, bool overwrite = true, string langRequired = "", bool debugMode = false)
+        public AppTheme(string importXml, bool overwrite = true, bool debugMode = false)
         {
-            ImportXmlData(importXml, overwrite, langRequired, debugMode);
+            ImportXmlData(importXml, overwrite, debugMode);
         }
-        public AppTheme(string systemKey, string appThemeFolder, string versionFolder, string langRequired = "", bool debugMode = false)
+        public AppTheme(string systemKey, string appThemeFolder, string versionFolder, bool debugMode = false)
         {
-            InitAppTheme(systemKey, appThemeFolder, versionFolder, langRequired, debugMode);
+            InitAppTheme(systemKey, appThemeFolder, versionFolder, debugMode);
         }
 
-        private void InitAppTheme(string systemKey, string appThemeFolder, string versionFolder, string langRequired = "", bool debugMode = false)
+        private void InitAppTheme(string systemKey, string appThemeFolder, string versionFolder, bool debugMode = false)
         {
             _debugMode = debugMode;
             _objCtrl = new DNNrocketController();
@@ -49,9 +49,6 @@ namespace Rocket.AppThemes.Componants
             AppSystemThemeFolderRel = AppProjectFolderRel + "/SystemThemes/" + SystemKey;
 
             AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
-
-            AppCultureCode = langRequired;
-            if (AppCultureCode == "") AppCultureCode = DNNrocketUtils.GetEditCulture();
 
             AssignVersionFolders();
 
@@ -93,30 +90,30 @@ namespace Rocket.AppThemes.Componants
 
         public void Populate()
         {
-            Info = _objCtrl.GetData(_guidKey, _entityTypeCode, AppCultureCode, -1, -1, false, _tableName);
+            Record = _objCtrl.GetRecord(_guidKey, _entityTypeCode, -1, -1, false, _tableName);
 
-            AppSummary = Info.GetXmlProperty("genxml/lang/genxml/textbox/summary");
+            AppSummary = Record.GetXmlProperty("genxml/lang/genxml/textbox/summary");
 
             // sync filesystem
             SyncFiles();
 
             // logo, take first image
-            var imageList = Info.GetList("imagelist");
+            var imageList = Record.GetRecordList("imagelist");
             Logo = "";
             if (imageList.Count > 0)
             {
-                var i = Info.GetListItem("imagelist", 0);
+                var i = Record.GetRecordListItem("imagelist", 0);
                 var logoMapPath = DNNrocketUtils.MapPath(i.GetXmlProperty("genxml/hidden/imagepath"));
                 Logo = i.GetXmlProperty("genxml/hidden/imagepath");
                 if (!File.Exists(logoMapPath)) Logo = "";
             }
 
             // RESX Default
-            var resxList = Info.GetList("resxlist");
+            var resxList = Record.GetRecordList("resxlist");
             if (resxList.Count == 0) // create default
             {
                 AddListResx("");
-                resxList = Info.GetList("resxlist");
+                resxList = Record.GetRecordList("resxlist");
             }
 
             foreach (var r in resxList)
@@ -155,7 +152,7 @@ namespace Rocket.AppThemes.Componants
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\pageheader.cshtml";
             if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
             {
-                //var formHtml = AppThemeUtils.GeneraateEditForm(Info.GetList("fielddata"), 0);
+                //var formHtml = AppThemeUtils.GeneraateEditForm(Record.GetList("fielddata"), 0);
                 FileUtils.SaveFile(tempMapPath, "");
                 _templateFileName.Add(Path.GetFileName(tempMapPath));
             }
@@ -213,7 +210,7 @@ namespace Rocket.AppThemes.Componants
         {
             if (Path.GetExtension(templateName) != "") templateName += Path.GetFileNameWithoutExtension(templateName);
             if (!_templateFileName.Contains(templateName + ".cshtml")) return "";
-            var rtnItem = Info.GetListItem("templatelist", "genxml/hidden/filename", templateName);
+            var rtnItem = Record.GetRecordListItem("templatelist", "genxml/hidden/filename", templateName);
             if (rtnItem == null) return "";
             return GeneralUtils.DeCode(rtnItem.GetXmlProperty("genxml/hidden/editorcodehtmlmixed"));
         }
@@ -222,13 +219,13 @@ namespace Rocket.AppThemes.Componants
         {
             if (Directory.Exists(AppThemeFolderMapPath))
             {
-                foreach(var v in VersionList)
+                foreach (var v in VersionList)
                 {
                     DeleteVersion(v);
                 }
                 Directory.Delete(AppThemeFolderMapPath, true);
                 // another record is created on populate from version deletd.  Remove this new record.
-                var versionRecord = _objCtrl.GetRecordByGuidKey(Info.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
+                var versionRecord = _objCtrl.GetRecordByGuidKey(Record.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
                 _objCtrl.Delete(versionRecord.ItemID, _tableName); // cascade delete
             }
         }
@@ -246,7 +243,7 @@ namespace Rocket.AppThemes.Componants
 
             _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + versionFolder;
 
-            var versionRecord = _objCtrl.GetRecordByGuidKey(Info.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
+            var versionRecord = _objCtrl.GetRecordByGuidKey(Record.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
             _objCtrl.Delete(versionRecord.ItemID, _tableName); // cascade delete
 
             PopulateVersionList();
@@ -276,29 +273,13 @@ namespace Rocket.AppThemes.Componants
             ActionListJsFiles(postInfo);
             postInfo = ActionListResxFiles(postInfo);
 
-            var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, AppCultureCode, -1, -1, true, _tableName);
+            var dbInfo = _objCtrl.GetRecord(_entityTypeCode, Record.ItemID, -1, -1, true, _tableName);
             if (dbInfo != null)
             {
 
-                // update all langauge record which are empty.
-                var cc = DNNrocketUtils.GetCultureCodeList();
-                foreach (var l in cc)
-                {
-                    var dbRecord = _objCtrl.GetRecordLang(Info.ItemID, l, false, _tableName);
-                    var nodList = dbRecord.XMLDoc.SelectNodes("genxml/*");
-                    if (nodList.Count == 0)
-                    {
-                        var dbInfo2 = _objCtrl.GetData(_entityTypeCode, Info.ItemID, l, -1, -1, true, _tableName);
-                        if (dbInfo2 != null)
-                        {
-                            dbInfo2.XMLData = postInfo.XMLData;
-                            _objCtrl.SaveData(dbInfo2, Info.ItemID, _tableName);
-                        }
-                    }
-                }
-
                 dbInfo.XMLData = postInfo.XMLData;
-                _objCtrl.SaveData(dbInfo, Info.ItemID, _tableName);
+                dbInfo.RemoveXmlNode("genxml/lang");
+                _objCtrl.SaveRecord(dbInfo, Record.ItemID, _tableName);
 
                 Populate();
 
@@ -391,13 +372,45 @@ namespace Rocket.AppThemes.Componants
             var fieldNames = new Dictionary<string, string>();
             foreach (var f in postInfo.GetList("fielddata"))
             {
-                if (f.GetXmlProperty("genxml/textbox/name") != "")
+                var fieldname = f.GetXmlProperty("genxml/textbox/name");
+                if (fieldname != "")
                 {
-                    var newfieldname = f.GetXmlProperty("genxml/textbox/name").Split('_')[0];
-                    var labelvalue = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
+                    var newfieldname = fieldname.Split('_')[0];
+                    var labelvalue = f.GetXmlProperty("genxml/textbox/label");
                     fieldNames.Add(newfieldname, labelvalue);
+
+                    // Add dictionary values for dropdownlist and radiobuttons.
+                    var keylist = f.GetXmlProperty("genxml/hidden/dictionarykey");
+                    var valuelist = f.GetXmlProperty("genxml/hidden/dictionaryvalue");
+                    if (keylist != "" && valuelist != "")
+                    {
+                        var keyarray = keylist.Split(',');
+                        var valuearray = valuelist.Split(',');
+                        if (keyarray.Length == valuearray.Length)
+                        {
+                            var lp = 0;
+                            foreach (var k in keyarray)
+                            {
+                                var resxfieldname = newfieldname + "-" + GeneralUtils.DeCode(k);
+                                if (resxfieldname != "")
+                                {
+                                    fieldNames.Add(resxfieldname, GeneralUtils.DeCode(valuearray[lp]));
+                                }
+                                lp += 1;
+                            }
+
+                        }
+                    }
                 }
             }
+
+            // write localized fieldname list, so we can disable default resx fiedls if they exist as a field.
+            var fieldlocalizedlist = "";
+            foreach (var f in fieldNames)
+            {
+                fieldlocalizedlist += f.Key + ".Text,";
+            }
+            postInfo.SetXmlProperty("genxml/hidden/fieldlocalizedlist", fieldlocalizedlist);
 
             //Write files.
             var tList = postInfo.GetList("resxlist");
@@ -411,7 +424,7 @@ namespace Rocket.AppThemes.Componants
                 var jsondata = GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/jsonresx"));
                 if (jsondata != "")
                 {
-                    var jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, AppCultureCode);
+                    var jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, DNNrocketUtils.GetEditCulture());
                     var row = 1;
                     foreach (var i in jasonInfo.GetList("resxlistvalues"))
                     {
@@ -427,34 +440,35 @@ namespace Rocket.AppThemes.Componants
                     }
                 }
 
-                if (culturecode == "" || culturecode == DNNrocketUtils.GetEditCulture())
+                foreach (var f in fieldNames)
                 {
-
-                    foreach (var f in fieldNames)
+                    if (!jsonDict.ContainsKey(f.Key + ".Text"))
                     {
-                        if (!jsonDict.ContainsKey(f.Key + ".Text"))
+                        jsonDict.Add(f.Key + ".Text", f.Value);
+                        if (culturecode == "")
                         {
-                            jsonDict.Add(f.Key + ".Text", f.Value);
                             fileFields += "  <data name=\"" + f.Key + ".Text\" xml:space=\"preserve\"><value>" + f.Value + "</value></data>";
                         }
+                        else
+                        {
+                            fileFields += "  <data name=\"" + f.Key + ".Text\" xml:space=\"preserve\"><value></value></data>";
+                        }
                     }
-
-                    // build json and save.
-                    var jsonStr = "{\"listdata\":[";
-                    var lp = 1;
-                    foreach (var j in jsonDict)
-                    {
-                        jsonStr += "{\"id\":\"name\",\"value\":\"" + j.Key + "\"},";
-                        jsonStr += "{\"id\":\"value\",\"value\":\"" + j.Value + "\"},";
-                        lp += 1;
-
-                    }
-                    jsonStr = jsonStr.TrimEnd(',') + "]}";
-                    postInfo.SetXmlProperty("genxml/resxlist/genxml[" + idx + "]/hidden/jsonresx", GeneralUtils.EnCode(jsonStr));
-
                 }
 
+                // build json and save.
+                var jsonStr = "{\"listdata\":[";
+                var lp = 1;
+                foreach (var j in jsonDict)
+                {
+                    jsonStr += "{\"id\":\"name_" + lp + "\",\"value\":\"" + j.Key + "\",\"row\":\"" + lp + "\",\"listname\":\".resxlistvalues\",\"type\":\"text\"},";
+                    jsonStr += "{\"id\":\"value_" + lp + "\",\"value\":\"" + j.Value + "\",\"row\":\"" + lp + "\",\"listname\":\".resxlistvalues\",\"type\":\"text\"},";
+                    lp += 1;
+                }
+                jsonStr = jsonStr.TrimEnd(',') + "]}";
+                postInfo.SetXmlProperty("genxml/resxlist/genxml[" + idx + "]/hidden/jsonresx", GeneralUtils.EnCode(jsonStr));
 
+                // Save to file
                 var resxtemplate = FileUtils.ReadFile(AppProjectFolderMapPath + @"\Themes\config-w3\1.0\default\resxtemplate.xml");
                 if (resxtemplate != "")
                 {
@@ -468,16 +482,16 @@ namespace Rocket.AppThemes.Componants
 
         public void Update()
         {
-            _objCtrl.SaveData(Info, -1, _tableName);
+            _objCtrl.SaveRecord(Record, -1, _tableName);
         }
         public void AddListImage()
         {
-            Info.AddListItem("imagelist");
+            Record.AddListItem("imagelist");
             Update();
         }
         public void AddListTemplate(string filename = "", string templateText = "")
         {
-            AddListFile("templatelist", filename, templateText,"htmlmixed");
+            AddListFile("templatelist", filename, templateText, "htmlmixed");
         }
         public void AddListCss(string filename = "", string templateText = "")
         {
@@ -485,20 +499,20 @@ namespace Rocket.AppThemes.Componants
         }
         public void AddListJs(string filename = "", string templateText = "")
         {
-            AddListFile("jslist", filename, templateText,"javascript");
+            AddListFile("jslist", filename, templateText, "javascript");
         }
         private void AddListFile(string listname, string filename = "", string templateText = "", string modeType = "")
         {
             filename = Path.GetFileNameWithoutExtension(filename);
             if (filename != "")
             {
-                var rtnItem = Info.GetListItem(listname, "genxml/hidden/filename", filename);
+                var rtnItem = Record.GetRecordListItem(listname, "genxml/hidden/filename", filename);
                 if (rtnItem != null)
                 {
                     // update
                     var idx = rtnItem.GetXmlPropertyInt("genxml/index");
-                    Info.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/filename", filename);
-                    Info.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/editorcode" + modeType, GeneralUtils.EnCode(templateText));
+                    Record.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/filename", filename);
+                    Record.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/editorcode" + modeType, GeneralUtils.EnCode(templateText));
                 }
                 else
                 {
@@ -506,12 +520,12 @@ namespace Rocket.AppThemes.Componants
                     var nbi = new SimplisityRecord();
                     nbi.SetXmlProperty("genxml/hidden/filename", filename);
                     nbi.SetXmlProperty("genxml/hidden/editorcode" + modeType, GeneralUtils.EnCode(templateText));
-                    Info.AddListItem(listname, nbi.XMLData);
+                    Record.AddListItem(listname, nbi.XMLData);
                 }
             }
             else
             {
-                Info.AddListItem(listname);
+                Record.AddListItem(listname);
             }
             Update();
         }
@@ -531,14 +545,14 @@ namespace Rocket.AppThemes.Componants
             }
             nbi.SetXmlProperty("genxml/hidden/culturecode", culturecode);
             nbi.SetXmlProperty("genxml/hidden/jsonresx", jsonresx);
-            Info.AddListItem(listname, nbi.XMLData);
+            Record.AddListItem(listname, nbi.XMLData);
             Update();
         }
 
         public void AddListField()
         {
             var listname = "fielddata";
-            Info.AddListItem(listname);
+            Record.AddListItem(listname);
             Update();
         }
 
@@ -570,7 +584,7 @@ namespace Rocket.AppThemes.Componants
                 AppVersionFolder = destVersionFolder;
 
                 // copy DB record
-                var versionCopyRecord = _objCtrl.GetRecordByGuidKey(Info.PortalId,-1, _entityTypeCode, _guidKey,"", _tableName);
+                var versionCopyRecord = _objCtrl.GetRecordByGuidKey(Record.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
                 _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
                 versionCopyRecord.GUIDKey = _guidKey;
                 versionCopyRecord.ItemID = -1;
@@ -578,7 +592,7 @@ namespace Rocket.AppThemes.Componants
 
                 versionCopyRecord = _objCtrl.SaveRecord(versionCopyRecord, -1, _tableName);
 
-                var l = _objCtrl.GetList(Info.PortalId, -1, _entityTypeCode + "LANG", " and R1.ParentItemId = " + Info.ItemID + " ", "", "", 0, 0, 0, 0, -1, _tableName);
+                var l = _objCtrl.GetList(Record.PortalId, -1, _entityTypeCode + "LANG", " and R1.ParentItemId = " + Record.ItemID + " ", "", "", 0, 0, 0, 0, -1, _tableName);
                 foreach (var i in l)
                 {
                     i.ParentItemId = versionCopyRecord.ItemID;
@@ -631,19 +645,19 @@ namespace Rocket.AppThemes.Componants
         {
             var systemInfoData = new SystemInfoData(SystemKey);
 
-            List<SimplisityInfo> fieldList = Info.GetList("fielddata");
-            var resxItem = Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
+            List<SimplisityRecord> fieldList = Record.GetRecordList("fielddata");
+            var resxItem = Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
             var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
             var jasonInfo = new SimplisityInfo();
             if (jsondata != "")
             {
-                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, AppCultureCode);
+                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, DNNrocketUtils.GetEditCulture());
             }
 
             var strFieldList = "";
             // calc rows
-            var frows = new List<List<SimplisityInfo>>();
-            var fline = new List<SimplisityInfo>();
+            var frows = new List<List<SimplisityRecord>>();
+            var fline = new List<SimplisityRecord>();
             var col = 0;
             foreach (var f in fieldList)
             {
@@ -653,7 +667,7 @@ namespace Rocket.AppThemes.Componants
                 if (col > 12)
                 {
                     frows.Add(fline);
-                    fline = new List<SimplisityInfo>();
+                    fline = new List<SimplisityRecord>();
                     fline.Add(f);
                     col = size;
                 }
@@ -679,7 +693,7 @@ namespace Rocket.AppThemes.Componants
                     var xpath = "";
                     var size = f.GetXmlProperty("genxml/select/size");
                     var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
-                    var labelname = f.GetXmlProperty("genxml/textbox/name");                    
+                    var labelname = f.GetXmlProperty("genxml/textbox/name");
                     var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
                     var defaultBool = f.GetXmlProperty("genxml/textbox/defaultvalue").ToLower();
                     if (defaultBool == "") defaultBool = "false";
@@ -689,10 +703,10 @@ namespace Rocket.AppThemes.Componants
 
                     if (labelname != "")
                     {
-                        var resxLabelItem = jasonInfo.GetListItem("resxlist", "genxml/textbox/name", labelname);
+                        var resxLabelItem = jasonInfo.GetRecordListItem("resxlist", "genxml/textbox/name", labelname);
                         if (resxLabelItem != null)
                         {
-                            strFieldList += "\t\t<label>@ResourceKey(\"" + AppThemeFolder + "." + labelname.Replace(".Text","") + "\")</label>";
+                            strFieldList += "\t\t<label>@ResourceKey(\"" + AppThemeFolder + "." + labelname.Replace(".Text", "") + "\")</label>";
                         }
                         else
                         {
@@ -737,7 +751,7 @@ namespace Rocket.AppThemes.Componants
                         if (localizedbool) xpath = "genxml/lang/" + xpath;
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
                         var datatext = GetDictionaryDecoded(f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue"));
-                        strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue.Replace("\"","\\\"") + "\",\"" + datatext.Replace("\"", "\\\"") + "\",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
+                        strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue.Replace("\"", "\\\"") + "\",\"" + datatext.Replace("\"", "\\\"") + "\",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
                     {
@@ -861,17 +875,12 @@ namespace Rocket.AppThemes.Componants
         private string GenerateEditList(int row)
         {
 
-            List<SimplisityInfo> fieldList = Info.GetList("fielddata");
-            var resxItem = Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
+            List<SimplisityRecord> fieldList = Record.GetRecordList("fielddata");
+            var resxItem = Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
             var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
-            var jasonInfo = new SimplisityInfo();
-            if (jsondata != "")
-            {
-                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, AppCultureCode);
-            }
 
             var strFieldList = "";
-            var sortedList = new List<SimplisityInfo>();
+            var sortedList = new List<SimplisityRecord>();
             for (int i = 1; i < 12; i++)
             {
                 foreach (var f in fieldList)
@@ -983,14 +992,9 @@ namespace Rocket.AppThemes.Componants
         private string GenerateView(int row)
         {
 
-            List<SimplisityInfo> fieldList = Info.GetList("fielddata");
-            var resxItem = Info.GetListItem("resxlist", "genxml/hidden/culturecode", "");
+            List<SimplisityRecord> fieldList = Record.GetRecordList("fielddata");
+            var resxItem = Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
             var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
-            var jasonInfo = new SimplisityInfo();
-            if (jsondata != "")
-            {
-                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, AppCultureCode);
-            }
 
             var strFieldList = "";
             foreach (var f in fieldList)
@@ -1095,6 +1099,7 @@ namespace Rocket.AppThemes.Componants
             }
 
         }
+
         public string Export()
         {
             var exportData = "<apptheme>";
@@ -1120,7 +1125,7 @@ namespace Rocket.AppThemes.Componants
             }
             exportData += "</versions>";
             exportData += "<images>";
-            var imageList = Info.GetList("imagelist");
+            var imageList = Record.GetRecordList("imagelist");
             foreach (var i in imageList)
             {
                 var logoMapPath = DNNrocketUtils.MapPath(i.GetXmlProperty("genxml/hidden/imagepath"));
@@ -1139,7 +1144,8 @@ namespace Rocket.AppThemes.Componants
             return exportData;
 
         }
-        private void ImportXmlData(string xmlImport, bool overwrite = true, string langRequired = "", bool debugMode = false)
+
+        private void ImportXmlData(string xmlImport, bool overwrite = true, bool debugMode = false)
         {
             var iRec = new SimplisityRecord();
             iRec.XMLData = xmlImport;
@@ -1180,8 +1186,9 @@ namespace Rocket.AppThemes.Componants
                 _objCtrl.Update(newInfo, _tableName);
             }
 
-            InitAppTheme(iRec.GetXmlProperty("apptheme/data/systemkey"), iRec.GetXmlProperty("apptheme/data/appthemefolder"), iRec.GetXmlProperty("apptheme/data/appversionfolder"), langRequired, debugMode);
+            InitAppTheme(iRec.GetXmlProperty("apptheme/data/systemkey"), iRec.GetXmlProperty("apptheme/data/appthemefolder"), iRec.GetXmlProperty("apptheme/data/appversionfolder"), debugMode);
         }
+
         #region "properties"
 
         public string AppProjectFolderRel { get; set; }
@@ -1190,7 +1197,6 @@ namespace Rocket.AppThemes.Componants
         public string AppSystemThemeFolderMapPath { get; set; }
         public string AppSummary { get; private set; }
         public string Logo { get; private set; }
-        public string AppCultureCode { get; set; }
         public string AppThemeFolder { get; set; }
         public string AppThemeFolderRel { get; set; }
         public string AppThemeFolderMapPath { get; set; }
@@ -1211,16 +1217,14 @@ namespace Rocket.AppThemes.Componants
         public string TempFolderRel { get; set; }
         public string JsFolderRel { get; set; }
         public string ResxFolderRel { get; set; }
-        public SimplisityInfo Info { get; set; }
-        public bool RegenerateEditList { get { return Info.GetXmlPropertyBool("genxml/checkbox/regenerateeditlist"); } }
-        public bool RegenerateEdit { get { return Info.GetXmlPropertyBool("genxml/checkbox/regenerateedit"); } }
-        public bool RegenerateView { get { return Info.GetXmlPropertyBool("genxml/checkbox/regenerateview"); } }
+        public SimplisityRecord Record { get; set; }
+        public bool RegenerateEditList { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateeditlist"); } }
+        public bool RegenerateEdit { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateedit"); } }
+        public bool RegenerateView { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateview"); } }
 
-        public int DataType { get { return Info.GetXmlPropertyInt("genxml/radio/themetype"); } }
+        public int DataType { get { return Record.GetXmlPropertyInt("genxml/radio/themetype"); } }
 
         public string SystemKey { get; set; }
-
-        public string ExportFileMapPath { get; set; }
 
         #endregion
 

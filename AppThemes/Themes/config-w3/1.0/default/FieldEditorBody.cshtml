@@ -11,11 +11,7 @@
 
 @{
 
-    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + DNNrocketUtils.GetEditCulture() + ".png";
-    if (!File.Exists(DNNrocketUtils.MapPath(flagurl)))
-    {
-        flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/none.png";
-    }
+    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/none.png";
 
 }
 
@@ -26,8 +22,9 @@
         @{
             var lp3 = 0;
         }
-        @foreach (SimplisityInfo i in Model.List)
+        @foreach (SimplisityRecord r in Model.List)
         {
+            var i = new SimplisityInfo(r);
             lp3 += 1;
 
             var settingsdataclassselect = "dictionarydata" + lp3;
@@ -36,9 +33,6 @@
             <li class="fielddata w3-card w3-margin-bottom w3-display-container @settingsdataclassselect ">
 
                 <div class="w3-container">
-
-                    <!-- Required to sort items in list -->
-                    @SortableListIndex(i, lp3)
 
                     <span id="deletebutton@(lp3)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin">
                         <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
@@ -57,7 +51,7 @@
                     </div>
                     <div class="w3-col m2 w3-padding">
                         <label class="">@ResourceKey("DNNrocket.label")</label>&nbsp;<img class='' src='@flagurl' alt='' />
-                        @TextBox(i, "genxml/textbox/label", "class='w3-input w3-border ' maxlength='500' autocomplete='off'  ", "", true, lp3)
+                        @TextBox(i, "genxml/textbox/label", "class='w3-input w3-border ' maxlength='500' autocomplete='off'  ", "", false, lp3)
                     </div>
                     <div class="w3-col m2 w3-padding" style="min-width: 140px;">
                         <label class="">@ResourceKey("DNNrocket.type")</label>
@@ -118,7 +112,7 @@
                                 <div row="@(lp3)" class=" addvaluekey w3-circle w3-display-left w3-margin ">@ResourceKey("DNNrocket.cmdAddIcon")</div>
 
                                 @HiddenField(i, "genxml/hidden/dictionarykey", " class='dictionarykeyvalue' row='" + lp3 + "' ", "", false, lp3)
-                                @HiddenField(i, "genxml/lang/genxml/hidden/dictionaryvalue", "", "", true, lp3)
+                                @HiddenField(i, "genxml/hidden/dictionaryvalue", "", "", false, lp3)
 
                                 @{
                                     var selectlistclass = "dictionarylist" + lp3;
@@ -311,10 +305,10 @@
         addtext += '<li class="dictionarydata' + index + ' w3-card w3-margin-bottom w3-display-container"> ';
         addtext += ' <div class="w3-row">';
         addtext += '		<div class="w3-col w3-padding m4">';
-        addtext += '			<input value="' + key + '" row="' + index + '" value="" class=" dictionaryInput dictionaryKey' + index + ' w3-input w3-border" autocomplete="off" type="text">';
+        addtext += '			<input value="' + key + '" row="' + index + '" value="" s-update="ignore" class=" dictionaryInput dictionaryKey' + index + ' w3-input w3-border" autocomplete="off" type="text">';
         addtext += '		</div>';
         addtext += '		<div class="w3-col w3-padding m7">';
-        addtext += '			<input value="' + value + '" id="dictionaryvalue' + index + '" row="' + index + '" value="" class=" dictionaryInput dictionaryValue' + index + ' w3-input w3-border" autocomplete="off" type="text">';
+        addtext += '			<input value="' + value + '" id="dictionaryvalue' + index + '" s-update="ignore" row="' + index + '" value="" class=" dictionaryInput dictionaryValue' + index + ' w3-input w3-border" autocomplete="off" type="text">';
         addtext += '		</div>';
         addtext += '		<div class="w3-col w3-padding m1">';
         addtext += '		<span class="hidedictionary w3-button w3-transparent" row="' + index + '" >&times;</span>';
