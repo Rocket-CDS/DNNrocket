@@ -428,15 +428,14 @@ namespace Rocket.AppThemes.Componants
                     var row = 1;
                     foreach (var i in jasonInfo.GetList("resxlistvalues"))
                     {
-                        if (i.GetXmlProperty("genxml/text/name") != "" && !jsonDict.ContainsKey(i.GetXmlProperty("genxml/text/name")))
+                        if (i.GetXmlProperty("genxml/text/*[1]") != "")
                         {
-                            jsonDict.Add(i.GetXmlProperty("genxml/text/name"), i.GetXmlProperty("genxml/text/value"));
+                            if (!jsonDict.ContainsKey(i.GetXmlProperty("genxml/text/*[1]")))
+                            {
+                                jsonDict.Add(i.GetXmlProperty("genxml/text/*[1]"), i.GetXmlProperty("genxml/text/*[2]"));
+                            }
                         }
                         row += 1;
-                    }
-                    foreach (var i in jsonDict)
-                    {
-                        fileFields += "  <data name=\"" + i.Key + "\" xml:space=\"preserve\"><value>" + i.Value + "</value></data>";
                     }
                 }
 
@@ -452,6 +451,14 @@ namespace Rocket.AppThemes.Componants
                         else
                         {
                             fileFields += "  <data name=\"" + f.Key + ".Text\" xml:space=\"preserve\"><value></value></data>";
+                        }
+                    }
+                    else
+                    {
+                        if (culturecode == "")
+                        {
+                            fileFields += "  <data name=\"" + f.Key + ".Text\" xml:space=\"preserve\"><value>" + f.Value + "</value></data>";
+                            jsonDict[f.Key + ".Text"] = f.Value;
                         }
                     }
                 }
