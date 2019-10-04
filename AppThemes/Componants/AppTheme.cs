@@ -412,32 +412,18 @@ namespace Rocket.AppThemes.Componants
             }
             postInfo.SetXmlProperty("genxml/hidden/fieldlocalizedlist", fieldlocalizedlist);
 
-            //Write files.
             var tList = postInfo.GetList("resxlist");
+            // get defaultDict
+            var defaultDict = GetResxDictionary(postInfo);
+
+            //Write files.
             var idx = 1;
             foreach (SimplisityInfo templateInfo in tList)
             {
                 var fileFields = "";
-                var jsonDict = new Dictionary<string, string>();
                 var fname = templateInfo.GetXmlProperty("genxml/hidden/fullfilename");
                 var culturecode = templateInfo.GetXmlProperty("genxml/hidden/culturecode");
-                var jsondata = GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/jsonresx"));
-                if (jsondata != "")
-                {
-                    var jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, DNNrocketUtils.GetEditCulture());
-                    var row = 1;
-                    foreach (var i in jasonInfo.GetList("resxlistvalues"))
-                    {
-                        if (i.GetXmlProperty("genxml/text/*[1]") != "")
-                        {
-                            if (!jsonDict.ContainsKey(i.GetXmlProperty("genxml/text/*[1]")))
-                            {
-                                jsonDict.Add(i.GetXmlProperty("genxml/text/*[1]"), i.GetXmlProperty("genxml/text/*[2]"));
-                            }
-                        }
-                        row += 1;
-                    }
-                }
+                var jsonDict = GetResxDictionary(postInfo, culturecode);
 
                 foreach (var f in fieldNames)
                 {
@@ -463,16 +449,16 @@ namespace Rocket.AppThemes.Componants
                     }
                 }
 
-                // build json and save.
-                var jsonStr = "{\"listdata\":[";
-                var lp = 1;
-                foreach (var j in jsonDict)
+                if (culturecode != "")
                 {
-                    jsonStr += "{\"id\":\"name_" + lp + "\",\"value\":\"" + j.Key + "\",\"row\":\"" + lp + "\",\"listname\":\".resxlistvalues\",\"type\":\"text\"},";
-                    jsonStr += "{\"id\":\"value_" + lp + "\",\"value\":\"" + j.Value + "\",\"row\":\"" + lp + "\",\"listname\":\".resxlistvalues\",\"type\":\"text\"},";
-                    lp += 1;
+                    foreach (var d in defaultDict)
+                    {
+                        if (!jsonDict.ContainsKey(d.Key)) jsonDict.Add(d.Key, "");
+                    }
                 }
-                jsonStr = jsonStr.TrimEnd(',') + "]}";
+
+                // build json and save.
+                var jsonStr = BuildJsonResx(jsonDict);
                 postInfo.SetXmlProperty("genxml/resxlist/genxml[" + idx + "]/hidden/jsonresx", GeneralUtils.EnCode(jsonStr));
 
                 // Save to file
@@ -485,6 +471,52 @@ namespace Rocket.AppThemes.Componants
                 idx += 1;
             }
             return postInfo;
+        }
+
+        private string BuildJsonResx(Dictionary<string,string> jsonDict)
+        {
+            var jsonStr = "{\"listdata\":[";
+            var lp = 1;
+            foreach (var j in jsonDict)
+            {
+                jsonStr += "{\"id\":\"name_" + lp + "\",\"value\":\"" + j.Key + "\",\"row\":\"" + lp + "\",\"listname\":\".resxlistvalues\",\"type\":\"text\"},";
+                jsonStr += "{\"id\":\"value_" + lp + "\",\"value\":\"" + j.Value + "\",\"row\":\"" + lp + "\",\"listname\":\".resxlistvalues\",\"type\":\"text\"},";
+                lp += 1;
+            }
+            jsonStr = jsonStr.TrimEnd(',') + "]}";
+            return jsonStr;
+        }
+
+        private Dictionary<string,string> GetResxDictionary(SimplisityInfo appThemeInfo, string culturecode = "")
+        {
+            var tList = appThemeInfo.GetList("resxlist");
+            // get defaultDict
+            var defaultDict = new Dictionary<string, string>();
+            foreach (SimplisityInfo templateInfo in tList)
+            {
+                var culturecode1 = templateInfo.GetXmlProperty("genxml/hidden/culturecode");
+                if (culturecode1 == culturecode)
+                {
+                    var jsondata = GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/jsonresx"));
+                    if (jsondata != "")
+                    {
+                        var jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, DNNrocketUtils.GetEditCulture());
+                        var row = 1;
+                        foreach (var i in jasonInfo.GetList("resxlistvalues"))
+                        {
+                            if (i.GetXmlProperty("genxml/text/*[1]") != "")
+                            {
+                                if (!defaultDict.ContainsKey(i.GetXmlProperty("genxml/text/*[1]")))
+                                {
+                                    defaultDict.Add(i.GetXmlProperty("genxml/text/*[1]"), i.GetXmlProperty("genxml/text/*[2]"));
+                                }
+                            }
+                            row += 1;
+                        }
+                    }
+                }
+            }
+            return defaultDict;
         }
 
         public void Update()
@@ -551,7 +583,17 @@ namespace Rocket.AppThemes.Componants
                 nbi.SetXmlProperty("genxml/hidden/fullfilename", AppThemeFolder + "." + culturecode + ".resx");
             }
             nbi.SetXmlProperty("genxml/hidden/culturecode", culturecode);
-            nbi.SetXmlProperty("genxml/hidden/jsonresx", jsonresx);
+
+
+            var jsonDict = new Dictionary<string, string>();
+            var rtnDict = GetResxDictionary(new SimplisityInfo(Record));
+            foreach (var d in rtnDict)
+            {
+                jsonDict.Add(d.Key,"");
+            }
+            var jsonStr = BuildJsonResx(jsonDict);
+            nbi.SetXmlProperty("genxml/hidden/jsonresx", GeneralUtils.EnCode(jsonStr));
+
             Record.AddListItem(listname, nbi.XMLData);
             Update();
         }
