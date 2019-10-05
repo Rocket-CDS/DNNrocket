@@ -189,7 +189,9 @@ namespace DNNrocket.AppThemes
                     return DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/AppThemes/App_LocalResources/", "AppThemes.appthemeexists");
                 }
 
-                _appVersionFolder = _appTheme.AppVersionFolder;
+                // crearte new apptheme.
+                var appTheme = new AppTheme(_appThemeDataList.SelectedSystemKey, newAppThemeName, "1.0");
+
                 _appThemeDataList.PopulateAppThemeList();
                 return "";
             }

@@ -221,12 +221,12 @@ namespace Rocket.AppThemes.Componants
             {
                 foreach (var v in VersionList)
                 {
-                    DeleteVersion(v);
+                    if (Directory.Exists(AppThemeFolderMapPath + "\\" + v)) Directory.Delete(AppThemeFolderMapPath + "\\" + v, true);
+                    _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + v;
+                    var versionRecord = _objCtrl.GetRecordByGuidKey(Record.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
+                    _objCtrl.Delete(versionRecord.ItemID, _tableName); // cascade delete
                 }
-                Directory.Delete(AppThemeFolderMapPath, true);
-                // another record is created on populate from version deletd.  Remove this new record.
-                var versionRecord = _objCtrl.GetRecordByGuidKey(Record.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
-                _objCtrl.Delete(versionRecord.ItemID, _tableName); // cascade delete
+                if (Directory.Exists(AppThemeFolderMapPath)) Directory.Delete(AppThemeFolderMapPath, true);
             }
         }
         public void DeleteVersion()
