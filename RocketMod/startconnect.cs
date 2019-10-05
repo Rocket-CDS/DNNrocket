@@ -617,7 +617,7 @@ namespace RocketMod
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "dashboard.cshtml";
 
-                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeFolder);
+                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
@@ -671,7 +671,6 @@ namespace RocketMod
 
         public static String GetDisplay()
         {
-
             try
             {
                 var strOut = "";
@@ -694,6 +693,9 @@ namespace RocketMod
                     passSettings.Add("datatype", appTheme.DataType.ToString());
                     var articleDataList = new ArticleDataList(_moduleid, DNNrocketUtils.GetCurrentCulture());
                     articleDataList.Populate(appTheme.DataType);
+
+                    passSettings.Add("DocumentFolderRel", _moduleParams.DocumentFolderRel);
+                    passSettings.Add("ImageFolderRel", _moduleParams.ImageFolderRel);                    
 
                     strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings, articleDataList.Header);
 

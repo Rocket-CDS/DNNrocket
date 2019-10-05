@@ -167,8 +167,6 @@ namespace DNNrocketAPI.render
 
             strOut += "</div>";
 
-            strOut += "</div>";
-
             //Text seciton
 
             if (uiType == "full")
@@ -230,7 +228,7 @@ namespace DNNrocketAPI.render
                 strOut += "</div>";
             }
 
-
+            strOut += "</div>";
 
 
             return new RawString(strOut);

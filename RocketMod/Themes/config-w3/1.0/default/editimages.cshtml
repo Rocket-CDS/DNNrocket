@@ -16,7 +16,7 @@
     {
         i = articleData.Info;
     }
-    var imgLP = 1;
+    var imgLP = 0;
     var datalist = i.GetList("imagelist");
 }
 
@@ -37,16 +37,24 @@
 
             @foreach (var imgInfo in datalist)
             {
-                <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
-                    @SortableListIndex(imgInfo, imgLP)
-                    <div class="w3-display-container  w3-card">
-                        @ImageEditFull(imgInfo, "imagepath", 100, 100, "", false, @imgLP)
-                        <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
-                            <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
-                        </div>
-                    </div>
-                </li>
                 imgLP += 1;
+
+                var settingsdataclassselect = "dictionarydata" + imgLP;
+                var imagesizeclass = "imagesize" + imgLP;
+
+                <li class="imagelist w3-card w3-margin w3-display-container w3-col m6 @settingsdataclassselect ">
+
+                    @SortableListIndex(i, imgLP)
+
+                    <span id="deletebutton@(imgLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin">
+                        <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
+                    </span>
+                    <div class="w3-col w3-padding">
+                        @ImageEditFull(i, "imagepath", 100, 100, "", false, imgLP)
+                    </div>
+
+                </li>
+
             }
         </ul>
 
@@ -54,6 +62,7 @@
 
     <script>
         $(document).ready(function () {
+            $(':checkbox').addClass('w3-check');
             $("#imagelistdata").sortable();
             $("#imagelistdata").disableSelection();
         });

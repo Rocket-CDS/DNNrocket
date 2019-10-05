@@ -45,6 +45,7 @@ namespace Rocket.AppThemes.Componants
 
             AppThemeFolder = appThemeFolder;
             AppVersionFolder = versionFolder;
+            if (AppVersionFolder == "") AppVersionFolder = "1.0";
 
             AppSystemThemeFolderRel = AppProjectFolderRel + "/SystemThemes/" + SystemKey;
 
