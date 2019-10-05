@@ -655,9 +655,7 @@
             for (var i = 0; i < len; i++) {
                 var disabled = false;
                 if (culturecode === '') {
-                        alert($('#fieldlocalizedlist').val() + '   ---> ' + namedata[i] + '  idx:' + i + '   [' + fieldkeylist + '] pos:' + $.inArray(namedata[i], fieldkeylist));
-                    if ($.inArray(namedata[i], fieldkeylist)) {
-                        alert('TRUE');
+                    if ($.inArray(namedata[i], fieldkeylist) >= 0) {
                         disabled = true;
                     }
                 }
