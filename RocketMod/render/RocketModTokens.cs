@@ -182,14 +182,17 @@ namespace RocketMod
                 }
             }
 
-            if (imagegallery || imageselect)
-            {
-                strOut += "<div id=\"dnnrocket_imageselectwrapper\">" + RenderImageSelect(100, true, false, model.GetSetting("ImageFolderRel")) + "</div>";
-            }
-            if (docgallery || docselect)
-            {
-                strOut += "<div id=\"dnnrocket_documentselectwrapper\">" + RenderDocumentSelect(true, false, model.GetSetting("DocumentFolderRel")) + "</div>";
-            }
+            strOut += "<div id=\"dnnrocket_imageselectwrapper\">" + RenderImageSelect(100, true, false, model.GetSetting("ImageFolderRel")) + "</div>";
+            strOut += "<div id=\"dnnrocket_documentselectwrapper\">" + RenderDocumentSelect(true, false, model.GetSetting("DocumentFolderRel")) + "</div>";
+
+            //if (imagegallery || imageselect)
+            //{
+            //    strOut += "<div id=\"dnnrocket_imageselectwrapper\">" + RenderImageSelect(100, true, false, model.GetSetting("ImageFolderRel")) + "</div>";
+            //}
+            //if (docgallery || docselect)
+            //{
+            //    strOut += "<div id=\"dnnrocket_documentselectwrapper\">" + RenderDocumentSelect(true, false, model.GetSetting("DocumentFolderRel")) + "</div>";
+            //}
 
             return strOut;
         }

@@ -883,14 +883,17 @@ namespace Rocket.AppThemes.Componants
                 strFieldList += "</div>" + Environment.NewLine;
             }
 
-            if (imagegallery || imageselect)
-            {
-                strFieldList += "<div id=\"dnnrocket_imageselectwrapper\">@RenderImageSelect(100, true, false, articleData.ImageFolder)</div>";
-            }
-            if (docgallery || docselect)
-            {
-                strFieldList += "<div id=\"dnnrocket_documentselectwrapper\">@RenderDocumentSelect(true, false, articleData.DocumentFolder)</div>";
-            }
+
+            // *** The doc and image select is added by the module using "@BuildRocketForm", this is so we get the correct upload folder for the module.
+
+            //if (imagegallery || imageselect)
+            //{
+            //    strFieldList += "<div id=\"dnnrocket_imageselectwrapper\">@RenderImageSelect(100, true, false, articleData.ImageFolder)</div>";
+            //}
+            //if (docgallery || docselect)
+            //{
+            //    strFieldList += "<div id=\"dnnrocket_documentselectwrapper\">@RenderDocumentSelect(true, false, articleData.DocumentFolder)</div>";
+            //}
 
 
             // merge to template            
