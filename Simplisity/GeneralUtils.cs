@@ -72,10 +72,7 @@ namespace Simplisity
             var l = value.ToCharArray();
             foreach (var c in l)
             {
-                var bytes = Encoding.ASCII.GetBytes(c.ToString());
-                string binStr = string.Join("", bytes.Select(b => Convert.ToString(b, 2)));
-                int decimalEquivalent = Convert.ToInt32(binStr, 2);
-                strOut += decimalEquivalent.ToString() + '.';
+                strOut += ((int)c).ToString() + '.';
             }
             return strOut.TrimEnd('.');
         }
