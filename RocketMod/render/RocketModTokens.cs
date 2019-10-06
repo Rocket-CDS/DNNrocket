@@ -186,8 +186,6 @@ namespace RocketMod
                 }
             }
 
-            strOut = "<h1>" + info.GetXmlProperty("genxml/hidden/imagefolder") + "</h1>";
-
             strOut += "<div id=\"dnnrocket_imageselectwrapper\">" + RenderImageSelect(100, true, false, moduleParams.ImageFolderRel) + "</div>";
             strOut += "<div id=\"dnnrocket_documentselectwrapper\">" + RenderDocumentSelect(true, false, moduleParams.DocumentFolderRel) + "</div>";
 
