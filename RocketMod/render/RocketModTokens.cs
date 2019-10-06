@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI;
+using DNNrocketAPI.Componants;
 using RazorEngine.Text;
 using Simplisity;
 using System;
@@ -31,9 +32,12 @@ namespace RocketMod
             var objCtrl = new DNNrocketController();
             var strOut = "";
             if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
+
+            var moduleParams = new ModuleParams(moduleid, -1);
             var fieldInfo = objCtrl.GetByType(portalid, moduleid, "ROCKETMODFIELDS", "", lang);
             if (fieldInfo != null)
             {
+
                 var fl = fieldInfo.GetList("fielddata");
 
                 // calc rows
@@ -182,8 +186,10 @@ namespace RocketMod
                 }
             }
 
-            strOut += "<div id=\"dnnrocket_imageselectwrapper\">" + RenderImageSelect(100, true, false, model.GetSetting("ImageFolderRel")) + "</div>";
-            strOut += "<div id=\"dnnrocket_documentselectwrapper\">" + RenderDocumentSelect(true, false, model.GetSetting("DocumentFolderRel")) + "</div>";
+            strOut = "<h1>" + info.GetXmlProperty("genxml/hidden/imagefolder") + "</h1>";
+
+            strOut += "<div id=\"dnnrocket_imageselectwrapper\">" + RenderImageSelect(100, true, false, moduleParams.ImageFolderRel) + "</div>";
+            strOut += "<div id=\"dnnrocket_documentselectwrapper\">" + RenderDocumentSelect(true, false, moduleParams.DocumentFolderRel) + "</div>";
 
             //if (imagegallery || imageselect)
             //{

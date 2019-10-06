@@ -1496,6 +1496,9 @@ namespace DNNrocketAPI
             imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectautoreturn", autoreturn.ToString());
             imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectsize", imagesize.ToString());
 
+            imageModel.HeaderData.SetXmlProperty("genxml/hidden/uploadfolderpath", uploadFolderPath);
+            imageModel.HeaderData.SetXmlProperty("genxml/hidden/uploadrelfolder", uploadRelFolder);
+
             var imgList = new List<object>();
             foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
             {

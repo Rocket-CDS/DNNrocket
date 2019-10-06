@@ -66,14 +66,14 @@
                 <td>
                     @TextBox(configinfo, "genxml/hidden/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
                 </td>
-                <td>@DNNrocketUtils.HomeRelDirectory()@configinfo.GetXmlProperty("genxml/hidden/imagefolder")</td>
+                <td>@DNNrocketUtils.HomeDNNrocketRelDirectory()/@configinfo.GetXmlProperty("genxml/hidden/imagefolder")</td>
             </tr>
             <tr>
                 <td class="w3-right-align"><b>@ResourceKey("RocketMod.documentfolder"):</b></td>
                 <td>
                     @TextBox(configinfo, "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
                 </td>
-                <td>@DNNrocketUtils.HomeRelDirectory()@configinfo.GetXmlProperty("genxml/hidden/documentfolder")</td>
+                <td>@DNNrocketUtils.HomeDNNrocketRelDirectory()/@configinfo.GetXmlProperty("genxml/hidden/documentfolder")</td>
             </tr>
         </table>
 
