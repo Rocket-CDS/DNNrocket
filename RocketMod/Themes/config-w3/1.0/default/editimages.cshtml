@@ -42,21 +42,24 @@
                 var settingsdataclassselect = "dictionarydata" + imgLP;
                 var imagesizeclass = "imagesize" + imgLP;
 
-                <li class="imagelist w3-card w3-margin w3-display-container w3-col m6 @settingsdataclassselect ">
+            <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
 
-                    @SortableListIndex(imgInfo, imgLP)
+                @SortableListIndex(imgInfo, imgLP)
 
-                    <span id="deletebutton@(imgLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin">
-                        <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
-                    </span>
-                    <div class="w3-col w3-padding">
-                        @ImageEditFull(imgInfo, "imagepath", 100, 100, "", false, imgLP)
+                <div class="w3-display-container w3-padding w3-card">
+                    <div class="w3-row">
+                        <span id="deletebutton@(imgLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin">
+                            <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
+                        </span>
+                        <div class="w3-col w3-padding">
+                            @ImageEditFull(imgInfo, "imagepath", 100, 100, "", false, imgLP)
+                        </div>
                     </div>
+                 </div>
+            </li>
 
-                </li>
-
-            }
-        </ul>
+                }
+            </ul>
 
     </div>
 
