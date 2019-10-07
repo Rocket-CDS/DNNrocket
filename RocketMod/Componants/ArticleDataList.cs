@@ -14,7 +14,6 @@ namespace RocketMod
     {
         private int _moduleid;
         private string _langRequired;
-        private List<SimplisityInfo> _dataList;
         private List<ArticleData> _articleList;
         private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "ROCKETMOD";
@@ -44,7 +43,7 @@ namespace RocketMod
             var searchOrderBy = " order by R1.[SortOrder] ";
 
             var rowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, -1, _tableName);
-            _dataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, returnLimit, Page, PageSize, rowCount, -1, _tableName);
+            DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, returnLimit, Page, PageSize, rowCount, -1, _tableName);
             RowCount = rowCount;
 
         }
@@ -61,15 +60,12 @@ namespace RocketMod
             }
         }
 
-        public List<SimplisityInfo> DataList
-        {
-            get { return _dataList; }
-        }
+        public List<SimplisityInfo> DataList { get; private set; }
 
         public List<ArticleData> GetArticleList()
         {
             _articleList = new List<ArticleData>();
-            foreach (var o in _dataList)
+            foreach (var o in DataList)
             {
                 var articleData = new ArticleData(o.ItemID, _moduleid, _langRequired);
                 _articleList.Add(articleData);
