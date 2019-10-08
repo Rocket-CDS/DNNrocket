@@ -1,0 +1,3 @@
+﻿<img src='@ThumbnailImageUrl(info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"genxml/hidden/" + fieldname + "\"), info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"genxml/textbox/width" + fieldname + "\") , info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"genxml/textbox/height" + fieldname + "\"))'/>
+
+

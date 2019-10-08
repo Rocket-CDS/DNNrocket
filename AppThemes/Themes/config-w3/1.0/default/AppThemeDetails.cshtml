@@ -449,11 +449,16 @@
         fieldhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippet" + lp + "'>" + fieldname + "</div>";
         xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>" + fieldname + "</div>";
 
+
         switch (i.GetXmlProperty("genxml/select/type").ToLower())
         {
             case "imagegallery":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("<img src='@ThumbnailImageUrl(info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"genxml/hidden/" + fieldname + "\"), 60 , 60)'/>") + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("<img src='@ThumbnailImageUrl(info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"genxml/hidden/" + fieldname + "\"), 60 , 60)'/>") + "' />";
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImageGallery")) + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImageGallery")) + "' />";
+                break;
+            case "imagefull":
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("<img src='@ThumbnailImageUrl(info.GetXmlProperty(\"genxml/hidden/" + fieldname + "\"), 60 , 60)'/>") + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("<img src='@ThumbnailImageUrl(info.GetXmlProperty(\"genxml/hidden/" + fieldname + "\"), 60 , 60)'/>") + "' />";
                 break;
             case "linkgallery":
                 fieldhtml += "";

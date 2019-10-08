@@ -20,7 +20,7 @@ namespace Rocket.AppThemes.Componants
         private List<string> _cssFileName;
         private List<string> _jsFileName;
         private List<string> _resxFileName;
-        private bool _debugMode;
+        private bool _debugMode;          
 
         public AppTheme(string importXml, bool overwrite = true, bool debugMode = false)
         {
@@ -123,6 +123,15 @@ namespace Rocket.AppThemes.Componants
             }
 
             TemplateDefaults();
+
+            // add snippetText
+            SnippetText = new Dictionary<string, string>();
+            var snippetFiles = Directory.GetFiles(AppProjectFolderMapPath + "\\Themes\\config-w3\\1.0\\default","snippet*.txt");
+            foreach (var snippetFile in snippetFiles)
+            {
+                var snipText = FileUtils.ReadFile(snippetFile);
+                AddSnippetText(Path.GetFileNameWithoutExtension(snippetFile), snipText);
+            }
 
         }
 
@@ -599,6 +608,21 @@ namespace Rocket.AppThemes.Componants
             Record.AddListItem(listname);
             Update();
         }
+
+        public void AddSnippetText(string key, string value)
+        {
+            SnippetText.Remove(key);
+            SnippetText.Add(key, value);
+        }
+        public string GetSnippetText(string key)
+        {
+            if (SnippetText.ContainsKey(key))
+            {
+                return SnippetText[key];
+            }
+            return "";
+        }
+
 
         public void CreateNewAppTheme()
         {
@@ -1217,6 +1241,7 @@ namespace Rocket.AppThemes.Componants
         public int DataType { get { return Record.GetXmlPropertyInt("genxml/radio/themetype"); } }
 
         public string SystemKey { get; set; }
+        public Dictionary<string,string> SnippetText { get; set; }
 
         #endregion
 
