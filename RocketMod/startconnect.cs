@@ -88,15 +88,15 @@ namespace RocketMod
                     strOut = GetArticleEdit(true);
                     break;
                 case "edit_addimage":
-                    RocketModAddListItem("imagelist");
+                    RocketModAddListItem("imagelist" + _paramInfo.Get("imgfieldname"));
                     strOut = GetArticleEdit();
                     break;
                 case "edit_adddocument":
-                    RocketModAddListItem("documentlist");
+                    RocketModAddListItem("documentlist" + _paramInfo.Get("docfieldname"));
                     strOut = GetArticleEdit();
                     break;
                 case "edit_addlink":
-                    RocketModAddListItem("linklist");
+                    RocketModAddListItem("linklist" + _paramInfo.Get("linkfieldname"));
                     strOut = GetArticleEdit();
                     break;
 
@@ -423,6 +423,26 @@ namespace RocketMod
 
                 _passSettings.Add("datatype", _appTheme.DataType.ToString());
 
+                // look at fields to find out what lists are included in the template.
+                var usedlistcsv = "";
+                foreach (SimplisityRecord f in _appTheme.Record.GetRecordList("fielddata"))
+                {
+                    var fieldtype = f.GetXmlProperty("genxml/select/type");
+                    if (fieldtype == "imagegallery") usedlistcsv += ".imagelist" + f.GetXmlProperty("genxml/textbox/name") + ",";
+                    if (fieldtype == "linkgallery") usedlistcsv += ".linklist" + f.GetXmlProperty("genxml/textbox/name") + ",";
+                    if (fieldtype == "documentgallery") usedlistcsv += ".documentlist" + f.GetXmlProperty("genxml/textbox/name") + ",";
+                }
+                var fieldData = GetFieldsData();
+                foreach (SimplisityInfo f in fieldData.List)
+                {
+                    var fieldtype = f.GetXmlProperty("genxml/select/type");
+                    if (fieldtype == "imagegallery") usedlistcsv += ".imagelist" + f.GetXmlProperty("genxml/textbox/name") + ",";
+                    if (fieldtype == "linkgallery") usedlistcsv += ".linklist" + f.GetXmlProperty("genxml/textbox/name") + ",";
+                    if (fieldtype == "documentgallery") usedlistcsv += ".documentlist" + f.GetXmlProperty("genxml/textbox/name") + ",";
+                }
+
+                _passSettings.Add("s-list-csv", usedlistcsv.TrimEnd(','));
+
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
 
                 // if the module settings change to a single form, use the last edited record.
@@ -477,7 +497,7 @@ namespace RocketMod
 
         private static SettingsData GetFieldsData()
         {
-            return new SettingsData(_tabid, _moduleid, _editLang, _rocketInterface.EntityTypeCode, "fielddata", false, _rocketInterface.DatabaseTable);
+            return new SettingsData(_tabid, _moduleid, _editLang, "ROCKETMODFIELDS", "fielddata", false, _rocketInterface.DatabaseTable);
         }
 
         private static String EditFieldsData()

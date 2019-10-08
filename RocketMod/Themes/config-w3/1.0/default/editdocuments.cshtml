@@ -17,6 +17,9 @@
         i = articleData.Info;
     }
     var docLP = 1;
+
+    var docfieldname = Model.GetSetting("docfieldname");
+
 }
 
 <div class="w3-container w3-theme w3-padding">
@@ -27,16 +30,16 @@
 
     <div class="w3-container">
         <div class="w3-col w3-padding" style="width:160px;">
-            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_adddocument" s-fields='{"selecteditemid":"@i.ItemID"}'><i class='fas fa-plus-circle'></i></div>
-            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="documentlistbin" s-return="#documentlistdata" s-removelist=".documentlist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_adddocument" s-fields='{"selecteditemid":"@i.ItemID","docfieldname":"@(docfieldname)"}'><i class='fas fa-plus-circle'></i></div>
+            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="documentlist@(docfieldname)bin" s-return="#documentlistdata@(docfieldname)" s-removelist=".documentlist@(docfieldname)" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
         </div>
     </div>
 
-    <ul id="documentlistdata" class="w3-ul">
+    <ul id="documentlistdata@(docfieldname)" class="w3-ul">
 
-        @foreach (var docInfo in i.GetList("documentlist"))
+        @foreach (var docInfo in i.GetList("documentlist" + docfieldname))
         {
-            <li class="documentlist w3-half w3-display-container w3-padding w3-border-0">
+            <li class="documentlist@(docfieldname) w3-half w3-display-container w3-padding w3-border-0">
                 @SortableListIndex(docInfo, docLP)
 
                 <div class="w3-display-container w3-padding w3-card">
@@ -49,7 +52,7 @@
                             <label class="">@ResourceKey("HtmlContent.justify")</label>
                             @RadioButtonList(docInfo, "genxml/hidden/layoutdocument", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, docLP)
                         </div>
-                        <div class="simplisity_removelistitem w3-right" s-removelist=".documentlist" s-recylebin="documentlistbin" style="cursor: pointer;">
+                        <div class="simplisity_removelistitem w3-right" s-removelist=".documentlist@(docfieldname)" s-recylebin="documentlist@(docfieldname)bin" style="cursor: pointer;">
                             <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
                         </div>
                     </div>
@@ -63,7 +66,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#documentlistdata").sortable();
-        $("#documentlistdata").disableSelection();
+        $("#documentlistdata@(docfieldname)").sortable();
+        $("#documentlistdata@(docfieldname)").disableSelection();
     });
 </script>

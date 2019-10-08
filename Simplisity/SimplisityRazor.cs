@@ -71,6 +71,12 @@ namespace Simplisity
             List = list;
         }
 
+        public void SetSetting(String key, String value)
+        {
+            if (Settings.ContainsKey(key)) Settings.Remove(key);
+            Settings.Add(key, value);
+        }
+
         public String GetSetting(String key, String defaultValue = "")
         {
             if (Settings.ContainsKey(key)) return Settings[key];

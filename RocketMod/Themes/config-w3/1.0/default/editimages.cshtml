@@ -17,7 +17,11 @@
         i = articleData.Info;
     }
     var imgLP = 0;
-    var datalist = i.GetList("imagelist");
+
+    var imgfieldname = Model.GetSetting("imgfieldname");
+
+    var datalist = i.GetList("imagelist" + imgfieldname);
+
 }
 
     <div class="w3-container w3-theme w3-padding">
@@ -28,12 +32,12 @@
 
         <div class="w3-container">
             <div class="w3-col w3-padding" style="width:160px;">
-                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addimage" s-fields='{"selecteditemid":"@i.ItemID"}'><i class='fas fa-plus-circle'></i></div>
-                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".imagelist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addimage" s-fields='{"selecteditemid":"@i.ItemID","imgfieldname":"@(imgfieldname)"}'><i class='fas fa-plus-circle'></i></div>
+                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelist@(imgfieldname)bin" s-return="#imagelistdata@(imgfieldname)" s-removelist=".imagelist@(imgfieldname)" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
             </div>
         </div>
 
-        <ul id="imagelistdata" class="w3-ul">
+        <ul id="imagelistdata@(imgfieldname)" class="w3-ul">
 
             @foreach (var imgInfo in datalist)
             {
@@ -42,17 +46,17 @@
                 var settingsdataclassselect = "dictionarydata" + imgLP;
                 var imagesizeclass = "imagesize" + imgLP;
 
-            <li class="imagelist w3-half w3-display-container w3-padding w3-border-0">
+            <li class="imagelist@(imgfieldname) w3-half w3-display-container w3-padding w3-border-0">
 
                 @SortableListIndex(imgInfo, imgLP)
 
                 <div class="w3-display-container w3-padding w3-card">
                     <div class="w3-row">
-                        <span id="deletebutton@(imgLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin">
+                        <span id="deletebutton@(imgLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".imagelist@(imgfieldname)" s-recylebin="imagelist@(imgfieldname)bin">
                             <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
                         </span>
                         <div class="w3-col w3-padding">
-                            @ImageEditFull(imgInfo, "imagepath", 100, 100, "", false, imgLP)
+                            @ImageEditFull(imgInfo, imgfieldname, 100, 100, "", false, imgLP)
                         </div>
                     </div>
                  </div>
@@ -65,8 +69,7 @@
 
     <script>
         $(document).ready(function () {
-            $(':checkbox').addClass('w3-check');
-            $("#imagelistdata").sortable();
-            $("#imagelistdata").disableSelection();
+            $("#imagelistdata@(imgfieldname)").sortable();
+            $("#imagelistdata@(imgfieldname)").disableSelection();
         });
     </script>

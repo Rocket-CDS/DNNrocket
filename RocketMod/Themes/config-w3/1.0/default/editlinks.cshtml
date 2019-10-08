@@ -16,6 +16,9 @@
         i = articleData.Info;
     }
     var linkLP = 1;
+
+    var linkfieldname = Model.GetSetting("linkfieldname");
+
 }
 
 <div class="w3-container w3-theme w3-padding linkheader">
@@ -27,22 +30,22 @@
 
     <div class="w3-container">
         <div class="w3-col w3-padding" style="width:160px;">
-            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addlink" s-fields='{"selecteditemid":"@i.ItemID"}'><i class='fas fa-plus-circle'></i></div>
-            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="linklistbin" s-return="#linklistdata" s-removelist=".linklist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="edit_addlink" s-fields='{"selecteditemid":"@i.ItemID","linkfieldname":"@(linkfieldname)"}'><i class='fas fa-plus-circle'></i></div>
+            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="linklist@(linkfieldname)bin" s-return="#linklistdata@(linkfieldname)" s-removelist=".linklist@(linkfieldname)" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
         </div>
     </div>
 
-    <ul id="linklistdata" class="w3-ul">
+    <ul id="linklistdata@(linkfieldname)" class="w3-ul">
 
-        @foreach (var linkInfo in i.GetList("linklist"))
+        @foreach (var linkInfo in i.GetList("linklist" + linkfieldname))
         {
-            <li class="linklist w3-half w3-display-container w3-padding w3-border-0">
+            <li class="linklist@(linkfieldname) w3-half w3-display-container w3-padding w3-border-0">
                 @SortableListIndex(linkInfo, linkLP)
 
                 <div class="w3-display-container w3-padding w3-card">
                     <div class="w3-row">
 
-                        @RadioButtonList(linkInfo, "genxml/radio/linktype", "0,1", ResourceKey("RocketMod.internallink") + "," + ResourceKey("RocketMod.externallink"), " class='linktypeclick' linkrow='" + linkLP + "' ", "0", "", false, linkLP)
+                        @RadioButtonList(linkInfo, "genxml/radio/linktype", "0,1", ResourceKey("RocketMod.internallink") + "," + ResourceKey("RocketMod.externallink"), " class='linktypeclick" + linkfieldname + ")' linkrow='" + linkLP + "' ", "0", "", false, linkLP)
 
                         @{
                             var linktype = linkInfo.GetXmlPropertyInt("genxml/radio/linktype");
@@ -55,7 +58,7 @@
                             }
                         }
 
-                        <div class="w3-container internallink@(linkLP)" style="@(internaldisplay)">
+                        <div class="w3-container internallink@(linkfieldname)@(linkLP)" style="@(internaldisplay)">
                             <div class="w3-col m12">
                                 @TabSelectListOnTabId(linkInfo, "genxml/select/internallink1", " class='w3-input w3-border' ", true, false, linkLP)
                             </div>
@@ -68,7 +71,7 @@
                             </div>
                         </div>
 
-                        <div class="w3-container externallink@(linkLP)" style="@(externaldisplay)">
+                        <div class="w3-container externallink@(linkfieldname)@(linkLP)" style="@(externaldisplay)">
                             <div class="w3-col m12">
                                 @TextBox(linkInfo, "genxml/textbox/externallink1", " class='w3-input w3-border' autocomplete='off'", "https://", true, linkLP)
                             </div>
@@ -82,7 +85,7 @@
                         </div>
 
                     </div>
-                    <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
+                    <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist@(linkfieldname)" s-recylebin="linklist@(linkfieldname)bin" style="cursor: pointer;">
                         <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
                     </div>
                 </div>
@@ -95,20 +98,20 @@
 
 <script>
     $(document).ready(function () {
-        $("#linklistdata").sortable();
-        $("#linklistdata").disableSelection();
+        $("#linklistdata@(linkfieldname)").sortable();
+        $("#linklistdata@(linkfieldname)").disableSelection();
 
-        $('.linktypeclick').unbind('click');
-        $('.linktypeclick').click(function () {
+        $('.linktypeclick@(linkfieldname)').unbind('click');
+        $('.linktypeclick@(linkfieldname)').click(function () {
             var linkrow = $(this).attr("linkrow");
-            var selectedval = $('input[name="linktype_' + linkrow + 'radio"]:checked').val();
+            var selectedval = $('.linklist@(linkfieldname) : input[name="linktype_' + linkrow + 'radio"]:checked').val();
             if (selectedval === '1') {
-                $('.internallink' + linkrow).hide();
-                $('.externallink' + linkrow).show();
+                $('.internallink@(linkfieldname)' + linkrow).hide();
+                $('.externallink@(linkfieldname)' + linkrow).show();
             }
             else {
-                $('.internallink' + linkrow).show();
-                $('.externallink' + linkrow).hide();
+                $('.internallink@(linkfieldname)' + linkrow).show();
+                $('.externallink@(linkfieldname)' + linkrow).hide();
             }
         });
 

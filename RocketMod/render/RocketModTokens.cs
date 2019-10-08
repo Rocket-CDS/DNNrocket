@@ -76,6 +76,7 @@ namespace RocketMod
                         var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
                         var defaultBool = f.GetXmlPropertyBool("genxml/textbox/defaultvalue");
                         var attributes = f.GetXmlProperty("genxml/textbox/attributes");
+                        var fieldname = f.GetXmlProperty("genxml/textbox/name");
 
                         strOut += "<div class='w3-col m" + size + " w3-padding'>";
                         strOut += "<label>" + label + "</label>";
@@ -163,6 +164,7 @@ namespace RocketMod
                         {
                             imagegallery = true;
                             strOut += "<div id='imagelistcontainer'>";
+                            model.SetSetting("imgfieldname", fieldname);
                             strOut += RenderTemplate("editimages.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", model, "1.0", true);
                             strOut += "</div>";
                         }
@@ -170,12 +172,14 @@ namespace RocketMod
                         {
                             docgallery = true;
                             strOut += "<div id='documentlistcontainer'>";
+                            model.SetSetting("docfieldname", fieldname);
                             strOut += RenderTemplate("editdocuments.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", model, "1.0", true);
                             strOut += "</div>";
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "linkgallery")
                         {
                             strOut += "<div id='linklistcontainer'>";
+                            model.SetSetting("linkfieldname", fieldname);
                             strOut += RenderTemplate("editlinks.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", model, "1.0", true);
                             strOut += "</div>";
                         }

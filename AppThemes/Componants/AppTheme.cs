@@ -739,6 +739,7 @@ namespace Rocket.AppThemes.Componants
                     var defaultBool = f.GetXmlProperty("genxml/textbox/defaultvalue").ToLower();
                     if (defaultBool == "") defaultBool = "false";
                     var attributes = f.GetXmlProperty("genxml/textbox/attributes");
+                    var fieldname = f.GetXmlProperty("genxml/textbox/name");
 
                     strFieldList += "\t<div class='w3-col m" + size + " w3-padding'>" + Environment.NewLine;
 
@@ -852,6 +853,9 @@ namespace Rocket.AppThemes.Componants
                     {
                         imagegallery = true;
                         strFieldList += "\t\t<div id='imagelistcontainer'>" + Environment.NewLine;
+                        strFieldList += "@{" + Environment.NewLine;
+                        strFieldList += " Model.SetSetting(\"imgfieldname\", \"" + fieldname + "\");" + Environment.NewLine;
+                        strFieldList += "}" + Environment.NewLine;
                         strFieldList += "\t\t\t@RenderTemplate(\"editimages.cshtml\", \"" + systemInfoData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
                     }
@@ -859,12 +863,18 @@ namespace Rocket.AppThemes.Componants
                     {
                         docgallery = true;
                         strFieldList += "\t\t<div id='documentlistcontainer'>" + Environment.NewLine;
+                        strFieldList += "@{" + Environment.NewLine;
+                        strFieldList += " Model.SetSetting(\"docfieldname\", \"" + fieldname + "\");" + Environment.NewLine;
+                        strFieldList += "}" + Environment.NewLine;
                         strFieldList += "\t\t\t@RenderTemplate(\"editdocuments.cshtml\", \"" + systemInfoData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "linkgallery")
                     {
                         strFieldList += "\t\t<div id='linklistcontainer'>" + Environment.NewLine;
+                        strFieldList += "@{" + Environment.NewLine;
+                        strFieldList += " Model.SetSetting(\"linkfieldname\", \"" + fieldname + "\");" + Environment.NewLine;
+                        strFieldList += "}" + Environment.NewLine;
                         strFieldList += "\t\t\t@RenderTemplate(\"editlinks.cshtml\", \"" + systemInfoData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
                     }
@@ -1000,9 +1010,9 @@ namespace Rocket.AppThemes.Componants
                     {
                         xpath = "genxml/hidden/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                         strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
-                        strFieldList += "@if (info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"genxml/hidden/imagepath\") != \"\")" + Environment.NewLine;
+                        strFieldList += "@if (info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"" + xpath + "\") != \"\")" + Environment.NewLine;
                         strFieldList += "{" + Environment.NewLine;
-                        strFieldList += "	<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"genxml/hidden/imagepath\"), 60 , 60)\" />" + Environment.NewLine;
+                        strFieldList += "	<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
                         strFieldList += "}" + Environment.NewLine;
                         strFieldList += "else" + Environment.NewLine;
                         strFieldList += "{" + Environment.NewLine;
@@ -1113,9 +1123,9 @@ namespace Rocket.AppThemes.Componants
                 {
                     xpath = "genxml/hidden/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                     strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
-                    strFieldList += "@if (info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"genxml/hidden/imagepath\") != \"\")" + Environment.NewLine;
+                    strFieldList += "@if (info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"" + xpath + "\") != \"\")" + Environment.NewLine;
                     strFieldList += "{" + Environment.NewLine;
-                    strFieldList += "	<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"genxml/hidden/imagepath\"), 60 , 60)\" />" + Environment.NewLine;
+                    strFieldList += "	<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist\", 0).GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
                     strFieldList += "}" + Environment.NewLine;
                     strFieldList += "else" + Environment.NewLine;
                     strFieldList += "{" + Environment.NewLine;
