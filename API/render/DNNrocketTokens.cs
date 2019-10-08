@@ -83,6 +83,7 @@ namespace DNNrocketAPI.render
 
         public IEncodedString ThumbnailImageUrl(string url, int width = 0, int height = 0, string extraurlparams = "")
         {
+            if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
             if (width > 0 || height > 0)
             {
                 url = "//" + DNNrocketUtils.GetCurrentWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams;
