@@ -300,6 +300,8 @@ namespace Rocket.AppThemes.Componants
                 tempMapPath = AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
                 if (viewHtml != "") FileUtils.SaveFile(tempMapPath, viewHtml);
 
+                SyncFiles();
+
             }
         }
         private void ActionListTemplateFiles(SimplisityInfo postInfo)
@@ -546,22 +548,11 @@ namespace Rocket.AppThemes.Componants
             filename = Path.GetFileNameWithoutExtension(filename);
             if (filename != "")
             {
-                var rtnItem = Record.GetRecordListItem(listname, "genxml/hidden/filename", filename);
-                if (rtnItem != null)
-                {
-                    // update
-                    var idx = rtnItem.GetXmlPropertyInt("genxml/index");
-                    Record.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/filename", filename);
-                    Record.SetXmlProperty("genxml/" + listname + "/genxml[" + idx + "]/hidden/editorcode" + modeType, GeneralUtils.EnCode(templateText));
-                }
-                else
-                {
-                    // add
-                    var nbi = new SimplisityRecord();
-                    nbi.SetXmlProperty("genxml/hidden/filename", filename);
-                    nbi.SetXmlProperty("genxml/hidden/editorcode" + modeType, GeneralUtils.EnCode(templateText));
-                    Record.AddListItem(listname, nbi.XMLData);
-                }
+                Record.RemoveRecordListItem(listname, "genxml/hidden/filename", filename);
+                var nbi = new SimplisityRecord();
+                nbi.SetXmlProperty("genxml/hidden/filename", filename);
+                nbi.SetXmlProperty("genxml/hidden/editorcode" + modeType, GeneralUtils.EnCode(templateText));
+                Record.AddListItem(listname, nbi.XMLData);
             }
             else
             {

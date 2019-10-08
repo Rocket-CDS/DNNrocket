@@ -148,11 +148,13 @@
                     <div id="templatedatasection" class="w3-row templatelistdatasection">
 
                         <div class="w3-container">
-                            <div class="w3-col w3-padding" style="width:160px;">
+                            <div class="w3-col w3-padding" style="">
                                 <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addtemplate" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                                <div class="w3-button w3-teal w3-padding-8 w3-right" onclick="location.reload();"><i class='fas fa-sync'></i></div>
                                 <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="templatelistbin" s-return="#templatelistdata" s-removelist=".templatelist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
                             </div>
                         </div>
+
 
                         <ul id="templatelistdata" class="w3-ul">
 

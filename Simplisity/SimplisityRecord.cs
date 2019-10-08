@@ -839,6 +839,23 @@ namespace Simplisity
                 RemoveXmlNode("genxml/" + listName + "/genxml[" + index + "]");
             }
         }
+        public void RemoveRecordListItem(string listName, string itemkeyxpath, string itemkey)
+        {
+            if (XMLDoc != null)
+            {
+
+                var list = GetRecordList(listName);
+                var lp = 1;
+                foreach (var i in list)
+                {
+                    if (itemkey == i.GetXmlProperty(itemkeyxpath))
+                    {
+                        RemoveXmlNode("genxml/" + listName + "/genxml[" + lp + "]");
+                    }
+                    lp += 1;
+                }
+            }
+        }
 
         public SimplisityRecord GetRecordListItem(string listName, int index)
         {
