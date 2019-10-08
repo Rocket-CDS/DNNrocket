@@ -445,19 +445,41 @@
     }
     @foreach (SimplisityRecord i in info.GetRecordList("fielddata"))
     {
-        fieldhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippet" + lp + "'>" + i.GetXmlProperty("genxml/textbox/name") + "</div>";
-        fieldhtml += " <div id='fieldsnippet" + lp + "' style='display:none;'>@info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\")</div>";
+        var fieldname = i.GetXmlProperty("genxml/textbox/name");
+        fieldhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippet" + lp + "'>" + fieldname + "</div>";
+        xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>" + fieldname + "</div>";
 
-        xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>" + i.GetXmlProperty("genxml/textbox/name") + "</div>";
-        xpathhtml += " <div id='fieldsnippetxpath" + lp + "' style='display:none;'>@info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\")</div>";
+        switch (i.GetXmlProperty("genxml/select/type").ToLower())
+        {
+            case "imagegallery":
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("<img src='@ThumbnailImageUrl(info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"genxml/hidden/" + fieldname + "\"), 60 , 60)'/>") + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("<img src='@ThumbnailImageUrl(info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"genxml/hidden/" + fieldname + "\"), 60 , 60)'/>") + "' />";
+                break;
+            case "linkgallery":
+                fieldhtml += "";
+                xpathhtml += "";
+                break;
+            case "documentgallery":
+                fieldhtml += "";
+                xpathhtml += "";
+                break;
+            case "richtext":
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@HtmlOf(info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\"))") + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@HtmlOf(info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\"))") + "' />";
+                break;
+            default:
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\")") + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\")") + "' />";
+              break;                    
+        }
+
+
 
         lp += 1;
     }
 
 
     <div class="w3-bar w3-light-grey editorviewmenu" style="display:none;">
-        <a href="#" class="w3-bar-item w3-button">Home</a>
-        <a href="#" class="w3-bar-item w3-button">Link 1</a>
         <div class="w3-dropdown-hover">
             <button class="w3-button">@ResourceKey("AppThemes.fields")</button>
             <div class="w3-dropdown-content w3-bar-block w3-card-4" style="z-index:999;">
@@ -633,7 +655,7 @@
         $('.fieldsnippet').unbind('click');
         $('.fieldsnippet').click(function () {
             if (typeof myCodeMirror !== 'undefined') {
-                var snip = $('#' + $(this).attr('snipname')).html();
+                var snip = simplisity_decode($('#' + $(this).attr('snipname')).val());
                 var position = myCodeMirror.getCursor();
                 myCodeMirror.replaceRange(snip, CodeMirror.Pos(position.line));
             }

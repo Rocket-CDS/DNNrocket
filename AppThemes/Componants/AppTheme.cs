@@ -284,6 +284,8 @@ namespace Rocket.AppThemes.Componants
 
                 Populate();
 
+                UpdateFieldXpath();
+
                 // output generated template.
                 var formHtml = GetTemplate("edit");
                 if (RegenerateEdit) formHtml = GenerateEditForm(0);
@@ -301,6 +303,7 @@ namespace Rocket.AppThemes.Componants
                 if (viewHtml != "") FileUtils.SaveFile(tempMapPath, viewHtml);
 
                 SyncFiles();
+
 
             }
         }
@@ -719,11 +722,6 @@ namespace Rocket.AppThemes.Componants
             }
             frows.Add(fline);
 
-            var imageselect = false;
-            var imagegallery = false;
-            var docselect = false;
-            var docgallery = false;
-
             foreach (var flines in frows)
             {
                 strFieldList += "<div class='w3-row'>" + Environment.NewLine;
@@ -731,7 +729,7 @@ namespace Rocket.AppThemes.Componants
                 {
                     var localized = f.GetXmlProperty("genxml/checkbox/localized").ToLower();
                     var localizedbool = f.GetXmlPropertyBool("genxml/checkbox/localized");
-                    var xpath = "";
+                    var xpath = f.GetXmlProperty("genxml/hidden/xpath");
                     var size = f.GetXmlProperty("genxml/select/size");
                     var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
                     var labelname = f.GetXmlProperty("genxml/textbox/name");
@@ -769,43 +767,32 @@ namespace Rocket.AppThemes.Componants
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
                     {
-                        xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        if (localizedbool) xpath = "genxml/lang/" + xpath;
                         strFieldList += "\t\t@TextBox(info,\"" + xpath + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
                     {
-                        xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        if (localizedbool) xpath = "genxml/lang/" + xpath;
                         strFieldList += "\t\t@CheckBox(info,\"" + xpath + "\", \"\", \"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
                     {
-                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        if (localizedbool) xpath = "genxml/lang/" + xpath;
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
                         var datatext = GetDictionaryDecoded(f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue"));
                         strFieldList += "\t\t@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\",\"" + datatext + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
                     {
-                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        if (localizedbool) xpath = "genxml/lang/" + xpath;
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
                         var datatext = GetDictionaryDecoded(f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue"));
                         strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue.Replace("\"", "\\\"") + "\",\"" + datatext.Replace("\"", "\\\"") + "\",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
                     {
-                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        if (localizedbool) xpath = "genxml/lang/" + xpath;
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
                         var datatext = GetDictionaryDecoded(f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue"));
                         strFieldList += "\t\t@CheckBoxList(info,\"" + xpath + "\",\"" + datavalue + "\",\"" + datatext + "\",\"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "image")
                     {
-                        imageselect = true;
                         var width = f.GetXmlPropertyInt("genxml/textbox/width");
                         var height = f.GetXmlPropertyInt("genxml/textbox/height");
                         if (width == 0 && height == 0)
@@ -817,7 +804,6 @@ namespace Rocket.AppThemes.Componants
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull")
                     {
-                        imageselect = true;
                         var width = f.GetXmlPropertyInt("genxml/hidden/width");
                         var height = f.GetXmlPropertyInt("genxml/hidden/height");
                         if (width == 0 && height == 0)
@@ -830,19 +816,15 @@ namespace Rocket.AppThemes.Componants
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "internalpage")
                     {
                         var allowEmpty = f.GetXmlPropertyBool("genxml/checkbox/allowempty");
-                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                         strFieldList += "\t\t@TabSelectListOnTabId(info,\"" + xpath + "\",\"" + attributes + "\"," + allowEmpty + "," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "document")
                     {
-                        docselect = true;
                         var fieldid = f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                         strFieldList += "\t\t@DocumentEdit(info,\"" + fieldid + "\",\"" + attributes + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext")
                     {
-                        xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        if (localizedbool) xpath = "genxml/lang/" + xpath;
                         strFieldList += "\t\t<div class='w3-col m12'>" + Environment.NewLine;
                         strFieldList += "\t\t\t@CKEditor(info,\"" + xpath + "\",\"\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
@@ -851,7 +833,6 @@ namespace Rocket.AppThemes.Componants
 
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
                     {
-                        imagegallery = true;
                         strFieldList += "\t\t<div id='imagelistcontainer'>" + Environment.NewLine;
                         strFieldList += "@{" + Environment.NewLine;
                         strFieldList += " Model.SetSetting(\"imgfieldname\", \"" + fieldname + "\");" + Environment.NewLine;
@@ -861,7 +842,6 @@ namespace Rocket.AppThemes.Componants
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "documentgallery")
                     {
-                        docgallery = true;
                         strFieldList += "\t\t<div id='documentlistcontainer'>" + Environment.NewLine;
                         strFieldList += "@{" + Environment.NewLine;
                         strFieldList += " Model.SetSetting(\"docfieldname\", \"" + fieldname + "\");" + Environment.NewLine;
@@ -883,18 +863,6 @@ namespace Rocket.AppThemes.Componants
                 }
                 strFieldList += "</div>" + Environment.NewLine;
             }
-
-
-            // *** The doc and image select is added by the module using "@BuildRocketForm", this is so we get the correct upload folder for the module.
-
-            //if (imagegallery || imageselect)
-            //{
-            //    strFieldList += "<div id=\"dnnrocket_imageselectwrapper\">@RenderImageSelect(100, true, false, articleData.ImageFolder)</div>";
-            //}
-            //if (docgallery || docselect)
-            //{
-            //    strFieldList += "<div id=\"dnnrocket_documentselectwrapper\">@RenderDocumentSelect(true, false, articleData.DocumentFolder)</div>";
-            //}
 
 
             // merge to template            
@@ -930,8 +898,6 @@ namespace Rocket.AppThemes.Componants
         {
 
             List<SimplisityRecord> fieldList = Record.GetRecordList("fielddata");
-            var resxItem = Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
-            var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
 
             var strFieldList = "";
             var sortedList = new List<SimplisityRecord>();
@@ -950,7 +916,7 @@ namespace Rocket.AppThemes.Componants
             foreach (var f in sortedList)
             {
                 var localized = f.GetXmlPropertyBool("genxml/checkbox/localized");
-                var xpath = "";
+                var xpath = f.GetXmlProperty("genxml/hidden/xpath");
                 var size = f.GetXmlProperty("genxml/select/size");
                 var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
                 var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
@@ -961,51 +927,25 @@ namespace Rocket.AppThemes.Componants
 
                 if (isonlist)
                 {
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
-                    {
-                        xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
-                    {
-                        xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
-                    {
-                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
-                    {
-                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
-                    {
-                        xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                    }
-
-                    if (localized) xpath = "genxml/lang/" + xpath;
-
                     if (xpath != "")
                     {
                         strFieldList += "\t<div class='w3-col m2 w3-padding'>" + Environment.NewLine;
                         strFieldList += "\t\t@info.GetXmlProperty(\"" + xpath + "\")" + Environment.NewLine;
                         strFieldList += "\t</div>" + Environment.NewLine;
-                    }
 
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull" || f.GetXmlProperty("genxml/select/type").ToLower() == "image")
+                        {
+                            strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
+                            strFieldList += "<img src=\"@ThumbnailImageUrl(info.GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
+                            strFieldList += "\t</div>" + Environment.NewLine;
+                        }
 
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull" || f.GetXmlProperty("genxml/select/type").ToLower() == "image")
-                    {
-                        xpath = "genxml/hidden/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
-                        strFieldList += "<img src=\"@ThumbnailImageUrl(info.GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
-                        strFieldList += "\t</div>" + Environment.NewLine;
-                    }
-
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
-                    {
-                        xpath = "genxml/hidden/" + fieldname.Trim(' ').ToLower();
-                        strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
-                        strFieldList += "<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
-                        strFieldList += "\t</div>" + Environment.NewLine;
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
+                        {
+                            strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
+                            strFieldList += "<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
+                            strFieldList += "\t</div>" + Environment.NewLine;
+                        }
                     }
 
                 }
@@ -1032,16 +972,81 @@ namespace Rocket.AppThemes.Componants
 
         private string GenerateView(int row)
         {
-
             List<SimplisityRecord> fieldList = Record.GetRecordList("fielddata");
-            var resxItem = Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
-            var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
 
             var strFieldList = "";
             foreach (var f in fieldList)
             {
                 var localized = f.GetXmlPropertyBool("genxml/checkbox/localized");
-                var xpath = "";
+                var xpath = f.GetXmlProperty("genxml/hidden/xpath");
+                var size = f.GetXmlProperty("genxml/select/size");
+                var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
+                var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
+                var defaultBool = f.GetXmlPropertyBool("genxml/textbox/defaultvalue");
+                var attributes = f.GetXmlProperty("genxml/textbox/attributes");
+                var isonlist = f.GetXmlPropertyBool("genxml/checkbox/isonlist");
+                var fieldname = f.GetXmlProperty("genxml/textbox/name");
+
+                if (xpath != "")
+                {
+                    strFieldList += "\t<div class='w3-col m2 w3-padding'>" + Environment.NewLine;
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext")
+                    {
+                        strFieldList += "\t\t@HtmlOf(info.GetXmlProperty(\"" + xpath + "\"))" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        strFieldList += "\t\t@info.GetXmlProperty(\"" + xpath + "\")" + Environment.NewLine;
+                    }
+                    strFieldList += "\t</div>" + Environment.NewLine;
+
+
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull" || f.GetXmlProperty("genxml/select/type").ToLower() == "image")
+                    {
+                        xpath = "genxml/hidden/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                        strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
+                        strFieldList += "<img src=\"@ThumbnailImageUrl(info.GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
+                        strFieldList += "\t</div>" + Environment.NewLine;
+                    }
+
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
+                    {
+                        xpath = "genxml/hidden/" + fieldname.Trim(' ').ToLower();
+                        strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
+                        strFieldList += "<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
+                        strFieldList += "\t</div>" + Environment.NewLine;
+                    }
+                }
+
+            }
+
+            // merge to template
+            var systemInfoData = new SystemInfoData(SystemKey);
+            var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\view.cshtml");
+            if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\view.cshtml");
+            if (strOut == "")
+            {
+                return strFieldList;
+            }
+            else
+            {
+                strOut = strOut.Replace("[Token:List]", strFieldList);
+                strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
+                strOut = strOut.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
+                strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
+                return strOut;
+            }
+
+        }
+
+        private void UpdateFieldXpath()
+        {
+            List<SimplisityRecord> fieldList = Record.GetRecordList("fielddata");
+            var lp = 1;
+            foreach (var f in fieldList)
+            {
+                var localized = f.GetXmlPropertyBool("genxml/checkbox/localized");
+                var xpath = f.GetXmlProperty("genxml/hidden/xpath");
                 var size = f.GetXmlProperty("genxml/select/size");
                 var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
                 var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
@@ -1079,55 +1084,13 @@ namespace Rocket.AppThemes.Componants
 
                 if (xpath != "")
                 {
-                    strFieldList += "\t<div class='w3-col m2 w3-padding'>" + Environment.NewLine;
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext")
-                    {
-                        strFieldList += "\t\t@HtmlOf(info.GetXmlProperty(\"" + xpath + "\"))" + Environment.NewLine;
-                    }
-                    else
-                    {
-                        strFieldList += "\t\t@info.GetXmlProperty(\"" + xpath + "\")" + Environment.NewLine;
-                    }
-                    strFieldList += "\t</div>" + Environment.NewLine;
+                    Record.SetXmlProperty("genxml/fielddata/genxml[" + lp + "]/hidden/xpath",xpath);
                 }
-
-
-                if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull" || f.GetXmlProperty("genxml/select/type").ToLower() == "image")
-                {
-                    xpath = "genxml/hidden/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                    strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
-                    strFieldList += "<img src=\"@ThumbnailImageUrl(info.GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
-                    strFieldList += "\t</div>" + Environment.NewLine;
-                }
-
-                if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
-                {
-                    xpath = "genxml/hidden/" + fieldname.Trim(' ').ToLower();
-                    strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
-                    strFieldList += "<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
-                    strFieldList += "\t</div>" + Environment.NewLine;
-                }
-
+                lp += 1;
             }
-
-            // merge to template
-            var systemInfoData = new SystemInfoData(SystemKey);
-            var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\view.cshtml");
-            if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\view.cshtml");
-            if (strOut == "")
-            {
-                return strFieldList;
-            }
-            else
-            {
-                strOut = strOut.Replace("[Token:List]", strFieldList);
-                strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
-                strOut = strOut.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
-                strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
-                return strOut;
-            }
-
+            _objCtrl.Update(Record);
         }
+
 
         public string Export()
         {
