@@ -437,6 +437,42 @@
             <h5 id="editorfilename" class="" style=""></h5>
         </div>
     </div>
+
+    @{
+        var lp = 1;
+        var fieldhtml = "";
+        var xpathhtml = "";
+    }
+    @foreach (SimplisityRecord i in info.GetRecordList("fielddata"))
+    {
+        fieldhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippet" + lp + "'>" + i.GetXmlProperty("genxml/textbox/name") + "</div>";
+        fieldhtml += " <div id='fieldsnippet" + lp + "' style='display:none;'>@info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\")</div>";
+
+        xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>" + i.GetXmlProperty("genxml/textbox/name") + "</div>";
+        xpathhtml += " <div id='fieldsnippetxpath" + lp + "' style='display:none;'>@info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\")</div>";
+
+        lp += 1;
+    }
+
+
+    <div class="w3-bar w3-light-grey editorviewmenu" style="display:none;">
+        <a href="#" class="w3-bar-item w3-button">Home</a>
+        <a href="#" class="w3-bar-item w3-button">Link 1</a>
+        <div class="w3-dropdown-hover">
+            <button class="w3-button">@ResourceKey("AppThemes.fields")</button>
+            <div class="w3-dropdown-content w3-bar-block w3-card-4" style="z-index:999;">
+                @HtmlOf(fieldhtml)
+            </div>
+        </div>
+        <div class="w3-dropdown-hover">
+            <button class="w3-button">XPath</button>
+            <div class="w3-dropdown-content w3-bar-block w3-card-4" style="z-index:999;">
+                @HtmlOf(xpathhtml)
+            </div>
+        </div>
+    </div>
+
+
     <div id="editorwrapper" class="w3-row " style=""></div>
 </div>
 
@@ -594,6 +630,15 @@
             };
         }
 
+        $('.fieldsnippet').unbind('click');
+        $('.fieldsnippet').click(function () {
+            if (typeof myCodeMirror !== 'undefined') {
+                var snip = $('#' + $(this).attr('snipname')).html();
+                var position = myCodeMirror.getCursor();
+                myCodeMirror.replaceRange(snip, CodeMirror.Pos(position.line));
+            }
+        });
+
         showDataTab();
     });
 
@@ -629,7 +674,7 @@
                 }
             }
         }
- 
+
         $('#resxvaluesstring').empty();
         $('#resxkeysstring').empty();
 
@@ -728,6 +773,9 @@
         myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
 
         $('#editorfilename').text($('#filename' + modetype + '_' + idx).val());
+        if ($('#filename' + modetype + '_' + idx).val() === 'view') {
+            $('.editorviewmenu').show();
+        }
         $('#editorwrapper').attr("index", idx);
 
         $('#razoreditor').focus();
@@ -848,6 +896,6 @@
             row += 1;
         }
 
-    }    
+    }
 
 </script>
