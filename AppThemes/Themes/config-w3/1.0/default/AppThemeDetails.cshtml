@@ -433,13 +433,18 @@
         @ButtonGap()
         <div class="w3-col m2 w3-button w3-khaki " onclick="cancelleditor();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
         @ButtonGap()
+        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditorcall" s-after="saveeditorreturn" s-track="false" s-cmd="rocketapptheme_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+        @ButtonGap()
+        <i id="saveicon" class='fas fa-save ' style="display:none;font-size:24px"></i>
         <div class="w3-col m4 w3-right">
             <h5 id="editorfilename" class="" style=""></h5>
         </div>
+
     </div>
 
     @{
         var lp = 1;
+
         var fieldhtml = "";
         var xpathhtml = "";
     }
@@ -501,8 +506,14 @@
         </div>
     </div>
 
-
+    <div id="editorsave" style="display:none;">
+        <input id="editorfilenamesave" type="hidden" value="" />
+        <input id="editorcodesave" type="hidden" value="" />
+        <input id="editorlistnamesave" type="hidden" value="" />        
+    </div>
+    <div id="editorsavereturn" style="display:none;"></div>
     <div id="editorwrapper" class="w3-row " style=""></div>
+
 </div>
 
 <div id="dnnrocket_imageselectwrapper">
@@ -672,13 +683,13 @@
     });
 
     function edittemplate(idx) {
-        editeditor(idx, 'htmlmixed');
+        editeditor(idx, 'htmlmixed','templatelist');
     }
     function editcss(idx) {
-        editeditor(idx, 'css');
+        editeditor(idx, 'css','csslist');
     }
     function editjs(idx) {
-        editeditor(idx, 'javascript');
+        editeditor(idx, 'javascript','jslist');
     }
     function editresx(idx) {
         $('#detailsection').hide();
@@ -753,19 +764,41 @@
 
     }
 
-    function savetemplate() {
+    function saveeditordata(action) {
         var modetype = $('#razoreditor').attr('modetype');
-        if ($('#editorfilename').text() === 'view') {
+        if ($('#editorfilenamesave').val() === 'view') {
             $('#regenerateview').prop('checked', false);
         }
-        if ($('#editorfilename').text() === 'edit') {
+        if ($('#editorfilenamesave').val() === 'edit') {
             $('#regenerateedit').prop('checked', false);
         }
-        if ($('#editorfilename').text() === 'editlist') {
+        if ($('#editorfilenamesave').val() === 'editlist') {
             $('#regenerateeditlist').prop('checked', false);
         }
 
-        saveeditor(modetype);
+        var idx = $('#editorwrapper').attr("index");
+        if (action === 1) {
+            $('#editorpopup').hide();
+            $('#detailsection').show();
+            $('#editorcode' + modetype + '_' + idx).val(simplisity_encode(myCodeMirror.getValue()));
+        }
+        else {
+            $('#editorcode' + modetype + '_' + idx).val(simplisity_encode(myCodeMirror.getValue()));
+            $('#editorcodesave').val(simplisity_encode(myCodeMirror.getValue()));
+        }
+    }
+
+    function saveeditorcall() {
+        saveeditordata(2);
+    }
+
+    function saveeditorreturn() {
+        $('#saveicon').show();
+        $('#saveicon').addClass('simplisity_fadeout');
+    }
+
+    function savetemplate() {
+        saveeditordata(1);
     }
 
     function saveresx() {
@@ -777,7 +810,7 @@
         $("#resxvalues").find("tr:gt(0)").remove();
     }
 
-    function editeditor(idx, modetype) {
+    function editeditor(idx, modetype, listname) {
 
         $('#detailsection').hide();
         $('#editorpopup').show();
@@ -801,6 +834,9 @@
 
         myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
 
+        $('#editorlistnamesave').val(listname);
+        $('#editorfilenamesave').val($('#filename' + modetype + '_' + idx).val());
+
         $('#editorfilename').text($('#filename' + modetype + '_' + idx).val());
         if ($('#filename' + modetype + '_' + idx).val() === 'view') {
             $('.editorviewmenu').show();
@@ -810,12 +846,6 @@
         $('#razoreditor').focus();
     }
 
-    function saveeditor(modetype) {
-        var idx = $('#editorwrapper').attr("index");
-        $('#editorpopup').hide();
-        $('#detailsection').show();
-        $('#editorcode' + modetype + '_' + idx).val(simplisity_encode(myCodeMirror.getValue()));
-    }
     function cancelleditor() {
         $('#editorpopup').hide();
         $('#detailsection').show();

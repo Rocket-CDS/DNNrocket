@@ -1,9 +1,5 @@
-﻿
-@foreach (var i in info.getList("imagelist[fieldname]")) {
-
-<img src='@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagepath[fieldname]"), i.GetXmlProperty("genxml/textbox/width[fieldname]") , i.GetXmlProperty("genxml/textbox/height[fieldname]"))'/>
-
+﻿<div>
+@foreach (var i in info.GetList("imagelistwwwwww")) {
+<img src='@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagepathwwwwww"), i.GetXmlPropertyInt("genxml/textbox/widthwwwwww") , i.GetXmlPropertyInt("genxml/textbox/heightwwwwww"))'/>
 }
-
-
-
+</div>

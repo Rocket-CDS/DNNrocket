@@ -116,6 +116,9 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_import":
                         strOut = ImportAppTheme();
                         break;
+                    case "rocketapptheme_saveeditor":
+                        strOut = SaveEditor();
+                        break;                        
                 }
             }
             else
@@ -287,6 +290,15 @@ private static Dictionary<string, string> ExportAppTheme()
         public static void SaveData()
         {
             _appTheme.Save(_postInfo);
+        }
+
+        public static string SaveEditor()
+        {
+            var editorcode = _postInfo.GetXmlProperty("genxml/hidden/editorcodesave");
+            var filename = _postInfo.GetXmlProperty("genxml/hidden/editorfilenamesave");
+            var listname = _postInfo.GetXmlProperty("genxml/hidden/editorlistnamesave");
+            _appTheme.SaveEditor(listname, filename, editorcode);
+            return "OK";
         }
 
         public static void AddListImage()

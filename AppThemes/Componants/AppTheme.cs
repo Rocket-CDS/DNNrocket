@@ -316,6 +316,38 @@ namespace Rocket.AppThemes.Componants
 
             }
         }
+
+        public void SaveEditor(string listname, string filename, string editorcode)
+        {
+            var editortype = "htmlmixed";
+            var fileext = ".cshtml";
+            var folder = "default";
+            if (listname == "csslist")
+            {
+                editortype = "css";
+                fileext = ".css";
+                folder = "css";
+            }
+            if (listname == "jslist")
+            {
+                editortype = "javascript";
+                fileext = ".js";
+                folder = "js";
+            }
+
+            var sr = new SimplisityRecord();
+            sr.SetXmlProperty("genxml/hidden/filename", filename);
+            sr.SetXmlProperty("genxml/hidden/editorcode" + editortype, editorcode);
+
+            Record.RemoveRecordListItem(listname, "genxml/hidden/filename", filename);
+            Record.AddRecordListItem(listname, sr);
+
+            var formHtml = GeneralUtils.DeCode(editorcode);
+            var tempMapPath = AppThemeVersionFolderMapPath + "\\" + folder + "\\" + filename + fileext;
+            FileUtils.SaveFile(tempMapPath, formHtml);
+        }
+
+
         private void ActionListTemplateFiles(SimplisityInfo postInfo)
         {
 
