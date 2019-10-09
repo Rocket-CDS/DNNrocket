@@ -121,7 +121,7 @@ namespace DNNrocketAPI.render
 
         private IEncodedString ImageEditToken(SimplisityInfo info, string fieldId, int width, int height, string attributes, bool localized, int row, string uiType)
         {
-            var xpath = "genxml/hidden/" + fieldId;
+            var xpath = "genxml/hidden/imagepath" + fieldId;
             var xpathwidth = "genxml/textbox/width" + fieldId;
             var xpathheight = "genxml/textbox/height" + fieldId;
             if (localized && !xpath.StartsWith("genxml/lang/"))

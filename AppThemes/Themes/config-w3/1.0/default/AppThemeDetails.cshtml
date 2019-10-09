@@ -449,12 +449,14 @@
         fieldhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippet" + lp + "'>" + fieldname + "</div>";
         xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>" + fieldname + "</div>";
 
+        var replaceData = new Dictionary<string, string>();
+        replaceData.Add("[fieldname]", fieldname);
 
         switch (i.GetXmlProperty("genxml/select/type").ToLower())
         {
             case "imagegallery":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImageGallery")) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImageGallery")) + "' />";
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImageGallery", replaceData)) + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImageGallery", replaceData)) + "' />";
                 break;
             case "imagefull":
                 fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("<img src='@ThumbnailImageUrl(info.GetXmlProperty(\"genxml/hidden/" + fieldname + "\"), 60 , 60)'/>") + "' />";
@@ -475,7 +477,7 @@
             default:
                 fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\")") + "' />";
                 xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\")") + "' />";
-              break;                    
+                break;
         }
 
 

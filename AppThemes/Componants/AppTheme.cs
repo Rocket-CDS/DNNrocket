@@ -614,11 +614,16 @@ namespace Rocket.AppThemes.Componants
             SnippetText.Remove(key);
             SnippetText.Add(key, value);
         }
-        public string GetSnippetText(string key)
+        public string GetSnippetText(string key, Dictionary<string,string> replaceData)
         {
             if (SnippetText.ContainsKey(key))
             {
-                return SnippetText[key];
+                var rtntext = SnippetText[key];
+                foreach (var t in replaceData)
+                {
+                    rtntext = rtntext.Replace(t.Key, t.Value);
+                }
+                return rtntext;
             }
             return "";
         }
