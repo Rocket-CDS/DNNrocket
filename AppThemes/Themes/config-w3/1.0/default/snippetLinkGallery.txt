@@ -1,0 +1,21 @@
+﻿<div>
+    @foreach (var i in info.GetList("linklist[fieldname]"))
+    {
+
+        if (i.GetXmlPropertyInt("genxml/radiobuttonlist/rbllink") == 1)
+        {
+            var tabddlvalue = @GetTabUrlByGuid(i, "/genxml/dropdownlist/linktab");
+            <div class="newspaper-link imageclick">
+                <a href="@(tabddlvalue)">@i.GetXmlProperty("genxml/lang/genxml/textbox/linktitle")</a>
+            </div>
+        }
+        if (i.GetXmlPropertyInt("genxml/radiobuttonlist/rbllink") == 2)
+        {
+            var externalURL = i.GetXmlProperty("genxml/lang/genxml/textbox/externalhref");
+            <div class="newspaper-link imageclick">
+                <a href="@(externalURL)" target="_blank">@i.GetXmlProperty("genxml/lang/genxml/textbox/linktitle")</a>
+            </div>
+        }
+
+    }
+</div>

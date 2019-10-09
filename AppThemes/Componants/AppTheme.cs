@@ -98,16 +98,8 @@ namespace Rocket.AppThemes.Componants
             // sync filesystem
             SyncFiles();
 
-            // logo, take first image
-            var imageList = Record.GetRecordList("imagelist");
-            Logo = "";
-            if (imageList.Count > 0)
-            {
-                var i = Record.GetRecordListItem("imagelist", 0);
-                var logoMapPath = DNNrocketUtils.MapPath(i.GetXmlProperty("genxml/hidden/imagepath"));
-                Logo = i.GetXmlProperty("genxml/hidden/imagepath");
-                if (!File.Exists(logoMapPath)) Logo = "";
-            }
+            // logo
+            Logo = Record.GetXmlProperty("genxml/hidden/imagepathlogo");
 
             // RESX Default
             var resxList = Record.GetRecordList("resxlist");

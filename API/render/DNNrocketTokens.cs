@@ -1,5 +1,7 @@
 ﻿using DNNrocketAPI.Componants;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using RazorEngine.Text;
 using Simplisity;
 using System;
@@ -427,6 +429,31 @@ namespace DNNrocketAPI.render
             }
             strOut += "</select>";
 
+            return new RawString(strOut);
+        }
+        public IEncodedString GetTabUrlByGuid(String tabguid)
+        {
+            var strOut = "";
+
+            var t = (from kvp in TabController.GetTabsBySortOrder(PortalSettings.Current.PortalId) where kvp.UniqueId.ToString() == tabguid select kvp.TabID);
+            if (t.Any())
+            {
+                var tabid = t.First();
+                strOut = Globals.NavigateURL(tabid);
+            }
+
+            return new RawString(strOut);
+        }
+
+        public IEncodedString GetTabUrlByGuid(SimplisityInfo info, String xpath)
+        {
+            var strOut = "";
+            var t = (from kvp in TabController.GetTabsBySortOrder(PortalSettings.Current.PortalId) where kvp.UniqueId.ToString() == info.GetXmlProperty(xpath) select kvp.TabID);
+            if (t.Any())
+            {
+                var tabid = t.First();
+                strOut = Globals.NavigateURL(tabid);
+            }
             return new RawString(strOut);
         }
 

@@ -123,6 +123,9 @@
   <data name="alphanumeric.Error" xml:space="preserve">
     <value>Alphanumeric required.</value>
   </data>
+  <data name="anchor.Text" xml:space="preserve">
+    <value>Anchor</value>
+  </data>
   <data name="apptheme.Text" xml:space="preserve">
     <value>App Theme</value>
   </data>
@@ -183,6 +186,9 @@
   <data name="name.Text" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="page.Text" xml:space="preserve">
+    <value>Page</value>
+  </data>
   <data name="ref.Text" xml:space="preserve">
     <value>Ref.</value>
   </data>
@@ -209,5 +215,11 @@
   </data>
   <data name="templatelevel.Text" xml:space="preserve">
     <value>Template Level</value>
+  </data>
+  <data name="text.Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="url.Text" xml:space="preserve">
+    <value>URL (https://www.mylink.com)</value>
   </data>
 </root>

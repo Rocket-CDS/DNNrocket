@@ -83,7 +83,12 @@
                 @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appTheme.SystemKey)
 
                 <div class="w3-container w3-padding">
-                    <div class="w3-col m9 w3-padding">
+
+                    <div class="w3-col m1 ">
+                        <label>Logo</label>
+                        @ImageEdit(info, "logo", 62, 62, " ", false)
+                    </div>
+                    <div class="w3-col m8 w3-padding">
                         <label>@ResourceKey("AppThemes.summary")</label>
                         @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border'", "", false)
                     </div>
@@ -223,7 +228,7 @@
                                     <div class="w3-display-container" style="min-width:150px;">
                                         <div class="w3-row w3-card" style="height:150px;">
                                             <div class="w3-display-middle ">
-                                                @ImageEdit(imgInfo, "imagepath", 120, 120, " ", false, @imgLP)
+                                                @ImageEdit(imgInfo, "img", 120, 120, " ", false, @imgLP)
                                             </div>
                                             <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
                                                 <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
@@ -464,16 +469,16 @@
                 xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImageGallery", replaceData)) + "' />";
                 break;
             case "imagefull":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("<img src='@ThumbnailImageUrl(info.GetXmlProperty(\"genxml/hidden/" + fieldname + "\"), 60 , 60)'/>") + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("<img src='@ThumbnailImageUrl(info.GetXmlProperty(\"genxml/hidden/" + fieldname + "\"), 60 , 60)'/>") + "' />";
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImage", replaceData)) + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImage", replaceData)) + "' />";
                 break;
             case "linkgallery":
-                fieldhtml += "";
-                xpathhtml += "";
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetLinkGallery", replaceData)) + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetLinkGallery", replaceData)) + "' />";
                 break;
             case "documentgallery":
-                fieldhtml += "";
-                xpathhtml += "";
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetDocGallery", replaceData)) + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetDocGallery", replaceData)) + "' />";
                 break;
             case "richtext":
                 fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@HtmlOf(info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\"))") + "' />";
@@ -483,6 +488,7 @@
                 fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\")") + "' />";
                 xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\")") + "' />";
                 break;
+
         }
 
 
@@ -818,7 +824,7 @@
         $("#razoreditor").remove();
         $(".CodeMirror").remove();
 
-        var newHeight = $(window).height() - 100;
+        var newHeight = $(window).height() - 140;
         $('#editorwrapper').css("height", newHeight);;
 
         var textArea = $('<textarea id="razoreditor" class="w3-input w3-border" modetype="' + modetype + '" spellcheck="false" />');

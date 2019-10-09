@@ -1,5 +1,6 @@
 ﻿<div>
-@foreach (var i in info.GetList("imagelistwwwwww")) {
-<img src='@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagepathwwwwww"), i.GetXmlPropertyInt("genxml/textbox/widthwwwwww") , i.GetXmlPropertyInt("genxml/textbox/heightwwwwww"))'/>
+@foreach (var i in info.GetList("imagelist[fieldname]")) 
+{
+	<img src='@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagepath[fieldname]"), i.GetXmlPropertyInt("genxml/textbox/width[fieldname]") , i.GetXmlPropertyInt("genxml/textbox/height[fieldname]"))'/>
 }
 </div>
