@@ -45,18 +45,21 @@
                 <div class="w3-display-container w3-padding w3-card">
                     <div class="w3-row">
 
-                        <div class="w3-col m8">
-                            @RadioButtonList(linkInfo, "genxml/radio/linktype" + linkfieldname, "0,1", ResourceKey("RocketMod.internallink") + "," + ResourceKey("RocketMod.externallink"), " class='linktypeclick" + linkfieldname + "' linkrow='" + linkLP + "' ", "0", "", false, linkLP)
+                        <div class="w3-col m6">
+                            @RadioButtonList(linkInfo, "genxml/radio/linktype" + linkfieldname, "1,2", ResourceKey("RocketMod.internallink") + "," + ResourceKey("RocketMod.externallink"), " class='linktypeclick" + linkfieldname + "' linkrow='" + linkLP + "' ", "1", "", false, linkLP)
                         </div>
-                        <div class="w3-col m4">
+                        <div class="w3-col m3">
                             @CheckBox(linkInfo, "genxml/checkbox/blank" + linkfieldname, "&nbsp;" + ResourceKey("RocketMod.blank").ToString(), " class='w3-check' ", false, false, linkLP)
+                        </div>
+                        <div class="w3-col m3">
+                            @CheckBox(linkInfo, "genxml/checkbox/hide" + linkfieldname, "&nbsp;" + ResourceKey("RocketMod.hidelink").ToString(), " class='w3-check' ", false, false, linkLP)
                         </div>
 
                         @{
                             var linktype = linkInfo.GetXmlPropertyInt("genxml/radio/linktype" + linkfieldname);
                             var internaldisplay = "";
                             var externaldisplay = "display:none;";
-                            if (linktype == 1)
+                            if (linktype == 2)
                             {
                                 internaldisplay = "display:none;";
                                 externaldisplay = "";
@@ -73,7 +76,7 @@
                         </div>
                         <div class="w3-col m12 externallink@(linkfieldname)@(linkLP)" style="@(externaldisplay);height:64px;">
                             <label>@ResourceKey("RocketMod.url")</label>&nbsp;@EditFlag()
-                            @TextBox(linkInfo, "genxml/textbox/externallink" + linkfieldname, " class='w3-input w3-border' autocomplete='off'", "https://", true, linkLP)
+                            @TextBox(linkInfo, "genxml/lang/genxml/textbox/externallink" + linkfieldname, " class='w3-input w3-border' autocomplete='off'", "https://", true, linkLP)
                         </div>
 
                         <div class="w3-col m6">
@@ -105,12 +108,12 @@
             var linkrow = $(this).attr("linkrow");
             var selectedval = $(this).find(":checked").val();
             if (selectedval === '1') {
-                $('.internallink@(linkfieldname)' + linkrow).hide();
-                $('.externallink@(linkfieldname)' + linkrow).show();
-            }
-            else {
                 $('.internallink@(linkfieldname)' + linkrow).show();
                 $('.externallink@(linkfieldname)' + linkrow).hide();
+            }
+            if (selectedval === '2') {
+                $('.internallink@(linkfieldname)' + linkrow).hide();
+                $('.externallink@(linkfieldname)' + linkrow).show();
             }
         });
 

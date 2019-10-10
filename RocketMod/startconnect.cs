@@ -40,7 +40,7 @@ namespace RocketMod
 
             paramCmd = initCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
 
-            // AssignSelecteditemId();
+            var rtnDic = new Dictionary<string, string>();
 
             switch (paramCmd)
             {
@@ -139,6 +139,11 @@ namespace RocketMod
                 case "rocketmodfields_delete":
                     strOut = FieldsDelete();
                     break;
+                case "testform_download":
+                    rtnDic.Add("filenamepath", postInfo.GetXmlProperty("genxml/hidden/filerelpath"));
+                    rtnDic.Add("downloadname", postInfo.GetXmlProperty("genxml/hidden/downloadname"));
+                    rtnDic.Add("fileext", "");
+                    break;
 
 
             }
@@ -148,8 +153,8 @@ namespace RocketMod
                 return DNNrocketUtils.ReturnString(GetSetup());
             }
 
-
-            return DNNrocketUtils.ReturnString(strOut);
+            rtnDic.Add("outputhtml", strOut);
+            return rtnDic;
         }
 
         public static string initCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")

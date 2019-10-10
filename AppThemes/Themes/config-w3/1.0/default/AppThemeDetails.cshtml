@@ -78,41 +78,48 @@
             </div>
         </div>
 
-            <div id="appthemedetails">
+        <div id="appthemedetails">
 
+
+            <div id="editorsave" style="display:none;">
                 @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appTheme.SystemKey)
-
-                <div class="w3-container w3-padding">
-
-                    <div class="w3-col m1 ">
-                        <label>Logo</label>
-                        @ImageEdit(info, "logo", 62, 62, " ", false)
-                    </div>
-                    <div class="w3-col m8 w3-padding">
-                        <label>@ResourceKey("AppThemes.summary")</label>
-                        @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border'", "", false)
-                    </div>
-                    <div class="w3-col m3 w3-padding" style="width:200px">
-                        <label>@ResourceKey("AppThemes.version")</label>
-                        @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border simplisity_change' s-cmd='rocketapptheme_changeversion' s-post='#appthemedetails' s-track='false' s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
-                    </div>
-                    <div class="w3-col m6 w3-padding">
-                        @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
-                    </div>
-                    <div class="w3-row ">
-                        <div class="w3-col m3 w3-padding ">
-                            @CheckBox(info, "genxml/checkbox/regenerateview", ResourceKey("AppThemes.autoregenerateview").ToString(), "", true)
-                        </div>
-                        <div class="w3-col m3 w3-padding ">
-                            @CheckBox(info, "genxml/checkbox/regenerateedit", ResourceKey("AppThemes.autoregenerateedit").ToString(), "", true)
-                        </div>
-                        <div class="w3-col m3 w3-padding regenerateeditlist" style="display:none;">
-                            @CheckBox(info, "genxml/checkbox/regenerateeditlist", ResourceKey("AppThemes.autoregenerateeditlist").ToString(), "", true)
-                        </div>
-                    </div>
-
-                </div>
+                <input id="editorfilenamesave" type="hidden" value="" />
+                <input id="editorcodesave" type="hidden" value="" />
+                <input id="editorlistnamesave" type="hidden" value="" />
             </div>
+
+
+            <div class="w3-container w3-padding">
+
+                <div class="w3-col m1 ">
+                    <label>Logo</label>
+                    @ImageEdit(info, "logo", 62, 62, " ", false)
+                </div>
+                <div class="w3-col m8 w3-padding">
+                    <label>@ResourceKey("AppThemes.summary")</label>
+                    @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border'", "", false)
+                </div>
+                <div class="w3-col m3 w3-padding" style="width:200px">
+                    <label>@ResourceKey("AppThemes.version")</label>
+                    @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border simplisity_change' s-cmd='rocketapptheme_changeversion' s-post='#appthemedetails' s-track='false' s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
+                </div>
+                <div class="w3-col m6 w3-padding">
+                    @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
+                </div>
+                <div class="w3-row ">
+                    <div class="w3-col m3 w3-padding ">
+                        @CheckBox(info, "genxml/checkbox/regenerateview", ResourceKey("AppThemes.autoregenerateview").ToString(), "", true)
+                    </div>
+                    <div class="w3-col m3 w3-padding ">
+                        @CheckBox(info, "genxml/checkbox/regenerateedit", ResourceKey("AppThemes.autoregenerateedit").ToString(), "", true)
+                    </div>
+                    <div class="w3-col m3 w3-padding regenerateeditlist" style="display:none;">
+                        @CheckBox(info, "genxml/checkbox/regenerateeditlist", ResourceKey("AppThemes.autoregenerateeditlist").ToString(), "", true)
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
 
             <div class="w3-container">
@@ -512,11 +519,6 @@
         </div>
     </div>
 
-    <div id="editorsave" style="display:none;">
-        <input id="editorfilenamesave" type="hidden" value="" />
-        <input id="editorcodesave" type="hidden" value="" />
-        <input id="editorlistnamesave" type="hidden" value="" />        
-    </div>
     <div id="editorsavereturn" style="display:none;"></div>
     <div id="editorwrapper" class="w3-row " style=""></div>
 

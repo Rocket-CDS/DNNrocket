@@ -165,6 +165,9 @@
   <data name="externallink.Text" xml:space="preserve">
     <value>External Link</value>
   </data>
+  <data name="hidelink.Text" xml:space="preserve">
+    <value>Hide Link</value>
+  </data>
   <data name="iframesupport.Text" xml:space="preserve">
     <value>Your browser does not support iframes. Use the Rocket Admin option.</value>
   </data>

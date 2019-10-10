@@ -44,8 +44,10 @@ namespace DNNrocket.AppThemes
             {
                 _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
+                var systemKey = postInfo.GetXmlProperty("genxml/hidden/selectedsystemkey");
+                if (systemKey == "")
 
-                _appThemeDataList = new AppThemeDataList(postInfo.GetXmlProperty("genxml/hidden/selectedsystemkey"));
+                _appThemeDataList = new AppThemeDataList(systemKey);
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/clearlistcache")) _appThemeDataList.PopulateAppThemeList();
 
                 if (paramCmd != "rocketapptheme_selectsystemkey" && _appThemeDataList.SelectedSystemKey == "") paramCmd = "rocketapptheme_getlist";

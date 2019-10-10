@@ -1,21 +1,35 @@
-﻿<div>
+﻿@* ----- Link Gallery: START ------------------------------------------ *@
+<div>
     @foreach (var i in info.GetList("linklist[fieldname]"))
     {
-
-        if (i.GetXmlPropertyInt("genxml/radiobuttonlist/rbllink") == 1)
-        {
-            var tabddlvalue = @GetTabUrlByGuid(i, "/genxml/dropdownlist/linktab");
-            <div class="newspaper-link imageclick">
-                <a href="@(tabddlvalue)">@i.GetXmlProperty("genxml/lang/genxml/textbox/linktitle")</a>
-            </div>
-        }
-        if (i.GetXmlPropertyInt("genxml/radiobuttonlist/rbllink") == 2)
-        {
-            var externalURL = i.GetXmlProperty("genxml/lang/genxml/textbox/externalhref");
-            <div class="newspaper-link imageclick">
-                <a href="@(externalURL)" target="_blank">@i.GetXmlProperty("genxml/lang/genxml/textbox/linktitle")</a>
-            </div>
-        }
-
+		if (!i.GetXmlPropertyBool("genxml/checkbox/hide[fieldname]"))
+		{
+			var blank = "";
+			if (i.GetXmlPropertyBool("genxml/checkbox/blank[fieldname]"))
+			{
+				blank = "target='_blank'";
+			}
+			var anchor = i.GetXmlProperty("genxml/textbox/anchor[fieldname]");
+			if (anchor != "")
+			{
+				anchor = "#" + anchor;
+			}
+    
+			if (i.GetXmlPropertyInt("genxml/radio/linktype[fieldname]") == 1)
+			{
+				var tabddlvalue = GetTabUrlByGuid(i, "genxml/select/internallink[fieldname]");
+				<div class="">
+					<a href="@(tabddlvalue)@(anchor)" @(blank)>@i.GetXmlProperty("genxml/lang/genxml/textbox/name[fieldname]")</a>
+				</div>
+			}
+			if (i.GetXmlPropertyInt("genxml/radio/linktype[fieldname]") == 2)
+			{
+				var externalURL = i.GetXmlProperty("genxml/lang/genxml/textbox/externallink[fieldname]");
+				<div class="">
+					<a href="@(externalURL)@(anchor)" @(blank)>@i.GetXmlProperty("genxml/lang/genxml/textbox/name[fieldname]")</a>
+				</div>
+			}
+		}
     }
 </div>
+@* ----- Link Gallery: END -------------------------------------------- *@
