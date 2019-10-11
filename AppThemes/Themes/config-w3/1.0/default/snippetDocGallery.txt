@@ -24,3 +24,7 @@
             c[fieldname] += 1;
 }
 </div>
+
+<div class="">
+  <a class="w3-button w3-teal w3-padding-8 simplisity_filedownload" s-cmd="rocketmodview_download" s-fields='{"document":"TEST.pdf","listname","documentlistdocstuff"}'>Download Document</a>
+</div>

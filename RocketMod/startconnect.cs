@@ -141,10 +141,8 @@ namespace RocketMod
                     break;
 
                 case "rocketmodview_download":
-
+                    rtnDic = DownloadDocument();
                     break;
-
-
             }
 
             if (strOut == "" && !_moduleParams.Exists)
@@ -312,14 +310,15 @@ namespace RocketMod
 
         public static Dictionary<string,string> DownloadDocument()
         {
-            var documentfilename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+            var documentref = _paramInfo.GetXmlProperty("genxml/hidden/document");
             var documentlistname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
             _articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
-            var docInfo = _articleData.Info.GetListItem(documentlistname, "genxml/", documentfilename);
-
+            var docInfo = _articleData.Info.GetListItem(documentlistname, "genxml/lang/genxml/hidden/document", documentref);
+            var filepath = docInfo.GetXmlProperty("genxml/lang/genxml/hidden/reldocument");
+            var namedocument = docInfo.GetXmlProperty("genxml/lang/genxml/hidden/namedocument");
             var rtnDic = new Dictionary<string, string>();
-            rtnDic.Add("downloadfiledata", _paramInfo.GetXmlProperty("genxml/hidden/filerelpath"));
-            rtnDic.Add("downloadname", _paramInfo.GetXmlProperty("genxml/hidden/downloadname"));
+            rtnDic.Add("filenamepath", filepath);
+            rtnDic.Add("downloadname", namedocument);
             rtnDic.Add("fileext", "");
             return rtnDic;
         }
