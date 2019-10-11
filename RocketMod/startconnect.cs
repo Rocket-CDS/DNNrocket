@@ -139,10 +139,9 @@ namespace RocketMod
                 case "rocketmodfields_delete":
                     strOut = FieldsDelete();
                     break;
-                case "testform_download":
-                    rtnDic.Add("filenamepath", postInfo.GetXmlProperty("genxml/hidden/filerelpath"));
-                    rtnDic.Add("downloadname", postInfo.GetXmlProperty("genxml/hidden/downloadname"));
-                    rtnDic.Add("fileext", "");
+
+                case "rocketmodview_download":
+
                     break;
 
 
@@ -251,6 +250,8 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmodfields_save", true);
             _commandSecurity.AddCommand("rocketmodfields_delete", true);
 
+            _commandSecurity.AddCommand("rocketmodview_download", false);
+
             var hasAccess = false;
             hasAccess = _commandSecurity.HasSecurityAccess(paramCmd);
 
@@ -309,6 +310,19 @@ namespace RocketMod
 
         #region "Articles"
 
+        public static Dictionary<string,string> DownloadDocument()
+        {
+            var documentfilename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+            var documentlistname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
+            _articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
+            var docInfo = _articleData.Info.GetListItem(documentlistname, "genxml/", documentfilename);
+
+            var rtnDic = new Dictionary<string, string>();
+            rtnDic.Add("downloadfiledata", _paramInfo.GetXmlProperty("genxml/hidden/filerelpath"));
+            rtnDic.Add("downloadname", _paramInfo.GetXmlProperty("genxml/hidden/downloadname"));
+            rtnDic.Add("fileext", "");
+            return rtnDic;
+        }
         public static void SaveArticle()
         {
 
