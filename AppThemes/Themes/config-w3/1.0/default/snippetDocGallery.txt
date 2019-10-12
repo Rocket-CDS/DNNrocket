@@ -1,30 +1,13 @@
-﻿<div>
-@{
-	var c[fieldname] = 1;
-}
+﻿@* ----- Document Gallery: BEGIN ------------------------------------------ *@
+<div>
 @foreach (var i in info.GetList("documentlist[fieldname]")) 
 {
-
-            XmlNode docdescnod = x.XMLDoc.SelectSingleNode("genxml/lang/genxml/docs/genxml[" + c[fieldname] + "]/textbox/docdesc");
-
-            var nbi = new NBrightInfo();
-            nbi.XMLData = i.OuterXml;
-            var displayname = "";
-            if (docdescnod != null)
-            {
-                displayname = docdescnod.InnerText;
-            }
-            if (displayname == "")
-            {
-                displayname = nbi.GetXmlProperty("genxml/hidden/filename");
-            }
-
-            <div><a href='/DesktopModules/NBright/NBrightMod/XmlConnector.ashx?cmd=downloadfile&fileindex=@(c[fieldname])&itemid=@(x.ItemID)&&downloadname=@(nbi.GetXmlProperty("genxml/hidden/filename").Replace(" ","_"))'>@(displayname)</a></div>
-
-            c[fieldname] += 1;
+  if (@i.GetXmlProperty("genxml/lang/genxml/hidden/reldocument") != "")
+  {  
+    <div>
+		<a class="w3-button w3-teal w3-padding-8" href="@i.GetXmlProperty("genxml/lang/genxml/hidden/reldocument")">@i.GetXmlProperty("genxml/lang/genxml/textbox/namedocument")</a>					
+	</div>
+  }
 }
 </div>
-
-<div class="">
-  <a class="w3-button w3-teal w3-padding-8 simplisity_filedownload" s-cmd="rocketmodview_download" s-fields='{"document":"TEST.pdf","listname","documentlistdocstuff"}'>Download Document</a>
-</div>
+@* ----- Document Gallery: END ------------------------------------------ *@

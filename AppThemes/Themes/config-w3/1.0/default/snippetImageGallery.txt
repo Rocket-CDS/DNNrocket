@@ -1,8 +1,8 @@
-﻿@* ----- Image Gallery: START ------------------------------------------ *@
+﻿@* ----- Image Gallery: BEGIN ------------------------------------------ *@
 <div>
 @foreach (var i in info.GetList("imagelist[fieldname]")) 
 {
 	<img src='@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagepath[fieldname]"), i.GetXmlPropertyInt("genxml/textbox/width[fieldname]") , i.GetXmlPropertyInt("genxml/textbox/height[fieldname]"))'/>
 }
 </div>
-@* ----- Image Gallery: START ------------------------------------------ *@
+@* ----- Image Gallery: END ------------------------------------------ *@

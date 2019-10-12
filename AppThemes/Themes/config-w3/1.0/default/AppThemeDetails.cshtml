@@ -462,14 +462,15 @@
     }
     @foreach (SimplisityRecord i in info.GetRecordList("fielddata"))
     {
+        var fieldtype = i.GetXmlProperty("genxml/select/type").ToLower();
         var fieldname = i.GetXmlProperty("genxml/textbox/name");
-        fieldhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippet" + lp + "'>" + fieldname + "</div>";
-        xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>" + fieldname + "</div>";
+        fieldhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippet" + lp + "'>" + fieldname + " [" + fieldtype + "]" + "</div>";
+        xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>" + fieldname + " [" + fieldtype + "]" +  "</div>";
 
         var replaceData = new Dictionary<string, string>();
         replaceData.Add("[fieldname]", fieldname);
 
-        switch (i.GetXmlProperty("genxml/select/type").ToLower())
+        switch (fieldtype.ToLower())
         {
             case "imagegallery":
                 fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImageGallery", replaceData)) + "' />";
