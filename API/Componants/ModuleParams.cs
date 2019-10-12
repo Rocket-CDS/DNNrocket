@@ -74,6 +74,7 @@ namespace DNNrocketAPI.Componants
         }
         public bool GetValueBool(string key)
         {
+            if (_moduleParamsRec == null) return false;
             return _moduleParamsRec.GetXmlPropertyBool("genxml/hidden/" + key.ToLower());
         }
         public void SetValue(string key, string value)
@@ -123,6 +124,7 @@ namespace DNNrocketAPI.Componants
             set { SetValue("DataModuleId", value.ToString()); }
         }
         public string ModuleRef { get { return GetValue("ModuleRef"); } set { SetValue("ModuleRef", value); } }
+        public bool DisbaleCache { get { return GetValueBool("disbalecache"); } set { SetValue("disbalecache", value.ToString()); } }
     }
 
 }

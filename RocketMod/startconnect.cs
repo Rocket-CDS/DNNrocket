@@ -285,6 +285,7 @@ namespace RocketMod
             _moduleParams.ModuleType = "RocketMod";
             if (_moduleParams.ModuleRef == "") _moduleParams.ModuleRef = GeneralUtils.GetUniqueKey();
             _moduleParams.Exists = true;
+            _moduleParams.DisbaleCache = _postInfo.GetXmlPropertyBool("genxml/hidden/disbalecache");;
             _moduleParams.Save();
             _passSettings.Add("saved", "true");
         }
@@ -718,7 +719,7 @@ namespace RocketMod
 
                     var razortemplate = "view.cshtml";
                     var apptheme = _moduleParams.AppThemeFolder;
-                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _moduleParams.AppProjectFolderRel, "SystemThemes/dnnrocketmodule/" + apptheme, DNNrocketUtils.GetCurrentCulture(), _moduleParams.AppThemeVersion);
+                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _moduleParams.AppProjectFolderRel, "SystemThemes/dnnrocketmodule/" + apptheme, DNNrocketUtils.GetCurrentCulture(), _moduleParams.AppThemeVersion, _moduleParams.DisbaleCache);
 
                     var passSettings = _paramInfo.ToDictionary();
                     

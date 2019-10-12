@@ -1,3 +1,0 @@
-﻿<div>
-	<img src='@ThumbnailImageUrl(info.GetXmlProperty("genxml/hidden/imagepath[fieldname]"), info.GetXmlPropertyInt("genxml/textbox/width[fieldname]") , info.GetXmlPropertyInt("genxml/textbox/height[fieldname]"))'/>
-</div>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,115 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="admin.Text" xml:space="preserve">
-    <value>Admin</value>
+  <data name="DocGallery" xml:space="preserve">
+    <value>@* ----- Document Gallery: BEGIN ------------------------------------------ *@
+&lt;div&gt;
+@foreach (var i in info.GetList("documentlist[fieldname]")) 
+{
+  if (@i.GetXmlProperty("genxml/lang/genxml/hidden/reldocument") != "")
+  {  
+    &lt;div&gt;
+		&lt;div class="w3-button w3-teal w3-padding-8" onclick="actiondownload[fieldname]()" style="cursor:pointer;"&gt;@i.GetXmlProperty("genxml/lang/genxml/textbox/namedocument")&lt;/div&gt;				
+	&lt;/div&gt;
+  &lt;script&gt;
+    function actiondownload[fieldname]() {
+      window.location = "@(i.GetXmlProperty("genxml/lang/genxml/hidden/reldocument"))";
+    }
+  &lt;/script&gt;
+  }
+}
+&lt;/div&gt;
+@* ----- Document Gallery: END ------------------------------------------ *@</value>
   </data>
-  <data name="alphanumeric.Error" xml:space="preserve">
-    <value>Alphanumeric required.</value>
+  <data name="Image" xml:space="preserve">
+    <value>&lt;div&gt;
+	&lt;img src='@ThumbnailImageUrl(info.GetXmlProperty("genxml/hidden/imagepath[fieldname]"), info.GetXmlPropertyInt("genxml/textbox/width[fieldname]") , info.GetXmlPropertyInt("genxml/textbox/height[fieldname]"))'/&gt;
+&lt;/div&gt;</value>
   </data>
-  <data name="anchor.Text" xml:space="preserve">
-    <value>Anchor</value>
+  <data name="ImageGallery" xml:space="preserve">
+    <value>@* ----- Image Gallery: BEGIN ------------------------------------------ *@
+&lt;div&gt;
+@foreach (var i in info.GetList("imagelist[fieldname]")) 
+{
+	&lt;img src='@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagepath[fieldname]"), i.GetXmlPropertyInt("genxml/textbox/width[fieldname]") , i.GetXmlPropertyInt("genxml/textbox/height[fieldname]"))'/&gt;
+}
+&lt;/div&gt;
+@* ----- Image Gallery: END ------------------------------------------ *@</value>
   </data>
-  <data name="apptheme.Text" xml:space="preserve">
-    <value>App Theme</value>
-  </data>
-  <data name="appthemeversion.Text" xml:space="preserve">
-    <value>App Theme Version</value>
-  </data>
-  <data name="blank.Text" xml:space="preserve">
-    <value>New Page</value>
-  </data>
-  <data name="cmdResetButton.Text" xml:space="preserve">
-    <value>&lt;i title="Reset" class="fas fa-redo fa-fw fa-lg"&gt;&lt;/i&gt; Reset Config.</value>
-  </data>
-  <data name="cmdResetDataButton.Text" xml:space="preserve">
-    <value>&lt;i title="Reset" class="fas fa-redo fa-fw fa-lg"&gt;&lt;/i&gt; Reset Data</value>
-  </data>
-  <data name="config.Text" xml:space="preserve">
-    <value>Configuration</value>
-  </data>
-  <data name="dashboard.Text" xml:space="preserve">
-    <value>DashBoard</value>
-  </data>
-  <data name="datasource.Text" xml:space="preserve">
-    <value>Data Source</value>
-  </data>
-  <data name="disbalecache.Text" xml:space="preserve">
-    <value>Disable Cache</value>
-  </data>
-  <data name="documentfolder.Text" xml:space="preserve">
-    <value>Document Folder</value>
-  </data>
-  <data name="edit.Text" xml:space="preserve">
-    <value>Edit Data</value>
-  </data>
-  <data name="editor.Text" xml:space="preserve">
-    <value>Editor</value>
-  </data>
-  <data name="edittitle.Text" xml:space="preserve">
-    <value>DNNrocket - High Speed Integration</value>
-  </data>
-  <data name="externallink.Text" xml:space="preserve">
-    <value>External Link</value>
-  </data>
-  <data name="hidelink.Text" xml:space="preserve">
-    <value>Hide Link</value>
-  </data>
-  <data name="iframesupport.Text" xml:space="preserve">
-    <value>Your browser does not support iframes. Use the Rocket Admin option.</value>
-  </data>
-  <data name="imagefolder.Text" xml:space="preserve">
-    <value>Image Folder</value>
-  </data>
-  <data name="interfacekey.Text" xml:space="preserve">
-    <value>Interface</value>
-  </data>
-  <data name="internallink.Text" xml:space="preserve">
-    <value>Internal Link</value>
-  </data>
-  <data name="justify.Text" xml:space="preserve">
-    <value>Justify</value>
-  </data>
-  <data name="manageremail.Text" xml:space="preserve">
-    <value>Manager Email</value>
-  </data>
-  <data name="name.Text" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="page.Text" xml:space="preserve">
-    <value>Page</value>
-  </data>
-  <data name="ref.Text" xml:space="preserve">
-    <value>Ref.</value>
-  </data>
-  <data name="resetdatamsg.Text" xml:space="preserve">
-    <value>Delete ALL data ? (Config NOT deleted)</value>
-  </data>
-  <data name="resetmsg.Text" xml:space="preserve">
-    <value>Reset this module config?  (Data NOT deleted)</value>
-  </data>
-  <data name="rocketmodfields.Text" xml:space="preserve">
-    <value>Field Editor</value>
-  </data>
-  <data name="rocketmodsettings.Text" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="search.Text" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="selectapptheme.Text" xml:space="preserve">
-    <value>Select AppTheme </value>
-  </data>
-  <data name="system.Text" xml:space="preserve">
-    <value>System</value>
-  </data>
-  <data name="templatelevel.Text" xml:space="preserve">
-    <value>Template Level</value>
-  </data>
-  <data name="text.Text" xml:space="preserve">
-    <value>Text</value>
-  </data>
-  <data name="url.Text" xml:space="preserve">
-    <value>URL (https://www.mylink.com)</value>
+  <data name="LinkGallery" xml:space="preserve">
+    <value>@* ----- Link Gallery: START ------------------------------------------ *@
+&lt;div&gt;
+    @foreach (var i in info.GetList("linklist[fieldname]"))
+    {
+		if (!i.GetXmlPropertyBool("genxml/checkbox/hide[fieldname]"))
+		{
+			var blank = "";
+			if (i.GetXmlPropertyBool("genxml/checkbox/blank[fieldname]"))
+			{
+				blank = "target='_blank'";
+			}
+			var anchor = i.GetXmlProperty("genxml/textbox/anchor[fieldname]");
+			if (anchor != "")
+			{
+				anchor = "#" + anchor;
+			}
+    
+			if (i.GetXmlPropertyInt("genxml/radio/linktype[fieldname]") == 1)
+			{
+				var tabddlvalue = GetTabUrlByGuid(i, "genxml/select/internallink[fieldname]");
+				&lt;div class=""&gt;
+					&lt;a href="@(tabddlvalue)@(anchor)" @(blank)&gt;@i.GetXmlProperty("genxml/lang/genxml/textbox/name[fieldname]")&lt;/a&gt;
+				&lt;/div&gt;
+			}
+			if (i.GetXmlPropertyInt("genxml/radio/linktype[fieldname]") == 2)
+			{
+				var externalURL = i.GetXmlProperty("genxml/lang/genxml/textbox/externallink[fieldname]");
+				&lt;div class=""&gt;
+					&lt;a href="@(externalURL)@(anchor)" @(blank)&gt;@i.GetXmlProperty("genxml/lang/genxml/textbox/name[fieldname]")&lt;/a&gt;
+				&lt;/div&gt;
+			}
+		}
+    }
+&lt;/div&gt;
+@* ----- Link Gallery: END -------------------------------------------- *@</value>
   </data>
 </root>

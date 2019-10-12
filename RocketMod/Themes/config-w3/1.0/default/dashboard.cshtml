@@ -42,8 +42,18 @@
                 <td></td>
             </tr>
             <tr>
+                <td class="w3-right-align "><b>ItemId:</b></td>
+                <td>@configinfo.ItemID </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="w3-right-align "><b>ModuleId:</b></td>
+                <td>@moduleParams.ModuleId</td>
+                <td></td>
+            </tr>
+            <tr>
                 <td class="w3-right-align "><b>@ResourceKey("RocketMod.ref"):</b></td>
-                <td>ItemId: @configinfo.ItemID &nbsp; ModuleId: @moduleParams.ModuleId &nbsp; Ref: @moduleParams.ModuleRef</td>
+                <td>@moduleParams.ModuleRef</td>
                 <td></td>
             </tr>
             <tr>
@@ -74,6 +84,11 @@
                     @TextBox(configinfo, "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
                 </td>
                 <td>@DNNrocketUtils.HomeDNNrocketRelDirectory()/@configinfo.GetXmlProperty("genxml/hidden/documentfolder")</td>
+            </tr>
+            <tr>
+                <td class="w3-right-align "><b>@ResourceKey("RocketMod.disbalecache"):</b></td>
+                <td>@CheckBox(configinfo,"genxml/hidden/disbalecache","","class='w3-check'",false)</td>
+                <td></td>
             </tr>
         </table>
 

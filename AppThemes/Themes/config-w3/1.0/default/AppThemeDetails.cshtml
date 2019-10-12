@@ -465,7 +465,7 @@
         var fieldtype = i.GetXmlProperty("genxml/select/type").ToLower();
         var fieldname = i.GetXmlProperty("genxml/textbox/name");
         fieldhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippet" + lp + "'>" + fieldname + " [" + fieldtype + "]" + "</div>";
-        xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>" + fieldname + " [" + fieldtype + "]" +  "</div>";
+        xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>" + fieldname + " [" + fieldtype + "]" + "</div>";
 
         var replaceData = new Dictionary<string, string>();
         replaceData.Add("[fieldname]", fieldname);
@@ -473,20 +473,20 @@
         switch (fieldtype.ToLower())
         {
             case "imagegallery":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImageGallery", replaceData)) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImageGallery", replaceData)) + "' />";
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("ImageGallery", replaceData)) + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("ImageGallery", replaceData)) + "' />";
                 break;
             case "imagefull":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImage", replaceData)) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetImage", replaceData)) + "' />";
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("Image", replaceData)) + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("Image", replaceData)) + "' />";
                 break;
             case "linkgallery":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetLinkGallery", replaceData)) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetLinkGallery", replaceData)) + "' />";
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("LinkGallery", replaceData)) + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("LinkGallery", replaceData)) + "' />";
                 break;
             case "documentgallery":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetDocGallery", replaceData)) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("snippetDocGallery", replaceData)) + "' />";
+                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("DocGallery", replaceData)) + "' />";
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("DocGallery", replaceData)) + "' />";
                 break;
             case "richtext":
                 fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@HtmlOf(info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\"))") + "' />";
@@ -496,26 +496,40 @@
                 fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\")") + "' />";
                 xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\")") + "' />";
                 break;
-
         }
+        lp += 1;
+    }
 
-
-
+    @{ 
+        var razortokenhtml = "";
+        lp = 1;
+    }
+    @foreach (var r in appTheme.RazorTokenText)
+    {
+        razortokenhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='razortokensnippet" + lp + "'>" + r.Key + "</div>";
+        razortokenhtml += "<input id='razortokensnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(r.Value) + "' />";
         lp += 1;
     }
 
 
+
     <div class="w3-bar w3-light-grey editorviewmenu" style="display:none;">
         <div class="w3-dropdown-hover">
-            <button class="w3-button">@ResourceKey("AppThemes.fields")</button>
+            <div class="w3-button">@ResourceKey("AppThemes.fields")</div>
             <div class="w3-dropdown-content w3-bar-block w3-card-4" style="z-index:999;">
                 @HtmlOf(fieldhtml)
             </div>
         </div>
         <div class="w3-dropdown-hover">
-            <button class="w3-button">XPath</button>
+            <div class="w3-button">XPath</div>
             <div class="w3-dropdown-content w3-bar-block w3-card-4" style="z-index:999;">
                 @HtmlOf(xpathhtml)
+            </div>
+        </div>
+        <div class="w3-dropdown-hover">
+            <div class="w3-button">Tokens</div>
+            <div class="w3-dropdown-content w3-bar-block w3-card-4" style="z-index:999;">
+                @HtmlOf(razortokenhtml)
             </div>
         </div>
     </div>

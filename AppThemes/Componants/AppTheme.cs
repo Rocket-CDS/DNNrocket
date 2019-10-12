@@ -118,13 +118,22 @@ namespace Rocket.AppThemes.Componants
 
             // add snippetText
             SnippetText = new Dictionary<string, string>();
-            var snippetFiles = Directory.GetFiles(AppProjectFolderMapPath + "\\Themes\\config-w3\\1.0\\default","snippet*.txt");
-            foreach (var snippetFile in snippetFiles)
+            var snippetInfo = new SimplisityRecord();
+            var snippetXML = File.ReadAllText(AppProjectFolderMapPath + "\\Themes\\config-w3\\1.0\\EditorTokens\\snippets.resx");
+            snippetInfo.XMLData = snippetXML;
+            foreach (XmlNode snip in snippetInfo.XMLDoc.SelectNodes("root/data"))
             {
-                var snipText = FileUtils.ReadFile(snippetFile);
-                AddSnippetText(Path.GetFileNameWithoutExtension(snippetFile), snipText);
+                AddSnippetText(snip.Attributes["name"].Value, snip.InnerText);
             }
-
+            // add RazorTokens
+            RazorTokenText = new Dictionary<string, string>();
+            var razortokensInfo = new SimplisityRecord();
+            var razortokensXML = File.ReadAllText(AppProjectFolderMapPath + "\\Themes\\config-w3\\1.0\\EditorTokens\\razortokens.resx");
+            razortokensInfo.XMLData = razortokensXML;
+            foreach (XmlNode snip in razortokensInfo.XMLDoc.SelectNodes("root/data"))
+            {
+                AddRazorTokenText(snip.Attributes["name"].Value, snip.InnerText);
+            }
         }
 
         private void TemplateDefaults()
@@ -653,6 +662,24 @@ namespace Rocket.AppThemes.Componants
             return "";
         }
 
+        public void AddRazorTokenText(string key, string value)
+        {
+            RazorTokenText.Remove(key);
+            RazorTokenText.Add(key, value);
+        }
+        public string GetRazorTokenText(string key, Dictionary<string, string> replaceData)
+        {
+            if (RazorTokenText.ContainsKey(key))
+            {
+                var rtntext = RazorTokenText[key];
+                foreach (var t in replaceData)
+                {
+                    rtntext = rtntext.Replace(t.Key, t.Value);
+                }
+                return rtntext;
+            }
+            return "";
+        }
 
         public void CreateNewAppTheme()
         {
@@ -1272,6 +1299,7 @@ namespace Rocket.AppThemes.Componants
 
         public string SystemKey { get; set; }
         public Dictionary<string,string> SnippetText { get; set; }
+        public Dictionary<string, string> RazorTokenText { get; set; }        
 
         #endregion
 
