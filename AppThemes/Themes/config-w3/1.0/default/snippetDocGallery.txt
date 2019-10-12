@@ -5,8 +5,13 @@
   if (@i.GetXmlProperty("genxml/lang/genxml/hidden/reldocument") != "")
   {  
     <div>
-		<a class="w3-button w3-teal w3-padding-8" href="@i.GetXmlProperty("genxml/lang/genxml/hidden/reldocument")">@i.GetXmlProperty("genxml/lang/genxml/textbox/namedocument")</a>					
+		<div class="w3-button w3-teal w3-padding-8" onclick="actiondownload[fieldname]()" style="cursor:pointer;">@i.GetXmlProperty("genxml/lang/genxml/textbox/namedocument")</div>				
 	</div>
+  <script>
+    function actiondownload[fieldname]() {
+      window.location = "@(i.GetXmlProperty("genxml/lang/genxml/hidden/reldocument"))";
+    }
+  </script>
   }
 }
 </div>
