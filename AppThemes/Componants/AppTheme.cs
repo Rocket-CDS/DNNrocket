@@ -43,6 +43,7 @@ namespace Rocket.AppThemes.Componants
             _jsFileName = new List<string>();
             _resxFileName = new List<string>();
 
+            AppSummary = "";
             AppThemeFolder = appThemeFolder;
             AppVersionFolder = versionFolder;
             if (AppVersionFolder == "") AppVersionFolder = "1.0";
@@ -117,22 +118,44 @@ namespace Rocket.AppThemes.Componants
             TemplateDefaults();
 
             // add snippetText
-            SnippetText = new Dictionary<string, string>();
+            SnippetText = new Dictionary<string, SimplisityRecord>();
             var snippetInfo = new SimplisityRecord();
             var snippetXML = File.ReadAllText(AppProjectFolderMapPath + "\\Themes\\config-w3\\1.0\\EditorTokens\\snippets.resx");
             snippetInfo.XMLData = snippetXML;
             foreach (XmlNode snip in snippetInfo.XMLDoc.SelectNodes("root/data"))
             {
-                AddSnippetText(snip.Attributes["name"].Value, snip.InnerText);
+                var snipRecord = new SimplisityRecord();
+                snipRecord.SetXmlProperty("genxml/name", snip.Attributes["name"].Value);
+                snipRecord.SetXmlProperty("genxml/value", snip.SelectSingleNode("value").InnerText);
+                if (snip.SelectSingleNode("comment") == null)
+                {
+                    snipRecord.SetXmlProperty("genxml/comment", "");
+                }
+                else
+                {
+                    snipRecord.SetXmlProperty("genxml/comment", snip.SelectSingleNode("comment").InnerText);
+                }
+                AddSnippetText(snip.Attributes["name"].Value, snipRecord);
             }
             // add RazorTokens
-            RazorTokenText = new Dictionary<string, string>();
+            RazorTokenText = new Dictionary<string, SimplisityRecord>();
             var razortokensInfo = new SimplisityRecord();
             var razortokensXML = File.ReadAllText(AppProjectFolderMapPath + "\\Themes\\config-w3\\1.0\\EditorTokens\\razortokens.resx");
             razortokensInfo.XMLData = razortokensXML;
             foreach (XmlNode snip in razortokensInfo.XMLDoc.SelectNodes("root/data"))
             {
-                AddRazorTokenText(snip.Attributes["name"].Value, snip.InnerText);
+                var snipRecord = new SimplisityRecord();
+                snipRecord.SetXmlProperty("genxml/name", snip.Attributes["name"].Value);
+                snipRecord.SetXmlProperty("genxml/value", snip.SelectSingleNode("value").InnerText);
+                if (snip.SelectSingleNode("comment") == null)
+                {
+                    snipRecord.SetXmlProperty("genxml/comment", "");
+                }
+                else
+                {
+                    snipRecord.SetXmlProperty("genxml/comment", snip.SelectSingleNode("comment").InnerText);
+                }
+                AddRazorTokenText(snip.Attributes["name"].Value, snipRecord);
             }
         }
 
@@ -643,7 +666,7 @@ namespace Rocket.AppThemes.Componants
             Update();
         }
 
-        public void AddSnippetText(string key, string value)
+        public void AddSnippetText(string key, SimplisityRecord value)
         {
             SnippetText.Remove(key);
             SnippetText.Add(key, value);
@@ -652,7 +675,7 @@ namespace Rocket.AppThemes.Componants
         {
             if (SnippetText.ContainsKey(key))
             {
-                var rtntext = SnippetText[key];
+                var rtntext = SnippetText[key].GetXmlProperty("genxml/value");
                 foreach (var t in replaceData)
                 {
                     rtntext = rtntext.Replace(t.Key, t.Value);
@@ -662,7 +685,7 @@ namespace Rocket.AppThemes.Componants
             return "";
         }
 
-        public void AddRazorTokenText(string key, string value)
+        public void AddRazorTokenText(string key, SimplisityRecord value)
         {
             RazorTokenText.Remove(key);
             RazorTokenText.Add(key, value);
@@ -671,7 +694,7 @@ namespace Rocket.AppThemes.Componants
         {
             if (RazorTokenText.ContainsKey(key))
             {
-                var rtntext = RazorTokenText[key];
+                var rtntext = RazorTokenText[key].GetXmlProperty("genxml/value");
                 foreach (var t in replaceData)
                 {
                     rtntext = rtntext.Replace(t.Key, t.Value);
@@ -1298,8 +1321,8 @@ namespace Rocket.AppThemes.Componants
         public int DataType { get { return Record.GetXmlPropertyInt("genxml/radio/themetype"); } }
 
         public string SystemKey { get; set; }
-        public Dictionary<string,string> SnippetText { get; set; }
-        public Dictionary<string, string> RazorTokenText { get; set; }        
+        public Dictionary<string, SimplisityRecord> SnippetText { get; set; }
+        public Dictionary<string, SimplisityRecord> RazorTokenText { get; set; }        
 
         #endregion
 

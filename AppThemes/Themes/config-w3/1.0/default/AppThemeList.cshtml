@@ -9,7 +9,6 @@
 
 @{
     var appThemeDataList = (AppThemeDataList)Model.List.First();
-    var systemInfoData2 = new SystemInfoData(appThemeDataList.SelectedSystemKey);
 }
 
 @if (appThemeDataList.SelectedSystemKey == "")
@@ -41,6 +40,7 @@
 }
 else
 {
+    var systemInfoData2 = new SystemInfoData(appThemeDataList.SelectedSystemKey);
 
     <div id="createnewapptheme" class="w3-modal">
         <div class="w3-modal-content w3-card w3-animate-zoom">
@@ -75,7 +75,7 @@ else
             </header>
 
             <div class="w3-container">
-                <br/>
+                <br />
                 <span class="w3-section">
                     <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#importfileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</span>
                 </span>
@@ -96,11 +96,9 @@ else
         <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'">@ResourceKey("DNNrocket.cmdAddButton")</div>
         @ButtonGap()
         <div class="w3-col m2 w3-button w3-blue w3-padding-8 " onclick="document.getElementById('importapptheme').style.display='block'"><i class="fas fa-file-import fa-fw fa-lg"></i>@ResourceKey("DNNrocket.import")</div>
-        @if (appThemeDataList.SystemFolderList.Count() > 1)
-        {
-            @ButtonGap()
-            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" s-track="false">@ResourceKey("DNNrocket.cmdReturnButton")</div>
-        }
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" s-track="false">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+        @ButtonGap()
         <div class="refreshlist w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-track="true" s-cmd="rocketapptheme_getlist" s-fields='' style="display:none;"></div>
     </div>
     <h2>@systemInfoData2.SystemName</h2>

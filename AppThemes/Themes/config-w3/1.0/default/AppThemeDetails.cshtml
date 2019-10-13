@@ -500,39 +500,60 @@
         lp += 1;
     }
 
-    @{ 
+    @{
         var razortokenhtml = "";
+        var datatokenhtml = "";
         lp = 1;
     }
     @foreach (var r in appTheme.RazorTokenText)
     {
-        razortokenhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='razortokensnippet" + lp + "'>" + r.Key + "</div>";
-        razortokenhtml += "<input id='razortokensnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(r.Value) + "' />";
+        var textValue = r.Value.GetXmlProperty("genxml/value");
+        var commentValue = r.Value.GetXmlProperty("genxml/comment");
+        if (commentValue != "")
+        {
+            commentValue = "&nbsp;&nbsp;{" + commentValue + "}";
+        }
+        if (r.Key.StartsWith("Data."))
+        {
+            datatokenhtml += " <div title='" + textValue + " " + commentValue + "' class='w3-bar-item w3-button fieldsnippet ' snipname='razortokensnippet" + lp + "'>" + r.Key.Replace("Data.","") + "</div>";
+            datatokenhtml += "<input id='razortokensnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(textValue) + "' />";
+        }
+        if (r.Key.StartsWith("Razor."))
+        {
+            razortokenhtml += " <div title='" + textValue + " " + commentValue + "' class='w3-bar-item w3-button fieldsnippet ' snipname='razortokensnippet" + lp + "'>" + r.Key.Replace("Razor.","") + "</div>";
+            razortokenhtml += "<input id='razortokensnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(textValue) + "' />";
+        }
         lp += 1;
     }
 
 
 
-    <div class="w3-bar w3-light-grey editorviewmenu" style="display:none;">
-        <div class="w3-dropdown-hover">
-            <div class="w3-button">@ResourceKey("AppThemes.fields")</div>
-            <div class="w3-dropdown-content w3-bar-block w3-card-4" style="z-index:999;">
-                @HtmlOf(fieldhtml)
-            </div>
-        </div>
-        <div class="w3-dropdown-hover">
-            <div class="w3-button">XPath</div>
-            <div class="w3-dropdown-content w3-bar-block w3-card-4" style="z-index:999;">
-                @HtmlOf(xpathhtml)
-            </div>
-        </div>
-        <div class="w3-dropdown-hover">
-            <div class="w3-button">Tokens</div>
-            <div class="w3-dropdown-content w3-bar-block w3-card-4" style="z-index:999;">
-                @HtmlOf(razortokenhtml)
-            </div>
+<div class="w3-bar w3-light-grey editorviewmenu" style="display:none;">
+    <div class="w3-dropdown-hover">
+        <div class="w3-button">Razor Tokens</div>
+        <div class="w3-dropdown-content w3-card-4" style="z-index:999;">
+            @HtmlOf(razortokenhtml)
         </div>
     </div>
+    <div class="w3-dropdown-hover">
+        <div class="w3-button">@ResourceKey("AppThemes.fields")</div>
+        <div class="w3-dropdown-content w3-card-4" style="z-index:999;">
+            @HtmlOf(fieldhtml)
+        </div>
+    </div>
+    <div class="w3-dropdown-hover">
+        <div class="w3-button">XPath</div>
+        <div class="w3-dropdown-content w3-card-4" style="z-index:999;">
+            @HtmlOf(xpathhtml)
+        </div>
+    </div>
+    <div class="w3-dropdown-hover">
+        <div class="w3-button">Data Tokens</div>
+        <div class="w3-dropdown-content w3-card-4" style="z-index:999;">
+            @HtmlOf(datatokenhtml)
+        </div>
+    </div>
+</div>
 
     <div id="editorsavereturn" style="display:none;"></div>
     <div id="editorwrapper" class="w3-row " style=""></div>

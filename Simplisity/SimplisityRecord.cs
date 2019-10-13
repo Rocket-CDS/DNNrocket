@@ -344,6 +344,13 @@ namespace Simplisity
             }
             return "";
         }
+        public void Set(string fieldname,string value)
+        {
+            if (!string.IsNullOrEmpty(XMLData))
+            {
+                SetXmlProperty("genxml/hidden/" + fieldname, value);
+            }
+        }
         public bool GetBool(string fieldname)
         {
             try
