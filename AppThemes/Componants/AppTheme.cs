@@ -94,7 +94,7 @@ namespace Rocket.AppThemes.Componants
         {
             Record = _objCtrl.GetRecord(_guidKey, _entityTypeCode, -1, -1, false, _tableName);
 
-            AppSummary = Record.GetXmlProperty("genxml/lang/genxml/textbox/summary");
+            AppSummary = Record.GetXmlProperty("genxml/textbox/summary");
 
             // sync filesystem
             SyncFiles();

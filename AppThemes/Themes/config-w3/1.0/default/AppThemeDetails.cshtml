@@ -49,77 +49,84 @@
     var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist,.fielddata";
 }
 
-@HiddenField(info,"genxml/hidden/fieldlocalizedlist"," s-update='ignore' ")
+@HiddenField(info, "genxml/hidden/fieldlocalizedlist", " s-update='ignore' ")
 
-<div id="detailsection">
+    <div id="detailsection">
 
-    <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform" s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton") AppTheme</div>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdDeleteButton")&nbsp;@ResourceKey("AppThemes.version")</div>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearlistcache":"true"}' s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
-    </div>
-    <div class="w3-row w3-padding">
-    </div>
+        <div class="w3-row w3-padding">
+            <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform" s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+            @ButtonGap()
+            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearlistcache":"true"}' s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+            @ButtonGap()
 
-    <div class="w3-container">
-
-        <div class="w3-display-container">
-            <div class="w3-col m10">
-                <h2>@(appTheme.AppThemeFolder)&nbsp;v@(appTheme.AppVersionFolder)&nbsp;<span class="validationfail w3-margin-left " style="display:none;"><i class='fas fa-exclamation-triangle' style='font-size:24px;color:red;'></i></span></h2>
+            <div class="w3-col m6 w3-dropdown-hover">
+                <button class="w3-button">More...</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card">
+                    <div class="w3-bar-item w3-button simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-teal fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
+                    <a class="w3-bar-item w3-button w3-padding-8 simplisity_filedownload" s-track="false" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-teal fas fa-file-export fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNRocket.cmdExport")</a>
+                    <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete") AppTheme</div>
+                    <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")</div>
+                </div>
             </div>
-            <div class="w3-right">
-                <i>ID: </i> @info.ItemID
-            </div>
+
         </div>
 
-        <div id="appthemedetails">
+        <div class="w3-container">
 
-
-            <div id="editorsave" style="display:none;">
-                @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appTheme.SystemKey)
-                <input id="editorfilenamesave" type="hidden" value="" />
-                <input id="editorcodesave" type="hidden" value="" />
-                <input id="editorlistnamesave" type="hidden" value="" />
+            <div class="w3-display-container">
+                <div class="w3-col m10">
+                    <h2>@(appTheme.AppThemeFolder)&nbsp;v@(appTheme.AppVersionFolder)&nbsp;<span class="validationfail w3-margin-left " style="display:none;"><i class='fas fa-exclamation-triangle' style='font-size:24px;color:red;'></i></span></h2>
+                </div>
+                <div class="w3-right">
+                    <i>ID: </i> @info.ItemID
+                </div>
             </div>
 
+            <div id="appthemedetails">
 
-            <div class="w3-container w3-padding">
 
-                <div class="w3-col m1 ">
-                    <label>Logo</label>
-                    @ImageEdit(info, "logo", 62, 62, " ", false)
-                </div>
-                <div class="w3-col m8 w3-padding">
-                    <label>@ResourceKey("AppThemes.summary")</label>
-                    @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border'", "", false)
-                </div>
-                <div class="w3-col m3 w3-padding" style="width:200px">
-                    <label>@ResourceKey("AppThemes.version")</label>
-                    @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border simplisity_change' s-cmd='rocketapptheme_changeversion' s-post='#appthemedetails' s-track='false' s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
-                </div>
-                <div class="w3-col m6 w3-padding">
-                    @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
-                </div>
-                <div class="w3-row ">
-                    <div class="w3-col m3 w3-padding ">
-                        @CheckBox(info, "genxml/checkbox/regenerateview", ResourceKey("AppThemes.autoregenerateview").ToString(), "", true)
-                    </div>
-                    <div class="w3-col m3 w3-padding ">
-                        @CheckBox(info, "genxml/checkbox/regenerateedit", ResourceKey("AppThemes.autoregenerateedit").ToString(), "", true)
-                    </div>
-                    <div class="w3-col m3 w3-padding regenerateeditlist" style="display:none;">
-                        @CheckBox(info, "genxml/checkbox/regenerateeditlist", ResourceKey("AppThemes.autoregenerateeditlist").ToString(), "", true)
-                    </div>
+                <div id="editorsave" style="display:none;">
+                    @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appTheme.SystemKey)
+                    <input id="editorfilenamesave" type="hidden" value="" />
+                    <input id="editorcodesave" type="hidden" value="" />
+                    <input id="editorlistnamesave" type="hidden" value="" />
                 </div>
 
+
+                <div class="w3-container">
+
+                    <div class="w3-row ">
+                        <div class="w3-col " style="width:136px;">
+                            <label>Logo</label>
+                            @ImageEdit(info, "logo", 120, 120, " ", false)
+                        </div>
+                        <div class="w3-col m8 w3-padding">
+                            <label>@ResourceKey("AppThemes.summary")</label>
+                            @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border'", "", false)
+                        </div>
+                        <div class="w3-col w3-padding" style="width:200px">
+                            <label>@ResourceKey("AppThemes.version")</label>
+                            @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border simplisity_change' s-cmd='rocketapptheme_changeversion' s-post='#appthemedetails' s-track='false' s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
+                        </div>
+                    </div>
+
+                    <div class="w3-row ">
+                        <div class="w3-col m3 w3-padding">
+                            @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
+                        </div>
+                        <div class="w3-col m3 w3-padding ">
+                            @CheckBox(info, "genxml/checkbox/regenerateview", ResourceKey("AppThemes.autoregenerateview").ToString(), "", true)
+                        </div>
+                        <div class="w3-col m3 w3-padding ">
+                            @CheckBox(info, "genxml/checkbox/regenerateedit", ResourceKey("AppThemes.autoregenerateedit").ToString(), "", true)
+                        </div>
+                        <div class="w3-col m3 w3-padding regenerateeditlist" style="display:none;">
+                            @CheckBox(info, "genxml/checkbox/regenerateeditlist", ResourceKey("AppThemes.autoregenerateeditlist").ToString(), "", true)
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
 
 
             <div class="w3-container">
@@ -439,126 +446,7 @@
         </div>
     </div>
 
-<div id="editorpopup" style="display:none;">
-    <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="savetemplate()">@ResourceKey("DNNrocket.cmdOKButton")</div>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-khaki " onclick="cancelleditor();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditorcall" s-after="saveeditorreturn" s-track="false" s-cmd="rocketapptheme_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
-        @ButtonGap()
-        <i id="saveicon" class='fas fa-save ' style="display:none;font-size:24px"></i>
-        <div class="w3-col m4 w3-right">
-            <h5 id="editorfilename" class="" style=""></h5>
-        </div>
-
-    </div>
-
-    @{
-        var lp = 1;
-
-        var fieldhtml = "";
-        var xpathhtml = "";
-    }
-    @foreach (SimplisityRecord i in info.GetRecordList("fielddata"))
-    {
-        var fieldtype = i.GetXmlProperty("genxml/select/type").ToLower();
-        var fieldname = i.GetXmlProperty("genxml/textbox/name");
-        fieldhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippet" + lp + "'>" + fieldname + " [" + fieldtype + "]" + "</div>";
-        xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>" + fieldname + " [" + fieldtype + "]" + "</div>";
-
-        var replaceData = new Dictionary<string, string>();
-        replaceData.Add("[fieldname]", fieldname);
-
-        switch (fieldtype.ToLower())
-        {
-            case "imagegallery":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("ImageGallery", replaceData)) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("ImageGallery", replaceData)) + "' />";
-                break;
-            case "imagefull":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("Image", replaceData)) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("Image", replaceData)) + "' />";
-                break;
-            case "linkgallery":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("LinkGallery", replaceData)) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("LinkGallery", replaceData)) + "' />";
-                break;
-            case "documentgallery":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("DocGallery", replaceData)) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("DocGallery", replaceData)) + "' />";
-                break;
-            case "richtext":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@HtmlOf(info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\"))") + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@HtmlOf(info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\"))") + "' />";
-                break;
-            default:
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\")") + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\")") + "' />";
-                break;
-        }
-        lp += 1;
-    }
-
-    @{
-        var razortokenhtml = "";
-        var datatokenhtml = "";
-        lp = 1;
-    }
-    @foreach (var r in appTheme.RazorTokenText)
-    {
-        var textValue = r.Value.GetXmlProperty("genxml/value");
-        var commentValue = r.Value.GetXmlProperty("genxml/comment");
-        if (commentValue != "")
-        {
-            commentValue = "&nbsp;&nbsp;{" + commentValue + "}";
-        }
-        if (r.Key.StartsWith("Data."))
-        {
-            datatokenhtml += " <div title='" + textValue + " " + commentValue + "' class='w3-bar-item w3-button fieldsnippet ' snipname='razortokensnippet" + lp + "'>" + r.Key.Replace("Data.","") + "</div>";
-            datatokenhtml += "<input id='razortokensnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(textValue) + "' />";
-        }
-        if (r.Key.StartsWith("Razor."))
-        {
-            razortokenhtml += " <div title='" + textValue + " " + commentValue + "' class='w3-bar-item w3-button fieldsnippet ' snipname='razortokensnippet" + lp + "'>" + r.Key.Replace("Razor.","") + "</div>";
-            razortokenhtml += "<input id='razortokensnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(textValue) + "' />";
-        }
-        lp += 1;
-    }
-
-
-
-<div class="w3-bar w3-light-grey editorviewmenu" style="display:none;">
-    <div class="w3-dropdown-hover">
-        <div class="w3-button">Razor Tokens</div>
-        <div class="w3-dropdown-content w3-card-4" style="z-index:999;">
-            @HtmlOf(razortokenhtml)
-        </div>
-    </div>
-    <div class="w3-dropdown-hover">
-        <div class="w3-button">@ResourceKey("AppThemes.fields")</div>
-        <div class="w3-dropdown-content w3-card-4" style="z-index:999;">
-            @HtmlOf(fieldhtml)
-        </div>
-    </div>
-    <div class="w3-dropdown-hover">
-        <div class="w3-button">XPath</div>
-        <div class="w3-dropdown-content w3-card-4" style="z-index:999;">
-            @HtmlOf(xpathhtml)
-        </div>
-    </div>
-    <div class="w3-dropdown-hover">
-        <div class="w3-button">Data Tokens</div>
-        <div class="w3-dropdown-content w3-card-4" style="z-index:999;">
-            @HtmlOf(datatokenhtml)
-        </div>
-    </div>
-</div>
-
-    <div id="editorsavereturn" style="display:none;"></div>
-    <div id="editorwrapper" class="w3-row " style=""></div>
-
-</div>
+@RenderTemplate("EditorPopUp.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", Model, "1.0", true)
 
 <div id="dnnrocket_imageselectwrapper">
     @RenderImageSelect(100, true, false, appTheme.ImageFolderRel)
@@ -632,7 +520,7 @@
 
 
     </div>
-    </div>
+</div>
 
 <!-- The Modal -->
 <div id="languageselector" class="w3-modal">
@@ -884,6 +772,8 @@
         $('#editorfilename').text($('#filename' + modetype + '_' + idx).val());
         if ($('#filename' + modetype + '_' + idx).val() === 'view') {
             $('.editorviewmenu').show();
+        } else {
+            $('.editorviewmenu').hide();
         }
         $('#editorwrapper').attr("index", idx);
 
