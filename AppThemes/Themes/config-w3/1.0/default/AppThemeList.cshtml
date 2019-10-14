@@ -107,7 +107,16 @@ else
 
 
     </div>
-    <h2>@systemInfoData2.SystemName</h2>
+    <div class="w3-row">
+        <div class="w3-half">
+            <h2>@systemInfoData2.SystemName</h2>
+        </div>
+        <div class="w3-half w3-padding w3-right-align">
+            <i class="griddisplayicon fas fa-th fa-2x"></i>
+            &nbsp;
+            <i class="listdisplayicon w3-text-blue fas fa-th-list fa-2x"></i>
+        </div>
+    </div>
     <div class="w3-row w3-card searchdata w3-margin-top">
 
         <div class="">
@@ -121,7 +130,7 @@ else
 
     <div id="datasection" class="w3-row w3-margin-top">
 
-        <ul id="datalist" class="w3-ul w3-border">
+        <ul id="datalist" class="w3-ul w3-border" style="display:none;">
 
             @{
                 var lp1 = 0;
@@ -137,14 +146,7 @@ else
                             <i class="fas fa-edit w3-center" title="@ResourceKey("DNNRocket.cmdEdit")" style='font-size:32px'></i>
                         </div>
                         <div class=" w3-cell w3-padding  w3-hide-small " style="width: 100px;">
-                            @if (appTheme.Logo != "")
-                            {
                                 <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" />
-                            }
-                            else
-                            {
-                                <img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=60&h=60' imageheight='60' imagewidth='60'>
-                            }
                         </div>
                         <div class=" w3-cell w3-padding">
                             <div class="">
@@ -156,9 +158,9 @@ else
 
                                 @{
                                     var summary = appTheme.AppSummary;
-                                    if (summary.Length > 160)
+                                    if (summary.Length > 120)
                                     {
-                                        summary = summary.Substring(0, 160) + "...";
+                                        summary = summary.Substring(0, 120) + "...";
                                     }
                                 }
                                 @summary
@@ -182,6 +184,22 @@ else
             }
         </ul>
 
+        <div id="datalist2" class="w3-container" style="display:none;">
+            @{
+                lp1 = 0;
+            }
+            @foreach (AppTheme appTheme in appThemeDataList.List)
+            {
+                lp1 += 1;
+                <div title="@appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder" class="w3-padding w3-button w3-col m2 w3-panel simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="cursor:pointer;">
+                    <img src="@ThumbnailImageUrl(appTheme.Logo,200,200)" alt="" style="width:80%;" class="w3-hover-opacity">
+                    <div><b>@appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder</b></div>
+                </div>
+            }
+        </div>
+
+        <hr/>
+
     </div>
 
 
@@ -189,7 +207,41 @@ else
     <script>
         $(document).ready(function () {
             $("#datalist").disableSelection();
+
+            var displayviewtype = simplisity_getCookieValue('displayviewtype');
+            if (displayviewtype === 'griddisplayicon') {
+                showgrid();
+            }
+            else {
+                showlist();
+            }
+
+            $('.griddisplayicon').unbind('click');
+            $('.griddisplayicon').click(function () {
+                showgrid();
+                simplisity_setCookieValue('displayviewtype','griddisplayicon');
+            });
+            $('.listdisplayicon').unbind('click');
+            $('.listdisplayicon').click(function () {
+                showlist();
+                simplisity_setCookieValue('displayviewtype','listdisplayicon');
+            });
+
+
         });
+
+    function showgrid() {
+                $('.griddisplayicon').addClass('w3-text-blue');
+                $('.listdisplayicon').removeClass('w3-text-blue');
+                $('#datalist2').show();
+                $('#datalist').hide();
+    }
+    function showlist() {
+                $('.griddisplayicon').removeClass('w3-text-blue');
+                $('.listdisplayicon').addClass('w3-text-blue');
+                $('#datalist2').hide();
+                $('#datalist').show();
+    }
 
         function searchFunction() {
             var input, filter, ul, li, a, i;
@@ -197,6 +249,16 @@ else
             filter = input.value.toUpperCase();
             ul = document.getElementById("datalist");
             li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                txtValue = li[i].textContent || li[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+            ul = document.getElementById("datalist2");
+            li = ul.getElementsByTagName("div");
             for (i = 0; i < li.length; i++) {
                 txtValue = li[i].textContent || li[i].innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {

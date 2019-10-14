@@ -135,6 +135,15 @@
   <data name="builder.Text" xml:space="preserve">
     <value>AppTheme Builder</value>
   </data>
+  <data name="copy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="copyapptheme.Text" xml:space="preserve">
+    <value>Copy this AppTheme</value>
+  </data>
+  <data name="copymsg.Text" xml:space="preserve">
+    <value>Copy this AppTheme to a new AppTheme.</value>
+  </data>
   <data name="createnewapptheme.Text" xml:space="preserve">
     <value>Create New AppTheme</value>
   </data>
@@ -221,6 +230,9 @@
   </data>
   <data name="resx.Text" xml:space="preserve">
     <value>RESX</value>
+  </data>
+  <data name="saveas.Text" xml:space="preserve">
+    <value>Save As</value>
   </data>
   <data name="search.Text" xml:space="preserve">
     <value>Search for AppThemes</value>

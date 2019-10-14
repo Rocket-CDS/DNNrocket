@@ -51,6 +51,32 @@
 
 @HiddenField(info, "genxml/hidden/fieldlocalizedlist", " s-update='ignore' ")
 
+    <div id="copyapptheme" class="w3-modal">
+        <div class="w3-modal-content w3-card w3-animate-zoom">
+
+            <header class="w3-container  w3-theme">
+                <span onclick="document.getElementById('copyapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>@ResourceKey("Appthemes.saveas")...</h2>
+            </header>
+
+            <div class="w3-row-padding">
+                <div class="w3-col m4 w3-padding">
+                    <input value="" id="appthemeprefix" s-xpath="genxml/textbox/appthemeprefix" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.prefix")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                </div>
+                <div class="w3-col m5 w3-padding">
+                    <input value="" id="appthemename" s-xpath="genxml/textbox/appthemename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.appthemename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                </div>
+                <div class="w3-col m3 w3-padding">
+                    <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_docopy" s-post="#copyapptheme" s-return=".copyappthemereturn" s-after="redisplayapptheme" s-fields=''><i class="fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copy")</div>
+                </div>
+            </div>
+            <div class="w3-row w3-panel w3-red copyappthemereturn" style="display:none;">
+            </div>
+        </div>
+    </div>
+
+
+
     <div id="detailsection">
 
         <div class="w3-row w3-padding">
@@ -62,15 +88,18 @@
             <div class="w3-col m6 w3-dropdown-hover">
                 <button class="w3-button">More...</button>
                 <div class="w3-dropdown-content w3-bar-block w3-card">
-                    <div class="w3-bar-item w3-button simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-teal fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
+                    <div class="w3-bar-item w3-button simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-blue fas fa-newspaper fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
+                    <div class="w3-bar-item w3-button simplisity_confirmclick" s-track="false" s-return="#dummyreturn" s-after="copyappthemereturn" s-confirm="@ResourceKey("AppThemes.copymsg")&nbsp;?" s-cmd="rocketapptheme_copyapptheme" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-blue fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copyapptheme")</div>
                     <a class="w3-bar-item w3-button w3-padding-8 simplisity_filedownload" s-track="false" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-teal fas fa-file-export fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNRocket.cmdExport")</a>
                     <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete") AppTheme</div>
                     <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")</div>
+
+                    <div class="w3-bar-item w3-button w3-padding-8 refreshdisplay simplisity_click" s-track="clear" s-cmd="rocketapptheme_getlist" s-fields='' style="display:none;"></div>
+
                 </div>
             </div>
 
         </div>
-
         <div class="w3-container">
 
             <div class="w3-display-container">
@@ -98,11 +127,11 @@
                     <div class="w3-row ">
                         <div class="w3-col " style="width:136px;">
                             <label>Logo</label>
-                            @ImageEdit(info, "logo", 120, 120, " ", false)
+                            <img src="@ThumbnailImageUrl(appTheme.Logo,136,136)" alt="" style="" class="w3-circle">
                         </div>
                         <div class="w3-col m8 w3-padding">
                             <label>@ResourceKey("AppThemes.summary")</label>
-                            @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border'", "", false)
+                            @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border' rows='4'", "", false)
                         </div>
                         <div class="w3-col w3-padding" style="width:200px">
                             <label>@ResourceKey("AppThemes.version")</label>
@@ -614,6 +643,9 @@
         showDataTab();
     });
 
+    function copyappthemereturn() {
+        document.getElementById('copyapptheme').style.display = 'block';
+    }
     function edittemplate(idx) {
         editeditor(idx, 'htmlmixed','templatelist');
     }
@@ -890,6 +922,15 @@
             row += 1;
         }
 
+    }
+
+    function redisplayapptheme() {
+        if ($('.copyappthemereturn').text() == '') {
+            simplisity_callserver($('.refreshdisplay'));
+        }
+        else {
+            $('.copyappthemereturn').show();
+        }
     }
 
 </script>

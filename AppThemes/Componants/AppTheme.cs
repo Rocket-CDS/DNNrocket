@@ -100,7 +100,7 @@ namespace Rocket.AppThemes.Componants
             SyncFiles();
 
             // logo
-            Logo = Record.GetXmlProperty("genxml/hidden/imagepathlogo");
+            Logo = Record.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/*[1]");
 
             // RESX Default
             var resxList = Record.GetRecordList("resxlist");
@@ -1196,7 +1196,7 @@ namespace Rocket.AppThemes.Componants
         }
 
 
-        public string Export()
+        public string Export(bool latestVersionOnly = false)
         {
             var exportData = "<apptheme>";
             exportData += "<data>";
@@ -1209,14 +1209,22 @@ namespace Rocket.AppThemes.Componants
             exportData += "<versions>";
             foreach (var v in VersionList)
             {
-
-                var guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + v;
-                var vRecord = _objCtrl.GetRecordByGuidKey(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, guidKey, "", _tableName);
-                if (vRecord != null)
+                var exportversion = true;
+                if (latestVersionOnly)
                 {
-                    exportData += "<version>";
-                    exportData += vRecord.ToXmlItem();
-                    exportData += "</version>";
+                    if (v != LatestVersionFolder) exportversion = false;
+                }
+
+                if (exportversion)
+                {
+                    var guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + v;
+                    var vRecord = _objCtrl.GetRecordByGuidKey(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, guidKey, "", _tableName);
+                    if (vRecord != null)
+                    {
+                        exportData += "<version>";
+                        exportData += vRecord.ToXmlItem();
+                        exportData += "</version>";
+                    }
                 }
             }
             exportData += "</versions>";
