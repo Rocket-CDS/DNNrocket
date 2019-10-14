@@ -130,12 +130,12 @@
     <value>@Model.ModuleRef</value>
   </data>
   <data name="Razor.AddCssLinkHeader" xml:space="preserve">
-    <value>@AddCssLinkHeader(string cssRelPath, int tabId)</value>
-    <comment>Adds a CSS script link to the page header.  Duplicates will be ignored.</comment>
+    <value>@AddCssLinkHeader(string cssRelPath)</value>
+    <comment>Adds a CSS script link to the page header. </comment>
   </data>
   <data name="Razor.AddJsScriptHeader" xml:space="preserve">
-    <value>@AddJsScriptHeader(string jsRelPath, int tabId)</value>
-    <comment>Adds a JS script link to the page header.  Duplicates will be ignored.</comment>
+    <value>@AddJsScriptHeader(string jsRelPath)</value>
+    <comment>Adds a JS script link to the page header. </comment>
   </data>
   <data name="Razor.AddPreProcessData" xml:space="preserve">
     <value>@AddPreProcessData(String metaKey, String metaValue,String templateFullName,String moduleId)</value>

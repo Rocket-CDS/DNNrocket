@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI;
+using DotNetNuke.Entities.Modules;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace DNNrocketAPI.Componants
         private int _moduleid;
         private int _systemid;
 
-        public ModuleParams(int moduleId,int systemid, bool useCache = true, string tableName = "DNNrocket")
+        public ModuleParams(int moduleId, int systemid, bool useCache = true, string tableName = "DNNrocket")
         {
             _tableName = tableName;
             _systemid = systemid;
@@ -112,7 +113,6 @@ namespace DNNrocketAPI.Componants
         public string ModuleType { get { return GetValue("ModuleType", ""); } set { SetValue("ModuleType", value); } }
         public int ModuleId { get {return _moduleid; } }
         public int SystemId { get { return _systemid; } }
-
         public int DataModuleId
         {
             get
@@ -124,7 +124,8 @@ namespace DNNrocketAPI.Componants
             set { SetValue("DataModuleId", value.ToString()); }
         }
         public string ModuleRef { get { return GetValue("ModuleRef"); } set { SetValue("ModuleRef", value); } }
-        public bool DisbaleCache { get { return GetValueBool("disbalecache"); } set { SetValue("disbalecache", value.ToString()); } }
+        public bool CacheDisbaled { get { return GetValueBool("disbalecache"); } set { SetValue("disbalecache", value.ToString()); } }
+        public bool CacheEnabled { get { return !GetValueBool("disbalecache"); } }
     }
 
 }

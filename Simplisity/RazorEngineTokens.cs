@@ -68,32 +68,16 @@ namespace Simplisity
             return AddProcessData(metaKey, metaValue);
         }
 
-        public IEncodedString AddCssLinkHeader(string cssRelPath, int tabId)
+        public IEncodedString AddCssLinkHeader(string cssRelPath)
         {
-            var cachedlist = (List<string>)CacheUtils.GetCache("csslinkdata" + tabId);
-            if (cachedlist == null)
-            {
-                cachedlist = new List<string>();
-            }
-
-            if (!cachedlist.Contains(cssRelPath)) cachedlist.Add(cssRelPath);
-
-            CacheUtils.SetCache("csslinkdata" + tabId, cachedlist);
-            return new RawString(""); //return nothing
+            var rtn = "<link rel='stylesheet' href='" + cssRelPath + "' />";
+            return new RawString(rtn); //return nothing
         }
 
-        public IEncodedString AddJsScriptHeader(string jsRelPath, int tabId)
+        public IEncodedString AddJsScriptHeader(string jsRelPath)
         {
-            var cachedlist = (List<string>)CacheUtils.GetCache("jsscriptdata" + tabId);
-            if (cachedlist == null)
-            {
-                cachedlist = new List<string>();
-            }
-
-            if (!cachedlist.Contains(jsRelPath)) cachedlist.Add(jsRelPath);
-
-            CacheUtils.SetCache("jsscriptdata" + tabId, cachedlist);
-            return new RawString(""); //return nothing
+            var rtn = "<script type='text/javascript' src='" + jsRelPath + "'></script>";
+            return new RawString(rtn); //return nothing
         }
 
         #endregion

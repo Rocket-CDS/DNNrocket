@@ -770,7 +770,8 @@
         $('#editorfilenamesave').val($('#filename' + modetype + '_' + idx).val());
 
         $('#editorfilename').text($('#filename' + modetype + '_' + idx).val());
-        if ($('#filename' + modetype + '_' + idx).val() === 'view') {
+
+        if ($('#razoreditor').attr('modetype') === 'htmlmixed') {
             $('.editorviewmenu').show();
         } else {
             $('.editorviewmenu').hide();

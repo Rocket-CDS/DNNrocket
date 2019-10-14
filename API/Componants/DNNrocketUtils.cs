@@ -1298,8 +1298,12 @@ namespace DNNrocketAPI
             return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
         }
 
-        public static void IncludePageHeaders(string appThemeFolder, string appThemeVersion, string templateRelPath, Page page, int tabId)
+        public static void IncludePageHeaders(ModuleParams moduleParams, Page page, int tabId)
         {
+            var appThemeFolder = moduleParams.AppThemeFolder;
+            var appThemeVersion = moduleParams.AppThemeVersion;
+            var templateRelPath = moduleParams.AppThemeFolderRel;
+
             if (!String.IsNullOrEmpty(templateRelPath))
             {
 
@@ -1308,9 +1312,7 @@ namespace DNNrocketAPI
 
                 if (!page.Items["dnnrocketinject"].ToString().Contains(fullTemplName + ","))
                 {
-                    var themeFolderPath = "Themes\\" + appThemeFolder + "\\" + appThemeVersion;
-                    var templCtrl = new TemplateGetter(DNNrocketUtils.HomeDirectory(), themeFolderPath, DNNrocketUtils.MapPath(templateRelPath));
-                    var activePageHeaderTemplate = templCtrl.GetTemplateData("pageheader.cshtml", DNNrocketUtils.GetCurrentCulture());
+                    var activePageHeaderTemplate = DNNrocketUtils.GetRazorTemplateData("pageheader.cshtml", moduleParams.AppProjectFolderRel, "SystemThemes/dnnrocketmodule/" + moduleParams.AppThemeFolder, DNNrocketUtils.GetCurrentCulture(), moduleParams.AppThemeVersion, moduleParams.CacheDisbaled);
                     if (activePageHeaderTemplate == null) activePageHeaderTemplate = "";
 
                     if (activePageHeaderTemplate != null && activePageHeaderTemplate != "")

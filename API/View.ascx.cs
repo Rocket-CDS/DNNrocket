@@ -95,13 +95,7 @@ namespace DNNrocketAPI
 
                 if (_moduleParams.Exists)
                 {
-                    DNNrocketUtils.IncludePageHeaders(_moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion, _moduleParams.AppThemeFolderRel, this.Page, TabId);
-                }
-                else
-                {
-                    var themeVersion = _rocketInterface.ThemeVersion;
-                    if (themeVersion == "") themeVersion = "1.0";
-                    DNNrocketUtils.IncludePageHeaders(_rocketInterface.DefaultTheme, themeVersion, _templateRelPath, this.Page, TabId);
+                    DNNrocketUtils.IncludePageHeaders(_moduleParams, this.Page, TabId);
                 }
 
             }
@@ -184,7 +178,7 @@ namespace DNNrocketAPI
                 var strOut = "No Interface Found.";
                 var cacheOutPut = "";
                 var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture();
-                if (_rocketInterface.IsCached) cacheOutPut = (string)CacheUtils.GetCache(cacheKey);
+                if (_moduleParams.CacheEnabled) cacheOutPut = (string)CacheUtils.GetCache(cacheKey);
 
                 if (cacheOutPut == null || cacheOutPut == "")
                 {
