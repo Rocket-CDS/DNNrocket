@@ -155,6 +155,7 @@
                     </div>
 
                 </div>
+
             </div>
 
 
@@ -782,7 +783,7 @@
         $("#razoreditor").remove();
         $(".CodeMirror").remove();
 
-        var newHeight = $(window).height() - 140;
+        var newHeight = $(window).height() - 100;
         $('#editorwrapper').css("height", newHeight);;
 
         var textArea = $('<textarea id="razoreditor" class="w3-input w3-border" modetype="' + modetype + '" spellcheck="false" />');
@@ -811,6 +812,18 @@
         $('#editorwrapper').attr("index", idx);
 
         $('#razoreditor').focus();
+
+
+    myCodeMirror.on("drop", function (cm, event) {
+        var coords = cm.coordsChar({
+            left: event.x,
+            top: event.y
+        });
+        alert('drop');
+        cm.replaceRange("Some TextXXXXXXXXXXXXXXXX", coords);
+    });
+
+
     }
 
     function cancelleditor() {
@@ -932,5 +945,8 @@
             $('.copyappthemereturn').show();
         }
     }
+
+
+
 
 </script>
