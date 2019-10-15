@@ -1509,8 +1509,8 @@ namespace DNNrocketAPI
             imageModel.List = imgList;
 
             var strOut = "<div id='dnnrocket_imageselectwrapper'>";
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut += DNNrocketUtils.RazorRender(imageModel, razorTempl, false);
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+            strOut += DNNrocketUtils.RazorRender(imageModel, razorTempl, true);
             strOut += "</div>";
             return strOut;
         }

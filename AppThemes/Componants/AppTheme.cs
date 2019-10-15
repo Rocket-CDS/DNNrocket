@@ -3,6 +3,7 @@ using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -24,17 +25,18 @@ namespace Rocket.AppThemes.Componants
 
         public AppTheme(string importXml, bool overwrite = true, bool debugMode = false)
         {
+            _objCtrl = new DNNrocketController();
             ImportXmlData(importXml, overwrite, debugMode);
         }
         public AppTheme(string systemKey, string appThemeFolder, string versionFolder, bool debugMode = false)
         {
+            _objCtrl = new DNNrocketController();
             InitAppTheme(systemKey, appThemeFolder, versionFolder, debugMode);
         }
 
         private void InitAppTheme(string systemKey, string appThemeFolder, string versionFolder, bool debugMode = false)
         {
             _debugMode = debugMode;
-            _objCtrl = new DNNrocketController();
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
             SystemKey = systemKey;
 
@@ -1222,27 +1224,26 @@ namespace Rocket.AppThemes.Componants
                     if (vRecord != null)
                     {
                         exportData += "<version>";
+                        var sr = new SimplisityRecord();
+                        var imageList = vRecord.GetRecordList("imagelist");
+                        foreach (var i in imageList)
+                        {
+                            var logoMapPath = DNNrocketUtils.MapPath(i.GetXmlProperty("genxml/hidden/imagepathimg"));
+                            if (File.Exists(logoMapPath))
+                            {
+                                sr.SetXmlProperty("genxml/hidden/imagepathimg", logoMapPath);
+                                var imgBytes = ImgUtils.ImageToByteArray(logoMapPath);
+                                var imgByteString = Convert.ToBase64String(imgBytes, Base64FormattingOptions.None);
+                                sr.SetXmlProperty("genxml/hidden/img", imgByteString);
+                                vRecord.AddListItem("images", sr.XMLData);
+                            }
+                        }
                         exportData += vRecord.ToXmlItem();
                         exportData += "</version>";
                     }
                 }
             }
             exportData += "</versions>";
-            exportData += "<images>";
-            var imageList = Record.GetRecordList("imagelist");
-            foreach (var i in imageList)
-            {
-                var logoMapPath = DNNrocketUtils.MapPath(i.GetXmlProperty("genxml/hidden/imagepath"));
-                if (File.Exists(logoMapPath))
-                {
-                    exportData += "<img>";
-                    var imgBytes = File.ReadAllBytes(logoMapPath);
-                    var imgByteString = Convert.ToBase64String(imgBytes, Base64FormattingOptions.None);
-                    exportData += imgByteString;
-                    exportData += "</img>";
-                }
-            }
-            exportData += "</images>";
             exportData += "</apptheme>";
 
             return exportData;
@@ -1256,41 +1257,55 @@ namespace Rocket.AppThemes.Componants
 
             // import DB records.
             var versionList = new List<SimplisityInfo>();
-            var nodList = iRec.XMLDoc.SelectNodes("genxml/versions/version");
+            var nodList = iRec.XMLDoc.SelectNodes("apptheme/versions/version");
             foreach (XmlNode nod in nodList)
             {
                 var s = new SimplisityInfo();
                 s.XMLData = nod.InnerXml;
                 versionList.Add(s);
             }
-            foreach (var vItem in versionList)
+            foreach (var info in versionList)
             {
-                var v = vItem.GetXmlProperty("item/genxml/select/versionfolder");
-                var guidKey = vItem.GetXmlProperty("item/guidkey");
-                var entityTypeCode = vItem.GetXmlProperty("item/typecode");
+                var vItem = new SimplisityRecord();
+                vItem.FromXmlItem(info.XMLData);
+                var v = info.GetXmlProperty("item/genxml/select/versionfolder");
+                var guidKey = info.GetXmlProperty("item/guidkey");
+                var entityTypeCode = info.GetXmlProperty("item/typecode");
 
                 var newInfo = new SimplisityRecord();
-                newInfo.FromXmlItem(vItem.XMLData);
+                newInfo.FromXmlItem(info.XMLData);
 
                 newInfo.PortalId = DNNrocketUtils.GetPortalId();
                 var itemid = -1;
                 var gInfo = _objCtrl.GetRecordByGuidKey(DNNrocketUtils.GetPortalId(), -1, entityTypeCode, guidKey, "", _tableName);
                 if (gInfo != null)
                 {
-                    if (overwrite)
-                        itemid = gInfo.ItemID;
-                    else
-                    {
-                        //var appTheme
-                        //newInfo.SetXmlProperty("",  + " - copy");
-                    }
+                    if (overwrite) itemid = gInfo.ItemID;
                 }
+                newInfo.RemoveRecordList("images");
                 newInfo.ItemID = itemid;
 
                 _objCtrl.Update(newInfo, _tableName);
             }
 
             InitAppTheme(iRec.GetXmlProperty("apptheme/data/systemkey"), iRec.GetXmlProperty("apptheme/data/appthemefolder"), iRec.GetXmlProperty("apptheme/data/appversionfolder"), debugMode);
+
+            // import images to file after InitAppTheme, so folders exist.
+            foreach (var info in versionList)
+            {
+                var vItem = new SimplisityRecord();
+                vItem.FromXmlItem(info.XMLData);
+                // save images to filesystem
+                foreach (var img in vItem.GetRecordList("images"))
+                {
+                    var imgpath = img.GetXmlProperty("genxml/hidden/imagepathimg");
+                    var imgBytes = img.GetXmlProperty("genxml/hidden/img");
+                    byte[] bytes = Convert.FromBase64String(imgBytes);
+                    ImgUtils.ByteArrayToImageFilebyMemoryStream(bytes, imgpath);
+                }
+            }
+
+
         }
 
         #region "properties"

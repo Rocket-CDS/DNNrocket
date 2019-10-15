@@ -11,6 +11,7 @@
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 
 @{
@@ -33,7 +34,7 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                var interfaceName = ResourceKey("RocketMod." + interfacekey).ToString();
+                var interfaceName = ResourceKey("AppThemes." + interfacekey).ToString();
                 if (interfaceName == "")
                 {
                     interfaceName = systemInfoData.GetSetting(interfacekey + "MenuName");
@@ -67,7 +68,7 @@
                 var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
                 var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
                 var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                var interfaceName = ResourceKey("RocketMod." + interfacekey).ToString();
+                var interfaceName = ResourceKey("AppTheme." + interfacekey).ToString();
                 if (interfaceName == "")
                 {
                     interfaceName = systemInfoData.GetSetting(interfacekey + "MenuName");

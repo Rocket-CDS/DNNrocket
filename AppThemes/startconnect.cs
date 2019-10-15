@@ -47,6 +47,9 @@ namespace DNNrocket.AppThemes
                 _userStorage = new UserStorage();
                 _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
+                if (_appVersionFolder == "") _appVersionFolder = _userStorage.Get("selectedappversion");
+                if (_appVersionFolder == "") _userStorage.Set("selectedappversion", "1.0");
+
                 _selectedSystemKey = postInfo.GetXmlProperty("genxml/hidden/selectedsystemkey");
                 if (_selectedSystemKey == "")
                 {
@@ -112,6 +115,8 @@ namespace DNNrocket.AppThemes
                         break;
                     case "rocketapptheme_changeversion":
                         _appVersionFolder = _postInfo.GetXmlProperty("genxml/select/versionfolder");
+                        _userStorage.Set("selectedappversion", _appVersionFolder);
+                        _appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder, true);
                         strOut = GetDetail();
                         break;
                     case "rocketapptheme_deleteversion":
@@ -289,24 +294,23 @@ private static Dictionary<string, string> ExportAppTheme()
             var fileuploadlist = _paramInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
             if (fileuploadlist != "")
             {
-                var userid = DNNrocketUtils.GetCurrentUserId();
-                var userFolder = DNNrocketUtils.TempDirectory() + "\\user" + userid;
-                var objCtrl = new DNNrocketController();
-
                 foreach (var f in fileuploadlist.Split(';'))
                 {
                     if (f != "")
                     {
+                        var userid = DNNrocketUtils.GetCurrentUserId();
+                        var userFolder = DNNrocketUtils.TempDirectory();
                         var friendlyname = GeneralUtils.DeCode(f);
-
+                        var fname = userFolder + "\\" + userid + "_" + friendlyname;
                         // get import data 
-                        var xmlData = FileUtils.ReadFile(userFolder + "\\" + friendlyname);
+                        var xmlData = FileUtils.ReadFile(fname);
                         var _appTheme = new AppTheme(xmlData, true, _systemInfoData.DebugMode);
                         // delete import file
-                        //File.Delete(userFolder + "\\" + friendlyname);
+                        File.Delete(fname);
                     }
                 }
-
+                _appThemeDataList.PopulateSystemFolderList();
+                _appThemeDataList.PopulateAppThemeList();
             }
 
             return GetList();

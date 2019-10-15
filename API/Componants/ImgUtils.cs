@@ -96,14 +96,24 @@ namespace DNNrocketAPI
             return bmpBytes;
         }
 
-        //Bitmap bytes have to be created using Image.Save()
-        public static Image BytesToImg(byte[] bmpBytes)
+        public static byte[] ImageToByteArray(string imagefilePath)
         {
-            var ms = new MemoryStream(bmpBytes);
-            var img = Image.FromStream(ms);
-            // Do NOT close the stream!
+            System.Drawing.Image image = System.Drawing.Image.FromFile(imagefilePath);
+            byte[] imageByte = ImageToByteArraybyMemoryStream(image);
+            return imageByte;
+        }
+        private static byte[] ImageToByteArraybyMemoryStream(Image image)
+        {
+            MemoryStream ms = new MemoryStream();
+            image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            return ms.ToArray();
+        }
 
-            return img;
+        public static void ByteArrayToImageFilebyMemoryStream(byte[] imageByte, string fileMapPath)
+        {
+            MemoryStream ms = new MemoryStream(imageByte);
+            Image image = Image.FromStream(ms);
+            image.Save(fileMapPath);
         }
 
         public static bool IsImageFile(FileInfo sFileInfo)
@@ -486,17 +496,6 @@ namespace DNNrocketAPI
             return newImage;
 
         }
-
-
-        public static byte[] ImageToBinary(string imagePath)
-        {
-            FileStream fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
-            byte[] buffer = new byte[fileStream.Length];
-            fileStream.Read(buffer, 0, (int)fileStream.Length);
-            fileStream.Close();
-            return buffer;
-        }
-
     }
 
 

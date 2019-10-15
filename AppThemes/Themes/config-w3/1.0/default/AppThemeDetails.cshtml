@@ -12,6 +12,7 @@
 @{
     var appTheme = (AppTheme)Model.List.First();
     var info = new SimplisityInfo(appTheme.Record);
+    var record = appTheme.Record;
 }
 @{
     var dataDic = new Dictionary<string, string>();
@@ -34,16 +35,16 @@
     var disabled = "";
 
     var imgLP = 1;
-    var imgdatalist = info.GetRecordList("imagelist");
+    var imgdatalist = record.GetRecordList("imagelist");
 
     var templateLP = 1;
-    var templatedatalist = info.GetRecordList("templatelist");
+    var templatedatalist = record.GetRecordList("templatelist");
     var cssLP = 1;
-    var cssdatalist = info.GetRecordList("csslist");
+    var cssdatalist = record.GetRecordList("csslist");
     var jsLP = 1;
-    var jsdatalist = info.GetRecordList("jslist");
+    var jsdatalist = record.GetRecordList("jslist");
     var resxLP = 1;
-    var resxdatalist = info.GetRecordList("resxlist");
+    var resxdatalist = record.GetRecordList("resxlist");
 
 
     var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist,.fielddata";
@@ -479,7 +480,7 @@
 @RenderTemplate("EditorPopUp.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", Model, "1.0", true)
 
 <div id="dnnrocket_imageselectwrapper">
-    @RenderImageSelect(100, true, false, appTheme.ImageFolderRel)
+    @RenderImageSelect(200, true, false, appTheme.ImageFolderRel)
 </div>
 
 <div id="dnnrocket_resxeditwrapper" style="display:none;">

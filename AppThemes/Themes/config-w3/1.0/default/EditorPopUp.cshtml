@@ -23,7 +23,7 @@
             @ButtonGap()
             <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditorcall" s-after="saveeditorreturn" s-track="false" s-cmd="rocketapptheme_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
             @ButtonGap()
-            <div class="w3-col m1 w3-right">
+            <div class="w3-col m1">
                 <i id="saveicon" class='fas fa-save ' style="display:none;font-size:24px"></i>
             </div>
             <div class="w3-col m1 w3-xlarge w3-right">
@@ -114,22 +114,22 @@
         <div id="searchbar" class="w3-bar-item">
             <input class="w3-col w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.search")..." id="rightmenusearchtext" onkeyup="rightmenusearchFunction()" style="width:200px;">
             @ButtonGap()
-            <button onclick="closeRightMenu()" class="w3-col w3-right-align w3-button w3-large" style="width:40px">&times;</button>
+            <div onclick="closeRightMenu()" class="w3-col w3-right-align w3-button w3-large" style="width:40px">&times;</div>
         </div>
 
-        <button class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('fieldstokensection')">@ResourceKey("AppThemes.fields") <i class="fa fa-caret-down"></i></button>
+        <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('fieldstokensection')">@ResourceKey("AppThemes.fields") <i class="fa fa-caret-down"></i></div>
         <div id="fieldstokensection" class="w3-hide w3-white w3-white w3-card">
             @HtmlOf(fieldhtml)
         </div>
-        <button class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('razortokensection')">Razor Tokens <i class="fa fa-caret-down"></i></button>
+        <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('razortokensection')">Razor Tokens <i class="fa fa-caret-down"></i></div>
         <div id="razortokensection" class="w3-hide w3-white w3-white w3-card">
             @HtmlOf(razortokenhtml)
         </div>
-        <button class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('datatokensection')">Data Tokens <i class="fa fa-caret-down"></i></button>
+        <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('datatokensection')">Data Tokens <i class="fa fa-caret-down"></i></div>
         <div id="datatokensection" class="w3-hide w3-white w3-white w3-card">
             @HtmlOf(datatokenhtml)
         </div>
-        <button class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('xpathtokensection')">XPath <i class="fa fa-caret-down"></i></button>
+        <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('xpathtokensection')">XPath <i class="fa fa-caret-down"></i></div>
         <div id="xpathtokensection" class="w3-hide w3-white w3-white w3-card">
             @HtmlOf(xpathhtml)
         </div>

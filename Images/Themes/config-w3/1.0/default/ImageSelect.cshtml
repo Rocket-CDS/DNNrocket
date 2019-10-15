@@ -31,47 +31,25 @@
                 </div>
 
                 <div id="rocketimageselectlist" class="w3-container">
-                    <div class="">
-
-
+                    <div class="w3-container">
                         @{
-                            var imageRows = new List<List<string>>();
-                            var imageItems = new List<string>();
-                            var lastImageItems = new List<string>();
                             var lp = 1;
                             var imagecount = Model.List.Count();
-                            foreach (string i in Model.List)
+                            foreach (string imageName in Model.List)
                             {
-                                imageItems.Add(i);
-                                if ((lp % 6) == 0)
-                                {
-                                    imageRows.Add(imageItems);
-                                    imageItems = new List<string>();
-                                }
+                                <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
+                                    <img src="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150)" class="w3-border w3-padding" style="width:100%" />
+                                    <span class="w3-display-topright dnnrocket-imageselected " title="" style="display:none;"><i class="fas fa-check-circle"></i></span>
+                                </div>
                                 lp += 1;
                             }
-                            imageRows.Add(imageItems);
-
-
-                            lp = 1;
-                            foreach (List<string> imageRow in imageRows)
-                            {
-                                <div class="w3-row">
-                                    @foreach (string imageName in imageRow)
-                                    {
-                                    <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
-                                        <img src="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150)" class="w3-border w3-padding" style="width:100%" />
-                                        <span class="w3-display-topright dnnrocket-imageselected " title="" style="display:none;" ><i class="fas fa-check-circle"></i></span>
-                                    </div>
-                                        lp += 1;
-                                    }
-                                </div>
-                            }
-
                         }
                     </div>
-                    <br/>
-                    <p>@imagecount</p>
+                    <br />
+                    <div class="w3-row">
+                        <p>@imagecount</p>
+                    </div>
+                    <br />
                 </div>
 
             </div>

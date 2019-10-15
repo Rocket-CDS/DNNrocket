@@ -231,6 +231,9 @@
   <data name="resx.Text" xml:space="preserve">
     <value>RESX</value>
   </data>
+  <data name="rocketapptheme.Text" xml:space="preserve">
+    <value>Local AppThemes</value>
+  </data>
   <data name="saveas.Text" xml:space="preserve">
     <value>Save As</value>
   </data>
