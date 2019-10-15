@@ -235,6 +235,9 @@
     <value>Save As</value>
   </data>
   <data name="search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="searchapptheme.Text" xml:space="preserve">
     <value>Search for AppThemes</value>
   </data>
   <data name="searchlanguage.Text" xml:space="preserve">

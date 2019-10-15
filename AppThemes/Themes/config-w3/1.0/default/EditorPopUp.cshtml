@@ -111,7 +111,11 @@
 
 
     <div class="w3-sidebar w3-bar-block w3-card w3-animate-right w3-light-grey " style="display:none;right:0;z-index:9999;width:300px" id="rightMenuTokens">
-        <button onclick="closeRightMenu()" class="w3-right-align w3-bar-item w3-button w3-large">&times;</button>
+        <div id="searchbar" class="w3-bar-item">
+            <input class="w3-col w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.search")..." id="rightmenusearchtext" onkeyup="rightmenusearchFunction()" style="width:200px;">
+            @ButtonGap()
+            <button onclick="closeRightMenu()" class="w3-col w3-right-align w3-button w3-large" style="width:40px">&times;</button>
+        </div>
 
         <button class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('fieldstokensection')">@ResourceKey("AppThemes.fields") <i class="fa fa-caret-down"></i></button>
         <div id="fieldstokensection" class="w3-hide w3-white w3-white w3-card">
@@ -168,5 +172,24 @@ function closeRightMenu() {
   document.getElementById("rightMenuTokens").style.display = "none";
     $('#openRightMenuButton').show();
     $('#closeRightMenuButton').hide();
+    }
+
+function rightmenusearchFunction() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("rightmenusearchtext");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("rightMenuTokens");
+    li = ul.getElementsByTagName("div");
+    for (i = 0; i < li.length; i++) {
+        if (li[i].id !== 'searchbar') {
+            txtValue = li[i].textContent || li[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
 }
+
 </script>
