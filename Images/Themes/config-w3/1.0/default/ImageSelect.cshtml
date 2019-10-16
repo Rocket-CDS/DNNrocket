@@ -9,7 +9,7 @@
 </div>
 
 <div id="rocketimageselect" class="w3-modal">
-    <div class="w3-modal-content" style="width:80%;">
+    <div class="w3-modal-content" style="width:60%;">
 
         <header class="w3-theme-d5 w3-center" style="height: 38.5px;">
             <span onclick="dnnrocketimages_closethelist();" class="w3-button w3-display-topright">&times;</span>
@@ -19,38 +19,39 @@
             <br />
             <div class="w3-container">
 
-                <div class="w3-row">
-                    <span class="w3-col m2 w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</span>
-                    @ButtonGap()
-                    <span class="w3-col m2 w3-button w3-green w3-padding-8" onclick="dnnrocketimages_useimages()">@ResourceKey("DNNrocket.cmdUseButton")</span>
-                    @ButtonGap()
-                    <span class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketimages_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist" s-fields='{"theme":"config-w3","template":"imagelist.cshtml","interfacekey":"imageupload","uploadrelfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")","imagefolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")","singleselect":"true","autoreturn":"false"}'>@ResourceKey("DNNrocket.cmdDeleteButton")</span>
-                </div>
-
-                <div class="w3-row">
-                    <div class="w3-half w3-panel w3-white" style="border-style:dotted">
+                <div class="w3-container">
+                    <div class="w3-col m3 w3-white" style="border-style:dotted;">
                         <input id="imagefileupload" class="simplisity_fileupload" s-cmd="rocketimages_upload" s-reload="false" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields='{"createseo":"false","imageresize":"800","theme":"config-w3","template":"imagelist.cshtml","interfacekey":"imageupload","imagerootfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imagerootfolder")","imagefolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
                         <p><i>@ResourceKey("DNNrocket.dropimage")...</i></p>
                     </div>
-                    <div class="w3-half w3-panel">
-                        <div class="w3-col m3">
-                            @DropDownList(Model.HeaderData, "genxml/hidden/resize", "0,160,320,640,960,1280,-1", "None,XS,S,M,L,XL,Other", "class='w3-select w3-border'", "640")
-                        </div>
-                        <div class="w3-col m3 w3-margin-left" stype="width:90px;">                            
-                            @TextBox(Model.HeaderData, "genxml/hidden/resize", "disabled class='w3-input w3-border'", "640px")
+                    @ButtonGap()
+                    <div class="w3-col m8 ">
+                        <span class="w3-col m2 w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</span>
+                        @ButtonGap()
+                        <span class="w3-col m2 w3-button w3-green w3-padding-8" onclick="dnnrocketimages_useimages()">@ResourceKey("DNNrocket.cmdUseButton")</span>
+                        @ButtonGap()
+                        <span class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketimages_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist" s-fields='{"theme":"config-w3","template":"imagelist.cshtml","interfacekey":"imageupload","uploadrelfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")","imagefolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")","singleselect":"true","autoreturn":"false"}'>@ResourceKey("DNNrocket.cmdDeleteButton")</span>
+
+                        <div class="w3-col m5 w3-panel">
+                            <div class="w3-col m3">
+                                @DropDownList(Model.HeaderData, "genxml/hidden/resize", "0,160,320,640,960,1280,-1", "None,XS,S,M,L,XL,Other", "class='w3-select w3-border'", "640")
+                            </div>
+                            @ButtonGap()
+                            <div class="w3-col m3" stype="width:90px;">
+                                @TextBox(Model.HeaderData, "genxml/hidden/resize", "disabled class='w3-input w3-border'", "640px")
+                            </div>
                         </div>
                     </div>
                 </div>
 
-
-                    <div id="rocketimageselectlist" class="w3-container">
+                    <div id="rocketimageselectlist" class="w3-container w3-margin-top">
                         <div class="w3-container">
                             @{
                                 var lp = 1;
                                 var imagecount = Model.List.Count();
                                 foreach (string imageName in Model.List)
                                 {
-                                    <div class="w3-display-container w3-col m1 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
+                                    <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
                                         <img src="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150)" class="w3-border w3-padding" style="width:100%" />
                                         <span class="w3-display-topright dnnrocket-imageselected " title="" style="display:none;"><i class="fas fa-check-circle"></i></span>
                                     </div>
