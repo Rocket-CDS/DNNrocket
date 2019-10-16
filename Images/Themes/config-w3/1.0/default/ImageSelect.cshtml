@@ -11,9 +11,9 @@
 <div id="rocketimageselect" class="w3-modal">
     <div class="w3-modal-content">
 
-        <header class="w3-theme-d5 w3-center" style="height: 38px;">
+        <header class="w3-theme-d5 w3-center" style="height: 38.5px;">
             <span onclick="dnnrocketimages_closethelist();" class="w3-button w3-display-topright">&times;</span>
-            <h4>@ResourceKey("DNNrocket.imagesfolder"):&nbsp; @Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")</h4>
+            <h4>@ResourceKey("DNNrocket.imagesfolder")</h4>
         </header>
         <div class="" style="">
             <br />
@@ -22,7 +22,7 @@
                 <span class="w3-section">
                     <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</span>
                     <span class="w3-button w3-green w3-padding-8" onclick="dnnrocketimages_useimages()">@ResourceKey("DNNrocket.cmdUseButton")</span>
-                    <span class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketimages_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist"  s-fields='{"theme":"config-w3","template":"imagelist.cshtml","interfacekey":"imageupload","imagerootfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imagerootfolder")","imagefolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")","singleselect":"true","autoreturn":"false"}'>@ResourceKey("DNNrocket.cmdDeleteButton")</span>
+                    <span class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketimages_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist"  s-fields='{"theme":"config-w3","template":"imagelist.cshtml","interfacekey":"imageupload","uploadrelfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")","imagefolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")","singleselect":"true","autoreturn":"false"}'>@ResourceKey("DNNrocket.cmdDeleteButton")</span>
                 </span>
 
                 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
@@ -45,11 +45,13 @@
                             }
                         }
                     </div>
-                    <br />
                     <div class="w3-row">
                         <p>@imagecount</p>
+                        @if (DNNrocketUtils.IsInRole("Administrator"))
+                        {
+                            <p class="w3-small">@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")</p>
+                        }
                     </div>
-                    <br />
                 </div>
 
             </div>

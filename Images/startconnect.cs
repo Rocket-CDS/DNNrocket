@@ -128,25 +128,28 @@ namespace DNNrocket.Images
 
         public static void DeleteImages()
         {
-            var imagefolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
-            if (imagefolder == "") imagefolder = "images";
-            var imageDirectory = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + imagefolder;
-            var imageList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-imagelist").Split(';');
-            foreach (var i in imageList)
+            var uploadrelfolder = _paramInfo.GetXmlProperty("genxml/hidden/uploadrelfolder");
+            if (uploadrelfolder != "")
             {
-                if (i != "")
+                var imageDirectory = DNNrocketUtils.MapPath(uploadrelfolder);
+                var imageList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-imagelist").Split(';');
+                foreach (var i in imageList)
                 {
-                    var friendlyname = GeneralUtils.DeCode(i);
-                    var imageFile = imageDirectory + "\\" + friendlyname;
-                    if (File.Exists(imageFile))
+                    if (i != "")
                     {
-                        File.Delete(imageFile);
+                        var friendlyname = GeneralUtils.DeCode(i);
+                        var imageFile = imageDirectory + "\\" + friendlyname;
+                        if (File.Exists(imageFile))
+                        {
+                            File.Delete(imageFile);
+                        }
                     }
                 }
-            }
 
-            CacheUtils.ClearAllCache();
-            DNNrocketUtils.ClearPortalCache();
+                CacheUtils.ClearAllCache();
+                DNNrocketUtils.ClearPortalCache();
+
+            }
 
         }
 

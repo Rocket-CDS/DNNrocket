@@ -48,15 +48,13 @@ namespace Rocket.AppThemes.Componants
             AppSummary = "";
             AppThemeFolder = appThemeFolder;
             AppVersionFolder = versionFolder;
-            if (AppVersionFolder == "") AppVersionFolder = "1.0";
-
             AppSystemThemeFolderRel = AppProjectFolderRel + "/SystemThemes/" + SystemKey;
-
             AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
 
             AssignVersionFolders();
 
             PopulateVersionList();
+
             if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder; ;
             _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
 
@@ -789,6 +787,7 @@ namespace Rocket.AppThemes.Componants
                 VersionList.Reverse();
                 LatestVersionFolder = (string)VersionList.First();
             }
+            if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
         }
 
         private string GenerateEditForm(int row)
