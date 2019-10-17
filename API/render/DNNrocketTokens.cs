@@ -18,6 +18,18 @@ namespace DNNrocketAPI.render
     public class DNNrocketTokens<T> : Simplisity.RazorEngineTokens<T>
     {
 
+        public IEncodedString ResourceCSV(String resourceFileKey, string keyListCSV, string lang = "", string resourceExtension = "Text")
+        {
+            var csvList = keyListCSV.Split(',');
+            var strOut = "";
+            foreach (var csv in csvList)
+            {
+                var resourceFileKeyCsv = resourceFileKey + "-" + csv;
+                strOut += ResourceKeyString(resourceFileKeyCsv, lang, resourceExtension).Replace(",",".") + ",";
+            }
+            return new RawString(strOut.TrimEnd(','));
+        }
+
         public IEncodedString ResourceKey(String resourceFileKey, String lang = "", String resourceExtension = "Text")
         {
             return new RawString(ResourceKeyString(resourceFileKey, lang, resourceExtension));

@@ -437,7 +437,7 @@ namespace Rocket.AppThemes.Componants
             {
                 var filename = t;
                 var delItem = postInfo.GetListItem("resxlist", "genxml/hidden/fullfilename", filename);
-                if (delItem == null && File.Exists(AppThemeVersionFolderMapPath + "\\resx\\" + filename)) File.Delete(AppThemeVersionFolderMapPath + "\\resx\\" + filename);
+                if (delItem != null && File.Exists(AppThemeVersionFolderMapPath + "\\resx\\" + filename)) File.Delete(AppThemeVersionFolderMapPath + "\\resx\\" + filename);
             }
 
             // get fields
@@ -499,9 +499,14 @@ namespace Rocket.AppThemes.Componants
 
                 foreach (var f in fieldNames)
                 {
-                    if (!jsonDict.ContainsKey(f.Key + ".Text"))
+                    var keyname = f.Key + ".Text";
+                    if (jsonDict.ContainsKey(keyname))
                     {
-                        jsonDict.Add(f.Key + ".Text", f.Value);
+                        fileFields += "  <data name=\"" + keyname + "\" xml:space=\"preserve\"><value>" + jsonDict[keyname] + "</value></data>";
+                    }
+                    else
+                    {
+                        jsonDict.Add(keyname, f.Value);
                         if (culturecode == "")
                         {
                             fileFields += "  <data name=\"" + f.Key + ".Text\" xml:space=\"preserve\"><value>" + f.Value + "</value></data>";
@@ -509,14 +514,6 @@ namespace Rocket.AppThemes.Componants
                         else
                         {
                             fileFields += "  <data name=\"" + f.Key + ".Text\" xml:space=\"preserve\"><value></value></data>";
-                        }
-                    }
-                    else
-                    {
-                        if (culturecode == "")
-                        {
-                            fileFields += "  <data name=\"" + f.Key + ".Text\" xml:space=\"preserve\"><value>" + f.Value + "</value></data>";
-                            jsonDict[f.Key + ".Text"] = f.Value;
                         }
                     }
                 }
@@ -534,7 +531,7 @@ namespace Rocket.AppThemes.Componants
                 postInfo.SetXmlProperty("genxml/resxlist/genxml[" + idx + "]/hidden/jsonresx", GeneralUtils.EnCode(jsonStr));
 
                 // Save to file
-                var resxtemplate = FileUtils.ReadFile(AppProjectFolderMapPath + @"\Themes\config-w3\1.0\default\resxtemplate.xml");
+                var resxtemplate = FileUtils.ReadFile(AppProjectFolderMapPath + @"\AppThemeBase\resxtemplate.xml");
                 if (resxtemplate != "")
                 {
                     resxtemplate = resxtemplate.Replace("<injectdatanodes/>", fileFields);
@@ -843,15 +840,16 @@ namespace Rocket.AppThemes.Componants
                     if (defaultBool == "") defaultBool = "false";
                     var attributes = f.GetXmlProperty("genxml/textbox/attributes");
                     var fieldname = f.GetXmlProperty("genxml/textbox/name");
+                    var resxKeyName = AppThemeFolder + "." + labelname.Replace(".Text", "");
 
                     strFieldList += "\t<div class='w3-col m" + size + " w3-padding'>" + Environment.NewLine;
 
                     if (labelname != "")
                     {
-                        var resxLabelItem = jasonInfo.GetRecordListItem("resxlistvalues", "genxml/text/*[starts-with(name(), 'name')]", labelname.Replace(".Text", "") + ".Text");
+                        var resxLabelItem = jasonInfo.GetRecordListItem("resxlistvalues", "genxml/text/*[starts-with(name(), 'name')]", resxKeyName + ".Text");
                         if (resxLabelItem != null)
                         {
-                            strFieldList += "\t\t<label>@ResourceKey(\"" + AppThemeFolder + "." + labelname.Replace(".Text", "") + "\")</label>";
+                            strFieldList += "\t\t<label>@ResourceKey(\"" + resxKeyName + "\")</label>";
                         }
                         else
                         {
@@ -882,53 +880,22 @@ namespace Rocket.AppThemes.Componants
                     {
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
                         var resxDict = GetResxDictionary(new SimplisityInfo(Record));
-                        var datatext = "";
-                        foreach (var r in datavalue.Split(','))
-                        {
-                            var resxKey = fieldname + "-" + r + ".Text";
-                            if (resxDict.ContainsKey(resxKey))
-                            {
-                                datatext += resxDict[resxKey].Replace(",", ".") + ",";
-                            }
-                            else
-                            {
-                                datatext += ",";
-                            }
-                        }
-                        datatext = datatext.TrimEnd(',');
-                        strFieldList += "\t\t@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\",\"" + datatext + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
+                        var datatext = "ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString()";
+                        strFieldList += "\t\t@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\"," + datatext + ",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
                     {
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
                         var resxDict = GetResxDictionary(new SimplisityInfo(Record));
-                        var datatext = "";
-                        foreach (var r in datavalue.Split(','))
-                        {
-                            var resxKey = fieldname + "-" + r + ".Text";
-                            if (resxDict.ContainsKey(resxKey))
-                                datatext += resxDict[resxKey].Replace(",", ".") + ",";
-                            else
-                                datatext += ",";
-                        }
-                        datatext = datatext.TrimEnd(',');
-                        strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue.Replace("\"", "\\\"") + "\",\"" + datatext.Replace("\"", "\\\"") + "\",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
+                        var datatext = "ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString()";
+                        strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue.Replace("\"", "\\\"") + "\"," + datatext + ",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
                     {
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
                         var resxDict = GetResxDictionary(new SimplisityInfo(Record));
-                        var datatext = "";
-                        foreach (var r in datavalue.Split(','))
-                        {
-                            var resxKey = fieldname + "-" + r + ".Text";
-                            if (resxDict.ContainsKey(resxKey))
-                                datatext += resxDict[resxKey].Replace(",", ".") + ",";
-                            else
-                                datatext += ",";
-                        }
-                        datatext = datatext.TrimEnd(',');
-                        strFieldList += "\t\t@CheckBoxList(info,\"" + xpath + "\",\"" + datavalue + "\",\"" + datatext + "\",\"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
+                        var datatext = "ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString()";
+                        strFieldList += "\t\t@CheckBoxList(info,\"" + xpath + "\",\"" + datavalue + "\"," + datatext + ",\"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "image")
                     {
