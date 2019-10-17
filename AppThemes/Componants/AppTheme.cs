@@ -433,11 +433,10 @@ namespace Rocket.AppThemes.Componants
         }
         private SimplisityInfo ActionListResxFiles(SimplisityInfo postInfo)
         {
-            foreach (var t in _resxFileName)
+            var fileList = Directory.GetFiles(AppThemeVersionFolderMapPath + "\\resx", "*.resx");
+            foreach (var filenamepath in fileList)
             {
-                var filename = t;
-                var delItem = postInfo.GetListItem("resxlist", "genxml/hidden/fullfilename", filename);
-                if (delItem != null && File.Exists(AppThemeVersionFolderMapPath + "\\resx\\" + filename)) File.Delete(AppThemeVersionFolderMapPath + "\\resx\\" + filename);
+                if (File.Exists(filenamepath)) File.Delete(filenamepath);
             }
 
             // get fields
@@ -502,19 +501,14 @@ namespace Rocket.AppThemes.Componants
                     var keyname = f.Key + ".Text";
                     if (jsonDict.ContainsKey(keyname))
                     {
-                        fileFields += "  <data name=\"" + keyname + "\" xml:space=\"preserve\"><value>" + jsonDict[keyname] + "</value></data>";
+                        var valueString = jsonDict[keyname].Replace("]]>", "");
+                        if (valueString == "") valueString = defaultDict[keyname].Replace("]]>", "");
+                        fileFields += "  <data name=\"" + keyname + "\" xml:space=\"preserve\"><value><![CDATA[" + valueString + "]]></value></data>";
                     }
                     else
                     {
-                        jsonDict.Add(keyname, f.Value);
-                        if (culturecode == "")
-                        {
-                            fileFields += "  <data name=\"" + f.Key + ".Text\" xml:space=\"preserve\"><value>" + f.Value + "</value></data>";
-                        }
-                        else
-                        {
-                            fileFields += "  <data name=\"" + f.Key + ".Text\" xml:space=\"preserve\"><value></value></data>";
-                        }
+                        jsonDict.Add(keyname, defaultDict[keyname].Replace("]]>", ""));
+                        fileFields += "  <data name=\"" + f.Key + ".Text\" xml:space=\"preserve\"><value><![CDATA[" + defaultDict[keyname].Replace("]]>", "") + "]]></value></data>";
                     }
                 }
 
@@ -548,8 +542,8 @@ namespace Rocket.AppThemes.Componants
             var lp = 1;
             foreach (var j in jsonDict)
             {
-                jsonStr += "{\"id\":\"name_" + lp + "\",\"value\":\"" + j.Key + "\",\"row\":\"" + lp + "\",\"listname\":\".resxlistvalues\",\"type\":\"text\"},";
-                jsonStr += "{\"id\":\"value_" + lp + "\",\"value\":\"" + j.Value + "\",\"row\":\"" + lp + "\",\"listname\":\".resxlistvalues\",\"type\":\"text\"},";
+                jsonStr += "{\"id\":\"name_" + lp + "\",\"value\":\"" + j.Key.Replace("\"", "") + "\",\"row\":\"" + lp + "\",\"listname\":\".resxlistvalues\",\"type\":\"text\"},";
+                jsonStr += "{\"id\":\"value_" + lp + "\",\"value\":\"" + j.Value.Replace("\"", "") + "\",\"row\":\"" + lp + "\",\"listname\":\".resxlistvalues\",\"type\":\"text\"},";
                 lp += 1;
             }
             jsonStr = jsonStr.TrimEnd(',') + "]}";
@@ -573,11 +567,12 @@ namespace Rocket.AppThemes.Componants
                         var row = 1;
                         foreach (var i in jasonInfo.GetList("resxlistvalues"))
                         {
-                            if (i.GetXmlProperty("genxml/text/*[1]") != "")
+                            var keyname = i.GetXmlProperty("genxml/text/*[1]").Replace("\"", "");
+                            if (keyname != "")
                             {
-                                if (!defaultDict.ContainsKey(i.GetXmlProperty("genxml/text/*[1]")))
+                                if (!defaultDict.ContainsKey(keyname))
                                 {
-                                    defaultDict.Add(i.GetXmlProperty("genxml/text/*[1]"), i.GetXmlProperty("genxml/text/*[2]"));
+                                    defaultDict.Add(keyname, i.GetXmlProperty("genxml/text/*[2]").Replace("\"",""));
                                 }
                             }
                             row += 1;
