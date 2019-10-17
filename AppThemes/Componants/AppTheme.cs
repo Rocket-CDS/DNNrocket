@@ -881,19 +881,53 @@ namespace Rocket.AppThemes.Componants
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
                     {
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        var datatext = GetDictionaryDecoded(f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue"));
+                        var resxDict = GetResxDictionary(new SimplisityInfo(Record));
+                        var datatext = "";
+                        foreach (var r in datavalue.Split(','))
+                        {
+                            var resxKey = fieldname + "-" + r + ".Text";
+                            if (resxDict.ContainsKey(resxKey))
+                            {
+                                datatext += resxDict[resxKey].Replace(",", ".") + ",";
+                            }
+                            else
+                            {
+                                datatext += ",";
+                            }
+                        }
+                        datatext = datatext.TrimEnd(',');
                         strFieldList += "\t\t@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\",\"" + datatext + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
                     {
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        var datatext = GetDictionaryDecoded(f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue"));
+                        var resxDict = GetResxDictionary(new SimplisityInfo(Record));
+                        var datatext = "";
+                        foreach (var r in datavalue.Split(','))
+                        {
+                            var resxKey = fieldname + "-" + r + ".Text";
+                            if (resxDict.ContainsKey(resxKey))
+                                datatext += resxDict[resxKey].Replace(",", ".") + ",";
+                            else
+                                datatext += ",";
+                        }
+                        datatext = datatext.TrimEnd(',');
                         strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue.Replace("\"", "\\\"") + "\",\"" + datatext.Replace("\"", "\\\"") + "\",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
                     {
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        var datatext = GetDictionaryDecoded(f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue"));
+                        var resxDict = GetResxDictionary(new SimplisityInfo(Record));
+                        var datatext = "";
+                        foreach (var r in datavalue.Split(','))
+                        {
+                            var resxKey = fieldname + "-" + r + ".Text";
+                            if (resxDict.ContainsKey(resxKey))
+                                datatext += resxDict[resxKey].Replace(",", ".") + ",";
+                            else
+                                datatext += ",";
+                        }
+                        datatext = datatext.TrimEnd(',');
                         strFieldList += "\t\t@CheckBoxList(info,\"" + xpath + "\",\"" + datavalue + "\",\"" + datatext + "\",\"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "image")
