@@ -498,4 +498,7 @@
   <data name="import.Text" xml:space="preserve">
     <value>Import</value>
   </data>
+  <data name="resizeonupload.Text" xml:space="preserve">
+    <value>Resize on Upload</value>
+  </data>
 </root>

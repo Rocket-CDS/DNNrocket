@@ -267,11 +267,9 @@ namespace DNNrocketAPI
 
                 return fileNamePathOut;
             }
-            // ReSharper disable UnusedVariable
-            catch (Exception)
-            // ReSharper restore UnusedVariable
+            catch (Exception ex)
             {
-                return "";
+                return ex.ToString();
             }
 
         }
