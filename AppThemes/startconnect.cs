@@ -106,6 +106,9 @@ namespace DNNrocket.AppThemes
                         SaveData();
                         strOut = AddListResx();
                         break;
+                    case "rocketapptheme_rebuildresx":
+                        strOut = RebuildResx();
+                        break;  
                     case "rocketapptheme_addfield":
                         SaveData();
                         strOut = AddListField();
@@ -429,6 +432,12 @@ private static Dictionary<string, string> ExportAppTheme()
             if (resxItem != null) jsonResx = resxItem.GetXmlProperty("genxml/hidden/jsonresx");
 
             _appTheme.AddListResx(culturecoderesx, jsonResx);
+            return GetEditTemplate(_appTheme);
+        }
+        public static string RebuildResx()
+        {
+            var culturecoderesx = _paramInfo.GetXmlProperty("genxml/hidden/culturecoderesx");
+            _appTheme.ReBuildResx(culturecoderesx);
             return GetEditTemplate(_appTheme);
         }
         private static string AddListField()

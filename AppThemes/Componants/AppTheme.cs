@@ -431,24 +431,30 @@ namespace Rocket.AppThemes.Componants
                 FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\js\\" + fname, GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodejavascript")));
             }
         }
-        private SimplisityInfo ActionListResxFiles(SimplisityInfo postInfo)
-        {
-            var fileList = Directory.GetFiles(AppThemeVersionFolderMapPath + "\\resx", "*.resx");
-            foreach (var filenamepath in fileList)
-            {
-                if (File.Exists(filenamepath)) File.Delete(filenamepath);
-            }
 
+        public Dictionary<string, string> GetFieldDictionary(bool withExt = true)
+        {
+            return GetFieldDictionary(Record, withExt);
+        }
+        public Dictionary<string,string> GetFieldDictionary(SimplisityRecord record, bool withExt = true)
+        {
             // get fields
             var fieldNames = new Dictionary<string, string>();
-            foreach (var f in postInfo.GetList("fielddata"))
+            foreach (var f in record.GetRecordList("fielddata"))
             {
                 var fieldname = f.GetXmlProperty("genxml/textbox/name");
                 if (fieldname != "")
                 {
-                    var newfieldname = fieldname.Split('_')[0];
+                    var newfieldname = fieldname.Split('_')[0];                   
                     var labelvalue = f.GetXmlProperty("genxml/textbox/label");
-                    fieldNames.Add(newfieldname, labelvalue);
+                    if (withExt)
+                    {
+                        fieldNames.Add(newfieldname + ".Text", labelvalue);
+                    }
+                    else
+                    {
+                        fieldNames.Add(newfieldname, labelvalue);
+                    }
 
                     // Add dictionary values for dropdownlist and radiobuttons.
                     var keylist = f.GetXmlProperty("genxml/hidden/dictionarykey");
@@ -465,7 +471,14 @@ namespace Rocket.AppThemes.Componants
                                 var resxfieldname = newfieldname + "-" + GeneralUtils.DeCode(k);
                                 if (resxfieldname != "")
                                 {
-                                    fieldNames.Add(resxfieldname, GeneralUtils.DeCode(valuearray[lp]));
+                                    if (withExt)
+                                    {
+                                        fieldNames.Add(resxfieldname + ".Text", GeneralUtils.DeCode(valuearray[lp]));
+                                    }
+                                    else
+                                    {
+                                        fieldNames.Add(resxfieldname, GeneralUtils.DeCode(valuearray[lp]));
+                                    }
                                 }
                                 lp += 1;
                             }
@@ -474,18 +487,33 @@ namespace Rocket.AppThemes.Componants
                     }
                 }
             }
+            return fieldNames;
+        }
+
+        private SimplisityInfo ActionListResxFiles(SimplisityInfo postInfo)
+        {
+            var fileList = Directory.GetFiles(AppThemeVersionFolderMapPath + "\\resx", "*.resx");
+            foreach (var filenamepath in fileList)
+            {
+                if (File.Exists(filenamepath)) File.Delete(filenamepath);
+            }
+
+            // get fields
+            var fieldNames = GetFieldDictionary(new SimplisityRecord(postInfo));
+
+            // get defaultDict
+            var defaultDict = GetResxDictionary(new SimplisityRecord(postInfo));
+            if (defaultDict.Count() == 0) defaultDict = fieldNames;
 
             // write localized fieldname list, so we can disable default resx fiedls if they exist as a field.
             var fieldlocalizedlist = "";
             foreach (var f in fieldNames)
             {
-                fieldlocalizedlist += f.Key + ".Text,";
+                fieldlocalizedlist += f.Key + ",";
             }
             postInfo.SetXmlProperty("genxml/hidden/fieldlocalizedlist", fieldlocalizedlist);
 
             var tList = postInfo.GetList("resxlist");
-            // get defaultDict
-            var defaultDict = GetResxDictionary(postInfo);
 
             //Write files.
             var idx = 1;
@@ -494,29 +522,55 @@ namespace Rocket.AppThemes.Componants
                 var fileFields = "";
                 var fname = templateInfo.GetXmlProperty("genxml/hidden/fullfilename");
                 var culturecode = templateInfo.GetXmlProperty("genxml/hidden/culturecode");
-                var jsonDict = GetResxDictionary(postInfo, culturecode);
-
-                foreach (var f in fieldNames)
+                var jsonDict = GetResxDictionary(new SimplisityRecord(postInfo), culturecode);
+                if (culturecode == "")
                 {
-                    var keyname = f.Key + ".Text";
-                    if (jsonDict.ContainsKey(keyname))
+                    // build default with current field names.
+                    foreach (var f in fieldNames)
                     {
-                        var valueString = jsonDict[keyname].Replace("]]>", "");
-                        if (valueString == "") valueString = defaultDict[keyname].Replace("]]>", "");
-                        fileFields += "  <data name=\"" + keyname + "\" xml:space=\"preserve\"><value><![CDATA[" + valueString + "]]></value></data>";
+                        var keyname = f.Key;
+                        if (defaultDict.ContainsKey(keyname))
+                        {
+                            defaultDict[f.Key] = f.Value;
+                        }
+                        else
+                        {
+                            defaultDict.Add(f.Key, f.Value);
+                        }
+                    }
+                    jsonDict = new Dictionary<string, string>();
+                    foreach (var d in defaultDict)
+                    {
+                        var keyname = d.Key;
+                        jsonDict.Add(keyname, defaultDict[keyname].Replace("]]>", "").Replace("\"", ""));
+                        fileFields += "  <data name=\"" + keyname + "\" xml:space=\"preserve\"><value><![CDATA[" + defaultDict[keyname].Replace("]]>", "").Replace("\"", "") + "]]></value></data>";
+                    }
+                }
+                else
+                {
+                    if (jsonDict.Count() == 0)
+                    {
+                        // build empty resx from default.
+                        foreach (var d in defaultDict)
+                        {
+                            var keyname = d.Key;
+                            jsonDict.Add(keyname, defaultDict[keyname].Replace("]]>", "").Replace("\"", ""));
+                            fileFields += "  <data name=\"" + keyname + "\" xml:space=\"preserve\"><value><![CDATA[" + defaultDict[keyname].Replace("]]>", "").Replace("\"", "") + "]]></value></data>";
+                        }
                     }
                     else
                     {
-                        jsonDict.Add(keyname, defaultDict[keyname].Replace("]]>", ""));
-                        fileFields += "  <data name=\"" + f.Key + ".Text\" xml:space=\"preserve\"><value><![CDATA[" + defaultDict[keyname].Replace("]]>", "") + "]]></value></data>";
-                    }
-                }
-
-                if (culturecode != "")
-                {
-                    foreach (var d in defaultDict)
-                    {
-                        if (!jsonDict.ContainsKey(d.Key)) jsonDict.Add(d.Key, "");
+                        // put default values in any empty values.
+                        foreach (var f in jsonDict)
+                        {
+                            var keyname = f.Key;
+                            if (jsonDict.ContainsKey(keyname))
+                            {
+                                var valueString = jsonDict[keyname].Replace("]]>", "");
+                                if (valueString == "") valueString = defaultDict[keyname].Replace("]]>", "").Replace("\"", "");
+                                fileFields += "  <data name=\"" + keyname + "\" xml:space=\"preserve\"><value><![CDATA[" + valueString + "]]></value></data>";
+                            }
+                        }
                     }
                 }
 
@@ -550,12 +604,12 @@ namespace Rocket.AppThemes.Componants
             return jsonStr;
         }
 
-        private Dictionary<string,string> GetResxDictionary(SimplisityInfo appThemeInfo, string culturecode = "")
+        private Dictionary<string,string> GetResxDictionary(SimplisityRecord appThemeRecord, string culturecode = "")
         {
-            var tList = appThemeInfo.GetList("resxlist");
+            var tList = appThemeRecord.GetRecordList("resxlist");
             // get defaultDict
             var defaultDict = new Dictionary<string, string>();
-            foreach (SimplisityInfo templateInfo in tList)
+            foreach (SimplisityRecord templateInfo in tList)
             {
                 var culturecode1 = templateInfo.GetXmlProperty("genxml/hidden/culturecode");
                 if (culturecode1 == culturecode)
@@ -622,6 +676,52 @@ namespace Rocket.AppThemes.Componants
             Update();
         }
 
+        public void ReBuildResx(string culturecode)
+        {
+            var listname = "resxlist";
+            var nbi = new SimplisityRecord();
+            if (culturecode == "")
+            {
+                nbi.SetXmlProperty("genxml/hidden/fullfilename", AppThemeFolder + ".resx");
+            }
+            else
+            {
+                nbi.SetXmlProperty("genxml/hidden/fullfilename", AppThemeFolder + "." + culturecode + ".resx");
+            }
+            nbi.SetXmlProperty("genxml/hidden/culturecode", culturecode);
+            nbi.SetXmlProperty("genxml/hidden/filefolder", "resx");
+
+            var jsonDict = new Dictionary<string, string>();
+            var rtnDict = GetFieldDictionary();
+            var resxDict = GetResxDictionary(Record, culturecode);
+            foreach (var d in rtnDict)
+            {
+                jsonDict.Add(d.Key, d.Value);
+            }
+            foreach (var d in resxDict)
+            {
+                if (jsonDict.ContainsKey(d.Key)) jsonDict.Remove(d.Key);
+                jsonDict.Add(d.Key, d.Value);
+            }
+            var jsonStr = BuildJsonResx(jsonDict);
+            nbi.SetXmlProperty("genxml/hidden/jsonresx", GeneralUtils.EnCode(jsonStr));
+
+            var l = Record.GetRecordList(listname);
+            var idx = 1;
+            var rtnidx = -1;
+            foreach (var r in l)
+            {
+                if (r.GetXmlProperty("genxml/hidden/culturecode") == culturecode) rtnidx = idx;
+                idx += 1;
+            }
+            if (rtnidx >= 1)
+            {
+                Record.RemoveRecordListItem(listname, rtnidx);
+                Record.AddListItem(listname, nbi.XMLData);
+                Update();
+            }
+        }
+
 
         public void AddListResx(string culturecode, string jsonresx = "")
         {
@@ -636,13 +736,13 @@ namespace Rocket.AppThemes.Componants
                 nbi.SetXmlProperty("genxml/hidden/fullfilename", AppThemeFolder + "." + culturecode + ".resx");
             }
             nbi.SetXmlProperty("genxml/hidden/culturecode", culturecode);
-
+            nbi.SetXmlProperty("genxml/hidden/filefolder", "resx");
 
             var jsonDict = new Dictionary<string, string>();
-            var rtnDict = GetResxDictionary(new SimplisityInfo(Record));
+            var rtnDict = GetResxDictionary(Record);
             foreach (var d in rtnDict)
             {
-                jsonDict.Add(d.Key,"");
+                jsonDict.Add(d.Key,d.Value);
             }
             var jsonStr = BuildJsonResx(jsonDict);
             nbi.SetXmlProperty("genxml/hidden/jsonresx", GeneralUtils.EnCode(jsonStr));
@@ -874,21 +974,21 @@ namespace Rocket.AppThemes.Componants
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
                     {
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        var resxDict = GetResxDictionary(new SimplisityInfo(Record));
+                        var resxDict = GetResxDictionary(Record);
                         var datatext = "ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString()";
                         strFieldList += "\t\t@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\"," + datatext + ",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
                     {
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        var resxDict = GetResxDictionary(new SimplisityInfo(Record));
+                        var resxDict = GetResxDictionary(Record);
                         var datatext = "ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString()";
                         strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue.Replace("\"", "\\\"") + "\"," + datatext + ",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
                     {
                         var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        var resxDict = GetResxDictionary(new SimplisityInfo(Record));
+                        var resxDict = GetResxDictionary(Record);
                         var datatext = "ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString()";
                         strFieldList += "\t\t@CheckBoxList(info,\"" + xpath + "\",\"" + datavalue + "\"," + datatext + ",\"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
                     }
