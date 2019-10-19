@@ -68,7 +68,7 @@
                     <input value="" id="appthemename" s-xpath="genxml/textbox/appthemename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.appthemename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
                 </div>
                 <div class="w3-col m3 w3-padding">
-                    <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_docopy" s-post="#copyapptheme" s-return=".copyappthemereturn" s-after="redisplayapptheme" s-fields=''><i class="fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copy")</div>
+                    <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_docopy" s-post="#copyapptheme" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class="fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copy")</div>
                 </div>
             </div>
             <div class="w3-row w3-panel w3-red copyappthemereturn" style="display:none;">
@@ -90,7 +90,7 @@
                 <button class="w3-button">More...</button>
                 <div class="w3-dropdown-content w3-bar-block w3-card">
                     <div class="w3-bar-item w3-button simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-blue fas fa-newspaper fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
-                    <div class="w3-bar-item w3-button simplisity_confirmclick" s-track="false" s-return="#dummyreturn" s-after="copyappthemereturn" s-confirm="@ResourceKey("AppThemes.copymsg")&nbsp;?" s-cmd="rocketapptheme_copyapptheme" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-blue fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copyapptheme")</div>
+                    <div class="w3-bar-item w3-button" onclick="document.getElementById('copyapptheme').style.display = 'block';"><i class="w3-text-blue fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copyapptheme")</div>
                     <a class="w3-bar-item w3-button w3-padding-8 simplisity_filedownload" s-track="false" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-teal fas fa-file-export fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNRocket.cmdExport")</a>
                     <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete") AppTheme</div>
                     <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")</div>
@@ -577,7 +577,6 @@
     </div>
 </div>
 
-
 <style>
     .CodeMirror {
         border: 1px solid #eee;
@@ -657,6 +656,7 @@
         });
 
         showDataTab();
+
     });
 
     function quickresxedit() {
@@ -672,9 +672,6 @@
         $('.changeversionclass').attr('s-fields', '{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"' + newversion + '"}');
     }
 
-    function copyappthemereturn() {
-        document.getElementById('copyapptheme').style.display = 'block';
-    }
     function edittemplate(idx) {
         editeditor(idx, 'htmlmixed','templatelist');
     }
@@ -930,17 +927,18 @@
 
 
     function openDataTab(target, tabName) {
-      var i, x, tablinks;
-      x = document.getElementsByClassName("city");
-      for (i = 0; i < x.length; i++) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("city");
+        for (i = 0; i < x.length; i++) {
         x[i].style.display = "none";
-      }
-      tablinks = document.getElementsByClassName("tablink");
-      for (i = 0; i < x.length; i++) {
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" w3-theme-d5", "");
-      }
-      document.getElementById(tabName).style.display = "block";
+        }
+        document.getElementById(tabName).style.display = "block";
         $('.' + target).addClass('w3-theme-d5');
+        simplisity_setCookieValue('tabName', tabName);
         simplisity_setCookieValue('tabName', tabName);
     }
 
@@ -965,17 +963,5 @@
         }
 
     }
-
-    function redisplayapptheme() {
-        if ($('.copyappthemereturn').text() == '') {
-            simplisity_callserver($('.refreshdisplay'));
-        }
-        else {
-            $('.copyappthemereturn').show();
-        }
-    }
-
-
-
 
 </script>

@@ -48,7 +48,8 @@ namespace DNNrocket.AppThemes
                 _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
                 if (_appVersionFolder == "") _appVersionFolder = _userStorage.Get("selectedappversion");
-                if (_appVersionFolder == "") _userStorage.Set("selectedappversion", "1.0");
+                if (_appVersionFolder == "") _appVersionFolder = "1.0";
+                _userStorage.Set("selectedappversion", _appVersionFolder);
 
                 _selectedSystemKey = postInfo.GetXmlProperty("genxml/hidden/selectedsystemkey");
                 if (_selectedSystemKey == "")
@@ -118,6 +119,8 @@ namespace DNNrocket.AppThemes
                         break;
                     case "rocketapptheme_changeversion":
                         _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
+                        _appTheme.Record.SetXmlProperty("genxml/select/versionfolder", _appVersionFolder);
+                        _appTheme.Update();
                         _userStorage.Set("selectedappversion", _appVersionFolder);
                         _appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder, true);
                         strOut = GetDetail();
@@ -138,9 +141,6 @@ namespace DNNrocket.AppThemes
                         break;
                     case "rocketapptheme_saveeditor":
                         strOut = SaveEditor();
-                        break;
-                    case "rocketapptheme_copyapptheme":
-                        strOut = CopyAppTheme();
                         break;
                     case "rocketapptheme_docopy":
                         strOut = DoCopyAppTheme();
@@ -325,16 +325,6 @@ private static Dictionary<string, string> ExportAppTheme()
         {
             _appTheme.Save(_postInfo);
         }
-        /// <summary>
-        /// Save the appTheme to be copied.
-        /// </summary>
-        public static string CopyAppTheme()
-        {
-            _userStorage.Set("copyAppThemeFolder", _appTheme.AppThemeFolder);
-            _userStorage.Set("copyLatestVersionFolder", _appTheme.LatestVersionFolder);
-            _userStorage.Set("copyAppThemeExport", GeneralUtils.EnCode(_appTheme.Export(true)));
-            return "OK";
-        }
         public static string DoCopyAppTheme()
         {
             try
@@ -343,51 +333,11 @@ private static Dictionary<string, string> ExportAppTheme()
                 var appthemename = _postInfo.GetXmlProperty("genxml/textbox/appthemename");
                 var newAppThemeName = appthemename;
                 if (appthemeprefix != "") newAppThemeName = appthemeprefix + "_" + newAppThemeName;
-
-                var guidKey = "appTheme*" + _selectedSystemKey + "*" + newAppThemeName + "*1.0";
-
-                var copyAppTheme = _userStorage.Get("copyAppThemeFolder");
-                var copyLatestVersionFolder = _userStorage.Get("copyLatestVersionFolder");
-                var copyAppThemeExport = GeneralUtils.DeCode(_userStorage.Get("copyAppThemeExport"));
-
-                var appRecord = new SimplisityRecord();
-                appRecord.XMLData = copyAppThemeExport;
-
-                appRecord.SetXmlProperty("apptheme/data/appthemefolder", newAppThemeName);
-                appRecord.SetXmlProperty("apptheme/data/appversionfolder", "1.0");
-                appRecord.SetXmlProperty("apptheme/versions/version/item/itemid", "-1");
-                appRecord.SetXmlProperty("apptheme/versions/version/item/guidkey", guidKey);
-                appRecord.SetXmlProperty("apptheme/versions/version/item/genxml/select/versionfolder", "1.0");
-
-                // convert resx filename
-                var lp = 1;
-                var nodlist = appRecord.XMLDoc.SelectNodes("apptheme/versions/version/item/genxml/resxlist/genxml");
-                foreach (var XmlNode in nodlist)
-                {
-                    var cultureCode = appRecord.GetXmlProperty("apptheme/versions/version/item/genxml/resxlist/genxml[" + lp + "]/hidden/culturecode");
-                    var fullfilename = newAppThemeName + "." + cultureCode + ".resx";
-                    appRecord.SetXmlProperty("apptheme/versions/version/item/genxml/resxlist/genxml[" + lp + "]/hidden/fullfilename", fullfilename);
-                    lp += 1;
-                }
-                // convert resx in templates to new filename
-                lp = 1;
-                var nodlist2 = appRecord.XMLDoc.SelectNodes("apptheme/versions/version/item/genxml/templatelist/genxml");
-                foreach (var XmlNode in nodlist2)
-                {
-                    var editorcode = appRecord.GetXmlProperty("apptheme/versions/version/item/genxml/templatelist/genxml[" + lp + "]/hidden/editorcodehtmlmixed");
-                    var editorText = GeneralUtils.DeCode(editorcode);
-                    editorText.Replace("(\"" + copyAppTheme + ".", "(\"" + newAppThemeName + ".");
-                    appRecord.SetXmlProperty("apptheme/versions/version/item/genxml/templatelist/genxml[" + lp + "]/hidden/editorcodehtmlmixed", GeneralUtils.EnCode(editorText));
-                    lp += 1;
-                }
-
-                copyAppThemeExport = appRecord.XMLData;
-                _appTheme = new AppTheme(copyAppThemeExport);
-
+                _appTheme.Copy(newAppThemeName);
+                _appTheme = new AppTheme(_selectedSystemKey, newAppThemeName, _appTheme.LatestVersionFolder);
                 _appThemeDataList.PopulateSystemFolderList();
                 _appThemeDataList.PopulateAppThemeList();
-
-                return "";
+                return GetDetail();
             }
             catch (Exception ex)
             {

@@ -1409,6 +1409,109 @@ namespace Rocket.AppThemes.Componants
 
         }
 
+        public void Copy(string appThemeName)
+        {
+            // copy folder
+            var newAppThemeFolder = AppSystemThemeFolderMapPath + "\\" + appThemeName;
+            DirectoryCopy(AppThemeFolderMapPath, newAppThemeFolder, true);
+            // rename
+            var l = _objCtrl.GetList(-1, -1, "APPTHEME", "and guidkey like 'appTheme*" + SystemKey + "*" + AppThemeFolder + "*%' ");
+            foreach (SimplisityInfo i in l)
+            {
+                var iclone = (SimplisityInfo)i.Clone();
+                var r = new SimplisityRecord(iclone);
+                r.ItemID = -1; // create new record
+                var appVersionFolder = r.GetXmlProperty("genxml/select/versionfolder");
+                var newguidkey = "appTheme*" + SystemKey + "*" + appThemeName + "*" + appVersionFolder;
+                r.GUIDKey = newguidkey;
+                var newAppThemeVersionFolderRel = AppSystemThemeFolderRel + "/" + appThemeName + "/" + appVersionFolder;
+                var newAppThemeVersionFolderMapPath = AppSystemThemeFolderMapPath + "\\" + appThemeName + "\\" + appVersionFolder;
+                var oldAppThemeVersionFolderMapPath = AppSystemThemeFolderMapPath + "\\" + AppThemeFolder + "\\" + appVersionFolder;
+
+                // rename rex files
+                var rlist = r.GetRecordList("resxlist");
+                var lp = 1;
+                foreach (var ri1 in rlist)
+                {
+                    var oldname = ri1.GetXmlProperty("genxml/hidden/fullfilename");
+                    var culturecode = ri1.GetXmlProperty("genxml/hidden/culturecode");
+                    var newName = appThemeName + "." + culturecode +  ".resx";
+                    r.SetXmlProperty("genxml/resxlist/genxml[" + lp + "]/hidden/fullfilename", newName);
+                    if (!File.Exists(newAppThemeVersionFolderMapPath + "\\resx\\" + newName))
+                    {
+                        if (File.Exists(oldAppThemeVersionFolderMapPath + "\\resx\\" + oldname))
+                        {
+                            File.Move(oldAppThemeVersionFolderMapPath + "\\resx\\" + oldname, newAppThemeVersionFolderMapPath + "\\resx\\" + newName);
+                        }
+                    }
+                    lp += 1;
+                }
+                // convert resx in templates to new filename
+                rlist = r.GetRecordList("templatelist");
+                lp = 1;
+                foreach (var ri2 in rlist)
+                {
+                    var editorcode = ri2.GetXmlProperty("genxml/hidden/editorcodehtmlmixed");
+                    var editorText = GeneralUtils.DeCode(editorcode);
+                    editorText.Replace("(\"" + AppThemeFolder + ".", "(\"" + appThemeName + ".");
+                    r.SetXmlProperty("genxml/templatelist/genxml[" + lp + "]/hidden/editorcodehtmlmixed", GeneralUtils.EnCode(editorText));
+                    lp += 1;
+                }
+
+                // convert image paths
+                rlist = r.GetRecordList("imagelist");
+                lp = 1;
+                foreach (var ri3 in rlist)
+                {
+                    var imagepath = ri3.GetXmlProperty("genxml/hidden/imagepathimg");
+                    var fname = Path.GetFileName(imagepath);
+                    imagepath = newAppThemeVersionFolderRel + "/img/" + fname;
+                    r.SetXmlProperty("genxml/imagelist/genxml[" + lp + "]/hidden/imagepathimg", imagepath);
+                    lp += 1;
+                }
+
+                _objCtrl.Update(r);
+            }
+        }
+
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            // If the destination directory doesn't exist, create it.
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
+            }
+        }
+
         #region "properties"
 
         public string AppProjectFolderRel { get; set; }
