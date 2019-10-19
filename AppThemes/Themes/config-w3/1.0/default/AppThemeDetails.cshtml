@@ -136,7 +136,7 @@
                         </div>
                         <div class="w3-col w3-padding" style="width:200px">
                             <label>@ResourceKey("AppThemes.version")</label>
-                            @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border simplisity_change' s-cmd='rocketapptheme_changeversion' s-post='#appthemedetails' s-track='false' s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
+                            @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border changeversionclass simplisity_change' s-before='changeversionaction' s-cmd='rocketapptheme_changeversion' s-post='#appthemedetails' s-track='true' s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
                         </div>
                     </div>
 
@@ -645,6 +645,11 @@
 
         showDataTab();
     });
+
+    function changeversionaction() {
+        var newversion = $('.changeversionclass').val();
+        $('.changeversionclass').attr('s-fields', '{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"' + newversion + '"}');
+    }
 
     function copyappthemereturn() {
         document.getElementById('copyapptheme').style.display = 'block';

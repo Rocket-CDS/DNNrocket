@@ -117,7 +117,7 @@ namespace DNNrocket.AppThemes
                         strOut = CreateNewVersion();
                         break;
                     case "rocketapptheme_changeversion":
-                        _appVersionFolder = _postInfo.GetXmlProperty("genxml/select/versionfolder");
+                        _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
                         _userStorage.Set("selectedappversion", _appVersionFolder);
                         _appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder, true);
                         strOut = GetDetail();
