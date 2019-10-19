@@ -503,7 +503,13 @@ namespace Rocket.AppThemes.Componants
 
             // get defaultDict
             var defaultDict = GetResxDictionary(new SimplisityRecord(postInfo));
-            if (defaultDict.Count() == 0) defaultDict = fieldNames;
+            if (defaultDict.Count() == 0)
+            {
+                foreach (var f in fieldNames)
+                {
+                    defaultDict.Add(f.Key,f.Value);
+                }
+            }
 
             // write localized fieldname list, so we can disable default resx fiedls if they exist as a field.
             var fieldlocalizedlist = "";
