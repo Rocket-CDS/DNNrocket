@@ -129,7 +129,7 @@ namespace DNNrocket.AppThemes
                         strOut = DeleteTheme();
                         break;
                     case "rocketapptheme_addapptheme":
-                        strOut = AddNewAppTheme();
+                        strOut = CreateNewAppTheme();
                         break;
                     case "rocketapptheme_export":
                         return ExportAppTheme();
@@ -162,6 +162,7 @@ namespace DNNrocket.AppThemes
             {
                 var rtn = _appTheme.CopyVersion(_appTheme.AppVersionFolder, (Convert.ToDouble(_appTheme.LatestVersionFolder) + 1).ToString("0.0"));
                 _appVersionFolder = _appTheme.AppVersionFolder;
+                _userStorage.Set("selectedappversion", _appVersionFolder);
                 if (rtn != "") return rtn;
                 return GetDetail();
             }
@@ -202,7 +203,7 @@ namespace DNNrocket.AppThemes
             }
         }
 
-        public static string AddNewAppTheme()
+        public static string CreateNewAppTheme()
         {
             try
             {
@@ -224,6 +225,7 @@ namespace DNNrocket.AppThemes
 
                 // crearte new apptheme.
                 var appTheme = new AppTheme(_selectedSystemKey, newAppThemeName, "1.0");
+                _userStorage.Set("selectedappversion", "1.0");
 
                 _appThemeDataList.PopulateAppThemeList();
                 return "";

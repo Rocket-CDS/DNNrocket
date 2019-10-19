@@ -502,7 +502,7 @@
 
         <div class="w3-margin">
             <div class="w3-button w3-teal w3-padding-8" onclick="addresxvalue('','')">@ResourceKey("DNNrocket.cmdAddButton")</div>
-            <div class="w3-button w3-teal w3-padding-8" onclick="document.getElementById('quickresxedit').style.display='block'"><i class='fas fa-bolt  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.quickedit")</div>
+            <div class="w3-button w3-teal w3-padding-8" onclick="quickresxedit()"><i class='fas fa-bolt  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.quickedit")</div>
             <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_rebuildresx" s-track="false" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-wrench  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.rebuild")</div>
             <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistvaluesbin" s-return="#resxvalues" s-removelist=".resxlistvalues" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</div>
         </div>
@@ -523,6 +523,7 @@
 
         <div id="quickresxedit" class="w3-modal">
             <div class="w3-modal-content" style="width:70%;">
+                <input id="culturecodeselected" s-update="ignore" type="hidden" value="" />
 
                 <header class="w3-container w3-theme">
                     <span onclick="document.getElementById('quickresxedit').style.display='none'" class="w3-button w3-display-topright">&times;</span>
@@ -543,7 +544,7 @@
 
 
                 <footer class="w3-container w3-theme w3-padding">
-                    <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="saveresxquickedit()">@ResourceKey("DNNrocket.cmdOKButton")</div>
+                    <div class="w3-col m2 w3-button w3-pale-green w3-padding-8 saveresxquickedit" onclick="saveresxquickedit()">@ResourceKey("DNNrocket.cmdOKButton")</div>
                 </footer>
 
             </div>
@@ -658,6 +659,14 @@
         showDataTab();
     });
 
+    function quickresxedit() {
+        $('.saveresxquickedit').show();
+        $('#quickresxedit').show();
+        //if ($('#culturecodeselected').val() === '') {
+        //    $('.saveresxquickedit').hide();
+        //}
+    }
+
     function changeversionaction() {
         var newversion = $('.changeversionclass').val();
         $('.changeversionclass').attr('s-fields', '{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"' + newversion + '"}');
@@ -743,6 +752,7 @@
         }
         $('#resxflag').attr("src", "/DesktopModules/DNNrocket/API/images/flags/32/" + culturecode + ".png");
         $('#culturecoderesx').text($('#culturecodedisplayname' + idx).text());
+        $('#culturecode').val(culturecode);
 
         simplisity_setParamField('culturecoderesx', $('#culturecode_' + idx).val());  // send culture code to server when we add resx value.
 
