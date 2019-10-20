@@ -81,7 +81,7 @@ else
                 </span>
 
                 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
-                    <input id="importfileupload" class="simplisity_fileupload" s-cmd="rocketapptheme_import" s-reload="false" s-after="" s-return="" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields='{"theme":"config-w3","interfacekey":"rocketapptheme"}' type="file" name="files[]" multiple style="display:none;">
+                    <input id="importfileupload" class="simplisity_fileupload" s-cmd="rocketapptheme_import" s-reload="false" s-after="closeimportmodal" s-return="" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields='{"theme":"config-w3","interfacekey":"rocketapptheme"}' type="file" name="files[]" multiple style="display:none;">
                     <p><i>@ResourceKey("DNNrocket.drophere")...</i></p>
                 </div>
 
@@ -229,6 +229,10 @@ else
 
 
         });
+
+        function closeimportmodal() {
+            $('#importapptheme').hide();
+        }
 
     function showgrid() {
                 $('.griddisplayicon').addClass('w3-text-blue');

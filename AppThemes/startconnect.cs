@@ -286,10 +286,11 @@ private static Dictionary<string, string> ExportAppTheme()
     var appVersionFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder");
     var appTheme = new AppTheme(_selectedSystemKey, appThemeFolder, appVersionFolder, true);
 
-    var rtnDic = new Dictionary<string, string>();
+    var exportZipMapPath = appTheme.Export();
 
-    rtnDic.Add("downloadfiledata", appTheme.Export());
-    rtnDic.Add("downloadname", appTheme.AppThemeFolder + ".xml");
+    var rtnDic = new Dictionary<string, string>();
+    rtnDic.Add("filenamepath", exportZipMapPath);
+    rtnDic.Add("downloadname", appTheme.AppThemeFolder + ".zip");
 
     return rtnDic;
 }
@@ -307,9 +308,7 @@ private static Dictionary<string, string> ExportAppTheme()
                         var userFolder = DNNrocketUtils.TempDirectory();
                         var friendlyname = GeneralUtils.DeCode(f);
                         var fname = userFolder + "\\" + userid + "_" + friendlyname;
-                        // get import data 
-                        var xmlData = FileUtils.ReadFile(fname);
-                        var _appTheme = new AppTheme(xmlData, true, _systemInfoData.DebugMode);
+                        var _appTheme = new AppTheme(fname);
                         // delete import file
                         File.Delete(fname);
                     }
