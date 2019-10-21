@@ -12,11 +12,9 @@
 
 @if (Model.GetSettingBool("addeditscript"))
 {
-
-
-    <div id="rocketmodmodel_@(Model.ModuleId)" class="w3-modal">
+    <div id="rocketmodmodel_@(Model.ModuleId)" class="w3-modal" style="z-index:9999;">
         <div class="w3-modal-content w3-card-4 w3-grey " style="width: 90%;height: 90%;">
-            <span onclick="location.reload();" class="w3-button w3-right closeiframe">@ResourceKey("DNNrocket.cmdCloseButton")</span>
+            <span onclick="rocketmodeditiframeclose_@(Model.ModuleId)();" class="w3-button w3-right closeiframe">@ResourceKey("DNNrocket.cmdCloseButton")</span>
             <div class="w3-row" style="height: 100%">
                 <iframe id="rocketmodIframe_@(Model.ModuleId)" style="width: 100%; height: 100%;">@ResourceKey("RocketMod.iframesupport")</iframe>
             </div>
@@ -24,14 +22,26 @@
     </div>
 
     <script>
-    $(document).ready(function () {
-        sessionStorage.RocketModReturn = window.location.href;
+        $(document).ready(function () {
+            sessionStorage.RocketModReturn = window.location.href;
+            var scrollpos =  sessionStorage.RocketModScrollPos;
+            if (typeof (scrollpos) !== 'undefined' && scrollpos > 0) {
+                $('html').scrollTop(scrollpos);
+            }
     });
+
+       function rocketmodeditiframeclose_@(Model.ModuleId)() {
+           $('#rocketmodmodel_@(Model.ModuleId)').hide();
+           $('body').hide();
+           location.reload();
+        }
 
         function rocketmodeditiframe_@(Model.ModuleId)() {
             simplisity_setCookieValue('editlang', '@(DNNrocketUtils.GetCurrentCulture())');
+            sessionStorage.RocketModScrollPos = $(window).scrollTop();
             $('#rocketmodmodel_@(Model.ModuleId)').show();
             $('.actionMenu').hide();
+            $('body').css('overflow', 'hidden');
             hidePersonaBar();
             document.getElementById('rocketmodIframe_@(Model.ModuleId)').src = "/desktopmodules/dnnrocket/RocketMod/admin.html?tabid=@(Model.GetSetting("tabid"))&moduleid=@(Model.ModuleId)&editmode=1"
         }
