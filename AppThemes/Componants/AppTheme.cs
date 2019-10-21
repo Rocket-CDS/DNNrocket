@@ -950,7 +950,7 @@ namespace Rocket.AppThemes.Componants
 
                     if (labelname != "")
                     {
-                        var resxLabelItem = jasonInfo.GetRecordListItem("resxlistvalues", "genxml/text/*[starts-with(name(), 'name')]", resxKeyName + ".Text");
+                        var resxLabelItem = jasonInfo.GetRecordListItem("resxlistvalues", "genxml/text/*[starts-with(name(), 'name')]", labelname + ".Text");
                         if (resxLabelItem != null)
                         {
                             strFieldList += "\t\t<label>@ResourceKey(\"" + resxKeyName + "\")</label>";

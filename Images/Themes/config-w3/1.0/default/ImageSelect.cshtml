@@ -212,6 +212,12 @@ function dnnrocketimages_selectimage(element) {
             }
         });
         $('#rocketimageselect').hide();
+        try {
+            languageChange(); // trigger save button, after image has been attached.
+        } catch(ConvError) {
+            // Ignore if no function on template.
+        }
+
     }
 
 

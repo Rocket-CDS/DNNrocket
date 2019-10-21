@@ -32,7 +32,11 @@
         $('.languageFlagImg').attr('src','/DesktopModules/DNNrocket/API/images/flags/16/' + $(this).attr('editlang') + '.png');
         $('.languageFlagText').text($(this).text());
         // We need to save and reload or just reload on the list page.  So call a function in each template
-        languageChange();
+        try {
+            languageChange();
+        } catch(ConvError) {
+            // Ignore if no function on template.
+        }
 
     });        
 

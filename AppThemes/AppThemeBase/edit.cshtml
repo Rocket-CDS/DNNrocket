@@ -17,7 +17,7 @@
 
 
     <div class="w3-row w3-padding ">
-        <div class="w3-col m2 w3-button w3-green langchangesave simplisity_click" s-cmd="[Token:DefaultInterface]_save" s-fields='{"selecteditemid":"@info.ItemID"}' s-post="#datasection" s-list=".imagelist,.documentlist,.linklist)">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+        <div class="w3-col m2 w3-button w3-green langchangesave simplisity_click" s-cmd="[Token:DefaultInterface]_save" s-fields='{"selecteditemid":"@info.ItemID"}' s-post="#datasection" s-list=".imagelist,.documentlist,.linklist">@ResourceKey("DNNrocket.cmdSaveButton")</div>
         @ButtonGap()
         <div class="w3-col m2 w3-button w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="[Token:DefaultInterface]_delete" s-fields='{"selecteditemid":"@info.ItemID"}'>@ResourceKey("DNNrocket.cmdDeleteButton")</div>
         @ButtonGap()
