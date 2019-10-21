@@ -150,6 +150,13 @@ namespace Simplisity
             var strOut = Path.GetDirectoryName(fileName) + "\\" + Path.GetFileNameWithoutExtension(fileName) + newExt;
             return strOut;
         }
+        public static string RemoveInvalidFileChars(string Str)
+        {
+            // This regex will include illegal chars you never dreamed of
+            string illegalCharsPattern = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            Regex r = new Regex(string.Format("[{0}]", Regex.Escape(illegalCharsPattern)));
+            return r.Replace(Str, "");
+        }
 
     }
 }

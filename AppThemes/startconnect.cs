@@ -207,8 +207,8 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                var appthemeprefix = _postInfo.GetXmlProperty("genxml/textbox/appthemeprefix");
-                var appthemename = _postInfo.GetXmlProperty("genxml/textbox/appthemename");
+                var appthemeprefix = FileUtils.RemoveInvalidFileChars(_postInfo.GetXmlProperty("genxml/textbox/appthemeprefix"));
+                var appthemename = FileUtils.RemoveInvalidFileChars(_postInfo.GetXmlProperty("genxml/textbox/appthemename"));
 
                 var newAppThemeName = appthemename;
                 if (appthemeprefix != "") newAppThemeName = appthemeprefix + "_" + newAppThemeName;
@@ -328,8 +328,8 @@ private static Dictionary<string, string> ExportAppTheme()
         {
             try
             {
-                var appthemeprefix = _postInfo.GetXmlProperty("genxml/textbox/appthemeprefix");
-                var appthemename = _postInfo.GetXmlProperty("genxml/textbox/appthemename");
+                var appthemeprefix = FileUtils.RemoveInvalidFileChars(_postInfo.GetXmlProperty("genxml/textbox/appthemeprefix"));
+                var appthemename = FileUtils.RemoveInvalidFileChars(_postInfo.GetXmlProperty("genxml/textbox/appthemename"));
                 var newAppThemeName = appthemename;
                 if (appthemeprefix != "") newAppThemeName = appthemeprefix + "_" + newAppThemeName;
                 _appTheme.Copy(newAppThemeName);
