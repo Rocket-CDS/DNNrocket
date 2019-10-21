@@ -980,22 +980,19 @@ namespace Rocket.AppThemes.Componants
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
                     {
-                        var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        var resxDict = GetResxDictionary(Record);
+                        var datavalue = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/hidden/dictionarykey"));
                         var datatext = "ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString()";
                         strFieldList += "\t\t@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\"," + datatext + ",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
                     {
-                        var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        var resxDict = GetResxDictionary(Record);
+                        var datavalue = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/hidden/dictionarykey"));
                         var datatext = "ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString()";
                         strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue.Replace("\"", "\\\"") + "\"," + datatext + ",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
                     {
-                        var datavalue = GetDictionaryDecoded(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        var resxDict = GetResxDictionary(Record);
+                        var datavalue = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/hidden/dictionarykey"));
                         var datatext = "ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString()";
                         strFieldList += "\t\t@CheckBoxList(info,\"" + xpath + "\",\"" + datavalue + "\"," + datatext + ",\"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
                     }
@@ -1089,17 +1086,6 @@ namespace Rocket.AppThemes.Componants
                 return strOut;
             }
 
-        }
-
-        private string GetDictionaryDecoded(string inputData)
-        {
-            var datatext = "";
-            var arraytext = inputData.Split(',');
-            foreach (var a in arraytext)
-            {
-                datatext += GeneralUtils.DeCode(a).Replace(",", ".") + ",";
-            }
-            return datatext.TrimEnd(',');
         }
 
         private string GenerateEditList(int row)
@@ -1399,7 +1385,8 @@ namespace Rocket.AppThemes.Componants
                 {
                     var oldname = ri1.GetXmlProperty("genxml/hidden/fullfilename");
                     var culturecode = ri1.GetXmlProperty("genxml/hidden/culturecode");
-                    var newName = appThemeName + "." + culturecode +  ".resx";
+                    var newName = appThemeName + "." + culturecode + ".resx";
+                    if (culturecode == "") newName = appThemeName + ".resx";
                     r.SetXmlProperty("genxml/resxlist/genxml[" + lp + "]/hidden/fullfilename", newName);
                     if (!File.Exists(newAppThemeVersionFolderMapPath + "\\resx\\" + newName))
                     {

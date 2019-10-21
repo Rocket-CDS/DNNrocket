@@ -76,6 +76,17 @@ namespace Simplisity
             }
             return strOut.TrimEnd('.');
         }
+        public static string DecodeCSV(string inputData)
+        {
+            var datatext = "";
+            var arraytext = inputData.Split(',');
+            foreach (var a in arraytext)
+            {
+                datatext += GeneralUtils.DeCode(a).Replace(",", ".") + ",";
+            }
+            return datatext.TrimEnd(',');
+        }
+
 
         public static void CreateFolder(string folderMapPath)
         {

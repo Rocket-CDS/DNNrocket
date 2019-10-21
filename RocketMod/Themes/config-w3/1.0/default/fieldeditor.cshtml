@@ -30,6 +30,7 @@
             l.Add(i);
         }
         m.List = l;
+        m.SetSetting("dictionarylocalized", "true");
     }
 
     @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", m, "1.0", true)

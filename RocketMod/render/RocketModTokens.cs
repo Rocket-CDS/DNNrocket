@@ -97,22 +97,22 @@ namespace RocketMod
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
                         {
                             xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                            var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
-                            var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
+                            var datavalue = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/hidden/dictionarykey"));
+                            var datatext = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue"));
                             strOut += DropDownList(info, xpath, datavalue, datatext, attributes, defaultValue, localized, row).ToString();
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
                         {
                             xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                            var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
-                            var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
+                            var datavalue = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/hidden/dictionarykey"));
+                            var datatext = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue"));
                             strOut +=  RadioButtonList(info, xpath, datavalue, datatext, attributes, defaultValue, "", localized, row).ToString();
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
                         {
                             xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                            var datavalue = f.GetXmlProperty("genxml/hidden/dictionarykey");
-                            var datatext = f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue");
+                            var datavalue = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/hidden/dictionarykey"));
+                            var datatext = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/lang/genxml/hidden/dictionaryvalue"));
                             strOut += CheckBoxList(info, xpath, datavalue, datatext, attributes, defaultBool, localized, row).ToString();
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "image")

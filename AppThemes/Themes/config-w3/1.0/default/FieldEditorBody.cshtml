@@ -112,7 +112,14 @@
                                 <div row="@(lp3)" class=" addvaluekey w3-circle w3-display-left w3-margin ">@ResourceKey("DNNrocket.cmdAddIcon")</div>
 
                                 @HiddenField(i, "genxml/hidden/dictionarykey", " class='dictionarykeyvalue' row='" + lp3 + "' ", "", false, lp3)
-                                @HiddenField(i, "genxml/hidden/dictionaryvalue", "", "", false, lp3)
+                                @if (Model.GetSettingBool("dictionarylocalized"))
+                                {
+                                    @HiddenField(i, "genxml/lang/genxml/hidden/dictionaryvalue", "", "", true, lp3)
+                                }
+                                else
+                                {
+                                    @HiddenField(i, "genxml/hidden/dictionaryvalue", "", "", false, lp3)
+                                }
 
                                 @{
                                     var selectlistclass = "dictionarylist" + lp3;
