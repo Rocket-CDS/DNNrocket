@@ -33,6 +33,7 @@ namespace RocketMod
         private static int _selectedItemId;
         private static AppTheme _appTheme;
         private static ArticleData _articleData;
+        private static AppThemeDataList _appThemeDataList;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -277,6 +278,8 @@ namespace RocketMod
 
         private static void SaveConfig()
         {
+            var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder);
+            _moduleParams.AppThemeLogo = appTheme.Logo;
             _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
             _moduleParams.DataModuleId = _postInfo.GetXmlPropertyInt("genxml/hidden/datamoduleid");
             _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
@@ -293,18 +296,21 @@ namespace RocketMod
         private static void SaveAppTheme()
         {
             _moduleParams.AppThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            _moduleParams.AppThemeVersion = _paramInfo.GetXmlProperty("genxml/hidden/latestversionfolder");
-
-            var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
-
+            var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder);
+            _moduleParams.AppThemeLogo = appTheme.Logo;
+            _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
+            _moduleParams.AppThemeVersion = appTheme.LatestVersionFolder;
+            _moduleParams.ModuleType = "RocketMod";
+            if (_moduleParams.ModuleRef == "") _moduleParams.ModuleRef = GeneralUtils.GetUniqueKey();
+            _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
+            _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
             _moduleParams.AppThemeFolderRel = appTheme.AppThemeFolderRel;
-
             _moduleParams.AppThemeVersionFolderRel = appTheme.AppThemeVersionFolderRel;
             _moduleParams.AppProjectFolderRel = appTheme.AppProjectFolderRel;
             _moduleParams.AppSystemThemeFolderRel = appTheme.AppSystemThemeFolderRel;
+            _moduleParams.Exists = true;
 
             _moduleParams.Save();
-
         }
 
         #region "Articles"
@@ -678,20 +684,13 @@ namespace RocketMod
                 {
                     var objCtrl = new DNNrocketController();
 
+                    _appThemeDataList = new AppThemeDataList(_systemInfoData.SystemKey);
+
                     var razortemplate = "selectapp.cshtml";
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(),"1.0", _systemInfoData.DebugMode);
+                    var passSettings = _postInfo.ToDictionary();
 
-                    var appList = new List<Object>();
-                    var dirlist = System.IO.Directory.GetDirectories(_appthemeSystemMapPath + "\\" + _systemInfoData.SystemKey);
-                    foreach (var d in dirlist)
-                    {
-                        var dr = new System.IO.DirectoryInfo(d);
-                        var appTheme = new AppTheme(_systemInfoData.SystemKey, dr.Name, "");
-                        appList.Add(appTheme);
-                    }
-
-                   strOut = DNNrocketUtils.RazorList(razorTempl, appList, _passSettings, null, _systemInfoData.DebugMode);
-
+                    return DNNrocketUtils.RazorDetail(razorTempl, _appThemeDataList, passSettings, null, true);
                 }
                 else
                 {

@@ -29,13 +29,13 @@ namespace Rocket.AppThemes.Componants
             _objCtrl = new DNNrocketController();
             ImportXmlData(zipMapPath);
         }
-        public AppTheme(string systemKey, string appThemeFolder, string versionFolder, bool debugMode = false)
+        public AppTheme(string systemKey, string appThemeFolder, string versionFolder = "", bool debugMode = false)
         {
             _objCtrl = new DNNrocketController();
             InitAppTheme(systemKey, appThemeFolder, versionFolder, debugMode);
         }
 
-        private void InitAppTheme(string systemKey, string appThemeFolder, string versionFolder, bool debugMode = false)
+        private void InitAppTheme(string systemKey, string appThemeFolder, string versionFolder = "", bool debugMode = false)
         {
             _debugMode = debugMode;
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
@@ -46,17 +46,19 @@ namespace Rocket.AppThemes.Componants
             _jsFileName = new List<string>();
             _resxFileName = new List<string>();
 
+
             AppSummary = "";
             AppThemeFolder = appThemeFolder;
-            AppVersionFolder = versionFolder;
             AppSystemThemeFolderRel = AppProjectFolderRel + "/SystemThemes/" + SystemKey;
             AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
-
-            AssignVersionFolders();
+            AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolderRel);
 
             PopulateVersionList();
+            if (versionFolder == "") versionFolder = LatestVersionFolder;
 
+            AppVersionFolder = versionFolder;
             if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder; ;
+
             _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
 
             AssignVersionFolders();
@@ -870,7 +872,7 @@ namespace Rocket.AppThemes.Componants
         public void PopulateVersionList()
         {
             LatestVersionFolder = "1.0";
-            if (AppThemeFolder != "")
+            if (AppThemeFolder != null && AppThemeFolder != "")
             {
                 VersionList = new List<string>();
                 if (System.IO.Directory.Exists(AppThemeFolderMapPath))

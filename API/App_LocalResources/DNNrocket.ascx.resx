@@ -501,4 +501,7 @@
   <data name="resizeonupload.Text" xml:space="preserve">
     <value>Resize on Upload</value>
   </data>
+  <data name="more.Text" xml:space="preserve">
+    <value>More</value>
+  </data>
 </root>

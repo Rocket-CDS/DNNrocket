@@ -19,79 +19,82 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click rocketmodsavebutton" s-cmd="rocketmod_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","selecteditemid":"@configinfo.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ResourceKey("DNNrocket.cmdSaveButton")</div>
         @ButtonGap()
-        <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.cmdResetButton")</div>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.cmdResetDataButton")</div>
+        <div class="w3-col m6 w3-dropdown-hover">
+            <div class="w3-button">@ResourceKey("DNNrocket.more")...</div>
+            <div class="w3-dropdown-content w3-bar-block w3-card">
+                <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.cmdResetButton")</div>
+                <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.cmdResetDataButton")</div>
+            </div>
+        </div>
+
         @if (Model.GetSettingBool("saved"))
         {
             <i class='fas fa-save w3-right simplisity_fadeout' style="font-size:24px"></i>
         }
     </div>
 
+<h1>@ResourceKey("RocketMod.config")</h1>
+
 <div id="configdata" class="w3-container simplisity_panel">
 
-    <div class="w3-container">
-        <h1>@ResourceKey("RocketMod.config")</h1>
-
-        <table class="w3-table w3-responsive">
-            <tr>
-                <td class="w3-right-align"><b>@ResourceKey("RocketMod.name"):</b></td>
-                <td>
+    <div class="w3-row">
+        <div class="w3-col m2 w3-margin " style="width:120px;height:120px;">
+            <img src="@ThumbnailImageUrl(moduleParams.AppThemeLogo,120,120)" class="w3-circle" />
+        </div>
+        <div class="w3-col m9">
+            <div class="w3-container">
+                <div class="w3-col m8 w3-padding">
+                    <label>@ResourceKey("RocketMod.name")</label>
                     @TextBox(configinfo, "genxml/hidden/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td class="w3-right-align "><b>ItemId:</b></td>
-                <td>@configinfo.ItemID </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td class="w3-right-align "><b>ModuleId:</b></td>
-                <td>@moduleParams.ModuleId</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td class="w3-right-align "><b>@ResourceKey("RocketMod.ref"):</b></td>
-                <td>@moduleParams.ModuleRef</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td class="w3-right-align"><b>@ResourceKey("RocketMod.apptheme"):</b></td>
-                <td>@moduleParams.AppThemeFolder</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td class="w3-right-align"><b>@ResourceKey("RocketMod.appthemeversion"):</b></td>
-                <td>@FolderSelectList(configinfo, "genxml/hidden/appthemeversion", moduleParams.AppThemeFolderMapPath, "class='w3-input w3-border'", false, false)</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td class="w3-right-align"><b>@ResourceKey("RocketMod.datasource"):</b></td>
-                <td>@DataSourceList(configinfo, moduleParams.SystemId, "genxml/hidden/datamoduleid", "class='w3-input w3-border'", true, false)</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td class="w3-right-align"><b>@ResourceKey("RocketMod.imagefolder"):</b></td>
-                <td>
-                    @TextBox(configinfo, "genxml/hidden/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
-                </td>
-                <td>@DNNrocketUtils.HomeDNNrocketRelDirectory()/@configinfo.GetXmlProperty("genxml/hidden/imagefolder")</td>
-            </tr>
-            <tr>
-                <td class="w3-right-align"><b>@ResourceKey("RocketMod.documentfolder"):</b></td>
-                <td>
-                    @TextBox(configinfo, "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
-                </td>
-                <td>@DNNrocketUtils.HomeDNNrocketRelDirectory()/@configinfo.GetXmlProperty("genxml/hidden/documentfolder")</td>
-            </tr>
-            <tr>
-                <td class="w3-right-align "><b>@ResourceKey("RocketMod.disbalecache"):</b></td>
-                <td>@CheckBox(configinfo,"genxml/hidden/disbalecache","","class='w3-check'",false)</td>
-                <td></td>
-            </tr>
-        </table>
+                </div>
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("RocketMod.appthemeversion")</label>
+                    @FolderSelectList(configinfo, "genxml/hidden/appthemeversion", moduleParams.AppThemeFolderMapPath, "class='w3-input w3-border'", false, false)
+                </div>
+            </div>
 
+            <div class="w3-container">
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("RocketMod.datasource")</label>
+                    @DataSourceList(configinfo, moduleParams.SystemId, "genxml/hidden/datamoduleid", "class='w3-input w3-border'", true, false)
+                </div>
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("RocketMod.imagefolder")</label>
+                    @TextBox(configinfo, "genxml/hidden/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
+                </div>
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("RocketMod.documentfolder")</label>
+                    @TextBox(configinfo, "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
+                </div>
+            </div>
+            <div class="w3-container">
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("RocketMod.disbalecache")</label><br />
+                    @CheckBox(configinfo, "genxml/hidden/disbalecache", "", "class='w3-check'", false)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w3-container">
+        <label>@ResourceKey("RocketMod.notes")</label>
+        @TextArea(configinfo, "genxml/hidden/notes", "class='w3-input w3-border' rows=5 ", "", false)
+    </div>
+
+
+
+    <div class="w3-container w3-border w3-margin-top">
+        <div class="w3-col m2 w3-padding">
+            ItemId:&nbsp;<b>@configinfo.ItemID</b>
+        </div>
+        <div class="w3-col m2 w3-padding">
+            ModuleId:&nbsp;<b>@configinfo.ModuleId</b>
+        </div>
+        <div class="w3-col m2 w3-padding">
+            @ResourceKey("RocketMod.ref"):&nbsp;<b>@moduleParams.ModuleRef</b>
+        </div>
+        <div class="w3-col m2 w3-padding">
+            @ResourceKey("RocketMod.apptheme"):&nbsp;<b>@moduleParams.AppThemeFolder</b>
+        </div>
     </div>
 
 

@@ -192,6 +192,9 @@
   <data name="name.Text" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="notes.Text" xml:space="preserve">
+    <value>Notes</value>
+  </data>
   <data name="page.Text" xml:space="preserve">
     <value>Page</value>
   </data>

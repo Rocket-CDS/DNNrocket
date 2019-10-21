@@ -4,7 +4,7 @@
 @using Rocket.AppThemes.Componants;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 @{
@@ -146,7 +146,7 @@ else
                             <i class="fas fa-edit w3-center" title="@ResourceKey("DNNRocket.cmdEdit")" style='font-size:32px'></i>
                         </div>
                         <div class=" w3-cell w3-padding  w3-hide-small " style="width: 100px;">
-                                <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" class="w3-circle" />
+                            <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" class="w3-circle" />
                         </div>
                         <div class=" w3-cell w3-padding">
                             <div class="">
@@ -168,13 +168,6 @@ else
                         </div>
                         <div class=" w3-cell w3-right w3-hide-small" style="width: 240px;">
                             <div class="w3-row">
-                                <div class="w3-button simplisity_confirmclick  " s-cmd="rocketapptheme_download" s-confirm="@ResourceKey("AppThemes.downloadmsg")&nbsp;?" s-track="false" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
-                                    <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
-                                </div>
-                                <div class="w3-button simplisity_confirmclick " s-cmd="rocketapptheme_upload" s-confirm="@ResourceKey("AppThemes.uploadmsg")&nbsp;?" s-track="false" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
-                                    <i class='fas fa-upload' title="@ResourceKey("DNNRocket.cmdUpload")" style='font-size:32px'></i>
-                                </div>
-
                                 <a class="w3-button simplisity_filedownload" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;"><i class='fas fa-file-export' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></a>
                             </div>
                         </div>
@@ -198,7 +191,7 @@ else
             }
         </div>
 
-        <hr/>
+        <hr />
 
     </div>
 
@@ -219,12 +212,12 @@ else
             $('.griddisplayicon').unbind('click');
             $('.griddisplayicon').click(function () {
                 showgrid();
-                simplisity_setCookieValue('displayviewtype','griddisplayicon');
+                simplisity_setCookieValue('displayviewtype', 'griddisplayicon');
             });
             $('.listdisplayicon').unbind('click');
             $('.listdisplayicon').click(function () {
                 showlist();
-                simplisity_setCookieValue('displayviewtype','listdisplayicon');
+                simplisity_setCookieValue('displayviewtype', 'listdisplayicon');
             });
 
 
@@ -234,18 +227,18 @@ else
             $('#importapptheme').hide();
         }
 
-    function showgrid() {
-                $('.griddisplayicon').addClass('w3-text-blue');
-                $('.listdisplayicon').removeClass('w3-text-blue');
-                $('#datalist2').show();
-                $('#datalist').hide();
-    }
-    function showlist() {
-                $('.griddisplayicon').removeClass('w3-text-blue');
-                $('.listdisplayicon').addClass('w3-text-blue');
-                $('#datalist2').hide();
-                $('#datalist').show();
-    }
+        function showgrid() {
+            $('.griddisplayicon').addClass('w3-text-blue');
+            $('.listdisplayicon').removeClass('w3-text-blue');
+            $('#datalist2').show();
+            $('#datalist').hide();
+        }
+        function showlist() {
+            $('.griddisplayicon').removeClass('w3-text-blue');
+            $('.listdisplayicon').addClass('w3-text-blue');
+            $('#datalist2').hide();
+            $('#datalist').show();
+        }
 
         function searchFunction() {
             var input, filter, ul, li, a, i;
