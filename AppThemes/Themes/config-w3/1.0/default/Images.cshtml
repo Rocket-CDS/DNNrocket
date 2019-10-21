@@ -2,6 +2,7 @@
 @using DNNrocketAPI;
 @using Simplisity;
 @using RocketSettings;
+@using DNNrocketAPI.Componants;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
@@ -45,18 +46,18 @@
             var settingsdataclassselect = "dictionarydata" + lp3;
             var imagesizeclass = "imagesize" + lp3;
 
-        <li class="settingsdata w3-card w3-margin w3-display-container w3-col m3 @settingsdataclassselect ">
+            <li class="settingsdata w3-card w3-margin w3-display-container w3-col m3 @settingsdataclassselect ">
 
-            @SortableListIndex(i, lp3)
- 
-            <span id="deletebutton@(lp3)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin">
-                <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
-            </span>
-            <div class="w3-col w3-padding">
-                @ImageEdit(i, "imagepath", 100, 100, "", false, lp3)
-            </div>
+                @SortableListIndex(i, lp3)
 
-        </li>
+                <span id="deletebutton@(lp3)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".settingsdata" s-recylebin="settingsbin">
+                    <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
+                </span>
+                <div class="w3-col w3-padding">
+                    @ImageEdit(i, "imagepath", 100, 100, "", false, lp3)
+                </div>
+
+            </li>
 
         }
 

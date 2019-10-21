@@ -144,6 +144,12 @@ namespace RocketMod
                 case "rocketmodview_download":
                     rtnDic = DownloadDocument();
                     break;
+
+                case "rocketmodapptheme_apptheme":
+                    strOut = GetAppTheme();
+                    break;
+
+
             }
 
             if (strOut == "" && !_moduleParams.Exists)
@@ -285,10 +291,11 @@ namespace RocketMod
             _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
             _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
             _moduleParams.AppThemeVersion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
+            _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
             _moduleParams.ModuleType = "RocketMod";
             if (_moduleParams.ModuleRef == "") _moduleParams.ModuleRef = GeneralUtils.GetUniqueKey();
             _moduleParams.Exists = true;
-            _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disbalecache");;
+            _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disbalecache");
             _moduleParams.Save();
             _passSettings.Add("saved", "true");
         }
@@ -308,6 +315,7 @@ namespace RocketMod
             _moduleParams.AppThemeVersionFolderRel = appTheme.AppThemeVersionFolderRel;
             _moduleParams.AppProjectFolderRel = appTheme.AppProjectFolderRel;
             _moduleParams.AppSystemThemeFolderRel = appTheme.AppSystemThemeFolderRel;
+            _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
             _moduleParams.Exists = true;
 
             _moduleParams.Save();
@@ -673,6 +681,28 @@ namespace RocketMod
                 return ex.ToString();
             }
         }
+
+        public static String GetAppTheme()
+        {
+            try
+            {
+                AssignEditLang();
+                var controlRelPath = _rocketInterface.TemplateRelPath;
+                var themeFolder = _rocketInterface.DefaultTheme;
+                var razortemplate = "apptheme.cshtml";
+
+                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
+
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+
+                return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
 
         public static String GetSelectApp()
         {

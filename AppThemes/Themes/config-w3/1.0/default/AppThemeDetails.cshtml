@@ -1,4 +1,5 @@
 ﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Componants;
 @using DNNrocketAPI;
 @using Simplisity;
 @using Rocket.AppThemes.Componants;
@@ -52,39 +53,39 @@
 
 @HiddenField(info, "genxml/hidden/fieldlocalizedlist", " s-update='ignore' ")
 
-    <div id="copyapptheme" class="w3-modal">
-        <div class="w3-modal-content w3-card w3-animate-zoom">
+<div id="copyapptheme" class="w3-modal">
+    <div class="w3-modal-content w3-card w3-animate-zoom">
 
-            <header class="w3-container  w3-theme">
-                <span onclick="document.getElementById('copyapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <h2>@ResourceKey("Appthemes.saveas")...</h2>
-            </header>
+        <header class="w3-container  w3-theme">
+            <span onclick="document.getElementById('copyapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <h2>@ResourceKey("Appthemes.saveas")...</h2>
+        </header>
 
-            <div class="w3-row-padding">
-                <div class="w3-col m4 w3-padding">
-                    <input value="" id="appthemeprefix" s-xpath="genxml/textbox/appthemeprefix" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.prefix")..." maxlength="350" autocomplete="off" s-update="save" type="text">
-                </div>
-                <div class="w3-col m5 w3-padding">
-                    <input value="" id="appthemename" s-xpath="genxml/textbox/appthemename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.appthemename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
-                </div>
-                <div class="w3-col m3 w3-padding">
-                    <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_docopy" s-post="#copyapptheme" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class="fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copy")</div>
-                </div>
+        <div class="w3-row-padding">
+            <div class="w3-col m4 w3-padding">
+                <input value="" id="appthemeprefix" s-xpath="genxml/textbox/appthemeprefix" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.prefix")..." maxlength="350" autocomplete="off" s-update="save" type="text">
             </div>
-            <div class="w3-row w3-panel w3-red copyappthemereturn" style="display:none;">
+            <div class="w3-col m5 w3-padding">
+                <input value="" id="appthemename" s-xpath="genxml/textbox/appthemename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.appthemename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+            </div>
+            <div class="w3-col m3 w3-padding">
+                <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_docopy" s-post="#copyapptheme" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class="fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copy")</div>
             </div>
         </div>
+        <div class="w3-row w3-panel w3-red copyappthemereturn" style="display:none;">
+        </div>
     </div>
+</div>
 
 
 
-    <div id="detailsection">
+<div id="detailsection">
 
-        <div class="w3-row w3-padding">
-            <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform" s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
-            @ButtonGap()
-            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearlistcache":"true"}' s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
-            @ButtonGap()
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform" s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearlistcache":"true"}' s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+        @ButtonGap()
 
         <div class="w3-col m6 w3-dropdown-hover">
             <div class="w3-button">@ResourceKey("DNNrocket.more")...</div>
@@ -100,382 +101,382 @@
             </div>
         </div>
 
-        </div>
-        <div class="w3-container">
+    </div>
+    <div class="w3-container">
 
-            <div class="w3-display-container">
-                <div class="w3-col m10">
-                    <h2>@(appTheme.AppThemeFolder)&nbsp;v@(appTheme.AppVersionFolder)&nbsp;<span class="validationfail w3-margin-left " style="display:none;"><i class='fas fa-exclamation-triangle' style='font-size:24px;color:red;'></i></span></h2>
-                </div>
-                <div class="w3-right">
-                    <i>ID: </i> @info.ItemID
-                </div>
+        <div class="w3-display-container">
+            <div class="w3-col m10">
+                <h2>@(appTheme.AppThemeFolder)&nbsp;v@(appTheme.AppVersionFolder)&nbsp;<span class="validationfail w3-margin-left " style="display:none;"><i class='fas fa-exclamation-triangle' style='font-size:24px;color:red;'></i></span></h2>
             </div>
+            <div class="w3-right">
+                <i>ID: </i> @info.ItemID
+            </div>
+        </div>
 
-            <div id="appthemedetails">
-
-
-                <div id="editorsave" style="display:none;">
-                    @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appTheme.SystemKey)
-                    <input id="editorfilenamesave" type="hidden" value="" />
-                    <input id="editorcodesave" type="hidden" value="" />
-                    <input id="editorlistnamesave" type="hidden" value="" />
-                </div>
+        <div id="appthemedetails">
 
 
-                <div class="w3-container">
-
-                    <div class="w3-row ">
-                        <div class="w3-col " style="width:136px;">
-                            <label>Logo</label>
-                            <img src="@ThumbnailImageUrl(appTheme.Logo,136,136)" alt="" style="" class="w3-circle">
-                        </div>
-                        <div class="w3-col m8 w3-padding">
-                            <label>@ResourceKey("AppThemes.summary")</label>
-                            @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border' rows='4'", "", false)
-                        </div>
-                        <div class="w3-col w3-padding" style="width:200px">
-                            <label>@ResourceKey("AppThemes.version")</label>
-                            @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border changeversionclass simplisity_change' s-before='changeversionaction' s-cmd='rocketapptheme_changeversion' s-post='#appthemedetails' s-track='true' s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
-                        </div>
-                    </div>
-
-                    <div class="w3-row ">
-                        <div class="w3-col m3 w3-padding">
-                            @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
-                        </div>
-                        <div class="w3-col m3 w3-padding ">
-                            @CheckBox(info, "genxml/checkbox/regenerateview", ResourceKey("AppThemes.autoregenerateview").ToString(), "", true)
-                        </div>
-                        <div class="w3-col m3 w3-padding ">
-                            @CheckBox(info, "genxml/checkbox/regenerateedit", ResourceKey("AppThemes.autoregenerateedit").ToString(), "", true)
-                        </div>
-                        <div class="w3-col m3 w3-padding regenerateeditlist" style="display:none;">
-                            @CheckBox(info, "genxml/checkbox/regenerateeditlist", ResourceKey("AppThemes.autoregenerateeditlist").ToString(), "", true)
-                        </div>
-                    </div>
-
-                </div>
-
+            <div id="editorsave" style="display:none;">
+                @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appTheme.SystemKey)
+                <input id="editorfilenamesave" type="hidden" value="" />
+                <input id="editorcodesave" type="hidden" value="" />
+                <input id="editorlistnamesave" type="hidden" value="" />
             </div>
 
 
             <div class="w3-container">
 
-                <div class="w3-bar w3-theme">
-                    <div class="w3-bar-item w3-button tablink w3-theme-d5 tabFields" onclick="openDataTab('tabFields','Fields')">@ResourceKey("AppThemes.fields")</div>
-                    <div class="w3-bar-item w3-button tablink tabTemplates" onclick="openDataTab('tabTemplates','Templates')">@ResourceKey("AppThemes.templates")</div>
-                    <div class="w3-bar-item w3-button tablink tabImages" onclick="openDataTab('tabImages','Images')">@ResourceKey("DNNrocket.images")</div>
-                    <div class="w3-bar-item w3-button tablink tabCSS" onclick="openDataTab('tabCSS','CSS')">@ResourceKey("AppThemes.css")</div>
-                    <div class="w3-bar-item w3-button tablink tabJavascript" onclick="openDataTab('tabJavascript','Javascript')">@ResourceKey("AppThemes.javascript")</div>
-                    <div class="w3-bar-item w3-button tablink tabResources" onclick="openDataTab('tabResources','Resources')">@ResourceKey("AppThemes.resources")</div>
-                </div>
-
-                <div id="Fields" class="w3-container w3-border city">
-
-                    <div id="fieldsdatasectiontab" class="w3-row fieldslistdatasection">
-
-                        <span class="w3-container">
-                            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addfield" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="fielddatalistbin" s-return="#fielddatalist" s-removelist=".fielddata" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
-                        </span>
-
-                        @{
-                            var m = new SimplisityRazor();
-                            var l2 = new List<object>();
-                            foreach (object i in info.GetRecordList("fielddata"))
-                            {
-                                l2.Add(i);
-                            }
-                            m.List = l2;
-                        }
-                        @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", m, "1.0", true)
+                <div class="w3-row ">
+                    <div class="w3-col " style="width:136px;">
+                        <label>Logo</label>
+                        <img src="@ThumbnailImageUrl(appTheme.Logo,136,136)" alt="" style="" class="w3-circle">
                     </div>
-
-                </div>
-
-                <div id="Templates" class="w3-container w3-border city" style="display:none">
-                    <div id="templatedatasection" class="w3-row templatelistdatasection">
-
-                        <div class="w3-container">
-                            <div class="w3-col w3-padding" style="">
-                                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addtemplate" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                                <div class="w3-button w3-teal w3-padding-8 w3-right" onclick="location.reload();"><i class='fas fa-sync'></i></div>
-                                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="templatelistbin" s-return="#templatelistdata" s-removelist=".templatelist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
-                            </div>
-                        </div>
-
-
-                        <ul id="templatelistdata" class="w3-ul">
-
-                            @foreach (var templateRecord in templatedatalist)
-                            {
-                                var templateInfo = new SimplisityInfo(templateRecord);
-                                <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
-                                    @HiddenField(templateInfo, "genxml/hidden/editorcodehtmlmixed", "", "", false, templateLP)
-                                    @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default", false, templateLP)
-                                    @HiddenField(templateInfo, "genxml/hidden/filenamehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/filename"), false, templateLP)
-                                    <div class="w3-row w3-display-container w3-padding  w3-card">
-
-                                        <div class="">
-                                            @{
-                                                var disabledfilename = "";
-                                                var hideicon = "display:none;";
-                                            }
-                                            @if (templateInfo.GetXmlProperty("genxml/hidden/filename") != "")
-                                            {
-                                                disabledfilename = "disabled";
-                                                hideicon = "";
-                                            }
-
-                                            <div class="w3-col m8">
-                                                <div>
-                                                    @TextBox(templateInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + templateLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, templateLP)
-                                                </div>
-                                            </div>
-                                            <div class="w3-col w3-margin-left" style="width:62px;">
-                                                <div class="w3-button filenameicon@(templateLP)" onclick="edittemplate(@(templateLP));" style="@(hideicon)">
-                                                    <i class="fas fa-edit " style='font-size:24px'></i>
-                                                </div>
-                                            </div>
-                                            <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".templatelist" s-recylebin="templatelistbin" style="cursor: pointer;width:42px;">
-                                                <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </li>
-
-                                templateLP += 1;
-                            }
-                        </ul>
+                    <div class="w3-col m8 w3-padding">
+                        <label>@ResourceKey("AppThemes.summary")</label>
+                        @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border' rows='4'", "", false)
+                    </div>
+                    <div class="w3-col w3-padding" style="width:200px">
+                        <label>@ResourceKey("AppThemes.version")</label>
+                        @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border changeversionclass simplisity_change' s-before='changeversionaction' s-cmd='rocketapptheme_changeversion' s-post='#appthemedetails' s-track='true' s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
                     </div>
                 </div>
 
-                <div id="Images" class="w3-container w3-border city" style="display:none">
-
-                    <div id="imagedatasection" class="w3-row imagelistdatasection">
-
-                        <div class="w3-container">
-                            <div class="w3-col w3-padding" style="width:160px;">
-                                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addimage" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".imagelist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
-                            </div>
-                        </div>
-
-                        <ul id="imagelistdata" class="w3-ul">
-
-                            @foreach (var imgRecord in imgdatalist)
-                            {
-                                var imgInfo = new SimplisityInfo(imgRecord);
-                                <li class="imagelist w3-padding w3-col m2 ">
-                                    <div class="w3-display-container" style="min-width:150px;">
-                                        <div class="w3-row w3-card" style="height:150px;">
-                                            <div class="w3-display-middle ">
-                                                @ImageEdit(imgInfo, "img", 120, 120, " ", false, @imgLP)
-                                            </div>
-                                            <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
-                                                <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                imgLP += 1;
-                            }
-                        </ul>
+                <div class="w3-row ">
+                    <div class="w3-col m3 w3-padding">
+                        @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
+                    </div>
+                    <div class="w3-col m3 w3-padding ">
+                        @CheckBox(info, "genxml/checkbox/regenerateview", ResourceKey("AppThemes.autoregenerateview").ToString(), "", true)
+                    </div>
+                    <div class="w3-col m3 w3-padding ">
+                        @CheckBox(info, "genxml/checkbox/regenerateedit", ResourceKey("AppThemes.autoregenerateedit").ToString(), "", true)
+                    </div>
+                    <div class="w3-col m3 w3-padding regenerateeditlist" style="display:none;">
+                        @CheckBox(info, "genxml/checkbox/regenerateeditlist", ResourceKey("AppThemes.autoregenerateeditlist").ToString(), "", true)
                     </div>
                 </div>
 
-                <div id="CSS" class="w3-container w3-border city" style="display:none">
-                    <div id="cssdatasection" class="w3-row csslistdatasection">
-
-                        <div class="w3-container">
-                            <div class="w3-col w3-padding" style="width:160px;">
-                                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addcss" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="csslistbin" s-return="#csslistdata" s-removelist=".csslist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
-                            </div>
-                        </div>
-
-
-                        <ul id="csslistdata" class="w3-ul">
-
-                            @foreach (var cssRecord in cssdatalist)
-                            {
-                                var cssInfo = new SimplisityInfo(cssRecord);
-                                <li class="csslist w3-col m4 w3-display-container w3-padding w3-border-0">
-                                    @HiddenField(cssInfo, "genxml/hidden/editorcodecss", "", "", false, cssLP)
-                                    @HiddenField(cssInfo, "genxml/hidden/filefolder", "", "css", false, cssLP)
-                                    @HiddenField(cssInfo, "genxml/hidden/filenamecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/filename"), false, cssLP)
-                                    <div class="w3-row w3-display-container w3-padding  w3-card">
-
-                                        <div class="">
-                                            @{
-                                                var disabledfilename = "";
-                                                var hideicon = "display:none;";
-                                            }
-                                            @if (cssInfo.GetXmlProperty("genxml/hidden/filename") != "")
-                                            {
-                                                disabledfilename = "disabled";
-                                                hideicon = "";
-                                            }
-
-                                            <div class="w3-col m8">
-                                                <div>
-                                                    @TextBox(cssInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + cssLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, cssLP)
-                                                </div>
-                                            </div>
-                                            <div class="w3-col w3-margin-left" style="width:62px;">
-                                                <div class="w3-button filenameicon@(cssLP)" onclick="editcss(@(cssLP));" style="@(hideicon)">
-                                                    <i class="fas fa-edit " style='font-size:24px'></i>
-                                                </div>
-                                            </div>
-                                            <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".csslist" s-recylebin="csslistbin" style="cursor: pointer;width:42px;">
-                                                <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </li>
-
-                                cssLP += 1;
-                            }
-                        </ul>
-
-
-                    </div>
-                </div>
-                <div id="Javascript" class="w3-container w3-border city" style="display:none">
-                    <div id="jsdatasection" class="w3-row jslistdatasection">
-
-                        <div class="w3-container">
-                            <div class="w3-col w3-padding" style="width:160px;">
-                                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addjs" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="jslistbin" s-return="#jslistdata" s-removelist=".jslist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
-                            </div>
-                        </div>
-
-                        <ul id="jslistdata" class="w3-ul">
-
-                            @foreach (var jsRecord in jsdatalist)
-                            {
-                                var jsInfo = new SimplisityInfo(jsRecord);
-                                <li class="jslist w3-col m4 w3-display-container w3-padding w3-border-0">
-                                    @HiddenField(jsInfo, "genxml/hidden/editorcodejavascript", "", "", false, jsLP)
-                                    @HiddenField(jsInfo, "genxml/hidden/filefolder", "", "js", false, jsLP)
-                                    @HiddenField(jsInfo, "genxml/hidden/filenamejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/filename"), false, jsLP)
-
-                                    <div class="w3-row w3-display-container w3-padding  w3-card">
-
-                                        <div class="">
-                                            @{
-                                                var disabledfilename = "";
-                                                var hideicon = "display:none;";
-                                            }
-                                            @if (jsInfo.GetXmlProperty("genxml/hidden/filename") != "")
-                                            {
-                                                disabledfilename = "disabled";
-                                                hideicon = "";
-                                            }
-
-                                            <div class="w3-col m8">
-                                                <div>
-                                                    @TextBox(jsInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + jsLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, jsLP)
-                                                </div>
-                                            </div>
-                                            <div class="w3-col w3-margin-left" style="width:62px;">
-                                                <div class="w3-button filenameicon@(jsLP)" onclick="editjs(@(jsLP));" style="@(hideicon)">
-                                                    <i class="fas fa-edit " style='font-size:24px'></i>
-                                                </div>
-                                            </div>
-                                            <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".jslist" s-recylebin="jslistbin" style="cursor: pointer;width:42px;">
-                                                <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </li>
-
-                                jsLP += 1;
-                            }
-                        </ul>
-                    </div>
-                </div>
-                <div id="Resources" class="w3-container w3-border city" style="display:none">
-                    <div id="resxdatasection" class="w3-row resxlistdatasection">
-
-                        <input id="defaultjsonresx" type="hidden" value="@Model.GetSetting("defaultjsonresx")" />
-
-                        <div class="w3-container">
-                            <div class="w3-col w3-padding" style="width:160px;">
-                                <div id="resxaddbutton" class="w3-hide w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addresx" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-
-                                <div class="w3-button w3-teal w3-padding-8 " onclick="selectlanguage()"><i class='fas fa-plus-circle'></i></div>
-                                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistbin" s-return="#resxlistdata" s-removelist=".resxlist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
-                            </div>
-                        </div>
-
-                        <ul id="resxlistdata" class="w3-ul">
-
-                            @foreach (var resxRecord in resxdatalist)
-                            {
-                                var resxInfo = new SimplisityInfo(resxRecord);
-                                <li class="resxlist w3-col m6 w3-display-container w3-padding w3-border-0">
-                                    @HiddenField(resxInfo, "genxml/hidden/jsonresx", "", "", false, resxLP)
-                                    @HiddenField(resxInfo, "genxml/hidden/filefolder", "", "resx", false, resxLP)
-                                    @HiddenField(resxInfo, "genxml/hidden/filenameresx", "s-update='ignore'", resxInfo.GetXmlProperty("genxml/hidden/filename"), false, resxLP)
-                                    @HiddenField(resxInfo, "genxml/hidden/culturecode", "", "", false, resxLP)
-                                    @HiddenField(resxInfo, "genxml/hidden/fullfilename", "", "", false, resxLP)
-
-
-                                    <div class="w3-row w3-display-container w3-padding  w3-card">
-
-                                        <div class="">
-                                            <div class="w3-col m8">
-                                                <div>
-                                                    @{
-                                                        var flag = resxInfo.GetXmlProperty("genxml/hidden/culturecode");
-                                                        var displayname = "";
-                                                        if (flag == "")
-                                                        {
-                                                            flag = "none";
-                                                            displayname = ResourceKey("AppThemes.default").ToString();
-                                                        }
-                                                        else
-                                                        {
-                                                            displayname = DNNrocketUtils.GetCultureCodeName(flag);
-                                                        }
-                                                    }
-                                                    <img class="" src="/DesktopModules/DNNrocket/API/images/flags/16/@(flag).png" alt="">
-                                                    <span id="culturecodedisplayname@(resxLP)">@(displayname)&nbsp;[@(flag)]</span>
-                                                </div>
-                                            </div>
-                                            <div class="w3-col w3-margin-left " style="width:62px;">
-                                                <div class="w3-button filenameicon@(resxLP)" onclick="editresx(@(resxLP));" style="">
-                                                    <i class="fas fa-edit " style='font-size:24px'></i>
-                                                </div>
-                                            </div>
-                                            <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".resxlist" s-recylebin="resxlistbin" style="cursor: pointer;width:42px;">
-                                                <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </li>
-
-                                resxLP += 1;
-                            }
-                        </ul>
-                    </div>
-                </div>
             </div>
 
         </div>
+
+
+        <div class="w3-container">
+
+            <div class="w3-bar w3-theme">
+                <div class="w3-bar-item w3-button tablink w3-theme-d5 tabFields" onclick="openDataTab('tabFields','Fields')">@ResourceKey("AppThemes.fields")</div>
+                <div class="w3-bar-item w3-button tablink tabTemplates" onclick="openDataTab('tabTemplates','Templates')">@ResourceKey("AppThemes.templates")</div>
+                <div class="w3-bar-item w3-button tablink tabImages" onclick="openDataTab('tabImages','Images')">@ResourceKey("DNNrocket.images")</div>
+                <div class="w3-bar-item w3-button tablink tabCSS" onclick="openDataTab('tabCSS','CSS')">@ResourceKey("AppThemes.css")</div>
+                <div class="w3-bar-item w3-button tablink tabJavascript" onclick="openDataTab('tabJavascript','Javascript')">@ResourceKey("AppThemes.javascript")</div>
+                <div class="w3-bar-item w3-button tablink tabResources" onclick="openDataTab('tabResources','Resources')">@ResourceKey("AppThemes.resources")</div>
+            </div>
+
+            <div id="Fields" class="w3-container w3-border city">
+
+                <div id="fieldsdatasectiontab" class="w3-row fieldslistdatasection">
+
+                    <span class="w3-container">
+                        <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addfield" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                        <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="fielddatalistbin" s-return="#fielddatalist" s-removelist=".fielddata" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                    </span>
+
+                    @{
+                        var m = new SimplisityRazor();
+                        var l2 = new List<object>();
+                        foreach (object i in info.GetRecordList("fielddata"))
+                        {
+                            l2.Add(i);
+                        }
+                        m.List = l2;
+                    }
+                    @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", m, "1.0", true)
+                </div>
+
+            </div>
+
+            <div id="Templates" class="w3-container w3-border city" style="display:none">
+                <div id="templatedatasection" class="w3-row templatelistdatasection">
+
+                    <div class="w3-container">
+                        <div class="w3-col w3-padding" style="">
+                            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addtemplate" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                            <div class="w3-button w3-teal w3-padding-8 w3-right" onclick="location.reload();"><i class='fas fa-sync'></i></div>
+                            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="templatelistbin" s-return="#templatelistdata" s-removelist=".templatelist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                        </div>
+                    </div>
+
+
+                    <ul id="templatelistdata" class="w3-ul">
+
+                        @foreach (var templateRecord in templatedatalist)
+                        {
+                            var templateInfo = new SimplisityInfo(templateRecord);
+                            <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
+                                @HiddenField(templateInfo, "genxml/hidden/editorcodehtmlmixed", "", "", false, templateLP)
+                                @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default", false, templateLP)
+                                @HiddenField(templateInfo, "genxml/hidden/filenamehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/filename"), false, templateLP)
+                                <div class="w3-row w3-display-container w3-padding  w3-card">
+
+                                    <div class="">
+                                        @{
+                                            var disabledfilename = "";
+                                            var hideicon = "display:none;";
+                                        }
+                                        @if (templateInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                        {
+                                            disabledfilename = "disabled";
+                                            hideicon = "";
+                                        }
+
+                                        <div class="w3-col m8">
+                                            <div>
+                                                @TextBox(templateInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + templateLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, templateLP)
+                                            </div>
+                                        </div>
+                                        <div class="w3-col w3-margin-left" style="width:62px;">
+                                            <div class="w3-button filenameicon@(templateLP)" onclick="edittemplate(@(templateLP));" style="@(hideicon)">
+                                                <i class="fas fa-edit " style='font-size:24px'></i>
+                                            </div>
+                                        </div>
+                                        <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".templatelist" s-recylebin="templatelistbin" style="cursor: pointer;width:42px;">
+                                            <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </li>
+
+                            templateLP += 1;
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <div id="Images" class="w3-container w3-border city" style="display:none">
+
+                <div id="imagedatasection" class="w3-row imagelistdatasection">
+
+                    <div class="w3-container">
+                        <div class="w3-col w3-padding" style="width:160px;">
+                            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addimage" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".imagelist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                        </div>
+                    </div>
+
+                    <ul id="imagelistdata" class="w3-ul">
+
+                        @foreach (var imgRecord in imgdatalist)
+                        {
+                            var imgInfo = new SimplisityInfo(imgRecord);
+                            <li class="imagelist w3-padding w3-col m2 ">
+                                <div class="w3-display-container" style="min-width:150px;">
+                                    <div class="w3-row w3-card" style="height:150px;">
+                                        <div class="w3-display-middle ">
+                                            @ImageEdit(imgInfo, "img", 120, 120, " ", false, @imgLP)
+                                        </div>
+                                        <div class="w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin" style="cursor: pointer;">
+                                            <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            imgLP += 1;
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <div id="CSS" class="w3-container w3-border city" style="display:none">
+                <div id="cssdatasection" class="w3-row csslistdatasection">
+
+                    <div class="w3-container">
+                        <div class="w3-col w3-padding" style="width:160px;">
+                            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addcss" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="csslistbin" s-return="#csslistdata" s-removelist=".csslist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                        </div>
+                    </div>
+
+
+                    <ul id="csslistdata" class="w3-ul">
+
+                        @foreach (var cssRecord in cssdatalist)
+                        {
+                            var cssInfo = new SimplisityInfo(cssRecord);
+                            <li class="csslist w3-col m4 w3-display-container w3-padding w3-border-0">
+                                @HiddenField(cssInfo, "genxml/hidden/editorcodecss", "", "", false, cssLP)
+                                @HiddenField(cssInfo, "genxml/hidden/filefolder", "", "css", false, cssLP)
+                                @HiddenField(cssInfo, "genxml/hidden/filenamecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/filename"), false, cssLP)
+                                <div class="w3-row w3-display-container w3-padding  w3-card">
+
+                                    <div class="">
+                                        @{
+                                            var disabledfilename = "";
+                                            var hideicon = "display:none;";
+                                        }
+                                        @if (cssInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                        {
+                                            disabledfilename = "disabled";
+                                            hideicon = "";
+                                        }
+
+                                        <div class="w3-col m8">
+                                            <div>
+                                                @TextBox(cssInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + cssLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, cssLP)
+                                            </div>
+                                        </div>
+                                        <div class="w3-col w3-margin-left" style="width:62px;">
+                                            <div class="w3-button filenameicon@(cssLP)" onclick="editcss(@(cssLP));" style="@(hideicon)">
+                                                <i class="fas fa-edit " style='font-size:24px'></i>
+                                            </div>
+                                        </div>
+                                        <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".csslist" s-recylebin="csslistbin" style="cursor: pointer;width:42px;">
+                                            <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </li>
+
+                            cssLP += 1;
+                        }
+                    </ul>
+
+
+                </div>
+            </div>
+            <div id="Javascript" class="w3-container w3-border city" style="display:none">
+                <div id="jsdatasection" class="w3-row jslistdatasection">
+
+                    <div class="w3-container">
+                        <div class="w3-col w3-padding" style="width:160px;">
+                            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addjs" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="jslistbin" s-return="#jslistdata" s-removelist=".jslist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                        </div>
+                    </div>
+
+                    <ul id="jslistdata" class="w3-ul">
+
+                        @foreach (var jsRecord in jsdatalist)
+                        {
+                            var jsInfo = new SimplisityInfo(jsRecord);
+                            <li class="jslist w3-col m4 w3-display-container w3-padding w3-border-0">
+                                @HiddenField(jsInfo, "genxml/hidden/editorcodejavascript", "", "", false, jsLP)
+                                @HiddenField(jsInfo, "genxml/hidden/filefolder", "", "js", false, jsLP)
+                                @HiddenField(jsInfo, "genxml/hidden/filenamejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/filename"), false, jsLP)
+
+                                <div class="w3-row w3-display-container w3-padding  w3-card">
+
+                                    <div class="">
+                                        @{
+                                            var disabledfilename = "";
+                                            var hideicon = "display:none;";
+                                        }
+                                        @if (jsInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                        {
+                                            disabledfilename = "disabled";
+                                            hideicon = "";
+                                        }
+
+                                        <div class="w3-col m8">
+                                            <div>
+                                                @TextBox(jsInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + jsLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, jsLP)
+                                            </div>
+                                        </div>
+                                        <div class="w3-col w3-margin-left" style="width:62px;">
+                                            <div class="w3-button filenameicon@(jsLP)" onclick="editjs(@(jsLP));" style="@(hideicon)">
+                                                <i class="fas fa-edit " style='font-size:24px'></i>
+                                            </div>
+                                        </div>
+                                        <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".jslist" s-recylebin="jslistbin" style="cursor: pointer;width:42px;">
+                                            <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </li>
+
+                            jsLP += 1;
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div id="Resources" class="w3-container w3-border city" style="display:none">
+                <div id="resxdatasection" class="w3-row resxlistdatasection">
+
+                    <input id="defaultjsonresx" type="hidden" value="@Model.GetSetting("defaultjsonresx")" />
+
+                    <div class="w3-container">
+                        <div class="w3-col w3-padding" style="width:160px;">
+                            <div id="resxaddbutton" class="w3-hide w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addresx" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+
+                            <div class="w3-button w3-teal w3-padding-8 " onclick="selectlanguage()"><i class='fas fa-plus-circle'></i></div>
+                            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistbin" s-return="#resxlistdata" s-removelist=".resxlist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                        </div>
+                    </div>
+
+                    <ul id="resxlistdata" class="w3-ul">
+
+                        @foreach (var resxRecord in resxdatalist)
+                        {
+                            var resxInfo = new SimplisityInfo(resxRecord);
+                            <li class="resxlist w3-col m6 w3-display-container w3-padding w3-border-0">
+                                @HiddenField(resxInfo, "genxml/hidden/jsonresx", "", "", false, resxLP)
+                                @HiddenField(resxInfo, "genxml/hidden/filefolder", "", "resx", false, resxLP)
+                                @HiddenField(resxInfo, "genxml/hidden/filenameresx", "s-update='ignore'", resxInfo.GetXmlProperty("genxml/hidden/filename"), false, resxLP)
+                                @HiddenField(resxInfo, "genxml/hidden/culturecode", "", "", false, resxLP)
+                                @HiddenField(resxInfo, "genxml/hidden/fullfilename", "", "", false, resxLP)
+
+
+                                <div class="w3-row w3-display-container w3-padding  w3-card">
+
+                                    <div class="">
+                                        <div class="w3-col m8">
+                                            <div>
+                                                @{
+                                                    var flag = resxInfo.GetXmlProperty("genxml/hidden/culturecode");
+                                                    var displayname = "";
+                                                    if (flag == "")
+                                                    {
+                                                        flag = "none";
+                                                        displayname = ResourceKey("AppThemes.default").ToString();
+                                                    }
+                                                    else
+                                                    {
+                                                        displayname = DNNrocketUtils.GetCultureCodeName(flag);
+                                                    }
+                                                }
+                                                <img class="" src="/DesktopModules/DNNrocket/API/images/flags/16/@(flag).png" alt="">
+                                                <span id="culturecodedisplayname@(resxLP)">@(displayname)&nbsp;[@(flag)]</span>
+                                            </div>
+                                        </div>
+                                        <div class="w3-col w3-margin-left " style="width:62px;">
+                                            <div class="w3-button filenameicon@(resxLP)" onclick="editresx(@(resxLP));" style="">
+                                                <i class="fas fa-edit " style='font-size:24px'></i>
+                                            </div>
+                                        </div>
+                                        <div class="w3-col w3-display-topright w3-padding simplisity_removelistitem" s-removelist=".resxlist" s-recylebin="resxlistbin" style="cursor: pointer;width:42px;">
+                                            <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </li>
+
+                            resxLP += 1;
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
     </div>
+</div>
 
 @RenderTemplate("EditorPopUp.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", Model, "1.0", true)
 
@@ -840,14 +841,14 @@
         $('#razoreditor').focus();
 
 
-    myCodeMirror.on("drop", function (cm, event) {
-        var coords = cm.coordsChar({
-            left: event.x,
-            top: event.y
-        });
-        alert('drop');
-        cm.replaceRange("Some TextXXXXXXXXXXXXXXXX", coords);
-    });
+    //myCodeMirror.on("drop", function (cm, event) {
+    //    var coords = cm.coordsChar({
+    //        left: event.x,
+    //        top: event.y
+    //    });
+    //    alert('drop');
+    //    cm.replaceRange("Some TextXXXXXXXXXXXXXXXX", coords);
+    //});
 
 
     }

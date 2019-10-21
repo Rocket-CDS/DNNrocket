@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace Rocket.AppThemes.Componants
+namespace DNNrocketAPI.Componants
 {
 
     public class AppTheme

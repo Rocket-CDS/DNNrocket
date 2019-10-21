@@ -2,6 +2,7 @@
 @using DNNrocketAPI;
 @using Simplisity;
 @using System.IO;
+@using DNNrocketAPI.Componants;
 
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
@@ -232,7 +233,7 @@
 
 
         });
-        
+
         $('.editbutton').unbind("click");
         $('.editbutton').click(function () {
             var row = $(this).attr('row');
@@ -429,7 +430,7 @@
             return this.optional(element) || !$.isNumeric(value.substring(0, 1));
         }, '@ResourceKey("RocketMod.alphanumeric", "", "Error")');
 
-        jQuery.validator.setDefaults({ 
+        jQuery.validator.setDefaults({
             ignore: ":hidden:not(#fielddatasection input[type=text])",
         });
 
