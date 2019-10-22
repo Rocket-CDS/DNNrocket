@@ -4,6 +4,7 @@
 @using Rocket.AppThemes.Componants;
 @using System.IO;
 @using DNNrocketAPI.Componants;
+@using RocketMod.Componants;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/images/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
@@ -11,13 +12,13 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 @{
-    var appTheme = (AppTheme)Model.List.First();
-    var info = new SimplisityInfo(appTheme.Record);
-    var record = appTheme.Record;
+    var appThemeMod = (AppThemeMod)Model.List.First();
+    var info = new SimplisityInfo(appThemeMod.AppTheme.Record);
+    var record = appThemeMod.AppTheme.Record;
 }
 @{
     var dataDic = new Dictionary<string, string>();
-    foreach (string i in appTheme.VersionList)
+    foreach (string i in appThemeMod.AppTheme.VersionList)
     {
         dataDic.Add(i, i);
     }
@@ -39,8 +40,11 @@
     <div class="w3-container">
 
         <div class="w3-display-container">
-            <div class="w3-col m10">
-                <h2>@(appTheme.AppThemeFolder)&nbsp;v@(appTheme.AppVersionFolder)&nbsp;<span class="validationfail w3-margin-left " style="display:none;"><i class='fas fa-exclamation-triangle' style='font-size:24px;color:red;'></i></span></h2>
+            <div class="w3-col m2" style="width:140px">
+                <img src="@ThumbnailImageUrl(appThemeMod.AppTheme.Logo,140,140)" alt="" style="width:60%;" class="w3-circle w3-hover-opacity w3-margin-bottom">
+            </div>
+            <div class="w3-col m8">
+                <h2>@(appThemeMod.AppTheme.AppThemeFolder)&nbsp;v@(appThemeMod.AppTheme.AppVersionFolder)&nbsp;<span class="validationfail w3-margin-left " style="display:none;"><i class='fas fa-exclamation-triangle' style='font-size:24px;color:red;'></i></span></h2>
             </div>
             <div class="w3-right">
                 <i>ID: </i> @info.ItemID
@@ -51,10 +55,10 @@
 
 
             <div id="editorsave" style="display:none;">
-                @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appTheme.SystemKey)
+                @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appThemeMod.AppTheme.SystemKey)
                 <input id="editorfilenamesave" type="hidden" value="" />
                 <input id="editorcodesave" type="hidden" value="" />
-                <input id="editorlistnamesave" type="hidden" value="" />
+                <input id="editorfileext" type="hidden" value="" />
             </div>
         </div>
 
@@ -69,7 +73,7 @@
 
                     <div class="w3-container">
                         <div class="w3-col w3-padding" style="">
-                            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addtemplate" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addtemplate" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appThemeMod.AppTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
                             <div class="w3-button w3-teal w3-padding-8 w3-right" onclick="location.reload();"><i class='fas fa-sync'></i></div>
                             <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="templatelistbin" s-return="#templatelistdata" s-removelist=".templatelist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
                         </div>
@@ -131,7 +135,7 @@
 
                     <div class="w3-container">
                         <div class="w3-col w3-padding" style="width:160px;">
-                            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addcss" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addcss" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appThemeMod.AppTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
                             <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="csslistbin" s-return="#csslistdata" s-removelist=".csslist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
                         </div>
                     </div>
@@ -194,7 +198,7 @@
 
                     <div class="w3-container">
                         <div class="w3-col w3-padding" style="width:160px;">
-                            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addjs" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addjs" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appThemeMod.AppTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
                             <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="jslistbin" s-return="#jslistdata" s-removelist=".jslist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
                         </div>
                     </div>
@@ -252,10 +256,16 @@
     </div>
 </div>
 
-@RenderTemplate("EditorPopUp.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", Model, "1.0", true)
+@{
+    var l = new List<object>();
+    l.Add(appThemeMod.AppTheme);
+    var m = new SimplisityRazor(l, Model.Settings);
+    m.SetSetting("interfacekey","rocketmodapptheme");
+}
+@RenderTemplate("EditorPopUp.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", m, "1.0", true)
 
 <div id="dnnrocket_imageselectwrapper">
-    @RenderImageSelect(200, true, false, appTheme.ImageFolderRel)
+    @RenderImageSelect(200, true, false, appThemeMod.AppTheme.ImageFolderRel)
 </div>
 
 <style>
@@ -333,7 +343,7 @@
 
     function changeversionaction() {
         var newversion = $('.changeversionclass').val();
-        $('.changeversionclass').attr('s-fields', '{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"' + newversion + '"}');
+        $('.changeversionclass').attr('s-fields', '{"appthemefolder":"@appThemeMod.AppTheme.AppThemeFolder","appversionfolder":"' + newversion + '"}');
     }
 
     function edittemplate(idx) {
@@ -345,81 +355,8 @@
     function editjs(idx) {
         editeditor(idx, 'javascript','jslist');
     }
-    function editresx(idx) {
-        $('#detailsection').hide();
-        $('#dnnrocket_resxeditwrapper').show();
 
-        var culturecode = $('#culturecode_' + idx).val();
-
-        var defaultjsonstr = $('#defaultjsonresx').val();
-        defaultNamedata = [];
-        defaultValuedata = [];
-        defaultjsonstr = simplisity_decode(defaultjsonstr);
-        if (defaultjsonstr !== '') {
-            var obj = JSON.parse(defaultjsonstr);
-            var len = obj.listdata.length;
-            for (var i = 0; i < len; i++) {
-                var itemobj = obj.listdata[i];
-                if (itemobj.id.startsWith("name")) {
-                    defaultNamedata.push(itemobj.value);
-                }
-                if (itemobj.id.startsWith("value")) {
-                    defaultValuedata.push(itemobj.value);
-                }
-            }
-        }
-
-        $('#resxvaluesstring').empty();
-        $('#resxkeysstring').empty();
-
-        var fieldkeylist = $('#fieldlocalizedlist').val().split(',');
-        var jsonstr = $('#jsonresx_' + idx).val();
-        jsonstr = simplisity_decode(jsonstr);
-        if (jsonstr !== '') {
-
-            //console.log('jsonstr:', jsonstr);
-
-            var namedata = [];
-            var valuedata = [];
-            var obj = JSON.parse(jsonstr);
-            var len = obj.listdata.length;
-            for (var i = 0; i < len; i++) {
-                var itemobj = obj.listdata[i];
-                if (itemobj.id.startsWith("name")) {
-                    namedata.push(itemobj.value);
-                }
-                if (itemobj.id.startsWith("value")) {
-                    valuedata.push(itemobj.value);
-                }
-            }
-            len = namedata.length;
-            for (var i = 0; i < len; i++) {
-                var disabled = false;
-                if (culturecode === '') {
-                    if ($.inArray(namedata[i], fieldkeylist) >= 0) {
-                        disabled = true;
-                    }
-                }
-                addresxvalue(namedata[i], valuedata[i], disabled);
-            }
-            $('#resxvaluesstring').attr("rows", len + 1);
-            $('#resxkeysstring').attr("rows", len + 1);
-        }
-
-        $('#resxfilename').text($('#fullfilename_' + idx).val());
-        $('#dnnrocket_resxeditwrapper').attr("index", idx);
-        if (culturecode === '') {
-            culturecode = 'none';
-        }
-        $('#resxflag').attr("src", "/DesktopModules/DNNrocket/API/images/flags/32/" + culturecode + ".png");
-        $('#culturecoderesx').text($('#culturecodedisplayname' + idx).text());
-        $('#culturecode').val(culturecode);
-
-        simplisity_setParamField('culturecoderesx', $('#culturecode_' + idx).val());  // send culture code to server when we add resx value.
-
-    }
-
-    function saveeditordata(action) {
+    function saveeditordata() {
         var modetype = $('#razoreditor').attr('modetype');
         if ($('#editorfilenamesave').val() === 'view') {
             $('#regenerateview').prop('checked', false);
@@ -431,38 +368,27 @@
             $('#regenerateeditlist').prop('checked', false);
         }
 
+        var fileext = 'cshtml';
+        if (modetype == 'css') {
+            fileext = "css"
+        }
+        if (modetype == 'javascript') {
+            fileext = "js"
+        }
+        $('#editorfileext').val(fileext);
+
         var idx = $('#editorwrapper').attr("index");
-        if (action === 1) {
-            $('#editorpopup').hide();
-            $('#detailsection').show();
-            $('#editorcode' + modetype + '_' + idx).val(simplisity_encode(myCodeMirror.getValue()));
-        }
-        else {
-            $('#editorcode' + modetype + '_' + idx).val(simplisity_encode(myCodeMirror.getValue()));
-            $('#editorcodesave').val(simplisity_encode(myCodeMirror.getValue()));
-        }
+        $('#editorcode' + modetype + '_' + idx).val(simplisity_encode(myCodeMirror.getValue()));
+        $('#editorcodesave').val(simplisity_encode(myCodeMirror.getValue()));
     }
 
     function saveeditorcall() {
-        saveeditordata(2);
+        saveeditordata();
     }
 
     function saveeditorreturn() {
         $('#saveicon').show();
         $('#saveicon').addClass('simplisity_fadeout');
-    }
-
-    function savetemplate() {
-        saveeditordata(1);
-    }
-
-    function saveresx() {
-        var jsonListData = simplisity_encode(simplisity_getlistjson('.resxlistvalues'));
-        var idx = $('#dnnrocket_resxeditwrapper').attr("index");
-        $('#jsonresx_' + idx).val(jsonListData);
-        $('#dnnrocket_resxeditwrapper').hide();
-        $('#detailsection').show();
-        $("#resxvalues").find("tr:gt(0)").remove();
     }
 
     function editeditor(idx, modetype, listname) {

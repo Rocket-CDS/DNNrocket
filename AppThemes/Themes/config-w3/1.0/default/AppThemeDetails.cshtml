@@ -478,6 +478,9 @@
     </div>
 </div>
 
+@{ 
+        Model.SetSetting("interfacekey","rocketapptheme");
+}
 @RenderTemplate("EditorPopUp.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", Model, "1.0", true)
 
 <div id="dnnrocket_imageselectwrapper">
@@ -756,7 +759,7 @@
 
     }
 
-    function saveeditordata(action) {
+    function saveeditordata() {
         var modetype = $('#razoreditor').attr('modetype');
         if ($('#editorfilenamesave').val() === 'view') {
             $('#regenerateview').prop('checked', false);
@@ -769,28 +772,17 @@
         }
 
         var idx = $('#editorwrapper').attr("index");
-        if (action === 1) {
-            $('#editorpopup').hide();
-            $('#detailsection').show();
-            $('#editorcode' + modetype + '_' + idx).val(simplisity_encode(myCodeMirror.getValue()));
-        }
-        else {
-            $('#editorcode' + modetype + '_' + idx).val(simplisity_encode(myCodeMirror.getValue()));
-            $('#editorcodesave').val(simplisity_encode(myCodeMirror.getValue()));
-        }
+        $('#editorcode' + modetype + '_' + idx).val(simplisity_encode(myCodeMirror.getValue()));
+        $('#editorcodesave').val(simplisity_encode(myCodeMirror.getValue()));
     }
 
     function saveeditorcall() {
-        saveeditordata(2);
+        saveeditordata();
     }
 
     function saveeditorreturn() {
         $('#saveicon').show();
         $('#saveicon').addClass('simplisity_fadeout');
-    }
-
-    function savetemplate() {
-        saveeditordata(1);
     }
 
     function saveresx() {

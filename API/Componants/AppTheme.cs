@@ -1502,7 +1502,8 @@ namespace DNNrocketAPI.Componants
 
         public string SystemKey { get; set; }
         public Dictionary<string, SimplisityRecord> SnippetText { get; set; }
-        public Dictionary<string, SimplisityRecord> RazorTokenText { get; set; }        
+        public Dictionary<string, SimplisityRecord> RazorTokenText { get; set; }
+        public DNNrocketController RocketController { get { return _objCtrl; } }
 
         #endregion
 

@@ -6,6 +6,7 @@ using DNNrocketAPI.Componants;
 using RocketSettings;
 using Simplisity;
 using Rocket.AppThemes.Componants;
+using RocketMod.Componants;
 
 namespace RocketMod
 {
@@ -31,7 +32,7 @@ namespace RocketMod
         private static SettingsData _settingsData;
         private static string _editLang;
         private static int _selectedItemId;
-        private static AppTheme _appTheme;
+        private static AppThemeMod _appThemeMod;
         private static ArticleData _articleData;
         private static AppThemeDataList _appThemeDataList;
 
@@ -146,7 +147,10 @@ namespace RocketMod
                     break;
 
                 case "rocketmodapptheme_apptheme":
-                    strOut = GetAppTheme();
+                    strOut = GetAppModTheme();
+                    break;
+                case "rocketmodapptheme_saveeditor":
+                    strOut = SaveEditor();
                     break;
 
 
@@ -209,7 +213,7 @@ namespace RocketMod
                 }
                 else
                 {
-                    _appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
+                    _appThemeMod = new AppThemeMod(_moduleid, _systemInfoData.SystemKey, true);
 
                     _passSettings.Add("AppTheme", _moduleParams.AppThemeFolder);
                     _passSettings.Add("AppThemeVersion", _moduleParams.AppThemeVersion);
@@ -256,6 +260,10 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmodfields_delete", true);
 
             _commandSecurity.AddCommand("rocketmodview_download", false);
+
+            _commandSecurity.AddCommand("rocketmodapptheme_apptheme", true);
+            _commandSecurity.AddCommand("rocketmodapptheme_saveeditor", true);
+            
 
             var hasAccess = false;
             hasAccess = _commandSecurity.HasSecurityAccess(paramCmd);
@@ -340,7 +348,7 @@ namespace RocketMod
         public static void SaveArticle()
         {
 
-            if (_appTheme.DataType == 1)
+            if (_appThemeMod.AppTheme.DataType == 1)
             {
                 _articleData = new ArticleData(_moduleid, _editLang);
             }
@@ -375,7 +383,7 @@ namespace RocketMod
 
         public static void DeleteArticle()
         {
-            if (_appTheme.DataType == 1)
+            if (_appThemeMod.AppTheme.DataType == 1)
             {
                 _articleData = new ArticleData(_moduleid, _editLang);
             }
@@ -407,7 +415,7 @@ namespace RocketMod
         {
             try
             {
-                if (_appTheme.DataType == 1)
+                if (_appThemeMod.AppTheme.DataType == 1)
                 {
                     return GetArticle();
                 }
@@ -439,7 +447,7 @@ namespace RocketMod
 
                 var strOut = "-- NO DATA -- Itemid: " + _selectedItemId;
 
-                if (_appTheme.DataType == 1)
+                if (_appThemeMod.AppTheme.DataType == 1)
                 {
                     _articleData = new ArticleData(_moduleid, _editLang);
                 }
@@ -454,11 +462,11 @@ namespace RocketMod
                 _articleData.AppThemeVersion = _moduleParams.AppThemeVersion;
                 _articleData.AppThemeRelPath = _moduleParams.AppThemeFolderRel;
 
-                _passSettings.Add("datatype", _appTheme.DataType.ToString());
+                _passSettings.Add("datatype", _appThemeMod.AppTheme.DataType.ToString());
 
                 // look at fields to find out what lists are included in the template.
                 var usedlistcsv = "";
-                foreach (SimplisityRecord f in _appTheme.Record.GetRecordList("fielddata"))
+                foreach (SimplisityRecord f in _appThemeMod.AppTheme.Record.GetRecordList("fielddata"))
                 {
                     var fieldtype = f.GetXmlProperty("genxml/select/type");
                     if (fieldtype == "imagegallery") usedlistcsv += ".imagelist" + f.GetXmlProperty("genxml/textbox/name") + ",";
@@ -682,7 +690,7 @@ namespace RocketMod
             }
         }
 
-        public static String GetAppTheme()
+        public static String GetAppModTheme()
         {
             try
             {
@@ -690,18 +698,26 @@ namespace RocketMod
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "apptheme.cshtml";
-
-                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
+                var appThemeMod = new AppThemeMod(_moduleid, _systemInfoData.SystemKey, true);
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
+                return DNNrocketUtils.RazorDetail(razorTempl, appThemeMod, _passSettings, null, true);
             }
             catch (Exception ex)
             {
                 return ex.ToString();
             }
         }
+        public static string SaveEditor()
+        {
+            var editorcode = _postInfo.GetXmlProperty("genxml/hidden/editorcodesave");
+            var filename = _postInfo.GetXmlProperty("genxml/hidden/editorfilenamesave");
+            var editorfileext = _postInfo.GetXmlProperty("genxml/hidden/editorfileext");
+            _appThemeMod.SaveEditor(filename, editorfileext, editorcode);
+            return "OK";
+        }
+
 
 
         public static String GetSelectApp()
@@ -822,25 +838,6 @@ namespace RocketMod
         {
             var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
             if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
-        }
-
-        private static void AssignSelecteditemId()
-        {
-            _appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
-            _selectedItemId = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-            if (_appTheme.DataType != null &&_appTheme.DataType == 1)
-            {
-                // form ony, create article and save itemid
-                _selectedItemId = _settingsData.Info.GetXmlPropertyInt("genxml/selecteditemid");
-                var articleDataNew = new ArticleData(_selectedItemId, _moduleid, _editLang);
-                if (!articleDataNew.Exists)
-                {
-                    articleDataNew = new ArticleData(-1, _moduleid, _editLang);
-                    _selectedItemId = articleDataNew.ItemId;
-                    _settingsData.Info.SetXmlProperty("genxml/selecteditemid", _selectedItemId.ToString());
-                    _settingsData.Update();
-                }
-            }
         }
 
 

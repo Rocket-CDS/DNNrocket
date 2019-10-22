@@ -207,6 +207,9 @@
   <data name="resetmsg.Text" xml:space="preserve">
     <value>Reset this module config?  (Data NOT deleted)</value>
   </data>
+  <data name="rocketmodapptheme.Text" xml:space="preserve">
+    <value>Edit Template</value>
+  </data>
   <data name="rocketmodfields.Text" xml:space="preserve">
     <value>Field Editor</value>
   </data>
