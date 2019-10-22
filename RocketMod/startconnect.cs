@@ -764,7 +764,9 @@ namespace RocketMod
 
                     var razortemplate = "view.cshtml";
                     var apptheme = _moduleParams.AppThemeFolder;
-                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _moduleParams.AppProjectFolderRel, "SystemThemes/dnnrocketmodule/" + apptheme, DNNrocketUtils.GetCurrentCulture(), _moduleParams.AppThemeVersion, _moduleParams.CacheDisbaled);
+                    //var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _moduleParams.AppProjectFolderRel, "SystemThemes/dnnrocketmodule/" + apptheme, DNNrocketUtils.GetCurrentCulture(), _moduleParams.AppThemeVersion, _moduleParams.CacheDisbaled);
+
+                    var razorTempl = _appThemeMod.GetTemplateRazor("view");
 
                     var passSettings = _paramInfo.ToDictionary();
                     

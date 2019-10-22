@@ -1093,11 +1093,11 @@ namespace DNNrocketAPI
 
         public static string DNNrocketThemesDirectory()
         {
-            return PortalSettings.Current.HomeDirectoryMapPath + "AppThemes";
+            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketThemes";
         }
         public static string DNNrocketThemesRelDirectory()
         {
-            return PortalSettings.Current.HomeDirectory + "AppThemes";
+            return PortalSettings.Current.HomeDirectory + "DNNrocketThemes";
         }
 
         public static string HomeDNNrocketDirectory()
