@@ -42,8 +42,7 @@ var trackgroup = '';
             debug: false
         }, options);
 
-        trackgroup = sessionStorage.trackgroup ? sessionStorage.trackgroup : sessionStorage.trackgroup = Math.random();
-        trackgroup = trackgroup + '_' + settings.systemprovider;
+        trackgroup = sessionStorage.trackgroup ? sessionStorage.trackgroup : sessionStorage.trackgroup = Math.random() + '_' + settings.systemprovider;
 
         debugmode = settings.debug;
 

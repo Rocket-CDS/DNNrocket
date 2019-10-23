@@ -32,21 +32,27 @@ namespace DNNrocketAPI.Componants
             _moduleParamsRec = new SimplisityRecord();
             _cacheKey = "moduleparams*" + moduleId;
             _moduleParamsRec = (SimplisityRecord)CacheUtils.GetCache(_cacheKey);
-            if ((_moduleParamsRec == null || !useCache) && moduleId > 0)
+            if ((_moduleParamsRec == null || !useCache))
             {
-                var objCtrl = new DNNrocketController();
-                _moduleParamsRec = objCtrl.GetRecordByGuidKey(-1, _moduleid, "MODULEPARAMS", _cacheKey, "", _tableName);
-                if (_moduleParamsRec == null)
+                if (moduleId <= 0)
                 {
-                    _moduleParamsRec = new SimplisityRecord();
-                    _moduleParamsRec.PortalId = -1;
-                    _moduleParamsRec.TypeCode = "MODULEPARAMS";
-                    _moduleParamsRec.GUIDKey = _cacheKey;
-                    _moduleParamsRec.ModuleId = _moduleid;
-                    objCtrl.SaveRecord(_moduleParamsRec);
+                    _moduleParamsRec = new SimplisityRecord(); // sto error when no moduleid
                 }
-
-                CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
+                else
+                {
+                    var objCtrl = new DNNrocketController();
+                    _moduleParamsRec = objCtrl.GetRecordByGuidKey(-1, _moduleid, "MODULEPARAMS", _cacheKey, "", _tableName);
+                    if (_moduleParamsRec == null)
+                    {
+                        _moduleParamsRec = new SimplisityRecord();
+                        _moduleParamsRec.PortalId = -1;
+                        _moduleParamsRec.TypeCode = "MODULEPARAMS";
+                        _moduleParamsRec.GUIDKey = _cacheKey;
+                        _moduleParamsRec.ModuleId = _moduleid;
+                        objCtrl.SaveRecord(_moduleParamsRec);
+                    }
+                    CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
+                }
             }
         }
         public void Save()

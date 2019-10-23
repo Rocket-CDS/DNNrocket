@@ -37,7 +37,10 @@
         }
 
         function rocketmodeditiframe_@(Model.ModuleId)() {
-            //simplisity_setCookieValue('editlang', '@(DNNrocketUtils.GetCurrentCulture())');
+
+            simplisity_setCookieValue('s-cmd-menu-' + sessionStorage.trackgroup, 'edit_editarticlelist');
+            simplisity_setCookieValue('s-lastmenuindex-' + sessionStorage.trackgroup, '1');
+    
             sessionStorage.RocketModScrollPos = $(window).scrollTop();
             $('#rocketmodmodel_@(Model.ModuleId)').show();
             $('.actionMenu').hide();
