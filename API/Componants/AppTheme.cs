@@ -168,7 +168,7 @@ namespace DNNrocketAPI.Componants
             var tempMapPath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
             if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
             {
-                var formHtml = GenerateEditForm(0);
+                var formHtml = GenerateEditForm("fielddata", "edit",0);
                 FileUtils.SaveFile(tempMapPath, formHtml);
                 _templateFileName.Add(Path.GetFileName(tempMapPath));
                 AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), formHtml);
@@ -196,6 +196,14 @@ namespace DNNrocketAPI.Componants
                 FileUtils.SaveFile(tempMapPath, "");
                 _templateFileName.Add(Path.GetFileName(tempMapPath));
                 AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), "");
+            }
+            tempMapPath = AppThemeVersionFolderMapPath + "\\default\\settings.cshtml";
+            if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
+            {
+                var formHtml = GenerateEditForm("settingfielddata", "settings",0);
+                FileUtils.SaveFile(tempMapPath, "");
+                _templateFileName.Add(Path.GetFileName(tempMapPath));
+                AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), formHtml);
             }
             tempMapPath = AppThemeVersionFolderMapPath + "\\css\\" + AppThemeFolder + ".css";
             if (!_cssFileName.Contains(Path.GetFileName(tempMapPath)))
@@ -358,6 +366,17 @@ namespace DNNrocketAPI.Componants
                 }
                 lp += 1;
             }
+            lp = 1;
+            foreach (var f in postInfo.GetList("settingfielddata"))
+            {
+                var newfieldname = f.GetXmlProperty("genxml/textbox/name");
+                if (GeneralUtils.IsNumeric(newfieldname) || newfieldname == "")
+                {
+                    newfieldname = "field" + newfieldname + lp;
+                    postInfo.SetXmlProperty("genxml/settingfielddata/genxml[" + lp + "]/textbox/name", newfieldname);
+                }
+                lp += 1;
+            }
 
             postInfo = ActionListTemplateFiles(postInfo);
             postInfo = ActionListCssFiles(postInfo);
@@ -374,12 +393,18 @@ namespace DNNrocketAPI.Componants
 
                 Populate();
 
-                UpdateFieldXpath();
+                UpdateFieldXpath("fielddata");
+                UpdateFieldXpath("settingfielddata");
 
                 // output generated template.
                 var formHtml = GetTemplate("edit");
-                if (RegenerateEdit) formHtml = GenerateEditForm(0);
+                if (RegenerateEdit) formHtml = GenerateEditForm("fielddata", "edit",0);
                 var tempMapPath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
+                if (formHtml != "") FileUtils.SaveFile(tempMapPath, formHtml);
+
+                formHtml = GetTemplate("settings");
+                if (RegenerateSettings) formHtml = GenerateEditForm("settingfielddata", "settings", 0);
+                tempMapPath = AppThemeVersionFolderMapPath + "\\default\\settings.cshtml";
                 if (formHtml != "") FileUtils.SaveFile(tempMapPath, formHtml);
 
                 var listHtml = GetTemplate("editlist");
@@ -514,15 +539,47 @@ namespace DNNrocketAPI.Componants
             return postInfo;
         }
 
-        public Dictionary<string, string> GetFieldDictionary(bool withExt = true)
+        public Dictionary<string, string> GetFieldDictionaryFields(bool withExt = true)
         {
-            return GetFieldDictionary(Record, withExt);
+            return GetFieldDictionary("fielddata", Record, withExt);
         }
-        public Dictionary<string,string> GetFieldDictionary(SimplisityRecord record, bool withExt = true)
+        public Dictionary<string, string> GetFieldDictionaryFields(SimplisityRecord record, bool withExt = true)
+        {
+            return GetFieldDictionary("fielddata", record, withExt);
+        }
+        public Dictionary<string, string> GetFieldDictionarySettings(bool withExt = true)
+        {
+            return GetFieldDictionary("settingfielddata", Record, withExt);
+        }
+        public Dictionary<string, string> GetFieldDictionarySettings(SimplisityRecord record, bool withExt = true)
+        {
+            return GetFieldDictionary("settingfielddata", record, withExt);
+        }
+        public Dictionary<string, string> GetFieldDictionaryAll(bool withExt = true)
+        {
+            var rtnlist = GetFieldDictionaryFields(withExt);
+            var sl = GetFieldDictionarySettings(withExt);
+            foreach (var s in sl)
+            {
+                rtnlist.Add(s.Key, s.Value);
+            }
+            return rtnlist;
+        }
+        public Dictionary<string, string> GetFieldDictionaryAll(SimplisityRecord record, bool withExt = true)
+        {
+            var rtnlist = GetFieldDictionaryFields(record, withExt);
+            var sl = GetFieldDictionarySettings(record, withExt);
+            foreach (var s in sl)
+            {
+                rtnlist.Add(s.Key, s.Value);
+            }
+            return rtnlist;
+        }
+        private Dictionary<string,string> GetFieldDictionary(string listname, SimplisityRecord record, bool withExt = true)
         {
             // get fields
             var fieldNames = new Dictionary<string, string>();
-            foreach (var f in record.GetRecordList("fielddata"))
+            foreach (var f in record.GetRecordList(listname))
             {
                 var fieldname = f.GetXmlProperty("genxml/textbox/name");
                 if (fieldname != "")
@@ -581,7 +638,7 @@ namespace DNNrocketAPI.Componants
             }
 
             // get fields
-            var fieldNames = GetFieldDictionary(new SimplisityRecord(postInfo));
+            var fieldNames = GetFieldDictionaryAll(new SimplisityRecord(postInfo));
 
             // get defaultDict
             var defaultDict = GetResxDictionary(new SimplisityRecord(postInfo));
@@ -781,7 +838,7 @@ namespace DNNrocketAPI.Componants
             nbi.SetXmlProperty("genxml/hidden/filefolder", "resx");
 
             var jsonDict = new Dictionary<string, string>();
-            var rtnDict = GetFieldDictionary();
+            var rtnDict = GetFieldDictionaryAll();
             var resxDict = GetResxDictionary(Record, culturecode);
             foreach (var d in rtnDict)
             {
@@ -843,6 +900,12 @@ namespace DNNrocketAPI.Componants
         public void AddListField()
         {
             var listname = "fielddata";
+            Record.AddListItem(listname);
+            Update();
+        }
+        public void AddSettingListField()
+        {
+            var listname = "settingfielddata";
             Record.AddListItem(listname);
             Update();
         }
@@ -971,11 +1034,11 @@ namespace DNNrocketAPI.Componants
             if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
         }
 
-        private string GenerateEditForm(int row)
+        private string GenerateEditForm(string listname, string basefile, int row)
         {
             var systemInfoData = new SystemInfoData(SystemKey);
 
-            List<SimplisityRecord> fieldList = Record.GetRecordList("fielddata");
+            List<SimplisityRecord> fieldList = Record.GetRecordList(listname);
             var resxItem = Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
             var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
             var jasonInfo = new SimplisityInfo();
@@ -1153,8 +1216,8 @@ namespace DNNrocketAPI.Componants
 
 
             // merge to template            
-            var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\edit.cshtml");
-            if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\edit.cshtml");
+            var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\" + basefile + ".cshtml");
+            if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\" + basefile + ".cshtml");
             if (strOut == "")
             {
                 return strFieldList;
@@ -1315,9 +1378,9 @@ namespace DNNrocketAPI.Componants
 
         }
 
-        private void UpdateFieldXpath()
+        private void UpdateFieldXpath(string listname)
         {
-            List<SimplisityRecord> fieldList = Record.GetRecordList("fielddata");
+            List<SimplisityRecord> fieldList = Record.GetRecordList(listname);
             var lp = 1;
             foreach (var f in fieldList)
             {
@@ -1360,7 +1423,7 @@ namespace DNNrocketAPI.Componants
 
                 if (xpath != "")
                 {
-                    Record.SetXmlProperty("genxml/fielddata/genxml[" + lp + "]/hidden/xpath",xpath);
+                    Record.SetXmlProperty("genxml/" + listname + "/genxml[" + lp + "]/hidden/xpath",xpath);
                 }
                 lp += 1;
             }
@@ -1576,6 +1639,7 @@ namespace DNNrocketAPI.Componants
         public SimplisityRecord Record { get; set; }
         public bool RegenerateEditList { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateeditlist"); } }
         public bool RegenerateEdit { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateedit"); } }
+        public bool RegenerateSettings { get { return Record.GetXmlPropertyBool("genxml/checkbox/regeneratesettings"); } }
         public bool RegenerateView { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateview"); } }
 
         public int DataType { get { return Record.GetXmlPropertyInt("genxml/radio/themetype"); } }

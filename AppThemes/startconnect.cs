@@ -114,6 +114,10 @@ namespace DNNrocket.AppThemes
                         SaveData();
                         strOut = AddListField();
                         break;
+                    case "rocketapptheme_addsettingfield":
+                        SaveData();
+                        strOut = AddSettingListField();
+                        break;
                     case "rocketapptheme_createversion":
                         strOut = CreateNewVersion();
                         break;
@@ -394,6 +398,11 @@ private static Dictionary<string, string> ExportAppTheme()
         private static string AddListField()
         {
             _appTheme.AddListField();
+            return GetEditTemplate(_appTheme);
+        }
+        private static string AddSettingListField()
+        {
+            _appTheme.AddSettingListField();
             return GetEditTemplate(_appTheme);
         }
         private static void AssignEditLang()

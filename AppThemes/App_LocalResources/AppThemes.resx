@@ -124,13 +124,16 @@
     <value>AppTheme Name</value>
   </data>
   <data name="autoregenerateedit.Text" xml:space="preserve">
-    <value>Regenerate "edit.cshtml"</value>
+    <value>edit.cshtml</value>
   </data>
   <data name="autoregenerateeditlist.Text" xml:space="preserve">
-    <value>Regenerate "editlist.cshtml"</value>
+    <value>editlist.cshtml</value>
+  </data>
+  <data name="autoregeneratesettings.Text" xml:space="preserve">
+    <value>Settings.cshtml</value>
   </data>
   <data name="autoregenerateview.Text" xml:space="preserve">
-    <value>Regenerate view.cshtml"</value>
+    <value>view.cshtml</value>
   </data>
   <data name="builder.Text" xml:space="preserve">
     <value>AppTheme Builder</value>
@@ -155,6 +158,9 @@
   </data>
   <data name="dashboard.Text" xml:space="preserve">
     <value>AppTheme</value>
+  </data>
+  <data name="datafields.Text" xml:space="preserve">
+    <value>Data Fields</value>
   </data>
   <data name="default.Text" xml:space="preserve">
     <value>Default</value>
@@ -228,6 +234,9 @@
   <data name="rebuild.Text" xml:space="preserve">
     <value>Rebuild</value>
   </data>
+  <data name="regenerate.Text" xml:space="preserve">
+    <value>Regenerate Templates</value>
+  </data>
   <data name="resources.Text" xml:space="preserve">
     <value>Resources</value>
   </data>
@@ -266,6 +275,9 @@
   </data>
   <data name="selectversion.Text" xml:space="preserve">
     <value>Select Version</value>
+  </data>
+  <data name="settingfields.Text" xml:space="preserve">
+    <value>Setting Fields</value>
   </data>
   <data name="summary.Text" xml:space="preserve">
     <value>Summary</value>

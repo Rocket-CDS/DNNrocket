@@ -48,7 +48,7 @@
     var resxdatalist = record.GetRecordList("resxlist");
 
 
-    var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist,.fielddata";
+    var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist,.fielddata,.settingfielddata";
 }
 
 @HiddenField(info, "genxml/hidden/fieldlocalizedlist", " s-update='ignore' ")
@@ -87,7 +87,7 @@
         <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearlistcache":"true"}' s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
         @ButtonGap()
 
-        <div class="w3-col m6 w3-dropdown-hover">
+        <div class="w3-col m2 w3-dropdown-hover">
             <div class="w3-button">@ResourceKey("DNNrocket.more")...</div>
             <div class="w3-dropdown-content w3-bar-block w3-card">
                 <div class="w3-bar-item w3-button simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-blue fas fa-newspaper fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
@@ -100,17 +100,14 @@
 
             </div>
         </div>
+        <div class="w3-col m5 w3-right">
+            <h2>@(appTheme.AppThemeFolder)&nbsp;v@(appTheme.AppVersionFolder)&nbsp;<span class="validationfail w3-margin-left " style="display:none;"><i class='fas fa-exclamation-triangle' style='font-size:24px;color:red;'></i></span></h2>
+        </div>
 
     </div>
     <div class="w3-container">
 
         <div class="w3-display-container">
-            <div class="w3-col m10">
-                <h2>@(appTheme.AppThemeFolder)&nbsp;v@(appTheme.AppVersionFolder)&nbsp;<span class="validationfail w3-margin-left " style="display:none;"><i class='fas fa-exclamation-triangle' style='font-size:24px;color:red;'></i></span></h2>
-            </div>
-            <div class="w3-right">
-                <i>ID: </i> @info.ItemID
-            </div>
         </div>
 
         <div id="appthemedetails">
@@ -124,9 +121,12 @@
             </div>
 
 
-            <div class="w3-container">
+            <div class="w3-container ">
+                <div class="w3-row w3-padding">
+                    @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
+                </div>
 
-                <div class="w3-row ">
+                <div class="w3-row w3-padding">
                     <div class="w3-col " style="width:136px;">
                         <label>Logo</label>
                         <img src="@ThumbnailImageUrl(appTheme.Logo,136,136)" alt="" style="" class="w3-circle">
@@ -142,34 +142,41 @@
                 </div>
 
                 <div class="w3-row ">
-                    <div class="w3-col m3 w3-padding">
-                        @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
+                    <div class="w3-col " style="width:136px;">
+                        &nbsp;
                     </div>
-                    <div class="w3-col m3 w3-padding ">
-                        @CheckBox(info, "genxml/checkbox/regenerateview", ResourceKey("AppThemes.autoregenerateview").ToString(), "", true)
-                    </div>
-                    <div class="w3-col m3 w3-padding ">
-                        @CheckBox(info, "genxml/checkbox/regenerateedit", ResourceKey("AppThemes.autoregenerateedit").ToString(), "", true)
-                    </div>
-                    <div class="w3-col m3 w3-padding regenerateeditlist" style="display:none;">
-                        @CheckBox(info, "genxml/checkbox/regenerateeditlist", ResourceKey("AppThemes.autoregenerateeditlist").ToString(), "", true)
+                    <div class="w3-col m9 w3-padding">
+                        <label>@ResourceKey("AppThemes.regenerate")</label>
+                        <div class="w3-row ">
+                            <div class="w3-col m3 w3-padding ">
+                                @CheckBox(info, "genxml/checkbox/regenerateview", ResourceKey("AppThemes.autoregenerateview").ToString(), "", true)
+                            </div>
+                            <div class="w3-col m3 w3-padding ">
+                                @CheckBox(info, "genxml/checkbox/regenerateedit", ResourceKey("AppThemes.autoregenerateedit").ToString(), "", true)
+                            </div>
+                            <div class="w3-col m3 w3-padding ">
+                                @CheckBox(info, "genxml/checkbox/regeneratesettings", ResourceKey("AppThemes.autoregeneratesettings").ToString(), "", true)
+                            </div>
+                            <div class="w3-col m3 w3-padding regenerateeditlist" style="display:none;">
+                                @CheckBox(info, "genxml/checkbox/regenerateeditlist", ResourceKey("AppThemes.autoregenerateeditlist").ToString(), "", true)
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
 
 
-        <div class="w3-container">
+        <div class="w3-container w3-margin-top">
 
             <div class="w3-bar w3-theme">
-                <div class="w3-bar-item w3-button tablink w3-theme-d5 tabFields" onclick="openDataTab('tabFields','Fields')">@ResourceKey("AppThemes.fields")</div>
+                <div class="w3-bar-item w3-button tablink w3-theme-d5 tabFields" onclick="openDataTab('tabFields','Fields')">@ResourceKey("AppThemes.datafields")</div>
+                <div class="w3-bar-item w3-button tablink tabSettingFields" onclick="openDataTab('tabSettingFields','SettingFields')">@ResourceKey("AppThemes.settingfields")</div>
                 <div class="w3-bar-item w3-button tablink tabTemplates" onclick="openDataTab('tabTemplates','Templates')">@ResourceKey("AppThemes.templates")</div>
-                <div class="w3-bar-item w3-button tablink tabImages" onclick="openDataTab('tabImages','Images')">@ResourceKey("DNNrocket.images")</div>
+                <div class="w3-bar-item w3-button tablink tabResources" onclick="openDataTab('tabResources','Resources')">@ResourceKey("AppThemes.resources")</div>
                 <div class="w3-bar-item w3-button tablink tabCSS" onclick="openDataTab('tabCSS','CSS')">@ResourceKey("AppThemes.css")</div>
                 <div class="w3-bar-item w3-button tablink tabJavascript" onclick="openDataTab('tabJavascript','Javascript')">@ResourceKey("AppThemes.javascript")</div>
-                <div class="w3-bar-item w3-button tablink tabResources" onclick="openDataTab('tabResources','Resources')">@ResourceKey("AppThemes.resources")</div>
+                <div class="w3-bar-item w3-button tablink tabImages" onclick="openDataTab('tabImages','Images')">@ResourceKey("DNNrocket.images")</div>
             </div>
 
             <div id="Fields" class="w3-container w3-border city">
@@ -189,8 +196,33 @@
                             l2.Add(i);
                         }
                         m.List = l2;
+                        m.SetSetting("listname", "fielddata");
                     }
                     @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", m, "1.0", true)
+                </div>
+
+            </div>
+
+            <div id="SettingFields" class="w3-container w3-border city">
+
+                <div id="settingfieldsdatasectiontab" class="w3-row settingfieldslistdatasection">
+
+                    <span class="w3-container">
+                        <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-cmd="rocketapptheme_addsettingfield" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                        <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="fielddatalistbin" s-return="#fielddatalist" s-removelist=".fielddata" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                    </span>
+
+                    @{
+                        var settingm = new SimplisityRazor();
+                        var settingl2 = new List<object>();
+                        foreach (object i in info.GetRecordList("settingfielddata"))
+                        {
+                            settingl2.Add(i);
+                        }
+                        settingm.List = settingl2;
+                        settingm.SetSetting("listname", "settingfielddata");
+                    }
+                    @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", settingm, "1.0", true)
                 </div>
 
             </div>
@@ -558,6 +590,9 @@
 
     </div>
 </div>
+<div class="w3-right">
+    <i>ID: </i> @info.ItemID
+</div>
 
 <!-- The Modal -->
 <div id="languageselector" class="w3-modal">
@@ -769,6 +804,9 @@
         }
         if ($('#editorfilenamesave').val() === 'editlist') {
             $('#regenerateeditlist').prop('checked', false);
+        }
+        if ($('#editorfilenamesave').val() === 'settings') {
+            $('#regeneratesettings').prop('checked', false);
         }
 
         var idx = $('#editorwrapper').attr("index");

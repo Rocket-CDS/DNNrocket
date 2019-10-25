@@ -1,0 +1,32 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "[Token:appthemeresx]")
+
+@{
+    var info = (SimplisityInfo)Model.List.First();
+}
+
+<div id="datasection" class="">
+    <!-- The Detail-->
+    <div id="detailDisplay" class="w3-container">
+        [Token:AppThemeFields]
+    </div>
+</div>
+<div>
+    <i>ID: </i> @info.ItemID
+</div>
+<script>
+    $(document).ready(function () {
+
+    });
+
+    function languageChange() {
+        $('.langchangesave').trigger("click");
+    }
+
+</script>
+
+
