@@ -273,4 +273,7 @@
   <data name="defaultinterface.Text" xml:space="preserve">
     <value>Default Interface</value>
   </data>
+  <data name="ref.Text" xml:space="preserve">
+    <value>Ref</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI;
+using RocketSettings;
 using Simplisity;
 using System;
 using System.Collections.Concurrent;
@@ -46,6 +47,8 @@ namespace RocketMod
             DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, returnLimit, Page, PageSize, rowCount, -1, _tableName);
             RowCount = rowCount;
 
+            ModuleSettings = new SettingsData(-1, _moduleid, "", "ROCKETMODSETTINGS", "rocketmodsettings", true);
+
         }
         public void DeleteAll()
         {
@@ -73,7 +76,6 @@ namespace RocketMod
             return _articleList;
         }
 
-
         #region "HEADER"
 
         public void CacheHeaderDelete()
@@ -97,6 +99,8 @@ namespace RocketMod
         }
 
         #endregion
+
+        public SettingsData ModuleSettings { get; private set; }
 
 
     }

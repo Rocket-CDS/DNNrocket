@@ -21,6 +21,7 @@ namespace RocketSettings
         private bool _onlyRead;
         private string _tableName;
         private DNNrocketController _objCtrl;
+        private Dictionary<string,string> _settingDict;
 
         public SimplisityInfo Info;
 
@@ -44,14 +45,14 @@ namespace RocketSettings
             _onlyRead = onlyRead;
             _entityTypeCode = entityTypeCode;
             _langRequired = langRequired;
-            if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
+            if (_langRequired == "") _langRequired = DNNrocketUtils.GetCurrentCulture();
             _tabid = tabId;
             _moduleid = moduleId;
             _guidKey = guidKey;
             _listName = listname;
             _objCtrl = new DNNrocketController();
 
-            Info = GetSettingData(_guidKey, _langRequired);
+            GetSettingData(_guidKey, _langRequired);
             if (Info == null) Info = new SimplisityInfo();
 
             Info.Lang = _langRequired;
@@ -140,6 +141,33 @@ namespace RocketSettings
             }
         }
 
+        public string Get(string key)
+        {
+            if (_settingDict.ContainsKey(key)) return _settingDict[key];
+            return "";
+        }
+        public bool GetBool(string key)
+        {
+            if (_settingDict.ContainsKey(key)) return Convert.ToBoolean(_settingDict[key]);
+            return false;
+        }
+        public int GetInt(string key)
+        {
+            if (_settingDict.ContainsKey(key))
+            {
+                if (GeneralUtils.IsNumeric(_settingDict[key])) return Convert.ToInt32(_settingDict[key]);
+            }
+            return 0;
+        }
+        public double GetDouble(string key)
+        {
+            if (_settingDict.ContainsKey(key))
+            {
+                if (GeneralUtils.IsNumeric(_settingDict[key])) return Convert.ToDouble(_settingDict[key]);
+            }
+            return 0;
+        }
+
 
         #region "properties"
 
@@ -157,18 +185,27 @@ namespace RocketSettings
 
         #region "private methods"
 
-        private SimplisityInfo GetSettingData(string guidKey, string cultureCode)
+        private void GetSettingData(string guidKey, string cultureCode)
         {
-            var info = _objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, _onlyRead, _tableName);
-            return info;
+            Info = _objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, _onlyRead, _tableName);
+            _settingDict = new Dictionary<string, string>();
+            var l = List;
+            foreach (var s in l)
+            {
+                var key = s.GetXmlProperty("genxml/textbox/name");
+                if (!_settingDict.ContainsKey(key) && key != "")
+                {
+                    if (s.GetXmlPropertyBool("genxml/checkbox/localized"))
+                    {
+                        _settingDict.Add(key, s.GetXmlProperty("genxml/lang/genxml/textbox/valuelang"));
+                    }
+                    else
+                    {
+                        _settingDict.Add(key, s.GetXmlProperty("genxml/textbox/value"));
+                    }
+                }
+            }
         }
-
-        private void SaveSettingData(string guidKey, SimplisityInfo sInfo)
-        {
-            sInfo.ModuleId = _moduleid;
-            _objCtrl.SaveData(guidKey, _entityTypeCode, sInfo, -1, _moduleid, _tableName);
-        }
-
         #endregion
 
 

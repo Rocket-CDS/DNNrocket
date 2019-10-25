@@ -12,6 +12,8 @@
 
 @if (Model.GetSettingBool("addeditscript"))
 {
+    <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+
     <div id="rocketmodmodel_@(Model.ModuleId)" class="w3-modal" style="z-index:9999;">
         <div class="w3-modal-content w3-card-4 w3-grey " style="width: 90%;height: 90%;">
             <span onclick="rocketmodeditiframeclose_@(Model.ModuleId)();" class="w3-button w3-right closeiframe">@ResourceKey("DNNrocket.cmdCloseButton")</span>
@@ -40,7 +42,7 @@
 
             simplisity_setCookieValue('s-cmd-menu-' + sessionStorage.trackgroup, 'edit_editarticlelist');
             simplisity_setCookieValue('s-lastmenuindex-' + sessionStorage.trackgroup, '1');
-    
+
             sessionStorage.RocketModScrollPos = $(window).scrollTop();
             $('#rocketmodmodel_@(Model.ModuleId)').show();
             $('.actionMenu').hide();

@@ -1,5 +1,6 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Componants;
+using RocketSettings;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -112,7 +113,6 @@ namespace RocketMod.Componants
                 }
             }
         }
-
         public void SaveEditor(string filename, string fileExtension, string editorcode)
         {
             var folder = ModuleTemplateFolderRazorMapPath;
@@ -165,6 +165,5 @@ namespace RocketMod.Componants
         public Dictionary<string, string> ModuelTemplateListRazor { get; private set; }
         public Dictionary<string, string> ModuelTemplateListJS { get; private set; }
         public Dictionary<string, string> ModuelTemplateListCSS { get; private set; }
-
     }
 }

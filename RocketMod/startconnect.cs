@@ -762,19 +762,12 @@ namespace RocketMod
                 {
                     var objCtrl = new DNNrocketController();
 
-                    var razortemplate = "view.cshtml";
                     var apptheme = _moduleParams.AppThemeFolder;
-                    //var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _moduleParams.AppProjectFolderRel, "SystemThemes/dnnrocketmodule/" + apptheme, DNNrocketUtils.GetCurrentCulture(), _moduleParams.AppThemeVersion, _moduleParams.CacheDisbaled);
-
                     var razorTempl = _appThemeMod.GetTemplateRazor("view");
-
-                    var passSettings = _paramInfo.ToDictionary();
-                    
+                    var passSettings = _paramInfo.ToDictionary();                 
                     passSettings.Add("addeditscript", _commandSecurity.HasModuleEditRights().ToString());
-
                     var adminurl = "/DesktopModules/DNNrocket/RocketMod/admin.html?moduleid=" + _moduleid + "&tabid=" + _tabid;
                     passSettings.Add("adminurl", adminurl);
-
                     var appTheme = new AppTheme(_systemInfoData.SystemKey, apptheme, _moduleParams.AppThemeVersion);
                     passSettings.Add("datatype", appTheme.DataType.ToString());
                     var articleDataList = new ArticleDataList(_moduleid, DNNrocketUtils.GetCurrentCulture());
