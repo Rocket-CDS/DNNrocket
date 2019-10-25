@@ -7,6 +7,7 @@ namespace Simplisity
 {
     public class SimplisityRazor
     {
+        public Dictionary<String, object> DataObjects { get; set; }
         public Dictionary<String, String> Settings { get; set; }
         public NameValueCollection UrlParams { get; set; }
         public List<object> List { get; set; }
@@ -31,6 +32,8 @@ namespace Simplisity
             UrlParams = urlParams;
             List = list;
 
+            DataObjects = new Dictionary<string, object>();
+
             ModuleRef = "";
             ModuleId = 0;
             ModuleIdDataSource = 0;
@@ -51,6 +54,7 @@ namespace Simplisity
         public SimplisityRazor()
         {
             Settings = new Dictionary<string, string>();
+            DataObjects = new Dictionary<string, object>();  
             HeaderData = new SimplisityInfo();
             var obj = new SimplisityInfo();
             var l = new List<object>();
@@ -81,6 +85,17 @@ namespace Simplisity
         {
             if (Settings.ContainsKey(key)) return Settings[key];
             return defaultValue;
+        }
+        public void SetDataObject(String key, object value)
+        {
+            if (DataObjects == null) DataObjects = new Dictionary<string, object>(); // could be null if initiated from within razor template to pass data.
+            if (DataObjects.ContainsKey(key)) DataObjects.Remove(key);
+            DataObjects.Add(key, value);
+        }
+        public object GetDataObject(String key)
+        {
+            if (DataObjects.ContainsKey(key)) return DataObjects[key];
+            return null;
         }
 
         public Boolean GetSettingBool(String key, Boolean defaultValue = false)

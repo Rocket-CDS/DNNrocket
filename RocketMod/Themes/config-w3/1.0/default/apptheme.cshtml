@@ -232,6 +232,15 @@
     l.Add(appThemeMod.AppTheme);
     var m = new SimplisityRazor(l, Model.Settings);
     m.SetSetting("interfacekey","rocketmodapptheme");
+    m.ModuleId = Model.ModuleId;
+
+    var objCtrl = new DNNrocketController();
+    var fieldInfo = objCtrl.GetByType(info.PortalId, Model.ModuleId, "ROCKETMODFIELDS", "", "");
+    if (fieldInfo != null)
+    {
+        m.SetDataObject("modulefieldlist", fieldInfo.GetRecordList("fielddata"));
+    }
+
 }
 @RenderTemplate("EditorPopUp.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", m, "1.0", true)
 

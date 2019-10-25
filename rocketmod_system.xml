@@ -5,10 +5,12 @@
   <textbox>
     <ctrlkey>dnnrocketmodule</ctrlkey>
     <systemname>DNN Rocket Mod</systemname>
-    <adminurl>/DesktopModules/DNNrocket/RocketMod/admin.aspx?moduleid=[moduleid]&amp;tabid=[tabid]</adminurl>
+    <adminurl>/DesktopModules/DNNrocket/RocketMod/admin.html?moduleid=[moduleid]&amp;tabid=[tabid]</adminurl>
     <apiurl>/DesktopModules/DNNrocket/API/api.ashx</apiurl>
+    <defaultinterface>rocketmod</defaultinterface>
     <licensekey />
     <encryptkey>12365498765454654222222222</encryptkey>
+    <systemrelpath>/DesktopModules/DNNrocket/RocketMod/</systemrelpath>
   </textbox>
   <checkbox>
     <debugmode>true</debugmode>
@@ -91,8 +93,8 @@
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
         <themeversion>1.0</themeversion>
-        <defaulttemplate>edit.cshtml</defaulttemplate>
-        <defaultcommand>rocketmod_edit</defaultcommand>
+        <defaulttemplate>editlist.cshtml</defaulttemplate>
+        <defaultcommand>edit_editarticlelist</defaultcommand>
         <namespaceclass>RocketMod.StartConnect</namespaceclass>
         <assembly>RocketMod</assembly>
         <databasetable />
@@ -150,7 +152,7 @@
       </checkboxlist>
       <checkbox>
         <active>true</active>
-        <cache>true</cache>
+        <cache>false</cache>
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
@@ -185,7 +187,112 @@
       </checkboxlist>
       <checkbox>
         <active>true</active>
-        <cache>true</cache>
+        <cache>false</cache>
+        <onmenu>true</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>imageupload</interfacekey>
+        <entitytypecode>IMG</entitytypecode>
+        <interfaceicon />
+        <defaulttheme />
+        <themeversion>1.0</themeversion>
+        <defaulttemplate />
+        <defaultcommand />
+        <namespaceclass>DNNrocket.Images.StartConnect</namespaceclass>
+        <assembly>DNNrocketImages</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/Images/</relpath>
+        <cmdfields />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
+        <onmenu>false</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>documentupload</interfacekey>
+        <entitytypecode>DOC</entitytypecode>
+        <interfaceicon />
+        <defaulttheme />
+        <themeversion>1.0</themeversion>
+        <defaulttemplate />
+        <defaultcommand />
+        <namespaceclass>DNNrocket.Documents.StartConnect</namespaceclass>
+        <assembly>DNNrocketDocuments</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/Documents/</relpath>
+        <cmdfields />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
+        <onmenu>false</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>rocketmodapptheme</interfacekey>
+        <entitytypecode />
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <themeversion>1.0</themeversion>
+        <defaulttemplate>apptheme.cshtml</defaulttemplate>
+        <defaultcommand>rocketmodapptheme_apptheme</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
+        <cmdfields />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="false" data="Manager" />
+          <chk value="false" data="Editor" />
+          <chk value="false" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
@@ -199,7 +306,7 @@
     </genxml>
     <genxml>
       <textbox>
-        <groupref>Themes</groupref>
+        <groupref>apptheme</groupref>
         <groupicon />
       </textbox>
     </genxml>
@@ -213,6 +320,9 @@
   <lang>
     <genxml>
       <interfacedata list="true">
+        <genxml />
+        <genxml />
+        <genxml />
         <genxml />
         <genxml />
         <genxml />

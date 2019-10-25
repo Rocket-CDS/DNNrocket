@@ -16,134 +16,150 @@
 }
 
 
-<div id="editorpopup" style="display:none;">
-    <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-khaki " onclick="cancelleditor();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditorcall" s-after="saveeditorreturn" s-track="false" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
-        @ButtonGap()
-        <div class="w3-col m1">
-            <i id="saveicon" class='fas fa-save ' style="display:none;font-size:24px"></i>
-        </div>
-        <div class="w3-col m1 w3-xlarge w3-right">
-            <div class="w3-button w3-xlarge" id="openRightMenuButton" onclick="openRightMenu()">&#9776;</div>
-            <div class="w3-button w3-xlarge" id="closeRightMenuButton" onclick="closeRightMenu()" style="display:none;">&#9776;</div>
-        </div>
-        <div class="w3-col m3 w3-right">
-            <h5 id="editorfilename" class="" style=""></h5>
-        </div>
-
-    </div>
-
-    @{
-        var lp = 1;
-
-        var fieldhtml = "";
-        var xpathhtml = "";
-    }
-    @foreach (SimplisityRecord i in info.GetRecordList("fielddata"))
-    {
-        var fieldtype = i.GetXmlProperty("genxml/select/type").ToLower();
-        var fieldname = i.GetXmlProperty("genxml/textbox/name");
-        fieldhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippet" + lp + "'>" + fieldname + " [" + fieldtype + "]" + "</div>";
-        xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>" + fieldname + " [" + fieldtype + "]" + "</div>";
-
-
-        var replaceData = new Dictionary<string, string>();
-        replaceData.Add("[fieldname]", fieldname);
-
-        switch (fieldtype.ToLower())
-        {
-            case "imagegallery":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("ImageGallery", replaceData)) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("ImageGallery", replaceData)) + "' />";
-                break;
-            case "imagefull":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("Image", replaceData)) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("Image", replaceData)) + "' />";
-                break;
-            case "linkgallery":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("LinkGallery", replaceData)) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("LinkGallery", replaceData)) + "' />";
-                break;
-            case "documentgallery":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("DocGallery", replaceData)) + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("DocGallery", replaceData)) + "' />";
-                break;
-            case "richtext":
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@HtmlOf(info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\"))") + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@HtmlOf(info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\"))") + "' />";
-                break;
-            default:
-                fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\")") + "' />";
-                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\")") + "' />";
-                break;
-        }
-        lp += 1;
-    }
-
-    @{
-        var razortokenhtml = "";
-        var datatokenhtml = "";
-        lp = 1;
-    }
-    @foreach (var r in appTheme.RazorTokenText)
-    {
-        var textValue = r.Value.GetXmlProperty("genxml/value");
-        var commentValue = r.Value.GetXmlProperty("genxml/comment");
-        if (commentValue != "")
-        {
-            commentValue = "&nbsp;&nbsp;{" + commentValue + "}";
-        }
-        if (r.Key.StartsWith("Data."))
-        {
-            datatokenhtml += " <div title='" + textValue + " " + commentValue + "' class='w3-bar-item w3-button fieldsnippet ' snipname='razortokensnippet" + lp + "'>" + r.Key.Replace("Data.", "") + "</div>";
-            datatokenhtml += "<input id='razortokensnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(textValue) + "' />";
-        }
-        if (r.Key.StartsWith("Razor."))
-        {
-            razortokenhtml += " <div title='" + textValue + " " + commentValue + "' class='w3-bar-item w3-button fieldsnippet ' snipname='razortokensnippet" + lp + "'>" + r.Key.Replace("Razor.", "") + "</div>";
-            razortokenhtml += "<input id='razortokensnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(textValue) + "' />";
-        }
-        lp += 1;
-    }
-
-
-    <div class="w3-sidebar w3-bar-block w3-card w3-animate-right w3-light-grey " style="display:none;right:0;z-index:9999;width:300px" id="rightMenuTokens">
-        <div id="searchbar" class="w3-bar-item">
-            <input class="w3-col w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.search")..." id="rightmenusearchtext" onkeyup="rightmenusearchFunction()" style="width:200px;">
+    <div id="editorpopup" style="display:none;">
+        <div class="w3-row w3-padding">
+            <div class="w3-col m2 w3-button w3-khaki " onclick="cancelleditor();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
             @ButtonGap()
-            <div onclick="closeRightMenu()" class="w3-col w3-right-align w3-button w3-large" style="width:40px">&times;</div>
+            <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditorcall" s-after="saveeditorreturn" s-track="false" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+            @ButtonGap()
+            <div class="w3-col m1">
+                <i id="saveicon" class='fas fa-save ' style="display:none;font-size:24px"></i>
+            </div>
+            <div class="w3-col m1 w3-xlarge w3-right">
+                <div class="w3-button w3-xlarge" id="openRightMenuButton" onclick="openRightMenu()">&#9776;</div>
+                <div class="w3-button w3-xlarge" id="closeRightMenuButton" onclick="closeRightMenu()" style="display:none;">&#9776;</div>
+            </div>
+            <div class="w3-col m3 w3-right">
+                <h5 id="editorfilename" class="" style=""></h5>
+            </div>
+
         </div>
 
-        <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('fieldstokensection')">@ResourceKey("AppThemes.fields") <i class="fa fa-caret-down"></i></div>
-        <div id="fieldstokensection" class="w3-hide w3-white w3-white w3-card">
-            @HtmlOf(fieldhtml)
+        @{
+            var lp = 1;
+
+            var fieldhtml = "";
+            var xpathhtml = "";
+
+            var fieldList = info.GetRecordList("fielddata");
+
+            if (Model.GetSetting("interfacekey") == "rocketmodapptheme" && Model.ModuleId > 0)
+            {
+                var modFields = (List<SimplisityRecord>)Model.GetDataObject("modulefieldlist");
+                if (modFields != null)
+                {
+                    foreach (SimplisityRecord modfield in modFields)
+                    {
+                        fieldList.Add(modfield);
+                    }
+                }
+            }
+
+
+        }
+        @foreach (SimplisityRecord i in fieldList)
+        {
+            var fieldtype = i.GetXmlProperty("genxml/select/type").ToLower();
+            var fieldname = i.GetXmlProperty("genxml/textbox/name");
+            fieldhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippet" + lp + "'>" + fieldname + " [" + fieldtype + "]" + "</div>";
+            xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>" + fieldname + " [" + fieldtype + "]" + "</div>";
+
+
+            var replaceData = new Dictionary<string, string>();
+            replaceData.Add("[fieldname]", fieldname);
+
+            switch (fieldtype.ToLower())
+            {
+                case "imagegallery":
+                    fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("ImageGallery", replaceData)) + "' />";
+                    xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("ImageGallery", replaceData)) + "' />";
+                    break;
+                case "imagefull":
+                    fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("Image", replaceData)) + "' />";
+                    xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("Image", replaceData)) + "' />";
+                    break;
+                case "linkgallery":
+                    fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("LinkGallery", replaceData)) + "' />";
+                    xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("LinkGallery", replaceData)) + "' />";
+                    break;
+                case "documentgallery":
+                    fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("DocGallery", replaceData)) + "' />";
+                    xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("DocGallery", replaceData)) + "' />";
+                    break;
+                case "richtext":
+                    fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@HtmlOf(info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\"))") + "' />";
+                    xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@HtmlOf(info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\"))") + "' />";
+                    break;
+                default:
+                    fieldhtml += "<input id='fieldsnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\")") + "' />";
+                    xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\")") + "' />";
+                    break;
+            }
+            lp += 1;
+        }
+
+        @{
+            var razortokenhtml = "";
+            var datatokenhtml = "";
+            lp = 1;
+        }
+        @foreach (var r in appTheme.RazorTokenText)
+        {
+            var textValue = r.Value.GetXmlProperty("genxml/value");
+            var commentValue = r.Value.GetXmlProperty("genxml/comment");
+            if (commentValue != "")
+            {
+                commentValue = "&nbsp;&nbsp;{" + commentValue + "}";
+            }
+            if (r.Key.StartsWith("Data."))
+            {
+                datatokenhtml += " <div title='" + textValue + " " + commentValue + "' class='w3-bar-item w3-button fieldsnippet ' snipname='razortokensnippet" + lp + "'>" + r.Key.Replace("Data.", "") + "</div>";
+                datatokenhtml += "<input id='razortokensnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(textValue) + "' />";
+            }
+            if (r.Key.StartsWith("Razor."))
+            {
+                razortokenhtml += " <div title='" + textValue + " " + commentValue + "' class='w3-bar-item w3-button fieldsnippet ' snipname='razortokensnippet" + lp + "'>" + r.Key.Replace("Razor.", "") + "</div>";
+                razortokenhtml += "<input id='razortokensnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(textValue) + "' />";
+            }
+            lp += 1;
+        }
+
+
+        <div class="w3-sidebar w3-bar-block w3-card w3-animate-right w3-light-grey " style="display:none;right:0;z-index:9999;width:300px" id="rightMenuTokens">
+            <div id="searchbar" class="w3-bar-item">
+                <input class="w3-col w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.search")..." id="rightmenusearchtext" onkeyup="rightmenusearchFunction()" style="width:200px;">
+                @ButtonGap()
+                <div onclick="closeRightMenu()" class="w3-col w3-right-align w3-button w3-large" style="width:40px">&times;</div>
+            </div>
+
+            <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('fieldstokensection')">@ResourceKey("AppThemes.fields") <i class="fa fa-caret-down"></i></div>
+            <div id="fieldstokensection" class="w3-hide w3-white w3-white w3-card">
+                @HtmlOf(fieldhtml)
+            </div>
+            <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('razortokensection')">Razor Tokens <i class="fa fa-caret-down"></i></div>
+            <div id="razortokensection" class="w3-hide w3-white w3-white w3-card">
+                @HtmlOf(razortokenhtml)
+            </div>
+            <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('datatokensection')">Data Tokens <i class="fa fa-caret-down"></i></div>
+            <div id="datatokensection" class="w3-hide w3-white w3-white w3-card">
+                @HtmlOf(datatokenhtml)
+            </div>
+            <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('xpathtokensection')">XPath <i class="fa fa-caret-down"></i></div>
+            <div id="xpathtokensection" class="w3-hide w3-white w3-white w3-card">
+                @HtmlOf(xpathhtml)
+            </div>
+
         </div>
-        <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('razortokensection')">Razor Tokens <i class="fa fa-caret-down"></i></div>
-        <div id="razortokensection" class="w3-hide w3-white w3-white w3-card">
-            @HtmlOf(razortokenhtml)
-        </div>
-        <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('datatokensection')">Data Tokens <i class="fa fa-caret-down"></i></div>
-        <div id="datatokensection" class="w3-hide w3-white w3-white w3-card">
-            @HtmlOf(datatokenhtml)
-        </div>
-        <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('xpathtokensection')">XPath <i class="fa fa-caret-down"></i></div>
-        <div id="xpathtokensection" class="w3-hide w3-white w3-white w3-card">
-            @HtmlOf(xpathhtml)
-        </div>
+
+
+
+
+        <div id="editorsavereturn" style="display:none;"></div>
+        <div id="editorwrapper" class="w3-row " style=""></div>
+
+
 
     </div>
-
-
-
-
-    <div id="editorsavereturn" style="display:none;"></div>
-    <div id="editorwrapper" class="w3-row " style=""></div>
-
-
-
-</div>
 
 <script>
 
