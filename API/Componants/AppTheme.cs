@@ -571,7 +571,14 @@ namespace DNNrocketAPI.Componants
             var sl = GetFieldDictionarySettings(record, withExt);
             foreach (var s in sl)
             {
-                rtnlist.Add(s.Key, s.Value);
+                var flp = 1;
+                var k = s.Key;
+                while (rtnlist.ContainsKey(k))
+                {
+                    k = k + flp;
+                    flp += 1;
+                }
+                rtnlist.Add(k, s.Value);
             }
             return rtnlist;
         }
