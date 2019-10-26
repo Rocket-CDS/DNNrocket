@@ -53,6 +53,14 @@
 
 @HiddenField(info, "genxml/hidden/fieldlocalizedlist", " s-update='ignore' ")
 
+@{ 
+    // activate auto versioning
+    var FieldEditorMapPath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes/Themes/config-w3/1.0/js/FieldEditor.js");
+    var FieldEditorAutoVersion = File.GetLastWriteTime(FieldEditorMapPath).Ticks;
+}
+<script src="/DesktopModules/DNNrocket/AppThemes/Themes/config-w3/1.0/js/FieldEditor.js?v=@(FieldEditorAutoVersion)"></script>
+
+
 <div id="copyapptheme" class="w3-modal">
     <div class="w3-modal-content w3-card w3-animate-zoom">
 
@@ -510,8 +518,8 @@
     </div>
 </div>
 
-@{ 
-        Model.SetSetting("interfacekey","rocketapptheme");
+@{
+    Model.SetSetting("interfacekey", "rocketapptheme");
 }
 @RenderTemplate("EditorPopUp.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", Model, "1.0", true)
 

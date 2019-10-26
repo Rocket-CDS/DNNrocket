@@ -677,11 +677,7 @@ namespace RocketMod
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "dashboard.cshtml";
-
-                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
-
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-
                 return DNNrocketUtils.RazorDetail(razorTempl, _moduleParams, _passSettings,null,true);
             }
             catch (Exception ex)

@@ -57,7 +57,7 @@ namespace DNNrocketAPI.Componants
             if (versionFolder == "") versionFolder = LatestVersionFolder;
 
             AppVersionFolder = versionFolder;
-            if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder; ;
+            if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
 
             _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
 
@@ -185,7 +185,7 @@ namespace DNNrocketAPI.Componants
             if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
             {
                 var viewHtml = GenerateView(0);
-                FileUtils.SaveFile(tempMapPath, "");
+                FileUtils.SaveFile(tempMapPath, viewHtml);
                 _templateFileName.Add(Path.GetFileName(tempMapPath));
                 AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), viewHtml);
             }
@@ -201,7 +201,7 @@ namespace DNNrocketAPI.Componants
             if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
             {
                 var formHtml = GenerateEditForm("settingfielddata", "settings",0);
-                FileUtils.SaveFile(tempMapPath, "");
+                FileUtils.SaveFile(tempMapPath, formHtml);
                 _templateFileName.Add(Path.GetFileName(tempMapPath));
                 AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), formHtml);
             }

@@ -159,43 +159,43 @@
     <value>@ButtonGap(int gapSize = 10)</value>
   </data>
   <data name="Razor.CheckBox" xml:space="preserve">
-    <value>@CheckBox(info, "genxml/",String text, String attributes = "", Boolean defaultValue = false, bool localized = false, int row = 0)</value>
+    <value>@CheckBox(info, "genxml/",String text, String attributes = "", Boolean defaultValue = false, bool localized = false, int row = 0, string listname = "")</value>
     <comment>Display CheckBox</comment>
   </data>
   <data name="Razor.CheckBoxList" xml:space="preserve">
-    <value>@CheckBoxList(info, "genxml/", String datavalue, String datatext, String attributes = "", Boolean defaultValue = false, bool localized = false, int row = 0)</value>
+    <value>@CheckBoxList(info, "genxml/", String datavalue, String datatext, String attributes = "", Boolean defaultValue = false, bool localized = false, int row = 0, string listname = "")</value>
     <comment>Display CheckBox List with String data input</comment>
   </data>
   <data name="Razor.CheckBoxListOf" xml:space="preserve">
     <value>@CheckBoxListOf(info, "genxml/", String datavalue, String datatext, String attributes = "")</value>
   </data>
   <data name="Razor.CKEditor" xml:space="preserve">
-    <value>@CKEditor(info, "genxml/", string attributes, string startupfile, bool localized = false, int row = 0)</value>
+    <value>@CKEditor(info, "genxml/", string attributes, string startupfile, bool localized = false, int row = 0, string listname = "")</value>
   </data>
   <data name="Razor.CKEditor1" xml:space="preserve">
     <value>@CKEditor(info, "genxml/", String attributes = "")</value>
   </data>
   <data name="Razor.CKEditorFull" xml:space="preserve">
-    <value>@CKEditorFull(info, "genxml/", String attributes, string startupfile = "startupfull.js", bool localized = false, int row = 0)</value>
+    <value>@CKEditorFull(info, "genxml/", String attributes, string startupfile = "startupfull.js", bool localized = false, int row = 0, string listname = "")</value>
   </data>
   <data name="Razor.CKEditorFull1" xml:space="preserve">
-    <value>@CKEditorFull(info, "genxml/", String attributes = "", bool localized = false, int row = 0)</value>
+    <value>@CKEditorFull(info, "genxml/", String attributes = "", bool localized = false, int row = 0, string listname = "")</value>
   </data>
   <data name="Razor.DataSourceList" xml:space="preserve">
     <value>@DataSourceList(info, int systemid, "genxml/", string attributes = "", bool allowEmpty = true, bool localized = false)</value>
   </data>
   <data name="Razor.DocumentEdit" xml:space="preserve">
-    <value>@DocumentEdit(info, string fieldId, string attributes = "", bool localized = true, int row = 0)</value>
+    <value>@DocumentEdit(info, string fieldId, string attributes = "", bool localized = true, int row = 0, string listname = "")</value>
   </data>
   <data name="Razor.DownloadDocument" xml:space="preserve">
     <value>@DownloadDocument(int ItemId, int row, string fieldId, string text = "", string attributes = "")</value>
   </data>
   <data name="Razor.DropDownList" xml:space="preserve">
-    <value>@DropDownList(info, "genxml/", Dictionary&lt;string,string&gt; dataDictionary, String attributes = "", String defaultValue = "", bool localized = false, int row = 0)</value>
+    <value>@DropDownList(info, "genxml/", Dictionary&lt;string,string&gt; dataDictionary, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")</value>
     <comment>Display DropDown List with Dictionary data input</comment>
   </data>
   <data name="Razor.DropDownList1" xml:space="preserve">
-    <value>@DropDownList(info, "genxml/", String datavalue, String datatext, String attributes = "", String defaultValue = "", bool localized = false, int row = 0)</value>
+    <value>@DropDownList(info, "genxml/", String datavalue, String datatext, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")</value>
     <comment>Display DropDown List with String data input</comment>
   </data>
   <data name="Razor.EditFlag" xml:space="preserve">
@@ -230,7 +230,7 @@
     <value>@getUpdateAttr("genxml/", String attributes, bool localized)</value>
   </data>
   <data name="Razor.HiddenField" xml:space="preserve">
-    <value>@HiddenField(info, "genxml/", String attributes = "", String defaultValue = "", bool localized = false, int row = 0)</value>
+    <value>@HiddenField(info, "genxml/", String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")</value>
     <comment>Display Hidden field</comment>
   </data>
   <data name="Razor.HtmlOf" xml:space="preserve">
@@ -242,13 +242,13 @@
     <comment>Display a string as HTML</comment>
   </data>
   <data name="Razor.ImageEdit" xml:space="preserve">
-    <value>@ImageEdit(info, string fieldId, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0)</value>
+    <value>@ImageEdit(info, string fieldId, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0, string listname = "")</value>
   </data>
   <data name="Razor.ImageEditFull" xml:space="preserve">
-    <value>@ImageEditFull(info, string fieldId, int width = 140, int height = 140, string attributes = "", bool localized = false, int row = 0)</value>
+    <value>@ImageEditFull(info, string fieldId, int width = 140, int height = 140, string attributes = "", bool localized = false, int row = 0, string listname = "")</value>
   </data>
   <data name="Razor.ImageEditFullName" xml:space="preserve">
-    <value>@ImageEditFullName(info, string fieldId, int width = 150, int height = 150, string attributes = "", bool localized = false, int row = 0)</value>
+    <value>@ImageEditFullName(info, string fieldId, int width = 150, int height = 150, string attributes = "", bool localized = false, int row = 0, string listname = "")</value>
   </data>
   <data name="Razor.InjectHiddenFieldData" xml:space="preserve">
     <value>@InjectHiddenFieldData(info)</value>
@@ -263,7 +263,7 @@
     <value>@LinkURL(info, "genxml/", bool openInNewWindow = true, string text = "", string attributes = "")</value>
   </data>
   <data name="Razor.RadioButtonList" xml:space="preserve">
-    <value>@RadioButtonList(info, "genxml/", String datavalue, String datatext, String attributes = "", String defaultValue = "",String labelattributes = "", bool localized = false, int row = 0)</value>
+    <value>@RadioButtonList(info, "genxml/", String datavalue, String datatext, String attributes = "", String defaultValue = "",String labelattributes = "", bool localized = false, int row = 0, string listname = "")</value>
     <comment>Display RadioButton List with String data input</comment>
   </data>
   <data name="Razor.RenderDocumentSelect" xml:space="preserve">
@@ -289,17 +289,17 @@
     <comment>Puts a unique key on the list record to link langauge records for sorting</comment>
   </data>
   <data name="Razor.TabSelectList" xml:space="preserve">
-    <value>@TabSelectList(info, "genxml/", String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0)</value>
+    <value>@TabSelectList(info, "genxml/", String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "")</value>
   </data>
   <data name="Razor.TabSelectListOnTabId" xml:space="preserve">
-    <value>@TabSelectListOnTabId(info, "genxml/", String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0)</value>
+    <value>@TabSelectListOnTabId(info, "genxml/", String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "")</value>
   </data>
   <data name="Razor.TextArea" xml:space="preserve">
-    <value>@TextArea(info, "genxml/", String attributes = "", String defaultValue = "", bool localized = false, int row = 0)</value>
+    <value>@TextArea(info, "genxml/", String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")</value>
     <comment>Display TextArea field</comment>
   </data>
   <data name="Razor.TextBox" xml:space="preserve">
-    <value>@TextBox(info, "genxml/", String attributes = "", String defaultValue = "", bool localized = false, int row = 0)</value>
+    <value>@TextBox(info, "genxml/", String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")</value>
     <comment>Display TextBox field</comment>
   </data>
   <data name="Razor.ThumbnailImageUrl" xml:space="preserve">

@@ -84,7 +84,7 @@ namespace Simplisity
 
         #region "general html control tokens"
 
-        public IEncodedString HiddenField(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0)
+        public IEncodedString HiddenField(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
             var value = info.GetXmlProperty(xpath);
@@ -93,14 +93,14 @@ namespace Simplisity
                 value = info.GetXmlProperty("genxml/lang/" + xpath);
             }
             var upd = getUpdateAttr(xpath, attributes, localized);
-            var id = getIdFromXpath(xpath, row);
+            var id = getIdFromXpath(xpath, row, listname);
             if (value == "") value = defaultValue;
             var strOut = "<input value='" + value + "' id='" + id + "' s-xpath='" + xpath + "' " + attributes + " " + upd + " type='hidden' />";
 
             return new RawString(strOut);
         }
 
-        public IEncodedString TextBox(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0)
+        public IEncodedString TextBox(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
             var value = info.GetXmlProperty(xpath);
@@ -109,7 +109,7 @@ namespace Simplisity
                 value = info.GetXmlProperty("genxml/lang/" + xpath);
             }
             var upd = getUpdateAttr(xpath, attributes, localized);
-            var id = getIdFromXpath(xpath, row);
+            var id = getIdFromXpath(xpath, row, listname);
 
             // [TODO: add encrypt option.]
             //var value = encrypted ? NBrightCore.common.Security.Decrypt(PortalController.Instance.GetCurrentPortalSettings().GUID.ToString(), info.GetXmlProperty(xpath)) : info.GetXmlProperty(xpath);
@@ -123,7 +123,7 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
-        public IEncodedString TextArea(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0)
+        public IEncodedString TextArea(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
             var value = info.GetXmlProperty(xpath);
@@ -132,14 +132,14 @@ namespace Simplisity
                 value = info.GetXmlProperty("genxml/lang/" + xpath);
             }
             var upd = getUpdateAttr(xpath, attributes, localized);
-            var id = getIdFromXpath(xpath, row);
+            var id = getIdFromXpath(xpath, row, listname);
             if (value == "") value = defaultValue;
             var strOut = "<textarea id='" + id + "' s-xpath='" + xpath + "' " + attributes + " " + upd + " type='text'>" + value + "</textarea>";
 
             return new RawString(strOut);
         }
 
-        public IEncodedString CheckBox(SimplisityInfo info, String xpath,String text, String attributes = "", Boolean defaultValue = false, bool localized = false, int row = 0)
+        public IEncodedString CheckBox(SimplisityInfo info, String xpath,String text, String attributes = "", Boolean defaultValue = false, bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
             var value = getChecked(info, xpath, defaultValue);
@@ -148,12 +148,12 @@ namespace Simplisity
                 value = getChecked(info, "genxml/lang/" + xpath, defaultValue);
             }
             var upd = getUpdateAttr(xpath, attributes, localized);
-            var id = getIdFromXpath(xpath, row);
+            var id = getIdFromXpath(xpath, row, listname);
             var strOut = "    <input id='" + id + "' s-xpath='" + xpath + "' type='checkbox' " + value + " " + attributes + " " + upd + " /><label for='" + id + "'>" + text + "</label>";
             return new RawString(strOut);
         }
 
-        public IEncodedString CheckBoxList(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "", Boolean defaultValue = false, bool localized = false, int row = 0)
+        public IEncodedString CheckBoxList(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "", Boolean defaultValue = false, bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
 
@@ -174,7 +174,7 @@ namespace Simplisity
             if (datav.Count() == datat.Count())
             {
                 var upd = getUpdateAttr(xpath, attributes, localized);
-                var id = getIdFromXpath(xpath, row);
+                var id = getIdFromXpath(xpath, row, listname);
                 strOut = "<div id='" + id + "' " + upd + " " + attributes + ">";
                 var c = 0;
                 foreach (var v in datav)
@@ -197,7 +197,7 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
-        public IEncodedString RadioButtonList(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "", String defaultValue = "",String labelattributes = "", bool localized = false, int row = 0)
+        public IEncodedString RadioButtonList(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "", String defaultValue = "",String labelattributes = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
             var strOut = "";
@@ -212,7 +212,7 @@ namespace Simplisity
                 }
 
                 var upd = getUpdateAttr(xpath, attributes, localized);
-                var id = getIdFromXpath(xpath, row);
+                var id = getIdFromXpath(xpath, row, listname);
                 strOut = "<div " + attributes + ">";
                 var c = 0;
                 var s = "";
@@ -231,7 +231,7 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
-        public IEncodedString DropDownList(SimplisityInfo info, String xpath, Dictionary<string,string> dataDictionary, String attributes = "", String defaultValue = "", bool localized = false, int row = 0)
+        public IEncodedString DropDownList(SimplisityInfo info, String xpath, Dictionary<string,string> dataDictionary, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
             var strOut = "";
@@ -242,7 +242,7 @@ namespace Simplisity
             }
 
             var upd = getUpdateAttr(xpath, attributes, localized);
-            var id = getIdFromXpath(xpath, row);
+            var id = getIdFromXpath(xpath, row, listname);
             strOut = "<select id='" + id + "' s-xpath='" + xpath + "' " + upd + " " + attributes + ">";
             var c = 0;
             var s = "";
@@ -262,7 +262,7 @@ namespace Simplisity
            return new RawString(strOut);
         }
 
-        public IEncodedString DropDownList(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "", String defaultValue = "", bool localized = false, int row = 0)
+        public IEncodedString DropDownList(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
             var datav = datavalue.Split(',');
@@ -279,7 +279,7 @@ namespace Simplisity
                     }
                     c += 1;
                 }
-                return DropDownList(info, xpath, dataDictionary, attributes, defaultValue, localized, row);
+                return DropDownList(info, xpath, dataDictionary, attributes, defaultValue, localized, row, listname);
             }
             return new RawString("");
         }
@@ -383,7 +383,7 @@ namespace Simplisity
             var strOut = "";
 
             var upd = getUpdateAttr(xpath, attributes, localized);
-            var id = getIdFromXpath(xpath,0);
+            var id = getIdFromXpath(xpath,0, "");
             strOut = "<select id='" + id + "' " + upd + " " + attributes + "  s-xpath='" + xpath + "'  >";
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
@@ -413,7 +413,7 @@ namespace Simplisity
             var strOut = "";
 
             var upd = getUpdateAttr(xpath, attributes, localized);
-            var id = getIdFromXpath(xpath, 0);
+            var id = getIdFromXpath(xpath, 0, "");
             strOut = "<select id='" + id + "' " + upd + " " + attributes + "  s-xpath='" + xpath + "' >";
             var s = "";
             if (allowEmpty) strOut += "    <option value=''></option>";
@@ -437,13 +437,13 @@ namespace Simplisity
         #region functions
 
 
-        public String getIdFromXpath(String xpath, int row)
+        public String getIdFromXpath(String xpath, int row, string listname)
         {
             if (xpath == "") return "";
             var rtnid = xpath.Split('/').Last();
             if (row > 0 )
             {
-                rtnid = rtnid + "_" + row;
+                rtnid = rtnid + "_" + listname + row;
             }
             return rtnid;
         }

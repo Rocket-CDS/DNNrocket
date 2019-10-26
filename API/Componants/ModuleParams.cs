@@ -32,6 +32,7 @@ namespace DNNrocketAPI.Componants
             _moduleParamsRec = new SimplisityRecord();
             _cacheKey = "moduleparams*" + moduleId;
             _moduleParamsRec = (SimplisityRecord)CacheUtils.GetCache(_cacheKey);
+
             if ((_moduleParamsRec == null || !useCache))
             {
                 if (moduleId <= 0)

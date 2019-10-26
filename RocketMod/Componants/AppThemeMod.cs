@@ -101,7 +101,7 @@ namespace RocketMod.Componants
                         AppTheme.Record.AddRecordListItem("csslist", itemInfo);
                     }
                 }
-                foreach (var d in ModuelTemplateListRazor)
+                foreach (var d in ModuelTemplateListJS)
                 {
                     var itemInfo = AppTheme.Record.GetRecordListItem("jslist", "genxml/hidden/filename", Path.GetFileNameWithoutExtension(d.Key));
                     if (itemInfo != null)

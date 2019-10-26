@@ -76,6 +76,11 @@ namespace DNNrocketAPI.render
             var strOut = DNNrocketUtils.RazorRender(model, razorTempl, debugMode);
             return new RawString(strOut);
         }
+        public IEncodedString RenderTemplate(string razorTemplate, SimplisityRazor model, bool debugMode = false)
+        {
+            var strOut = DNNrocketUtils.RazorRender(model, razorTemplate, debugMode);
+            return new RawString(strOut);
+        }
 
         public IEncodedString RenderImageSelect(int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
         {
@@ -120,20 +125,20 @@ namespace DNNrocketAPI.render
         }
 
 
-        public IEncodedString ImageEdit(SimplisityInfo info, string fieldId, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0)
+        public IEncodedString ImageEdit(SimplisityInfo info, string fieldId, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0, string listname = "")
         {
-            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "");
+            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "", listname);
         }
-        public IEncodedString ImageEditFull(SimplisityInfo info, string fieldId, int width = 140, int height = 140, string attributes = "", bool localized = false, int row = 0)
+        public IEncodedString ImageEditFull(SimplisityInfo info, string fieldId, int width = 140, int height = 140, string attributes = "", bool localized = false, int row = 0, string listname = "")
         {
-            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "full");
+            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "full", listname);
         }
-        public IEncodedString ImageEditFullName(SimplisityInfo info, string fieldId, int width = 150, int height = 150, string attributes = "", bool localized = false, int row = 0)
+        public IEncodedString ImageEditFullName(SimplisityInfo info, string fieldId, int width = 150, int height = 150, string attributes = "", bool localized = false, int row = 0, string listname = "")
         {
-            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "name");
+            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "name", listname);
         }
 
-        private IEncodedString ImageEditToken(SimplisityInfo info, string fieldId, int width, int height, string attributes, bool localized, int row, string uiType)
+        private IEncodedString ImageEditToken(SimplisityInfo info, string fieldId, int width, int height, string attributes, bool localized, int row, string uiType, string listname)
         {
             var xpath = "genxml/hidden/imagepath" + fieldId;
             var xpathwidth = "genxml/textbox/width" + fieldId;
@@ -164,7 +169,7 @@ namespace DNNrocketAPI.render
             var valueheight = info.GetXmlPropertyInt(xpathheight);
 
             var upd = getUpdateAttr(xpath, "", localized);
-            var id = getIdFromXpath(xpath, row);
+            var id = getIdFromXpath(xpath, row, listname);
             strOut += "<input value='" + value + "' id='" + id + "' s-xpath='" + xpath + "' " + upd + " type='hidden' />";
 
             if (imgurl == "")
@@ -250,7 +255,7 @@ namespace DNNrocketAPI.render
         }
 
 
-        public IEncodedString DocumentEdit(SimplisityInfo info, string fieldId, string attributes = "", bool localized = true, int row = 0)
+        public IEncodedString DocumentEdit(SimplisityInfo info, string fieldId, string attributes = "", bool localized = true, int row = 0, string listname = "")
         {
             var xpath = "genxml/hidden/" + fieldId;
             var xpathname = "genxml/textbox/name" + fieldId;
@@ -285,9 +290,9 @@ namespace DNNrocketAPI.render
             if (value == "") disabled = "disabled";
             var upd = getUpdateAttr(xpath, "", localized);
             var updname = getUpdateAttr(xpathname, "", localized);
-            var id = getIdFromXpath(xpath, row);
-            var idname = getIdFromXpath(xpathname, row);
-            var idrel =  getIdFromXpath(xpathrel, row);
+            var id = getIdFromXpath(xpath, row, listname);
+            var idname = getIdFromXpath(xpathname, row, listname);
+            var idrel =  getIdFromXpath(xpathrel, row, listname);
             strOut += "<input value='" + value + "' id='" + id + "' s-xpath='" + xpath + "' " + upd + " type='hidden' />";
             strOut += "<input value='" + valuerel + "' id='" + idrel + "' s-xpath='" + xpathrel + "' " + upd + " type='hidden' />";
             strOut += "<input value='" + valuename + "' id='" + idname + "' s-xpath='" + xpathname + "' " + updname + " " + disabled + " " + attributes + " type='text' />";
@@ -333,13 +338,13 @@ namespace DNNrocketAPI.render
         /// <param name="xpath"></param>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        public IEncodedString CKEditor(SimplisityInfo info, string xpath, string attributes, string startupfile, bool localized = false, int row = 0)
+        public IEncodedString CKEditor(SimplisityInfo info, string xpath, string attributes, string startupfile, bool localized = false, int row = 0, string listname = "")
         {
             if (startupfile == "") startupfile = "startup.js";
             if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
 
             var upd = getUpdateAttr(xpath, attributes, localized);
-            var id = getIdFromXpath(xpath, row);
+            var id = getIdFromXpath(xpath, row, listname);
 
             var value = info.GetXmlProperty(xpath);
             if (localized && !xpath.StartsWith("genxml/lang/"))
@@ -356,11 +361,11 @@ namespace DNNrocketAPI.render
             return CKEditor(info, xpath, attributes, "startup.js");
         }
 
-        public IEncodedString CKEditorFull(SimplisityInfo info, String xpath, String attributes, string startupfile = "startupfull.js", bool localized = false, int row = 0)
+        public IEncodedString CKEditorFull(SimplisityInfo info, String xpath, String attributes, string startupfile = "startupfull.js", bool localized = false, int row = 0, string listname = "")
         {
             return CKEditor(info, xpath, attributes, startupfile, localized, row);
         }
-        public IEncodedString CKEditorFull(SimplisityInfo info, String xpath, String attributes = "", bool localized = false, int row = 0)
+        public IEncodedString CKEditorFull(SimplisityInfo info, String xpath, String attributes = "", bool localized = false, int row = 0, string listname = "")
         {
             return CKEditor(info, xpath, attributes, "startupfull.js", localized, row);
         }
@@ -392,7 +397,7 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        public IEncodedString TabSelectList(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0)
+        public IEncodedString TabSelectList(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "")
         {
             if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
 
@@ -400,7 +405,7 @@ namespace DNNrocketAPI.render
             var strOut = "";
 
             var upd = getUpdateAttr(xpath, "", localized);
-            var id = getIdFromXpath(xpath, row);
+            var id = getIdFromXpath(xpath, row, listname);
 
             strOut = "<select id='" + id + "' s-xpath='" + xpath + "' " + upd + " " + attributes + ">";
             var s = "";
@@ -418,7 +423,7 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        public IEncodedString TabSelectListOnTabId(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0)
+        public IEncodedString TabSelectListOnTabId(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "")
         {
             if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
 
@@ -426,7 +431,7 @@ namespace DNNrocketAPI.render
             var strOut = "";
 
             var upd = getUpdateAttr(xpath, "", localized);
-            var id = getIdFromXpath(xpath, row);
+            var id = getIdFromXpath(xpath, row, listname);
 
             strOut = "<select id='" + id + "' s-xpath='" + xpath + "' " + upd + " " + attributes + ">";
             var s = "";
@@ -527,7 +532,7 @@ namespace DNNrocketAPI.render
 
 
                 var upd = getUpdateAttr(xpath, attributes, localized);
-                var id = getIdFromXpath(xpath, 0);
+                var id = getIdFromXpath(xpath, 0, "");
                 strOut = "<select id='" + id + "' " + upd + " " + attributes + "  s-xpath='" + xpath + "' >";
                 var s = "";
                 if (allowEmpty) strOut += "    <option value=''></option>";
