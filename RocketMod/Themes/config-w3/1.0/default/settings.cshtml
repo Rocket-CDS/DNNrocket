@@ -2,21 +2,37 @@
 @using DNNrocketAPI;
 @using Simplisity;
 @using RocketSettings;
+@using DNNrocketAPI.Componants;
+@using RocketMod;
+@using RocketMod.Componants;
+
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 
 @{
     var settingsData = (SettingsData)Model.List.First();
+    var appThemeMod = new AppThemeMod(Model.ModuleId,"dnnrocketmodule", true);
 }
 
-    <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodsettings_add" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}'>@ResourceKey("DNNrocket.cmdAddButton")</div>
-        @ButtonGap()
-        <span class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click langchangesave" s-cmd="rocketmodsettings_save" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}' s-post="" s-list=".rocketmodsettings">@ResourceKey("DNNrocket.cmdSaveButton")</span>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="rocketmodsettingsbin" s-return="#rocketmodsettingsdata" s-removelist=".rocketmodsettings" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</div>
-    </div>
+<div class="w3-row w3-padding">
+    <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodsettings_add" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}'>@ResourceKey("DNNrocket.cmdAddButton")</div>
+    @ButtonGap()
+    <span class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click langchangesave" s-cmd="rocketmodsettings_save" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}' s-post="" s-list=".rocketmodsettings">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="rocketmodsettingsbin" s-return="#rocketmodsettingsdata" s-removelist=".rocketmodsettings" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</div>
+</div>
+
+<div id="settingsdata">
+    @{
+        var l = new List<object>();
+        l.Add(settingsData);
+        var m = new SimplisityRazor(l, Model.Settings);
+        var razorTempl = appThemeMod.GetTemplateRazor("settings");
+    }
+    @RenderTemplate(razorTempl, m, true)
+</div>
+
 
 <div class="w3-container">
 
@@ -40,7 +56,7 @@
                         @ResourceKey("system.value")
                     </div>
                 </th>
-                <th  class="w3-col m1" style="width:60px;"></th>
+                <th class="w3-col m1" style="width:60px;"></th>
                 <th class="w3-col m2">
                     <label class="">@ResourceKey("DNNrocket.localized")</label>
                 </th>
@@ -51,33 +67,33 @@
             {
                 lp3 += 1;
 
-        <tr class="rocketmodsettings">
-            <td class="w3-col m2">
-                <!-- Required to sort items in list -->
-                @SortableListIndex(i, lp3)
+                <tr class="rocketmodsettings">
+                    <td class="w3-col m2">
+                        <!-- Required to sort items in list -->
+                        @SortableListIndex(i, lp3)
 
-                @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border settingreftextbox' maxlength='250' autocomplete='off' ", "", false, lp3)
-            </td>
-            <td class="w3-col m5">
-                <div style='display:none;' class=' notlocalizedfield@(lp3)'>
-                    @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' autocomplete='off' ", "", false, lp3)
-                </div>
-                <div style='display:none;' class=' localizedfield@(lp3)'>
-                    @TextBox(i, "genxml/lang/genxml/textbox/valuelang", "class='w3-input w3-border' maxlength='500' autocomplete='off' ", "", true, lp3)
-                </div>
-            </td>
-            <td class="w3-col m1" style="width:60px;">
-                <div style='display:none;' class="localizedfieldflag@(lp3)">
-                    @EditFlag()
-                </div>
-            </td>
-            <td class="w3-col m2">
-                @CheckBox(i, "genxml/checkbox/localized", "", " class='localize' row='" + lp3 + "' ", false, false, lp3)
-            </td>
-            <td class="" style="width:20px;">
-                <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".rocketmodsettings" s-recylebin="rocketmodsettingsbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
-            </td>
-        </tr>
+                        @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border settingreftextbox' maxlength='250' autocomplete='off' ", "", false, lp3)
+                    </td>
+                    <td class="w3-col m5">
+                        <div style='display:none;' class=' notlocalizedfield@(lp3)'>
+                            @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' autocomplete='off' ", "", false, lp3)
+                        </div>
+                        <div style='display:none;' class=' localizedfield@(lp3)'>
+                            @TextBox(i, "genxml/lang/genxml/textbox/valuelang", "class='w3-input w3-border' maxlength='500' autocomplete='off' ", "", true, lp3)
+                        </div>
+                    </td>
+                    <td class="w3-col m1" style="width:60px;">
+                        <div style='display:none;' class="localizedfieldflag@(lp3)">
+                            @EditFlag()
+                        </div>
+                    </td>
+                    <td class="w3-col m2">
+                        @CheckBox(i, "genxml/checkbox/localized", "", " class='localize' row='" + lp3 + "' ", false, false, lp3)
+                    </td>
+                    <td class="" style="width:20px;">
+                        <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".rocketmodsettings" s-recylebin="rocketmodsettingsbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
+                    </td>
+                </tr>
 
             }
         </table>
@@ -96,7 +112,7 @@
 
         $('.settingreftextbox').each(function (index) {
             if ($(this).val() !== '') {
-                $(this).prop('disabled','true')
+                $(this).prop('disabled', 'true')
             }
         });
 

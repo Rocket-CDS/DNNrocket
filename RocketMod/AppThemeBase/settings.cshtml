@@ -1,12 +1,14 @@
 ﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
 @using Simplisity;
+@using RocketSettings;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
 @AddProcessData("resourcepath", "[Token:appthemeresx]")
 
 @{
-    var info = (SimplisityInfo)Model.List.First();
+    var settingsData = (SettingsData)Model.List.First();
+    var info = settingsData.Info;
 }
 
 <div id="datasection" class="">
