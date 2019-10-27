@@ -189,6 +189,9 @@
   <data name="editor.Text" xml:space="preserve">
     <value>Editor</value>
   </data>
+  <data name="enablesettings.Text" xml:space="preserve">
+    <value>Enable Settings</value>
+  </data>
   <data name="enterkey.Text" xml:space="preserve">
     <value>Entyer Key... </value>
   </data>

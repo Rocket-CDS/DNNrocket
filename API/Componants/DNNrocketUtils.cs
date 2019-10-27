@@ -855,7 +855,14 @@ namespace DNNrocketAPI
             var resDic = GetResourceData(resourcePath, resourceKey, lang);
             if (resDic != null && resDic.ContainsKey(resourceExt))
             {
-                return resDic[resourceExt].TrimEnd(' ');
+                try
+                {
+                    return resDic[resourceExt].TrimEnd(' ');
+                }
+                catch (Exception)
+                {
+                    // This action throws an error when added to the resx while it's cached by DNN.
+                }
             }
             return "";
         }

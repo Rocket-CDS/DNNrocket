@@ -18,7 +18,7 @@
 
 <div class="w3-container">
 
-    <div id="selectapptheme_@(Model.GetSetting("moduleid"))" class="w3-modal">
+    <div id="selectapptheme" class="w3-modal">
 
         <div class="w3-modal-content w3-animate-top w3-card-4 postdatasection" style="width:80%">
             <header class="w3-container w3-theme-d3">
@@ -115,7 +115,7 @@
                     <div class="w3-row w3-padding">
                         <div class="w3-col m2 w3-button w3-khaki" onclick="showselect();">@ResourceKey("DNNrocket.cmdBackButton")</div>
                         @ButtonGap()
-                        <div class="w3-col m2 w3-button w3-green w3-padding-8 saveappthemeconfig" s-cmd="rocketmod_saveappthemeconfig" s-track="false" s-post=".postdatasection" s-return="#settingsection">@ResourceKey("DNNrocket.cmdNextButton")</div>
+                        <div class="w3-col m2 w3-button w3-green w3-padding-8 saveappthemeconfig" s-cmd="rocketmod_saveappthemeconfig" s-after="settingreturn" s-track="false" s-post=".postdatasection" s-return="#settingsection">@ResourceKey("DNNrocket.cmdNextButton")</div>
                     </div>
                     <div class="w3-row">
                         <div class="w3-col m2 w3-margin appthemedisplay ">
@@ -178,8 +178,6 @@
 
         $('.saveappthemeconfig').unbind('click');
         $('.saveappthemeconfig').click(function () {
-            $('#datasection2').hide();
-            $('#datasection3').show();
             simplisity_callserver(this);
         });        
 
@@ -194,7 +192,7 @@
             simplisity_setCookieValue('displayviewtype', 'listdisplayicon');
         });
 
-        $('#selectapptheme_@(Model.GetSetting("moduleid"))').show();
+        $('#selectapptheme').show();
 
     });
 
@@ -210,8 +208,17 @@
     function showselect() {
         $('#datasection').show();
         $('#datasection2').hide();
+        $('#datasection3').hide();        
     }
 
+    function settingreturn() {
+        if ($('#settingsection').text() === '') {
+            location.reload();
+        } else {
+            $('#datasection2').hide();
+            $('#datasection3').show();
+        }
+    }
 
     function showgrid() {
         $('.griddisplayicon').addClass('w3-text-blue');

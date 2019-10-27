@@ -69,7 +69,7 @@ namespace RocketMod
                     strOut = GetSettingSection();
                     break;
                 case "rocketmod_saveappthemesetting":
-                    strOut = SettingsSave();
+                    SettingsSave();
                     strOut = GetDashBoard();
                     break;
 
@@ -682,6 +682,7 @@ namespace RocketMod
             {
                 AssignEditLang();
                 var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion, true);
+                if (!appTheme.EnableSettings) return "";
                 var razorTempl = appTheme.GetTemplate("settings"); // new module, so settings theme will be systemtheme.
                 _settingsData = GetSettingsData();
                 return DNNrocketUtils.RazorDetail(razorTempl, _settingsData, _passSettings, null, true);

@@ -1650,7 +1650,8 @@ namespace DNNrocketAPI.Componants
         public bool RegenerateView { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateview"); } }
 
         public int DataType { get { return Record.GetXmlPropertyInt("genxml/radio/themetype"); } }
-
+        public bool EnableSettings { get { return Record.GetXmlPropertyBool("genxml/checkbox/enablesettings"); } }
+        
         public string SystemKey { get; set; }
         public Dictionary<string, SimplisityRecord> SnippetText { get; set; }
         public Dictionary<string, SimplisityRecord> RazorTokenText { get; set; }
