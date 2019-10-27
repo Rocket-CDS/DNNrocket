@@ -15,9 +15,6 @@
 @{
     var moduleParams = (ModuleParams)Model.List.First();
     var configinfo = new SimplisityInfo(moduleParams.Record);
-    var systemDataInfo = new SystemInfoData(moduleParams.SystemId);
-    var settingsData = new SettingsData(-1, moduleParams.ModuleId , DNNrocketUtils.GetEditCulture(), "ROCKETMODSETTINGS", "rocketmodsettings", true);
-    var appThemeMod = new AppThemeMod(moduleParams.ModuleId, systemDataInfo.SystemKey, true);
 }
 
 
@@ -83,16 +80,6 @@
     <div class="w3-container">
         <label>@ResourceKey("RocketMod.notes")</label>
         @TextArea(configinfo, "genxml/hidden/appthemenotes", "class='w3-input w3-border' rows=5 ", "", false)
-    </div>
-
-    <div id="settingsdata">
-        @{ 
-            var l = new List<object>();
-            l.Add(settingsData);
-            var m = new SimplisityRazor(l, Model.Settings);
-            var razorTempl = appThemeMod.GetTemplateRazor("settings");
-        }
-        @RenderTemplate(razorTempl, m, true)
     </div>
 
     <div class="w3-container w3-border w3-margin-top">

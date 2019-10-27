@@ -163,7 +163,7 @@ namespace DNNrocket.TestForm
                         var newfilename = GeneralUtils.GetUniqueKey();
 
                         var imgInfo = new SimplisityInfo();
-                        var imagerelpath = DNNrocketUtils.HomeRelDirectory() + "/images/" + newfilename;
+                        var imagerelpath = DNNrocketUtils.HomeDirectoryRel() + "/images/" + newfilename;
                         var imagepath = imageDirectory + "\\" + newfilename;
 
                         File.Move(DNNrocketUtils.TempDirectory() + "\\" + encryptName, imagepath);
@@ -225,7 +225,7 @@ namespace DNNrocket.TestForm
                         var newfilename = GeneralUtils.GetUniqueKey();
 
                         var docInfo = new SimplisityInfo();
-                        var docrelpath = DNNrocketUtils.HomeRelDirectory() + "/docs/" + newfilename;
+                        var docrelpath = DNNrocketUtils.HomeDirectoryRel() + "/docs/" + newfilename;
                         var docpath = docDirectory + "\\" + newfilename;
 
                         File.Move(DNNrocketUtils.TempDirectory() + "\\" + encryptName, docpath);

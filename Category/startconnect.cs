@@ -281,7 +281,7 @@ namespace DNNrocket.Category
                             var newfilename = GeneralUtils.GetUniqueKey();
 
                             var imgInfo = new SimplisityInfo();
-                            var imagerelpath = DNNrocketUtils.HomeRelDirectory() + "/images/" + newfilename;
+                            var imagerelpath = DNNrocketUtils.HomeDirectoryRel() + "/images/" + newfilename;
                             var imagepath = imageDirectory + "\\" + newfilename;
 
                             if (File.Exists(DNNrocketUtils.TempDirectory() + "\\" + encryptName))
