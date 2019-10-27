@@ -32,12 +32,12 @@ namespace DNNrocketAPI.Componants
             _moduleParamsRec = new SimplisityRecord();
             _cacheKey = "moduleparams*" + moduleId;
             _moduleParamsRec = (SimplisityRecord)CacheUtils.GetCache(_cacheKey);
-
             if ((_moduleParamsRec == null || !useCache))
             {
                 if (moduleId <= 0)
                 {
                     _moduleParamsRec = new SimplisityRecord(); // sto error when no moduleid
+                    Exists = false;
                 }
                 else
                 {
@@ -50,7 +50,8 @@ namespace DNNrocketAPI.Componants
                         _moduleParamsRec.TypeCode = "MODULEPARAMS";
                         _moduleParamsRec.GUIDKey = _cacheKey;
                         _moduleParamsRec.ModuleId = _moduleid;
-                        objCtrl.SaveRecord(_moduleParamsRec);
+                        _moduleParamsRec = objCtrl.SaveRecord(_moduleParamsRec);
+                        Exists = false;
                     }
                     CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
                 }
@@ -59,12 +60,15 @@ namespace DNNrocketAPI.Componants
         public void Save()
         {
             var objCtrl = new DNNrocketController();
-            objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _systemid, _moduleid, _tableName);
+            _moduleParamsRec = objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _systemid, _moduleid, _tableName);
+            CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
         }
         public void Delete()
         {
             var objCtrl = new DNNrocketController();
             objCtrl.Delete(Record.ItemID, _tableName);
+            Exists = false;
+            CacheUtils.RemoveCache(_cacheKey);
         }
         public string GetValue(string key, string defaultValue = "")
         {

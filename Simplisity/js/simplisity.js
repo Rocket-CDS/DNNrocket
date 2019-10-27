@@ -210,6 +210,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             type: "POST",
             url: cmdupdate,
             cache: false,
+            async: true,
             dataType: 'json',
             timeout: 120000,
             data: { inputjson: encodeURI(jsonData), paramjson: encodeURI(jsonParam), simplisity_cmd: scmd },
@@ -236,6 +237,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
         var request = $.ajax({
             type: "POST",
             url: cmdupdate,
+            async: true,
             cache: false,
             timeout: 120000,
             data: { inputjson: encodeURI(jsonData), paramjson: encodeURI(jsonParam), simplisity_cmd: scmd }
