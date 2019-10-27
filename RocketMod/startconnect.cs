@@ -64,6 +64,14 @@ namespace RocketMod
                     SaveAppTheme();
                     strOut = GetDashBoard();
                     break;
+                case "rocketmod_saveappthemeconfig":
+                    SaveAppTheme();
+                    strOut = GetSettingSection();
+                    break;
+                case "rocketmod_saveappthemesetting":
+                    strOut = SettingsSave();
+                    strOut = GetDashBoard();
+                    break;
 
                 case "edit_editarticlelist":
                     strOut = GetArticleEdit(true);
@@ -207,7 +215,7 @@ namespace RocketMod
             }
             else
             {
-                if (!_moduleParams.Exists && paramCmd != "rocketmod_getdata" && paramCmd != "rocketmod_saveapptheme" && paramCmd != "rocketmod_saveconfig")
+                if (!_moduleParams.Exists && paramCmd != "rocketmod_getdata" && paramCmd != "rocketmod_saveapptheme" && paramCmd != "rocketmod_saveconfig" && paramCmd != "rocketmod_saveappthemeconfig")
                 {
                     return "rocketmod_selectapptheme";
                 }
@@ -662,6 +670,21 @@ namespace RocketMod
                 var articleDataList = new ArticleDataList(_moduleid, _editLang);
                 articleDataList.DeleteAll();
                 return GetDashBoard();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        public static String GetSettingSection()
+        {
+            try
+            {
+                AssignEditLang();
+                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion, true);
+                var razorTempl = appTheme.GetTemplate("settings"); // new module, so settings theme will be systemtheme.
+                _settingsData = GetSettingsData();
+                return DNNrocketUtils.RazorDetail(razorTempl, _settingsData, _passSettings, null, true);
             }
             catch (Exception ex)
             {

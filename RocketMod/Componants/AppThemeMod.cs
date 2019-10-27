@@ -47,20 +47,20 @@ namespace RocketMod.Componants
 
         private void LoadTemplates()
         {
-            ModuelTemplateListRazor = AppTheme.GetTemplateDictionaryRazor();
-            ModuelTemplateListJS = AppTheme.GetTemplateDictionaryJS();
-            ModuelTemplateListCSS = AppTheme.GetTemplateDictionaryCSS();
+            ModuleTemplateListRazor = AppTheme.GetTemplateDictionaryRazor();
+            ModuleTemplateListJS = AppTheme.GetTemplateDictionaryJS();
+            ModuleTemplateListCSS = AppTheme.GetTemplateDictionaryCSS();
 
             // get razor
-            if (ModuelTemplateListRazor != null) // does not exist on selection of Module AppTheme.
+            if (ModuleTemplateListRazor != null) // does not exist on selection of Module AppTheme.
             {
                 var flist = Directory.GetFiles(ModuleTemplateFolderRazorMapPath, ModuleParams.ModuleRef + "_*.cshtml");
                 foreach (var f in flist)
                 {
                     var fname = Path.GetFileNameWithoutExtension(f).Replace(ModuleParams.ModuleRef + "_", "");
                     var ftext = FileUtils.ReadFile(f);
-                    if (ModuelTemplateListRazor.ContainsKey(fname)) ModuelTemplateListRazor.Remove(fname);
-                    ModuelTemplateListRazor.Add(fname, ftext);
+                    if (ModuleTemplateListRazor.ContainsKey(fname)) ModuleTemplateListRazor.Remove(fname);
+                    ModuleTemplateListRazor.Add(fname, ftext);
                 }
                 // get css
                 flist = Directory.GetFiles(ModuleTemplateFolderCSSMapPath, ModuleParams.ModuleRef + "_*.css");
@@ -68,8 +68,8 @@ namespace RocketMod.Componants
                 {
                     var fname = Path.GetFileNameWithoutExtension(f).Replace(ModuleParams.ModuleRef + "_", "");
                     var ftext = FileUtils.ReadFile(f);
-                    if (ModuelTemplateListCSS.ContainsKey(fname)) ModuelTemplateListCSS.Remove(fname);
-                    ModuelTemplateListCSS.Add(fname, ftext);
+                    if (ModuleTemplateListCSS.ContainsKey(fname)) ModuleTemplateListCSS.Remove(fname);
+                    ModuleTemplateListCSS.Add(fname, ftext);
                 }
                 // get js
                 flist = Directory.GetFiles(ModuleTemplateFolderJSMapPath, ModuleParams.ModuleRef + "_*.js");
@@ -77,11 +77,11 @@ namespace RocketMod.Componants
                 {
                     var fname = Path.GetFileNameWithoutExtension(f).Replace(ModuleParams.ModuleRef + "_", "");
                     var ftext = FileUtils.ReadFile(f);
-                    if (ModuelTemplateListJS.ContainsKey(fname)) ModuelTemplateListJS.Remove(fname);
-                    ModuelTemplateListJS.Add(fname, ftext);
+                    if (ModuleTemplateListJS.ContainsKey(fname)) ModuleTemplateListJS.Remove(fname);
+                    ModuleTemplateListJS.Add(fname, ftext);
                 }
 
-                foreach (var d in ModuelTemplateListRazor)
+                foreach (var d in ModuleTemplateListRazor)
                 {
                     var itemInfo = AppTheme.Record.GetRecordListItem("templatelist", "genxml/hidden/filename", Path.GetFileNameWithoutExtension(d.Key));
                     if (itemInfo != null)
@@ -91,7 +91,7 @@ namespace RocketMod.Componants
                         AppTheme.Record.AddRecordListItem("templatelist", itemInfo);
                     }
                 }
-                foreach (var d in ModuelTemplateListCSS)
+                foreach (var d in ModuleTemplateListCSS)
                 {
                     var itemInfo = AppTheme.Record.GetRecordListItem("csslist", "genxml/hidden/filename", Path.GetFileNameWithoutExtension(d.Key));
                     if (itemInfo != null)
@@ -101,7 +101,7 @@ namespace RocketMod.Componants
                         AppTheme.Record.AddRecordListItem("csslist", itemInfo);
                     }
                 }
-                foreach (var d in ModuelTemplateListJS)
+                foreach (var d in ModuleTemplateListJS)
                 {
                     var itemInfo = AppTheme.Record.GetRecordListItem("jslist", "genxml/hidden/filename", Path.GetFileNameWithoutExtension(d.Key));
                     if (itemInfo != null)
@@ -127,27 +127,27 @@ namespace RocketMod.Componants
         public string GetTemplateRazor(string templatename)
         {
             var template = "";
-            if (ModuelTemplateListRazor.ContainsKey(templatename))
+            if (ModuleTemplateListRazor.ContainsKey(templatename))
             {
-                template = ModuelTemplateListRazor[templatename];
+                template = ModuleTemplateListRazor[templatename];
             }
             return template;
         }
         public string GetTemplateCSS(string templatename)
         {
             var template = "";
-            if (ModuelTemplateListCSS.ContainsKey(templatename))
+            if (ModuleTemplateListCSS.ContainsKey(templatename))
             {
-                template = ModuelTemplateListCSS[templatename];
+                template = ModuleTemplateListCSS[templatename];
             }
             return template;
         }
         public string GetTemplateJS(string templatename)
         {
             var template = "";
-            if (ModuelTemplateListJS.ContainsKey(templatename))
+            if (ModuleTemplateListJS.ContainsKey(templatename))
             {
-                template = ModuelTemplateListJS[templatename];
+                template = ModuleTemplateListJS[templatename];
             }
             return template;
         }
@@ -162,8 +162,8 @@ namespace RocketMod.Componants
         public string ModuleTemplateFolderRazorMapPath { get { return ModuleTemplateFolderMapPath + "\\default"; } }
         public string ModuleTemplateFolderCSSMapPath { get { return ModuleTemplateFolderMapPath + "\\css"; } }
         public string ModuleTemplateFolderJSMapPath { get { return ModuleTemplateFolderMapPath + "\\js"; } }
-        public Dictionary<string, string> ModuelTemplateListRazor { get; private set; }
-        public Dictionary<string, string> ModuelTemplateListJS { get; private set; }
-        public Dictionary<string, string> ModuelTemplateListCSS { get; private set; }
+        public Dictionary<string, string> ModuleTemplateListRazor { get; private set; }
+        public Dictionary<string, string> ModuleTemplateListJS { get; private set; }
+        public Dictionary<string, string> ModuleTemplateListCSS { get; private set; }
     }
 }

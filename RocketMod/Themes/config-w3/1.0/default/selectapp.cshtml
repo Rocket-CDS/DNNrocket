@@ -113,9 +113,9 @@
 
                 <div id="datasection2" class="w3-row w3-margin-top" style="display:none;">
                     <div class="w3-row w3-padding">
-                        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click saveapptheme" s-cmd="rocketmod_saveapptheme" s-track="false" s-post=".postdatasection">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+                        <div class="w3-col m2 w3-button w3-khaki" onclick="showselect();">@ResourceKey("DNNrocket.cmdBackButton")</div>
                         @ButtonGap()
-                        <div class="w3-col m2 w3-button w3-khaki" onclick="showselect();">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+                        <div class="w3-col m2 w3-button w3-green w3-padding-8 saveappthemeconfig" s-cmd="rocketmod_saveappthemeconfig" s-track="false" s-post=".postdatasection" s-return="#settingsection">@ResourceKey("DNNrocket.cmdNextButton")</div>
                     </div>
                     <div class="w3-row">
                         <div class="w3-col m2 w3-margin appthemedisplay ">
@@ -144,6 +144,19 @@
                     </div>
                     <hr />
                 </div>
+
+
+                <div id="datasection3" class="w3-row" style="display:none;">
+                    <div class="w3-row w3-padding">
+                        <div class="w3-col m2 w3-button w3-khaki" onclick="showdetail(simplisity_getParamField('appthemefolder'));">@ResourceKey("DNNrocket.cmdBackButton")</div>
+                        @ButtonGap()
+                        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketmod_saveappthemesetting" s-track="false" s-post="#settingsection">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+                    </div>
+                    <div id="settingsection">
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -162,6 +175,13 @@
         else {
             showlist();
         }
+
+        $('.saveappthemeconfig').unbind('click');
+        $('.saveappthemeconfig').click(function () {
+            $('#datasection2').hide();
+            $('#datasection3').show();
+            simplisity_callserver(this);
+        });        
 
         $('.griddisplayicon').unbind('click');
         $('.griddisplayicon').click(function () {
@@ -185,6 +205,7 @@
         $('#name').val(appThemeFolder);
         $('#datasection').hide();
         $('#datasection2').show();
+        $('#datasection3').hide();        
     }
     function showselect() {
         $('#datasection').show();
