@@ -1,0 +1,122 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using Rocket.AppThemes.Componants;
+@using DNNrocketAPI.Componants;
+@using RocketMod.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+
+
+@{
+    var moduleParamList = (ModuleParamList)Model.List.First();
+}
+
+<div class="w3-container">
+
+    <div id="selectdatasource" class="w3-modal">
+
+        <div class="w3-modal-content w3-animate-top w3-card-4 postdatasection" style="width:80%">
+            <header class="w3-container w3-theme-d3">
+                <span onclick="selectdatasource_closethelist();" class="w3-button w3-display-topright">&times;</span>
+                <h2>@ResourceKey("RocketMod.selectdatasource")</h2>
+            </header>
+            <div class="w3-container">
+
+                <div id="datasection" class="w3-row w3-margin-top">
+
+                    <div class="w3-row w3-card searchdata w3-margin-top">
+
+                        <div class="">
+                            <div class="w3-row w3-padding">
+                                <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("RocketMod.search")..." id="searchtext" onkeyup="searchFunction()">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <ul id="datalist" class="w3-ul w3-border">
+
+                        @{
+                            var lp1 = 0;
+                        }
+                        @foreach (ModuleParams moduleParams in moduleParamList.DataList)
+                        {
+                            lp1 += 1;
+                            <li class="datalistitem w3-display-container">
+
+                                <div class="listrow w3-cell-row">
+
+                                    <div class=" w3-cell w3-padding">
+                                        <div class="">
+                                            <b>@(moduleParams.Name)</b>
+                                            <b>:</b>
+                                            <b>@moduleParams.AppThemeFolder</b>
+                                        </div>
+                                        <div class="w3-hide-small ">
+                                        </div>
+                                    </div>
+                                    <div class=" w3-cell w3-right w3-hide-small" style="width: 240px;">
+                                        <div class="w3-row">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        }
+                    </ul>
+
+                    <hr />
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#datalist").disableSelection();
+
+        $('#selectdatasource').show();
+
+    });
+
+    function selectdatasource_closethelist() {
+        $('#selectdatasource').hide();
+    }
+
+
+    function searchFunction() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("searchtext");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("datalist");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            txtValue = li[i].textContent || li[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+        ul = document.getElementById("datalist2");
+        li = ul.getElementsByTagName("div");
+        for (i = 0; i < li.length; i++) {
+            txtValue = li[i].textContent || li[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
+
+</script>

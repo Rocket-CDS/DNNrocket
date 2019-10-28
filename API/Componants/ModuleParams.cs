@@ -57,9 +57,8 @@ namespace DNNrocketAPI.Componants
                 }
             }
         }
-        public void Save(SimplisityRecord postData = null)
+        public void Save()
         {
-            if (postData != null && _moduleParamsRec != null) _moduleParamsRec.XMLData = postData.XMLData;
             var objCtrl = new DNNrocketController();
             _moduleParamsRec = objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _systemid, _moduleid, _tableName);
             CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
@@ -115,8 +114,8 @@ namespace DNNrocketAPI.Componants
         public string ImageFolderRel { get{ return DNNrocketUtils.HomeDNNrocketRelDirectory().TrimEnd('/') + "/" + ImageFolder; } }
         public string DocumentFolderRel { get{ return DNNrocketUtils.HomeDNNrocketRelDirectory().TrimEnd('/') + "/" + DocumentFolder;} }
 
-        public string DocumentFolder { get { return GetValue("DocumentFolder","docs"); } set { SetValue("DocumentFolder", value); } }
-        public string ImageFolder { get { return GetValue("ImageFolder", "images"); } set { SetValue("ImageFolder", value); } }
+        public string DocumentFolder { get { return GetValue("documentfolder", "");} set { SetValue("DocumentFolder", value); } }
+        public string ImageFolder { get { return GetValue("imagefolder", ""); } set { SetValue("ImageFolder", value); } }
 
         public string DocumentFolderMapPath { get { return DNNrocketUtils.MapPath(DocumentFolderRel); } }
         public string ImageFolderMapPath { get { return DNNrocketUtils.MapPath(ImageFolderRel); } }
@@ -126,6 +125,9 @@ namespace DNNrocketAPI.Componants
         public string ModuleType { get { return GetValue("ModuleType", ""); } set { SetValue("ModuleType", value); } }
         public int ModuleId { get {return _moduleid; } }
         public int SystemId { get { return _systemid; } }
+        public string ShareData { get { return GetValue("sharedata", ""); } set { SetValue("sharedata", value); } }
+        public int DataSourceModId { get { return GetValueInt("DataSourceModId"); } set { SetValue("DataSourceModId", value.ToString()); } }
+        public string DataSourceModRef { get { return GetValue("DataSourceModRef"); } set { SetValue("DataSourceModRef", value.ToString()); } }
         public int DataModuleId
         {
             get

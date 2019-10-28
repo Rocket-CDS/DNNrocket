@@ -123,6 +123,9 @@ namespace RocketMod
                 case "rocketmod_resetdata":
                     strOut = ResetDataRocketMod();
                     break;
+                case "rocketmod_datasourcelist":
+                    strOut = GetDataSourceList();
+                    break;
 
                 case "rocketmodsettings_edit":
                     strOut = EditSettingsData();
@@ -302,17 +305,18 @@ namespace RocketMod
         {
             var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder);
             _moduleParams.AppThemeLogo = appTheme.Logo;
-            //_moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
-            //_moduleParams.DataModuleId = _postInfo.GetXmlPropertyInt("genxml/hidden/datamoduleid");
-            //_moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
-            //_moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
-            //_moduleParams.AppThemeVersion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
-            //_moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
+            _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
+            _moduleParams.DataModuleId = _postInfo.GetXmlPropertyInt("genxml/hidden/datamoduleid");
+            _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
+            _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
+            _moduleParams.AppThemeVersion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
+            _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
             _moduleParams.ModuleType = "RocketMod";
             if (_moduleParams.ModuleRef == "") _moduleParams.ModuleRef = GeneralUtils.GetUniqueKey();
             _moduleParams.Exists = true;
             _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disbalecache");
-            _moduleParams.Save(new SimplisityRecord(_postInfo));
+            _moduleParams.ShareData = _postInfo.GetXmlProperty("genxml/hidden/sharedata");
+            _moduleParams.Save();
             _passSettings.Add("saved", "true");
         }
 
@@ -332,6 +336,7 @@ namespace RocketMod
             _moduleParams.AppProjectFolderRel = appTheme.AppProjectFolderRel;
             _moduleParams.AppSystemThemeFolderRel = appTheme.AppSystemThemeFolderRel;
             _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
+            _moduleParams.ShareData = "1";
             _moduleParams.Exists = true;
 
             _moduleParams.Save();
@@ -423,6 +428,8 @@ namespace RocketMod
         {
             try
             {
+                if (_moduleParams.DataSourceModId > 0) return "Data Source";
+
                 if (_appThemeMod.AppTheme.DataType == 1)
                 {
                     return GetArticle();
@@ -701,6 +708,23 @@ namespace RocketMod
                 var razortemplate = "dashboard.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 return DNNrocketUtils.RazorDetail(razorTempl, _moduleParams, _passSettings,null,true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public static String GetDataSourceList()
+        {
+            try
+            {
+                var mp = new ModuleParamList(DNNrocketUtils.GetCurrentCulture(),true, true);
+                var controlRelPath = _rocketInterface.TemplateRelPath;
+                var themeFolder = _rocketInterface.DefaultTheme;
+                var razortemplate = "selectdatasource.cshtml";
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return DNNrocketUtils.RazorDetail(razorTempl, mp, _passSettings, null, true);
             }
             catch (Exception ex)
             {

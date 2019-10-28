@@ -222,6 +222,9 @@
   <data name="selectapptheme.Text" xml:space="preserve">
     <value>Select AppTheme </value>
   </data>
+  <data name="selectdatasource.Text" xml:space="preserve">
+    <value>Select Data Source</value>
+  </data>
   <data name="sharedata.Text" xml:space="preserve">
     <value>Share Data</value>
   </data>
