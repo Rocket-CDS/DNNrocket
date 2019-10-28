@@ -21,18 +21,21 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketmod_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","selecteditemid":"@configinfo.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ResourceKey("DNNrocket.cmdSaveButton")</div>
         @ButtonGap()
-        <div class="w3-col m6 w3-dropdown-hover">
-            <div class="w3-button">@ResourceKey("DNNrocket.more")...</div>
-            <div class="w3-dropdown-content w3-bar-block w3-card">
-                <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.cmdResetButton")</div>
-                <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.cmdResetDataButton")</div>
-            </div>
+    <div class="w3-col m6 w3-dropdown-hover">
+        <div class="w3-button">@ResourceKey("DNNrocket.more")...</div>
+        <div class="w3-dropdown-content w3-bar-block w3-card">
+            <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmod_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.cmdResetButton")</div>
+            <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmod_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.cmdResetDataButton")</div>
         </div>
-
         @if (Model.GetSettingBool("saved"))
         {
-            <i class='fas fa-save w3-right simplisity_fadeout' style="font-size:24px"></i>
+            <i class='fas fa-save simplisity_fadeout' style="font-size:24px"></i>
         }
+    </div>
+        <div class="w3-right">
+            <i class='fas fa-share-alt-square sharedataicon' style='font-size:36px;color:teal'></i>
+        </div>
+
     </div>
 
 <h1>@ResourceKey("RocketMod.config")</h1>
@@ -49,17 +52,17 @@
                     <label>@ResourceKey("RocketMod.name")</label>
                     @TextBox(configinfo, "genxml/hidden/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
                 </div>
-                <div class="w3-col m4 w3-padding">
-                    <label>@ResourceKey("RocketMod.appthemeversion")</label>
+                <div class="w3-col m2 w3-padding">
+                    <label>@ResourceKey("RocketMod.version")</label>
                     @FolderSelectList(configinfo, "genxml/hidden/appthemeversion", moduleParams.AppThemeFolderMapPath, "class='w3-input w3-border'", false, false)
+                </div>
+                <div class="w3-col m2 w3-padding">
+                    <label>@ResourceKey("RocketMod.disablecache")</label><br />
+                    @CheckBox(configinfo, "genxml/hidden/disbalecache", "", "class='w3-check'", false)
                 </div>
             </div>
 
             <div class="w3-container">
-                <div class="w3-col m4 w3-padding">
-                    <label>@ResourceKey("RocketMod.datasource")</label>
-                    @DataSourceList(configinfo, moduleParams.SystemId, "genxml/hidden/datamoduleid", "class='w3-input w3-border'", true, false)
-                </div>
                 <div class="w3-col m4 w3-padding">
                     <label>@ResourceKey("RocketMod.imagefolder")</label>
                     @TextBox(configinfo, "genxml/hidden/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
@@ -68,12 +71,12 @@
                     <label>@ResourceKey("RocketMod.documentfolder")</label>
                     @TextBox(configinfo, "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
                 </div>
+                <div class="w3-col m4 w3-padding">
+                    <label>@ResourceKey("RocketMod.sharedata")</label><br />
+                    @RadioButtonList(configinfo,"genxml/radiobuttonlist/sharedata","0,1,2", ResourceKey("RocketMod.sharedataoptions").ToString()," class='sharedataaction' ","1","")
+                </div>
             </div>
             <div class="w3-container">
-                <div class="w3-col m4 w3-padding">
-                    <label>@ResourceKey("RocketMod.disbalecache")</label><br />
-                    @CheckBox(configinfo, "genxml/hidden/disbalecache", "", "class='w3-check'", false)
-                </div>
             </div>
         </div>
     </div>
@@ -103,6 +106,21 @@
 <script>
 
     $(document).ready(function () {
+
+        $('.sharedataaction').unbind('change');
+        $('.sharedataaction').change(function () {
+            if ($('input[name=sharedataradio]:checked').val() === '0') {
+                $('.sharedataicon').hide();
+            }
+            if ($('input[name=sharedataradio]:checked').val() === '1') {
+                $('.sharedataicon').show();
+                $('.sharedataicon').css('color', 'teal')
+            }
+            if ($('input[name=sharedataradio]:checked').val() === '2') {
+                $('.sharedataicon').show();
+                $('.sharedataicon').css('color', 'red')
+            }
+        });
 
     });
 

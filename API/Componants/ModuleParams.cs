@@ -57,8 +57,9 @@ namespace DNNrocketAPI.Componants
                 }
             }
         }
-        public void Save()
+        public void Save(SimplisityRecord postData = null)
         {
+            if (postData != null && _moduleParamsRec != null) _moduleParamsRec.XMLData = postData.XMLData;
             var objCtrl = new DNNrocketController();
             _moduleParamsRec = objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _systemid, _moduleid, _tableName);
             CacheUtils.SetCache(_cacheKey, _moduleParamsRec);

@@ -302,17 +302,17 @@ namespace RocketMod
         {
             var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder);
             _moduleParams.AppThemeLogo = appTheme.Logo;
-            _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
-            _moduleParams.DataModuleId = _postInfo.GetXmlPropertyInt("genxml/hidden/datamoduleid");
-            _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
-            _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
-            _moduleParams.AppThemeVersion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
-            _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
+            //_moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
+            //_moduleParams.DataModuleId = _postInfo.GetXmlPropertyInt("genxml/hidden/datamoduleid");
+            //_moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
+            //_moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
+            //_moduleParams.AppThemeVersion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
+            //_moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
             _moduleParams.ModuleType = "RocketMod";
             if (_moduleParams.ModuleRef == "") _moduleParams.ModuleRef = GeneralUtils.GetUniqueKey();
             _moduleParams.Exists = true;
             _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disbalecache");
-            _moduleParams.Save();
+            _moduleParams.Save(new SimplisityRecord(_postInfo));
             _passSettings.Add("saved", "true");
         }
 
