@@ -94,7 +94,7 @@ namespace Simplisity
         }
         public object GetDataObject(String key)
         {
-            if (DataObjects.ContainsKey(key)) return DataObjects[key];
+            if (DataObjects != null && DataObjects.ContainsKey(key)) return DataObjects[key];
             return null;
         }
 
