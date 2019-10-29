@@ -34,7 +34,7 @@
         }
     </div>
     <div class="w3-right">
-        @if (moduleParams.ShareData != "0")
+        @if (moduleParams.ShareData != "0" && !moduleParams.DataSourceExternal)
         {
             var sharecolor = "teal";
             if (moduleParams.ShareData == "2")
@@ -82,8 +82,16 @@
                     @TextBox(configinfo, "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
                 </div>
                 <div class="w3-col m4 w3-padding">
-                    <label>@ResourceKey("RocketMod.sharedata")</label><br />
-                    @RadioButtonList(configinfo,"genxml/hidden/sharedata","0,1,2", ResourceKey("RocketMod.sharedataoptions").ToString()," class='sharedataaction' ","1","")
+                    @if (!moduleParams.DataSourceExternal)
+                    {
+                        <label>@ResourceKey("RocketMod.sharedata")</label><br />
+                        @RadioButtonList(configinfo, "genxml/hidden/sharedata", "0,1,2", ResourceKey("RocketMod.sharedataoptions").ToString(), " class='sharedataaction' ", "1", "")
+                    }
+                    else
+                    {
+                        <label>@ResourceKey("RocketMod.datasource")</label><br />
+                        <b>@HtmlOf(moduleParams.GetValue("tabname")) &nbsp; @HtmlOf(moduleParams.Name)</b>
+                    }
                 </div>
             </div>
             <div class="w3-container">

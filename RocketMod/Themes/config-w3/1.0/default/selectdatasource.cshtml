@@ -19,7 +19,7 @@
 
     <div id="selectdatasource" class="w3-modal">
 
-        <div class="w3-modal-content w3-animate-top w3-card-4 postdatasection" style="width:80%">
+        <div class="w3-modal-content w3-animate-top w3-card-4 postdatasection" style="width:60%">
             <header class="w3-container w3-theme-d3">
                 <span onclick="selectdatasource_closethelist();" class="w3-button w3-display-topright">&times;</span>
                 <h2>@ResourceKey("RocketMod.selectdatasource")</h2>
@@ -38,38 +38,34 @@
 
                     </div>
 
-                    <ul id="datalist" class="w3-ul w3-border w3-margin-top">
+                    <ul id="datasourcelist" class="w3-ul w3-border w3-margin-top">
 
                         @{
                             var lp1 = 0;
                         }
                         @foreach (ModuleParams moduleParams in moduleParamList.DataList)
                         {
-                            if (moduleParams.ModuleId != Model.GetSettingInt("moduleid"))
+                            var currentmodule = "";
+                            if (moduleParams.ModuleId == Model.GetSettingInt("moduleid"))
                             {
-                                lp1 += 1;
-                                <li class="datalistitem w3-display-container">
+                                currentmodule = "w3-theme-l3";
+                            }
+                            lp1 += 1;
+                                <li class="datasourcelistitem w3-display-container @(currentmodule) simplisity_click" s-cmd="rocketmod_datasourceselect" s-fields='{"moduleid":"@(Model.GetSetting("moduleid"))","selectedmoduleid":"@(moduleParams.ModuleId)","selectedmoduleref":"@(moduleParams.ModuleRef)"}'>
 
-                                    <div class="listrow w3-cell-row">
-
-                                        <div class=" w3-cell w3-padding">
-                                            <div class="">
-                                                <b>ModuleId: @(moduleParams.ModuleId)</b>
-                                                <b>&nbsp;Name: @(moduleParams.Name)</b>
-                                                <b>&nbsp;AppThemeFolder: @moduleParams.AppThemeFolder</b>
-                                                <b>&nbsp;ModuleRef : @moduleParams.ModuleRef</b>
-                                                <b>&nbsp;TabName : @moduleParams.GetValue("tabname")</b>
-                                            </div>
-                                            <div class="w3-hide-small ">
-                                            </div>
+                                    <div class="listrow w3-padding w3-row w3-hover-theme">
+                                        <div class=" w3-col w3-hide-small " style="width: 100px;">
+                                            <img src="@ThumbnailImageUrl(moduleParams.AppThemeLogo,60,60)" class="w3-circle" />
                                         </div>
-                                        <div class=" w3-cell w3-right w3-hide-small" style="width: 240px;">
-                                            <div class="w3-row">
+                                        <div class=" w3-col m10">
+                                            <div><b>@HtmlOf(moduleParams.GetValue("tabname")) &nbsp; @HtmlOf(moduleParams.Name)</b></div>
+                                            <div class="w3-hide-small ">
+                                                <b>AppTheme:</b> @HtmlOf(moduleParams.AppThemeFolder) &nbsp; @HtmlOf(moduleParams.AppThemeVersion) &nbsp; <b>ModuleId:</b> @(moduleParams.ModuleId) &nbsp; <b>ModuleRef:</b> @moduleParams.ModuleRef
                                             </div>
                                         </div>
                                     </div>
+
                                 </li>
-                            }
                         }
                     </ul>
 
@@ -86,7 +82,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#datalist").disableSelection();
+        $("#datasourcelist").disableSelection();
 
         $('#selectdatasource').show();
 

@@ -126,6 +126,9 @@ namespace RocketMod
                 case "rocketmod_datasourcelist":
                     strOut = GetDataSourceList();
                     break;
+                case "rocketmod_datasourceselect":
+                    strOut = GetDataSourceSelect();
+                    break;
 
                 case "rocketmodsettings_edit":
                     strOut = EditSettingsData();
@@ -312,7 +315,6 @@ namespace RocketMod
             _moduleParams.AppThemeVersion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
             _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
             _moduleParams.ModuleType = "RocketMod";
-            if (_moduleParams.ModuleRef == "") _moduleParams.ModuleRef = GeneralUtils.GetUniqueKey();
             _moduleParams.Exists = true;
             _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disbalecache");
             _moduleParams.ShareData = _postInfo.GetXmlProperty("genxml/hidden/sharedata");
@@ -330,7 +332,6 @@ namespace RocketMod
             _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
             _moduleParams.AppThemeVersion = appTheme.LatestVersionFolder;
             _moduleParams.ModuleType = "RocketMod";
-            if (_moduleParams.ModuleRef == "") _moduleParams.ModuleRef = GeneralUtils.GetUniqueKey();
             _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
             _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
             _moduleParams.AppThemeFolderRel = appTheme.AppThemeFolderRel;
@@ -723,11 +724,37 @@ namespace RocketMod
             try
             {
                 var mp = new ModuleParamList(DNNrocketUtils.GetCurrentCulture(),true, true);
+                if (_moduleParams.ShareData == "0") mp.DataList.Add(_moduleParams); // current to list, so we can assigned current module as data source.
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "selectdatasource.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 return DNNrocketUtils.RazorDetail(razorTempl, mp, _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        public static String GetDataSourceSelect()
+        {
+            try
+            {
+                var selectmoduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/selectedmoduleid");
+                var selectmoduleref = _paramInfo.GetXmlProperty("genxml/hidden/selectedmoduleref");
+                if (selectmoduleid == 0)
+                {
+                    selectmoduleid = _moduleid;
+                    selectmoduleref = _moduleParams.ModuleRef;
+                }
+                else
+                {
+                    _moduleParams.ShareData = "0";
+                }
+                _moduleParams.DataSourceModId = selectmoduleid;
+                _moduleParams.DataSourceModRef = selectmoduleref;
+                _moduleParams.Save();
+                return GetDashBoard();
             }
             catch (Exception ex)
             {

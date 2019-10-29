@@ -56,10 +56,19 @@ namespace DNNrocketAPI.Componants
                     CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
                 }
             }
+            DataSourceExternal = false;
+            if (DataSourceModId != _moduleid) DataSourceExternal = true;
+            if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueKey();
+            if (DataSourceModId <= 0) DataSourceModId = _moduleid;
+            if (DataSourceModRef == "") DataSourceModRef = ModuleRef;
         }
         public void Save()
         {
             var objCtrl = new DNNrocketController();
+
+            DataSourceExternal = false;
+            if (DataSourceModId != _moduleid) DataSourceExternal = true;
+
             _moduleParamsRec = objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _systemid, _moduleid, _tableName);
             CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
         }
@@ -139,6 +148,7 @@ namespace DNNrocketAPI.Componants
             }
             set { SetValue("DataModuleId", value.ToString()); }
         }
+        public bool DataSourceExternal { get; set; }
         public string ModuleRef { get { return GetValue("ModuleRef"); } set { SetValue("ModuleRef", value); } }
         public bool CacheDisbaled { get { return GetValueBool("disbalecache"); } set { SetValue("disbalecache", value.ToString()); } }
         public bool CacheEnabled { get { return !GetValueBool("disbalecache"); } }
