@@ -87,11 +87,6 @@
                         <label>@ResourceKey("RocketMod.sharedata")</label><br />
                         @RadioButtonList(configinfo, "genxml/hidden/sharedata", "0,1,2", ResourceKey("RocketMod.sharedataoptions").ToString(), " class='sharedataaction' ", "1", "")
                     }
-                    else
-                    {
-                        <label>@ResourceKey("RocketMod.datasource")</label><br />
-                        <b>@HtmlOf(moduleParams.GetValue("tabname")) &nbsp; @HtmlOf(moduleParams.Name)</b>
-                    }
                 </div>
             </div>
             <div class="w3-container">
@@ -103,6 +98,23 @@
         @TextArea(configinfo, "genxml/hidden/appthemenotes", "class='w3-input w3-border' rows=5 ", "", false)
     </div>
 
+    @if (moduleParams.DataSourceExternal)
+    {
+
+        <div class="w3-container w3-border w3-margin-top">
+            <div class="w3-col m4 w3-padding">
+                @ResourceKey("RocketMod.datasource"):&nbsp;<b>@HtmlOf(moduleParams.GetValue("tabname")) &nbsp;&gt;&nbsp; @HtmlOf(moduleParams.Name)</b>
+            </div>
+            <div class="w3-col m2 w3-padding">
+                ModuleId:&nbsp;<b>@(moduleParams.DataModuleId)</b>
+            </div>
+            <div class="w3-col m3 w3-padding">
+                @ResourceKey("RocketMod.ref"):&nbsp;<b>@moduleParams.DataSourceModRef</b>
+            </div>
+        </div>
+    }
+
+
     <div class="w3-container w3-border w3-margin-top">
         <div class="w3-col m2 w3-padding">
             ItemId:&nbsp;<b>@configinfo.ItemID</b>
@@ -111,10 +123,10 @@
             ModuleId:&nbsp;<b>@configinfo.ModuleId</b>
         </div>
         <div class="w3-col m2 w3-padding">
-            @ResourceKey("RocketMod.ref"):&nbsp;<b>@moduleParams.ModuleRef</b>
-        </div>
-        <div class="w3-col m2 w3-padding">
             @ResourceKey("RocketMod.apptheme"):&nbsp;<b>@moduleParams.AppThemeFolder</b>
+        </div>
+        <div class="w3-col m3 w3-padding">
+            @ResourceKey("RocketMod.ref"):&nbsp;<b>@moduleParams.ModuleRef</b>
         </div>
     </div>
 
