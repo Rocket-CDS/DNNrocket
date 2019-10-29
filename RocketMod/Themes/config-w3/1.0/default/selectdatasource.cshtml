@@ -38,34 +38,38 @@
 
                     </div>
 
-                    <ul id="datalist" class="w3-ul w3-border">
+                    <ul id="datalist" class="w3-ul w3-border w3-margin-top">
 
                         @{
                             var lp1 = 0;
                         }
                         @foreach (ModuleParams moduleParams in moduleParamList.DataList)
                         {
-                            lp1 += 1;
-                            <li class="datalistitem w3-display-container">
+                            if (moduleParams.ModuleId != Model.GetSettingInt("moduleid"))
+                            {
+                                lp1 += 1;
+                                <li class="datalistitem w3-display-container">
 
-                                <div class="listrow w3-cell-row">
+                                    <div class="listrow w3-cell-row">
 
-                                    <div class=" w3-cell w3-padding">
-                                        <div class="">
-                                            <b>@(moduleParams.Name)</b>
-                                            <b>:</b>
-                                            <b>@moduleParams.AppThemeFolder</b>
+                                        <div class=" w3-cell w3-padding">
+                                            <div class="">
+                                                <b>ModuleId: @(moduleParams.ModuleId)</b>
+                                                <b>&nbsp;Name: @(moduleParams.Name)</b>
+                                                <b>&nbsp;AppThemeFolder: @moduleParams.AppThemeFolder</b>
+                                                <b>&nbsp;ModuleRef : @moduleParams.ModuleRef</b>
+                                                <b>&nbsp;TabName : @moduleParams.GetValue("tabname")</b>
+                                            </div>
+                                            <div class="w3-hide-small ">
+                                            </div>
                                         </div>
-                                        <div class="w3-hide-small ">
+                                        <div class=" w3-cell w3-right w3-hide-small" style="width: 240px;">
+                                            <div class="w3-row">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class=" w3-cell w3-right w3-hide-small" style="width: 240px;">
-                                        <div class="w3-row">
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
+                                </li>
+                            }
                         }
                     </ul>
 

@@ -24,7 +24,7 @@ namespace DNNrocketAPI.Componants
         private int _moduleid;
         private int _systemid;
 
-        public ModuleParams(int moduleId, int systemid, bool useCache = true, string tableName = "DNNrocket")
+        public ModuleParams( int moduleId, int systemid, bool useCache = true, string tableName = "DNNrocket")
         {
             _tableName = tableName;
             _systemid = systemid;
@@ -125,6 +125,7 @@ namespace DNNrocketAPI.Componants
         public string ModuleType { get { return GetValue("ModuleType", ""); } set { SetValue("ModuleType", value); } }
         public int ModuleId { get {return _moduleid; } }
         public int SystemId { get { return _systemid; } }
+        public int TabId { get { return GetValueInt("TabId"); } set { SetValue("TabId", value.ToString()); } }
         public string ShareData { get { return GetValue("sharedata", ""); } set { SetValue("sharedata", value); } }
         public int DataSourceModId { get { return GetValueInt("DataSourceModId"); } set { SetValue("DataSourceModId", value.ToString()); } }
         public string DataSourceModRef { get { return GetValue("DataSourceModRef"); } set { SetValue("DataSourceModRef", value.ToString()); } }

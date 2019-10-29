@@ -316,6 +316,8 @@ namespace RocketMod
             _moduleParams.Exists = true;
             _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disbalecache");
             _moduleParams.ShareData = _postInfo.GetXmlProperty("genxml/hidden/sharedata");
+            _moduleParams.TabId = _tabid;
+
             _moduleParams.Save();
             _passSettings.Add("saved", "true");
         }
@@ -337,6 +339,7 @@ namespace RocketMod
             _moduleParams.AppSystemThemeFolderRel = appTheme.AppSystemThemeFolderRel;
             _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
             _moduleParams.ShareData = "1";
+            _moduleParams.TabId = _tabid;
             _moduleParams.Exists = true;
 
             _moduleParams.Save();

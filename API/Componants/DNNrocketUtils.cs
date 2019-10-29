@@ -629,6 +629,25 @@ namespace DNNrocketAPI
             return (DotNetNuke.Entities.Portals.PortalSettings)System.Web.HttpContext.Current.Items["PortalSettings"];
         }
 
+        public static ModuleInfo GetModuleInfo(int tabid, int moduleid)
+        {
+            return ModuleController.Instance.GetModule(moduleid,tabid,false);
+        }
+
+        public static int GetModuleTabId(Guid uniqueId)
+        {
+            var mod = ModuleController.Instance.GetModuleByUniqueID(uniqueId);
+            if (mod != null) return mod.TabID;
+            return -1;
+        }
+        public static TabInfo GetTabInfo(int portalid, int tabid, bool ignoreCache = false)
+        {
+            return TabController.Instance.GetTab(tabid, portalid, ignoreCache);
+        }
+        public static TabInfo GetTabInfo(int tabid, bool ignoreCache = false)
+        {
+            return TabController.Instance.GetTab(tabid, PortalSettings.Current.PortalId, ignoreCache);
+        }        
         public static Dictionary<int, string> GetTreeTabList()
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);

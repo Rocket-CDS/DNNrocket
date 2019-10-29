@@ -38,6 +38,11 @@ namespace RocketMod.Componants
             foreach (var i in l)
             {
                 var m = new ModuleParams(i.ModuleId, i.SystemId, _useCache, _tableName);
+                var tabInfo = DNNrocketUtils.GetTabInfo(m.TabId);
+                if (tabInfo != null)
+                {
+                    m.SetValue("tabname", tabInfo.TabName);
+                }
                 if (_sharedDataOnly)
                 {
                     if ((m.ShareData == "1" || m.ShareData == "2" || m.ShareData == "")) DataList.Add(m);
