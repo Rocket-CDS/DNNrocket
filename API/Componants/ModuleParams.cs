@@ -136,17 +136,16 @@ namespace DNNrocketAPI.Componants
         public int SystemId { get { return _systemid; } }
         public int TabId { get { return GetValueInt("TabId"); } set { SetValue("TabId", value.ToString()); } }
         public string ShareData { get { return GetValue("sharedata", ""); } set { SetValue("sharedata", value); } }
-        public int DataSourceModId { get { return GetValueInt("DataSourceModId"); } set { SetValue("DataSourceModId", value.ToString()); } }
         public string DataSourceModRef { get { return GetValue("DataSourceModRef"); } set { SetValue("DataSourceModRef", value.ToString()); } }
-        public int DataModuleId
+        public int DataSourceModId
         {
             get
             {
-                var dv = GetValueInt("DataModuleId");
+                var dv = GetValueInt("DataSourceModId");
                 if (dv == 0) dv = _moduleid;
                 return dv;
             }
-            set { SetValue("DataModuleId", value.ToString()); }
+            set { SetValue("DataSourceModId", value.ToString()); }
         }
         public bool DataSourceExternal { get; set; }
         public string ModuleRef { get { return GetValue("ModuleRef"); } set { SetValue("ModuleRef", value); } }

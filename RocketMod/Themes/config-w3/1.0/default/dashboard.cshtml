@@ -15,6 +15,7 @@
 @{
     var moduleParams = (ModuleParams)Model.List.First();
     var configinfo = new SimplisityInfo(moduleParams.Record);
+    var dataModuleParams = new ModuleParams(moduleParams.DataSourceModId, moduleParams.SystemId);
 }
 
 
@@ -101,17 +102,20 @@
     @if (moduleParams.DataSourceExternal)
     {
 
-        <div class="w3-container w3-border w3-margin-top">
-            <div class="w3-col m4 w3-padding">
-                @ResourceKey("RocketMod.datasource"):&nbsp;<b>@HtmlOf(moduleParams.GetValue("tabname")) &nbsp;&gt;&nbsp; @HtmlOf(moduleParams.Name)</b>
-            </div>
-            <div class="w3-col m2 w3-padding">
-                ModuleId:&nbsp;<b>@(moduleParams.DataModuleId)</b>
-            </div>
-            <div class="w3-col m3 w3-padding">
-                @ResourceKey("RocketMod.ref"):&nbsp;<b>@moduleParams.DataSourceModRef</b>
-            </div>
-        </div>
+<div class="w3-container w3-border w3-margin-top">
+    <div class="w3-col m2 w3-padding">
+        @ResourceKey("RocketMod.datasource"):&nbsp;<b>@HtmlOf(dataModuleParams.Name)</b>
+    </div>
+    <div class="w3-col m2 w3-padding">
+        ModuleId:&nbsp;<b>@(moduleParams.DataSourceModId)</b>
+    </div>
+    <div class="w3-col m2 w3-padding">
+        @ResourceKey("RocketMod.apptheme"):&nbsp;<b>@dataModuleParams.AppThemeFolder</b>
+    </div>
+    <div class="w3-col m3 w3-padding">
+        @ResourceKey("RocketMod.ref"):&nbsp;<b>@moduleParams.DataSourceModRef</b>
+    </div>
+</div>
     }
 
 
