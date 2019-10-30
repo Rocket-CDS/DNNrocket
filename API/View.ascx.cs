@@ -55,6 +55,7 @@ namespace DNNrocketAPI
         private DNNrocketInterface _rocketInterface;
 
         private ModuleParams _moduleParams;
+        private ModuleParams _dataModuleParams;
         private SimplisityInfo _systemInfo;
 
 
@@ -80,6 +81,7 @@ namespace DNNrocketAPI
             _interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
             _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
             _moduleParams = new ModuleParams(ModuleId, _systemInfo.SystemId);
+            _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemInfo.SystemId);
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
             var systemInfoData = new SystemInfoData(_systemInfo);
             _debugmode = systemInfoData.DebugMode;

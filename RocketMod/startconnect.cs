@@ -393,7 +393,7 @@ namespace RocketMod
                     var selectitemid = info.GetXmlPropertyInt("genxml/hidden/itemid");
                     if (selectitemid > 0)
                     {
-                        var art = new ArticleData(selectitemid, _moduleid, _editLang);
+                        var art = new ArticleData(selectitemid, _dataModuleParams.ModuleId, _editLang);
                         art.SortOrder = lp;
                         art.Update();
                         lp += 1;
@@ -406,11 +406,11 @@ namespace RocketMod
         {
             if (_appThemeMod.AppTheme.DataType == 1)
             {
-                _articleData = new ArticleData(_moduleid, _editLang);
+                _articleData = new ArticleData(_dataModuleParams.ModuleId, _editLang);
             }
             else
             {
-                _articleData = new ArticleData(_selectedItemId, _moduleid, _editLang);
+                _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
             }
             _articleData.Delete();
         }
@@ -419,7 +419,7 @@ namespace RocketMod
         {
             try
             {
-                var articleData = new ArticleData(-1, _moduleid, _editLang);
+                var articleData = new ArticleData(-1, _dataModuleParams.ModuleId, _editLang);
                 _selectedItemId = articleData.ItemId;
                 var strOut = GetArticle();
 
@@ -464,7 +464,11 @@ namespace RocketMod
             {
                 AssignEditLang();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("edit.cshtml", _appthemeRelPath + "/SystemThemes/" + _systemInfoData.SystemKey, _dataModuleParams.AppThemeFolder, _editLang, _dataModuleParams.AppThemeVersion, _systemInfoData.DebugMode);
+                var razorTempl = _appThemeMod.GetTemplateRazor("edit");
+                if (_moduleParams.DataSourceExternal)
+                {
+                    razorTempl = _dataAppThemeMod.GetTemplateRazor("edit");
+                }
 
                 var strOut = "-- NO DATA -- Itemid: " + _selectedItemId;
 
@@ -845,11 +849,11 @@ namespace RocketMod
                     passSettings.Add("adminurl", adminurl);
                     var appTheme = new AppTheme(_systemInfoData.SystemKey, apptheme, _moduleParams.AppThemeVersion);
                     passSettings.Add("datatype", appTheme.DataType.ToString());
-                    var articleDataList = new ArticleDataList(_moduleid, DNNrocketUtils.GetCurrentCulture());
+                    var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
                     articleDataList.Populate(appTheme.DataType);
 
-                    passSettings.Add("DocumentFolderRel", _moduleParams.DocumentFolderRel);
-                    passSettings.Add("ImageFolderRel", _moduleParams.ImageFolderRel);                    
+                    passSettings.Add("DocumentFolderRel", _dataModuleParams.DocumentFolderRel);
+                    passSettings.Add("ImageFolderRel", _dataModuleParams.ImageFolderRel);                    
 
                     strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings, articleDataList.Header);
 
