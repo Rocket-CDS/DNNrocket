@@ -141,31 +141,21 @@ namespace RocketSettings
             }
         }
 
-        public string Get(string key)
+        public string Get(string xpath)
         {
-            if (_settingDict.ContainsKey(key)) return _settingDict[key];
-            return "";
+            return Info.GetXmlProperty(xpath);
         }
-        public bool GetBool(string key)
+        public bool GetBool(string xpath)
         {
-            if (_settingDict.ContainsKey(key)) return Convert.ToBoolean(_settingDict[key]);
-            return false;
+            return Info.GetXmlPropertyBool(xpath);
         }
-        public int GetInt(string key)
+        public int GetInt(string xpath)
         {
-            if (_settingDict.ContainsKey(key))
-            {
-                if (GeneralUtils.IsNumeric(_settingDict[key])) return Convert.ToInt32(_settingDict[key]);
-            }
-            return 0;
+            return Info.GetXmlPropertyInt(xpath);
         }
-        public double GetDouble(string key)
+        public double GetDouble(string xpath)
         {
-            if (_settingDict.ContainsKey(key))
-            {
-                if (GeneralUtils.IsNumeric(_settingDict[key])) return Convert.ToDouble(_settingDict[key]);
-            }
-            return 0;
+            return Info.GetXmlPropertyDouble(xpath);
         }
 
 
@@ -193,23 +183,6 @@ namespace RocketSettings
         private void GetSettingData(string guidKey, string cultureCode)
         {
             Info = _objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, _onlyRead, _tableName);
-            _settingDict = new Dictionary<string, string>();
-            var l = List;
-            foreach (var s in l)
-            {
-                var key = s.GetXmlProperty("genxml/textbox/name");
-                if (!_settingDict.ContainsKey(key) && key != "")
-                {
-                    if (s.GetXmlPropertyBool("genxml/checkbox/localized"))
-                    {
-                        _settingDict.Add(key, s.GetXmlProperty("genxml/lang/genxml/textbox/valuelang"));
-                    }
-                    else
-                    {
-                        _settingDict.Add(key, s.GetXmlProperty("genxml/textbox/value"));
-                    }
-                }
-            }
         }
         #endregion
 

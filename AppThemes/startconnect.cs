@@ -54,7 +54,7 @@ namespace DNNrocket.AppThemes
                 _selectedSystemKey = postInfo.GetXmlProperty("genxml/hidden/selectedsystemkey");
                 if (_selectedSystemKey == "")
                 {
-                    _selectedSystemKey = _userStorage.Record.Get("selectedsystemkey");
+                    _selectedSystemKey = _userStorage.Record.GetXmlProperty("genxml/hidden/selectedsystemkey");
                 }
                 else
                 {

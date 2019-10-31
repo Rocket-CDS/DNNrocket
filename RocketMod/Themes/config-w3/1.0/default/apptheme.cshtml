@@ -83,6 +83,11 @@
                                             @{
                                                 var disabledfilename = "";
                                                 var hideicon = "display:none;";
+                                                var moduletemplate = "";
+                                                if (templateInfo.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
+                                                {
+                                                    moduletemplate = "w3-pale-green";
+                                                }
                                             }
                                             @if (templateInfo.GetXmlProperty("genxml/hidden/filename") != "")
                                             {
@@ -92,7 +97,7 @@
 
                                             <div class="w3-col m8">
                                                 <div>
-                                                    @TextBox(templateInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + templateLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, templateLP)
+                                                    @TextBox(templateInfo, "genxml/hidden/filename", " " + disabledfilename + " class=' " + moduletemplate +  " w3-input w3-border filenametext' index='" + templateLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, templateLP)
                                                 </div>
                                             </div>
                                             <div class="w3-col w3-margin-left" style="width:62px;">
@@ -137,6 +142,11 @@
                                                 @{
                                                     var disabledfilename = "";
                                                     var hideicon = "display:none;";
+                                                    var moduletemplate = "";
+                                                    if (cssRecord.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
+                                                    {
+                                                        moduletemplate = "w3-pale-green";
+                                                    }
                                                 }
                                                 @if (cssInfo.GetXmlProperty("genxml/hidden/filename") != "")
                                                 {
@@ -146,7 +156,7 @@
 
                                                 <div class="w3-col m8">
                                                     <div>
-                                                        @TextBox(cssInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + cssLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, cssLP)
+                                                        @TextBox(cssInfo, "genxml/hidden/filename", " " + disabledfilename + " class='" + moduletemplate +  " w3-input w3-border filenametext' index='" + cssLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, cssLP)
                                                     </div>
                                                 </div>
                                                 <div class="w3-col w3-margin-left" style="width:62px;">
@@ -194,6 +204,11 @@
                                                 @{
                                                     var disabledfilename = "";
                                                     var hideicon = "display:none;";
+                                                    var moduletemplate = "";
+                                                    if (jsRecord.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
+                                                    {
+                                                        moduletemplate = "w3-pale-green";
+                                                    }
                                                 }
                                                 @if (jsInfo.GetXmlProperty("genxml/hidden/filename") != "")
                                                 {
@@ -203,7 +218,7 @@
 
                                                 <div class="w3-col m8">
                                                     <div>
-                                                        @TextBox(jsInfo, "genxml/hidden/filename", " " + disabledfilename + " class='w3-input w3-border filenametext' index='" + jsLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, jsLP)
+                                                        @TextBox(jsInfo, "genxml/hidden/filename", " " + disabledfilename + " class='" + moduletemplate +  " w3-input w3-border filenametext' index='" + jsLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, jsLP)
                                                     </div>
                                                 </div>
                                                 <div class="w3-col w3-margin-left" style="width:62px;">
@@ -237,6 +252,7 @@
     l.Add(appThemeMod.AppTheme);
     var m = new SimplisityRazor(l, Model.Settings);
     m.SetSetting("interfacekey", "rocketmodapptheme");
+    m.SetSetting("moduletemplate", "True");
     m.ModuleId = Model.ModuleId;
 
     var objCtrl = new DNNrocketController();

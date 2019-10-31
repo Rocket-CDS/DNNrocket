@@ -504,4 +504,7 @@
   <data name="more.Text" xml:space="preserve">
     <value>More</value>
   </data>
+  <data name="removemoduletemplate.Text" xml:space="preserve">
+    <value>Remove Module Level Template</value>
+  </data>
 </root>

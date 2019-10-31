@@ -326,65 +326,6 @@ namespace Simplisity
             return "";
         }
 
-        public string Get(string fieldname)
-        {
-            if (!string.IsNullOrEmpty(XMLData))
-            {
-                try
-                {
-                    var d = ToDictionary();
-                    if (d.ContainsKey(fieldname)) return d[fieldname];
-                    return "";
-                }
-                catch (Exception ex)
-                {
-                    var ms = ex.ToString();
-                    return "XML READ ERROR";
-                }
-            }
-            return "";
-        }
-        public void Set(string fieldname,string value)
-        {
-            if (!string.IsNullOrEmpty(XMLData))
-            {
-                SetXmlProperty("genxml/hidden/" + fieldname, value);
-            }
-        }
-        public bool GetBool(string fieldname)
-        {
-            try
-            {
-                return Convert.ToBoolean(Get(fieldname));
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public double GetDouble(string fieldname)
-        {
-            try
-            {
-                return Convert.ToDouble(Get(fieldname));
-            }
-            catch 
-            {
-                return 0;
-            }
-        }
-        public double GetInt(string fieldname)
-        {
-            try
-            {
-                return Convert.ToInt32(Get(fieldname));
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-
         public void SetXmlPropertyDouble(string xpath, Double value, int precision = 2)
         {
             SetXmlPropertyDouble(xpath, Math.Round(value, precision).ToString(""));

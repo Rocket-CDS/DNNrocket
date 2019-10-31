@@ -56,12 +56,12 @@ namespace DNNrocketAPI.Componants
 
         public void Set(string nodename,string value)
         {
-            Record.Set(nodename, value);
+            Record.SetXmlProperty("genxml/hidden/" + nodename, value);
             Save();
         }
         public string Get(string nodename)
         {
-            return Record.Get(nodename);
+            return Record.GetXmlProperty("genxml/hidden/" + nodename);
         }
 
 

@@ -100,15 +100,16 @@ namespace RocketMod
                     strOut = GetArticleEdit(true);
                     break;
                 case "edit_addimage":
-                    RocketModAddListItem("imagelist" + _paramInfo.Get("imgfieldname"));
+                    RocketModAddListItem("imagelist" + _paramInfo.GetXmlProperty("genxml/hidden/imgfieldname"));
                     strOut = GetArticleEdit();
                     break;
                 case "edit_adddocument":
-                    RocketModAddListItem("documentlist" + _paramInfo.Get("docfieldname"));
+                    RocketModAddListItem("documentlist" + _paramInfo.GetXmlProperty("genxml/hidden/docfieldname"));
                     strOut = GetArticleEdit();
                     break;
                 case "edit_addlink":
-                    RocketModAddListItem("linklist" + _paramInfo.Get("linkfieldname"));
+
+                    RocketModAddListItem("linklist" + _paramInfo.GetXmlProperty("genxml/hidden/linkfieldname"));
                     strOut = GetArticleEdit();
                     break;
 
