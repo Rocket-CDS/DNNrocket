@@ -178,7 +178,12 @@ namespace RocketSettings
 
         public List<SimplisityInfo> List
         {
-            get { return Info.GetList(_listName); }
+            get {
+                if (Info == null) return new List<SimplisityInfo>();
+                var l = Info.GetList(_listName);
+                if (l == null) return new List<SimplisityInfo>();
+                return l;
+            }
         }
 
         #endregion

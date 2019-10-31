@@ -40,8 +40,21 @@
 
             var fieldhtml = "";
             var xpathhtml = "";
+            var fieldList = new List<SimplisityRecord>();
 
-            var fieldList = info.GetRecordList("fielddata");
+            var moduleParams = new ModuleParams(Model.ModuleId, appTheme.SystemId);
+            if (moduleParams.DataSourceModId != Model.ModuleId)
+            {
+                // get the field form the data source AppTheme
+                var dataModuleParams = new ModuleParams(moduleParams.DataSourceModId, appTheme.SystemId);
+                var dataAppTheme = new AppTheme(appTheme.SystemKey, dataModuleParams.AppThemeFolder, dataModuleParams.AppThemeVersion, true);
+                fieldList = dataAppTheme.Record.GetRecordList("fielddata");
+            }
+            else
+            {
+                fieldList = info.GetRecordList("fielddata");
+            }
+
 
             if (Model.GetSetting("interfacekey") == "rocketmodapptheme" && Model.ModuleId > 0)
             {

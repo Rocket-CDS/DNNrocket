@@ -40,11 +40,13 @@ namespace DNNrocketAPI.Componants
             _debugMode = debugMode;
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
             SystemKey = systemKey;
-
+            var systemInfodata = new SystemInfoData(systemKey);
+            SystemId = systemInfodata.SystemId;
             _templateFileName = new List<string>();
             _cssFileName = new List<string>();
             _jsFileName = new List<string>();
             _resxFileName = new List<string>();
+
 
 
             AppSummary = "";
@@ -1651,7 +1653,7 @@ namespace DNNrocketAPI.Componants
 
         public int DataType { get { return Record.GetXmlPropertyInt("genxml/radio/themetype"); } }
         public bool EnableSettings { get { return Record.GetXmlPropertyBool("genxml/checkbox/enablesettings"); } }
-        
+        public int SystemId { get; set; }
         public string SystemKey { get; set; }
         public Dictionary<string, SimplisityRecord> SnippetText { get; set; }
         public Dictionary<string, SimplisityRecord> RazorTokenText { get; set; }

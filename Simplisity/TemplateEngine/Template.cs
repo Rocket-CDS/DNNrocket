@@ -67,6 +67,7 @@ namespace Simplisity.TemplateEngine
 
                     if (String.IsNullOrEmpty(TemplateDataStr) && File.Exists(_templatePath))
                     {
+                        TemplateDataStr = ""; // so we don;t throw error.
                         string inputLine;
                         var inputStream = new FileStream(_templatePath, FileMode.Open, FileAccess.Read);
                         var streamReader = new StreamReader(inputStream);
