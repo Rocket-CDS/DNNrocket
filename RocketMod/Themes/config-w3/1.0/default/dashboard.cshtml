@@ -54,85 +54,97 @@
 <div id="configdata" class="w3-container simplisity_panel">
 
     <div class="w3-row">
-        <div class="w3-col m2 w3-margin " style="width:120px;height:120px;">
+        <div class="w3-col m2 w3-margin-top " style="width:120px;height:120px;">
             <img src="@ThumbnailImageUrl(moduleParams.AppThemeLogo,120,120)" class="w3-circle" />
         </div>
         <div class="w3-col m9">
-            <div class="w3-container">
-                <div class="w3-col m8 w3-padding">
-                    <label>@ResourceKey("RocketMod.name")</label>
-                    @TextBox(configinfo, "genxml/hidden/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+            <div class="w3-row">
+                <div class="w3-col m12">
+                    <div class="w3-col m8 w3-padding">
+                        <label>@ResourceKey("RocketMod.name")</label>
+                        @TextBox(configinfo, "genxml/hidden/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+                    </div>
+                    <div class="w3-col m2 w3-padding">
+                        <label>@ResourceKey("RocketMod.version")</label>
+                        @FolderSelectList(configinfo, "genxml/hidden/appthemeversion", moduleParams.AppThemeFolderMapPath, "class='w3-input w3-border'", false, false)
+                    </div>
+                    <div class="w3-col m2 w3-padding">
+                        <label>@ResourceKey("RocketMod.disablecache")</label><br />
+                        @CheckBox(configinfo, "genxml/hidden/disbalecache", "", "class='w3-check'", false)
+                    </div>
                 </div>
-                <div class="w3-col m2 w3-padding">
-                    <label>@ResourceKey("RocketMod.version")</label>
-                    @FolderSelectList(configinfo, "genxml/hidden/appthemeversion", moduleParams.AppThemeFolderMapPath, "class='w3-input w3-border'", false, false)
+                <div class="w3-col m12 w3-padding">
+                    <div class="w3-col m4 w3-padding">
+                        <label>@ResourceKey("RocketMod.imagefolder")</label>
+                        @TextBox(configinfo, "genxml/hidden/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
+                    </div>
+                    <div class="w3-col m4 w3-padding">
+                        <label>@ResourceKey("RocketMod.documentfolder")</label>
+                        @TextBox(configinfo, "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
+                    </div>
+                    <div class="w3-col m4 w3-padding">
+                        @if (!moduleParams.DataSourceExternal)
+                        {
+                            <label>@ResourceKey("RocketMod.sharedata")</label><br />
+                            @RadioButtonList(configinfo, "genxml/hidden/sharedata", "0,1,2", ResourceKey("RocketMod.sharedataoptions").ToString(), " class='sharedataaction' ", "1", "")
+                        }
+                    </div>
                 </div>
-                <div class="w3-col m2 w3-padding">
-                    <label>@ResourceKey("RocketMod.disablecache")</label><br />
-                    @CheckBox(configinfo, "genxml/hidden/disbalecache", "", "class='w3-check'", false)
-                </div>
-            </div>
-
-            <div class="w3-container">
-                <div class="w3-col m4 w3-padding">
-                    <label>@ResourceKey("RocketMod.imagefolder")</label>
-                    @TextBox(configinfo, "genxml/hidden/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
-                </div>
-                <div class="w3-col m4 w3-padding">
-                    <label>@ResourceKey("RocketMod.documentfolder")</label>
-                    @TextBox(configinfo, "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
-                </div>
-                <div class="w3-col m4 w3-padding">
-                    @if (!moduleParams.DataSourceExternal)
-                    {
-                        <label>@ResourceKey("RocketMod.sharedata")</label><br />
-                        @RadioButtonList(configinfo, "genxml/hidden/sharedata", "0,1,2", ResourceKey("RocketMod.sharedataoptions").ToString(), " class='sharedataaction' ", "1", "")
-                    }
-                </div>
-            </div>
-            <div class="w3-container">
             </div>
         </div>
     </div>
-    <div class="w3-container">
-        <label>@ResourceKey("RocketMod.notes")</label>
-        @TextArea(configinfo, "genxml/hidden/appthemenotes", "class='w3-input w3-border' rows=5 ", "", false)
+
+    <div class="w3-row">
+        <div class="w3-col m8">
+            <label>@ResourceKey("RocketMod.notes")</label>
+            @TextArea(configinfo, "genxml/hidden/appthemenotes", "class='w3-input w3-border ' rows=5 ", "", false)
+        </div>
+        <div class="w3-col m4">
+            @if (moduleParams.DataSourceExternal)
+            {
+                <div class="w3-col m3 w3-padding w3-margin" style="width:80px;height:80px;">
+                    <br />
+                    <img src="@ThumbnailImageUrl(dataModuleParams.AppThemeLogo,80,80)" class="w3-circle" />
+                </div>
+                <div class="w3-col m8 w3-margin w3-padding">
+                    <table class="">
+                        <tr>
+                            <td>@ResourceKey("RocketMod.datasource"):</td>
+                            <td><b>@HtmlOf(dataModuleParams.Name)</b></td>
+                        </tr>
+                        <tr>
+                            <td>@ResourceKey("RocketMod.ref"):</td>
+                            <td><b>@moduleParams.DataSourceModRef</b></td>
+                        </tr>
+                        <tr>
+                            <td>ModuleId:</td>
+                            <td><b>@(moduleParams.DataSourceModId)</b></td>
+                        </tr>
+                        <tr>
+                            <td>AppTheme:</td>
+                            <td><b>@dataModuleParams.AppThemeFolder</b></td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
     </div>
 
-    @if (moduleParams.DataSourceExternal)
-    {
 
-<div class="w3-container w3-border w3-margin-top">
-    <div class="w3-col m3 w3-padding">
-        @ResourceKey("RocketMod.datasource"):&nbsp;<b>@HtmlOf(dataModuleParams.Name)</b>
+    <div class="w3-container w3-border w3-margin-top">
+        <div class="w3-col m3 w3-padding">
+            ItemId:&nbsp;<b>@configinfo.ItemID</b>
+        </div>
+        <div class="w3-col m3 w3-padding">
+            @ResourceKey("RocketMod.apptheme"):&nbsp;<b>@moduleParams.AppThemeFolder</b>
+        </div>
+        <div class="w3-col m2 w3-padding">
+            ModuleId:&nbsp;<b>@configinfo.ModuleId</b>
+        </div>
+        <div class="w3-col m3 w3-padding">
+            @ResourceKey("RocketMod.ref"):&nbsp;<b>@moduleParams.ModuleRef</b>
+        </div>
     </div>
-    <div class="w3-col m3 w3-padding">
-        @ResourceKey("RocketMod.apptheme"):&nbsp;<b>@dataModuleParams.AppThemeFolder</b>
-    </div>
-    <div class="w3-col m2 w3-padding">
-        ModuleId:&nbsp;<b>@(moduleParams.DataSourceModId)</b>
-    </div>
-    <div class="w3-col m3 w3-padding">
-        @ResourceKey("RocketMod.ref"):&nbsp;<b>@moduleParams.DataSourceModRef</b>
-    </div>
-</div>
-    }
-
-
-<div class="w3-container w3-border w3-margin-top">
-    <div class="w3-col m3 w3-padding">
-        ItemId:&nbsp;<b>@configinfo.ItemID</b>
-    </div>
-    <div class="w3-col m3 w3-padding">
-        @ResourceKey("RocketMod.apptheme"):&nbsp;<b>@moduleParams.AppThemeFolder</b>
-    </div>
-    <div class="w3-col m2 w3-padding">
-        ModuleId:&nbsp;<b>@configinfo.ModuleId</b>
-    </div>
-    <div class="w3-col m3 w3-padding">
-        @ResourceKey("RocketMod.ref"):&nbsp;<b>@moduleParams.ModuleRef</b>
-    </div>
-</div>
 
 
 </div>

@@ -148,7 +148,7 @@
     <value>DashBoard</value>
   </data>
   <data name="datasource.Text" xml:space="preserve">
-    <value>Data Source</value>
+    <value>DataSource</value>
   </data>
   <data name="disablecache.Text" xml:space="preserve">
     <value>Disable Cache</value>
