@@ -51,6 +51,8 @@ namespace RocketMod.Componants
             ModuleTemplateListJS = AppTheme.GetTemplateDictionaryJS();
             ModuleTemplateListCSS = AppTheme.GetTemplateDictionaryCSS();
 
+            var modellevelTemplates = new Dictionary<string, bool>();
+
             // get razor
             if (ModuleTemplateListRazor != null) // does not exist on selection of Module AppTheme.
             {
@@ -61,6 +63,7 @@ namespace RocketMod.Componants
                     var ftext = FileUtils.ReadFile(f);
                     if (ModuleTemplateListRazor.ContainsKey(fname)) ModuleTemplateListRazor.Remove(fname);
                     ModuleTemplateListRazor.Add(fname, ftext);
+                    modellevelTemplates.Add("razor_" + fname, true);
                 }
                 // get css
                 flist = Directory.GetFiles(ModuleTemplateFolderCSSMapPath, ModuleParams.ModuleRef + "_*.css");
@@ -70,6 +73,7 @@ namespace RocketMod.Componants
                     var ftext = FileUtils.ReadFile(f);
                     if (ModuleTemplateListCSS.ContainsKey(fname)) ModuleTemplateListCSS.Remove(fname);
                     ModuleTemplateListCSS.Add(fname, ftext);
+                    modellevelTemplates.Add("css_" + fname, true);
                 }
                 // get js
                 flist = Directory.GetFiles(ModuleTemplateFolderJSMapPath, ModuleParams.ModuleRef + "_*.js");
@@ -79,6 +83,7 @@ namespace RocketMod.Componants
                     var ftext = FileUtils.ReadFile(f);
                     if (ModuleTemplateListJS.ContainsKey(fname)) ModuleTemplateListJS.Remove(fname);
                     ModuleTemplateListJS.Add(fname, ftext);
+                    modellevelTemplates.Add("js_" + fname, true);
                 }
 
                 foreach (var d in ModuleTemplateListRazor)
@@ -88,6 +93,10 @@ namespace RocketMod.Componants
                     {
                         AppTheme.Record.RemoveRecordListItem("templatelist", "genxml/hidden/filename", Path.GetFileNameWithoutExtension(d.Key));
                         itemInfo.SetXmlProperty("genxml/hidden/editorcodehtmlmixed", GeneralUtils.EnCode(d.Value));
+                        if (modellevelTemplates.ContainsKey("razor_" + Path.GetFileNameWithoutExtension(d.Key)))
+                        {
+                            itemInfo.SetXmlProperty("genxml/hidden/moduletemplate", "True");
+                        }
                         AppTheme.Record.AddRecordListItem("templatelist", itemInfo);
                     }
                 }
@@ -98,6 +107,10 @@ namespace RocketMod.Componants
                     {
                         AppTheme.Record.RemoveRecordListItem("csslist", "genxml/hidden/filename", Path.GetFileNameWithoutExtension(d.Key));
                         itemInfo.SetXmlProperty("genxml/hidden/editorcodecss", GeneralUtils.EnCode(d.Value));
+                        if (modellevelTemplates.ContainsKey("css_" + Path.GetFileNameWithoutExtension(d.Key)))
+                        {
+                            itemInfo.SetXmlProperty("genxml/hidden/moduletemplate", "True");
+                        }
                         AppTheme.Record.AddRecordListItem("csslist", itemInfo);
                     }
                 }
@@ -108,6 +121,10 @@ namespace RocketMod.Componants
                     {
                         AppTheme.Record.RemoveRecordListItem("jslist", "genxml/hidden/filename", Path.GetFileNameWithoutExtension(d.Key));
                         itemInfo.SetXmlProperty("genxml/hidden/editorcodejavascript", GeneralUtils.EnCode(d.Value));
+                        if (modellevelTemplates.ContainsKey("js_" + Path.GetFileNameWithoutExtension(d.Key)))
+                        {
+                            itemInfo.SetXmlProperty("genxml/hidden/moduletemplate", "True");
+                        }
                         AppTheme.Record.AddRecordListItem("jslist", itemInfo);
                     }
                 }
