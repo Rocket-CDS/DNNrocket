@@ -150,6 +150,16 @@ namespace RocketMod.Componants
             }
             return template;
         }
+        public void RemoveModuleTemplate(string filename, string fileExtension)
+        {
+            var folder = ModuleTemplateFolderRazorMapPath;
+            if (fileExtension.Trim('.') == "css") folder = ModuleTemplateFolderCSSMapPath;
+            if (fileExtension.Trim('.') == "js") folder = ModuleTemplateFolderJSMapPath;
+
+            var templatefileMapPath = folder + "\\" + ModuleParams.ModuleRef + "_" + filename + "." + fileExtension.Trim('.');
+            File.Delete(templatefileMapPath);
+            LoadTemplates();
+        }
         public string GetTemplateCSS(string templatename)
         {
             var template = "";

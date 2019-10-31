@@ -169,7 +169,9 @@ namespace RocketMod
                 case "rocketmodapptheme_saveeditor":
                     strOut = SaveEditor();
                     break;
-
+                case "rocketmodapptheme_removemodtemplate":
+                    strOut = RemoveTemplate();
+                    break;                    
 
             }
 
@@ -798,6 +800,13 @@ namespace RocketMod
             return "OK";
         }
 
+        public static string RemoveTemplate()
+        {
+            var filename = _postInfo.GetXmlProperty("genxml/hidden/editorfilenamesave");
+            var editorfileext = _postInfo.GetXmlProperty("genxml/hidden/editorfileext");
+            _appThemeMod.RemoveModuleTemplate(filename, editorfileext);
+            return GetAppModTheme();
+        }
 
 
         public static String GetSelectApp()

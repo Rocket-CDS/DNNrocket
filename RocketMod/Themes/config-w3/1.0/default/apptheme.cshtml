@@ -73,43 +73,44 @@
                             @foreach (var templateRecord in templatedatalist)
                             {
                                 var templateInfo = new SimplisityInfo(templateRecord);
-                                <li class="templatelist w3-col m12 w3-display-container w3-padding w3-border-0">
-                                    @HiddenField(templateInfo, "genxml/hidden/editorcodehtmlmixed", "", "", false, templateLP)
-                                    @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default", false, templateLP)
-                                    @HiddenField(templateInfo, "genxml/hidden/filenamehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/filename"), false, templateLP)
-                                    <div class="w3-row w3-display-container w3-padding  w3-card">
+                            <li class="templatelist w3-col m12 w3-display-container w3-padding w3-border-0">
+                                @HiddenField(templateInfo, "genxml/hidden/editorcodehtmlmixed", "", "", false, templateLP)
+                                @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default", false, templateLP)
+                                @HiddenField(templateInfo, "genxml/hidden/filenamehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/filename"), false, templateLP)
+                                @HiddenField(templateInfo, "genxml/hidden/moduletemplatehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/moduletemplate"), false, templateLP)
+                                <div class="w3-row w3-display-container w3-padding  w3-card">
 
-                                        <div class="">
-                                            @{
-                                                var disabledfilename = "";
-                                                var hideicon = "display:none;";
-                                                var moduletemplate = "";
-                                                if (templateInfo.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
-                                                {
-                                                    moduletemplate = "w3-pale-green";
-                                                }
-                                            }
-                                            @if (templateInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                    <div class="">
+                                        @{
+                                            var disabledfilename = "";
+                                            var hideicon = "display:none;";
+                                            var moduletemplate = "";
+                                            if (templateInfo.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
                                             {
-                                                disabledfilename = "disabled";
-                                                hideicon = "";
+                                                moduletemplate = "w3-pale-green";
                                             }
+                                        }
+                                        @if (templateInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                        {
+                                            disabledfilename = "disabled";
+                                            hideicon = "";
+                                        }
 
-                                            <div class="w3-col m8">
-                                                <div>
-                                                    @TextBox(templateInfo, "genxml/hidden/filename", " " + disabledfilename + " class=' " + moduletemplate +  " w3-input w3-border filenametext' index='" + templateLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, templateLP)
-                                                </div>
-                                            </div>
-                                            <div class="w3-col w3-margin-left" style="width:62px;">
-                                                <div class="w3-button filenameicon@(templateLP)" onclick="edittemplate(@(templateLP));" style="@(hideicon)">
-                                                    <i class="fas fa-edit " style='font-size:24px'></i>
-                                                </div>
+                                        <div class="w3-col m8">
+                                            <div>
+                                                @TextBox(templateInfo, "genxml/hidden/filename", " " + disabledfilename + " class=' " + moduletemplate + " w3-input w3-border filenametext' index='" + templateLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, templateLP)
                                             </div>
                                         </div>
-
+                                        <div class="w3-col w3-margin-left" style="width:62px;">
+                                            <div class="w3-button filenameicon@(templateLP)" onclick="edittemplate(@(templateLP));" style="@(hideicon)">
+                                                <i class="fas fa-edit " style='font-size:24px'></i>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                </li>
+                                </div>
+
+                            </li>
 
                                 templateLP += 1;
                             }
@@ -132,43 +133,44 @@
                                 @foreach (var cssRecord in cssdatalist)
                                 {
                                     var cssInfo = new SimplisityInfo(cssRecord);
-                                    <li class="csslist w3-col m12 w3-display-container w3-padding w3-border-0">
-                                        @HiddenField(cssInfo, "genxml/hidden/editorcodecss", "", "", false, cssLP)
-                                        @HiddenField(cssInfo, "genxml/hidden/filefolder", "", "css", false, cssLP)
-                                        @HiddenField(cssInfo, "genxml/hidden/filenamecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/filename"), false, cssLP)
-                                        <div class="w3-row w3-display-container w3-padding  w3-card">
+                                <li class="csslist w3-col m12 w3-display-container w3-padding w3-border-0">
+                                    @HiddenField(cssInfo, "genxml/hidden/editorcodecss", "", "", false, cssLP)
+                                    @HiddenField(cssInfo, "genxml/hidden/filefolder", "", "css", false, cssLP)
+                                    @HiddenField(cssInfo, "genxml/hidden/filenamecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/filename"), false, cssLP)
+                                    @HiddenField(cssInfo, "genxml/hidden/moduletemplatecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/moduletemplate"), false, cssLP)
+                                    <div class="w3-row w3-display-container w3-padding  w3-card">
 
-                                            <div class="">
-                                                @{
-                                                    var disabledfilename = "";
-                                                    var hideicon = "display:none;";
-                                                    var moduletemplate = "";
-                                                    if (cssRecord.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
-                                                    {
-                                                        moduletemplate = "w3-pale-green";
-                                                    }
-                                                }
-                                                @if (cssInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                        <div class="">
+                                            @{
+                                                var disabledfilename = "";
+                                                var hideicon = "display:none;";
+                                                var moduletemplate = "";
+                                                if (cssRecord.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
                                                 {
-                                                    disabledfilename = "disabled";
-                                                    hideicon = "";
+                                                    moduletemplate = "w3-pale-green";
                                                 }
+                                            }
+                                            @if (cssInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                            {
+                                                disabledfilename = "disabled";
+                                                hideicon = "";
+                                            }
 
-                                                <div class="w3-col m8">
-                                                    <div>
-                                                        @TextBox(cssInfo, "genxml/hidden/filename", " " + disabledfilename + " class='" + moduletemplate +  " w3-input w3-border filenametext' index='" + cssLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, cssLP)
-                                                    </div>
-                                                </div>
-                                                <div class="w3-col w3-margin-left" style="width:62px;">
-                                                    <div class="w3-button filenameicon@(cssLP)" onclick="editcss(@(cssLP));" style="@(hideicon)">
-                                                        <i class="fas fa-edit " style='font-size:24px'></i>
-                                                    </div>
+                                            <div class="w3-col m8">
+                                                <div>
+                                                    @TextBox(cssInfo, "genxml/hidden/filename", " " + disabledfilename + " class='" + moduletemplate + " w3-input w3-border filenametext' index='" + cssLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, cssLP)
                                                 </div>
                                             </div>
-
+                                            <div class="w3-col w3-margin-left" style="width:62px;">
+                                                <div class="w3-button filenameicon@(cssLP)" onclick="editcss(@(cssLP));" style="@(hideicon)">
+                                                    <i class="fas fa-edit " style='font-size:24px'></i>
+                                                </div>
+                                            </div>
                                         </div>
 
-                                    </li>
+                                    </div>
+
+                                </li>
 
                                     cssLP += 1;
                                 }
@@ -193,44 +195,45 @@
                                 @foreach (var jsRecord in jsdatalist)
                                 {
                                     var jsInfo = new SimplisityInfo(jsRecord);
-                                    <li class="jslist w3-col m12 w3-display-container w3-padding w3-border-0">
-                                        @HiddenField(jsInfo, "genxml/hidden/editorcodejavascript", "", "", false, jsLP)
-                                        @HiddenField(jsInfo, "genxml/hidden/filefolder", "", "js", false, jsLP)
-                                        @HiddenField(jsInfo, "genxml/hidden/filenamejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/filename"), false, jsLP)
+                                <li class="jslist w3-col m12 w3-display-container w3-padding w3-border-0">
+                                    @HiddenField(jsInfo, "genxml/hidden/editorcodejavascript", "", "", false, jsLP)
+                                    @HiddenField(jsInfo, "genxml/hidden/filefolder", "", "js", false, jsLP)
+                                    @HiddenField(jsInfo, "genxml/hidden/filenamejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/filename"), false, jsLP)
+                                    @HiddenField(jsInfo, "genxml/hidden/moduletemplatejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/moduletemplate"), false, jsLP)
 
-                                        <div class="w3-row w3-display-container w3-padding  w3-card">
+                                    <div class="w3-row w3-display-container w3-padding  w3-card">
 
-                                            <div class="">
-                                                @{
-                                                    var disabledfilename = "";
-                                                    var hideicon = "display:none;";
-                                                    var moduletemplate = "";
-                                                    if (jsRecord.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
-                                                    {
-                                                        moduletemplate = "w3-pale-green";
-                                                    }
-                                                }
-                                                @if (jsInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                        <div class="">
+                                            @{
+                                                var disabledfilename = "";
+                                                var hideicon = "display:none;";
+                                                var moduletemplate = "";
+                                                if (jsRecord.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
                                                 {
-                                                    disabledfilename = "disabled";
-                                                    hideicon = "";
+                                                    moduletemplate = "w3-pale-green";
                                                 }
+                                            }
+                                            @if (jsInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                            {
+                                                disabledfilename = "disabled";
+                                                hideicon = "";
+                                            }
 
-                                                <div class="w3-col m8">
-                                                    <div>
-                                                        @TextBox(jsInfo, "genxml/hidden/filename", " " + disabledfilename + " class='" + moduletemplate +  " w3-input w3-border filenametext' index='" + jsLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, jsLP)
-                                                    </div>
-                                                </div>
-                                                <div class="w3-col w3-margin-left" style="width:62px;">
-                                                    <div class="w3-button filenameicon@(jsLP)" onclick="editjs(@(jsLP));" style="@(hideicon)">
-                                                        <i class="fas fa-edit " style='font-size:24px'></i>
-                                                    </div>
+                                            <div class="w3-col m8">
+                                                <div>
+                                                    @TextBox(jsInfo, "genxml/hidden/filename", " " + disabledfilename + " class='" + moduletemplate + " w3-input w3-border filenametext' index='" + jsLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, jsLP)
                                                 </div>
                                             </div>
-
+                                            <div class="w3-col w3-margin-left" style="width:62px;">
+                                                <div class="w3-button filenameicon@(jsLP)" onclick="editjs(@(jsLP));" style="@(hideicon)">
+                                                    <i class="fas fa-edit " style='font-size:24px'></i>
+                                                </div>
+                                            </div>
                                         </div>
 
-                                    </li>
+                                    </div>
+
+                                </li>
 
                                     jsLP += 1;
                                 }
@@ -252,7 +255,7 @@
     l.Add(appThemeMod.AppTheme);
     var m = new SimplisityRazor(l, Model.Settings);
     m.SetSetting("interfacekey", "rocketmodapptheme");
-    m.SetSetting("moduletemplate", "True");
+    m.SetSetting("moduletemplatebutton", "True");
     m.ModuleId = Model.ModuleId;
 
     var objCtrl = new DNNrocketController();
@@ -381,6 +384,9 @@
         var idx = $('#editorwrapper').attr("index");
         $('#editorcode' + modetype + '_' + idx).val(simplisity_encode(myCodeMirror.getValue()));
         $('#editorcodesave').val(simplisity_encode(myCodeMirror.getValue()));
+
+        $('.moduletemplatebutton').show();
+        $('#reloadaftersave').val('True');
     }
 
     function saveeditorcall() {
@@ -421,6 +427,13 @@
 
         $('#editorfilename').text($('#filename' + modetype + '_' + idx).val());
 
+        if ($('#moduletemplate' + modetype + '_' + idx).val() === 'True') {
+            $('.moduletemplatebutton').show();
+        }
+        else {
+            $('.moduletemplatebutton').hide();
+        }
+
         if ($('#razoreditor').attr('modetype') === 'htmlmixed') {
             $('.editorviewmenu').show();
         } else {
@@ -432,8 +445,12 @@
     }
 
     function cancelleditor() {
-        $('#editorpopup').hide();
-        $('#detailsection').show();
+        if ($('#reloadaftersave').val() === 'True') {
+            location.reload(); 
+        } else {
+            $('#editorpopup').hide();
+            $('#detailsection').show();
+        }
     }
     function cancelresx() {
         $('#dnnrocket_resxeditwrapper').hide();
