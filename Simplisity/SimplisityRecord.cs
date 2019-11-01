@@ -457,8 +457,13 @@ namespace Simplisity
 
         }
 
-
-        public Dictionary<String, String> ToDictionary(String xpathroot = "")
+        /// <summary>
+        /// Get Dictionary of all values on XML. 
+        /// Excludes Lists. 
+        /// The nodes on the 3rd level will be returned "genxml/mynode/*"
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, string> ToDictionary()
         {
             var rtnDictionary = new Dictionary<string, string>();
             if (XMLDoc != null)
@@ -468,7 +473,10 @@ namespace Simplisity
                 {
                     foreach (XmlNode nod in nods)
                     {
-                        rtnDictionary = AddToDictionary(rtnDictionary, xpathroot + "genxml/" + nod.Name + "/*");
+                        if (nod.Attributes["list"] == null)
+                        {
+                            rtnDictionary = AddToDictionary(rtnDictionary, "genxml/" + nod.Name + "/*");
+                        }
                     }
                 }
             }
@@ -478,7 +486,6 @@ namespace Simplisity
             if (!rtnDictionary.ContainsKey("systemid")) rtnDictionary.Add("systemid", SystemId.ToString(""));
             return rtnDictionary;
         }
-
 
 
         public object Clone()
@@ -588,25 +595,28 @@ namespace Simplisity
                 {
                     foreach (XmlNode nod in nods)
                     {
-                        if (inpDictionary.ContainsKey(nod.Name))
+                        if (nod.Name != "")
                         {
-                            inpDictionary[nod.Name] = nod.InnerText; // overwrite same name node
-                        }
-                        else
-                        {
-                            inpDictionary.Add(nod.Name, nod.InnerText);
-                        }
-                        if (nod.Attributes != null && nod.Attributes["selectedtext"] != null)
-                        {
-                            var textname = nod.Name + "text";
-                            if (inpDictionary.ContainsKey(textname))
+                            if (inpDictionary.ContainsKey(nod.Name))
                             {
-                                inpDictionary[textname] = nod.Attributes["selectedtext"].Value;
-                                // overwrite same name node
+                                inpDictionary[nod.Name] = nod.InnerText; // overwrite same name node
                             }
                             else
                             {
-                                inpDictionary.Add(textname, nod.Attributes["selectedtext"].Value);
+                                inpDictionary.Add(nod.Name, nod.InnerText);
+                            }
+                            if (nod.Attributes != null && nod.Attributes["selectedtext"] != null)
+                            {
+                                var textname = nod.Name + "text";
+                                if (inpDictionary.ContainsKey(textname))
+                                {
+                                    inpDictionary[textname] = nod.Attributes["selectedtext"].Value;
+                                    // overwrite same name node
+                                }
+                                else
+                                {
+                                    inpDictionary.Add(textname, nod.Attributes["selectedtext"].Value);
+                                }
                             }
                         }
                     }

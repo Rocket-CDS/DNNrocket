@@ -233,6 +233,28 @@ namespace Simplisity
             }
         }
 
+        /// <summary>
+        /// Get Dictionary of all values on XML. 
+        /// For both Neutral and Language data.  
+        /// Excludes Lists.  
+        /// The nodes on the 3rd level will be returned "genxml/mynode/*"
+        /// </summary>
+        /// <returns></returns>
+        public new Dictionary<string, string> ToDictionary()
+        {
+            var temp = new SimplisityInfo();
+            temp.XMLData = XMLData;
+            var tempRec = new SimplisityRecord(temp);
+            var rtnDictionary = tempRec.ToDictionary();
+            var langRecord = GetLangRecord();
+            foreach (var d in langRecord.ToDictionary())
+            {
+                if (!rtnDictionary.ContainsKey(d.Key)) rtnDictionary.Add(d.Key, d.Value);
+            }
+            return rtnDictionary;
+        }
+
+
         #endregion 
 
     }

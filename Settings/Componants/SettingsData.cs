@@ -160,6 +160,26 @@ namespace RocketSettings
         {
             return Info.GetXmlPropertyDouble(xpath);
         }
+        
+        public Dictionary<string,string> ToDictionary()
+        {
+            var rtnDict = new Dictionary<string, string>();
+            foreach (var s in List)
+            {
+                var v = s.GetXmlProperty("genxml/textbox/value");
+                if (v == "") v = s.GetXmlProperty("genxml/lang/genxml/textbox/valuelang");
+                var k = s.GetXmlProperty("genxml/textbox/name");
+                if (!rtnDict.ContainsKey(k)) rtnDict.Add(k, v);
+            }
+
+            // add non-list values.
+            var l = Info.ToDictionary();
+            foreach (var s in l)
+            {
+                if (!rtnDict.ContainsKey(s.Key)) rtnDict.Add(s.Key, s.Value);
+            }
+            return rtnDict;
+        }
 
 
         #region "properties"
