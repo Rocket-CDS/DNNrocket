@@ -1,121 +1,193 @@
 <genxml>
   <hidden>
-    <theme>config-w3</theme>
-    <template>Admin_SystemDetail.cshtml</template>
-    <activevalue />
-    <pagesize>20</pagesize>
-    <page>1</page>
-    <selecteditemid>1</selecteditemid>
-    <editlanguage />
-    <index>0</index>
-    <systemprovider>systemapi</systemprovider>
-    <uilang1>en-US</uilang1>
+    <index>99</index>
   </hidden>
   <textbox>
-    <ctrlkey>dnnrocket</ctrlkey>
-    <systemname>DNN Rocket</systemname>
-    <adminurl>/desktopmodules/dnnrocket/admin.html</adminurl>
-    <apiurl>/desktopmodules/dnnrocket/api/api.ashx</apiurl>
+    <ctrlkey>dnnrocketmodule</ctrlkey>
+    <systemname>DNN Rocket Mod</systemname>
+    <adminurl>/DesktopModules/DNNrocket/RocketMod/admin.html?moduleid=[moduleid]&amp;tabid=[tabid]</adminurl>
+    <apiurl>/DesktopModules/DNNrocket/API/api.ashx</apiurl>
+    <defaultinterface>rocketmod</defaultinterface>
     <licensekey />
-    <encryptkey>dfvgdfvdfvdfvdf</encryptkey>
+    <encryptkey>12365498765454654222222222</encryptkey>
+    <systemrelpath>/DesktopModules/DNNrocket/RocketMod/</systemrelpath>
   </textbox>
   <checkbox>
-    <debugmode>false</debugmode>
+    <debugmode>true</debugmode>
   </checkbox>
   <interfacedata list="true">
     <genxml>
       <textbox>
-        <interfacekey>settingcountry</interfacekey>
-        <entitytypecode>COUNTRY</entitytypecode>
-        <interfaceicon>fa fa-globe</interfaceicon>
+        <interfacekey>rocketmod</interfacekey>
+        <entitytypecode>ROCKETMOD</entitytypecode>
+        <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
-        <defaulttemplate>CountrySettings.cshtml</defaulttemplate>
-        <defaultcommand>settingcountry_get</defaultcommand>
-        <namespaceclass>DNNrocket.Country.StartConnect</namespaceclass>
-        <assembly>DNNrocketCountry</assembly>
-        <relpath />
+        <themeversion>1.0</themeversion>
+        <defaulttemplate>view.cshtml</defaulttemplate>
+        <defaultcommand>rocketmod_getdata</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
+        <cmdfields />
       </textbox>
       <dropdownlist>
-        <group>settings</group>
+        <group />
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="api" />
+          <chk value="false" data="1" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
-          <chk value="false" data="Manager" />
-          <chk value="false" data="Editor" />
-          <chk value="false" data="ClientEditor" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
         </securityroles>
       </checkboxlist>
       <checkbox>
         <active>true</active>
-        <cache>true</cache>
+        <cache>false</cache>
+        <onmenu>false</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>dashboard</interfacekey>
+        <entitytypecode>ROCKETMOD</entitytypecode>
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <themeversion>1.0</themeversion>
+        <defaulttemplate>dashboard.cshtml</defaulttemplate>
+        <defaultcommand>dashboard_get</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
+        <cmdfields>moduleid:[moduleid]</cmdfields>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
     <genxml>
       <textbox>
-        <interfacekey>testform</interfacekey>
-        <entitytypecode>TESTFORM</entitytypecode>
-        <interfaceicon>fa fa-hand-peace-o </interfaceicon>
+        <interfacekey>edit</interfacekey>
+        <entitytypecode>ROCKETMOD</entitytypecode>
+        <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
-        <defaulttemplate>testform.cshtml</defaulttemplate>
-        <defaultcommand>testform_get</defaultcommand>
-        <namespaceclass>DNNrocket.TestForm.StartConnect</namespaceclass>
-        <assembly>DNNrocketTestForm</assembly>
-        <relpath>/DesktopModules/DNNrocket/TestForm/</relpath>
+        <themeversion>1.0</themeversion>
+        <defaulttemplate>editlist.cshtml</defaulttemplate>
+        <defaultcommand>edit_editarticlelist</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
+        <cmdfields />
       </textbox>
       <dropdownlist>
-        <group>Tests</group>
+        <group />
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="api" />
+          <chk value="false" data="1" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
           <chk value="true" data="Manager" />
-          <chk value="false" data="Editor" />
-          <chk value="false" data="ClientEditor" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
         </securityroles>
       </checkboxlist>
       <checkbox>
         <active>true</active>
-        <cache>true</cache>
+        <cache>false</cache>
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
     <genxml>
       <textbox>
-        <interfacekey>testlist</interfacekey>
-        <entitytypecode>TESTLIST</entitytypecode>
-        <interfaceicon>fa fa-hand-spock-o</interfaceicon>
+        <interfacekey>rocketmodfields</interfacekey>
+        <entitytypecode>ROCKETMODFIELDS</entitytypecode>
+        <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
-        <defaulttemplate>testlist.cshtml</defaulttemplate>
-        <defaultcommand>testlist_getlist</defaultcommand>
-        <namespaceclass>DNNrocket.TestList.StartConnect</namespaceclass>
-        <assembly>DNNrocketTestList</assembly>
-        <relpath>/DesktopModules/DNNrocket/TestList/</relpath>
+        <themeversion>1.0</themeversion>
+        <defaulttemplate>fieldeditor.cshtml</defaulttemplate>
+        <defaultcommand>rocketmodfields_edit</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
+        <cmdfields />
       </textbox>
       <dropdownlist>
-        <group>Tests</group>
+        <group />
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="api" />
+          <chk value="false" data="1" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
           <chk value="true" data="Manager" />
-          <chk value="false" data="Editor" />
-          <chk value="false" data="ClientEditor" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
         </securityroles>
       </checkboxlist>
       <checkbox>
         <active>true</active>
-        <cache>true</cache>
+        <cache>false</cache>
+        <onmenu>true</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>rocketmodsettings</interfacekey>
+        <entitytypecode>ROCKETMODSETTINGS</entitytypecode>
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <themeversion>1.0</themeversion>
+        <defaulttemplate>settings.cshtml</defaulttemplate>
+        <defaultcommand>rocketmodsettings_edit</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
+        <cmdfields />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
@@ -125,18 +197,21 @@
         <entitytypecode>IMG</entitytypecode>
         <interfaceicon />
         <defaulttheme />
+        <themeversion>1.0</themeversion>
         <defaulttemplate />
         <defaultcommand />
         <namespaceclass>DNNrocket.Images.StartConnect</namespaceclass>
         <assembly>DNNrocketImages</assembly>
+        <databasetable />
         <relpath>/DesktopModules/DNNrocket/Images/</relpath>
+        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="api" />
+          <chk value="false" data="1" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
@@ -157,18 +232,91 @@
         <entitytypecode>DOC</entitytypecode>
         <interfaceicon />
         <defaulttheme />
+        <themeversion>1.0</themeversion>
         <defaulttemplate />
         <defaultcommand />
         <namespaceclass>DNNrocket.Documents.StartConnect</namespaceclass>
         <assembly>DNNrocketDocuments</assembly>
+        <databasetable />
         <relpath>/DesktopModules/DNNrocket/Documents/</relpath>
+        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="api" />
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
+        <onmenu>false</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>rocketmodapptheme</interfacekey>
+        <entitytypecode />
+        <interfaceicon />
+        <defaulttheme>config-w3</defaulttheme>
+        <themeversion>1.0</themeversion>
+        <defaulttemplate>apptheme.cshtml</defaulttemplate>
+        <defaultcommand>rocketmodapptheme_apptheme</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
+        <cmdfields />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="false" data="Manager" />
+          <chk value="false" data="Editor" />
+          <chk value="false" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
+        <onmenu>true</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>exportmodule</interfacekey>
+        <entitytypecode>ROCKETMOD</entitytypecode>
+        <interfaceicon />
+        <defaulttheme />
+        <themeversion />
+        <defaulttemplate />
+        <defaultcommand>exportmodule_export</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
+        <relpath>ketMod</relpath>
+        <cmdfields />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="1" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
@@ -184,50 +332,40 @@
       </checkbox>
     </genxml>
   </interfacedata>
-  <idxfielddata list="true">
+  <settingsdata list="true">
     <genxml>
       <textbox>
-        <indexref>input1</indexref>
-        <xpath>genxml/textbox/txtinput</xpath>
+        <name />
+        <value />
       </textbox>
-      <dropdownlist>
-        <entitytypecode>TESTLIST</entitytypecode>
-        <xreftypecode />
-      </dropdownlist>
     </genxml>
     <genxml>
       <textbox>
-        <indexref>inputlang1</indexref>
-        <xpath>genxml/lang/genxml/textbox/txtinputl</xpath>
+        <name />
+        <value />
       </textbox>
-      <dropdownlist>
-        <entitytypecode>TESTLIST</entitytypecode>
-        <xreftypecode />
-      </dropdownlist>
     </genxml>
-  </idxfielddata>
+  </settingsdata>
   <groupsdata list="true">
     <genxml>
       <textbox>
-        <groupref>settings</groupref>
-        <groupicon>fa fa-cog</groupicon>
+        <groupref>Admin</groupref>
+        <groupicon />
       </textbox>
     </genxml>
     <genxml>
       <textbox>
-        <groupref>Tests</groupref>
-        <groupicon>fa fa-cogs</groupicon>
+        <groupref>apptheme</groupref>
+        <groupicon />
+      </textbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <groupref>root</groupref>
+        <groupicon />
       </textbox>
     </genxml>
   </groupsdata>
-  <provtypesdata list="true">
-    <genxml>
-      <textbox>
-        <provtypes>api</provtypes>
-        <provname>API</provname>
-      </textbox>
-    </genxml>
-  </provtypesdata>
   <lang>
     <genxml>
       <interfacedata list="true">
@@ -236,19 +374,20 @@
         <genxml />
         <genxml />
         <genxml />
+        <genxml />
+        <genxml />
+        <genxml />
+        <genxml />
       </interfacedata>
-      <idxfielddata list="true">
+      <settingsdata list="true">
         <genxml />
         <genxml />
-      </idxfielddata>
+      </settingsdata>
       <groupsdata list="true">
         <genxml />
         <genxml />
-      </groupsdata>
-      <provtypesdata list="true">
         <genxml />
-      </provtypesdata>
+      </groupsdata>
     </genxml>
   </lang>
-  <systemprovider>systemapi</systemprovider>
 </genxml>

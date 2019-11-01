@@ -1093,9 +1093,18 @@ namespace DNNrocketAPI
             return rtn;
         }
 
+        [Obsolete("Please use TempDirectoryMapPath() instead.")]
         public static string TempDirectory()
         {
             return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketTemp";
+        }
+        public static string TempDirectoryMapPath()
+        {
+            return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketTemp";
+        }
+        public static string TempDirectoryRel()
+        {
+            return PortalSettings.Current.HomeDirectory.TrimEnd('/') + "/DNNrocketTemp";
         }
 
         public static string HomeDirectoryMapPath()
@@ -1106,12 +1115,12 @@ namespace DNNrocketAPI
         {
             return PortalSettings.Current.HomeDirectory;
         }
-        [Obsolete("Is deprecated, please use HomeDirectoryMapPath() instead.")]
+        [Obsolete("Please use HomeDirectoryMapPath() instead.")]
         public static string HomeDirectory()
         {
             return PortalSettings.Current.HomeDirectoryMapPath;
         }
-        [Obsolete("Is deprecated, please use HomeDirectoryRel() instead.")]
+        [Obsolete("Please use HomeDirectoryRel() instead.")]
         public static string HomeRelDirectory()
         {
             return PortalSettings.Current.HomeDirectory;

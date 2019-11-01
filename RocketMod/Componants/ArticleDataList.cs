@@ -4,6 +4,8 @@ using Simplisity;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -75,6 +77,40 @@ namespace RocketMod
             }
             return _articleList;
         }
+
+
+        public string Export()
+        {
+            // Export DB
+            var exportData = "<root>";
+            foreach (var s in DataList)
+            {
+                exportData += s.ToXmlItem();
+            }
+            exportData += "</root>";
+
+            var exportDirMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\export_" + _moduleid;
+            Directory.Delete(exportDirMapPath, true);
+            Directory.CreateDirectory(exportDirMapPath);
+
+            var exportFileMapPath = exportDirMapPath + "\\export.xml";
+            if (File.Exists(exportFileMapPath)) File.Delete(exportFileMapPath);
+            FileUtils.SaveFile(exportFileMapPath, exportData);
+
+            //TODO: Add files needed for export Images, docs, etc.
+
+
+            // Create zip
+            var exportZipMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\export_" + _moduleid + ".zip";
+            if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
+            ZipFile.CreateFromDirectory(exportDirMapPath, exportZipMapPath);
+
+            Directory.Delete(exportDirMapPath, true);
+
+            return exportZipMapPath;
+        }
+
+
 
         #region "HEADER"
 

@@ -171,7 +171,12 @@ namespace RocketMod
                     break;
                 case "rocketmodapptheme_removemodtemplate":
                     strOut = RemoveTemplate();
-                    break;                    
+                    break;
+
+                case "exportmodule_export":
+                    strOut = "<test>TEST</test>";
+                    break;
+
 
             }
 

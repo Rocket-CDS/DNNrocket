@@ -57,6 +57,7 @@ namespace DNNrocketAPI.Componants
                 }
             }
             DataSourceExternal = false;
+            if (_systemid <= 0) _systemid = _moduleParamsRec.SystemId; // to get export data when we don't know the systemid, so use the DB one.
             if (DataSourceModId != _moduleid) DataSourceExternal = true;
             if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueKey();
             if (DataSourceModId <= 0) DataSourceModId = _moduleid;
