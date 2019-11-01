@@ -480,10 +480,6 @@ namespace Simplisity
                     }
                 }
             }
-            if (!rtnDictionary.ContainsKey("moduleid")) rtnDictionary.Add("moduleid", ModuleId.ToString(""));
-            if (!rtnDictionary.ContainsKey("portalid")) rtnDictionary.Add("portalid", PortalId.ToString(""));
-            if (!rtnDictionary.ContainsKey("itemid")) rtnDictionary.Add("itemid", ItemID.ToString(""));
-            if (!rtnDictionary.ContainsKey("systemid")) rtnDictionary.Add("systemid", SystemId.ToString(""));
             return rtnDictionary;
         }
 
