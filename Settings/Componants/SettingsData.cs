@@ -95,18 +95,21 @@ namespace RocketSettings
             var cc = DNNrocketUtils.GetCultureCodeList();
             foreach (var l in cc)
             {
-                var dbRecord = _objCtrl.GetRecordLang(Info.ItemID, l, false, _tableName);
-                var nodcount = 0;
-                if (dbRecord != null)
+                if (Info.Lang != l)
                 {
-                    var nodList = dbRecord.XMLDoc.SelectNodes("genxml/*");
-                    nodcount = nodList.Count;
-                }
-                if (nodcount == 0)
-                {
-                    var newInfo = Info;                    
-                    newInfo.Lang = l;
-                    _objCtrl.SaveData(newInfo, Info.ItemID, _tableName);
+                    var dbRecord = _objCtrl.GetRecordLang(Info.ItemID, l, false, _tableName);
+                    var nodcount = 0;
+                    if (dbRecord != null)
+                    {
+                        var nodList = dbRecord.XMLDoc.SelectNodes("genxml/*");
+                        nodcount = nodList.Count;
+                    }
+                    if (nodcount == 0)
+                    {
+                        var newInfo = Info;
+                        newInfo.Lang = l;
+                        _objCtrl.SaveData(newInfo, Info.ItemID, _tableName);
+                    }
                 }
             }
         }

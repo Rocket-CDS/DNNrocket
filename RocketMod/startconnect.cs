@@ -862,6 +862,31 @@ namespace RocketMod
                     var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
                     articleDataList.Populate(appTheme.DataType);
 
+                    // get all module settings for the data module
+                    if (articleDataList.ModuleSettings != null)
+                    {
+                        foreach (var s in articleDataList.ModuleSettings.List)
+                        {
+                            var v = s.GetXmlProperty("genxml/hidden/value");
+                            if (v == "") v = s.GetXmlProperty("genxml/lang/genxml/hidden/value");
+                            var k = s.GetXmlProperty("genxml/hidden/name");
+                            if (!passSettings.ContainsKey(k)) passSettings.Add(k, v);
+                        }
+                    }
+                    // get all module settings for the curenty module
+                    var currentArticleDataList = new ArticleDataList(_moduleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
+                    if (currentArticleDataList.ModuleSettings != null)
+                    {
+                        foreach (var s in currentArticleDataList.ModuleSettings.List)
+                        {
+                            var v = s.GetXmlProperty("genxml/hidden/value");
+                            if (v == "") v = s.GetXmlProperty("genxml/lang/genxml/hidden/value");
+                            var k = s.GetXmlProperty("genxml/hidden/name");
+                            if (passSettings.ContainsKey(k)) passSettings.Remove(k);
+                            passSettings.Add(k, v);
+                        }
+                    }
+
                     passSettings.Add("DocumentFolderRel", _dataModuleParams.DocumentFolderRel);
                     passSettings.Add("ImageFolderRel", _dataModuleParams.ImageFolderRel);                    
 

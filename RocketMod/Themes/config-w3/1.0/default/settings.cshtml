@@ -12,7 +12,7 @@
 
 @{
     var settingsData = (SettingsData)Model.List.First();
-    var appThemeMod = new AppThemeMod(Model.ModuleId,"dnnrocketmodule", true);
+    var appThemeMod = new AppThemeMod(Model.ModuleId, "dnnrocketmodule", true);
 }
 
 <div class="w3-row w3-padding">
@@ -28,80 +28,80 @@
     }
     @RenderTemplate(razorTempl, m, true)
 
-    <div class="w3-container">
+</div>
 
-        <div class="w3-container w3-theme w3-padding">
-            <label>@ResourceKey("DNNrocket.settings")</label>
-        </div>
+<div class="w3-container">
 
-        <div class="w3-row w3-padding">
-            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodsettings_add" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}'><i class='fas fa-plus-circle'></i></div>
-            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="rocketmodsettingsbin" s-return="#rocketmodsettingsdata" s-removelist=".rocketmodsettings" style="display: none;"><i title="" class="fas fa-undo fa-fw fa-lg"></i></div>
-        </div>
+    <div class="w3-container w3-theme w3-padding">
+        <label>@ResourceKey("DNNrocket.settings")</label>
+    </div>
 
-        <div class="w3-row w3-margin">
+    <div class="w3-row w3-padding">
+        <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodsettings_add" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}'><i class='fas fa-plus-circle'></i></div>
+        <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="rocketmodsettingsbin" s-return="#rocketmodsettingsdata" s-removelist=".rocketmodsettings" style="display: none;"><i title="" class="fas fa-undo fa-fw fa-lg"></i></div>
+    </div>
 
-            @{
-                var lp3 = 0;
-            }
+    <div class="w3-row w3-margin">
 
-            <table id="rocketmodsettingsdata" class="w3-table-all">
+        @{
+            var lp3 = 0;
+        }
 
-                <tr class="w3-hide-small">
-                    <th class="w3-col m2">
-                        <label class="">@ResourceKey("system.ref")</label>
-                    </th>
-                    <th class="w3-col m5">
-                        <div style='' class=' notlocalizedfieldlabel'>
-                            @ResourceKey("system.value")
+        <table id="rocketmodsettingsdata" class="w3-table-all">
+
+            <tr class="w3-hide-small">
+                <th class="w3-col m2">
+                    <label class="">@ResourceKey("system.ref")</label>
+                </th>
+                <th class="w3-col m5">
+                    <div style='' class=' notlocalizedfieldlabel'>
+                        @ResourceKey("system.value")
+                    </div>
+                    <div style='display:none;' class=' localizedfieldlabel'>
+                        @ResourceKey("system.value")
+                    </div>
+                </th>
+                <th class="w3-col m1" style="width:60px;"></th>
+                <th class="w3-col m2">
+                    <label class="">@ResourceKey("DNNrocket.localized")</label>
+                </th>
+                <th style="width:20px;"></th>
+            </tr>
+
+            @foreach (var i in settingsData.List)
+            {
+                lp3 += 1;
+
+                <tr class="rocketmodsettings">
+                    <td class="w3-col m2">
+                        <!-- Required to sort items in list -->
+                        @SortableListIndex(i, lp3)
+
+                        @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border settingreftextbox' maxlength='250' autocomplete='off' ", "", false, lp3)
+                    </td>
+                    <td class="w3-col m5">
+                        <div style='display:none;' class=' notlocalizedfield@(lp3)'>
+                            @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' autocomplete='off' ", "", false, lp3)
                         </div>
-                        <div style='display:none;' class=' localizedfieldlabel'>
-                            @ResourceKey("system.value")
+                        <div style='display:none;' class=' localizedfield@(lp3)'>
+                            @TextBox(i, "genxml/lang/genxml/textbox/valuelang", "class='w3-input w3-border' maxlength='500' autocomplete='off' ", "", true, lp3)
                         </div>
-                    </th>
-                    <th class="w3-col m1" style="width:60px;"></th>
-                    <th class="w3-col m2">
-                        <label class="">@ResourceKey("DNNrocket.localized")</label>
-                    </th>
-                    <th style="width:20px;"></th>
+                    </td>
+                    <td class="w3-col m1" style="width:60px;">
+                        <div style='display:none;' class="localizedfieldflag@(lp3)">
+                            @EditFlag()
+                        </div>
+                    </td>
+                    <td class="w3-col m2">
+                        @CheckBox(i, "genxml/checkbox/localized", "", " class='localize' row='" + lp3 + "' ", false, false, lp3)
+                    </td>
+                    <td class="" style="width:20px;">
+                        <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".rocketmodsettings" s-recylebin="rocketmodsettingsbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
+                    </td>
                 </tr>
 
-                @foreach (var i in settingsData.List)
-                {
-                    lp3 += 1;
-
-                    <tr class="rocketmodsettings">
-                        <td class="w3-col m2">
-                            <!-- Required to sort items in list -->
-                            @SortableListIndex(i, lp3)
-
-                            @TextBox(i, "genxml/textbox/name", "class='w3-input w3-border settingreftextbox' maxlength='250' autocomplete='off' ", "", false, lp3)
-                        </td>
-                        <td class="w3-col m5">
-                            <div style='display:none;' class=' notlocalizedfield@(lp3)'>
-                                @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' autocomplete='off' ", "", false, lp3)
-                            </div>
-                            <div style='display:none;' class=' localizedfield@(lp3)'>
-                                @TextBox(i, "genxml/lang/genxml/textbox/valuelang", "class='w3-input w3-border' maxlength='500' autocomplete='off' ", "", true, lp3)
-                            </div>
-                        </td>
-                        <td class="w3-col m1" style="width:60px;">
-                            <div style='display:none;' class="localizedfieldflag@(lp3)">
-                                @EditFlag()
-                            </div>
-                        </td>
-                        <td class="w3-col m2">
-                            @CheckBox(i, "genxml/checkbox/localized", "", " class='localize' row='" + lp3 + "' ", false, false, lp3)
-                        </td>
-                        <td class="" style="width:20px;">
-                            <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".rocketmodsettings" s-recylebin="rocketmodsettingsbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
-                        </td>
-                    </tr>
-
-                }
-            </table>
-
-        </div>
+            }
+        </table>
 
     </div>
 
