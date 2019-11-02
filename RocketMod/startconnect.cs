@@ -174,7 +174,7 @@ namespace RocketMod
                     break;
 
                 case "exportmodule_export":
-                    strOut = "<test>TEST</test>";
+                    strOut = ExportData();
                     break;
 
 
@@ -960,6 +960,17 @@ namespace RocketMod
             var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
             if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
         }
+
+        private static void ExportData()
+        {
+            var xmlOut = "";
+
+            // export DATA
+
+
+            return xmlOut;
+        }
+
 
 
     }

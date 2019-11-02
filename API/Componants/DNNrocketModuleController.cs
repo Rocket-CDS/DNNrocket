@@ -47,21 +47,26 @@ namespace DNNrocketAPI.Componants
                 if (systemInfo != null)
                 {
                     var systemInfoData = new SystemInfoData(systemInfo);
-                    // use the interface "exportmodule" to link the RocketAPI.
-                    var rocketInterface = new DNNrocketInterface(systemInfo, "exportmodule");
-                    if (rocketInterface.Exists)
+                    foreach (var r in systemInfoData.InterfaceList)
                     {
-                        var paramInfo = new SimplisityInfo();
-                        paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
-                        var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
-                        if (returnDictionary.ContainsKey("outputhtml"))
+                        var rocketInterface = r.Value;
+                        if (rocketInterface.IsProvider("exportmodule"))
                         {
-                            xmlOut += returnDictionary["outputhtml"];
+                            if (rocketInterface.Exists)
+                            {
+                                var paramInfo = new SimplisityInfo();
+                                paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
+                                if (returnDictionary.ContainsKey("outputhtml"))
+                                {
+                                    xmlOut += returnDictionary["outputhtml"];
+                                }
+                            }
+                            else
+                            {
+                                xmlOut += "<error>No rocketInterface '" + rocketInterface.InterfaceKey + "'</error>";
+                            }
                         }
-                    }
-                    else
-                    {
-                        xmlOut += "<error>No rocketInterface 'exportmodule'</error>";
                     }
                 }
                 else
