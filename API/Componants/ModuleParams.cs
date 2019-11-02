@@ -57,7 +57,8 @@ namespace DNNrocketAPI.Componants
                 }
             }
             DataSourceExternal = false;
-            if (_systemKey == "") _systemKey = _moduleParamsRec.GetXmlProperty("genxml/systemkey"); // to get export data when we don't know the systemid, so use the DB one.
+            if (_systemKey == "") _systemKey = SystemKey; // to get export data when we don't know the systemid, so use the DB one.
+            SystemKey = _systemKey;
             if (DataSourceModId != _moduleid) DataSourceExternal = true;
             if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueKey();
             if (DataSourceModId <= 0) DataSourceModId = _moduleid;
@@ -134,7 +135,7 @@ namespace DNNrocketAPI.Componants
         public string Name { get { return GetValue("Name", ""); } set { SetValue("Name", value); } }
         public string ModuleType { get { return GetValue("ModuleType", ""); } set { SetValue("ModuleType", value); } }
         public int ModuleId { get {return _moduleid; } }
-        public string SystemKey { get { return _systemKey; } }
+        public string SystemKey { get { return GetValue("SystemKey", ""); } set { SetValue("SystemKey", value); } }
         public int TabId { get { return GetValueInt("TabId"); } set { SetValue("TabId", value.ToString()); } }
         public string ShareData { get { return GetValue("sharedata", ""); } set { SetValue("sharedata", value); } }
         public string DataSourceModRef { get { return GetValue("DataSourceModRef"); } set { SetValue("DataSourceModRef", value.ToString()); } }

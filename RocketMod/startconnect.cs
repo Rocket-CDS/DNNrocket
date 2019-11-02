@@ -333,6 +333,7 @@ namespace RocketMod
             _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disbalecache");
             _moduleParams.ShareData = _postInfo.GetXmlProperty("genxml/hidden/sharedata");
             _moduleParams.TabId = _tabid;
+            _moduleParams.SystemKey = _systemInfoData.SystemKey;            
 
             _moduleParams.Save();
             _passSettings.Add("saved", "true");
@@ -968,6 +969,14 @@ namespace RocketMod
             var xmlOut = "";
 
             // export DATA
+            if (_dataModuleParams.ModuleId != _moduleParams.ModuleId)
+            {
+                var articleDataList = new ArticleDataList(_moduleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
+                foreach (var sInfo in articleDataList.DataList)
+                {
+
+                }
+            }
 
 
             return xmlOut;

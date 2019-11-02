@@ -56,6 +56,7 @@ namespace DNNrocketAPI
             }
         }
 
+        public SimplisityInfo SystemInfo { get { return Info; } }
         public SimplisityInfo Info { get; set; }
         public List<DNNrocketInterface> EventList { get; set;}
         public bool Exists { get; set; }

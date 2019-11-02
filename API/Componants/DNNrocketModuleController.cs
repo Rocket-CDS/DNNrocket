@@ -39,41 +39,39 @@ namespace DNNrocketAPI.Componants
 
             if (objModInfo != null)
             {
-                //var portalId = objModInfo.PortalID;
-                //var objCtrl = new DNNrocketController();
+                var portalId = objModInfo.PortalID;
+                var objCtrl = new DNNrocketController();
 
-                //var moduleParams = new ModuleParams(ModuleId, systemKey);
-                //var systemInfoData = new SystemInfoData(moduleParams.SystemKey);
-                //var systemInfo = objCtrl.GetInfo(_systemKey);
-                //if (systemInfo != null)
-                //{
-                //    var systemInfoData = new SystemInfoData(systemInfo);
-                //    foreach (var r in systemInfoData.InterfaceList)
-                //    {
-                //        var rocketInterface = r.Value;
-                //        if (rocketInterface.IsProvider("exportmodule"))
-                //        {
-                //            if (rocketInterface.Exists)
-                //            {
-                //                var paramInfo = new SimplisityInfo();
-                //                paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
-                //                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
-                //                if (returnDictionary.ContainsKey("outputhtml"))
-                //                {
-                //                    xmlOut += returnDictionary["outputhtml"];
-                //                }
-                //            }
-                //            else
-                //            {
-                //                xmlOut += "<error>No rocketInterface '" + rocketInterface.InterfaceKey + "'</error>";
-                //            }
-                //        }
-                //    }
-                //}
-                //else
-                //{
-                //    xmlOut += "<error>No systemInfo record found for systemid: " + moduleParams.SystemId + "</error>";
-                //}
+                var moduleParams = new ModuleParams(ModuleId);
+                var systemInfoData = new SystemInfoData(moduleParams.SystemKey);
+                if (systemInfoData.Exists)
+                {
+                    foreach (var r in systemInfoData.InterfaceList)
+                    {
+                        var rocketInterface = r.Value;
+                        if (rocketInterface.IsProvider("exportmodule"))
+                        {
+                            if (rocketInterface.Exists)
+                            {
+                                var paramInfo = new SimplisityInfo();
+                                paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfoData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
+                                if (returnDictionary.ContainsKey("outputhtml"))
+                                {
+                                    xmlOut += returnDictionary["outputhtml"];
+                                }
+                            }
+                            else
+                            {
+                                xmlOut += "<error>No rocketInterface '" + rocketInterface.InterfaceKey + "'</error>";
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    xmlOut += "<error>No systemInfo record found for systemid: " + moduleParams.SystemKey + "</error>";
+                }
             }
             xmlOut += "</export>";
 
