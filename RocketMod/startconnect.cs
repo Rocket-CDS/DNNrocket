@@ -886,6 +886,7 @@ namespace RocketMod
                     }
                     // get all module settings for the curenty module
                     var currentArticleDataList = new ArticleDataList(_moduleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
+                    currentArticleDataList.Populate(appTheme.DataType);
                     if (currentArticleDataList.ModuleSettings != null)
                     {
                         foreach (var s in currentArticleDataList.ModuleSettings.ToDictionary())
