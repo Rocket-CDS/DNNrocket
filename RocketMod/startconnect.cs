@@ -109,7 +109,6 @@ namespace RocketMod
                     strOut = GetArticleEdit();
                     break;
                 case "edit_addlink":
-
                     RocketModAddListItem("linklist" + _paramInfo.GetXmlProperty("genxml/hidden/linkfieldname"));
                     strOut = GetArticleEdit();
                     break;
@@ -966,20 +965,8 @@ namespace RocketMod
 
         private static string ExportData()
         {
-            var xmlOut = "";
-
-            // export DATA
-            if (_dataModuleParams.ModuleId != _moduleParams.ModuleId)
-            {
-                var articleDataList = new ArticleDataList(_moduleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
-                foreach (var sInfo in articleDataList.DataList)
-                {
-
-                }
-            }
-
-
-            return xmlOut;
+            var exportData = new ExportData(_moduleid, _systemKey);
+            return exportData.GetXml();
         }
 
 

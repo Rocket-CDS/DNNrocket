@@ -19,6 +19,7 @@
     var docLP = 1;
 
     var docfieldname = Model.GetSetting("docfieldname");
+    var datalist = i.GetList("documentlist" + docfieldname);
 
 }
 
@@ -37,7 +38,7 @@
 
     <ul id="documentlistdata@(docfieldname)" class="w3-ul">
 
-        @foreach (var docInfo in i.GetList("documentlist" + docfieldname))
+        @foreach (var docInfo in datalist)
         {
             <li class="documentlist@(docfieldname) w3-half w3-display-container w3-padding w3-border-0">
                 @SortableListIndex(docInfo, docLP)
@@ -46,11 +47,11 @@
                     <div class="w3-row">
                         <div class="w3-col m8">
                             <label class="">@ResourceKey("HtmlContent.document")</label>&nbsp;@EditFlag()
-                            @DocumentEdit(docInfo, "document", " class='w3-input w3-border' ", true, docLP)
+                            @DocumentEdit(docInfo, docfieldname, " class='w3-input w3-border' ", true, docLP)
                         </div>
                         <div class="w3-col w3-padding" style="width:160px">
                             <label class="">@ResourceKey("HtmlContent.justify")</label>
-                            @RadioButtonList(docInfo, "genxml/hidden/layoutdocument", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, docLP)
+                            @RadioButtonList(docInfo, "genxml/hidden/layout" + docfieldname, "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, docLP)
                         </div>
                         <div class="simplisity_removelistitem w3-right" s-removelist=".documentlist@(docfieldname)" s-recylebin="documentlist@(docfieldname)bin" style="cursor: pointer;">
                             <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
