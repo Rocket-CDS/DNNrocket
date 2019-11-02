@@ -83,7 +83,7 @@ namespace DNNrocket.Country
             {
                 var strOut = "";
                 var objCtrl = new DNNrocketController();
-                var smi = objCtrl.GetData("countrysettings", "SETTINGS", editlang, _systemInfo.ItemID, -1, false, _rocketInterface.DatabaseTable);
+                var smi = objCtrl.GetData("countrysettings", "SETTINGS", editlang, -1, false, _rocketInterface.DatabaseTable);
                 if (smi != null)
                 {
                     var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
@@ -108,7 +108,7 @@ namespace DNNrocket.Country
         {
             _passSettings.Add("saved", "true");
             var objCtrl = new DNNrocketController();
-            objCtrl.SaveData("countrysettings", "SETTINGS", postInfo, _systemInfo.ItemID, -1, _rocketInterface.DatabaseTable);
+            objCtrl.SaveData("countrysettings", "SETTINGS", postInfo, -1, _rocketInterface.DatabaseTable);
         }
 
     }

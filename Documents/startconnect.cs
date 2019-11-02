@@ -99,8 +99,8 @@ namespace DNNrocket.Documents
                     {
                         var friendlyname = GeneralUtils.DeCode(f);
                         var userfilename = userid + "_" + friendlyname;
-                        File.Copy(DNNrocketUtils.TempDirectory() + "\\" + userfilename, docDirectory + "\\" + friendlyname,true);
-                        File.Delete(DNNrocketUtils.TempDirectory() + "\\" + userfilename);
+                        File.Copy(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename, docDirectory + "\\" + friendlyname,true);
+                        File.Delete(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename);
                     }
                 }
 

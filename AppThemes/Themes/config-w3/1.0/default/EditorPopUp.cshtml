@@ -45,11 +45,11 @@
         var xpathhtml = "";
         var fieldList = new List<SimplisityRecord>();
 
-        var moduleParams = new ModuleParams(Model.ModuleId, appTheme.SystemId);
+        var moduleParams = new ModuleParams(Model.ModuleId);
         if (moduleParams.DataSourceModId != Model.ModuleId)
         {
             // get the field form the data source AppTheme
-            var dataModuleParams = new ModuleParams(moduleParams.DataSourceModId, appTheme.SystemId);
+            var dataModuleParams = new ModuleParams(moduleParams.DataSourceModId);
             var dataAppTheme = new AppTheme(appTheme.SystemKey, dataModuleParams.AppThemeFolder, dataModuleParams.AppThemeVersion, true);
             fieldList = dataAppTheme.Record.GetRecordList("fielddata");
         }

@@ -43,7 +43,6 @@ namespace Simplisity
             this.UserId = simplisityRecord.UserId;
             this.RowCount = simplisityRecord.RowCount;
             this.EncodingKey = simplisityRecord.EncodingKey;
-            this.SystemId = simplisityRecord.SystemId;
         }
 
 

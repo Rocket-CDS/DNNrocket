@@ -97,7 +97,7 @@ namespace DNNrocketAPI.Componants
 
         public void Populate()
         {
-            Record = _objCtrl.GetRecord(_guidKey, _entityTypeCode, -1, -1, false, _tableName);
+            Record = _objCtrl.GetRecord(_guidKey, _entityTypeCode, -1, false, _tableName);
             Record.SetXmlProperty("genxml/hidden/appthemefolder", AppThemeFolder);
             AppSummary = Record.GetXmlProperty("genxml/textbox/summary");
 
@@ -385,13 +385,13 @@ namespace DNNrocketAPI.Componants
             postInfo = ActionListJsFiles(postInfo);
             postInfo = ActionListResxFiles(postInfo);
 
-            var dbInfo = _objCtrl.GetRecord(_entityTypeCode, Record.ItemID, -1, -1, true, _tableName);
+            var dbInfo = _objCtrl.GetRecord(_entityTypeCode, Record.ItemID, -1, true, _tableName);
             if (dbInfo != null)
             {
 
                 dbInfo.XMLData = postInfo.XMLData;
                 dbInfo.RemoveXmlNode("genxml/lang");
-                _objCtrl.SaveRecord(dbInfo, Record.ItemID, _tableName);
+                _objCtrl.SaveRecord(dbInfo, _tableName);
 
                 Populate();
 
@@ -793,7 +793,7 @@ namespace DNNrocketAPI.Componants
 
         public void Update()
         {
-            _objCtrl.SaveRecord(Record, -1, _tableName);
+            _objCtrl.SaveRecord(Record, _tableName);
         }
         public void AddListImage()
         {
@@ -991,9 +991,9 @@ namespace DNNrocketAPI.Componants
                 versionCopyRecord.ItemID = -1;
                 versionCopyRecord.SetXmlProperty("genxml/select/versionfolder", AppVersionFolder);
 
-                versionCopyRecord = _objCtrl.SaveRecord(versionCopyRecord, -1, _tableName);
+                versionCopyRecord = _objCtrl.SaveRecord(versionCopyRecord, _tableName);
 
-                var l = _objCtrl.GetList(Record.PortalId, -1, _entityTypeCode + "LANG", " and R1.ParentItemId = " + Record.ItemID + " ", "", "", 0, 0, 0, 0, -1, _tableName);
+                var l = _objCtrl.GetList(Record.PortalId, -1, _entityTypeCode + "LANG", " and R1.ParentItemId = " + Record.ItemID + " ", "", "", 0, 0, 0, 0, _tableName);
                 foreach (var i in l)
                 {
                     i.ParentItemId = versionCopyRecord.ItemID;
@@ -1460,7 +1460,7 @@ namespace DNNrocketAPI.Componants
             FileUtils.SaveFile(exportMapPath, exportData);
 
             // Create zip
-            var exportZipMapPath = DNNrocketUtils.TempDirectory() + "\\" + AppThemeFolder + ".zip";
+            var exportZipMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + AppThemeFolder + ".zip";
             if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
             ZipFile.CreateFromDirectory(AppThemeFolderMapPath, exportZipMapPath);
 
@@ -1469,7 +1469,7 @@ namespace DNNrocketAPI.Componants
 
         private void ImportXmlData(string zipMapPath)
         {
-            var tempDir = DNNrocketUtils.TempDirectory();
+            var tempDir = DNNrocketUtils.TempDirectoryMapPath();
             var tempZipFolder = tempDir + "\\TempImport";
             if (Directory.Exists(tempZipFolder)) Directory.Delete(tempZipFolder, true);
             ZipFile.ExtractToDirectory(zipMapPath, tempZipFolder);

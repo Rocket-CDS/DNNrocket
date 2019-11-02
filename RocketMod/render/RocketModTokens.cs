@@ -33,7 +33,7 @@ namespace RocketMod
             var strOut = "";
             if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
 
-            var moduleParams = new ModuleParams(moduleid, -1);
+            var moduleParams = new ModuleParams(moduleid);
             var fieldInfo = objCtrl.GetByType(portalid, moduleid, "ROCKETMODFIELDS", "", lang);
             if (fieldInfo != null)
             {

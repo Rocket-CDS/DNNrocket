@@ -9,10 +9,12 @@ namespace DNNrocket.SystemData
 {
     public class StartConnect : DNNrocketAPI.APInterface
     {
+        private static SystemInfoData _systemInfoData;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
 
+            _systemInfoData = new SystemInfoData(systemInfo);
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
             var commandSecurity = new CommandSecurity(-1, -1, rocketInterface);
 
@@ -409,11 +411,11 @@ namespace DNNrocket.SystemData
                             objCtrl.DeleteIndex(sInfo);
                         }
                     }
-                    var l = objCtrl.GetList(-1, -1, entityCode + "LANG","","","",0,0,0,0, sysInfo.ItemID);
+                    var l = objCtrl.GetList(-1, -1, entityCode + "LANG","","","",0,0,0,0);
                     if (l.Count == 0)
                     {
                         // the record may NOT have a LANG record.
-                        l = objCtrl.GetList(-1, -1, entityCode, "", "", "", 0, 0, 0, 0, sysInfo.ItemID);
+                        l = objCtrl.GetList(-1, -1, entityCode, "", "", "", 0, 0, 0, 0);
                         foreach (var sInfo in l)
                         {
                             objCtrl.RebuildIndex(sInfo);

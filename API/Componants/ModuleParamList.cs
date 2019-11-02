@@ -19,25 +19,25 @@ namespace RocketMod.Componants
         private DNNrocketController _objCtrl;
         private bool _useCache;
         private bool _sharedDataOnly;
-        public ModuleParamList(string langRequired = "", bool sharedDataOnly = false, bool useCache = true)
+        public ModuleParamList(string systemKey, string langRequired = "", bool sharedDataOnly = false, bool useCache = true)
         {
             _sharedDataOnly = sharedDataOnly;
             _useCache = useCache;
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetCurrentCulture();
             _objCtrl = new DNNrocketController();
-            Populate();
+            Populate(systemKey);
         }
-        private void Populate()
+        private void Populate(string systemKey)
         {
             DataList = new List<ModuleParams>();
             var searchFilter = " ";
             var searchOrderBy = "";
             //var searchOrderBy = " order by R1.[XMLData].value('(genxml/hidden/name)[1]', 'nvarchar(100)') ";
-            var l = _objCtrl.GetList(-1, -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, 0, 0, 0, 0, -1, _tableName);
+            var l = _objCtrl.GetList(-1, -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, 0, 0, 0, 0, _tableName);
             foreach (var i in l)
             {
-                var m = new ModuleParams(i.ModuleId, i.SystemId, _useCache, _tableName);
+                var m = new ModuleParams(i.ModuleId, systemKey, _useCache, _tableName);
                 var tabInfo = DNNrocketUtils.GetTabInfo(m.TabId);
                 if (tabInfo != null)
                 {

@@ -1211,8 +1211,8 @@ namespace DNNrocketAPI
             // the userid is prefixed to the filename on upload to the temp folder and then used to get the file back from the temp folder.
             var userid = GetCurrentUserId();
 
-            if (!Directory.Exists(TempDirectory())) {
-                Directory.CreateDirectory(TempDirectory());
+            if (!Directory.Exists(TempDirectoryMapPath())) {
+                Directory.CreateDirectory(TempDirectoryMapPath());
             }
             if (!Directory.Exists(HomeDNNrocketDirectory()))
             {
@@ -1255,7 +1255,7 @@ namespace DNNrocketAPI
                 var fn = fileName;
                 fn = userid + "_" + fn;
 
-                var fullName = TempDirectory() + "\\" + fn;
+                var fullName = TempDirectoryMapPath() + "\\" + fn;
 
                 using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
                 {
@@ -1295,7 +1295,7 @@ namespace DNNrocketAPI
                     //var fn = GetUniqueFileName(file.FileName);
                     var fn = file.FileName;
                     fn = userid + "_" + fn;
-                    file.SaveAs(TempDirectory() + "\\" + fn);
+                    file.SaveAs(TempDirectoryMapPath() + "\\" + fn);
                     statuses.Add(new FilesStatus(Path.GetFileName(fn), file.ContentLength));
                     flist = flist + ";" + fn;
                 }
@@ -1424,10 +1424,6 @@ namespace DNNrocketAPI
                             {
                                 try
                                 {
-                                    if (postInfo != null)
-                                    {
-                                        postInfo.SystemId = systemInfo.ItemID;  // systemid is required for index, always add to postdata so it gets passed to the razor templates.
-                                    }
                                     var ajaxprov = APInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
                                     rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, paramInfo, editlang);
                                 }

@@ -29,6 +29,7 @@ namespace RocketMod
         private static int _tabid;
         private static int _moduleid;
         private static SystemInfoData _systemInfoData;
+        private static string _systemKey;
         private static Dictionary<string, string> _passSettings;
         private static SettingsData _settingsData;
         private static string _editLang;
@@ -203,6 +204,7 @@ namespace RocketMod
             _postInfo = postInfo;
             _paramInfo = paramInfo;
             _systemInfo = systemInfo;
+            _systemKey = _systemInfoData.SystemKey;
 
             _selectedItemId = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
 
@@ -223,8 +225,8 @@ namespace RocketMod
             if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid"); // IPN
             _passSettings.Add("tabid", _tabid.ToString());
 
-            _moduleParams = new ModuleParams(_moduleid, _systemInfoData.SystemId);
-            _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemInfoData.SystemId);
+            _moduleParams = new ModuleParams(_moduleid, _systemKey);
+            _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemKey);
             
 
             if (!CheckSecurity(paramCmd))
@@ -308,7 +310,7 @@ namespace RocketMod
                     var objCtrl = new DNNrocketController();
                     var info = objCtrl.GetData(_rocketInterface.EntityTypeCode, selecteditemid, _editLang);
                     info.AddListItem(listname);
-                    objCtrl.SaveData(info,-1);
+                    objCtrl.SaveData(info);
                 }
             }
             catch (Exception ex)
@@ -673,9 +675,9 @@ namespace RocketMod
                 _moduleParams.Delete();
 
                 var objCtrl = new DNNrocketController();
-                var info = objCtrl.GetData("moduleid" + _moduleid, "ROCKETMODFIELDS", "", -1, _moduleid, true);
+                var info = objCtrl.GetData("moduleid" + _moduleid, "ROCKETMODFIELDS", "", _moduleid, true);
                 if (info != null) objCtrl.Delete(info.ItemID);
-                info = objCtrl.GetData("moduleid" + _moduleid, "ROCKETSETTINGS", "", -1, _moduleid, true);
+                info = objCtrl.GetData("moduleid" + _moduleid, "ROCKETSETTINGS", "", _moduleid, true);
                 if (info != null) objCtrl.Delete(info.ItemID);
 
                 return GetSelectApp();
@@ -738,7 +740,7 @@ namespace RocketMod
         {
             try
             {
-                var mp = new ModuleParamList(DNNrocketUtils.GetCurrentCulture(),true, true);
+                var mp = new ModuleParamList(_systemKey, DNNrocketUtils.GetCurrentCulture(),true, true);
                 if (_moduleParams.ShareData == "0") mp.DataList.Add(_moduleParams); // current to list, so we can assigned current module as data source.
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
@@ -961,7 +963,7 @@ namespace RocketMod
             if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
         }
 
-        private static void ExportData()
+        private static string ExportData()
         {
             var xmlOut = "";
 

@@ -17,9 +17,12 @@ namespace DNNrocket.Category
         private static string _editlang;
         private static string _systemprovider;
         private static SimplisityInfo _systemInfo;
+        private static SystemInfoData _systemInfoData;
+
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
+            _systemInfoData = new SystemInfoData(systemInfo);
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
             var commandSecurity = new CommandSecurity(-1,-1,rocketInterface);
             commandSecurity.AddCommand("category_add", true);
@@ -185,7 +188,7 @@ namespace DNNrocket.Category
             info.GUIDKey = systemInfo.GUIDKey;
 
             var objCtrl = new DNNrocketController();
-            return objCtrl.SaveData(info, systemInfo.ItemID);
+            return objCtrl.SaveData(info);
         }
 
         public static void Save(SimplisityInfo postInfo, SimplisityInfo systemInfo)
@@ -225,7 +228,7 @@ namespace DNNrocket.Category
                 info.GUIDKey = _systemprovider;
                 info.XMLData = postInfo.XMLData;
                 info.ModuleId = systemInfo.ItemID;
-                objCtrl.SaveData(info, systemInfo.ItemID);
+                objCtrl.SaveData(info);
                 CacheUtils.ClearAllCache();
             }
         }
@@ -284,10 +287,10 @@ namespace DNNrocket.Category
                             var imagerelpath = DNNrocketUtils.HomeDirectoryRel() + "/images/" + newfilename;
                             var imagepath = imageDirectory + "\\" + newfilename;
 
-                            if (File.Exists(DNNrocketUtils.TempDirectory() + "\\" + encryptName))
+                            if (File.Exists(DNNrocketUtils.TempDirectoryMapPath() + "\\" + encryptName))
                             {
 
-                                File.Move(DNNrocketUtils.TempDirectory() + "\\" + encryptName, imagepath);
+                                File.Move(DNNrocketUtils.TempDirectoryMapPath() + "\\" + encryptName, imagepath);
 
                                 imgInfo.SetXmlProperty("genxml/hidden", "");
                                 imgInfo.SetXmlProperty("genxml/hidden/imagerelpath", imagerelpath);
@@ -301,7 +304,7 @@ namespace DNNrocket.Category
                         }
                     }
 
-                    objCtrl.SaveData(info, _systemInfo.ItemID);
+                    objCtrl.SaveData(info);
 
                 }
 
@@ -330,13 +333,12 @@ namespace DNNrocket.Category
             var level = 0;
             RecursiveUpdateParent(xmldoc.SelectNodes("./results/*"),0, ref index, level);
 
-
             var objCtrl = new DNNrocketController();
             var info = objCtrl.GetData(_systemprovider, "CATEGORYLIST", _editlang);
             info.XMLData = postInfo.XMLData;
             info.AddXmlNode(xmldoc.OuterXml, "results", "genxml");
             info.ModuleId = systemInfo.ItemID;
-            objCtrl.SaveData(info, systemInfo.ItemID);
+            objCtrl.SaveData(info);
 
             CacheUtils.ClearAllCache();
         }
@@ -394,7 +396,7 @@ namespace DNNrocket.Category
                     strOut = DNNrocketUtils.GetResourceString(ControlRelPath + "/App_LocalResources", "category.hiddenicon_true", "Text", DNNrocketUtils.GetEditCulture());
                 }
 
-                objCtrl.SaveData(catData.Info, _systemInfo.ItemID);
+                objCtrl.SaveData(catData.Info);
 
                 return strOut;
             }
@@ -426,7 +428,7 @@ namespace DNNrocket.Category
                     strOut = DNNrocketUtils.GetResourceString(ControlRelPath + "/App_LocalResources", "category.toggleicon_off", "Text", DNNrocketUtils.GetEditCulture());
                 }
 
-                objCtrl.SaveData(catData.Info, systemInfo.ItemID);
+                objCtrl.SaveData(catData.Info);
 
                 return strOut;
             }

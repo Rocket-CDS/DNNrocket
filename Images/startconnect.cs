@@ -111,16 +111,16 @@ namespace DNNrocket.Images
                         var friendlyname = GeneralUtils.DeCode(f);
                         var userfilename = userid + "_" + friendlyname;
                         var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname, imageDirectory);
-                        var fname = ImgUtils.ResizeImage(DNNrocketUtils.TempDirectory() + "\\" + userfilename, imageDirectory + "\\" + unqName, resize);
+                        var fname = ImgUtils.ResizeImage(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectory + "\\" + unqName, resize);
                         if (!File.Exists(fname)) return "ERROR: " + fname;
                         if (createseo)
                         {
                             var imageDirectorySEO = imageDirectory + "\\seo";
                             if (!Directory.Exists(imageDirectorySEO)) Directory.CreateDirectory(imageDirectorySEO);
-                            ImgUtils.CopyImageForSEO(DNNrocketUtils.TempDirectory() + "\\" + userfilename, imageDirectorySEO, unqName);
+                            ImgUtils.CopyImageForSEO(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectorySEO, unqName);
                         }
 
-                        File.Delete(DNNrocketUtils.TempDirectory() + "\\" + userfilename);
+                        File.Delete(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename);
                     }
                 }
 

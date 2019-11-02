@@ -10,7 +10,7 @@ namespace DNNrocket.TestList
     {
         private static string _EntityTypeCode;
         private static string _editlang;
-        private static SimplisityInfo _systemInfo;
+        private static SystemInfoData _systemInfoData;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
@@ -26,7 +26,7 @@ namespace DNNrocket.TestList
             commandSecurity.AddCommand("testlist_sort", false);
             commandSecurity.AddCommand("testlist_search", false);
 
-            _systemInfo = systemInfo;
+            _systemInfoData = new SystemInfoData(systemInfo);
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
             _editlang = editlang;
             if (_editlang == "") _editlang = DNNrocketUtils.GetEditCulture();
@@ -181,7 +181,7 @@ var rtnDic = new Dictionary<string, string>();
             info.GUIDKey = GeneralUtils.GetUniqueKey();
             
             var objCtrl = new DNNrocketController();
-            return objCtrl.SaveData(info, _systemInfo.ItemID);
+            return objCtrl.SaveData(info);
         }
 
         public static void Save(SimplisityInfo postInfo, SimplisityInfo paramInfo)
@@ -192,7 +192,7 @@ var rtnDic = new Dictionary<string, string>();
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
                 info.XMLData = postInfo.XMLData;
-                objCtrl.SaveData(info, _systemInfo.ItemID);
+                objCtrl.SaveData(info);
                 CacheUtils.ClearAllCache();
             }
         }
@@ -223,7 +223,7 @@ var rtnDic = new Dictionary<string, string>();
                     newInfo.SetXmlProperty("genxml/textbox/txtinput", GeneralUtils.GetUniqueKey() + "-" + i.ToString());
                     newInfo.SetXmlProperty("genxml/lang/genxml/textbox/txtinputl", GeneralUtils.GetUniqueKey() + "-" + i.ToString());
                     newInfo.Lang = c;
-                    objCtrl.SaveData(newInfo, _systemInfo.ItemID);
+                    objCtrl.SaveData(newInfo);
                 }
 
                 var rec = objCtrl.GetRecord(newInfo.ItemID);

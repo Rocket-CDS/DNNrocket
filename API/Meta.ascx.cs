@@ -48,10 +48,6 @@ namespace DNNrocketAPI
 
                 var guidKey = "tabid" + PortalSettings.Current.ActiveTab.TabID;
                 _dataRecord = _objCtrl.GetData(guidKey, "ROCKETPL", DNNrocketUtils.GetCurrentCulture());
-                var systemInfo = _objCtrl.GetInfo(_dataRecord.SystemId);
-                _debugmode = false;
-                if (systemInfo != null) _debugmode = systemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode");
-
 
                 if (_dataRecord != null)
                 {

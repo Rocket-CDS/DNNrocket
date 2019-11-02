@@ -166,7 +166,7 @@ namespace DNNrocket.TestForm
                         var imagerelpath = DNNrocketUtils.HomeDirectoryRel() + "/images/" + newfilename;
                         var imagepath = imageDirectory + "\\" + newfilename;
 
-                        File.Move(DNNrocketUtils.TempDirectory() + "\\" + encryptName, imagepath);
+                        File.Move(DNNrocketUtils.TempDirectoryMapPath() + "\\" + encryptName, imagepath);
 
                         imgInfo.SetXmlProperty("genxml/hidden", "");
                         imgInfo.SetXmlProperty("genxml/hidden/imagerelpath", imagerelpath);
@@ -228,7 +228,7 @@ namespace DNNrocket.TestForm
                         var docrelpath = DNNrocketUtils.HomeDirectoryRel() + "/docs/" + newfilename;
                         var docpath = docDirectory + "\\" + newfilename;
 
-                        File.Move(DNNrocketUtils.TempDirectory() + "\\" + encryptName, docpath);
+                        File.Move(DNNrocketUtils.TempDirectoryMapPath() + "\\" + encryptName, docpath);
 
                         docInfo.SetXmlProperty("genxml/hidden", "");
                         docInfo.SetXmlProperty("genxml/hidden/docrelpath", docrelpath);

@@ -2,6 +2,7 @@
 @using DNNrocketAPI;
 @using Simplisity;
 @using RocketSettings;
+@using System.IO;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
@@ -10,6 +11,14 @@
 @{
     var settingsData = (SettingsData)Model.List.First();
 }
+
+@{
+    // activate auto versioning
+    var FieldEditorMapPath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes/Themes/config-w3/1.0/js/FieldEditor.js");
+    var FieldEditorAutoVersion = File.GetLastWriteTime(FieldEditorMapPath).Ticks;
+}
+<script src="/DesktopModules/DNNrocket/AppThemes/Themes/config-w3/1.0/js/FieldEditor.js?v=@(FieldEditorAutoVersion)"></script>
+
 
 <div class="w3-row w3-padding">
     <a class="w3-col m2 w3-button w3-teal simplisity_click" s-cmd="rocketmodfields_add" s-fields=''>@ResourceKey("DNNrocket.cmdAddButton")</a>
@@ -32,6 +41,7 @@
         m.List = l;
         m.ModuleId = Model.ModuleId;
         m.SetSetting("dictionarylocalized", "true");
+        m.SetSetting("listname", "fielddata");
     }
 
     @RenderTemplate("FieldEditorBody.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", m, "1.0", true)

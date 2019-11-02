@@ -33,7 +33,7 @@ namespace DNNrocketAPI.Componants
                     Record.TypeCode = _entityTypeCode;
                     Record.GUIDKey = _guidKey;
                     Record.UserId = UserId;
-                    _objCtrl.SaveRecord(Record, 0, _tableName);
+                    _objCtrl.SaveRecord(Record, _tableName);
                 }
                 CacheUtils.SetCache(_guidKey, Record);
             }

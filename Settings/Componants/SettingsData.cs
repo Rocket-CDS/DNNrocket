@@ -72,19 +72,19 @@ namespace RocketSettings
 
         public void Save(SimplisityInfo postInfo)
         {
-            var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, _langRequired, -1, _moduleid, true, _tableName);
+            var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, _langRequired, _moduleid, true, _tableName);
             if (dbInfo != null)
             {
                 dbInfo.XMLData = postInfo.XMLData;
                 CreateMissingLanguageRecords(postInfo.XMLData);
-                _objCtrl.SaveData(dbInfo, Info.ItemID, _tableName);
+                _objCtrl.SaveData(dbInfo, _tableName);
             }
 
         }
 
         public void Update()
         {
-            _objCtrl.SaveData(Info, -1, _tableName);
+            _objCtrl.SaveData(Info, _tableName);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace RocketSettings
                     {
                         var newInfo = Info;
                         newInfo.Lang = l;
-                        _objCtrl.SaveData(newInfo, Info.ItemID, _tableName);
+                        _objCtrl.SaveData(newInfo, _tableName);
                     }
                 }
             }
@@ -118,7 +118,7 @@ namespace RocketSettings
         public void AddRow()
         {
             Info.AddListItem(_listName);
-            _objCtrl.SaveData(Info, Info.ItemID, _tableName);
+            _objCtrl.SaveData(Info, _tableName);
             CreateMissingLanguageRecords();
         }
 
@@ -205,7 +205,7 @@ namespace RocketSettings
 
         private void GetSettingData(string guidKey, string cultureCode)
         {
-            Info = _objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, -1, _moduleid, _onlyRead, _tableName);
+            Info = _objCtrl.GetData(guidKey, _entityTypeCode, cultureCode, _moduleid, _onlyRead, _tableName);
         }
         #endregion
 

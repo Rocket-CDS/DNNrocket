@@ -309,7 +309,7 @@ private static Dictionary<string, string> ExportAppTheme()
                     if (f != "")
                     {
                         var userid = DNNrocketUtils.GetCurrentUserId();
-                        var userFolder = DNNrocketUtils.TempDirectory();
+                        var userFolder = DNNrocketUtils.TempDirectoryMapPath();
                         var friendlyname = GeneralUtils.DeCode(f);
                         var fname = userFolder + "\\" + userid + "_" + friendlyname;
                         var _appTheme = new AppTheme(fname);

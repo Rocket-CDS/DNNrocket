@@ -24,7 +24,6 @@ namespace Simplisity
         public int UserId { get; set; }
         public int RowCount { get; set; }
         public string EncodingKey { get; set; }
-        public int SystemId { get; set; }
         public int SortOrder { get; set; }
 
         private string _xmlData;
@@ -43,8 +42,7 @@ namespace Simplisity
             string Lang,
             int UserId,
             int RowCount,            
-            string EncodingKey,
-            int SystemId)
+            string EncodingKey)
         {
             this.ItemID = ItemID;
             this.PortalId = PortalId;
@@ -60,7 +58,6 @@ namespace Simplisity
             this.UserId = UserId;
             this.RowCount = RowCount;
             this.EncodingKey = EncodingKey;
-            this.SystemId = SystemId;
         }
 
         public SimplisityRecord(SimplisityInfo info)
@@ -80,7 +77,6 @@ namespace Simplisity
             this.UserId = info.UserId;
             this.RowCount = info.RowCount;
             this.EncodingKey = info.EncodingKey;
-            this.SystemId = info.SystemId;
         }
 
         public SimplisityRecord()

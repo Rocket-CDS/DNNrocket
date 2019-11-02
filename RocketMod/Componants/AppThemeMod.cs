@@ -26,7 +26,7 @@ namespace RocketMod.Componants
 
         private void InitAppThemeMod() {
 
-            ModuleParams = new ModuleParams(ModuleId, SystemId);
+            ModuleParams = new ModuleParams(ModuleId, _systemKey);
             SystemInfoData = new SystemInfoData(_systemKey);
             AppTheme = new AppTheme(SystemInfoData.SystemKey, ModuleParams.AppThemeFolder, ModuleParams.AppThemeVersion, _debugMode);
 

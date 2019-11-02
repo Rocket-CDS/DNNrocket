@@ -45,8 +45,8 @@ namespace RocketMod
             }
             var searchOrderBy = " order by R1.[SortOrder] ";
 
-            var rowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, -1, _tableName);
-            DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, returnLimit, Page, PageSize, rowCount, -1, _tableName);
+            var rowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, _tableName);
+            DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, returnLimit, Page, PageSize, rowCount, _tableName);
             RowCount = rowCount;
 
             ModuleSettings = new SettingsData(-1, _moduleid, "", "ROCKETMODSETTINGS", "rocketmodsettings", true);
@@ -57,8 +57,8 @@ namespace RocketMod
             var returnLimit = 0; // form
             var searchFilter = " and R1.ModuleId = " + _moduleid + " ";
 
-            var rowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, -1, _tableName);
-            var l = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, "", returnLimit, Page, PageSize, rowCount, -1, _tableName);
+            var rowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, _tableName);
+            var l = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, "", returnLimit, Page, PageSize, rowCount, _tableName);
             foreach (var r in l)
             {
                 _objCtrl.Delete(r.ItemID);

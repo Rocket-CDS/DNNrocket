@@ -44,7 +44,7 @@ namespace RocketMod
 
         public void Save(SimplisityInfo postInfo)
         {
-            var dbInfo = _objCtrl.GetData( _entityTypeCode, Info.ItemID, _langRequired, -1, _moduleid, true, _tableName);
+            var dbInfo = _objCtrl.GetData( _entityTypeCode, Info.ItemID, _langRequired, _moduleid, true, _tableName);
             if (dbInfo != null)
             {
                 // update all langauge record which are empty.
@@ -55,23 +55,23 @@ namespace RocketMod
                     var nodList = dbRecord.XMLDoc.SelectNodes("genxml/*");
                     if (nodList.Count == 0)
                     {
-                        var dbInfo2 = _objCtrl.GetData(_entityTypeCode, Info.ItemID, l, -1, _moduleid, true, _tableName);
+                        var dbInfo2 = _objCtrl.GetData(_entityTypeCode, Info.ItemID, l, _moduleid, true, _tableName);
                         if (dbInfo2 != null)
                         {
                             dbInfo2.XMLData = postInfo.XMLData;
-                            _objCtrl.SaveData(dbInfo2, Info.ItemID, _tableName);
+                            _objCtrl.SaveData(dbInfo2, _tableName);
                         }
                     }
                 }
 
                 dbInfo.XMLData = postInfo.XMLData;
-                _objCtrl.SaveData(dbInfo, Info.ItemID, _tableName); // save before list sort, so we have hte data in DB.
+                _objCtrl.SaveData(dbInfo, _tableName); // save before list sort, so we have hte data in DB.
 
             }
         }
         public void Update()
         {
-            _objCtrl.SaveData(Info, SystemId, _tableName);
+            _objCtrl.SaveData(Info, _tableName);
         }
 
         public void AddListItem(string listname)
@@ -82,18 +82,18 @@ namespace RocketMod
 
         private void AddArticle()
         {
-            Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, -1, _moduleid, false, _tableName);    
+            Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, _moduleid, false, _tableName);    
         }
         private void AddArticle(string guidkey)
         {
-            Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, -1, _moduleid, false, _tableName);
+            Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, _moduleid, false, _tableName);
             Info.GUIDKey = guidkey;
-            _objCtrl.SaveData(Info, -1, _tableName);
+            _objCtrl.SaveData(Info, _tableName);
         }
 
         public bool Populate(int ItemId)
         {
-            Info = _objCtrl.GetData(_entityTypeCode, ItemId, _langRequired, -1, _moduleid, true, _tableName);
+            Info = _objCtrl.GetData(_entityTypeCode, ItemId, _langRequired, _moduleid, true, _tableName);
             if (Info == null) return false;
             return true;
         }
@@ -101,7 +101,7 @@ namespace RocketMod
         {
             var tempInfo = _objCtrl.GetByGuidKey(-1, _moduleid, _entityTypeCode, guidkey, "", _tableName);
             if (tempInfo == null) return false;
-            Info = _objCtrl.GetData(_entityTypeCode, tempInfo.ItemID, _langRequired, -1, _moduleid, true, _tableName);
+            Info = _objCtrl.GetData(_entityTypeCode, tempInfo.ItemID, _langRequired, _moduleid, true, _tableName);
             return true;
         }
 
@@ -112,7 +112,6 @@ namespace RocketMod
         public int ModuleId { get { return Info.ModuleId; } set { Info.ModuleId = value; } }
         public int XrefItemId { get { return Info.XrefItemId; } set { Info.XrefItemId = value; } }
         public int ParentItemId { get { return Info.ParentItemId; } set { Info.ParentItemId = value; } }
-        public int SystemId { get { return Info.SystemId; } set { Info.SystemId = value; } }
         public int ItemId { get { return Info.ItemID; } }
         public int SortOrder { get { return Info.SortOrder; } set { Info.SortOrder = value; } }
         public string ImageFolder { get; set; }

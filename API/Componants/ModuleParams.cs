@@ -22,12 +22,12 @@ namespace DNNrocketAPI.Componants
         private string _cacheKey;
         private string _tableName;
         private int _moduleid;
-        private int _systemid;
+        private string _systemKey;
 
-        public ModuleParams( int moduleId, int systemid, bool useCache = true, string tableName = "DNNrocket")
+        public ModuleParams(int moduleId, string systemKey = "", bool useCache = true, string tableName = "DNNrocket")
         {
+            _systemKey = systemKey;
             _tableName = tableName;
-            _systemid = systemid;
             _moduleid = moduleId;
             _moduleParamsRec = new SimplisityRecord();
             _cacheKey = "moduleparams*" + moduleId;
@@ -57,7 +57,7 @@ namespace DNNrocketAPI.Componants
                 }
             }
             DataSourceExternal = false;
-            if (_systemid <= 0) _systemid = _moduleParamsRec.SystemId; // to get export data when we don't know the systemid, so use the DB one.
+            if (_systemKey == "") _systemKey = _moduleParamsRec.GetXmlProperty("genxml/systemkey"); // to get export data when we don't know the systemid, so use the DB one.
             if (DataSourceModId != _moduleid) DataSourceExternal = true;
             if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueKey();
             if (DataSourceModId <= 0) DataSourceModId = _moduleid;
@@ -70,7 +70,7 @@ namespace DNNrocketAPI.Componants
             DataSourceExternal = false;
             if (DataSourceModId != _moduleid) DataSourceExternal = true;
 
-            _moduleParamsRec = objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _systemid, _moduleid, _tableName);
+            _moduleParamsRec = objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _moduleid, _tableName);
             CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
         }
         public void Delete()
@@ -134,7 +134,7 @@ namespace DNNrocketAPI.Componants
         public string Name { get { return GetValue("Name", ""); } set { SetValue("Name", value); } }
         public string ModuleType { get { return GetValue("ModuleType", ""); } set { SetValue("ModuleType", value); } }
         public int ModuleId { get {return _moduleid; } }
-        public int SystemId { get { return _systemid; } }
+        public string SystemKey { get { return _systemKey; } }
         public int TabId { get { return GetValueInt("TabId"); } set { SetValue("TabId", value.ToString()); } }
         public string ShareData { get { return GetValue("sharedata", ""); } set { SetValue("sharedata", value); } }
         public string DataSourceModRef { get { return GetValue("DataSourceModRef"); } set { SetValue("DataSourceModRef", value.ToString()); } }
