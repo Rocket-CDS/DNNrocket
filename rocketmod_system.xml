@@ -36,7 +36,10 @@
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="1" />
+          <chk value="false" data="exportmodule" />
+          <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
@@ -71,7 +74,10 @@
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="1" />
+          <chk value="false" data="exportmodule" />
+          <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
@@ -106,7 +112,10 @@
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="1" />
+          <chk value="false" data="exportmodule" />
+          <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
@@ -141,7 +150,10 @@
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="1" />
+          <chk value="false" data="exportmodule" />
+          <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
@@ -176,7 +188,10 @@
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="1" />
+          <chk value="false" data="exportmodule" />
+          <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
@@ -211,7 +226,10 @@
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="1" />
+          <chk value="false" data="exportmodule" />
+          <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
@@ -246,7 +264,10 @@
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="1" />
+          <chk value="false" data="exportmodule" />
+          <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
@@ -281,7 +302,10 @@
       </dropdownlist>
       <checkboxlist>
         <providertype>
-          <chk value="false" data="1" />
+          <chk value="false" data="exportmodule" />
+          <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
         </providertype>
         <securityroles>
           <chk value="true" data="Administrators" />
@@ -296,7 +320,59 @@
         <onmenu>true</onmenu>
       </checkbox>
     </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>exportmodule</interfacekey>
+        <entitytypecode>ROCKETMOD</entitytypecode>
+        <interfaceicon />
+        <defaulttheme />
+        <themeversion>1.0</themeversion>
+        <defaulttemplate />
+        <defaultcommand>exportmodule_export</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
+        <relpath>ketMod</relpath>
+        <cmdfields />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="true" data="exportmodule" />
+          <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
+        <onmenu>false</onmenu>
+      </checkbox>
+    </genxml>
   </interfacedata>
+  <settingsdata list="true">
+    <genxml>
+      <textbox>
+        <name />
+        <value />
+      </textbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <name />
+        <value />
+      </textbox>
+    </genxml>
+  </settingsdata>
   <groupsdata list="true">
     <genxml>
       <textbox>
@@ -317,6 +393,32 @@
       </textbox>
     </genxml>
   </groupsdata>
+  <provtypesdata list="true">
+    <genxml>
+      <textbox>
+        <provtypes>exportmodule</provtypes>
+        <provname>Export Module</provname>
+      </textbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <provtypes>importmodule</provtypes>
+        <provname>Import Module</provname>
+      </textbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <provtypes>searchmodule</provtypes>
+        <provname>Search Module</provname>
+      </textbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <provtypes>upgrademodule</provtypes>
+        <provname>Upgrade Module</provname>
+      </textbox>
+    </genxml>
+  </provtypesdata>
   <lang>
     <genxml>
       <interfacedata list="true">
@@ -328,12 +430,23 @@
         <genxml />
         <genxml />
         <genxml />
+        <genxml />
       </interfacedata>
+      <settingsdata list="true">
+        <genxml />
+        <genxml />
+      </settingsdata>
       <groupsdata list="true">
         <genxml />
         <genxml />
         <genxml />
       </groupsdata>
+      <provtypesdata list="true">
+        <genxml />
+        <genxml />
+        <genxml />
+        <genxml />
+      </provtypesdata>
     </genxml>
   </lang>
 </genxml>
