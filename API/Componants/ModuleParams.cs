@@ -153,6 +153,7 @@ namespace DNNrocketAPI.Componants
         public string ModuleRef { get { return GetValue("ModuleRef"); } set { SetValue("ModuleRef", value); } }
         public bool CacheDisbaled { get { return GetValueBool("disbalecache"); } set { SetValue("disbalecache", value.ToString()); } }
         public bool CacheEnabled { get { return !GetValueBool("disbalecache"); } }
+        public bool ExportResourceFiles { get { return GetValueBool("exportresourcefiles"); } set { SetValue("exportresourcefiles", value.ToString()); } }
     }
 
 }

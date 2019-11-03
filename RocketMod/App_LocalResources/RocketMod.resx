@@ -165,6 +165,9 @@
   <data name="edittitle.Text" xml:space="preserve">
     <value>DNNrocket - High Speed Integration</value>
   </data>
+  <data name="exportresourcefiles.Text" xml:space="preserve">
+    <value>Export Resource Files</value>
+  </data>
   <data name="externallink.Text" xml:space="preserve">
     <value>External Link</value>
   </data>

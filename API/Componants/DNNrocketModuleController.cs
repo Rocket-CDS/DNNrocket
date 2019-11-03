@@ -40,12 +40,11 @@ namespace DNNrocketAPI.Componants
             if (objModInfo != null)
             {
                 var portalId = objModInfo.PortalID;
-                var objCtrl = new DNNrocketController();
-
                 var moduleParams = new ModuleParams(ModuleId);
                 var systemInfoData = new SystemInfoData(moduleParams.SystemKey);
                 if (systemInfoData.Exists)
                 {
+                    xmlOut += "<systemkey>" + moduleParams.SystemKey + "</systemkey>";
                     foreach (var r in systemInfoData.InterfaceList)
                     {
                         var rocketInterface = r.Value;
@@ -53,8 +52,10 @@ namespace DNNrocketAPI.Componants
                         {
                             if (rocketInterface.Exists)
                             {
+                                xmlOut += "<databasetable>" + rocketInterface.DatabaseTable + "</databasetable>";
                                 var paramInfo = new SimplisityInfo();
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
+                                paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
                                 var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfoData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
                                 if (returnDictionary.ContainsKey("outputhtml"))
                                 {
@@ -94,8 +95,37 @@ namespace DNNrocketAPI.Componants
 
         public void ImportModule(int moduleId, string content, string version, int userId)
         {
+            var objModCtrl = new ModuleController();
+            var postInfo = new SimplisityInfo();
+            postInfo.XMLData = content;
 
+            var objModInfo = objModCtrl.GetModule(moduleId, Null.NullInteger, true);
+            if (objModInfo != null)
+            {
+                var portalId = objModInfo.PortalID;
+                var systemKey = postInfo.GetXmlProperty("export/systemkey");
+                var databasetable = postInfo.GetXmlProperty("export/databasetable");
 
+                var systemInfoData = new SystemInfoData(systemKey);
+                if (systemInfoData.Exists)
+                {
+                    foreach (var r in systemInfoData.InterfaceList)
+                    {
+                        var rocketInterface = r.Value;
+                        if (rocketInterface.IsProvider("importmodule"))
+                        {
+                            if (rocketInterface.Exists)
+                            {
+                                var paramInfo = new SimplisityInfo();
+                                paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleId.ToString());
+                                paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
+                                paramInfo.SetXmlProperty("genxml/hidden/databasetable", databasetable);                                
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfoData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         #endregion

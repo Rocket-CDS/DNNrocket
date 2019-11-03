@@ -328,11 +328,11 @@
         <defaulttheme />
         <themeversion>1.0</themeversion>
         <defaulttemplate />
-        <defaultcommand>exportmodule_export</defaultcommand>
+        <defaultcommand>module_export</defaultcommand>
         <namespaceclass>RocketMod.StartConnect</namespaceclass>
         <assembly>RocketMod</assembly>
         <databasetable />
-        <relpath>ketMod</relpath>
+        <relpath />
         <cmdfields />
       </textbox>
       <dropdownlist>
@@ -342,6 +342,44 @@
         <providertype>
           <chk value="true" data="exportmodule" />
           <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
+        </providertype>
+        <securityroles>
+          <chk value="true" data="Administrators" />
+          <chk value="true" data="Manager" />
+          <chk value="true" data="Editor" />
+          <chk value="true" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>false</cache>
+        <onmenu>false</onmenu>
+      </checkbox>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>importmodule</interfacekey>
+        <entitytypecode>ROCKETMOD</entitytypecode>
+        <interfaceicon />
+        <defaulttheme />
+        <themeversion>1.0</themeversion>
+        <defaulttemplate />
+        <defaultcommand>module_import</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
+        <relpath />
+        <cmdfields />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="exportmodule" />
+          <chk value="true" data="importmodule" />
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
         </providertype>
@@ -422,6 +460,7 @@
   <lang>
     <genxml>
       <interfacedata list="true">
+        <genxml />
         <genxml />
         <genxml />
         <genxml />

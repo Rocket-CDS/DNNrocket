@@ -57,79 +57,86 @@
         <div class="w3-col m2 w3-margin-top " style="width:120px;height:120px;">
             <img src="@ThumbnailImageUrl(moduleParams.AppThemeLogo,120,120)" class="w3-circle" />
         </div>
-        <div class="w3-col m9">
+        <div class="w3-col m5">
             <div class="w3-row">
-                <div class="w3-col m12">
-                    <div class="w3-col m8 w3-padding">
-                        <label>@ResourceKey("RocketMod.name")</label>
-                        @TextBox(configinfo, "genxml/hidden/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
-                    </div>
-                    <div class="w3-col m2 w3-padding">
-                        <label>@ResourceKey("RocketMod.version")</label>
-                        @FolderSelectList(configinfo, "genxml/hidden/appthemeversion", moduleParams.AppThemeFolderMapPath, "class='w3-input w3-border'", false, false)
-                    </div>
-                    <div class="w3-col m2 w3-padding">
-                        <label>@ResourceKey("RocketMod.disablecache")</label><br />
-                        @CheckBox(configinfo, "genxml/hidden/disbalecache", "", "class='w3-check'", false)
-                    </div>
+                <div class="w3-col m9 w3-padding">
+                    <label>@ResourceKey("RocketMod.name")</label>
+                    @TextBox(configinfo, "genxml/hidden/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
                 </div>
+                <div class="w3-col m3 w3-padding">
+                    <label>@ResourceKey("RocketMod.version")</label>
+                    @FolderSelectList(configinfo, "genxml/hidden/appthemeversion", moduleParams.AppThemeFolderMapPath, "class='w3-input w3-border'", false, false)
+                </div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col m6 w3-padding">
+                    <label>@ResourceKey("RocketMod.imagefolder")</label>
+                    @TextBox(configinfo, "genxml/hidden/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
+                </div>
+                <div class="w3-col m6 w3-padding">
+                    <label>@ResourceKey("RocketMod.documentfolder")</label>
+                    @TextBox(configinfo, "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
+                </div>
+            </div>
+
+        </div>
+        <div class="w3-col m4">
+            <div class="w3-row">
                 <div class="w3-col m12 w3-padding">
-                    <div class="w3-col m4 w3-padding">
-                        <label>@ResourceKey("RocketMod.imagefolder")</label>
-                        @TextBox(configinfo, "genxml/hidden/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
-                    </div>
-                    <div class="w3-col m4 w3-padding">
-                        <label>@ResourceKey("RocketMod.documentfolder")</label>
-                        @TextBox(configinfo, "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
-                    </div>
-                    <div class="w3-col m4 w3-padding">
-                        @if (!moduleParams.DataSourceExternal)
-                        {
-                            <label>@ResourceKey("RocketMod.sharedata")</label><br />
-                            @RadioButtonList(configinfo, "genxml/hidden/sharedata", "0,1,2", ResourceKey("RocketMod.sharedataoptions").ToString(), " class='sharedataaction' ", "1", "")
-                        }
-                    </div>
+                    @if (!moduleParams.DataSourceExternal)
+                    {
+                        <label>@ResourceKey("RocketMod.sharedata")</label><br />
+                        @RadioButtonList(configinfo, "genxml/hidden/sharedata", "0,1,2", ResourceKey("RocketMod.sharedataoptions").ToString(), " class='sharedataaction' ", "1", "")
+                    }
+                    else
+                    {
+                        <div class="w3-col m3 w3-padding w3-margin" style="width:80px;height:80px;">
+                            <br />
+                            <img src="@ThumbnailImageUrl(dataModuleParams.AppThemeLogo,80,80)" class="w3-circle" />
+                        </div>
+                        <div class="w3-col m8 w3-margin w3-padding">
+                            <table class="">
+                                <tr>
+                                    <td>@ResourceKey("RocketMod.datasource"):</td>
+                                    <td><b>@HtmlOf(dataModuleParams.Name)</b></td>
+                                </tr>
+                                <tr>
+                                    <td>@ResourceKey("RocketMod.ref"):</td>
+                                    <td><b>@moduleParams.DataSourceModRef</b></td>
+                                </tr>
+                                <tr>
+                                    <td>ModuleId:</td>
+                                    <td><b>@(moduleParams.DataSourceModId)</b></td>
+                                </tr>
+                                <tr>
+                                    <td>AppTheme:</td>
+                                    <td><b>@dataModuleParams.AppThemeFolder</b></td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
                 </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="w3-row w3-padding">
+        <div class="w3-col m6 w3-padding">
+            <label>@ResourceKey("RocketMod.notes")</label>
+            @TextArea(configinfo, "genxml/hidden/appthemenotes", "class='w3-input w3-border' rows=5 ", "", false)
+        </div>
+        <div class="w3-col m6  w3-padding w3-margin-top">
+            <div class="w3-col m6 w3-padding">
+                @CheckBox(configinfo, "genxml/hidden/disbalecache", "", "class='w3-check'", false)
+                <label>@ResourceKey("RocketMod.disablecache")</label>
+            </div>
+            <div class="w3-col m6 w3-padding ">
+                @CheckBox(configinfo, "genxml/hidden/exportresourcefiles", "", "class='w3-check'", false)
+                <label>@ResourceKey("RocketMod.exportresourcefiles")</label>
             </div>
         </div>
     </div>
-
-    <div class="w3-row">
-        <div class="w3-col m8">
-            <label>@ResourceKey("RocketMod.notes")</label>
-            @TextArea(configinfo, "genxml/hidden/appthemenotes", "class='w3-input w3-border ' rows=5 ", "", false)
-        </div>
-        <div class="w3-col m4">
-            @if (moduleParams.DataSourceExternal)
-            {
-                <div class="w3-col m3 w3-padding w3-margin" style="width:80px;height:80px;">
-                    <br />
-                    <img src="@ThumbnailImageUrl(dataModuleParams.AppThemeLogo,80,80)" class="w3-circle" />
-                </div>
-                <div class="w3-col m8 w3-margin w3-padding">
-                    <table class="">
-                        <tr>
-                            <td>@ResourceKey("RocketMod.datasource"):</td>
-                            <td><b>@HtmlOf(dataModuleParams.Name)</b></td>
-                        </tr>
-                        <tr>
-                            <td>@ResourceKey("RocketMod.ref"):</td>
-                            <td><b>@moduleParams.DataSourceModRef</b></td>
-                        </tr>
-                        <tr>
-                            <td>ModuleId:</td>
-                            <td><b>@(moduleParams.DataSourceModId)</b></td>
-                        </tr>
-                        <tr>
-                            <td>AppTheme:</td>
-                            <td><b>@dataModuleParams.AppThemeFolder</b></td>
-                        </tr>
-                    </table>
-                </div>
-            }
-        </div>
-    </div>
-
 
     <div class="w3-container w3-border w3-margin-top">
         <div class="w3-col m3 w3-padding">
@@ -149,32 +156,32 @@
 
 </div>
 
-<div id="datasourcelist">
-</div>
+    <div id="datasourcelist">
+    </div>
 
-<script>
+    <script>
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        $('.sharedataaction').unbind('change');
-        $('.sharedataaction').change(function () {
-            if ($('input[name=sharedataradio]:checked').val() === '0') {
-                $('.sharedataicon').hide();
-            }
-            if ($('input[name=sharedataradio]:checked').val() === '1') {
-                $('.sharedataicon').show();
-                $('.sharedataicon').css('color', 'teal')
-            }
-            if ($('input[name=sharedataradio]:checked').val() === '2') {
-                $('.sharedataicon').show();
-                $('.sharedataicon').css('color', 'red')
-            }
+            $('.sharedataaction').unbind('change');
+            $('.sharedataaction').change(function () {
+                if ($('input[name=sharedataradio]:checked').val() === '0') {
+                    $('.sharedataicon').hide();
+                }
+                if ($('input[name=sharedataradio]:checked').val() === '1') {
+                    $('.sharedataicon').show();
+                    $('.sharedataicon').css('color', 'teal')
+                }
+                if ($('input[name=sharedataradio]:checked').val() === '2') {
+                    $('.sharedataicon').show();
+                    $('.sharedataicon').css('color', 'red')
+                }
+            });
+
         });
 
-    });
+        function reloadpage() {
+            location.reload();
+        }
 
-    function reloadpage() {
-        location.reload();
-    }
-
-</script>
+    </script>

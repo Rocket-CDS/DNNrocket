@@ -173,8 +173,11 @@ namespace RocketMod
                     strOut = RemoveTemplate();
                     break;
 
-                case "exportmodule_export":
+                case "module_export":
                     strOut = ExportData();
+                    break;
+                case "module_import":
+                    ImportData();
                     break;
 
 
@@ -332,7 +335,8 @@ namespace RocketMod
             _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disbalecache");
             _moduleParams.ShareData = _postInfo.GetXmlProperty("genxml/hidden/sharedata");
             _moduleParams.TabId = _tabid;
-            _moduleParams.SystemKey = _systemInfoData.SystemKey;            
+            _moduleParams.SystemKey = _systemInfoData.SystemKey;
+            _moduleParams.ExportResourceFiles = _postInfo.GetXmlPropertyBool("genxml/hidden/exportresourcefiles");
 
             _moduleParams.Save();
             _passSettings.Add("saved", "true");
@@ -966,10 +970,13 @@ namespace RocketMod
 
         private static string ExportData()
         {
-            var exportData = new ExportData(_moduleid, _systemKey);
+            var exportData = new ExportData(_rocketInterface, _moduleid, _systemKey);
             return exportData.GetXml();
         }
-
+        private static void ImportData()
+        {
+            var importData = new ImportData(_rocketInterface, _paramInfo.GetXmlPropertyInt("export/portalid"), _moduleid, _postInfo.XMLData);
+        }
 
 
     }

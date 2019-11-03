@@ -13,11 +13,13 @@ namespace RocketMod.Componants
         private List<string> _documentRelList;
         private List<string> _imageRelList;
         private DNNrocketController _objCtrl;
+        private static DNNrocketInterface _rocketInterface;
 
 
-        public ExportData(int moduleid, string systemKey)
+
+        public ExportData(DNNrocketInterface rocketInterface, int moduleid, string systemKey)
         {
-
+            _rocketInterface = rocketInterface;
             _moduleParams = new ModuleParams(moduleid, systemKey);
             _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, systemKey);
             _objCtrl = new DNNrocketController();
@@ -35,22 +37,25 @@ namespace RocketMod.Componants
             xmlOut += GetXMLExportRecords("ROCKETMODFIELDS", "");
             xmlOut += GetXMLExportRecords("ROCKETMODFIELDSLANG", "");
 
-            if (_dataModuleParams.ModuleId != _moduleParams.ModuleId) // only export if data is linked to module.
+            if (_dataModuleParams.ModuleId == _moduleParams.ModuleId) // only export if data is in this module.
             {
                 // export DATA
                 xmlOut += GetXMLExportRecords("ROCKETMOD", "");
                 xmlOut += GetXMLExportRecords("ROCKETMODLANG", "");
                 // export IMAGES
+                xmlOut += "<imagelist>";
                 foreach (var i in _imageRelList)
                 {
-                    xmlOut += "<img>" + i + "</img>";
+                    xmlOut += "<rel>" + i + "</rel>";
                 }
+                xmlOut += "</imagelist>";
                 // export DOCS
+                xmlOut += "<documentlist>";
                 foreach (var i in _documentRelList)
                 {
-                    xmlOut += "<doc>" + i + "</doc>";
+                    xmlOut += "<rel>" + i + "</rel>";
                 }
-
+                xmlOut += "</documentlist>";
             }
 
             // export APPTHEME
@@ -62,8 +67,10 @@ namespace RocketMod.Componants
 
         private string GetXMLExportRecords(string entityTypeCode, string searchFilter)
         {
-            var dataList = _objCtrl.GetList(-1, _moduleParams.ModuleId, entityTypeCode, searchFilter, "", "", 0, 0, 0, 0, "DNNrocket");
-            var xmlOut = "";
+            var tablename = _rocketInterface.DatabaseTable;
+            if (tablename == "") tablename = "DNNrocket";
+            var dataList = _objCtrl.GetList(-1, _moduleParams.ModuleId, entityTypeCode, searchFilter, "", "", 0, 0, 0, 0, tablename);
+            var xmlOut = "<entitytype>" + entityTypeCode + "</entitytype>";
             foreach (var sInfo in dataList)
             {
                 // get imagelists and doclists
@@ -72,7 +79,7 @@ namespace RocketMod.Componants
                 {
                     if (listname.StartsWith("imagelist"))
                     {
-                        var fieldname = listname.Substring(10,listname.Length);
+                        var fieldname = listname.Substring(9,listname.Length - 9);
                         var list = sInfo.GetList(listname);
                         foreach (var i in list)
                         {
@@ -82,7 +89,7 @@ namespace RocketMod.Componants
                     }
                     if (listname.StartsWith("documentlist"))
                     {
-                        var fieldname = listname.Substring(13, listname.Length);
+                        var fieldname = listname.Substring(12, listname.Length - 12);
                         var list = sInfo.GetList(listname);
                         foreach (var i in list)
                         {
