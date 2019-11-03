@@ -237,7 +237,7 @@ namespace RocketMod
             }
             else
             {
-                if (!_moduleParams.Exists && paramCmd != "rocketmod_getdata" && paramCmd != "rocketmod_saveapptheme" && paramCmd != "rocketmod_saveconfig" && paramCmd != "rocketmod_saveappthemeconfig")
+                if (!_moduleParams.Exists && paramCmd != "module_import" && paramCmd != "rocketmod_getdata" && paramCmd != "rocketmod_saveapptheme" && paramCmd != "rocketmod_saveconfig" && paramCmd != "rocketmod_saveappthemeconfig")
                 {
                     return "rocketmod_selectapptheme";
                 }
@@ -681,7 +681,7 @@ namespace RocketMod
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetData("moduleid" + _moduleid, "ROCKETMODFIELDS", "", _moduleid, true);
                 if (info != null) objCtrl.Delete(info.ItemID);
-                info = objCtrl.GetData("moduleid" + _moduleid, "ROCKETSETTINGS", "", _moduleid, true);
+                info = objCtrl.GetData("moduleid" + _moduleid, "ROCKETMODSETTINGS", "", _moduleid, true);
                 if (info != null) objCtrl.Delete(info.ItemID);
 
                 return GetSelectApp();
@@ -975,7 +975,11 @@ namespace RocketMod
         }
         private static void ImportData()
         {
-            var importData = new ImportData(_rocketInterface, _paramInfo.GetXmlPropertyInt("export/portalid"), _moduleid, _postInfo.XMLData);
+            var oldmoduleid = _postInfo.GetXmlPropertyInt("export/moduleid");
+            var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+            var importData = new ImportData(_rocketInterface, portalid, _moduleid, oldmoduleid, _postInfo.XMLData);
+            CacheUtils.ClearAllCache();
+            DNNrocketUtils.ClearAllCache();
         }
 
 

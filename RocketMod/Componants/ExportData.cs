@@ -31,6 +31,8 @@ namespace RocketMod.Componants
         {
             var xmlOut = "";
 
+            xmlOut = "<moduleid>" + _moduleParams.ModuleId + "</moduleid>";
+
             xmlOut += GetXMLExportRecords("MODULEPARAMS", "");
             xmlOut += GetXMLExportRecords("ROCKETMODSETTINGS", "");
             xmlOut += GetXMLExportRecords("ROCKETMODSETTINGSLANG", "");

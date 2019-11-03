@@ -13,17 +13,21 @@ namespace RocketMod.Componants
         private DNNrocketController _objCtrl;
         private SimplisityInfo _importInfo;
         private int _moduleId;
+        private int _oldmoduleId;
         private static DNNrocketInterface _rocketInterface;
         private string _tablename;
 
-        public ImportData(DNNrocketInterface rocketInterface, int portalid, int moduleId, string content)
+
+        public ImportData(DNNrocketInterface rocketInterface, int portalid, int moduleId, int oldmoduleId, string content)
         {
             _rocketInterface = rocketInterface;
             _importInfo = new SimplisityInfo();
             _importInfo.XMLData = content;
             _moduleId = moduleId;
+            _oldmoduleId = oldmoduleId;
             _tablename = _rocketInterface.DatabaseTable;
             if (_tablename == "") _tablename = "DNNrocket";
+            _objCtrl = new DNNrocketController();
 
             var xmlNodList = _importInfo.XMLDoc.SelectNodes("export/entitytype");
             if (xmlNodList != null)
@@ -49,9 +53,14 @@ namespace RocketMod.Componants
                     importInfo.ItemID = -1; // new item
                     importInfo.PortalId = portalid;
                     importInfo.ModuleId = moduleId;
+
+                    // change standard guidkey using moduleid.
+                    if (importInfo.GUIDKey == "moduleparams*" + _oldmoduleId) importInfo.GUIDKey = "moduleparams*" + moduleId;
+                    if (importInfo.GUIDKey == "moduleid" + _oldmoduleId) importInfo.GUIDKey = "moduleid" + moduleId;
+
                     var newItemId = _objCtrl.Update(importInfo, _tablename);
 
-                    if (!legacyIdList.ContainsKey(newItemId)) legacyIdList.Add(newItemId, oldItemId);
+                    if (!legacyIdList.ContainsKey(oldItemId)) legacyIdList.Add(oldItemId, newItemId);
 
                 }
             }
@@ -65,7 +74,7 @@ namespace RocketMod.Componants
                 {
                     foreach (var legacyId in legacyIdList)
                     {
-                        var dataList = _objCtrl.GetList(-1, _moduleId, nod.InnerText, " and parentitemid = " + legacyId.Key + " ", "", "", 0, 0, 0, 0, _tablename);
+                        var dataList = _objCtrl.GetList(-1, _moduleId, nod.InnerText, " and ParentItemId = " + legacyId.Key + " ", "", "", 0, 0, 0, 0, _tablename);
                         foreach (var sInfo in dataList)
                         {
                             sInfo.ParentItemId = legacyId.Value;
