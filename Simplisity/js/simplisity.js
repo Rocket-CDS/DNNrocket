@@ -73,10 +73,23 @@ var trackgroup = '';
         var scmd = simplisity_getCookieValue('s-cmd-menu-' + trackgroup);
         var sfields = simplisity_getCookieValue('s-fields-menu-' + trackgroup);
         if ((typeof strack !== 'undefined' || scmd !== '') && settings.usehistory === true && iframeedit === '') {
-            $('#simplisity_startpanel').removeAttr('s-cmd');
-            $('#simplisity_startpanel').removeAttr('s-fields');
-            $('#simplisity_startpanel').attr('s-cmd', scmd);
-            $('#simplisity_startpanel').attr('s-fields', sfields);
+
+            // check if cookie gets corrupted.
+            var usecookie = true;
+            if (typeof sfields !== 'undefined'){
+                var obj = $.parseJSON(sfields);
+                if (typeof obj !== 'undefined') {
+                    if (obj['systemprovider'] !== settings.systemprovider) {
+                        usecookie = false;
+                    }
+                }
+            }
+            if (usecookie) {
+                $('#simplisity_startpanel').removeAttr('s-cmd');
+                $('#simplisity_startpanel').removeAttr('s-fields');
+                $('#simplisity_startpanel').attr('s-cmd', scmd);
+                $('#simplisity_startpanel').attr('s-fields', sfields);
+            }
         }
         sessionStorage.iframeedit = '';
 
