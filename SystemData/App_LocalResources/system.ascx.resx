@@ -276,4 +276,19 @@
   <data name="ref.Text" xml:space="preserve">
     <value>Ref</value>
   </data>
+  <data name="ftphomedirectory.Text" xml:space="preserve">
+    <value>FTP Home Directory</value>
+  </data>
+  <data name="ftppassword.Text" xml:space="preserve">
+    <value>FTP Password</value>
+  </data>
+  <data name="ftpserver.Text" xml:space="preserve">
+    <value>FTP Server</value>
+  </data>
+  <data name="ftpuser.Text" xml:space="preserve">
+    <value>FTP User</value>
+  </data>
+  <data name="publicappthemeuri.Text" xml:space="preserve">
+    <value>Public AppTheme URI</value>
+  </data>
 </root>

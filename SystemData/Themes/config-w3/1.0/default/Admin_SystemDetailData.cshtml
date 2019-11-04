@@ -68,6 +68,24 @@
             </div>
         </div>
 
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.ftpserver")</label>
+                @TextBox(sInfo, "genxml/textbox/ftpserver", "class='w3-input w3-border' maxlength='250' ", "")
+                <label class="">@ResourceKey("system.ftpuser")</label>
+                @TextBox(sInfo, "genxml/textbox/ftpuser", "class='w3-input w3-border' maxlength='250' ", "")
+                <label class="">@ResourceKey("system.publicappthemeuri")</label>
+                @TextBox(sInfo, "genxml/textbox/publicappthemeuri", "class='w3-input w3-border' maxlength='250' ", "")
+            </div>
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.ftphomedirectory")</label>
+                @TextBox(sInfo, "genxml/textbox/ftphomedirectory", "class='w3-input w3-border' maxlength='250' ", "")
+                <label class="">@ResourceKey("system.ftppassword")</label>
+                @TextBox(sInfo, "genxml/textbox/ftppassword", "class='w3-input w3-border' maxlength='250' ", "")
+            </div>
+        </div>
+
+
         <div class="w3-row-padding w3-right-align">
             @sInfo.GUIDKey / @sInfo.ItemID
         </div>

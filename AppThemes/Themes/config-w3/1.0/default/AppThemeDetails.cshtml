@@ -86,6 +86,33 @@
         </div>
     </div>
 
+    <div id="uploadapptheme" class="w3-modal">
+        <div class="w3-modal-content w3-card w3-animate-zoom">
+
+            <header class="w3-container  w3-theme">
+                <span onclick="document.getElementById('uploadapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>@ResourceKey("Appthemes.uploadapptheme")...</h2>
+            </header>
+
+
+            <div class="w3-light-grey w3-margin">
+                <div id="progressBarUpload" class="w3-container w3-green" style="height:24px;width:1%"></div>
+            </div>
+
+
+            <div class="w3-row-padding">
+                <div class="w3-col m3 w3-padding">
+                    <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-track="false" s-before="moveprogressbarupload" s-cmd="rocketapptheme_uploadapptheme" s-post="#uploadapptheme" s-return=".uploadappthemereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class="fas fa-upload fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.upload")</div>
+                </div>
+            </div>
+            <div class="w3-row w3-padding">
+                <div class="w3-row w3-panel w3-red uploadappthemereturn" style="display:none;">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 
 
     <div id="detailsection">
@@ -98,10 +125,12 @@
 
             <div class="w3-col m2 w3-dropdown-hover">
                 <div class="w3-button">@ResourceKey("DNNrocket.more")...</div>
-                <div class="w3-dropdown-content w3-bar-block w3-card">
+                <div class="w3-dropdown-content w3-bar-block w3-card" style="width:340px;">
                     <div class="w3-bar-item w3-button simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-blue fas fa-newspaper fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
                     <div class="w3-bar-item w3-button" onclick="document.getElementById('copyapptheme').style.display = 'block';"><i class="w3-text-blue fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copyapptheme")</div>
+                    <div class="w3-bar-item w3-button" onclick="document.getElementById('uploadapptheme').style.display = 'block';"><i class="w3-text-blue fas fa-upload fa-fw fa-lg"></i>&nbsp;@ResourceKey("AppThemes.uploadapptheme")</div>
                     <a class="w3-bar-item w3-button w3-padding-8 simplisity_filedownload" s-track="false" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-teal fas fa-file-export fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNRocket.cmdExport")</a>
+                    <div class="w3-bar-item" style="height:30px;"><hr /></div>
                     <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete") AppTheme</div>
                     <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")</div>
 
@@ -650,6 +679,7 @@
     var myCodeMirror;
     var defaultNamedata = [];
     var defaultValuedata = [];
+    var progressbarid = '';
 
     $(document).ready(function () {
 
@@ -714,6 +744,19 @@
                 var position = myCodeMirror.getCursor();
                 myCodeMirror.replaceRange(snip, CodeMirror.Pos(position.line));
             }
+        });
+
+        $('.uploadappthemereturn').unbind('change');
+        $('.uploadappthemereturn').change(function () {
+            var rtn = $(this).text();
+            clearInterval(progressbarid);
+            if (rtn === 'OK') {
+                document.getElementById('uploadapptheme').style.display = 'none';
+            }
+            else {
+                $('.uploadappthemereturn').show();
+            }
+
         });
 
         showDataTab();
@@ -975,6 +1018,13 @@
             }
         });
 
+        $('.resxnameinput').unbind("focusout");
+        $('.resxnameinput').focusout(function () {
+            if ($(this).val().indexOf(".") === -1) {
+                $(this).val($(this).val() + '.Text');
+            }
+        });
+
 
     }
 
@@ -1015,6 +1065,20 @@
             row += 1;
         }
 
+    }
+
+    function moveprogressbarupload() {
+        var elem = document.getElementById("progressBarUpload");
+        var width = 1;
+        progressbarid = setInterval(frame, 10);
+        function frame() {
+            if (width >= 100) {
+                width = 1;
+            } else {
+                width++;
+                elem.style.width = width + '%';
+            }
+        }
     }
 
 </script>

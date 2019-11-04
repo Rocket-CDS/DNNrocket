@@ -297,6 +297,9 @@
   <data name="upload.Text" xml:space="preserve">
     <value>Upload</value>
   </data>
+  <data name="uploadapptheme.Text" xml:space="preserve">
+    <value>Upload AppTheme to FTP Server</value>
+  </data>
   <data name="uploadmsg.Text" xml:space="preserve">
     <value>Upload AppTheme</value>
   </data>

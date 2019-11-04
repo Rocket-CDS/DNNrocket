@@ -149,6 +149,9 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_docopy":
                         strOut = DoCopyAppTheme();
                         break;
+                    case "rocketapptheme_uploadapptheme":
+                        strOut = UploadAppTheme();
+                        break;                        
                 }
             }
             else
@@ -284,20 +287,25 @@ namespace DNNrocket.AppThemes
             }
         }
 
-private static Dictionary<string, string> ExportAppTheme()
-{
-    var appThemeFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appthemefolder");
-    var appVersionFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder");
-    var appTheme = new AppTheme(_selectedSystemKey, appThemeFolder, appVersionFolder, true);
+        private static Dictionary<string, string> ExportAppTheme()
+        {
+            var appThemeFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appthemefolder");
+            var appVersionFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder");
+            var appTheme = new AppTheme(_selectedSystemKey, appThemeFolder, appVersionFolder, true);
 
-    var exportZipMapPath = appTheme.Export();
+            var exportZipMapPath = appTheme.Export();
 
-    var rtnDic = new Dictionary<string, string>();
-    rtnDic.Add("filenamepath", exportZipMapPath);
-    rtnDic.Add("downloadname", appTheme.AppThemeFolder + ".zip");
+            var rtnDic = new Dictionary<string, string>();
+            rtnDic.Add("filenamepath", exportZipMapPath);
+            rtnDic.Add("downloadname", appTheme.AppThemeFolder + ".zip");
 
-    return rtnDic;
-}
+            return rtnDic;
+        }
+        private static string UploadAppTheme()
+        {
+
+            return "All Fucked UP!!!";
+        }
 
         private static string ImportAppTheme()
         {
