@@ -67,21 +67,24 @@ namespace DNNrocketAPI.Componants
             // Get module settings
             ModuleSettings = new Dictionary<string, string>();
             var moduleSettings = objCtrl.GetByGuidKey(-1, moduleId, ModuleType.ToUpper() +  "SETTINGS", "moduleid" + _moduleid, "",_tableName);
-            moduleSettings = objCtrl.GetInfo(moduleSettings.ItemID, DNNrocketUtils.GetCurrentCulture());
             if (moduleSettings != null)
             {
-                var settingsDict = moduleSettings.ToDictionary();
-                var settingList = moduleSettings.GetList(ModuleType.ToLower() + "settings");
-                if (settingList != null)
+                moduleSettings = objCtrl.GetInfo(moduleSettings.ItemID, DNNrocketUtils.GetCurrentCulture());
+                if (moduleSettings != null)
                 {
-                    foreach (var s in settingList)
+                    var settingsDict = moduleSettings.ToDictionary();
+                    var settingList = moduleSettings.GetList(ModuleType.ToLower() + "settings");
+                    if (settingList != null)
                     {
-                        var settingvalue = s.GetXmlProperty("genxml/textbox/value");
-                        if (s.GetXmlPropertyBool("genxml/checkbox/localized")) settingvalue = s.GetXmlProperty("genxml/lang/genxml/textbox/valuelang");
+                        foreach (var s in settingList)
+                        {
+                            var settingvalue = s.GetXmlProperty("genxml/textbox/value");
+                            if (s.GetXmlPropertyBool("genxml/checkbox/localized")) settingvalue = s.GetXmlProperty("genxml/lang/genxml/textbox/valuelang");
 
-                        settingsDict.Add(s.GetXmlProperty("genxml/textbox/name"), settingvalue);
+                            settingsDict.Add(s.GetXmlProperty("genxml/textbox/name"), settingvalue);
+                        }
+                        ModuleSettings = settingsDict;
                     }
-                    ModuleSettings = settingsDict;
                 }
             }
 
