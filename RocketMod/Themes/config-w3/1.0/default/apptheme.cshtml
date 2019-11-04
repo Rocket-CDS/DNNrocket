@@ -89,11 +89,16 @@
                                             {
                                                 moduletemplate = "w3-pale-green";
                                             }
+                                            var filename = templateInfo.GetXmlProperty("genxml/hidden/filename");
                                         }
-                                        @if (templateInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                        @if (filename != "")
                                         {
                                             disabledfilename = "disabled";
                                             hideicon = "";
+                                        }
+                                        @if (appThemeMod.ModuleParams.DataSourceExternal && ( filename == "edit" || filename == "editlist"))
+                                        {
+                                            hideicon = "display:none;";
                                         }
 
                                         <div class="w3-col m8">

@@ -32,6 +32,7 @@ namespace DNNrocketAPI.Componants
             _moduleParamsRec = new SimplisityRecord();
             _cacheKey = "moduleparams*" + moduleId;
             _moduleParamsRec = (SimplisityRecord)CacheUtils.GetCache(_cacheKey);
+            var objCtrl = new DNNrocketController();
             if ((_moduleParamsRec == null || !useCache))
             {
                 if (moduleId <= 0)
@@ -41,7 +42,6 @@ namespace DNNrocketAPI.Componants
                 }
                 else
                 {
-                    var objCtrl = new DNNrocketController();
                     _moduleParamsRec = objCtrl.GetRecordByGuidKey(-1, _moduleid, "MODULEPARAMS", _cacheKey, "", _tableName);
                     if (_moduleParamsRec == null)
                     {
@@ -63,6 +63,28 @@ namespace DNNrocketAPI.Componants
             if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueKey();
             if (DataSourceModId <= 0) DataSourceModId = _moduleid;
             if (DataSourceModRef == "") DataSourceModRef = ModuleRef;
+
+            // Get module settings
+            ModuleSettings = new Dictionary<string, string>();
+            var moduleSettings = objCtrl.GetByGuidKey(-1, moduleId, ModuleType.ToUpper() +  "SETTINGS", "moduleid" + _moduleid, "",_tableName);
+            moduleSettings = objCtrl.GetInfo(moduleSettings.ItemID, DNNrocketUtils.GetCurrentCulture());
+            if (moduleSettings != null)
+            {
+                var settingsDict = moduleSettings.ToDictionary();
+                var settingList = moduleSettings.GetList(ModuleType.ToLower() + "settings");
+                if (settingList != null)
+                {
+                    foreach (var s in settingList)
+                    {
+                        var settingvalue = s.GetXmlProperty("genxml/textbox/value");
+                        if (s.GetXmlPropertyBool("genxml/checkbox/localized")) settingvalue = s.GetXmlProperty("genxml/lang/genxml/textbox/valuelang");
+
+                        settingsDict.Add(s.GetXmlProperty("genxml/textbox/name"), settingvalue);
+                    }
+                    ModuleSettings = settingsDict;
+                }
+            }
+
         }
         public void Save()
         {
@@ -154,6 +176,8 @@ namespace DNNrocketAPI.Componants
         public bool CacheDisbaled { get { return GetValueBool("disbalecache"); } set { SetValue("disbalecache", value.ToString()); } }
         public bool CacheEnabled { get { return !GetValueBool("disbalecache"); } }
         public bool ExportResourceFiles { get { return GetValueBool("exportresourcefiles"); } set { SetValue("exportresourcefiles", value.ToString()); } }
+        public Dictionary<string,string> ModuleSettings { get; private set; }
+
     }
 
 }

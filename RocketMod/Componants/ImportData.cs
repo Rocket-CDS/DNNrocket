@@ -38,6 +38,10 @@ namespace RocketMod.Componants
                 }
             }
 
+            // get new moduleref 
+            var currentModuleParams = new ModuleParams(moduleId);
+            var newmoduleref = currentModuleParams.ModuleRef;
+
             var legacyIdList = new Dictionary<int, int>();
             xmlNodList = _importInfo.XMLDoc.SelectNodes("export/item");
             if (xmlNodList != null)
@@ -50,6 +54,7 @@ namespace RocketMod.Componants
                     var oldItemId = importInfo.ItemID;
 
                     importInfo.SetXmlProperty("genxml/legacyitemid", oldItemId.ToString());
+                    if (importInfo.TypeCode == "MODULEPARAMS") importInfo.SetXmlProperty("genxml/hidden/moduleref", newmoduleref);                    
                     importInfo.ItemID = -1; // new item
                     importInfo.PortalId = portalid;
                     importInfo.ModuleId = moduleId;

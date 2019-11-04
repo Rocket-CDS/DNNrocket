@@ -49,8 +49,6 @@ namespace RocketMod
             DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, returnLimit, Page, PageSize, rowCount, _tableName);
             RowCount = rowCount;
 
-            ModuleSettings = new SettingsData(-1, _moduleid, "", "ROCKETMODSETTINGS", "rocketmodsettings", true);
-
         }
         public void DeleteAll()
         {
@@ -135,8 +133,6 @@ namespace RocketMod
         }
 
         #endregion
-
-        public SettingsData ModuleSettings { get; private set; }
 
 
     }

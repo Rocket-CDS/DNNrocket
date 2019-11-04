@@ -862,48 +862,20 @@ namespace RocketMod
                 {
                     var objCtrl = new DNNrocketController();
 
-                    var apptheme = _moduleParams.AppThemeFolder;
+                    var appthemefolder = _moduleParams.AppThemeFolder;
                     var razorTempl = _appThemeMod.GetTemplateRazor("view");
                     var passSettings = _paramInfo.ToDictionary();                 
                     passSettings.Add("addeditscript", _commandSecurity.HasModuleEditRights().ToString());
                     var adminurl = "/DesktopModules/DNNrocket/RocketMod/admin.html?moduleid=" + _moduleid + "&tabid=" + _tabid;
                     passSettings.Add("adminurl", adminurl);
-                    var appTheme = new AppTheme(_systemInfoData.SystemKey, apptheme, _moduleParams.AppThemeVersion);
+                    var appTheme = new AppTheme(_systemInfoData.SystemKey, appthemefolder, _moduleParams.AppThemeVersion);
                     passSettings.Add("datatype", appTheme.DataType.ToString());
                     var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
                     articleDataList.Populate(appTheme.DataType);
 
-                    // get all module settings for the data module
-                    if (articleDataList.ModuleSettings != null)
+                    foreach (var s in _moduleParams.ModuleSettings)
                     {
-                        foreach (var s in articleDataList.ModuleSettings.ToDictionary())
-                        {
-                            if (passSettings.ContainsKey(s.Key))
-                            {
-                                passSettings[s.Key] = s.Value;
-                            }
-                            else
-                            {
-                                passSettings.Add(s.Key, s.Value);
-                            }
-                        }
-                    }
-                    // get all module settings for the curenty module
-                    var currentArticleDataList = new ArticleDataList(_moduleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
-                    currentArticleDataList.Populate(appTheme.DataType);
-                    if (currentArticleDataList.ModuleSettings != null)
-                    {
-                        foreach (var s in currentArticleDataList.ModuleSettings.ToDictionary())
-                        {
-                            if (passSettings.ContainsKey(s.Key))
-                            {
-                                passSettings[s.Key] = s.Value;
-                            }
-                            else
-                            {
-                                passSettings.Add(s.Key, s.Value);
-                            }
-                        }
+                        if (!passSettings.ContainsKey(s.Key)) passSettings.Add(s.Key, s.Value);
                     }
 
                     passSettings.Add("DocumentFolderRel", _dataModuleParams.DocumentFolderRel);
