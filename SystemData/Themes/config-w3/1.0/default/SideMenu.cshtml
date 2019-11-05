@@ -1,0 +1,103 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
+
+@{
+    var username = UserUtils.GetCurrentUserName();
+    var sidemenu = (SideMenu)Model.List.First();
+    var systemInfoData = new SystemInfoData(sidemenu.SystemKey);
+}
+
+<div class="w3-row w3-padding-small w3-white w3-border-bottom">
+    <img src="/DesktopModules/DNNrocket/SystemData/Themes/config-w3/1.0/img/rocketsystem.png" style="" class="">
+    <button class="w3-hide-large w3-button w3-right" onclick="w3_close()" style="cursor:pointer" title=""><i class='fas fa-caret-left' style='font-size:36px'></i></button>
+</div>
+
+<div class="w3-bar-block w3-theme-d3">
+
+    <div class="w3-overlay w3-white " style="display:none;" id="sidebar_loader"><i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i></div>
+
+    <a class="w3-bar-item w3-button w3-padding w3-theme-d3 " href="/desktopmodules/dnnrocket/adminsystem.html"><i title="System" class='fas fa-rocket' style='width:20px;'></i>&nbsp;System</a>
+
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_clearallcache" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("DNNrocket.clearallcache")</div>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="login_signout" s-return="#simplisity_startpanel"><i class="fas fa-sign-out-alt"></i>&nbsp;@ResourceKey("DNNrocket.signout")</div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $(window).resize(function () {
+            if ($('#simplisity_fullloader').is(':visible')) {
+                $('#mySidebar').width($('#mySidebar').parent().width());
+            }
+        });
+
+        sidemenuchange();
+
+    });
+
+    // Get the Sidebar
+    var mySidebar = document.getElementById("mySidebar");
+
+    // Toggle between showing and hiding the sidebar, and add overlay effect
+    function w3_open() {
+        if (mySidebar.style.display === 'block') {
+            mySidebar.style.display = 'none';
+        } else {
+            mySidebar.style.display = 'block';
+        }
+        $('#mySidebar').width($('#mySidebar').parent().width());
+        $('#simplisity_fullloader').show();
+    }
+
+    // Close the sidebar with the close button
+    function w3_close() {
+        if ($('#simplisity_fullloader').is(':visible')) {
+            mySidebar.style.display = 'none';
+            $('#mySidebar').width(270)
+            $('#simplisity_fullloader').hide();
+        }
+    }
+
+    function sidebarloader() {
+        $('#sidebar_loader').show();
+    }
+
+    function sidemenuchange() {
+        $('.simplisity_menulink').removeClass('w3-white');
+        $('.simplisity_menulink').removeClass('w3-text-blue-grey');
+        var index = simplisity_lastmenuindex();
+        if (index != '') {
+            $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-white');
+            $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-text-blue-grey');
+        }
+        w3_close();
+        $('#sidebar_loader').hide();
+    }
+
+    function returnclick() {
+        $('#simplisity_loader').show();
+
+        var returnurl = sessionStorage.RocketModReturn;
+        if (typeof returnurl === 'undefined' || returnurl === '') {
+            window.history.back();
+        }
+        else {
+            window.location = returnurl;
+        }
+    }
+
+</script>

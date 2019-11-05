@@ -134,7 +134,7 @@ namespace DNNrocket.SystemData
                     var passSettings = sInfo.ToDictionary();
 
 
-                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
                     var objCtrl = new DNNrocketController();
                     var info = objCtrl.GetInfo(selecteditemid);
@@ -167,7 +167,7 @@ namespace DNNrocket.SystemData
 
                 var passSettings = sInfo.ToDictionary();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
                 strOut = DNNrocketUtils.RazorList(razorTempl, list, passSettings);
 
@@ -202,7 +202,7 @@ namespace DNNrocket.SystemData
                 var objCtrl = new DNNrocketController();
                 info.ItemID = objCtrl.SaveRecord(info).ItemID;
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
 
@@ -492,7 +492,7 @@ namespace DNNrocket.SystemData
                 CacheUtils.ClearAllCache();
                 var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
                 var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, info);
 
             }

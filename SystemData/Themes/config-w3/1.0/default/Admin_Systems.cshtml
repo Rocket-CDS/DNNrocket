@@ -7,10 +7,8 @@
 
     <div class="w3-container">
 
-        <div class="w3-row w3-border w3-theme-l5 w3-padding">
+        <div class="w3-row w3-padding">
             <div class="w3-col m2 w3-button w3-teal w3-margin-left simplisity_click" s-cmd="systemapi_adminaddnew" s-fields='{"theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdAddButton")</div>
-            <div class="w3-col m2 w3-button w3-orange w3-margin-left simplisity_confirmclick" s-cmd="systemapi_clearallcache" s-confirm="@ResourceKey("DNNrocket.cmdClearCache","","confirm")" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdClearCacheButton")</div>
-            <div class="w3-col m2 w3-button w3-green w3-margin-left simplisity_click" s-cmd="login_signout" s-return="#simplisity_startpanel"><i class="fas fa-sign-out-alt"></i>&nbsp;@ResourceKey("DNNrocket.signout")</div>
         </div>
 
         <div class="w3-row-padding plugins w3-margin-top">
