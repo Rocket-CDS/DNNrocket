@@ -277,7 +277,7 @@
     <value>Ref</value>
   </data>
   <data name="ftphomedirectory.Text" xml:space="preserve">
-    <value>FTP Home Directory</value>
+    <value>FTP Directory (not including the default directory)</value>
   </data>
   <data name="ftppassword.Text" xml:space="preserve">
     <value>FTP Password</value>

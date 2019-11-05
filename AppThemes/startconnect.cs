@@ -303,8 +303,14 @@ namespace DNNrocket.AppThemes
         }
         private static string UploadAppTheme()
         {
+            var rtnDic = ExportAppTheme();
+            if (rtnDic["filenamepath"] != null && rtnDic["filenamepath"] != "")
+            {
+                var ftpConnect = new FtpConnect(_systemInfoData.SystemKey);
 
-            return "All Fucked UP!!!";
+                return ftpConnect.UploadAppTheme(_appTheme);
+            }
+            return "FTP Failed, No AppTheme export file found.";
         }
 
         private static string ImportAppTheme()
