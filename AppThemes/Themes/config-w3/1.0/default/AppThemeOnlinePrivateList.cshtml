@@ -1,0 +1,161 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using Rocket.AppThemes.Componants;
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+
+@{
+    var appThemeDataList = (AppThemeDataPrivateList)Model.List.First();
+}
+
+    <div class=''>
+
+
+        @if (appThemeDataList.SelectedSystemKey == "")
+        {
+
+            <div class="w3-modal-content w3-border w3-card">
+
+                <header class="w3-container w3-theme">
+                    <h2>@ResourceKey("Appthemes.selectsystem")</h2>
+                </header>
+
+                <div class="w3-row-padding w3-margin">
+                    <ul class="w3-ul w3-border w3-hoverable w-margin">
+
+                        @foreach (SystemInfoData systemInfoData in appThemeDataList.SystemFolderList)
+                        {
+                            <li class="simplisity_click" s-cmd="rocketapptheme_selectsystemkey" s-fields='{"systemkey":"@systemInfoData.SystemKey"}' onclick="document.getElementById('systemselect').style.display='none'">
+                                @systemInfoData.SystemName
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+
+                <footer class="w3-container w3-theme"></footer>
+
+            </div>
+
+        }
+        else
+        {
+            var systemInfoData2 = new SystemInfoData(appThemeDataList.SelectedSystemKey);
+
+
+            <div class="w3-row w3-padding">
+                <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" s-track="false">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-half">
+                    <h2>@systemInfoData2.SystemName</h2>
+                </div>
+                <div class="w3-half w3-padding w3-right-align">
+                    <i class="griddisplayicon fas fa-th fa-2x"></i>
+                    &nbsp;
+                    <i class="listdisplayicon w3-text-blue fas fa-th-list fa-2x"></i>
+                </div>
+            </div>
+            <div class="w3-row w3-card searchdata w3-margin-top">
+
+                <div class="">
+                    <div class="w3-row w3-padding">
+                        <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
+                    </div>
+                </div>
+
+            </div>
+
+
+            @RenderTemplate("AppThemeOnlineListBody.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", Model, "1.0", true)
+
+
+            <script>
+                $(document).ready(function () {
+                    $("#datalist").disableSelection();
+
+                    var displayviewtype = simplisity_getCookieValue('displayviewtype');
+                    if (displayviewtype === 'griddisplayicon') {
+                        showgrid();
+                    }
+                    else {
+                        showlist();
+                    }
+
+                    $('.griddisplayicon').unbind('click');
+                    $('.griddisplayicon').click(function () {
+                        showgrid();
+                        simplisity_setCookieValue('displayviewtype', 'griddisplayicon');
+                    });
+                    $('.listdisplayicon').unbind('click');
+                    $('.listdisplayicon').click(function () {
+                        showlist();
+                        simplisity_setCookieValue('displayviewtype', 'listdisplayicon');
+                    });
+
+                    RocketAnimation_StartHook();
+
+                });
+
+                function closeimportmodal() {
+                    $('#importapptheme').hide();
+                }
+
+                function showgrid() {
+                    $('.griddisplayicon').addClass('w3-text-blue');
+                    $('.listdisplayicon').removeClass('w3-text-blue');
+                    $('#datalist2').show();
+                    $('#datalist').hide();
+                }
+                function showlist() {
+                    $('.griddisplayicon').removeClass('w3-text-blue');
+                    $('.listdisplayicon').addClass('w3-text-blue');
+                    $('#datalist2').hide();
+                    $('#datalist').show();
+                }
+
+                function searchFunction() {
+                    var input, filter, ul, li, a, i;
+                    input = document.getElementById("searchtext");
+                    filter = input.value.toUpperCase();
+                    ul = document.getElementById("datalist");
+                    li = ul.getElementsByTagName("li");
+                    for (i = 0; i < li.length; i++) {
+                        txtValue = li[i].textContent || li[i].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            li[i].style.display = "";
+                        } else {
+                            li[i].style.display = "none";
+                        }
+                    }
+                    ul = document.getElementById("datalist2");
+                    li = ul.getElementsByTagName("div");
+                    for (i = 0; i < li.length; i++) {
+                        txtValue = li[i].textContent || li[i].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            li[i].style.display = "";
+                        } else {
+                            li[i].style.display = "none";
+                        }
+                    }
+                }
+
+                function redisplaylist() {
+                    if ($('.createnewappthemereturn').text() == '') {
+                        simplisity_callserver($('.refreshlist'));
+                    }
+                    else {
+                        $('.createnewappthemereturn').show();
+                    }
+                }
+
+            </script>
+
+        }
+
+    </div>
+

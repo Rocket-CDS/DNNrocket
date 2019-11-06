@@ -10,17 +10,21 @@ namespace DNNrocket.SystemData
     public class StartConnect : DNNrocketAPI.APInterface
     {
         private static SystemInfoData _systemInfoData;
+        private static string _controlRelPath;
+        private static SimplisityInfo _postInfo;
+        private static SimplisityInfo _paramInfo;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
-
+            _postInfo = postInfo;
+            _paramInfo = paramInfo;
             _systemInfoData = new SystemInfoData(systemInfo);
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
             var commandSecurity = new CommandSecurity(-1, -1, rocketInterface);
 
             //CacheUtils.ClearAllCache();
 
-            var controlRelPath = "/DesktopModules/DNNrocket/SystemData";
+            _controlRelPath = "/DesktopModules/DNNrocket/SystemData";
 
             var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [SystemData]";
 
@@ -31,41 +35,41 @@ namespace DNNrocket.SystemData
                 switch (paramCmd)
                 {
                     case "systemapi_admin_getsystemlist":
-                        strOut = SystemAdminList(paramInfo, controlRelPath);
+                        strOut = SystemAdminList(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_admin_getdetail":
-                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
+                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_adminaddnew":
-                        strOut = SystemAddNew(paramInfo, controlRelPath);
+                        strOut = SystemAddNew(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_addinterface":
                         SystemAddListItem(paramInfo, "interfacedata");
-                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
+                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_admin_save":
                         SystemSave(postInfo, paramInfo);
-                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
+                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_admin_delete":
                         SystemDelete(paramInfo);
-                        strOut = SystemAdminList(paramInfo, controlRelPath);
+                        strOut = SystemAdminList(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_addparam":
                         SystemAddListItem(paramInfo, "idxfielddata");
-                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
+                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_addsetting":
                         SystemAddListItem(paramInfo, "settingsdata");
-                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
+                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_addgroup":
                         SystemAddListItem(paramInfo, "groupsdata");
-                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
+                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_addprovtype":
                         SystemAddListItem(paramInfo, "provtypesdata");
-                        strOut = SystemAdminDetail(paramInfo, controlRelPath);
+                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_rebuildindex":
                         RebuildIndex(paramInfo, false);
@@ -76,12 +80,19 @@ namespace DNNrocket.SystemData
                         strOut = "<h1>Deleting and Rebuilding Index</h1>";
                         break;
                     case "systemapi_copyinterface":
-                        strOut = CopyInterface(paramInfo, controlRelPath);
+                        strOut = CopyInterface(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_clearallcache":
                         CacheUtils.ClearAllCache();
                         DNNrocketUtils.ClearAllCache();
-                        strOut = SystemAdminList(paramInfo, controlRelPath);
+                        strOut = SystemAdminList(paramInfo, _controlRelPath);
+                        break;
+                    case "systemapi_globaldetail":
+                        strOut = SystemGlobalDetail();
+                        break;
+                    case "systemapi_globalsave":
+                        SystemGlobalSave();
+                        strOut = SystemGlobalDetail();
                         break;
                 }
             }
@@ -150,6 +161,35 @@ namespace DNNrocket.SystemData
                 return ex.ToString();
             }
         }
+
+        public static String SystemGlobalDetail()
+        {
+            try
+            {
+                var passSettings = _paramInfo.ToDictionary();
+
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("Admin_SystemGlobalDetail.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+
+                var globalData = new SystemGlobalData();
+
+                var strOut = DNNrocketUtils.RazorDetail(razorTempl, globalData, passSettings);
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                DNNrocketUtils.LogException(ex);
+                return ex.ToString();
+            }
+        }
+
+        public static void SystemGlobalSave()
+        {
+            var globalData = new SystemGlobalData();
+            globalData.Save(_postInfo);
+
+            CacheUtils.ClearAllCache();
+        }
+
 
 
         public static String RenderSystemAdminList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath)

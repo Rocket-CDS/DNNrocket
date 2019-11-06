@@ -1,0 +1,55 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
+@{
+    var systemGlobalData = (SystemGlobalData)Model.List.First();
+    var info = systemGlobalData.Info;
+}
+
+<div class="w3-row w3-padding">
+    <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_globalsave"  s-post="#globalsettings">@ResourceKey("DNNrocket.cmdSaveButton")</div>
+    @ButtonGap()
+</div>
+
+<div id="globalsettings" class="">
+
+    <div class="w3-padding-large">
+        <h1>@ResourceKey("system.privateftp")</h1>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.ftpserver")</label>
+                @TextBox(info, "genxml/textbox/ftpserver", "class='w3-input w3-border' maxlength='250' ", "")
+            </div>
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.ftpuser")</label>
+                @TextBox(info, "genxml/textbox/ftpuser", "class='w3-input w3-border' maxlength='250' ", "")
+                <label class="">@ResourceKey("system.ftppassword")</label>
+                @TextBox(info, "genxml/textbox/ftppassword", "class='w3-input w3-border' type='password'  maxlength='50' ", "")
+            </div>
+        </div>
+
+        <h1>@ResourceKey("system.publicapptheme")</h1>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.publicappthemeuri")</label>
+                @TextBox(info, "genxml/textbox/publicappthemeuri", "class='w3-input w3-border' maxlength='250' ", "http://appthemes.dnnrocket.com/publicappthemes")
+            </div>
+            <div class="w3-half">
+                <label class="">DNNrocket @ResourceKey("system.publicappthemeuri")</label>
+                @TextBox(info, "genxml/textbox/dnnrocketappthemeuri", "class='w3-input w3-border' maxlength='250' ", "http://appthemes.dnnrocket.com/appthemes")
+            </div>
+        </div>
+
+        <div class="w3-row-padding w3-right-align">
+            @info.ItemID
+        </div>
+
+
+    </div>
+</div>
+

@@ -131,6 +131,10 @@ namespace DNNrocketAPI
         {
             get { return Info.GetXmlProperty("genxml/textbox/defaultinterface"); }
         }
+        public string FtpRoot
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/ftproot"); }
+        }        
 
     }
 }

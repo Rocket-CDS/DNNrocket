@@ -151,7 +151,11 @@ namespace DNNrocket.AppThemes
                         break;
                     case "rocketapptheme_uploadapptheme":
                         strOut = UploadAppTheme();
-                        break;                        
+                        break;
+                    case "rocketapptheme_getprivatelist":
+                        strOut = GetPrivateListAppTheme();
+                        break;
+                        
                 }
             }
             else
@@ -287,13 +291,32 @@ namespace DNNrocket.AppThemes
             }
         }
 
+        public static String GetPrivateListAppTheme()
+        {
+            try
+            {
+                var appThemeDataList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey); 
+                var template = _rocketInterface.DefaultTemplate;
+                if (template == "") template = "AppThemeOnlinePrivateList.cshtml";
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var passSettings = _postInfo.ToDictionary();
+
+                return DNNrocketUtils.RazorDetail(razorTempl, appThemeDataList, passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+
+            }
+        }
+
         private static Dictionary<string, string> ExportAppTheme()
         {
             var appThemeFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appthemefolder");
             var appVersionFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder");
             var appTheme = new AppTheme(_selectedSystemKey, appThemeFolder, appVersionFolder, true);
 
-            var exportZipMapPath = appTheme.Export();
+            var exportZipMapPath = appTheme.ExportZipFile();
 
             var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("filenamepath", exportZipMapPath);
@@ -306,7 +329,7 @@ namespace DNNrocket.AppThemes
             var rtnDic = ExportAppTheme();
             if (rtnDic["filenamepath"] != null && rtnDic["filenamepath"] != "")
             {
-                var ftpConnect = new FtpConnect(_systemInfoData.SystemKey);
+                var ftpConnect = new FtpConnect(_selectedSystemKey);
 
                 return ftpConnect.UploadAppTheme(_appTheme);
             }

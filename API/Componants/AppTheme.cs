@@ -27,7 +27,7 @@ namespace DNNrocketAPI.Componants
         public AppTheme(string zipMapPath)
         {
             _objCtrl = new DNNrocketController();
-            ImportXmlData(zipMapPath);
+            ImportXmlFile(zipMapPath);
         }
         public AppTheme(string systemKey, string appThemeFolder, string versionFolder = "", bool debugMode = false)
         {
@@ -1439,8 +1439,7 @@ namespace DNNrocketAPI.Componants
             _objCtrl.Update(Record);
         }
 
-
-        public string Export(bool latestVersionOnly = false)
+        public string ExportXML()
         {
             // Export DB
             var exportData = "<root>";
@@ -1455,6 +1454,14 @@ namespace DNNrocketAPI.Componants
             }
             exportData += "</root>";
 
+            return exportData;
+        }
+
+        public string ExportZipFile()
+        {
+            // Export DB
+            var exportData = ExportXML();
+
             var exportMapPath = AppThemeFolderMapPath + "\\export.xml";
             if (File.Exists(exportMapPath)) File.Delete(exportMapPath);
             FileUtils.SaveFile(exportMapPath, exportData);
@@ -1467,7 +1474,7 @@ namespace DNNrocketAPI.Componants
             return exportZipMapPath;
         }
 
-        private void ImportXmlData(string zipMapPath)
+        private void ImportXmlFile(string zipMapPath)
         {
             var tempDir = DNNrocketUtils.TempDirectoryMapPath();
             var tempZipFolder = tempDir + "\\TempImport";

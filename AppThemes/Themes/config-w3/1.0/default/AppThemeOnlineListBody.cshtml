@@ -1,0 +1,79 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using Rocket.AppThemes.Componants;
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+
+@{
+    var appThemeDataList = (AppThemeDataPrivateList)Model.List.First();
+}
+
+<div id="datasection" class="w3-row w3-margin-top">
+
+    <ul id="datalist" class="w3-ul w3-border" style="display:none;">
+
+        @{
+                    var lp1 = 0;
+        }
+        @foreach (SimplisityInfo info in appThemeDataList.List)
+                {
+                    lp1 += 1;
+        <li class="datalistitem w3-display-container">
+
+            <div class="listrow w3-cell-row">
+
+                <div class=" w3-cell w3-padding w3-button rocket_animation simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")","appversionfolder":"@info.GetXmlProperty("genxml/hidden/latestverison")"}' style="width: 64px;">
+                    <i class="fas fa-edit w3-center" title="@ResourceKey("DNNRocket.cmdEdit")" style='font-size:32px'></i>
+                </div>
+                <div class=" w3-cell w3-padding  w3-hide-small " style="width: 100px;">
+                    <img src="@ThumbnailImageUrl(@info.GetXmlProperty("genxml/hidden/logo"),60,60)" class="w3-circle" />
+                </div>
+                <div class=" w3-cell w3-padding">
+                    <div class="">
+                        <b>
+                            @info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")
+                        </b>
+                    </div>
+                    <div class="w3-hide-small ">
+
+                        @{
+                            var summary = info.GetXmlProperty("genxml/hidden/summary");
+                            if (summary.Length > 120)
+                            {
+                                summary = summary.Substring(0, 120) + "...";
+                            }
+                        }
+                        @summary
+                    </div>
+                </div>
+                <div class=" w3-cell w3-right w3-hide-small" style="width: 240px;">
+                    <div class="w3-row">
+                        <a class="w3-button simplisity_filedownload" s-cmd="rocketapptheme_download" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")","appversionfolder":"@info.GetXmlProperty("genxml/hidden/latestverison")"}' style="width: 64px;"><i class='fas fa-file-export' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></a>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+                }
+    </ul>
+
+    <div id="datalist2" class="w3-container" style="display:none;">
+        @{
+                    lp1 = 0;
+        }
+        @foreach (SimplisityInfo info in appThemeDataList.List)
+                {
+                    lp1 += 1;
+        <div title=" &nbsp; " class="w3-padding w3-button w3-col m2 w3-panel simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"","appversionfolder":""}' style="cursor:pointer;">
+            <div><b>@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")</b></div>
+        </div>
+                }
+    </div>
+
+    <hr />
+
+</div>

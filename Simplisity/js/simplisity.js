@@ -437,6 +437,12 @@ function ConvertFormToJSON(spost, slist) {
         sposts.forEach((post) => {
             $(post).find('input, textarea, select').each(function () {
 
+                // if html type is NOT one supported, then convert it to hidden.
+                var htmlType = this.getAttribute("type");
+                if (htmlType !== '' && htmlType !== 'checkbox' && htmlType !== 'text' && htmlType !== 'radio' && htmlType !== 'select' && htmlType !== 'hidden') {
+                    htmlType = 'hidden';
+                }
+
                 if (this.getAttribute("s-update") !== 'ignore' && this.id !== '') {
 
                     if (this.getAttribute("s-datatype") === 'coded') {
@@ -454,7 +460,7 @@ function ConvertFormToJSON(spost, slist) {
                     jsonData['s-update'] = this.getAttribute("s-update") || '';
                     jsonData['s-datatype'] = this.getAttribute("s-datatype") || '';
                     jsonData['s-xpath'] = this.getAttribute("s-xpath") || '';
-                    jsonData['type'] = this.getAttribute("type") || 'select';
+                    jsonData['type'] = htmlType || 'select';
                     jsonData['checked'] = $(this).prop('checked') || '';
                     jsonData['name'] = this.getAttribute("name") || '';
                     viewData.postdata.push(jsonData);

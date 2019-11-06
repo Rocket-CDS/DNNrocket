@@ -28,7 +28,7 @@ using DNNrocketAPI.Componants;
 using DotNetNuke.Common;
 using System.IO.Compression;
 using Simplisity.TemplateEngine;
-
+using DotNetNuke.Services.Exceptions;
 
 namespace DNNrocketAPI
 {
@@ -1634,6 +1634,10 @@ namespace DNNrocketAPI
                 }
             }
             return portalalias;
+        }
+        public static void LogException(Exception exc)
+        {
+            Exceptions.LogException(exc);
         }
 
     }

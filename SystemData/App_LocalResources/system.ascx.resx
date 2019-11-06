@@ -276,8 +276,8 @@
   <data name="ref.Text" xml:space="preserve">
     <value>Ref</value>
   </data>
-  <data name="ftphomedirectory.Text" xml:space="preserve">
-    <value>FTP Directory (not including the default directory)</value>
+  <data name="ftproot.Text" xml:space="preserve">
+    <value>FTP Root Directory (not including the default directory)</value>
   </data>
   <data name="ftppassword.Text" xml:space="preserve">
     <value>FTP Password</value>
@@ -290,5 +290,14 @@
   </data>
   <data name="publicappthemeuri.Text" xml:space="preserve">
     <value>Public AppTheme URI</value>
+  </data>
+  <data name="globalsettings.Text" xml:space="preserve">
+    <value>Global Settings</value>
+  </data>
+  <data name="privateftp.Text" xml:space="preserve">
+    <value>Private FTP Settings</value>
+  </data>
+  <data name="publicapptheme.Text" xml:space="preserve">
+    <value>Public AppTheme</value>
   </data>
 </root>

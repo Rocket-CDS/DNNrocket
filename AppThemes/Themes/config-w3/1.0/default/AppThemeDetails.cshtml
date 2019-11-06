@@ -750,6 +750,10 @@
         $('.uploadappthemereturn').change(function () {
             var rtn = $(this).text();
             clearInterval(progressbarid);
+
+            var elem = document.getElementById("progressBarUpload");
+            elem.style.width = '1%';
+
             if (rtn === 'OK') {
                 document.getElementById('uploadapptheme').style.display = 'none';
             }
