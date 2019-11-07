@@ -100,16 +100,18 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        public IEncodedString ThumbnailImageUrl(string url, int width = 0, int height = 0, string extraurlparams = "")
+        public IEncodedString ThumbnailImageUrl(string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
         {
+            var pngType = "";
             if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
+            if (pngImage && url.ToLower().EndsWith(".png")) pngType = "&imgtype=png";
             if (width > 0 || height > 0)
             {
-                url = "//" + DNNrocketUtils.GetCurrentWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams;
+                url = "//" + DNNrocketUtils.GetCurrentWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
             }
             else
             {
-                url = "//" + DNNrocketUtils.GetCurrentWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams;
+                url = "//" + DNNrocketUtils.GetCurrentWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
             }
             return new RawString(url);
         }
@@ -125,20 +127,20 @@ namespace DNNrocketAPI.render
         }
 
 
-        public IEncodedString ImageEdit(SimplisityInfo info, string fieldId, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0, string listname = "")
+        public IEncodedString ImageEdit(SimplisityInfo info, string fieldId, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0, string listname = "", bool pngImage = true)
         {
-            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "", listname);
+            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "", listname, pngImage);
         }
-        public IEncodedString ImageEditFull(SimplisityInfo info, string fieldId, int width = 140, int height = 140, string attributes = "", bool localized = false, int row = 0, string listname = "")
+        public IEncodedString ImageEditFull(SimplisityInfo info, string fieldId, int width = 140, int height = 140, string attributes = "", bool localized = false, int row = 0, string listname = "", bool pngImage = true)
         {
-            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "full", listname);
+            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "full", listname, pngImage);
         }
-        public IEncodedString ImageEditFullName(SimplisityInfo info, string fieldId, int width = 150, int height = 150, string attributes = "", bool localized = false, int row = 0, string listname = "")
+        public IEncodedString ImageEditFullName(SimplisityInfo info, string fieldId, int width = 150, int height = 150, string attributes = "", bool localized = false, int row = 0, string listname = "", bool pngImage = true)
         {
-            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "name", listname);
+            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "name", listname, pngImage);
         }
 
-        private IEncodedString ImageEditToken(SimplisityInfo info, string fieldId, int width, int height, string attributes, bool localized, int row, string uiType, string listname)
+        private IEncodedString ImageEditToken(SimplisityInfo info, string fieldId, int width, int height, string attributes, bool localized, int row, string uiType, string listname, bool pngImage)
         {
             var xpath = "genxml/hidden/imagepath" + fieldId;
             var xpathwidth = "genxml/textbox/width" + fieldId;
@@ -153,6 +155,8 @@ namespace DNNrocketAPI.render
             var xpathalt = "genxml/lang/genxml/textbox/alt" + fieldId;
             var xpathname = "genxml/textbox/name" + fieldId;
 
+            var imgType = "jpg";
+            if (pngImage) imgType = "png";
 
             var strOut = "<div class='w3-row'>";
 
@@ -174,12 +178,12 @@ namespace DNNrocketAPI.render
 
             if (imgurl == "")
             {
-                strOut += "<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=/DesktopModules/DNNrocket/api/images/noimage2.png&w=" + width + "&h=" + height + "' imageheight='" + height + "' imagewidth='" + width + "'  " + attributes + ">";
+                strOut += "<img src='" + ThumbnailImageUrl(imgurl,width, height, "", pngImage) + "' imageheight='" + height + "' imagewidth='" + width + "'  " + attributes + ">";
                 strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-imagechange' title=''><i class='fas fa-edit'></i></span>";
             }
             else
             {
-                strOut += "<img src='/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + imgurl + "&w=" + width + "&h=" + height + "' imageheight='" + height + "' imagewidth='" + width + "' " + attributes + ">";
+                strOut += "<img src='" + ThumbnailImageUrl(imgurl, width, height, "", pngImage) + "' imageheight='" + height + "' imagewidth='" + width + "' " + attributes + ">";
                 strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-imageremove ' title=''>&times;</span>";
             }
 
