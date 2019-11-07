@@ -228,6 +228,15 @@
   <data name="newmsg.Text" xml:space="preserve">
     <value>Create new AppTheme, based on an existing one or from a blank canvas.</value>
   </data>
+  <data name="onlineprivatelist.Text" xml:space="preserve">
+    <value>Online Private AppThemes</value>
+  </data>
+  <data name="onlinepubliclist.Text" xml:space="preserve">
+    <value>Online Public AppThemes</value>
+  </data>
+  <data name="onlinerocketlist.Text" xml:space="preserve">
+    <value>Online Rocket AppThemes</value>
+  </data>
   <data name="prefix.Text" xml:space="preserve">
     <value>Prefix</value>
   </data>

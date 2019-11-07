@@ -38,8 +38,6 @@ namespace DNNrocketAPI.Componants
                 }
             }
 
-            var uriimg = _baseuri + "/img";
-            CreateFTPDirectory(uriimg);
             var urixml = _baseuri + "/xml";
             CreateFTPDirectory(urixml);
             var urizip = _baseuri + "/zip";
@@ -59,15 +57,22 @@ namespace DNNrocketAPI.Componants
                     sInfo.SetXmlProperty("genxml/hidden/appthemefolder", appTheme.AppThemeFolder);
                     sInfo.SetXmlProperty("genxml/hidden/summary", appTheme.AppSummary);
                     sInfo.SetXmlProperty("genxml/hidden/latestverison", appTheme.LatestVersionFolder);
-                    sInfo.SetXmlProperty("genxml/hidden/logo", Path.GetFileName(DNNrocketUtils.MapPath(appTheme.Logo)));
+                    var logoMapPath = DNNrocketUtils.MapPath(appTheme.Logo);
+                    sInfo.SetXmlProperty("genxml/hidden/logo", Path.GetFileName(logoMapPath));
+                    if (File.Exists(logoMapPath))
+                    {
+                        var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));
+
+                        // Convert the image to byte[]
+                        System.IO.MemoryStream stream = new System.IO.MemoryStream();
+                        newImage.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+                        byte[] imageBytes = stream.ToArray();
+                        string base64String = Convert.ToBase64String(imageBytes);
+                        sInfo.SetXmlProperty("genxml/hidden/logobase64", base64String);   
+                    }
+
                     FileUtils.SaveFile(xmlMapPath, sInfo.ToXmlItem());
                     client.UploadFile(urixml + "/" + Path.GetFileName(xmlMapPath), WebRequestMethods.Ftp.UploadFile, xmlMapPath);
-                }
-                using (var client = new WebClient())
-                {
-                    client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-                    var imgMapPath = DNNrocketUtils.MapPath(appTheme.Logo.ToLower());
-                    client.UploadFile(uriimg + "/" + Path.GetFileName(imgMapPath), WebRequestMethods.Ftp.UploadFile, imgMapPath);
                 }
             }
             catch (Exception ex)
@@ -163,7 +168,7 @@ namespace DNNrocketAPI.Componants
                     if (xmlDownload != "FAIL")
                     {
                         var sInfo = new SimplisityInfo();
-                        sInfo.XMLData = xmlDownload;
+                        sInfo.FromXmlItem(xmlDownload);
                         rtnList.Add(sInfo);
                     }
                 }

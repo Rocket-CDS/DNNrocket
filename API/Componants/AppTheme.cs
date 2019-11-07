@@ -337,21 +337,29 @@ namespace DNNrocketAPI.Componants
         public void DeleteVersion(string versionFolder)
         {
 
-            if (Directory.Exists(AppThemeVersionFolderMapPath))
+            try
             {
-                Directory.Delete(AppThemeVersionFolderMapPath, true);
+                if (Directory.Exists(AppThemeVersionFolderMapPath))
+                {
+                    Directory.Delete(AppThemeVersionFolderMapPath, true);
+                }
+
+                _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + versionFolder;
+
+                var versionRecord = _objCtrl.GetRecordByGuidKey(Record.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
+                _objCtrl.Delete(versionRecord.ItemID, _tableName); // cascade delete
+
+                PopulateVersionList();
+                AppVersionFolder = LatestVersionFolder;
+                _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
+                AssignVersionFolders();
+                Populate();
+            }
+            catch (Exception ex)
+            {
+                DNNrocketUtils.LogException(ex);
             }
 
-            _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + versionFolder;
-
-            var versionRecord = _objCtrl.GetRecordByGuidKey(Record.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
-            _objCtrl.Delete(versionRecord.ItemID, _tableName); // cascade delete
-
-            PopulateVersionList();
-            AppVersionFolder = LatestVersionFolder;
-            _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
-            AssignVersionFolders();
-            Populate();
         }
         public void Save(SimplisityInfo postInfo)
         {

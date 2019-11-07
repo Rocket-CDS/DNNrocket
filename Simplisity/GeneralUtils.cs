@@ -738,8 +738,6 @@ namespace Simplisity
             var encoding = new UTF8Encoding();
             return encoding.GetBytes(str);
         }
-
-
     }
 
 }

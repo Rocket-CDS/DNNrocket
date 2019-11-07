@@ -331,7 +331,12 @@ namespace DNNrocket.AppThemes
             {
                 var ftpConnect = new FtpConnect(_selectedSystemKey);
 
-                return ftpConnect.UploadAppTheme(_appTheme);
+                var rtn = ftpConnect.UploadAppTheme(_appTheme);
+
+                var appThemeDataPrivateList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey);
+                appThemeDataPrivateList.ClearCache();
+
+                return rtn;
             }
             return "FTP Failed, No AppTheme export file found.";
         }

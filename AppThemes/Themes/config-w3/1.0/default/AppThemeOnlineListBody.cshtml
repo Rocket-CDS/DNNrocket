@@ -30,7 +30,7 @@
                     <i class="fas fa-edit w3-center" title="@ResourceKey("DNNRocket.cmdEdit")" style='font-size:32px'></i>
                 </div>
                 <div class=" w3-cell w3-padding  w3-hide-small " style="width: 100px;">
-                    <img src="@ThumbnailImageUrl(@info.GetXmlProperty("genxml/hidden/logo"),60,60)" class="w3-circle" />
+                    <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60px;height:60px;" class="w3-circle" />
                 </div>
                 <div class=" w3-cell w3-padding">
                     <div class="">
@@ -63,15 +63,16 @@
 
     <div id="datalist2" class="w3-container" style="display:none;">
         @{
-                    lp1 = 0;
+            lp1 = 0;
         }
         @foreach (SimplisityInfo info in appThemeDataList.List)
-                {
-                    lp1 += 1;
-        <div title=" &nbsp; " class="w3-padding w3-button w3-col m2 w3-panel simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"","appversionfolder":""}' style="cursor:pointer;">
-            <div><b>@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")</b></div>
-        </div>
-                }
+        {
+            lp1 += 1;
+            <div title="@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")" class="w3-padding w3-button w3-col m2 w3-panel simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")","appversionfolder":"@info.GetXmlProperty("genxml/hidden/latestverison")"}' style="cursor:pointer;">
+                <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60%;" class="w3-circle w3-hover-opacity" />
+                <div><b>@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")</b></div>
+            </div>
+        }
     </div>
 
     <hr />
