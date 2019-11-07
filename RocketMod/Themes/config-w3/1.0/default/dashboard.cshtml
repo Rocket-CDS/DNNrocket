@@ -16,6 +16,8 @@
     var moduleParams = (ModuleParams)Model.List.First();
     var configinfo = new SimplisityInfo(moduleParams.Record);
     var dataModuleParams = new ModuleParams(moduleParams.DataSourceModId, moduleParams.SystemKey);
+    var globalSettings = new SystemGlobalData();
+
 }
 
 
@@ -55,7 +57,7 @@
 
     <div class="w3-row">
         <div class="w3-col m2 w3-margin-top " style="width:120px;height:120px;">
-            <img src="@ThumbnailImageUrl(moduleParams.AppThemeLogo,120,120)" class="w3-circle" />
+            <img src="@ThumbnailImageUrl(moduleParams.AppThemeLogo,120,120,"", globalSettings.PngImage)" class="w3-circle" />
         </div>
         <div class="w3-col m5">
             <div class="w3-row">

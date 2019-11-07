@@ -1,5 +1,5 @@
 ﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
-@using DNNrocketAPI;
+@using DNNrocketAPI.Componants;
 @using Simplisity;
 @using RocketSettings;
 @using RocketMod;
@@ -21,6 +21,7 @@
     var imgfieldname = Model.GetSetting("imgfieldname");
 
     var datalist = i.GetList("imagelist" + imgfieldname);
+    var globalSettings = new SystemGlobalData();
 
 }
 
@@ -56,7 +57,7 @@
                             <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
                         </span>
                         <div class="w3-col w3-padding">
-                            @ImageEditFull(imgInfo, imgfieldname, 100, 100, "", false, imgLP)
+                            @ImageEditFull(imgInfo, imgfieldname, 100, 100, "", false, imgLP,"", globalSettings.PngImage)
                         </div>
                     </div>
                  </div>

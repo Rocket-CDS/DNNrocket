@@ -1,8 +1,13 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
+@using DNNrocketAPI.Componants;
 @using Simplisity;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{
+    var globalSettings = new SystemGlobalData();
+}
 
 <div id="dnnrocket_deleteimagelist">
     <input id="dnnrocket-imagelist" type="hidden" value="" />
@@ -33,7 +38,7 @@
                         <p><i>@ResourceKey("DNNrocket.dropimage")...</i></p>
                     </div>
                     <div class="w3-col m3 w3-right-align ">
-                            <div class="w3-margin-top w3-hide-small w3-hide-medium">@ResourceKey("DNNrocket.resizeonupload") : </div>
+                        <div class="w3-margin-top w3-hide-small w3-hide-medium">@ResourceKey("DNNrocket.resizeonupload") : </div>
                     </div>
                     <div class="w3-col m4 ">
                         <div class="w3-col m12 w3-padding">
@@ -48,32 +53,32 @@
                     </div>
                 </div>
 
-                    <div id="rocketimageselectlist" class="w3-container w3-margin-top">
-                        <div class="w3-container">
-                            @{
-                                var lp = 1;
-                                var imagecount = Model.List.Count();
-                                foreach (string imageName in Model.List)
-                                {
-                                    <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
-                                        <img src="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150)" class="w3-border w3-padding" style="width:100%" />
-                                        <span class="w3-display-topright dnnrocket-imageselected " title="" style="display:none;"><i class="fas fa-check-circle"></i></span>
-                                    </div>
-                                    lp += 1;
-                                }
-                            }
-                        </div>
-                        <div class="w3-row">
-                            <p>@imagecount</p>
-                            @if (DNNrocketUtils.IsInRole("Administrator"))
+                <div id="rocketimageselectlist" class="w3-container w3-margin-top">
+                    <div class="w3-container">
+                        @{
+                            var lp = 1;
+                            var imagecount = Model.List.Count();
+                            foreach (string imageName in Model.List)
                             {
-                                <p class="w3-small  w3-hide-small">@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")</p>
+                                <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
+                                    <img src="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150,"", globalSettings.PngImage)" class="w3-border w3-padding" style="width:100%" />
+                                    <span class="w3-display-topright dnnrocket-imageselected " title="" style="display:none;"><i class="fas fa-check-circle"></i></span>
+                                </div>
+                                lp += 1;
                             }
-                        </div>
+                        }
                     </div>
-
+                    <div class="w3-row">
+                        <p>@imagecount</p>
+                        @if (DNNrocketUtils.IsInRole("Administrator"))
+                        {
+                            <p class="w3-small  w3-hide-small">@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")</p>
+                        }
+                    </div>
                 </div>
+
             </div>
+        </div>
     </div>
 </div>
 
@@ -99,8 +104,8 @@
             }
         });
 
-        var dnnrocketimages_resizevalue = simplisity_getCookieValue('dnnrocketimages_resizevalue') 	
-        var dnnrocketimages_imageresizedropdown = simplisity_getCookieValue('dnnrocketimages_imageresizedropdown') 	
+        var dnnrocketimages_resizevalue = simplisity_getCookieValue('dnnrocketimages_resizevalue')
+        var dnnrocketimages_imageresizedropdown = simplisity_getCookieValue('dnnrocketimages_imageresizedropdown')
 
         if (typeof dnnrocketimages_imageresizedropdown !== 'undefined' && dnnrocketimages_imageresizedropdown === '-1') {
             $('.resizevalue').prop('disabled', false)
@@ -121,8 +126,8 @@
     });
 
     function dnnrocketimages_beforeupload() {
-        simplisity_setCookieValue('dnnrocketimages_imageresizedropdown',$('.imageresizedropdown').val()) 	
-        simplisity_setCookieValue('dnnrocketimages_resizevalue',$('.resizevalue').val()) 	
+        simplisity_setCookieValue('dnnrocketimages_imageresizedropdown',$('.imageresizedropdown').val())
+        simplisity_setCookieValue('dnnrocketimages_resizevalue',$('.resizevalue').val())
         simplisity_setParamField('imageresize', $('.resizevalue').val())
     }
 
@@ -203,7 +208,7 @@ function dnnrocketimages_selectimage(element) {
                 $('#' + idx).parent().children('img').attr('src', $(this).attr('dnnrocket-imagethumburl') + "&w=" + w + "&h=" + h);
                 $('#' + idx).val($(this).attr('dnnrocket-imageurl'));
                 $(this).removeClass('w3-pale-green');
-                $(this).find('.dnnrocket-imageselected').hide();        
+                $(this).find('.dnnrocket-imageselected').hide();
 
                 $('#' + idx).parent().find(".dnnrocket-imageaction").html('&times;');
                 $('#' + idx).parent().find(".dnnrocket-imageaction").addClass('dnnrocket-imageremove');
@@ -225,7 +230,7 @@ function dnnrocketimages_selectimage(element) {
         $('.dnnrocket-imageselector').each(function (index) {
             if ($(this).hasClass('w3-pale-green')) {
                 $(this).removeClass('w3-pale-green');
-                $(this).find('.dnnrocket-imageselected').hide();        
+                $(this).find('.dnnrocket-imageselected').hide();
             }
         });
     }

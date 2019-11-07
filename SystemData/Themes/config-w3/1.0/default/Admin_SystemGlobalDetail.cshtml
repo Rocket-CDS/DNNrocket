@@ -45,6 +45,23 @@
             </div>
         </div>
 
+        <h1>@ResourceKey("system.settings")</h1>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <div class="w3-col m6 w3-right-align w3-padding">
+                    <label class="">@ResourceKey("system.imagetype")</label>
+                </div>
+                <div class="w3-col m6  w3-padding">
+                    @DropDownList(info, "genxml/select/imagetype", "png,jpg", "png,jpg", "class='w3-input w3-border'", "png")
+                </div>
+            </div>
+            <div class="w3-half">
+                <p class="w3-small">
+                    @ResourceKey("system.imagetype", "", "Help")
+                </p>
+            </div>
+        </div>
+
         <div class="w3-row-padding w3-right-align">
             @info.ItemID
         </div>

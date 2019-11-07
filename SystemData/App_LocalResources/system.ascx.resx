@@ -300,4 +300,10 @@
   <data name="publicapptheme.Text" xml:space="preserve">
     <value>Public AppTheme</value>
   </data>
+  <data name="imagetype.Help" xml:space="preserve">
+    <value>Defines the image type that will be used by the image thumbnailer.  Usually this will be the image extension type  "png" or "jpg".  However, the hosting server needs "png" drivers.  If not available the image type will need to be set to "jpg".</value>
+  </data>
+  <data name="imagetype.Text" xml:space="preserve">
+    <value>Image Type</value>
+  </data>
 </root>
