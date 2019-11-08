@@ -219,6 +219,9 @@
   <data name="js.Text" xml:space="preserve">
     <value>JS</value>
   </data>
+  <data name="localversion.Text" xml:space="preserve">
+    <value>Local Version</value>
+  </data>
   <data name="name.Text" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -287,6 +290,9 @@
   </data>
   <data name="selectversion.Text" xml:space="preserve">
     <value>Select Version</value>
+  </data>
+  <data name="serverversion.Text" xml:space="preserve">
+    <value>Server Version</value>
   </data>
   <data name="settingfields.Text" xml:space="preserve">
     <value>Setting Fields</value>

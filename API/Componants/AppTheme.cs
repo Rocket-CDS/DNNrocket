@@ -398,6 +398,7 @@ namespace DNNrocketAPI.Componants
             {
 
                 dbInfo.XMLData = postInfo.XMLData;
+                dbInfo.SetXmlProperty("genxml/hidden/latestrev", (LatestRev + 1).ToString());
                 dbInfo.RemoveXmlNode("genxml/lang");
                 _objCtrl.SaveRecord(dbInfo, _tableName);
 
@@ -1648,6 +1649,7 @@ namespace DNNrocketAPI.Componants
         public string AppThemeVersionFolderMapPath { get; set; }
         public List<string> VersionList { get; set; }
         public string LatestVersionFolder { get; set; }
+        public int LatestRev { get { return Record.GetXmlPropertyInt("genxml/hidden/latestrev"); } }
         public string ImageFolderMapPath { get; set; }
         public string DocumentFolderMapPath { get; set; }
         public string CssFolderMapPath { get; set; }

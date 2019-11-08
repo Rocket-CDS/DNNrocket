@@ -25,7 +25,33 @@ namespace Rocket.AppThemes.Componants
             if (SelectedSystemKey != "")
             {
                 var ftpConnect = new FtpConnect(SelectedSystemKey);
-                List = ftpConnect.DownloadAppThemeXmlList();
+                var l = ftpConnect.DownloadAppThemeXmlList();
+
+                // check verison
+                foreach (SimplisityInfo a in l)
+                {
+                    var appTheme = new AppTheme(SelectedSystemKey, a.GetXmlProperty("genxml/hidden/appthemefolder"));
+                    a.SetXmlProperty("genxml/hidden/localversion", appTheme.LatestVersionFolder);
+                    a.SetXmlProperty("genxml/hidden/localrev", appTheme.LatestRev.ToString());
+                    a.SetXmlProperty("genxml/hidden/islatestversion", "False");
+                    if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") == Convert.ToDouble(appTheme.LatestVersionFolder))
+                    {
+                        a.SetXmlProperty("genxml/hidden/islatestversion", "True");
+                    }
+
+                    a.SetXmlProperty("genxml/hidden/localupdated", "False");
+                    if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") < Convert.ToDouble(appTheme.LatestVersionFolder))
+                    {
+                        a.SetXmlProperty("genxml/hidden/localupdated", "True");
+                    }
+                    if (a.GetXmlPropertyInt("genxml/hidden/latestrev") < appTheme.LatestRev)
+                    {
+                        a.SetXmlProperty("genxml/hidden/localupdated", "True");
+                    }
+
+                    List.Add(a);
+                }
+
             }
         }
         public void PopulateSystemFolderList()
@@ -50,6 +76,7 @@ namespace Rocket.AppThemes.Componants
             PopulateAppThemeList();
         }
         public string SelectedSystemKey { get; set; }
+        
         public List<SimplisityInfo> List {
             get
             {

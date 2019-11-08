@@ -24,15 +24,12 @@
                     lp1 += 1;
         <li class="datalistitem w3-display-container">
 
-            <div class="listrow w3-cell-row">
+            <div class="listrow w3-row">
 
-                <div class=" w3-cell w3-padding w3-button rocket_animation simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")","appversionfolder":"@info.GetXmlProperty("genxml/hidden/latestverison")"}' style="width: 64px;">
-                    <i class="fas fa-edit w3-center" title="@ResourceKey("DNNRocket.cmdEdit")" style='font-size:32px'></i>
-                </div>
-                <div class=" w3-cell w3-padding  w3-hide-small " style="width: 100px;">
+                <div class=" w3-col w3-padding  w3-hide-small " style="width: 100px;">
                     <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60px;height:60px;" class="w3-circle" />
                 </div>
-                <div class=" w3-cell w3-padding">
+                <div class=" w3-col m6 w3-padding">
                     <div class="">
                         <b>
                             @info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")
@@ -50,12 +47,43 @@
                         @summary
                     </div>
                 </div>
-                <div class=" w3-cell w3-right w3-hide-small" style="width: 240px;">
-                    <div class="w3-row">
-                        <a class="w3-button simplisity_filedownload" s-cmd="rocketapptheme_download" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")","appversionfolder":"@info.GetXmlProperty("genxml/hidden/latestverison")"}' style="width: 64px;"><i class='fas fa-file-export' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></a>
+
+                <div class=" w3-col w3-padding" style="width:240px;">
+                    <div>
+                        @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/localversion").@info.GetXmlPropertyInt("genxml/hidden/localrev")
+                    </div>
+                    <div>
+                        @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/latestversion").@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
                     </div>
                 </div>
-            </div>
+
+                <div class="w3-col w3-right w3-button simplisity_click" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")","appversionfolder":"@info.GetXmlProperty("genxml/hidden/latestverison")"}' style="width:64px;">
+                        <div class="w3-text-teal w3-row w3-left-align " style="width: 64px;">
+                            <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
+                        </div>
+                </div>
+
+                    <div class=" w3-col w3-right w3-padding w3-hide-small" style="width:72px;">
+                        <div class="w3-row">
+                            @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
+                            {
+                                <div class="w3-text-green" style="width: 64px;"><i class='fas fa-hdd' style='font-size:32px'></i></div>
+                            }
+                            else
+                            {
+                                <div class="w3-text-black" style="width: 64px;"><i class='fas fa-hdd' style='font-size:32px'></i></div>
+                            }
+                        </div>
+                    </div>
+                    <div class="w3-col w3-right w3-padding w3-hide-small" style="width:72px;">
+                        <div class="w3-row">
+                            @if (info.GetXmlPropertyBool("genxml/hidden/localupdated"))
+                            {
+                                <div class="w3-text-red" style="width: 64px;"><i class='fas fa-exclamation-triangle' style='font-size:32px'></i></div>
+                            }
+                        </div>
+                    </div>
+                </div>
         </li>
 
                 }
@@ -68,10 +96,13 @@
         @foreach (SimplisityInfo info in appThemeDataList.List)
         {
             lp1 += 1;
-            <div title="@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")" class="w3-padding w3-button w3-col m2 w3-panel simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")","appversionfolder":"@info.GetXmlProperty("genxml/hidden/latestverison")"}' style="cursor:pointer;">
-                <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60%;" class="w3-circle w3-hover-opacity" />
-                <div><b>@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")</b></div>
-            </div>
+        <div title="@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")" class="w3-padding w3-button w3-col m2 w3-panel w3-display-container simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")","appversionfolder":"@info.GetXmlProperty("genxml/hidden/latestverison")"}' style="cursor:pointer;">
+            <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60%;" class="w3-circle w3-hover-opacity" />
+            <div><b>@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")</b></div>
+            <a class="w3-button w3-display-topright simplisity_filedownload" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")","appversionfolder":"@info.GetXmlProperty("genxml/hidden/latestverison")"}' style="width: 64px;"><i class='fas fa-download' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></a>
+            <a class="w3-button w3-display-topleft w3-text-green" style="width: 64px;"><i class='fas fa-hdd' style='font-size:32px'></i></a>
+        </div>
+
         }
     </div>
 
