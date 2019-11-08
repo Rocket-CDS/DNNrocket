@@ -139,6 +139,7 @@ namespace DNNrocketAPI.Componants
             try
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uri);
+                request.KeepAlive = false;
                 request.Method = WebRequestMethods.Ftp.DownloadFile;
                 request.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
@@ -158,24 +159,17 @@ namespace DNNrocketAPI.Componants
         public List<SimplisityInfo> DownloadAppThemeXmlList()
         {
             var rtnList = new List<SimplisityInfo>();
-            try
+            var namelist = ListXmlFiles();
+            foreach (var n in namelist)
             {
-                var namelist = ListXmlFiles();
-                foreach (var n in namelist)
+                var uri = _baseuri + "/xml/" + n;
+                var xmlDownload = Download(uri);
+                if (xmlDownload != "FAIL")
                 {
-                    var uri = _baseuri + "/xml/" + n;
-                    var xmlDownload = Download(uri);
-                    if (xmlDownload != "FAIL")
-                    {
-                        var sInfo = new SimplisityInfo();
-                        sInfo.FromXmlItem(xmlDownload);
-                        rtnList.Add(sInfo);
-                    }
+                    var sInfo = new SimplisityInfo();
+                    sInfo.FromXmlItem(xmlDownload);
+                    rtnList.Add(sInfo);
                 }
-            }
-            catch (Exception exc)
-            {
-                DNNrocketUtils.LogException(exc);
             }
             return rtnList;
         }
@@ -185,6 +179,7 @@ namespace DNNrocketAPI.Componants
             {
                 var uri = _baseuri + "/xml";
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uri);
+                request.KeepAlive = false;
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
                 request.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
@@ -197,9 +192,8 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception exc)
             {
-                DNNrocketUtils.LogException(exc);
+                throw exc;
             }
-            return new List<string>();
         }
 
 

@@ -10,10 +10,10 @@ namespace DNNrocketAPI.Componants
     public class SystemGlobalData
     {
         private static string _cacheKey; 
-        public SystemGlobalData()
+        public SystemGlobalData(bool cache = true)
         {
             _cacheKey = "GLOBALSETTINGS";
-            Info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
+            if (cache) Info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
             if (Info == null)
             {
                 LoadData();
@@ -25,6 +25,13 @@ namespace DNNrocketAPI.Componants
              var objCtrl = new DNNrocketController();
             Info.XMLData = postInfo.XMLData;
             objCtrl.Update(Info);
+            CacheUtils.SetCache(_cacheKey, Info);
+        }
+        public void Update()
+        {
+            var objCtrl = new DNNrocketController();
+            objCtrl.Update(Info);
+            CacheUtils.SetCache(_cacheKey, Info);
         }
 
         private void LoadData()

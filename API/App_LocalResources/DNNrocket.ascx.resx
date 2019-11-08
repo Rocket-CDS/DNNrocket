@@ -495,4 +495,10 @@
   <data name="removemoduletemplate.Text" xml:space="preserve">
     <value>Remove Module Level Template</value>
   </data>
+  <data name="refresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="serverdetails.Text" xml:space="preserve">
+    <value>Server Details</value>
+  </data>
 </root>

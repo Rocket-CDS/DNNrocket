@@ -198,6 +198,9 @@
   <data name="entervalue.Text" xml:space="preserve">
     <value>Enter Value...</value>
   </data>
+  <data name="errorprivateapptheme.Text" xml:space="preserve">
+    <value>There is a problem connecting to the Private AppTheme server, please check your server details, username and password.</value>
+  </data>
   <data name="exportmsg.Text" xml:space="preserve">
     <value>Export AppTheme</value>
   </data>

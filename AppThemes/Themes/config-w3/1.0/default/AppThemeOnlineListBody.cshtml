@@ -12,100 +12,134 @@
     var appThemeDataList = (AppThemeDataPrivateList)Model.List.First();
 }
 
-<div id="datasection" class="w3-row w3-margin-top">
+@if (appThemeDataList.Error)
+{
+    <div class="w3-row-padding">
+        <div class="w3-text-red  w3-padding">@ResourceKey("AppThemes.errorprivateapptheme")</div>
+        <div class="w3-red w3-panel w3-padding">@appThemeDataList.ErrorMsg</div>
+    </div>
+}
+else
+{
 
-    <ul id="datalist" class="w3-ul w3-border" style="display:none;">
+    <div id="datasection" class="w3-row w3-margin-top">
 
-        @{
-                    var lp1 = 0;
-        }
-        @foreach (SimplisityInfo info in appThemeDataList.List)
-                {
-                    lp1 += 1;
-        <li class="datalistitem w3-display-container">
+        <ul id="datalist" class="w3-ul w3-border" style="display:none;">
 
-            <div class="listrow w3-row">
+            @{
+                var lp1 = 0;
+            }
+            @foreach (SimplisityInfo info in appThemeDataList.List)
+            {
+                lp1 += 1;
+                <li class="datalistitem w3-display-container">
 
-                <div class=" w3-col w3-padding  w3-hide-small " style="width: 100px;">
-                    <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60px;height:60px;" class="w3-circle" />
-                </div>
-                <div class=" w3-col m6 w3-padding">
-                    <div class="">
-                        <b>
-                            @info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")
-                        </b>
-                    </div>
-                    <div class="w3-hide-small ">
+                    <div class="listrow w3-row">
 
-                        @{
-                            var summary = info.GetXmlProperty("genxml/hidden/summary");
-                            if (summary.Length > 120)
-                            {
-                                summary = summary.Substring(0, 120) + "...";
-                            }
-                        }
-                        @summary
-                    </div>
-                </div>
-
-                <div class=" w3-col w3-padding" style="width:240px;">
-                    <div>
-                        @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/localversion").@info.GetXmlPropertyInt("genxml/hidden/localrev")
-                    </div>
-                    <div>
-                        @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/latestversion").@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
-                    </div>
-                </div>
-
-                <div class="w3-col w3-right w3-button simplisity_click" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")","appversionfolder":"@info.GetXmlProperty("genxml/hidden/latestverison")"}' style="width:64px;">
-                        <div class="w3-text-teal w3-row w3-left-align " style="width: 64px;">
-                            <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
+                        <div class=" w3-col w3-padding  w3-hide-small " style="width: 100px;">
+                            <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60px;height:60px;" class="w3-circle" />
                         </div>
-                </div>
+                        <div class=" w3-col m6 w3-padding">
+                            <div class="">
+                                <b>
+                                    @info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")
+                                </b>
+                            </div>
+                            <div class="w3-hide-small ">
 
-                    <div class=" w3-col w3-right w3-padding w3-hide-small" style="width:72px;">
-                        <div class="w3-row">
+                                @{
+                                    var summary = info.GetXmlProperty("genxml/hidden/summary");
+                                    if (summary.Length > 120)
+                                    {
+                                        summary = summary.Substring(0, 120) + "...";
+                                    }
+                                }
+                                @summary
+                            </div>
+                        </div>
+
+                        <div class=" w3-col w3-padding" style="width:300px;">
+                            <div>
+                                @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/localversion").@info.GetXmlPropertyInt("genxml/hidden/localrev")
+                                @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
+                                {
+                                    <i class='w3-text-green fas fa-hdd' style='font-size:16px'></i>
+                                }
+                                else
+                                {
+                                    <i class='w3-text-black fas fa-hdd' style='font-size:16px'></i>
+                                }
+                            </div>
+                            <div>
+                                @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/latestversion").@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
+                                @if (info.GetXmlPropertyBool("genxml/hidden/localupdated"))
+                                {
+                                    <i class='w3-text-red fas fa-exclamation-triangle' style='font-size:16px'></i>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="w3-col w3-right w3-button simplisity_click" s-cmd="rocketapptheme_deleteprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width:64px;">
+                            <div class="w3-text-teal w3-row w3-left-align " style="width: 64px;">
+                                <i class='fas fa-download w3-text-black' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
+                            </div>
+                        </div>
+
+                    </div>
+                </li>
+
+            }
+        </ul>
+
+        <div id="datalist2" class="w3-container " style="display:none;">
+            @{
+                lp1 = 0;
+            }
+            @foreach (SimplisityInfo info in appThemeDataList.List)
+            {
+                lp1 += 1;
+                <div class=" w3-col w3-padding w3-col m2 ">
+
+                    <div class="w3-padding w3-panel w3-display-container w3-border">
+                        <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60%;" class="w3-circle w3-hover-opacity" />
+                        <div><b>@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")</b></div>
+
+                        @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
+                        {
+                            <a class="w3-button w3-text-light-grey w3-display-topright simplisity_filedownload" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;"><i class='fas fa-download' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></a>
+                        }
+                        else
+                        {
+                            <a class="w3-button w3-display-topright simplisity_filedownload" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;"><i class='fas fa-download' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></a>
+                        }
+
+
+                        <div class="">
+                            @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/localversion").@info.GetXmlPropertyInt("genxml/hidden/localrev")
                             @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
                             {
-                                <div class="w3-text-green" style="width: 64px;"><i class='fas fa-hdd' style='font-size:32px'></i></div>
+                                <i class='w3-text-green fas fa-hdd' style='font-size:16px'></i>
                             }
                             else
                             {
-                                <div class="w3-text-black" style="width: 64px;"><i class='fas fa-hdd' style='font-size:32px'></i></div>
+                                <i class='w3-text-black fas fa-hdd' style='font-size:16px'></i>
                             }
                         </div>
-                    </div>
-                    <div class="w3-col w3-right w3-padding w3-hide-small" style="width:72px;">
-                        <div class="w3-row">
+                        <div class="">
+                            @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/latestversion").@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
                             @if (info.GetXmlPropertyBool("genxml/hidden/localupdated"))
                             {
-                                <div class="w3-text-red" style="width: 64px;"><i class='fas fa-exclamation-triangle' style='font-size:32px'></i></div>
+                                <i class='w3-text-red fas fa-exclamation-triangle' style='font-size:16px'></i>
                             }
                         </div>
+
                     </div>
                 </div>
-        </li>
-
-                }
-    </ul>
-
-    <div id="datalist2" class="w3-container" style="display:none;">
-        @{
-            lp1 = 0;
-        }
-        @foreach (SimplisityInfo info in appThemeDataList.List)
-        {
-            lp1 += 1;
-        <div title="@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")" class="w3-padding w3-button w3-col m2 w3-panel w3-display-container simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")","appversionfolder":"@info.GetXmlProperty("genxml/hidden/latestverison")"}' style="cursor:pointer;">
-            <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60%;" class="w3-circle w3-hover-opacity" />
-            <div><b>@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")</b></div>
-            <a class="w3-button w3-display-topright simplisity_filedownload" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")","appversionfolder":"@info.GetXmlProperty("genxml/hidden/latestverison")"}' style="width: 64px;"><i class='fas fa-download' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></a>
-            <a class="w3-button w3-display-topleft w3-text-green" style="width: 64px;"><i class='fas fa-hdd' style='font-size:32px'></i></a>
+            }
         </div>
 
-        }
+        <hr />
+
     </div>
 
-    <hr />
-
-</div>
+}

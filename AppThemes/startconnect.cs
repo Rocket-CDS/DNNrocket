@@ -155,7 +155,9 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_getprivatelist":
                         strOut = GetPrivateListAppTheme();
                         break;
-                        
+                    case "rocketapptheme_saveftpdetails":
+                        strOut = SaveServerDetails();
+                        break;                        
                 }
             }
             else
@@ -388,6 +390,20 @@ namespace DNNrocket.AppThemes
             {
                 return ex.ToString();
             }
+        }
+
+        public static string SaveServerDetails()
+        {
+            var systemGlobalData = new SystemGlobalData();
+            systemGlobalData.FtpServer = _postInfo.GetXmlProperty("genxml/textbox/ftpserver");
+            systemGlobalData.FtpUserName = _postInfo.GetXmlProperty("genxml/textbox/ftpuser");
+            systemGlobalData.FtpPassword = _postInfo.GetXmlProperty("genxml/textbox/ftppassword");
+            systemGlobalData.Update();
+
+            var appThemeDataList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey);
+            appThemeDataList.ClearCache();
+
+            return "OK";
         }
 
         public static string SaveEditor()

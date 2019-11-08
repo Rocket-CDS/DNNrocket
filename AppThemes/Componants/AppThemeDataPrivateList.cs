@@ -16,8 +16,25 @@ namespace Rocket.AppThemes.Componants
         private const string AppThemeListType = "AppThemeDataPrivateList";
         public AppThemeDataPrivateList(string selectedsystemkey)
         {
-            SelectedSystemKey = selectedsystemkey;
-            if (List.Count == 0) PopulateAppThemeList();
+            try
+            {
+                ErrorMsg = "";
+                Error = false;
+                SelectedSystemKey = selectedsystemkey;
+
+                var cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
+                SystemFolderList = (List<SystemInfoData>)CacheUtils.GetCache(cachekey);
+                if (SystemFolderList == null) PopulateSystemFolderList();
+
+                cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
+                List = (List<SimplisityInfo>)CacheUtils.GetCache(cachekey);
+                if (List == null) PopulateAppThemeList();
+            }
+            catch (Exception exc)
+            {
+                ErrorMsg = exc.ToString();
+                Error = true; 
+            }
         }
         public void PopulateAppThemeList()
         {
@@ -51,7 +68,8 @@ namespace Rocket.AppThemes.Componants
 
                     List.Add(a);
                 }
-
+                var cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
+                CacheUtils.SetCache(cachekey, List);
             }
         }
         public void PopulateSystemFolderList()
@@ -67,45 +85,24 @@ namespace Rocket.AppThemes.Componants
                 var systemInfoData = new SystemInfoData(dr.Name);
                 if (systemInfoData.Exists) SystemFolderList.Add(systemInfoData);
             }
+
+            var cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
+            CacheUtils.SetCache(cachekey, SystemFolderList);
+
         }
         public void ClearCache()
         {
             SelectedSystemKey = "";
             var cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
             CacheUtils.RemoveCache(cachekey);
-            PopulateAppThemeList();
+            cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
+            CacheUtils.RemoveCache(cachekey);
         }
         public string SelectedSystemKey { get; set; }
-        
-        public List<SimplisityInfo> List {
-            get
-            {
-                var cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
-                if (CacheUtils.GetCache(cachekey) == null) return new List<SimplisityInfo>();
-                return (List<SimplisityInfo>)CacheUtils.GetCache(cachekey);
-            }
-            set
-            {
-                var cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
-                CacheUtils.SetCache(cachekey, value);
-            }
-        }
-
-        public List<SystemInfoData> SystemFolderList
-        {
-            get
-            {
-                var cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
-                if (CacheUtils.GetCache(cachekey) == null) return new List<SystemInfoData>();
-                return (List<SystemInfoData>)CacheUtils.GetCache(cachekey);
-            }
-            set
-            {
-                var cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
-                CacheUtils.SetCache(cachekey, value);
-            }
-        }
-
+        public List<SimplisityInfo> List { get; set; }
+        public List<SystemInfoData> SystemFolderList { get; set; }
+        public bool Error { get; set; }
+        public string ErrorMsg { get; set; }
 
     }
 
