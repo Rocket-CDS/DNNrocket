@@ -82,15 +82,17 @@
         var systemInfoData2 = new SystemInfoData(appThemeDataList.SelectedSystemKey);
 
 
-        <div class="w3-row w3-padding">
-            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" s-track="false">@ResourceKey("DNNrocket.cmdReturnButton")</div>
-            @ButtonGap()
-            <div class="w3-col m2 w3-button w3-blue" onclick="location.reload();"><i class="fas fa-sync fa-lg "></i>&nbsp;@ResourceKey("DNNrocket.refresh")</div>
-            @ButtonGap()
-            <div class="w3-col m2 w3-button w3-teal" onclick="ftpdetail();"><i class="fas fa-server fa-lg "></i>&nbsp;@ResourceKey("DNNrocket.serverdetails")</div>
+<div class="w3-row w3-padding">
+    <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" s-track="false">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-blue" onclick="location.reload();"><i class="fas fa-sync fa-lg "></i>&nbsp;@ResourceKey("DNNrocket.refresh")</div>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-teal" onclick="ftpdetail();"><i class="fas fa-server fa-lg "></i>&nbsp;@ResourceKey("DNNrocket.serverdetails")</div>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-green"><i class="fas fa-download fa-lg "></i>&nbsp;@ResourceKey("Appthemes.downloadall")</div>
 
 
-        </div>
+</div>
 
 
         <div class="w3-row">

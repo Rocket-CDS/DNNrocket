@@ -177,6 +177,9 @@
   <data name="download.Text" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="downloadall.Text" xml:space="preserve">
+    <value>Download All</value>
+  </data>
   <data name="downloadmsg.Text" xml:space="preserve">
     <value>Download AppTheme</value>
   </data>
