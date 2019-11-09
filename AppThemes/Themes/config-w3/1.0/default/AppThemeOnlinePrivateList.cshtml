@@ -20,10 +20,9 @@
 
             <header class="w3-container  w3-theme">
                 <span onclick="document.getElementById('ftpdetails').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <h2>@ResourceKey("DNNrocket.serverdetails")...</h2>
+                <h2>@ResourceKey("system.privateftp")</h2>
             </header>
 
-            <h1>@ResourceKey("system.privateftp")</h1>
             <div class="w3-row w3-padding">
                 <div class="w3-half  w3-padding">
                     <label class="">@ResourceKey("system.ftpserver")</label>
@@ -85,7 +84,7 @@
 <div class="w3-row w3-padding">
     <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" s-track="false">@ResourceKey("DNNrocket.cmdReturnButton")</div>
     @ButtonGap()
-    <div class="w3-col m2 w3-button w3-blue" onclick="location.reload();"><i class="fas fa-sync fa-lg "></i>&nbsp;@ResourceKey("DNNrocket.refresh")</div>
+    <div class="w3-col m2 w3-button w3-blue simplisity_click" s-cmd="rocketapptheme_refreshprivatelist" s-track="false"><i class="fas fa-sync fa-lg "></i>&nbsp;@ResourceKey("DNNrocket.refresh")</div>
     @ButtonGap()
     <div class="w3-col m2 w3-button w3-teal" onclick="ftpdetail();"><i class="fas fa-server fa-lg "></i>&nbsp;@ResourceKey("DNNrocket.serverdetails")</div>
     @ButtonGap()

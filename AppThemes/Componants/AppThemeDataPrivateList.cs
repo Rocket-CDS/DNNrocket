@@ -14,7 +14,8 @@ namespace Rocket.AppThemes.Componants
     public class AppThemeDataPrivateList
     {
         private const string AppThemeListType = "AppThemeDataPrivateList";
-        public AppThemeDataPrivateList(string selectedsystemkey)
+        private const string AppSystemFolderRel = "/DesktopModules/DNNrocket/AppThemes/SystemThemes";
+        public AppThemeDataPrivateList(string selectedsystemkey, bool useCache)
         {
             try
             {
@@ -23,11 +24,11 @@ namespace Rocket.AppThemes.Componants
                 SelectedSystemKey = selectedsystemkey;
 
                 var cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
-                SystemFolderList = (List<SystemInfoData>)CacheUtils.GetCache(cachekey);
+                if (useCache) SystemFolderList = (List<SystemInfoData>)CacheUtils.GetCache(cachekey);
                 if (SystemFolderList == null) PopulateSystemFolderList();
 
                 cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
-                List = (List<SimplisityInfo>)CacheUtils.GetCache(cachekey);
+                if (useCache) List = (List<SimplisityInfo>)CacheUtils.GetCache(cachekey);
                 if (List == null) PopulateAppThemeList();
             }
             catch (Exception exc)
@@ -47,25 +48,36 @@ namespace Rocket.AppThemes.Componants
                 // check verison
                 foreach (SimplisityInfo a in l)
                 {
-                    var appTheme = new AppTheme(SelectedSystemKey, a.GetXmlProperty("genxml/hidden/appthemefolder"));
-                    a.SetXmlProperty("genxml/hidden/localversion", appTheme.LatestVersionFolder);
-                    a.SetXmlProperty("genxml/hidden/localrev", appTheme.LatestRev.ToString());
-                    a.SetXmlProperty("genxml/hidden/islatestversion", "False");
-                    if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") == Convert.ToDouble(appTheme.LatestVersionFolder))
+                    //get local directory and check if exists
+                    var localdir = AppSystemFolderRel + "/" + SelectedSystemKey + "/" + a.GetXmlProperty("genxml/hidden/appthemefolder");
+                    var localdirMapPath = DNNrocketUtils.MapPath(localdir);
+                    if (Directory.Exists(localdirMapPath))
                     {
-                        a.SetXmlProperty("genxml/hidden/islatestversion", "True");
-                    }
+                        var appTheme = new AppTheme(SelectedSystemKey, a.GetXmlProperty("genxml/hidden/appthemefolder"));
+                        a.SetXmlProperty("genxml/hidden/localversion", appTheme.LatestVersionFolder);
+                        a.SetXmlProperty("genxml/hidden/localrev", appTheme.LatestRev.ToString());
+                        a.SetXmlProperty("genxml/hidden/islatestversion", "False");
+                        a.SetXmlProperty("genxml/hidden/exists", "True");
+                        if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") == Convert.ToDouble(appTheme.LatestVersionFolder))
+                        {
+                            a.SetXmlProperty("genxml/hidden/islatestversion", "True");
+                        }
 
-                    a.SetXmlProperty("genxml/hidden/localupdated", "False");
-                    if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") < Convert.ToDouble(appTheme.LatestVersionFolder))
-                    {
-                        a.SetXmlProperty("genxml/hidden/localupdated", "True");
+                        a.SetXmlProperty("genxml/hidden/localupdated", "False");
+                        if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") < Convert.ToDouble(appTheme.LatestVersionFolder))
+                        {
+                            a.SetXmlProperty("genxml/hidden/localupdated", "True");
+                        }
+                        if (a.GetXmlPropertyInt("genxml/hidden/latestrev") < appTheme.LatestRev)
+                        {
+                            a.SetXmlProperty("genxml/hidden/localupdated", "True");
+                        }
                     }
-                    if (a.GetXmlPropertyInt("genxml/hidden/latestrev") < appTheme.LatestRev)
+                    else
                     {
-                        a.SetXmlProperty("genxml/hidden/localupdated", "True");
+                        a.SetXmlProperty("genxml/hidden/islatestversion", "False");
+                        a.SetXmlProperty("genxml/hidden/exists", "False");
                     }
-
                     List.Add(a);
                 }
                 var cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();

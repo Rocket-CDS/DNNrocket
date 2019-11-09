@@ -152,8 +152,11 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_uploadapptheme":
                         strOut = UploadAppTheme();
                         break;
+                    case "rocketapptheme_refreshprivatelist":
+                        strOut = GetPrivateListAppTheme(false);
+                        break;
                     case "rocketapptheme_getprivatelist":
-                        strOut = GetPrivateListAppTheme();
+                        strOut = GetPrivateListAppTheme(true);
                         break;
                     case "rocketapptheme_saveftpdetails":
                         strOut = SaveServerDetails();
@@ -309,10 +312,7 @@ namespace DNNrocket.AppThemes
                 _appTheme.Update();
                 File.Delete(destinationMapPath);
 
-                var appThemeDataPrivateList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey);
-                appThemeDataPrivateList.ClearCache();
-
-                return GetPrivateListAppTheme();
+                return GetPrivateListAppTheme(false);
             }
             catch (Exception ex)
             {
@@ -321,11 +321,11 @@ namespace DNNrocket.AppThemes
             }
         }
 
-        public static string GetPrivateListAppTheme()
+        public static string GetPrivateListAppTheme(bool useCache)
         {
             try
             {
-                var appThemeDataPrivateList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey); 
+                var appThemeDataPrivateList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey, useCache);
                 var template = "AppThemeOnlinePrivateList.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var passSettings = _postInfo.ToDictionary();
@@ -362,9 +362,9 @@ namespace DNNrocket.AppThemes
 
                 var rtn = ftpConnect.UploadAppTheme(_appTheme);
 
-                var appThemeDataPrivateList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey);
+                var appThemeDataPrivateList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey, true);
                 appThemeDataPrivateList.ClearCache();
-
+                _appThemeDataList.ClearCache();
                 return rtn;
             }
             return "FTP Failed, No AppTheme export file found.";
@@ -427,7 +427,7 @@ namespace DNNrocket.AppThemes
             systemGlobalData.FtpPassword = _postInfo.GetXmlProperty("genxml/textbox/ftppassword");
             systemGlobalData.Update();
 
-            var appThemeDataList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey);
+            var appThemeDataList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey, true);
             appThemeDataList.ClearCache();
 
             return "OK";
