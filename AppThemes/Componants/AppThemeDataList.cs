@@ -60,15 +60,20 @@ namespace Rocket.AppThemes.Componants
             }
         }
 
-        public void ClearCache()
+        public void ClearCacheLists()
         {
-            SelectedSystemKey = "";
             var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath;
             CacheUtils.RemoveCache(cachekey);
             cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
             CacheUtils.RemoveCache(cachekey);
             PopulateSystemFolderList();
             PopulateAppThemeList();
+        }
+
+        public void ClearCache()
+        {
+            SelectedSystemKey = "";
+            ClearCacheLists();
         }
         public string AppProjectFolderRel { get; set; }
         public string AppProjectFolderMapPath { get; set; }

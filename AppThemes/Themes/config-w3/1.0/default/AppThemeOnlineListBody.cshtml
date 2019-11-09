@@ -32,6 +32,16 @@ else
             @foreach (SimplisityInfo info in appThemeDataList.List)
             {
                 lp1 += 1;
+                var version = info.GetXmlProperty("genxml/hidden/latestversion");
+                if (version == "")
+                {
+                    version = "0.0";
+                }
+                var localversion = info.GetXmlProperty("genxml/hidden/localversion");
+                if (localversion == "")
+                {
+                    localversion = "0.0";
+                }
                 <li class="datalistitem w3-display-container">
 
                     <div class="listrow w3-row">
@@ -40,7 +50,7 @@ else
                             <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60px;height:60px;" class="w3-circle" />
                         </div>
                         <div class=" w3-col m6 w3-padding">
-                            <div class="">
+                            <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
                                 <b>
                                     @info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")
                                 </b>
@@ -68,7 +78,7 @@ else
                                 {
                                     <i class='w3-text-black fas fa-hdd' style='font-size:16px'></i>
                                 }
-                                @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/localversion").@info.GetXmlPropertyInt("genxml/hidden/localrev")
+                                @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@localversion.@info.GetXmlPropertyInt("genxml/hidden/localrev")
                             </div>
                             <div>
                                 @if (info.GetXmlPropertyBool("genxml/hidden/localupdated"))
@@ -79,15 +89,22 @@ else
                                 {
                                     <i class='fas fa-check' style='font-size:16px'></i>
                                 }
-                                @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/latestversion").@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
+                                @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@version.@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
                             </div>
                         </div>
 
-                        <div class="w3-col w3-right w3-button simplisity_click" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width:64px;">
-                            <div class="w3-text-teal w3-row w3-left-align " style="width: 64px;">
-                                <i class='fas fa-download w3-text-black' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
+                        @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
+                        {
+                            <div class="w3-button w3-text-light-grey w3-display-topright simplisity_click" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;">
+                                <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="w3-button w3-display-topright simplisity_click" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;">
+                                <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
+                            </div>
+                        }
 
                     </div>
                 </li>
@@ -102,19 +119,35 @@ else
             @foreach (SimplisityInfo info in appThemeDataList.List)
             {
                 lp1 += 1;
+                var version = info.GetXmlProperty("genxml/hidden/latestversion");
+                if (version == "")
+                {
+                    version = "0.0";
+                }
+                var localversion = info.GetXmlProperty("genxml/hidden/localversion");
+                if (localversion == "")
+                {
+                    localversion = "0.0";
+                }
                 <div class=" w3-col w3-padding w3-col m2 ">
 
                     <div class="w3-padding w3-panel w3-display-container w3-border">
                         <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60%;" class="w3-circle w3-hover-opacity" />
-                        <div><b>@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")</b></div>
+                        <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
+                        <b>@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestversion")</b>
+                        </div>
 
                         @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
                         {
-                            <div class="w3-button w3-text-light-grey w3-display-topright simplisity_click" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;"><i class='fas fa-download' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></div>
+                            <div class="w3-button w3-text-light-grey w3-display-topright simplisity_click" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;">
+                                <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
+                            </div>
                         }
                         else
                         {
-                            <div class="w3-button w3-display-topright simplisity_click" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;"><i class='fas fa-download' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></div>
+                            <div class="w3-button w3-display-topright simplisity_click" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;">
+                                <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
+                            </div>
                         }
 
 
@@ -127,7 +160,7 @@ else
                         {
                             <i class='w3-text-black fas fa-hdd' style='font-size:16px'></i>
                         }
-                        @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/localversion").@info.GetXmlPropertyInt("genxml/hidden/localrev")
+                        @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@localversion.@info.GetXmlPropertyInt("genxml/hidden/localrev")
                     </div>
                     <div class="">
                         @if (info.GetXmlPropertyBool("genxml/hidden/localupdated"))
@@ -138,7 +171,7 @@ else
                         {
                             <i class='fas fa-check' style='font-size:16px'></i>
                         }
-                        @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/latestversion").@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
+                        @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@version.@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
                     </div>
 
                     </div>

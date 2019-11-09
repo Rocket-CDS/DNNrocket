@@ -163,7 +163,16 @@ namespace DNNrocket.AppThemes
                         break;
                     case "rocketapptheme_downloadprivate":
                         strOut = GetPrivateAppTheme();
-                        break;                        
+                        break;
+                    case "rocketapptheme_refreshpubliclist":
+                        strOut = GetPublicListAppTheme(false);
+                        break;
+                    case "rocketapptheme_getpubliclist":
+                        strOut = GetPublicListAppTheme(true);
+                        break;
+                    case "rocketapptheme_downloadpublic":
+                        strOut = GetPublicAppTheme();
+                        break;
 
                 }
             }
@@ -300,6 +309,49 @@ namespace DNNrocket.AppThemes
             }
         }
 
+
+        public static string GetPublicAppTheme()
+        {
+            try
+            {
+                //var ftpConnect = new FtpConnect(_selectedSystemKey);
+                //var userid = DNNrocketUtils.GetCurrentUserId();
+                //var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + _appThemeFolder + ".zip";
+                //ftpConnect.DownloadAppThemeToFile(_appThemeFolder, destinationMapPath);
+                //var _appTheme = new AppTheme(destinationMapPath);
+                //_appTheme.Update();
+                //File.Delete(destinationMapPath);
+
+                //_appThemeDataList.ClearCacheLists();
+
+                return GetPublicListAppTheme(false);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+
+            }
+        }
+
+        public static string GetPublicListAppTheme(bool useCache)
+        {
+            try
+            {
+                var appThemeDataPublicList = new AppThemeDataPublicList(_appThemeDataList.SelectedSystemKey, useCache);
+                var template = "AppThemeOnlinePublicList.cshtml";
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var passSettings = _postInfo.ToDictionary();
+
+                return DNNrocketUtils.RazorDetail(razorTempl, appThemeDataPublicList, passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+
+            }
+        }
+
+
         public static string GetPrivateAppTheme()
         {
             try
@@ -311,6 +363,8 @@ namespace DNNrocket.AppThemes
                 var _appTheme = new AppTheme(destinationMapPath);
                 _appTheme.Update();
                 File.Delete(destinationMapPath);
+
+                _appThemeDataList.ClearCacheLists();
 
                 return GetPrivateListAppTheme(false);
             }
