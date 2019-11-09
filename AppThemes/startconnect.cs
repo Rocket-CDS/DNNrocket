@@ -157,7 +157,11 @@ namespace DNNrocket.AppThemes
                         break;
                     case "rocketapptheme_saveftpdetails":
                         strOut = SaveServerDetails();
+                        break;
+                    case "rocketapptheme_downloadprivate":
+                        strOut = GetPrivateAppTheme();
                         break;                        
+
                 }
             }
             else
@@ -293,17 +297,40 @@ namespace DNNrocket.AppThemes
             }
         }
 
-        public static String GetPrivateListAppTheme()
+        public static string GetPrivateAppTheme()
         {
             try
             {
-                var appThemeDataList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey); 
-                var template = _rocketInterface.DefaultTemplate;
-                if (template == "") template = "AppThemeOnlinePrivateList.cshtml";
+                var ftpConnect = new FtpConnect(_selectedSystemKey);
+                var userid = DNNrocketUtils.GetCurrentUserId();
+                var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + _appThemeFolder + ".zip";
+                ftpConnect.DownloadAppThemeToFile(_appThemeFolder, destinationMapPath);
+                var _appTheme = new AppTheme(destinationMapPath);
+                _appTheme.Update();
+                File.Delete(destinationMapPath);
+
+                var appThemeDataPrivateList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey);
+                appThemeDataPrivateList.ClearCache();
+
+                return GetPrivateListAppTheme();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+
+            }
+        }
+
+        public static string GetPrivateListAppTheme()
+        {
+            try
+            {
+                var appThemeDataPrivateList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey); 
+                var template = "AppThemeOnlinePrivateList.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, _appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var passSettings = _postInfo.ToDictionary();
 
-                return DNNrocketUtils.RazorDetail(razorTempl, appThemeDataList, passSettings, null, true);
+                return DNNrocketUtils.RazorDetail(razorTempl, appThemeDataPrivateList, passSettings, null, true);
             }
             catch (Exception ex)
             {

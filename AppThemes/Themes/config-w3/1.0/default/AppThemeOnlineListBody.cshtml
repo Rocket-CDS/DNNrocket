@@ -79,7 +79,7 @@ else
                             </div>
                         </div>
 
-                        <div class="w3-col w3-right w3-button simplisity_click" s-cmd="rocketapptheme_deleteprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width:64px;">
+                        <div class="w3-col w3-right w3-button simplisity_click" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width:64px;">
                             <div class="w3-text-teal w3-row w3-left-align " style="width: 64px;">
                                 <i class='fas fa-download w3-text-black' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
                             </div>
@@ -106,11 +106,11 @@ else
 
                         @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
                         {
-                            <a class="w3-button w3-text-light-grey w3-display-topright simplisity_filedownload" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;"><i class='fas fa-download' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></a>
+                            <div class="w3-button w3-text-light-grey w3-display-topright simplisity_click" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;"><i class='fas fa-download' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></div>
                         }
                         else
                         {
-                            <a class="w3-button w3-display-topright simplisity_filedownload" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;"><i class='fas fa-download' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></a>
+                            <div class="w3-button w3-display-topright simplisity_click" s-cmd="rocketapptheme_downloadprivate" s-fields='{"appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;"><i class='fas fa-download' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></div>
                         }
 
 

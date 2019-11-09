@@ -25,7 +25,7 @@ namespace DNNrocketAPI.Componants
         {
 
             var exportZipMapPath = appTheme.ExportZipFile();
-            var filename = Path.GetFileName(exportZipMapPath).ToLower();
+            var filename = Path.GetFileName(exportZipMapPath);
 
             var dirlist = (_systemInfoData.FtpRoot + "/" + _systemInfoData.SystemKey).Split('/');
             var createftpdir = "";
@@ -52,7 +52,7 @@ namespace DNNrocketAPI.Componants
                 using (var client = new WebClient())
                 {
                     client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-                    var xmlMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + appTheme.AppThemeFolder.ToLower() + ".xml";
+                    var xmlMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + appTheme.AppThemeFolder + ".xml";
                     var sInfo = new SimplisityInfo();
                     sInfo.SetXmlProperty("genxml/hidden/appthemefolder", appTheme.AppThemeFolder);
                     sInfo.SetXmlProperty("genxml/hidden/summary", appTheme.AppSummary);
@@ -118,13 +118,12 @@ namespace DNNrocketAPI.Componants
                 }
             }
         }
-        public string DownloadAppThemeToFile(string destinationMapPath)
+        public string DownloadAppThemeToFile(string appThemeFolder, string destinationMapPath)
         {
             try
             {
-                var filename = Path.GetFileName(destinationMapPath);
-                var uri = _baseuri + "/zip/" + filename;
-                FileUtils.SaveFile(destinationMapPath, Download(uri) );
+                var uri = _baseuri + "/zip/" + appThemeFolder + ".zip";
+                DownloadZip(uri, destinationMapPath);
             }
             catch (Exception exc)
             {
@@ -132,6 +131,13 @@ namespace DNNrocketAPI.Componants
                 return "FAIL";
             }
             return "OK";
+        }
+
+        public void DownloadZip(string uri, string destinationmapPath)
+        {
+            WebClient client = new WebClient();
+            client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
+            client.DownloadFile(uri, destinationmapPath);
         }
 
         public string Download(string uri)
