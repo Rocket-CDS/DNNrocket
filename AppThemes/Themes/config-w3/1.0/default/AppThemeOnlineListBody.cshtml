@@ -60,8 +60,7 @@ else
 
                         <div class=" w3-col w3-padding" style="width:300px;">
                             <div>
-                                @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/localversion").@info.GetXmlPropertyInt("genxml/hidden/localrev")
-                                @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
+                                @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion") && info.GetXmlPropertyBool("genxml/hidden/exists"))
                                 {
                                     <i class='w3-text-green fas fa-hdd' style='font-size:16px'></i>
                                 }
@@ -69,13 +68,18 @@ else
                                 {
                                     <i class='w3-text-black fas fa-hdd' style='font-size:16px'></i>
                                 }
+                                @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/localversion").@info.GetXmlPropertyInt("genxml/hidden/localrev")
                             </div>
                             <div>
-                                @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/latestversion").@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
                                 @if (info.GetXmlPropertyBool("genxml/hidden/localupdated"))
                                 {
                                     <i class='w3-text-red fas fa-exclamation-triangle' style='font-size:16px'></i>
                                 }
+                                else
+                                {
+                                    <i class='fas fa-check' style='font-size:16px'></i>
+                                }
+                                @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/latestversion").@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
                             </div>
                         </div>
 
@@ -114,24 +118,28 @@ else
                         }
 
 
-                        <div class="">
-                            @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/localversion").@info.GetXmlPropertyInt("genxml/hidden/localrev")
-                            @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
-                            {
-                                <i class='w3-text-green fas fa-hdd' style='font-size:16px'></i>
-                            }
-                            else
-                            {
-                                <i class='w3-text-black fas fa-hdd' style='font-size:16px'></i>
-                            }
-                        </div>
-                        <div class="">
-                            @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/latestversion").@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
-                            @if (info.GetXmlPropertyBool("genxml/hidden/localupdated"))
-                            {
-                                <i class='w3-text-red fas fa-exclamation-triangle' style='font-size:16px'></i>
-                            }
-                        </div>
+                    <div class="">
+                        @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
+                        {
+                            <i class='w3-text-green fas fa-hdd' style='font-size:16px'></i>
+                        }
+                        else
+                        {
+                            <i class='w3-text-black fas fa-hdd' style='font-size:16px'></i>
+                        }
+                        @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/localversion").@info.GetXmlPropertyInt("genxml/hidden/localrev")
+                    </div>
+                    <div class="">
+                        @if (info.GetXmlPropertyBool("genxml/hidden/localupdated"))
+                        {
+                            <i class='w3-text-red fas fa-exclamation-triangle' style='font-size:16px'></i>
+                        }
+                        else
+                        {
+                            <i class='fas fa-check' style='font-size:16px'></i>
+                        }
+                        @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@info.GetXmlProperty("genxml/hidden/latestversion").@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
+                    </div>
 
                     </div>
                 </div>
