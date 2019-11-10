@@ -95,8 +95,8 @@
   <ItemGroup>
     <Compile Include="Componants\AppTheme.cs" />
     <Compile Include="Componants\DNNrocketModuleController.cs" />
-    <Compile Include="Componants\HttpConnect.cs" />
     <Compile Include="Componants\FtpConnect.cs" />
+    <Compile Include="Componants\HttpConnect.cs" />
     <Compile Include="Componants\ModuleParamList.cs" />
     <Compile Include="Componants\ModuleParams.cs" />
     <Compile Include="Componants\SystemGlobalData.cs" />

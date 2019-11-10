@@ -153,6 +153,8 @@ namespace DNNrocket.AppThemes
                         strOut = UploadAppTheme();
                         break;
                     case "rocketapptheme_refreshprivatelist":
+                        var ftpConnect = new FtpConnect(_selectedSystemKey);
+                        ftpConnect.ReindexPrivateXmlList();
                         strOut = GetPrivateListAppTheme(false);
                         break;
                     case "rocketapptheme_getprivatelist":

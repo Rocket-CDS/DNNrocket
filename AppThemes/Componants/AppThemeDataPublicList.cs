@@ -30,7 +30,7 @@ namespace Rocket.AppThemes.Componants
                 if (SystemFolderList == null) PopulateSystemFolderList();
 
                 cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
-                if (useCache) List = (List<SimplisityInfo>)CacheUtils.GetCache(cachekey);
+                if (useCache) List = (List<SimplisityRecord>)CacheUtils.GetCache(cachekey);
                 if (List == null) PopulateAppThemeList();
             }
             catch (Exception exc)
@@ -39,7 +39,7 @@ namespace Rocket.AppThemes.Componants
                 Error = true; 
             }
         }
-        private List<SimplisityInfo> DownloadAppThemeXmlList()
+        private List<SimplisityRecord> DownloadAppThemeXmlList()
         {
             var httpConnect = new HttpConnect(SelectedSystemKey);
             var rtnList = httpConnect.DownloadAppThemeXmlList();
@@ -48,14 +48,15 @@ namespace Rocket.AppThemes.Componants
 
         public void PopulateAppThemeList()
         {
-            List = new List<SimplisityInfo>();
+            List = new List<SimplisityRecord>();
             if (SelectedSystemKey != "")
             {
 
                 var l = DownloadAppThemeXmlList();
 
-                // check verison
-                foreach (SimplisityInfo a in l)
+                List<SimplisityRecord> SortedList = l.OrderBy(o => o.GetXmlProperty("genxml/hidden/appthemefolder")).ToList();
+
+                foreach (SimplisityRecord a in SortedList)
                 {
                     //get local directory and check if exists
                     var localdir = AppSystemFolderRel + "/" + SelectedSystemKey + "/" + a.GetXmlProperty("genxml/hidden/appthemefolder");
@@ -120,7 +121,7 @@ namespace Rocket.AppThemes.Componants
             CacheUtils.RemoveCache(cachekey);
         }
         public string SelectedSystemKey { get; set; }
-        public List<SimplisityInfo> List { get; set; }
+        public List<SimplisityRecord> List { get; set; }
         public List<SystemInfoData> SystemFolderList { get; set; }
         public bool Error { get; set; }
         public string ErrorMsg { get; set; }

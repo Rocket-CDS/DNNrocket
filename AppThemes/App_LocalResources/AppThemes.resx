@@ -249,6 +249,9 @@
   <data name="prefix.Text" xml:space="preserve">
     <value>Prefix</value>
   </data>
+  <data name="publicserver.Text" xml:space="preserve">
+    <value>Public Server</value>
+  </data>
   <data name="quickedit.Text" xml:space="preserve">
     <value>Quick Edit</value>
   </data>

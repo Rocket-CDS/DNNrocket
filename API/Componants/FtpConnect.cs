@@ -23,7 +23,6 @@ namespace DNNrocketAPI.Componants
 
         public string UploadAppTheme(AppTheme appTheme)
         {
-
             var exportZipMapPath = appTheme.ExportZipFile();
             var filename = Path.GetFileName(exportZipMapPath);
 
@@ -53,7 +52,7 @@ namespace DNNrocketAPI.Componants
                 {
                     client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
                     var xmlMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + appTheme.AppThemeFolder + ".xml";
-                    var sInfo = new SimplisityInfo();
+                    var sInfo = new SimplisityRecord();
                     sInfo.SetXmlProperty("genxml/hidden/appthemefolder", appTheme.AppThemeFolder);
                     sInfo.SetXmlProperty("genxml/hidden/summary", appTheme.AppSummary);
                     sInfo.SetXmlProperty("genxml/hidden/latestversion", appTheme.LatestVersionFolder);
@@ -72,8 +71,10 @@ namespace DNNrocketAPI.Componants
                         sInfo.SetXmlProperty("genxml/hidden/logobase64", base64String);   
                     }
 
-                    FileUtils.SaveFile(xmlMapPath, sInfo.ToXmlItem());
+                    var updateXml = sInfo.ToXmlItem();
+                    FileUtils.SaveFile(xmlMapPath, updateXml);
                     client.UploadFile(urixml + "/" + Path.GetFileName(xmlMapPath), WebRequestMethods.Ftp.UploadFile, xmlMapPath);
+                    UploadChangedXmlIndex(appTheme.AppThemeFolder, updateXml);
                 }
             }
             catch (Exception ex)
@@ -83,6 +84,64 @@ namespace DNNrocketAPI.Componants
             }
             return "OK";
         }
+
+        private void UploadChangedXmlIndex(string appThemeFolder, string updateXml = "")
+        {
+
+            var uriidx = _baseuri + "/idx";
+            var reindexuri = uriidx + "/list.xml";
+            var xmlIdx = Download(reindexuri);
+
+            if (xmlIdx == "" || xmlIdx == "FAIL")
+            {
+                ReindexPrivateXmlList();
+            }
+            else
+            {
+                if (updateXml != "")
+                {
+                    var idxInfo = new SimplisityRecord();
+                    idxInfo.XMLData = xmlIdx;
+                    idxInfo.RemoveRecordListItem("idx", "genxml/hidden/appthemefolder", appThemeFolder);
+                    var updateInfo = new SimplisityRecord();
+                    updateInfo.FromXmlItem(updateXml);
+                    idxInfo.AddListItem("idx", updateInfo.XMLData);
+                    UploadXmlIndex(idxInfo.XMLData);
+                }
+            }
+        }
+
+        private void UploadXmlIndex(string fulllistxml)
+        {
+            var uriidx = _baseuri + "/idx";
+            CreateFTPDirectory(uriidx);
+
+            using (var client = new WebClient())
+            {
+                client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
+                var idxMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\list.xml";
+
+                FileUtils.SaveFile(idxMapPath, fulllistxml);
+                client.UploadFile(uriidx + "/list.xml", WebRequestMethods.Ftp.UploadFile, idxMapPath);
+            }
+        }
+        public string ReindexPrivateXmlList()
+        {
+            var ftpidx = "<genxml>";
+            ftpidx += "<idx list=\"true\">";
+
+            var l = DownloadAppThemeXmlList();
+            foreach (var x in l)
+            {
+                ftpidx += x.XMLData;
+            }
+            ftpidx += "</idx>";
+            ftpidx += "</genxml>";
+            UploadXmlIndex(ftpidx);
+            return ftpidx;
+        }
+
+
         public bool CreateFTPDirectory(string directory)
         {
 
@@ -105,7 +164,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (WebException ex)
             {
-                DNNrocketUtils.LogException(ex);
+                //DNNrocketUtils.LogException(ex);
                 FtpWebResponse response = (FtpWebResponse)ex.Response;
                 if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
                 {
@@ -163,9 +222,33 @@ namespace DNNrocketAPI.Componants
             }
         }
 
-        public List<SimplisityInfo> DownloadAppThemeXmlList()
+        public List<SimplisityRecord> DownloadAppThemeXmlIndexList()
         {
-            var rtnList = new List<SimplisityInfo>();
+
+            var uriidx = _baseuri + "/idx";
+            var reindexuri = uriidx + "/list.xml";
+            var xmlIdx = Download(reindexuri);
+
+            if (xmlIdx == "" || xmlIdx == "FAIL")
+            {
+                xmlIdx = ReindexPrivateXmlList();
+            }
+
+            var sRec = new SimplisityRecord();
+            sRec.XMLData = xmlIdx;
+
+            var xmlReclist = sRec.GetRecordList("idx");
+            var rtnList = new List<SimplisityRecord>();
+            foreach (var n in xmlReclist)
+            {
+                rtnList.Add(n);
+            }
+            return rtnList;
+        }
+
+        public List<SimplisityRecord> DownloadAppThemeXmlList()
+        {
+            var rtnList = new List<SimplisityRecord>();
             var namelist = ListXmlFiles();
             foreach (var n in namelist)
             {
@@ -173,7 +256,7 @@ namespace DNNrocketAPI.Componants
                 var xmlDownload = Download(uri);
                 if (xmlDownload != "FAIL")
                 {
-                    var sInfo = new SimplisityInfo();
+                    var sInfo = new SimplisityRecord();
                     sInfo.FromXmlItem(xmlDownload);
                     rtnList.Add(sInfo);
                 }

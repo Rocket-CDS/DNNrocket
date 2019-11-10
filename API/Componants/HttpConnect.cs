@@ -48,7 +48,6 @@ namespace DNNrocketAPI.Componants
             try
             {
                 WebClient client = new WebClient();
-                client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
                 var rtnString = client.DownloadString(uri);
                 return rtnString;
             }
@@ -58,62 +57,21 @@ namespace DNNrocketAPI.Componants
             }
         }
 
-        public List<SimplisityInfo> DownloadAppThemeXmlList()
-        {
-            var rtnList = new List<SimplisityInfo>();
-            var namelist = ListXmlFiles();
-            foreach (var n in namelist)
-            {
-                var uri = _baseuri + "/xml/" + n;
-                var xmlDownload = Download(uri);
-                if (xmlDownload != "FAIL")
-                {
-                    var sInfo = new SimplisityInfo();
-                    sInfo.FromXmlItem(xmlDownload);
-                    rtnList.Add(sInfo);
-                }
-            }
-            return rtnList;
-        }
-        private List<string> ListXmlFiles()
+        public List<SimplisityRecord> DownloadAppThemeXmlList()
         {
             try
             {
-                WebClient client = new WebClient();
-                var rtnList = new List<string>();
-                var uri = _baseuri + "/xml";
-                WebRequest request = WebRequest.Create(uri);
-                WebResponse response = request.GetResponse();
-                Regex regex = new Regex("<a href=\".*(.xml)");
-
-                using (var reader = new StreamReader(response.GetResponseStream()))
-                {
-                    string result = reader.ReadToEnd();
-                    MatchCollection matches = regex.Matches(result);
-                    if (matches.Count > 0)
-                    {
-                        foreach (Match match in matches)
-                        {
-                            if (!match.Success) { continue; }
-                            foreach (Group n in match.Groups)
-                            {
-                                var hrefLink = XElement.Parse(n.Value + "</a>")
-                                               .Descendants("a")
-                                               .Select(x => x.Attribute("href").Value)
-                                               .FirstOrDefault();
-                                rtnList.Add(hrefLink);
-                            }
-                        }
-                    }
-                }
-                return rtnList;
+                var uri = _baseuri + "/idx/list.xml";
+                var xmlIndexList = Download(uri);
+                var sRec = new SimplisityRecord();
+                sRec.XMLData = xmlIndexList;
+                return sRec.GetRecordList("idx");
             }
             catch (Exception exc)
             {
                 throw exc;
             }
         }
-
 
     }
 }
