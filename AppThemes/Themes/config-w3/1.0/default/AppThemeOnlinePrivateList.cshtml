@@ -117,6 +117,7 @@
         Model.SetDataObject("appThemeDataList.List", appThemeDataList.List);
         Model.SetSetting("listerror", appThemeDataList.Error.ToString());
         Model.SetSetting("listerrormsg", appThemeDataList.ErrorMsg);
+        Model.SetSetting("s-cmd-download", "rocketapptheme_downloadprivate");
 
         @RenderTemplate("AppThemeOnlineListBody.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", Model, "1.0", true)
 

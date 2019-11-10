@@ -316,15 +316,17 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                //var ftpConnect = new FtpConnect(_selectedSystemKey);
-                //var userid = DNNrocketUtils.GetCurrentUserId();
-                //var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + _appThemeFolder + ".zip";
-                //ftpConnect.DownloadAppThemeToFile(_appThemeFolder, destinationMapPath);
-                //var _appTheme = new AppTheme(destinationMapPath);
-                //_appTheme.Update();
-                //File.Delete(destinationMapPath);
+                var httpConnect = new HttpConnect(_selectedSystemKey);
+                var userid = DNNrocketUtils.GetCurrentUserId();
+                var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + _appThemeFolder + ".zip";
 
-                //_appThemeDataList.ClearCacheLists();
+                httpConnect.DownloadAppThemeToFile(_appThemeFolder,destinationMapPath);
+
+                var _appTheme = new AppTheme(destinationMapPath);
+                _appTheme.Update();
+                File.Delete(destinationMapPath);
+
+                _appThemeDataList.ClearCacheLists();
 
                 return GetPublicListAppTheme(false);
             }
