@@ -194,6 +194,7 @@ namespace DNNrocket.AppThemes
                 var rtn = _appTheme.CopyVersion(_appTheme.AppVersionFolder, (Convert.ToDouble(_appTheme.LatestVersionFolder) + 1).ToString("0.0"));
                 _appVersionFolder = _appTheme.AppVersionFolder;
                 _userStorage.Set("selectedappversion", _appVersionFolder);
+                ClearServerCacheLists();
                 if (rtn != "") return rtn;
                 return GetDetail();
             }
@@ -211,6 +212,9 @@ namespace DNNrocket.AppThemes
                 _appThemeDataList = new AppThemeDataList(_selectedSystemKey); // rebuild list without verison.
                 _appThemeDataList.PopulateSystemFolderList();
                 _appThemeDataList.PopulateAppThemeList();
+
+                ClearServerCacheLists();
+
                 return GetDetail();
             }
             catch (Exception ex)
@@ -226,12 +230,24 @@ namespace DNNrocket.AppThemes
                 _appThemeDataList = new AppThemeDataList(_selectedSystemKey);
                 _appThemeDataList.PopulateSystemFolderList();
                 _appThemeDataList.PopulateAppThemeList();
+
+                ClearServerCacheLists();
+
                 return GetList();
             }
             catch (Exception ex)
             {
                 return ex.ToString();
             }
+        }
+
+        public static void ClearServerCacheLists()
+        {
+            // make sure list cache is cleared, so lists match local and server.
+            var appThemeDataPrivateList = new AppThemeDataPrivateList(_selectedSystemKey, true);
+            appThemeDataPrivateList.ClearCache();
+            var appThemeDataPublicList = new AppThemeDataPublicList(_selectedSystemKey, true);
+            appThemeDataPublicList.ClearCache();
         }
 
         public static string CreateNewAppTheme()
@@ -259,6 +275,9 @@ namespace DNNrocket.AppThemes
                 _userStorage.Set("selectedappversion", "1.0");
 
                 _appThemeDataList.PopulateAppThemeList();
+
+                ClearServerCacheLists();
+
                 return "";
             }
             catch (Exception ex)
@@ -284,6 +303,7 @@ namespace DNNrocket.AppThemes
             _userStorage.Set("selectedsystemkey", _selectedSystemKey);
             _appThemeDataList.SelectedSystemKey = _selectedSystemKey;
             _appThemeDataList.PopulateAppThemeList();
+            ClearServerCacheLists();
             return GetList();
         }
         public static String ClearSystemKey()
@@ -328,6 +348,8 @@ namespace DNNrocket.AppThemes
 
                 _appThemeDataList.ClearCacheLists();
 
+                ClearServerCacheLists();
+
                 return GetPublicListAppTheme(false);
             }
             catch (Exception ex)
@@ -369,6 +391,8 @@ namespace DNNrocket.AppThemes
                 File.Delete(destinationMapPath);
 
                 _appThemeDataList.ClearCacheLists();
+
+                ClearServerCacheLists();
 
                 return GetPrivateListAppTheme(false);
             }
@@ -423,6 +447,7 @@ namespace DNNrocket.AppThemes
                 var appThemeDataPrivateList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey, true);
                 appThemeDataPrivateList.ClearCache();
                 _appThemeDataList.ClearCache();
+                ClearServerCacheLists();
                 return rtn;
             }
             return "FTP Failed, No AppTheme export file found.";
@@ -448,6 +473,7 @@ namespace DNNrocket.AppThemes
                 }
                 _appThemeDataList.PopulateSystemFolderList();
                 _appThemeDataList.PopulateAppThemeList();
+                ClearServerCacheLists();
             }
 
             return GetList();
@@ -456,6 +482,7 @@ namespace DNNrocket.AppThemes
         public static void SaveData()
         {
             _appTheme.Save(_postInfo);
+            ClearServerCacheLists();
         }
         public static string DoCopyAppTheme()
         {
@@ -469,6 +496,7 @@ namespace DNNrocket.AppThemes
                 _appTheme = new AppTheme(_selectedSystemKey, newAppThemeName, _appTheme.LatestVersionFolder);
                 _appThemeDataList.PopulateSystemFolderList();
                 _appThemeDataList.PopulateAppThemeList();
+                ClearServerCacheLists();
                 return GetDetail();
             }
             catch (Exception ex)
@@ -485,8 +513,7 @@ namespace DNNrocket.AppThemes
             systemGlobalData.FtpPassword = _postInfo.GetXmlProperty("genxml/textbox/ftppassword");
             systemGlobalData.Update();
 
-            var appThemeDataList = new AppThemeDataPrivateList(_appThemeDataList.SelectedSystemKey, true);
-            appThemeDataList.ClearCache();
+            ClearServerCacheLists();
 
             return "OK";
         }

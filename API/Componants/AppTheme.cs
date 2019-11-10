@@ -1525,7 +1525,7 @@ namespace DNNrocketAPI.Componants
                 DirectoryCopy(tempZipFolder, destinationFolder, true);
                 if (Directory.Exists(tempZipFolder)) Directory.Delete(tempZipFolder, true);
 
-                InitAppTheme(SystemKey, appThemeFolder, lastversion.ToString("F1", CultureInfo.InvariantCulture), false);
+                InitAppTheme(systemKey, appThemeFolder, lastversion.ToString("F1", CultureInfo.InvariantCulture), false);
             }
         }
 

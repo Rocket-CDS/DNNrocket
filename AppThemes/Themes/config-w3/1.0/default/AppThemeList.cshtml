@@ -188,10 +188,16 @@
                 @foreach (AppTheme appTheme in appThemeDataList.List)
                 {
                     lp1 += 1;
-                <div title="@appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder" class="w3-padding w3-button w3-col m2 w3-panel simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="cursor:pointer;">
-                    <img src="@ThumbnailImageUrl(appTheme.Logo,140,140)" alt="" style="width:60%;" class="w3-circle w3-hover-opacity">
-                    <div><b>@appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder.@appTheme.LatestRev</b></div>
-                </div>
+
+                    <div class="w3-padding w3-col m2 w3-center ">
+
+                        <div class="w3-padding w3-panel w3-display-container w3-border simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="cursor:pointer;">
+                            <img src="@ThumbnailImageUrl(appTheme.Logo,140,140)" style="width:60%;" class="w3-circle w3-hover-opacity" />
+                            <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
+                                <b>@appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder.@appTheme.LatestRev </b>
+                            </div>
+                        </div>
+                    </div>
                 }
             </div>
 
