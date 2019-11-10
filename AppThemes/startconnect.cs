@@ -175,6 +175,9 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_downloadpublic":
                         strOut = GetPublicAppTheme();
                         break;
+                    case "rocketapptheme_downloadallpublic":
+                        strOut = GetAllPublicAppThemes();
+                        break;
 
                 }
             }
@@ -331,25 +334,50 @@ namespace DNNrocket.AppThemes
             }
         }
 
-
-        public static string GetPublicAppTheme()
+        public static string GetAllPublicAppThemes()
         {
             try
             {
-                var httpConnect = new HttpConnect(_selectedSystemKey);
-                var userid = DNNrocketUtils.GetCurrentUserId();
-                var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + _appThemeFolder + ".zip";
+                var appThemeDataPublicList = new AppThemeDataPublicList(_selectedSystemKey, true);
+                foreach (var a in appThemeDataPublicList.List)
+                {
+                    if (!a.GetXmlPropertyBool("genxml/hidden/islatestversion") && !a.GetXmlPropertyBool("genxml/hidden/localupdated"))
+                    {
+                        DownloadPublicAppTheme(a.GetXmlProperty("genxml/hidden/appthemefolder"));
+                    }
+                }
+                return GetPublicListAppTheme(false);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
 
-                httpConnect.DownloadAppThemeToFile(_appThemeFolder,destinationMapPath);
+            }
+        }
 
-                var _appTheme = new AppTheme(destinationMapPath);
-                _appTheme.Update();
-                File.Delete(destinationMapPath);
+        private static void DownloadPublicAppTheme(string appThemeFolder = "")
+        {
+            if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
+            var httpConnect = new HttpConnect(_selectedSystemKey);
+            var userid = DNNrocketUtils.GetCurrentUserId();
+            var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + appThemeFolder + ".zip";
 
-                _appThemeDataList.ClearCacheLists();
+            httpConnect.DownloadAppThemeToFile(appThemeFolder, destinationMapPath);
 
-                ClearServerCacheLists();
+            var _appTheme = new AppTheme(destinationMapPath);
+            _appTheme.Update();
+            File.Delete(destinationMapPath);
 
+            _appThemeDataList.ClearCacheLists();
+
+            ClearServerCacheLists();
+        }
+
+        public static string GetPublicAppTheme(string appThemeFolder = "")
+        {
+            try
+            {
+                DownloadPublicAppTheme(appThemeFolder);
                 return GetPublicListAppTheme(false);
             }
             catch (Exception ex)

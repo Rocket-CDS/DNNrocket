@@ -1508,24 +1508,27 @@ namespace DNNrocketAPI.Componants
                 {
                     var s = new SimplisityInfo();
                     if (nod != null) s.FromXmlItem(nod.OuterXml);
-                    systemKey = s.GetXmlProperty("genxml/hidden/selectedsystemkey");
+                    if (s.GetXmlProperty("genxml/hidden/selectedsystemkey") != "") systemKey = s.GetXmlProperty("genxml/hidden/selectedsystemkey");
                     if (s.GetXmlPropertyDouble("genxml/select/versionfolder") > lastversion) lastversion = s.GetXmlPropertyDouble("genxml/select/versionfolder");
                     s.ItemID = -1;
                     var dbRec = _objCtrl.GetRecordByGuidKey(-1, -1, "APPTHEME", s.GUIDKey, "", _tableName);
                     if (dbRec != null) s.ItemID = dbRec.ItemID;
-                    _objCtrl.Update(s, _tableName);
+                    if (systemKey != "")  _objCtrl.Update(s, _tableName);
                 }
 
-                var appProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
-                var appSystemThemeFolderRel = appProjectFolderRel + "/SystemThemes/" + systemKey;
-                var appSystemThemeFolderMapPath = DNNrocketUtils.MapPath(appSystemThemeFolderRel);
+                if (systemKey != "")
+                {
+                    var appProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
+                    var appSystemThemeFolderRel = appProjectFolderRel + "/SystemThemes/" + systemKey;
+                    var appSystemThemeFolderMapPath = DNNrocketUtils.MapPath(appSystemThemeFolderRel);
 
-                var destinationFolder = appSystemThemeFolderMapPath + "\\" + appThemeFolder;
-                if (Directory.Exists(destinationFolder)) Directory.Delete(destinationFolder, true);
-                DirectoryCopy(tempZipFolder, destinationFolder, true);
-                if (Directory.Exists(tempZipFolder)) Directory.Delete(tempZipFolder, true);
+                    var destinationFolder = appSystemThemeFolderMapPath + "\\" + appThemeFolder;
+                    if (Directory.Exists(destinationFolder)) Directory.Delete(destinationFolder, true);
+                    DirectoryCopy(tempZipFolder, destinationFolder, true);
+                    if (Directory.Exists(tempZipFolder)) Directory.Delete(tempZipFolder, true);
 
-                InitAppTheme(systemKey, appThemeFolder, lastversion.ToString("F1", CultureInfo.InvariantCulture), false);
+                    InitAppTheme(systemKey, appThemeFolder, lastversion.ToString("F1", CultureInfo.InvariantCulture), false);
+                }
             }
         }
 
