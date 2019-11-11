@@ -182,6 +182,9 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_downloadallpublic":
                         strOut = GetAllPublicAppThemes();
                         break;
+                    case "rocketapptheme_downloadallprivate":
+                        strOut = GetAllPrivateAppThemes();
+                        break;
 
                 }
             }
@@ -358,18 +361,35 @@ namespace DNNrocket.AppThemes
 
             }
         }
+        public static string GetAllPrivateAppThemes()
+        {
+            try
+            {
+                var appThemeDataPrivateList = new AppThemeDataPublicList(_selectedSystemKey, true);
+                foreach (var a in appThemeDataPrivateList.List)
+                {
+                    if (!a.GetXmlPropertyBool("genxml/hidden/islatestversion") && !a.GetXmlPropertyBool("genxml/hidden/localupdated"))
+                    {
+                        DownloadPrivateAppTheme(a.GetXmlProperty("genxml/hidden/appthemefolder"));
+                    }
+                }
+                return GetPublicListAppTheme(false);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
 
+            }
+        }
         private static void DownloadPublicAppTheme(string appThemeFolder = "")
         {
             if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
             var httpConnect = new HttpConnect(_selectedSystemKey);
             var userid = DNNrocketUtils.GetCurrentUserId();
             var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + appThemeFolder + ".zip";
-
             httpConnect.DownloadAppThemeToFile(appThemeFolder, destinationMapPath);
-
-            var _appTheme = new AppTheme(destinationMapPath);
-            _appTheme.Update();
+            var appTheme = new AppTheme(destinationMapPath);
+            appTheme.Update();
             File.Delete(destinationMapPath);
 
             _appThemeDataList.ClearCacheLists();
@@ -409,23 +429,25 @@ namespace DNNrocket.AppThemes
             }
         }
 
+        private static void DownloadPrivateAppTheme(string appThemeFolder = "")
+        {
+            if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
 
-        public static string GetPrivateAppTheme()
+            var ftpConnect = new FtpConnect(_selectedSystemKey);
+            var userid = DNNrocketUtils.GetCurrentUserId();
+            var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + appThemeFolder + ".zip";
+            ftpConnect.DownloadAppThemeToFile(appThemeFolder, destinationMapPath);
+            var appTheme = new AppTheme(destinationMapPath);
+            appTheme.Update();
+            File.Delete(destinationMapPath);
+            _appThemeDataList.ClearCacheLists();
+            ClearServerCacheLists();
+        }
+        public static string GetPrivateAppTheme(string appThemeFolder = "")
         {
             try
             {
-                var ftpConnect = new FtpConnect(_selectedSystemKey);
-                var userid = DNNrocketUtils.GetCurrentUserId();
-                var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + _appThemeFolder + ".zip";
-                ftpConnect.DownloadAppThemeToFile(_appThemeFolder, destinationMapPath);
-                var _appTheme = new AppTheme(destinationMapPath);
-                _appTheme.Update();
-                File.Delete(destinationMapPath);
-
-                _appThemeDataList.ClearCacheLists();
-
-                ClearServerCacheLists();
-
+                DownloadPrivateAppTheme(appThemeFolder);
                 return GetPrivateListAppTheme(false);
             }
             catch (Exception ex)
