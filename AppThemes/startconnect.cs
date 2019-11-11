@@ -310,6 +310,7 @@ namespace DNNrocket.AppThemes
         public static String SetSystemKey()
         {
             _selectedSystemKey = _paramInfo.GetXmlProperty("genxml/hidden/systemkey");
+            _appThemeDataList = new AppThemeDataList(_selectedSystemKey);
             _userStorage.Set("selectedsystemkey", _selectedSystemKey);
             _appThemeDataList.SelectedSystemKey = _selectedSystemKey;
             _appThemeDataList.PopulateAppThemeList();

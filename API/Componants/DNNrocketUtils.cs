@@ -35,6 +35,22 @@ namespace DNNrocketAPI
     public static class DNNrocketUtils
     {
 
+        public static void CreateRocketDirectories()
+        {
+            if (!Directory.Exists(TempDirectoryMapPath()))
+            {
+                Directory.CreateDirectory(TempDirectoryMapPath());
+            }
+            if (!Directory.Exists(HomeDNNrocketDirectoryMapPath()))
+            {
+                Directory.CreateDirectory(HomeDNNrocketDirectoryMapPath());
+            }
+            if (!Directory.Exists(DNNrocketThemesDirectoryMapPath()))
+            {
+                Directory.CreateDirectory(DNNrocketThemesDirectoryMapPath());
+            }            
+        }
+
         public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
         {
             var rtnDic = new Dictionary<string, string>();
@@ -206,7 +222,7 @@ namespace DNNrocketAPI
                 var themeFolderPath = themeFolder + "\\" + versionFolder;
                 if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder + "\\" + versionFolder;
                 if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder;
-                var RocketThemes = DNNrocketThemesDirectory();
+                var RocketThemes = DNNrocketThemesDirectoryMapPath();
                 templCtrl = new TemplateGetter(RocketThemes, themeFolderPath, controlMapPath, debugMode);
                 CacheUtils.SetCache(cacheKey, templCtrl);
             }
@@ -1115,31 +1131,21 @@ namespace DNNrocketAPI
         {
             return PortalSettings.Current.HomeDirectory;
         }
-        [Obsolete("Please use HomeDirectoryMapPath() instead.")]
-        public static string HomeDirectory()
-        {
-            return PortalSettings.Current.HomeDirectoryMapPath;
-        }
-        [Obsolete("Please use HomeDirectoryRel() instead.")]
-        public static string HomeRelDirectory()
-        {
-            return PortalSettings.Current.HomeDirectory;
-        }
 
-        public static string DNNrocketThemesDirectory()
+        public static string DNNrocketThemesDirectoryMapPath()
         {
             return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketThemes";
         }
-        public static string DNNrocketThemesRelDirectory()
+        public static string DNNrocketThemesDirectoryRel()
         {
             return PortalSettings.Current.HomeDirectory + "DNNrocketThemes";
         }
 
-        public static string HomeDNNrocketDirectory()
+        public static string HomeDNNrocketDirectoryMapPath()
         {
             return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocket";
         }
-        public static string HomeDNNrocketRelDirectory()
+        public static string HomeDNNrocketDirectoryRel()
         {
             return PortalSettings.Current.HomeDirectory + "DNNrocket";
         }
@@ -1214,9 +1220,9 @@ namespace DNNrocketAPI
             if (!Directory.Exists(TempDirectoryMapPath())) {
                 Directory.CreateDirectory(TempDirectoryMapPath());
             }
-            if (!Directory.Exists(HomeDNNrocketDirectory()))
+            if (!Directory.Exists(HomeDNNrocketDirectoryMapPath()))
             {
-                Directory.CreateDirectory(HomeDNNrocketDirectory());
+                Directory.CreateDirectory(HomeDNNrocketDirectoryMapPath());
             }
 
             var statuses = new List<FilesStatus>();
@@ -1519,7 +1525,7 @@ namespace DNNrocketAPI
         /// <returns></returns>
         public static string RenderImageSelect(int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadRelFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
         {
-            if (!uploadRelFolder.Contains("/")) uploadRelFolder = DNNrocketUtils.HomeDNNrocketRelDirectory() + "/" + uploadRelFolder;
+            if (!uploadRelFolder.Contains("/")) uploadRelFolder = DNNrocketUtils.HomeDNNrocketDirectoryRel() + "/" + uploadRelFolder;
             var uploadFolderPath = DNNrocketUtils.MapPath(uploadRelFolder);
 
             var imageModel = new SimplisityRazor();
@@ -1554,10 +1560,10 @@ namespace DNNrocketAPI
             docModel.HeaderData.SetXmlProperty("genxml/hidden/documentselectsingle", selectsingle.ToString());
             docModel.HeaderData.SetXmlProperty("genxml/hidden/documentselectautoreturn", autoreturn.ToString());
 
-            var uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + uploadFolder;
+            var uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectoryMapPath() + "\\" + uploadFolder;
             if (uploadFolder.Contains("//")) uploadFolderPath = uploadFolder;
 
-            var uploadRelFolderPath = DNNrocketUtils.HomeDNNrocketRelDirectory() + "/" + uploadFolder;
+            var uploadRelFolderPath = DNNrocketUtils.HomeDNNrocketDirectoryRel() + "/" + uploadFolder;
             if (uploadFolder.Contains("//")) uploadRelFolderPath = DNNrocketUtils.MapPath(uploadFolder);
 
             var docList = new List<object>();

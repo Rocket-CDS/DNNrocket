@@ -147,8 +147,8 @@ namespace DNNrocketAPI.Componants
         public string AppSystemThemeFolderMapPath { get { return DNNrocketUtils.MapPath(AppSystemThemeFolderRel); } }
         public string AppThemeVersion { get { return GetValue("AppThemeVersion"); } set { SetValue("AppThemeVersion", value); } }
 
-        public string ImageFolderRel { get{ return DNNrocketUtils.HomeDNNrocketRelDirectory().TrimEnd('/') + "/" + ImageFolder; } }
-        public string DocumentFolderRel { get{ return DNNrocketUtils.HomeDNNrocketRelDirectory().TrimEnd('/') + "/" + DocumentFolder;} }
+        public string ImageFolderRel { get{ return DNNrocketUtils.HomeDNNrocketDirectoryRel().TrimEnd('/') + "/" + ImageFolder; } }
+        public string DocumentFolderRel { get{ return DNNrocketUtils.HomeDNNrocketDirectoryRel().TrimEnd('/') + "/" + DocumentFolder;} }
 
         public string DocumentFolder { get { return GetValue("documentfolder", "");} set { SetValue("DocumentFolder", value); } }
         public string ImageFolder { get { return GetValue("imagefolder", ""); } set { SetValue("ImageFolder", value); } }

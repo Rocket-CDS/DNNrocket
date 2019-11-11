@@ -86,7 +86,7 @@ namespace DNNrocket.Documents
 
             var documentfolder = _paramInfo.GetXmlProperty("genxml/hidden/documentfolder");
             if (documentfolder == "") documentfolder = "docs";
-            var docDirectory = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + documentfolder;
+            var docDirectory = DNNrocketUtils.HomeDNNrocketDirectoryMapPath() + "\\" + documentfolder;
             if (!Directory.Exists(docDirectory)) Directory.CreateDirectory(docDirectory);
 
             var strOut = "";
@@ -113,7 +113,7 @@ namespace DNNrocket.Documents
         {
             var docfolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
             if (docfolder == "") docfolder = "docs";
-            var docDirectory = DNNrocketUtils.HomeDNNrocketDirectory() + "\\" + docfolder;
+            var docDirectory = DNNrocketUtils.HomeDNNrocketDirectoryMapPath() + "\\" + docfolder;
             var docList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-documentlist").Split(';');
             foreach (var i in docList)
             {

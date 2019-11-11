@@ -94,7 +94,7 @@ namespace DNNrocket.Images
             var imagefolder = _paramInfo.GetXmlProperty("genxml/hidden/imagefolder");
             if (imagefolder == "") imagefolder = "images";
             var uploadFolderPath = imagefolder;
-            if (!uploadFolderPath.Contains("/")) uploadFolderPath = DNNrocketUtils.HomeDNNrocketRelDirectory() + "/" + imagefolder;
+            if (!uploadFolderPath.Contains("/")) uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectoryRel() + "/" + imagefolder;
             var imageDirectory = DNNrocketUtils.MapPath(uploadFolderPath);
             if (!Directory.Exists(imageDirectory)) Directory.CreateDirectory(imageDirectory);
             var strOut = "";

@@ -22,6 +22,8 @@ namespace DNNrocket.SystemData
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
             var commandSecurity = new CommandSecurity(-1, -1, rocketInterface);
 
+            DNNrocketUtils.CreateRocketDirectories();
+
             //CacheUtils.ClearAllCache();
 
             _controlRelPath = "/DesktopModules/DNNrocket/SystemData";
