@@ -50,7 +50,7 @@
 
         if (moduleParams.DataSourceModId != Model.ModuleId)
         {
-            // get the field form the data source AppTheme
+            // get the field from the data source AppTheme
             var dataModuleParams = new ModuleParams(moduleParams.DataSourceModId);
             var dataAppTheme = new AppTheme(appTheme.SystemKey, dataModuleParams.AppThemeFolder, dataModuleParams.AppThemeVersion, true);
             fieldList = dataAppTheme.Record.GetRecordList("fielddata");
@@ -114,6 +114,9 @@
                 break;
             case "richtext":
                 xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@HtmlOf(info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\"))") + "' />";
+                break;
+            case "textarea":
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@BreakOf(info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\"))") + "' />";
                 break;
             default:
                 xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\")") + "' />";

@@ -404,8 +404,9 @@ namespace DNNrocketAPI.Componants
 
                 Populate();
 
-                UpdateFieldXpath("fielddata");
-                UpdateFieldXpath("settingfielddata");
+                Record = DNNrocketUtils.UpdateFieldXpath(Record, "fielddata");
+                Record = DNNrocketUtils.UpdateFieldXpath(Record, "settingfielddata");
+                _objCtrl.Update(Record, _tableName);
 
                 // output generated template.
                 var formHtml = GetTemplate("edit");
@@ -1400,61 +1401,6 @@ namespace DNNrocketAPI.Componants
 
         }
 
-        private void UpdateFieldXpath(string listname)
-        {
-            List<SimplisityRecord> fieldList = Record.GetRecordList(listname);
-            var lp = 1;
-            foreach (var f in fieldList)
-            {
-                var localized = f.GetXmlPropertyBool("genxml/checkbox/localized");
-                var xpath = f.GetXmlProperty("genxml/hidden/xpath");
-                var size = f.GetXmlProperty("genxml/select/size");
-                var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
-                var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
-                var defaultBool = f.GetXmlPropertyBool("genxml/textbox/defaultvalue");
-                var attributes = f.GetXmlProperty("genxml/textbox/attributes");
-                var isonlist = f.GetXmlPropertyBool("genxml/checkbox/isonlist");
-                var fieldname = f.GetXmlProperty("genxml/textbox/name");
-
-                if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
-                {
-                    xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                }
-                if (f.GetXmlProperty("genxml/select/type").ToLower() == "textarea")
-                {
-                    xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                }
-                if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
-                {
-                    xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                }
-                if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
-                {
-                    xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                }
-                if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
-                {
-                    xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                }
-                if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
-                {
-                    xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                }
-                if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext")
-                {
-                    xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                }
-
-                if (localized) xpath = "genxml/lang/" + xpath;
-
-                if (xpath != "")
-                {
-                    Record.SetXmlProperty("genxml/" + listname + "/genxml[" + lp + "]/hidden/xpath",xpath);
-                }
-                lp += 1;
-            }
-            _objCtrl.Update(Record);
-        }
 
         public string ExportXML()
         {

@@ -578,7 +578,8 @@ namespace RocketMod
         private static SettingsData GetFieldsData(int moduleid = 0)
         {
             if (moduleid == 0) moduleid = _moduleid;
-            return new SettingsData(_tabid, moduleid, _editLang, "ROCKETMODFIELDS", "fielddata", false, _rocketInterface.DatabaseTable);
+            var settingsData = new SettingsData(_tabid, moduleid, _editLang, "ROCKETMODFIELDS", "fielddata", false, _rocketInterface.DatabaseTable);
+            return settingsData;
         }
 
         private static String EditFieldsData()
@@ -618,6 +619,16 @@ namespace RocketMod
         {
             var fieldsData = GetFieldsData();
             fieldsData.Save(_postInfo);
+            
+            // AFTER SAVE: calc and save any xpath for fields.
+            var objCtrl = new DNNrocketController();
+            var dbInfo = objCtrl.GetRecord("ROCKETMODFIELDS", fieldsData.Info.ItemID, -1, true, _rocketInterface.DatabaseTable);
+            if (dbInfo != null)
+            {
+                dbInfo = DNNrocketUtils.UpdateFieldXpath(dbInfo, "fielddata");
+                objCtrl.Update(dbInfo, _rocketInterface.DatabaseTable);
+            }
+
             _passSettings.Add("saved", "true");
             return EditFieldsData();
         }

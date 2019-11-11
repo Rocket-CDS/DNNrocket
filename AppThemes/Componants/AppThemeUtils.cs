@@ -12,6 +12,5 @@ namespace Rocket.AppThemes.Componants
     public static class AppThemeUtils
     {
 
-
     }
 }
