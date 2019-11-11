@@ -89,6 +89,11 @@ namespace RocketMod
                             xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                             strOut += TextBox(info, xpath, attributes, defaultValue, localized, row).ToString();
                         }
+                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "textarea")
+                        {
+                            xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                            strOut += TextArea(info, xpath, attributes, defaultValue, localized, row).ToString();
+                        }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
                         {
                             xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();

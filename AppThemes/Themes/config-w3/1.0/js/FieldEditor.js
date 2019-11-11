@@ -44,6 +44,10 @@ $('.inputtypefield').unbind("change");
         $('#attributes_' + row).val(" class='w3-input w3-border' autocomplete='off' ");
     }
 
+            if (($(this).val().toLowerCase() === 'textarea')) {
+                $('#attributes_' + row).val(" class='w3-input w3-border' rows='4' ");
+    }
+
             if (($(this).val().toLowerCase() === 'document')) {
         $('#attributes_' + row).val(" class='w3-input w3-border' autocomplete='off' ");
     $('.defaulttextbox' + row).hide();

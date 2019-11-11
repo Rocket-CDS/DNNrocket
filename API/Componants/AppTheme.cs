@@ -1137,6 +1137,10 @@ namespace DNNrocketAPI.Componants
                     {
                         strFieldList += "\t\t@TextBox(info,\"" + xpath + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "textarea")
+                    {
+                        strFieldList += "\t\t@TextArea(info,\"" + xpath + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
+                    }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
                     {
                         strFieldList += "\t\t@CheckBox(info,\"" + xpath + "\", \"\", \"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
@@ -1416,6 +1420,10 @@ namespace DNNrocketAPI.Componants
                 {
                     xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                 }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "textarea")
+                {
+                    xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
                 if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
                 {
                     xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
@@ -1456,10 +1464,13 @@ namespace DNNrocketAPI.Componants
             foreach (SimplisityInfo i in l)
             {
                 var r = new SimplisityRecord(i);
-                var appVersionFolder = r.GetXmlProperty("genxml/select/versionfolder");
-                r.ItemID = -1;
-                r.SetXmlProperty("genxml/hidden/appthemefolder", AppThemeFolder);
-                exportData += r.ToXmlItem();
+                if (r.GetXmlProperty("genxml/hidden/selectedsystemkey") == SystemKey) // only export if we have a systemkey.
+                {
+                    var appVersionFolder = r.GetXmlProperty("genxml/select/versionfolder");
+                    r.ItemID = -1;
+                    r.SetXmlProperty("genxml/hidden/appthemefolder", AppThemeFolder);
+                    exportData += r.ToXmlItem();
+                }
             }
             exportData += "</root>";
 

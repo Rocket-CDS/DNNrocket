@@ -60,14 +60,18 @@ namespace DNNrocket.AppThemes
                 {
                     _userStorage.Set("selectedsystemkey", _selectedSystemKey);
                 }
-                _appThemeDataList = new AppThemeDataList(_selectedSystemKey);
-
-                if (_paramInfo.GetXmlPropertyBool("genxml/hidden/clearlistcache")) _appThemeDataList.PopulateAppThemeList();
-
-                if (paramCmd != "rocketapptheme_selectsystemkey" && _selectedSystemKey == "") paramCmd = "rocketapptheme_getlist";
-
-                _appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder, true);
-                AssignEditLang();
+                if (_selectedSystemKey == "")
+                {
+                    paramCmd = "rocketapptheme_selectsystemkey";
+                }
+                else
+                {
+                    _appThemeDataList = new AppThemeDataList(_selectedSystemKey);
+                    if (_paramInfo.GetXmlPropertyBool("genxml/hidden/clearlistcache")) _appThemeDataList.PopulateAppThemeList();
+                    //if (paramCmd != "rocketapptheme_selectsystemkey" && _selectedSystemKey == "") paramCmd = "rocketapptheme_getlist";
+                    _appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder, true);
+                    AssignEditLang();
+                }
 
                 switch (paramCmd)
                 {
