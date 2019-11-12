@@ -264,6 +264,23 @@ namespace DNNrocketAPI
             }
             return null;
         }
+        public SimplisityRecord GetRecordByType(int portalId, int moduleId, string entityTypeCode, string selUserId = "", string lang = "", string tableName = "DNNrocket")
+        {
+            var strFilter = "";
+            if (selUserId != "")
+            {
+                strFilter += " and R1.UserId = " + selUserId + " ";
+            }
+
+            var l = CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetList(portalId, moduleId, entityTypeCode, strFilter, lang, "", 1, 1, 1, 1, tableName));
+            if (l.Count >= 1)
+            {
+                SimplisityInfo nbi = l[0];
+                var rtnRec = new SimplisityRecord(nbi);
+                return rtnRec;
+            }
+            return null;
+        }
 
         /// <summary>
         /// Get a single record back from the database, using the guyidkey (The seluserid is used to confirm the correct user.)

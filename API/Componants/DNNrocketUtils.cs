@@ -1618,7 +1618,7 @@ namespace DNNrocketAPI
             response.End();
         }
 
-        public static string GetCurrentWebsiteDomainUrl()
+        public static string GetDefaultWebsiteDomainUrl()
         {
             return PortalSettings.Current.DefaultPortalAlias;
         }

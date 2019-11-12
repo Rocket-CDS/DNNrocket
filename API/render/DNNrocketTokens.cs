@@ -107,11 +107,11 @@ namespace DNNrocketAPI.render
             if (pngImage && url.ToLower().EndsWith(".png")) pngType = "&imgtype=png";
             if (width > 0 || height > 0)
             {
-                url = "//" + DNNrocketUtils.GetCurrentWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
+                url = "//" + DNNrocketUtils.GetDefaultWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
             }
             else
             {
-                url = "//" + DNNrocketUtils.GetCurrentWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
+                url = "//" + DNNrocketUtils.GetDefaultWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
             }
             return new RawString(url);
         }
