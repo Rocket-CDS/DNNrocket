@@ -12,10 +12,11 @@ namespace DNNrocketAPI.Componants
     {
         private string _encrypteddomain;
         private DNNrocketController _objCtrl;
-        public LicenseData(string licenseKey, string domain)
+        public LicenseData(string systemkey, string licenseKey, string domain)
         {
             LicenseKey = licenseKey;
             DomainUrl = domain;
+            SystemKey = systemkey;
             LoadLicense();
             if (!IsLicensed)
             {
@@ -37,6 +38,7 @@ namespace DNNrocketAPI.Componants
         public string LicenseKey { get; private set; }
         public string DomainUrl { get; private set; }
         public DateTime ExpireDate { get; private set; }
+        public string SystemKey { get; private set; }
 
         private void CheckOnlIneLicense()
         {
@@ -73,7 +75,7 @@ namespace DNNrocketAPI.Componants
                         var checkdate = DateTime.Now.Date.AddDays(-1);
                         Record.SetXmlProperty("genxml/checkdate", checkdate.ToString("O"), TypeCode.DateTime);
                         Record.SetXmlProperty("genxml/validate", "30");
-
+                        Record.GUIDKey = SystemKey;
                         Record.ItemID = _objCtrl.Update(Record);
 
                         LicenseMessage = "FREE - Community Version";
