@@ -306,4 +306,10 @@
   <data name="imagetype.Text" xml:space="preserve">
     <value>Image Type</value>
   </data>
+  <data name="licenses.Text" xml:space="preserve">
+    <value>Licenses</value>
+  </data>
+  <data name="search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>

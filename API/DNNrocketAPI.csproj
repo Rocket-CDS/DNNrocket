@@ -100,6 +100,7 @@
     <Compile Include="Componants\LicenseData.cs" />
     <Compile Include="Componants\ModuleParamList.cs" />
     <Compile Include="Componants\ModuleParams.cs" />
+    <Compile Include="Componants\SystemLicenseData.cs" />
     <Compile Include="Componants\SystemGlobalData.cs" />
     <Compile Include="Componants\UserStorage.cs" />
     <Compile Include="downloadfile.ashx.cs">

@@ -13,14 +13,15 @@ namespace DNNrocket.SystemData
         private static string _controlRelPath;
         private static SimplisityInfo _postInfo;
         private static SimplisityInfo _paramInfo;
+        private static DNNrocketInterface _rocketInterface;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
             _postInfo = postInfo;
             _paramInfo = paramInfo;
             _systemInfoData = new SystemInfoData(systemInfo);
-            var rocketInterface = new DNNrocketInterface(interfaceInfo);
-            var commandSecurity = new CommandSecurity(-1, -1, rocketInterface);
+            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            var commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
 
             DNNrocketUtils.CreateRocketDirectories();
 
@@ -96,6 +97,15 @@ namespace DNNrocket.SystemData
                         SystemGlobalSave();
                         strOut = SystemGlobalDetail();
                         break;
+
+                    case "systemapi_licenselist":
+                        strOut = GetLicenseList();
+                        break;
+                    case "systemapi_licensesave":
+
+                        strOut = GetLicenseList();
+                        break;
+
                 }
             }
             else
@@ -117,6 +127,21 @@ namespace DNNrocket.SystemData
         }
 
 
+        public static String GetLicenseList()
+        {
+            try
+            {
+                var systemLicenseData = new SystemLicenseData();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("Admin_SystemLicense.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var passSettings = _postInfo.ToDictionary();
+                return DNNrocketUtils.RazorDetail(razorTempl, systemLicenseData, passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+
+            }
+        }
 
 
         public static string SystemAdminList(SimplisityInfo sInfo, string templateControlRelPath)

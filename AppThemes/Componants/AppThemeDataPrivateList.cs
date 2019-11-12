@@ -31,7 +31,15 @@ namespace Rocket.AppThemes.Componants
                 if (useCache)
                 {
                     List = (List<SimplisityRecord>)CacheUtils.GetCache(cachekey);
-                    Error = (bool)CacheUtils.GetCache(cachekey + "ERROR");
+                    var cacheRtn = CacheUtils.GetCache(cachekey + "ERROR");
+                    if (cacheRtn == null)
+                    {
+                        Error = false;
+                    }
+                    else
+                    {
+                        Error = Convert.ToBoolean(cacheRtn);
+                    }
                 }
                 if (List == null) PopulateAppThemeList();
             }

@@ -12,7 +12,7 @@ namespace DNNrocketAPI.Componants
         private static string _cacheKey; 
         public SystemGlobalData(bool cache = true)
         {
-            _cacheKey = "GLOBALSETTINGS";
+            _cacheKey = "rocketGLOBALSETTINGS";
             if (cache) Info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
             if (Info == null)
             {

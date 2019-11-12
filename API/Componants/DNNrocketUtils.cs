@@ -539,6 +539,19 @@ namespace DNNrocketAPI
             return pList;
         }
 
+        public static List<SimplisityRecord> GetAllPortalRecords()
+        {
+            var rtnList = new List<SimplisityRecord>();
+            var allportals = GetAllPortals();
+            foreach (var p in allportals)
+            {
+                var r = new SimplisityRecord();
+                r.PortalId = p.PortalID;
+                r.SetXmlProperty("genxml/portalname", p.PortalName);
+                rtnList.Add(r);
+            }
+            return rtnList;
+        }
         public static string GetModuleVersion(int moduleId)
         {
             var strVersion = "";

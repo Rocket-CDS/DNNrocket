@@ -55,17 +55,12 @@ namespace DNNrocketAPI
                 var key = s.GetXmlProperty("genxml/textbox/name");
                 if (key != "" && !Settings.ContainsKey(key)) Settings.Add(key, s.GetXmlProperty("genxml/textbox/value"));
             }
-
-            var licenseData = new LicenseData(SystemKey, LicenseKey, DNNrocketUtils.GetDefaultWebsiteDomainUrl());
-            IsLicensed = licenseData.IsLicensed;
-            
         }
 
         public SimplisityInfo SystemInfo { get { return Info; } }
         public SimplisityInfo Info { get; set; }
         public List<DNNrocketInterface> EventList { get; set;}
         public bool Exists { get; set; }
-        public bool IsLicensed { get; private set; }
         public Dictionary<string, DNNrocketInterface> InterfaceList { get; set; }
         public Dictionary<string, string> Settings { get; set; }
         public string GetSetting(string key)

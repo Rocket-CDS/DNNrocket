@@ -31,9 +31,12 @@
     <a class="w3-bar-item w3-button w3-padding w3-theme-d3 " href="/desktopmodules/dnnrocket/adminsystem.html"><i title="System" class='fas fa-rocket' style='width:20px;'></i>&nbsp;System</a>
 
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_globaldetail" s-fields=''><i class="fas fa-globe"></i>&nbsp;@ResourceKey("system.globalsettings")</div>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_licenselist" s-fields=''><i class="fas fa-key"></i>&nbsp;@ResourceKey("system.licenses")</div>
 
+    <hr />
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_clearallcache" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("DNNrocket.clearallcache")</div>
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="login_signout" s-return="#simplisity_startpanel"><i class="fas fa-sign-out-alt"></i>&nbsp;@ResourceKey("DNNrocket.signout")</div>
+    <hr />
 
 </div>
 
