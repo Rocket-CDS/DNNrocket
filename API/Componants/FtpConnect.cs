@@ -19,10 +19,16 @@ namespace DNNrocketAPI.Componants
             _systemInfoData = new SystemInfoData(selectedSystemKey);
             _systemGlobalData = new SystemGlobalData();
             _baseuri = "ftp://" + _systemGlobalData.FtpServer + "/" + _systemInfoData.FtpRoot.TrimStart('/').TrimEnd('/') + "/" + _systemInfoData.SystemKey;
+            IsValid = true;
+            if (String.IsNullOrEmpty(_systemGlobalData.FtpServer) || String.IsNullOrEmpty(_systemGlobalData.FtpUserName) || String.IsNullOrEmpty(_systemGlobalData.FtpPassword)) IsValid = false;
         }
+
+        public bool IsValid { get; private set; }
 
         public string UploadAppTheme(AppTheme appTheme)
         {
+            if (!IsValid) return "";
+
             var exportZipMapPath = appTheme.ExportZipFile();
             var filename = Path.GetFileName(exportZipMapPath);
 
@@ -87,64 +93,73 @@ namespace DNNrocketAPI.Componants
 
         private void UploadChangedXmlIndex(string appThemeFolder, string updateXml = "")
         {
-
-            var uriidx = _baseuri + "/idx";
-            var reindexuri = uriidx + "/list.xml";
-            var xmlIdx = Download(reindexuri);
-
-            if (xmlIdx == "" || xmlIdx == "FAIL")
+            if (IsValid)
             {
-                ReindexPrivateXmlList();
-            }
-            else
-            {
-                if (updateXml != "")
+                var uriidx = _baseuri + "/idx";
+                var reindexuri = uriidx + "/list.xml";
+                var xmlIdx = Download(reindexuri);
+
+                if (xmlIdx == "" || xmlIdx == "FAIL")
                 {
-                    var idxInfo = new SimplisityRecord();
-                    idxInfo.XMLData = xmlIdx;
-                    idxInfo.RemoveRecordListItem("idx", "genxml/hidden/appthemefolder", appThemeFolder);
-                    var updateInfo = new SimplisityRecord();
-                    updateInfo.FromXmlItem(updateXml);
-                    idxInfo.AddListItem("idx", updateInfo.XMLData);
-                    UploadXmlIndex(idxInfo.XMLData);
+                    ReindexPrivateXmlList();
+                }
+                else
+                {
+                    if (updateXml != "")
+                    {
+                        var idxInfo = new SimplisityRecord();
+                        idxInfo.XMLData = xmlIdx;
+                        idxInfo.RemoveRecordListItem("idx", "genxml/hidden/appthemefolder", appThemeFolder);
+                        var updateInfo = new SimplisityRecord();
+                        updateInfo.FromXmlItem(updateXml);
+                        idxInfo.AddListItem("idx", updateInfo.XMLData);
+                        UploadXmlIndex(idxInfo.XMLData);
+                    }
                 }
             }
         }
 
         private void UploadXmlIndex(string fulllistxml)
         {
-            var uriidx = _baseuri + "/idx";
-            CreateFTPDirectory(uriidx);
-
-            using (var client = new WebClient())
+            if (IsValid)
             {
-                client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-                var idxMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\list.xml";
+                var uriidx = _baseuri + "/idx";
+                CreateFTPDirectory(uriidx);
 
-                FileUtils.SaveFile(idxMapPath, fulllistxml);
-                client.UploadFile(uriidx + "/list.xml", WebRequestMethods.Ftp.UploadFile, idxMapPath);
+                using (var client = new WebClient())
+                {
+                    client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
+                    var idxMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\list.xml";
+
+                    FileUtils.SaveFile(idxMapPath, fulllistxml);
+                    client.UploadFile(uriidx + "/list.xml", WebRequestMethods.Ftp.UploadFile, idxMapPath);
+                }
             }
         }
         public string ReindexPrivateXmlList()
         {
-            var ftpidx = "<genxml>";
-            ftpidx += "<idx list=\"true\">";
-
-            var l = DownloadAppThemeXmlList();
-            foreach (var x in l)
+            if (IsValid)
             {
-                ftpidx += x.XMLData;
+                var ftpidx = "<genxml>";
+                ftpidx += "<idx list=\"true\">";
+
+                var l = DownloadAppThemeXmlList();
+                foreach (var x in l)
+                {
+                    ftpidx += x.XMLData;
+                }
+                ftpidx += "</idx>";
+                ftpidx += "</genxml>";
+                UploadXmlIndex(ftpidx);
+                return ftpidx;
             }
-            ftpidx += "</idx>";
-            ftpidx += "</genxml>";
-            UploadXmlIndex(ftpidx);
-            return ftpidx;
+            return "<genxml></genxml>";
         }
 
 
         public bool CreateFTPDirectory(string directory)
         {
-
+            if (!IsValid) return false;
             try
             {
                 //create the directory
@@ -180,6 +195,7 @@ namespace DNNrocketAPI.Componants
         }
         public string DownloadAppThemeToFile(string appThemeFolder, string destinationMapPath)
         {
+            if (!IsValid) return "FAIL";
             try
             {
                 var uri = _baseuri + "/zip/" + appThemeFolder + ".zip";
@@ -195,13 +211,17 @@ namespace DNNrocketAPI.Componants
 
         public void DownloadZip(string uri, string destinationmapPath)
         {
-            WebClient client = new WebClient();
-            client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-            client.DownloadFile(uri, destinationmapPath);
+            if (IsValid)
+            {
+                WebClient client = new WebClient();
+                client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
+                client.DownloadFile(uri, destinationmapPath);
+            }
         }
 
         public string Download(string uri)
         {
+            if (!IsValid) return "FAIL";
             try
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uri);
@@ -224,6 +244,8 @@ namespace DNNrocketAPI.Componants
 
         public List<SimplisityRecord> DownloadAppThemeXmlIndexList()
         {
+            var rtnList = new List<SimplisityRecord>();
+            if (!IsValid) return rtnList;
 
             var uriidx = _baseuri + "/idx";
             var reindexuri = uriidx + "/list.xml";
@@ -238,7 +260,6 @@ namespace DNNrocketAPI.Componants
             sRec.XMLData = xmlIdx;
 
             var xmlReclist = sRec.GetRecordList("idx");
-            var rtnList = new List<SimplisityRecord>();
             foreach (var n in xmlReclist)
             {
                 rtnList.Add(n);
@@ -249,6 +270,7 @@ namespace DNNrocketAPI.Componants
         public List<SimplisityRecord> DownloadAppThemeXmlList()
         {
             var rtnList = new List<SimplisityRecord>();
+            if (!IsValid) return rtnList;
             var namelist = ListXmlFiles();
             foreach (var n in namelist)
             {
@@ -267,18 +289,22 @@ namespace DNNrocketAPI.Componants
         {
             try
             {
-                var uri = _baseuri + "/xml";
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uri);
-                request.KeepAlive = false;
-                request.Method = WebRequestMethods.Ftp.ListDirectory;
-                request.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-                Stream responseStream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(responseStream);
-                string names = reader.ReadToEnd();
-                reader.Close();
-                response.Close();
-                return names.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                if (!IsValid) 
+                {
+                    var uri = _baseuri + "/xml";
+                    FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uri);
+                    request.KeepAlive = false;
+                    request.Method = WebRequestMethods.Ftp.ListDirectory;
+                    request.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
+                    FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                    Stream responseStream = response.GetResponseStream();
+                    StreamReader reader = new StreamReader(responseStream);
+                    string names = reader.ReadToEnd();
+                    reader.Close();
+                    response.Close();
+                    return names.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                }
+                return new List<string>();
             }
             catch (Exception exc)
             {

@@ -28,7 +28,11 @@ namespace Rocket.AppThemes.Componants
                 if (SystemFolderList == null) PopulateSystemFolderList();
 
                 cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
-                if (useCache) List = (List<SimplisityRecord>)CacheUtils.GetCache(cachekey);
+                if (useCache)
+                {
+                    List = (List<SimplisityRecord>)CacheUtils.GetCache(cachekey);
+                    Error = (bool)CacheUtils.GetCache(cachekey + "ERROR");
+                }
                 if (List == null) PopulateAppThemeList();
             }
             catch (Exception exc)
@@ -43,46 +47,53 @@ namespace Rocket.AppThemes.Componants
             if (SelectedSystemKey != "")
             {
                 var ftpConnect = new FtpConnect(SelectedSystemKey);
-                var l = ftpConnect.DownloadAppThemeXmlIndexList();
-
-                List<SimplisityRecord> SortedList = l.OrderBy(o => o.GetXmlProperty("genxml/hidden/appthemefolder")).ToList();
-
-                foreach (SimplisityRecord a in SortedList)
+                if (ftpConnect.IsValid)
                 {
-                    //get local directory and check if exists
-                    var localdir = AppSystemFolderRel + "/" + SelectedSystemKey + "/" + a.GetXmlProperty("genxml/hidden/appthemefolder");
-                    var localdirMapPath = DNNrocketUtils.MapPath(localdir);
-                    if (Directory.Exists(localdirMapPath))
+                    var l = ftpConnect.DownloadAppThemeXmlIndexList();
+                    List<SimplisityRecord> SortedList = l.OrderBy(o => o.GetXmlProperty("genxml/hidden/appthemefolder")).ToList();
+                    foreach (SimplisityRecord a in SortedList)
                     {
-                        var appTheme = new AppTheme(SelectedSystemKey, a.GetXmlProperty("genxml/hidden/appthemefolder"));
-                        a.SetXmlProperty("genxml/hidden/localversion", appTheme.LatestVersionFolder);
-                        a.SetXmlProperty("genxml/hidden/localrev", appTheme.LatestRev.ToString());
-                        a.SetXmlProperty("genxml/hidden/islatestversion", "False");
-                        a.SetXmlProperty("genxml/hidden/exists", "True");
-                        if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") == Convert.ToDouble(appTheme.LatestVersionFolder))
+                        //get local directory and check if exists
+                        var localdir = AppSystemFolderRel + "/" + SelectedSystemKey + "/" + a.GetXmlProperty("genxml/hidden/appthemefolder");
+                        var localdirMapPath = DNNrocketUtils.MapPath(localdir);
+                        if (Directory.Exists(localdirMapPath))
                         {
-                            a.SetXmlProperty("genxml/hidden/islatestversion", "True");
-                        }
+                            var appTheme = new AppTheme(SelectedSystemKey, a.GetXmlProperty("genxml/hidden/appthemefolder"));
+                            a.SetXmlProperty("genxml/hidden/localversion", appTheme.LatestVersionFolder);
+                            a.SetXmlProperty("genxml/hidden/localrev", appTheme.LatestRev.ToString());
+                            a.SetXmlProperty("genxml/hidden/islatestversion", "False");
+                            a.SetXmlProperty("genxml/hidden/exists", "True");
+                            if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") == Convert.ToDouble(appTheme.LatestVersionFolder))
+                            {
+                                a.SetXmlProperty("genxml/hidden/islatestversion", "True");
+                            }
 
-                        a.SetXmlProperty("genxml/hidden/localupdated", "False");
-                        if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") < Convert.ToDouble(appTheme.LatestVersionFolder))
-                        {
-                            a.SetXmlProperty("genxml/hidden/localupdated", "True");
+                            a.SetXmlProperty("genxml/hidden/localupdated", "False");
+                            if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") < Convert.ToDouble(appTheme.LatestVersionFolder))
+                            {
+                                a.SetXmlProperty("genxml/hidden/localupdated", "True");
+                            }
+                            if (a.GetXmlPropertyInt("genxml/hidden/latestrev") < appTheme.LatestRev)
+                            {
+                                a.SetXmlProperty("genxml/hidden/localupdated", "True");
+                            }
                         }
-                        if (a.GetXmlPropertyInt("genxml/hidden/latestrev") < appTheme.LatestRev)
+                        else
                         {
-                            a.SetXmlProperty("genxml/hidden/localupdated", "True");
+                            a.SetXmlProperty("genxml/hidden/islatestversion", "False");
+                            a.SetXmlProperty("genxml/hidden/exists", "False");
                         }
+                        List.Add(a);
                     }
-                    else
-                    {
-                        a.SetXmlProperty("genxml/hidden/islatestversion", "False");
-                        a.SetXmlProperty("genxml/hidden/exists", "False");
-                    }
-                    List.Add(a);
+                }
+                else
+                {
+                    Error = true;
+                    ErrorMsg = "";
                 }
                 var cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
                 CacheUtils.SetCache(cachekey, List);
+                CacheUtils.SetCache(cachekey + "ERROR", Error);
             }
         }
         public void PopulateSystemFolderList()
