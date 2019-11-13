@@ -63,6 +63,18 @@ namespace DNNrocketAPI.Componants
         {
             return Record.GetXmlProperty("genxml/hidden/" + nodename);
         }
+        public int GetInt(string nodename)
+        {
+            return Record.GetXmlPropertyInt("genxml/hidden/" + nodename);
+        }
+        public bool GetBool(string nodename)
+        {
+            return Record.GetXmlPropertyBool("genxml/hidden/" + nodename);
+        }
+        public double GetDouble(string nodename)
+        {
+            return Record.GetXmlPropertyDouble("genxml/hidden/" + nodename);
+        }
 
 
         public int UserId { get; set; }
