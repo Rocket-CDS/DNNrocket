@@ -112,7 +112,6 @@
     <Compile Include="Componants\PagesUtils.cs" />
     <Compile Include="Componants\FileStatus.cs" />
     <Compile Include="Componants\ImgUtils.cs" />
-    <Compile Include="Componants\Login.cs" />
     <Compile Include="Componants\SystemData.cs" />
     <Compile Include="Componants\PageIncludes.cs" />
     <Compile Include="Componants\EmailUtils.cs" />
@@ -172,6 +171,8 @@
     <None Include="packages.config" />
     <None Include="Systems\dnnrocket.Zxml" />
     <None Include="Systems\OpenStore.Zxml" />
+    <None Include="Themes\config-w3\1.0\default\CreateUserForm.cshtml" />
+    <None Include="Themes\config-w3\1.0\default\RegisterForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\LoginForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\MenuOut.cshtml" />
     <None Include="Themes\config-w3\1.0\default\SideMenu.cshtml" />

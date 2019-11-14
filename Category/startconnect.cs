@@ -93,7 +93,7 @@ namespace DNNrocket.Category
             {
                 if (commandSecurity.ValidCommand(paramCmd))
                 {
-                 //   strOut = LoginUtils.LoginForm(postInfo, rocketInterface.InterfaceKey);
+                 //   strOut = UserUtils.LoginForm(postInfo, rocketInterface.InterfaceKey);
                 }
             }
 

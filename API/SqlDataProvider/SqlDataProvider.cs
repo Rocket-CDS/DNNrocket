@@ -157,12 +157,20 @@ namespace DNNrocketAPI
         {
             return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetRecordLang", parentitemId, lang, tableName);
         }
+        public override IDataReader GetUsersCMS(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetDNNUsers", portalId, sqlSearchFilter, returnLimit, pageNumber, pageSize, recordCount);
+        }
+        public override int GetUsersCountCMS(int portalId, string sqlSearchFilter = "")
+        {
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetDNNUsersCount", portalId, sqlSearchFilter));
+        }
 
         #endregion
 
 
 
 
-	}
+    }
 
 }

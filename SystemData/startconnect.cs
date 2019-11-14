@@ -117,7 +117,7 @@ namespace DNNrocket.SystemData
                         //strOut = ResetPass(sInfo);
                         break;
                     default:
-                        strOut = LoginUtils.LoginForm(systemInfo, rtnInfo,"systemapi", UserUtils.GetCurrentUserId());
+                        strOut = UserUtils.LoginForm(systemInfo, rtnInfo,"systemapi", UserUtils.GetCurrentUserId());
                         break;
                 }
             }

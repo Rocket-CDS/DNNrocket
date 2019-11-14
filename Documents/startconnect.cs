@@ -37,7 +37,7 @@ namespace DNNrocket.Documents
 
             if (!_commandSecurity.HasSecurityAccess(paramCmd))
             {
-                strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, DNNrocketUtils.GetCurrentUserId());
+                strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, DNNrocketUtils.GetCurrentUserId());
                 return ReturnString(strOut);
             }
 

@@ -50,7 +50,7 @@ namespace RocketMod
             switch (paramCmd)
             {
                 case "rocketmod_login":
-                    strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                    strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                     break;
 
                 case "dashboard_get":

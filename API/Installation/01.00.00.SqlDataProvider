@@ -882,6 +882,104 @@ GO
 
 
 
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetDNNUsers]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetDNNUsers]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetDNNUsers]
+@PortalId int, 
+@FilterText nvarchar(max),
+@ReturnLimit int = 0,
+@pageNum int = 0,
+@PageSize int = 0,
+@RecordCount int = 0
+AS
+begin
+
+		DECLARE @recct int 
+		SET @recct = @RecordCount
+		
+		DECLARE @lbound int, @ubound int;
+
+		SET @pageNum = ABS(@pageNum);
+		SET @pageSize = ABS(@pageSize);
+		IF @pageNum < 1 SET @pageNum = 1;
+		IF @pageSize < 1 SET @pageSize = 1;
+
+		SET @lbound = ((@pageNum - 1) * @pageSize);;
+		SET @ubound = @lbound + (@pageSize + 1);
+		IF @lbound >= @recct BEGIN 
+		   SET @ubound = @recct + 1 ;
+		   SET @lbound = @ubound - (@pageSize + 1);  -- return the last page of records if no records would be on the specified page '
+		END ;
+
+
+		with [UsersBy] as (
+			SELECT 
+			U.UserId as ItemId,
+			U.PortalId,
+			'<genxml><textbox>' +
+			'<username>' + U.Username + '</username>' +
+			'<firstname>' + U.FirstName   + '</firstname>' +
+			'<lastname>' + U.LastName  + '</lastname>' +
+			'<displayname>' + U.DisplayName  + '</displayname>' +
+			'<email>' + U.Email  + '</email>' +
+			'<authorised>' + convert(nvarchar(1),U.Authorised)  + '</authorised>' +
+			'<updatepassword>' + convert(nvarchar(1),U.UpdatePassword)  + '</updatepassword>' +
+			'<isdeleted>' + convert(nvarchar(1),U.IsDeleted)  + '</isdeleted>' +
+			'</textbox></genxml>' as XMLData,
+					
+			ROW_NUMBER() OVER (ORDER BY Email ASC) AS ROWID
+				FROM    {databaseOwner}{objectQualifier}vw_Users U
+				WHERE U.PortalId = @PortalId 
+					AND (LOWER(U.Username) LIKE LOWER(@FilterText) 
+					OR LOWER(U.FirstName) LIKE LOWER(@FilterText) 
+					OR LOWER(U.LastName) LIKE LOWER(@FilterText) 
+					OR LOWER(U.DisplayName) LIKE LOWER(@FilterText) 
+					OR LOWER(U.Email) LIKE LOWER(@FilterText))
+		)
+		select ItemId,PortalId,XMLData  
+			from [UsersBy]
+			where ROWID > @lbound AND ROWID < @ubound 
+
+
+
+end
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_GetDNNUsersCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_GetDNNUsersCount]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetDNNUsersCount]
+@PortalId int, 
+@FilterText nvarchar(max)
+AS
+begin
+
+	SELECT count(U.UserId)
+	FROM    {databaseOwner}{objectQualifier}vw_Users U
+	WHERE U.PortalId = @PortalId 
+			AND (LOWER(U.Username) LIKE LOWER(@FilterText) 
+			OR LOWER(U.FirstName) LIKE LOWER(@FilterText) 
+			OR LOWER(U.LastName) LIKE LOWER(@FilterText) 
+			OR LOWER(U.DisplayName) LIKE LOWER(@FilterText) 
+			OR LOWER(U.Email) LIKE LOWER(@FilterText))
+end
+
+
+GO
+
 
 
 

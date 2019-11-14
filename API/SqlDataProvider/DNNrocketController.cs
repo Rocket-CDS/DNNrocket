@@ -640,6 +640,15 @@ namespace DNNrocketAPI
             return nbi;
         }
 
+        public  List<SimplisityInfo> GetUsersCMS(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
+        {
+            return CBO.FillCollection<SimplisityInfo>(DataProvider.Instance().GetUsersCMS(portalId, sqlSearchFilter, returnLimit, pageNumber, pageSize, recordCount));
+        }
+        public int GetUsersCountCMS(int portalId, string sqlSearchFilter = "")
+        {
+            return DataProvider.Instance().GetUsersCountCMS(portalId, sqlSearchFilter);
+        }
+
 
         #endregion
 

@@ -190,7 +190,7 @@ namespace DNNrocket.AppThemes
             }
             else
             {
-                strOut = LoginUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
             }
 
             return DNNrocketUtils.ReturnString(strOut);

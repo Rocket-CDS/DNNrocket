@@ -4,6 +4,7 @@ using System;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
 using System.Configuration;
+using Simplisity;
 
 namespace DNNrocketAPI
 {
@@ -71,10 +72,12 @@ namespace DNNrocketAPI
         public abstract void CleanData(string tableName = "DNNrocket");
         public abstract IDataReader GetRecord(int itemId, string tableName = "DNNrocket");
         public abstract IDataReader GetRecordLang(int parentitemId,String lang, string tableName = "DNNrocket");
-        
-		#endregion
+        public abstract IDataReader GetUsersCMS(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);
+        public abstract int GetUsersCountCMS(int portalId, string sqlSearchFilter = "");
+
+        #endregion
 
 
-	}
+    }
 
 }

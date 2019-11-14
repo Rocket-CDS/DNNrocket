@@ -45,7 +45,7 @@ namespace DNNrocketAPI
                     {
                         var ps = new PortalSecurity();
                         ps.SignOut();
-                        strOut = LoginUtils.LoginForm(new SimplisityInfo(), new SimplisityInfo(),"login", UserUtils.GetCurrentUserId());
+                        strOut = UserUtils.LoginForm(new SimplisityInfo(), new SimplisityInfo(),"login", UserUtils.GetCurrentUserId());
                         context.Response.ContentType = "text/plain";
                         context.Response.Write(strOut);
                         context.Response.End();
@@ -125,7 +125,7 @@ namespace DNNrocketAPI
 
                     if (paramCmd == "login_login")
                     {
-                        LoginUtils.DoLogin(systemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
+                        UserUtils.DoLogin(systemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
                         strOut = ""; // the page will rteload after the call
                     }
                     else
