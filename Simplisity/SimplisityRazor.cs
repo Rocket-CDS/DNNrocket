@@ -77,13 +77,14 @@ namespace Simplisity
 
         public void SetSetting(String key, String value)
         {
+            if (Settings == null) Settings = new Dictionary<String, String>();
             if (Settings.ContainsKey(key)) Settings.Remove(key);
             Settings.Add(key, value);
         }
 
         public String GetSetting(String key, String defaultValue = "")
         {
-            if (Settings.ContainsKey(key)) return Settings[key];
+            if (Settings != null && Settings.ContainsKey(key)) return Settings[key];
             return defaultValue;
         }
         public void SetDataObject(String key, object value)
@@ -102,6 +103,7 @@ namespace Simplisity
         {
             try
             {
+                if (Settings == null) Settings = new Dictionary<String, String>();
                 if (Settings.ContainsKey(key))
                 {
                     var x = Settings[key];
@@ -126,6 +128,7 @@ namespace Simplisity
 
         public int GetSettingInt(String key, int defaultValue = -1)
         {
+            if (Settings == null) Settings = new Dictionary<String, String>();
             if (Settings.ContainsKey(key))
             {
                 var s = Settings[key];
@@ -136,6 +139,7 @@ namespace Simplisity
 
         public String GetUrlParam(String key, String defaultValue = "")
         {
+            if (UrlParams == null) return "";
             var result = defaultValue;
             if (UrlParams.Count != 0)
             {

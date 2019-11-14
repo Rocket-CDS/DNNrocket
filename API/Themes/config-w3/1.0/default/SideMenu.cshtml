@@ -1,4 +1,5 @@
-﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+
 @using DNNrocketAPI;
 @using System
 @using System.Linq
@@ -6,163 +7,34 @@
 @using Simplisity;
 @using DNNrocketAPI.Componants;
 
+
+
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketLicense/App_LocalResources/")
 
 
-@{
-    var username = UserUtils.GetCurrentUserName();
-    var sidemenu = (SideMenu)Model.List.First();
+    <div class="w3-row w3-padding-small w3-white w3-border-bottom">
+        <div class="w3-large"><i class='fas fa-rocket' style='font-size:24px'></i>&nbsp;Rocket API</div>
+        <button class="w3-hide-large w3-button w3-right" onclick="w3_close()" style="cursor:pointer" title=""><i class='fas fa-caret-left' style='font-size:36px'></i></button>
+    </div>
 
-    var menuOut = "";
-    // get action interfaces. (no group)
-    var lp = 0;
-    var interfacelist = sidemenu.GetInterfaces("");
-    if (interfacelist.Count() > 0)
-    {
-        foreach (var i in interfacelist)
-        {
-            if (i.GetXmlPropertyBool("genxml/checkbox/onmenu"))
-            {
-                var defaulttheme = i.GetXmlProperty("genxml/textbox/defaulttheme");
-                var defaulttemplate = i.GetXmlProperty("genxml/textbox/defaulttemplate");
-                var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
-                var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
-                var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfacekey + "</div>";
-            }
+<div class="w3-bar-block w3-theme">
+
+    @RenderTemplate("LanguageSelect.cshtml", "\\DesktopModules\\DNNrocket\\Country", "config-w3", Model, "1.0", true)
+
+    <div class="w3-overlay w3-white " style="display:none;" id="sidebar_loader"><i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i></div>
+
+    <div class="w3-margin-top w3-margin-bottom">
+        @{
+            Model.SetSetting("projectfolder", "DNNrocket/api");
+            Model.SetSetting("resxfile", "RocketApi");
         }
-        lp += 1;
-    }
-
-
-    // get sub group interfaces
-    lp = 0;
-    foreach (SimplisityRecord g in sidemenu.GetGroups())
+        @RenderTemplate("MenuOut.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
+    </div>
+    @if (DNNrocketUtils.IsSuperUser())
     {
-        var groupref = g.GetXmlProperty("genxml/textbox/groupref");
-        var groupicon = g.GetXmlProperty("genxml/textbox/groupicon");
-        interfacelist = sidemenu.GetInterfaces(groupref);
-        if (interfacelist.Count() > 0)
-        {
-            menuOut += "<div class='w3-bar-item w3-button w3-theme-l4 w3-hover-theme menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + groupref + "&nbsp;<i class='fas fa-caret-down'></i></div>";
-            menuOut += "<div id='" + groupref + "' class='w3-hide w3-theme-l4'>";
-            foreach (var i in interfacelist)
-            {
-                var defaulttheme = i.GetXmlProperty("genxml/textbox/defaulttheme");
-                var defaulttemplate = i.GetXmlProperty("genxml/textbox/defaulttemplate");
-                var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
-                var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
-                var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
-                menuOut += "<div class='w3-bar-item w3-button w3-theme-l5 w3-hover-theme simplisity_menulink ' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='tabid:" + Model.GetSetting("tabid") + ",moduleid:" + sidemenu.ModuleId + ",theme:" + defaulttheme + ",template:" + defaulttemplate + ",systemprovider:" + sidemenu.SystemKey + ",interfacekey:" + interfacekey + "' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" +  interfacekey + "</div>";
-            }
-            menuOut += "</div>";
-            lp += 1;
-        }
+        <hr />
+        <a class="w3-bar-item w3-button w3-padding w3-theme " href="/desktopmodules/dnnrocket/adminsystem.html" target="_blank"><i title="System" class='fas fa-rocket' style='width:20px;'></i>&nbsp;System</a>
     }
-}
-
-<div class="w3-sidebar w3-bar-block w3-card w3-theme-l4" style="width:260px;">
-    @HtmlOf(menuOut)
     <hr />
-
-    @if (Model.ModuleId == 0)
-    {
-        <div class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme simplisity_click " s-cmd="login_signout" s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdSignOutButton")</div>
-    }
-    else
-    {
-        <div onclick="returnclick();" class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme">@ResourceKey("DNNrocket.cmdReturnButton")</div>
-    }
-
 </div>
-
-<span id="langflagrequired" style="display:none;" class="w3-display-right w3-right-align w3-padding">
-
-    @{
-
-        var strOut1 = "";
-
-        var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
-        foreach (var l in enabledlanguages)
-        {
-            var imageclass = "";
-            if (DNNrocketUtils.GetEditCulture() == l)
-            {
-                imageclass = "w3-border-top w3-border-theme";
-            }
-            strOut1 += "<a href='javascript:void(0)' class='w3-margin-right " + imageclass + " selectlang' editlang='" + l + "'>";
-            strOut1 += "<img class='' src='/DesktopModules/DNNrocket/API/images/flags/32/" + l + ".png' alt='" + l + "' />";
-            strOut1 += "</a>";
-        }
-    }
-
-    @HtmlOf(strOut1)
-
-</span>
-
-<!-- Overlay effect when opening the side navigation on small screens -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="Close Sidemenu" id="myOverlay"></div>
-
-
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        $("#menulangflags").empty();
-        $("#langflagrequired").appendTo("#menulangflags");
-        $('#langflagrequired').show();
-
-
-        $('.menuaccordian').unbind('click');
-        $('.menuaccordian').click(function () {
-            var actionid = $(this).attr("actionid")
-            if ($('#' + actionid).hasClass('w3-show')) {
-                $('#' + actionid).addClass('w3-hide');
-                $('#' + actionid).removeClass('w3-show');
-                $(this).removeClass('w3-theme-d4');
-            }
-            else {
-                $('#' + actionid).addClass('w3-show');
-                $('#' + actionid).removeClass('w3-hide');
-                $(this).addClass('w3-theme-d4');
-            }
-        });
-
-        $('.selectlang').unbind('click');
-        $('.selectlang').click(function () {
-            // change langauge by setting "nextlang" cookie and then trigger the save with "simplisity_langchange" class on the save button.
-            // the ajax return with switch the editlang cookie to the nextlang cookie and delete the nextlang cookie, it will then reload the page.
-            simplisity_setCookieValue('nextlang', $(this).attr('editlang'));
-            $('.simplisity_langchange').trigger('click');
-        });
-
-        $('.selectlangreload').unbind('click');
-        $('.selectlangreload').click(function () {
-            simplisity_setCookieValue('nextlang', $(this).attr('editlang'))
-            location.reload();
-        });
-
-        $('#dnnrocket_usernameplaceholder').text('@(username)');
-
-    });
-
-    function sidemenuchange() {
-        $('.simplisity_menulink').addClass('w3-light-grey');
-        $('.simplisity_menulink').removeClass('w3-theme-l2');
-        var index = simplisity_lastmenuindex();
-        $('.simplisity_menulink[s-index=' + index + ']').removeClass('w3-light-grey');
-        $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-theme-l2');
-    }
-
-    function returnclick() {
-        $('#simplisity_loader').show();
-        var returnurl = simplisity_getCookieValue('rocketmod_return');
-        if (typeof returnurl === 'undefined' || returnurl === '') {
-            window.history.back();
-        } else {
-            window.location = returnurl;
-        }
-    }
-
-
-</script>
