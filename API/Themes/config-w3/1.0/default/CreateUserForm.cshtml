@@ -2,35 +2,69 @@
 @using Simplisity;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
+@AddProcessData("resourcepath", "/App_GlobalResources")
 
 <!-- Login form -->
 <div id="registerform" class="w3-modal">
     <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width:40%;">
 
-        <div class="w3-center w3-padding">
+        <div class="w3-center">
             <br>
             <span onclick="hidelogin()" class="w3-button w3-xlarge w3-transparent w3-display-topright" title="@ResourceKey("login.CloseModal")">X</span>
-            <img src="/DesktopModules/DNNrocket/api/images/img_avatar4.png" alt="Avatar" style="width:20%" class="w3-circle w3-margin-top">
+            <img src="/DesktopModules/DNNrocket/api/images/img_avatar4.png" alt="Avatar" style="width:60px" class="w3-circle w3-margin-top">
         </div>
 
         <div class="w3-section w3-padding registerdata simplisity_panel">
-            <div class="logininput">
-                <label><b>@ResourceKey("login.Username")</b></label>
-                <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="@ResourceKey("login.EnterUsername")" name="usrname" id="username" required>
+            <div class="registerinput">
 
-                <label><b>@ResourceKey("login.Password")</b></label>
-                <input class="w3-input w3-border" type="password" placeholder="@ResourceKey("login.enterpassword")" name="psw" id="password" required>
-                <br />
+                <div class="w3-row">
+                    <div class="w3-half w3-padding w3-margin-top">
+                        <div class="w3-row">
+                            <div class="w3-half w3-padding">
+                                <input class="w3-check " type="checkbox" checked="checked" id="autorize"><span>&nbsp;@ResourceKey("login.autorize")</span>
+                            </div>
+                            <div class="w3-half w3-padding">
+                                <input class="w3-check " type="checkbox" checked="checked" id="notification"><span>&nbsp;@ResourceKey("login.notification")</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w3-half w3-padding ">
+                        <label><b>@ResourceKey("login.displayname")</b></label>
+                        <input class="w3-input w3-border" type="text" autocomplete="off" placeholder="@ResourceKey("login.enterdisplayname")..." name="displayname" id="displayname" required>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-half w3-padding ">
+                        <label><b>@ResourceKey("login.Username")</b></label>
+                        <input class="w3-input w3-border" type="text" autocomplete="off" placeholder="@ResourceKey("login.EnterUsername")..." name="usrname" id="username" required>
+                    </div>
+                    <div class="w3-half w3-padding ">
+                        <label><b>@ResourceKey("login.email")</b></label>
+                        <input class="w3-input w3-border" type="text" autocomplete="off" placeholder="@ResourceKey("login.enteremail")..." name="email" id="email" required>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-half w3-padding ">
+                        <label><b>@ResourceKey("login.Password")</b></label>
+                        <input class="w3-input w3-border" type="password" autocomplete="off" placeholder="@ResourceKey("login.enterpassword")..." name="psw" id="password" required>
+                    </div>
+                    <div class="w3-half w3-padding ">
+                        <label><b>@ResourceKey("login.confirmpassword")</b></label>
+                        <input class="w3-input w3-border" type="password" autocomplete="off" placeholder="@ResourceKey("login.enterconfirmpassword")..." name="confirmpassword" id="confirmpassword" required>
+                    </div>
+                </div>
+
 
                 <span class="w3-button w3-block w3-green w3-section w3-padding simplisity_click" s-fields="" s-track="false" s-post=".registerdata" s-return=".registerreturn" s-cmd="rocketlicense_register" s-after="">@ResourceKey("login.Login")</span>
 
-                <div class="w3-panel w3-orange w3-padding-16 registerreturn">@Model.HeaderData.GetXmlProperty("genxml/message")</div>
+                <div class="w3-panel w3-orange w3-padding-16 registerreturn"></div>
 
-                <input class="w3-check w3-margin-top" type="checkbox" checked="checked" id="rememberme"><span>@ResourceKey("login.Rememberme")</span>
 
             </div>
 
-        </div>
+            </div>
 
         <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
             <div class="logininput">

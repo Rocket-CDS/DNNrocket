@@ -127,7 +127,7 @@
     <value>Enter Password</value>
   </data>
   <data name="EnterUsername.Text" xml:space="preserve">
-    <value>Enter Username or email address</value>
+    <value>Enter Username</value>
   </data>
   <data name="Forgotpassword.Text" xml:space="preserve">
     <value>Forgot password?</value>
@@ -145,7 +145,7 @@
     <value>Remember me</value>
   </data>
   <data name="Username.Text" xml:space="preserve">
-    <value>Username or email address</value>
+    <value>Username</value>
   </data>
   <data name="emailaddress.Text" xml:space="preserve">
     <value>Email Address</value>
@@ -155,5 +155,35 @@
   </data>
   <data name="sendreset.Text" xml:space="preserve">
     <value>Send Reset Link</value>
+  </data>
+  <data name="autorize.Text" xml:space="preserve">
+    <value>Authorise</value>
+  </data>
+  <data name="confirmpassword.Text" xml:space="preserve">
+    <value>Confirmation Password</value>
+  </data>
+  <data name="displayname.Text" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="email.Text" xml:space="preserve">
+    <value>User Email</value>
+  </data>
+  <data name="enterconfirmpassword.Text" xml:space="preserve">
+    <value>Enter Confirmation Password</value>
+  </data>
+  <data name="enterdisplayname.Text" xml:space="preserve">
+    <value>Enter Display Name</value>
+  </data>
+  <data name="enteremail.Text" xml:space="preserve">
+    <value>Enter User Email</value>
+  </data>
+  <data name="enterusernameemail.Text" xml:space="preserve">
+    <value>Enter Username or email address</value>
+  </data>
+  <data name="notification.Text" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="usernameemail.Text" xml:space="preserve">
+    <value>Username or email address</value>
   </data>
 </root>

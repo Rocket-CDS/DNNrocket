@@ -161,28 +161,73 @@ namespace DNNrocketAPI
             return DNNrocketUtils.RazorDetail(razorTempl, sInfo);
         }
 
-        public static string DoRegister(SimplisityInfo sInfo, string currentCulture = "")
+        public static string RegisterUser(SimplisityInfo sInfo, string currentCulture = "")
         {
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("fr-FR");
 
             var username = sInfo.GetXmlProperty("genxml/text/username");
-            var useremail = sInfo.GetXmlProperty("genxml/text/useremail");
-            var password = sInfo.GetXmlProperty("genxml/text/password");
+            var useremail = sInfo.GetXmlProperty("genxml/text/email");
+            var password = sInfo.GetXmlProperty("genxml/hidden/password");
+            var displayname = sInfo.GetXmlProperty("genxml/text/displayname");
+
 
             UserInfo objUser;
-                objUser = new UserInfo
-                {
-                    PortalID = DNNrocketUtils.GetPortalId(),
-                    UserID = Null.NullInteger,
-                    Username = username,
-                    Email = useremail,
-                    FirstName = username, // accessing this and others requires Profile property access
-                    LastName = string.Empty
+            objUser = new UserInfo
+            {
+                PortalID = DNNrocketUtils.GetPortalId(),
+                UserID = Null.NullInteger,
+                Username = username,
+                Email = useremail,
+                FirstName = username, // accessing this and others requires Profile property access
+                LastName = string.Empty,
+                DisplayName = displayname
                 };
                 objUser.Membership.Password = password;
                 objUser.Membership.Approved = true;
                 var registerstatus = UserController.CreateUser(ref objUser);
-            return UserController.GetUserCreateStatus(registerstatus);
+            return GetUserCreateStatus(registerstatus);
+        }
+
+        private static string GetUserCreateStatus(UserCreateStatus userRegistrationStatus)
+        {
+            switch (userRegistrationStatus)
+            {
+                case UserCreateStatus.DuplicateEmail:
+                    return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.UserEmailExists");
+                case UserCreateStatus.InvalidAnswer:
+                    return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.InvalidAnswer");
+                case UserCreateStatus.InvalidEmail:
+                    return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.InvalidEmail");
+                case UserCreateStatus.InvalidPassword:
+                    string strInvalidPassword = DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.InvalidPassword");
+                    strInvalidPassword = strInvalidPassword.Replace("[PasswordLength]", MembershipProviderConfig.MinPasswordLength.ToString());
+                    strInvalidPassword = strInvalidPassword.Replace("[NoneAlphabet]", MembershipProviderConfig.MinNonAlphanumericCharacters.ToString());
+                    return strInvalidPassword;
+                case UserCreateStatus.PasswordMismatch:
+                    return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.PasswordMismatch");
+                case UserCreateStatus.InvalidQuestion:
+                    return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.InvalidQuestion");
+                case UserCreateStatus.InvalidUserName:
+                    return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.InvalidUserName");
+                case UserCreateStatus.InvalidDisplayName:
+                    return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.InvalidDisplayName");
+                case UserCreateStatus.DuplicateDisplayName:
+                    return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.DuplicateDisplayName");
+                case UserCreateStatus.UserRejected:
+                    return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.UserRejected");
+                case UserCreateStatus.DuplicateUserName:
+                case UserCreateStatus.UserAlreadyRegistered:
+                case UserCreateStatus.UsernameAlreadyExists:
+                    return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.UserNameExists");
+                case UserCreateStatus.BannedPasswordUsed:
+                    return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.BannedPasswordUsed");
+                case UserCreateStatus.ProviderError:
+                case UserCreateStatus.DuplicateProviderUserKey:
+                case UserCreateStatus.InvalidProviderUserKey:
+                    return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.RegError");
+                default:
+                    throw new ArgumentException("Unknown UserCreateStatus value encountered", "userRegistrationStatus");
+            }
         }
 
 
