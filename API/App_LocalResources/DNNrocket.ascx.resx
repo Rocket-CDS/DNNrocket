@@ -510,4 +510,13 @@
   <data name="licensekey.Text" xml:space="preserve">
     <value>License Key</value>
   </data>
+  <data name="systemkey.Text" xml:space="preserve">
+    <value>System Key</value>
+  </data>
+  <data name="email.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="create.Text" xml:space="preserve">
+    <value>Create</value>
+  </data>
 </root>
