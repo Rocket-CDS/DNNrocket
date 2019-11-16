@@ -519,4 +519,10 @@
   <data name="create.Text" xml:space="preserve">
     <value>Create</value>
   </data>
+  <data name="certificate.Text" xml:space="preserve">
+    <value>Certificate</value>
+  </data>
+  <data name="certificatekey.Text" xml:space="preserve">
+    <value>Certificate Key</value>
+  </data>
 </root>
