@@ -186,4 +186,7 @@
   <data name="usernameemail.Text" xml:space="preserve">
     <value>Username or email address</value>
   </data>
+  <data name="createuser.Text" xml:space="preserve">
+    <value>Create User</value>
+  </data>
 </root>

@@ -181,10 +181,10 @@ namespace DNNrocketAPI
                 FirstName = username, // accessing this and others requires Profile property access
                 LastName = string.Empty,
                 DisplayName = displayname
-                };
-                objUser.Membership.Password = password;
-                objUser.Membership.Approved = true;
-                var registerstatus = UserController.CreateUser(ref objUser);
+            };
+            objUser.Membership.Password = password;
+            objUser.Membership.Approved = true;
+            var registerstatus = UserController.CreateUser(ref objUser);
             return GetUserCreateStatus(registerstatus);
         }
 
@@ -225,6 +225,8 @@ namespace DNNrocketAPI
                 case UserCreateStatus.DuplicateProviderUserKey:
                 case UserCreateStatus.InvalidProviderUserKey:
                     return DNNrocketUtils.GetResourceString("/App_GlobalResources", "SharedResources.RegError");
+                case UserCreateStatus.Success:
+                    return "";
                 default:
                     throw new ArgumentException("Unknown UserCreateStatus value encountered", "userRegistrationStatus");
             }

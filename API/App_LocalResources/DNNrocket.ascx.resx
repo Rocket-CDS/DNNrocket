@@ -501,4 +501,13 @@
   <data name="serverdetails.Text" xml:space="preserve">
     <value>Server Details</value>
   </data>
+  <data name="license.Text" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="domainurl.Text" xml:space="preserve">
+    <value>Domian URL (without sub-domain  "mydomain.com")</value>
+  </data>
+  <data name="licensekey.Text" xml:space="preserve">
+    <value>License Key</value>
+  </data>
 </root>
