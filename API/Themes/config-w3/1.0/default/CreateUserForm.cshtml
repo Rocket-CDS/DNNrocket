@@ -30,15 +30,21 @@
                         <input class="w3-input w3-border" type="text" autocomplete="off" placeholder="@ResourceKey("login.EnterUsername")..." name="usrname" id="username" required>
                     </div>
                     <div class="w3-half w3-padding ">
-                        <label><b>@ResourceKey("login.Password")</b></label>
-                        <input class="w3-input w3-border" type="password" autocomplete="off" placeholder="@ResourceKey("login.enterpassword")..." name="psw" id="password" required>
+                        <label><b>@ResourceKey("login.email")</b></label>
+                        <input class="w3-input w3-border" type="text" autocomplete="off" placeholder="@ResourceKey("login.enteremail")..." name="email" id="email" required>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-padding ">
+                        <input class="w3-check " id="randompassword" s-xpath="genxml/checkbox/randompassword" type="checkbox" s-update="save"><span>&nbsp;@ResourceKey("login.randompassword")</span>
                     </div>
                 </div>
 
                 <div class="w3-row">
                     <div class="w3-half w3-padding ">
-                        <label><b>@ResourceKey("login.email")</b></label>
-                        <input class="w3-input w3-border" type="text" autocomplete="off" placeholder="@ResourceKey("login.enteremail")..." name="email" id="email" required>
+                        <label><b>@ResourceKey("login.Password")</b></label>
+                        <input class="w3-input w3-border" type="password" autocomplete="off" placeholder="@ResourceKey("login.enterpassword")..." name="psw" id="password" required>
                     </div>
                     <div class="w3-half w3-padding ">
                         <label><b>@ResourceKey("login.confirmpassword")</b></label>
@@ -48,18 +54,18 @@
 
 
                 <div class="w3-row">
-                    <div class="w3-half w3-padding ">
-                        <span class="w3-button w3-block w3-green w3-section w3-padding activatevalidation simplisity_click" s-fields="" s-before="validatecreateuserform" s-track="false" s-post=".registerdata" s-return=".registerreturn" s-cmd="@(Model.GetSetting("registercommand"))" s-after="">@ResourceKey("login.createuser")</span>
-                    </div>
-                    <div class="w3-half w3-padding w3-margin-top">
+                    <div class="w3-twothird w3-padding">
                         <div class="w3-row">
                             <div class="w3-half w3-padding">
-                                <input class="w3-check " type="checkbox" checked="checked" id="autorize"><span>&nbsp;@ResourceKey("login.autorize")</span>
+                                <input class="w3-check " id="autorize" s-xpath="genxml/checkbox/autorize" type="checkbox" s-update="save" checked><span>&nbsp;@ResourceKey("login.autorize")</span>
                             </div>
                             <div class="w3-half w3-padding">
-                                <input class="w3-check " type="checkbox" checked="checked" id="notification"><span>&nbsp;@ResourceKey("login.notification")</span>
+                                <input class="w3-check " id="notification" s-xpath="genxml/checkbox/notification" type="checkbox" s-update="save" checked><span>&nbsp;@ResourceKey("login.notification")</span>
                             </div>
                         </div>
+                    </div>
+                    <div class="w3-third w3-padding ">
+                        <span class="w3-button w3-block w3-green w3-padding activatevalidation simplisity_click" s-fields="" s-before="validatecreateuserform" s-track="false" s-post=".registerinput" s-return=".registerreturn" s-cmd="@(Model.GetSetting("registercommand"))" s-after="">@ResourceKey("login.createuser")</span>
                     </div>
                 </div>
 
@@ -94,6 +100,21 @@
                 $(this).show();
             }
         });
+
+        $('#randompassword').unbind('change');
+        $('#randompassword').change(function () {
+            if ($(this).is(":checked")) {
+                $('#password').val('**********');
+                $('#confirmpassword').val('**********');
+                $('#password').prop('disabled', true);
+                $('#confirmpassword').prop('disabled', true);
+            } else {
+                $('#password').val('');
+                $('#confirmpassword').val('');
+                $('#password').prop('disabled', false);
+                $('#confirmpassword').prop('disabled', false);
+            }
+        });        
 
     });    
 

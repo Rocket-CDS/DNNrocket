@@ -57,13 +57,12 @@ namespace DNNrocketAPI.render
             return strOut;
         }
 
-        public IEncodedString RenderPagingTemplate(string scmd, string spost, string sfields, string sreturn, SimplisityRazor model, string versionFolder = "1.0")
+        public IEncodedString RenderPagingTemplate(string scmd, string spost, SimplisityRazor model, string sreturn = "", string versionFolder = "1.0")
         {
             if (model.HeaderData == null)
             {
                 model.HeaderData = new SimplisityInfo();
             }
-            model.HeaderData.SetXmlProperty("genxml/s-paging-fields", sfields);
             model.HeaderData.SetXmlProperty("genxml/s-paging-return", sreturn);
             model.HeaderData.SetXmlProperty("genxml/s-paging-cmd", scmd);
             model.HeaderData.SetXmlProperty("genxml/s-paging-post", spost);

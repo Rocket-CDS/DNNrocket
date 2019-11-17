@@ -343,6 +343,7 @@ namespace Simplisity
                     }
                     else
                     {
+                        if (xpath == "") xpath = "genxml/checkbox/" + ctrlname;
                         // checkbox list, select siblings.
                         if (!doneCheckboxes.Contains(xpath))
                         {

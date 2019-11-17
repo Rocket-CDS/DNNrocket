@@ -168,6 +168,14 @@ namespace DNNrocketAPI
             var username = sInfo.GetXmlProperty("genxml/text/username");
             var useremail = sInfo.GetXmlProperty("genxml/text/email");
             var password = sInfo.GetXmlProperty("genxml/hidden/password");
+            var confirmpassword = sInfo.GetXmlProperty("genxml/hidden/confirmpassword");
+            var approved = sInfo.GetXmlPropertyBool("genxml/checkbox/autorize");
+            var randompassword = sInfo.GetXmlPropertyBool("genxml/checkbox/randompassword");
+            if (randompassword)
+            {
+                password = GeneralUtils.GetUniqueKey(8);
+                confirmpassword = password;
+            }
             var displayname = sInfo.GetXmlProperty("genxml/text/displayname");
 
 
@@ -183,7 +191,8 @@ namespace DNNrocketAPI
                 DisplayName = displayname
             };
             objUser.Membership.Password = password;
-            objUser.Membership.Approved = true;
+            objUser.Membership.PasswordConfirm = confirmpassword;
+            objUser.Membership.Approved = approved;
             var registerstatus = UserController.CreateUser(ref objUser);
             return GetUserCreateStatus(registerstatus);
         }

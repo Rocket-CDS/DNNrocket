@@ -189,4 +189,7 @@
   <data name="createuser.Text" xml:space="preserve">
     <value>Create User</value>
   </data>
+  <data name="randompassword.Text" xml:space="preserve">
+    <value>Allocate Random Password</value>
+  </data>
 </root>
