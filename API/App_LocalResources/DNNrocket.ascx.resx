@@ -505,7 +505,7 @@
     <value>License</value>
   </data>
   <data name="domainurl.Text" xml:space="preserve">
-    <value>Domian URL (without sub-domain  "mydomain.com")</value>
+    <value>Domian URL</value>
   </data>
   <data name="licensekey.Text" xml:space="preserve">
     <value>License Key</value>
@@ -524,5 +524,8 @@
   </data>
   <data name="certificatekey.Text" xml:space="preserve">
     <value>Certificate Key</value>
+  </data>
+  <data name="update.Text" xml:space="preserve">
+    <value>Update</value>
   </data>
 </root>

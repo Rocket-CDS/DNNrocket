@@ -8,6 +8,13 @@
 
 @{
     var licenseDataList = (SystemLicenseData)Model.List.First();
+    var systemData = new SystemData();
+
+    var systemDictionary = new Dictionary<string, string>();
+    foreach (var s in systemData.GetSystemList())
+    {
+        systemDictionary.Add(s.GUIDKey, s.GetXmlProperty("genxml/textbox/systemname"));
+    }
 }
 
 <div class=''>
@@ -17,10 +24,12 @@
 
             <header class="w3-container  w3-theme">
                 <span onclick="document.getElementById('createnewlicense').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <h2>XXXXXXXXXXXXXXXXXXXX</h2>
+                <h2>@DNNrocketUtils.SiteGuid()</h2>
             </header>
 
             <div class="w3-row-padding">
+                <label><b>@ResourceKey("DNNrocket.system")</b></label>
+                @DropDownList(new SimplisityInfo(), "genxml/hidden/systemkey", systemDictionary, "class='w3-input'")
             </div>
             <div class="w3-row w3-panel w3-red createnewlicensereturn" style="display:none;">
             </div>

@@ -1636,6 +1636,27 @@ namespace DNNrocketAPI
             return PortalSettings.Current.DefaultPortalAlias;
         }
 
+        public static List<string> GetPortalAliases(int portalId)
+        {
+            var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
+            var rtnList = new List<string>();
+            foreach (var pa in padic)
+            {
+                if (pa.Value.PortalID == portalId)
+                {
+                    rtnList.Add(pa.Key);
+                }
+            }
+            return rtnList;
+        }
+        public static string DefaultPortalAlias()
+        {
+            return PortalSettings.Current.DefaultPortalAlias;
+        }
+        public static string SiteGuid()
+        {
+            return PortalSettings.Current.GUID.ToString();
+        }
 
         public static string GetPortalAlias(string lang)
         {
