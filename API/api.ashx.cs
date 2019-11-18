@@ -85,6 +85,7 @@ namespace DNNrocketAPI
 
                     var systemprovider = paramInfo.GetXmlProperty("genxml/urlparams/systemprovider").Trim(' ');
                     if (systemprovider == "") systemprovider = paramInfo.GetXmlProperty("genxml/hidden/systemprovider").Trim(' ');
+                    if (systemprovider == "" && paramCmd.Contains("_")) systemprovider = paramCmd.Split('_')[0];
                     if (systemprovider == "") systemprovider = "dnnrocket";
                     var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
                     var systemInfoData = new SystemInfoData(systemInfo); 

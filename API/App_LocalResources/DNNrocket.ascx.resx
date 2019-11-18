@@ -528,4 +528,10 @@
   <data name="update.Text" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="system.Text" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>

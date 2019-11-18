@@ -41,8 +41,8 @@
         </div>
         <div class="w3-row-padding">
             <div class="w3-half">
-                <label class="">@ResourceKey("system.licensekey")</label>
-                @TextBox(sInfo, "genxml/textbox/licensekey", "class='w3-input w3-border' maxlength='250' ", "")
+                <label class="">@ResourceKey("system.systemrelpath")</label>
+                @TextBox(sInfo, "genxml/textbox/systemrelpath", "class='w3-input w3-border' maxlength='350'")
             </div>
             <div class="w3-half">
                 <label class="">@ResourceKey("system.encryptkey")</label>
@@ -52,40 +52,32 @@
 
         <div class="w3-row-padding">
             <div class="w3-half">
-                <label class="">@ResourceKey("system.systemrelpath")</label>
-                @TextBox(sInfo, "genxml/textbox/systemrelpath", "class='w3-input w3-border' maxlength='350'")
-            </div>
-            <div class="w3-quarter">
-                <label class="">@ResourceKey("system.debugmode")</label><br />
-                @CheckBox(sInfo, "genxml/checkbox/debugmode", "")
-            </div>
-            <div class="w3-quarter">
-                @if (sInfo.GetXmlProperty("genxml/textbox/adminurl") != "")
-                {
-                    <a class="w3-button w3-teal w3-padding-8 w3-margin-top" href="@sInfo.GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ResourceKey("DNNrocket.cmdAdminButton")</a>
-                }
-
-            </div>
-        </div>
-
-        <div class="w3-row-padding">
-            <div class="w3-half">
                 <label class="">@ResourceKey("system.ftproot")</label>
-                @TextBox(sInfo, "genxml/textbox/ftproot", "class='w3-input w3-border' maxlength='350'","appthemes")
+                @TextBox(sInfo, "genxml/textbox/ftproot", "class='w3-input w3-border' maxlength='350'", "appthemes")
             </div>
             <div class="w3-quarter">
+                <br />
+                @CheckBox(sInfo, "genxml/checkbox/debugmode", "&nbsp;" + ResourceKey("system.debugmode"))
             </div>
             <div class="w3-quarter">
+                <br />
+                @CheckBox(sInfo, "genxml/checkbox/proavailable", "&nbsp;" + ResourceKey("system.proavailable"))
             </div>
         </div>
 
+        @if (sInfo.GetXmlProperty("genxml/textbox/adminurl") != "")
+        {
+            <div class="w3-row w3-padding">
+                <a class="w3-button w3-teal w3-padding-8 w3-margin-top" href="@sInfo.GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ResourceKey("DNNrocket.cmdAdminButton")</a>
+            </div>
+        }
 
         <div class="w3-row-padding w3-right-align">
             @sInfo.GUIDKey / @sInfo.ItemID
         </div>
 
 
-    </div>
+       </div>
 </div>
 
 <span onclick="AccordianFunction('XML')" class="w3-button w3-block w3-left-align w3-pale-yellow w3-margin-top">

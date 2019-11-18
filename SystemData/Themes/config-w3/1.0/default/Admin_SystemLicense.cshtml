@@ -9,120 +9,87 @@
 @{
     var licenseDataList = (SystemLicenseData)Model.List.First();
     var systemData = new SystemData();
-
-    var systemDictionary = new Dictionary<string, string>();
-    foreach (var s in systemData.GetSystemList())
-    {
-        systemDictionary.Add(s.GUIDKey, s.GetXmlProperty("genxml/textbox/systemname"));
-    }
 }
 
-<div class=''>
+    <div class=''>
 
-    <div id="createnewlicense" class="w3-modal">
-        <div class="w3-modal-content w3-card w3-animate-zoom">
+        @RenderTemplate("LicensePopup.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model, "1.0", true)
 
-            <header class="w3-container  w3-theme">
-                <span onclick="document.getElementById('createnewlicense').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <h2>@DNNrocketUtils.SiteGuid()</h2>
-            </header>
-
-            <div class="w3-row-padding">
-                <label><b>@ResourceKey("DNNrocket.system")</b></label>
-                @DropDownList(new SimplisityInfo(), "genxml/hidden/systemkey", systemDictionary, "class='w3-input'")
-            </div>
-            <div class="w3-row w3-panel w3-red createnewlicensereturn" style="display:none;">
+        <div class="w3-row w3-padding">
+            <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewlicense').style.display='block'">@ResourceKey("DNNrocket.cmdAddButton")</div>
+        </div>
+        <div class="w3-row">
+            <div class="w3-half">
+                <h2>@ResourceKey("system.licenses")</h2>
             </div>
         </div>
-    </div>
+        <div class="w3-row w3-card searchdata w3-margin-top">
 
-    <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewlicense').style.display='block'">@ResourceKey("DNNrocket.cmdAddButton")</div>
-        @ButtonGap()
-        <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketlicense_clearsystemkey" s-track="false">@ResourceKey("DNNrocket.cmdReturnButton")</div>
-        @ButtonGap()
-        <div class="w3-col m6 w3-dropdown-hover">
-            <button class="w3-button">More...</button>
-            <div class="w3-dropdown-content w3-bar-block w3-card">
-                <div class="w3-bar-item w3-button w3-padding-8 " onclick="document.getElementById('importlicense').style.display='block'"><i class="w3-text-teal fas fa-file-import fa-fw fa-lg"></i>@ResourceKey("DNNrocket.import")</div>
-                <div class="w3-bar-item w3-button w3-padding-8 refreshlist simplisity_click" s-track="clear" s-cmd="rocketlicense_getlist" s-fields='' style="display:none;"></div>
+            <div class="">
+                <div class="w3-row w3-padding">
+                    <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("system.search")..." id="searchtext" onkeyup="searchFunction()">
+                </div>
             </div>
+
         </div>
 
 
-    </div>
-    <div class="w3-row">
-        <div class="w3-half">
-            <h2>@ResourceKey("system.licenses")</h2>
+        <div id="datasection" class="w3-row w3-margin-top">
+
+            <ul id="datalist" class="w3-ul w3-border">
+
+                @{
+                    var lp1 = 0;
+                }
+                @foreach (LicenseData license in licenseDataList.List)
+                {
+                    lp1 += 1;
+                    <li class="datalistitem w3-display-container">
+
+
+
+                    </li>
+
+                }
+            </ul>
+
+            <hr />
+
         </div>
-    </div>
-    <div class="w3-row w3-card searchdata w3-margin-top">
-
-        <div class="">
-            <div class="w3-row w3-padding">
-                <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("system.search")..." id="searchtext" onkeyup="searchFunction()">
-            </div>
-        </div>
-
-    </div>
 
 
-    <div id="datasection" class="w3-row w3-margin-top">
+        <script>
+            $(document).ready(function () {
+                $("#datalist").disableSelection();
+            });
 
-        <ul id="datalist" class="w3-ul w3-border">
-
-            @{
-                var lp1 = 0;
-            }
-            @foreach (LicenseData license in licenseDataList.List)
-            {
-                lp1 += 1;
-                <li class="datalistitem w3-display-container">
-
-
-
-                </li>
-
-            }
-        </ul>
-
-        <hr />
-
-    </div>
-
-
-    <script>
-        $(document).ready(function () {
-            $("#datalist").disableSelection();
-        });
-
-        function searchFunction() {
-            var input, filter, ul, li, a, i;
-            input = document.getElementById("searchtext");
-            filter = input.value.toUpperCase();
-            ul = document.getElementById("datalist");
-            li = ul.getElementsByTagName("li");
-            for (i = 0; i < li.length; i++) {
-                txtValue = li[i].textContent || li[i].innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
+            function searchFunction() {
+                var input, filter, ul, li, a, i;
+                input = document.getElementById("searchtext");
+                filter = input.value.toUpperCase();
+                ul = document.getElementById("datalist");
+                li = ul.getElementsByTagName("li");
+                for (i = 0; i < li.length; i++) {
+                    txtValue = li[i].textContent || li[i].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+                ul = document.getElementById("datalist2");
+                li = ul.getElementsByTagName("div");
+                for (i = 0; i < li.length; i++) {
+                    txtValue = li[i].textContent || li[i].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
                 }
             }
-            ul = document.getElementById("datalist2");
-            li = ul.getElementsByTagName("div");
-            for (i = 0; i < li.length; i++) {
-                txtValue = li[i].textContent || li[i].innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
-                }
-            }
-        }
 
-    </script>
+        </script>
 
-</div>
+    </div>
 

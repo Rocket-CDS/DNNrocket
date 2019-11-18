@@ -20,6 +20,9 @@
 
     <div class="w3-padding-large">
         <h1>@ResourceKey("system.privateftp")</h1>
+        <p>
+            <i>@ResourceKey("system.privateftp", "", "Help")</i>
+        </p>
         <div class="w3-row-padding">
             <div class="w3-half">
                 <label class="">@ResourceKey("system.ftpserver")</label>
@@ -34,10 +37,33 @@
         </div>
 
         <h1>@ResourceKey("system.publicapptheme")</h1>
+        <p>
+            <i>@ResourceKey("system.publicapptheme", "", "Help")</i>
+        </p>
         <div class="w3-row-padding">
             <div class="w3-half">
                 <label class="">@ResourceKey("system.publicappthemeuri")</label>
                 @TextBox(info, "genxml/textbox/publicappthemeuri", "class='w3-input w3-border' maxlength='250' ", "http://www.rocket-templates.ovh/publicappthemes")
+            </div>
+        </div>
+
+        <h1>@ResourceKey("system.licenseurl")</h1>
+        <p>
+            <i>@ResourceKey("system.licenseurl", "", "Help")</i>
+        </p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.licenseurl")</label>
+                @TextBox(info, "genxml/textbox/licenseurl", "class='w3-input w3-border' maxlength='250' ", "https://license.rocket.com")
+            </div>
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.accountemail")</label>
+                @TextBox(info, "genxml/textbox/ftpuser", "class='w3-input w3-border' maxlength='250' ", "")
+                <label class="">@ResourceKey("system.secretkey")</label>
+                <div>
+                    <i class="w3-small">@ResourceKey("system.secretkey", "", "Help")</i>
+                </div>
+                @TextBox(info, "genxml/textbox/secretkey", "class='w3-input w3-border' type='password'  maxlength='50' ", "")
             </div>
         </div>
 
@@ -58,7 +84,7 @@
             </div>
         </div>
 
-        <div class="w3-row-padding w3-right-align">
+        <div class="w3-row-padding w3-right-align w3-margin-top">
             @info.ItemID
         </div>
 
