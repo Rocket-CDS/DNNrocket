@@ -12,7 +12,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 @{
-    var appThemeMod = (AppThemeMod)Model.List.First();
+    var appThemeMod = (AppThemeModule)Model.List.First();
     var info = new SimplisityInfo(appThemeMod.AppTheme.Record);
     var record = appThemeMod.AppTheme.Record;
 }

@@ -1,24 +1,20 @@
-﻿using DNNrocketAPI;
-using DNNrocketAPI.Componants;
-using RocketSettings;
-using Simplisity;
-using System;
+﻿using Simplisity;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
-namespace RocketMod.Componants
+namespace DNNrocketAPI.Componants
 {
-    public class AppThemeMod
+    public class AppThemeModule
     {
-        private bool _debugMode;
         private string _systemKey;
+        private Dictionary<string,bool> _modellevelTemplates;
 
-        public AppThemeMod(int moduleId, string systemKey, bool debugMode = false)
+        public AppThemeModule(int moduleId, string systemKey)
         {
-            _debugMode = debugMode;
             ModuleId = moduleId;
             _systemKey = systemKey;
+
+            _modellevelTemplates = new Dictionary<string, bool>();
 
             InitAppThemeMod();
             LoadTemplates();
@@ -28,7 +24,7 @@ namespace RocketMod.Componants
 
             ModuleParams = new ModuleParams(ModuleId, _systemKey);
             SystemInfoData = new SystemInfoData(_systemKey);
-            AppTheme = new AppTheme(SystemInfoData.SystemKey, ModuleParams.AppThemeFolder, ModuleParams.AppThemeVersion, _debugMode);
+            AppTheme = new AppTheme(SystemInfoData.SystemKey, ModuleParams.AppThemeFolder, ModuleParams.AppThemeVersion);
 
             ModuleTemplateFolderMapPath = DNNrocketUtils.HomeDirectoryMapPath().Trim('\\') + "\\DNNrocketThemes";
             if (!Directory.Exists(ModuleTemplateFolderMapPath)) Directory.CreateDirectory(ModuleTemplateFolderMapPath);
@@ -51,8 +47,6 @@ namespace RocketMod.Componants
             ModuleTemplateListJS = AppTheme.GetTemplateDictionaryJS();
             ModuleTemplateListCSS = AppTheme.GetTemplateDictionaryCSS();
 
-            var modellevelTemplates = new Dictionary<string, bool>();
-
             // get razor
             if (ModuleTemplateListRazor != null) // does not exist on selection of Module AppTheme.
             {
@@ -63,7 +57,7 @@ namespace RocketMod.Componants
                     var ftext = FileUtils.ReadFile(f);
                     if (ModuleTemplateListRazor.ContainsKey(fname)) ModuleTemplateListRazor.Remove(fname);
                     ModuleTemplateListRazor.Add(fname, ftext);
-                    modellevelTemplates.Add("razor_" + fname, true);
+                    _modellevelTemplates.Add("razor_" + fname, true);
                 }
                 // get css
                 flist = Directory.GetFiles(ModuleTemplateFolderCSSMapPath, ModuleParams.ModuleRef + "_*.css");
@@ -73,7 +67,7 @@ namespace RocketMod.Componants
                     var ftext = FileUtils.ReadFile(f);
                     if (ModuleTemplateListCSS.ContainsKey(fname)) ModuleTemplateListCSS.Remove(fname);
                     ModuleTemplateListCSS.Add(fname, ftext);
-                    modellevelTemplates.Add("css_" + fname, true);
+                    _modellevelTemplates.Add("css_" + fname, true);
                 }
                 // get js
                 flist = Directory.GetFiles(ModuleTemplateFolderJSMapPath, ModuleParams.ModuleRef + "_*.js");
@@ -83,7 +77,7 @@ namespace RocketMod.Componants
                     var ftext = FileUtils.ReadFile(f);
                     if (ModuleTemplateListJS.ContainsKey(fname)) ModuleTemplateListJS.Remove(fname);
                     ModuleTemplateListJS.Add(fname, ftext);
-                    modellevelTemplates.Add("js_" + fname, true);
+                    _modellevelTemplates.Add("js_" + fname, true);
                 }
 
                 foreach (var d in ModuleTemplateListRazor)
@@ -93,7 +87,7 @@ namespace RocketMod.Componants
                     {
                         AppTheme.Record.RemoveRecordListItem("templatelist", "genxml/hidden/filename", Path.GetFileNameWithoutExtension(d.Key));
                         itemInfo.SetXmlProperty("genxml/hidden/editorcodehtmlmixed", GeneralUtils.EnCode(d.Value));
-                        if (modellevelTemplates.ContainsKey("razor_" + Path.GetFileNameWithoutExtension(d.Key)))
+                        if (_modellevelTemplates.ContainsKey("razor_" + Path.GetFileNameWithoutExtension(d.Key)))
                         {
                             itemInfo.SetXmlProperty("genxml/hidden/moduletemplate", "True");
                         }
@@ -107,7 +101,7 @@ namespace RocketMod.Componants
                     {
                         AppTheme.Record.RemoveRecordListItem("csslist", "genxml/hidden/filename", Path.GetFileNameWithoutExtension(d.Key));
                         itemInfo.SetXmlProperty("genxml/hidden/editorcodecss", GeneralUtils.EnCode(d.Value));
-                        if (modellevelTemplates.ContainsKey("css_" + Path.GetFileNameWithoutExtension(d.Key)))
+                        if (_modellevelTemplates.ContainsKey("css_" + Path.GetFileNameWithoutExtension(d.Key)))
                         {
                             itemInfo.SetXmlProperty("genxml/hidden/moduletemplate", "True");
                         }
@@ -121,7 +115,7 @@ namespace RocketMod.Componants
                     {
                         AppTheme.Record.RemoveRecordListItem("jslist", "genxml/hidden/filename", Path.GetFileNameWithoutExtension(d.Key));
                         itemInfo.SetXmlProperty("genxml/hidden/editorcodejavascript", GeneralUtils.EnCode(d.Value));
-                        if (modellevelTemplates.ContainsKey("js_" + Path.GetFileNameWithoutExtension(d.Key)))
+                        if (_modellevelTemplates.ContainsKey("js_" + Path.GetFileNameWithoutExtension(d.Key)))
                         {
                             itemInfo.SetXmlProperty("genxml/hidden/moduletemplate", "True");
                         }
@@ -130,6 +124,16 @@ namespace RocketMod.Componants
                 }
             }
         }
+
+        public bool IsModuleLevelTemplate(string templatename)
+        {
+            templatename = templatename.ToLower();
+            if (_modellevelTemplates.ContainsKey("razor_" + Path.GetFileNameWithoutExtension(templatename))) return true;
+            if (_modellevelTemplates.ContainsKey("css_" + Path.GetFileNameWithoutExtension(templatename))) return true;
+            if (_modellevelTemplates.ContainsKey("js_" + Path.GetFileNameWithoutExtension(templatename))) return true;
+            return false;
+        }
+
         public void SaveEditor(string filename, string fileExtension, string editorcode)
         {
             var folder = ModuleTemplateFolderRazorMapPath;

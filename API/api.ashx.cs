@@ -100,7 +100,7 @@ namespace DNNrocketAPI
                         var debugSystemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
                         if (debugSystemInfo != null && debugSystemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
                         {
-                            FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + "\\debug_requestJson.json", requestJson);
+                            DNNrocketUtils.LogDebug("===== requestJson =====" + Environment.NewLine + requestJson);
                         }
                         // ---- END: DEBUG POST ------
 
@@ -110,7 +110,7 @@ namespace DNNrocketAPI
                         // ---- START: DEBUG POST ------
                         if (debugSystemInfo != null && debugSystemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
                         {
-                            FileUtils.SaveFile(PortalSettings.Current.HomeDirectoryMapPath + "\\debug_postInfo.xml", postInfo.XMLData);
+                            DNNrocketUtils.LogDebug("===== postInfo.XMLData =====" + Environment.NewLine + postInfo.XMLData);
                         }
                         // ---- END: DEBUG POST ------
 

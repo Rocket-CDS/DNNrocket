@@ -99,7 +99,7 @@ namespace DNNrocketAPI
 
                 if (_moduleParams.Exists)
                 {
-                    DNNrocketUtils.IncludePageHeaders(_moduleParams, this.Page, TabId);
+                    DNNrocketUtils.IncludePageHeaders(_moduleParams, this.Page, TabId, systemInfoData.DebugMode);
                 }
 
             }
@@ -227,6 +227,7 @@ namespace DNNrocketAPI
                 if (!_moduleParams.GetValueBool("noiframeedit"))
                 {
                     actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.edit") , "", "", "register.gif", "javascript:" + _interfacekey + "editiframe_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
+                    PageIncludes.IncludeTextInHeader(Page, "<link rel='stylesheet' href='/DesktopModules/DNNrocket/css/w3.css' />");
                 }
 
                 var adminurl = _systemInfo.GetXmlProperty("genxml/textbox/adminurl");

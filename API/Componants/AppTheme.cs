@@ -22,22 +22,20 @@ namespace DNNrocketAPI.Componants
         private List<string> _cssFileName;
         private List<string> _jsFileName;
         private List<string> _resxFileName;
-        private bool _debugMode;          
-
+ 
         public AppTheme(string zipMapPath)
         {
             _objCtrl = new DNNrocketController();
             ImportXmlFile(zipMapPath);
         }
-        public AppTheme(string systemKey, string appThemeFolder, string versionFolder = "", bool debugMode = false)
+        public AppTheme(string systemKey, string appThemeFolder, string versionFolder = "")
         {
             _objCtrl = new DNNrocketController();
-            InitAppTheme(systemKey, appThemeFolder, versionFolder, debugMode);
+            InitAppTheme(systemKey, appThemeFolder, versionFolder);
         }
 
-        private void InitAppTheme(string systemKey, string appThemeFolder, string versionFolder = "", bool debugMode = false)
+        private void InitAppTheme(string systemKey, string appThemeFolder, string versionFolder = "")
         {
-            _debugMode = debugMode;
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
             SystemKey = systemKey;
             var systemInfodata = new SystemInfoData(systemKey);
@@ -1484,7 +1482,7 @@ namespace DNNrocketAPI.Componants
                     DirectoryCopy(tempZipFolder, destinationFolder, true);
                     if (Directory.Exists(tempZipFolder)) Directory.Delete(tempZipFolder, true);
 
-                    InitAppTheme(systemKey, appThemeFolder, lastversion.ToString("F1", CultureInfo.InvariantCulture), false);
+                    InitAppTheme(systemKey, appThemeFolder, lastversion.ToString("F1", CultureInfo.InvariantCulture));
                 }
             }
         }

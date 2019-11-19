@@ -12,9 +12,9 @@ namespace Simplisity
 
         #region "cache"
 
-        public static object GetCache(string cacheKey)
+        public static object GetCache(string cacheKey, string groupid = "")
         {
-            cacheKey = GetMd5Hash(cacheKey);
+            cacheKey = GetMd5Hash(cacheKey) + "_groupid:" + groupid;
 
             ObjectCache cache = MemoryCache.Default;
             if (cache.GetCacheItem(cacheKey) == null)
@@ -24,13 +24,13 @@ namespace Simplisity
             return cache.GetCacheItem(cacheKey).Value;
         }
 
-        public static void SetCache(string cacheKey, object objObject)
+        public static void SetCache(string cacheKey, object objObject, string groupid = "")
         {
             if (objObject != null)
             {
-                RemoveCache(cacheKey);
+                RemoveCache(cacheKey, groupid);
 
-                cacheKey = GetMd5Hash(cacheKey);
+                cacheKey = GetMd5Hash(cacheKey) + "_groupid:" + groupid;
 
                 ObjectCache cache = MemoryCache.Default;
                 CacheItemPolicy policy = new CacheItemPolicy();
@@ -40,15 +40,15 @@ namespace Simplisity
             }
         }
 
-        public static void RemoveCache(string cacheKey)
+        public static void RemoveCache(string cacheKey, string groupid = "")
         {
-            cacheKey = GetMd5Hash(cacheKey);
+            cacheKey = GetMd5Hash(cacheKey) + "_groupid:" + groupid;
 
             ObjectCache cache = MemoryCache.Default;
             cache.Remove(cacheKey);
         }
 
-        public static void ClearAllCache()
+        public static void ClearAllCache(string groupid = "")
         {
             try
             {
@@ -56,7 +56,10 @@ namespace Simplisity
                 List<string> cacheKeys = cache.Select(kvp => kvp.Key).ToList();
                 foreach (string cacheKey in cacheKeys)
                 {
-                    cache.Remove(cacheKey);
+                    if (groupid == "" || cacheKey.EndsWith("_groupid:" + groupid))
+                    {
+                        cache.Remove(cacheKey);
+                    }
                 }
             }
             catch (Exception ex)

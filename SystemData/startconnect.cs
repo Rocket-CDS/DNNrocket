@@ -303,6 +303,9 @@ namespace DNNrocket.SystemData
 
         public static void SystemSave(SimplisityInfo postInfo, SimplisityInfo paramInfo)
         {
+            // remove any debug logs created in debug mode.
+            DNNrocketUtils.LogDebugClear();
+
             //remove any params
             postInfo.RemoveXmlNode("genxml/postform");
             postInfo.RemoveXmlNode("genxml/urlparams");

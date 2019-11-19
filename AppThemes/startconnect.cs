@@ -69,7 +69,7 @@ namespace DNNrocket.AppThemes
                     _appThemeDataList = new AppThemeDataList(_selectedSystemKey);
                     if (_paramInfo.GetXmlPropertyBool("genxml/hidden/clearlistcache")) _appThemeDataList.PopulateAppThemeList();
                     //if (paramCmd != "rocketapptheme_selectsystemkey" && _selectedSystemKey == "") paramCmd = "rocketapptheme_getlist";
-                    _appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder, true);
+                    _appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
                     AssignEditLang();
                 }
 
@@ -130,7 +130,7 @@ namespace DNNrocket.AppThemes
                         _appTheme.Record.SetXmlProperty("genxml/select/versionfolder", _appVersionFolder);
                         _appTheme.Update();
                         _userStorage.Set("selectedappversion", _appVersionFolder);
-                        _appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder, true);
+                        _appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
                         strOut = GetDetail();
                         break;
                     case "rocketapptheme_deleteversion":
@@ -480,7 +480,7 @@ namespace DNNrocket.AppThemes
         {
             var appThemeFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appthemefolder");
             var appVersionFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder");
-            var appTheme = new AppTheme(_selectedSystemKey, appThemeFolder, appVersionFolder, true);
+            var appTheme = new AppTheme(_selectedSystemKey, appThemeFolder, appVersionFolder);
 
             var exportZipMapPath = appTheme.ExportZipFile();
 

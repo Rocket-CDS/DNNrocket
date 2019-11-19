@@ -146,7 +146,7 @@ namespace Simplisity
         public static string GetBase64FromFile(string fileMapPath)
         {
             byte[] imageArray = System.IO.File.ReadAllBytes(fileMapPath);
-            return Convert.ToBase64String(imageArray); 
+            return Convert.ToBase64String(imageArray);
         }
 
         public static string ReplaceFileExt(string fileName, string newExt)

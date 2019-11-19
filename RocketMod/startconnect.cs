@@ -34,8 +34,8 @@ namespace RocketMod
         private static SettingsData _settingsData;
         private static string _editLang;
         private static int _selectedItemId;
-        private static AppThemeMod _appThemeMod;
-        private static AppThemeMod _dataAppThemeMod;
+        private static AppThemeModule _appThemeMod;
+        private static AppThemeModule _dataAppThemeMod;
         private static ArticleData _articleData;
         private static AppThemeDataList _appThemeDataList;
 
@@ -183,6 +183,8 @@ namespace RocketMod
 
             }
 
+            if (paramCmd != "rocketmod_getdata") CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
+
             if (strOut == "" && !_moduleParams.Exists)
             {
                 return DNNrocketUtils.ReturnString(GetSetup());
@@ -243,8 +245,8 @@ namespace RocketMod
                 }
                 else
                 {
-                    _appThemeMod = new AppThemeMod(_moduleid, _systemInfoData.SystemKey, true);
-                    _dataAppThemeMod = new AppThemeMod(_moduleParams.DataSourceModId, _systemInfoData.SystemKey, true);
+                    _appThemeMod = new AppThemeModule(_moduleid, _systemInfoData.SystemKey);
+                    _dataAppThemeMod = new AppThemeModule(_moduleParams.DataSourceModId, _systemInfoData.SystemKey);
 
                     _passSettings.Add("AppTheme", _moduleParams.AppThemeFolder);
                     _passSettings.Add("AppThemeVersion", _moduleParams.AppThemeVersion);
@@ -722,7 +724,7 @@ namespace RocketMod
             try
             {
                 AssignEditLang();
-                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion, true);
+                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
                 if (!appTheme.EnableSettings) return "";
                 var razorTempl = appTheme.GetTemplate("settings"); // new module, so settings theme will be systemtheme.
                 _settingsData = GetSettingsData();
@@ -802,7 +804,7 @@ namespace RocketMod
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "apptheme.cshtml";
-                var appThemeMod = new AppThemeMod(_moduleid, _systemInfoData.SystemKey, true);
+                var appThemeMod = new AppThemeModule(_moduleid, _systemInfoData.SystemKey);
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 

@@ -1352,60 +1352,60 @@ namespace DNNrocketAPI
             return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
         }
 
-        public static void IncludePageHeaders(ModuleParams moduleParams, Page page, int tabId)
+        public static void IncludePageHeaders(ModuleParams moduleParams, Page page, int tabId, bool debugMode = false)
         {
-            var appThemeFolder = moduleParams.AppThemeFolder;
-            var appThemeVersion = moduleParams.AppThemeVersion;
-            var templateRelPath = moduleParams.AppThemeFolderRel;
-
-            if (!String.IsNullOrEmpty(templateRelPath))
+            var cachekey = moduleParams.ModuleId + "." + moduleParams.ModuleRef + ".pageheader.cshtml";
+            string cacheHead = null;
+            if (!debugMode) cacheHead = (string)CacheUtils.GetCache(cachekey, moduleParams.CacheGroupId);
+            if (cacheHead != null)
             {
+                PageIncludes.IncludeTextInHeader(page, cacheHead);
+            }
+            else
+            {
+                var appThemeMod = new AppThemeModule(moduleParams.ModuleId, moduleParams.SystemKey);
+                var templatelist = new List<string>();
 
-            if (!page.Items.Contains("dnnrocketinject")) page.Items.Add("dnnrocketinject", "");
-            var fullTemplName = appThemeFolder + "." + appThemeVersion + ".pageheader.cshtml";
-
-                if (!page.Items["dnnrocketinject"].ToString().Contains(fullTemplName + ","))
+                var activePageHeaderTemplate = appThemeMod.GetTemplateRazor("pageheader");
+                if (activePageHeaderTemplate != "")
                 {
-                    var activePageHeaderTemplate = DNNrocketUtils.GetRazorTemplateData("pageheader.cshtml", moduleParams.AppProjectFolderRel, "SystemThemes/dnnrocketmodule/" + moduleParams.AppThemeFolder, DNNrocketUtils.GetCurrentCulture(), moduleParams.AppThemeVersion, moduleParams.CacheDisbaled);
-                    if (activePageHeaderTemplate == null) activePageHeaderTemplate = "";
+                    var settings = new Dictionary<string, string>();
+                    var l = new List<object>();
+                    l.Add(new SimplisityInfo());
+                    var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
+                    nbRazor.PageId = tabId;
+                    cacheHead = RazorRender(nbRazor, activePageHeaderTemplate, false);
+                    PageIncludes.IncludeTextInHeader(page, cacheHead);
 
-                    if (activePageHeaderTemplate != null && activePageHeaderTemplate != "")
+                    // Inject pageheader css link, use Razor Token "AddCssLinkHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
+                    var injectCss = "";
+                    var csslist = (List<String>)CacheUtils.GetCache("csslinkdata" + tabId);
+                    if (csslist != null)
                     {
-                        var settings = new Dictionary<string, string>();
-                        var l = new List<object>();
-                        l.Add(new SimplisityInfo());
-                        var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
-                        nbRazor.PageId = tabId;
-                        var strOut = RazorRender(nbRazor, activePageHeaderTemplate, false);
-                        PageIncludes.IncludeTextInHeader(page, strOut);
-                        page.Items["dnnrocketinject"] = page.Items["dnnrocketinject"] + fullTemplName + ",";
-
-
-                        // Inject pageheader css link, use Razor Token "AddCssLinkHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
-                        var injectCss = "";
-                        var csslist = (List<String>)CacheUtils.GetCache("csslinkdata" + tabId);
-                        if (csslist != null)
+                        foreach (var cssRelPath in csslist)
                         {
-                            foreach (var cssRelPath in csslist)
-                            {
-                                injectCss += "<link rel='stylesheet' href='" + cssRelPath + "' />";
-                            }
-                            PageIncludes.IncludeTextInHeader(page, injectCss);
+                            injectCss += "<link rel='stylesheet' href='" + cssRelPath + "' />";
                         }
+                        cacheHead += injectCss;
+                    }
 
-                        // Inject pageheader JS link, use Razor Token "AddJsScriptHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
-                        var injectJS = "";
-                        var jslist = (List<String>)CacheUtils.GetCache("jsscriptdata" + tabId);
-                        if (jslist != null)
+                    // Inject pageheader JS link, use Razor Token "AddJsScriptHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
+                    var injectJS = "";
+                    var jslist = (List<String>)CacheUtils.GetCache("jsscriptdata" + tabId);
+                    if (jslist != null)
+                    {
+                        foreach (var jsRelPath in jslist)
                         {
-                            foreach (var jsRelPath in jslist)
-                            {
-                                injectJS += "<script type='text/javascript' src='" + jsRelPath + "'></script>";
-                            }
-                            PageIncludes.IncludeTextInHeader(page, injectJS);
+                            injectJS += "<script type='text/javascript' src='" + jsRelPath + "'></script>";
                         }
+                        cacheHead += injectJS;
                     }
                 }
+
+                if (debugMode) LogDebug("IncludePageHeaders(....) cacheHead: " + Environment.NewLine + cacheHead);
+
+                CacheUtils.SetCache(cachekey, cacheHead, moduleParams.CacheGroupId);
+                PageIncludes.IncludeTextInHeader(page, cacheHead);
             }
         }
 
@@ -1733,6 +1733,21 @@ namespace DNNrocketAPI
                 lp += 1;
             }
             return record;
+        }
+
+
+        //  --------------------- Debug Log files ------------------------------
+        public static void LogDebug(string message)
+        {
+            var mappath = TempDirectoryMapPath().TrimEnd('\\') + "\\debuglog.txt";
+            var readmsg = FileUtils.ReadFile(mappath);
+            readmsg += Environment.NewLine + DateTime.Now.ToString("d/M/yyyy HH:mm:ss") + " - " +  message;
+            FileUtils.SaveFile(mappath, readmsg);
+        }
+        public static void LogDebugClear()
+        {
+            var mappath = TempDirectoryMapPath().TrimEnd('\\') + "\\debuglog.txt";
+            File.Delete(mappath);
         }
 
 
