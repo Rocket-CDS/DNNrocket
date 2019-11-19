@@ -21,9 +21,9 @@
 
 
 <div class="w3-row w3-padding">
-    <a class="w3-col m2 w3-button w3-teal simplisity_click" s-cmd="rocketmodfields_add" s-fields=''>@ResourceKey("DNNrocket.cmdAddButton")</a>
+    <a class="w3-col m2 w3-button w3-teal simplisity_click" s-cmd="rocketmodfields_add" s-fields=''>@ButtonText(ButtonTypes.add)</a>
     @ButtonGap()
-    <span class="w3-col m2 w3-button w3-green simplisity_click langchangesave" s-before="validateform" s-cmd="rocketmodfields_save" s-fields='' s-post="" s-list=".fielddata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <span class="w3-col m2 w3-button w3-green simplisity_click langchangesave" s-before="validateform" s-cmd="rocketmodfields_save" s-fields='' s-post="" s-list=".fielddata">@ButtonText(ButtonTypes.save)</span>
     @if (Model.GetSettingBool("saved"))
     {
         <i class='fas fa-save w3-right simplisity_fadeout' style="font-size:24px"></i>

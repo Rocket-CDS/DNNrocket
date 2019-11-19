@@ -118,7 +118,7 @@
     <div id="detailsection">
 
         <div class="w3-row w3-padding">
-            <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform" s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+            <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform" s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
             @ButtonGap()
             <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearlistcache":"true"}' s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
             @ButtonGap()
@@ -587,7 +587,7 @@
         <div id="dnnrocket_resxvaluelist">
 
             <div class="w3-margin">
-                <div class="w3-button w3-teal w3-padding-8" onclick="addresxvalue('','')">@ResourceKey("DNNrocket.cmdAddButton")</div>
+                <div class="w3-button w3-teal w3-padding-8" onclick="addresxvalue('','')">@ButtonText(ButtonTypes.add)</div>
                 <div class="w3-button w3-teal w3-padding-8" onclick="quickresxedit()"><i class='fas fa-bolt  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.quickedit")</div>
                 <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_rebuildresx" s-track="false" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-wrench  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.rebuild")</div>
                 <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistvaluesbin" s-return="#resxvalues" s-removelist=".resxlistvalues" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</div>

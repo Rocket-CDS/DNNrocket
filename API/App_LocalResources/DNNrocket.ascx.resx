@@ -117,17 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="cmdAdd.Text" xml:space="preserve">
+  <data name="add.Text" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="cmdAddIcon.Text" xml:space="preserve">
-    <value>&lt;i title="Add New" class="fas fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
-  <data name="cmdAddButton.Text" xml:space="preserve">
-    <value>&lt;i title="Add New" class="fas fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Add</value>
-  </data>
-  <data name="cmdAddFiles.Text" xml:space="preserve">
-    <value>&lt;i title="Add New" class="fas fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt; Add</value>
+  <data name="add.Icon" xml:space="preserve">
+    <value>&lt;i title="Add" class="fas fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdCancel.Text" xml:space="preserve">
     <value>Cancel</value>
@@ -174,23 +168,11 @@
   <data name="cmdResetButton.Text" xml:space="preserve">
     <value>&lt;i title="Reset" class="fas fa-refresh fa-fw fa-lg"&gt;&lt;/i&gt; Reset</value>
   </data>
-  <data name="cmdSave.Text" xml:space="preserve">
+  <data name="save.Text" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="cmdSaveExit.confirm" xml:space="preserve">
-    <value>Save and Exit?</value>
-  </data>
-  <data name="cmdSaveExit.Text" xml:space="preserve">
-    <value>Exit</value>
-  </data>
-  <data name="cmdSearch.Text" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="cmdSearchIcon.Text" xml:space="preserve">
+  <data name="search.Icon" xml:space="preserve">
     <value>&lt;i title="Search" class="fas fa-search fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
-  <data name="cmdSearchButton.Text" xml:space="preserve">
-    <value>&lt;i title="Search" class="fas fa-search fa-fw fa-lg"&gt;&lt;/i&gt; Search</value>
   </data>
   <data name="cmdSelect.Text" xml:space="preserve">
     <value>Select</value>
@@ -228,11 +210,8 @@
   <data name="cmdRemoveButton.Text" xml:space="preserve">
     <value>&lt;i title="Remove" class="fas fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt; Remove</value>
   </data>
-  <data name="cmdSaveIcon.Text" xml:space="preserve">
-    <value>&lt;i  title="Save" class="fas fa-save fa-fw fa-2x"&gt;&lt;/i&gt;</value>
-  </data>
-  <data name="cmdSaveButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Save" class="fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save</value>
+  <data name="save.Icon" xml:space="preserve">
+    <value>&lt;i  title="Save" class="fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cmdCancelSelect.Text" xml:space="preserve">
     <value>Cancel Select</value>
@@ -243,12 +222,6 @@
   <data name="cmdMoveIcon.Text" xml:space="preserve">
     <value>&lt;i title="Move to here" class="fas fa-arrow-circle-left fa-fw fa-2x"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="cmdSaveAsButton.confirm" xml:space="preserve">
-    <value>Save ?</value>
-  </data>
-  <data name="cmdSaveAsButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Save As" class="fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save As</value>
-  </data>
   <data name="cmdOk.Text" xml:space="preserve">
     <value>Ok</value>
   </data>
@@ -257,9 +230,6 @@
   </data>
   <data name="cmdFolderIcon.Text" xml:space="preserve">
     <value>&lt;i title="Open" class="fas fa-folder-open fa-fw fa-2x"&gt;&lt;/i&gt;</value>
-  </data>
-  <data name="cmdSaveExitButton.Text" xml:space="preserve">
-    <value>&lt;i  title="Save" class="fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt; Save &amp; Exit</value>
   </data>
   <data name="cmdFilter.Text" xml:space="preserve">
     <value>Filter</value>

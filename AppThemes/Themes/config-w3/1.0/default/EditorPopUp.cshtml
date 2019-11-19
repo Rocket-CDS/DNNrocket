@@ -21,7 +21,7 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m2 w3-button w3-khaki " onclick="cancelleditor();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
         @ButtonGap()
-        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditorcall" s-after="saveeditorreturn" s-track="false" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditorcall" s-after="saveeditorreturn" s-track="false" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
         @ButtonGap()
         @if (Model.GetSettingBool("moduletemplatebutton"))
         {

@@ -11,7 +11,7 @@
 
 <div class="w3-container">
     <div class="w3-margin">
-        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addgroup" s-fields='{"selecteditemid":"@sInfo.ItemID","theme":"config-w3","template":"Admin_SystemDetailGroups.cshtml","ajaxprovider":"systemapi"}' s-return="#Groups">@ResourceKey("DNNrocket.cmdAddButton")</a>
+        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addgroup" s-fields='{"selecteditemid":"@sInfo.ItemID","theme":"config-w3","template":"Admin_SystemDetailGroups.cshtml","ajaxprovider":"systemapi"}' s-return="#Groups">@ButtonText(ButtonTypes.add)</a>
         <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="groupsbin" s-return="#plugingroups" s-removelist=".groupsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
     </div>
 

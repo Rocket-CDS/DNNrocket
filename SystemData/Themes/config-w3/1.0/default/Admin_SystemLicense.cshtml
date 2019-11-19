@@ -16,7 +16,7 @@
         @RenderTemplate("LicensePopup.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model, "1.0", true)
 
         <div class="w3-row w3-padding">
-            <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewlicense').style.display='block'">@ResourceKey("DNNrocket.cmdAddButton")</div>
+            <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewlicense').style.display='block'">@ButtonText(ButtonTypes.add)</div>
         </div>
         <div class="w3-row">
             <div class="w3-half">

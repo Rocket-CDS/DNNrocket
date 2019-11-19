@@ -1,5 +1,6 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using Simplisity;
+@using DNNrocketAPI;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
@@ -8,7 +9,7 @@
     <div class="w3-container">
 
         <div class="w3-row w3-padding">
-            <div class="w3-col m2 w3-button w3-teal w3-margin-left simplisity_click" s-cmd="systemapi_adminaddnew" s-fields='{"theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.cmdAddButton")</div>
+            <div class="w3-col m2 w3-button w3-teal w3-margin-left simplisity_click" s-cmd="systemapi_adminaddnew" s-fields='{"theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-return="#simplisity_startpanel">@ButtonText(ButtonTypes.add)</div>
         </div>
 
         <div class="w3-row-padding plugins w3-margin-top">

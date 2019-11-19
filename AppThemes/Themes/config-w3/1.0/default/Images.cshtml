@@ -18,8 +18,8 @@
 
 <span class="w3-section simplisity_buttons">
     <a class="w3-button w3-pale-yellow w3-padding-8" onclick="location.reload();">@ResourceKey("DNNrocket.cmdCancelButton")</a>
-    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="tabid:-1,moduleid:-1,parentitemid:@settingsData.Info.ParentItemId,selecteditemid:@settingsData.Info.ItemID,interfacekey:images">@ResourceKey("DNNrocket.cmdAddButton")</a>
-    <span class="w3-button w3-green w3-padding-8 simplisity_click  simplisity_langchange activatevalidation" s-cmd="rocketsettings_save" s-fields="tabid:-1,moduleid:-1,parentitemid:@settingsData.Info.ParentItemId,selecteditemid:@settingsData.Info.ItemID,interfacekey:images" s-list=".settingsdata">@ResourceKey("DNNrocket.cmdSaveButton")</span>
+    <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketsettings_add" s-fields="tabid:-1,moduleid:-1,parentitemid:@settingsData.Info.ParentItemId,selecteditemid:@settingsData.Info.ItemID,interfacekey:images">@ButtonText(ButtonTypes.add)</a>
+    <span class="w3-button w3-green w3-padding-8 simplisity_click  simplisity_langchange activatevalidation" s-cmd="rocketsettings_save" s-fields="tabid:-1,moduleid:-1,parentitemid:@settingsData.Info.ParentItemId,selecteditemid:@settingsData.Info.ItemID,interfacekey:images" s-list=".settingsdata">@ButtonText(ButtonTypes.save)</span>
     <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#datalist" s-removelist=".settingsdata" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
 </span>
 

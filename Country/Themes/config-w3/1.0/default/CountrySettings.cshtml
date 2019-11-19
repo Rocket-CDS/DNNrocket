@@ -20,7 +20,7 @@
 }
 
     <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-green simplisity_click" s-cmd="settingcountry_save" s-list=".countrylist" s-track="false" s-fields='{"stopanimate":"true"}'>@ResourceKey("DNNrocket.cmdSaveButton")</div>
+        <div class="w3-col m2 w3-button w3-green simplisity_click" s-cmd="settingcountry_save" s-list=".countrylist" s-track="false" s-fields='{"stopanimate":"true"}'>@ButtonText(ButtonTypes.save)</div>
         @if (Model.GetSettingBool("saved"))
         {
             <i class='fas fa-save w3-right simplisity_fadeout' style="font-size:24px"></i>
