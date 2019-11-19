@@ -217,17 +217,13 @@ namespace RocketMod
 
             _settingsData = GetSettingsData();
             _passSettings = LocalUtils.SettingsToDictionary(_settingsData);
-            _passSettings.Add("stopanimate", _paramInfo.GetXmlProperty("genxml/hidden/stopanimate"));
 
             // we should ALWAYS pass back the moduleid & tabid in the template post.
             // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
             _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-            if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid"); // IPN           
-            _passSettings.Add("moduleid", _moduleid.ToString());
+            if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");          
             _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
-
-            if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid"); // IPN
-            _passSettings.Add("tabid", _tabid.ToString());
+            if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid"); 
 
             _moduleParams = new ModuleParams(_moduleid, _systemKey);
             _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemKey);
@@ -248,9 +244,9 @@ namespace RocketMod
                     _appThemeMod = new AppThemeModule(_moduleid, _systemInfoData.SystemKey);
                     _dataAppThemeMod = new AppThemeModule(_moduleParams.DataSourceModId, _systemInfoData.SystemKey);
 
-                    _passSettings.Add("AppTheme", _moduleParams.AppThemeFolder);
-                    _passSettings.Add("AppThemeVersion", _moduleParams.AppThemeVersion);
-                    _passSettings.Add("AppThemeRelPath", _moduleParams.AppThemeFolderRel);
+                    if (!_passSettings.ContainsKey("AppTheme")) _passSettings.Add("AppTheme", _moduleParams.AppThemeFolder);
+                    if (!_passSettings.ContainsKey("AppThemeVersion")) _passSettings.Add("AppThemeVersion", _moduleParams.AppThemeVersion);
+                    if (!_passSettings.ContainsKey("AppThemeRelPath")) _passSettings.Add("AppThemeRelPath", _moduleParams.AppThemeFolderRel);
                 }
             }
 

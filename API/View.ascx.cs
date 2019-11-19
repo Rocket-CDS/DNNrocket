@@ -182,7 +182,8 @@ namespace DNNrocketAPI
                 var strOut = "No Interface Found.";
                 var cacheOutPut = "";
                 var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture();
-                if (_moduleParams.CacheEnabled) cacheOutPut = (string)CacheUtils.GetCache(cacheKey);
+                if (_moduleParams.CacheEnabled) cacheOutPut = (string)CacheUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
+
 
                 if (cacheOutPut == null || cacheOutPut == "")
                 {
@@ -191,7 +192,7 @@ namespace DNNrocketAPI
                     if (returnDictionary.ContainsKey("outputhtml"))
                     {
                         strOut = returnDictionary["outputhtml"];
-                        if (_rocketInterface.IsCached) CacheUtils.SetCache(cacheKey, strOut);
+                        if (_rocketInterface.IsCached) CacheUtils.SetCache(cacheKey, strOut, _moduleParams.CacheGroupId);
                     }
                 }
                 else
@@ -211,6 +212,11 @@ namespace DNNrocketAPI
                 phData.Controls.Add(lit);
             }
 
+            if (EditMode)
+            {
+                PageIncludes.IncludeTextInHeader(Page, "<link rel='stylesheet' href='/DesktopModules/DNNrocket/css/w3.css' />");
+            }
+
         }
 
 
@@ -227,7 +233,6 @@ namespace DNNrocketAPI
                 if (!_moduleParams.GetValueBool("noiframeedit"))
                 {
                     actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.edit") , "", "", "register.gif", "javascript:" + _interfacekey + "editiframe_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
-                    PageIncludes.IncludeTextInHeader(Page, "<link rel='stylesheet' href='/DesktopModules/DNNrocket/css/w3.css' />");
                 }
 
                 var adminurl = _systemInfo.GetXmlProperty("genxml/textbox/adminurl");

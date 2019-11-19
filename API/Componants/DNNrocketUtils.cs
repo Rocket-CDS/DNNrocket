@@ -1375,7 +1375,6 @@ namespace DNNrocketAPI
                     var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
                     nbRazor.PageId = tabId;
                     cacheHead = RazorRender(nbRazor, activePageHeaderTemplate, false);
-                    PageIncludes.IncludeTextInHeader(page, cacheHead);
 
                     // Inject pageheader css link, use Razor Token "AddCssLinkHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
                     var injectCss = "";

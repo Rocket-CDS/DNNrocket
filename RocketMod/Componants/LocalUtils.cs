@@ -20,7 +20,7 @@ namespace RocketMod
                 {
                     var value = s.GetXmlProperty("genxml/lang/genxml/textbox/value");
                     if (value == "") value = s.GetXmlProperty("genxml/textbox/value");
-                    rtn.Add(name, value);
+                    if (!rtn.ContainsKey(name))  rtn.Add(name, value);
                 }
             }
             return rtn;
