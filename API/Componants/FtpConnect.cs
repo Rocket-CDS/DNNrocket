@@ -27,7 +27,7 @@ namespace DNNrocketAPI.Componants
 
         public string UploadAppTheme(AppTheme appTheme)
         {
-            if (!IsValid) return "";
+            if (!IsValid) return "Invalid FTP Credentials";
 
             var exportZipMapPath = appTheme.ExportZipFile();
             var filename = Path.GetFileName(exportZipMapPath);
