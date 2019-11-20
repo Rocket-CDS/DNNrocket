@@ -18,12 +18,14 @@
     var dataModuleParams = new ModuleParams(moduleParams.DataSourceModId, moduleParams.SystemKey);
     var globalSettings = new SystemGlobalData();
 
+    Model.SetSetting("licensetype", "dnnrocketmodule");
 }
 
 
-    <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketmod_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","selecteditemid":"@configinfo.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.save)</div>
-        @ButtonGap()
+
+<div class="w3-row w3-padding">
+    <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketmod_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","selecteditemid":"@configinfo.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.save)</div>
+    @ButtonGap()
     <div class="w3-col m6 w3-dropdown-hover">
         <div class="w3-button">@ResourceKey("DNNrocket.more")...</div>
         <div class="w3-dropdown-content w3-bar-block w3-card">
@@ -49,7 +51,7 @@
 
     </div>
 
-    </div>
+</div>
 
 <h1>@ResourceKey("RocketMod.config")</h1>
 
@@ -140,6 +142,17 @@
         </div>
     </div>
 
+
+    <h2>@ResourceKey("DNNrocket.createaccount")</h2>
+
+    @RenderTemplate("CreateAccountInject.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
+
+    <h2>@ResourceKey("DNNrocket.getlicense")</h2>
+
+    @RenderTemplate("LicenseInject.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
+
+
+
     <div class="w3-container w3-border w3-margin-top">
         <div class="w3-col m3 w3-padding">
             ItemId:&nbsp;<b>@configinfo.ItemID</b>
@@ -158,32 +171,32 @@
 
 </div>
 
-    <div id="datasourcelist">
-    </div>
+<div id="datasourcelist">
+</div>
 
-    <script>
+<script>
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            $('.sharedataaction').unbind('change');
-            $('.sharedataaction').change(function () {
-                if ($('input[name=sharedataradio]:checked').val() === '0') {
-                    $('.sharedataicon').hide();
-                }
-                if ($('input[name=sharedataradio]:checked').val() === '1') {
-                    $('.sharedataicon').show();
-                    $('.sharedataicon').css('color', 'teal')
-                }
-                if ($('input[name=sharedataradio]:checked').val() === '2') {
-                    $('.sharedataicon').show();
-                    $('.sharedataicon').css('color', 'red')
-                }
-            });
-
+        $('.sharedataaction').unbind('change');
+        $('.sharedataaction').change(function () {
+            if ($('input[name=sharedataradio]:checked').val() === '0') {
+                $('.sharedataicon').hide();
+            }
+            if ($('input[name=sharedataradio]:checked').val() === '1') {
+                $('.sharedataicon').show();
+                $('.sharedataicon').css('color', 'teal')
+            }
+            if ($('input[name=sharedataradio]:checked').val() === '2') {
+                $('.sharedataicon').show();
+                $('.sharedataicon').css('color', 'red')
+            }
         });
 
-        function reloadpage() {
-            location.reload();
-        }
+    });
 
-    </script>
+    function reloadpage() {
+        location.reload();
+    }
+
+</script>

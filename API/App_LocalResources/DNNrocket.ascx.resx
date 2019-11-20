@@ -405,4 +405,25 @@
   <data name="update.Icon" xml:space="preserve">
     <value>&lt;i  title="Update" class="fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
+  <data name="createaccount.Help" xml:space="preserve">
+    <value>Creating an account at &lt;a href='https://www.dnnrocket.com' target='_blank'&gt;www.dnnrocket.com&lt;/a&gt; is free and allows you to track your licenses and purchases.  It also entiles you to have multi-license discount, promotions, direct email and ticket support, which is included with the professional licenses.  If you require a more dedicated support then subscription, consultation and development options are available.   </value>
+  </data>
+  <data name="createaccount.Text" xml:space="preserve">
+    <value>Create a DNNrocket Account</value>
+  </data>
+  <data name="getlicense.Help" xml:space="preserve">
+    <value>You are currently running a FREE trial or community version of this product.  Purchasing a professional license entitles you to direct support email and ticket support.  It will also release professional features.  Buy a license and help us continue to deliver new, advanced, stable and professional software products.</value>
+  </data>
+  <data name="getlicense.Text" xml:space="preserve">
+    <value>Get Professional License</value>
+  </data>
+  <data name="register.Text" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="sitekey.Text" xml:space="preserve">
+    <value>SiteKey</value>
+  </data>
+  <data name="licenseredirect.Help" xml:space="preserve">
+    <value>You will be redirect to the www.dnnrocket.com website, where you can choose your payment method for this website license. </value>
+  </data>
 </root>

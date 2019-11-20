@@ -1,0 +1,29 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+<div class="w3-container w3-margin-top">
+    <div class="w3-col m3 w3-padding">
+        <span class="w3-button w3-block w3-green w3-section w3-padding " onclick="document.getElementById('createnewlicense').style.display='block'">@ResourceKey("DNNrocket.getlicense")</span>
+    </div>
+    <div class="w3-col m9 w3-padding">
+        <i>@ResourceKey("DNNrocket.getlicense", "", "Help")</i>
+    </div>
+</div>
+
+@RenderTemplate("LicenseForm.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
+
+<script>
+
+    $(document).ready(function () {
+
+
+    });
+
+</script>
