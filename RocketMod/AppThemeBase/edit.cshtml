@@ -30,11 +30,11 @@
     <div class="w3-row w3-padding ">
         <div class="w3-col m2 w3-button w3-green langchangesave simplisity_click" s-cmd="edit_savearticle" s-fields='{"selecteditemid":"@info.ItemID"}' s-post="#datasection" s-list="@Model.GetSetting("s-list-csv")">@ButtonText(ButtonTypes.save)</div>
         @ButtonGap()
-        <div class="w3-col m2 w3-button w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="edit_deletearticle" s-fields='{"selecteditemid":"@info.ItemID"}'>@ResourceKey("DNNrocket.cmdDeleteButton")</div>
+        <div class="w3-col m2 w3-button w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="edit_deletearticle" s-fields='{"selecteditemid":"@info.ItemID"}'>@ButtonText(ButtonTypes.delete)</div>
         @ButtonGap()
         @if (Model.GetSettingInt("datatype") == 2)
         {
-            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="edit_editarticlelist" s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="edit_editarticlelist" s-track="true">@ButtonText(ButtonTypes.return)</div>
         }
 
         @if (Model.GetSettingBool("saved"))

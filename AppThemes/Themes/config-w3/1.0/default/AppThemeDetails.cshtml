@@ -120,7 +120,7 @@
         <div class="w3-row w3-padding">
             <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform" s-track="false" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
             @ButtonGap()
-            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearlistcache":"true"}' s-track="true">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearlistcache":"true"}' s-track="true">@ButtonText(ButtonTypes.return)</div>
             @ButtonGap()
 
             <div class="w3-col m2 w3-dropdown-hover">
@@ -129,7 +129,7 @@
                     <div class="w3-bar-item w3-button simplisity_confirmclick" s-track="false" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-blue fas fa-newspaper fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
                     <div class="w3-bar-item w3-button" onclick="document.getElementById('copyapptheme').style.display = 'block';"><i class="w3-text-blue fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copyapptheme")</div>
                     <div class="w3-bar-item w3-button" onclick="document.getElementById('uploadapptheme').style.display = 'block';"><i class="w3-text-blue fas fa-upload fa-fw fa-lg"></i>&nbsp;@ResourceKey("AppThemes.uploadapptheme")</div>
-                    <a class="w3-bar-item w3-button w3-padding-8 simplisity_filedownload" s-track="false" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-teal fas fa-file-export fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNRocket.cmdExport")</a>
+                    <a class="w3-bar-item w3-button w3-padding-8 simplisity_filedownload" s-track="false" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-teal fas fa-file-export fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNRocket.export")</a>
                     <div class="w3-bar-item" style="height:30px;"><hr /></div>
                     <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete") AppTheme</div>
                     <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")</div>
@@ -571,9 +571,9 @@
 
     <div id="dnnrocket_resxeditwrapper" style="display:none;">
         <div class="w3-row w3-padding">
-            <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="saveresx()">@ResourceKey("DNNrocket.cmdOKButton")</div>
+            <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="saveresx()">@ButtonText(ButtonTypes.ok)</div>
             @ButtonGap()
-            <div class="w3-col m2 w3-button w3-khaki " onclick="cancelresx();">@ResourceKey("DNNrocket.cmdCancelButton")</div>
+        <div class="w3-col m2 w3-button w3-khaki " onclick="cancelresx();">@ButtonText(ButtonTypes.cancel)</div>
             @ButtonGap()
             <div class="w3-col m3 w3-center">
                 <image id="resxflag" src="/DesktopModules/DNNrocket/API/images/flags/32/none.png"></image>
@@ -590,7 +590,7 @@
                 <div class="w3-button w3-teal w3-padding-8" onclick="addresxvalue('','')">@ButtonText(ButtonTypes.add)</div>
                 <div class="w3-button w3-teal w3-padding-8" onclick="quickresxedit()"><i class='fas fa-bolt  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.quickedit")</div>
                 <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_rebuildresx" s-track="false" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-wrench  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.rebuild")</div>
-                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistvaluesbin" s-return="#resxvalues" s-removelist=".resxlistvalues" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</div>
+                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistvaluesbin" s-return="#resxvalues" s-removelist=".resxlistvalues" style="display: none;">@ButtonText(ButtonTypes.undo)</div>
             </div>
 
             <div class="w3-row w3-margin">
@@ -630,7 +630,7 @@
 
 
                     <footer class="w3-container w3-theme w3-padding">
-                        <div class="w3-col m2 w3-button w3-pale-green w3-padding-8 saveresxquickedit" onclick="saveresxquickedit()">@ResourceKey("DNNrocket.cmdOKButton")</div>
+                        <div class="w3-col m2 w3-button w3-pale-green w3-padding-8 saveresxquickedit" onclick="saveresxquickedit()">@ButtonText(ButtonTypes.ok)</div>
                     </footer>
 
                 </div>

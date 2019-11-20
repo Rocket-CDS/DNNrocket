@@ -25,11 +25,11 @@
             <div class="w3-container">
 
                 <div class="w3-row w3-margin-bottom">
-                    <span class="w3-col m2 w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</span>
+                    <span class="w3-col m2 w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')">@ButtonText(ButtonTypes.upload)</span>
                     @ButtonGap()
-                    <span class="w3-col m2 w3-button w3-green w3-padding-8" onclick="dnnrocketimages_useimages()">@ResourceKey("DNNrocket.cmdUseButton")</span>
+                <span class="w3-col m2 w3-button w3-green w3-padding-8" onclick="dnnrocketimages_useimages()">@ButtonText(ButtonTypes.use)</span>
                     @ButtonGap()
-                    <span class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketimages_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist" s-fields='{"theme":"config-w3","template":"imagelist.cshtml","interfacekey":"imageupload","uploadrelfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")","imagefolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")","singleselect":"true","autoreturn":"false"}'>@ResourceKey("DNNrocket.cmdDeleteButton")</span>
+                    <span class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketimages_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist" s-fields='{"theme":"config-w3","template":"imagelist.cshtml","interfacekey":"imageupload","uploadrelfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")","imagefolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")","singleselect":"true","autoreturn":"false"}'>@ButtonText(ButtonTypes.delete)</span>
                 </div>
 
                 <div class="w3-container">

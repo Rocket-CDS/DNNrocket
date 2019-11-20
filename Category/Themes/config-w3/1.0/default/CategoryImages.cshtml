@@ -12,8 +12,8 @@
 <h1>@ResourceKey("Category.images")</h1>
 
 <span class="w3-section">
-    <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')" >@ResourceKey("DNNrocket.cmdUploadButton")</span>
-    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="categoryimgbin" s-return="#sortlistimg" s-removelist=".categoryimg" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')" >@ButtonText(ButtonTypes.upload)</span>
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="categoryimgbin" s-return="#sortlistimg" s-removelist=".categoryimg" style="display: none;">@ButtonText(ButtonTypes.undo)</a>
 </span>
 
 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">

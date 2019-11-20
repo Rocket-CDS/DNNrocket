@@ -12,7 +12,7 @@
 
 <span class="w3-section simplisity_buttons">
     <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="testform_save" s-post="#testform" s-list=".testlist,.testlist2,.testtabledata,.testlistdoc" s-fields="theme:config-w3,template:TestForm.cshtml,interfacekey:testform">@ButtonText(ButtonTypes.save)</span>
-    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="testform_delete" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestList.cshtml,interfacekey:testform">@ResourceKey("DNNrocket.cmdDeleteButton")</span>
+    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="testform_delete" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestList.cshtml,interfacekey:testform">@ButtonText(ButtonTypes.delete)</span>
 </span>
 
 

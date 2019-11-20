@@ -135,10 +135,10 @@
   <data name="blank.Text" xml:space="preserve">
     <value>New Page</value>
   </data>
-  <data name="cmdResetButton.Text" xml:space="preserve">
+  <data name="resetconfig.Text" xml:space="preserve">
     <value>&lt;i title="Reset" class="fas fa-redo fa-fw fa-lg"&gt;&lt;/i&gt; Reset Config.</value>
   </data>
-  <data name="cmdResetDataButton.Text" xml:space="preserve">
+  <data name="resetdata.Text" xml:space="preserve">
     <value>&lt;i title="Reset" class="fas fa-redo fa-fw fa-lg"&gt;&lt;/i&gt; Reset Data</value>
   </data>
   <data name="config.Text" xml:space="preserve">

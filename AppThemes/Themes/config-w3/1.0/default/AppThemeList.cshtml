@@ -81,7 +81,7 @@
                 <div class="w3-container">
                     <br />
                     <span class="w3-section">
-                        <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#importfileupload').trigger('click')">@ResourceKey("DNNrocket.cmdUploadButton")</span>
+                        <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#importfileupload').trigger('click')">@ButtonText(ButtonTypes.upload)</span>
                     </span>
 
                     <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
@@ -99,7 +99,7 @@
         <div class="w3-row w3-padding">
             <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'">@ButtonText(ButtonTypes.add)</div>
             @ButtonGap()
-            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" s-track="false">@ResourceKey("DNNrocket.cmdReturnButton")</div>
+            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" s-track="false">@ButtonText(ButtonTypes.return)</div>
             @ButtonGap()
             <div class="w3-col m6 w3-dropdown-hover">
                 <button class="w3-button">More...</button>
@@ -146,7 +146,7 @@
                         <div class="listrow w3-cell-row">
 
                             <div class=" w3-cell w3-padding w3-button rocket_animation simplisity_click " s-cmd="rocketapptheme_getdetail" s-track="true" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
-                                <i class="fas fa-edit w3-center" title="@ResourceKey("DNNRocket.cmdEdit")" style='font-size:32px'></i>
+                                <i class="fas fa-edit w3-center" title="@ResourceKey("DNNRocket.edit")" style='font-size:32px'></i>
                             </div>
                             <div class=" w3-cell w3-padding  w3-hide-small " style="width: 100px;">
                                 <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" class="w3-circle" />
@@ -171,7 +171,7 @@
                             </div>
                             <div class=" w3-cell w3-right w3-hide-small" style="width: 240px;">
                                 <div class="w3-row">
-                                    <a class="w3-button simplisity_filedownload" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;"><i class='fas fa-file-export' title="@ResourceKey("DNNRocket.cmdExport")" style='font-size:32px'></i></a>
+                                    <a class="w3-button simplisity_filedownload" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;"><i class='fas fa-file-export' title="@ResourceKey("DNNRocket.export")" style='font-size:32px'></i></a>
                                 </div>
                             </div>
                         </div>

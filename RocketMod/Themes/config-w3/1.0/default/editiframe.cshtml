@@ -16,7 +16,7 @@
 
     <div id="rocketmodmodel_@(Model.ModuleId)" class="w3-modal" style="z-index:9999;background-color:grey">
         <div class="w3-modal-content w3-card-4 w3-black " style="width: 95%;height: 90%;">
-            <span onclick="rocketmodeditiframeclose_@(Model.ModuleId)();" class="w3-button w3-right closeiframe">&times;@ResourceKey("DNNrocket.cmdCloseButton")</span>
+            <span onclick="rocketmodeditiframeclose_@(Model.ModuleId)();" class="w3-button w3-right closeiframe">&times;@ButtonText(ButtonTypes.close)</span>
             <div class="w3-row" style="height: 100%">
                 <iframe id="rocketmodIframe_@(Model.ModuleId)" style="width: 100%; height: 100%;">@ResourceKey("RocketMod.iframesupport")</iframe>
             </div>

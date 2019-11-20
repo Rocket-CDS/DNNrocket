@@ -12,8 +12,8 @@
 <h1>@ResourceKey("testform.testformlist") Docs</h1>
 
 <span class="w3-section">
-    <span class="w3-button w3-teal w3-padding-8" onclick="$('#docfileupload').trigger('click')" >@ResourceKey("DNNrocket.cmdUploadButton")</span>
-    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="testlistdocbin" s-return="#sortlistdoc" s-removelist=".testlistdoc" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    <span class="w3-button w3-teal w3-padding-8" onclick="$('#docfileupload').trigger('click')" >@ButtonText(ButtonTypes.upload)</span>
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="testlistdocbin" s-return="#sortlistdoc" s-removelist=".testlistdoc" style="display: none;">@ButtonText(ButtonTypes.undo)</a>
 </span>
 
 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
@@ -36,7 +36,7 @@
 
             <div class="w3-row w3-margin">
                 <div class="w3-col m2">
-                    <a class="w3-button w3-teal w3-padding-8 simplisity_filedownload" s-cmd="testform_download" s-fields="interfacekey:testform,filerelpath:@i.GetXmlProperty("genxml/hidden/docrelpath"),downloadname:@i.GetXmlProperty("genxml/lang/genxml/textbox/filename")@i.GetXmlProperty("genxml/hidden/ext")">@ResourceKey("DNNrocket.cmdDownloadButton")</a>
+                    <a class="w3-button w3-teal w3-padding-8 simplisity_filedownload" s-cmd="testform_download" s-fields="interfacekey:testform,filerelpath:@i.GetXmlProperty("genxml/hidden/docrelpath"),downloadname:@i.GetXmlProperty("genxml/lang/genxml/textbox/filename")@i.GetXmlProperty("genxml/hidden/ext")">@ButtonText(ButtonTypes.download)</a>
                 </div>
 
                 <div class="w3-col m8">

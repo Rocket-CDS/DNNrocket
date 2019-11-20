@@ -14,7 +14,7 @@
 <div class="w3-container">
     <div class="w3-margin">
         <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addinterface" s-fields='{"selecteditemid":"@sInfo.ItemID","theme":"config-w3","template":"Admin_SystemDetailInterfaces.cshtml"}' s-return="#Interface">@ButtonText(ButtonTypes.add)</a>
-        <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-removelist=".interfacedata" s-recylebin="interfacesbin" s-return="#plugininterfaces" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+        <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-removelist=".interfacedata" s-recylebin="interfacesbin" s-return="#plugininterfaces" style="display: none;">@ButtonText(ButtonTypes.undo)</a>
     </div>
 
     <ul id="plugininterfaces" class="w3-ul">

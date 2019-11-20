@@ -68,7 +68,7 @@
         @if (sInfo.GetXmlProperty("genxml/textbox/adminurl") != "")
         {
             <div class="w3-row w3-padding">
-                <a class="w3-button w3-teal w3-padding-8 w3-margin-top" href="@sInfo.GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ResourceKey("DNNrocket.cmdAdminButton")</a>
+                <a class="w3-button w3-teal w3-padding-8 w3-margin-top" href="@sInfo.GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ButtonText(ButtonTypes.admin)</a>
             </div>
         }
 
