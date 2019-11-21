@@ -102,8 +102,11 @@ namespace DNNrocket.SystemData
                         strOut = GetLicenseList();
                         break;
                     case "systemapi_licensesave":
-
                         strOut = GetLicenseList();
+                        break;
+                    case "systemapi_savesecretkey":
+                        SaveSecretKey();
+                        strOut = "OK";
                         break;
 
                 }
@@ -111,13 +114,26 @@ namespace DNNrocket.SystemData
             else
             {
 
+                commandSecurity.AddCommand("systemapi_savesecretkey", true);
+
+                if (commandSecurity.HasSecurityAccess(paramCmd))
+                {
+                    switch (paramCmd)
+                    {
+                        case "systemapi_savesecretkey":
+                            SaveSecretKey();
+                            strOut = "OK";
+                            break;
+                    }
+                }
+
                 switch (paramCmd)
                 {
                     case "login_sendreset":
                         //strOut = ResetPass(sInfo);
                         break;
                     default:
-                        strOut = UserUtils.LoginForm(systemInfo, rtnInfo,"systemapi", UserUtils.GetCurrentUserId());
+                        strOut = UserUtils.LoginForm(systemInfo, rtnInfo, "systemapi", UserUtils.GetCurrentUserId());
                         break;
                 }
             }
@@ -207,6 +223,15 @@ namespace DNNrocket.SystemData
                 DNNrocketUtils.LogException(ex);
                 return ex.ToString();
             }
+        }
+
+        public static void SaveSecretKey()
+        {
+            var globalData = new SystemGlobalData();
+            if (globalData.SecretKey == "") globalData.SecretKey = _postInfo.GetXmlProperty("genxml/textbox/secretkey");
+            globalData.Update();
+
+            CacheUtils.ClearAllCache();
         }
 
         public static void SystemGlobalSave()

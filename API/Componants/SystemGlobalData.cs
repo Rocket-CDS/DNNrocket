@@ -57,5 +57,9 @@ namespace DNNrocketAPI.Componants
         public string ImageType { get { return Info.GetXmlProperty("genxml/select/imagetype"); } set { Info.SetXmlProperty("genxml/select/imagetype", value); } }
         public bool PngImage { get { if (Info.GetXmlProperty("genxml/select/imagetype") != "jpg") return true; else return false; } }
 
+        public string LicenseUrl { get { return Info.GetXmlProperty("genxml/textbox/licenseurl"); } set { Info.SetXmlProperty("genxml/textbox/licenseurl", value); } }
+        public string AccountEmail { get { return Info.GetXmlProperty("genxml/textbox/accountemail"); } set { Info.SetXmlProperty("genxml/textbox/accountemail", value); } }
+        public string SecretKey { get { return Info.GetXmlProperty("genxml/textbox/secretkey"); } set { Info.SetXmlProperty("genxml/textbox/secretkey", value); } }
+
     }
 }

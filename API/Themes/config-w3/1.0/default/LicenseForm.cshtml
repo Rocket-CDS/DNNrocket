@@ -6,6 +6,10 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
 
 
+@{ 
+  var globalData = new SystemGlobalData();
+}
+
 <div id="createnewlicense" class="w3-modal">
     <div class="w3-modal-content w3-card w3-animate-zoom">
 
@@ -31,15 +35,17 @@
         <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
             <div class="">
                 <span class="w3-button w3-red " onclick="document.getElementById('createnewlicense').style.display='none'">@ResourceKey("DNNrocket.cancel")</span>
-                <a href="http://dev.dnnrocket.com/DesktopModules/DNNrocketModules/RocketLicense/newlicense.html?sitekey=@(DNNrocketUtils.SiteGuid())&licensetype=@(Model.GetSetting("licensetype"))&siteurl=@GeneralUtils.EnCode(DNNrocketUtils.GetDefaultWebsiteDomainUrl())" class="w3-right w3-button w3-green">@ResourceKey("DNNrocket.getlicense")</a>
+                <a href="@(globalData.LicenseUrl.TrimEnd('/'))/DesktopModules/DNNrocketModules/RocketLicense/newlicense.html?secretkey=@(globalData.SecretKey)sitekey=@(DNNrocketUtils.SiteGuid())&licensetype=@(Model.GetSetting("licensetype"))&siteurl=@GeneralUtils.EnCode(DNNrocketUtils.GetDefaultWebsiteDomainUrl())" class="w3-right w3-button w3-green redirectbutton">@ResourceKey("DNNrocket.getlicense")</a>
             </div>
         </div>
-
 
     </div>
 </div>
 
 
-<script type="text/javascript">
-
+<script type="text/javascript">   	
+    $(document).ready(function () {
+        var currentURL = window.location.href;
+        $('.redirectbutton').attr('href', $('.redirectbutton').attr('href') + "&returnurl=" + simplisity_encode(currentURL));
+    });
 </script>

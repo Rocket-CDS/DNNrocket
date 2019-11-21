@@ -333,10 +333,4 @@
   <data name="publicapptheme.Help" xml:space="preserve">
     <value>The public AppTheme URI identifies the location of available Rocket Templates.  When searching for online templates this URI will be used to get a list of available templates.</value>
   </data>
-  <data name="secretkey.Help" xml:space="preserve">
-    <value>Your SecretKey identifies you to our software system.  Treat it like a password and username.</value>
-  </data>
-  <data name="secretkey.Text" xml:space="preserve">
-    <value>Secretkey</value>
-  </data>
 </root>

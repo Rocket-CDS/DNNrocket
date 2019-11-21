@@ -412,7 +412,7 @@
     <value>Create a DNNrocket Account</value>
   </data>
   <data name="getlicense.Help" xml:space="preserve">
-    <value>You are currently running a FREE trial or community version of this product.  Purchasing a professional license entitles you to direct support email and ticket support.  It will also release professional features.  Buy a license and help us continue to deliver new, advanced, stable and professional software products.</value>
+    <value>You are currently running a FREE trial or community version of this product.  Purchasing a professional license entitles you to direct email and ticket support.  It will also release professional features.  Buy a license and help us continue to deliver new, advanced, stable and professional software products.</value>
   </data>
   <data name="getlicense.Text" xml:space="preserve">
     <value>Get Professional License</value>
@@ -424,6 +424,21 @@
     <value>SiteKey</value>
   </data>
   <data name="licenseredirect.Help" xml:space="preserve">
-    <value>You will be redirect to the www.dnnrocket.com website, where you can choose your payment method for this website license. </value>
+    <value>You will be redirect to the DNNrocket license website, where you can choose your payment method for this website license. </value>
+  </data>
+  <data name="entersecretkey.Help" xml:space="preserve">
+    <value>You can enter your DNNrocket Secret Key, this will link this site with your DNNrocket account and allow you to maintain, transfer and validate licenses for this site. </value>
+  </data>
+  <data name="entersecretkey.Text" xml:space="preserve">
+    <value>Enter Secret Key</value>
+  </data>
+  <data name="secretkey.Help" xml:space="preserve">
+    <value>Your SecretKey identifies you to our software system.  Treat it like a password and username.</value>
+  </data>
+  <data name="secretkey.Text" xml:space="preserve">
+    <value>Secretkey</value>
+  </data>
+  <data name="dnnrocketaccount.Text" xml:space="preserve">
+    <value>DNNrocket Account</value>
   </data>
 </root>
