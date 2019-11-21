@@ -229,6 +229,7 @@ namespace DNNrocket.SystemData
         {
             var globalData = new SystemGlobalData();
             if (globalData.SecretKey == "") globalData.SecretKey = _postInfo.GetXmlProperty("genxml/textbox/secretkey");
+            if (globalData.AccountEmail == "") globalData.AccountEmail = _postInfo.GetXmlProperty("genxml/textbox/accountemail");
             globalData.Update();
 
             CacheUtils.ClearAllCache();

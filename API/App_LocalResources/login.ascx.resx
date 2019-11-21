@@ -192,4 +192,7 @@
   <data name="randompassword.Text" xml:space="preserve">
     <value>Allocate Random Password</value>
   </data>
+  <data name="register.Text" xml:space="preserve">
+    <value>Register</value>
+  </data>
 </root>

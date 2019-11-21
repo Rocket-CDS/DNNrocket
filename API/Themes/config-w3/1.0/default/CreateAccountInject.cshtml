@@ -63,9 +63,29 @@ else
         </header>
 
         <div class="w3-row">
-            <div class="w3-half w3-padding">
+            <div class="w3-padding">
+                <label><b>@ResourceKey("DNNrocket.accountemail")</b></label>
+                @{
+                    var disableInput = "";
+                    if (systemGlobalData.AccountEmail != "")
+                    {
+                        disableInput = " disabled ";
+                    }
+                }
+                @TextBox(systemGlobalData.Info, "genxml/textbox/accountemail", "class='w3-input w3-border' " + disableInput, "")
+            </div>
+        </div>
+        <div class="w3-row">
+            <div class="w3-padding">
                 <label><b>@ResourceKey("DNNrocket.secretkey")</b></label>
-                @TextBox(new SimplisityInfo(), "genxml/textbox/secretkey", "class='w3-input w3-border' ", "")
+                @{
+                    disableInput = "";
+                    if (systemGlobalData.SecretKey != "")
+                    {
+                        disableInput = " disabled ";
+                    }
+                }
+                @TextBox(systemGlobalData.Info, "genxml/textbox/secretkey", "class='w3-input w3-border' " + disableInput, "")
             </div>
         </div>
         <div class="w3-padding">

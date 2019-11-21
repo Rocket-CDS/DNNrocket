@@ -441,4 +441,10 @@
   <data name="dnnrocketaccount.Text" xml:space="preserve">
     <value>DNNrocket Account</value>
   </data>
+  <data name="accountemail.Text" xml:space="preserve">
+    <value>Account Email</value>
+  </data>
+  <data name="accountpassword.Text" xml:space="preserve">
+    <value>Account Password</value>
+  </data>
 </root>

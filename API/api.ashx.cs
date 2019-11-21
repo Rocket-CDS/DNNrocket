@@ -124,7 +124,15 @@ namespace DNNrocketAPI
 
                     paramInfo.SetXmlProperty("genxml/systemprovider", systemprovider);
 
-                    if (paramCmd == "login_login")
+                    if (paramCmd == "login_doregister")
+                    {
+                        strOut = UserUtils.RegisterUser(postInfo, DNNrocketUtils.GetCurrentCulture());
+                    }
+                    else if (paramCmd == "login_register")
+                    {
+                        strOut = UserUtils.RegisterForm(systemInfo, postInfo, interfacekey, UserUtils.GetCurrentUserId());
+                    }
+                    else if (paramCmd == "login_login")
                     {
                         UserUtils.DoLogin(systemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
                         strOut = ""; // the page will rteload after the call

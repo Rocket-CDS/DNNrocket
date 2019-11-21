@@ -137,7 +137,7 @@ namespace DNNrocketAPI
                     }
                 }
             }
-            strOut = LoginForm(systemInfo, rtnInfo, "login", objUser.UserID);
+            strOut = LoginForm(systemInfo, rtnInfo, "login", -1);
 
             return strOut;
         }
@@ -156,7 +156,26 @@ namespace DNNrocketAPI
             {
                 sInfo.SetXmlProperty("genxml/securityaccess", "You do not have security access");
             }
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData("LoginForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture());
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData("LoginForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+            sInfo.SetXmlProperty("genxml/interfacekey", interfacekey); // make sure the login form has the correct interface command.
+            return DNNrocketUtils.RazorDetail(razorTempl, sInfo);
+        }
+
+        public static string RegisterForm(SimplisityInfo systemInfo, SimplisityInfo sInfo, string interfacekey, int userid)
+        {
+            if (systemInfo != null)
+            {
+                // clear cookie for cmd.  This could cause a fail login loop.
+                // A module MUST always have a tabid and a valid users.  Invalid cookies without tabid could cause a loop.
+                DNNrocketUtils.DeleteCookieValue("s-cmd-menu-" + systemInfo.GUIDKey);
+                DNNrocketUtils.DeleteCookieValue("s-fields-menu-" + systemInfo.GUIDKey);
+            }
+
+            if (userid > 0)
+            {
+                sInfo.SetXmlProperty("genxml/securityaccess", "You do not have security access");
+            }
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData("RegisterForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
             sInfo.SetXmlProperty("genxml/interfacekey", interfacekey); // make sure the login form has the correct interface command.
             return DNNrocketUtils.RazorDetail(razorTempl, sInfo);
         }
@@ -170,6 +189,7 @@ namespace DNNrocketAPI
             var password = sInfo.GetXmlProperty("genxml/hidden/password");
             var confirmpassword = sInfo.GetXmlProperty("genxml/hidden/confirmpassword");
             var approved = sInfo.GetXmlPropertyBool("genxml/checkbox/autorize");
+            if (sInfo.GetXmlProperty("genxml/checkbox/autorize") == "") approved = true;
             var randompassword = sInfo.GetXmlPropertyBool("genxml/checkbox/randompassword");
             if (randompassword)
             {

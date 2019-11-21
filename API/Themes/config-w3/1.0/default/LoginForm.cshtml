@@ -42,8 +42,6 @@
                     <div class="w3-panel w3-pale-red w3-padding-16">@info.GetXmlProperty("genxml/securityaccess")</div>
                 }
 
-                <input class="w3-check w3-margin-top" type="checkbox" checked="checked" id="rememberme"><span>@ResourceKey("login.Rememberme")</span>
-
             </div>
 
             <div class="resetpassinput" style="display:none;">
@@ -61,11 +59,12 @@
 
         <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
             <div class="logininput">
-                <span onclick="reloadpage()" type="button" class="w3-button w3-red">@ResourceKey("login.Cancel")</span>
-
+                <div onclick="reloadpage()" type="button" class="w3-button w3-red">@ResourceKey("login.Cancel")</div>
+                <div class="w3-button w3-teal w3-right simplisity_click" onclick="$('#loginform').hide();" s-track="false" s-post=".logindata" s-cmd="login_register" >@ResourceKey("login.register")</div>
+                
                 <!--
-                <span type="button" class="w3-button w3-pale-yellow w3-right w3-padding w3-hide-small resetpassword">@ResourceKey("login.Forgotpassword")</span>
-                -->
+    <span type="button" class="w3-button w3-pale-yellow w3-right w3-padding w3-hide-small resetpassword">@ResourceKey("login.Forgotpassword")</span>
+    -->
             </div>
 
             <div class="resetpassinput" style="display:none;">

@@ -8,12 +8,13 @@
     <adminurl>/DesktopModules/DNNrocket/RocketMod/admin.html?moduleid=[moduleid]&amp;tabid=[tabid]</adminurl>
     <apiurl>/DesktopModules/DNNrocket/API/api.ashx</apiurl>
     <defaultinterface>rocketmod</defaultinterface>
-    <licensekey />
-    <encryptkey>12365498765454654222222222</encryptkey>
     <systemrelpath>/DesktopModules/DNNrocket/RocketMod/</systemrelpath>
+    <encryptkey>9734yfh9uwehbfy8gwsuhd9weyr9823hsg</encryptkey>
+    <ftproot>appthemes</ftproot>
   </textbox>
   <checkbox>
     <debugmode>true</debugmode>
+    <proavailable>false</proavailable>
   </checkbox>
   <interfacedata list="true">
     <genxml>
@@ -396,6 +397,44 @@
         <onmenu>false</onmenu>
       </checkbox>
     </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>systemapi</interfacekey>
+        <entitytypecode />
+        <interfaceicon />
+        <defaulttheme />
+        <themeversion>1.0</themeversion>
+        <defaulttemplate />
+        <defaultcommand />
+        <namespaceclass>DNNrocket.SystemData.StartConnect</namespaceclass>
+        <assembly>DNNrocketSystemData</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/api/</relpath>
+        <cmdfields />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="exportmodule" />
+          <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
+        </providertype>
+        <securityroles>
+          <chk value="false" data="Administrators" />
+          <chk value="false" data="Manager" />
+          <chk value="false" data="Editor" />
+          <chk value="false" data="ClientEditor" />
+        </securityroles>
+      </checkboxlist>
+      <checkbox>
+        <active>true</active>
+        <cache>true</cache>
+        <onmenu>false</onmenu>
+      </checkbox>
+    </genxml>
   </interfacedata>
   <settingsdata list="true">
     <genxml>
@@ -460,6 +499,7 @@
   <lang>
     <genxml>
       <interfacedata list="true">
+        <genxml />
         <genxml />
         <genxml />
         <genxml />
