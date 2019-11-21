@@ -61,7 +61,7 @@
 
 
         <div class="w3-container">
-            <div class="w3-third w3-padding"">
+            <div class="w3-row w3-padding"">
                 <div class="w3-container w3-theme w3-padding">
                     <label>@ResourceKey("AppThemes.templates")</label>
                 </div>
@@ -73,46 +73,37 @@
                             @foreach (var templateRecord in templatedatalist)
                             {
                                 var templateInfo = new SimplisityInfo(templateRecord);
-                            <li class="templatelist w3-col m12 w3-display-container w3-padding w3-border-0">
+                            <li class="templatelist w3-col m4 w3-border-0">
                                 @HiddenField(templateInfo, "genxml/hidden/editorcodehtmlmixed", "", "", false, templateLP)
                                 @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default", false, templateLP)
                                 @HiddenField(templateInfo, "genxml/hidden/filenamehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/filename"), false, templateLP)
                                 @HiddenField(templateInfo, "genxml/hidden/moduletemplatehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/moduletemplate"), false, templateLP)
-                                <div class="w3-row w3-display-container w3-padding  w3-card">
 
-                                    <div class="">
-                                        @{
-                                            var disabledfilename = "";
-                                            var hideicon = "display:none;";
-                                            var moduletemplate = "";
-                                            if (templateInfo.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
-                                            {
-                                                moduletemplate = "w3-pale-green";
-                                            }
-                                            var filename = templateInfo.GetXmlProperty("genxml/hidden/filename");
-                                        }
-                                        @if (filename != "")
-                                        {
-                                            disabledfilename = "disabled";
-                                            hideicon = "";
-                                        }
-                                        @if (appThemeMod.ModuleParams.DataSourceExternal && ( filename == "edit" || filename == "editlist"))
-                                        {
-                                            hideicon = "display:none;";
-                                        }
+                                @{
+                                    var hideicon = "display:none;";
+                                    var moduletemplate = "";
+                                    if (templateInfo.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
+                                    {
+                                        moduletemplate = "w3-pale-green";
+                                    }
+                                    var filename = templateInfo.GetXmlProperty("genxml/hidden/filename");
+                                }
+                                @if (filename != "")
+                                {
+                                    hideicon = "";
+                                }
+                                @if (appThemeMod.ModuleParams.DataSourceExternal && (filename == "edit" || filename == "editlist"))
+                                {
+                                    hideicon = "display:none;";
+                                }
 
-                                        <div class="w3-col m8">
-                                            <div>
-                                                @TextBox(templateInfo, "genxml/hidden/filename", " " + disabledfilename + " class=' " + moduletemplate + " w3-input w3-border filenametext' index='" + templateLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, templateLP)
-                                            </div>
-                                        </div>
-                                        <div class="w3-col w3-margin-left" style="width:62px;">
-                                            <div class="w3-button filenameicon@(templateLP)" onclick="edittemplate(@(templateLP));" style="@(hideicon)">
-                                                <i class="fas fa-edit " style='font-size:24px'></i>
-                                            </div>
-                                        </div>
+
+                                <div class="w3-row w3-display-container @moduletemplate w3-padding w3-card">
+                                    <div>
+                                        <i class="w3-display-top fas fa-edit filenameicon@(templateLP) " onclick="edittemplate(@(templateLP));" style='font-size:12px;@(hideicon);cursor:pointer;'></i>
+                                        &nbsp;
+                                        @templateInfo.GetXmlProperty("genxml/hidden/filename")
                                     </div>
-
                                 </div>
 
                             </li>
@@ -126,7 +117,7 @@
 
             @if (cssdatalist.Count > 0)
             {
-                <div class="w3-third w3-padding">
+                <div class="w3-row w3-padding">
                     <div class="w3-container w3-theme w3-padding">
                         <label>@ResourceKey("AppThemes.css")</label>
                     </div>
@@ -138,41 +129,31 @@
                                 @foreach (var cssRecord in cssdatalist)
                                 {
                                     var cssInfo = new SimplisityInfo(cssRecord);
-                                <li class="csslist w3-col m12 w3-display-container w3-padding w3-border-0">
+                                <li class="csslist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     @HiddenField(cssInfo, "genxml/hidden/editorcodecss", "", "", false, cssLP)
                                     @HiddenField(cssInfo, "genxml/hidden/filefolder", "", "css", false, cssLP)
                                     @HiddenField(cssInfo, "genxml/hidden/filenamecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/filename"), false, cssLP)
                                     @HiddenField(cssInfo, "genxml/hidden/moduletemplatecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/moduletemplate"), false, cssLP)
-                                    <div class="w3-row w3-display-container w3-padding  w3-card">
 
-                                        <div class="">
-                                            @{
-                                                var disabledfilename = "";
-                                                var hideicon = "display:none;";
-                                                var moduletemplate = "";
-                                                if (cssRecord.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
-                                                {
-                                                    moduletemplate = "w3-pale-green";
-                                                }
-                                            }
-                                            @if (cssInfo.GetXmlProperty("genxml/hidden/filename") != "")
-                                            {
-                                                disabledfilename = "disabled";
-                                                hideicon = "";
-                                            }
+                                    @{
+                                        var hideicon = "display:none;";
+                                        var moduletemplate = "";
+                                        if (cssRecord.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
+                                        {
+                                            moduletemplate = "w3-pale-green";
+                                        }
+                                    }
+                                    @if (cssInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                    {
+                                        hideicon = "";
+                                    }
 
-                                            <div class="w3-col m8">
-                                                <div>
-                                                    @TextBox(cssInfo, "genxml/hidden/filename", " " + disabledfilename + " class='" + moduletemplate + " w3-input w3-border filenametext' index='" + cssLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, cssLP)
-                                                </div>
-                                            </div>
-                                            <div class="w3-col w3-margin-left" style="width:62px;">
-                                                <div class="w3-button filenameicon@(cssLP)" onclick="editcss(@(cssLP));" style="@(hideicon)">
-                                                    <i class="fas fa-edit " style='font-size:24px'></i>
-                                                </div>
-                                            </div>
+                                    <div class="w3-row w3-display-container @moduletemplate w3-padding w3-card">
+                                        <div>
+                                            <i class="w3-display-top fas fa-edit filenameicon@(cssLP) " onclick="editcss(@(cssLP));" style='font-size:12px;@(hideicon);cursor:pointer;'></i>
+                                            &nbsp;
+                                            @cssInfo.GetXmlProperty("genxml/hidden/filename")
                                         </div>
-
                                     </div>
 
                                 </li>
@@ -188,7 +169,7 @@
 
             @if (jsdatalist.Count > 0)
             {
-                <div class="w3-third w3-padding">
+                <div class="w3-row w3-padding">
                     <div class="w3-container w3-theme w3-padding">
                         <label>@ResourceKey("AppThemes.javascript")</label>
                     </div>
@@ -200,42 +181,31 @@
                                 @foreach (var jsRecord in jsdatalist)
                                 {
                                     var jsInfo = new SimplisityInfo(jsRecord);
-                                <li class="jslist w3-col m12 w3-display-container w3-padding w3-border-0">
+                                <li class="jslist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     @HiddenField(jsInfo, "genxml/hidden/editorcodejavascript", "", "", false, jsLP)
                                     @HiddenField(jsInfo, "genxml/hidden/filefolder", "", "js", false, jsLP)
                                     @HiddenField(jsInfo, "genxml/hidden/filenamejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/filename"), false, jsLP)
                                     @HiddenField(jsInfo, "genxml/hidden/moduletemplatejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/moduletemplate"), false, jsLP)
 
-                                    <div class="w3-row w3-display-container w3-padding  w3-card">
+                                    @{
+                                        var hideicon = "display:none;";
+                                        var moduletemplate = "";
+                                        if (jsRecord.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
+                                        {
+                                            moduletemplate = "w3-pale-green";
+                                        }
+                                    }
+                                    @if (jsInfo.GetXmlProperty("genxml/hidden/filename") != "")
+                                    {
+                                        hideicon = "";
+                                    }
 
-                                        <div class="">
-                                            @{
-                                                var disabledfilename = "";
-                                                var hideicon = "display:none;";
-                                                var moduletemplate = "";
-                                                if (jsRecord.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
-                                                {
-                                                    moduletemplate = "w3-pale-green";
-                                                }
-                                            }
-                                            @if (jsInfo.GetXmlProperty("genxml/hidden/filename") != "")
-                                            {
-                                                disabledfilename = "disabled";
-                                                hideicon = "";
-                                            }
-
-                                            <div class="w3-col m8">
-                                                <div>
-                                                    @TextBox(jsInfo, "genxml/hidden/filename", " " + disabledfilename + " class='" + moduletemplate + " w3-input w3-border filenametext' index='" + jsLP + "' autocomplete='false' placeholder='" + ResourceKey("AppThemes.filename") + "...' ", "", false, jsLP)
-                                                </div>
-                                            </div>
-                                            <div class="w3-col w3-margin-left" style="width:62px;">
-                                                <div class="w3-button filenameicon@(jsLP)" onclick="editjs(@(jsLP));" style="@(hideicon)">
-                                                    <i class="fas fa-edit " style='font-size:24px'></i>
-                                                </div>
-                                            </div>
+                                    <div class="w3-row w3-display-container @moduletemplate w3-padding w3-card">
+                                        <div>
+                                            <i class="w3-display-top fas fa-edit filenameicon@(jsLP)" onclick="editjs(@(jsLP));" style='font-size:12px;@(hideicon);cursor:pointer;'></i>
+                                            &nbsp;
+                                            @jsInfo.GetXmlProperty("genxml/hidden/filename")
                                         </div>
-
                                     </div>
 
                                 </li>
