@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="roles.Text" xml:space="preserve">
-    <value>Administrators,Manager,Editor,ClientEditor</value>
+    <value>Administrators,Manager,Editor,ClientEditor,Registered Users,Subscribers,All</value>
   </data>
   <data name="licensekey.Text" xml:space="preserve">
     <value>License Key</value>
@@ -326,5 +326,8 @@
   </data>
   <data name="publicapptheme.Help" xml:space="preserve">
     <value>The public AppTheme URI identifies the location of available Rocket Templates.  When searching for online templates this URI will be used to get a list of available templates.</value>
+  </data>
+  <data name="securityaccess.Text" xml:space="preserve">
+    <value>Security Access</value>
   </data>
 </root>

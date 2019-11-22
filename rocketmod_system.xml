@@ -9,7 +9,7 @@
     <apiurl>/DesktopModules/DNNrocket/API/api.ashx</apiurl>
     <defaultinterface>rocketmod</defaultinterface>
     <systemrelpath>/DesktopModules/DNNrocket/RocketMod/</systemrelpath>
-    <encryptkey>9734yfh9uwehbfy8gwsuhd9weyr9823hsg</encryptkey>
+    <encryptkey>12365498765454654222222222</encryptkey>
     <ftproot>appthemes</ftproot>
   </textbox>
   <checkbox>
@@ -30,11 +30,15 @@
         <assembly>RocketMod</assembly>
         <databasetable />
         <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
-        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
+      <checkbox>
+        <onmenu>false</onmenu>
+        <active>true</active>
+        <cache>false</cache>
+      </checkbox>
       <checkboxlist>
         <providertype>
           <chk value="false" data="exportmodule" />
@@ -42,18 +46,16 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
         </providertype>
-        <securityroles>
-          <chk value="true" data="Administrators" />
-          <chk value="true" data="Manager" />
-          <chk value="true" data="Editor" />
-          <chk value="true" data="ClientEditor" />
-        </securityroles>
       </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>false</cache>
-        <onmenu>false</onmenu>
-      </checkbox>
+      <radio>
+        <securityrolesadministrators>0</securityrolesadministrators>
+        <securityrolesmanager>0</securityrolesmanager>
+        <securityroleseditor>0</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>1</securityrolesall>
+      </radio>
     </genxml>
     <genxml>
       <textbox>
@@ -68,11 +70,15 @@
         <assembly>RocketMod</assembly>
         <databasetable />
         <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
-        <cmdfields>moduleid:[moduleid]</cmdfields>
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
+      <checkbox>
+        <onmenu>true</onmenu>
+        <active>true</active>
+        <cache>false</cache>
+      </checkbox>
       <checkboxlist>
         <providertype>
           <chk value="false" data="exportmodule" />
@@ -80,18 +86,16 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
         </providertype>
-        <securityroles>
-          <chk value="true" data="Administrators" />
-          <chk value="true" data="Manager" />
-          <chk value="true" data="Editor" />
-          <chk value="true" data="ClientEditor" />
-        </securityroles>
       </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>false</cache>
-        <onmenu>true</onmenu>
-      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>1</securityrolesmanager>
+        <securityroleseditor>0</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
     </genxml>
     <genxml>
       <textbox>
@@ -106,11 +110,15 @@
         <assembly>RocketMod</assembly>
         <databasetable />
         <relpath>/DesktopModules/DNNrocket/RocketMod</relpath>
-        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
+      <checkbox>
+        <onmenu>true</onmenu>
+        <active>true</active>
+        <cache>false</cache>
+      </checkbox>
       <checkboxlist>
         <providertype>
           <chk value="false" data="exportmodule" />
@@ -118,18 +126,16 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
         </providertype>
-        <securityroles>
-          <chk value="true" data="Administrators" />
-          <chk value="true" data="Manager" />
-          <chk value="true" data="Editor" />
-          <chk value="true" data="ClientEditor" />
-        </securityroles>
       </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>false</cache>
-        <onmenu>true</onmenu>
-      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>1</securityrolesmanager>
+        <securityroleseditor>1</securityroleseditor>
+        <securityrolesclienteditor>1</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
     </genxml>
     <genxml>
       <textbox>
@@ -144,11 +150,15 @@
         <assembly>RocketMod</assembly>
         <databasetable />
         <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
-        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
+      <checkbox>
+        <onmenu>true</onmenu>
+        <active>true</active>
+        <cache>false</cache>
+      </checkbox>
       <checkboxlist>
         <providertype>
           <chk value="false" data="exportmodule" />
@@ -156,18 +166,16 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
         </providertype>
-        <securityroles>
-          <chk value="true" data="Administrators" />
-          <chk value="true" data="Manager" />
-          <chk value="true" data="Editor" />
-          <chk value="true" data="ClientEditor" />
-        </securityroles>
       </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>false</cache>
-        <onmenu>true</onmenu>
-      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>1</securityrolesmanager>
+        <securityroleseditor>0</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
     </genxml>
     <genxml>
       <textbox>
@@ -182,11 +190,15 @@
         <assembly>RocketMod</assembly>
         <databasetable />
         <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
-        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
+      <checkbox>
+        <onmenu>true</onmenu>
+        <active>true</active>
+        <cache>false</cache>
+      </checkbox>
       <checkboxlist>
         <providertype>
           <chk value="false" data="exportmodule" />
@@ -194,18 +206,16 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
         </providertype>
-        <securityroles>
-          <chk value="true" data="Administrators" />
-          <chk value="true" data="Manager" />
-          <chk value="true" data="Editor" />
-          <chk value="true" data="ClientEditor" />
-        </securityroles>
       </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>false</cache>
-        <onmenu>true</onmenu>
-      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>1</securityrolesmanager>
+        <securityroleseditor>0</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
     </genxml>
     <genxml>
       <textbox>
@@ -220,11 +230,15 @@
         <assembly>DNNrocketImages</assembly>
         <databasetable />
         <relpath>/DesktopModules/DNNrocket/Images/</relpath>
-        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
+      <checkbox>
+        <onmenu>false</onmenu>
+        <active>true</active>
+        <cache>false</cache>
+      </checkbox>
       <checkboxlist>
         <providertype>
           <chk value="false" data="exportmodule" />
@@ -232,18 +246,16 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
         </providertype>
-        <securityroles>
-          <chk value="true" data="Administrators" />
-          <chk value="true" data="Manager" />
-          <chk value="true" data="Editor" />
-          <chk value="true" data="ClientEditor" />
-        </securityroles>
       </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>false</cache>
-        <onmenu>false</onmenu>
-      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>1</securityrolesmanager>
+        <securityroleseditor>1</securityroleseditor>
+        <securityrolesclienteditor>1</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
     </genxml>
     <genxml>
       <textbox>
@@ -258,11 +270,15 @@
         <assembly>DNNrocketDocuments</assembly>
         <databasetable />
         <relpath>/DesktopModules/DNNrocket/Documents/</relpath>
-        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
+      <checkbox>
+        <onmenu>false</onmenu>
+        <active>true</active>
+        <cache>false</cache>
+      </checkbox>
       <checkboxlist>
         <providertype>
           <chk value="false" data="exportmodule" />
@@ -270,18 +286,16 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
         </providertype>
-        <securityroles>
-          <chk value="true" data="Administrators" />
-          <chk value="true" data="Manager" />
-          <chk value="true" data="Editor" />
-          <chk value="true" data="ClientEditor" />
-        </securityroles>
       </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>false</cache>
-        <onmenu>false</onmenu>
-      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>1</securityrolesmanager>
+        <securityroleseditor>1</securityroleseditor>
+        <securityrolesclienteditor>1</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
     </genxml>
     <genxml>
       <textbox>
@@ -296,11 +310,15 @@
         <assembly>RocketMod</assembly>
         <databasetable />
         <relpath>/DesktopModules/DNNrocket/RocketMod/</relpath>
-        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
+      <checkbox>
+        <onmenu>true</onmenu>
+        <active>true</active>
+        <cache>false</cache>
+      </checkbox>
       <checkboxlist>
         <providertype>
           <chk value="false" data="exportmodule" />
@@ -308,18 +326,16 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
         </providertype>
-        <securityroles>
-          <chk value="true" data="Administrators" />
-          <chk value="false" data="Manager" />
-          <chk value="false" data="Editor" />
-          <chk value="false" data="ClientEditor" />
-        </securityroles>
       </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>false</cache>
-        <onmenu>true</onmenu>
-      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>1</securityrolesmanager>
+        <securityroleseditor>0</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
     </genxml>
     <genxml>
       <textbox>
@@ -334,11 +350,15 @@
         <assembly>RocketMod</assembly>
         <databasetable />
         <relpath />
-        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
+      <checkbox>
+        <onmenu>false</onmenu>
+        <active>true</active>
+        <cache>false</cache>
+      </checkbox>
       <checkboxlist>
         <providertype>
           <chk value="true" data="exportmodule" />
@@ -346,18 +366,16 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
         </providertype>
-        <securityroles>
-          <chk value="true" data="Administrators" />
-          <chk value="true" data="Manager" />
-          <chk value="true" data="Editor" />
-          <chk value="true" data="ClientEditor" />
-        </securityroles>
       </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>false</cache>
-        <onmenu>false</onmenu>
-      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>1</securityrolesmanager>
+        <securityroleseditor>1</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
     </genxml>
     <genxml>
       <textbox>
@@ -372,11 +390,15 @@
         <assembly>RocketMod</assembly>
         <databasetable />
         <relpath />
-        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
+      <checkbox>
+        <onmenu>false</onmenu>
+        <active>true</active>
+        <cache>false</cache>
+      </checkbox>
       <checkboxlist>
         <providertype>
           <chk value="false" data="exportmodule" />
@@ -384,18 +406,16 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
         </providertype>
-        <securityroles>
-          <chk value="true" data="Administrators" />
-          <chk value="true" data="Manager" />
-          <chk value="true" data="Editor" />
-          <chk value="true" data="ClientEditor" />
-        </securityroles>
       </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>false</cache>
-        <onmenu>false</onmenu>
-      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>1</securityrolesmanager>
+        <securityroleseditor>1</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
     </genxml>
     <genxml>
       <textbox>
@@ -410,11 +430,15 @@
         <assembly>DNNrocketSystemData</assembly>
         <databasetable />
         <relpath>/DesktopModules/DNNrocket/api/</relpath>
-        <cmdfields />
       </textbox>
       <dropdownlist>
         <group />
       </dropdownlist>
+      <checkbox>
+        <onmenu>false</onmenu>
+        <active>true</active>
+        <cache>true</cache>
+      </checkbox>
       <checkboxlist>
         <providertype>
           <chk value="false" data="exportmodule" />
@@ -422,18 +446,16 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
         </providertype>
-        <securityroles>
-          <chk value="false" data="Administrators" />
-          <chk value="false" data="Manager" />
-          <chk value="false" data="Editor" />
-          <chk value="false" data="ClientEditor" />
-        </securityroles>
       </checkboxlist>
-      <checkbox>
-        <active>true</active>
-        <cache>true</cache>
-        <onmenu>false</onmenu>
-      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>0</securityrolesmanager>
+        <securityroleseditor>0</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
     </genxml>
   </interfacedata>
   <settingsdata list="true">
