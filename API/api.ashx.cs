@@ -127,6 +127,7 @@ namespace DNNrocketAPI
                     if (paramCmd == "login_doregister")
                     {
                         strOut = UserUtils.RegisterUser(postInfo, DNNrocketUtils.GetCurrentCulture());
+                        if (strOut == "") UserUtils.DoLogin(systemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
                     }
                     else if (paramCmd == "login_register")
                     {
