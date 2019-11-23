@@ -104,28 +104,11 @@ namespace DNNrocket.SystemData
                     case "systemapi_licensesave":
                         strOut = GetLicenseList();
                         break;
-                    case "systemapi_savesecretkey":
-                        SaveSecretKey();
-                        strOut = "OK";
-                        break;
 
                 }
             }
             else
             {
-
-                commandSecurity.AddCommand("systemapi_savesecretkey", true);
-
-                if (commandSecurity.HasSecurityAccess(paramCmd))
-                {
-                    switch (paramCmd)
-                    {
-                        case "systemapi_savesecretkey":
-                            SaveSecretKey();
-                            strOut = "OK";
-                            break;
-                    }
-                }
 
                 switch (paramCmd)
                 {
@@ -223,16 +206,6 @@ namespace DNNrocket.SystemData
                 DNNrocketUtils.LogException(ex);
                 return ex.ToString();
             }
-        }
-
-        public static void SaveSecretKey()
-        {
-            var globalData = new SystemGlobalData();
-            if (globalData.SecretKey == "") globalData.SecretKey = _postInfo.GetXmlProperty("genxml/textbox/secretkey");
-            if (globalData.AccountEmail == "") globalData.AccountEmail = _postInfo.GetXmlProperty("genxml/textbox/accountemail");
-            globalData.Update();
-
-            CacheUtils.ClearAllCache();
         }
 
         public static void SystemGlobalSave()

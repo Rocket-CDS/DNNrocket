@@ -146,12 +146,11 @@
         </div>
     </div>
 
-    @RenderTemplate("CreateAccountInject.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
-
-
-    <h2>@ResourceKey("DNNrocket.getlicense")</h2>
     @RenderTemplate("LicenseInject.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
 
+    <div class="w3-panel w3-panel">
+        @RenderTemplate("CreateAccountInject.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
+    </div>
 
 
     <div class="w3-container w3-border w3-margin-top">
@@ -172,32 +171,32 @@
 
 </div>
 
-<div id="datasourcelist">
-</div>
+    <div id="datasourcelist">
+    </div>
 
-<script>
+    <script>
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        $('.sharedataaction').unbind('change');
-        $('.sharedataaction').change(function () {
-            if ($('input[name=sharedataradio]:checked').val() === '0') {
-                $('.sharedataicon').hide();
-            }
-            if ($('input[name=sharedataradio]:checked').val() === '1') {
-                $('.sharedataicon').show();
-                $('.sharedataicon').css('color', 'teal')
-            }
-            if ($('input[name=sharedataradio]:checked').val() === '2') {
-                $('.sharedataicon').show();
-                $('.sharedataicon').css('color', 'red')
-            }
+            $('.sharedataaction').unbind('change');
+            $('.sharedataaction').change(function () {
+                if ($('input[name=sharedataradio]:checked').val() === '0') {
+                    $('.sharedataicon').hide();
+                }
+                if ($('input[name=sharedataradio]:checked').val() === '1') {
+                    $('.sharedataicon').show();
+                    $('.sharedataicon').css('color', 'teal')
+                }
+                if ($('input[name=sharedataradio]:checked').val() === '2') {
+                    $('.sharedataicon').show();
+                    $('.sharedataicon').css('color', 'red')
+                }
+            });
+
         });
 
-    });
+        function reloadpage() {
+            location.reload();
+        }
 
-    function reloadpage() {
-        location.reload();
-    }
-
-</script>
+    </script>

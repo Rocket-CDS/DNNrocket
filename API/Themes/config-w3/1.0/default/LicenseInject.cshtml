@@ -8,12 +8,17 @@
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
-<div class="w3-container w3-margin-top">
-    <div class="w3-col m3 w3-padding">
-        <span class="w3-button w3-block w3-green w3-section w3-padding " onclick="document.getElementById('createnewlicense').style.display='block'">@ResourceKey("DNNrocket.getlicense")</span>
-    </div>
-    <div class="w3-col m9 w3-padding">
-        <i>@ResourceKey("DNNrocket.getlicense", "", "Help")</i>
+<div class="w3-panel w3-panel w3-red">
+    <h2>@ResourceKey("DNNrocket.getlicense")</h2>
+
+
+    <div class="w3-container w3-margin-top">
+        <div class="w3-col m3 w3-padding">
+            <span class="w3-button w3-block w3-green w3-section w3-padding " onclick="document.getElementById('createnewlicense').style.display='block'">@ResourceKey("DNNrocket.getlicense")</span>
+        </div>
+        <div class="w3-col m9 w3-padding">
+            <i>@ResourceKey("DNNrocket.getlicense", "", "Help")</i>
+        </div>
     </div>
 </div>
 

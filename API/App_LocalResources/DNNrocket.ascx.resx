@@ -405,17 +405,14 @@
   <data name="update.Icon" xml:space="preserve">
     <value>&lt;i  title="Update" class="fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="createaccount.Help" xml:space="preserve">
-    <value>Creating an account at &lt;a href='https://www.dnnrocket.com' target='_blank'&gt;www.dnnrocket.com&lt;/a&gt; is free and allows you to track your licenses and purchases.  It also entiles you to have multi-license discount, promotions, direct email and ticket support, which is included with the professional licenses.  If you require a more dedicated support then subscription, consultation and development options are available.   </value>
-  </data>
-  <data name="createaccount.Text" xml:space="preserve">
-    <value>Create a DNNrocket Account</value>
+  <data name="dnnrocketaccount.Help" xml:space="preserve">
+    <value>An account at &lt;a href='https://www.dnnrocket.com' target='_blank'&gt;www.dnnrocket.com&lt;/a&gt; is free and allows you to track, maintain, transfer and validate licenses.  It also entiles you to have multi-license discount, promotions, direct email and ticket support, which is included with the professional licenses.  If you require a more dedicated support: subscription, consultation and development options are available.   </value>
   </data>
   <data name="getlicense.Help" xml:space="preserve">
-    <value>You are currently running a FREE trial or community version of this product.  Purchasing a professional license entitles you to direct email and ticket support.  It will also release professional features.  Buy a license and help us continue to deliver new, advanced, stable and professional software products.</value>
+    <value>You are currently running a FREE trial or community version of this product.  Purchasing a professional license entitles you to direct email and ticket support.  It will also release professional features.  If you require a more dedicated support: subscription, consultation and development options are available.</value>
   </data>
   <data name="getlicense.Text" xml:space="preserve">
-    <value>Get Professional License</value>
+    <value>Professional License</value>
   </data>
   <data name="register.Text" xml:space="preserve">
     <value>Register</value>
@@ -425,18 +422,6 @@
   </data>
   <data name="licenseredirect.Help" xml:space="preserve">
     <value>You will be redirect to the DNNrocket license website, where you can choose your payment method for this website license. </value>
-  </data>
-  <data name="entersecretkey.Help" xml:space="preserve">
-    <value>You can enter your DNNrocket Secret Key, this will link this site with your DNNrocket account and allow you to maintain, transfer and validate licenses for this site. </value>
-  </data>
-  <data name="entersecretkey.Text" xml:space="preserve">
-    <value>Enter Secret Key</value>
-  </data>
-  <data name="secretkey.Help" xml:space="preserve">
-    <value>Your SecretKey identifies you to our software system.  Treat it like a password and username.</value>
-  </data>
-  <data name="secretkey.Text" xml:space="preserve">
-    <value>Secretkey</value>
   </data>
   <data name="dnnrocketaccount.Text" xml:space="preserve">
     <value>DNNrocket Account</value>

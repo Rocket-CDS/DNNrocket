@@ -1,9 +1,4 @@
 ﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
-@using DNNrocketAPI;
-@using System
-@using System.Linq
-@using System.Xml
-@using Simplisity;
 @using DNNrocketAPI.Componants;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
@@ -13,34 +8,8 @@
 }
 
 
-@if (systemGlobalData.SecretKey == "")
-{
-
     <h2>@ResourceKey("DNNrocket.createaccount")</h2>
-    <div class="w3-container">
 
-        <div class="w3-row">
-            <div class="w3-col m3 w3-padding">
-                <div class="w3-button w3-block w3-green w3-section w3-padding" onclick="document.getElementById('entersecretkey').style.display='block'">@ResourceKey("DNNrocket.entersecretkey")</div>
-            </div>
-            <div class="w3-col m9 w3-padding">
-                <i>@ResourceKey("DNNrocket.entersecretkey", "", "Help")</i>
-            </div>
-        </div>
-        <div class="w3-row">
-            <div class="w3-col m3 w3-padding">
-                <div class="w3-button w3-block w3-green w3-section w3-padding" onclick="document.getElementById('createaccountform').style.display='block'">@ResourceKey("DNNrocket.createaccount")</div>
-            </div>
-            <div class="w3-col m9 w3-padding">
-                <i>@ResourceKey("DNNrocket.createaccount", "", "Help")</i>
-            </div>
-        </div>
-
-    </div>
-
-}
-else
-{
     <h2>@ResourceKey("DNNrocket.dnnrocketaccount")</h2>
     <div class="w3-container">
         <div class="w3-row">
@@ -48,76 +17,15 @@ else
                 <a href="https://www.dnnrocket.com" target="_blank" class="w3-button w3-block w3-green w3-section w3-padding">@ResourceKey("DNNrocket.dnnrocketaccount")</a>
             </div>
             <div class="w3-col m9 w3-padding">
+                <i>@ResourceKey("DNNrocket.dnnrocketaccount", "", "Help")</i>
             </div>
         </div>
     </div>
-}
-
-
-<div id="entersecretkey" class="w3-modal">
-    <div class="w3-modal-content w3-card w3-animate-zoom">
-
-        <header class="w3-container  w3-theme">
-            <span onclick="document.getElementById('entersecretkey').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <h2>@ResourceKey("DNNrocket.entersecretkey")</h2>
-        </header>
-
-        <div class="w3-row">
-            <div class="w3-padding">
-                <label><b>@ResourceKey("DNNrocket.accountemail")</b></label>
-                @{
-                    var disableInput = "";
-                    if (systemGlobalData.AccountEmail != "")
-                    {
-                        disableInput = " disabled ";
-                    }
-                }
-                @TextBox(systemGlobalData.Info, "genxml/textbox/accountemail", "class='w3-input w3-border' " + disableInput, "")
-            </div>
-        </div>
-        <div class="w3-row">
-            <div class="w3-padding">
-                <label><b>@ResourceKey("DNNrocket.secretkey")</b></label>
-                @{
-                    disableInput = "";
-                    if (systemGlobalData.SecretKey != "")
-                    {
-                        disableInput = " disabled ";
-                    }
-                }
-                @TextBox(systemGlobalData.Info, "genxml/textbox/secretkey", "class='w3-input w3-border' " + disableInput, "")
-            </div>
-        </div>
-        <div class="w3-padding">
-            <i><b>@ResourceKey("DNNrocket.entersecretkey", "", "Help")</b></i>
-        </div>
-        <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-            <div class="">
-                <span class="w3-button w3-red " onclick="document.getElementById('entersecretkey').style.display='none'">@ResourceKey("DNNrocket.cancel")</span>
-                <div class="w3-right w3-button w3-green simplisity_click" s-cmd="systemapi_savesecretkey" s-fields='' s-return="#entersecretkeyreturn" s-post="#entersecretkey">@ButtonText(ButtonTypes.save)</div>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div id="entersecretkeyreturn"></div>
-
-
-@RenderTemplate("CreateAccountForm.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
-
-
 
 
 <script>
 
     $(document).ready(function () {
-        $('#entersecretkeyreturn').unbind('change');
-        $('#entersecretkeyreturn').change(function () {
-            location.reload();
-        });
-
-
 
     });
 

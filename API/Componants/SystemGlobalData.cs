@@ -59,7 +59,5 @@ namespace DNNrocketAPI.Componants
 
         public string LicenseUrl { get { return Info.GetXmlProperty("genxml/textbox/licenseurl"); } set { Info.SetXmlProperty("genxml/textbox/licenseurl", value); } }
         public string AccountEmail { get { return Info.GetXmlProperty("genxml/textbox/accountemail"); } set { Info.SetXmlProperty("genxml/textbox/accountemail", value); } }
-        public string SecretKey { get { return Info.GetXmlProperty("genxml/textbox/secretkey"); } set { Info.SetXmlProperty("genxml/textbox/secretkey", value); } }
-
     }
 }

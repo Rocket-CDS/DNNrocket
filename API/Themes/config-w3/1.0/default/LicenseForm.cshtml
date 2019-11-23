@@ -2,12 +2,15 @@
 @using Simplisity;
 @using DNNrocketAPI;
 @using DNNrocketAPI.Componants;
+@using System.Linq
+
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
 
 
-@{ 
-  var systemGlobalData = new SystemGlobalData();
+@{
+    var systemGlobalData = new SystemGlobalData();
+    var moduleParams = (ModuleParams)Model.List.First();
 }
 
 <div id="createnewlicense" class="w3-modal">
@@ -29,13 +32,6 @@
                 <label><b>@ResourceKey("DNNrocket.sitekey")</b></label>
                 @TextBox(new SimplisityInfo(), "genxml/hidden/sitekey", "class='w3-input w3-border' disabled", DNNrocketUtils.SiteGuid())
             </div>
-            @if (systemGlobalData.SecretKey != "")
-            {
-                <div class="w3-padding">
-                    <label><b>@ResourceKey("DNNrocket.secretkey")</b></label>
-                    @TextBox(systemGlobalData.Info, "genxml/textbox/secretkey", "class='w3-input w3-border' disabled", "")
-                </div>
-             }
         </div>
 
         <div class="w3-padding">
@@ -51,20 +47,19 @@
     </div>
 </div>
 
+<script type="text/javascript">
 
-<script type="text/javascript">   	
     $(document).ready(function () {
     });
 
     function doRedirection() {
         var currentURL = window.location.href;
         var url = "@(systemGlobalData.LicenseUrl.TrimEnd('/'))/DesktopModules/DNNrocketModules/RocketLicense/newlicense.html";
-        url += "?secretkey=@(systemGlobalData.SecretKey)";
-        url += "&sitekey=@(DNNrocketUtils.SiteGuid())";
+        url += "?sitekey=@(DNNrocketUtils.SiteGuid())";
         url += "&licensetype=@(Model.GetSetting("licensetype"))";
         url += "&siteurl=@GeneralUtils.EnCode(DNNrocketUtils.GetDefaultWebsiteDomainUrl())";
         url += "&returnurl=" + simplisity_encode(currentURL);
-        url += "&password=" + simplisity_encode($('#password').val());
+        url += "&systemkey=" + simplisity_encode('@(moduleParams.SystemKey)');
         window.location.replace(url);
     }
 </script>
