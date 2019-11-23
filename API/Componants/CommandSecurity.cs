@@ -54,7 +54,7 @@ namespace DNNrocketAPI.Componants
 
         private void ValidateUser()
         {
-            if (_userInfo != null && _userInfo.UserID > 0)
+            if (_userInfo != null && _userInfo.UserID > 0 && !_userInfo.IsDeleted && _userInfo.Membership.Approved)
             {
                 ValidUser = true;
                 _userId = _userInfo.UserID;
