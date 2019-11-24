@@ -53,6 +53,8 @@
 
             </div>
 
+            <a class="w3-right w3-text-blue loginlink" href="/Login">@ResourceKey("login.loginpage")</a>
+
 
 
         </div>
@@ -60,22 +62,17 @@
         <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
             <div class="logininput">
                 <div onclick="reloadpage()" type="button" class="w3-button w3-red">@ResourceKey("login.Cancel")</div>
-                <div class="w3-button w3-teal w3-right simplisity_click" onclick="$('#loginform').hide();" s-track="false" s-post=".logindata" s-cmd="login_register" >@ResourceKey("login.register")</div>
-                
-                <!--
-    <span type="button" class="w3-button w3-pale-yellow w3-right w3-padding w3-hide-small resetpassword">@ResourceKey("login.Forgotpassword")</span>
-    -->
+                <a class="w3-button w3-teal w3-right registerlink" href="/Register">@ResourceKey("login.register")</a>
             </div>
 
             <div class="resetpassinput" style="display:none;">
                 <span type="button" class="w3-button w3-red cancelresetpassword">@ResourceKey("login.Cancel")</span>
             </div>
 
-
         </div>
 
+
     </div>
-</div>
 
 
 @if (info.GetXmlProperty("genxml/loginstatus") == "ok")
@@ -104,6 +101,9 @@ else
                 $('.resetpassinput').hide();
             });
 
+            var returnURL = window.location.href ;
+            $('.registerlink').prop('href',$('.registerlink').prop('href') + "?returnurl=" + encodeURIComponent(returnURL))
+            $('.loginlink').prop('href',$('.loginlink').prop('href') + "?returnurl=" + encodeURIComponent(returnURL))
         });
     </script>
 }

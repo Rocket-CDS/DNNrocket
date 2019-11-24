@@ -218,7 +218,7 @@ namespace DNNrocketAPI
             };
             objUser.Membership.Password = password;
             objUser.Membership.PasswordConfirm = confirmpassword;
-            //objUser.Membership.Approved = approved;
+            objUser.Membership.Approved = approved;
             var registerstatus = UserController.CreateUser(ref objUser);
 
             return GetUserCreateStatus(registerstatus);

@@ -195,4 +195,7 @@
   <data name="register.Text" xml:space="preserve">
     <value>Register</value>
   </data>
+  <data name="loginpage.Text" xml:space="preserve">
+    <value>Login Page</value>
+  </data>
 </root>
