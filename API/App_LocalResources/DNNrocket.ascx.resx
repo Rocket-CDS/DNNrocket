@@ -375,9 +375,6 @@
   <data name="domainurl.Text" xml:space="preserve">
     <value>Domian URL</value>
   </data>
-  <data name="licensekey.Text" xml:space="preserve">
-    <value>License Key</value>
-  </data>
   <data name="systemkey.Text" xml:space="preserve">
     <value>System Key</value>
   </data>
@@ -431,5 +428,8 @@
   </data>
   <data name="accountpassword.Text" xml:space="preserve">
     <value>Account Password</value>
+  </data>
+  <data name="expiredate.Text" xml:space="preserve">
+    <value>Expire Date</value>
   </data>
 </root>
