@@ -23,6 +23,10 @@ using DotNetNuke.Common.Lists;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Entities.Users.Membership;
 using System.Globalization;
+using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.Services.Mail;
+using DotNetNuke.Common;
+using DotNetNuke.UI.UserControls;
 
 namespace DNNrocketAPI
 {
@@ -182,7 +186,9 @@ namespace DNNrocketAPI
 
         public static string RegisterUser(SimplisityInfo sInfo, string currentCulture = "")
         {
-            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("fr-FR");
+            if (currentCulture == "") currentCulture = "en-US";
+
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(currentCulture);
 
             var username = sInfo.GetXmlProperty("genxml/text/username");
             var useremail = sInfo.GetXmlProperty("genxml/text/email");
@@ -212,8 +218,9 @@ namespace DNNrocketAPI
             };
             objUser.Membership.Password = password;
             objUser.Membership.PasswordConfirm = confirmpassword;
-            objUser.Membership.Approved = approved;
+            //objUser.Membership.Approved = approved;
             var registerstatus = UserController.CreateUser(ref objUser);
+
             return GetUserCreateStatus(registerstatus);
         }
 
@@ -260,6 +267,7 @@ namespace DNNrocketAPI
                     throw new ArgumentException("Unknown UserCreateStatus value encountered", "userRegistrationStatus");
             }
         }
+
 
 
     }
