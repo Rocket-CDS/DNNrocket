@@ -125,7 +125,55 @@ namespace DNNrocketAPI
             }
             set {Info.SetXmlProperty("genxml/textbox/databasetable", value.ToString());}
         }
+        public bool SecurityCheckUser(int portalId, int userid)
+        {
+            var userInfo = UserController.Instance.GetUserById(portalId, userid);
+            var validUser = false;
+            if (userInfo != null && userInfo.UserID > 0 && !userInfo.IsDeleted && userInfo.Membership.Approved)
+            {
+                validUser = true;
+            }
 
+            if (!validUser) return false;
+            if (userInfo.IsSuperUser) return true; //always allow access to su
+            if (Exists)
+            {
+                var securityrolesadministrators = Info.GetXmlPropertyInt("genxml/radio/securityrolesadministrators");
+                var securityrolesmanager = Info.GetXmlPropertyInt("genxml/radio/securityrolesmanager");
+                var securityroleseditor = Info.GetXmlPropertyInt("genxml/radio/securityroleseditor");
+                var securityrolesclienteditor = Info.GetXmlPropertyInt("genxml/radio/securityrolesclienteditor");
+                var securityrolesregisteredusers = Info.GetXmlPropertyInt("genxml/radio/securityrolesregisteredusers");
+                var securityrolessubscribers = Info.GetXmlPropertyInt("genxml/radio/securityrolessubscribers");
+                var securityrolesall = Info.GetXmlPropertyInt("genxml/radio/securityrolesall");
+
+                var roleAdministrators = userInfo.IsInRole("Administrators");
+                var roleManager = userInfo.IsInRole("Manager");
+                var roleEditor = userInfo.IsInRole("Editor");
+                var roleClientEditor = userInfo.IsInRole("ClientEditor");
+                var roleRegisteredUsers = userInfo.IsInRole("Registered Users");
+                var roleSubscribers = userInfo.IsInRole("Subscribers");
+
+                // ##### block #####
+                if (roleAdministrators && securityrolesadministrators == 2) return false;
+                if (roleManager && securityrolesmanager == 2) return false;
+                if (roleEditor && securityroleseditor == 2) return false;
+                if (roleClientEditor && securityrolesclienteditor == 2) return false;
+                if (roleRegisteredUsers && securityrolesregisteredusers == 2) return false;
+                if (roleSubscribers && securityrolessubscribers == 2) return false;
+                if (securityrolesall == 2) return false; // su only
+
+                // ##### Allow #####
+                if (securityrolesall == 1) return true;
+                if (roleAdministrators && securityrolesadministrators == 1) return true;
+                if (roleManager && securityrolesmanager == 1) return true;
+                if (roleEditor && securityroleseditor == 1) return true;
+                if (roleClientEditor && securityrolesclienteditor == 1) return true;
+                if (roleRegisteredUsers && securityrolesregisteredusers == 1) return true;
+                if (roleSubscribers && securityrolessubscribers == 1) return true;
+            }
+
+            return false;
+        }
 
     }
 

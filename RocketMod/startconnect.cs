@@ -52,86 +52,85 @@ namespace RocketMod
                 case "rocketmod_login":
                     strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                     break;
+                case "rocketmod_getdata":
+                    strOut = GetDisplay();
+                    break;
+                case "rocketmod_getsetupmenu":
+                    strOut = GetSetup();
+                    break;
 
                 case "dashboard_get":
                     strOut = GetDashBoard();
                     break;
 
-                case "rocketmod_getdata":
-                    strOut = GetDisplay();
-                    break;
-                case "rocketmod_selectapptheme":
+                case "rocketmodedit_selectapptheme":
                     strOut = GetSelectApp();
                     break;
-                case "rocketmod_saveapptheme":
+                case "rocketmodedit_saveapptheme":
                     SaveAppTheme();
                     strOut = GetDashBoard();
                     break;
-                case "rocketmod_saveappthemeconfig":
+                case "rocketmodedit_saveappthemeconfig":
                     SaveAppTheme();
                     strOut = GetSettingSection();
                     break;
-                case "rocketmod_saveappthemesetting":
+                case "rocketmodedit_saveappthemesetting":
                     SettingsSave();
                     strOut = GetDashBoard();
                     break;
-
-                case "edit_editarticlelist":
+                case "rocketmodedit_editarticlelist":
                     strOut = GetArticleEdit(true);
                     break;
-                case "edit_articlesearch":
+                case "rocketmodedit_articlesearch":
                     strOut = GetArticleEdit(false);
                     break;
-                case "edit_addarticle":
+                case "rocketmodedit_addarticle":
                     strOut = AddArticle();
                     break;
-                case "edit_editarticle":
+                case "rocketmodedit_editarticle":
                     strOut = GetArticleEdit();
                     break;
-                case "edit_savearticle":
+                case "rocketmodedit_savearticle":
                     SaveArticle();
                     strOut = GetArticleEdit();
                     break;
-                case "edit_savearticlelist":
+                case "rocketmodedit_savearticlelist":
                     SaveArticleList();
                     strOut = GetArticleEdit(true);
                     break;
-                case "edit_deletearticle":
+                case "rocketmodedit_deletearticle":
                     DeleteArticle();
                     strOut = GetArticleEdit(true);
                     break;
-                case "edit_addimage":
+                case "rocketmodedit_addimage":
                     RocketModAddListItem("imagelist" + _paramInfo.GetXmlProperty("genxml/hidden/imgfieldname"));
                     strOut = GetArticleEdit();
                     break;
-                case "edit_adddocument":
+                case "rocketmodedit_adddocument":
                     RocketModAddListItem("documentlist" + _paramInfo.GetXmlProperty("genxml/hidden/docfieldname"));
                     strOut = GetArticleEdit();
                     break;
-                case "edit_addlink":
+                case "rocketmodedit_addlink":
                     RocketModAddListItem("linklist" + _paramInfo.GetXmlProperty("genxml/hidden/linkfieldname"));
                     strOut = GetArticleEdit();
                     break;
-
-                case "rocketmod_saveconfig":
+                case "rocketmodedit_saveconfig":
                     SaveConfig();
                     strOut = GetDashBoard();
                     break;
-                case "rocketmod_getsetupmenu":
-                    strOut = GetSetup();
-                    break;
-                case "rocketmod_reset":
+                case "rocketmodedit_reset":
                     strOut = ResetRocketMod();
                     break;
-                case "rocketmod_resetdata":
+                case "rocketmodedit_resetdata":
                     strOut = ResetDataRocketMod();
                     break;
-                case "rocketmod_datasourcelist":
+                case "rocketmodedit_datasourcelist":
                     strOut = GetDataSourceList();
                     break;
-                case "rocketmod_datasourceselect":
+                case "rocketmodedit_datasourceselect":
                     strOut = GetDataSourceSelect();
                     break;
+
 
                 case "rocketmodsettings_edit":
                     strOut = EditSettingsData();
@@ -227,7 +226,14 @@ namespace RocketMod
 
             _moduleParams = new ModuleParams(_moduleid, _systemKey);
             _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemKey);
-            
+
+            if (!CheckSecurity(paramCmd))
+            {
+                // default to see if the user has access, but last login was a different user.
+                // The client cookie for simplisity will try and run the last users command.
+                paramCmd = "rocketmodedit_editarticlelist";
+                _rocketInterface = new DNNrocketInterface(systemInfo, "rocketmodedit");
+            }
 
             if (!CheckSecurity(paramCmd))
             {
@@ -235,9 +241,9 @@ namespace RocketMod
             }
             else
             {
-                if (!_moduleParams.Exists && paramCmd != "module_import" && paramCmd != "rocketmod_getdata" && paramCmd != "rocketmod_saveapptheme" && paramCmd != "rocketmod_saveconfig" && paramCmd != "rocketmod_saveappthemeconfig")
+                if (!_moduleParams.Exists && paramCmd != "module_import" && paramCmd != "rocketmod_getdata" && paramCmd != "rocketmodedit_saveapptheme" && paramCmd != "rocketmodedit_saveconfig" && paramCmd != "rocketmodedit_saveappthemeconfig")
                 {
-                    return "rocketmod_selectapptheme";
+                    return "rocketmodedit_selectapptheme";
                 }
                 else
                 {
@@ -258,22 +264,22 @@ namespace RocketMod
 
             _commandSecurity.AddCommand("dashboard_get", true);
 
-            _commandSecurity.AddCommand("rocketmod_saveconfig", true);
+            _commandSecurity.AddCommand("rocketmodedit_saveconfig", true);
             _commandSecurity.AddCommand("rocketmod_saveheader", true);
             _commandSecurity.AddCommand("rocketmod_getsetupmenu", true);
-            _commandSecurity.AddCommand("rocketmod_reset", true);
-            _commandSecurity.AddCommand("rocketmod_resetdata", true);
-            _commandSecurity.AddCommand("rocketmod_selectapptheme", true);
-            _commandSecurity.AddCommand("rocketmod_saveapptheme", true);
+            _commandSecurity.AddCommand("rocketmodedit_reset", true);
+            _commandSecurity.AddCommand("rocketmodedit_resetdata", true);
+            _commandSecurity.AddCommand("rocketmodedit_selectapptheme", true);
+            _commandSecurity.AddCommand("rocketmodedit_saveapptheme", true);
             _commandSecurity.AddCommand("rocketmod_getsidemenu", true);
 
-            _commandSecurity.AddCommand("edit_editarticlelist", true);
-            _commandSecurity.AddCommand("edit_articlesearch", true);
-            _commandSecurity.AddCommand("edit_editarticle", true);
-            _commandSecurity.AddCommand("edit_addarticle", true);
-            _commandSecurity.AddCommand("edit_savearticle", true);
-            _commandSecurity.AddCommand("edit_deletearticle", true);
-            _commandSecurity.AddCommand("edit_addimage", true);
+            _commandSecurity.AddCommand("rocketmodedit_editarticlelist", true);
+            _commandSecurity.AddCommand("rocketmodedit_articlesearch", true);
+            _commandSecurity.AddCommand("rocketmodedit_editarticle", true);
+            _commandSecurity.AddCommand("rocketmodedit_addarticle", true);
+            _commandSecurity.AddCommand("rocketmodedit_savearticle", true);
+            _commandSecurity.AddCommand("rocketmodedit_deletearticle", true);
+            _commandSecurity.AddCommand("rocketmodedit_addimage", true);
 
             _commandSecurity.AddCommand("rocketmod_getdata", false);
             _commandSecurity.AddCommand("rocketmod_login", false);
@@ -293,11 +299,7 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmodapptheme_apptheme", true);
             _commandSecurity.AddCommand("rocketmodapptheme_saveeditor", true);
             
-
-            var hasAccess = false;
-            hasAccess = _commandSecurity.HasSecurityAccess(paramCmd);
-
-            return hasAccess;
+            return _commandSecurity.HasSecurityAccess(paramCmd);
         }
 
         public static void RocketModAddListItem(string listname)

@@ -67,7 +67,7 @@ namespace DNNrocketAPI.Componants
                 Record.SetXmlProperty("genxml/hidden/encryptedkey", "FREE");
                 Record.SetXmlProperty("genxml/hidden/fail", "0");
                 ExpireDate = DateTime.Now.Date.AddDays(-1);
-                Record.SetXmlProperty("genxml/hidden/expiredate", ExpireDate.ToString("O"), TypeCode.DateTime);
+                Record.SetXmlProperty("genxml/textbox/expiredate", ExpireDate.ToString("O"), TypeCode.DateTime);
                 var checkdate = DateTime.Now.Date.AddDays(-1);
                 Record.SetXmlProperty("genxml/hidden/checkdate", checkdate.ToString("O"), TypeCode.DateTime);
                 Record.SetXmlProperty("genxml/hidden/validate", "30");
@@ -84,9 +84,9 @@ namespace DNNrocketAPI.Componants
             IsLicensed = false;
             if (GeneralUtils.IsDate(Record.GetXmlPropertyRaw("genxml/hidden/checkdate"), "en-US") && !String.IsNullOrEmpty(LicenseKey) && !String.IsNullOrEmpty(DomainUrl))
             {
-                var encryptdata = DomainUrl + "&" + Record.GetXmlPropertyRaw("genxml/hidden/expiredate");
+                var encryptdata = DomainUrl + "&" + Record.GetXmlPropertyRaw("genxml/textbox/expiredate");
                 _encrypteddomain = DNNrocketUtils.Encrypt(encryptdata, LicenseKey);
-                if (_encrypteddomain == Record.GetXmlProperty("genxml/hidden/encryptedkey") && Convert.ToDateTime(Record.GetXmlPropertyRaw("genxml/hidden/expiredate")) >= DateTime.Now.Date) IsLicensed = true;
+                if (_encrypteddomain == Record.GetXmlProperty("genxml/hidden/encryptedkey") && Convert.ToDateTime(Record.GetXmlPropertyRaw("genxml/textbox/expiredate")) >= DateTime.Now.Date) IsLicensed = true;
             }
 
         }

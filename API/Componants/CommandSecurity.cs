@@ -79,48 +79,6 @@ namespace DNNrocketAPI.Componants
             return _userInfo.IsSuperUser;
         }
 
-        public bool SecurityCheckUser()
-        {
-            if (!ValidUser) return false;
-            if (SecurityCheckIsSuperUser()) return true; //always allow access to su
-            if (_interfaceInfo != null)
-            {
-                var securityrolesadministrators = _interfaceInfo.Info.GetXmlPropertyInt("genxml/radio/securityrolesadministrators");
-                var securityrolesmanager = _interfaceInfo.Info.GetXmlPropertyInt("genxml/radio/securityrolesmanager");
-                var securityroleseditor = _interfaceInfo.Info.GetXmlPropertyInt("genxml/radio/securityroleseditor");
-                var securityrolesclienteditor = _interfaceInfo.Info.GetXmlPropertyInt("genxml/radio/securityrolesclienteditor");
-                var securityrolesregisteredusers = _interfaceInfo.Info.GetXmlPropertyInt("genxml/radio/securityrolesregisteredusers");
-                var securityrolessubscribers = _interfaceInfo.Info.GetXmlPropertyInt("genxml/radio/securityrolessubscribers");
-                var securityrolesall = _interfaceInfo.Info.GetXmlPropertyInt("genxml/radio/securityrolesall");
-
-                var roleAdministrators = _userInfo.IsInRole("Administrators");
-                var roleManager = _userInfo.IsInRole("Manager");
-                var roleEditor = _userInfo.IsInRole("Editor");
-                var roleClientEditor = _userInfo.IsInRole("ClientEditor");
-                var roleRegisteredUsers = _userInfo.IsInRole("Registered Users");
-                var roleSubscribers = _userInfo.IsInRole("Subscribers");
-
-                // ##### block #####
-                if (roleAdministrators && securityrolesadministrators == 2) return false;
-                if (roleManager && securityrolesmanager == 2) return false;
-                if (roleEditor && securityroleseditor == 2) return false;
-                if (roleClientEditor && securityrolesclienteditor == 2) return false;
-                if (roleRegisteredUsers && securityrolesregisteredusers == 2) return false;
-                if (roleSubscribers && securityrolessubscribers == 2) return false;
-                if (securityrolesall == 2) return false; // su only
-
-                // ##### Allow #####
-                if (securityrolesall == 1) return true;
-                if (roleAdministrators && securityrolesadministrators == 1) return true;
-                if (roleManager && securityrolesmanager == 1) return true;
-                if (roleEditor && securityroleseditor == 1) return true;
-                if (roleClientEditor && securityrolesclienteditor == 1) return true;
-                if (roleRegisteredUsers && securityrolesregisteredusers == 1) return true;
-                if (roleSubscribers && securityrolessubscribers == 1) return true;
-            }
-
-            return false;
-        }
 
         public void SignUserOut()
         {
@@ -161,6 +119,14 @@ namespace DNNrocketAPI.Componants
             return _commandSecurity.ContainsKey(commandKey);
         }
 
+        public string DefaultCommandInMenu()
+        {
+            foreach (var c in _commandSecurity)
+            {
+                if (c.Value) return c.Key;
+            }
+            return _interfaceInfo.DefaultCommand;
+        }
 
         public bool HasSecurityAccess(string commandKey)
         {
@@ -169,7 +135,7 @@ namespace DNNrocketAPI.Componants
             {
                 return true;
             }
-            if (HasModuleEditRights() && SecurityCheckUser())
+            if (HasModuleEditRights() && _interfaceInfo.SecurityCheckUser(_userInfo.PortalID, _userId))
             {
                 return true;
             }

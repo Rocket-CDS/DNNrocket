@@ -148,14 +148,6 @@ namespace DNNrocketAPI
 
         public static string LoginForm(SimplisityInfo systemInfo, SimplisityInfo sInfo, string interfacekey, int userid)
         {
-            if (systemInfo != null)
-            {
-                // clear cookie for cmd.  This could cause a fail login loop.
-                // A module MUST always have a tabid and a valid users.  Invalid cookies without tabid could cause a loop.
-                DNNrocketUtils.DeleteCookieValue("s-cmd-menu-" + systemInfo.GUIDKey);
-                DNNrocketUtils.DeleteCookieValue("s-fields-menu-" + systemInfo.GUIDKey);
-            }
-
             if (userid > 0)
             {
                 sInfo.SetXmlProperty("genxml/securityaccess", "You do not have security access");

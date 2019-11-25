@@ -68,10 +68,21 @@ namespace DNNrocketAPI
             if (Settings.ContainsKey(key)) return Settings[key];
             return "";
         }
-
         public bool HasInterface(string interfaceKey)
         {
             return InterfaceList.ContainsKey(interfaceKey);
+        }
+        public List<DNNrocketInterface> GetInterfaceList()
+        {
+            var rtnList = new List<DNNrocketInterface>();
+            var s = Info.GetList("interfacedata");
+            if (s == null) return null;
+            foreach (var i in s)
+            {
+                var iface = new DNNrocketInterface(i);
+                rtnList.Add(iface);
+            }
+            return rtnList;
         }
 
         public DNNrocketInterface GetInterface(string interfaceKey)

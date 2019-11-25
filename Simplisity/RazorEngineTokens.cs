@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -123,25 +124,22 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
-        public IEncodedString TextBoxDate(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+        public IEncodedString TextBoxDate(SimplisityInfo info, String xpath, String attributes = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
-            var value = info.GetXmlProperty(xpath);
+            var value = info.GetXmlPropertyDate(xpath);
             if (localized && !xpath.StartsWith("genxml/lang/"))
             {
-                value = info.GetXmlProperty("genxml/lang/" + xpath);
+                value = info.GetXmlPropertyDate("genxml/lang/" + xpath);
             }
             var upd = getUpdateAttr(xpath, attributes, localized);
             var id = getIdFromXpath(xpath, row, listname);
 
-            // [TODO: add encrypt option.]
-            //var value = encrypted ? NBrightCore.common.Security.Decrypt(PortalController.Instance.GetCurrentPortalSettings().GUID.ToString(), info.GetXmlProperty(xpath)) : info.GetXmlProperty(xpath);
-            if (value == "") value = defaultValue;
-
             var typeattr = "type='date'";
             if (attributes.ToLower().Contains(" type=")) typeattr = "";
 
-            var strOut = "<input value='" + value.Replace("'", "&#39;") + "' id='" + id + "' s-xpath='" + xpath + "' " + attributes + " " + upd + " " + typeattr + " />";
+
+            var strOut = "<input value='" + value.ToString("yyyy-MM-dd")+ "' id='" + id + "' s-xpath='" + xpath + "' " + attributes + " " + upd + " " + typeattr + " />";
 
             return new RawString(strOut);
         }

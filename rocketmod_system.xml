@@ -99,7 +99,7 @@
     </genxml>
     <genxml>
       <textbox>
-        <interfacekey>edit</interfacekey>
+        <interfacekey>rocketmodedit</interfacekey>
         <entitytypecode>ROCKETMOD</entitytypecode>
         <interfaceicon />
         <defaulttheme>config-w3</defaulttheme>
@@ -169,7 +169,7 @@
       </checkboxlist>
       <radio>
         <securityrolesadministrators>1</securityrolesadministrators>
-        <securityrolesmanager>1</securityrolesmanager>
+        <securityrolesmanager>0</securityrolesmanager>
         <securityroleseditor>0</securityroleseditor>
         <securityrolesclienteditor>0</securityrolesclienteditor>
         <securityrolesregisteredusers>0</securityrolesregisteredusers>
@@ -209,7 +209,7 @@
       </checkboxlist>
       <radio>
         <securityrolesadministrators>1</securityrolesadministrators>
-        <securityrolesmanager>1</securityrolesmanager>
+        <securityrolesmanager>0</securityrolesmanager>
         <securityroleseditor>0</securityroleseditor>
         <securityrolesclienteditor>0</securityrolesclienteditor>
         <securityrolesregisteredusers>0</securityrolesregisteredusers>
@@ -329,7 +329,7 @@
       </checkboxlist>
       <radio>
         <securityrolesadministrators>1</securityrolesadministrators>
-        <securityrolesmanager>1</securityrolesmanager>
+        <securityrolesmanager>0</securityrolesmanager>
         <securityroleseditor>0</securityroleseditor>
         <securityrolesclienteditor>0</securityrolesclienteditor>
         <securityrolesregisteredusers>0</securityrolesregisteredusers>

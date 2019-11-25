@@ -241,6 +241,30 @@ namespace Simplisity
             }
             return 0;
         }
+        public DateTime GetXmlPropertyDate(string xpath)
+        {
+            if (!string.IsNullOrEmpty(XMLData))
+            {
+                try
+                {
+                    var x = GetGenXmlValueRawFormat(XMLData, xpath);
+                    if (GeneralUtils.IsDate(x, "en-US"))
+                    {
+                        return Convert.ToDateTime(x, CultureInfo.GetCultureInfo("en-US"));
+                    }
+                    else
+                    {
+                        return DateTime.MinValue;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var ms = ex.ToString();
+                    return DateTime.MinValue;
+                }
+            }
+            return DateTime.MinValue;
+        }
 
         /// <summary>
         /// return Bool data type from XML
