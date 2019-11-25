@@ -76,7 +76,7 @@ var trackgroup = '';
 
             // check if cookie gets corrupted.
             var usecookie = true;
-            if (typeof sfields !== 'undefined'){
+            if (typeof sfields !== 'undefined' && sfields !== ''){
                 var obj = $.parseJSON(sfields);
                 if (typeof obj !== 'undefined') {
                     if (obj['systemprovider'] !== settings.systemprovider) {

@@ -105,7 +105,7 @@
         <defaulttheme>config-w3</defaulttheme>
         <themeversion>1.0</themeversion>
         <defaulttemplate>editlist.cshtml</defaulttemplate>
-        <defaultcommand>edit_editarticlelist</defaultcommand>
+        <defaultcommand>rocketmodedit_editarticlelist</defaultcommand>
         <namespaceclass>RocketMod.StartConnect</namespaceclass>
         <assembly>RocketMod</assembly>
         <databasetable />
