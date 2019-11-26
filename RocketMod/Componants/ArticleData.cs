@@ -52,6 +52,16 @@ namespace RocketMod
                 foreach (var l in cc)
                 {
                     var dbRecord = _objCtrl.GetRecordLang(Info.ItemID, l, false, _tableName);
+                    if (dbRecord == null)
+                    {
+                        dbRecord = dbInfo;
+                        dbRecord.XMLData = dbInfo.GetLangXml();
+                        dbRecord.Lang = l;
+                        dbRecord.ParentItemId = dbInfo.ItemID;
+                        dbRecord.ItemID = -1;
+                        dbRecord.TypeCode = dbInfo.TypeCode + "LANG";
+                        dbRecord.ItemID = _objCtrl.Update(dbRecord, _tableName);
+                    }
                     var nodList = dbRecord.XMLDoc.SelectNodes("genxml/*");
                     if (nodList.Count == 0)
                     {

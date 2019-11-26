@@ -126,12 +126,6 @@ function simplisity_nbxgetCompleted(e) {
         $('#simplisity_loader').hide();
     }
 
-    // a change of langauge has been triggered.
-    var nextlang = simplisity_getParamField('nextlang');
-    if ((typeof nextlang !== 'undefined') && nextlang !== '') {
-        simplisity_setParamField('nextlang', '');
-    }
-
     // clear any uploaded files after completed call
     $('input[id*="simplisity_fileuploadlist"]').val('');
        
