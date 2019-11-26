@@ -38,7 +38,16 @@ namespace DNNrocketAPI.Componants
                 CacheUtils.SetCache(_guidKey, Record);
             }
         }
-
+        public void Track(string systemKey, string paramCmd, SimplisityInfo _paramInfo)
+        {
+            Set(systemKey + "-s-menu-cmd", paramCmd);
+            Set(systemKey + "-s-menu-paramInfo", _paramInfo.ToXmlItem());
+        }
+        public void TrackClear(string systemKey)
+        {
+            Set(systemKey + "-s-menu-cmd", "");
+            Set(systemKey + "-s-menu-paramInfo", "");
+        }
         public void Save()
         {
             _objCtrl.SaveRecord(Record);

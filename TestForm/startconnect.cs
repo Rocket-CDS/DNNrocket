@@ -137,9 +137,9 @@ namespace DNNrocket.TestForm
                 Directory.CreateDirectory(imageDirectory);
             }
 
-            var systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
+            var systemkey = postInfo.GetXmlProperty("genxml/systemkey");
             var systemData = new SystemData();
-            var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+            var sInfoSystem = systemData.GetSystemByKey(systemkey);
             var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
 
             var strOut = "";
@@ -199,9 +199,9 @@ namespace DNNrocket.TestForm
                 Directory.CreateDirectory(docDirectory);
             }
 
-            var systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
+            var systemkey = postInfo.GetXmlProperty("genxml/systemkey");
             var systemData = new SystemData();
-            var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+            var sInfoSystem = systemData.GetSystemByKey(systemkey);
             var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
 
             var strOut = "";

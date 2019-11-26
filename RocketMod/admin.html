@@ -66,7 +66,7 @@
 
         <form id="rocketmod_form">
 
-            <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketmodedit_editarticlelist" s-track="true" s-fields=''>
+            <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketmodedit_editarticlelist"  s-fields=''>
                 <div class="">
                     <i class='fa fa-spinner fa-spin w3-display-middle' style='font-size:48px'></i>
                 </div>
@@ -80,8 +80,9 @@
 
         <script>
             $(document).ready(function () {
-                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocketmodule', usehistory: true, debug: false, trackgroup: 'admin' });
+                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemkey: 'dnnrocketmodule', debug: false });
                 var urlParams = new URLSearchParams(window.location.search);
+                simplisity_setParamField("reload", true)
                 simplisity_setParamField("moduleid", urlParams.get('moduleid'))
                 simplisity_setParamField("tabid", urlParams.get('tabid'))
                 simplisity_setParamField("editmode", urlParams.get('editmode'))

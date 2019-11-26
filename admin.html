@@ -59,7 +59,7 @@
         <!-- !PAGE CONTENT! -->
     <div class="w3-main" style="margin-left:300px;margin-top:60px; " id="base-panel">
 
-        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="testform_get" s-track="true" s-fields="theme:config-w3,template:TestForm.cshtml,interfacekey:testform"></div>
+        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="testform_get"  s-fields="theme:config-w3,template:TestForm.cshtml,interfacekey:testform"></div>
 
         <!-- End page content -->
     </div>
@@ -67,7 +67,7 @@
         <script>
             $(document).ready(function () {
 
-                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocket'});
+                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemkey: 'dnnrocket'});
 
             });
 

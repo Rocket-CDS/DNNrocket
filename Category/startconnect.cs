@@ -15,7 +15,7 @@ namespace DNNrocket.Category
     {
         private static string _EntityTypeCode;
         private static string _editlang;
-        private static string _systemprovider;
+        private static string _systemkey;
         private static SimplisityInfo _systemInfo;
         private static SystemInfoData _systemInfoData;
 
@@ -38,7 +38,7 @@ namespace DNNrocket.Category
             commandSecurity.AddCommand("category_search", false);
 
             _systemInfo = systemInfo;
-            _systemprovider = systemInfo.GUIDKey;
+            _systemkey = systemInfo.GUIDKey;
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
             _editlang = editlang;
             if (_editlang == "") _editlang = DNNrocketUtils.GetEditCulture();
@@ -225,7 +225,7 @@ namespace DNNrocket.Category
                         postInfo.SetXmlProperty("genxml/level", "0");
                     }
                 }
-                info.GUIDKey = _systemprovider;
+                info.GUIDKey = _systemkey;
                 info.XMLData = postInfo.XMLData;
                 info.ModuleId = systemInfo.ItemID;
                 objCtrl.SaveData(info);
@@ -254,9 +254,9 @@ namespace DNNrocket.Category
                     Directory.CreateDirectory(imageDirectory);
                 }
 
-                var systemprovider = postInfo.GetXmlProperty("genxml/systemprovider");
+                var systemkey = postInfo.GetXmlProperty("genxml/systemkey");
                 var systemData = new SystemData();
-                var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+                var sInfoSystem = systemData.GetSystemByKey(systemkey);
                 var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
 
                 var strOut = "";
@@ -334,7 +334,7 @@ namespace DNNrocket.Category
             RecursiveUpdateParent(xmldoc.SelectNodes("./results/*"),0, ref index, level);
 
             var objCtrl = new DNNrocketController();
-            var info = objCtrl.GetData(_systemprovider, "CATEGORYLIST", _editlang);
+            var info = objCtrl.GetData(_systemkey, "CATEGORYLIST", _editlang);
             info.XMLData = postInfo.XMLData;
             info.AddXmlNode(xmldoc.OuterXml, "results", "genxml");
             info.ModuleId = systemInfo.ItemID;
@@ -364,7 +364,7 @@ namespace DNNrocket.Category
                         catRecord.SetXmlProperty("genxml/dropdownlist/parentid", parentid.ToString());
                         catRecord.SetXmlProperty("genxml/level", levelstatic.ToString());
                         catRecord.XrefItemId = index;
-                        catRecord.GUIDKey = _systemprovider;
+                        catRecord.GUIDKey = _systemkey;
                         objCtrl.SaveRecord(catRecord);
                         index += 100;  // so we can insert rows on parentid change for detail save.
                         lastItemId = catRecord.ItemID;

@@ -17,7 +17,7 @@
     var configinfo = new SimplisityInfo(moduleParams.Record);
     var dataModuleParams = new ModuleParams(moduleParams.DataSourceModId, moduleParams.SystemKey);
     var systemGlobalData = new SystemGlobalData();
-
+    var systemInfoData = new SystemInfoData("dnnrocketmodule");
     Model.SetSetting("licensetype", "dnnrocketmodule");
 }
 
@@ -26,18 +26,22 @@
 <div class="w3-row w3-padding">
     <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketmodedit_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","selecteditemid":"@configinfo.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.save)</div>
     @ButtonGap()
-    <div class="w3-col m6 w3-dropdown-hover">
-        <div class="w3-button">@ResourceKey("DNNrocket.more")...</div>
-        <div class="w3-dropdown-content w3-bar-block w3-card">
-            <div class="w3-bar-item w3-button w3-blue w3-padding-8 simplisity_click" s-cmd="rocketmodedit_datasourcelist" s-return="#datasourcelist" s-fields='{"moduleid":"@(Model.ModuleId)"}'><i class="fas fa-share-alt-square fa-fw fa-lg"></i>@ResourceKey("RocketMod.datasource")</div>
-            <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmodedit_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetconfig")</div>
-            <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmodedit_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetdata")</div>
-        </div>
-        @if (Model.GetSettingBool("saved"))
-        {
-            <i class='fas fa-save simplisity_fadeout' style="font-size:24px"></i>
-        }
+<div class="w3-col m6 w3-dropdown-hover">
+    <div class="w3-button">@ResourceKey("DNNrocket.more")...</div>
+    <div class="w3-dropdown-content w3-bar-block w3-card">
+        <div class="w3-bar-item w3-button w3-blue w3-padding-8 simplisity_click" s-cmd="rocketmodedit_datasourcelist" s-return="#datasourcelist" s-fields='{"moduleid":"@(Model.ModuleId)"}'><i class="fas fa-share-alt-square fa-fw fa-lg"></i>@ResourceKey("RocketMod.datasource")</div>
+        <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmodedit_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetconfig")</div>
+        <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmodedit_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetdata")</div>
     </div>
+    @if (systemInfoData.DebugMode)
+    {
+<b class="w3-text-red">&nbsp;@ResourceKey("DNNrocket.system")&nbsp;@ResourceKey("DNNrocket.debugmode"):&nbsp;@ResourceKey("DNNrocket.on")&nbsp;</b>
+    }
+    @if (Model.GetSettingBool("saved"))
+    {
+        <i class='fas fa-save simplisity_fadeout' style="font-size:24px"></i>
+    }
+</div>
     <div class="w3-right">
         @if (moduleParams.ShareData != "0" && !moduleParams.DataSourceExternal)
         {
@@ -140,7 +144,7 @@
                 <label>@ResourceKey("RocketMod.exportresourcefiles")</label>
             </div>
             <div class="w3-col m12 w3-padding">
-                <label>@ResourceKey("DNnrocket.sitekey")</label>
+                <label>@ResourceKey("DNNrocket.sitekey")</label>
                 <div class="w3-border w3-padding  w3-light-grey">@DNNrocketUtils.SiteGuid()</div>
             </div>
         </div>
@@ -171,32 +175,32 @@
 
 </div>
 
-    <div id="datasourcelist">
-    </div>
+<div id="datasourcelist">
+</div>
 
-    <script>
+<script>
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            $('.sharedataaction').unbind('change');
-            $('.sharedataaction').change(function () {
-                if ($('input[name=sharedataradio]:checked').val() === '0') {
-                    $('.sharedataicon').hide();
-                }
-                if ($('input[name=sharedataradio]:checked').val() === '1') {
-                    $('.sharedataicon').show();
-                    $('.sharedataicon').css('color', 'teal')
-                }
-                if ($('input[name=sharedataradio]:checked').val() === '2') {
-                    $('.sharedataicon').show();
-                    $('.sharedataicon').css('color', 'red')
-                }
-            });
-
+        $('.sharedataaction').unbind('change');
+        $('.sharedataaction').change(function () {
+            if ($('input[name=sharedataradio]:checked').val() === '0') {
+                $('.sharedataicon').hide();
+            }
+            if ($('input[name=sharedataradio]:checked').val() === '1') {
+                $('.sharedataicon').show();
+                $('.sharedataicon').css('color', 'teal')
+            }
+            if ($('input[name=sharedataradio]:checked').val() === '2') {
+                $('.sharedataicon').show();
+                $('.sharedataicon').css('color', 'red')
+            }
         });
 
-        function reloadpage() {
-            location.reload();
-        }
+    });
 
-    </script>
+    function reloadpage() {
+        location.reload();
+    }
+
+</script>

@@ -21,11 +21,11 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m2 w3-button w3-khaki " onclick="cancelleditor();">@ButtonText(ButtonTypes.cancel)</div>
         @ButtonGap()
-        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditorcall" s-after="saveeditorreturn" s-track="false" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
+        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditorcall" s-after="saveeditorreturn"  s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
         @ButtonGap()
         @if (Model.GetSettingBool("moduletemplatebutton"))
         {
-            <div class="w3-col m3 w3-button w3-blue w3-padding-8 moduletemplatebutton simplisity_confirmclick" s-before="saveeditorcall" s-confirm="@ResourceKey("DNNrocket.removemoduletemplate")" s-track="false" s-cmd="@(Model.GetSetting("interfacekey"))_removemodtemplate" s-post="#editorsave" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-minus-square fa-fw fa-lg"></i>@ResourceKey("DNNrocket.removemoduletemplate")</div>
+            <div class="w3-col m3 w3-button w3-blue w3-padding-8 moduletemplatebutton simplisity_confirmclick" s-before="saveeditorcall" s-confirm="@ResourceKey("DNNrocket.removemoduletemplate")"  s-cmd="@(Model.GetSetting("interfacekey"))_removemodtemplate" s-post="#editorsave" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-minus-square fa-fw fa-lg"></i>@ResourceKey("DNNrocket.removemoduletemplate")</div>
         }
         @ButtonGap()
         <div class="w3-col m1 w3-xlarge w3-right">

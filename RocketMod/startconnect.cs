@@ -38,6 +38,7 @@ namespace RocketMod
         private static AppThemeModule _dataAppThemeMod;
         private static ArticleData _articleData;
         private static AppThemeDataList _appThemeDataList;
+        private static UserStorage _userStorage;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -195,6 +196,41 @@ namespace RocketMod
 
         public static string initCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
+            _userStorage = new UserStorage();
+
+            _paramInfo = paramInfo;
+            if (!CheckSecurity(paramCmd))
+            {
+                paramCmd = "rocketmodedit_editarticlelist";
+            }
+            else
+            {
+                if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
+                {
+                    var menucmd = _userStorage.Get(_systemKey + "-s-menu-cmd");
+                    if (menucmd != "")
+                    {
+                        paramCmd = menucmd;
+                        var paramXml = _userStorage.Get(_systemKey + "-s-menu-paramInfo");
+                        if (paramXml != "") _paramInfo.FromXmlItem(paramXml);
+
+                        // we may have a diiferent rocketInterface if we have reloaded from the last command.
+                        var interfacekey = paramInfo.GetXmlProperty("genxml/hidden/interfacekey");
+                        if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
+                        if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
+                        var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
+                        interfaceInfo = rocketInterface.Info;
+                    }
+                }
+                else
+                {
+                    if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
+                    {
+                        _userStorage.Track(_systemKey, paramCmd, _paramInfo);
+                    }
+                }
+            }
+
             _systemInfoData = new SystemInfoData(systemInfo);
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
@@ -205,9 +241,15 @@ namespace RocketMod
             _rocketModMapPath = DNNrocketUtils.MapPath(_rocketModRelPath);
 
             _postInfo = postInfo;
-            _paramInfo = paramInfo;
             _systemInfo = systemInfo;
             _systemKey = _systemInfoData.SystemKey;
+
+            // we should ALWAYS pass back the moduleid & tabid in the template post.
+            // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
+            _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
+            _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
+            if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid");
 
             _selectedItemId = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
 
@@ -217,15 +259,9 @@ namespace RocketMod
             _settingsData = GetSettingsData();
             _passSettings = LocalUtils.SettingsToDictionary(_settingsData);
 
-            // we should ALWAYS pass back the moduleid & tabid in the template post.
-            // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
-            _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-            if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");          
-            _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
-            if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid"); 
-
             _moduleParams = new ModuleParams(_moduleid, _systemKey);
             _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemKey);
+
 
             if (!CheckSecurity(paramCmd))
             {
@@ -317,7 +353,7 @@ namespace RocketMod
             }
             catch (Exception ex)
             {
-                // ignore
+                DNNrocketUtils.LogException(ex);
             }
         }
 
@@ -333,6 +369,9 @@ namespace RocketMod
             _moduleParams.ModuleType = "RocketMod";
             _moduleParams.Exists = true;
             _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disbalecache");
+
+            if (_systemInfoData.DebugMode) _moduleParams.CacheDisbaled = true;
+
             _moduleParams.ShareData = _postInfo.GetXmlProperty("genxml/hidden/sharedata");
             _moduleParams.TabId = _tabid;
             _moduleParams.SystemKey = _systemInfoData.SystemKey;
@@ -427,6 +466,7 @@ namespace RocketMod
                 _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
             }
             _articleData.Delete();
+            _selectedItemId = -1;
         }
 
         public static String AddArticle()

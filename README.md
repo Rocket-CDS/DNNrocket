@@ -39,7 +39,7 @@ copy "$(ProjectDir)$(OutDir)$(AssemblyName).pdb" "$(ProjectDir)..\\..\\..\bin\$(
             _editLang = langRequired;
             if (_editLang == "") _editLang = DNNrocketUtils.GetEditCulture();
 
-            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [testform]";
+            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemkey is defined. [testform]";
 
             switch (paramCmd)
             {

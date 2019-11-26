@@ -7,12 +7,12 @@ namespace DNNrocket.Country
 {
     public static class CountryUtils
     {
-        public static string[] CountryListCSV(string systemprovider, bool allowempty = true)
+        public static string[] CountryListCSV(string systemkey, bool allowempty = true)
         {
             var rtn = new string[2];
             var objCtrl = new DNNrocketController();
 
-            var systemInfo = DNNrocketUtils.GetSystemByName(systemprovider);
+            var systemInfo = DNNrocketUtils.GetSystemByName(systemkey);
             var smi = objCtrl.GetData("countrysettings", "SETTINGS", DNNrocketUtils.GetEditCulture(), systemInfo.ItemID);
             var countrycode_csv = "";
             var countryname_csv = "";

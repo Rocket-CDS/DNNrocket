@@ -14,13 +14,14 @@
 
 
 @{
-    var username = UserUtils.GetCurrentUserName();
+    var userStorage = new UserStorage();
     var sidemenu = (SideMenu)Model.List.First();
     var systemInfoData = new SystemInfoData(sidemenu.SystemKey);
 
+
     var menuOut = "";
     // get action interfaces. (no group)
-    var lp = 0;
+    var lp = 1;
     var interfacelist = sidemenu.GetInterfaces("");
     if (interfacelist.Count() > 0)
     {
@@ -42,15 +43,15 @@
                         interfaceName = interfacekey;
                     }
                 }
-                menuOut += "<div class='w3-bar-item w3-button w3-padding simplisity_menulink' s-before='sidebarloader' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='{\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemprovider\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\"}' ><i class='" + interfaceicon + "' style='width:20px;'></i>&nbsp;" + interfaceName + "</div>";
+                menuOut += "<div class='w3-bar-item w3-button w3-padding simplisity_click' s-before='sidebarloader' s-after='sidemenuchange' s-cmd='" + defaultcommand + "' s-fields='{\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='" + interfaceicon + "' style='width:20px;'></i>&nbsp;" + interfaceName + "</div>";
             }
+            lp += 1;
         }
-        lp += 1;
     }
 
 
     // get sub group interfaces
-    lp = 0;
+    lp = 1;
     foreach (SimplisityRecord g in sidemenu.GetGroups())
     {
         var groupref = g.GetXmlProperty("genxml/textbox/groupref");
@@ -76,13 +77,28 @@
                         interfaceName = interfacekey;
                     }
                 }
-                menuOut += "<div class='w3-bar-item w3-button w3-padding simplisity_menulink ' s-before='sidebarloader' s-after='sidemenuchange' s-track='true' s-cmd='" + defaultcommand + "' s-fields='{\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemprovider\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfaceName + "</div>";
+                menuOut += "<div class='w3-bar-item w3-button w3-padding simplisity_click ' s-before='sidebarloader' s-after='sidemenuchange'  s-cmd='" + defaultcommand + "' s-fields='{\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfaceName + "</div>";
+                lp += 1;
             }
             menuOut += "</div>";
-            lp += 1;
         }
     }
 }
+
+@{ 
+    menuOut += "<hr />";
+}
+@if (DNNrocketUtils.IsSuperUser())
+{
+    menuOut += "<a class='w3-bar-item w3-button w3-padding w3-theme ' href='/desktopmodules/dnnrocket/adminsystem.html' target='_blank'><i title='System' class='fas fa-rocket' style='width:20px;'></i>&nbsp;System</a>";
+    menuOut += "<hr />";
+}
+@{
+    menuOut += "<div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class='w3-bar-item w3-button w3-theme w3-hover-theme simplisity_click'>" + ButtonText(ButtonTypes.back) + "</div>";
+    menuOut += "<hr />";
+}
+
+<div class="menureturn" style="display:none;"></div>
 
 @HtmlOf(menuOut)
 
@@ -90,6 +106,10 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+
+        // turn off the reload flag
+        simplisity_setParamField("reload", false)
+
 
         $('.menuaccordian').unbind('click');
         $('.menuaccordian').click(function () {
@@ -145,20 +165,13 @@
     }
 
     function sidemenuchange() {
-        $('.simplisity_menulink').removeClass('w3-white');
-        $('.simplisity_menulink').removeClass('w3-text-blue-grey');
-        var index = simplisity_lastmenuindex();
-        if (index != '') {
-            $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-white');
-            $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-text-blue-grey');
-        }
         w3_close();
         $('#sidebar_loader').hide();
     }
 
     function returnclick() {
         $('#simplisity_loader').show();
-
+        $('.simplisity_panel').hide();
         var returnurl = sessionStorage.RocketModReturn;
         if (typeof returnurl === 'undefined' || returnurl === '') {
             window.history.back();

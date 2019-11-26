@@ -40,7 +40,6 @@
             <a href="#attributes" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Command Attributes</a>
             <a href="#methods" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Methods</a>
             <a href="#classevents" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Class Events</a>
-            <a href="#sessioncookies" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Session Cookies</a>
             <a href="#fielddata" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Field Data</a>
             <a href="#utilityfunctions" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Utility Functions</a>
             <a href="#ajaxdropdown" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Ajax DropDown</a>
@@ -138,14 +137,6 @@
                     <td>Confirm message of "simplisity_confirmclick"</td>
                 </tr>
                 <tr>
-                    <td>s-track</td>
-                    <td>(Optional: true, false or clear. Default: false) If this attribute is added to a command click, the command is remembered as a cookie.  When a page refresh is made, like for language change, it is the last s-track command that will activate first. "clear" will remove the s-track cookies.</td>
-                </tr>
-                <tr>
-                    <td>s-track-cmd</td>
-                    <td>(Optional: the default is the "s-cmd" command attribute.) If the "s-track" command attribute has been set, you use this command attribute to define which command is saved in the track history.  This is used when we save data and a refresh with the same command will result in the same save being actioned again, but the data will not be in the post and hence data may be overwritten and set to blank.</td>
-                </tr>
-                <tr>
                     <td>s-regexpr</td>
                     <td>Regular Expression used to limit file type upload.  This is used only on the "simplisity_fileupload" class element. If not specified the default is used.  '/(\.|\/)(gif|jpe?g|png|pdf)$/i'</td>
                 </tr>
@@ -196,18 +187,17 @@
             <hr />
 
             <p><b>$(document).simplisityStartUp(<i>string</i> apiurl)</b></p>
-            <p>This is the main activation for Simplisity.  It searches the webpage for any html elements with "simplisity_panel" class.  Simplisity will then process the command attributes attached to the html element.  On first call for the page, this function will look for the last cookie used and take that as the required command.</p>
+            <p>This is the main activation for Simplisity.  It searches the webpage for any html elements with "simplisity_panel" class.  Simplisity will then process the command attributes attached to the html element.</p>
             <p>
-                Options can also be passed.  {systemprovider: 'dnnrocket',usehistory: false,activatepanel: true, overlayclass: 'w3-overlay'}.<br />
+                Options can also be passed.  {systemkey: 'dnnrocket',activatepanel: true, overlayclass: 'w3-overlay'}.<br />
                 <br />
-                <b>systemprovider:</b> You can pass a default systemprovider to use if non are specifiecd on the simplisity_panel.  This stops the need to specify the systemprovider on each simplisity_panel.<br />
-                <b>usehistory:</b> Use history on page refresh.  Simplisity keeps a history of the last action, when the page is refreshed the last action is rerun to leave the users in the same position they refreshed the page in.<br />
+                <b>systemkey:</b> You can pass a default systemkey to use if non are specifiecd on the simplisity_panel.  This stops the need to specify the systemkey on each simplisity_panel.<br />
                 <b>activatepanel:</b> Activate the simplsity_panels.  Default:true<br />
                 <b>overlayclass:</b> Defines a overlayclass to use, for when the server is called. Default: w3-overlay<br />
                 <b>debug:</b> Puts the JS in debug mode.  The browser console log will contain data to help debuging.<br />
             </p>
             <i>Example:</i><br />
-            $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'rocketexample', usehistory: true, overlayclass:'w3-overlay w3-theme' });;
+            $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemkey: 'rocketexample', usehistory: true, overlayclass:'w3-overlay w3-theme' });;
             <hr />
 
             <p><b>$('#mycontainer').activateSimplisityPanel()</b></p>
@@ -309,56 +299,6 @@
         </div>
 
 
-        <div class="w3-container" id="sessioncookies" style="margin-top:75px">
-            <h1 class="w3-xxxlarge w3-text-teal"><b>Session Cookies</b></h1>
-            <hr style="width:50px;border:5px solid teal" class="w3-round">
-            <p>Session cookies are used to keep track of operations.</p>
-
-            <table class="w3-table w3-bordered">
-                <tr class="w3-teal">
-                    <th>Cookie Name</th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <td>editlang</td>
-                    <td>Keeps track of the current edit langauge.</td>
-                </tr>
-                <tr>
-                    <td>nextlang</td>
-                    <td>Identifies the next edit langauge to be activated.  This is set before an edit langauge changed, the data is saved in the current edit langauge and then the edit language is changed to the nextlang cookie and the nextlang cookie is cleared.</td>
-                </tr>
-                <tr>
-                    <td>s-cmd-menu-<i>[Browser Tab Number]-[System Name]</i></td>
-                    <td>Is the last s-cmd to be tracked when using the s-track attribute.  This is then used to call the last tracked command on page refresh.</td>
-                </tr>
-                <tr>
-                    <td>s-fields-menu-<i>[Browser Tab Number]-[System Name]</i></td>
-                    <td>Is the last s-field to be tracked when using the s-track attribute.  This is then used to call the last tracked command on page refresh.</td>
-                </tr>
-                <tr>
-                    <td>s-tabname</td>
-                    <td>Tracks the last tab used, so a refresh of page displays the last tab.</td>
-                </tr>
-                <tr>
-                    <td>s-lastmenuindex-<i>[Browser Tab Number]-[System Name]</i></td>
-                    <td>
-                        Tracks the last menu clicked. This is usally used to highlight the menu on page refresh.
-                        <hr />
-                        <div class="w3-code ">
-                            function sidemenuchange() {<br />
-                            &nbsp;&nbsp;$('.simplisity_menulink').addClass('w3-light-grey');<br />
-                            &nbsp;&nbsp;$('.simplisity_menulink').removeClass('w3-theme-l2');<br />
-                            &nbsp;&nbsp;var index = simplisity_lastmenuindex();<br />
-                            &nbsp;&nbsp;$('.simplisity_menulink[s-index=' + index + ']').removeClass('w3-light-grey');<br />
-                            &nbsp;&nbsp;$('.simplisity_menulink[s-index=' + index + ']').addClass('w3-theme-l2');<br />
-                            }<br />
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-        </div>
-
         <div class="w3-container" id="fielddata" style="margin-top:75px">
             <h1 class="w3-xxxlarge w3-text-teal"><b>Field Data</b></h1>
             <hr style="width:50px;border:5px solid teal" class="w3-round">
@@ -370,13 +310,13 @@
                     <th></th>
                 </tr>
                 <tr>
-                    <td>simplisity_systemprovider</td>
+                    <td>simplisity_systemkey</td>
                     <td>
-                        This is set by the "simplisity_startup" function (see below).  It keeps track of the default systemprovider being used by the page.
+                        This is set by the "simplisity_startup" function (see below).  It keeps track of the default systemkey being used by the page.
                         <hr />
                         <div class="w3-code ">
                             $(document).ready(function () {<br />
-                            $(document).simplisityStartUp('/<i>My API call url</i>', { systemprovider: 'amylisbusiness'});<br />
+                            $(document).simplisityStartUp('/<i>My API call url</i>', { systemkey: 'amylisbusiness'});<br />
                             });<br />
                         </div>
                     </td>

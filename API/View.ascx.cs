@@ -46,7 +46,7 @@ namespace DNNrocketAPI
         private bool _activatedetail = false;
 
         private string _paramCmd;
-        private string _systemprovider;
+        private string _systemkey;
 
         private string _interfacekey;
         private string _templateRelPath;
@@ -78,9 +78,9 @@ namespace DNNrocketAPI
             var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
             var desktopModule = moduleInfo.DesktopModule;
 
-            _systemprovider = desktopModule.ModuleDefinitions.First().Key.ToLower(); // Use the First DNN Module definition as the DNNrocket systemprovider
+            _systemkey = desktopModule.ModuleDefinitions.First().Key.ToLower(); // Use the First DNN Module definition as the DNNrocket systemkey
             _interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
-            _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemprovider);
+            _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemkey);
             _systemInfoData = new SystemInfoData(_systemInfo);
             _moduleParams = new ModuleParams(ModuleId, _systemInfoData.SystemKey);
             _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemInfoData.SystemKey);
@@ -192,7 +192,7 @@ namespace DNNrocketAPI
                     if (returnDictionary.ContainsKey("outputhtml"))
                     {
                         strOut = returnDictionary["outputhtml"];
-                        if (_rocketInterface.IsCached) CacheUtils.SetCache(cacheKey, strOut, _moduleParams.CacheGroupId);
+                        CacheUtils.SetCache(cacheKey, strOut, _moduleParams.CacheGroupId);
                     }
                 }
                 else
@@ -206,7 +206,7 @@ namespace DNNrocketAPI
             }
             else
             {
-                var strOut = "Invalid Interface: systemprovider: " + _systemprovider + "  interfacekey: " + _interfacekey;
+                var strOut = "Invalid Interface: systemkey: " + _systemkey + "  interfacekey: " + _interfacekey;
                 var lit = new Literal();
                 lit.Text = strOut;
                 phData.Controls.Add(lit);

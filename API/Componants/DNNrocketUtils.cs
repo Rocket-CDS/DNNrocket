@@ -1265,8 +1265,8 @@ namespace DNNrocketAPI
                 var inputStream = context.Request.Files[0].InputStream;
 
                 var systemData = new SystemData();
-                var systemprovider = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "systemprovider"));
-                var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+                var systemkey = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "systemkey"));
+                var sInfoSystem = systemData.GetSystemByKey(systemkey);
                 var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
 
                 //var fn = EncryptFileName(encryptkey, fileName);
@@ -1299,8 +1299,8 @@ namespace DNNrocketAPI
         public static string UploadWholeFile(HttpContext context, List<FilesStatus> statuses, string fileregexpr, int userid)
         {
             var systemData = new SystemData();
-            var systemprovider = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "systemprovider"));
-            var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+            var systemkey = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "systemkey"));
+            var sInfoSystem = systemData.GetSystemByKey(systemkey);
             var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
             var flist = "";
 
@@ -1346,10 +1346,10 @@ namespace DNNrocketAPI
             return fn;
         }
 
-        public static SimplisityInfo GetSystemByName(string systemprovider)
+        public static SimplisityInfo GetSystemByName(string systemkey)
         {
             var objCtrl = new DNNrocketController();
-            return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
+            return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
         }
 
         public static void IncludePageHeaders(ModuleParams moduleParams, Page page, int tabId, bool debugMode = false)
@@ -1411,22 +1411,22 @@ namespace DNNrocketAPI
         public static Dictionary<string,string> GetProviderReturn(string paramCmd,SimplisityInfo systemInfo, DNNrocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
         {
             var rtnDic = new Dictionary<string, string>();
-            var systemprovider = "";
+            var systemkey = "";
             if (systemInfo != null)
             {
-                systemprovider = systemInfo.GUIDKey;
+                systemkey = systemInfo.GUIDKey;
             }
-            if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
+            if (systemkey == "" || systemkey == "systemapi" || systemkey == "login")
             {
                 var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.StartConnect");
                 rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, editlang);
             }
             else
             {
-                if (systemprovider != "")
+                if (systemkey != "")
                 {
                     // Run API Provider.
-                    rtnDic.Add("outputhtml", "API not found: " + systemprovider);
+                    rtnDic.Add("outputhtml", "API not found: " + systemkey);
                     if (systemInfo != null)
                     {
                         if (rocketInterface.Exists)
@@ -1436,7 +1436,7 @@ namespace DNNrocketAPI
                             if (rocketInterface.Assembly == "" || rocketInterface.NameSpaceClass == "")
                             {
                                 rtnDic.Remove("outputhtml");
-                                rtnDic.Add("outputhtml", "No assembly or namespaceclass defined: " + systemprovider + " : " + rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass);
+                                rtnDic.Add("outputhtml", "No assembly or namespaceclass defined: " + systemkey + " : " + rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass);
                             }
                             else
                             {
@@ -1448,7 +1448,7 @@ namespace DNNrocketAPI
                                 catch (Exception ex)
                                 {
                                     rtnDic.Remove("outputhtml");
-                                    rtnDic.Add("outputhtml", "ERROR: " + systemprovider + " : " + rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass + " cmd:" + paramCmd + "<br/>" + ex.ToString());
+                                    rtnDic.Add("outputhtml", "ERROR: " + systemkey + " : " + rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass + " cmd:" + paramCmd + "<br/>" + ex.ToString());
                                 }
                             }
                         }
@@ -1461,7 +1461,7 @@ namespace DNNrocketAPI
                     else
                     {
                         rtnDic.Remove("outputhtml");
-                        rtnDic.Add("outputhtml", "No valid system found: " + systemprovider);
+                        rtnDic.Add("outputhtml", "No valid system found: " + systemkey);
                     }
                 }
             }

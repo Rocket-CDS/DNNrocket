@@ -83,13 +83,23 @@ namespace DNNrocketAPI
                     }
 
 
-                    var systemprovider = paramInfo.GetXmlProperty("genxml/urlparams/systemprovider").Trim(' ');
-                    if (systemprovider == "") systemprovider = paramInfo.GetXmlProperty("genxml/hidden/systemprovider").Trim(' ');
-                    if (systemprovider == "" && paramCmd.Contains("_")) systemprovider = paramCmd.Split('_')[0];
-                    if (systemprovider == "") systemprovider = "dnnrocket";
-                    var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
-                    var systemInfoData = new SystemInfoData(systemInfo); 
+                    var systemkey = paramInfo.GetXmlProperty("genxml/urlparams/systemkey").Trim(' ');
+                    if (systemkey == "") systemkey = paramInfo.GetXmlProperty("genxml/hidden/systemkey").Trim(' ');
+                    if (systemkey == "" && paramCmd.Contains("_")) systemkey = paramCmd.Split('_')[0];
+                    if (systemkey == "") systemkey = "dnnrocket";
+                    var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
+                    var systemInfoData = new SystemInfoData(systemInfo);
 
+                    if (paramCmd == "admin_return")
+                    {
+                        // we need to clear the tracking of commands on return to view.
+                        // This command is usually called from "MenuOut.cshtml" and triggers the "returnclick()" function.
+                        var userStorage = new UserStorage();
+                        userStorage.TrackClear(systemkey);
+                        context.Response.ContentType = "text/plain";
+                        context.Response.Write("OK");
+                        context.Response.End();
+                    }
 
                     var postInfo = new SimplisityInfo(_editlang);
                     if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
@@ -97,7 +107,7 @@ namespace DNNrocketAPI
                         requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
 
                         // ---- START: DEBUG POST ------
-                        var debugSystemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemprovider);
+                        var debugSystemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
                         if (debugSystemInfo != null && debugSystemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
                         {
                             DNNrocketUtils.LogDebug("===== requestJson =====" + Environment.NewLine + requestJson);
@@ -122,7 +132,7 @@ namespace DNNrocketAPI
                     if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
                     if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
 
-                    paramInfo.SetXmlProperty("genxml/systemprovider", systemprovider);
+                    paramInfo.SetXmlProperty("genxml/systemkey", systemkey);
 
                     if (paramCmd == "login_doregister")
                     {
@@ -143,7 +153,7 @@ namespace DNNrocketAPI
                         switch (paramCmd)
                         {
                         case "getsidemenu":
-                            strOut = GetSideMenu(paramInfo, systemprovider);
+                            strOut = GetSideMenu(paramInfo, systemkey);
                             break;
                         default:
                             var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
@@ -180,7 +190,7 @@ namespace DNNrocketAPI
                             else
                             {
                                 // check for systemspi, does not exist.  It's used to create the systemprovders 
-                                if (systemprovider == "" || systemprovider == "systemapi" || systemprovider == "login")
+                                if (systemkey == "" || systemkey == "systemapi" || systemkey == "login")
                                 {
                                     var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.StartConnect");
                                     returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, _editlang);
@@ -188,7 +198,7 @@ namespace DNNrocketAPI
                                 }
                                 else
                                 {
-                                    strOut = "ERROR: Invalid SystemProvider: " + systemprovider + "  interfacekey: " + interfacekey + " cmd: " + paramCmd + " - Check Database for SYSTEM,'" + systemprovider + "' (No spaces) - Check 'simplisity_startpanel' and 'simplisity_panel' for correct s-cmd.  ";
+                                    strOut = "ERROR: Invalid systemkey: " + systemkey + "  interfacekey: " + interfacekey + " cmd: " + paramCmd + " - Check Database for SYSTEM,'" + systemkey + "' (No spaces) - Check 'simplisity_startpanel' and 'simplisity_panel' for correct s-cmd.  ";
                                 }
                             }
 
@@ -244,7 +254,7 @@ namespace DNNrocketAPI
             }
         }
 
-        public static string GetSideMenu(SimplisityInfo sInfo, string systemprovider)
+        public static string GetSideMenu(SimplisityInfo sInfo, string systemkey)
         {
             try
             {
@@ -257,7 +267,7 @@ namespace DNNrocketAPI
                 var passSettings = sInfo.ToDictionary();
 
                 var systemData = new SystemData();
-                var sInfoSystem = systemData.GetSystemByKey(systemprovider);
+                var sInfoSystem = systemData.GetSystemByKey(systemkey);
                 var systemInfoData = new SystemInfoData(sInfoSystem);
                 var sidemenu = new Componants.SideMenu(sInfoSystem);
                 var templateControlRelPath = sInfo.GetXmlProperty("genxml/hidden/relpath");

@@ -29,7 +29,7 @@ namespace DNNrocket.SystemData
 
             _controlRelPath = "/DesktopModules/DNNrocket/SystemData";
 
-            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [SystemData]";
+            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemkey is defined. [SystemData]";
 
             var rtnInfo = new SimplisityInfo();
             // Security Check MUST be in the extension.

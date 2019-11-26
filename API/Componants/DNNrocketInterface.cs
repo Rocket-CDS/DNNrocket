@@ -111,11 +111,6 @@ namespace DNNrocketAPI
             get { return Info.GetXmlPropertyBool("genxml/checkbox/active"); }
             set { Info.SetXmlProperty("genxml/checkbox/active", value.ToString()); }
         }
-        public bool IsCached
-        {
-            get { return Info.GetXmlPropertyBool("genxml/checkbox/cache"); }
-            set { Info.SetXmlProperty("genxml/checkbox/cache", value.ToString()); }
-        }
         public string DatabaseTable
         {
             get {
