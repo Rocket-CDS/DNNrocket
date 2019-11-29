@@ -63,7 +63,7 @@
 
                     @foreach (SystemInfoData systemInfoData in appThemeDataList.SystemFolderList)
                     {
-                        <li class="simplisity_click" s-cmd="rocketapptheme_selectsystemkey" s-fields='{"systemkey":"@systemInfoData.SystemKey"}' onclick="document.getElementById('systemselect').style.display='none'">
+                        <li class="simplisity_click" s-cmd="rocketapptheme_getprivatelist" s-fields='{"selectedsystemkey":"@systemInfoData.SystemKey"}' onclick="document.getElementById('systemselect').style.display='none'">
                             @systemInfoData.SystemName
                         </li>
                     }
@@ -82,7 +82,7 @@
 
 
 <div class="w3-row w3-padding">
-    <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_clearsystemkey" >@ButtonText(ButtonTypes.back)</div>
+    <div class="w3-col m2 w3-button w3-khaki simplisity_click"  s-cmd="rocketapptheme_getprivatelist" s-fields='{"clearselectedsystemkey":"true"}'  >@ButtonText(ButtonTypes.back)</div>
     @ButtonGap()
     <div class="w3-col m2 w3-button w3-blue simplisity_click" s-cmd="rocketapptheme_refreshprivatelist" ><i class="fas fa-sync fa-lg "></i>&nbsp;@ResourceKey("DNNrocket.refresh")</div>
     @ButtonGap()

@@ -43,7 +43,8 @@
                         interfaceName = interfacekey;
                     }
                 }
-                menuOut += "<div class='w3-bar-item w3-button w3-padding simplisity_click' s-before='sidebarloader' s-after='sidemenuchange' s-cmd='" + defaultcommand + "' s-fields='{\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='" + interfaceicon + "' style='width:20px;'></i>&nbsp;" + interfaceName + "</div>";
+                menuOut += "<div class='w3-bar-item w3-button w3-padding menubaritem menubaritem" + lp + "  simplisity_click' s-before='sidebarloader" + lp + "' s-after='sidemenuchange' s-cmd='" + defaultcommand + "' s-fields='{\"menuindex\":\"" + lp + "\",\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='" + interfaceicon + "' style='width:20px;'></i>&nbsp;" + interfaceName + "</div>";
+                menuOut += "<script type='text/javascript'>function sidebarloader" + lp + "() {simplisity_setCookieValue('menuindex','" + lp + "');$('#sidebar_loader').show();}</script>";
             }
             lp += 1;
         }
@@ -77,7 +78,8 @@
                         interfaceName = interfacekey;
                     }
                 }
-                menuOut += "<div class='w3-bar-item w3-button w3-padding simplisity_click ' s-before='sidebarloader' s-after='sidemenuchange'  s-cmd='" + defaultcommand + "' s-fields='{\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfaceName + "</div>";
+                menuOut += "<div class='w3-bar-item w3-button w3-padding menubaritem menubaritem" + lp + " simplisity_click ' s-before='sidebarloader" + lp + "' s-after='sidemenuchange'  s-cmd='" + defaultcommand + "' s-fields='{\"menuindex\":\"" + lp + "\",\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfaceName + "</div>";
+                menuOut += "<script type='text/javascript'>function sidebarloader" + lp + "() {simplisity_setCookieValue('menuindex','" + lp + "');$('#sidebar_loader').show();}</script>";
                 lp += 1;
             }
             menuOut += "</div>";
@@ -85,17 +87,24 @@
     }
 }
 
-@{ 
-    menuOut += "<hr />";
+@{
+    menuOut += "<div class='w3-border-bottom w3-bar-item'>&nbsp;</div>";
 }
+
 @if (DNNrocketUtils.IsSuperUser())
 {
-    menuOut += "<a class='w3-bar-item w3-button w3-padding w3-theme ' href='/desktopmodules/dnnrocket/adminsystem.html' target='_blank'><i title='System' class='fas fa-rocket' style='width:20px;'></i>&nbsp;System</a>";
-    menuOut += "<hr />";
+    menuOut += "<div class='w3-bar-item w3-button w3-padding w3-theme ' href='/desktopmodules/dnnrocket/adminsystem.html' target='_blank'><i title='System' class='fas fa-rocket' style='width:20px;'></i>&nbsp;System</div>";
+}
+@if (Model.GetSettingBool("menu-backbutton"))
+{
+    menuOut += "<div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class=' w3-bar-item w3-button w3-theme w3-hover-theme simplisity_click'>" + ButtonText(ButtonTypes.back) + "</div>";
+}
+@if (Model.GetSettingBool("menu-signoutbutton"))
+{
+    menuOut += "<div class='w3-bar-item w3-button w3-theme w3-hover-theme  simplisity_click' s-cmd='login_signout'><i class='fas fa-sign-out-alt'></i>&nbsp;" + ResourceKey("DNNrocket.signout") + "</div>";
 }
 @{
-    menuOut += "<div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class='w3-bar-item w3-button w3-theme w3-hover-theme simplisity_click'>" + ButtonText(ButtonTypes.back) + "</div>";
-    menuOut += "<hr />";
+    menuOut += "<div class='w3-border-top w3-bar-item'>&nbsp;</div>";
 }
 
 <div class="menureturn" style="display:none;"></div>
@@ -160,11 +169,10 @@
         }
     }
 
-    function sidebarloader() {
-        $('#sidebar_loader').show();
-    }
-
     function sidemenuchange() {
+        var menuindex = simplisity_getCookieValue('menuindex');
+        $('.menubaritem').removeClass('w3-theme-d5');
+        $('.menubaritem' + menuindex).addClass('w3-theme-d5');
         w3_close();
         $('#sidebar_loader').hide();
     }
@@ -181,3 +189,7 @@
         }
     }
 </script>
+
+
+
+

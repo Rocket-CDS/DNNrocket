@@ -319,7 +319,7 @@
     <value>DNNrocket License URL</value>
   </data>
   <data name="licenseurl.Help" xml:space="preserve">
-    <value>When purchasing a license for our software, this url is used to make the connection from your website to our licensing server.  Trial versions are also requested from this URL.  If the webite is not public accessible then you will need to login to your account at https://www.dnnrocket.com to get an offline activated licensekey.</value>
+    <value>When purchasing a license for our software, the url below is used to make the connection from this website to our licensing server.  Trial versions are also requested from this URL.  If this webite is not accessible via public internet, then you will need to login to your account at https://www.dnnrocket.com to get an offline activated licensekey.</value>
   </data>
   <data name="privateftp.Help" xml:space="preserve">
     <value>A private ftp service can be turned on.  Private templates can be shared between portals and installations across servers.  Using a standard FTP service.  This feature is only available in professional version.</value>

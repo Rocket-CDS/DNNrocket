@@ -562,5 +562,18 @@ namespace DNNrocketAPI.render
             var strOut = "<div class='w3-hide-small w3-col' style='width:" + gapSize + "px'>&nbsp;</div><div class='w3-hide-medium w3-hide-large'>&nbsp;</div>";
             return new RawString(strOut);
         }
+
+        public IEncodedString RenderSideMenu(SimplisityRazor model, string projectfolder, string resxFileWithoutExt, bool backbutton, bool signoutbutton)
+        {
+            model.SetSetting("projectfolder", projectfolder);
+            model.SetSetting("resxfile", resxFileWithoutExt);
+            model.SetSetting("menu-backbutton", backbutton.ToString());
+            model.SetSetting("menu-signoutbutton", signoutbutton.ToString());
+            return RenderTemplate("MenuOut.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model, "1.0", true);
+        }
+
+
     }
+
+
 }

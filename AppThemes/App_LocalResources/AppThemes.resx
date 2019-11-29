@@ -237,6 +237,9 @@
   <data name="newmsg.Text" xml:space="preserve">
     <value>Create new AppTheme, based on an existing one or from a blank canvas.</value>
   </data>
+  <data name="nolocal.Text" xml:space="preserve">
+    <value>You do not have any local AppThemes.  Create an Apptheme, import or download pre-defined AppThemes from online repositories.</value>
+  </data>
   <data name="onlineprivatelist.Text" xml:space="preserve">
     <value>Online Private AppThemes</value>
   </data>

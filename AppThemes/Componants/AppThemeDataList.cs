@@ -39,12 +39,16 @@ namespace Rocket.AppThemes.Componants
             List = new List<AppTheme>();
             if (SelectedSystemKey != "")
             {
-                var dirlist = System.IO.Directory.GetDirectories(AppSystemThemeFolderRootMapPath + "\\" + SelectedSystemKey);
-                foreach (var d in dirlist)
+                var themePath = AppSystemThemeFolderRootMapPath + "\\" + SelectedSystemKey;
+                if (Directory.Exists(themePath))
                 {
-                    var dr = new System.IO.DirectoryInfo(d);
-                    var appTheme = new AppTheme(SelectedSystemKey, dr.Name, "");
-                    List.Add(appTheme);
+                    var dirlist = System.IO.Directory.GetDirectories(themePath);
+                    foreach (var d in dirlist)
+                    {
+                        var dr = new System.IO.DirectoryInfo(d);
+                        var appTheme = new AppTheme(SelectedSystemKey, dr.Name, "");
+                        List.Add(appTheme);
+                    }
                 }
             }
         }
@@ -63,9 +67,9 @@ namespace Rocket.AppThemes.Componants
         public void ClearCacheLists()
         {
             var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath;
-            CacheUtils.RemoveCache(cachekey);
+            CacheUtils.RemoveCache(cachekey, "apptheme");
             cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
-            CacheUtils.RemoveCache(cachekey);
+            CacheUtils.RemoveCache(cachekey, "apptheme");
             PopulateSystemFolderList();
             PopulateAppThemeList();
         }
@@ -86,26 +90,26 @@ namespace Rocket.AppThemes.Componants
             get
             {
                 var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath;
-                if (CacheUtils.GetCache(cachekey) == null) return new List<AppTheme>();
-                return (List<AppTheme>)CacheUtils.GetCache(cachekey);
+                if (CacheUtils.GetCache(cachekey, "apptheme") == null) return new List<AppTheme>();
+                return (List<AppTheme>)CacheUtils.GetCache(cachekey, "apptheme");
             }
             set
             {
                 var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath;
-                CacheUtils.SetCache(cachekey, value);
+                CacheUtils.SetCache(cachekey, value, "apptheme");
             }
         }
         public List<SystemInfoData> SystemFolderList {
             get
             {
                 var cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
-                if (CacheUtils.GetCache(cachekey) == null) return new List<SystemInfoData>();
-                return (List<SystemInfoData>)CacheUtils.GetCache(cachekey);
+                if (CacheUtils.GetCache(cachekey, "apptheme") == null) return new List<SystemInfoData>();
+                return (List<SystemInfoData>)CacheUtils.GetCache(cachekey, "apptheme");
             }
             set
             {
                 var cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
-                CacheUtils.SetCache(cachekey, value);
+                CacheUtils.SetCache(cachekey, value, "apptheme");
             }
         }
 
