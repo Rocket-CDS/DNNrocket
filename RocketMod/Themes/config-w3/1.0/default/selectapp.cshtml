@@ -155,8 +155,10 @@
                     </div>
                 </div>
 
-
-                <div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class=' w3-margin w3-bar-item w3-button w3-theme w3-hover-theme simplisity_click'>@ButtonText(ButtonTypes.back)</div>
+                @if (Model.GetSettingInt("moduleid") == 0)
+                {
+                    <div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class=' w3-margin w3-bar-item w3-button w3-theme w3-hover-theme simplisity_click'>@ButtonText(ButtonTypes.back)</div>
+                }
 
             </div>
         </div>
