@@ -231,10 +231,10 @@
     var m = new SimplisityRazor(l, Model.Settings);
     m.SetSetting("interfacekey", "rocketmodapptheme");
     m.SetSetting("moduletemplatebutton", "True");
-    m.ModuleId = Model.ModuleId;
+    m.ModuleId = appThemeMod.ModuleId;
 
     var objCtrl = new DNNrocketController();
-    var fieldInfo = objCtrl.GetByType(info.PortalId, Model.ModuleId, "ROCKETMODFIELDS", "", "");
+    var fieldInfo = objCtrl.GetByType(info.PortalId, m.ModuleId, "ROCKETMODFIELDS", "", "");
     if (fieldInfo != null)
     {
         m.SetDataObject("modulefieldlist", fieldInfo.GetRecordList("fielddata"));

@@ -183,8 +183,6 @@ namespace RocketMod
 
             }
 
-            if (paramCmd != "rocketmod_getdata") CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
-
             if (strOut == "" && !_moduleParams.Exists)
             {
                 return DNNrocketUtils.ReturnString(GetSetup());
@@ -196,8 +194,9 @@ namespace RocketMod
 
         public static string initCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
-            _userStorage = new UserStorage();
+            if (paramCmd != "rocketmod_getdata") CacheUtils.ClearAllCache();
 
+            _userStorage = new UserStorage();
             _paramInfo = paramInfo;
             if (!CheckSecurity(paramCmd))
             {

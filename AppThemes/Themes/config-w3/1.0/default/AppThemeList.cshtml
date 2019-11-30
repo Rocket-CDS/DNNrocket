@@ -61,7 +61,7 @@
                             <input value="" id="appthemename" s-xpath="genxml/textbox/appthemename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.appthemename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
                         </div>
                         <div class="w3-col m3 w3-padding">
-                            <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addapptheme" s-post="#createnewapptheme" s-return=".createnewappthemereturn" s-after="redisplaylist" s-fields=''>@ButtonText(ButtonTypes.add)</div>
+                            <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addapptheme" s-post="#createnewapptheme" s-return=".createnewappthemereturn" s-after="redisplaylist" s-fields=''>@ButtonText(ButtonTypes.create)</div>
                         </div>
                     </div>
                     <div class="w3-row w3-panel w3-red createnewappthemereturn" style="display:none;">
@@ -96,9 +96,9 @@
             <div id="exportdownloadedurl" class="w3-hide"></div>
 
             <div class="w3-row w3-padding">
-                <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'">@ButtonText(ButtonTypes.create)</div>
+                <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearselectedsystemkey":"true"}'>@ButtonText(ButtonTypes.back)</div>
                 @ButtonGap()
-                <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearselectedsystemkey":"true"}' >@ButtonText(ButtonTypes.back)</div>
+                <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'">@ButtonText(ButtonTypes.create)</div>
                 @ButtonGap()
                 <div class="w3-col m6 w3-dropdown-hover">
                     <button class="w3-button">More...</button>

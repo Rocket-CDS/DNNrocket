@@ -1,6 +1,7 @@
 ﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using Simplisity;
 @using RocketMod;
+@using DNNrocketAPI;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "[Token:appthemeresx]")
@@ -12,7 +13,9 @@
 <div class=''>
 
     <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodedit_addarticle" s-fields=''>@ButtonText(DNNrocketAPI.ButtonTypes.add)</div>
+        <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodedit_addarticle" s-fields=''>@ButtonText(ButtonTypes.add)</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-blue langchangesave simplisity_click" s-cmd="rocketmodedit_editarticlelist">@ButtonText(ButtonTypes.refresh)</div>
     </div>
 
     <div class="w3-row w3-card searchdata w3-margin-top">

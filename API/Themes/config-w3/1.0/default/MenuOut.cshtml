@@ -44,7 +44,7 @@
                     }
                 }
                 menuOut += "<div class='w3-bar-item w3-button w3-padding menubaritem menubaritem" + lp + "  simplisity_click' s-before='sidebarloader" + lp + "' s-after='sidemenuchange' s-cmd='" + defaultcommand + "' s-fields='{\"menuindex\":\"" + lp + "\",\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='" + interfaceicon + "' style='width:20px;'></i>&nbsp;" + interfaceName + "</div>";
-                menuOut += "<script type='text/javascript'>function sidebarloader" + lp + "() {simplisity_setCookieValue('menuindex','" + lp + "');$('#sidebar_loader').show();}</script>";
+                menuOut += "<script type='text/javascript'>function sidebarloader" + lp + "() {simplisity_setCookieValue('" + @sidemenu.SystemKey + "-menuindex','" + lp + "');$('#sidebar_loader').show();}</script>";
             }
             lp += 1;
         }
@@ -79,7 +79,7 @@
                     }
                 }
                 menuOut += "<div class='w3-bar-item w3-button w3-padding menubaritem menubaritem" + lp + " simplisity_click ' s-before='sidebarloader" + lp + "' s-after='sidemenuchange'  s-cmd='" + defaultcommand + "' s-fields='{\"menuindex\":\"" + lp + "\",\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfaceName + "</div>";
-                menuOut += "<script type='text/javascript'>function sidebarloader" + lp + "() {simplisity_setCookieValue('menuindex','" + lp + "');$('#sidebar_loader').show();}</script>";
+                menuOut += "<script type='text/javascript'>function sidebarloader" + lp + "() {simplisity_setCookieValue('" + @sidemenu.SystemKey + "-menuindex','" + lp + "');$('#sidebar_loader').show();}</script>";
                 lp += 1;
             }
             menuOut += "</div>";
@@ -109,7 +109,18 @@
 
 <div class="menureturn" style="display:none;"></div>
 
-@HtmlOf(menuOut)
+
+<div class="w3-bar-block w3-theme">
+
+    @RenderTemplate("LanguageSelect.cshtml", "\\DesktopModules\\DNNrocket\\Country", "config-w3", Model, "1.0", true)
+
+    <div class="w3-overlay w3-white " style="display:none;" id="sidebar_loader"><i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i></div>
+
+    <div class="w3-margin-top w3-margin-bottom">
+        @HtmlOf(menuOut)
+    </div>
+</div>
+
 
 
 <script type="text/javascript">
@@ -170,9 +181,11 @@
     }
 
     function sidemenuchange() {
-        var menuindex = simplisity_getCookieValue('menuindex');
-        $('.menubaritem').removeClass('w3-theme-d5');
-        $('.menubaritem' + menuindex).addClass('w3-theme-d5');
+        var menuindex = simplisity_getCookieValue('@(sidemenu.SystemKey)-menuindex');
+        if (menuindex !== '') {
+            $('.menubaritem').removeClass('w3-theme-d5');
+            $('.menubaritem' + menuindex).addClass('w3-theme-d5');
+        }
         w3_close();
         $('#sidebar_loader').hide();
     }
@@ -188,6 +201,11 @@
             window.location = returnurl;
         }
     }
+
+    function languageChange() {
+        $('.langchangesave').trigger("click");
+    }
+
 </script>
 
 

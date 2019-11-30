@@ -10,23 +10,10 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
+
 <div class="w3-row w3-padding-small w3-theme-d5 w3-border-bottom w3-padding">
     <div class="w3-col w3-large"><i class='fas fa-rocket' style='font-size:36px'></i>&nbsp;Rocket Mod</div>
     <div class="w3-col w3-hide-large w3-button w3-display-topright" onclick="w3_close()" style="cursor:pointer;width:40px;" title=""><i class='fas fa-caret-left' style='font-size:36px'></i></div>
 </div>
 
-<div class="w3-bar-block w3-theme">
-
-    @RenderTemplate("LanguageSelect.cshtml", "\\DesktopModules\\DNNrocket\\Country", "config-w3", Model, "1.0", true)
-
-    <div class="w3-overlay w3-white " style="display:none;" id="sidebar_loader"><i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i></div>
-
-    <div class="w3-margin-top w3-margin-bottom">
-        @{
-            Model.SetSetting("projectfolder", "DNNrocket/RocketMod");
-            Model.SetSetting("resxfile", "RocketMod");
-        }
-        @RenderTemplate("MenuOut.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
-    </div>
-</div>
-
+@RenderSideMenu(Model, "DNNrocket/RocketMod", "RocketMod", true, false)

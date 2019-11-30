@@ -108,14 +108,13 @@
                     </div>
 
                     <hr />
-
                 </div>
 
                 <div id="datasection2" class="w3-row w3-margin-top" style="display:none;">
                     <div class="w3-row w3-padding">
                         <div class="w3-col m2 w3-button w3-khaki" onclick="showselect();">@ButtonText(ButtonTypes.back)</div>
                         @ButtonGap()
-                    <div class="w3-col m2 w3-button w3-green w3-padding-8 saveappthemeconfig" s-cmd="rocketmodedit_saveappthemeconfig" s-after="settingreturn"  s-post=".postdatasection" s-return="#settingsection">@ButtonText(ButtonTypes.next)</div>
+                        <div class="w3-col m2 w3-button w3-green w3-padding-8 saveappthemeconfig" s-cmd="rocketmodedit_saveappthemeconfig" s-after="settingreturn" s-post=".postdatasection" s-return="#settingsection">@ButtonText(ButtonTypes.next)</div>
                     </div>
                     <div class="w3-row">
                         <div class="w3-col m2 w3-margin appthemedisplay ">
@@ -150,12 +149,14 @@
                     <div class="w3-row w3-padding">
                         <div class="w3-col m2 w3-button w3-khaki" onclick="showdetail(simplisity_getParamField('appthemefolder'));">@ButtonText(ButtonTypes.back)</div>
                         @ButtonGap()
-                        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketmodedit_saveappthemesetting"  s-post="#settingsection">@ButtonText(ButtonTypes.save)</div>
+                        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketmodedit_saveappthemesetting" s-post="#settingsection">@ButtonText(ButtonTypes.save)</div>
                     </div>
                     <div id="settingsection">
                     </div>
                 </div>
 
+
+                <div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class=' w3-margin w3-bar-item w3-button w3-theme w3-hover-theme simplisity_click'>@ButtonText(ButtonTypes.back)</div>
 
             </div>
         </div>
