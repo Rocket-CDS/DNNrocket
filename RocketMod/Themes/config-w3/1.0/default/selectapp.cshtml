@@ -26,138 +26,145 @@
             </header>
             <div class="w3-container">
 
-                <div id="datasection" class="w3-row w3-margin-top">
-
-                    <div class="w3-row">
-                        <div class="w3-padding w3-right-align">
-                            <i class="griddisplayicon fas fa-th fa-2x"></i>
-                            &nbsp;
-                            <i class="listdisplayicon w3-text-blue fas fa-th-list fa-2x"></i>
-                        </div>
-                    </div>
-                    <div class="w3-row w3-card searchdata w3-margin-top">
-
-                        <div class="">
-                            <div class="w3-row w3-padding">
-                                <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <ul id="datalist" class="w3-ul w3-border" style="display:none;">
-
-                        @{
-                            var lp1 = 0;
-                        }
-                        @foreach (AppTheme appTheme in appThemeDataList.List)
-                        {
-                            lp1 += 1;
-                            <li class="datalistitem w3-display-container">
-
-                                <div class="listrow w3-cell-row">
-
-                                    <div class=" w3-cell w3-padding w3-button " onclick="showdetail('@(appTheme.AppThemeFolder)');" style="width: 64px;">
-                                        <i class="fas fa-arrow-alt-circle-right" style='font-size:32px'></i>
-                                    </div>
-                                    <div class=" w3-cell w3-padding  w3-hide-small " style="width: 100px;">
-                                        <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" class="w3-circle" />
-                                    </div>
-                                    <div class=" w3-cell w3-padding">
-                                        <div class="">
-                                            <b>
-                                                @appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder
-                                            </b>
-                                        </div>
-                                        <div class="w3-hide-small ">
-
-                                            @{
-                                                var summary = appTheme.AppSummary;
-                                                if (summary.Length > 120)
-                                                {
-                                                    summary = summary.Substring(0, 120) + "...";
-                                                }
-                                            }
-                                            @summary
-                                        </div>
-                                    </div>
-                                    <div class=" w3-cell w3-right w3-hide-small" style="width: 240px;">
-                                        <div class="w3-row">
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                        }
-                    </ul>
-
-                    <div id="datalist2" class="w3-container" style="display:none;">
-                        @{
-                            lp1 = 0;
-                        }
-                        @foreach (AppTheme appTheme in appThemeDataList.List)
-                        {
-                            lp1 += 1;
-                            <div title="@appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder" class="w3-padding w3-button w3-col m2 w3-panel " onclick="showdetail('@(appTheme.AppThemeFolder)');" appthemefolder="@appTheme.AppThemeFolder" style="cursor:pointer;">
-                                <div class="appthemedisplay_@(appTheme.AppThemeFolder)">
-                                    <img src="@ThumbnailImageUrl(appTheme.Logo,140,140)" alt="" style="width:60%;" class="w3-circle w3-hover-opacity">
-                                    <div><b>@appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder</b></div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-
-                    <hr />
-                </div>
-
-                <div id="datasection2" class="w3-row w3-margin-top" style="display:none;">
-                    <div class="w3-row w3-padding">
-                        <div class="w3-col m2 w3-button w3-khaki" onclick="showselect();">@ButtonText(ButtonTypes.back)</div>
-                        @ButtonGap()
-                        <div class="w3-col m2 w3-button w3-green w3-padding-8 saveappthemeconfig" s-cmd="rocketmodedit_saveappthemeconfig" s-after="settingreturn" s-post=".postdatasection" s-return="#settingsection">@ButtonText(ButtonTypes.next)</div>
-                    </div>
-                    <div class="w3-row">
-                        <div class="w3-col m2 w3-margin appthemedisplay ">
-
-                        </div>
-                        <div class="w3-col m9">
-                            <div class="w3-row">
-                                <div class="w3-col m12">
-                                    <label>@ResourceKey("RocketMod.name")</label>
-                                    @TextBox(new SimplisityInfo(), "genxml/hidden/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
-                                </div>
-                                <div class="w3-col m12">
-                                    <label>@ResourceKey("RocketMod.imagefolder")</label>
-                                    @TextBox(new SimplisityInfo(), "genxml/hidden/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
-                                </div>
-                                <div class="w3-col m12">
-                                    <label>@ResourceKey("RocketMod.documentfolder")</label>
-                                    @TextBox(new SimplisityInfo(), "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
-                                </div>
-                                <div class="w3-col m12">
-                                </div>
-                                <div class="w3-col m12">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
-                </div>
-
-
-                <div id="datasection3" class="w3-row" style="display:none;">
-                    <div class="w3-row w3-padding">
-                        <div class="w3-col m2 w3-button w3-khaki" onclick="showdetail(simplisity_getParamField('appthemefolder'));">@ButtonText(ButtonTypes.back)</div>
-                        @ButtonGap()
-                        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketmodedit_saveappthemesetting" s-post="#settingsection">@ButtonText(ButtonTypes.save)</div>
-                    </div>
-                    <div id="settingsection">
-                    </div>
-                </div>
-
                 @if (Model.GetSettingInt("moduleid") == 0)
                 {
+                    <div class="w3-red w3-panel">
+                        <p>@ResourceKey("RocketMod.nomoduleid")</p>
+                    </div>
                     <div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class=' w3-margin w3-bar-item w3-button w3-theme w3-hover-theme simplisity_click'>@ButtonText(ButtonTypes.back)</div>
+                }
+                else
+                {
+
+                    <div id="datasection" class="w3-row w3-margin-top">
+
+                        <div class="w3-row">
+                            <div class="w3-padding w3-right-align">
+                                <i class="griddisplayicon fas fa-th fa-2x"></i>
+                                &nbsp;
+                                <i class="listdisplayicon w3-text-blue fas fa-th-list fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="w3-row w3-card searchdata w3-margin-top">
+
+                            <div class="">
+                                <div class="w3-row w3-padding">
+                                    <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <ul id="datalist" class="w3-ul w3-border" style="display:none;">
+
+                            @{
+                                var lp1 = 0;
+                            }
+                            @foreach (AppTheme appTheme in appThemeDataList.List)
+                            {
+                                lp1 += 1;
+                                <li class="datalistitem w3-display-container">
+
+                                    <div class="listrow w3-cell-row">
+
+                                        <div class=" w3-cell w3-padding w3-button " onclick="showdetail('@(appTheme.AppThemeFolder)');" style="width: 64px;">
+                                            <i class="fas fa-arrow-alt-circle-right" style='font-size:32px'></i>
+                                        </div>
+                                        <div class=" w3-cell w3-padding  w3-hide-small " style="width: 100px;">
+                                            <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" class="w3-circle" />
+                                        </div>
+                                        <div class=" w3-cell w3-padding">
+                                            <div class="">
+                                                <b>
+                                                    @appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder
+                                                </b>
+                                            </div>
+                                            <div class="w3-hide-small ">
+
+                                                @{
+                                                    var summary = appTheme.AppSummary;
+                                                    if (summary.Length > 120)
+                                                    {
+                                                        summary = summary.Substring(0, 120) + "...";
+                                                    }
+                                                }
+                                                @summary
+                                            </div>
+                                        </div>
+                                        <div class=" w3-cell w3-right w3-hide-small" style="width: 240px;">
+                                            <div class="w3-row">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            }
+                        </ul>
+
+                        <div id="datalist2" class="w3-container" style="display:none;">
+                            @{
+                                lp1 = 0;
+                            }
+                            @foreach (AppTheme appTheme in appThemeDataList.List)
+                            {
+                                lp1 += 1;
+                                <div title="@appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder" class="w3-padding w3-button w3-col m2 w3-panel " onclick="showdetail('@(appTheme.AppThemeFolder)');" appthemefolder="@appTheme.AppThemeFolder" style="cursor:pointer;">
+                                    <div class="appthemedisplay_@(appTheme.AppThemeFolder)">
+                                        <img src="@ThumbnailImageUrl(appTheme.Logo,140,140)" alt="" style="width:60%;" class="w3-circle w3-hover-opacity">
+                                        <div><b>@appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder</b></div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <hr />
+                    </div>
+
+                    <div id="datasection2" class="w3-row w3-margin-top" style="display:none;">
+                        <div class="w3-row w3-padding">
+                            <div class="w3-col m2 w3-button w3-khaki" onclick="showselect();">@ButtonText(ButtonTypes.back)</div>
+                            @ButtonGap()
+                            <div class="w3-col m2 w3-button w3-green w3-padding-8 saveappthemeconfig" s-cmd="rocketmodedit_saveappthemeconfig" s-after="settingreturn" s-post=".postdatasection" s-return="#settingsection">@ButtonText(ButtonTypes.next)</div>
+                        </div>
+                        <div class="w3-row">
+                            <div class="w3-col m2 w3-margin appthemedisplay ">
+
+                            </div>
+                            <div class="w3-col m9">
+                                <div class="w3-row">
+                                    <div class="w3-col m12">
+                                        <label>@ResourceKey("RocketMod.name")</label>
+                                        @TextBox(new SimplisityInfo(), "genxml/hidden/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+                                    </div>
+                                    <div class="w3-col m12">
+                                        <label>@ResourceKey("RocketMod.imagefolder")</label>
+                                        @TextBox(new SimplisityInfo(), "genxml/hidden/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
+                                    </div>
+                                    <div class="w3-col m12">
+                                        <label>@ResourceKey("RocketMod.documentfolder")</label>
+                                        @TextBox(new SimplisityInfo(), "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
+                                    </div>
+                                    <div class="w3-col m12">
+                                    </div>
+                                    <div class="w3-col m12">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+
+
+                    <div id="datasection3" class="w3-row" style="display:none;">
+                        <div class="w3-row w3-padding">
+                            <div class="w3-col m2 w3-button w3-khaki" onclick="showdetail(simplisity_getParamField('appthemefolder'));">@ButtonText(ButtonTypes.back)</div>
+                            @ButtonGap()
+                            <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketmodedit_saveappthemesetting" s-post="#settingsection">@ButtonText(ButtonTypes.save)</div>
+                        </div>
+                        <div id="settingsection">
+                        </div>
+                    </div>
+
                 }
 
             </div>

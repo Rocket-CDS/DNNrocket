@@ -252,4 +252,7 @@
   <data name="version.Text" xml:space="preserve">
     <value>Version</value>
   </data>
+  <data name="nomoduleid.Text" xml:space="preserve">
+    <value>No ModuleId is defined.  You should exit the administration and re-enter the edit option,</value>
+  </data>
 </root>

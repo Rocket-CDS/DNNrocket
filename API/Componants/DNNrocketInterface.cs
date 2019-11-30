@@ -142,9 +142,9 @@ namespace DNNrocketAPI
                 var securityrolesall = Info.GetXmlPropertyInt("genxml/radio/securityrolesall");
 
                 var roleAdministrators = userInfo.IsInRole("Administrators");
-                var roleManager = userInfo.IsInRole("Manager");
-                var roleEditor = userInfo.IsInRole("Editor");
-                var roleClientEditor = userInfo.IsInRole("ClientEditor");
+                var roleManager = userInfo.IsInRole("Manager") || userInfo.IsInRole("manager");
+                var roleEditor = userInfo.IsInRole("Editor") || userInfo.IsInRole("editor");
+                var roleClientEditor = userInfo.IsInRole("ClientEditor") || userInfo.IsInRole("clienteditor");
                 var roleRegisteredUsers = userInfo.IsInRole("Registered Users");
                 var roleSubscribers = userInfo.IsInRole("Subscribers");
 
