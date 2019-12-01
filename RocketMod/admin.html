@@ -61,12 +61,18 @@
     <div class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-grey" onclick="w3_open();"><i class="fas fa-bars"></i></div>
 
     <!-- !PAGE CONTENT! -->
-    <div class="w3-main w3-container w3-margin-top" style="margin-left:270px;top:0px " id="base-panel">
+    <div class="w3-row"  style="height:20px">
+        <div class="w3-col m1">
+            <div class="editlanguageflag w3-margin-left "></div>
+        </div>
+        <div id="menulanguageselectdiv" class="w3-col m10"></div>
+    </div>
 
+    <div class="w3-main w3-container" style="margin-left:270px;top:0px " id="base-panel">
 
         <form id="rocketmod_form">
 
-            <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketmodedit_editarticlelist"  s-fields=''>
+            <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketmodedit_editarticlelist" s-fields=''>
                 <div class="">
                     <i class='fa fa-spinner fa-spin w3-display-middle' style='font-size:48px'></i>
                 </div>
@@ -78,20 +84,21 @@
     </div>
 
 
-        <script>
-            $(document).ready(function () {
-                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemkey: 'dnnrocketmodule', debug: false });
-                var urlParams = new URLSearchParams(window.location.search);
-                simplisity_setParamField("reload", true)
-                simplisity_setParamField("moduleid", urlParams.get('moduleid'))
-                simplisity_setParamField("tabid", urlParams.get('tabid'))
-                simplisity_setParamField("editmode", urlParams.get('editmode'))
-                if (urlParams.get('editmode') === '1') {
-                    //$('#base-panel').css('margin-left','0px');
-                    //$('#mySidebar').css('width','0px');
-                }
-            });
-        </script>
+    <script>
+        $(document).ready(function () {
+            $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemkey: 'dnnrocketmodule', debug: false });
+            var urlParams = new URLSearchParams(window.location.search);
+            simplisity_setParamField("reload", true)
+            simplisity_setParamField("moduleid", urlParams.get('moduleid'))
+            simplisity_setParamField("tabid", urlParams.get('tabid'))
+            simplisity_setParamField("editmode", urlParams.get('editmode'))
+            if (urlParams.get('editmode') === '1') {
+                $('#base-panel').css('margin-left', '0px');
+                $('#mySidebar').css('width', '0px');
+                $('#menulanguageselectdiv').attr('editmode', '1');
+            }
+        });
+    </script>
 
 
 </body>

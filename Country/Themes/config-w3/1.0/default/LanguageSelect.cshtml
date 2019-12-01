@@ -4,50 +4,62 @@
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
-    <div class="w3-dropdown-click">
-        <button onclick="LanguageClickSelect()" class="w3-button w3-theme-l4 languageFlag"><img class='languageFlagImg' src='/DesktopModules/DNNrocket/API/images/flags/16/@(DNNrocketUtils.GetEditCulture()).png' alt='@(DNNrocketUtils.GetEditCulture())' /><span class="w3-small languageFlagText">&nbsp;@DNNrocketUtils.GetCultureCodeName(DNNrocketUtils.GetEditCulture())</span></button>
-        <div id="LanguageClickShow" class="w3-dropdown-content w3-bar-block w3-border w3-theme-l3">
-            @{
-                var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
-                foreach (var l in enabledlanguages)
-                {
-                    <div class="w3-bar-item w3-button selectlang " editlang='@l' style="width:100%;" ><img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/@(l).png' alt='@(l)' /><span class="w3-small">&nbsp;@DNNrocketUtils.GetCultureCodeName(l)</span></div>
-                }
+<div class="w3-dropdown-click">
+    <button onclick="LanguageClickSelect()" class="w3-button w3-theme-l4 languageFlag"><img class='languageFlagImg' src='/DesktopModules/DNNrocket/API/images/flags/16/@(DNNrocketUtils.GetEditCulture()).png' alt='@(DNNrocketUtils.GetEditCulture())' /><span class="w3-small languageFlagText">&nbsp;@DNNrocketUtils.GetCultureCodeName(DNNrocketUtils.GetEditCulture())</span></button>
+    <div class="LanguageClickShow w3-dropdown-content w3-bar-block w3-border w3-theme-l5">
+        @{
+            var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+            foreach (var l in enabledlanguages)
+            {
+                <div class="w3-bar-item w3-button selectlang w3-border-bottom " editlang='@l' style="width:100%;"><img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/@(l).png' alt='@(l)' /><span class="w3-small">&nbsp;@DNNrocketUtils.GetCultureCodeName(l)</span></div>
             }
-            <hr/>
-        </div>
+        }
     </div>
+</div>
+
+<!-- single flag, if required, like iframe edit -->
+<div class="w3-row langaugeselectsingleflag" style="display:none;">
+    @foreach (var l in enabledlanguages)
+    {
+        <div class="w3-col w3-right selectlang" style="width:24px;" editlang='@l'>
+            <img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/@(l).png' alt='@(l)' />
+        </div>
+    }
+</div>
+
 
 <script>
     $(document).ready(function () {
 
-    simplisity_setParamField('nextlang', '');
+        simplisity_setParamField('nextlang', "");
 
-    $('.selectlang').unbind('click');
-    $('.selectlang').click(function () {
-        // change langauge by setting "nextlang" cookie and then trigger the save with "simplisity_langchange" class on the save button.
-        // the ajax return with switch the editlang cookie to the nextlang cookie and delete the nextlang cookie, it will then reload the page.
-        simplisity_setParamField('nextlang', $(this).attr('editlang'))
-        LanguageClickSelect(); // close list
-        $('.languageFlagImg').attr('src','/DesktopModules/DNNrocket/API/images/flags/16/' + $(this).attr('editlang') + '.png');
-        $('.languageFlagText').text($(this).text());
-        // We need to save and reload or just reload on the list page.  So call a function in each template
-        try {
-            languageChange();
-        } catch(ConvError) {
-            // Ignore if no function on template.
-        }
+        $('.editlanguageflag').html("<img src='/DesktopModules/DNNrocket/API/images/flags/16/@(DNNrocketUtils.GetEditCulture()).png' alt='@(DNNrocketUtils.GetEditCulture())' />")
 
-    });        
+        $('.selectlang').unbind('click');
+        $('.selectlang').click(function () {
+            // change langauge by setting "nextlang" cookie and then trigger the save with "simplisity_langchange" class on the save button.
+            // the ajax return with switch the editlang cookie to the nextlang cookie and delete the nextlang cookie, it will then reload the page.
+            simplisity_setParamField('nextlang', $(this).attr('editlang'))
+            LanguageClickSelect(); // close list
+            $('.languageFlagImg').attr('src', '/DesktopModules/DNNrocket/API/images/flags/16/' + $(this).attr('editlang') + '.png');
+            $('.languageFlagText').text($(this).text());
+            // We need to save and reload or just reload on the list page.  So call a function in each template
+            try {
+                $('.editlanguageflag').html("<img src='/DesktopModules/DNNrocket/API/images/flags/16/" + $(this).attr('editlang') + ".png' alt='" + $(this).attr('editlang') + "' />")
+                languageChange();
+            } catch (ConvError) {
+                // Ignore if no function on template.
+            }
+
+        });
 
     });
 
-function LanguageClickSelect() {
-  var x = document.getElementById("LanguageClickShow");
-  if (x.className.indexOf("w3-show") == -1) { 
-    x.className += " w3-show";
-  } else {
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
+    function LanguageClickSelect() {
+        if (!$(".LanguageClickShow").hasClass("w3-show")) {
+            $(".LanguageClickShow").addClass("w3-show");
+        } else {
+            $(".LanguageClickShow").removeClass("w3-show");
+        }
+    }
 </script>

@@ -154,6 +154,11 @@
 
         sidemenuchange();
 
+        if ($('#menulanguageselectdiv').attr('editmode') === '1') {
+            $('.langaugeselectsingleflag').appendTo('#menulanguageselectdiv');
+            $('.langaugeselectsingleflag').show();
+        }
+
     });
 
 
