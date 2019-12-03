@@ -7,24 +7,19 @@ using System.Threading.Tasks;
 
 namespace DNNrocketAPI.Componants
 {
-    public class SystemLicenseData
+    public class LicenseListData
     {
         private DNNrocketController _objCtrl;
-        public SystemLicenseData()
+        public LicenseListData()
         {
             _objCtrl = new DNNrocketController();
             LoadData();
         }
 
-        public void Save(SimplisityRecord postInfo)
+        public void AddLicense(int portalId, string systemKey)
         {
-            LoadData();
-        }
-
-        public void AddLicense(SimplisityRecord newLicenseRecord)
-        {
-            var l = new LicenseData(newLicenseRecord); 
-            l.Update();
+            var licenseData = new LicenseData(portalId, systemKey);
+            licenseData.Update();
             LoadData();
         }
 
@@ -41,6 +36,5 @@ namespace DNNrocketAPI.Componants
         }
 
         public List<LicenseData> List { get; set;}
-
     }
 }

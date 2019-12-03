@@ -13,13 +13,14 @@ namespace Simplisity
     public static class SimplisityUtils
     {        
 
-        public static string PostData(string url, string simplisity_cmd, string inputjson = "", string paramjson = "")
+        public static string PostData(string url, string systemkey, string simplisity_cmd, string inputjson = "", string paramjson = "", NameValueCollection reqparm = null)
         {
-            var reqparm = new NameValueCollection();
+            if (reqparm == null) reqparm = new NameValueCollection();
             reqparm.Add("simplisity_cmd", simplisity_cmd);
             reqparm.Add("inputjson", inputjson);
             reqparm.Add("paramjson", paramjson);
-            return PostData(url, reqparm);
+            if (!url.ToLower().StartsWith("http")) url = "http://" + url;
+            return PostData(url + "?cmd=" + simplisity_cmd + "&systemkey=" + systemkey, reqparm);
         }
         public static string PostData(string url, NameValueCollection reqparm)
         {

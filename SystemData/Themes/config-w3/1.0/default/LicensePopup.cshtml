@@ -7,7 +7,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 
 @{
-    var licenseDataList = (SystemLicenseData)Model.List.First();
+    var licenseDataList = (LicenseListData)Model.List.First();
     var systemData = new SystemData();
 
     var systemDictionary = new Dictionary<string, string>();

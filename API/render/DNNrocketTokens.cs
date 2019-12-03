@@ -18,6 +18,22 @@ namespace DNNrocketAPI.render
     public class DNNrocketTokens<T> : Simplisity.RazorEngineTokens<T>
     {
 
+        public IEncodedString DropDownSystemKeyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+        {
+            var dataSytemKeys = new Dictionary<string, string>();
+
+            var systemData = new DNNrocketAPI.SystemData();
+            var list = systemData.GetSystemList();
+            foreach (var sk in list)
+            {
+                if (!dataSytemKeys.ContainsKey(sk.GUIDKey) && sk.GetXmlPropertyBool("genxml/checkbox/proavailable"))
+                {
+                    dataSytemKeys.Add(sk.GUIDKey, sk.GUIDKey);
+                }
+            }
+            return DropDownList(info, xpath, dataSytemKeys, attributes, defaultValue, localized, row, listname);
+        }
+
         public IEncodedString ResourceCSV(String resourceFileKey, string keyListCSV, string lang = "", string resourceExtension = "Text")
         {
             var csvList = keyListCSV.Split(',');

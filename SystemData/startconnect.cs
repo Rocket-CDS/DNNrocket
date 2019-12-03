@@ -115,6 +115,9 @@ namespace DNNrocket.SystemData
                     case "login_sendreset":
                         //strOut = ResetPass(sInfo);
                         break;
+                    case "systemapi_licenserecieveremote":
+                        strOut = SaveRemote();
+                        break;
                     default:
                         strOut = UserUtils.LoginForm(systemInfo, rtnInfo, "systemapi", UserUtils.GetCurrentUserId());
                         break;
@@ -125,15 +128,39 @@ namespace DNNrocket.SystemData
             return rtnDic;            
         }
 
+        public static String SaveRemote()
+        {
+            try
+            {
+                var licenseXml = _paramInfo.GetXmlProperty("genxml/postform/licensecode");
+                if (licenseXml != "")
+                {
+                    licenseXml = GeneralUtils.DeCode(licenseXml);
+                    var sRec = new SimplisityRecord();
+                    sRec.FromXmlItem(licenseXml);
+                    sRec.ItemID = -1;
+                    sRec.TypeCode = "LICENSECLIENT";
+                    var objCtrl = new DNNrocketController();
+                    objCtrl.Update(sRec);
+                    return "OK";
+                }
+                return "FAIL REMOTE : no data";
+            }
+            catch (Exception ex)
+            {
+                return "FAIL REMOTE : " + ex.ToString();
+
+            }
+        }
 
         public static String GetLicenseList()
         {
             try
             {
-                var systemLicenseData = new SystemLicenseData();
+                var LicenseListData = new LicenseListData();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("Admin_SystemLicense.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var passSettings = _postInfo.ToDictionary();
-                return DNNrocketUtils.RazorDetail(razorTempl, systemLicenseData, passSettings, null, true);
+                return DNNrocketUtils.RazorDetail(razorTempl, LicenseListData, passSettings, null, true);
             }
             catch (Exception ex)
             {
