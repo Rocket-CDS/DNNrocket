@@ -162,5 +162,24 @@ namespace Simplisity
             return r.Replace(Str, "");
         }
 
+        public static void AppendToLog(string logMapPathFolder, string logName, string logMessage)
+        {
+            var dstring = DateTime.Now.ToString("yyyy-mm-dd");
+            using (StreamWriter w = File.AppendText(logMapPathFolder.TrimEnd('\\') + "\\" + dstring + "_" + Path.GetFileNameWithoutExtension(logName) + ".txt"))
+            {
+                Log(DateTime.Now.ToString("d/M/yyyy HH:mm:ss") + " :  " + logMessage, w);
+            }
+
+        }
+        public static void Log(string logMessage, TextWriter w)
+        {
+            w.Write("\r\nLog Entry : ");
+            w.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+            w.WriteLine("  :");
+            w.WriteLine($"  :{logMessage}");
+            w.WriteLine("-------------------------------");
+        }
+
+
     }
 }

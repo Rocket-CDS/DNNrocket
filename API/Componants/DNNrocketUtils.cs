@@ -1738,18 +1738,26 @@ namespace DNNrocketAPI
         //  --------------------- Debug Log files ------------------------------
         public static void LogDebug(string message)
         {
-            var mappath = TempDirectoryMapPath().TrimEnd('\\') + "\\debuglog.txt";
-            var readmsg = FileUtils.ReadFile(mappath);
-            readmsg += Environment.NewLine + DateTime.Now.ToString("d/M/yyyy HH:mm:ss") + " - " +  message;
-            FileUtils.SaveFile(mappath, readmsg);
+            var mappath = TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
+            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
+            FileUtils.AppendToLog(mappath, "debug", message);
         }
         public static void LogDebugClear()
         {
-            var mappath = TempDirectoryMapPath().TrimEnd('\\') + "\\debuglog.txt";
-            File.Delete(mappath);
+            var mappath = TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
+            System.IO.DirectoryInfo di = new DirectoryInfo(mappath);
+            foreach (System.IO.FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
         }
 
-
+        public static void LogTracking(string message, string logName = "Log")
+        {
+            var mappath = HomeDNNrocketDirectoryMapPath().TrimEnd('\\') + "\\logs";
+            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
+            FileUtils.AppendToLog(mappath, logName, message);
+        }
 
     }
 }
