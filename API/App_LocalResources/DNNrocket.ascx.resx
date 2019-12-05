@@ -409,7 +409,7 @@
     <value>You are currently running a FREE trial or community version of this product.  Purchasing a professional license entitles you to direct email and ticket support.  It will also unlock professional features.  If you require a more dedicated support: subscription, consultation and development options are available.</value>
   </data>
   <data name="getlicense.Text" xml:space="preserve">
-    <value>Professional License</value>
+    <value>Get Professional License</value>
   </data>
   <data name="register.Text" xml:space="preserve">
     <value>Register</value>
@@ -449,5 +449,11 @@
   </data>
   <data name="refresh.Icon" xml:space="preserve">
     <value>&lt;i title="Refresh" class="fas fa-sync-alt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="prolicense.Text" xml:space="preserve">
+    <value>Professional License</value>
+  </data>
+  <data name="checkkey.Text" xml:space="preserve">
+    <value>Verify Key</value>
   </data>
 </root>

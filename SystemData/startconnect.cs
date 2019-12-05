@@ -3,6 +3,7 @@ using DNNrocketAPI.Componants;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Xml;
 
 namespace DNNrocket.SystemData
@@ -103,53 +104,107 @@ namespace DNNrocket.SystemData
                         break;
                     case "systemapi_licensesave":
                         strOut = GetLicenseList();
-                        break;
-
+                        break;                       
                 }
             }
-            else
+
+            switch (paramCmd)
             {
-
-                switch (paramCmd)
-                {
-                    case "login_sendreset":
-                        //strOut = ResetPass(sInfo);
-                        break;
-                    case "systemapi_licenserecieveremote":
-                        strOut = SaveRemote();
-                        break;
-                    default:
+                case "login_sendreset":
+                    //strOut = ResetPass(sInfo);
+                    break;
+                case "systemapi_licenserecieveremote":
+                    strOut = "FAIL";
+                    var licenseXml = _paramInfo.GetXmlProperty("genxml/postform/licensecode");
+                    if (SaveRemoteLicense(licenseXml)) strOut = "OK";
+                    break;
+                case "systemapi_licensevarify":
+                    strOut = "FAIL";
+                    if (VarifyLicense()) strOut = "OK";
+                    break;
+                default:
+                    if (!commandSecurity.SecurityCheckIsSuperUser())
+                    {
                         strOut = UserUtils.LoginForm(systemInfo, rtnInfo, "systemapi", UserUtils.GetCurrentUserId());
-                        break;
-                }
+                    }
+                    break;
             }
+
             var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;            
         }
 
-        public static String SaveRemote()
+        public static bool GetRemoteLicense()
         {
             try
             {
-                var licenseXml = _paramInfo.GetXmlProperty("genxml/postform/licensecode");
+                var systemGlobalData = new SystemGlobalData();
+                var reqparm = new NameValueCollection();
+                reqparm.Add("sitekey", DNNrocketUtils.SiteGuid());
+                reqparm.Add("systemkey", _systemInfoData.SystemKey);
+                reqparm.Add("domainurl", DNNrocketUtils.GetDefaultWebsiteDomainUrl());
+                var rtnLicenseStatus = SimplisityUtils.PostData(systemGlobalData.LicenseUrl.TrimEnd('/') + "/DesktopModules/DNNrocket/api/api.ashx", "rocketlicense", "clientlicense_getlicense", "", "", reqparm);
+                if (rtnLicenseStatus == "OK") return true;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                DNNrocketUtils.LogException(ex);
+                return false;
+            }
+        }
+
+        public static bool VarifyLicense()
+        {
+            try
+            {
+                var getremote = GetRemoteLicense();
+                if (!getremote) return false;
+                var sitekey = _paramInfo.GetXmlProperty("genxml/hidden/sitekey");
+                var systemkey = _paramInfo.GetXmlProperty("genxml/hidden/systemkey");
+                var licenseData = new LicenseData(systemkey, sitekey);
+                return licenseData.ValidateCertificateKey(sitekey);
+            }
+            catch (Exception ex)
+            {
+                DNNrocketUtils.LogException(ex);
+                return false;
+            }
+        }
+
+        public static bool SaveRemoteLicense(string licenseXml)
+        {
+            try
+            {
                 if (licenseXml != "")
                 {
                     licenseXml = GeneralUtils.DeCode(licenseXml);
                     var sRec = new SimplisityRecord();
                     sRec.FromXmlItem(licenseXml);
-                    sRec.ItemID = -1;
-                    sRec.TypeCode = "LICENSECLIENT";
-                    var objCtrl = new DNNrocketController();
-                    objCtrl.Update(sRec);
-                    return "OK";
+
+                    var systemkey = sRec.GetXmlProperty("genxml/select/systemkey");
+                    var sitekey = sRec.GetXmlProperty("genxml/textbox/sitekey");
+                    var licenseData = new LicenseData(systemkey, sitekey);
+                    if (licenseData.Exists)
+                    {
+                        licenseData.Record.XMLData = sRec.XMLData;
+                        licenseData.Update();
+                    }
+                    else
+                    {
+                        var objCtrl = new DNNrocketController();
+                        sRec.ItemID = -1;
+                        objCtrl.Update(sRec);
+                    }
+                    return true;
                 }
-                return "FAIL REMOTE : no data";
+                return false;
             }
             catch (Exception ex)
             {
-                return "FAIL REMOTE : " + ex.ToString();
-
+                DNNrocketUtils.LogException(ex);
+                return false;
             }
         }
 
