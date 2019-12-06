@@ -12,12 +12,14 @@
 
 @if (Model.GetSettingBool("addeditscript"))
 {
-    <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
-    <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+    
 
     <div id="rocketmodmodel_@(Model.ModuleId)" class="w3-modal" style="z-index:9999;background-color:grey">
-        <div class="w3-modal-content w3-card-4 w3-blue-grey " style="width: 95%;height: 90%;">
-            <div onclick="rocketmodeditiframeclose_@(Model.ModuleId)();" class="w3-button w3-right closeiframe">&times;@ButtonText(ButtonTypes.close)</div>
+        <div class="w3-modal-content w3-card-4 " style="width: 95%;height: 90%;">
+
+            <header class="w3-row w3-blue-grey " >
+                <span onclick="rocketmodeditiframeclose_@(Model.ModuleId)();" style="cursor:pointer;" class="w3-button w3-right closeiframe">@ButtonText(ButtonTypes.close)</span>
+            </header>
             <div class="w3-row" style="height: 100%">
                 <iframe id="rocketmodIframe_@(Model.ModuleId)" style="width: 100%; height: 100%;">@ResourceKey("RocketMod.iframesupport")</iframe>
             </div>
@@ -31,7 +33,7 @@
             if (typeof (scrollpos) !== 'undefined' && scrollpos > 0) {
                 $('html').scrollTop(scrollpos);
             }
-    });
+        });
 
        function rocketmodeditiframeclose_@(Model.ModuleId)() {
            $('#rocketmodmodel_@(Model.ModuleId)').hide();

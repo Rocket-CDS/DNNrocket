@@ -127,6 +127,9 @@ namespace DNNrocketAPI
 
         private void PageLoad()
         {
+            var hasEditAccess = false;
+            if (UserId > 0) hasEditAccess = DotNetNuke.Security.Permissions.ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration);
+
             var objCtrl = new DNNrocketController();
 
             var itemref = DNNrocketUtils.RequestQueryStringParam(Request, "refid");
@@ -179,7 +182,7 @@ namespace DNNrocketAPI
                     paramInfo.SetXmlProperty("genxml/postform/" + key.Replace("_","-"), Request.Form[key]); // remove '_' from xpath
                 }
 
-                var strOut = "No Interface Found.";
+                var strOut = "";
                 var cacheOutPut = "";
                 var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture();
                 if (_moduleParams.CacheEnabled) cacheOutPut = (string)CacheUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
@@ -189,10 +192,28 @@ namespace DNNrocketAPI
                 {
                     var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, paramInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
 
+                    if (hasEditAccess)
+                    {
+                        strOut = "<div class='rocketmodcontentwrapper w3-display-container'>";
+                        var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemInfoData.DebugMode);
+                        var model = new SimplisityRazor();
+                        model.ModuleId = ModuleId;
+                        strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemInfoData.DebugMode);
+                    }
+
                     if (returnDictionary.ContainsKey("outputhtml"))
                     {
-                        strOut = returnDictionary["outputhtml"];
+                        strOut += returnDictionary["outputhtml"];
                         CacheUtils.SetCache(cacheKey, strOut, _moduleParams.CacheGroupId);
+                    }
+
+                    if (hasEditAccess)
+                    {
+                        strOut += "</div>";
+                        var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemInfoData.DebugMode);
+                        var model = new SimplisityRazor();
+                        model.ModuleId = ModuleId;
+                        strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemInfoData.DebugMode);
                     }
                 }
                 else
@@ -212,9 +233,10 @@ namespace DNNrocketAPI
                 phData.Controls.Add(lit);
             }
 
-            if (EditMode)
+            if (hasEditAccess && (!Page.Items.Contains("dnnrocketview-addedheader") || !(bool)Page.Items["dnnrocketview-addedheader"]))
             {
-                PageIncludes.IncludeTextInHeader(Page, "<link rel='stylesheet' href='/DesktopModules/DNNrocket/css/w3.css' />");
+                if (!Page.Items.Contains("dnnrocketview-addedheader")) Page.Items.Add("dnnrocketview-addedheader", true);
+                PageIncludes.IncludeTextInHeader(Page, "<link rel='stylesheet' href='/DesktopModules/DNNrocket/fa/css/all.min.css'><link rel='stylesheet' href='/DesktopModules/DNNrocket/css/w3.css'><script type='text/javascript' src='/DesktopModules/DNNrocket/Simplisity/js/simplisity.js'></script>");
             }
 
         }
