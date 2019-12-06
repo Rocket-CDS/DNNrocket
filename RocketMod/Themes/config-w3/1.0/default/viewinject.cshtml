@@ -13,13 +13,13 @@
 
     <script>
         $(document).ready(function () {
-            $('.rocketmodcontentwrapper').hover(				
+
+            $('#rocketmodcontentwrapper@(Model.ModuleId)').hover(				
                 function () {
-                    $('.rocketmodcontentediticons').show()
-                }, 
-				
+                    $('#rocketmodcontentediticons@(Model.ModuleId)').show()
+                }, 				
                 function () {
-                    $('.rocketmodcontentediticons').hide()
+                   $('#rocketmodcontentediticons@(Model.ModuleId)').hide()
                 }
             );
         });

@@ -48,135 +48,175 @@ namespace RocketMod
 
             var rtnDic = new Dictionary<string, string>();
 
+            // set editlang from url param or cache
+            _editLang = DNNrocketUtils.GetEditCulture();
+
             switch (paramCmd)
             {
                 case "rocketmod_login":
+                    AssignEditLang(); //check for change of langauge
                     strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                     break;
                 case "rocketmod_getdata":
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetDisplay();
                     break;
                 case "rocketmod_getsetupmenu":
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetSetup();
                     break;
 
                 case "dashboard_get":
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetDashBoard();
                     break;
 
                 case "rocketmodedit_selectapptheme":
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetSelectApp();
                     break;
                 case "rocketmodedit_saveapptheme":
                     SaveAppTheme();
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetDashBoard();
                     break;
                 case "rocketmodedit_saveappthemeconfig":
                     SaveAppTheme();
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetSettingSection();
                     break;
                 case "rocketmodedit_saveappthemesetting":
                     SettingsSave();
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetDashBoard();
                     break;
                 case "rocketmodedit_editarticlelist":
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetArticleEdit(true);
                     break;
                 case "rocketmodedit_articlesearch":
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetArticleEdit(false);
                     break;
                 case "rocketmodedit_addarticle":
+                    AssignEditLang(); //check for change of langauge
                     strOut = AddArticle();
                     break;
                 case "rocketmodedit_editarticle":
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_savearticle":
                     SaveArticle();
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_savearticlelist":
                     SaveArticleList();
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetArticleEdit(true);
                     break;
                 case "rocketmodedit_deletearticle":
                     DeleteArticle();
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetArticleEdit(true);
                     break;
                 case "rocketmodedit_addimage":
+                    AssignEditLang(); //check for change of langauge
                     RocketModAddListItem("imagelist" + _paramInfo.GetXmlProperty("genxml/hidden/imgfieldname"));
                     strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_adddocument":
+                    AssignEditLang(); //check for change of langauge
                     RocketModAddListItem("documentlist" + _paramInfo.GetXmlProperty("genxml/hidden/docfieldname"));
                     strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_addlink":
+                    AssignEditLang(); //check for change of langauge
                     RocketModAddListItem("linklist" + _paramInfo.GetXmlProperty("genxml/hidden/linkfieldname"));
                     strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_saveconfig":
                     SaveConfig();
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetDashBoard();
                     break;
                 case "rocketmodedit_reset":
+                    AssignEditLang(); //check for change of langauge
                     strOut = ResetRocketMod();
                     break;
                 case "rocketmodedit_resetdata":
+                    AssignEditLang(); //check for change of langauge
                     strOut = ResetDataRocketMod();
                     break;
                 case "rocketmodedit_datasourcelist":
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetDataSourceList();
                     break;
                 case "rocketmodedit_datasourceselect":
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetDataSourceSelect();
                     break;
 
 
                 case "rocketmodsettings_edit":
+                    AssignEditLang(); //check for change of langauge
                     strOut = EditSettingsData();
                     break;
                 case "rocketmodsettings_add":
+                    AssignEditLang(); //check for change of langauge
                     strOut = AddSettingsRow();
                     break;
                 case "rocketmodsettings_save":
+                    AssignEditLang(); //check for change of langauge
                     strOut = SettingsSave();
                     break;
                 case "rocketmodsettings_delete":
+                    AssignEditLang(); //check for change of langauge
                     strOut = SettingsDelete();
                     break;
 
                 case "rocketmodfields_edit":
+                    AssignEditLang(); //check for change of langauge
                     strOut = EditFieldsData();
                     break;
                 case "rocketmodfields_add":
+                    AssignEditLang(); //check for change of langauge
                     strOut = AddFieldsRow();
                     break;
                 case "rocketmodfields_save":
+                    AssignEditLang(); //check for change of langauge
                     strOut = FieldsSave();
                     break;
                 case "rocketmodfields_delete":
+                    AssignEditLang(); //check for change of langauge
                     strOut = FieldsDelete();
                     break;
 
                 case "rocketmodview_download":
+                    AssignEditLang(); //check for change of langauge
                     rtnDic = DownloadDocument();
                     break;
 
                 case "rocketmodapptheme_apptheme":
+                    AssignEditLang(); //check for change of langauge
                     strOut = GetAppModTheme();
                     break;
                 case "rocketmodapptheme_saveeditor":
+                    AssignEditLang(); //check for change of langauge
                     strOut = SaveEditor();
                     break;
                 case "rocketmodapptheme_removemodtemplate":
+                    AssignEditLang(); //check for change of langauge
                     strOut = RemoveTemplate();
                     break;
 
                 case "module_export":
+                    AssignEditLang(); //check for change of langauge
                     strOut = ExportData();
                     break;
                 case "module_import":
+                    AssignEditLang(); //check for change of langauge
                     ImportData();
                     break;
 
@@ -206,19 +246,26 @@ namespace RocketMod
             {
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
                 {
-                    var menucmd = _userStorage.Get(_systemKey + "-s-menu-cmd");
-                    if (menucmd != "")
+                    if (paramInfo.GetXmlProperty("genxml/hidden/editmode") == "1")
                     {
-                        paramCmd = menucmd;
-                        var paramXml = _userStorage.Get(_systemKey + "-s-menu-paramInfo");
-                        if (paramXml != "") _paramInfo.FromXmlItem(paramXml);
+                        paramCmd = "rocketmodedit_editarticlelist";
+                    }
+                    else
+                    {
+                        var menucmd = _userStorage.Get(_systemKey + "-s-menu-cmd");
+                        if (menucmd != "")
+                        {
+                            paramCmd = menucmd;
+                            var paramXml = _userStorage.Get(_systemKey + "-s-menu-paramInfo");
+                            if (paramXml != "") _paramInfo.FromXmlItem(paramXml);
 
-                        // we may have a diiferent rocketInterface if we have reloaded from the last command.
-                        var interfacekey = paramInfo.GetXmlProperty("genxml/hidden/interfacekey");
-                        if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
-                        if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
-                        var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
-                        interfaceInfo = rocketInterface.Info;
+                            // we may have a diiferent rocketInterface if we have reloaded from the last command.
+                            var interfacekey = paramInfo.GetXmlProperty("genxml/hidden/interfacekey");
+                            if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
+                            if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
+                            var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
+                            interfaceInfo = rocketInterface.Info;
+                        }
                     }
                 }
                 else
@@ -419,7 +466,6 @@ namespace RocketMod
         }
         public static void SaveArticle()
         {
-
             if (_dataAppThemeMod.AppTheme.DataType == 1)
             {
                 _articleData = new ArticleData(_dataModuleParams.ModuleId, _editLang);
@@ -432,6 +478,7 @@ namespace RocketMod
             _articleData.DebugMode = _systemInfoData.DebugMode;
             _articleData.Save(_postInfo);
         }
+
         public static void SaveArticleList()
         {
             var listNames = _postInfo.GetLists();
@@ -514,8 +561,6 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang();
-
                 var razorTempl = _appThemeMod.GetTemplateRazor("edit");
                 if (_moduleParams.DataSourceExternal)
                 {
@@ -582,7 +627,6 @@ namespace RocketMod
             try
             {
                 var strOut = "";
-                AssignEditLang();
                 var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, _editLang);
                 if (loadCachedHeader)
                 {
@@ -624,7 +668,6 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang();
                 var fieldsData = GetFieldsData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
@@ -683,7 +726,6 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang();
                 var settingsData = GetSettingsData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
@@ -745,7 +787,6 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang();
                 var articleDataList = new ArticleDataList(_moduleid, _editLang);
                 articleDataList.DeleteAll();
                 return GetDashBoard();
@@ -759,7 +800,6 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang();
                 var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
                 if (!appTheme.EnableSettings) return "";
                 var razorTempl = appTheme.GetTemplate("settings"); // new module, so settings theme will be systemtheme.
@@ -776,7 +816,6 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang();
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "dashboard.cshtml";
@@ -836,7 +875,6 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang();
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "apptheme.cshtml";
@@ -984,12 +1022,6 @@ namespace RocketMod
 
         }
 
-        private static void AssignEditLang()
-        {
-            var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
-            if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
-        }
-
         private static string ExportData()
         {
             var exportData = new ExportData(_rocketInterface, _moduleid, _systemKey);
@@ -1002,6 +1034,12 @@ namespace RocketMod
             var importData = new ImportData(_rocketInterface, portalid, _moduleid, oldmoduleid, _postInfo.XMLData);
             CacheUtils.ClearAllCache();
             DNNrocketUtils.ClearAllCache();
+        }
+
+        private static void AssignEditLang()
+        {
+            var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
+            if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
         }
 
 

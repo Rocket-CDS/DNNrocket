@@ -10,5 +10,8 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
-  <a href='javascript:rocketmodeditiframe_@(Model.ModuleId)()' class='rocketmodcontentediticons' style='display:none;'><i class='fas fa-edit'></i></a>
+    <div id="rocketmodcontentediticons@(Model.ModuleId)" class="w3-row w3-display-topleft w3-light-grey w3-padding" style='display:none;'>
+        <a href='javascript:rocketmodeditiframe_@(Model.ModuleId)()' class=''><i class='fas fa-edit fa-3x w3-text-blue'></i></a>
+        <a href='/desktopmodules/dnnrocket/rocketmod/admin.html?moduleid=@(Model.ModuleId)&amp;tabid=@(Model.TabId)'><i class="fas fa-layer-group fa-3x w3-text-blue"></i></a>
+    </div>
 

@@ -1073,7 +1073,10 @@ namespace DNNrocketAPI
                 if (obj != null) rtnLang = obj.ToString();
                 if (String.IsNullOrEmpty(rtnLang)) rtnLang = GetCurrentCulture();
             }
-            SetEditCulture(rtnLang);
+            else
+            {
+                SetEditCulture(rtnLang);
+            }
             return rtnLang;
         }
 
@@ -1373,7 +1376,7 @@ namespace DNNrocketAPI
                     var l = new List<object>();
                     l.Add(new SimplisityInfo());
                     var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
-                    nbRazor.PageId = tabId;
+                    nbRazor.TabId = tabId;
                     cacheHead = RazorRender(nbRazor, activePageHeaderTemplate, false);
 
                     // Inject pageheader css link, use Razor Token "AddCssLinkHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]

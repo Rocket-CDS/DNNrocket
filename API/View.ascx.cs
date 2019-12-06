@@ -192,12 +192,14 @@ namespace DNNrocketAPI
                 {
                     var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, paramInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
 
+                    var model = new SimplisityRazor();
+                    model.ModuleId = ModuleId;
+                    model.TabId = TabId;
+
                     if (hasEditAccess)
                     {
-                        strOut = "<div class='rocketmodcontentwrapper w3-display-container'>";
+                        strOut = "<div id='rocketmodcontentwrapper" + ModuleId + "' class=' w3-display-container'>";
                         var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemInfoData.DebugMode);
-                        var model = new SimplisityRazor();
-                        model.ModuleId = ModuleId;
                         strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemInfoData.DebugMode);
                     }
 
@@ -211,8 +213,6 @@ namespace DNNrocketAPI
                     {
                         strOut += "</div>";
                         var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemInfoData.DebugMode);
-                        var model = new SimplisityRazor();
-                        model.ModuleId = ModuleId;
                         strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemInfoData.DebugMode);
                     }
                 }

@@ -21,7 +21,7 @@ namespace Simplisity
 
         public String Lang { get; set; }
 
-        public int PageId { get; set; }
+        public int TabId { get; set; }
 
         public SimplisityInfo Datainfo { get; set; }
         public SimplisityInfo HeaderData { get; set; }

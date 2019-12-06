@@ -162,7 +162,7 @@ namespace DNNrocket.SystemData
                 var getremote = GetRemoteLicense();
                 if (!getremote) return false;
                 var sitekey = _paramInfo.GetXmlProperty("genxml/hidden/sitekey");
-                var systemkey = _paramInfo.GetXmlProperty("genxml/hidden/systemkey");
+                var systemkey = _paramInfo.GetXmlProperty("genxml/postform/systemkey");
                 var licenseData = new LicenseData(systemkey, sitekey);
                 return licenseData.ValidateCertificateKey(sitekey);
             }
