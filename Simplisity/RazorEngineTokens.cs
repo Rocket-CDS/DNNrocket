@@ -72,13 +72,13 @@ namespace Simplisity
         public IEncodedString AddCssLinkHeader(string cssRelPath)
         {
             var rtn = "<link rel='stylesheet' href='" + cssRelPath + "' />";
-            return new RawString(rtn); //return nothing
+            return new RawString(rtn); 
         }
 
         public IEncodedString AddJsScriptHeader(string jsRelPath)
         {
             var rtn = "<script type='text/javascript' src='" + jsRelPath + "'></script>";
-            return new RawString(rtn); //return nothing
+            return new RawString(rtn); 
         }
 
         #endregion
