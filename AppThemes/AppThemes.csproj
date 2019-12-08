@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="SystemThemes\**" />
+    <EmbeddedResource Remove="SystemThemes\**" />
+    <None Remove="SystemThemes\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="AppThemeBase\resxtemplate.xml" />
   </ItemGroup>
 
@@ -21,58 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SystemThemes\cp\2.0\doc\" />
-    <Folder Include="SystemThemes\cp\2.0\img\" />
-    <Folder Include="SystemThemes\cp\2.0\resx\" />
-    <Folder Include="SystemThemes\cp\2.0\temp\" />
-    <Folder Include="SystemThemes\dddd\1.0\doc\" />
-    <Folder Include="SystemThemes\dddd\1.0\resx\" />
-    <Folder Include="SystemThemes\dddd\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\c40\1.0\css\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\c40\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\c40\1.0\js\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\c40\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\c40\2.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\c40\2.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\copy_test1\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\copy_test1\1.0\resx\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\copy_test1\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\copy_test1\2.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\copy_test1\2.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\cp\1.0\css\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\cp\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\cp\1.0\js\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\cp\1.0\resx\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\cp\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\cp\2.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\cp\2.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\dddd\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\dddd\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\HtmlList\1.0\js\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\HtmlList\2.0\resx\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_DocMenu\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_DocMenu\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_DocumentationMenu\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_DocumentationMenu\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_Documentation\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_Documentation\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\rocket_newtest1\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\rocket_newtest1\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\rocket_newtest1\2.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\rocket_newtest1\2.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\test_new2\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\test_new2\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\test_new3\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\test_new3\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\test_test2\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\test_test2\1.0\resx\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\test_test2\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\test_test2\2.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\test_test2\2.0\temp\" />
-    <Folder Include="SystemThemes\Rocket_DocumentationMenu\1.0\doc\" />
-    <Folder Include="SystemThemes\Rocket_DocumentationMenu\1.0\img\" />
-    <Folder Include="SystemThemes\Rocket_DocumentationMenu\1.0\resx\" />
-    <Folder Include="SystemThemes\Rocket_DocumentationMenu\1.0\temp\" />
     <Folder Include="Themes\blank\1.0\img\" />
     <Folder Include="Themes\blank\1.0\css\" />
     <Folder Include="Themes\blank\1.0\js\" />

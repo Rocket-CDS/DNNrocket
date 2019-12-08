@@ -208,8 +208,6 @@ namespace RocketMod
             _systemInfo = systemInfo;
             _systemKey = _systemInfoData.SystemKey;
 
-            if (paramCmd != "rocketmod_getdata") CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
-
             // set editlang from url param or cache
             _editLang = DNNrocketUtils.GetEditCulture();
 
@@ -271,6 +269,7 @@ namespace RocketMod
             _moduleParams = new ModuleParams(_moduleid, _systemKey);
             _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemKey);
 
+            if (paramCmd != "rocketmod_getdata") CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
 
             if (!CheckSecurity(paramCmd))
             {
