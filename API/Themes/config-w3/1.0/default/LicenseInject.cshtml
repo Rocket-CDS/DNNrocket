@@ -8,13 +8,36 @@
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
+@{ 
+    var moduleParams = (ModuleParams)Model.List.First();
+    var licenseData = new LicenseData(moduleParams.SystemKey, DNNrocketUtils.SiteGuid());
+}
+
+<div class="w3-panel w3-purple">
+    <div class="w3-row">
+        <div class="w3-col m3">
+            <h2>@ResourceKey("DNNrocket.prolicense")</h2>
+        </div>
+        <div class="w3-col m7 w3-padding">
+            @ResourceKey("DNNrocket.domainurl"):&nbsp;@licenseData.DomainUrl<br />
+            @ResourceKey("DNNrocket.certificatekey"):&nbsp;@licenseData.CertificateKey<br />
+        </div>
+        <div class="w3-col m2 w3-padding" id="verifycertificatekey">
+            <div class="w3-button w3-blue w3-right simplisity_click" s-post="" s-return="#verifycertificatekey" s-cmd="systemapi_licenseverify" s-fields='{"sitekey":"@DNNrocketUtils.SiteGuid()","systemkey":"@licenseData.SystemKey"}' s-track="false"><i class="fas fa-check"></i>&nbsp;@ResourceKey("DNNrocket.checkkey")</div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="w3-panel w3-red">
     <h2>@ResourceKey("DNNrocket.getlicense")</h2>
 
 
     <div class="w3-container w3-margin-top">
         <div class="w3-col m3 w3-padding">
-            <span class="w3-button w3-block w3-green w3-section w3-padding " onclick="document.getElementById('createnewlicense').style.display='block'">@ResourceKey("DNNrocket.getlicense")</span>
+            <span title="@ResourceKey("DNNrocket.getlicense")" class="w3-button w3-block w3-green w3-section w3-padding " onclick="document.getElementById('createnewlicense').style.display='block'">@ResourceKey("DNNrocket.getlicense")</span>
+            <span title="@ResourceKey("DNNrocket.entercertificatekey")" class="w3-button w3-block w3-green w3-section w3-padding " onclick="document.getElementById('entercertificatekey').style.display='block'">@ResourceKey("DNNrocket.entercertificatekey")</span>
         </div>
         <div class="w3-col m9 w3-padding">
             <i>@ResourceKey("DNNrocket.getlicense", "", "Help")</i>
@@ -23,6 +46,8 @@
 </div>
 
 @RenderTemplate("LicenseForm.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
+
+@RenderTemplate("LicenseKeyForm.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
 
 <script>
 

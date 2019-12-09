@@ -165,21 +165,6 @@
 
     }
 
-    <div class="w3-panel w3-purple">
-        <div class="w3-row">
-            <div class="w3-col m3">
-                <h2>@ResourceKey("DNNrocket.prolicense")</h2>
-            </div>
-            <div class="w3-col m7 w3-padding">
-                @ResourceKey("DNNrocket.domainurl"):&nbsp;@licenseData.DomainUrl<br />
-                @ResourceKey("DNNrocket.certificatekey"):&nbsp;@licenseData.CertificateKey<br />
-            </div>
-            <div class="w3-col m2 w3-padding" id="varifycertificatekey">
-                <div class="w3-button w3-blue simplisity_click" s-post="" s-return="#varifycertificatekey" s-cmd="systemapi_licensevarify" s-fields='{"sitekey":"@DNNrocketUtils.SiteGuid()","systemkey":"@licenseData.SystemKey"}' s-track="false"><i class="fas fa-check"></i>&nbsp;@ResourceKey("DNNrocket.checkkey")</div>
-            </div>
-        </div>
-    </div>
-
 
     @RenderTemplate("LicenseInject.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
 

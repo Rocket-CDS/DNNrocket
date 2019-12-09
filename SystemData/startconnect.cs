@@ -118,9 +118,12 @@ namespace DNNrocket.SystemData
                     var licenseXml = _paramInfo.GetXmlProperty("genxml/postform/licensecode");
                     if (SaveRemoteLicense(licenseXml)) strOut = "OK";
                     break;
-                case "systemapi_licensevarify":
-                    strOut = "FAIL";
-                    if (VarifyLicense()) strOut = "OK";
+                case "systemapi_licenseverify":
+                    strOut = "<i class='fas fa-times w3-text-red w3-right fa-3x'></i>";
+                    if (verifyLicense()) strOut = "<i class='fas fa-check w3-text-green w3-right fa-3x'></i>";
+                    break;
+                case "systemapi_entercertificatekey":
+                    EnterCertificateKey();
                     break;
                 default:
                     if (!commandSecurity.SecurityCheckIsSuperUser())
@@ -155,16 +158,23 @@ namespace DNNrocket.SystemData
             }
         }
 
-        public static bool VarifyLicense()
+        public static bool verifyLicense()
         {
             try
             {
                 var getremote = GetRemoteLicense();
                 if (!getremote) return false;
-                var sitekey = _paramInfo.GetXmlProperty("genxml/hidden/sitekey");
-                var systemkey = _paramInfo.GetXmlProperty("genxml/postform/systemkey");
-                var licenseData = new LicenseData(systemkey, sitekey);
-                return licenseData.ValidateCertificateKey(sitekey);
+                var licensecode = _paramInfo.GetXmlProperty("genxml/postform/licensecode");
+                if (licensecode != "")
+                {
+                    var licenseInfo = new SimplisityInfo();
+                    licenseInfo.FromXmlItem(GeneralUtils.DeCode(licensecode));
+                    var sitekey = licenseInfo.GetXmlProperty("genxml/textbox/sitekey");
+                    var systemkey = licenseInfo.GetXmlProperty("genxml/select/systemkey");
+                    var licenseData = new LicenseData(systemkey, sitekey);
+                    return licenseData.ValidateCertificateKey(sitekey);
+                }
+                return false;
             }
             catch (Exception ex)
             {
@@ -207,6 +217,36 @@ namespace DNNrocket.SystemData
                 return false;
             }
         }
+
+        public static void EnterCertificateKey()
+        {
+            try
+            {
+                var certificateKey = _postInfo.GetXmlProperty("genxml/textbox/certificatekey");
+                var domainurl = DNNrocketUtils.GetDefaultWebsiteDomainUrl(); ;
+                var systemkey = _systemInfoData.SystemKey;
+                var sitekey = DNNrocketUtils.SiteGuid();
+
+                var licenseData = new LicenseData(systemkey, sitekey);
+                if (certificateKey == "")
+                {
+                    licenseData.Delete();
+                }
+                else
+                {
+                    licenseData.DomainUrl = domainurl;
+                    licenseData.CreateNew(-1);
+                    licenseData.CertificateKey = certificateKey;
+                    licenseData.Update();
+                }
+            }
+            catch (Exception ex)
+            {
+                DNNrocketUtils.LogException(ex);
+            }
+
+        }
+
 
         public static String GetLicenseList()
         {

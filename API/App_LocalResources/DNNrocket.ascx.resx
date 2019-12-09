@@ -456,4 +456,7 @@
   <data name="checkkey.Text" xml:space="preserve">
     <value>Verify Key</value>
   </data>
+  <data name="entercertificatekey.Text" xml:space="preserve">
+    <value>Enter License Certificate Key</value>
+  </data>
 </root>

@@ -1,0 +1,58 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using DNNrocketAPI;
+@using DNNrocketAPI.Componants;
+@using System.Linq
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
+
+
+@{
+    var systemGlobalData = new SystemGlobalData();
+    var moduleParams = (ModuleParams)Model.List.First();
+}
+
+<div id="entercertificatekey" class="w3-modal">
+    <div class="w3-modal-content w3-card w3-animate-zoom">
+
+        <header class="w3-container  w3-theme">
+            <span onclick="document.getElementById('entercertificatekey').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <h2>@ResourceKey("DNNrocket.license")</h2>
+        </header>
+
+        <div class="w3-row w3-padding">
+            <h2>
+                @DNNrocketUtils.GetDefaultWebsiteDomainUrl()
+            </h2>
+        </div>
+
+        <div class="w3-row">
+            <div class="w3-padding">
+                <label><b>@ResourceKey("DNNrocket.sitekey")</b></label>
+                @TextBox(new SimplisityInfo(), "genxml/hidden/sitekey", "class='w3-input w3-border' disabled", DNNrocketUtils.SiteGuid())
+            </div>
+        </div>
+        <div class="w3-row">
+            <div class="w3-padding">
+                <label><b>@ResourceKey("DNNrocket.certificatekey")</b></label>
+                @TextBox(new SimplisityInfo(), "genxml/textbox/certificatekey", "class='w3-input w3-border'")
+            </div>
+        </div>
+
+        <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+            <div class="">
+                <span class="w3-button w3-red " onclick="document.getElementById('entercertificatekey').style.display='none'">@ResourceKey("DNNrocket.cancel")</span>
+                <div class="w3-right w3-button w3-green simplisity_click"  s-cmd="systemapi_entercertificatekey" s-post="#entercertificatekey" s-return="#entercertificatekey">@ButtonText(ButtonTypes.save)</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+    });
+
+</script>

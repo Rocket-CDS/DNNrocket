@@ -11,85 +11,97 @@
     var systemData = new SystemData();
 }
 
-    <div class=''>
 
-        @RenderTemplate("LicensePopup.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model, "1.0", true)
 
-        <div class="w3-row w3-padding">
-            <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewlicense').style.display='block'">@ButtonText(ButtonTypes.add)</div>
+<div id="updatelicense"></div>
+
+<div class=''>
+
+    <div class="w3-row">
+        <div class="w3-half">
+            <h2>@ResourceKey("system.licenses")</h2>
         </div>
-        <div class="w3-row">
-            <div class="w3-half">
-                <h2>@ResourceKey("system.licenses")</h2>
+    </div>
+    <div class="w3-row w3-card searchdata w3-margin-top">
+
+        <div class="">
+            <div class="w3-row w3-padding">
+                <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("DNNrocket.search")..." id="searchtext" onkeyup="searchFunction()">
             </div>
         </div>
-        <div class="w3-row w3-card searchdata w3-margin-top">
 
-            <div class="">
-                <div class="w3-row w3-padding">
-                    <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("system.search")..." id="searchtext" onkeyup="searchFunction()">
-                </div>
-            </div>
-
-        </div>
+    </div>
 
 
-        <div id="datasection" class="w3-row w3-margin-top">
-
-            <ul id="datalist" class="w3-ul w3-border">
-
-                @{
-                    var lp1 = 0;
-                }
-                @foreach (LicenseData license in licenseDataList.List)
-                {
-                    lp1 += 1;
-                    <li class="datalistitem w3-display-container">
+    <div id="datasection" class="w3-row w3-margin-top">
 
 
+        <table id="datalist" class="w3-table w3-table-all">
 
-                    </li>
+            <tr>
+                <th><span style="display:none;">tableheader</span></th>
+                <th>@ResourceKey("DNNrocket.systemkey")</th>
+                <th class="w3-hide-small">@ResourceKey("DNNrocket.domainurl")</th>
+                <th class="w3-hide-small">@ResourceKey("DNNrocket.sitekey")</th>
+                <th class="w3-hide-small">@ResourceKey("DNNrocket.expiredate")</th>
+                <th></th>
+            </tr>
 
-                }
-            </ul>
+            @foreach (LicenseData license in licenseDataList.List)
+            {
 
-            <hr />
+                <tr>
+                    <td style="">
+                    </td>
+                    <td>
+                        @license.SystemKey
+                    </td>
+                    <td class="w3-hide-small">
+                        @license.DomainUrl
+                    </td>
+                    <td class="w3-hide-small">
+                        @license.SiteKey 
+                    </td>
+                    <td class="w3-hide-small">
+                        @license.ExpireDate.ToShortDateString() 
+                    </td>
+                    <td></td>
+                </tr>
 
-        </div>
+            }
+
+        </table>
+
+        <hr />
+
+    </div>
 
 
-        <script>
-            $(document).ready(function () {
-                $("#datalist").disableSelection();
-            });
+    <script>
+        $(document).ready(function () {
 
-            function searchFunction() {
-                var input, filter, ul, li, a, i;
-                input = document.getElementById("searchtext");
-                filter = input.value.toUpperCase();
-                ul = document.getElementById("datalist");
-                li = ul.getElementsByTagName("li");
-                for (i = 0; i < li.length; i++) {
-                    txtValue = li[i].textContent || li[i].innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        li[i].style.display = "";
-                    } else {
-                        li[i].style.display = "none";
-                    }
-                }
-                ul = document.getElementById("datalist2");
-                li = ul.getElementsByTagName("div");
-                for (i = 0; i < li.length; i++) {
-                    txtValue = li[i].textContent || li[i].innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        li[i].style.display = "";
-                    } else {
+
+        });
+
+        function searchFunction() {
+            var input, filter, ul, li, a, i;
+            input = document.getElementById("searchtext");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("datalist");
+            li = ul.getElementsByTagName("tr");
+            for (i = 0; i < li.length; i++) {
+                txtValue = li[i].textContent || li[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    if (txtValue.toUpperCase().indexOf("TABLEHEADER") <= -1) {
                         li[i].style.display = "none";
                     }
                 }
             }
+        }
 
-        </script>
 
-    </div>
+    </script>
 
+</div>
