@@ -125,6 +125,9 @@ namespace DNNrocket.SystemData
                 case "systemapi_entercertificatekey":
                     EnterCertificateKey();
                     break;
+                case "systemapi_licensepopup":
+                    strOut = LicensePopup();
+                    break;                    
                 default:
                     if (!commandSecurity.SecurityCheckIsSuperUser())
                     {
@@ -137,6 +140,33 @@ namespace DNNrocket.SystemData
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;            
         }
+
+
+        public static String LicensePopup()
+        {
+            try
+            {
+                var licenseid = _paramInfo.GetXmlPropertyInt("genxml/hidden/licenseid");
+                var strOut = "";
+                var passSettings = _paramInfo.ToDictionary();
+
+                if (licenseid > 0)
+                {
+                    var licenseData = new LicenseData(licenseid);
+                    var razorTempl = DNNrocketUtils.GetRazorTemplateData("LicensePopup.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                    strOut = DNNrocketUtils.RazorDetail(razorTempl, licenseData, passSettings);
+                }
+
+
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
 
         public static bool GetRemoteLicense()
         {
