@@ -104,7 +104,11 @@ namespace DNNrocket.SystemData
                         break;
                     case "systemapi_licensesave":
                         strOut = GetLicenseList();
-                        break;                       
+                        break;
+                    case "systemapi_deletelicense":
+                        DeleteLicense();
+                        strOut = GetLicenseList();
+                        break;
                 }
             }
 
@@ -124,6 +128,7 @@ namespace DNNrocket.SystemData
                     break;
                 case "systemapi_entercertificatekey":
                     EnterCertificateKey();
+                    strOut = GetLicenseList();
                     break;
                 case "systemapi_licensepopup":
                     strOut = LicensePopup();
@@ -248,26 +253,49 @@ namespace DNNrocket.SystemData
             }
         }
 
+        public static void DeleteLicense()
+        {
+            try
+            {
+                var licenseid = _paramInfo.GetXmlPropertyInt("genxml/hidden/licenseid");
+                if (licenseid > 0)
+                {
+                    var licenseData = new LicenseData(licenseid);
+                    licenseData.Delete();
+                }
+            }
+            catch (Exception ex)
+            {
+                DNNrocketUtils.LogException(ex);
+            }
+
+        }
+
         public static void EnterCertificateKey()
         {
             try
             {
-                var certificateKey = _postInfo.GetXmlProperty("genxml/textbox/certificatekey");
+                var licenseid = _paramInfo.GetXmlPropertyInt("genxml/hidden/licenseid");
+                var certificateKey = _postInfo.GetXmlProperty("genxml/hidden/certificatekey");
                 var domainurl = DNNrocketUtils.GetDefaultWebsiteDomainUrl(); ;
                 var systemkey = _systemInfoData.SystemKey;
                 var sitekey = DNNrocketUtils.SiteGuid();
-
-                var licenseData = new LicenseData(systemkey, sitekey);
-                if (certificateKey == "")
+                if (licenseid > 0)
                 {
-                    licenseData.Delete();
+                    var licenseData = new LicenseData(licenseid);
+                    licenseData.CertificateKey = certificateKey;
+                    licenseData.Update();
                 }
                 else
                 {
-                    licenseData.DomainUrl = domainurl;
-                    licenseData.CreateNew(-1);
-                    licenseData.CertificateKey = certificateKey;
-                    licenseData.Update();
+                    var licenseData = new LicenseData(systemkey, sitekey);
+                    if (certificateKey != "")
+                    {
+                        licenseData.DomainUrl = domainurl;
+                        licenseData.CreateNew(-1);
+                        licenseData.CertificateKey = certificateKey;
+                        licenseData.Update();
+                    }
                 }
             }
             catch (Exception ex)
