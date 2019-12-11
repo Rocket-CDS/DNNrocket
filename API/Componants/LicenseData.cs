@@ -47,7 +47,7 @@ namespace DNNrocketAPI.Componants
         }
         public void Update()
         {
-            if (Exists) _objCtrl.Update(Record, _tableName);
+            if (Exists) Record.ItemID = _objCtrl.Update(Record, _tableName);
         }
         public void Delete()
         {
@@ -104,7 +104,6 @@ namespace DNNrocketAPI.Componants
                 Record.GUIDKey = _guidkey;
                 Record.TypeCode = "LICENSE";
                 Record.Lang = "";
-                GenerateCertificateKey(); // updates also.
             }
         }
 
@@ -121,21 +120,6 @@ namespace DNNrocketAPI.Componants
                 if (decryptedKey.StartsWith(SystemKey) && decryptedKey.EndsWith(sitekey)) return true;
             }
             return false;
-        }
-
-        public void GenerateCertificateKey()
-        {
-            CertificateKey = "";
-            if (SiteKey != "")
-            {
-                var licenseKey = GeneralUtils.GetUniqueKey(12);
-                CertificateKey = licenseKey + GeneralUtils.Encrypt(licenseKey, SystemKey + SiteKey);
-            }
-            else
-            {
-                CertificateKey = "ERROR: Invalid SiteKey";
-            }
-            Update();
         }
         public string CertificateKey { get { return Record.GetXmlProperty("genxml/hidden/certificatekey"); } set { Record.SetXmlProperty("genxml/hidden/certificatekey", value); } }
         public string DomainUrl { get { return Record.GetXmlProperty("genxml/textbox/domainurl"); } set { Record.SetXmlProperty("genxml/textbox/domainurl", value); } }

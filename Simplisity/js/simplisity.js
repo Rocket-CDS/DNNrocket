@@ -172,7 +172,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             async: true,
             dataType: 'json',
             timeout: 120000,
-            data: { inputjson: encodeURI(jsonData), paramjson: encodeURI(jsonParam), simplisity_cmd: scmd },
+            data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd },
             success: function (json) {
                 var jsontest = JSON.stringify(eval("(" + json + ")"));
                 var obj = JSON.parse(jsontest);
@@ -199,7 +199,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             async: true,
             cache: false,
             timeout: 120000,
-            data: { inputjson: encodeURI(jsonData), paramjson: encodeURI(jsonParam), simplisity_cmd: scmd }
+            data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd }
         });
 
         request.done(function (data) {

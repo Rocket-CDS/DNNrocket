@@ -55,7 +55,7 @@
         <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
             <div class="logininput">
                 <div onclick="document.getElementById('updatelicensemodel').style.display='none'" type="button" class="w3-button w3-red">@ButtonText(ButtonTypes.cancel)</div>
-                <div class="w3-right w3-button w3-margin-left w3-green simplisity_click" s-post="#updatelicensemodel" s-cmd="systemapi_entercertificatekey" s-fields='{"licenseid":"@(clientLicense.LicenseId)"}' s-track="false">@ButtonText(ButtonTypes.save)</div>
+                <div class="w3-right w3-button w3-margin-left w3-green simplisity_click" s-post="#updatelicensemodel" s-cmd="systemapi_updatecertificatekey" s-fields='{"licenseid":"@(clientLicense.LicenseId)"}' s-track="false">@ButtonText(ButtonTypes.save)</div>
                 <div class="w3-right w3-button w3-margin-left w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;?" s-post="" s-cmd="systemapi_deletelicense" s-fields='{"licenseid":"@(clientLicense.LicenseId)"}' s-track="false">@ButtonText(ButtonTypes.delete)</div>
             </div>
         </div>

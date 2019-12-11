@@ -128,6 +128,10 @@ namespace DNNrocket.SystemData
                     break;
                 case "systemapi_entercertificatekey":
                     EnterCertificateKey();
+                    strOut = "";
+                    break;
+                case "systemapi_updatecertificatekey":
+                    EnterCertificateKey();
                     strOut = GetLicenseList();
                     break;
                 case "systemapi_licensepopup":
