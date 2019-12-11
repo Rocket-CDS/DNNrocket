@@ -118,7 +118,7 @@
     <div id="detailsection">
 
         <div class="w3-row w3-padding">
-            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearlistcache":"true"}'>@ButtonText(ButtonTypes.back)</div>
+            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"track":"true","clearlistcache":"true"}'>@ButtonText(ButtonTypes.back)</div>
             @ButtonGap()
             <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
             @ButtonGap()

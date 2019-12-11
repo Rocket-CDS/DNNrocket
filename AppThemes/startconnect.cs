@@ -26,13 +26,11 @@ namespace DNNrocket.AppThemes
         //private static AppTheme _appTheme;
         private static UserStorage _userStorage;
         private static string _selectedSystemKey;
-        private static string _paramCmdCall;
+        private static string _paramCmd;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = "ERROR - Must be SuperUser"; // return ERROR if not matching commands.
-
-            paramCmd = paramCmd.ToLower();
 
             _passSettings = new Dictionary<string, string>(); 
             _systemInfoData = new SystemInfoData(systemInfo);
@@ -46,8 +44,29 @@ namespace DNNrocket.AppThemes
             if (DNNrocketUtils.IsSuperUser())
             {
                 CacheUtils.ClearAllCache("apptheme");
-                _paramCmdCall = paramCmd;
+                _paramCmd = paramCmd;
                 _userStorage = new UserStorage();
+
+                if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
+                {
+                    var menucmd = _userStorage.GetCommand(_systemInfoData.SystemKey);
+                    if (menucmd != "")
+                    {
+                        paramCmd = menucmd;
+                        _paramInfo = _userStorage.GetParamInfo(_systemInfoData.SystemKey);
+                        var interfacekey = _userStorage.GetInterfaceKey(_systemInfoData.SystemKey);
+                        _rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
+                    }
+                }
+                else
+                {
+                    if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
+                    {
+                        _userStorage.Track(_systemInfoData.SystemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
+                    }
+                }
+
+
                 _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
                 if (_appVersionFolder == "") _appVersionFolder = _userStorage.Get("selectedappversion");
