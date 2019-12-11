@@ -15,6 +15,7 @@ namespace DNNrocket.SystemData
         private static SimplisityInfo _postInfo;
         private static SimplisityInfo _paramInfo;
         private static DNNrocketInterface _rocketInterface;
+        private static UserStorage _userStorage;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
@@ -26,7 +27,23 @@ namespace DNNrocket.SystemData
 
             DNNrocketUtils.CreateRocketDirectories();
 
-            //CacheUtils.ClearAllCache();
+            _userStorage = new UserStorage();
+            if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
+            {
+                var menucmd = _userStorage.GetCommand("systemapi");
+                if (menucmd != "")
+                {
+                    paramCmd = menucmd;
+                    _paramInfo = _userStorage.GetParamInfo("systemapi");
+                }
+            }
+            else
+            {
+                if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
+                {
+                    _userStorage.Track("systemapi", paramCmd, _paramInfo, "");
+                }
+            }
 
             _controlRelPath = "/DesktopModules/DNNrocket/SystemData";
 
@@ -42,18 +59,18 @@ namespace DNNrocket.SystemData
                         strOut = SystemAdminList(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_admin_getdetail":
-                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
+                        strOut = SystemAdminDetail(_controlRelPath);
                         break;
                     case "systemapi_adminaddnew":
                         strOut = SystemAddNew(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_addinterface":
                         SystemAddListItem(paramInfo, "interfacedata");
-                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
+                        strOut = SystemAdminDetail(_controlRelPath);
                         break;
                     case "systemapi_admin_save":
                         SystemSave(postInfo, paramInfo);
-                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
+                        strOut = SystemAdminDetail(_controlRelPath);
                         break;
                     case "systemapi_admin_delete":
                         SystemDelete(paramInfo);
@@ -61,19 +78,19 @@ namespace DNNrocket.SystemData
                         break;
                     case "systemapi_addparam":
                         SystemAddListItem(paramInfo, "idxfielddata");
-                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
+                        strOut = SystemAdminDetail(_controlRelPath);
                         break;
                     case "systemapi_addsetting":
                         SystemAddListItem(paramInfo, "settingsdata");
-                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
+                        strOut = SystemAdminDetail(_controlRelPath);
                         break;
                     case "systemapi_addgroup":
                         SystemAddListItem(paramInfo, "groupsdata");
-                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
+                        strOut = SystemAdminDetail(_controlRelPath);
                         break;
                     case "systemapi_addprovtype":
                         SystemAddListItem(paramInfo, "provtypesdata");
-                        strOut = SystemAdminDetail(paramInfo, _controlRelPath);
+                        strOut = SystemAdminDetail(_controlRelPath);
                         break;
                     case "systemapi_rebuildindex":
                         RebuildIndex(paramInfo, false);
@@ -341,18 +358,18 @@ namespace DNNrocket.SystemData
             }
         }
 
-        public static String SystemAdminDetail(SimplisityInfo sInfo, string templateControlRelPath)
+        public static String SystemAdminDetail(string templateControlRelPath)
         {
             try
             {
                 var strOut = "Invalid ItemId";
-                var selecteditemid = sInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-                var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
-                var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
+                var selecteditemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+                var themeFolder = _paramInfo.GetXmlProperty("genxml/hidden/theme");
+                var razortemplate = _paramInfo.GetXmlProperty("genxml/hidden/template");
 
                 if (selecteditemid > 0)
                 {
-                    var passSettings = sInfo.ToDictionary();
+                    var passSettings = _paramInfo.ToDictionary();
 
 
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);

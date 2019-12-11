@@ -93,7 +93,11 @@
 
 @if (DNNrocketUtils.IsSuperUser())
 {
-    menuOut += "<div class='w3-bar-item w3-button w3-padding w3-theme ' href='/desktopmodules/dnnrocket/adminsystem.html' target='_blank'><i title='System' class='fas fa-rocket' style='width:20px;'></i>&nbsp;System</div>";
+    menuOut += "<a class='w3-bar-item w3-button w3-padding w3-theme ' href='/desktopmodules/dnnrocket/adminsystem.html' target='_blank'><i title='System' class='fas fa-rocket' style='width:20px;'></i>&nbsp;System</a>";
+}
+@if (Model.GetSettingBool("menu-appthemes"))
+{
+    menuOut += "<a class='w3-bar-item w3-button w3-padding w3-theme ' href='/Desktopmodules/dnnrocket/AppThemes/admin.html' target='_blank'><i title='System' class='fas fa-file-code' style='width:20px;'></i>&nbsp;AppThemes</a>";
 }
 @if (Model.GetSettingBool("menu-backbutton"))
 {

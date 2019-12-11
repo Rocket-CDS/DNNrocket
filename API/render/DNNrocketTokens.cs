@@ -579,12 +579,13 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        public IEncodedString RenderSideMenu(SimplisityRazor model, string projectfolder, string resxFileWithoutExt, bool backbutton, bool signoutbutton)
+        public IEncodedString RenderSideMenu(SimplisityRazor model, string projectfolder, string resxFileWithoutExt, bool backbutton = false, bool signoutbutton = true, bool appthemes = false)
         {
             model.SetSetting("projectfolder", projectfolder);
             model.SetSetting("resxfile", resxFileWithoutExt);
             model.SetSetting("menu-backbutton", backbutton.ToString());
             model.SetSetting("menu-signoutbutton", signoutbutton.ToString());
+            model.SetSetting("menu-appthemes", appthemes.ToString());
             return RenderTemplate("MenuOut.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model, "1.0", true);
         }
 

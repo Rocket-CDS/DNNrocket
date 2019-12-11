@@ -227,19 +227,13 @@ namespace RocketMod
                     }
                     else
                     {
-                        var menucmd = _userStorage.Get(_systemKey + "-s-menu-cmd");
+                        var menucmd = _userStorage.GetCommand(_systemKey);
                         if (menucmd != "")
                         {
                             paramCmd = menucmd;
-                            var paramXml = _userStorage.Get(_systemKey + "-s-menu-paramInfo");
-                            if (paramXml != "") _paramInfo.FromXmlItem(paramXml);
-
-                            // we may have a diiferent rocketInterface if we have reloaded from the last command.
-                            var interfacekey = paramInfo.GetXmlProperty("genxml/hidden/interfacekey");
-                            if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
-                            if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
-                            var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
-                            interfaceInfo = rocketInterface.Info;
+                            _paramInfo = _userStorage.GetParamInfo(_systemKey);
+                            var interfacekey = _userStorage.GetInterfaceKey(_systemKey);
+                            _rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
                         }
                     }
                 }
@@ -247,7 +241,7 @@ namespace RocketMod
                 {
                     if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
                     {
-                        _userStorage.Track(_systemKey, paramCmd, _paramInfo);
+                        _userStorage.Track(_systemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
                     }
                 }
             }

@@ -38,15 +38,31 @@ namespace DNNrocketAPI.Componants
                 CacheUtils.SetCache(_guidKey, Record);
             }
         }
-        public void Track(string systemKey, string paramCmd, SimplisityInfo _paramInfo)
+        public string GetCommand(string systemKey)
+        {
+            return Get(systemKey + "-s-menu-cmd");
+        }
+        public string GetInterfaceKey(string systemKey)
+        {
+            return Get(systemKey + "-s-menu-interfaceKey");
+        }
+        public SimplisityInfo GetParamInfo(string systemKey)
+        {
+            var paramInfo = new SimplisityInfo();
+            var xmlInfo = GeneralUtils.DeCode(Get(systemKey + "-s-menu-paraminfo"));
+            if (xmlInfo != "") paramInfo.FromXmlItem(xmlInfo);
+            return paramInfo;
+        }
+        public void Track(string systemKey, string paramCmd, SimplisityInfo _paramInfo, string interfaceKey)
         {
             Set(systemKey + "-s-menu-cmd", paramCmd);
-            Set(systemKey + "-s-menu-paramInfo", _paramInfo.ToXmlItem());
+            Set(systemKey + "-s-menu-paraminfo", GeneralUtils.EnCode(_paramInfo.ToXmlItem()));
+            Set(systemKey + "-s-menu-interfaceKey", interfaceKey);            
         }
         public void TrackClear(string systemKey)
         {
             Set(systemKey + "-s-menu-cmd", "");
-            Set(systemKey + "-s-menu-paramInfo", "");
+            Set(systemKey + "-s-menu-paraminfo", "");
         }
         public void Save()
         {

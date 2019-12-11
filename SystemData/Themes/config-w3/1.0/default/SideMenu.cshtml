@@ -29,13 +29,13 @@
 
     <div class="w3-overlay w3-white " style="display:none;" id="sidebar_loader"><i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i></div>
 
-    <a class="w3-bar-item w3-button w3-padding w3-theme-d3 " href="/desktopmodules/dnnrocket/adminsystem.html"><i title="System" class='fas fa-rocket' style='width:20px;'></i>&nbsp;System</a>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-before="tuenoffreload" s-cmd="systemapi_admin_getsystemlist" s-fields='{"track":"true","theme":"config-w3","template":"Admin_Systems.cshtml"}'><i title="System" class='fas fa-rocket' style='width:20px;'></i>&nbsp;System</div>
 
-    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_globaldetail" s-fields=''><i class="fas fa-globe"></i>&nbsp;@ResourceKey("system.globalsettings")</div>
-    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_licenselist" s-fields=''><i class="fas fa-key"></i>&nbsp;@ResourceKey("system.licenses")</div>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-before="tuenoffreload" s-cmd="systemapi_globaldetail" s-fields='{"track":"true"}'><i class="fas fa-globe"></i>&nbsp;@ResourceKey("system.globalsettings")</div>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-before="tuenoffreload" s-cmd="systemapi_licenselist" s-fields='{"track":"true"}'><i class="fas fa-key"></i>&nbsp;@ResourceKey("system.licenses")</div>
 
     <hr />
-    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_clearallcache" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("DNNrocket.clearallcache")</div>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_clearallcache" s-reload="true" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("DNNrocket.clearallcache")</div>
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="login_signout" s-return="#simplisity_startpanel"><i class="fas fa-sign-out-alt"></i>&nbsp;@ResourceKey("DNNrocket.signout")</div>
     <hr />
 
@@ -54,6 +54,12 @@
         sidemenuchange();
 
     });
+
+    function tuenoffreload() {
+        // turn off the reload flag, which is set on adminsystem.html.
+        // This flag tells the system to remember this command, if "track" param is true.
+        simplisity_setParamField("reload", false);
+    }
 
     // Get the Sidebar
     var mySidebar = document.getElementById("mySidebar");
@@ -83,13 +89,6 @@
     }
 
     function sidemenuchange() {
-        //$('.simplisity_menulink').removeClass('w3-white');
-        //$('.simplisity_menulink').removeClass('w3-text-blue-grey');
-        //var index = simplisity_lastmenuindex();
-        //if (index != '') {
-        //    $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-white');
-        //    $('.simplisity_menulink[s-index=' + index + ']').addClass('w3-text-blue-grey');
-        //}
         w3_close();
         $('#sidebar_loader').hide();
     }
