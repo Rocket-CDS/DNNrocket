@@ -494,7 +494,7 @@ namespace DNNrocket.SystemData
                     objCtrl.SaveRecord(info);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // ignore
             }

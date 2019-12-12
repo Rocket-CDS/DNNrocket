@@ -13,17 +13,13 @@ namespace DNNrocket.AppThemes
     {
         private static SimplisityInfo _postInfo;
         private static SimplisityInfo _paramInfo;
-        private static CommandSecurity _commandSecurity;
         private static DNNrocketInterface _rocketInterface;
-        //private static AppThemeDataList _appThemeDataList;
-        private static SimplisityInfo _systemInfo;
         private static string _editLang;
         private static SystemInfoData _systemInfoData;
         private static Dictionary<string, string> _passSettings;
         private static string _appThemeFolder;
         private static string _appVersionFolder;
         private const string _tableName = "DNNRocket";
-        //private static AppTheme _appTheme;
         private static UserStorage _userStorage;
         private static string _selectedSystemKey;
         private static string _paramCmd;

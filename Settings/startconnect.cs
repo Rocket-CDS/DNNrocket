@@ -15,7 +15,6 @@ namespace RocketSettings
         private static CommandSecurity _commandSecurity;
         private static DNNrocketInterface _rocketInterface;
         private static SettingsData _settingsData;
-        private static string _tableName;
         private static Dictionary<string, string> _passSettings;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")

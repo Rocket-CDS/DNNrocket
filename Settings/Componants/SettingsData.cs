@@ -21,7 +21,6 @@ namespace RocketSettings
         private bool _onlyRead;
         private string _tableName;
         private DNNrocketController _objCtrl;
-        private Dictionary<string,string> _settingDict;
 
         public SimplisityInfo Info;
 

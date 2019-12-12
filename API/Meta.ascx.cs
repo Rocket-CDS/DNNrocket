@@ -32,19 +32,18 @@ namespace DNNrocketAPI
         private DNNrocketController _objCtrl;
         private static SimplisityInfo _dataRecord;
         private static TabInfo _dnnTab;
-        private bool _debugmode;
+        private static bool _debugmode;
 
         protected override void OnLoad(EventArgs e)
         {
             try
             {
+                _debugmode = false;
 
                 _objCtrl = new DNNrocketController();
                 var objTabCtrl = new TabController();
 
                 _dnnTab = objTabCtrl.GetTab(PortalSettings.Current.ActiveTab.TabID, PortalSettings.Current.PortalId);
-
-
 
                 var guidKey = "tabid" + PortalSettings.Current.ActiveTab.TabID;
                 _dataRecord = _objCtrl.GetData(guidKey, "ROCKETPL", DNNrocketUtils.GetCurrentCulture());
@@ -66,7 +65,7 @@ namespace DNNrocketAPI
 
                 }
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 //ignore
             }

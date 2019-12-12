@@ -174,11 +174,7 @@ namespace DNNrocketAPI.render
             var xpathalt = "genxml/lang/genxml/textbox/alt" + fieldId;
             var xpathname = "genxml/textbox/name" + fieldId;
 
-            var imgType = "jpg";
-            if (pngImage) imgType = "png";
-
             var strOut = "<div class='w3-row'>";
-
 
             strOut += "<div class='w3-col w3-padding' style='width:" + (width + 20) + "px;'>";
 

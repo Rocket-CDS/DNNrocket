@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\2.0\default\edit.cshtml = AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\2.0\default\edit.cshtml
 		..\..\Portals\_default\Skins\LeftMenuContent\LeftMenuContent.ascx = ..\..\Portals\_default\Skins\LeftMenuContent\LeftMenuContent.ascx
 		README.md = README.md
+		rocketappthemes_system.xml = rocketappthemes_system.xml
 		rocketmod_system.xml = rocketmod_system.xml
 		AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\2.0\default\view.cshtml = AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\2.0\default\view.cshtml
 		AppThemes\SystemThemes\dnnrocketmodule\Rocket_DocMenu\1.0\default\view.cshtml = AppThemes\SystemThemes\dnnrocketmodule\Rocket_DocMenu\1.0\default\view.cshtml

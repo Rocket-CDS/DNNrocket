@@ -66,6 +66,19 @@ namespace DNNrocketAPI
 
             base.OnInit(e);
 
+            var objCtrl = new DNNrocketController();
+
+            var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
+            var desktopModule = moduleInfo.DesktopModule;
+
+            _systemkey = desktopModule.ModuleDefinitions.First().Key.ToLower(); // Use the First DNN Module definition as the DNNrocket systemkey
+            _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemkey);
+            if (_systemInfo == null)
+            {
+                var sData = new SystemData(); // load XML files.
+                _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemkey);
+            }
+
             var clearallcache = DNNrocketUtils.RequestParam(Context, "clearallcache");
             if (clearallcache != "")
             {
@@ -73,15 +86,9 @@ namespace DNNrocketAPI
                 CacheUtils.ClearAllCache();
             }
 
-            var objCtrl = new DNNrocketController();
 
-            var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
-            var desktopModule = moduleInfo.DesktopModule;
-
-            _systemkey = desktopModule.ModuleDefinitions.First().Key.ToLower(); // Use the First DNN Module definition as the DNNrocket systemkey
-            _interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
-            _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemkey);
             _systemInfoData = new SystemInfoData(_systemInfo);
+            _interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
             _moduleParams = new ModuleParams(ModuleId, _systemInfoData.SystemKey);
             _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemInfoData.SystemKey);
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
@@ -257,23 +264,26 @@ namespace DNNrocketAPI
                     actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.edit") , "", "", "register.gif", "javascript:" + _interfacekey + "editiframe_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
                 }
 
-                var adminurl = _systemInfo.GetXmlProperty("genxml/textbox/adminurl");
-                adminurl = adminurl.ToLower().Replace("[moduleid]", ModuleId.ToString());
-                adminurl = adminurl.ToLower().Replace("[tabid]", TabId.ToString());
-                if (adminurl != "")
+                if (_systemInfo != null) // might be null of initialization
                 {
-                    actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmin"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
-                    if (adminurl.Contains("?"))
+                    var adminurl = _systemInfo.GetXmlProperty("genxml/textbox/adminurl");
+                    adminurl = adminurl.ToLower().Replace("[moduleid]", ModuleId.ToString());
+                    adminurl = adminurl.ToLower().Replace("[tabid]", TabId.ToString());
+                    if (adminurl != "")
                     {
-                        adminurl += "&newpage=1";
+                        actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmin"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
+                        if (adminurl.Contains("?"))
+                        {
+                            adminurl += "&newpage=1";
+                        }
+                        else
+                        {
+                            adminurl += "?newpage=1";
+                        }
+                        actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmintab"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, true);
                     }
-                    else
-                    {
-                        adminurl += "?newpage=1";
-                    }
-                    actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmintab"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, true);
+                    actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearallcache"), "", "", "action_refresh.gif", "?clearallcache=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);
                 }
-                actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearallcache"), "", "", "action_refresh.gif", "?clearallcache=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);
                 return actions;
             }
         }

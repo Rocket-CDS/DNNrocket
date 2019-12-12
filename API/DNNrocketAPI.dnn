@@ -154,6 +154,9 @@ DNNrocketAPI
             <file>
               <name>rocketmod_system.xml</name>
             </file>
+            <file>
+              <name>rocketappthemes_system.xml</name>
+            </file>
           </files>
         </component>
 

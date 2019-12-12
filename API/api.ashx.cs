@@ -71,7 +71,7 @@ namespace DNNrocketAPI
                         {
                             paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), GeneralUtils.DeCode(context.Request.QueryString[key]));
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             // it might not be coded. (ignore and use genxml/urlparams/* xpath)
                             paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), context.Request.QueryString[key]);

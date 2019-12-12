@@ -24,11 +24,6 @@ namespace RocketMod
 
         private string BuildRocketForm(SimplisityRazor model, int portalid, int moduleid, SimplisityInfo info, int row, string lang = "")
         {
-            var imageselect = false;
-            var imagegallery = false;
-            var docselect = false;
-            var docgallery = false;
-
             var objCtrl = new DNNrocketController();
             var strOut = "";
             if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
@@ -122,7 +117,6 @@ namespace RocketMod
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "image")
                         {
-                            imageselect = true;
                             var width = f.GetXmlPropertyInt("genxml/textbox/width");
                             var height = f.GetXmlPropertyInt("genxml/textbox/height");
                             if (width == 0 && height == 0)
@@ -134,7 +128,6 @@ namespace RocketMod
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull")
                         {
-                            imageselect = true;
                             var width = f.GetXmlPropertyInt("genxml/hidden/width");
                             var height = f.GetXmlPropertyInt("genxml/hidden/height");
                             if (width == 0 && height == 0)
@@ -152,7 +145,6 @@ namespace RocketMod
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "document")
                         {
-                            docselect = true;
                             var fieldid =  f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                             strOut += DocumentEdit(info, fieldid, attributes, localized, row).ToString();
                         }
@@ -167,7 +159,6 @@ namespace RocketMod
 
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
                         {
-                            imagegallery = true;
                             strOut += "<div id='imagelistcontainer'>";
                             model.SetSetting("imgfieldname", fieldname);
                             strOut += RenderTemplate("editimages.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", model, "1.0", true);
@@ -175,7 +166,6 @@ namespace RocketMod
                         }
                         if (f.GetXmlProperty("genxml/select/type").ToLower() == "documentgallery")
                         {
-                            docgallery = true;
                             strOut += "<div id='documentlistcontainer'>";
                             model.SetSetting("docfieldname", fieldname);
                             strOut += RenderTemplate("editdocuments.cshtml", "/DesktopModules/DNNrocket/RocketMod/", "config-w3", model, "1.0", true);
