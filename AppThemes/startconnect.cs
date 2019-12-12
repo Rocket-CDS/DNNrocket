@@ -43,7 +43,9 @@ namespace DNNrocket.AppThemes
 
             if (DNNrocketUtils.IsSuperUser())
             {
-                CacheUtils.ClearAllCache("apptheme");
+                // Do NOT globally clear cache, performace drop on external call for FTP and HTML AppTheme Lists
+                //CacheUtils.ClearAllCache("apptheme");
+
                 _paramCmd = paramCmd;
                 _userStorage = new UserStorage();
 
