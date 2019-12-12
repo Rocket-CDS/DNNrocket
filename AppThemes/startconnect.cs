@@ -549,6 +549,10 @@ namespace DNNrocket.AppThemes
             systemGlobalData.FtpPassword = _postInfo.GetXmlProperty("genxml/textbox/ftppassword");
             systemGlobalData.Update();
 
+            var systemInfoData = new SystemInfoData(_selectedSystemKey);
+            systemInfoData.FtpRoot = _postInfo.GetXmlProperty("genxml/textbox/ftproot");
+            systemInfoData.Update();
+
             ClearServerCacheLists();
 
             return "OK";

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DNNrocketAPI.Componants
@@ -285,11 +286,12 @@ namespace DNNrocketAPI.Componants
             }
             return rtnList;
         }
+
         private List<string> ListXmlFiles()
         {
             try
             {
-                if (!IsValid) 
+                if (IsValid) 
                 {
                     var uri = _baseuri + "/xml";
                     FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uri);

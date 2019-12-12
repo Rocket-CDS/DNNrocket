@@ -91,6 +91,11 @@ namespace DNNrocketAPI
             if (s == null) return null;
             return new DNNrocketInterface(s);
         }
+        public void Update()
+        {
+            var objCtrl = new DNNrocketController();
+            objCtrl.Update(Info);
+        }
 
         public string SystemKey
         {
@@ -146,7 +151,8 @@ namespace DNNrocketAPI
         public string FtpRoot
         {
             get { return Info.GetXmlProperty("genxml/textbox/ftproot"); }
-        }        
+            set { Info.SetXmlProperty("genxml/textbox/ftproot", value); }
+        }
 
     }
 }
