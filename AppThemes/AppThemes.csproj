@@ -13,23 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="AppThemeBase\resxtemplate.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="AppThemeBase\resxtemplate.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
     <ProjectReference Include="..\Images\Images.csproj" />
     <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Themes\blank\1.0\img\" />
-    <Folder Include="Themes\blank\1.0\css\" />
-    <Folder Include="Themes\blank\1.0\js\" />
     <Folder Include="Shared\" />
   </ItemGroup>
 

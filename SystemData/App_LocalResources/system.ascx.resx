@@ -288,17 +288,11 @@
   <data name="ftpuser.Text" xml:space="preserve">
     <value>FTP User</value>
   </data>
-  <data name="publicappthemeuri.Text" xml:space="preserve">
-    <value>Public AppTheme URI</value>
-  </data>
   <data name="globalsettings.Text" xml:space="preserve">
     <value>Global Settings</value>
   </data>
   <data name="privateftp.Text" xml:space="preserve">
     <value>Private FTP Settings</value>
-  </data>
-  <data name="publicapptheme.Text" xml:space="preserve">
-    <value>Public AppTheme</value>
   </data>
   <data name="imagetype.Help" xml:space="preserve">
     <value>Defines the image type that will be used by the image thumbnailer.  Usually this will be the image extension type  "png" or "jpg".  However, the hosting server needs "png" drivers.  If not available the image type will need to be set to "jpg".</value>
@@ -315,17 +309,8 @@
   <data name="proavailable.Text" xml:space="preserve">
     <value>Pro Version Available</value>
   </data>
-  <data name="licenseurl.Text" xml:space="preserve">
-    <value>DNNrocket License URL</value>
-  </data>
-  <data name="licenseurl.Help" xml:space="preserve">
-    <value>When purchasing a license for our software, the url below is used to make the connection from this website to our licensing server.  Trial versions are also requested from this URL.  If this webite is not accessible via public internet, then you will need to login to your account at https://www.dnnrocket.com to get an offline activated licensekey.</value>
-  </data>
   <data name="privateftp.Help" xml:space="preserve">
     <value>A private ftp service can be turned on.  Private templates can be shared between portals and installations across servers.  Using a standard FTP service.  This feature is only available in professional version.</value>
-  </data>
-  <data name="publicapptheme.Help" xml:space="preserve">
-    <value>The public AppTheme URI identifies the location of available Rocket Templates.  When searching for online templates this URI will be used to get a list of available templates.</value>
   </data>
   <data name="securityaccess.Text" xml:space="preserve">
     <value>Security Access</value>

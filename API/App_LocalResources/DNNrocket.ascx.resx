@@ -459,4 +459,13 @@
   <data name="entercertificatekey.Text" xml:space="preserve">
     <value>Enter License Certificate Key</value>
   </data>
+  <data name="appthemeadmin.Text" xml:space="preserve">
+    <value>AppTheme Administration</value>
+  </data>
+  <data name="downloadallappthemes.Text" xml:space="preserve">
+    <value>Download ALL Public AppThemes</value>
+  </data>
+  <data name="nolocalappthemes.Text" xml:space="preserve">
+    <value>You do not have any local AppThemes installed.  You can install and create AppThemes from the Appthemes administration or you can download free public AppThemes directly. </value>
+  </data>
 </root>

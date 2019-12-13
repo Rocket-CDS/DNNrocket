@@ -14,10 +14,6 @@
 <div class="w3-row w3-padding">
     <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_globalsave" s-post="#globalsettings">@ButtonText(ButtonTypes.save)</div>
     @ButtonGap()
-    <div class="w3-col m2 w3-button w3-blue w3-padding-8 simplisity_click" title="Save the Globel Setting to the ../DNNrocket folder, so it can be used by package creation with MSBuild for installation package" s-cmd="systemapi_globalsaveasfile" s-post="#globalsettings">@ButtonText(ButtonTypes.save)&nbsp;to&nbsp;File</div>
-    @ButtonGap()
-    <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="THIS WILL RELOAD ALL GLOBAL SETTINGS, ARE YOU SURE?" title="Reset the Globel Setting from initial setup file." s-cmd="systemapi_globalresetfromfile" s-post="#globalsettings">@ButtonText(ButtonTypes.reset)&nbsp;from&nbsp;File</div>
-    @ButtonGap()
 </div>
 
 <div id="globalsettings" class="">
@@ -37,30 +33,6 @@
                 @TextBox(info, "genxml/textbox/ftpuser", "class='w3-input w3-border' maxlength='250' ", "")
                 <label class="">@ResourceKey("system.ftppassword")</label>
                 @TextBox(info, "genxml/textbox/ftppassword", "class='w3-input w3-border' type='password'  maxlength='50' ", "")
-            </div>
-        </div>
-
-        <h1>@ResourceKey("system.publicapptheme")</h1>
-        <p>
-            <i>@ResourceKey("system.publicapptheme", "", "Help")</i>
-        </p>
-        <div class="w3-row-padding">
-            <div class="w3-half">
-                <label class="">@ResourceKey("system.publicappthemeuri")</label>
-                @TextBox(info, "genxml/textbox/publicappthemeuri", "class='w3-input w3-border' maxlength='250' ", "http://www.rocket-templates.ovh/appthemes")
-            </div>
-        </div>
-
-        <h1>@ResourceKey("system.licenseurl")</h1>
-        <p>
-            <i>@ResourceKey("system.licenseurl", "", "Help")</i>
-        </p>
-        <div class="w3-row-padding">
-            <div class="w3-half">
-                <label class="">@ResourceKey("system.licenseurl")</label>
-                @TextBox(info, "genxml/textbox/licenseurl", "class='w3-input w3-border' maxlength='250' ", "https://license.dnnrocket.com")
-            </div>
-            <div class="w3-half">
             </div>
         </div>
 

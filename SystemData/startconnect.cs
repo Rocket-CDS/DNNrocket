@@ -115,14 +115,6 @@ namespace DNNrocket.SystemData
                         SystemGlobalSave();
                         strOut = SystemGlobalDetail();
                         break;
-                    case "systemapi_globalsaveasfile":
-                        SystemGlobalSaveToFile();
-                        strOut = SystemGlobalDetail();
-                        break;
-                    case "systemapi_globalresetfromfile":
-                        SystemGlobalResetFromFile();
-                        strOut = SystemGlobalDetail();
-                        break;
 
                     case "systemapi_licenselist":
                         strOut = GetLicenseList();
@@ -421,17 +413,6 @@ namespace DNNrocket.SystemData
         {
             var globalData = new SystemGlobalData();
             globalData.Save(_postInfo);
-        }
-        public static void SystemGlobalSaveToFile()
-        {
-            var globalData = new SystemGlobalData();
-            globalData.Save(_postInfo);
-            globalData.SaveToFile();
-        }
-        public static void SystemGlobalResetFromFile()
-        {
-            var globalData = new SystemGlobalData();
-            globalData.ResetFromFile();
         }
 
         public static String RenderSystemAdminList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath)

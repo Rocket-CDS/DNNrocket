@@ -1,17 +1,17 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNNrocketMod" type="Module" version="1.0.0">
-			<friendlyName>DNNrocketMod</friendlyName>
-			<description>DNNrocket Module</description>
-			<iconFile />
-			<owner>
+		<package name="RocketMod" type="Module" version="1.0.0">
+			<friendlyName>RocketMod</friendlyName>
+			<description>Rocket Module</description>
+      <iconFile>DesktopModules/DNNrocket/RocketMod/dnnrocketlogo2.jpg</iconFile>
+      <owner>
 				<name>Charles France</name>
 				<organization>DNN Rocket</organization>
 				<url>www.dnnrocket.com</url>
 				<email>support@dnnrocket.com</email>
 			</owner>
 			<license>
-        Copyright (c) 2015, www.dnnrocket.com
+        Copyright (c) 2019, www.dnnrocket.com
         All rights reserved.
 
         THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -133,7 +133,7 @@ DNNrocketAPI
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
-                    <iconFile>dnnrocketlogo2.jpg</iconFile>
+                    <iconFile>DesktopModules/DNNrocket/RocketMod/dnnrocketlogo2.jpg</iconFile>
                     <helpUrl />
                     <supportsPopUps>False</supportsPopUps>
                     <viewOrder>0</viewOrder>
@@ -158,9 +158,9 @@ DNNrocketAPI
         </component>
         <component type="File">
           <files>
-            <basePath>DesktopModules\DNNrocket\RocketMod\</basePath>
+            <basePath>DesktopModules\DNNrocket\</basePath>
             <file>
-              <name>dnnrocketlogo2.jpg</name>
+              <name>globalconfig.xml</name>
             </file>
           </files>
         </component>

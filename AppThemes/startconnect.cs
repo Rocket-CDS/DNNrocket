@@ -255,11 +255,8 @@ namespace DNNrocket.AppThemes
 
         public static void ClearServerCacheLists()
         {
-            // make sure list cache is cleared, so lists match local and server.
-            var appThemeDataPrivateList = new AppThemeDataPrivateList(_selectedSystemKey, true);
-            appThemeDataPrivateList.ClearCache();
-            var appThemeDataPublicList = new AppThemeDataPublicList(_selectedSystemKey, true);
-            appThemeDataPublicList.ClearCache();
+            // clear all cache for aptheme
+            CacheUtils.ClearAllCache("apptheme");
         }
 
         public static string CreateNewAppTheme()

@@ -14,44 +14,32 @@ namespace DNNrocketAPI.Componants
         {
             _cacheKey = "rocketGLOBALSETTINGS";
             if (cache) Info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
-            if (Info == null)
-            {
-                LoadData();
-            }
-        }
+            if (Info == null) LoadData();
 
-        public void SaveToFile()
-        {
-            var xmlData = Info.ToXmlItem();
-            var fullFileName = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket").TrimEnd('\\') + "\\globalsettings.config";
-            FileUtils.SaveFile(fullFileName, xmlData);
-            CacheUtils.ClearAllCache();
-        }
-        public void ResetFromFile()
-        {
-            var fullFileName = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket").TrimEnd('\\') + "\\globalsettings.config";
-            var xmlData = FileUtils.ReadFile(fullFileName);
-            if (xmlData != "")
-            {
-                Info.FromXmlItem(xmlData);
-                var objCtrl = new DNNrocketController();
-                objCtrl.Update(Info);
-            }
-            CacheUtils.ClearAllCache();
+            if (cache) ConfigInfo = (SimplisityRecord)CacheUtils.GetCache(_cacheKey + "ConfigInfo");
+            if (ConfigInfo == null) LoadConfig();
         }
         public void Save(SimplisityInfo postInfo)
         {
              var objCtrl = new DNNrocketController();
             Info.XMLData = postInfo.XMLData;
-            objCtrl.Update(Info);
-            CacheUtils.ClearAllCache();
-            CacheUtils.SetCache(_cacheKey, Info);
+            Update();
         }
         public void Update()
         {
             var objCtrl = new DNNrocketController();
             objCtrl.Update(Info);
+            CacheUtils.ClearAllCache();
             CacheUtils.SetCache(_cacheKey, Info);
+        }
+        private void LoadConfig()
+        {
+            ConfigInfo = new SimplisityRecord();
+            //import the config data from XML file.
+            var fullFileName = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket").TrimEnd('\\') + "\\globalconfig.xml";
+            var xmlData = FileUtils.ReadFile(fullFileName);
+            if (xmlData != "") ConfigInfo.XMLData = xmlData;
+            CacheUtils.SetCache(_cacheKey + "ConfigInfo", ConfigInfo);
         }
 
         private void LoadData()
@@ -66,18 +54,23 @@ namespace DNNrocketAPI.Componants
                 Info.TypeCode = "GLOBALSETTINGS";
                 Info.ItemID = objCtrl.Update(Info);
             }
+            CacheUtils.SetCache(_cacheKey, Info);
         }
 
         public SimplisityInfo Info { get; set; }
+        public SimplisityRecord ConfigInfo { get; set; }
 
         public string FtpUserName { get { return Info.GetXmlProperty("genxml/textbox/ftpuser"); } set { Info.SetXmlProperty("genxml/textbox/ftpuser",value); } }
         public string FtpPassword { get { return Info.GetXmlProperty("genxml/textbox/ftppassword"); } set { Info.SetXmlProperty("genxml/textbox/ftppassword", value); } }
         public string FtpServer { get { return Info.GetXmlProperty("genxml/textbox/ftpserver"); } set { Info.SetXmlProperty("genxml/textbox/ftpserver", value); } }
-        public string PublicAppThemeURI { get { return Info.GetXmlProperty("genxml/textbox/publicappthemeuri"); } set { Info.SetXmlProperty("genxml/textbox/publicappthemeuri", value); } }
         public string ImageType { get { return Info.GetXmlProperty("genxml/select/imagetype"); } set { Info.SetXmlProperty("genxml/select/imagetype", value); } }
         public bool PngImage { get { if (Info.GetXmlProperty("genxml/select/imagetype") != "jpg") return true; else return false; } }
 
-        public string LicenseUrl { get { return Info.GetXmlProperty("genxml/textbox/licenseurl"); } set { Info.SetXmlProperty("genxml/textbox/licenseurl", value); } }
-        public string AccountEmail { get { return Info.GetXmlProperty("genxml/textbox/accountemail"); } set { Info.SetXmlProperty("genxml/textbox/accountemail", value); } }
+
+
+        // globalconfig.xml - Config XML file data
+        public string LicenseUrl { get { return ConfigInfo.GetXmlProperty("genxml/hidden/licenseurl"); } }
+        public string PublicAppThemeURI { get { return ConfigInfo.GetXmlProperty("genxml/hidden/publicappthemeuri"); } }
+
     }
 }
