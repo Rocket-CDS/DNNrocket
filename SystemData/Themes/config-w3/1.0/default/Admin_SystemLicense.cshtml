@@ -50,24 +50,24 @@
             @foreach (LicenseData license in licenseDataList.List)
             {
 
-        <tr>
-            <td style="width:32px;cursor:pointer;">
-                <div class="simplisity_click" s-track="false" s-cmd="systemapi_licensepopup" s-fields='{"licenseid":"@(license.Record.ItemID)"}' s-return="#updatelicense">@ResourceKey("DNNrocket.edit", "", "Icon")</div>
-            </td>
-            <td>
-                @license.SystemKey
-            </td>
-            <td class="w3-hide-small">
-                @license.DomainUrl
-            </td>
-            <td class="w3-hide-small">
-                @license.SiteKey
-            </td>
-            <td class="w3-hide-small">
-                @license.ExpireDate.ToShortDateString()
-            </td>
-            <td></td>
-        </tr>
+                <tr>
+                    <td style="width:32px;cursor:pointer;">
+                        <div class="simplisity_click" s-track="false" s-cmd="systemapi_licensepopup" s-fields='{"licenseid":"@(license.Record.ItemID)"}' s-return="#updatelicense">@ResourceKey("DNNrocket.edit", "", "Icon")</div>
+                    </td>
+                    <td>
+                        @license.SystemKey
+                    </td>
+                    <td class="w3-hide-small">
+                        @license.DomainUrl
+                    </td>
+                    <td class="w3-hide-small">
+                        @license.SiteKey
+                    </td>
+                    <td class="w3-hide-small">
+                        @license.ExpireDate.ToShortDateString()
+                    </td>
+                    <td></td>
+                </tr>
 
             }
 
@@ -77,11 +77,10 @@
 
     </div>
 
-
     <script>
         $(document).ready(function () {
-
-
+            // turn off the reload flag
+            simplisity_setParamField("reload", false)
         });
 
         function searchFunction() {

@@ -58,26 +58,14 @@ namespace DNNrocketAPI
         private ModuleParams _dataModuleParams;
         private SimplisityInfo _systemInfo;
         private SystemInfoData _systemInfoData;
-
-
+        private DNNrocketController _objCtrl;
 
         protected override void OnInit(EventArgs e)
         {
 
             base.OnInit(e);
 
-            var objCtrl = new DNNrocketController();
-
-            var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
-            var desktopModule = moduleInfo.DesktopModule;
-
-            _systemkey = desktopModule.ModuleDefinitions.First().Key.ToLower(); // Use the First DNN Module definition as the DNNrocket systemkey
-            _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemkey);
-            if (_systemInfo == null)
-            {
-                var sData = new SystemData(); // load XML files.
-                _systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemkey);
-            }
+            _objCtrl = new DNNrocketController();
 
             var clearallcache = DNNrocketUtils.RequestParam(Context, "clearallcache");
             if (clearallcache != "")
@@ -86,6 +74,11 @@ namespace DNNrocketAPI
                 CacheUtils.ClearAllCache();
             }
 
+            var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
+            var desktopModule = moduleInfo.DesktopModule;
+            _systemkey = desktopModule.ModuleDefinitions.First().Key.ToLower(); // Use the First DNN Module definition as the DNNrocket systemkey
+
+            InitSystemInfo();
 
             _systemInfoData = new SystemInfoData(_systemInfo);
             _interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
@@ -110,7 +103,6 @@ namespace DNNrocketAPI
                 }
 
             }
-
 
         }
 
@@ -137,13 +129,11 @@ namespace DNNrocketAPI
             var hasEditAccess = false;
             if (UserId > 0) hasEditAccess = DotNetNuke.Security.Permissions.ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration);
 
-            var objCtrl = new DNNrocketController();
-
             var itemref = DNNrocketUtils.RequestQueryStringParam(Request, "refid");
             // check for detail page display
             if (GeneralUtils.IsNumeric(itemref))
             {
-                var info = objCtrl.GetInfo(Convert.ToInt32(itemref), DNNrocketUtils.GetCurrentCulture());
+                var info = _objCtrl.GetInfo(Convert.ToInt32(itemref), DNNrocketUtils.GetCurrentCulture());
                 if (info != null)
                 {
                     var pagename = info.GetXmlProperty("genxml/lang/genxml/textbox/pagename");
@@ -250,6 +240,24 @@ namespace DNNrocketAPI
 
 
         #endregion
+
+        private void InitSystemInfo()
+        {
+            _systemInfo = (SimplisityInfo)CacheUtils.GetCache(_systemkey + "modid" + ModuleId);
+            if (_systemInfo == null)
+            {
+                _systemInfo = _objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemkey);
+                if (_systemInfo != null) CacheUtils.GetCache(_systemkey + "modid" + ModuleId, _systemkey);
+            }
+            if (_systemInfo == null)
+            {
+                // no system data, so must be new install.
+                var sData = new SystemData(); // load XML files.
+                _systemInfo = _objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemkey);
+                if (_systemInfo != null) CacheUtils.GetCache(_systemkey + "modid" + ModuleId, _systemkey);
+            }
+
+        }
 
 
         #region Optional Interfaces

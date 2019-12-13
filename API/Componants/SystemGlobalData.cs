@@ -20,11 +20,31 @@ namespace DNNrocketAPI.Componants
             }
         }
 
+        public void SaveToFile()
+        {
+            var xmlData = Info.ToXmlItem();
+            var fullFileName = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket").TrimEnd('\\') + "\\globalsettings.config";
+            FileUtils.SaveFile(fullFileName, xmlData);
+            CacheUtils.ClearAllCache();
+        }
+        public void ResetFromFile()
+        {
+            var fullFileName = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket").TrimEnd('\\') + "\\globalsettings.config";
+            var xmlData = FileUtils.ReadFile(fullFileName);
+            if (xmlData != "")
+            {
+                Info.FromXmlItem(xmlData);
+                var objCtrl = new DNNrocketController();
+                objCtrl.Update(Info);
+            }
+            CacheUtils.ClearAllCache();
+        }
         public void Save(SimplisityInfo postInfo)
         {
              var objCtrl = new DNNrocketController();
             Info.XMLData = postInfo.XMLData;
             objCtrl.Update(Info);
+            CacheUtils.ClearAllCache();
             CacheUtils.SetCache(_cacheKey, Info);
         }
         public void Update()

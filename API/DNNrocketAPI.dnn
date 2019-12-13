@@ -8,7 +8,7 @@
 				<name>Charles France</name>
 				<organization>DNN Rocket</organization>
 				<url>www.dnnrocket.com</url>
-				<email></email>
+				<email>support@dnnrocket.com</email>
 			</owner>
 			<license>
         Copyright (c) 2015, www.dnnrocket.com
@@ -133,7 +133,7 @@ DNNrocketAPI
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
-                    <iconFile />
+                    <iconFile>dnnrocketlogo2.jpg</iconFile>
                     <helpUrl />
                     <supportsPopUps>False</supportsPopUps>
                     <viewOrder>0</viewOrder>
@@ -149,13 +149,18 @@ DNNrocketAPI
           <files>
             <basePath>DesktopModules\DNNrocket\API\Systems\</basePath>
             <file>
-              <name>dnnrocket_system.xml</name>
-            </file>
-            <file>
               <name>rocketmod_system.xml</name>
             </file>
             <file>
               <name>rocketappthemes_system.xml</name>
+            </file>
+          </files>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>DesktopModules\DNNrocket\RocketMod\</basePath>
+            <file>
+              <name>dnnrocketlogo2.jpg</name>
             </file>
           </files>
         </component>

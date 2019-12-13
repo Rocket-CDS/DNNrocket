@@ -12,7 +12,11 @@
 }
 
 <div class="w3-row w3-padding">
-    <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_globalsave"  s-post="#globalsettings">@ButtonText(ButtonTypes.save)</div>
+    <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_globalsave" s-post="#globalsettings">@ButtonText(ButtonTypes.save)</div>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-blue w3-padding-8 simplisity_click" title="Save the Globel Setting to the ../DNNrocket folder, so it can be used by package creation with MSBuild for installation package" s-cmd="systemapi_globalsaveasfile" s-post="#globalsettings">@ButtonText(ButtonTypes.save)&nbsp;to&nbsp;File</div>
+    @ButtonGap()
+    <div class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="THIS WILL RELOAD ALL GLOBAL SETTINGS, ARE YOU SURE?" title="Reset the Globel Setting from initial setup file." s-cmd="systemapi_globalresetfromfile" s-post="#globalsettings">@ButtonText(ButtonTypes.reset)&nbsp;from&nbsp;File</div>
     @ButtonGap()
 </div>
 
@@ -85,3 +89,11 @@
     </div>
 </div>
 
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        // turn off the reload flag
+        simplisity_setParamField("reload", false)
+    });
+
+</script>

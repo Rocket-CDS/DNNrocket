@@ -44,9 +44,6 @@
       <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
     </CreateItem>
 
-    <CreateItem Include="..\dnnrocket_system.xml">
-      <Output TaskParameter="Include" ItemName="PluginFiles" />
-    </CreateItem>
     <CreateItem Include="..\rocket*.xml">
       <Output TaskParameter="Include" ItemName="PluginFiles" />
     </CreateItem>
