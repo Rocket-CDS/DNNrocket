@@ -209,7 +209,6 @@ namespace DNNrocketAPI
                     if (returnDictionary.ContainsKey("outputhtml"))
                     {
                         strOut += returnDictionary["outputhtml"];
-                        CacheUtils.SetCache(cacheKey, strOut, _moduleParams.CacheGroupId);
                     }
 
                     if (hasEditAccess)
@@ -218,6 +217,7 @@ namespace DNNrocketAPI
                         var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemInfoData.DebugMode);
                         strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemInfoData.DebugMode);
                     }
+                    CacheUtils.SetCache(cacheKey, strOut, _moduleParams.CacheGroupId);
                 }
                 else
                 {
