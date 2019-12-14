@@ -30,7 +30,7 @@
 
     <div class="w3-container">
         <div class="w3-col w3-padding" style="width:160px;">
-            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodedit_addlink" s-fields='{"selecteditemid":"@i.ItemID","linkfieldname":"@(linkfieldname)"}'><i class='fas fa-plus-circle'></i></div>
+            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-post="#datasection" s-list="@Model.GetSetting("s-list-csv")" s-cmd="rocketmodedit_addlink" s-fields='{"selecteditemid":"@i.ItemID","linkfieldname":"@(linkfieldname)"}'><i class='fas fa-plus-circle'></i></div>
             <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="linklist@(linkfieldname)bin" s-return="#linklistdata@(linkfieldname)" s-removelist=".linklist@(linkfieldname)" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
         </div>
     </div>

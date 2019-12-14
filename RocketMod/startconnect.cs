@@ -104,14 +104,17 @@ namespace RocketMod
                     strOut = GetArticleEdit(true);
                     break;
                 case "rocketmodedit_addimage":
+                    SaveArticle();
                     RocketModAddListItem("imagelist" + _paramInfo.GetXmlProperty("genxml/hidden/imgfieldname"));
                     strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_adddocument":
+                    SaveArticle();
                     RocketModAddListItem("documentlist" + _paramInfo.GetXmlProperty("genxml/hidden/docfieldname"));
                     strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_addlink":
+                    SaveArticle();
                     RocketModAddListItem("linklist" + _paramInfo.GetXmlProperty("genxml/hidden/linkfieldname"));
                     strOut = GetArticleEdit();
                     break;
@@ -259,6 +262,11 @@ namespace RocketMod
 
             _settingsData = GetSettingsData();
             _passSettings = LocalUtils.SettingsToDictionary(_settingsData);
+
+            _passSettings.Remove("tabid");
+            _passSettings.Add("tabid", _tabid.ToString());
+            _passSettings.Remove("moduleid");
+            _passSettings.Add("moduleid", _moduleid.ToString());
 
             _moduleParams = new ModuleParams(_moduleid, _systemKey);
             _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemKey);
@@ -954,8 +962,7 @@ namespace RocketMod
             try
             {
                 _rocketInterface.Info.ModuleId = _moduleid;
-                if (!_passSettings.ContainsKey("tabid")) _passSettings.Add("tabid", _tabid.ToString());
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",_systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",_systemInfoData.DebugMode);                
                 return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
             }
             catch (Exception ex)

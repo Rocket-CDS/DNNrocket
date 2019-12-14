@@ -1404,8 +1404,6 @@ namespace DNNrocketAPI
                     }
                 }
 
-                if (debugMode) LogDebug("IncludePageHeaders(....) cacheHead: " + Environment.NewLine + cacheHead);
-
                 CacheUtils.SetCache(cachekey, cacheHead, moduleParams.CacheGroupId);
                 PageIncludes.IncludeTextInHeader(page, cacheHead);
             }

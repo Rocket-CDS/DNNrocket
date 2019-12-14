@@ -170,20 +170,26 @@ namespace DNNrocketAPI
                 var paramString = "";
                 foreach (String key in Request.QueryString.AllKeys)
                 {
-                    paramString += key + "=" + Request.QueryString[key];
-                    // we need this if we need to process url parmas on the APInterface.  In the cshtml we can use (Model.GetUrlParam("????"))
-                    paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_","-"), Request.QueryString[key]);
+                    if (key != null) // test for null, but should not happen.   
+                    {
+                        paramString += key + "=" + Request.QueryString[key];
+                        // we need this if we need to process url parmas on the APInterface.  In the cshtml we can use (Model.GetUrlParam("????"))
+                        paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), Request.QueryString[key]);
+                    }
                 }
                 foreach (string key in Request.Form)
                 {
-                    paramInfo.SetXmlProperty("genxml/postform/" + key.Replace("_","-"), Request.Form[key]); // remove '_' from xpath
+                    if (key != null && !key.StartsWith("_")) // null can happen and don't bother with system form keys, we don;t use those.
+                    {
+                        paramInfo.SetXmlProperty("genxml/postform/" + key.Replace("_", "-"), Request.Form[key]); // remove '_' from xpath
+                    }
                 }
 
                 var strOut = "";
                 var cacheOutPut = "";
                 var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture();
-                if (_moduleParams.CacheEnabled) cacheOutPut = (string)CacheUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
 
+                if (_moduleParams.CacheEnabled) cacheOutPut = (string)CacheUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
 
                 if (cacheOutPut == null || cacheOutPut == "")
                 {
