@@ -19,14 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="AppThemeBase\resxtemplate.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="AppThemeBase\resxtemplate.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
     <ProjectReference Include="..\AppThemes\AppThemes.csproj" />
     <ProjectReference Include="..\Settings\Settings.csproj" />
