@@ -25,27 +25,31 @@
 
 }
 
+@if (!Model.GetSettingBool("hideheading"))
+{
     <div class="w3-container w3-theme w3-padding">
         <label>@ResourceKey("DNNrocket.images")</label>
     </div>
+}
 
-    <div class="w3-row imagelistdatasection">
 
-        <div class="w3-container">
-            <div class="w3-col w3-padding" style="width:160px;">
-                <div class="w3-button w3-teal w3-padding-8 simplisity_click"  s-post="#datasection" s-list="@Model.GetSetting("s-list-csv")" s-cmd="rocketmodedit_addimage" s-fields='{"selecteditemid":"@i.ItemID","imgfieldname":"@(imgfieldname)"}'><i class='fas fa-plus-circle'></i></div>
-                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelist@(imgfieldname)bin" s-return="#imagelistdata@(imgfieldname)" s-removelist=".imagelist@(imgfieldname)" style="display: none;"><i title="" class="fas fa-undo fa-fw fa-lg"></i></div>
-            </div>
+<div class="w3-row imagelistdatasection">
+
+    <div class="w3-container">
+        <div class="w3-col w3-padding" style="width:160px;">
+            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-post="#datasection" s-list="@Model.GetSetting("s-list-csv")" s-cmd="rocketmodedit_addimage" s-fields='{"selecteditemid":"@i.ItemID","imgfieldname":"@(imgfieldname)"}'><i class='fas fa-plus-circle'></i></div>
+            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelist@(imgfieldname)bin" s-return="#imagelistdata@(imgfieldname)" s-removelist=".imagelist@(imgfieldname)" style="display: none;"><i title="" class="fas fa-undo fa-fw fa-lg"></i></div>
         </div>
+    </div>
 
-        <ul id="imagelistdata@(imgfieldname)" class="w3-ul">
+    <ul id="imagelistdata@(imgfieldname)" class="w3-ul">
 
-            @foreach (var imgInfo in datalist)
-            {
-                imgLP += 1;
+        @foreach (var imgInfo in datalist)
+        {
+            imgLP += 1;
 
-                var settingsdataclassselect = "dictionarydata" + imgLP;
-                var imagesizeclass = "imagesize" + imgLP;
+            var settingsdataclassselect = "dictionarydata" + imgLP;
+            var imagesizeclass = "imagesize" + imgLP;
 
             <li class="imagelist@(imgfieldname) w3-half w3-display-container w3-padding w3-border-0">
 
@@ -57,20 +61,20 @@
                             <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
                         </span>
                         <div class="w3-col w3-padding">
-                            @ImageEditFull(imgInfo, imgfieldname, 100, 100, "", false, imgLP,"", globalSettings.PngImage)
+                            @ImageEditFull(imgInfo, imgfieldname, 100, 100, "", false, imgLP, "", globalSettings.PngImage)
                         </div>
                     </div>
-                 </div>
+                </div>
             </li>
 
-                }
-            </ul>
+        }
+    </ul>
 
-    </div>
+</div>
 
-    <script>
+<script>
         $(document).ready(function () {
             $("#imagelistdata@(imgfieldname)").sortable();
             $("#imagelistdata@(imgfieldname)").disableSelection();
         });
-    </script>
+</script>

@@ -406,6 +406,8 @@ namespace DNNrocketAPI.Componants
                 Record = DNNrocketUtils.UpdateFieldXpath(Record, "settingfielddata");
                 _objCtrl.Update(Record, _tableName);
 
+                SyncFiles();
+
                 // output generated template.
                 var formHtml = GetTemplate("edit");
                 if (RegenerateEdit) formHtml = GenerateEditForm("fielddata", "edit",0);

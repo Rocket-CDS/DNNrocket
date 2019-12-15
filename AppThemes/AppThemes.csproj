@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="SystemThemes\**" />
-    <EmbeddedResource Remove="SystemThemes\**" />
-    <None Remove="SystemThemes\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="AppThemeBase\resxtemplate.xml" />
   </ItemGroup>
 
@@ -28,6 +22,12 @@
 
   <ItemGroup>
     <Folder Include="Shared\" />
+    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_DocMenu\1.0\doc\" />
+    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_DocMenu\1.0\temp\" />
+    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_Documentation\1.0\doc\" />
+    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_Documentation\1.0\temp\" />
+    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_HtmlContent\1.0\doc\" />
+    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_HtmlContent\1.0\temp\" />
   </ItemGroup>
 
   <ItemGroup>

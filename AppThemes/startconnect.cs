@@ -256,7 +256,8 @@ namespace DNNrocket.AppThemes
         public static void ClearServerCacheLists()
         {
             // clear all cache for aptheme
-            CacheUtils.ClearAllCache("apptheme");
+            CacheUtils.ClearAllCache();
+            DNNrocketUtils.ClearPortalCache();
         }
 
         public static string CreateNewAppTheme()
