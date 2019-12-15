@@ -111,7 +111,7 @@
                     <div id="dictionarydisplay@(lp3listname)" class="w3-row " style="display:none;">
                         <div class="w3-container">
                             <div class="w3-display-container ">
-                                <div row="@(lp3listname)" class=" addvaluekey w3-circle w3-display-left w3-margin ">@ResourceKey("DNNrocket.cmdAddIcon")</div>
+                                <div row="@(lp3listname)" class=" addvaluekey w3-text-teal w3-padding-8 w3-display-left w3-margin ">@ResourceKey("DNNrocket.add", "", "Icon")</div>
 
                                 @HiddenField(i, "genxml/hidden/dictionarykey", " class='dictionarykeyvalue' row='" + lp3listname + "' ", "", false, lp3, listname)
                                 @if (Model.GetSettingBool("dictionarylocalized"))
