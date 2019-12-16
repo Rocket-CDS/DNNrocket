@@ -4,14 +4,16 @@
 
  $(document).ready(function () {
 
-//     CKEDITOR.plugins.addExternal('dnnpagelinks', '/DesktopModules/DNNrocket/ckeditor/plugins/dnnpagelinks/', 'plugin.js' );
-
      editorvar{id} = CKEDITOR.replace('editor{id}', {
-         customConfig: '/DesktopModules/DNNrocket/ckeditor/limitedconfig.js'
+         customConfig: '/DesktopModules/DNNrocket/ckeditor/limitedconfig.js',
+         extraPlugins: 'justify',
      });
 
- editorvar{id}.on('change', function (event) {  
-	var value = editorvar{id}.getData();
-	$('#{id}').val(value); }); }
-);
+     editorvar{id}.unbind('change');
+     editorvar{id}.on('change', function (event) {  
+	    var value = editorvar{id}.getData();
+         $('#{id}').val(value);
+     });
+
+ });
  

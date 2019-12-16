@@ -45,6 +45,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Images", "Images\Images.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Documents", "Documents\Documents.csproj", "{4948C11A-2933-4DA9-B457-54D9B02DB9FC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CKEditor", "CKEditor", "{5AB59797-C962-466E-87D5-CE7EC9B72C38}"
+	ProjectSection(SolutionItems) = preProject
+		CKEditor\limitedconfig.js = CKEditor\limitedconfig.js
+		CKEditor\startup.js = CKEditor\startup.js
+		CKEditor\startupfull.js = CKEditor\startupfull.js
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +113,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5AB59797-C962-466E-87D5-CE7EC9B72C38} = {14576A6A-F2E6-483D-8DF8-B7ECFFFC1ECE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5246FDCC-59B3-4727-A3B3-159E4DFBC825}

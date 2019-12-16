@@ -4,10 +4,14 @@
 
  $(document).ready(function () {
 
-editorvar{id} = CKEDITOR.replace('editor{id}', { } );
+     editorvar{id} = CKEDITOR.replace('editor{id}', {
+         extraPlugins: 'justify',
+     });
 
- editorvar{id}.on('change', function (event) {  
-	var value = editorvar{id}.getData();
-	$('#{id}').val(value); }); }
-);
+     editorvar{id}.unbind('change');
+     editorvar{id}.on('change', function (event) {  
+         var value = editorvar{id}.getData();
+         $('#{id}').val(value);
+     });
+});
  
