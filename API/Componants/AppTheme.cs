@@ -430,9 +430,21 @@ namespace DNNrocketAPI.Componants
                 if (viewHtml != "") FileUtils.SaveFile(tempMapPath, viewHtml);
 
                 SyncFiles();
-
-
             }
+
+            var appthemeprefix = "";
+            var newAppThemeName = AppThemeFolder;
+            var s = AppThemeFolder.Split('_');
+            if (s.Length > 1)
+            {
+                appthemeprefix = s[0];
+                newAppThemeName = s[1];
+            }
+            AppThemePrefix = appthemeprefix;
+            AppThemeName = newAppThemeName;
+            Update();
+
+
         }
 
         public void SaveEditor(string listname, string filename, string editorcode)
@@ -1635,6 +1647,9 @@ namespace DNNrocketAPI.Componants
         public Dictionary<string, SimplisityRecord> SnippetText { get; set; }
         public Dictionary<string, SimplisityRecord> RazorTokenText { get; set; }
         public DNNrocketController RocketController { get { return _objCtrl; } }
+
+        public string AppThemeName { get { return Record.GetXmlProperty("genxml/hidden/appthemename"); } set { Record.SetXmlProperty("genxml/hidden/appthemename",value); } }
+        public string AppThemePrefix { get { return Record.GetXmlProperty("genxml/hidden/appthemeprefix"); } set { Record.SetXmlProperty("genxml/hidden/appthemeprefix", value); } }
 
         #endregion
 

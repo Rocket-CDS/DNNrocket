@@ -61,6 +61,8 @@ namespace DNNrocketAPI.Componants
                     var xmlMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + appTheme.AppThemeFolder + ".xml";
                     var sInfo = new SimplisityRecord();
                     sInfo.SetXmlProperty("genxml/hidden/appthemefolder", appTheme.AppThemeFolder);
+                    sInfo.SetXmlProperty("genxml/hidden/appthemename", appTheme.AppThemeName);
+                    sInfo.SetXmlProperty("genxml/hidden/appthemeprefix", appTheme.AppThemePrefix);
                     sInfo.SetXmlProperty("genxml/hidden/summary", appTheme.AppSummary);
                     sInfo.SetXmlProperty("genxml/hidden/latestversion", appTheme.LatestVersionFolder);
                     sInfo.SetXmlProperty("genxml/hidden/latestrev", appTheme.LatestRev.ToString());

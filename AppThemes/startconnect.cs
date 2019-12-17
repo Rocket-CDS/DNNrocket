@@ -264,8 +264,8 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                var appthemeprefix = FileUtils.RemoveInvalidFileChars(_postInfo.GetXmlProperty("genxml/textbox/appthemeprefix"));
-                var appthemename = FileUtils.RemoveInvalidFileChars(_postInfo.GetXmlProperty("genxml/textbox/appthemename"));
+                var appthemeprefix = FileUtils.RemoveInvalidFileChars(_postInfo.GetXmlProperty("genxml/textbox/appthemeprefix").Replace("_", "-"));
+                var appthemename = FileUtils.RemoveInvalidFileChars(_postInfo.GetXmlProperty("genxml/textbox/appthemename").Replace("_","-"));
 
                 var newAppThemeName = appthemename;
                 if (appthemeprefix != "") newAppThemeName = appthemeprefix + "_" + newAppThemeName;
@@ -282,6 +282,10 @@ namespace DNNrocket.AppThemes
 
                 // crearte new apptheme.
                 var appTheme = new AppTheme(_selectedSystemKey, newAppThemeName, "1.0");
+                appTheme.AppThemePrefix = appthemeprefix;
+                appTheme.AppThemeName = newAppThemeName;
+                appTheme.Update();
+
                 _userStorage.Set("selectedappversion", "1.0");
 
                 ClearServerCacheLists();
