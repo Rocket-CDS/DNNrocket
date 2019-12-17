@@ -214,8 +214,16 @@ namespace RocketMod
             // set editlang from url param or cache
             _editLang = DNNrocketUtils.GetEditCulture();
 
-            _userStorage = new UserStorage();
             _paramInfo = paramInfo;
+
+            _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
+            _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
+            if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid");
+
+            _userStorage = new UserStorage();
+            _userStorage.ModuleId = _moduleid; // use moduleid for tracking commands. 
+
             if (!CheckSecurity(paramCmd))
             {
                 paramCmd = "rocketmodedit_editarticlelist";
@@ -248,13 +256,6 @@ namespace RocketMod
                     }
                 }
             }
-
-            // we should ALWAYS pass back the moduleid & tabid in the template post.
-            // But for the admin start we need it to be passed by the admin.aspx url parameters.  Which then puts it in the s-fields for the simplsity start call.
-            _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-            if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
-            _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
-            if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid");
 
             _selectedItemId = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
 
