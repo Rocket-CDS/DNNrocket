@@ -7,6 +7,87 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="SystemThemes\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\css\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\doc\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\js\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\temp\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\c40\2.0\doc\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\c40\2.0\temp\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\css\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\doc\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\js\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\resx\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\temp\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\cp\2.0\doc\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\cp\2.0\temp\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\dddd\1.0\doc\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\dddd\1.0\temp\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\Rocket_DocumentationMenu\1.0\doc\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\Rocket_DocumentationMenu\1.0\temp\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\rocket_newtest1\1.0\doc\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\rocket_newtest1\1.0\temp\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\rocket_newtest1\2.0\doc\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\rocket_newtest1\2.0\temp\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\test_new3\1.0\doc\**" />
+    <Compile Remove="Themes\SystemThemes\dnnrocketmodule\test_new3\1.0\temp\**" />
+    <Compile Remove="Themes\SystemThemes\TemplateEdit\bin\**" />
+    <Compile Remove="Themes\SystemThemes\TemplateEdit\obj\Debug\TempPE\**" />
+    <EmbeddedResource Remove="SystemThemes\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\css\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\doc\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\js\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\temp\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\c40\2.0\doc\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\c40\2.0\temp\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\css\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\doc\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\js\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\resx\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\temp\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\cp\2.0\doc\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\cp\2.0\temp\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\dddd\1.0\doc\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\dddd\1.0\temp\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\Rocket_DocumentationMenu\1.0\doc\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\Rocket_DocumentationMenu\1.0\temp\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\rocket_newtest1\1.0\doc\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\rocket_newtest1\1.0\temp\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\rocket_newtest1\2.0\doc\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\rocket_newtest1\2.0\temp\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\test_new3\1.0\doc\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\test_new3\1.0\temp\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\TemplateEdit\bin\**" />
+    <EmbeddedResource Remove="Themes\SystemThemes\TemplateEdit\obj\Debug\TempPE\**" />
+    <None Remove="SystemThemes\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\css\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\doc\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\js\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\temp\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\c40\2.0\doc\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\c40\2.0\temp\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\css\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\doc\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\js\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\resx\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\cp\1.0\temp\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\cp\2.0\doc\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\cp\2.0\temp\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\dddd\1.0\doc\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\dddd\1.0\temp\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\Rocket_DocumentationMenu\1.0\doc\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\Rocket_DocumentationMenu\1.0\temp\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\rocket_newtest1\1.0\doc\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\rocket_newtest1\1.0\temp\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\rocket_newtest1\2.0\doc\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\rocket_newtest1\2.0\temp\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\test_new3\1.0\doc\**" />
+    <None Remove="Themes\SystemThemes\dnnrocketmodule\test_new3\1.0\temp\**" />
+    <None Remove="Themes\SystemThemes\TemplateEdit\bin\**" />
+    <None Remove="Themes\SystemThemes\TemplateEdit\obj\Debug\TempPE\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="AppThemeBase\resxtemplate.xml" />
   </ItemGroup>
 
@@ -22,12 +103,6 @@
 
   <ItemGroup>
     <Folder Include="Shared\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_DocMenu\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_DocMenu\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_Documentation\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_Documentation\1.0\temp\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_HtmlContent\1.0\doc\" />
-    <Folder Include="SystemThemes\dnnrocketmodule\Rocket_HtmlContent\1.0\temp\" />
   </ItemGroup>
 
   <ItemGroup>
