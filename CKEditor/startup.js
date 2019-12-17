@@ -9,7 +9,6 @@
          extraPlugins: 'justify',
      });
 
-     editorvar{id}.unbind('change');
      editorvar{id}.on('change', function (event) {  
 	    var value = editorvar{id}.getData();
          $('#{id}').val(value);
