@@ -65,7 +65,7 @@ namespace DNNrocketAPI.Componants
         public string FtpServer { get { return Info.GetXmlProperty("genxml/textbox/ftpserver"); } set { Info.SetXmlProperty("genxml/textbox/ftpserver", value); } }
         public string ImageType { get { return Info.GetXmlProperty("genxml/select/imagetype"); } set { Info.SetXmlProperty("genxml/select/imagetype", value); } }
         public bool PngImage { get { if (Info.GetXmlProperty("genxml/select/imagetype") != "jpg") return true; else return false; } }
-
+        public string CKEditorCssList { get { return Info.GetXmlProperty("genxml/textbox/ckeditorcsslist"); } set { Info.SetXmlProperty("genxml/textbox/ckeditorcsslist", value); } }
 
 
         // globalconfig.xml - Config XML file data

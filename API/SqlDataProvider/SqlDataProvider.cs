@@ -147,6 +147,10 @@ namespace DNNrocketAPI
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "CleanData", tableName);
         }
+        public override void DeleteAllData(string tableName)
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "DeleteAllData", tableName);
+        }
 
         public override IDataReader GetRecord(int itemId, string tableName = "DNNrocket")
         {

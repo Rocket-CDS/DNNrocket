@@ -395,6 +395,8 @@ namespace DNNrocketAPI.render
             var filepath = HttpContext.Current.Server.MapPath("/DesktopModules/DNNrocket/CKEditor/" + filename);
             strOut += FileUtils.ReadFile(filepath);
             strOut = strOut.Replace("{id}", id);
+            var systemGlobalData = new SystemGlobalData();;            
+            strOut = strOut.Replace("{cssfilelist}", systemGlobalData.CKEditorCssList);            
             strOut += "</script>";
             return strOut;
         }

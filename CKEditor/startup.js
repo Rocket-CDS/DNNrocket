@@ -6,6 +6,7 @@
 
      editorvar{id} = CKEDITOR.replace('editor{id}', {
          customConfig: '/DesktopModules/DNNrocket/ckeditor/limitedconfig.js',
+         contentsCss: ['/DesktopModules/DNNrocket/css/w3.css',{cssfilelist}],
          extraPlugins: 'justify',
      });
 

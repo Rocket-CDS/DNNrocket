@@ -91,6 +91,11 @@ namespace DNNrocketAPI
             if (s == null) return null;
             return new DNNrocketInterface(s);
         }
+        public void ClearTempDB()
+        {
+            var objCtrl = new DNNrocketController();
+            objCtrl.DeleteAllData("DNNrocketTemp");
+        }
         public void Update()
         {
             var objCtrl = new DNNrocketController();

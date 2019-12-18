@@ -44,6 +44,45 @@ END
 
 GO
 
+-- CREATE DNNrocketTemp
+if NOT exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocketTemp]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+CREATE TABLE {databaseOwner}[{objectQualifier}DNNrocketTemp] (
+	[ItemId] [int] IDENTITY (1, 1) NOT NULL ,
+	[PortalId] [int] NULL CONSTRAINT [DF_DNNrocketTemp_PortalId]  DEFAULT ((-1)),
+	[ModuleId] [int] NULL CONSTRAINT [DF_DNNrocketTemp_ModuleId]  DEFAULT ((-1)),
+	[TypeCode] [nvarchar](50) NULL ,
+	[XMLData] [xml] NULL ,
+	[GUIDKey] [nvarchar](250) NULL ,
+	[ModifiedDate] [datetime] NULL ,
+	[TextData] [nvarchar](MAX) NULL ,
+	[XrefItemId] [int] NULL ,
+	[ParentItemId] [int] NULL ,
+	[Lang] [nvarchar] (50) NULL ,
+	[UserId] [int] NOT NULL CONSTRAINT [DF_DNNrocketTemp_UserId] DEFAULT ((-1)),
+	[SortOrder] [int] NULL CONSTRAINT [DF_DNNrocketTemp_SortOrder]  DEFAULT ((-1)),	
+	CONSTRAINT [PK_DNNrocketTemp] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemId]
+	)  ON [PRIMARY] 
+) ON [PRIMARY]
+
+-- Index DNNrocket
+ CREATE NONCLUSTERED INDEX IX_DNNrocketTempXref ON {databaseOwner}[{objectQualifier}DNNrocketTemp] (  XrefItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ]  
+ CREATE NONCLUSTERED INDEX IX_DNNrocketTempMod ON {databaseOwner}[{objectQualifier}DNNrocketTemp] (  ModuleId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketTempParent ON {databaseOwner}[{objectQualifier}DNNrocketTemp] (  ParentItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketTempPortal ON {databaseOwner}[{objectQualifier}DNNrocketTemp] (  PortalId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketTempType ON {databaseOwner}[{objectQualifier}DNNrocketTemp] (  TypeCode ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketTempUserId ON {databaseOwner}[{objectQualifier}DNNrocketTemp] (  UserId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketTempLang ON {databaseOwner}[{objectQualifier}DNNrocketTemp] (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketTempGuidKey ON {databaseOwner}[{objectQualifier}DNNrocketTemp] (  GuidKey ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_DNNrocketTempSortOrder ON {databaseOwner}[{objectQualifier}DNNrocketTemp] (  SortOrder ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+
+END
+
+GO
+
 
 -------------------------------------------------------------------------------
 --------------                       FUNCTIONS                     ------------
@@ -124,6 +163,38 @@ set @sql = 'delete from ' + @TableName + ' where moduleid not in (select modulei
 	exec sp_executesql  @sql
 end
 GO
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_DeleteAllData]    Script Date: 14/06/2019 16:18:52 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}DNNrocket_DeleteAllData]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}DNNrocket_DeleteAllData]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_DeleteAllData]    Script Date: 14/06/2019 16:18:52 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_DeleteAllData]
+@TableName nvarchar(100)
+AS
+begin
+
+ Declare @sql AS NVarchar(max)
+
+ set @TableName = '{databaseOwner}' + @TableName
+
+
+/***  Clean ALL data that is not linked to a module.  i.e. modules that have been deleted. **/
+set @sql = 'delete from ' + @TableName 
+	
+	exec sp_executesql  @sql
+end
+GO
+
+
 
 
 /****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}DNNrocket_Delete]    Script Date: 15/06/2019 08:20:57 ******/

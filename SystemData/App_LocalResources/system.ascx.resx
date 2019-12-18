@@ -315,4 +315,13 @@
   <data name="securityaccess.Text" xml:space="preserve">
     <value>Security Access</value>
   </data>
+  <data name="ckeditorcsslist.Help" xml:space="preserve">
+    <value>This is a csv list of css files to be used for inline content in the CKEditor.  This is very often the skin.css or/and portal.css.  The format is: '/myfolder/myfile1.css','/myfolder/myfile2.css'.  The w3-css is already included by default.</value>
+  </data>
+  <data name="ckeditorcsslist.Text" xml:space="preserve">
+    <value>CKEditor CSS List</value>
+  </data>
+  <data name="cleartempdb.Text" xml:space="preserve">
+    <value>Clear Temp DB</value>
+  </data>
 </root>

@@ -70,6 +70,7 @@ namespace DNNrocketAPI
         public abstract int Update(int ItemId, int PortalId, int ModuleId, String TypeCode, String XMLData, String GUIDKey, DateTime ModifiedDate, String TextData, int XrefItemId, int ParentItemId, int UserId, string lang, int sortOrder, string tableName = "DNNrocket");
         public abstract void Delete(int itemId, string tableName = "DNNrocket");
         public abstract void CleanData(string tableName = "DNNrocket");
+        public abstract void DeleteAllData(string tableName);
         public abstract IDataReader GetRecord(int itemId, string tableName = "DNNrocket");
         public abstract IDataReader GetRecordLang(int parentitemId,String lang, string tableName = "DNNrocket");
         public abstract IDataReader GetUsersCMS(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);

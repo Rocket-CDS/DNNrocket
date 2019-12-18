@@ -12,5 +12,6 @@ namespace DNNrocketAPI.Interfaces
         public abstract SimplisityRecord GetRecord(int itemId, string tableName = "DNNrocket");
         public abstract void Delete(int itemId, string tableName = "DNNrocket");
         public abstract void CleanData(string tableName = "DNNrocket");
+        public abstract void DeleteAllData(string tableName);
     }
 }

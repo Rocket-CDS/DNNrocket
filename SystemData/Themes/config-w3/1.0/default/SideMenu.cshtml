@@ -36,6 +36,7 @@
 
     <hr />
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_clearallcache" s-reload="true" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("DNNrocket.clearallcache")</div>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_confirmclick" s-confirm="DELETE ALL TEMPORARY DATA ?" s-cmd="systemapi_cleartempdb" s-reload="true" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("system.cleartempdb")</div>
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="login_signout" s-return="#simplisity_startpanel"><i class="fas fa-sign-out-alt"></i>&nbsp;@ResourceKey("DNNrocket.signout")</div>
     <hr />
 

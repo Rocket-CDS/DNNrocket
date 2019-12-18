@@ -108,6 +108,11 @@ namespace DNNrocket.SystemData
                         DNNrocketUtils.ClearAllCache();
                         strOut = SystemAdminList(paramInfo, _controlRelPath);
                         break;
+                    case "systemapi_cleartempdb":
+                        CacheUtils.ClearAllCache();
+                        DNNrocketUtils.ClearAllCache();
+                        _systemInfoData.ClearTempDB();
+                        break;                        
                     case "systemapi_globaldetail":
                         strOut = SystemGlobalDetail();
                         break;

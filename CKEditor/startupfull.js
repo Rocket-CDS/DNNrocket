@@ -5,6 +5,7 @@
  $(document).ready(function () {
 
      editorvar{id} = CKEDITOR.replace('editor{id}', {
+         contentsCss: ['/DesktopModules/DNNrocket/css/w3.css', { cssfilelist }],
          extraPlugins: 'justify',
      });
 

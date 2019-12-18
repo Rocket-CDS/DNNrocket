@@ -32,6 +32,10 @@ namespace DNNrocketAPI
         {
             DataProvider.Instance().CleanData(tableName);
         }
+        public override void DeleteAllData(string tableName)
+        {
+            DataProvider.Instance().DeleteAllData(tableName);
+        }
 
         /// <summary>
         /// override for Database Function.  Gets record, if lang is specified then lang xml in injected into the  base genxml node.
