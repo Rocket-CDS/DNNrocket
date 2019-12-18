@@ -201,6 +201,8 @@ namespace DNNrocketAPI
 
                     if (hasEditAccess)
                     {
+                        model.SetSetting("editiconcolor", _systemInfoData.GetSetting("editiconcolor"));
+                        model.SetSetting("editicontextcolor", _systemInfoData.GetSetting("editicontextcolor"));
                         strOut = "<div id='rocketmodcontentwrapper" + ModuleId + "' class=' w3-display-container'>";
                         var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemInfoData.DebugMode);
                         strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemInfoData.DebugMode);

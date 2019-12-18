@@ -10,8 +10,20 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
-    <div id="rocketmodcontentediticons@(Model.ModuleId)" class='w3-row w3-display-topleft w3-light-grey w3-padding w3-border' style='display:none;'>
-        <a href='javascript:rocketmodeditiframe_@(Model.ModuleId)()' class=''><i class='fas fa-edit fa-2x w3-text-blue'></i></a>
-        <a href='/desktopmodules/dnnrocket/rocketmod/admin.html?moduleid=@(Model.ModuleId)&amp;tabid=@(Model.TabId)'><i class="fas fa-layer-group fa-2x w3-text-blue"></i></a>
+@{
+
+var editicontextcolor = Model.GetSetting("editicontextcolor");
+var editiconcolor = Model.GetSetting("editiconcolor");
+if (editiconcolor == "")
+{
+ editiconcolor = " w3-pale-yellow ";
+}
+
+}
+
+    <div id="rocketmodcontentediticons@(Model.ModuleId)" class='w3-display-topleft w3-padding ' style='display:none;'>
+        <a href='javascript:rocketmodeditiframe_@(Model.ModuleId)()' class=''><i class='w3-small @(editiconcolor) @(editicontextcolor) w3-border w3-circle w3-card-4 w3-padding fas fa-edit'></i></a>
+        <a href='/desktopmodules/dnnrocket/rocketmod/admin.html?moduleid=@(Model.ModuleId)&amp;tabid=@(Model.TabId)'><i class="w3-small @(editiconcolor) @(editicontextcolor) w3-border w3-circle w3-card-4 w3-padding fas fa-layer-group"></i></a>
+        <span onclick="$('#rocketmodcontentediticons@(Model.ModuleId)').hide();"><i class='w3-small @(editiconcolor) @(editicontextcolor) w3-border w3-circle w3-card-4 w3-padding fas fa-times'></i></span>
     </div>
 
