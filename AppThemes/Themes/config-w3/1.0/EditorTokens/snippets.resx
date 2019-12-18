@@ -118,24 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DocGallery" xml:space="preserve">
-    <value>@* ----- Document Gallery: BEGIN ------------------------------------------ *@
-&lt;div&gt;
-@foreach (var i in info.GetList("documentlist[fieldname]")) 
-{
-  if (@i.GetXmlProperty("genxml/lang/genxml/hidden/reldocument") != "")
-  {  
-    &lt;div&gt;
-		&lt;div class="w3-button w3-teal w3-padding-8" onclick="actiondownload[fieldname]()" style="cursor:pointer;"&gt;@i.GetXmlProperty("genxml/lang/genxml/textbox/namedocument")&lt;/div&gt;				
-	&lt;/div&gt;
-  &lt;script&gt;
-    function actiondownload[fieldname]() {
-      window.location = "@(i.GetXmlProperty("genxml/lang/genxml/hidden/reldocument"))";
-    }
-  &lt;/script&gt;
-  }
-}
-&lt;/div&gt;
-@* ----- Document Gallery: END ------------------------------------------ *@</value>
+    <value />
   </data>
   <data name="Image" xml:space="preserve">
     <value>&lt;div&gt;
@@ -188,5 +171,65 @@
     }
 &lt;/div&gt;
 @* ----- Link Gallery: END -------------------------------------------- *@</value>
+  </data>
+  <data name="String" xml:space="preserve">
+    <value>&lt;div class="w3-container"&gt;</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>@foreach(var i in info.GetList("documentlistdocs"))</value>
+  </data>
+  <data name="String10" xml:space="preserve">
+    <value>if (i.GetXmlPropertyInt("genxml/hidden/layoutdocs") == 2)</value>
+  </data>
+  <data name="String11" xml:space="preserve">
+    <value>{</value>
+  </data>
+  <data name="String12" xml:space="preserve">
+    <value>docalign = "w3-right";</value>
+  </data>
+  <data name="String13" xml:space="preserve">
+    <value>}</value>
+  </data>
+  <data name="String14" xml:space="preserve">
+    <value>&lt;div class="@docalign"&gt;</value>
+  </data>
+  <data name="String15" xml:space="preserve">
+    <value>&lt;a class="w3-button w3-theme w3-padding-8" style="cursor:pointer;" href="@(i.GetXmlProperty("genxml/lang/genxml/hidden/reldocs"))" download&gt;@i.GetXmlProperty("genxml/lang/genxml/textbox/namedocs")&lt;/a&gt;</value>
+  </data>
+  <data name="String16" xml:space="preserve">
+    <value>&lt;/div&gt;</value>
+  </data>
+  <data name="String17" xml:space="preserve">
+    <value>}</value>
+  </data>
+  <data name="String18" xml:space="preserve">
+    <value>}</value>
+  </data>
+  <data name="String19" xml:space="preserve">
+    <value>&lt;/div&gt;</value>
+  </data>
+  <data name="String2" xml:space="preserve">
+    <value>{</value>
+  </data>
+  <data name="String3" xml:space="preserve">
+    <value>if (i.GetXmlProperty("genxml/lang/genxml/hidden/reldocs") != "")</value>
+  </data>
+  <data name="String4" xml:space="preserve">
+    <value>{</value>
+  </data>
+  <data name="String5" xml:space="preserve">
+    <value>var docalign = "";</value>
+  </data>
+  <data name="String6" xml:space="preserve">
+    <value>if (i.GetXmlPropertyInt("genxml/hidden/layoutdocs") == 1)</value>
+  </data>
+  <data name="String7" xml:space="preserve">
+    <value>{</value>
+  </data>
+  <data name="String8" xml:space="preserve">
+    <value>docalign = "w3-center";</value>
+  </data>
+  <data name="String9" xml:space="preserve">
+    <value>}</value>
   </data>
 </root>

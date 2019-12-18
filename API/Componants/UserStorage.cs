@@ -40,29 +40,29 @@ namespace DNNrocketAPI.Componants
         }
         public string GetCommand(string systemKey)
         {
-            return Get(systemKey + "-s-menu-cmd");
+            return Get(systemKey + "-s-menu-cmd" + ModuleId);
         }
         public string GetInterfaceKey(string systemKey)
         {
-            return Get(systemKey + "-s-menu-interfaceKey");
+            return Get(systemKey + "-s-menu-interfaceKey" + ModuleId);
         }
         public SimplisityInfo GetParamInfo(string systemKey)
         {
             var paramInfo = new SimplisityInfo();
-            var xmlInfo = GeneralUtils.DeCode(Get(systemKey + "-s-menu-paraminfo"));
+            var xmlInfo = GeneralUtils.DeCode(Get(systemKey + "-s-menu-paraminfo" + ModuleId));
             if (xmlInfo != "") paramInfo.FromXmlItem(xmlInfo);
             return paramInfo;
         }
         public void Track(string systemKey, string paramCmd, SimplisityInfo _paramInfo, string interfaceKey)
         {
-            Set(systemKey + "-s-menu-cmd", paramCmd);
-            Set(systemKey + "-s-menu-paraminfo", GeneralUtils.EnCode(_paramInfo.ToXmlItem()));
-            Set(systemKey + "-s-menu-interfaceKey", interfaceKey);            
+            Set(systemKey + "-s-menu-cmd" + ModuleId, paramCmd);
+            Set(systemKey + "-s-menu-paraminfo" + ModuleId, GeneralUtils.EnCode(_paramInfo.ToXmlItem()));
+            Set(systemKey + "-s-menu-interfaceKey" + ModuleId, interfaceKey);            
         }
         public void TrackClear(string systemKey)
         {
-            Set(systemKey + "-s-menu-cmd", "");
-            Set(systemKey + "-s-menu-paraminfo", "");
+            Set(systemKey + "-s-menu-cmd" + ModuleId, "");
+            Set(systemKey + "-s-menu-paraminfo" + ModuleId, "");
         }
         public void Save()
         {
@@ -101,6 +101,7 @@ namespace DNNrocketAPI.Componants
             return Record.GetXmlPropertyDouble("genxml/hidden/" + nodename);
         }
 
+        public int ModuleId { get; set; }
 
         public int UserId { get; set; }
         public SimplisityRecord Record { get; set; } 

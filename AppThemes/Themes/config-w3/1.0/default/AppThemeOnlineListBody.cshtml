@@ -51,9 +51,12 @@ else
                         </div>
                         <div class=" w3-col m6 w3-padding">
                             <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
-                                <b>
-                                    @info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestverison")
-                                </b>
+                                <b class="w3-text-blue ">@info.GetXmlProperty("genxml/hidden/appthemeprefix")</b>
+                                &nbsp;
+                                <b class="">@info.GetXmlProperty("genxml/hidden/appthemename")</b>
+                                &nbsp;
+                                <b class="">@version.@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))</b>
+
                             </div>
                             <div class="w3-hide-small ">
 
@@ -132,9 +135,12 @@ else
                 <div class="w3-padding w3-col m2 ">
 
                     <div class="w3-padding w3-panel w3-display-container w3-border">
+                        <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
+                            <b class="w3-left w3-text-blue ">@info.GetXmlProperty("genxml/hidden/appthemeprefix")</b>
+                        </div>
                         <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60%;" class="w3-circle w3-hover-opacity" />
                         <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
-                            <b>@info.GetXmlProperty("genxml/hidden/appthemefolder") &nbsp; @info.GetXmlProperty("genxml/hidden/latestversion")</b>
+                            <b>@info.GetXmlProperty("genxml/hidden/appthemename") &nbsp; @info.GetXmlProperty("genxml/hidden/latestversion")</b>
                         </div>
 
                         @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
@@ -145,7 +151,7 @@ else
                         }
                         else
                         {
-                            <div class="w3-button w3-display-topright simplisity_click" s-cmd="@Model.GetSetting("s-cmd-download")"  s-fields='{"systemkey":"dnnrocketapptheme","appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;">
+                            <div class="w3-button w3-display-topright simplisity_click" s-cmd="@Model.GetSetting("s-cmd-download")" s-fields='{"systemkey":"dnnrocketapptheme","appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;">
                                 <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
                             </div>
                         }
