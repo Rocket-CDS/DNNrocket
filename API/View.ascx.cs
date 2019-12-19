@@ -95,7 +95,7 @@ namespace DNNrocketAPI
                 _templateRelPath = _rocketInterface.TemplateRelPath;
                 _entiytypecode = _rocketInterface.EntityTypeCode;
                 _paramCmd = _rocketInterface.DefaultCommand;
-                if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we dont; define template path in the interface assume it's the control path.
+                if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we don't define template path in the interface assume it's the control path.
 
                 if (_moduleParams.Exists)
                 {
@@ -187,7 +187,7 @@ namespace DNNrocketAPI
 
                 var strOut = "";
                 var cacheOutPut = "";
-                var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture();
+                var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
 
                 if (_moduleParams.CacheEnabled) cacheOutPut = (string)CacheUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
 

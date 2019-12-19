@@ -48,7 +48,7 @@ namespace DNNrocketAPI
             if (!Directory.Exists(DNNrocketThemesDirectoryMapPath()))
             {
                 Directory.CreateDirectory(DNNrocketThemesDirectoryMapPath());
-            }            
+            }
         }
 
         public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
@@ -95,7 +95,7 @@ namespace DNNrocketAPI
         public static string RequestQueryStringParam(HttpContext context, string paramName)
         {
             return RequestQueryStringParam(context.Request, paramName);
-        }       
+        }
 
 
         public static string RazorRender(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
@@ -202,7 +202,7 @@ namespace DNNrocketAPI
             var rtnStr = "";
             if (razorTemplate != "")
             {
-                if (settings == null) settings = new Dictionary<string, string>(); 
+                if (settings == null) settings = new Dictionary<string, string>();
                 if (headerData == null) headerData = new SimplisityInfo();
                 var nbRazor = new SimplisityRazor(objList, settings, HttpContext.Current.Request.QueryString);
                 nbRazor.HeaderData = headerData;
@@ -339,7 +339,7 @@ namespace DNNrocketAPI
             var codes = countryRegionCodeKey.Split(':');
             if (codes.Length == 2)
             {
-                var countrycodesplit = codes[0].Split('.'); 
+                var countrycodesplit = codes[0].Split('.');
                 if (countrycodesplit.Length == 3)
                 {
                     var l = GetRegionList(countrycodesplit[1], dnnlistname);
@@ -354,7 +354,7 @@ namespace DNNrocketAPI
         }
 
 
-        public static Dictionary<string,string> GetCultureCodeNameList(int portalId = -1)
+        public static Dictionary<string, string> GetCultureCodeNameList(int portalId = -1)
         {
             var rtnList = new Dictionary<string, string>();
             if (portalId == -1 && PortalSettings.Current != null) portalId = PortalSettings.Current.PortalId;
@@ -660,7 +660,7 @@ namespace DNNrocketAPI
 
         public static ModuleInfo GetModuleInfo(int tabid, int moduleid)
         {
-            return ModuleController.Instance.GetModule(moduleid,tabid,false);
+            return ModuleController.Instance.GetModule(moduleid, tabid, false);
         }
 
         public static int GetModuleTabId(Guid uniqueId)
@@ -676,7 +676,7 @@ namespace DNNrocketAPI
         public static TabInfo GetTabInfo(int tabid, bool ignoreCache = false)
         {
             return TabController.Instance.GetTab(tabid, PortalSettings.Current.PortalId, ignoreCache);
-        }        
+        }
         public static Dictionary<int, string> GetTreeTabList()
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
@@ -965,7 +965,7 @@ namespace DNNrocketAPI
 
         public static void ClearAllCache()
         {
-            DataCache.ClearCache(); 
+            DataCache.ClearCache();
         }
         public static void ClearPortalCache()
         {
@@ -1233,7 +1233,8 @@ namespace DNNrocketAPI
             // the userid is prefixed to the filename on upload to the temp folder and then used to get the file back from the temp folder.
             var userid = GetCurrentUserId();
 
-            if (!Directory.Exists(TempDirectoryMapPath())) {
+            if (!Directory.Exists(TempDirectoryMapPath()))
+            {
                 Directory.CreateDirectory(TempDirectoryMapPath());
             }
             if (!Directory.Exists(HomeDNNrocketDirectoryMapPath()))
@@ -1325,7 +1326,7 @@ namespace DNNrocketAPI
             return flist.TrimStart(';');
         }
 
-        public static string GetUniqueFileName(string fileName,string folderMapPath, int idx = 1)
+        public static string GetUniqueFileName(string fileName, string folderMapPath, int idx = 1)
         {
             foreach (char c in System.IO.Path.GetInvalidFileNameChars())
             {
@@ -1409,7 +1410,7 @@ namespace DNNrocketAPI
             }
         }
 
-        public static Dictionary<string,string> GetProviderReturn(string paramCmd,SimplisityInfo systemInfo, DNNrocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
+        public static Dictionary<string, string> GetProviderReturn(string paramCmd, SimplisityInfo systemInfo, DNNrocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
         {
             var rtnDic = new Dictionary<string, string>();
             var systemkey = "";
@@ -1479,7 +1480,7 @@ namespace DNNrocketAPI
                 {
                     try
                     {
-                        var cacheKey = rocketInterface.Assembly + "," +  rocketInterface.NameSpaceClass;
+                        var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
                         var ajaxprov = (EventInterface)CacheUtils.GetCache(cacheKey);
                         if (ajaxprov == null)
                         {
@@ -1583,9 +1584,9 @@ namespace DNNrocketAPI
             foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
             {
                 var sInfo = new SimplisityInfo();
-                sInfo.SetXmlProperty("genxml/name",i.Name);
+                sInfo.SetXmlProperty("genxml/name", i.Name);
                 sInfo.SetXmlProperty("genxml/fullname", i.FullName);
-                sInfo.SetXmlProperty("genxml/extension", i.Extension );
+                sInfo.SetXmlProperty("genxml/extension", i.Extension);
                 sInfo.SetXmlProperty("genxml/directoryname", i.DirectoryName);
                 sInfo.SetXmlProperty("genxml/lastwritetime", i.LastWriteTime.ToShortDateString());
                 sInfo.SetXmlProperty("genxml/relfolder", uploadRelFolderPath);
@@ -1618,10 +1619,10 @@ namespace DNNrocketAPI
                     // will cause a exception on the respone.End.  Just ignore.
                     var msg = ex.ToString();
                 }
+            }
+
+
         }
-
-
-    }
 
         public static void ForceStringDownload(HttpResponse response, string fileName, string fileData)
         {
@@ -1758,6 +1759,27 @@ namespace DNNrocketAPI
             var mappath = HomeDNNrocketDirectoryMapPath().TrimEnd('\\') + "\\logs";
             if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
             FileUtils.AppendToLog(mappath, logName, message);
+        }
+
+        /// <summary>
+        /// Recycles a web site Application Pool (including the current web site).
+        /// Requires to reference Microsoft.Web.Administration and System.Web.Hosting.
+        /// IMPORTANT: The IIS user requires extended permissions to recycle application pool(s).
+        /// </summary>
+        /// <param name="siteName">The site name: leave it NULL to recycle the current site's App Pool.</param>
+        /// <returns>TRUE if the site's App Pool has been recycled; FALSE if no site has been found with the given name.</returns>
+        public static bool RecycleApplicationPool(string siteName = null)
+        {
+            try
+            {
+                RetryableAction.Retry5TimesWith2SecondsDelay(() => File.SetLastWriteTime(Globals.ApplicationMapPath + "\\web.config", DateTime.Now), "Touching config file");
+                return true;
+            }
+            catch (Exception exc)
+            {
+                return false;
+            }
+
         }
 
     }

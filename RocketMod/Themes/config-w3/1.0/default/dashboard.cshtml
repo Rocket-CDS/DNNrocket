@@ -34,10 +34,6 @@
         <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmodedit_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetconfig")</div>
         <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmodedit_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetdata")</div>
     </div>
-    @if (systemInfoData.DebugMode)
-    {
-<b class="w3-text-red">&nbsp;@ResourceKey("DNNrocket.system")&nbsp;@ResourceKey("DNNrocket.debugmode"):&nbsp;@ResourceKey("DNNrocket.on")&nbsp;</b>
-    }
     @if (Model.GetSettingBool("saved"))
     {
         <i class='fas fa-save simplisity_fadeout' style="font-size:24px"></i>
@@ -137,8 +133,20 @@
         </div>
         <div class="w3-col m6  w3-padding w3-margin-top">
             <div class="w3-col m6 w3-padding">
-                @CheckBox(configinfo, "genxml/hidden/disbalecache", "", "class='w3-check'", false)
+                @{
+                    var disablecheckbox = "";
+                }
+                @if (systemInfoData.DebugMode)
+                {
+                    disablecheckbox = "disabled";
+                }
+                @CheckBox(configinfo, "genxml/hidden/disbalecache", "", "class='w3-check' " + disablecheckbox, false)
                 <label>@ResourceKey("RocketMod.disablecache")</label>
+                @if (systemInfoData.DebugMode)
+                {
+                    <b class="w3-text-red">&nbsp;&nbsp;@ResourceKey("DNNrocket.system")&nbsp;@ResourceKey("DNNrocket.debugmode"):&nbsp;@ResourceKey("DNNrocket.on")&nbsp;</b>
+                }
+
             </div>
             <div class="w3-col m6 w3-padding " style="display:none;">
                 @CheckBox(configinfo, "genxml/hidden/exportresourcefiles", "", "class='w3-check'", false)

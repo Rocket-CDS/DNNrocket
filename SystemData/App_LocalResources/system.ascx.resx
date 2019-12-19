@@ -324,4 +324,10 @@
   <data name="cleartempdb.Text" xml:space="preserve">
     <value>Clear Temp DB</value>
   </data>
+  <data name="cleartempdb.Confirm" xml:space="preserve">
+    <value>Delete ALL record in DNNrocketTemp table ?</value>
+  </data>
+  <data name="recycleapppool.Text" xml:space="preserve">
+    <value>Recycle AppPool</value>
+  </data>
 </root>

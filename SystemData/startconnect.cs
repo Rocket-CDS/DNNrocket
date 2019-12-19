@@ -112,6 +112,7 @@ namespace DNNrocket.SystemData
                         CacheUtils.ClearAllCache();
                         DNNrocketUtils.ClearAllCache();
                         _systemInfoData.ClearTempDB();
+                        strOut = "<h1>DNNrocketTemp Database table clear</h1>";
                         break;                        
                     case "systemapi_globaldetail":
                         strOut = SystemGlobalDetail();
@@ -131,6 +132,12 @@ namespace DNNrocket.SystemData
                         DeleteLicense();
                         strOut = GetLicenseList();
                         break;
+                    case "systemapi_recycleapppool":
+                        CacheUtils.ClearAllCache();
+                        DNNrocketUtils.ClearAllCache();
+                        DNNrocketUtils.RecycleApplicationPool();
+                        strOut = "<h1>Recycle App Pool</h1>";
+                        break;                        
                 }
             }
 
