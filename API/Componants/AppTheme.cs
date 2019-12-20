@@ -45,25 +45,29 @@ namespace DNNrocketAPI.Componants
             _jsFileName = new List<string>();
             _resxFileName = new List<string>();
 
-
-
             AppSummary = "";
             AppThemeFolder = appThemeFolder;
             AppSystemThemeFolderRel = AppProjectFolderRel + "/SystemThemes/" + SystemKey;
             AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
             AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolderRel);
+            AppSystemThemeFolderMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRel);
+            if (!Directory.Exists(AppSystemThemeFolderMapPath)) Directory.CreateDirectory(AppSystemThemeFolderMapPath);
 
-            PopulateVersionList();
-            if (versionFolder == "") versionFolder = LatestVersionFolder;
+            if (AppThemeFolder != "") // don't create anything if we dont; have a apptheme (first entry)
+            {
+                PopulateVersionList();
+                if (versionFolder == "") versionFolder = LatestVersionFolder;
 
-            AppVersionFolder = versionFolder;
-            if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
+                AppVersionFolder = versionFolder;
+                if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
 
-            _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
+                _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
 
-            AssignVersionFolders();
+                AssignVersionFolders();
 
-            if (AppThemeFolder != "" && SystemKey != "") Populate();
+                if (AppThemeFolder != "" && SystemKey != "") Populate();
+            }
+
         }
 
         private void AssignVersionFolders()
@@ -87,7 +91,6 @@ namespace DNNrocketAPI.Componants
             JsFolderMapPath = DNNrocketUtils.MapPath(JsFolderRel);
             ResxFolderMapPath = DNNrocketUtils.MapPath(ResxFolderRel);
             AppProjectFolderMapPath = DNNrocketUtils.MapPath(AppProjectFolderRel);
-            AppSystemThemeFolderMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRel);
 
             CreateNewAppTheme();
 

@@ -18,14 +18,17 @@
 </div>
 
 <!-- single flag, if required, like iframe edit -->
-<div class="w3-row langaugeselectsingleflag" style="display:none;">
-    @foreach (var l in enabledlanguages)
-    {
-        <div class="w3-col w3-right selectlang" style="width:24px;" editlang='@l'>
-            <img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/@(l).png' alt='@(l)' />
-        </div>
-    }
-</div>
+@if (enabledlanguages.Count > 1)
+{
+    <div class="w3-row langaugeselectsingleflag" style="display:none;">
+        @foreach (var l in enabledlanguages)
+        {
+            <div class="w3-col w3-right selectlang" style="width:24px;" editlang='@l'>
+                <img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/@(l).png' alt='@(l)' />
+            </div>
+        }
+    </div>
+}
 
 
 <script>

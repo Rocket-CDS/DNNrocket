@@ -83,6 +83,8 @@
         $(document).ready(function () {
             $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemkey: 'dnnrocketapptheme', debug: false});
             simplisity_setParamField("reload", true);
+            var urlParams = new URLSearchParams(window.location.search);
+            simplisity_setParamField("selectedsystemkey", urlParams.get('selectedsystemkey'))
         });
     </script>
 
