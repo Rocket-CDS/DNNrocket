@@ -126,6 +126,13 @@ namespace DNNrocketAPI
 
         private void PageLoad()
         {
+
+
+        }
+
+
+        protected override void OnPreRender(EventArgs e)
+        {
             var hasEditAccess = false;
             if (UserId > 0) hasEditAccess = DotNetNuke.Security.Permissions.ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration);
 
@@ -243,7 +250,6 @@ namespace DNNrocketAPI
                 if (!Page.Items.Contains("dnnrocketview-addedheader")) Page.Items.Add("dnnrocketview-addedheader", true);
                 PageIncludes.IncludeTextInHeader(Page, "<link rel='stylesheet' href='/DesktopModules/DNNrocket/fa/css/all.min.css'><link rel='stylesheet' href='/DesktopModules/DNNrocket/css/w3.css'><script type='text/javascript' src='/DesktopModules/DNNrocket/Simplisity/js/simplisity.js'></script>");
             }
-
         }
 
 

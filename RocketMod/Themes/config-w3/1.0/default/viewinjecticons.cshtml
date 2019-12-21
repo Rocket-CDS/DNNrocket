@@ -21,7 +21,7 @@ if (editiconcolor == "")
 
 }
 
-    <div id="rocketmodcontentediticons@(Model.ModuleId)" class='w3-display-topleft w3-padding ' style='display:none;'>
+    <div id="rocketmodcontentediticons@(Model.ModuleId)" class='w3-display-topleft w3-padding ' style='display:none;z-index:99;'>
         <a href='javascript:rocketmodeditiframe_@(Model.ModuleId)()' class=''><i class='w3-small @(editiconcolor) @(editicontextcolor) w3-border w3-circle w3-card-4 w3-padding fas fa-edit'></i></a>
         <a href='/desktopmodules/dnnrocket/rocketmod/admin.html?moduleid=@(Model.ModuleId)&amp;tabid=@(Model.TabId)'><i class="w3-small @(editiconcolor) @(editicontextcolor) w3-border w3-circle w3-card-4 w3-padding fas fa-layer-group"></i></a>
         <span onclick="$('#rocketmodcontentediticons@(Model.ModuleId)').hide();"><i class='w3-small @(editiconcolor) @(editicontextcolor) w3-border w3-circle w3-card-4 w3-padding fas fa-times'></i></span>

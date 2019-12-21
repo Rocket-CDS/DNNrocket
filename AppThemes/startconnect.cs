@@ -76,7 +76,8 @@ namespace DNNrocket.AppThemes
                     _userStorage.Set("selectedsystemkey", "");
                 }
 
-                _selectedSystemKey = _paramInfo.GetXmlProperty("genxml/hidden/selectedsystemkey");
+                _selectedSystemKey = _paramInfo.GetXmlProperty("genxml/hidden/urlparamsystemkey");
+                if (_selectedSystemKey == "")  _selectedSystemKey = _paramInfo.GetXmlProperty("genxml/hidden/selectedsystemkey");
                 if (_selectedSystemKey == "")
                 {
                     _selectedSystemKey = _userStorage.Record.GetXmlProperty("genxml/hidden/selectedsystemkey");
