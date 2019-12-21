@@ -892,7 +892,7 @@ namespace RocketMod
                     _appThemeDataList = new AppThemeDataList(_systemInfoData.SystemKey);
 
                     var razortemplate = "selectapp.cshtml";
-                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(),"1.0", _systemInfoData.DebugMode);
+                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(),"1.0", true);
                     var passSettings = _postInfo.ToDictionary();
                     passSettings.Add("moduleid", _moduleParams.ModuleId.ToString());
 

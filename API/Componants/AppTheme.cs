@@ -1519,6 +1519,14 @@ namespace DNNrocketAPI.Componants
                 var appVersionFolder = r.GetXmlProperty("genxml/select/versionfolder");
                 var newguidkey = "appTheme*" + SystemKey + "*" + appThemeName + "*" + appVersionFolder;
                 r.GUIDKey = newguidkey;
+
+                var s = appThemeName.Split('_');
+                if (s.Length > 1)
+                {
+                    r.SetXmlProperty("genxml/hidden/appthemeprefix", s[0]);
+                    r.SetXmlProperty("genxml/hidden/appthemename", s[1]);
+                }
+
                 var newAppThemeVersionFolderRel = AppSystemThemeFolderRel + "/" + appThemeName + "/" + appVersionFolder;
                 var newAppThemeVersionFolderMapPath = AppSystemThemeFolderMapPath + "\\" + appThemeName + "\\" + appVersionFolder;
                 var oldAppThemeVersionFolderMapPath = AppSystemThemeFolderMapPath + "\\" + AppThemeFolder + "\\" + appVersionFolder;

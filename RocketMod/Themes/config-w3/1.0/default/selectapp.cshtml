@@ -62,13 +62,15 @@
                 else
                 {
 
-                    <div class="w3-row">
-                        <div class="w3-padding w3-right-align">
-                            <i class="griddisplayicon fas fa-th fa-2x"></i>
-                            &nbsp;
-                            <i class="listdisplayicon w3-text-blue fas fa-th-list fa-2x"></i>
-                        </div>
-                    </div>
+            <div class="w3-row">
+                <div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class='w3-col m2 w3-button w3-theme w3-hover-theme simplisity_click'>@ButtonText(ButtonTypes.back)</div>
+                @ButtonGap()
+                <div class="w3-padding w3-right-align">
+                    <i class="griddisplayicon fas fa-th fa-2x"></i>
+                    &nbsp;
+                    <i class="listdisplayicon w3-text-blue fas fa-th-list fa-2x"></i>
+                </div>
+            </div>
                     <div class="w3-row w3-card searchdata w3-margin-top">
 
                         <div class="">
