@@ -424,7 +424,16 @@ namespace Simplisity
 
         public IEncodedString FolderSelectList(SimplisityInfo info, String xpath, String mappathRootFolder, String attributes = "", Boolean allowEmpty = true, bool localized = false)
         {
-            var dirlist = System.IO.Directory.GetDirectories(mappathRootFolder);
+            var dirlist = new string[0]; ;
+            try
+            {
+                dirlist = System.IO.Directory.GetDirectories(mappathRootFolder);
+            }
+            catch (Exception)
+            {
+                // ignore, might have invalid folder.
+            }
+
             var tList = new List<String>();
             foreach (var d in dirlist)
             {
