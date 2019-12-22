@@ -202,7 +202,7 @@ namespace RocketMod
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
-            _appthemeSystemRelPath = "/DesktopModules/DNNrocket/AppThemes/SystemThemes";
+            _appthemeSystemRelPath = "/DesktopModules/DNNrocket/SystemThemes";
             _appthemeSystemMapPath = DNNrocketUtils.MapPath(_appthemeSystemRelPath);
             _rocketModRelPath = "/DesktopModules/DNNrocket/RocketMod";
             _rocketModMapPath = DNNrocketUtils.MapPath(_rocketModRelPath);
@@ -608,7 +608,7 @@ namespace RocketMod
                 }
                 articleDataList.Populate();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", _appthemeRelPath + "/SystemThemes/" + _systemInfoData.SystemKey, _dataModuleParams.AppThemeFolder, _editLang, _dataModuleParams.AppThemeVersion, _systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", "/DesktopModules/DNNrocket/SystemThemes/" + _systemInfoData.SystemKey, _dataModuleParams.AppThemeFolder, _editLang, _dataModuleParams.AppThemeVersion, _systemInfoData.DebugMode);
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, _passSettings, articleDataList.Header, _systemInfoData.DebugMode);
                 return strOut;
             }

@@ -31,7 +31,7 @@ namespace Rocket.AppThemes.Componants
             AppProjectThemesFolderRel = AppProjectFolderRel + "/Themes";
             AppProjectThemesFolderMapPath = DNNrocketUtils.MapPath(AppProjectThemesFolderRel);
 
-            AppSystemThemeFolderRootRel = AppProjectFolderRel + "/SystemThemes";
+            AppSystemThemeFolderRootRel = "/DesktopModules/DNNrocket/SystemThemes";
             AppSystemThemeFolderRootMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRootRel);
         }
         public void PopulateAppThemeList()

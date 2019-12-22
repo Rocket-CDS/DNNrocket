@@ -271,8 +271,7 @@ namespace DNNrocket.AppThemes
                 var newAppThemeName = appthemename;
                 if (appthemeprefix != "") newAppThemeName = appthemeprefix + "_" + newAppThemeName;
 
-                var appProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
-                var appSystemThemeFolderRel = appProjectFolderRel + "/SystemThemes/" + _selectedSystemKey;
+                var appSystemThemeFolderRel = "/DesktopModules/DNNrocket/SystemThemes/" + _selectedSystemKey;
                 var appThemeFolderRel = appSystemThemeFolderRel + "/" + newAppThemeName;
                 var appThemeFolderMapPath = DNNrocketUtils.MapPath(appThemeFolderRel);
 

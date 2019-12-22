@@ -47,7 +47,7 @@ namespace DNNrocketAPI.Componants
 
             AppSummary = "";
             AppThemeFolder = appThemeFolder;
-            AppSystemThemeFolderRel = AppProjectFolderRel + "/SystemThemes/" + SystemKey;
+            AppSystemThemeFolderRel = "/DesktopModules/DNNrocket/SystemThemes/" + SystemKey;
             AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
             AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolderRel);
             AppSystemThemeFolderMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRel);
@@ -1502,8 +1502,7 @@ namespace DNNrocketAPI.Componants
 
                 if (systemKey != "")
                 {
-                    var appProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
-                    var appSystemThemeFolderRel = appProjectFolderRel + "/SystemThemes/" + systemKey;
+                    var appSystemThemeFolderRel = "/DesktopModules/DNNrocket/SystemThemes/" + systemKey;
                     var appSystemThemeFolderMapPath = DNNrocketUtils.MapPath(appSystemThemeFolderRel);
 
                     var destinationFolder = appSystemThemeFolderMapPath + "\\" + appThemeFolder;

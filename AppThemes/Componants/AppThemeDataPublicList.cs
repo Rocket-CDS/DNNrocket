@@ -16,7 +16,7 @@ namespace Rocket.AppThemes.Componants
     public class AppThemeDataPublicList
     {
         private const string AppThemeListType = "AppThemeDataPublicList";
-        private const string AppSystemFolderRel = "/DesktopModules/DNNrocket/AppThemes/SystemThemes";
+        private const string AppSystemFolderRel = "/DesktopModules/DNNrocket/SystemThemes";
         public AppThemeDataPublicList(string selectedsystemkey, bool useCache)
         {
             try
@@ -96,7 +96,7 @@ namespace Rocket.AppThemes.Componants
         }
         public void PopulateSystemFolderList()
         {
-            var appSystemThemeFolderRootRel = "/DesktopModules/DNNrocket/AppThemes/SystemThemes";
+            var appSystemThemeFolderRootRel = "/DesktopModules/DNNrocket/SystemThemes";
             var appSystemThemeFolderRootMapPath = DNNrocketUtils.MapPath(appSystemThemeFolderRootRel);
 
             SystemFolderList = new List<SystemInfoData>();

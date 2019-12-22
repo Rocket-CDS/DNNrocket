@@ -129,12 +129,12 @@
   <data name="Data.ModuleRef" xml:space="preserve">
     <value>@Model.ModuleRef</value>
   </data>
-  <data name="Razor.AddCssLinkHeader" xml:space="preserve">
-    <value>@AddCssLinkHeader(string cssRelPath)</value>
+  <data name="Razor.AddPageCssLinkHeader" xml:space="preserve">
+    <value>@AddPageCssLinkHeader(string pageId, string cssRelPath, string attributes = "")</value>
     <comment>Adds a CSS script link to the page header. </comment>
   </data>
-  <data name="Razor.AddJsScriptHeader" xml:space="preserve">
-    <value>@AddJsScriptHeader(string jsRelPath)</value>
+  <data name="Razor.AddPageJsScriptHeader" xml:space="preserve">
+    <value>@AddPageJsScriptHeader(string pageId, string jsRelPath, string attributes = "")</value>
     <comment>Adds a JS script link to the page header. </comment>
   </data>
   <data name="Razor.AddPreProcessData" xml:space="preserve">
