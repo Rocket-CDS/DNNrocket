@@ -164,10 +164,10 @@ namespace Simplisity
 
         public static void AppendToLog(string logMapPathFolder, string logName, string logMessage)
         {
-            var dstring = DateTime.Now.ToString("yyyy-mm-dd");
+            var dstring = DateTime.Now.ToString("yyyy-MM-dd");
             using (StreamWriter w = File.AppendText(logMapPathFolder.TrimEnd('\\') + "\\" + dstring + "_" + Path.GetFileNameWithoutExtension(logName) + ".txt"))
             {
-                Log(DateTime.Now.ToString("d/M/yyyy HH:mm:ss") + " :  " + logMessage, w);
+                Log(DateTime.Now.ToString("d/MM/yyyy HH:mm:ss") + " :  " + logMessage, w);
             }
 
         }

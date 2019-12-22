@@ -279,7 +279,8 @@ namespace DNNrocketAPI.Componants
             var defaultDict = new Dictionary<string, string>();
             foreach (SimplisityRecord templateInfo in tList)
             {
-                defaultDict.Add(templateInfo.GetXmlProperty("genxml/hidden/filename"),GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodehtmlmixed")));
+                if (!defaultDict.ContainsKey(templateInfo.GetXmlProperty("genxml/hidden/filename")))
+                    defaultDict.Add(templateInfo.GetXmlProperty("genxml/hidden/filename"),GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodehtmlmixed")));
             }
             return defaultDict;
         }
@@ -291,7 +292,8 @@ namespace DNNrocketAPI.Componants
             var defaultDict = new Dictionary<string, string>();
             foreach (SimplisityRecord templateInfo in tList)
             {
-                defaultDict.Add(templateInfo.GetXmlProperty("genxml/hidden/filename"), GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodecss")));
+                if (!defaultDict.ContainsKey(templateInfo.GetXmlProperty("genxml/hidden/filename")))
+                    defaultDict.Add(templateInfo.GetXmlProperty("genxml/hidden/filename"), GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodecss")));
             }
             return defaultDict;
         }
@@ -303,7 +305,8 @@ namespace DNNrocketAPI.Componants
             var defaultDict = new Dictionary<string, string>();
             foreach (SimplisityRecord templateInfo in tList)
             {
-                defaultDict.Add(templateInfo.GetXmlProperty("genxml/hidden/filename"), GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodejavascript")));
+                if (!defaultDict.ContainsKey(templateInfo.GetXmlProperty("genxml/hidden/filename")))
+                    defaultDict.Add(templateInfo.GetXmlProperty("genxml/hidden/filename"), GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodejavascript")));
             }
             return defaultDict;
         }
@@ -321,9 +324,18 @@ namespace DNNrocketAPI.Componants
         {
             if (Directory.Exists(AppThemeFolderMapPath))
             {
+                Save(new SimplisityInfo());
+
                 foreach (var v in VersionList)
                 {
-                    if (Directory.Exists(AppThemeFolderMapPath + "\\" + v)) Directory.Delete(AppThemeFolderMapPath + "\\" + v, true);
+                    var folderToDelete = AppThemeFolderMapPath + "\\" + v;
+                    if (Directory.Exists(folderToDelete))
+                    {
+                        string currentDirectory = Directory.GetCurrentDirectory();
+                        Directory.SetCurrentDirectory(currentDirectory);
+                        Directory.Delete(folderToDelete,true);
+                    }
+
                     _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + v;
                     var versionRecord = _objCtrl.GetRecordByGuidKey(Record.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
                     _objCtrl.Delete(versionRecord.ItemID, _tableName); // cascade delete
