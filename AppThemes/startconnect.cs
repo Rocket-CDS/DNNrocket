@@ -595,14 +595,8 @@ namespace DNNrocket.AppThemes
         public static string AddListResx()
         {
             var culturecoderesx = _paramInfo.GetXmlProperty("genxml/hidden/culturecoderesx");
-
-            // get default data
-            var jsonResx = "";
             var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
-            var resxItem = appTheme.Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
-            if (resxItem != null) jsonResx = resxItem.GetXmlProperty("genxml/hidden/jsonresx");
-
-            appTheme.AddListResx(culturecoderesx, jsonResx);
+            appTheme.AddListResx(culturecoderesx);
             return GetEditTemplate(appTheme);
         }
         public static string RebuildResx()

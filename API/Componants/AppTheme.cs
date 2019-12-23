@@ -255,6 +255,28 @@ namespace DNNrocketAPI.Componants
             }
 
             if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\resx")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\resx");
+            foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\resx", "*.resx", SearchOption.TopDirectoryOnly))
+            {
+                var templateName = Path.GetFileName(newPath);
+                var culturecode = "";
+                var templateNameWithoutExtension = Path.GetFileNameWithoutExtension(newPath);
+                var t = templateNameWithoutExtension.Split('.');
+                if (t.Length == 2) culturecode = t[1];
+                var templateText = FileUtils.ReadFile(newPath);
+                var sRec = new SimplisityRecord();
+                sRec.XMLData = templateText;
+                var nodList = sRec.XMLDoc.SelectNodes("root/data");
+                var resxDict = new Dictionary<string, string>();
+                foreach (XmlNode n in nodList)
+                {
+                    resxDict.Add(n.SelectSingleNode("@name").InnerText, n.SelectSingleNode("value").InnerText);
+                }
+                AddListResx(culturecode, resxDict);
+                _resxFileName.Add(templateName);
+            }
+
+
+
         }
         private void CreateVersionFolders(string versionFolder)
         {
@@ -914,9 +936,9 @@ namespace DNNrocketAPI.Componants
             }
         }
 
-
-        public void AddListResx(string culturecode, string jsonresx = "")
+        public void AddListResx(string culturecode, Dictionary<string, string> resxDict = null)
         {
+            if (resxDict == null) resxDict = new Dictionary<string, string>();
             var listname = "resxlist";
             var nbi = new SimplisityRecord();
             if (culturecode == "")
@@ -930,18 +952,25 @@ namespace DNNrocketAPI.Componants
             nbi.SetXmlProperty("genxml/hidden/culturecode", culturecode);
             nbi.SetXmlProperty("genxml/hidden/filefolder", "resx");
 
-            var jsonDict = new Dictionary<string, string>();
-            var rtnDict = GetResxDictionary(Record);
-            foreach (var d in rtnDict)
+            if (resxDict.Count == 0)
             {
-                jsonDict.Add(d.Key,d.Value);
+                // no file data, so take anythign we have in DB
+                var rtnDict = GetResxDictionary(Record);
+                foreach (var d in rtnDict)
+                {
+                    if (!resxDict.ContainsKey(d.Key)) resxDict.Add(d.Key, d.Value);
+                }
             }
-            var jsonStr = BuildJsonResx(jsonDict);
+
+            var jsonStr = BuildJsonResx(resxDict);
             nbi.SetXmlProperty("genxml/hidden/jsonresx", GeneralUtils.EnCode(jsonStr));
 
+            Record.RemoveRecordListItem(listname,"genxml/hidden/culturecode",culturecode);
             Record.AddListItem(listname, nbi.XMLData);
             Update();
         }
+
+
 
         public void AddListField()
         {
