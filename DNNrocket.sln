@@ -52,7 +52,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CKEditor", "CKEditor", "{5A
 		CKEditor\startupfull.js = CKEditor\startupfull.js
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemThemes", "SystemThemes\SystemThemes.csproj", "{06E04A76-3F41-4AB8-9DE2-189D172B7653}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemThemes", "SystemThemes\SystemThemes.csproj", "{1641449B-A58E-406B-8AF6-58BC348FD29B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,10 +112,10 @@ Global
 		{4948C11A-2933-4DA9-B457-54D9B02DB9FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4948C11A-2933-4DA9-B457-54D9B02DB9FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4948C11A-2933-4DA9-B457-54D9B02DB9FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{06E04A76-3F41-4AB8-9DE2-189D172B7653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{06E04A76-3F41-4AB8-9DE2-189D172B7653}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{06E04A76-3F41-4AB8-9DE2-189D172B7653}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{06E04A76-3F41-4AB8-9DE2-189D172B7653}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1641449B-A58E-406B-8AF6-58BC348FD29B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1641449B-A58E-406B-8AF6-58BC348FD29B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1641449B-A58E-406B-8AF6-58BC348FD29B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1641449B-A58E-406B-8AF6-58BC348FD29B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

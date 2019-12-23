@@ -335,6 +335,6 @@ AppThemes-OLD/
 API/Installation/DNNrocketAPI_1.0.0_Install.zip
 AppThemes/Themes/HtmlContent/2.0/meta.xml
 AppThemes/SystemThemes/
-SystemThemes/
+SystemThemes/**
 Uninstall.SqlDataProvider
 Resource.zip.manifest

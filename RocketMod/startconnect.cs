@@ -573,6 +573,11 @@ namespace RocketMod
 
                 _passSettings.Add("s-list-csv", usedlistcsv.TrimEnd(','));
 
+                foreach (var s in _moduleParams.ModuleSettings)
+                {
+                    if (!_passSettings.ContainsKey(s.Key)) _passSettings.Add(s.Key, s.Value);
+                }
+
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
 
                 // if the module settings change to a single form, use the last edited record.
