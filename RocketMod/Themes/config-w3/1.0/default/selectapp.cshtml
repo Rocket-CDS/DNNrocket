@@ -189,7 +189,7 @@
                         <div class="w3-row w3-padding">
                             <div class="w3-col m2 w3-button w3-khaki" onclick="showdetail(simplisity_getParamField('appthemefolder'));">@ButtonText(ButtonTypes.back)</div>
                             @ButtonGap()
-                            <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketmodedit_saveappthemesetting" s-post="#settingsection">@ButtonText(ButtonTypes.save)</div>
+                            <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="hidesettings" s-cmd="rocketmodedit_saveappthemesetting" s-post="#settingsection">@ButtonText(ButtonTypes.save)</div>
                         </div>
                         <div id="settingsection">
                         </div>
@@ -235,6 +235,10 @@
         $('#selectapptheme').show();
 
     });
+
+    function hidesettings() {
+        $('#datasection3').hide();
+    }
 
     function showdetail(appThemeFolder) {
         simplisity_setParamField("appthemefolder", appThemeFolder)
