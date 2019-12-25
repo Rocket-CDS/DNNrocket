@@ -1,0 +1,59 @@
+﻿<genxml>
+  <hidden>
+    <index>99</index>
+  </hidden>
+  <textbox>
+    <ctrlkey>rockettools</ctrlkey>
+    <systemname>Rocket Tools</systemname>
+    <adminurl>/DesktopModules/DNNrocket/Tools/admin.html</adminurl>
+    <apiurl>/DesktopModules/DNNrocket/API/api.ashx</apiurl>
+    <defaultinterface>dashboard</defaultinterface>
+    <systemrelpath>/DesktopModules/DNNrocket/Tools/</systemrelpath>
+    <encryptkey>9734yfrh78934yt8756</encryptkey>
+    <ftproot>appthemes</ftproot>
+  </textbox>
+  <checkbox>
+    <debugmode>true</debugmode>
+    <proavailable>false</proavailable>
+  </checkbox>
+  <interfacedata list="true">
+    <genxml>
+      <textbox>
+        <interfacekey>rockettools</interfacekey>
+        <entitytypecode>TOOLS</entitytypecode>
+        <interfaceicon />
+        <defaulttheme>dashboard.cshtml</defaulttheme>
+        <themeversion>1.0</themeversion>
+        <defaulttemplate />
+        <defaultcommand>rockettools_dash</defaultcommand>
+        <namespaceclass>Rocket.Tools.StartConnect</namespaceclass>
+        <assembly>RocketTools</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/Tools</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkbox>
+        <onmenu>true</onmenu>
+        <active>true</active>
+      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>0</securityrolesmanager>
+        <securityroleseditor>0</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
+    </genxml>
+  </interfacedata>
+  <lang>
+    <genxml>
+      <interfacedata list="true">
+        <genxml />
+      </interfacedata>
+    </genxml>
+  </lang>
+</genxml>

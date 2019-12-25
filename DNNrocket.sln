@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		rocketappthemes_system.xml = rocketappthemes_system.xml
 		rocketmod_system.xml = rocketmod_system.xml
+		rockettools_system.xml = rockettools_system.xml
 		AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\2.0\default\view.cshtml = AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\2.0\default\view.cshtml
 		AppThemes\SystemThemes\dnnrocketmodule\Rocket_DocMenu\1.0\default\view.cshtml = AppThemes\SystemThemes\dnnrocketmodule\Rocket_DocMenu\1.0\default\view.cshtml
 		css\w3.css = css\w3.css
@@ -52,7 +53,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CKEditor", "CKEditor", "{5A
 		CKEditor\startupfull.js = CKEditor\startupfull.js
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemThemes", "SystemThemes\SystemThemes.csproj", "{219F8FBC-D978-40FA-B072-E60B75F670E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemThemes", "SystemThemes\SystemThemes.csproj", "{219F8FBC-D978-40FA-B072-E60B75F670E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools", "Tools\Tools.csproj", "{BC6FD7D7-0FD7-49FC-A5C2-7E5B9797C4B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -116,6 +119,10 @@ Global
 		{219F8FBC-D978-40FA-B072-E60B75F670E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{219F8FBC-D978-40FA-B072-E60B75F670E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{219F8FBC-D978-40FA-B072-E60B75F670E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC6FD7D7-0FD7-49FC-A5C2-7E5B9797C4B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC6FD7D7-0FD7-49FC-A5C2-7E5B9797C4B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC6FD7D7-0FD7-49FC-A5C2-7E5B9797C4B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC6FD7D7-0FD7-49FC-A5C2-7E5B9797C4B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
