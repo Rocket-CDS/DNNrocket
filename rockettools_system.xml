@@ -22,10 +22,41 @@
         <interfacekey>rockettools</interfacekey>
         <entitytypecode>TOOLS</entitytypecode>
         <interfaceicon />
-        <defaulttheme>dashboard.cshtml</defaulttheme>
+        <defaulttheme>config-w3</defaulttheme>
         <themeversion>1.0</themeversion>
-        <defaulttemplate />
-        <defaultcommand>rockettools_dash</defaultcommand>
+        <defaulttemplate>roles.cshtml</defaulttemplate>
+        <defaultcommand>rockettools_roles</defaultcommand>
+        <namespaceclass>Rocket.Tools.StartConnect</namespaceclass>
+        <assembly>RocketTools</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/Tools</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkbox>
+        <onmenu>false</onmenu>
+        <active>true</active>
+      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>0</securityrolesmanager>
+        <securityroleseditor>0</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>rocketroles</interfacekey>
+        <entitytypecode>TOOLS</entitytypecode>
+        <interfaceicon>fas fa-user-tag</interfaceicon>
+        <defaulttheme>config-w3</defaulttheme>
+        <themeversion>1.0</themeversion>
+        <defaulttemplate>roles.cshtml</defaulttemplate>
+        <defaultcommand>rocketroles_roles</defaultcommand>
         <namespaceclass>Rocket.Tools.StartConnect</namespaceclass>
         <assembly>RocketTools</assembly>
         <databasetable />
@@ -52,6 +83,7 @@
   <lang>
     <genxml>
       <interfacedata list="true">
+        <genxml />
         <genxml />
       </interfacedata>
     </genxml>

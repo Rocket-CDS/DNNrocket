@@ -1,5 +1,6 @@
 ﻿using DNNrocketAPI.Componants;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using RazorEngine.Text;
@@ -469,6 +470,7 @@ namespace DNNrocketAPI.render
 
             return new RawString(strOut);
         }
+
         public IEncodedString GetTabUrlByGuid(String tabguid)
         {
             var strOut = "";
@@ -606,7 +608,6 @@ namespace DNNrocketAPI.render
             CacheUtils.SetCache(cachekey, rtn);
             return new RawString(rtn);
         }
-
 
 
 

@@ -29,6 +29,7 @@ using DotNetNuke.Common;
 using System.IO.Compression;
 using Simplisity.TemplateEngine;
 using DotNetNuke.Services.Exceptions;
+using System.Collections;
 
 namespace DNNrocketAPI
 {
@@ -677,38 +678,6 @@ namespace DNNrocketAPI
         {
             return TabController.Instance.GetTab(tabid, PortalSettings.Current.PortalId, ignoreCache);
         }
-        public static Dictionary<int, string> GetTreeTabList()
-        {
-            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
-            var rtnList = new Dictionary<int, string>();
-            return GetTreeTabList(rtnList, tabList, 0, 0);
-        }
-
-        private static Dictionary<int, string> GetTreeTabList(Dictionary<int, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "")
-        {
-
-            if (level > 20) // stop infinate loop
-            {
-                return rtnList;
-            }
-            if (parentid > 0) prefix += "..";
-            foreach (TabInfo tInfo in tabList)
-            {
-                var parenttestid = tInfo.ParentId;
-                if (parenttestid < 0) parenttestid = 0;
-                if (parentid == parenttestid)
-                {
-                    if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
-                    {
-                        rtnList.Add(tInfo.TabID, prefix + "" + tInfo.TabName);
-                        GetTreeTabList(rtnList, tabList, level + 1, tInfo.TabID, prefix);
-                    }
-                }
-            }
-
-            return rtnList;
-        }
-
 
         public static Dictionary<Guid, string> GetTreeTabListOnUniqueId()
         {
@@ -742,6 +711,45 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
+        public static string GetTreeTabList()
+        {
+            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
+            var rtnString = "";
+            return GetTreeTabList(rtnString, tabList, 0, 0);
+        }
+
+        private static string GetTreeTabList(string rtnString, List<TabInfo> tabList, int level, int parentid)
+        {
+
+            if (level > 50) // stop infinate loop
+            {
+                return rtnString;
+            }
+
+            rtnString += "<ul>";
+            foreach (TabInfo tInfo in tabList)
+            {
+                var parenttestid = tInfo.ParentId;
+                if (parenttestid < 0) parenttestid = 0;
+                if (parentid == parenttestid)
+                {
+                    if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
+                    {
+                        rtnString += "<li>";
+                        rtnString += tInfo.TabName  + " tInfo.TabID:" + tInfo.TabID;
+                        rtnString += "</li>";
+                        if (tInfo.HasChildren)
+                        {
+                            rtnString = GetTreeTabList(rtnString, tabList, level + 1, tInfo.TabID);
+                        }
+                    }
+                }
+            }
+            rtnString += "</ul>";
+            return rtnString;
+        }
+
+
         public static Dictionary<int, string> GetTreeTabListOnTabId()
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
@@ -773,46 +781,6 @@ namespace DNNrocketAPI
 
             return rtnList;
         }
-
-
-        public static String GetTreeViewTabJSData(String selectTabIdCVS = "")
-        {
-            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
-            var rtnDataString = "";
-            var selecttabidlist = selectTabIdCVS.Split(',');
-            rtnDataString = GetTreeViewTabJSData(rtnDataString, tabList, 0, 0, selecttabidlist);
-            rtnDataString = rtnDataString.Replace(", children: []", "");
-            rtnDataString = "var treeData = [" + rtnDataString + "];";
-            return rtnDataString;
-        }
-
-        private static String GetTreeViewTabJSData(String rtnDataString, List<TabInfo> tabList, int level, int parentid, String[] selecttabidlist)
-        {
-
-            if (level > 20) // stop infinate loop
-            {
-                return rtnDataString;
-            }
-            foreach (TabInfo tInfo in tabList)
-            {
-                var parenttestid = tInfo.ParentId;
-                if (parenttestid < 0) parenttestid = 0;
-                if (parentid == parenttestid)
-                {
-                    if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
-                    {
-                        var selectedvalue = "false";
-                        if (selecttabidlist.Contains(tInfo.TabID.ToString(""))) selectedvalue = "true";
-                        rtnDataString += "{title: '" + tInfo.TabName.Replace("'", "&apos;") + "', key:'" + tInfo.TabID + "', selected: " + selectedvalue + ", children: [";
-                        rtnDataString = GetTreeViewTabJSData(rtnDataString, tabList, level + 1, tInfo.TabID, selecttabidlist);
-                        rtnDataString += "]},";
-                    }
-                }
-            }
-            rtnDataString = rtnDataString.TrimEnd(',');
-            return rtnDataString;
-        }
-
 
         public static Dictionary<string, string> GetUserProfileProperties(UserInfo userInfo)
         {
@@ -1781,6 +1749,7 @@ namespace DNNrocketAPI
             }
 
         }
+
 
     }
 }
