@@ -711,14 +711,14 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public static string GetTreeTabList()
+        public static string GetTreeTabList(string id, string attributes)
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
             var rtnString = "";
-            return GetTreeTabList(rtnString, tabList, 0, 0);
+            return GetTreeTabList(rtnString, tabList, 0, 0, id, attributes);
         }
 
-        private static string GetTreeTabList(string rtnString, List<TabInfo> tabList, int level, int parentid)
+        private static string GetTreeTabList(string rtnString, List<TabInfo> tabList, int level, int parentid, string id, string attributes)
         {
 
             if (level > 50) // stop infinate loop
@@ -726,7 +726,11 @@ namespace DNNrocketAPI
                 return rtnString;
             }
 
-            rtnString += "<ul>";
+            if (level == 0)
+                rtnString += "<ul id=" + id + " " + attributes + " >";
+            else
+                rtnString += "<ul>";
+
             foreach (TabInfo tInfo in tabList)
             {
                 var parenttestid = tInfo.ParentId;
@@ -736,12 +740,23 @@ namespace DNNrocketAPI
                     if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
                     {
                         rtnString += "<li>";
-                        rtnString += tInfo.TabName  + " tInfo.TabID:" + tInfo.TabID;
-                        rtnString += "</li>";
                         if (tInfo.HasChildren)
                         {
-                            rtnString = GetTreeTabList(rtnString, tabList, level + 1, tInfo.TabID);
+                            rtnString += "<i class='fa fa-plus'></i>";
                         }
+                        else
+                        {
+                            rtnString += "<i class='far fa-circle '></i>";
+                        }
+                        rtnString += "&nbsp;<label>";
+                        rtnString += "<input id='tabid" + tInfo.TabID + "' data-id='" + tInfo.TabID + "' s-update='save' type='checkbox'>";
+                        rtnString += tInfo.TabName;
+                        rtnString += "</label>";
+                        if (tInfo.HasChildren)
+                        {
+                            rtnString = GetTreeTabList(rtnString, tabList, level + 1, tInfo.TabID, id, attributes);
+                        }
+                        rtnString += "</li>";
                     }
                 }
             }
