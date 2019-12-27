@@ -101,9 +101,7 @@ namespace DNNrocketAPI
                 {
                     DNNrocketUtils.IncludePageHeaders(_moduleParams, this.Page, TabId, systemInfoData.DebugMode);
                 }
-
             }
-
         }
 
         protected override void OnLoad(EventArgs e)
