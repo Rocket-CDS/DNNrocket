@@ -30,6 +30,8 @@ using System.IO.Compression;
 using Simplisity.TemplateEngine;
 using DotNetNuke.Services.Exceptions;
 using System.Collections;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Security.Permissions;
 
 namespace DNNrocketAPI
 {
@@ -650,6 +652,117 @@ namespace DNNrocketAPI
         public static DotNetNuke.Entities.Portals.PortalSettings GetCurrentPortalSettings()
         {
             return (DotNetNuke.Entities.Portals.PortalSettings)System.Web.HttpContext.Current.Items["PortalSettings"];
+        }
+
+        public static void AddRoleToModule(int portalId, int moduleid, int roleid)
+        {
+            var moduleInfo = GetModuleInfo(moduleid);
+            var roleexist = false;
+            var permissionID = -1;
+            var PermissionsList2 = moduleInfo.ModulePermissions.ToList();
+            var role = RoleController.Instance.GetRoleById(portalId, roleid);
+            if (role != null)
+            {
+                foreach (var p in PermissionsList2)
+                {
+                    if (p.RoleName == role.RoleName)
+                    {
+                        permissionID = p.PermissionID;
+                        roleexist = true;
+                    }
+                }
+
+                // ADD Role
+                if (!roleexist)
+                {
+                    ArrayList permissions = PermissionController.GetPermissionsByPortalDesktopModule();
+                    foreach (PermissionInfo permission in permissions)
+                    {
+                        if (permission.PermissionKey == "DEPLOY")
+                        {
+                            var objPermission = new ModulePermissionInfo(permission)
+                            {
+
+                                ModuleID = moduleInfo.DesktopModuleID,
+                                RoleID = role.RoleID,
+                                RoleName = role.RoleName,
+                                AllowAccess = true,
+                                UserID = Null.NullInteger,
+                                DisplayName = Null.NullString
+                            };
+                            var permId = moduleInfo.ModulePermissions.Add(objPermission, true);
+                            ModuleController.Instance.UpdateModule(moduleInfo);
+                        }
+                    }
+                    var permissionController = new PermissionController();
+                    ArrayList systemModuleEditPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
+                    foreach (PermissionInfo permission in systemModuleEditPermissions)
+                    {
+                        if (permission.PermissionKey == "EDIT")
+                        {
+                            var objPermission = new ModulePermissionInfo(permission)
+                            {
+                                ModuleID = moduleInfo.DesktopModuleID,
+                                RoleID = role.RoleID,
+                                RoleName = role.RoleName,
+                                AllowAccess = true,
+                                UserID = Null.NullInteger,
+                                DisplayName = Null.NullString
+                            };
+                            var permId = moduleInfo.ModulePermissions.Add(objPermission, true);
+                            ModuleController.Instance.UpdateModule(moduleInfo);
+                        }
+                    }
+                }
+            }
+        }
+        public static void RemoveRoleToModule(int portalId, int moduleid, int roleid)
+        {
+            var moduleInfo = GetModuleInfo(moduleid);
+            var roleexist = false;
+            var permissionID = -1;
+            var PermissionsList2 = moduleInfo.ModulePermissions.ToList();
+            var role = RoleController.Instance.GetRoleById(portalId, roleid);
+            if (role != null)
+            {
+                foreach (var p in PermissionsList2)
+                {
+                    if (p.RoleName == role.RoleName)
+                    {
+                        permissionID = p.PermissionID;
+                        roleexist = true;
+                    }
+                }
+
+                if (roleexist && permissionID > -1)
+                {
+                    moduleInfo.ModulePermissions.Remove(permissionID, role.RoleID, Null.NullInteger);
+                    ModuleController.Instance.UpdateModule(moduleInfo);
+                }
+            }
+
+
+        }
+
+        public static SimplisityRecord GetRoleById(int portalId, int roleId)
+        {
+            var r = RoleController.Instance.GetRoleById(portalId, roleId);
+            var rtnRec = new SimplisityRecord();
+            rtnRec.ItemID = roleId;
+            rtnRec.SetXmlProperty("genxml/rolename", r.RoleName);
+            rtnRec.SetXmlProperty("genxml/roleid", roleId.ToString());
+            return rtnRec;
+        }
+
+        public static Dictionary<int, string> GetRoles(int portalId)
+        {
+            var rtnDic = new Dictionary<int, string>();
+            var l = RoleController.Instance.GetRoles(portalId);
+            foreach (RoleInfo r in l)
+            {
+                rtnDic.Add(r.RoleID, r.RoleName);
+            }
+            return rtnDic;
         }
         public static Dictionary<int,string> GetTabModuleTitles(int tabid, bool getDeleted = false)
         {

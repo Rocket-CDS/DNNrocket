@@ -474,4 +474,13 @@
   <data name="uncheckall.Text" xml:space="preserve">
     <value>Uncheck All</value>
   </data>
+  <data name="modules.Text" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="pages.Text" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="roles.Text" xml:space="preserve">
+    <value>Roles</value>
+  </data>
 </root>

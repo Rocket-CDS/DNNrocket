@@ -15,19 +15,66 @@
 }
 
     <div class="w3-row">
-        <div class="w3-center">
-            <div class="w3-button w3-teal w3-small simplisity_click" s-cmd="rocketroles_getmodules" s-return=".moduledatasection" s-fields='' s-post="#treeview2_container"><i class='fas fa-sync'></i></div>
-            <div class="w3-button w3-blue w3-small" id="checkAll">@ResourceKey("DNNrocket.checkall")</div>
-            <div class="w3-button w3-blue w3-small" id="uncheckAll">@ResourceKey("DNNrocket.uncheckall")</div>
+
+        <div class="w3-row w3-padding">
+            <div class="w3-button w3-col m3 w3-blue w3-small" id="modulecheckAll">@ResourceKey("DNNrocket.checkall")</div>
+            @ButtonGap()
+            <div class="w3-button w3-col m3 w3-blue w3-small" id="moduleuncheckAll">@ResourceKey("DNNrocket.uncheckall")</div>
+            @ButtonGap()
+            <div class="w3-button w3-col m3 w3-green w3-right w3-small nextbuttonmodule simplisity_click" style="display:none;" s-cmd="rocketroles_getroles" s-return=".rolesdatasection" s-fields='' s-post="#modulelistdata">@ResourceKey("DNNrocket.next")&nbsp;<i class="fas fa-caret-right"></i></div>
         </div>
 
-        @{
-            foreach (var m in info.GetRecordList("modulelist"))
-            {
-                <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
-                <label>@m.GetXmlProperty("genxml/moduletitle")</label>
-            }
-        }
+        <div class="hummingbird-treeview well h-scroll-large">
+
+            <ul id="modulelistdata" class="hummingbird-base">
+
+                @{
+                    foreach (var m in info.GetRecordList("modulelist"))
+                    {
+                        <li>
+                            <label>
+                                <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' class="modulecheckbox" moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
+                                @m.GetXmlProperty("genxml/moduletitle")
+                            </label>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
 
     </div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('.nextbuttonpage').hide();
+
+        $("#modulecheckAll").unbind("click");
+        $("#modulecheckAll").click(function () {
+            $('.modulecheckbox').prop('checked', true);
+            if ($('.rolesdatasection').text() === '') {
+                $('.nextbuttonmodule').show();
+            }
+        });
+        $("#moduleuncheckAll").unbind("click");
+        $("#moduleuncheckAll").click(function () {
+            $('.modulecheckbox').prop('checked', false);
+            if ($('.rolesdatasection').text() === '') {
+                $('.nextbuttonmodule').show();
+            }
+        });
+
+        $(".modulecheckbox").unbind("click");
+        $(".modulecheckbox").click(function () {
+            if ($('.rolesdatasection').text() === '') {
+                $('.nextbuttonmodule').show();
+            }
+        });
+
+    });
+
+
+
+</script>
 
