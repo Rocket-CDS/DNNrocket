@@ -10,6 +10,10 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
 
+@{
+    var info = (SimplisityInfo)Model.List.First();
+}
+
     <div class="w3-row">
         <div class="w3-center">
             <div class="w3-button w3-teal w3-small simplisity_click" s-cmd="rocketroles_getmodules" s-return=".moduledatasection" s-fields='' s-post="#treeview2_container"><i class='fas fa-sync'></i></div>
@@ -17,7 +21,13 @@
             <div class="w3-button w3-blue w3-small" id="uncheckAll">@ResourceKey("DNNrocket.uncheckall")</div>
         </div>
 
-        <h1>LIST</h1>
+        @{
+            foreach (var m in info.GetRecordList("modulelist"))
+            {
+                <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
+                <label>@m.GetXmlProperty("genxml/moduletitle")</label>
+            }
+        }
 
     </div>
 

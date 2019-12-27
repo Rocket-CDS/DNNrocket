@@ -27,19 +27,27 @@ namespace Rocket.Tools
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _passSettings = new Dictionary<string, string>();
 
-            switch (paramCmd)
+            if (DNNrocketUtils.IsSuperUser())
             {
-                case "rockettools_login":
-                    strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
-                    break;
-                case "rocketroles_roles":
-                    strOut = RolesAdmin();
-                    break;
-                case "rocketroles_getmodules":
-                    SaveTreeView();
-                    strOut = GetModules();
-                    break;                    
+                switch (paramCmd)
+                {
+                    case "rockettools_login":
+                        strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                        break;
+                    case "rocketroles_roles":
+                        strOut = RolesAdmin();
+                        break;
+                    case "rocketroles_getmodules":
+                        SaveTreeView();
+                        strOut = GetModules();
+                        break;
+                }
             }
+            else
+            {
+                strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+            }
+
 
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;
@@ -81,10 +89,24 @@ namespace Rocket.Tools
                 var info = GetCachedInfo();
                 if (info.GUIDKey == "new") return "reload"; // we have lost the cache and page data, reload and start agian.
 
+                info.RemoveRecordList("modulelist");
+                foreach (var t in info.GetRecordList("tabtreeview"))
+                {
+                    var tabid = t.GetXmlPropertyInt("genxml/tabid");
+                    var l = DNNrocketUtils.GetTabModuleTitles(tabid);
+                    foreach (var m in l)
+                    {
+                        var sRec = new SimplisityRecord();
+                        sRec.SetXmlProperty("genxml/moduleid", m.Key.ToString());
+                        sRec.SetXmlProperty("genxml/moduletitle", m.Value);
+                        info.AddRecordListItem("modulelist", sRec);
+                    }
+                }
+
                 _passSettings.Add("portalid", DNNrocketUtils.GetPortalId().ToString());
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
-                var razortemplate = "rolessection.cshtml";
+                var razortemplate = "rolesmodulesection.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 return DNNrocketUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
             }

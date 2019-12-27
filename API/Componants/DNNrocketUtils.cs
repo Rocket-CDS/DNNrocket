@@ -565,13 +565,6 @@ namespace DNNrocketAPI
             return strVersion;
         }
 
-        public static ModuleInfo GetModuleinfo(int moduleId)
-        {
-            var objMCtrl = new DotNetNuke.Entities.Modules.ModuleController();
-            var objMInfo = objMCtrl.GetModule(moduleId);
-            return objMInfo;
-        }
-
         public static void CreateFolder(string fullfolderPath)
         {
             // This function is to get around medium trust not allowing createfolder in .Net 2.0. 
@@ -658,12 +651,37 @@ namespace DNNrocketAPI
         {
             return (DotNetNuke.Entities.Portals.PortalSettings)System.Web.HttpContext.Current.Items["PortalSettings"];
         }
-
+        public static Dictionary<int,string> GetTabModuleTitles(int tabid, bool getDeleted = false)
+        {
+            var rtnDic = new Dictionary<int, string>();
+            var l = ModuleController.Instance.GetTabModules(tabid);
+            foreach (var m in l)
+            {
+                if (getDeleted)
+                {
+                    rtnDic.Add(m.Value.ModuleID, m.Value.ModuleTitle);
+                }
+                else
+                {
+                    if (!m.Value.IsDeleted) rtnDic.Add(m.Value.ModuleID, m.Value.ModuleTitle);
+                }
+            }
+            return rtnDic;
+        }
+        public static Dictionary<int, ModuleInfo> GetTabModules(int tabid)
+        {
+            return ModuleController.Instance.GetTabModules(tabid);
+        }
         public static ModuleInfo GetModuleInfo(int tabid, int moduleid)
         {
             return ModuleController.Instance.GetModule(moduleid, tabid, false);
         }
-
+        public static ModuleInfo GetModuleInfo(int moduleId)
+        {
+            var objMCtrl = new DotNetNuke.Entities.Modules.ModuleController();
+            var objMInfo = objMCtrl.GetModule(moduleId);
+            return objMInfo;
+        }
         public static int GetModuleTabId(Guid uniqueId)
         {
             var mod = ModuleController.Instance.GetModuleByUniqueID(uniqueId);
