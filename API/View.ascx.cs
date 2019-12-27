@@ -196,7 +196,7 @@ namespace DNNrocketAPI
 
                 if (_moduleParams.CacheEnabled) cacheOutPut = (string)CacheUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
 
-                if (cacheOutPut == null || cacheOutPut == "")
+                if (String.IsNullOrEmpty(cacheOutPut))
                 {
                     var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, paramInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
 

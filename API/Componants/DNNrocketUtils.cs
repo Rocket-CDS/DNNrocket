@@ -1343,8 +1343,8 @@ namespace DNNrocketAPI
         {
             var cachekey = moduleParams.ModuleId + "." + moduleParams.ModuleRef + ".pageheader.cshtml";
             string cacheHead = null;
-            if (!debugMode) cacheHead = (string)CacheUtils.GetCache(cachekey, moduleParams.CacheGroupId);
-            if (cacheHead != null)
+            if (moduleParams.CacheEnabled) cacheHead = (string)CacheUtils.GetCache(cachekey, moduleParams.CacheGroupId);
+            if (!String.IsNullOrEmpty(cacheHead))
             {
                 PageIncludes.IncludeTextInHeader(page, cacheHead);
             }
