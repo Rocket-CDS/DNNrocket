@@ -1,0 +1,23 @@
+﻿@inherits Rocket.Tools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using RazorEngine.Text;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+
+    <div class="w3-row">
+        <div class="w3-center">
+            <div class="w3-button w3-teal w3-small simplisity_click" s-cmd="rocketroles_getmodules" s-return=".moduledatasection" s-fields='' s-post="#treeview2_container"><i class='fas fa-sync'></i></div>
+            <div class="w3-button w3-blue w3-small" id="checkAll">@ResourceKey("DNNrocket.checkall")</div>
+            <div class="w3-button w3-blue w3-small" id="uncheckAll">@ResourceKey("DNNrocket.uncheckall")</div>
+        </div>
+
+        <h1>LIST</h1>
+
+    </div>
+

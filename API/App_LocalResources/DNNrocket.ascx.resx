@@ -468,4 +468,10 @@
   <data name="nolocalappthemes.Text" xml:space="preserve">
     <value>You do not have any local AppThemes installed.  You can install and create AppThemes from the Appthemes administration or you can download free public AppThemes directly. </value>
   </data>
+  <data name="checkall.Text" xml:space="preserve">
+    <value>Check All</value>
+  </data>
+  <data name="uncheckall.Text" xml:space="preserve">
+    <value>Uncheck All</value>
+  </data>
 </root>

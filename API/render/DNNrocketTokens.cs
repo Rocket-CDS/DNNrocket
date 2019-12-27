@@ -609,6 +609,67 @@ namespace DNNrocketAPI.render
             return new RawString(rtn);
         }
 
+        public IEncodedString GetTreeTabList(int portalId, List<int> selectedTabIdList, string treeviewId, string lang = "", string attributes = "")
+        {
+            if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
+            var tabList = TabController.GetTabsBySortOrder(portalId, lang, true);
+            var rtnString = "";
+            var strOut = GetTreeTabList(rtnString, tabList, 0, 0, treeviewId, attributes, selectedTabIdList);
+
+            // add JS to action hummingbirdtree
+            strOut += "";
+
+            return new RawString(strOut);
+        }
+
+        private static string GetTreeTabList(string rtnString, List<TabInfo> tabList, int level, int parentid, string id, string attributes, List<int> selectedTabIdList)
+        {
+
+            if (level > 50) // stop infinate loop
+            {
+                return rtnString;
+            }
+
+            if (level == 0)
+                rtnString += "<ul id=" + id + " " + attributes + " >";
+            else
+                rtnString += "<ul>";
+
+            foreach (TabInfo tInfo in tabList)
+            {
+                var parenttestid = tInfo.ParentId;
+                if (parenttestid < 0) parenttestid = 0;
+                if (parentid == parenttestid)
+                {
+                    if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
+                    {
+                        var checkedvalue = "";
+                        if (selectedTabIdList.Contains(tInfo.TabID)) checkedvalue = "checked";
+
+                        rtnString += "<li>";
+                        if (tInfo.HasChildren)
+                        {
+                            rtnString += "<i class='fa fa-plus' style='width:30px;'></i>";
+                        }
+                        else
+                        {
+                            rtnString += "<i class='far fa-circle w3-text-white ' style='width:30px;'></i>";
+                        }
+                        rtnString += "&nbsp;<label>";
+                        rtnString += "<input id='tabid-" + id + "-" + tInfo.TabID + "' data-id='" + tInfo.TabID + "' s-xpath='genxml/treeview/" + id + "/tabid" + tInfo.TabID + "' s-update='save' " + checkedvalue + " type='checkbox'>";
+                        rtnString += tInfo.TabName;
+                        rtnString += "</label>";
+                        if (tInfo.HasChildren)
+                        {
+                            rtnString = GetTreeTabList(rtnString, tabList, level + 1, tInfo.TabID, id, attributes, selectedTabIdList);
+                        }
+                        rtnString += "</li>";
+                    }
+                }
+            }
+            rtnString += "</ul>";
+            return rtnString;
+        }
 
 
     }
