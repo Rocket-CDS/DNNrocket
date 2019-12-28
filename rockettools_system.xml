@@ -79,10 +79,42 @@
         <securityrolesall>0</securityrolesall>
       </radio>
     </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>rocketclones</interfacekey>
+        <entitytypecode>TOOLS</entitytypecode>
+        <interfaceicon>fas fa-user-tag</interfaceicon>
+        <defaulttheme>config-w3</defaulttheme>
+        <themeversion>1.0</themeversion>
+        <defaulttemplate>clones.cshtml</defaulttemplate>
+        <defaultcommand>rocketclones_getdisplay</defaultcommand>
+        <namespaceclass>Rocket.Tools.StartConnect</namespaceclass>
+        <assembly>RocketTools</assembly>
+        <databasetable />
+        <relpath>/DesktopModules/DNNrocket/Tools</relpath>
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkbox>
+        <onmenu>true</onmenu>
+        <active>true</active>
+      </checkbox>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>0</securityrolesmanager>
+        <securityroleseditor>0</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
+    </genxml>
   </interfacedata>
   <lang>
     <genxml>
       <interfacedata list="true">
+        <genxml />
         <genxml />
         <genxml />
       </interfacedata>

@@ -123,8 +123,14 @@
   <data name="applyroles.Text" xml:space="preserve">
     <value>Apply EDIT permissions to Roles </value>
   </data>
+  <data name="moduleroles.Help" xml:space="preserve">
+    <value>Module Roles can be added or removed from multiple modules across the entire site.  The EDIT permissions will be activated when the module is updated with a new role.  For more granular control use the standard module interface. </value>
+  </data>
   <data name="permissions.Text" xml:space="preserve">
     <value>Permissions</value>
+  </data>
+  <data name="rocketclones.Text" xml:space="preserve">
+    <value>Module Clones</value>
   </data>
   <data name="rocketroles.Text" xml:space="preserve">
     <value>Module Roles</value>

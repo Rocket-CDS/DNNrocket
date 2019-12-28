@@ -11,47 +11,8 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
 
 
-<h1>Module Roles</h1>
-<p>@ResourceKey("RocketTools.moduleroles","","Help")</p>
-<div class="w3-container w3-border w3-light-grey w3-margin-bottom">
-    <div class="w3-third">
-        <h3>
-            @ResourceKey("DNNrocket.pages")
-        </h3>
-    </div>
-    <div class="w3-third">
-        <h3>
-            @ResourceKey("DNNrocket.modules")
-        </h3>
-    </div>
-    <div class="w3-third">
-        <h3>
-            @ResourceKey("DNNrocket.roles")
-        </h3>
-    </div>
-</div>
-
-<div class="w3-row">
-
-    <div class="w3-third">
-        <div class="w3-row w3-padding">
-            <div class="w3-button w3-col m3 w3-blue w3-small" id="checkAll">@ResourceKey("DNNrocket.checkall")</div>
-            @ButtonGap()
-            <div class="w3-button w3-col m3 w3-blue w3-small" id="uncheckAll">@ResourceKey("DNNrocket.uncheckall")</div>
-            @ButtonGap()
-            <div class="w3-button w3-col m3 w3-green w3-right w3-small nextbuttonpage simplisity_click" style="display:none;" s-cmd="rocketroles_getmodules" s-return=".moduledatasection" s-fields='' s-post="#treeview2_container">@ResourceKey("DNNrocket.next")&nbsp;<i class="fas fa-caret-right"></i></div>
-        </div>
-        <div id="treeview2_container" class="hummingbird-treeview well h-scroll-large">
-            @GetTreeTabList(Model.GetSettingInt("portalid"), new List<int>(), "treeview2", "", "class='hummingbird-base'")
-        </div>
-    </div>
-    <div  class="w3-twothird" id="updatesection">
-        <div class="w3-half moduledatasection">
-        </div>
-        <div class="w3-half rolesdatasection">
-        </div>
-    </div>
-</div>
+<h1>Module Clones</h1>
+<p>@ResourceKey("RocketTools.moduleclone","","Help")</p>
 
 
 <script>

@@ -49,6 +49,13 @@ namespace Rocket.Tools
                         SaveModules();
                         strOut = ApplyRoles();
                         break;
+
+
+                    case "rocketclones_getdisplay":
+                        strOut = CloneAdmin();
+                        break;
+
+
                 }
             }
             else
@@ -94,6 +101,29 @@ namespace Rocket.Tools
 
             return RolesOK();
         }
+
+        #region "Clones"
+        public static String CloneAdmin()
+        {
+            try
+            {
+                _passSettings.Add("portalid", DNNrocketUtils.GetPortalId().ToString());
+                var controlRelPath = _rocketInterface.TemplateRelPath;
+                var themeFolder = _rocketInterface.DefaultTheme;
+                var razortemplate = "clones.cshtml";
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        #endregion
+
+        #region "Roles"
+
         public static void SaveModules()
         {
             var info = GetCachedInfo();
@@ -246,6 +276,7 @@ namespace Rocket.Tools
             }
         }
 
+        #endregion
 
     }
 }
