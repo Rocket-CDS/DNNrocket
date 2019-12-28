@@ -72,16 +72,20 @@ namespace Rocket.Tools
                     var nodList1 = _postInfo.XMLDoc.SelectNodes("genxml/rolecheckbox/*");
                     foreach (XmlNode nod1 in nodList1)
                     {
-                        var roleid = _postInfo.GetXmlPropertyInt("genxml/rolecheckbox/" + nod1.Name);
-                        if (roleid > 0)
+                        var strroleid = nod1.Name.Replace("roleid", "");
+                        if (GeneralUtils.IsNumeric(strroleid))
                         {
-                            if (nod1.InnerText.ToLower() == "true")
+                            var roleid = Convert.ToInt32(strroleid);
+                            if (roleid > 0)
                             {
-                                DNNrocketUtils.AddRoleToModule(DNNrocketUtils.GetPortalId(), moduleid, roleid);
-                            }
-                            else
-                            {
-                                DNNrocketUtils.RemoveRoleToModule(DNNrocketUtils.GetPortalId(), moduleid, roleid);
+                                if (nod1.InnerText.ToLower() == "true")
+                                {
+                                    DNNrocketUtils.AddRoleToModule(DNNrocketUtils.GetPortalId(), moduleid, roleid);
+                                }
+                                else
+                                {
+                                    DNNrocketUtils.RemoveRoleToModule(DNNrocketUtils.GetPortalId(), moduleid, roleid);
+                                }
                             }
                         }
                     }
@@ -120,10 +124,18 @@ namespace Rocket.Tools
             {
                 if (nod.InnerText.ToLower() == "true")
                 {
-                    var sRec = new SimplisityRecord();
-                    sRec.SetXmlProperty("genxml/treeid", nod.Name);
-                    sRec.SetXmlProperty("genxml/tabid", nod.Name.Replace("tabid",""));
-                    info.AddRecordListItem("tabtreeview", sRec);
+                    var tabid = nod.Name.Replace("tabid", "");
+                    if (GeneralUtils.IsNumeric(tabid))
+                    {
+                        var sRec = new SimplisityRecord();
+                        sRec.SetXmlProperty("genxml/treeid", nod.Name);
+                        sRec.SetXmlProperty("genxml/tabid", tabid);
+
+                        var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), Convert.ToInt32(tabid));
+                        sRec.SetXmlProperty("genxml/tabname", pageData.Name);
+
+                        info.AddRecordListItem("tabtreeview", sRec);
+                    }
                 }
             }
             CacheUtils.SetCache(_pageref, info, "roles");
@@ -146,17 +158,13 @@ namespace Rocket.Tools
                 if (info.GUIDKey == "new") return "reload"; // we have lost the cache and page data, reload and start agian.
 
                 info.RemoveRecordList("rolelist");
-                foreach (var t in info.GetRecordList("tabtreeview"))
+                var l = DNNrocketUtils.GetRoles(DNNrocketUtils.GetPortalId());
+                foreach (var m in l)
                 {
-                    var tabid = t.GetXmlPropertyInt("genxml/tabid");
-                    var l = DNNrocketUtils.GetRoles(DNNrocketUtils.GetPortalId());
-                    foreach (var m in l)
-                    {
-                        var sRec = new SimplisityRecord();
-                        sRec.SetXmlProperty("genxml/roleid", m.Key.ToString());
-                        sRec.SetXmlProperty("genxml/rolename", m.Value);
-                        info.AddRecordListItem("rolelist", sRec);
-                    }
+                    var sRec = new SimplisityRecord();
+                    sRec.SetXmlProperty("genxml/roleid", m.Key.ToString());
+                    sRec.SetXmlProperty("genxml/rolename", m.Value);
+                    info.AddRecordListItem("rolelist", sRec);
                 }
 
                 _passSettings.Add("portalid", DNNrocketUtils.GetPortalId().ToString());
@@ -187,7 +195,7 @@ namespace Rocket.Tools
                     {
                         var sRec = new SimplisityRecord();
                         sRec.SetXmlProperty("genxml/moduleid", m.Key.ToString());
-                        sRec.SetXmlProperty("genxml/moduletitle", m.Value);
+                        sRec.SetXmlProperty("genxml/moduletitle", t.GetXmlProperty("genxml/tabname") + ": " +  m.Value);
                         info.AddRecordListItem("modulelist", sRec);
                     }
                 }

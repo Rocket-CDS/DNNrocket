@@ -239,50 +239,5 @@ namespace DNNrocketAPI
             return Globals.NavigateURL(tabId);
         }
 
-        public static string GetPageName(int tabId, int portalId)
-        {
-            var objTabs = new TabController();
-            var tabInfo = objTabs.GetTab(tabId, portalId);
-            if (tabInfo != null)
-            {
-                return tabInfo.TabName;
-            }
-            return "";
-        }
-
-        public static string GetPageTitle(int tabId, int portalId)
-        {
-            var objTabs = new TabController();
-            var tabInfo = objTabs.GetTab(tabId, portalId);
-            if (tabInfo != null)
-            {
-                return tabInfo.Title;
-            }
-            return "";
-        }
-
-        public static string GetPageKeyWord(int tabId, int portalId)
-        {
-            var objTabs = new TabController();
-            var tabInfo = objTabs.GetTab(tabId, portalId);
-            if (tabInfo != null)
-            {
-                return tabInfo.KeyWords;
-            }
-            return "";
-        }
-
-        public static string GetPageDescription(int tabId, int portalId)
-        {
-            var objTabs = new TabController();
-            var tabInfo = objTabs.GetTab(tabId, portalId);
-            if (tabInfo != null)
-            {
-                return tabInfo.Description;
-            }
-            return "";
-        }
-
-
     }
 }

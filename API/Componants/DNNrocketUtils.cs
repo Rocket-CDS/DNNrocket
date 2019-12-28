@@ -663,16 +663,58 @@ namespace DNNrocketAPI
             var role = RoleController.Instance.GetRoleById(portalId, roleid);
             if (role != null)
             {
+                var permissionController = new PermissionController();
+
+                var editPermissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
+                PermissionInfo editPermisison = null;
+                //Edit
+                if (editPermissionsList != null && editPermissionsList.Count > 0)
+                {
+                    editPermisison = (PermissionInfo)editPermissionsList[0];
+                }
+
+
                 foreach (var p in PermissionsList2)
                 {
                     if (p.RoleName == role.RoleName)
                     {
                         permissionID = p.PermissionID;
+                        p.AllowAccess = true;
                         roleexist = true;
+
+                        var modulePermission = new ModulePermissionInfo(editPermisison);
+                        modulePermission.RoleID = role.RoleID;
+                        modulePermission.AllowAccess = true;
+                        moduleInfo.ModulePermissions.Add(modulePermission);
                     }
                 }
 
                 // ADD Role
+                if (!roleexist)
+                {
+                    ArrayList systemModuleEditPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
+                    foreach (PermissionInfo permission in systemModuleEditPermissions)
+                    {
+                        if (permission.PermissionKey == "EDIT")
+                        {
+                            var objPermission = new ModulePermissionInfo(permission)
+                            {
+                                ModuleID = moduleInfo.DesktopModuleID,
+                                RoleID = role.RoleID,
+                                RoleName = role.RoleName,
+                                AllowAccess = true,
+                                UserID = Null.NullInteger,
+                                DisplayName = Null.NullString
+                            };
+                            var permId = moduleInfo.ModulePermissions.Add(objPermission, true);
+                            ModuleController.Instance.UpdateModule(moduleInfo);
+                        }
+                    }
+                }
+
+
+                // Check for DEPLOY 
+                // This was added for upgrade on module.  I'm unsure if it's still required.
                 if (!roleexist)
                 {
                     ArrayList permissions = PermissionController.GetPermissionsByPortalDesktopModule();
@@ -694,26 +736,9 @@ namespace DNNrocketAPI
                             ModuleController.Instance.UpdateModule(moduleInfo);
                         }
                     }
-                    var permissionController = new PermissionController();
-                    ArrayList systemModuleEditPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
-                    foreach (PermissionInfo permission in systemModuleEditPermissions)
-                    {
-                        if (permission.PermissionKey == "EDIT")
-                        {
-                            var objPermission = new ModulePermissionInfo(permission)
-                            {
-                                ModuleID = moduleInfo.DesktopModuleID,
-                                RoleID = role.RoleID,
-                                RoleName = role.RoleName,
-                                AllowAccess = true,
-                                UserID = Null.NullInteger,
-                                DisplayName = Null.NullString
-                            };
-                            var permId = moduleInfo.ModulePermissions.Add(objPermission, true);
-                            ModuleController.Instance.UpdateModule(moduleInfo);
-                        }
-                    }
                 }
+
+
             }
         }
         public static void RemoveRoleToModule(int portalId, int moduleid, int roleid)
