@@ -13,41 +13,45 @@
 
 <h1>Module Clones</h1>
 <p>@ResourceKey("RocketTools.moduleclone","","Help")</p>
+<div class="w3-container w3-border w3-light-grey w3-margin-bottom">
+    <div class="w3-third">
+        <h3>
+            @ResourceKey("DNNrocket.page")
+        </h3>
+    </div>
+    <div class="w3-third">
+        <h3>
+            @ResourceKey("DNNrocket.modules")
+        </h3>
+    </div>
+    <div class="w3-third">
+        <h3>
+            @ResourceKey("RocketTools.topage")
+        </h3>
+    </div>
+</div>
+
+<div class="w3-row">
+
+    <div class="w3-third w3-padding tabselect">
+        @TabSelectList(new SimplisityInfo(),"genxml/fromtabid"," class=' w3-input w3-border simplisity_change' s-cmd='rocketclones_getmodules' s-return='.moduledatasection' s-post='.tabselect' ")
+    </div>
+    <div class="w3-twothird w3-padding" id="updatesection">
+        <div class="w3-half w3-padding moduledatasection">
+        </div>
+        <div class="w3-half w3-padding topagedatasection">
+        </div>
+    </div>
+</div>
+
 
 
 <script>
 
     $(document).ready(function () {
 
-        simplisity_setParamField('pageref', CreateGuid())
+        simplisity_setParamField('pageref', CreateGuid());
 
-        $.fn.hummingbird.defaults.SymbolPrefix = "fas";
-        $.fn.hummingbird.defaults.collapsedSymbol = "fa-caret-down";
-        $.fn.hummingbird.defaults.expandedSymbol = "fa-caret-up";
-
-        $("#treeview2").hummingbird();
-
-
-        $("#checkAll").click(function () {
-            $("#treeview2").hummingbird("checkAll");
-        });
-        $("#uncheckAll").click(function () {
-            $("#treeview2").hummingbird("uncheckAll");
-        });
-        $("#collapseAll").click(function () {
-            $("#treeview2").hummingbird("collapseAll");
-        });
-
-        $("#treeview2").on("nodeChecked", function(){
-            $('.nextbuttonpage').show();
-            $('.moduledatasection').text('');
-            $('.rolesdatasection').text('');            
-        });
-        $("#treeview2").on("nodeUnchecked", function(){
-            $('.nextbuttonpage').show();
-            $('.moduledatasection').text('');
-            $('.rolesdatasection').text('');            
-        });
     });
 
     function CreateGuid() {

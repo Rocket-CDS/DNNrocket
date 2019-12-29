@@ -423,7 +423,7 @@ namespace DNNrocketAPI.render
         {
             if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
 
-            var tList = DNNrocketUtils.GetTreeTabListOnUniqueId();
+            var tList = DNNrocketUtils.GetTreeTabList();
             var strOut = "";
 
             var upd = getUpdateAttr(xpath, "", localized);

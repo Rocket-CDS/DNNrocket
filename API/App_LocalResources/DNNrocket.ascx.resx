@@ -483,4 +483,7 @@
   <data name="roles.Text" xml:space="preserve">
     <value>Roles</value>
   </data>
+  <data name="page.Text" xml:space="preserve">
+    <value>Page</value>
+  </data>
 </root>

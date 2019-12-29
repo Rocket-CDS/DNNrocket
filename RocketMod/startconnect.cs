@@ -44,7 +44,7 @@ namespace RocketMod
         {
             var strOut = ""; // return nothing if not matching commands.
 
-            paramCmd = initCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
+            paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
 
             var rtnDic = new Dictionary<string, string>();
 
@@ -195,7 +195,7 @@ namespace RocketMod
             return rtnDic;
         }
 
-        public static string initCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public static string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
 
             _systemInfoData = new SystemInfoData(systemInfo);

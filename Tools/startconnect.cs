@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using DNNrocketAPI;
+using DNNrocketAPI.Componants;
 using Simplisity;
 
 namespace Rocket.Tools
@@ -14,21 +15,16 @@ namespace Rocket.Tools
         private static SimplisityInfo _postInfo;
         private static SimplisityInfo _paramInfo;
         private static string _pageref;
+        private static UserStorage _userStorage;
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = ""; // return nothing if not matching commands.
             var rtnDic = new Dictionary<string, string>();
 
-            _postInfo = postInfo;
-            _paramInfo = paramInfo;
-            _pageref = _paramInfo.GetXmlProperty("genxml/hidden/pageref");
-
-            _systemInfoData = new SystemInfoData(systemInfo);
-            _rocketInterface = new DNNrocketInterface(interfaceInfo);
-            _passSettings = new Dictionary<string, string>();
-
             if (DNNrocketUtils.IsSuperUser())
             {
+                paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
+
                 switch (paramCmd)
                 {
                     case "rockettools_login":
@@ -54,6 +50,9 @@ namespace Rocket.Tools
                     case "rocketclones_getdisplay":
                         strOut = CloneAdmin();
                         break;
+                    case "rocketclones_getmodules":
+                        strOut = GetCloneSelectModules();
+                        break;
 
 
                 }
@@ -68,6 +67,42 @@ namespace Rocket.Tools
             return rtnDic;
 
         }
+
+        public static string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        {
+
+            _postInfo = postInfo;
+            _paramInfo = paramInfo;
+            _pageref = _paramInfo.GetXmlProperty("genxml/hidden/pageref");
+
+            _systemInfoData = new SystemInfoData(systemInfo);
+            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            _passSettings = new Dictionary<string, string>();
+
+            _userStorage = new UserStorage();
+
+            if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
+            {
+                var menucmd = _userStorage.GetCommand(_systemInfoData.SystemKey);
+                if (menucmd != "")
+                {
+                    paramCmd = menucmd;
+                    _paramInfo = _userStorage.GetParamInfo(_systemInfoData.SystemKey);
+                    var interfacekey = _userStorage.GetInterfaceKey(_systemInfoData.SystemKey);
+                    _rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
+                }
+            }
+            else
+            {
+                if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
+                {
+                    _userStorage.Track(_systemInfoData.SystemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
+                }
+            }
+
+            return paramCmd;
+        }
+
         public static string ApplyRoles()
         {
             var info = GetCachedInfo();
@@ -201,6 +236,41 @@ namespace Rocket.Tools
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "roleselectsection.cshtml";
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return DNNrocketUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }        
+        public static String GetCloneSelectModules()
+        {
+            try
+            {
+                var info = GetCachedInfo();
+                info.GUIDKey = "";  // clear flag on new selection.
+
+
+                info.RemoveRecordList("clonemodulelist");
+                var tabid = _postInfo.GetXmlPropertyInt("genxml/fromtabid");
+                var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), tabid);
+                var l = DNNrocketUtils.GetTabModuleTitles(tabid);
+                foreach (var m in l)
+                {
+                    var sRec = new SimplisityRecord();
+                    sRec.SetXmlProperty("genxml/moduleid", m.Key.ToString());
+                    sRec.SetXmlProperty("genxml/moduletitle", pageData.Name + ": " + m.Value);
+                    info.AddRecordListItem("clonemodulelist", sRec);
+                }
+
+                _passSettings.Add("portalid", DNNrocketUtils.GetPortalId().ToString());
+                var controlRelPath = _rocketInterface.TemplateRelPath;
+                var themeFolder = _rocketInterface.DefaultTheme;
+                var razortemplate = "clonesmodulesection.cshtml";
+
+                CacheUtils.SetCache(_pageref, info, "roles");
+
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 return DNNrocketUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
             }

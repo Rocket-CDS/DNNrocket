@@ -835,14 +835,14 @@ namespace DNNrocketAPI
             return TabController.Instance.GetTab(tabid, PortalSettings.Current.PortalId, ignoreCache);
         }
 
-        public static Dictionary<Guid, string> GetTreeTabListOnUniqueId()
+        public static Dictionary<int, string> GetTreeTabList()
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
-            var rtnList = new Dictionary<Guid, string>();
-            return GetTreeTabListOnUniqueId(rtnList, tabList, 0, 0);
+            var rtnList = new Dictionary<int, string>();
+            return GetTreeTabList(rtnList, tabList, 0, 0);
         }
 
-        private static Dictionary<Guid, string> GetTreeTabListOnUniqueId(Dictionary<Guid, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "")
+        private static Dictionary<int, string> GetTreeTabList(Dictionary<int, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "")
         {
 
             if (level > 20) // stop infinate loop
@@ -858,8 +858,8 @@ namespace DNNrocketAPI
                 {
                     if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
                     {
-                        rtnList.Add(tInfo.UniqueId, prefix + "" + tInfo.TabName);
-                        GetTreeTabListOnUniqueId(rtnList, tabList, level + 1, tInfo.TabID, prefix);
+                        rtnList.Add(tInfo.TabID, prefix + "" + tInfo.TabName);
+                        GetTreeTabList(rtnList, tabList, level + 1, tInfo.TabID, prefix);
                     }
                 }
             }
