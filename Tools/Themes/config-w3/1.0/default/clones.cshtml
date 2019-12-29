@@ -13,35 +13,36 @@
 
 <h1>Module Clones</h1>
 <p>@ResourceKey("RocketTools.moduleclone","","Help")</p>
-<div class="w3-container w3-border w3-light-grey w3-margin-bottom">
-    <div class="w3-third">
-        <h3>
-            @ResourceKey("DNNrocket.page")
-        </h3>
-    </div>
-    <div class="w3-third">
-        <h3>
-            @ResourceKey("DNNrocket.modules")
-        </h3>
-    </div>
-    <div class="w3-third">
-        <h3>
-            @ResourceKey("RocketTools.topage")
-        </h3>
-    </div>
-</div>
 
 <div class="w3-row">
 
     <div class="w3-third w3-padding tabselect">
-        @TabSelectList(new SimplisityInfo(),"genxml/fromtabid"," class=' w3-input w3-border simplisity_change' s-cmd='rocketclones_getmodules' s-return='.moduledatasection' s-post='.tabselect' ")
-    </div>
-    <div class="w3-twothird w3-padding" id="updatesection">
-        <div class="w3-half w3-padding moduledatasection">
+        <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
+            <b class="w3-large">@ResourceKey("DNNrocket.page")</b>
         </div>
-        <div class="w3-half w3-padding topagedatasection">
+        @TabSelectList(new SimplisityInfo(), "genxml/fromtabid", " class=' w3-input w3-border simplisity_change' s-cmd='rocketclones_getmodules' s-return='.moduledatasection' s-post='.tabselect' ")
+    </div>
+    <div class="w3-twothird" id="updatesection">
+        <div class="w3-half w3-padding">
+            <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
+                <b class="w3-large">@ResourceKey("DNNrocket.modules")</b>
+                <div class="w3-button w3-green w3-right nextbuttonmodule simplisity_click" style="display:none;" s-cmd="rocketclones_getdestination" s-return=".topagedatasection" s-fields='' s-post="#updatesection">@ResourceKey("DNNrocket.next")&nbsp;<i class="fas fa-caret-right"></i></div>
+            </div>
+            <div class="w3-row moduledatasection">
+
+            </div>
+        </div>
+        <div class="w3-half w3-padding">
+            <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
+                <b class="w3-large">@ResourceKey("RocketTools.topage")</b>
+                <div class="w3-button w3-green w3-right rocketclonesbutton simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.clone","","Confirm")" style="display:none;" s-cmd="rocketclones_clone" s-fields='' s-post="#updatesection"><i class="fas fa-save"></i>&nbsp;@ResourceKey("DNNrocket.clone")</div>
+            </div>
+            <div class="w3-row topagedatasection">
+
+            </div>
         </div>
     </div>
+
 </div>
 
 

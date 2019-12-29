@@ -123,8 +123,11 @@
   <data name="applyroles.Text" xml:space="preserve">
     <value>Apply EDIT permissions to Roles </value>
   </data>
+  <data name="clone.Confirm" xml:space="preserve">
+    <value>Clone the selected module to ALL the selected pages?</value>
+  </data>
   <data name="moduleclone.Help" xml:space="preserve">
-    <value>Modules can be cloned across the site using this interface.  Select the page where the module you want to clone is on.  Select the module and then select the pages you want to clone it to.  The system will try and place the cloen in the same container, if the same container does not exist on the destination page, the cloned module will be placed in the main content container.</value>
+    <value>Modules can be cloned across the site using this interface.  Select the page where the module you want to clone is on.  Select the module and then select the pages you want to clone it to.  The system will try and place the clone in the same container, if the same container does not exist on the destination page, the cloned module will be placed in the main content container.</value>
   </data>
   <data name="moduleroles.Help" xml:space="preserve">
     <value>Module Roles can be added or removed from multiple modules across the entire site.  The EDIT permissions will be activated when the module is updated with a new role.  For more granular control use the standard module interface. </value>

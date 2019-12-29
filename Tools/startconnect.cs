@@ -21,9 +21,10 @@ namespace Rocket.Tools
             var strOut = ""; // return nothing if not matching commands.
             var rtnDic = new Dictionary<string, string>();
 
+            paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
+
             if (DNNrocketUtils.IsSuperUser())
             {
-                paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
 
                 switch (paramCmd)
                 {
@@ -52,6 +53,9 @@ namespace Rocket.Tools
                         break;
                     case "rocketclones_getmodules":
                         strOut = GetCloneSelectModules();
+                        break;
+                    case "rocketclones_getdestination":
+                        strOut = CloneDestination();
                         break;
 
 
@@ -103,40 +107,6 @@ namespace Rocket.Tools
             return paramCmd;
         }
 
-        public static string ApplyRoles()
-        {
-            var info = GetCachedInfo();
-            foreach (var m in info.GetRecordList("tabmodules"))
-            {
-                var moduleid = m.GetXmlPropertyInt("genxml/moduleid");
-                if (moduleid > 0)
-                {
-                    var nodList1 = _postInfo.XMLDoc.SelectNodes("genxml/rolecheckbox/*");
-                    foreach (XmlNode nod1 in nodList1)
-                    {
-                        var strroleid = nod1.Name.Replace("roleid", "");
-                        if (GeneralUtils.IsNumeric(strroleid))
-                        {
-                            var roleid = Convert.ToInt32(strroleid);
-                            if (roleid > 0)
-                            {
-                                if (nod1.InnerText.ToLower() == "true")
-                                {
-                                    DNNrocketUtils.AddRoleToModule(DNNrocketUtils.GetPortalId(), moduleid, roleid);
-                                }
-                                else
-                                {
-                                    DNNrocketUtils.RemoveRoleToModule(DNNrocketUtils.GetPortalId(), moduleid, roleid);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return RolesOK();
-        }
-
         #region "Clones"
         public static String CloneAdmin()
         {
@@ -154,6 +124,23 @@ namespace Rocket.Tools
                 return ex.ToString();
             }
         }
+        public static String CloneDestination()
+        {
+            try
+            {
+                _passSettings.Add("portalid", DNNrocketUtils.GetPortalId().ToString());
+                var controlRelPath = _rocketInterface.TemplateRelPath;
+                var themeFolder = _rocketInterface.DefaultTheme;
+                var razortemplate = "clonesdestination.cshtml";
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
 
         #endregion
 
@@ -312,7 +299,6 @@ namespace Rocket.Tools
                 return ex.ToString();
             }
         }
-
         public static String RolesAdmin()
         {
             try
@@ -329,7 +315,6 @@ namespace Rocket.Tools
                 return ex.ToString();
             }
         }
-
         public static String RolesOK()
         {
             try
@@ -344,6 +329,39 @@ namespace Rocket.Tools
             {
                 return ex.ToString();
             }
+        }
+        public static string ApplyRoles()
+        {
+            var info = GetCachedInfo();
+            foreach (var m in info.GetRecordList("tabmodules"))
+            {
+                var moduleid = m.GetXmlPropertyInt("genxml/moduleid");
+                if (moduleid > 0)
+                {
+                    var nodList1 = _postInfo.XMLDoc.SelectNodes("genxml/rolecheckbox/*");
+                    foreach (XmlNode nod1 in nodList1)
+                    {
+                        var strroleid = nod1.Name.Replace("roleid", "");
+                        if (GeneralUtils.IsNumeric(strroleid))
+                        {
+                            var roleid = Convert.ToInt32(strroleid);
+                            if (roleid > 0)
+                            {
+                                if (nod1.InnerText.ToLower() == "true")
+                                {
+                                    DNNrocketUtils.AddRoleToModule(DNNrocketUtils.GetPortalId(), moduleid, roleid);
+                                }
+                                else
+                                {
+                                    DNNrocketUtils.RemoveRoleToModule(DNNrocketUtils.GetPortalId(), moduleid, roleid);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return RolesOK();
         }
 
         #endregion

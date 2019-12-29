@@ -10,31 +10,25 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
 
-
-
-
-<div class="w3-row w3-padding">
-    <div class="w3-button w3-col m3 w3-blue w3-small" id="checkAll">@ResourceKey("DNNrocket.checkall")</div>
-    @ButtonGap()
-    <div class="w3-button w3-col m3 w3-blue w3-small" id="uncheckAll">@ResourceKey("DNNrocket.uncheckall")</div>
-    @ButtonGap()
-    <div class="w3-button w3-col m3 w3-green w3-right w3-small nextbuttonpage simplisity_click" style="display:none;" s-cmd="rocketroles_getmodules" s-return=".moduledatasection" s-fields='' s-post="#treeview2_container">@ResourceKey("DNNrocket.next")&nbsp;<i class="fas fa-caret-right"></i></div>
-</div>
 <div id="treeview3_container" class="hummingbird-treeview well h-scroll-large">
-    @GetTreeTabList(Model.GetSettingInt("portalid"), new List<int>(), "treeview2", "", "class='hummingbird-base'")
+    @GetTreeTabList(Model.GetSettingInt("portalid"), new List<int>(), "treeview3", "", "class='hummingbird-base'")
 </div>
-
+<div class="w3-row ">
+    <div class="w3-button w3-col m5 w3-blue w3-margin-right" id="checkAll">@ResourceKey("DNNrocket.checkall")</div>
+    <div class="w3-button w3-col m5 w3-blue" id="uncheckAll">@ResourceKey("DNNrocket.uncheckall")</div>
+</div>
 
 <script>
 
     $(document).ready(function () {
+
+        $('.rocketclonesbutton').show();
 
         $.fn.hummingbird.defaults.SymbolPrefix = "fas";
         $.fn.hummingbird.defaults.collapsedSymbol = "fa-caret-down";
         $.fn.hummingbird.defaults.expandedSymbol = "fa-caret-up";
 
         $("#treeview3").hummingbird();
-
 
         $("#checkAll").click(function () {
             $("#treeview3").hummingbird("checkAll");
@@ -43,16 +37,6 @@
             $("#treeview3").hummingbird("uncheckAll");
         });
 
-        $("#treeview3").on("nodeChecked", function () {
-            $('.nextbuttonpage').show();
-            $('.moduledatasection').text('');
-            $('.rolesdatasection').text('');
-        });
-        $("#treeview3").on("nodeUnchecked", function () {
-            $('.nextbuttonpage').show();
-            $('.moduledatasection').text('');
-            $('.rolesdatasection').text('');
-        });
     });
 
 </script>

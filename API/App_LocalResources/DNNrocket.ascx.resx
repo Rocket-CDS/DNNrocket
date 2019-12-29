@@ -486,4 +486,7 @@
   <data name="page.Text" xml:space="preserve">
     <value>Page</value>
   </data>
+  <data name="clone.Text" xml:space="preserve">
+    <value>Clone</value>
+  </data>
 </root>
