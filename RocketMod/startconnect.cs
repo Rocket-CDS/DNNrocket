@@ -390,6 +390,10 @@ namespace RocketMod
 
             _moduleParams.Save();
             _passSettings.Add("saved", "true");
+
+            // update module with a better name
+            DNNrocketUtils.UpdateModuleTitle(_tabid, _moduleid, _moduleParams.Name + ":" + _moduleid);
+
         }
 
         private static void SaveAppTheme()
@@ -410,7 +414,6 @@ namespace RocketMod
             _moduleParams.ShareData = "1";
             _moduleParams.TabId = _tabid;
             _moduleParams.Exists = true;
-
             _moduleParams.Save();
         }
 

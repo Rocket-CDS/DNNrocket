@@ -814,6 +814,15 @@ namespace DNNrocketAPI
         {
             return ModuleController.Instance.GetModule(moduleid, tabid, false);
         }
+        public static void UpdateModuleTitle(int tabid, int moduleid, string title)
+        {
+            var modInfo = GetModuleInfo(tabid, moduleid);
+            if (modInfo != null)
+            {
+                modInfo.ModuleTitle = title;
+                ModuleController.Instance.UpdateModule(modInfo);
+            }
+        }
         public static ModuleInfo GetModuleInfo(int moduleId)
         {
             var objMCtrl = new DotNetNuke.Entities.Modules.ModuleController();
