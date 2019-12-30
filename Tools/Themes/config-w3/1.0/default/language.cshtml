@@ -51,21 +51,15 @@
                 <b class="w3-large">@ResourceKey("RocketTools.destinationlanguage")</b>
             </div>
             @DropDownLanguageList(new SimplisityInfo(), "genxml/destinationlanguage", "class='w3-input w3-border' ")
+            <div class="w3-button w3-right w3-margin-top w3-green w3-padding simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.copylanguage","","Confirm")" s-cmd="rocketlang_copy" s-fields='' s-post=".langaugeselection"><i class="fas fa-save"></i>&nbsp;@ResourceKey("RocketTools.copylanguage")</div>
         </div>
 
     </div>
-
-<div class="w3-row w3-center w3-padding w3-margin-bottom">
-    <div class="w3-col m3" >&nbsp;</div>
-    <div class="w3-button w3-col m6 w3-green w3-small simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.applyroles","","Confirm")" s-cmd="rocketroles_applyroles" s-fields='' s-post="#updatesection"><i class="fas fa-save"></i>&nbsp;@ResourceKey("RocketTools.applyroles")</div>
-    <div class="w3-col m3" >&nbsp;</div>
-</div>
 
 
 <div class="w3-row w3-padding">
     <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
         <b class="w3-large">@ResourceKey("DNNrocket.history")</b>
-        <div class="w3-button w3-green w3-right rocketclonesbutton simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.clone","","Confirm")" style="display:none;" s-cmd="rocketclones_clone" s-fields='' s-post="#updatesection"><i class="fas fa-save"></i>&nbsp;@ResourceKey("DNNrocket.clone")</div>
     </div>
     <div class="w3-row historydatasection">
 

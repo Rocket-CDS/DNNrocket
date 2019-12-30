@@ -183,6 +183,11 @@ namespace RocketMod
                     ImportData();
                     break;
 
+                case "module_copylanguage":
+                    CopyLanguage();
+                    break;                    
+
+
 
             }
 
@@ -288,7 +293,7 @@ namespace RocketMod
             }
             else
             {
-                if (!_moduleParams.Exists && paramCmd != "module_import" && paramCmd != "rocketmod_getdata" && paramCmd != "rocketmodedit_saveapptheme" && paramCmd != "rocketmodedit_saveconfig" && paramCmd != "rocketmodedit_saveappthemeconfig")
+                if (!_moduleParams.Exists && paramCmd != "module_copylanguage" && paramCmd != "module_import" && paramCmd != "rocketmod_getdata" && paramCmd != "rocketmodedit_saveapptheme" && paramCmd != "rocketmodedit_saveconfig" && paramCmd != "rocketmodedit_saveappthemeconfig")
                 {
                     return "rocketmodedit_selectapptheme";
                 }
@@ -1018,6 +1023,39 @@ namespace RocketMod
         {
             var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
             if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
+        }
+        private static void CopyLanguage()
+        {
+            var objCtrl = new DNNrocketController();
+
+            // data passed to system with _paramInfo
+            var copylanguage = _paramInfo.GetXmlProperty("genxml/hidden/copylanguage");
+            var destinationlanguage = _paramInfo.GetXmlProperty("genxml/hidden/destinationlanguage");
+
+            // delete destination language
+            var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANGIDX", " and r1.Lang = '" + destinationlanguage + "'");
+            foreach (var sInfo in l)
+            {
+                objCtrl.Delete(sInfo.ItemID);
+            }
+            l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANG", " and r1.Lang = '" + destinationlanguage + "'");
+            foreach (var sInfo in l)
+            {
+               objCtrl.Delete(sInfo.ItemID);
+            }
+            // copy copy language
+            l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANG", " and r1.Lang = '" + copylanguage + "'");
+            foreach (var sInfo in l)
+            {
+                var sRec = new SimplisityRecord(sInfo);
+                sRec.ItemID = -1;
+                sRec.Lang = destinationlanguage;
+                objCtrl.Update(sRec);
+                // recreate the IDX record.
+                objCtrl.RebuildLangIndex(sRec.PortalId, sRec.ParentItemId);
+
+            }
+
         }
 
 

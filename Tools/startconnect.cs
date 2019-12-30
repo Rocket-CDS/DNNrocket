@@ -67,7 +67,11 @@ namespace Rocket.Tools
                     case "rocketlang_getdisplay":
                         strOut = LangAdmin();
                         break;
-
+                    case "rocketlang_copy":
+                        SaveSystems("languagesystemlist");
+                        CopyLang();
+                        strOut = LangAdmin();
+                        break;
 
                 }
             }
@@ -75,7 +79,6 @@ namespace Rocket.Tools
             {
                 strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
             }
-
 
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;
@@ -118,7 +121,7 @@ namespace Rocket.Tools
         }
 
 
-        #region "Clones"
+        #region "Language"
         public static String LangAdmin()
         {
             try
@@ -133,6 +136,36 @@ namespace Rocket.Tools
             catch (Exception ex)
             {
                 return ex.ToString();
+            }
+        }
+
+        public static void CopyLang()
+        {
+            var info = GetCachedInfo();
+            var copylanguage = _postInfo.GetXmlProperty("genxml/copylanguage");
+            var destinationlanguage = _postInfo.GetXmlProperty("genxml/destinationlanguage");
+
+            foreach (var s in info.GetRecordList("languagesystemlist"))
+            {
+                var systemid = s.GetXmlPropertyInt("genxml/systemid");
+                if (systemid > 0)
+                {
+                    var systemInfoData = new SystemInfoData(systemid);
+                    if (systemInfoData.Exists)
+                    {
+                        foreach (var rocketInterface in systemInfoData.GetInterfaceList())
+                        {
+                            if (rocketInterface.Exists && rocketInterface.IsProvider("copylanguage"))
+                            {
+                                var paramInfo = new SimplisityInfo();
+                                paramInfo.SetXmlProperty("genxml/hidden/destinationlanguage", destinationlanguage);
+                                paramInfo.SetXmlProperty("genxml/hidden/copylanguage", copylanguage);
+                                paramInfo.SetXmlProperty("genxml/hidden/portalid", DNNrocketUtils.GetPortalId().ToString());
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfoData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -209,7 +242,6 @@ namespace Rocket.Tools
                 return ex.ToString();
             }
         }
-
         public static void CloneModules()
         {
             var info = GetCachedInfo();
@@ -226,8 +258,6 @@ namespace Rocket.Tools
                     }
                 }
             }
-
-
         }
 
         public static String ClonesOK()
@@ -391,6 +421,25 @@ namespace Rocket.Tools
         #endregion
 
         #region "general"
+        public static void SaveSystems(string listName)
+        {
+            var info = GetCachedInfo();
+            info.GUIDKey = "";  // clear flag on new selection.
+
+            var nodList = _postInfo.XMLDoc.SelectNodes("genxml/checkbox/*");
+            info.RemoveRecordList(listName);
+            foreach (XmlNode nod in nodList)
+            {
+                if (nod.InnerText.ToLower() == "true")
+                {
+                    var sRec = new SimplisityRecord();
+                    sRec.SetXmlProperty("genxml/elementid", nod.Name);
+                    sRec.SetXmlProperty("genxml/systemid", nod.Name.Replace("systemid", ""));
+                    info.AddRecordListItem(listName, sRec);
+                }
+            }
+            CacheUtils.SetCache(_pageref, info, "roles");
+        }
         public static void SaveModules(string listName)
         {
             var info = GetCachedInfo();
