@@ -419,11 +419,11 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        public IEncodedString TabSelectList(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "")
+        public IEncodedString TabSelectList(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "", bool showAllTabs = false)
         {
             if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
 
-            var tList = DNNrocketUtils.GetTreeTabList();
+            var tList = DNNrocketUtils.GetTreeTabList(showAllTabs);
             var strOut = "";
 
             var upd = getUpdateAttr(xpath, "", localized);
@@ -445,11 +445,11 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        public IEncodedString TabSelectListOnTabId(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "")
+        public IEncodedString TabSelectListOnTabId(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "", bool showAllTabs = false)
         {
             if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
 
-            var tList = DNNrocketUtils.GetTreeTabListOnTabId();
+            var tList = DNNrocketUtils.GetTreeTabListOnTabId(showAllTabs);
             var strOut = "";
 
             var upd = getUpdateAttr(xpath, "", localized);
@@ -609,12 +609,12 @@ namespace DNNrocketAPI.render
             return new RawString(rtn);
         }
 
-        public IEncodedString GetTreeTabList(int portalId, List<int> selectedTabIdList, string treeviewId, string lang = "", string attributes = "")
+        public IEncodedString GetTreeTabList(int portalId, List<int> selectedTabIdList, string treeviewId, string lang = "", string attributes = "", bool showAllTabs = false)
         {
             if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
             var tabList = TabController.GetTabsBySortOrder(portalId, lang, true);
             var rtnString = "";
-            var strOut = GetTreeTabList(rtnString, tabList, 0, 0, treeviewId, attributes, selectedTabIdList);
+            var strOut = GetTreeTabList(rtnString, tabList, 0, 0, treeviewId, attributes, selectedTabIdList, showAllTabs);
 
             // add JS to action hummingbirdtree
             strOut += "";
@@ -622,7 +622,7 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        private static string GetTreeTabList(string rtnString, List<TabInfo> tabList, int level, int parentid, string id, string attributes, List<int> selectedTabIdList)
+        private static string GetTreeTabList(string rtnString, List<TabInfo> tabList, int level, int parentid, string id, string attributes, List<int> selectedTabIdList, bool showAllTabs)
         {
 
             if (level > 50) // stop infinate loop
@@ -641,7 +641,7 @@ namespace DNNrocketAPI.render
                 if (parenttestid < 0) parenttestid = 0;
                 if (parentid == parenttestid)
                 {
-                    if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
+                    if (!tInfo.IsDeleted && (tInfo.TabPermissions.Count > 2 || showAllTabs))
                     {
                         var checkedvalue = "";
                         if (selectedTabIdList.Contains(tInfo.TabID)) checkedvalue = "checked";
@@ -661,7 +661,7 @@ namespace DNNrocketAPI.render
                         rtnString += "</label>";
                         if (tInfo.HasChildren)
                         {
-                            rtnString = GetTreeTabList(rtnString, tabList, level + 1, tInfo.TabID, id, attributes, selectedTabIdList);
+                            rtnString = GetTreeTabList(rtnString, tabList, level + 1, tInfo.TabID, id, attributes, selectedTabIdList, showAllTabs);
                         }
                         rtnString += "</li>";
                     }

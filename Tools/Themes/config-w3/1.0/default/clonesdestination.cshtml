@@ -11,7 +11,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
 
 <div id="treeview3_container" class="hummingbird-treeview well h-scroll-large">
-    @GetTreeTabList(Model.GetSettingInt("portalid"), new List<int>(), "treeview3", "", "class='hummingbird-base'")
+    @GetTreeTabList(Model.GetSettingInt("portalid"), new List<int>(), "treeview3", "", "class='hummingbird-base'", true)
 </div>
 <div class="w3-row ">
     <div class="w3-button w3-col m5 w3-blue w3-margin-right" id="checkAll">@ResourceKey("DNNrocket.checkall")</div>

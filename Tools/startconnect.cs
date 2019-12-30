@@ -35,15 +35,15 @@ namespace Rocket.Tools
                         strOut = RolesAdmin();
                         break;
                     case "rocketroles_getmodules":
-                        SaveTreeView();
+                        SaveTreeView("tabtreeview");
                         strOut = GetModules();
                         break;
                     case "rocketroles_getroles":
-                        SaveModules();
+                        SaveModules("tabmodules");
                         strOut = GetRoles();
                         break;
                     case "rocketroles_applyroles":
-                        SaveModules();
+                        SaveModules("tabmodules");
                         strOut = ApplyRoles();
                         break;
 
@@ -57,7 +57,12 @@ namespace Rocket.Tools
                     case "rocketclones_getdestination":
                         strOut = CloneDestination();
                         break;
-
+                    case "rocketclones_clone":
+                        SaveModules("clonemodules");
+                        SaveTreeView("clonetreeview");
+                        CloneModules();
+                        strOut = ClonesOK();
+                        break;
 
                 }
             }
@@ -124,6 +129,44 @@ namespace Rocket.Tools
                 return ex.ToString();
             }
         }
+
+        public static String GetCloneSelectModules()
+        {
+            try
+            {
+                var info = GetCachedInfo();
+                info.GUIDKey = "";  // clear flag on new selection.
+
+
+                info.RemoveRecordList("clonemodulelist");
+                var tabid = _postInfo.GetXmlPropertyInt("genxml/fromtabid");
+                info.SetXmlProperty("genxml/fromtabid", _postInfo.GetXmlProperty("genxml/fromtabid"));
+                var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), tabid);
+                var l = DNNrocketUtils.GetTabModuleTitles(tabid);
+                foreach (var m in l)
+                {
+                    var sRec = new SimplisityRecord();
+                    sRec.SetXmlProperty("genxml/moduleid", m.Key.ToString());
+                    sRec.SetXmlProperty("genxml/moduletitle", pageData.Name + ": " + m.Value);
+                    info.AddRecordListItem("clonemodulelist", sRec);
+                }
+
+                _passSettings.Add("portalid", DNNrocketUtils.GetPortalId().ToString());
+                var controlRelPath = _rocketInterface.TemplateRelPath;
+                var themeFolder = _rocketInterface.DefaultTheme;
+                var razortemplate = "clonesmodulesection.cshtml";
+
+                CacheUtils.SetCache(_pageref, info, "roles");
+
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return DNNrocketUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
         public static String CloneDestination()
         {
             try
@@ -141,57 +184,47 @@ namespace Rocket.Tools
             }
         }
 
+        public static void CloneModules()
+        {
+            var info = GetCachedInfo();
+            var fromTabId = info.GetXmlPropertyInt("genxml/fromtabid");
+            foreach (var m in info.GetRecordList("clonemodules"))
+            {
+                var moduleid = m.GetXmlPropertyInt("genxml/moduleid");
+                if (moduleid > 0)
+                {
+                    foreach (var t in info.GetRecordList("clonetreeview"))
+                    {
+                        var toTabid = t.GetXmlPropertyInt("genxml/tabid");
+                        DNNrocketUtils.CloneModule(moduleid, fromTabId, toTabid);
+                    }
+                }
+            }
+
+
+        }
+
+        public static String ClonesOK()
+        {
+            try
+            {
+                var controlRelPath = _rocketInterface.TemplateRelPath;
+                var themeFolder = _rocketInterface.DefaultTheme;
+                var razortemplate = "clonesok.cshtml";
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
 
         #endregion
 
         #region "Roles"
 
-        public static void SaveModules()
-        {
-            var info = GetCachedInfo();
-            info.GUIDKey = "";  // clear flag on new selection.
-
-            var nodList = _postInfo.XMLDoc.SelectNodes("genxml/checkbox/*");
-            info.RemoveRecordList("tabmodules");
-            foreach (XmlNode nod in nodList)
-            {
-                if (nod.InnerText.ToLower() == "true")
-                {
-                    var sRec = new SimplisityRecord();
-                    sRec.SetXmlProperty("genxml/elementid", nod.Name);
-                    sRec.SetXmlProperty("genxml/moduleid", nod.Name.Replace("moduleid", ""));
-                    info.AddRecordListItem("tabmodules", sRec);
-                }
-            }
-            CacheUtils.SetCache(_pageref, info, "roles");
-        }
-        public static void SaveTreeView()
-        {
-            var info = GetCachedInfo();
-            info.GUIDKey = "";  // clear flag on new selection.
-
-            var nodList = _postInfo.XMLDoc.SelectNodes("genxml/treeview/*/*");
-            info.RemoveRecordList("tabtreeview");
-            foreach (XmlNode nod in nodList)
-            {
-                if (nod.InnerText.ToLower() == "true")
-                {
-                    var tabid = nod.Name.Replace("tabid", "");
-                    if (GeneralUtils.IsNumeric(tabid))
-                    {
-                        var sRec = new SimplisityRecord();
-                        sRec.SetXmlProperty("genxml/treeid", nod.Name);
-                        sRec.SetXmlProperty("genxml/tabid", tabid);
-
-                        var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), Convert.ToInt32(tabid));
-                        sRec.SetXmlProperty("genxml/tabname", pageData.Name);
-
-                        info.AddRecordListItem("tabtreeview", sRec);
-                    }
-                }
-            }
-            CacheUtils.SetCache(_pageref, info, "roles");
-        }
         public static SimplisityInfo GetCachedInfo()
         {
             var info = (SimplisityInfo)CacheUtils.GetCache(_pageref, "roles");
@@ -231,41 +264,6 @@ namespace Rocket.Tools
                 return ex.ToString();
             }
         }        
-        public static String GetCloneSelectModules()
-        {
-            try
-            {
-                var info = GetCachedInfo();
-                info.GUIDKey = "";  // clear flag on new selection.
-
-
-                info.RemoveRecordList("clonemodulelist");
-                var tabid = _postInfo.GetXmlPropertyInt("genxml/fromtabid");
-                var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), tabid);
-                var l = DNNrocketUtils.GetTabModuleTitles(tabid);
-                foreach (var m in l)
-                {
-                    var sRec = new SimplisityRecord();
-                    sRec.SetXmlProperty("genxml/moduleid", m.Key.ToString());
-                    sRec.SetXmlProperty("genxml/moduletitle", pageData.Name + ": " + m.Value);
-                    info.AddRecordListItem("clonemodulelist", sRec);
-                }
-
-                _passSettings.Add("portalid", DNNrocketUtils.GetPortalId().ToString());
-                var controlRelPath = _rocketInterface.TemplateRelPath;
-                var themeFolder = _rocketInterface.DefaultTheme;
-                var razortemplate = "clonesmodulesection.cshtml";
-
-                CacheUtils.SetCache(_pageref, info, "roles");
-
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
         public static String GetModules()
         {
             try
@@ -366,5 +364,55 @@ namespace Rocket.Tools
 
         #endregion
 
+        #region "general"
+        public static void SaveModules(string listName)
+        {
+            var info = GetCachedInfo();
+            info.GUIDKey = "";  // clear flag on new selection.
+
+            var nodList = _postInfo.XMLDoc.SelectNodes("genxml/checkbox/*");
+            info.RemoveRecordList(listName);
+            foreach (XmlNode nod in nodList)
+            {
+                if (nod.InnerText.ToLower() == "true")
+                {
+                    var sRec = new SimplisityRecord();
+                    sRec.SetXmlProperty("genxml/elementid", nod.Name);
+                    sRec.SetXmlProperty("genxml/moduleid", nod.Name.Replace("moduleid", ""));
+                    info.AddRecordListItem(listName, sRec);
+                }
+            }
+            CacheUtils.SetCache(_pageref, info, "roles");
+        }
+
+        public static void SaveTreeView(string listName)
+        {
+            var info = GetCachedInfo();
+            info.GUIDKey = "";  // clear flag on new selection.
+
+            var nodList = _postInfo.XMLDoc.SelectNodes("genxml/treeview/*/*");
+            info.RemoveRecordList(listName);
+            foreach (XmlNode nod in nodList)
+            {
+                if (nod.InnerText.ToLower() == "true")
+                {
+                    var tabid = nod.Name.Replace("tabid", "");
+                    if (GeneralUtils.IsNumeric(tabid))
+                    {
+                        var sRec = new SimplisityRecord();
+                        sRec.SetXmlProperty("genxml/treeid", nod.Name);
+                        sRec.SetXmlProperty("genxml/tabid", tabid);
+
+                        var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), Convert.ToInt32(tabid));
+                        sRec.SetXmlProperty("genxml/tabname", pageData.Name);
+
+                        info.AddRecordListItem(listName, sRec);
+                    }
+                }
+            }
+            CacheUtils.SetCache(_pageref, info, "roles");
+        }
+
+        #endregion
     }
 }

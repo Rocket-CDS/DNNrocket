@@ -126,6 +126,9 @@
   <data name="clone.Confirm" xml:space="preserve">
     <value>Clone the selected module to ALL the selected pages?</value>
   </data>
+  <data name="clonesok.Text" xml:space="preserve">
+    <value>The module has been cloned to the selected pages.</value>
+  </data>
   <data name="moduleclone.Help" xml:space="preserve">
     <value>Modules can be cloned across the site using this interface.  Select the page where the module you want to clone is on.  Select the module and then select the pages you want to clone it to.  The system will try and place the clone in the same container, if the same container does not exist on the destination page, the cloned module will be placed in the main content container.</value>
   </data>

@@ -835,14 +835,14 @@ namespace DNNrocketAPI
             return TabController.Instance.GetTab(tabid, PortalSettings.Current.PortalId, ignoreCache);
         }
 
-        public static Dictionary<int, string> GetTreeTabList()
+        public static Dictionary<int, string> GetTreeTabList(bool showAllTabs = false)
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
             var rtnList = new Dictionary<int, string>();
-            return GetTreeTabList(rtnList, tabList, 0, 0);
+            return GetTreeTabList(rtnList, tabList, 0, 0,"", showAllTabs);
         }
 
-        private static Dictionary<int, string> GetTreeTabList(Dictionary<int, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "")
+        private static Dictionary<int, string> GetTreeTabList(Dictionary<int, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "", bool showAllTabs = false)
         {
 
             if (level > 20) // stop infinate loop
@@ -856,7 +856,7 @@ namespace DNNrocketAPI
                 if (parenttestid < 0) parenttestid = 0;
                 if (parentid == parenttestid)
                 {
-                    if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
+                    if (!tInfo.IsDeleted && (tInfo.TabPermissions.Count > 2 || showAllTabs))
                     {
                         rtnList.Add(tInfo.TabID, prefix + "" + tInfo.TabName);
                         GetTreeTabList(rtnList, tabList, level + 1, tInfo.TabID, prefix);
@@ -867,14 +867,14 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public static Dictionary<int, string> GetTreeTabListOnTabId()
+        public static Dictionary<int, string> GetTreeTabListOnTabId(bool showAllTabs = false)
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
             var rtnList = new Dictionary<int, string>();
-            return GetTreeTabListOnTabId(rtnList, tabList, 0, 0);
+            return GetTreeTabListOnTabId(rtnList, tabList, 0, 0, "", showAllTabs);
         }
 
-        private static Dictionary<int, string> GetTreeTabListOnTabId(Dictionary<int, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "")
+        private static Dictionary<int, string> GetTreeTabListOnTabId(Dictionary<int, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "", bool showAllTabs = false)
         {
 
             if (level > 20) // stop infinate loop
@@ -888,7 +888,7 @@ namespace DNNrocketAPI
                 if (parenttestid < 0) parenttestid = 0;
                 if (parentid == parenttestid)
                 {
-                    if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
+                    if (!tInfo.IsDeleted && (tInfo.TabPermissions.Count > 2 || showAllTabs))
                     {
                         rtnList.Add(tInfo.TabID, prefix + "" + tInfo.TabName);
                         GetTreeTabListOnTabId(rtnList, tabList, level + 1, tInfo.TabID, prefix);
@@ -1867,6 +1867,32 @@ namespace DNNrocketAPI
 
         }
 
+        public static void CloneModule(int moduleid, int fromTabId, int toTabId)
+        {
+            if ((toTabId > 0) && (fromTabId > 0) && (fromTabId != toTabId))
+            {
+                var existingmodule = ModuleController.Instance.GetModule(moduleid, toTabId, true);
+                if (existingmodule != null)
+                {
+                    if (existingmodule.IsDeleted)
+                    {
+                        ModuleController.Instance.DeleteTabModule(toTabId, moduleid, false) ;
+                    }
+                    existingmodule = ModuleController.Instance.GetModule(moduleid, toTabId, true);
+                }
+                if (existingmodule == null)
+                {
+                    ModuleInfo fmi = ModuleController.Instance.GetModule(moduleid, fromTabId, true);
+                    ModuleInfo newModule = fmi.Clone();
+
+                    newModule.UniqueId = Guid.NewGuid(); // Cloned Module requires a different uniqueID 
+                    newModule.TabID = toTabId;
+                    ModuleController.Instance.AddModule(newModule);
+                }
+
+            }
+
+        }
 
     }
 }
