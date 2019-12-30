@@ -489,4 +489,7 @@
   <data name="clone.Text" xml:space="preserve">
     <value>Clone</value>
   </data>
+  <data name="history.Text" xml:space="preserve">
+    <value>History</value>
+  </data>
 </root>

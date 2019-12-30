@@ -19,7 +19,22 @@ namespace DNNrocketAPI.render
     public class DNNrocketTokens<T> : Simplisity.RazorEngineTokens<T>
     {
 
-        public IEncodedString DropDownSystemKeyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+    public IEncodedString DropDownLanguageList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+    {
+        var dataLangKeys = new Dictionary<string, string>();
+        var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+        foreach (var l in enabledlanguages)
+        {
+            if (!dataLangKeys.ContainsKey(l))
+            {
+                dataLangKeys.Add(l, "<img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/" + l + ".png' alt='" + l + "' /><span class='w3-small'>&nbsp;" + DNNrocketUtils.GetCultureCodeName(l) + "</span>");
+            }
+
+        }
+        return DropDownList(info, xpath, dataLangKeys, attributes, defaultValue, localized, row, listname);
+    }
+
+    public IEncodedString DropDownSystemKeyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             var dataSytemKeys = new Dictionary<string, string>();
 

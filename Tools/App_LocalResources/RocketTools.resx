@@ -129,6 +129,12 @@
   <data name="clonesok.Text" xml:space="preserve">
     <value>The module has been cloned to the selected pages.</value>
   </data>
+  <data name="copylanguage.Text" xml:space="preserve">
+    <value>Copy Language</value>
+  </data>
+  <data name="destinationlanguage.Text" xml:space="preserve">
+    <value>Destination Language</value>
+  </data>
   <data name="moduleclone.Help" xml:space="preserve">
     <value>Modules can be cloned across the site using this interface.  Select the page where the module you want to clone is on.  Select the module and then select the pages you want to clone it to.  The system will try and place the clone in the same container, if the same container does not exist on the destination page, the cloned module will be placed in the main content container.</value>
   </data>
@@ -139,7 +145,10 @@
     <value>Permissions</value>
   </data>
   <data name="rocketclones.Text" xml:space="preserve">
-    <value>Module Clones</value>
+    <value>Clone Modules</value>
+  </data>
+  <data name="rocketlang.Text" xml:space="preserve">
+    <value>Language</value>
   </data>
   <data name="rocketroles.Text" xml:space="preserve">
     <value>Module Roles</value>

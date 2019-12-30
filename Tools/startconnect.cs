@@ -64,6 +64,11 @@ namespace Rocket.Tools
                         strOut = ClonesOK();
                         break;
 
+                    case "rocketlang_getdisplay":
+                        strOut = LangAdmin();
+                        break;
+
+
                 }
             }
             else
@@ -111,6 +116,27 @@ namespace Rocket.Tools
 
             return paramCmd;
         }
+
+
+        #region "Clones"
+        public static String LangAdmin()
+        {
+            try
+            {
+                _passSettings.Add("portalid", DNNrocketUtils.GetPortalId().ToString());
+                var controlRelPath = _rocketInterface.TemplateRelPath;
+                var themeFolder = _rocketInterface.DefaultTheme;
+                var razortemplate = "language.cshtml";
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        #endregion
 
         #region "Clones"
         public static String CloneAdmin()
