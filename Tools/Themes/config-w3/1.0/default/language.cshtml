@@ -27,12 +27,16 @@
                     var list = systemData.GetSystemList();
                     foreach (var sk in list)
                     {
-                        <li>
-                            <label>
-                                <input id='sk.GUIDKey' class="systemcheckbox" systemid='@sk.ItemID' s-xpath="genxml/checkbox/systemid@(sk.ItemID)" s-update="save" type="checkbox">
-                                @sk.GetXmlProperty("genxml/textbox/systemname")
-                            </label>
-                        </li>
+                        var systemInfoData = new SystemInfoData(sk.ItemID);
+                        if (systemInfoData.GetInterface("copylanguage") != null)
+                        {
+                            <li>
+                                <label>
+                                    <input id='sk.GUIDKey' class="systemcheckbox" systemid='@sk.ItemID' s-xpath="genxml/checkbox/systemid@(sk.ItemID)" s-update="save" type="checkbox">
+                                    @sk.GetXmlProperty("genxml/textbox/systemname")
+                                </label>
+                            </li>
+                        }
                     }
                 }
             </ul>
@@ -46,12 +50,12 @@
             @DropDownLanguageList(new SimplisityInfo(), "genxml/copylanguage", "class='w3-input w3-border' ")
         </div>
 
-        <div class="w3-third w3-padding">
+        <div class="w3-third w3-padding" style="height:200px;">
             <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
                 <b class="w3-large">@ResourceKey("RocketTools.destinationlanguage")</b>
             </div>
             @DropDownLanguageList(new SimplisityInfo(), "genxml/destinationlanguage", "class='w3-input w3-border' ")
-            <div class="w3-button w3-right w3-margin-top w3-green w3-padding simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.copylanguage","","Confirm")" s-cmd="rocketlang_copy" s-fields='' s-post=".langaugeselection"><i class="fas fa-save"></i>&nbsp;@ResourceKey("RocketTools.copylanguage")</div>
+            <div class="w3-button w3-right w3-margin-top w3-green w3-padding copybutton simplisity_confirmclick" style="display:none;" s-confirm="@ResourceKey("RocketTools.copylanguage","","Confirm")" s-cmd="rocketlang_copy" s-fields='' s-post=".langaugeselection"><i class="fas fa-save"></i>&nbsp;@ResourceKey("RocketTools.copylanguage")</div>
         </div>
 
     </div>
@@ -67,13 +71,20 @@
 </div>
 
 
-
-
 <script>
 
     $(document).ready(function () {
 
         simplisity_setParamField('pageref', CreateGuid());
+
+        $(".systemcheckbox").unbind('click');
+        $(".systemcheckbox").click(function () {
+            if (jQuery('.systemcheckbox:checked').length) {
+                $('.copybutton').show();
+            } else {
+                $('.copybutton').hide();
+            }
+        });        
 
     });
 

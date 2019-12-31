@@ -1032,28 +1032,31 @@ namespace RocketMod
             var copylanguage = _paramInfo.GetXmlProperty("genxml/hidden/copylanguage");
             var destinationlanguage = _paramInfo.GetXmlProperty("genxml/hidden/destinationlanguage");
 
-            // delete destination language
-            var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANGIDX", " and r1.Lang = '" + destinationlanguage + "'");
-            foreach (var sInfo in l)
+            if (destinationlanguage != copylanguage)
             {
-                objCtrl.Delete(sInfo.ItemID);
-            }
-            l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANG", " and r1.Lang = '" + destinationlanguage + "'");
-            foreach (var sInfo in l)
-            {
-               objCtrl.Delete(sInfo.ItemID);
-            }
-            // copy copy language
-            l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANG", " and r1.Lang = '" + copylanguage + "'");
-            foreach (var sInfo in l)
-            {
-                var sRec = new SimplisityRecord(sInfo);
-                sRec.ItemID = -1;
-                sRec.Lang = destinationlanguage;
-                objCtrl.Update(sRec);
-                // recreate the IDX record.
-                objCtrl.RebuildLangIndex(sRec.PortalId, sRec.ParentItemId);
+                // delete destination language
+                var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANGIDX", " and r1.Lang = '" + destinationlanguage + "'");
+                foreach (var sInfo in l)
+                {
+                    objCtrl.Delete(sInfo.ItemID);
+                }
+                l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANG", " and r1.Lang = '" + destinationlanguage + "'");
+                foreach (var sInfo in l)
+                {
+                    objCtrl.Delete(sInfo.ItemID);
+                }
+                // copy copy language
+                l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANG", " and r1.Lang = '" + copylanguage + "'");
+                foreach (var sInfo in l)
+                {
+                    var sRec = new SimplisityRecord(sInfo);
+                    sRec.ItemID = -1;
+                    sRec.Lang = destinationlanguage;
+                    objCtrl.Update(sRec);
+                    // recreate the IDX record.
+                    objCtrl.RebuildLangIndex(sRec.PortalId, sRec.ParentItemId);
 
+                }
             }
 
         }
