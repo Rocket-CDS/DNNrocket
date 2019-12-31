@@ -67,6 +67,19 @@
     </div>
     <div class="w3-row historydatasection">
 
+        @{
+            var archiveDataList = new ArchiveDataList();
+
+            foreach (var moduleFolder in archiveDataList.ModuleFolderList)
+            {
+                foreach (var archiveData in archiveDataList.GetArchiveList(moduleFolder))
+                {
+                    <h1>@archiveData.FileMapPath</h1>
+                }
+            }
+
+        }
+
     </div>
 </div>
 

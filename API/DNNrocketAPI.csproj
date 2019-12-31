@@ -109,6 +109,8 @@
   <ItemGroup>
     <Compile Include="Componants\AppTheme.cs" />
     <Compile Include="Componants\AppThemeModule.cs" />
+    <Compile Include="Componants\ArchiveData.cs" />
+    <Compile Include="Componants\ArchiveDataList.cs" />
     <Compile Include="Componants\ClientLocalLicense.cs" />
     <Compile Include="Componants\DNNrocketModuleController.cs" />
     <Compile Include="Componants\FtpConnect.cs" />
