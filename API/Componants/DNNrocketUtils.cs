@@ -52,6 +52,10 @@ namespace DNNrocketAPI
             {
                 Directory.CreateDirectory(DNNrocketThemesDirectoryMapPath());
             }
+            if (!Directory.Exists(ArchiveDirectoryMapPath()))
+            {
+                Directory.CreateDirectory(ArchiveDirectoryMapPath());
+            }
         }
 
         public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
@@ -806,11 +810,11 @@ namespace DNNrocketAPI
             }
             return rtnDic;
         }
-        public static Dictionary<int, ModuleInfo> GetTabModules(int tabid)
+        private static Dictionary<int, ModuleInfo> GetTabModules(int tabid)
         {
             return ModuleController.Instance.GetTabModules(tabid);
         }
-        public static ModuleInfo GetModuleInfo(int tabid, int moduleid)
+        private static ModuleInfo GetModuleInfo(int tabid, int moduleid)
         {
             return ModuleController.Instance.GetModule(moduleid, tabid, false);
         }
@@ -823,12 +827,29 @@ namespace DNNrocketAPI
                 ModuleController.Instance.UpdateModule(modInfo);
             }
         }
-        public static ModuleInfo GetModuleInfo(int moduleId)
+        private static ModuleInfo GetModuleInfo(int moduleId)
         {
             var objMCtrl = new DotNetNuke.Entities.Modules.ModuleController();
             var objMInfo = objMCtrl.GetModule(moduleId);
             return objMInfo;
         }
+        public static bool ModuleIsDeleted(int tabid, int moduleid)
+        {
+            var modInfo = GetModuleInfo(tabid, moduleid);
+            if (modInfo  != null)
+            {
+                return modInfo.IsDeleted;
+            }
+            return true;
+        }
+        public static bool ModuleExists(int tabid, int moduleid)
+        {
+            var modInfo = GetModuleInfo(tabid, moduleid);
+            if (modInfo == null) return false;
+            return true;
+        }
+
+
         public static int GetModuleTabId(Guid uniqueId)
         {
             var mod = ModuleController.Instance.GetModuleByUniqueID(uniqueId);
@@ -1223,10 +1244,18 @@ namespace DNNrocketAPI
         public static string TempDirectory()
         {
             return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketTemp";
-        }
+        }        
         public static string TempDirectoryMapPath()
         {
             return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketTemp";
+        }
+        public static string ArchiveDirectory()
+        {
+            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketArchive";
+        }
+        public static string ArchiveDirectoryMapPath()
+        {
+            return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketArchive";
         }
         public static string TempDirectoryRel()
         {
@@ -1854,6 +1883,17 @@ namespace DNNrocketAPI
             if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
             FileUtils.AppendToLog(mappath, logName, message);
         }
+
+        public static void ArchiveData(string moduleName, string exportXml)
+        {
+            if (!Directory.Exists(ArchiveDirectoryMapPath() + "\\" + moduleName))
+            {
+                Directory.CreateDirectory(ArchiveDirectoryMapPath() + "\\" + moduleName);
+            }
+            FileUtils.SaveFile(ArchiveDirectoryMapPath() + "\\" + moduleName +  "\\" + DateTime.Now.ToFileTime() + "_archive.xml", exportXml);
+        }
+
+
 
         /// <summary>
         /// Recycles a web site Application Pool (including the current web site).

@@ -99,6 +99,13 @@ namespace DNNrocketAPI
 
                 if (_moduleParams.Exists)
                 {
+                    if (_moduleParams.TabId != PortalSettings.Current.ActiveTab.TabID)
+                    {
+                        // change of page for module
+                        _moduleParams.TabId = PortalSettings.Current.ActiveTab.TabID; 
+                        _moduleParams.Save();
+                    }
+
                     DNNrocketUtils.IncludePageHeaders(_moduleParams, this.Page, TabId, systemInfoData.DebugMode);
                 }
             }
@@ -167,7 +174,7 @@ namespace DNNrocketAPI
             paramInfo.PortalId = PortalSettings.Current.PortalId;
             paramInfo.ModuleId = ModuleId;
             paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
-            paramInfo.SetXmlProperty("genxml/hidden/tabid", PortalSettings.Current.ActiveTab.TabID.ToString());
+            paramInfo.SetXmlProperty("genxml/hidden/tabid", _moduleParams.TabId.ToString());
 
             if (_rocketInterface != null && _rocketInterface.Exists)
             {

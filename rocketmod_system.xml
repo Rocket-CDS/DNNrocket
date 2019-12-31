@@ -10,7 +10,7 @@
     <defaultinterface>rocketmod</defaultinterface>
     <systemrelpath>/DesktopModules/DNNrocket/RocketMod/</systemrelpath>
     <encryptkey>idysgfbw9e84756hrgei7rfyt</encryptkey>
-    <ftproot>appthemes</ftproot>
+    <ftproot>www/appthemes</ftproot>
   </textbox>
   <checkbox>
     <debugmode>false</debugmode>
@@ -37,7 +37,6 @@
       <checkbox>
         <onmenu>false</onmenu>
         <active>true</active>
-        <cache>false</cache>
       </checkbox>
       <checkboxlist>
         <providertype>
@@ -45,6 +44,7 @@
           <chk value="false" data="importmodule" />
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
+          <chk value="false" data="copylanguage" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -77,7 +77,6 @@
       <checkbox>
         <onmenu>true</onmenu>
         <active>true</active>
-        <cache>false</cache>
       </checkbox>
       <checkboxlist>
         <providertype>
@@ -85,6 +84,7 @@
           <chk value="false" data="importmodule" />
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
+          <chk value="false" data="copylanguage" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -117,7 +117,6 @@
       <checkbox>
         <onmenu>true</onmenu>
         <active>true</active>
-        <cache>false</cache>
       </checkbox>
       <checkboxlist>
         <providertype>
@@ -125,6 +124,7 @@
           <chk value="false" data="importmodule" />
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
+          <chk value="false" data="copylanguage" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -157,7 +157,6 @@
       <checkbox>
         <onmenu>true</onmenu>
         <active>true</active>
-        <cache>false</cache>
       </checkbox>
       <checkboxlist>
         <providertype>
@@ -165,6 +164,7 @@
           <chk value="false" data="importmodule" />
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
+          <chk value="false" data="copylanguage" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -197,7 +197,6 @@
       <checkbox>
         <onmenu>true</onmenu>
         <active>true</active>
-        <cache>false</cache>
       </checkbox>
       <checkboxlist>
         <providertype>
@@ -205,6 +204,7 @@
           <chk value="false" data="importmodule" />
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
+          <chk value="false" data="copylanguage" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -237,7 +237,6 @@
       <checkbox>
         <onmenu>false</onmenu>
         <active>true</active>
-        <cache>false</cache>
       </checkbox>
       <checkboxlist>
         <providertype>
@@ -245,6 +244,7 @@
           <chk value="false" data="importmodule" />
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
+          <chk value="false" data="copylanguage" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -277,7 +277,6 @@
       <checkbox>
         <onmenu>false</onmenu>
         <active>true</active>
-        <cache>false</cache>
       </checkbox>
       <checkboxlist>
         <providertype>
@@ -285,6 +284,7 @@
           <chk value="false" data="importmodule" />
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
+          <chk value="false" data="copylanguage" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -317,7 +317,6 @@
       <checkbox>
         <onmenu>true</onmenu>
         <active>true</active>
-        <cache>false</cache>
       </checkbox>
       <checkboxlist>
         <providertype>
@@ -325,6 +324,7 @@
           <chk value="false" data="importmodule" />
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
+          <chk value="false" data="copylanguage" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -357,7 +357,6 @@
       <checkbox>
         <onmenu>false</onmenu>
         <active>true</active>
-        <cache>false</cache>
       </checkbox>
       <checkboxlist>
         <providertype>
@@ -365,6 +364,7 @@
           <chk value="false" data="importmodule" />
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
+          <chk value="false" data="copylanguage" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -397,7 +397,6 @@
       <checkbox>
         <onmenu>false</onmenu>
         <active>true</active>
-        <cache>false</cache>
       </checkbox>
       <checkboxlist>
         <providertype>
@@ -405,6 +404,7 @@
           <chk value="true" data="importmodule" />
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
+          <chk value="false" data="copylanguage" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -437,7 +437,6 @@
       <checkbox>
         <onmenu>false</onmenu>
         <active>true</active>
-        <cache>true</cache>
       </checkbox>
       <checkboxlist>
         <providertype>
@@ -445,11 +444,52 @@
           <chk value="false" data="importmodule" />
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
+          <chk value="false" data="copylanguage" />
         </providertype>
       </checkboxlist>
       <radio>
         <securityrolesadministrators>1</securityrolesadministrators>
         <securityrolesmanager>0</securityrolesmanager>
+        <securityroleseditor>0</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>copylanguage</interfacekey>
+        <entitytypecode>ROCKETMOD</entitytypecode>
+        <interfaceicon />
+        <defaulttheme />
+        <themeversion>1.0</themeversion>
+        <defaulttemplate />
+        <defaultcommand>module_copylanguage</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
+        <relpath />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkbox>
+        <onmenu>false</onmenu>
+        <active>true</active>
+      </checkbox>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="exportmodule" />
+          <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
+          <chk value="true" data="copylanguage" />
+        </providertype>
+      </checkboxlist>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>1</securityrolesmanager>
         <securityroleseditor>0</securityroleseditor>
         <securityrolesclienteditor>0</securityrolesclienteditor>
         <securityrolesregisteredusers>0</securityrolesregisteredusers>
@@ -517,10 +557,17 @@
         <provname>Upgrade Module</provname>
       </textbox>
     </genxml>
+    <genxml>
+      <textbox>
+        <provtypes>copylanguage</provtypes>
+        <provname>Copy Language</provname>
+      </textbox>
+    </genxml>
   </provtypesdata>
   <lang>
     <genxml>
       <interfacedata list="true">
+        <genxml />
         <genxml />
         <genxml />
         <genxml />
@@ -543,6 +590,7 @@
         <genxml />
       </groupsdata>
       <provtypesdata list="true">
+        <genxml />
         <genxml />
         <genxml />
         <genxml />

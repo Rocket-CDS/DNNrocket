@@ -7,6 +7,7 @@ using RocketSettings;
 using Simplisity;
 using Rocket.AppThemes.Componants;
 using RocketMod.Componants;
+using System.IO;
 
 namespace RocketMod
 {
@@ -185,8 +186,11 @@ namespace RocketMod
 
                 case "module_copylanguage":
                     CopyLanguage();
-                    break;                    
+                    break;
 
+                case "module_validate":
+                    ValidateData();
+                    break;
 
 
             }
@@ -1034,8 +1038,24 @@ namespace RocketMod
 
             if (destinationlanguage != copylanguage)
             {
+                // archive data to file /
+                var archiveData = "<root>";
+                var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "MODULEPARAMS", " and r1.XmlData.value('(genxml/hidden/moduletype)[1]','nvarchar(max)') = 'RocketMod'");
+                foreach (var sInfo in l)
+                {
+                    var moduleParams = new ModuleParams(sInfo.ModuleId, _systemKey);
+                    if (DNNrocketUtils.ModuleExists(moduleParams.TabId, sInfo.ModuleId) && !DNNrocketUtils.ModuleIsDeleted(moduleParams.TabId, sInfo.ModuleId))
+                    {
+                        var exportData = new ExportData(_rocketInterface, moduleParams.ModuleId, moduleParams.SystemKey);
+                        archiveData += exportData.GetXml();
+                    }
+                }
+                archiveData += "</root>";
+                DNNrocketUtils.ArchiveData("RocketMod", archiveData);
+
+
                 // delete destination language
-                var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANGIDX", " and r1.Lang = '" + destinationlanguage + "'");
+                l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANGIDX", " and r1.Lang = '" + destinationlanguage + "'");
                 foreach (var sInfo in l)
                 {
                     objCtrl.Delete(sInfo.ItemID);
@@ -1061,6 +1081,18 @@ namespace RocketMod
 
         }
 
+        private static void ValidateData()
+        {
+            var objCtrl = new DNNrocketController();
+
+            // remove deleted modules
+            var moduleParams = new ModuleParams(_moduleid, _systemKey);
+            if (!DNNrocketUtils.ModuleExists(moduleParams.TabId, _moduleid) && moduleParams.ModuleType.ToLower() == "rocketmod")
+            {
+                moduleParams.Delete();
+            }
+
+        }
 
     }
 }

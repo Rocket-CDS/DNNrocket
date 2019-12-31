@@ -152,7 +152,7 @@
   </data>
   <data name="rocketlang.Help" xml:space="preserve">
     <value>You can copy the language records of all DNNrocket modules on the site.  select a DNNrocket system, a language to copy and a destination language.  Only DNNrocket modules will copy languages. &lt;br/&gt;&lt;br/&gt;
-The selected “Copy Language” will replace the “Destination Language”.  The content of the destination language will be archived to a history record, which can be restored to the site.  WARNING!! This action will OVERWRITE the “Destination Language” with the “Copy Language”.</value>
+The selected “Copy Language” will replace the “Destination Language”.  ALL content data of the module will be archived to a history record, which can be restored.  WARNING!! This action will OVERWRITE the “Destination Language” with the “Copy Language”.</value>
   </data>
   <data name="rocketlang.Text" xml:space="preserve">
     <value>Language</value>
