@@ -7,38 +7,38 @@ using System.Threading.Tasks;
 
 namespace DNNrocketAPI.Componants
 {
-    public class ArchiveDataList
+    public class BackUpDataList
     {
         
-        public ArchiveDataList()
+        public BackUpDataList()
         {
             LoadData();
         }
 
         private void LoadData()
         {
-            List = new Dictionary<string, List<ArchiveData>>();
+            List = new Dictionary<string, List<BackUpData>>();
             ModuleFolderList = new List<string>();
 
-            var l = Directory.GetDirectories(DNNrocketUtils.ArchiveDirectoryMapPath());
+            var l = Directory.GetDirectories(DNNrocketUtils.BackUpDirectoryMapPath());
             foreach (var d in l)
             {
                 string fullPath = Path.GetFullPath(d).TrimEnd(Path.DirectorySeparatorChar);
                 string projectName = Path.GetFileName(fullPath);
 
-                var fileList = new List<ArchiveData>();
+                var fileList = new List<BackUpData>();
                 ModuleFolderList.Add(projectName);
                 var l2 = Directory.GetFiles(d);
                 foreach (var f in l2)
                 {
-                    var archiveData = new ArchiveData(f);
-                    fileList.Add(archiveData);
+                    var BackUpData = new BackUpData(f);
+                    fileList.Add(BackUpData);
                 }
                 List.Add(projectName, fileList);
             }
         }
 
-        public List<ArchiveData> GetArchiveList(string moduleFolder)
+        public List<BackUpData> GetBackUpList(string moduleFolder)
         {
             if (List.ContainsKey(moduleFolder))
             {
@@ -47,7 +47,7 @@ namespace DNNrocketAPI.Componants
             return null;
         }
 
-        public Dictionary<string, List<ArchiveData>> List { get; set; }
+        public Dictionary<string, List<BackUpData>> List { get; set; }
         public List<string> ModuleFolderList { get; set; }
 
     }

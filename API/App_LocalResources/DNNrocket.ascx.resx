@@ -492,4 +492,13 @@
   <data name="history.Text" xml:space="preserve">
     <value>History</value>
   </data>
+  <data name="backup.Text" xml:space="preserve">
+    <value>BackUp</value>
+  </data>
+  <data name="date.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="restore.Text" xml:space="preserve">
+    <value>Restore</value>
+  </data>
 </root>

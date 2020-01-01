@@ -144,6 +144,7 @@ namespace Rocket.Tools
             var info = GetCachedInfo();
             var copylanguage = _postInfo.GetXmlProperty("genxml/copylanguage");
             var destinationlanguage = _postInfo.GetXmlProperty("genxml/destinationlanguage");
+            var backup = _postInfo.GetXmlProperty("genxml/checkbox/backup");            
 
             foreach (var s in info.GetRecordList("languagesystemlist"))
             {
@@ -160,6 +161,7 @@ namespace Rocket.Tools
                                 var paramInfo = new SimplisityInfo();
                                 paramInfo.SetXmlProperty("genxml/hidden/destinationlanguage", destinationlanguage);
                                 paramInfo.SetXmlProperty("genxml/hidden/copylanguage", copylanguage);
+                                paramInfo.SetXmlProperty("genxml/checkbox/backup", backup);
                                 paramInfo.SetXmlProperty("genxml/hidden/portalid", DNNrocketUtils.GetPortalId().ToString());
                                 var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfoData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
                             }

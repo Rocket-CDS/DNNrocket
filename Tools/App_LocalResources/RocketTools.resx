@@ -135,6 +135,9 @@
   <data name="copylanguage.Text" xml:space="preserve">
     <value>Copy Language</value>
   </data>
+  <data name="deletebackup.Confirm" xml:space="preserve">
+    <value>Delete this BackUp?</value>
+  </data>
   <data name="destinationlanguage.Text" xml:space="preserve">
     <value>Destination Language</value>
   </data>
@@ -147,12 +150,15 @@
   <data name="permissions.Text" xml:space="preserve">
     <value>Permissions</value>
   </data>
+  <data name="restorebackup.Confirm" xml:space="preserve">
+    <value>Restore Backup?  This will OVERWRITE the current data for all languages.</value>
+  </data>
   <data name="rocketclones.Text" xml:space="preserve">
     <value>Clone Modules</value>
   </data>
   <data name="rocketlang.Help" xml:space="preserve">
     <value>You can copy the language records of all DNNrocket modules on the site.  select a DNNrocket system, a language to copy and a destination language.  Only DNNrocket modules will copy languages. &lt;br/&gt;&lt;br/&gt;
-The selected “Copy Language” will replace the “Destination Language”.  ALL content data of the module will be archived to a history record, which can be restored.  WARNING!! This action will OVERWRITE the “Destination Language” with the “Copy Language”.</value>
+The selected “Copy Language” will replace the “Destination Language”.  ALL content data of the module will be BackUpd to a history record, which can be restored.  WARNING!! This action will OVERWRITE the “Destination Language” with the “Copy Language”.</value>
   </data>
   <data name="rocketlang.Text" xml:space="preserve">
     <value>Language</value>

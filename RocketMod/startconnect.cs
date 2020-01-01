@@ -1035,27 +1035,31 @@ namespace RocketMod
             // data passed to system with _paramInfo
             var copylanguage = _paramInfo.GetXmlProperty("genxml/hidden/copylanguage");
             var destinationlanguage = _paramInfo.GetXmlProperty("genxml/hidden/destinationlanguage");
+            var backup = _paramInfo.GetXmlPropertyBool("genxml/checkbox/backup");
 
             if (destinationlanguage != copylanguage)
             {
-                // archive data to file /
-                var archiveData = "<root>";
-                var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "MODULEPARAMS", " and r1.XmlData.value('(genxml/hidden/moduletype)[1]','nvarchar(max)') = 'RocketMod'");
-                foreach (var sInfo in l)
+                // BackUp data to file 
+                if (backup)
                 {
-                    var moduleParams = new ModuleParams(sInfo.ModuleId, _systemKey);
-                    if (DNNrocketUtils.ModuleExists(moduleParams.TabId, sInfo.ModuleId) && !DNNrocketUtils.ModuleIsDeleted(moduleParams.TabId, sInfo.ModuleId))
+                    var BackUpData = "<root>";
+                    var l2 = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "MODULEPARAMS", " and r1.XmlData.value('(genxml/hidden/moduletype)[1]','nvarchar(max)') = 'RocketMod'");
+                    foreach (var sInfo in l2)
                     {
-                        var exportData = new ExportData(_rocketInterface, moduleParams.ModuleId, moduleParams.SystemKey);
-                        archiveData += exportData.GetXml();
+                        var moduleParams = new ModuleParams(sInfo.ModuleId, _systemKey);
+                        if (DNNrocketUtils.ModuleExists(moduleParams.TabId, sInfo.ModuleId) && !DNNrocketUtils.ModuleIsDeleted(moduleParams.TabId, sInfo.ModuleId))
+                        {
+                            var exportData = new ExportData(_rocketInterface, moduleParams.ModuleId, moduleParams.SystemKey);
+                            BackUpData += exportData.GetXml();
+                        }
                     }
+                    BackUpData += "</root>";
+                    DNNrocketUtils.BackUpData("RocketMod", BackUpData);
                 }
-                archiveData += "</root>";
-                DNNrocketUtils.ArchiveData("RocketMod", archiveData);
 
 
                 // delete destination language
-                l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANGIDX", " and r1.Lang = '" + destinationlanguage + "'");
+                var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANGIDX", " and r1.Lang = '" + destinationlanguage + "'");
                 foreach (var sInfo in l)
                 {
                     objCtrl.Delete(sInfo.ItemID);

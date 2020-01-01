@@ -55,7 +55,9 @@
                 <b class="w3-large">@ResourceKey("RocketTools.destinationlanguage")</b>
             </div>
             @DropDownLanguageList(new SimplisityInfo(), "genxml/destinationlanguage", "class='w3-input w3-border' ")
-            <div class="w3-button w3-right w3-margin-top w3-green w3-padding copybutton simplisity_confirmclick" style="display:none;" s-confirm="@ResourceKey("RocketTools.copylanguage","","Confirm")" s-cmd="rocketlang_copy" s-fields='' s-post=".langaugeselection"><i class="fas fa-save"></i>&nbsp;@ResourceKey("RocketTools.copylanguage")</div>
+            @CheckBox(new SimplisityInfo(),"genxml/checkbox/backup",ResourceKey("DNNrocket.backup").ToString()," class='w3-check w3-margin-top'", true)
+            <div class="w3-button w3-right w3-margin-top w3-green w3-padding copybutton simplisity_confirmclick" style="display:none;" s-confirm="@ResourceKey("RocketTools.copylanguage", "", "Confirm")" s-cmd="rocketlang_copy" s-fields='' s-post=".langaugeselection"><i class="fas fa-save"></i>&nbsp;@ResourceKey("RocketTools.copylanguage")</div>
+
         </div>
 
     </div>
@@ -63,22 +65,40 @@
 
 <div class="w3-row w3-padding">
     <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
-        <b class="w3-large">@ResourceKey("DNNrocket.history")</b>
+        <b class="w3-large">@ResourceKey("DNNrocket.backup")</b>
     </div>
     <div class="w3-row historydatasection">
 
-        @{
-            var archiveDataList = new ArchiveDataList();
+        <table class="w3-table w3-bordered">
+            <tr>
+                <th style="width:200px;">@ResourceKey("DNNrocket.date")</th>
+                <th>@ResourceKey("DNNrocket.type")</th>
+                <th></th>
+                <th></th>
+            </tr>
 
-            foreach (var moduleFolder in archiveDataList.ModuleFolderList)
-            {
-                foreach (var archiveData in archiveDataList.GetArchiveList(moduleFolder))
+            @{
+                var BackUpDataList = new BackUpDataList();
+                foreach (var moduleFolder in BackUpDataList.ModuleFolderList)
                 {
-                    <h1>@archiveData.FileMapPath</h1>
+                    foreach (var BackUpData in BackUpDataList.GetBackUpList(moduleFolder))
+                    {
+                        <tr>
+                            <td>
+                                @BackUpData.BackUpDate.ToString("yyyy-MM-dd HH:mm:ss")
+                            </td>
+                            <td>@moduleFolder</td>
+                            <td style="width:74px;">
+                                <div class="w3-button w3-padding simplisity_confirmclick" title="@ResourceKey("DNNrocket.restore")" s-confirm="@ResourceKey("RocketTools.restorebackup", "", "Confirm")" s-cmd="rocketlang_restorebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-recycle"></i></div>
+                            </td>
+                            <td style="width:74px;">
+                                <div class="w3-button w3-padding simplisity_confirmclick" title="@ResourceKey("DNNrocket.delete")" s-confirm="@ResourceKey("RocketTools.deletebackup", "", "Confirm")" s-cmd="rocketlang_deletebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-trash-alt"></i></div>
+                            </td>
+                        </tr>
+                    }
                 }
             }
-
-        }
+        </table>
 
     </div>
 </div>

@@ -9,18 +9,22 @@ using System.Xml;
 
 namespace DNNrocketAPI.Componants
 {
-    public class ArchiveData
+    public class BackUpData
     {
 
-        public ArchiveData(string fileMapPath)
+        public BackUpData(string fileMapPath)
         {
             Exists = false;
             FileMapPath = fileMapPath;
             if (File.Exists(FileMapPath))
             {
                 Exists = true;
-                var archiveXml = FileUtils.ReadFile(fileMapPath);
-                Info = new SimplisityInfo(archiveXml);
+
+                BackUpDate = DateTime.Now;
+                var s = Path.GetFileNameWithoutExtension(fileMapPath).Split('_');
+                if (s.Length == 2 && GeneralUtils.IsNumeric(s[0])) BackUpDate = DateTime.FromFileTime(Convert.ToInt64(s[0]));
+                var BackUpXml = FileUtils.ReadFile(fileMapPath);
+                Info = new SimplisityInfo(BackUpXml);
                 var nodList = Info.XMLDoc.SelectNodes("root/*");
                 foreach (XmlNode nod in nodList)
                 {
@@ -45,6 +49,7 @@ namespace DNNrocketAPI.Componants
         public string FileMapPath { get; set; }
         public bool Exists { get; set; }
         public SimplisityInfo Info { get; set; }
+        public DateTime BackUpDate { get; set; }
 
 
     }

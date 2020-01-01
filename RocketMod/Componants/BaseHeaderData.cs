@@ -74,11 +74,11 @@ namespace RocketMod
         {
             get
             {
-                return _header.GetXmlPropertyBool("genxml/checkbox/showarchived");
+                return _header.GetXmlPropertyBool("genxml/checkbox/showarchive");
             }
             set
             {
-                _header.SetXmlProperty("genxml/checkbox/showarchived", value.ToString());
+                _header.SetXmlProperty("genxml/checkbox/showarchive", value.ToString());
             }
         }
 

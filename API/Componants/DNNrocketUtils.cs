@@ -52,9 +52,9 @@ namespace DNNrocketAPI
             {
                 Directory.CreateDirectory(DNNrocketThemesDirectoryMapPath());
             }
-            if (!Directory.Exists(ArchiveDirectoryMapPath()))
+            if (!Directory.Exists(BackUpDirectoryMapPath()))
             {
-                Directory.CreateDirectory(ArchiveDirectoryMapPath());
+                Directory.CreateDirectory(BackUpDirectoryMapPath());
             }
         }
 
@@ -1249,13 +1249,13 @@ namespace DNNrocketAPI
         {
             return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketTemp";
         }
-        public static string ArchiveDirectory()
+        public static string BackUpDirectory()
         {
-            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketArchive";
+            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketBackUp";
         }
-        public static string ArchiveDirectoryMapPath()
+        public static string BackUpDirectoryMapPath()
         {
-            return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketArchive";
+            return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketBackUp";
         }
         public static string TempDirectoryRel()
         {
@@ -1884,13 +1884,13 @@ namespace DNNrocketAPI
             FileUtils.AppendToLog(mappath, logName, message);
         }
 
-        public static void ArchiveData(string moduleName, string exportXml)
+        public static void BackUpData(string moduleName, string exportXml)
         {
-            if (!Directory.Exists(ArchiveDirectoryMapPath() + "\\" + moduleName))
+            if (!Directory.Exists(BackUpDirectoryMapPath() + "\\" + moduleName))
             {
-                Directory.CreateDirectory(ArchiveDirectoryMapPath() + "\\" + moduleName);
+                Directory.CreateDirectory(BackUpDirectoryMapPath() + "\\" + moduleName);
             }
-            FileUtils.SaveFile(ArchiveDirectoryMapPath() + "\\" + moduleName +  "\\" + DateTime.Now.ToFileTime() + "_archive.xml", exportXml);
+            FileUtils.SaveFile(BackUpDirectoryMapPath() + "\\" + moduleName +  "\\" + DateTime.Now.ToFileTime() + "_BackUp.xml", exportXml);
         }
 
 
