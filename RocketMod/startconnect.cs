@@ -40,6 +40,7 @@ namespace RocketMod
         private static ArticleData _articleData;
         private static AppThemeDataList _appThemeDataList;
         private static UserStorage _userStorage;
+        private static string _tableName;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -219,6 +220,7 @@ namespace RocketMod
             _postInfo = postInfo;
             _systemInfo = systemInfo;
             _systemKey = _systemInfoData.SystemKey;
+            _tableName = _rocketInterface.DatabaseTable;
 
             // set editlang from url param or cache
             _editLang = DNNrocketUtils.GetEditCulture();
@@ -1058,27 +1060,21 @@ namespace RocketMod
                 }
 
 
-                // delete destination language
-                var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANGIDX", " and r1.Lang = '" + destinationlanguage + "'");
+                // copy language
+                var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANG", " and r1.Lang = '" + copylanguage + "'","","",0,0,0,0, _tableName);
                 foreach (var sInfo in l)
                 {
-                    objCtrl.Delete(sInfo.ItemID);
-                }
-                l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANG", " and r1.Lang = '" + destinationlanguage + "'");
-                foreach (var sInfo in l)
-                {
-                    objCtrl.Delete(sInfo.ItemID);
-                }
-                // copy copy language
-                l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANG", " and r1.Lang = '" + copylanguage + "'");
-                foreach (var sInfo in l)
-                {
-                    var sRec = new SimplisityRecord(sInfo);
-                    sRec.ItemID = -1;
-                    sRec.Lang = destinationlanguage;
-                    objCtrl.Update(sRec);
-                    // recreate the IDX record.
-                    objCtrl.RebuildLangIndex(sRec.PortalId, sRec.ParentItemId);
+                    var objRecLang = objCtrl.GetRecordLang(sInfo.ParentItemId, destinationlanguage, true, _tableName);
+                    if (objRecLang != null)
+                    {
+                        objRecLang.XMLData = sInfo.XMLData;
+                        objCtrl.Update(objRecLang);
+
+                        // recreate the IDX record.
+                        var idxInfo = objCtrl.GetInfo(objRecLang.ParentItemId, objRecLang.Lang, _tableName);
+                        objCtrl.RebuildIndex(idxInfo, _tableName);
+                        objCtrl.RebuildLangIndex(idxInfo.PortalId, idxInfo.ItemID, _tableName);
+                    }
 
                 }
             }
