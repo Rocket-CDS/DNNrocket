@@ -1502,30 +1502,6 @@ namespace DNNrocketAPI
                     var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
                     nbRazor.TabId = tabId;
                     cacheHead = RazorRender(nbRazor, activePageHeaderTemplate, false);
-
-                    // Inject pageheader css link, use Razor Token "AddCssLinkHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
-                    var injectCss = "";
-                    var csslist = (List<String>)CacheUtils.GetCache("csslinkdata" + tabId);
-                    if (csslist != null)
-                    {
-                        foreach (var cssRelPath in csslist)
-                        {
-                            injectCss += "<link rel='stylesheet' href='" + cssRelPath + "' />";
-                        }
-                        cacheHead += injectCss;
-                    }
-
-                    // Inject pageheader JS link, use Razor Token "AddJsScriptHeader" so we do not duplicate links. [AFTER pageheader.cshtml has rendered]
-                    var injectJS = "";
-                    var jslist = (List<String>)CacheUtils.GetCache("jsscriptdata" + tabId);
-                    if (jslist != null)
-                    {
-                        foreach (var jsRelPath in jslist)
-                        {
-                            injectJS += "<script type='text/javascript' src='" + jsRelPath + "'></script>";
-                        }
-                        cacheHead += injectJS;
-                    }
                 }
 
                 CacheUtils.SetCache(cachekey, cacheHead, moduleParams.CacheGroupId);
