@@ -185,7 +185,6 @@ namespace Rocket.Tools
             if (File.Exists(filemappath))
             {
                 File.Delete(filemappath);
-                CacheUtils.ClearAllCache();
             }
             return LangAdmin();
         }
@@ -198,7 +197,9 @@ namespace Rocket.Tools
                 var backupData = new BackUpData(filemappath);
                 backupData.RestoreData();
                 CacheUtils.ClearAllCache();
+                DNNrocketUtils.ClearAllCache();
             }
+
             return LangAdmin();
         }
 

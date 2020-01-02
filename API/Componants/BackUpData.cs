@@ -65,6 +65,17 @@ namespace DNNrocketAPI.Componants
             {
                 objCtrl.Update(s, DatabaseTable);
             }
+            // do a second loop for index, so we have all correct data updated
+            foreach (var s in ItemList)
+            {
+                if (!s.TypeCode.EndsWith("LANG") && s.Lang == "")
+                {
+                    // recreate the IDX record.
+                    var idxInfo = objCtrl.GetInfo(s.ItemID, s.Lang, DatabaseTable);
+                    objCtrl.RebuildIndex(idxInfo, DatabaseTable);
+                    objCtrl.RebuildLangIndex(idxInfo.PortalId, idxInfo.ItemID, DatabaseTable);
+                }
+            }
         }
         public void Save()
         {

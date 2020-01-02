@@ -1080,6 +1080,10 @@ namespace RocketMod
                     }
 
                 }
+
+                CacheUtils.ClearAllCache();
+                DNNrocketUtils.ClearAllCache();
+
             }
 
         }
