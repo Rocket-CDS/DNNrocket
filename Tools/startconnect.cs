@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using DNNrocketAPI;
 using DNNrocketAPI.Componants;
@@ -72,6 +73,13 @@ namespace Rocket.Tools
                         CopyLang();
                         strOut = LangAdmin();
                         break;
+                    case "rocketlang_deletebackup":
+                        strOut = DeleteBackUp();
+                        break;
+                    case "rocketlang_restorebackup":
+                        strOut = RestoreBackUp();
+                        break;
+
 
                 }
             }
@@ -169,6 +177,29 @@ namespace Rocket.Tools
                     }
                 }
             }
+        }
+
+        private static string DeleteBackUp()
+        {
+            var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/hidden/filemappath"));
+            if (File.Exists(filemappath))
+            {
+                File.Delete(filemappath);
+                CacheUtils.ClearAllCache();
+            }
+            return LangAdmin();
+        }
+
+        private static string RestoreBackUp()
+        {
+            var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/hidden/filemappath"));
+            if (File.Exists(filemappath))
+            {
+                var backupData = new BackUpData(filemappath);
+                backupData.RestoreData();
+                CacheUtils.ClearAllCache();
+            }
+            return LangAdmin();
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Componants;
+using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,6 +26,20 @@ namespace RocketMod.Componants
             _objCtrl = new DNNrocketController();
             _documentRelList = new List<string>();
             _imageRelList = new List<string>();
+        }
+
+
+        public List<SimplisityInfo> GetList()
+        {
+            var rtnList = new List<SimplisityInfo>();
+            foreach (var i in GetExportList("MODULEPARAMS", "")) { rtnList.Add(i); }
+            foreach (var i in GetExportList("ROCKETMODSETTINGS", "")) { rtnList.Add(i); }
+            foreach (var i in GetExportList("ROCKETMODSETTINGSLANG", "")) { rtnList.Add(i); }
+            foreach (var i in GetExportList("ROCKETMODFIELDS", "")) { rtnList.Add(i); }
+            foreach (var i in GetExportList("ROCKETMODFIELDSLANG", "")) { rtnList.Add(i); }
+            foreach (var i in GetExportList("ROCKETMOD", "")) { rtnList.Add(i); }
+            foreach (var i in GetExportList("ROCKETMODLANG", "")) { rtnList.Add(i); }
+            return rtnList;
         }
 
         public string GetXml()
@@ -105,6 +120,19 @@ namespace RocketMod.Componants
                 xmlOut += sInfo.ToXmlItem();
             }
             return xmlOut;
+        }
+
+        private List<SimplisityInfo> GetExportList(string entityTypeCode, string searchFilter)
+        {
+            var rtnList = new List<SimplisityInfo>();
+            var tablename = _rocketInterface.DatabaseTable;
+            if (tablename == "") tablename = "DNNrocket";
+            var dataList = _objCtrl.GetList(-1, _moduleParams.ModuleId, entityTypeCode, searchFilter, "", "", 0, 0, 0, 0, tablename);
+            foreach (var sInfo in dataList)
+            {
+                rtnList.Add(sInfo);
+            }
+            return rtnList;
         }
 
     }

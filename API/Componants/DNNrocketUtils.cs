@@ -1884,15 +1884,18 @@ namespace DNNrocketAPI
             FileUtils.AppendToLog(mappath, logName, message);
         }
 
-        public static void BackUpData(string moduleName, string exportXml)
+        /// <summary>
+        /// Generates a new backup file name, based on the date and time.  (May not be unique)
+        /// </summary>
+        /// <returns></returns>
+        public static string BackUpNewFileName(string moduleName)
         {
             if (!Directory.Exists(BackUpDirectoryMapPath() + "\\" + moduleName))
             {
                 Directory.CreateDirectory(BackUpDirectoryMapPath() + "\\" + moduleName);
             }
-            FileUtils.SaveFile(BackUpDirectoryMapPath() + "\\" + moduleName +  "\\" + DateTime.Now.ToFileTime() + "_BackUp.xml", exportXml);
+            return BackUpDirectoryMapPath() + "\\" + moduleName + "\\" + DateTime.Now.ToFileTime() + "_BackUp.xml";
         }
-
 
 
         /// <summary>

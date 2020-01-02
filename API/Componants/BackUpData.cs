@@ -11,21 +11,34 @@ namespace DNNrocketAPI.Componants
 {
     public class BackUpData
     {
+        // not same as export.  
+        // A backup and restore will use the same record and itemid.
+        // Import and Export are designed to work across portals and will therefore delete and create records.  
 
         public BackUpData(string fileMapPath)
         {
             Exists = false;
             FileMapPath = fileMapPath;
+            Load();
+        }
+        private void Load()
+        {
+            Info = new SimplisityInfo();
+            ItemList = new List<SimplisityInfo>();
+            BackUpDate = DateTime.Now;
             if (File.Exists(FileMapPath))
             {
                 Exists = true;
-
-                BackUpDate = DateTime.Now;
-                var s = Path.GetFileNameWithoutExtension(fileMapPath).Split('_');
+                var s = Path.GetFileNameWithoutExtension(FileMapPath).Split('_');
                 if (s.Length == 2 && GeneralUtils.IsNumeric(s[0])) BackUpDate = DateTime.FromFileTime(Convert.ToInt64(s[0]));
-                var BackUpXml = FileUtils.ReadFile(fileMapPath);
-                Info = new SimplisityInfo(BackUpXml);
-                var nodList = Info.XMLDoc.SelectNodes("root/*");
+
+                var d = Path.GetDirectoryName(FileMapPath);
+                SystemKey = new DirectoryInfo(d).Name;
+
+                var BackUpXml = FileUtils.ReadFile(FileMapPath);
+                Info = new SimplisityInfo();
+                Info.XMLData = BackUpXml;
+                var nodList = Info.XMLDoc.SelectNodes("backup/*");
                 foreach (XmlNode nod in nodList)
                 {
                     var importXml = nod.OuterXml;
@@ -35,14 +48,33 @@ namespace DNNrocketAPI.Componants
                 }
             }
         }
-
-        public void RestoreData(string tableName = "DNNrocket")
+        public void BackUp(List<SimplisityInfo> list)
+        {
+            ItemList = new List<SimplisityInfo>();
+            foreach (var i in list)
+            {
+                ItemList.Add(i);
+            }
+            Save();
+            Load();
+        }
+        public void RestoreData()
         {
             var objCtrl = new DNNrocketController();
             foreach (var s in ItemList)
             {
-                objCtrl.Update(s, tableName);
+                objCtrl.Update(s, DatabaseTable);
             }
+        }
+        public void Save()
+        {
+            var backUpData = "<backup>";
+            foreach (var i in ItemList)
+            {
+                backUpData += i.ToXmlItem();
+            }
+            backUpData += "</backup>";
+            FileUtils.SaveFile(FileMapPath, backUpData);
         }
 
         public List<SimplisityInfo> ItemList { get; set; }
@@ -50,6 +82,18 @@ namespace DNNrocketAPI.Componants
         public bool Exists { get; set; }
         public SimplisityInfo Info { get; set; }
         public DateTime BackUpDate { get; set; }
+        public string SystemKey { get; set; }
+        public string DatabaseTable
+        {
+            get
+            {
+                var s = new SystemInfoData(SystemKey);
+                if (s == null || !s.Exists) return "";
+                var r = s.GetInterface(s.DefaultInterface);
+                if (r == null || !r.Exists) return "";
+                return r.DatabaseTable;
+            }
+        }
 
 
     }

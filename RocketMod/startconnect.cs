@@ -193,7 +193,6 @@ namespace RocketMod
                     ValidateData();
                     break;
 
-
             }
 
             if (strOut == "" && !_moduleParams.Exists)
@@ -1044,7 +1043,7 @@ namespace RocketMod
                 // BackUp data to file 
                 if (backup)
                 {
-                    var BackUpData = "<root>";
+                    var saveList = new List<SimplisityInfo>();
                     var l2 = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "MODULEPARAMS", " and r1.XmlData.value('(genxml/hidden/moduletype)[1]','nvarchar(max)') = 'RocketMod'");
                     foreach (var sInfo in l2)
                     {
@@ -1052,11 +1051,15 @@ namespace RocketMod
                         if (DNNrocketUtils.ModuleExists(moduleParams.TabId, sInfo.ModuleId) && !DNNrocketUtils.ModuleIsDeleted(moduleParams.TabId, sInfo.ModuleId))
                         {
                             var exportData = new ExportData(_rocketInterface, moduleParams.ModuleId, moduleParams.SystemKey);
-                            BackUpData += exportData.GetXml();
+                            foreach (var s in exportData.GetList())
+                            {
+                                saveList.Add(s);
+                            }
                         }
                     }
-                    BackUpData += "</root>";
-                    DNNrocketUtils.BackUpData("RocketMod", BackUpData);
+                    var fileName = DNNrocketUtils.BackUpNewFileName(_systemKey);
+                    var backupData = new BackUpData(fileName);
+                    backupData.BackUp(saveList);
                 }
 
 
@@ -1080,6 +1083,7 @@ namespace RocketMod
             }
 
         }
+
 
         private static void ValidateData()
         {
