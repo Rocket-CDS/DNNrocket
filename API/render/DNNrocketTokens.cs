@@ -608,7 +608,7 @@ namespace DNNrocketAPI.render
         {
             var cachekey = "rocketlinkcssdata*" + pageId + "*" + cssRelPath;
             var rtn = (string)CacheUtils.GetCache(cachekey);
-            if (!String.IsNullOrEmpty(rtn)) return new RawString("");
+            //if (!String.IsNullOrEmpty(rtn)) return new RawString("");
             rtn = "<link rel='stylesheet' href='" + cssRelPath + "' " + attributes + " />";
             CacheUtils.SetCache(cachekey, rtn);
             return new RawString(rtn);
@@ -618,7 +618,7 @@ namespace DNNrocketAPI.render
         {
             var cachekey = "rocketlinkjsdata*" + pageId + "*" + jsRelPath;
             var rtn = (string)CacheUtils.GetCache(cachekey);
-            if (!String.IsNullOrEmpty(rtn)) return new RawString("");
+            //if (!String.IsNullOrEmpty(rtn)) return new RawString("");
             rtn = "<script type='text/javascript' src='" + jsRelPath + "' " + attributes + " ></script>";
             CacheUtils.SetCache(cachekey, rtn);
             return new RawString(rtn);

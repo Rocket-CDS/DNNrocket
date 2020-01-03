@@ -282,8 +282,6 @@ namespace RocketMod
             _moduleParams = new ModuleParams(_moduleid, _systemKey);
             _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemKey);
 
-            if (paramCmd != "rocketmod_getdata") CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
-
             if (!CheckSecurity(paramCmd))
             {
                 // default to see if the user has access, but last login was a different user.
@@ -456,6 +454,7 @@ namespace RocketMod
             _passSettings.Add("saved", "true");
             _articleData.DebugMode = _systemInfoData.DebugMode;
             _articleData.Save(_postInfo);
+            CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
         }
 
         public void SaveArticleList()
@@ -477,6 +476,7 @@ namespace RocketMod
                     }
                 }
             }
+            CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
         }
 
         public void DeleteArticle()
