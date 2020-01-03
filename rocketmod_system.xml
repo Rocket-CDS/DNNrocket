@@ -45,6 +45,7 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
           <chk value="false" data="copylanguage" />
+          <chk value="false" data="validatedata" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -85,6 +86,7 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
           <chk value="false" data="copylanguage" />
+          <chk value="false" data="validatedata" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -125,6 +127,7 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
           <chk value="false" data="copylanguage" />
+          <chk value="false" data="validatedata" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -165,6 +168,7 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
           <chk value="false" data="copylanguage" />
+          <chk value="false" data="validatedata" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -205,6 +209,7 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
           <chk value="false" data="copylanguage" />
+          <chk value="false" data="validatedata" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -245,6 +250,7 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
           <chk value="false" data="copylanguage" />
+          <chk value="false" data="validatedata" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -285,6 +291,7 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
           <chk value="false" data="copylanguage" />
+          <chk value="false" data="validatedata" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -325,6 +332,7 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
           <chk value="false" data="copylanguage" />
+          <chk value="false" data="validatedata" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -365,6 +373,7 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
           <chk value="false" data="copylanguage" />
+          <chk value="false" data="validatedata" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -405,6 +414,7 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
           <chk value="false" data="copylanguage" />
+          <chk value="false" data="validatedata" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -445,6 +455,7 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
           <chk value="false" data="copylanguage" />
+          <chk value="false" data="validatedata" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -485,6 +496,48 @@
           <chk value="false" data="searchmodule" />
           <chk value="false" data="upgrademodule" />
           <chk value="true" data="copylanguage" />
+          <chk value="false" data="validatedata" />
+        </providertype>
+      </checkboxlist>
+      <radio>
+        <securityrolesadministrators>1</securityrolesadministrators>
+        <securityrolesmanager>1</securityrolesmanager>
+        <securityroleseditor>0</securityroleseditor>
+        <securityrolesclienteditor>0</securityrolesclienteditor>
+        <securityrolesregisteredusers>0</securityrolesregisteredusers>
+        <securityrolessubscribers>0</securityrolessubscribers>
+        <securityrolesall>0</securityrolesall>
+      </radio>
+    </genxml>
+    <genxml>
+      <textbox>
+        <interfacekey>validatedate</interfacekey>
+        <entitytypecode>ROCKETMOD</entitytypecode>
+        <interfaceicon />
+        <defaulttheme />
+        <themeversion>1.0</themeversion>
+        <defaulttemplate />
+        <defaultcommand>module_validate</defaultcommand>
+        <namespaceclass>RocketMod.StartConnect</namespaceclass>
+        <assembly>RocketMod</assembly>
+        <databasetable />
+        <relpath />
+      </textbox>
+      <dropdownlist>
+        <group />
+      </dropdownlist>
+      <checkbox>
+        <onmenu>false</onmenu>
+        <active>true</active>
+      </checkbox>
+      <checkboxlist>
+        <providertype>
+          <chk value="false" data="exportmodule" />
+          <chk value="false" data="importmodule" />
+          <chk value="false" data="searchmodule" />
+          <chk value="false" data="upgrademodule" />
+          <chk value="false" data="copylanguage" />
+          <chk value="true" data="validatedata" />
         </providertype>
       </checkboxlist>
       <radio>
@@ -563,10 +616,17 @@
         <provname>Copy Language</provname>
       </textbox>
     </genxml>
+    <genxml>
+      <textbox>
+        <provtypes>validatedata</provtypes>
+        <provname>Validate Data</provname>
+      </textbox>
+    </genxml>
   </provtypesdata>
   <lang>
     <genxml>
       <interfacedata list="true">
+        <genxml />
         <genxml />
         <genxml />
         <genxml />
@@ -590,6 +650,7 @@
         <genxml />
       </groupsdata>
       <provtypesdata list="true">
+        <genxml />
         <genxml />
         <genxml />
         <genxml />

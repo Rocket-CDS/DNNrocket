@@ -81,6 +81,10 @@ namespace Rocket.Tools
                         break;
 
 
+                    case "rocketactions_getdisplay":
+                        strOut = ActionAdmin();
+                        break;
+
                 }
             }
             else
@@ -450,6 +454,26 @@ namespace Rocket.Tools
             }
 
             return RolesOK();
+        }
+
+        #endregion
+
+        #region "Actions"
+        public String ActionAdmin()
+        {
+            try
+            {
+                _passSettings.Add("portalid", DNNrocketUtils.GetPortalId().ToString());
+                var controlRelPath = _rocketInterface.TemplateRelPath;
+                var themeFolder = _rocketInterface.DefaultTheme;
+                var razortemplate = "actions.cshtml";
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
         }
 
         #endregion

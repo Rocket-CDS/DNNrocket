@@ -1,0 +1,41 @@
+﻿@inherits Rocket.Tools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using RazorEngine.Text;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+
+
+<h1>@ResourceKey("RocketTools.actions")</h1>
+<p>@ResourceKey("RocketTools.actions", "", "Help")</p>
+
+<div class="w3-row w3-margin-bottom ">
+
+
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        simplisity_setParamField('pageref', CreateGuid());
+
+    });
+
+    function CreateGuid() {
+        function _p8(s) {
+            var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+            return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+        }
+        return _p8() + _p8(true) + _p8(true) + _p8();
+    }
+
+
+</script>
+
