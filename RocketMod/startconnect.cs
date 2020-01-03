@@ -389,7 +389,7 @@ namespace RocketMod
             _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
             _moduleParams.ModuleType = "RocketMod";
             _moduleParams.Exists = true;
-            _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disbalecache");
+            _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disablecache");
 
             if (_systemInfoData.DebugMode) _moduleParams.CacheDisbaled = true;
 

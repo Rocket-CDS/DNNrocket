@@ -176,8 +176,8 @@ namespace DNNrocketAPI.Componants
         }
         public bool DataSourceExternal { get; set; }
         public string ModuleRef { get { return GetValue("ModuleRef"); } set { SetValue("ModuleRef", value); } }
-        public bool CacheDisbaled { get { return GetValueBool("disbalecache"); } set { SetValue("disbalecache", value.ToString()); } }
-        public bool CacheEnabled { get { return !GetValueBool("disbalecache"); } }
+        public bool CacheDisbaled { get { return GetValueBool("disablecache"); } set { SetValue("disablecache", value.ToString()); } }
+        public bool CacheEnabled { get { return !GetValueBool("disablecache"); } }
         public bool ExportResourceFiles { get { return GetValueBool("exportresourcefiles"); } set { SetValue("exportresourcefiles", value.ToString()); } }
         public Dictionary<string,string> ModuleSettings { get; private set; }
         public string CacheGroupId { get { return "datamoduleid:" + DataSourceModId; } }        
