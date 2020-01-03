@@ -104,6 +104,7 @@ namespace DNNrocketAPI
                         // change of page for module
                         _moduleParams.TabId = PortalSettings.Current.ActiveTab.TabID; 
                         _moduleParams.Save();
+                        CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
                     }
 
                     DNNrocketUtils.IncludePageHeaders(_moduleParams, this.Page, TabId, systemInfoData.DebugMode);
