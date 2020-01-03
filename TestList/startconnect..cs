@@ -8,9 +8,9 @@ namespace DNNrocket.TestList
 {
     public class StartConnect : DNNrocketAPI.APInterface
     {
-        private static string _EntityTypeCode;
-        private static string _editlang;
-        private static SystemInfoData _systemInfoData;
+        private string _EntityTypeCode;
+        private string _editlang;
+        private SystemInfoData _systemInfoData;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
@@ -84,7 +84,7 @@ var rtnDic = new Dictionary<string, string>();
             return rtnDic;
         }
 
-        public static String GetList(SimplisityInfo postInfo, SimplisityInfo paramInfo, string template)
+        public String GetList(SimplisityInfo postInfo, SimplisityInfo paramInfo, string template)
         {
             try
             {
@@ -119,7 +119,7 @@ var rtnDic = new Dictionary<string, string>();
             }
         }
 
-        public static String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string template, SimplisityInfo headerData)
+        public String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string template, SimplisityInfo headerData)
         {
             try
             {
@@ -146,7 +146,7 @@ var rtnDic = new Dictionary<string, string>();
 
         }
 
-        public static String GetDetail(SimplisityInfo postInfo, string template)
+        public String GetDetail(SimplisityInfo postInfo, string template)
         {
             try
             {
@@ -171,7 +171,7 @@ var rtnDic = new Dictionary<string, string>();
         }
 
 
-        public static SimplisityInfo AddNew()
+        public SimplisityInfo AddNew()
         {
             var info = new SimplisityInfo();
             info.ItemID = -1;
@@ -184,7 +184,7 @@ var rtnDic = new Dictionary<string, string>();
             return objCtrl.SaveData(info);
         }
 
-        public static void Save(SimplisityInfo postInfo, SimplisityInfo paramInfo)
+        public void Save(SimplisityInfo postInfo, SimplisityInfo paramInfo)
         {
             var selecteditemid = paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (selecteditemid > 0)
@@ -197,7 +197,7 @@ var rtnDic = new Dictionary<string, string>();
             }
         }
 
-        public static void DeleteRows()
+        public void DeleteRows()
         {
             var objCtrl = new DNNrocketController();
             var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _EntityTypeCode, "and R1.guidkey = 'testrecord'");
@@ -207,7 +207,7 @@ var rtnDic = new Dictionary<string, string>();
             }
         }
 
-        public static void CreateRows(SimplisityInfo postInfo)
+        public void CreateRows(SimplisityInfo postInfo)
         {
             var objCtrl = new DNNrocketController();
 
@@ -234,7 +234,7 @@ var rtnDic = new Dictionary<string, string>();
         }
 
 
-        public static void Delete(SimplisityInfo postInfo)
+        public void Delete(SimplisityInfo postInfo)
         {
             var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (selecteditemid > 0)

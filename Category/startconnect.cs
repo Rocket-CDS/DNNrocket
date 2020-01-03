@@ -13,11 +13,11 @@ namespace DNNrocket.Category
 {
     public class StartConnect : DNNrocketAPI.APInterface
     {
-        private static string _EntityTypeCode;
-        private static string _editlang;
-        private static string _systemkey;
-        private static SimplisityInfo _systemInfo;
-        private static SystemInfoData _systemInfoData;
+        private string _EntityTypeCode;
+        private string _editlang;
+        private string _systemkey;
+        private SimplisityInfo _systemInfo;
+        private SystemInfoData _systemInfoData;
 
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
@@ -102,7 +102,7 @@ namespace DNNrocket.Category
             return rtnDic;
         }
 
-        public static String GetList(SimplisityInfo postInfo, string templateControlRelPath, SimplisityInfo systemInfo)
+        public String GetList(SimplisityInfo postInfo, string templateControlRelPath, SimplisityInfo systemInfo)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace DNNrocket.Category
             }
         }
 
-        public static String RenderList(List<Category> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath, SimplisityInfo headerData)
+        public String RenderList(List<Category> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath, SimplisityInfo headerData)
         {
             try
             {
@@ -152,7 +152,7 @@ namespace DNNrocket.Category
         }
 
 
-        public static String GetDetail(SimplisityInfo postInfo, string templateControlRelPath, SimplisityInfo systemInfo)
+        public String GetDetail(SimplisityInfo postInfo, string templateControlRelPath, SimplisityInfo systemInfo)
         {
             try
             {
@@ -177,7 +177,7 @@ namespace DNNrocket.Category
         }
 
 
-        public static SimplisityInfo AddNew(SimplisityInfo systemInfo)
+        public SimplisityInfo AddNew(SimplisityInfo systemInfo)
         {
             var info = new SimplisityInfo();
             info.ItemID = -1;
@@ -191,7 +191,7 @@ namespace DNNrocket.Category
             return objCtrl.SaveData(info);
         }
 
-        public static void Save(SimplisityInfo postInfo, SimplisityInfo systemInfo)
+        public void Save(SimplisityInfo postInfo, SimplisityInfo systemInfo)
         {
             var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (selecteditemid > 0)
@@ -233,7 +233,7 @@ namespace DNNrocket.Category
             }
         }
 
-        public static void Delete(SimplisityInfo postInfo)
+        public void Delete(SimplisityInfo postInfo)
         {
             var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (selecteditemid > 0)
@@ -244,7 +244,7 @@ namespace DNNrocket.Category
             }
         }
 
-        public static string AddImageToList(SimplisityInfo postInfo, string templateControlRelPath)
+        public string AddImageToList(SimplisityInfo postInfo, string templateControlRelPath)
         {
 
 
@@ -320,7 +320,7 @@ namespace DNNrocket.Category
         }
 
 
-        public static void SaveList(SimplisityInfo postInfo, SimplisityInfo systemInfo)
+        public void SaveList(SimplisityInfo postInfo, SimplisityInfo systemInfo)
         {
             // For some mad reason Stringify passes back a json string which cannot be parse by JsonConvert.
             // So we do the required replace chars to make it work. 
@@ -343,7 +343,7 @@ namespace DNNrocket.Category
             CacheUtils.ClearAllCache();
         }
 
-        private static void RecursiveUpdateParent(XmlNodeList xmlNodList, int parentid, ref int index, int level)
+        private void RecursiveUpdateParent(XmlNodeList xmlNodList, int parentid, ref int index, int level)
         {
             var levelstatic = level;
             var lastItemId = 0;
@@ -374,7 +374,7 @@ namespace DNNrocket.Category
         }
 
 
-        private static String ToggleHidden(SimplisityInfo postInfo, string ControlRelPath, SimplisityInfo systemInfo)
+        private String ToggleHidden(SimplisityInfo postInfo, string ControlRelPath, SimplisityInfo systemInfo)
         {
             try
             {
@@ -406,7 +406,7 @@ namespace DNNrocket.Category
             }
         }
 
-        private static String ToggleDisable(SimplisityInfo postInfo, string ControlRelPath, SimplisityInfo systemInfo)
+        private String ToggleDisable(SimplisityInfo postInfo, string ControlRelPath, SimplisityInfo systemInfo)
         {
             try
             {

@@ -13,34 +13,34 @@ namespace RocketMod
 {
     public class StartConnect : DNNrocketAPI.APInterface
     {
-        //private static ModuleData _moduleData;
-        private static string _appthemeRelPath;
-        private static string _appthemeMapPath;
-        private static string _appthemeSystemRelPath;
-        private static string _appthemeSystemMapPath;
-        private static string _rocketModRelPath;
-        private static string _rocketModMapPath;
-        private static SimplisityInfo _postInfo;
-        private static SimplisityInfo _paramInfo;
-        private static CommandSecurity _commandSecurity;
-        private static DNNrocketInterface _rocketInterface;
-        private static SimplisityInfo _systemInfo;
-        private static ModuleParams _moduleParams;
-        private static ModuleParams _dataModuleParams;
-        private static int _tabid;
-        private static int _moduleid;
-        private static SystemInfoData _systemInfoData;
-        private static string _systemKey;
-        private static Dictionary<string, string> _passSettings;
-        private static SettingsData _settingsData;
-        private static string _editLang;
-        private static int _selectedItemId;
-        private static AppThemeModule _appThemeMod;
-        private static AppThemeModule _dataAppThemeMod;
-        private static ArticleData _articleData;
-        private static AppThemeDataList _appThemeDataList;
-        private static UserStorage _userStorage;
-        private static string _tableName;
+        //private ModuleData _moduleData;
+        private string _appthemeRelPath;
+        private string _appthemeMapPath;
+        private string _appthemeSystemRelPath;
+        private string _appthemeSystemMapPath;
+        private string _rocketModRelPath;
+        private string _rocketModMapPath;
+        private SimplisityInfo _postInfo;
+        private SimplisityInfo _paramInfo;
+        private CommandSecurity _commandSecurity;
+        private DNNrocketInterface _rocketInterface;
+        private SimplisityInfo _systemInfo;
+        private ModuleParams _moduleParams;
+        private ModuleParams _dataModuleParams;
+        private int _tabid;
+        private int _moduleid;
+        private SystemInfoData _systemInfoData;
+        private string _systemKey;
+        private Dictionary<string, string> _passSettings;
+        private SettingsData _settingsData;
+        private string _editLang;
+        private int _selectedItemId;
+        private AppThemeModule _appThemeMod;
+        private AppThemeModule _dataAppThemeMod;
+        private ArticleData _articleData;
+        private AppThemeDataList _appThemeDataList;
+        private UserStorage _userStorage;
+        private string _tableName;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -204,7 +204,7 @@ namespace RocketMod
             return rtnDic;
         }
 
-        public static string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
 
             _systemInfoData = new SystemInfoData(systemInfo);
@@ -315,7 +315,7 @@ namespace RocketMod
 
             return paramCmd;
         }
-        public static bool CheckSecurity(string paramCmd)
+        public bool CheckSecurity(string paramCmd)
         {
             _commandSecurity = new CommandSecurity(_tabid, _moduleid, _rocketInterface);
 
@@ -359,7 +359,7 @@ namespace RocketMod
             return _commandSecurity.HasSecurityAccess(paramCmd);
         }
 
-        public static void RocketModAddListItem(string listname)
+        public void RocketModAddListItem(string listname)
         {
             try
             {
@@ -378,7 +378,7 @@ namespace RocketMod
             }
         }
 
-        private static void SaveConfig()
+        private void SaveConfig()
         {
             var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder);
             _moduleParams.AppThemeLogo = appTheme.Logo;
@@ -406,7 +406,7 @@ namespace RocketMod
 
         }
 
-        private static void SaveAppTheme()
+        private void SaveAppTheme()
         {
             _moduleParams.AppThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
             var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder);
@@ -429,7 +429,7 @@ namespace RocketMod
 
         #region "Articles"
 
-        public static Dictionary<string,string> DownloadDocument()
+        public Dictionary<string,string> DownloadDocument()
         {
             var documentref = _paramInfo.GetXmlProperty("genxml/hidden/document");
             var documentlistname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
@@ -443,7 +443,7 @@ namespace RocketMod
             rtnDic.Add("fileext", "");
             return rtnDic;
         }
-        public static void SaveArticle()
+        public void SaveArticle()
         {
             if (_dataAppThemeMod.AppTheme.DataType == 1)
             {
@@ -458,7 +458,7 @@ namespace RocketMod
             _articleData.Save(_postInfo);
         }
 
-        public static void SaveArticleList()
+        public void SaveArticleList()
         {
             var listNames = _postInfo.GetLists();
             foreach (var listName in listNames)
@@ -479,7 +479,7 @@ namespace RocketMod
             }
         }
 
-        public static void DeleteArticle()
+        public void DeleteArticle()
         {
             if (_appThemeMod.AppTheme.DataType == 1)
             {
@@ -493,7 +493,7 @@ namespace RocketMod
             _selectedItemId = -1;
         }
 
-        public static String AddArticle()
+        public String AddArticle()
         {
             try
             {
@@ -510,7 +510,7 @@ namespace RocketMod
 
         }
 
-        public static String GetArticleEdit(bool loadCachedHeader = true)
+        public String GetArticleEdit(bool loadCachedHeader = true)
         {
             try
             {
@@ -537,7 +537,7 @@ namespace RocketMod
         }
 
 
-        public static String GetArticle()
+        public String GetArticle()
         {
             try
             {
@@ -606,7 +606,7 @@ namespace RocketMod
 
         }
 
-        public static String GetArticleList(bool loadCachedHeader)
+        public String GetArticleList(bool loadCachedHeader)
         {
 
             try
@@ -642,14 +642,14 @@ namespace RocketMod
 
         #region "Fields"
 
-        private static SettingsData GetFieldsData(int moduleid = 0)
+        private SettingsData GetFieldsData(int moduleid = 0)
         {
             if (moduleid == 0) moduleid = _moduleid;
             var settingsData = new SettingsData(_tabid, moduleid, _editLang, "ROCKETMODFIELDS", "fielddata", false, _rocketInterface.DatabaseTable);
             return settingsData;
         }
 
-        private static String EditFieldsData()
+        private String EditFieldsData()
         {
             try
             {
@@ -668,21 +668,21 @@ namespace RocketMod
                 return ex.ToString();
             }
         }
-        private static string FieldsDelete()
+        private string FieldsDelete()
         {
             var fieldsData = GetFieldsData();
             fieldsData.Delete();
             return EditFieldsData();
         }
 
-        private static string AddFieldsRow()
+        private string AddFieldsRow()
         {
             var fieldsData = GetFieldsData();
             fieldsData.AddRow();
             return EditFieldsData();
         }
 
-        private static String FieldsSave()
+        private String FieldsSave()
         {
             var fieldsData = GetFieldsData();
             fieldsData.Save(_postInfo);
@@ -704,11 +704,11 @@ namespace RocketMod
 
         #region "Settings"
 
-        private static SettingsData GetSettingsData()
+        private SettingsData GetSettingsData()
         {
             return new SettingsData(_tabid, _moduleid, _editLang, "ROCKETMODSETTINGS", "rocketmodsettings", true, _rocketInterface.DatabaseTable);
         }
-        private static String EditSettingsData()
+        private String EditSettingsData()
         {
             try
             {
@@ -727,21 +727,21 @@ namespace RocketMod
                 return ex.ToString();
             }
         }
-        private static string SettingsDelete()
+        private string SettingsDelete()
         {
             var settingsData = GetSettingsData();
             settingsData.Delete();
             return EditSettingsData();
         }
 
-        private static string AddSettingsRow()
+        private string AddSettingsRow()
         {
             var settingsData = GetSettingsData();
             settingsData.AddRow();
             return EditSettingsData();
         }
 
-        private static String SettingsSave()
+        private String SettingsSave()
         {
             var settingsData = GetSettingsData();
             settingsData.Save(_postInfo);
@@ -750,7 +750,7 @@ namespace RocketMod
 
         #endregion
 
-        public static String ResetRocketMod()
+        public String ResetRocketMod()
         {
             try
             {
@@ -770,7 +770,7 @@ namespace RocketMod
             }
         }
 
-        public static String ResetDataRocketMod()
+        public String ResetDataRocketMod()
         {
             try
             {
@@ -783,7 +783,7 @@ namespace RocketMod
                 return ex.ToString();
             }
         }
-        public static String GetSettingSection()
+        public String GetSettingSection()
         {
             try
             {
@@ -800,7 +800,7 @@ namespace RocketMod
             }
         }
 
-        public static String GetDashBoard()
+        public String GetDashBoard()
         {
             try
             {
@@ -817,7 +817,7 @@ namespace RocketMod
             }
         }
 
-        public static String GetDataSourceList()
+        public String GetDataSourceList()
         {
             try
             {
@@ -834,7 +834,7 @@ namespace RocketMod
                 return ex.ToString();
             }
         }
-        public static String GetDataSourceSelect()
+        public String GetDataSourceSelect()
         {
             try
             {
@@ -860,7 +860,7 @@ namespace RocketMod
             }
         }
 
-        public static String GetAppModTheme()
+        public String GetAppModTheme()
         {
             try
             {
@@ -879,7 +879,7 @@ namespace RocketMod
                 return ex.ToString();
             }
         }
-        public static string SaveEditor()
+        public string SaveEditor()
         {
             var editorcode = _postInfo.GetXmlProperty("genxml/hidden/editorcodesave");
             var filename = _postInfo.GetXmlProperty("genxml/hidden/editorfilenamesave");
@@ -888,7 +888,7 @@ namespace RocketMod
             return "OK";
         }
 
-        public static string RemoveTemplate()
+        public string RemoveTemplate()
         {
             var filename = _postInfo.GetXmlProperty("genxml/hidden/editorfilenamesave");
             var editorfileext = _postInfo.GetXmlProperty("genxml/hidden/editorfileext");
@@ -897,7 +897,7 @@ namespace RocketMod
         }
 
 
-        public static String GetSelectApp()
+        public String GetSelectApp()
         {
 
             try
@@ -931,7 +931,7 @@ namespace RocketMod
         }
 
 
-        public static String GetDisplay()
+        public String GetDisplay()
         {
             try
             {
@@ -976,7 +976,7 @@ namespace RocketMod
 
         }
 
-        private static String GetSetup()
+        private String GetSetup()
         {
             try
             {
@@ -990,7 +990,7 @@ namespace RocketMod
             }
         }
 
-        public static bool CheckIfList()
+        public bool CheckIfList()
         {
             try
             {
@@ -1010,12 +1010,12 @@ namespace RocketMod
 
         }
 
-        private static string ExportData()
+        private string ExportData()
         {
             var exportData = new ExportData(_rocketInterface, _moduleid, _systemKey);
             return exportData.GetXml();
         }
-        private static void ImportData()
+        private void ImportData()
         {
             var oldmoduleid = _postInfo.GetXmlPropertyInt("export/moduleid");
             var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
@@ -1024,12 +1024,12 @@ namespace RocketMod
             DNNrocketUtils.ClearAllCache();
         }
 
-        private static void AssignEditLang()
+        private void AssignEditLang()
         {
             var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
             if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
         }
-        private static void CopyLanguage()
+        private void CopyLanguage()
         {
             var objCtrl = new DNNrocketController();
 
@@ -1089,7 +1089,7 @@ namespace RocketMod
         }
 
 
-        private static void ValidateData()
+        private void ValidateData()
         {
             var objCtrl = new DNNrocketController();
 

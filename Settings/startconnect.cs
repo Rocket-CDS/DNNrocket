@@ -119,7 +119,7 @@ namespace RocketSettings
             return ReturnString(strOut);
         }
 
-        public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
+        public Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
         {
             var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("outputhtml", strOut);
@@ -127,7 +127,7 @@ namespace RocketSettings
             return rtnDic;
         }
 
-        public static String EditData()
+        public String EditData()
         {
             try
             {

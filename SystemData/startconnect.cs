@@ -10,12 +10,12 @@ namespace DNNrocket.SystemData
 {
     public class StartConnect : DNNrocketAPI.APInterface
     {
-        private static SystemInfoData _systemInfoData;
-        private static string _controlRelPath;
-        private static SimplisityInfo _postInfo;
-        private static SimplisityInfo _paramInfo;
-        private static DNNrocketInterface _rocketInterface;
-        private static UserStorage _userStorage;
+        private SystemInfoData _systemInfoData;
+        private string _controlRelPath;
+        private SimplisityInfo _postInfo;
+        private SimplisityInfo _paramInfo;
+        private DNNrocketInterface _rocketInterface;
+        private UserStorage _userStorage;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
@@ -180,7 +180,7 @@ namespace DNNrocket.SystemData
         }
 
 
-        public static String LicensePopup()
+        public String LicensePopup()
         {
             try
             {
@@ -206,7 +206,7 @@ namespace DNNrocket.SystemData
         }
 
 
-        public static bool GetRemoteLicense()
+        public bool GetRemoteLicense()
         {
             try
             {
@@ -226,7 +226,7 @@ namespace DNNrocket.SystemData
             }
         }
 
-        public static bool verifyLicense()
+        public bool verifyLicense()
         {
             try
             {
@@ -251,7 +251,7 @@ namespace DNNrocket.SystemData
             }
         }
 
-        public static bool SaveRemoteLicense(string licenseXml)
+        public bool SaveRemoteLicense(string licenseXml)
         {
             try
             {
@@ -286,7 +286,7 @@ namespace DNNrocket.SystemData
             }
         }
 
-        public static void DeleteLicense()
+        public void DeleteLicense()
         {
             try
             {
@@ -304,7 +304,7 @@ namespace DNNrocket.SystemData
 
         }
 
-        public static void EnterCertificateKey()
+        public void EnterCertificateKey()
         {
             try
             {
@@ -339,7 +339,7 @@ namespace DNNrocket.SystemData
         }
 
 
-        public static String GetLicenseList()
+        public String GetLicenseList()
         {
             try
             {
@@ -356,7 +356,7 @@ namespace DNNrocket.SystemData
         }
 
 
-        public static string SystemAdminList(SimplisityInfo sInfo, string templateControlRelPath)
+        public string SystemAdminList(SimplisityInfo sInfo, string templateControlRelPath)
         {
             try
             {
@@ -370,7 +370,7 @@ namespace DNNrocket.SystemData
             }
         }
 
-        public static String SystemAdminDetail(string templateControlRelPath)
+        public String SystemAdminDetail(string templateControlRelPath)
         {
             try
             {
@@ -401,7 +401,7 @@ namespace DNNrocket.SystemData
             }
         }
 
-        public static String SystemGlobalDetail()
+        public String SystemGlobalDetail()
         {
             try
             {
@@ -421,13 +421,13 @@ namespace DNNrocket.SystemData
             }
         }
 
-        public static void SystemGlobalSave()
+        public void SystemGlobalSave()
         {
             var globalData = new SystemGlobalData();
             globalData.Save(_postInfo);
         }
 
-        public static String RenderSystemAdminList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath)
+        public String RenderSystemAdminList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath)
         {
 
             try
@@ -456,7 +456,7 @@ namespace DNNrocket.SystemData
         }
 
 
-        public static String SystemAddNew(SimplisityInfo sInfo, string templateControlRelPath)
+        public String SystemAddNew(SimplisityInfo sInfo, string templateControlRelPath)
         {
             try
             {
@@ -489,7 +489,7 @@ namespace DNNrocket.SystemData
             }
         }
 
-        public static void SystemAddListItem(SimplisityInfo sInfo, string listname)
+        public void SystemAddListItem(SimplisityInfo sInfo, string listname)
         {
             try
             {
@@ -509,7 +509,7 @@ namespace DNNrocket.SystemData
         }
 
 
-        public static void SystemSave(SimplisityInfo postInfo, SimplisityInfo paramInfo)
+        public void SystemSave(SimplisityInfo postInfo, SimplisityInfo paramInfo)
         {
             // remove any debug logs created in debug mode.
             DNNrocketUtils.LogDebugClear();
@@ -640,7 +640,7 @@ namespace DNNrocket.SystemData
             }
         }
 
-        public static void SystemDelete(SimplisityInfo sInfo)
+        public void SystemDelete(SimplisityInfo sInfo)
         {
             var itemid = sInfo.GetXmlProperty("genxml/hidden/selecteditemid");
             if (GeneralUtils.IsNumeric(itemid))
@@ -653,7 +653,7 @@ namespace DNNrocket.SystemData
         }
 
 
-        public static void RebuildIndex(SimplisityInfo postInfo, bool deleteindex )
+        public void RebuildIndex(SimplisityInfo postInfo, bool deleteindex )
         {
             var itemid = postInfo.GetXmlProperty("genxml/hidden/selecteditemid");
             if (GeneralUtils.IsNumeric(itemid))
@@ -714,7 +714,7 @@ namespace DNNrocket.SystemData
         }
 
 
-        public static string CopyInterface(SimplisityInfo postInfo, string templateControlRelPath)
+        public string CopyInterface(SimplisityInfo postInfo, string templateControlRelPath)
         {
             var strOut = "";
             var info = new SimplisityInfo();

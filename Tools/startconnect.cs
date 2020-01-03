@@ -10,13 +10,13 @@ namespace Rocket.Tools
 {
     public class StartConnect : DNNrocketAPI.APInterface
     {
-        private static DNNrocketInterface _rocketInterface;
-        private static SystemInfoData _systemInfoData;
-        private static Dictionary<string, string> _passSettings;
-        private static SimplisityInfo _postInfo;
-        private static SimplisityInfo _paramInfo;
-        private static string _pageref;
-        private static UserStorage _userStorage;
+        private DNNrocketInterface _rocketInterface;
+        private SystemInfoData _systemInfoData;
+        private Dictionary<string, string> _passSettings;
+        private SimplisityInfo _postInfo;
+        private SimplisityInfo _paramInfo;
+        private string _pageref;
+        private UserStorage _userStorage;
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = ""; // return nothing if not matching commands.
@@ -93,7 +93,7 @@ namespace Rocket.Tools
 
         }
 
-        public static string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
 
             _postInfo = postInfo;
@@ -130,7 +130,7 @@ namespace Rocket.Tools
 
 
         #region "Language"
-        public static String LangAdmin()
+        public String LangAdmin()
         {
             try
             {
@@ -147,7 +147,7 @@ namespace Rocket.Tools
             }
         }
 
-        public static void CopyLang()
+        public void CopyLang()
         {
             var info = GetCachedInfo();
             var copylanguage = _postInfo.GetXmlProperty("genxml/copylanguage");
@@ -179,7 +179,7 @@ namespace Rocket.Tools
             }
         }
 
-        private static string DeleteBackUp()
+        private string DeleteBackUp()
         {
             var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/hidden/filemappath"));
             if (File.Exists(filemappath))
@@ -189,7 +189,7 @@ namespace Rocket.Tools
             return LangAdmin();
         }
 
-        private static string RestoreBackUp()
+        private string RestoreBackUp()
         {
             var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/hidden/filemappath"));
             if (File.Exists(filemappath))
@@ -206,7 +206,7 @@ namespace Rocket.Tools
         #endregion
 
         #region "Clones"
-        public static String CloneAdmin()
+        public String CloneAdmin()
         {
             try
             {
@@ -223,7 +223,7 @@ namespace Rocket.Tools
             }
         }
 
-        public static String GetCloneSelectModules()
+        public String GetCloneSelectModules()
         {
             try
             {
@@ -260,7 +260,7 @@ namespace Rocket.Tools
             }
         }
 
-        public static String CloneDestination()
+        public String CloneDestination()
         {
             try
             {
@@ -276,7 +276,7 @@ namespace Rocket.Tools
                 return ex.ToString();
             }
         }
-        public static void CloneModules()
+        public void CloneModules()
         {
             var info = GetCachedInfo();
             var fromTabId = info.GetXmlPropertyInt("genxml/fromtabid");
@@ -294,7 +294,7 @@ namespace Rocket.Tools
             }
         }
 
-        public static String ClonesOK()
+        public String ClonesOK()
         {
             try
             {
@@ -315,7 +315,7 @@ namespace Rocket.Tools
 
         #region "Roles"
 
-        public static SimplisityInfo GetCachedInfo()
+        public SimplisityInfo GetCachedInfo()
         {
             var info = (SimplisityInfo)CacheUtils.GetCache(_pageref, "roles");
             if (info == null)
@@ -325,7 +325,7 @@ namespace Rocket.Tools
             }
             return info;
         }
-        public static String GetRoles()
+        public String GetRoles()
         {
             try
             {
@@ -354,7 +354,7 @@ namespace Rocket.Tools
                 return ex.ToString();
             }
         }        
-        public static String GetModules()
+        public String GetModules()
         {
             try
             {
@@ -387,7 +387,7 @@ namespace Rocket.Tools
                 return ex.ToString();
             }
         }
-        public static String RolesAdmin()
+        public String RolesAdmin()
         {
             try
             {
@@ -403,7 +403,7 @@ namespace Rocket.Tools
                 return ex.ToString();
             }
         }
-        public static String RolesOK()
+        public String RolesOK()
         {
             try
             {
@@ -418,7 +418,7 @@ namespace Rocket.Tools
                 return ex.ToString();
             }
         }
-        public static string ApplyRoles()
+        public string ApplyRoles()
         {
             var info = GetCachedInfo();
             foreach (var m in info.GetRecordList("tabmodules"))
@@ -455,7 +455,7 @@ namespace Rocket.Tools
         #endregion
 
         #region "general"
-        public static void SaveSystems(string listName)
+        public void SaveSystems(string listName)
         {
             var info = GetCachedInfo();
             info.GUIDKey = "";  // clear flag on new selection.
@@ -474,7 +474,7 @@ namespace Rocket.Tools
             }
             CacheUtils.SetCache(_pageref, info, "roles");
         }
-        public static void SaveModules(string listName)
+        public void SaveModules(string listName)
         {
             var info = GetCachedInfo();
             info.GUIDKey = "";  // clear flag on new selection.
@@ -494,7 +494,7 @@ namespace Rocket.Tools
             CacheUtils.SetCache(_pageref, info, "roles");
         }
 
-        public static void SaveTreeView(string listName)
+        public void SaveTreeView(string listName)
         {
             var info = GetCachedInfo();
             info.GUIDKey = "";  // clear flag on new selection.

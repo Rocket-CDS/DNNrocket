@@ -9,12 +9,12 @@ namespace DNNrocket.Documents
 {
     public class StartConnect : DNNrocketAPI.APInterface
     {
-        private static string _appthemeRelPath;
-        private static string _appthemeMapPath;
-        private static SimplisityInfo _postInfo;
-        private static SimplisityInfo _paramInfo;
-        private static CommandSecurity _commandSecurity;
-        private static DNNrocketInterface _rocketInterface;
+        private string _appthemeRelPath;
+        private string _appthemeMapPath;
+        private SimplisityInfo _postInfo;
+        private SimplisityInfo _paramInfo;
+        private CommandSecurity _commandSecurity;
+        private DNNrocketInterface _rocketInterface;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -59,7 +59,7 @@ namespace DNNrocket.Documents
             return ReturnString(strOut);
         }
 
-        public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
+        public Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
         {
             var rtnDic = new Dictionary<string, string>();
             rtnDic.Add("outputhtml", strOut);
@@ -68,7 +68,7 @@ namespace DNNrocket.Documents
         }
 
 
-        public static String ListData()
+        public String ListData()
         {
             try
             {
@@ -80,7 +80,7 @@ namespace DNNrocket.Documents
             }
         }
 
-        public static string UploadDocumentToFolder()
+        public string UploadDocumentToFolder()
         {
             var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
 
@@ -109,7 +109,7 @@ namespace DNNrocket.Documents
             return strOut;
         }
 
-        public static void DeleteDocs()
+        public void DeleteDocs()
         {
             var docfolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
             if (docfolder == "") docfolder = "docs";

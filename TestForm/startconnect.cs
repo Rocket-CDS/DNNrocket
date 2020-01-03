@@ -71,7 +71,7 @@ namespace DNNrocket.TestForm
             return rtnDic;
         }
 
-        public static string AddToList(SimplisityInfo postInfo, string templateControlRelPath)
+        public string AddToList(SimplisityInfo postInfo, string templateControlRelPath)
         {
             var strOut = "";
             var listname = postInfo.GetXmlProperty("genxml/hidden/listname");
@@ -93,7 +93,7 @@ namespace DNNrocket.TestForm
             return strOut;
         }
 
-        public static String TestFormDetail(SimplisityInfo postInfo, string templateControlRelPath)
+        public String TestFormDetail(SimplisityInfo postInfo, string templateControlRelPath)
         {
             try
             {
@@ -115,20 +115,20 @@ namespace DNNrocket.TestForm
             }
         }
 
-        public static void TestFormSave(SimplisityInfo postInfo)
+        public void TestFormSave(SimplisityInfo postInfo)
         {
             var objCtrl = new DNNrocketController();
             objCtrl.SaveData("testform", "TEST", postInfo);
         }
 
-        public static void Delete(SimplisityInfo postInfo)
+        public void Delete(SimplisityInfo postInfo)
         {
             var objCtrl = new DNNrocketController();
             var info = objCtrl.GetData("testform", "TEST", DNNrocketUtils.GetEditCulture());
             objCtrl.Delete(info.ItemID);
         }
 
-        public static string AddImageToList(SimplisityInfo postInfo, string templateControlRelPath)
+        public string AddImageToList(SimplisityInfo postInfo, string templateControlRelPath)
         {
 
             var imageDirectory =  DNNrocketUtils.HomeDNNrocketDirectoryMapPath() + "\\images";
@@ -191,7 +191,7 @@ namespace DNNrocket.TestForm
             return strOut;
         }
 
-        public static string AddDocToList(SimplisityInfo postInfo, string templateControlRelPath)
+        public string AddDocToList(SimplisityInfo postInfo, string templateControlRelPath)
         {
             var docDirectory = DNNrocketUtils.HomeDNNrocketDirectoryMapPath() + "\\docs";
             if (!Directory.Exists(docDirectory))

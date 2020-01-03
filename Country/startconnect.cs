@@ -9,9 +9,9 @@ namespace DNNrocket.Country
 {
     public class StartConnect : APInterface
     {
-        private static SimplisityInfo _systemInfo;
-        private static DNNrocketInterface _rocketInterface;
-        private static Dictionary<string,string> _passSettings; 
+        private SimplisityInfo _systemInfo;
+        private DNNrocketInterface _rocketInterface;
+        private Dictionary<string,string> _passSettings; 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
@@ -51,7 +51,7 @@ namespace DNNrocket.Country
             return rtnDic;
         }
 
-        public static String CultureSelect(SimplisityInfo sInfo, string templateControlRelPath, string editlang)
+        public String CultureSelect(SimplisityInfo sInfo, string templateControlRelPath, string editlang)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace DNNrocket.Country
         }
 
 
-        public static String CountryDetail(SimplisityInfo sInfo, string templateControlRelPath, string editlang)
+        public String CountryDetail(SimplisityInfo sInfo, string templateControlRelPath, string editlang)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace DNNrocket.Country
             }
         }
 
-        public static void CountrySave(SimplisityInfo postInfo)
+        public void CountrySave(SimplisityInfo postInfo)
         {
             _passSettings.Add("saved", "true");
             var objCtrl = new DNNrocketController();
