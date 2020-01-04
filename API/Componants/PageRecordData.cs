@@ -26,6 +26,8 @@ namespace DNNrocketAPI
                 Record.SetXmlProperty("genxml/title", tabInfo.Title);
                 Record.SetXmlProperty("genxml/description", tabInfo.Description);
                 Record.SetXmlProperty("genxml/keywords", tabInfo.KeyWords);
+                Record.SetXmlProperty("genxml/url", tabInfo.Url);
+                Record.SetXmlProperty("genxml/fullurl", tabInfo.FullUrl);
             }
         }
 
@@ -44,7 +46,6 @@ namespace DNNrocketAPI
 
         public int PortalId { get; set; }
         public int PageId { get; set; }
-
         public SimplisityRecord Record { get; set; }
         public string Name
         {
@@ -65,6 +66,16 @@ namespace DNNrocketAPI
         {
             get { return Record.GetXmlProperty("genxml/keywords"); }
             set { Record.SetXmlProperty("genxml/keywords", value); }
+        }
+        public string Url
+        {
+            get { return Record.GetXmlProperty("genxml/url"); }
+            set { Record.SetXmlProperty("genxml/url", value); }
+        }
+        public string FullUrl
+        {
+            get { return Record.GetXmlProperty("genxml/fullurl"); }
+            set { Record.SetXmlProperty("genxml/fullurl", value); }
         }
 
     }

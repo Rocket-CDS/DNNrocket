@@ -392,6 +392,8 @@ namespace RocketMod
             _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
             _moduleParams.AppThemeVersion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
             _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
+            _moduleParams.DetailUrlParam = _postInfo.GetXmlProperty("genxml/hidden/detailurlparam");
+            _moduleParams.DetailView = _postInfo.GetXmlPropertyBool("genxml/hidden/detailview");
             _moduleParams.ModuleType = "RocketMod";
             _moduleParams.Exists = true;
             _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disablecache");
@@ -948,25 +950,59 @@ namespace RocketMod
                     var objCtrl = new DNNrocketController();
 
                     var appthemefolder = _moduleParams.AppThemeFolder;
-                    var razorTempl = _appThemeMod.GetTemplateRazor("view");
                     var passSettings = _paramInfo.ToDictionary();                 
                     passSettings.Add("addeditscript", _commandSecurity.HasModuleEditRights().ToString());
                     var adminurl = "/DesktopModules/DNNrocket/RocketMod/admin.html?moduleid=" + _moduleid + "&tabid=" + _tabid;
                     passSettings.Add("adminurl", adminurl);
                     var appTheme = new AppTheme(_systemInfoData.SystemKey, appthemefolder, _moduleParams.AppThemeVersion);
                     passSettings.Add("datatype", appTheme.DataType.ToString());
-                    var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
-                    articleDataList.Populate(appTheme.DataType);
 
-                    foreach (var s in _moduleParams.ModuleSettings)
+                    if ((_paramInfo.GetXmlPropertyInt("genxml/urlparams/" + _moduleParams.DetailUrlParam) > 0) && _moduleParams.DetailView)
                     {
-                        if (!passSettings.ContainsKey(s.Key)) passSettings.Add(s.Key, s.Value);
+                        // detail display
+                        var itemid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/" + _moduleParams.DetailUrlParam);
+
+                        var razorTempl = _appThemeMod.GetTemplateRazor("detail");
+
+                        var articleData = new ArticleData(_dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
+                        articleData.Populate(itemid);
+
+                        foreach (var s in _moduleParams.ModuleSettings)
+                        {
+                            if (!passSettings.ContainsKey(s.Key)) passSettings.Add(s.Key, s.Value);
+                        }
+
+                        passSettings.Add("DocumentFolderRel", _dataModuleParams.DocumentFolderRel);
+                        passSettings.Add("ImageFolderRel", _dataModuleParams.ImageFolderRel);
+
+                        if (passSettings.ContainsKey("tabid")) passSettings.Remove("tabid");
+                        passSettings.Add("tabid", _tabid.ToString());
+
+                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, passSettings);
+
+                    }
+                    else
+                    {
+                        // list display
+                        var razorTempl = _appThemeMod.GetTemplateRazor("view");
+
+                        var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
+                        articleDataList.Populate(appTheme.DataType);
+
+                        foreach (var s in _moduleParams.ModuleSettings)
+                        {
+                            if (!passSettings.ContainsKey(s.Key)) passSettings.Add(s.Key, s.Value);
+                        }
+
+                        passSettings.Add("DocumentFolderRel", _dataModuleParams.DocumentFolderRel);
+                        passSettings.Add("ImageFolderRel", _dataModuleParams.ImageFolderRel);
+
+                        if (passSettings.ContainsKey("tabid")) passSettings.Remove("tabid");
+                        passSettings.Add("tabid", _tabid.ToString());
+
+                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings, articleDataList.Header);
                     }
 
-                    passSettings.Add("DocumentFolderRel", _dataModuleParams.DocumentFolderRel);
-                    passSettings.Add("ImageFolderRel", _dataModuleParams.ImageFolderRel);                    
-
-                    strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings, articleDataList.Header);
 
                 }
                 else

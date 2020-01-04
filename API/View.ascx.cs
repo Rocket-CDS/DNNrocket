@@ -142,9 +142,10 @@ namespace DNNrocketAPI
             var hasEditAccess = false;
             if (UserId > 0) hasEditAccess = DotNetNuke.Security.Permissions.ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration);
 
-            var itemref = DNNrocketUtils.RequestQueryStringParam(Request, "refid");
+           
+            var itemref = DNNrocketUtils.RequestQueryStringParam(Request, _moduleParams.DetailUrlParam);
             // check for detail page display
-            if (GeneralUtils.IsNumeric(itemref))
+            if (GeneralUtils.IsNumeric(itemref) && _moduleParams.DetailView)
             {
                 var info = _objCtrl.GetInfo(Convert.ToInt32(itemref), DNNrocketUtils.GetCurrentCulture());
                 if (info != null)

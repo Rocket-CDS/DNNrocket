@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RocketMod\RocketMod.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="DNNrocketAPI">
       <HintPath>..\..\..\bin\DNNrocketAPI.dll</HintPath>
     </Reference>

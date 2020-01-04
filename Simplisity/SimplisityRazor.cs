@@ -49,6 +49,8 @@ namespace Simplisity
                 ModuleIdDataSource = Convert.ToInt32(settings["moduleiddatasource"]);
             }
 
+            if (settings.ContainsKey("tabid") && GeneralUtils.IsNumeric(settings["tabid"])) TabId = Convert.ToInt32(settings["tabid"]);
+
         }
 
         public SimplisityRazor()

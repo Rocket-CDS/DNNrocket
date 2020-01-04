@@ -238,6 +238,15 @@ namespace DNNrocketAPI
         {
             return Globals.NavigateURL(tabId);
         }
+        public static string NavigateURL(int tabId, string controlKey = "", string[] param = null)
+        {
+            if (param == null) param = new string[1];
+            param[0] = "";
+            var targetUrl = Globals.NavigateURL(tabId, controlKey, param);
+            return targetUrl;
+        }
+
+
 
     }
 }

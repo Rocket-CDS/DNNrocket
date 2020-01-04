@@ -255,4 +255,13 @@
   <data name="nomoduleid.Text" xml:space="preserve">
     <value>No ModuleId is defined.  You should exit the administration and re-enter the edit option,</value>
   </data>
+  <data name="detailurlparam.Help" xml:space="preserve">
+    <value>The detail url param is the name of the parameters in the url which identifies the detail item record.  Usually this can be left as "refid", but in situations of mulitple list detail modules on a single page it can be altered to make each module activate the detail page individually.  If can also be altered to offer a more meaningful name.</value>
+  </data>
+  <data name="detailurlparam.Text" xml:space="preserve">
+    <value>Detail URL param</value>
+  </data>
+  <data name="detailview.Text" xml:space="preserve">
+    <value>Detail View</value>
+  </data>
 </root>

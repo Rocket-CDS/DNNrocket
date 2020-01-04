@@ -83,6 +83,15 @@
                     @TextBox(configinfo, "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
                 </div>
             </div>
+            <div class="w3-row">
+                <div class="w3-col m6 w3-padding" style="height:78px;">
+                    @CheckBox(configinfo, "genxml/hidden/detailview", "&nbsp;" + ResourceKey("RocketMod.detailview").ToString(), "class='w3-check detailviewcheckbox' ", false)
+                </div>
+                <div class="w3-col m6 w3-padding detailurlparam" style="display:none;">
+                    <label class="w3-tooltip">@ResourceKey("RocketMod.detailurlparam")</label>
+                    @TextBox(configinfo, "genxml/hidden/detailurlparam", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "refid", false)
+                </div>
+            </div>
 
         </div>
         <div class="w3-col m4">
@@ -220,6 +229,20 @@
                 $('.sharedataicon').css('color', 'red')
             }
         });
+
+        $('.detailviewcheckbox').unbind('click');
+        $('.detailviewcheckbox').click(function () {
+            if ($(this).prop('checked')) {
+                $('.detailurlparam').show();
+            }
+            else {
+                $('.detailurlparam').hide();
+            }
+        });        
+
+        if ($('.detailviewcheckbox').prop('checked')) {
+            $('.detailurlparam').show();
+        }
 
     });
 
