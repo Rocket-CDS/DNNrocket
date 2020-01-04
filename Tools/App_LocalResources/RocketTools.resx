@@ -139,7 +139,10 @@
     <value>Copy Language</value>
   </data>
   <data name="deletebackup.Confirm" xml:space="preserve">
-    <value>Delete this BackUp?</value>
+    <value>Delete this BackUp ?</value>
+  </data>
+  <data name="deletebackupall.Confirm" xml:space="preserve">
+    <value>Delete ALL BackUps ?</value>
   </data>
   <data name="destinationlanguage.Text" xml:space="preserve">
     <value>Destination Language</value>

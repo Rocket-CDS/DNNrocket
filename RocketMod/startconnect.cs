@@ -1044,7 +1044,8 @@ namespace RocketMod
             var copylanguage = _paramInfo.GetXmlProperty("genxml/hidden/copylanguage");
             var destinationlanguage = _paramInfo.GetXmlProperty("genxml/hidden/destinationlanguage");
             var backup = _paramInfo.GetXmlPropertyBool("genxml/checkbox/backup");
-
+            var backuprootfolder = _paramInfo.GetXmlProperty("genxml/hidden/backuprootfolder");
+            
             if (destinationlanguage != copylanguage)
             {
                 // BackUp data to file 
@@ -1064,7 +1065,7 @@ namespace RocketMod
                             }
                         }
                     }
-                    var fileName = DNNrocketUtils.BackUpNewFileName(_systemKey);
+                    var fileName = DNNrocketUtils.BackUpNewFileName(backuprootfolder, _systemKey);
                     var backupData = new BackUpData(fileName);
                     backupData.BackUp(saveList);
                 }

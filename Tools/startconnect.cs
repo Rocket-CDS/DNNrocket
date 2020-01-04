@@ -79,6 +79,9 @@ namespace Rocket.Tools
                     case "rocketlang_restorebackup":
                         strOut = RestoreBackUp();
                         break;
+                    case "rocketlang_deletebackupall":
+                        strOut = DeleteAllBackUp();
+                        break;                        
 
 
                     case "rocketactions_getdisplay":
@@ -177,6 +180,7 @@ namespace Rocket.Tools
                                 var paramInfo = new SimplisityInfo();
                                 paramInfo.SetXmlProperty("genxml/hidden/destinationlanguage", destinationlanguage);
                                 paramInfo.SetXmlProperty("genxml/hidden/copylanguage", copylanguage);
+                                paramInfo.SetXmlProperty("genxml/hidden/backuprootfolder", _rocketInterface.InterfaceKey);
                                 paramInfo.SetXmlProperty("genxml/checkbox/backup", backup);
                                 paramInfo.SetXmlProperty("genxml/hidden/portalid", DNNrocketUtils.GetPortalId().ToString());
                                 var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfoData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
@@ -190,10 +194,14 @@ namespace Rocket.Tools
         private string DeleteBackUp()
         {
             var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/hidden/filemappath"));
-            if (File.Exists(filemappath))
-            {
-                File.Delete(filemappath);
-            }
+            var backUpDataList = new BackUpDataList(_rocketInterface.InterfaceKey);
+            backUpDataList.DeleteBackUpFile(filemappath);
+            return LangAdmin();
+        }
+        private string DeleteAllBackUp()
+        {
+            var backUpDataList = new BackUpDataList(_rocketInterface.InterfaceKey);
+            backUpDataList.DeleteAllBackUpFiles();
             return LangAdmin();
         }
 

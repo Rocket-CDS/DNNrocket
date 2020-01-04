@@ -66,6 +66,7 @@
 <div class="w3-row w3-padding">
     <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
         <b class="w3-large">@ResourceKey("DNNrocket.backup")</b>
+        <div class="w3-button w3-right w3-padding simplisity_confirmclick" title="@ResourceKey("DNNrocket.delete")" s-confirm="@ResourceKey("RocketTools.deletebackupall", "", "Confirm")" s-cmd="rocketlang_deletebackupall" s-fields=''><i class="fas fa-trash-alt"></i></div>
     </div>
     <div class="w3-row historydatasection">
 
@@ -78,7 +79,7 @@
             </tr>
 
             @{
-                var BackUpDataList = new BackUpDataList();
+                var BackUpDataList = new BackUpDataList("rocketlang");
                 foreach (var moduleFolder in BackUpDataList.ModuleFolderList)
                 {
                     foreach (var BackUpData in BackUpDataList.GetBackUpList(moduleFolder))
