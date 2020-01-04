@@ -123,6 +123,9 @@
   <data name="appthemename.Text" xml:space="preserve">
     <value>AppTheme Name</value>
   </data>
+  <data name="autoregeneratedetail.Text" xml:space="preserve">
+    <value>detail.cshtml</value>
+  </data>
   <data name="autoregenerateedit.Text" xml:space="preserve">
     <value>edit.cshtml</value>
   </data>

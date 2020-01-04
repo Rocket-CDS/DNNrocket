@@ -164,9 +164,8 @@
                         @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
                     </div>
 
-                    <div class="w3-row w3-padding">
+                    <div class="w3-row w3-padding w3-border-bottom">
                         <div class="w3-col " style="width:136px;">
-                            <label>Logo</label>
                             <img src="@ThumbnailImageUrl(appTheme.Logo,136,136)" alt="" style="" class="w3-circle">
                         </div>
                         <div class="w3-col m8 w3-padding">
@@ -188,22 +187,22 @@
                     </div>
 
                     <div class="w3-row ">
-                        <div class="w3-col " style="width:136px;">
-                            &nbsp;
-                        </div>
                         <div class="w3-col m9 w3-padding">
                             <label>@ResourceKey("AppThemes.regenerate")</label>
                             <div class="w3-row ">
-                                <div class="w3-col m3 w3-padding ">
+                                <div class="w3-col m2 w3-padding ">
                                     @CheckBox(info, "genxml/checkbox/regenerateview", ResourceKey("AppThemes.autoregenerateview").ToString(), "", true)
                                 </div>
-                                <div class="w3-col m3 w3-padding ">
+                                <div class="w3-col m2 w3-padding ">
+                                    @CheckBox(info, "genxml/checkbox/regeneratedetail", ResourceKey("AppThemes.autoregeneratedetail").ToString(), "", true)
+                                </div>
+                                <div class="w3-col m2 w3-padding ">
                                     @CheckBox(info, "genxml/checkbox/regenerateedit", ResourceKey("AppThemes.autoregenerateedit").ToString(), "", true)
                                 </div>
-                                <div class="w3-col m3 w3-padding ">
+                                <div class="w3-col m2 w3-padding ">
                                     @CheckBox(info, "genxml/checkbox/regeneratesettings", ResourceKey("AppThemes.autoregeneratesettings").ToString(), "", true)
                                 </div>
-                                <div class="w3-col m3 w3-padding regenerateeditlist" style="display:none;">
+                                <div class="w3-col m2 w3-padding regenerateeditlist" style="display:none;">
                                     @CheckBox(info, "genxml/checkbox/regenerateeditlist", ResourceKey("AppThemes.autoregenerateeditlist").ToString(), "", true)
                                 </div>
                             </div>

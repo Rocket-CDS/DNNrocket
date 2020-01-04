@@ -1,0 +1,23 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketMod;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "[Token:appthemeresx]")
+
+@RenderTemplate("editiframe.cshtml", "/DesktopModules/DNNrocket/rocketmod", "config-w3", Model)
+
+@{
+    var articleData = (ArticleData)Model.List.First();
+}
+
+<div class="w3-row">
+
+        [Token:List]
+
+</div>
+
+

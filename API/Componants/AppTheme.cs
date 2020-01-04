@@ -466,6 +466,11 @@ namespace DNNrocketAPI.Componants
                 tempMapPath = AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
                 if (viewHtml != "") FileUtils.SaveFile(tempMapPath, viewHtml);
 
+                var detailHtml = GetTemplate("detail");
+                if (RegenerateDetail) detailHtml = GenerateView(0);
+                tempMapPath = AppThemeVersionFolderMapPath + "\\default\\detail.cshtml";
+                if (detailHtml != "") FileUtils.SaveFile(tempMapPath, detailHtml);
+
                 SyncFiles();
             }
 
@@ -1690,6 +1695,7 @@ namespace DNNrocketAPI.Componants
         public bool RegenerateEdit { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateedit"); } }
         public bool RegenerateSettings { get { return Record.GetXmlPropertyBool("genxml/checkbox/regeneratesettings"); } }
         public bool RegenerateView { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateview"); } }
+        public bool RegenerateDetail { get { return Record.GetXmlPropertyBool("genxml/checkbox/regeneratedetail"); } }
 
         public int DataType { get { return Record.GetXmlPropertyInt("genxml/radio/themetype"); } }
         public bool EnableSettings { get { return Record.GetXmlPropertyBool("genxml/checkbox/enablesettings"); } }
