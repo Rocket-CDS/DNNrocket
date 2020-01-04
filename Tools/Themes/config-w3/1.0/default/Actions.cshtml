@@ -14,11 +14,47 @@
 <h1>@ResourceKey("RocketTools.actions")</h1>
 <p>@ResourceKey("RocketTools.actions", "", "Help")</p>
 
-<div class="w3-row w3-margin-bottom ">
+<div class="w3-row w3-margin-bottom validationaction">
+
+
+    <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
+        <b class="w3-large">@ResourceKey("DNNrocket.system")</b>
+    </div>
+
+    <div class="w3-third w3-padding">
+        <div class="hummingbird-treeview well h-scroll-large">
+            <ul id="validatelistdata" class="hummingbird-base">
+
+                @{
+                    var systemData = new DNNrocketAPI.SystemData();
+                    var list = systemData.GetSystemList();
+                    foreach (var sk in list)
+                    {
+                        var systemInfoData = new SystemInfoData(sk.ItemID);
+                        if (systemInfoData.GetInterface("validatedata") != null)
+                        {
+                            <li>
+                                <label>
+                                    <input id='sk.GUIDKey' class="systemcheckbox" systemid='@sk.ItemID' s-xpath="genxml/checkbox/systemid@(sk.ItemID)" s-update="save" type="checkbox" checked="true">
+                                    @sk.GetXmlProperty("genxml/textbox/systemname")
+                                </label>
+                            </li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="w3-third w3-padding">
+          <div class="w3-button w3-margin-top w3-green w3-padding simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.validate") ?" s-cmd="rocketactions_validate" s-fields='' s-post=".validationaction" style="width:100%;"><i class="fas fa-save"></i>&nbsp;@ResourceKey("DNNrocket.validate")</div>
+    </div>
+
 
 
 </div>
 
+<hr/>
 
 <script>
 

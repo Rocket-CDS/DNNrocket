@@ -511,7 +511,7 @@
     </genxml>
     <genxml>
       <textbox>
-        <interfacekey>validatedate</interfacekey>
+        <interfacekey>validatedata</interfacekey>
         <entitytypecode>ROCKETMOD</entitytypecode>
         <interfaceicon />
         <defaulttheme />

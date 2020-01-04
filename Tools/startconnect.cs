@@ -84,7 +84,11 @@ namespace Rocket.Tools
                     case "rocketactions_getdisplay":
                         strOut = ActionAdmin();
                         break;
-
+                    case "rocketactions_validate":
+                        SaveSystems("validatesystemlist");
+                        DoValidation();
+                        strOut = ActionAdmin();
+                        break;                        
                 }
             }
             else
@@ -253,7 +257,7 @@ namespace Rocket.Tools
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "clonesmodulesection.cshtml";
 
-                CacheUtils.SetCache(_pageref, info, "roles");
+                CacheUtils.SetCache(_pageref, info, "rockettools");
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 return DNNrocketUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
@@ -319,16 +323,6 @@ namespace Rocket.Tools
 
         #region "Roles"
 
-        public SimplisityInfo GetCachedInfo()
-        {
-            var info = (SimplisityInfo)CacheUtils.GetCache(_pageref, "roles");
-            if (info == null)
-            {
-                info = new SimplisityInfo();
-                info.GUIDKey = "new";  // flag to check if we have lost the previous selection
-            }
-            return info;
-        }
         public String GetRoles()
         {
             try
@@ -476,9 +470,47 @@ namespace Rocket.Tools
             }
         }
 
+        public void DoValidation()
+        {
+            var info = GetCachedInfo();
+
+            foreach (var s in info.GetRecordList("validatesystemlist"))
+            {
+
+                var systemid = s.GetXmlPropertyInt("genxml/systemid");
+                if (systemid > 0)
+                {
+                    var systemInfoData = new SystemInfoData(systemid);
+                    if (systemInfoData.Exists)
+                    {
+                        foreach (var rocketInterface in systemInfoData.GetInterfaceList())
+                        {
+                            if (rocketInterface.Exists && rocketInterface.IsProvider("validatedata"))
+                            {
+                                var paramInfo = new SimplisityInfo();
+                                paramInfo.SetXmlProperty("genxml/hidden/portalid", DNNrocketUtils.GetPortalId().ToString());
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfoData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
         #endregion
 
         #region "general"
+        public SimplisityInfo GetCachedInfo()
+        {
+            var info = (SimplisityInfo)CacheUtils.GetCache(_pageref, "rockettools");
+            if (info == null)
+            {
+                info = new SimplisityInfo();
+                info.GUIDKey = "new";  // flag to check if we have lost the previous selection
+            }
+            return info;
+        }
         public void SaveSystems(string listName)
         {
             var info = GetCachedInfo();
@@ -496,7 +528,7 @@ namespace Rocket.Tools
                     info.AddRecordListItem(listName, sRec);
                 }
             }
-            CacheUtils.SetCache(_pageref, info, "roles");
+            CacheUtils.SetCache(_pageref, info, "rockettools");
         }
         public void SaveModules(string listName)
         {
@@ -515,7 +547,7 @@ namespace Rocket.Tools
                     info.AddRecordListItem(listName, sRec);
                 }
             }
-            CacheUtils.SetCache(_pageref, info, "roles");
+            CacheUtils.SetCache(_pageref, info, "rockettools");
         }
 
         public void SaveTreeView(string listName)
@@ -543,7 +575,7 @@ namespace Rocket.Tools
                     }
                 }
             }
-            CacheUtils.SetCache(_pageref, info, "roles");
+            CacheUtils.SetCache(_pageref, info, "rockettools");
         }
 
         #endregion

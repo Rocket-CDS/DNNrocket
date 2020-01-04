@@ -551,13 +551,13 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        public IEncodedString DataSourceList(SimplisityInfo info, int systemid, string xpath, string attributes = "", bool allowEmpty = true, bool localized = false)
+        public IEncodedString DataSourceList(SimplisityInfo info, int systemkey, string xpath, string attributes = "", bool allowEmpty = true, bool localized = false)
         {
             var strOut = "";
             if (info != null)
             {
                 var objCtrl = new DNNrocketController();
-                var filter = "and systemId = " + systemid + " ";
+                var filter = "and r1.XMlData.value('(genxml/hidden/systemkey)[1]','nvarchar(max)') = '" + systemkey + "' ";
                 var dirlist = objCtrl.GetList(info.PortalId,-1, "MODULEPARAMS", filter);
                 var tList = new Dictionary<int,string>();
                 foreach (var sInfo in dirlist)

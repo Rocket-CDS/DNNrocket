@@ -125,10 +125,10 @@ namespace RocketMod
                     strOut = GetDashBoard();
                     break;
                 case "rocketmodedit_reset":
-                    strOut = ResetRocketMod();
+                    strOut = ResetRocketMod(_moduleid);
                     break;
                 case "rocketmodedit_resetdata":
-                    strOut = ResetDataRocketMod();
+                    strOut = ResetDataRocketMod(_moduleid);
                     break;
                 case "rocketmodedit_datasourcelist":
                     strOut = GetDataSourceList();
@@ -296,7 +296,14 @@ namespace RocketMod
             }
             else
             {
-                if (!_moduleParams.Exists && paramCmd != "module_copylanguage" && paramCmd != "module_import" && paramCmd != "rocketmod_getdata" && paramCmd != "rocketmodedit_saveapptheme" && paramCmd != "rocketmodedit_saveconfig" && paramCmd != "rocketmodedit_saveappthemeconfig")
+                if (!_moduleParams.Exists &&
+                    paramCmd != "module_validate" &&
+                    paramCmd != "module_copylanguage" &&
+                    paramCmd != "module_import" &&
+                    paramCmd != "rocketmod_getdata" &&
+                    paramCmd != "rocketmodedit_saveapptheme" &&
+                    paramCmd != "rocketmodedit_saveconfig" &&
+                    paramCmd != "rocketmodedit_saveappthemeconfig")
                 {
                     return "rocketmodedit_selectapptheme";
                 }
@@ -750,16 +757,16 @@ namespace RocketMod
 
         #endregion
 
-        public String ResetRocketMod()
+        public String ResetRocketMod(int moduleid)
         {
             try
             {
                 _moduleParams.Delete();
 
                 var objCtrl = new DNNrocketController();
-                var info = objCtrl.GetData("moduleid" + _moduleid, "ROCKETMODFIELDS", "", _moduleid, true);
+                var info = objCtrl.GetData("moduleid" + moduleid, "ROCKETMODFIELDS", "", moduleid, true);
                 if (info != null) objCtrl.Delete(info.ItemID);
-                info = objCtrl.GetData("moduleid" + _moduleid, "ROCKETMODSETTINGS", "", _moduleid, true);
+                info = objCtrl.GetData("moduleid" + moduleid, "ROCKETMODSETTINGS", "", moduleid, true);
                 if (info != null) objCtrl.Delete(info.ItemID);
 
                 return GetSelectApp();
@@ -770,11 +777,11 @@ namespace RocketMod
             }
         }
 
-        public String ResetDataRocketMod()
+        public String ResetDataRocketMod(int moduleid)
         {
             try
             {
-                var articleDataList = new ArticleDataList(_moduleid, _editLang);
+                var articleDataList = new ArticleDataList(moduleid, _editLang);
                 articleDataList.DeleteAll();
                 return GetDashBoard();
             }
@@ -1094,10 +1101,16 @@ namespace RocketMod
             var objCtrl = new DNNrocketController();
 
             // remove deleted modules
-            var moduleParams = new ModuleParams(_moduleid, _systemKey);
-            if (!DNNrocketUtils.ModuleExists(moduleParams.TabId, _moduleid) && moduleParams.ModuleType.ToLower() == "rocketmod")
+            var filter = "and r1.XMlData.value('(genxml/hidden/systemkey)[1]','nvarchar(max)') = '" + _systemKey + "' ";
+            var dirlist = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "MODULEPARAMS", filter);
+            foreach (var sInfo in dirlist)
             {
-                moduleParams.Delete();
+                var moduleParams = new ModuleParams(sInfo.ModuleId, _systemKey);
+                if (moduleParams.ModuleId == sInfo.ModuleId && !DNNrocketUtils.ModuleExists(moduleParams.TabId, sInfo.ModuleId) && moduleParams.ModuleType.ToLower() == "rocketmod")
+                {
+                    ResetRocketMod(sInfo.ModuleId);
+                    ResetDataRocketMod(sInfo.ModuleId);
+                }
             }
 
         }
