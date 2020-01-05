@@ -1483,7 +1483,7 @@ namespace DNNrocketAPI
         {
             var cachekey = moduleParams.ModuleId + "." + moduleParams.ModuleRef + ".pageheader.cshtml";
             string cacheHead = null;
-            if (moduleParams.CacheEnabled) cacheHead = (string)CacheUtils.GetCache(cachekey, moduleParams.CacheGroupId);
+            if (moduleParams.CacheEnabled) cacheHead = (string)CacheFileUtils.GetCache(cachekey, moduleParams.CacheGroupId);
             if (!String.IsNullOrEmpty(cacheHead))
             {
                 PageIncludes.IncludeTextInHeader(page, cacheHead);
@@ -1504,7 +1504,7 @@ namespace DNNrocketAPI
                     cacheHead = RazorRender(nbRazor, activePageHeaderTemplate, false);
                 }
 
-                CacheUtils.SetCache(cachekey, cacheHead, moduleParams.CacheGroupId);
+                CacheFileUtils.SetCache(cachekey, cacheHead, moduleParams.CacheGroupId);
                 PageIncludes.IncludeTextInHeader(page, cacheHead);
             }
         }

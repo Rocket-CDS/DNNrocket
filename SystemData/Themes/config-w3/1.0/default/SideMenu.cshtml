@@ -35,9 +35,11 @@
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-before="tuenoffreload" s-cmd="systemapi_licenselist" s-fields='{"track":"true"}'><i class="fas fa-key"></i>&nbsp;@ResourceKey("system.licenses")</div>
 
     <hr />
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_clearmemcache" s-reload="true" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("system.clearmemcache")</div>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_clearfilecache" s-reload="true" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("system.clearfilecache")</div>
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_clearallcache" s-reload="true" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("DNNrocket.clearallcache")</div>
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_confirmclick" s-confirm="@ResourceKey("system.cleartempdb","","Confirm")" s-cmd="systemapi_cleartempdb"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("system.cleartempdb")</div>
-    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click"  s-reload="true" s-cmd="systemapi_recycleapppool"><i class="fas fa-sync"></i>&nbsp;@ResourceKey("system.recycleapppool")</div>    
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-reload="true" s-cmd="systemapi_recycleapppool"><i class="fas fa-sync"></i>&nbsp;@ResourceKey("system.recycleapppool")</div>
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="login_signout" s-return="#simplisity_startpanel"><i class="fas fa-sign-out-alt"></i>&nbsp;@ResourceKey("DNNrocket.signout")</div>
     <hr />
 

@@ -71,7 +71,7 @@ namespace DNNrocketAPI
             if (clearallcache != "")
             {
                 DNNrocketUtils.ClearPortalCache(PortalId);
-                CacheUtils.ClearAllCache();
+                CacheFileUtils.ClearAllCache();
             }
 
             var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
@@ -104,7 +104,7 @@ namespace DNNrocketAPI
                         // change of page for module
                         _moduleParams.TabId = PortalSettings.Current.ActiveTab.TabID; 
                         _moduleParams.Save();
-                        CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
+                        CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
                     }
 
                     DNNrocketUtils.IncludePageHeaders(_moduleParams, this.Page, TabId, systemInfoData.DebugMode);
@@ -204,7 +204,7 @@ namespace DNNrocketAPI
                 var cacheOutPut = "";
                 var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
 
-                if (_moduleParams.CacheEnabled) cacheOutPut = (string)CacheUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
+                if (_moduleParams.CacheEnabled) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
 
                 if (String.IsNullOrEmpty(cacheOutPut))
                 {
@@ -234,7 +234,7 @@ namespace DNNrocketAPI
                         var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemInfoData.DebugMode);
                         strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemInfoData.DebugMode);
                     }
-                    CacheUtils.SetCache(cacheKey, strOut, _moduleParams.CacheGroupId);
+                    CacheFileUtils.SetCache(cacheKey, strOut, _moduleParams.CacheGroupId);
                 }
                 else
                 {

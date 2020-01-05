@@ -330,4 +330,10 @@
   <data name="recycleapppool.Text" xml:space="preserve">
     <value>Recycle AppPool</value>
   </data>
+  <data name="clearfilecache.Text" xml:space="preserve">
+    <value>Clear File Cache</value>
+  </data>
+  <data name="clearmemcache.Text" xml:space="preserve">
+    <value>Clear Memory Cache</value>
+  </data>
 </root>
