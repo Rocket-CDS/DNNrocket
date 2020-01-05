@@ -392,7 +392,7 @@ namespace RocketMod
             _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
             _moduleParams.AppThemeVersion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
             _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
-            _moduleParams.DetailUrlParam = _postInfo.GetXmlProperty("genxml/hidden/detailurlparam");
+            _moduleParams.DetailUrlParam = GeneralUtils.UrlFriendly(_postInfo.GetXmlProperty("genxml/hidden/detailurlparam"));
             _moduleParams.DetailView = _postInfo.GetXmlPropertyBool("genxml/hidden/detailview");
             _moduleParams.ModuleType = "RocketMod";
             _moduleParams.Exists = true;

@@ -13,12 +13,17 @@
 @{
     var articleDataList = (ArticleDataList)Model.List.First();
 }
+<br />
+<br />
 
-<div class="w3-row">
+<div class="w3-row w3-margin-top">
 
     @foreach (var info in articleDataList.DataList)
     {
-        [Token:List]
+        <div class="w3-row">
+            <a class="w3-button w3-blue" href="@DetailUrl(Model,info.ItemID,info.GetXmlProperty("genxml/lang/genxml/textbox/title"))">@ResourceKey("DNNrocket.edit")</a>
+            [Token:List]
+        </div>
     }
 
 </div>

@@ -18,6 +18,7 @@ namespace Simplisity
         public String FullTemplateName { get; set; }
         public String TemplateName { get; set; }
         public String ThemeFolder { get; set; }
+        public String SystemKey { get; set; }
 
         public String Lang { get; set; }
 
@@ -50,6 +51,7 @@ namespace Simplisity
             }
 
             if (settings.ContainsKey("tabid") && GeneralUtils.IsNumeric(settings["tabid"])) TabId = Convert.ToInt32(settings["tabid"]);
+            if (settings.ContainsKey("systemkey")) SystemKey = settings["systemkey"];
 
         }
 

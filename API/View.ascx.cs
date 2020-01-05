@@ -177,6 +177,7 @@ namespace DNNrocketAPI
             paramInfo.ModuleId = ModuleId;
             paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
             paramInfo.SetXmlProperty("genxml/hidden/tabid", _moduleParams.TabId.ToString());
+            paramInfo.SetXmlProperty("genxml/hidden/systemkey", _systemkey);
 
             if (_rocketInterface != null && _rocketInterface.Exists)
             {

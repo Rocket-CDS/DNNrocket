@@ -50,6 +50,31 @@ namespace DNNrocketAPI.render
             return DropDownList(info, xpath, dataSytemKeys, attributes, defaultValue, localized, row, listname);
         }
 
+        public IEncodedString DetailUrl(SimplisityRazor model, int itemid, string title)
+        {
+            var rtn = "";
+            var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), model.TabId);
+            var moduleParams = new ModuleParams(model.ModuleId, model.SystemKey);
+
+            if (model.SystemKey == "") rtn += "ERROR: no SystemKey";
+            if (model.TabId <= 0) rtn += "ERROR: no TabId";
+
+            rtn += pageData.FullUrl + "/" + moduleParams.DetailUrlParam + "/" + itemid + "/" + GeneralUtils.UrlFriendly(title);
+
+            return new RawString(rtn);
+        }
+        public IEncodedString ListUrl(SimplisityRazor model)
+        {
+            var rtn = "";
+            var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), model.TabId);
+
+            if (model.TabId <= 0) rtn += "ERROR: no TabId";
+
+            rtn += pageData.FullUrl;
+
+            return new RawString(rtn);
+        }
+
         public IEncodedString ResourceCSV(String resourceFileKey, string keyListCSV, string lang = "", string resourceExtension = "Text")
         {
             var csvList = keyListCSV.Split(',');

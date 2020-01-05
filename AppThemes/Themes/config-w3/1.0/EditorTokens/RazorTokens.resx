@@ -308,4 +308,10 @@
   <data name="Razor.ResourceCSV" xml:space="preserve">
     <value>@ResourceCSV(String resourceFileKey, string keyListCSV, string lang = "", string resourceExtension = "Text")</value>
   </data>
+  <data name="Razor.DetailUrl" xml:space="preserve">
+    <value>@DetailUrl(SimplisityRazor model, int itemid, string title)</value>
+  </data>
+  <data name="Razor.ListUrl" xml:space="preserve">
+    <value>@ListUrl(SimplisityRazor model)</value>
+  </data>
 </root>

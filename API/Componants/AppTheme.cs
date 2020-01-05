@@ -17,7 +17,7 @@ namespace DNNrocketAPI.Componants
         private string _guidKey;
         private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "APPTHEME";
-        private DNNrocketController _objCtrl;
+        private readonly DNNrocketController _objCtrl;
         private List<string> _templateFileName;
         private List<string> _cssFileName;
         private List<string> _jsFileName;
@@ -187,7 +187,15 @@ namespace DNNrocketAPI.Componants
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
             if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
             {
-                var viewHtml = GenerateView(0);
+                var viewHtml = GenerateView(0, "view.cshtml");
+                FileUtils.SaveFile(tempMapPath, viewHtml);
+                _templateFileName.Add(Path.GetFileName(tempMapPath));
+                AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), viewHtml);
+            }
+            tempMapPath = AppThemeVersionFolderMapPath + "\\default\\detail.cshtml";
+            if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
+            {
+                var viewHtml = GenerateView(0, "detail.cshtml");
                 FileUtils.SaveFile(tempMapPath, viewHtml);
                 _templateFileName.Add(Path.GetFileName(tempMapPath));
                 AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), viewHtml);
@@ -462,12 +470,12 @@ namespace DNNrocketAPI.Componants
                 if (listHtml != "") FileUtils.SaveFile(tempMapPath, listHtml);
 
                 var viewHtml = GetTemplate("view");
-                if (RegenerateView) viewHtml = GenerateView(0);
+                if (RegenerateView) viewHtml = GenerateView(0, "view.cshtml");
                 tempMapPath = AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
                 if (viewHtml != "") FileUtils.SaveFile(tempMapPath, viewHtml);
 
                 var detailHtml = GetTemplate("detail");
-                if (RegenerateDetail) detailHtml = GenerateView(0);
+                if (RegenerateDetail) detailHtml = GenerateView(0, "detail.cshtml");
                 tempMapPath = AppThemeVersionFolderMapPath + "\\default\\detail.cshtml";
                 if (detailHtml != "") FileUtils.SaveFile(tempMapPath, detailHtml);
 
@@ -641,7 +649,7 @@ namespace DNNrocketAPI.Componants
                 var k = s.Key;
                 while (rtnlist.ContainsKey(k))
                 {
-                    k = k + flp;
+                    k += flp;
                     flp += 1;
                 }
                 rtnlist.Add(k, s.Value);
@@ -1308,13 +1316,26 @@ namespace DNNrocketAPI.Componants
             }
             else
             {
-                strOut = strOut.Replace("[Token:AppThemeFields]", strFieldList);
-                strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
-                strOut = strOut.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
-                strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
+                strOut = ReplaceTemplateTokens(strOut, strFieldList, systemInfoData);
                 return strOut;
             }
 
+        }
+
+        private string ReplaceTemplateTokens(string templateText, string strFieldList, SystemInfoData systemInfoData)
+        {
+            templateText = templateText.Replace("[Token:AppThemeFields]", strFieldList);
+            templateText = templateText.Replace("[Token: AppThemeFields]", strFieldList);
+            templateText = templateText.Replace("[Token:List]", strFieldList);
+            templateText = templateText.Replace("[Token: List]", strFieldList);
+            templateText = templateText.Replace("[Token:SystemKey]", SystemKey);
+            templateText = templateText.Replace("[Token: SystemKey]", SystemKey);
+            templateText = templateText.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
+            templateText = templateText.Replace("[Token: DefaultInterface]", systemInfoData.DefaultInterface);
+            templateText = templateText.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
+            templateText = templateText.Replace("[Token: appthemeresx]", AppThemeVersionFolderRel + "/resx/");
+
+            return templateText;
         }
 
         private string GenerateEditList(int row)
@@ -1384,16 +1405,13 @@ namespace DNNrocketAPI.Componants
             }
             else
             {
-                strOut = strOut.Replace("[Token:List]", strFieldList);
-                strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
-                strOut = strOut.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
-                strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
+                strOut = ReplaceTemplateTokens(strOut, strFieldList, systemInfoData);
                 return strOut;
             }
 
         }
 
-        private string GenerateView(int row)
+        private string GenerateView(int row, string templatefilename)
         {
             List<SimplisityRecord> fieldList = Record.GetRecordList("fielddata");
 
@@ -1445,18 +1463,15 @@ namespace DNNrocketAPI.Componants
 
             // merge to template
             var systemInfoData = new SystemInfoData(SystemKey);
-            var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\view.cshtml");
-            if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\view.cshtml");
+            var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\" + templatefilename);
+            if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\" + templatefilename);
             if (strOut == "")
             {
                 return strFieldList;
             }
             else
             {
-                strOut = strOut.Replace("[Token:List]", strFieldList);
-                strOut = strOut.Replace("[Token:SystemKey]", SystemKey);
-                strOut = strOut.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
-                strOut = strOut.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
+                strOut = ReplaceTemplateTokens(strOut, strFieldList, systemInfoData);
                 return strOut;
             }
 
