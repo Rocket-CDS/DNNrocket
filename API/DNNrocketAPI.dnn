@@ -1,9 +1,9 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="RocketMod" type="Module" version="1.0.0">
-			<friendlyName>RocketMod</friendlyName>
-			<description>Rocket Module</description>
-      <iconFile>DesktopModules/DNNrocket/RocketMod/dnnrocketlogo2.jpg</iconFile>
+		<package name="RocketSystem" type="Module" version="1.0.0">
+			<friendlyName>RocketSystem</friendlyName>
+			<description>Rocket System</description>
+      <iconFile>DesktopModules/DNNrocket/api/images/dnnrocketadminlogo.jpg</iconFile>
       <owner>
 				<name>Charles France</name>
 				<organization>DNN Rocket</organization>
@@ -109,6 +109,37 @@
           </assemblies>
 				</component>
 				<component type="Module">
+
+
+          <desktopModule>
+            <moduleName>rocketadmin</moduleName>
+            <foldername>api</foldername>
+            <businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Portable" />
+              <supportedFeature type="Searchable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>rocketsystem</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/DNNrocket/API/View.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile>DesktopModules/DNNrocket/api/images/dnnrocketadminlogo.jpg</iconFile>
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+
 
           <desktopModule>
             <moduleName>rocketmod</moduleName>

@@ -209,6 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\dnnrocket.jpg" />
+    <None Include="images\dnnrocketadminlogo.jpg" />
     <Content Include="images\flags\16\af-ZA.png" />
     <Content Include="images\flags\16\ar-AE.png" />
     <Content Include="images\flags\16\ar-BH.png" />

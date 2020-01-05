@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		globalconfig.xml = globalconfig.xml
 		..\..\Portals\_default\Skins\LeftMenuContent\LeftMenuContent.ascx = ..\..\Portals\_default\Skins\LeftMenuContent\LeftMenuContent.ascx
 		README.md = README.md
+		rocketadmin_system.xml = rocketadmin_system.xml
 		rocketappthemes_system.xml = rocketappthemes_system.xml
 		rocketmod_system.xml = rocketmod_system.xml
 		rockettools_system.xml = rockettools_system.xml
@@ -55,7 +56,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CKEditor", "CKEditor", "{5A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemThemes", "SystemThemes\SystemThemes.csproj", "{219F8FBC-D978-40FA-B072-E60B75F670E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools", "Tools\Tools.csproj", "{BC6FD7D7-0FD7-49FC-A5C2-7E5B9797C4B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tools", "Tools\Tools.csproj", "{BC6FD7D7-0FD7-49FC-A5C2-7E5B9797C4B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
