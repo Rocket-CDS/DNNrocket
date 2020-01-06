@@ -1,27 +1,27 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<genxml>
+﻿<genxml>
   <hidden>
     <index>99</index>
   </hidden>
   <textbox>
     <ctrlkey>rocketsystem</ctrlkey>
     <systemname>Rocket System</systemname>
-    <adminurl />
-    <apiurl />
+    <adminurl>/DesktopModules/DNNrocket/adminsystem.html</adminurl>
+    <apiurl>/DesktopModules/DNNrocket/API/api.ashx</apiurl>
     <defaultinterface>rocketadmin</defaultinterface>
-    <systemrelpath />
+    <systemrelpath>/DesktopModules/DNNrocket/systemdata/</systemrelpath>
     <encryptkey>231564987462</encryptkey>
     <ftproot>www/appthemes</ftproot>
   </textbox>
   <checkbox>
-    <debugmode>false</debugmode>
+    <debugmode>true</debugmode>
     <proavailable>false</proavailable>
+    <cacheoff>true</cacheoff>
   </checkbox>
   <interfacedata list="true">
     <genxml>
       <textbox>
         <interfacekey>rocketadmin</interfacekey>
-        <entitytypecode />
+        <entitytypecode>ADMIN</entitytypecode>
         <interfaceicon />
         <defaulttheme />
         <themeversion>1.0</themeversion>
@@ -36,7 +36,7 @@
         <group />
       </dropdownlist>
       <checkbox>
-        <onmenu>true</onmenu>
+        <onmenu>false</onmenu>
         <active>true</active>
       </checkbox>
       <radio>

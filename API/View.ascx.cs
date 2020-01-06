@@ -204,7 +204,7 @@ namespace DNNrocketAPI
                 var cacheOutPut = "";
                 var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
 
-                if (_moduleParams.CacheEnabled) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
+                if (_moduleParams.CacheEnabled && _systemInfoData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
 
                 if (String.IsNullOrEmpty(cacheOutPut))
                 {

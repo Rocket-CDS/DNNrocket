@@ -146,7 +146,11 @@ namespace DNNrocket.SystemData
                         DNNrocketUtils.ClearAllCache();
                         DNNrocketUtils.RecycleApplicationPool();
                         strOut = "<h1>Recycle App Pool</h1>";
-                        break;                        
+                        break;
+                    case "rocketadmin_adminpanel":
+                        strOut = AdminPanel();
+                        break;
+
                 }
             }
 
@@ -187,6 +191,25 @@ namespace DNNrocket.SystemData
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;            
         }
+
+
+        public String AdminPanel()
+        {
+            try
+            {
+                var strOut = "";
+                var passSettings = _paramInfo.ToDictionary();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("adminpanel.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), passSettings);
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
 
 
         public String LicensePopup()

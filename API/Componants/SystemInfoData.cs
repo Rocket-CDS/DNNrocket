@@ -122,6 +122,15 @@ namespace DNNrocketAPI
             get { return Info.GetXmlProperty("genxml/textbox/adminurl"); }
             set { Info.SetXmlProperty("genxml/textbox/adminurl", value); }
         }
+        public bool CacheOff
+        {
+            get { return Info.GetXmlPropertyBool("genxml/checkbox/cacheoff"); }
+            set { Info.SetXmlProperty("genxml/checkbox/cacheoff", value.ToString()); }
+        }
+        public bool CacheOn
+        {
+            get { return !Info.GetXmlPropertyBool("genxml/checkbox/cacheoff"); }
+        }
         public bool DebugMode
         {
             get { return Info.GetXmlPropertyBool("genxml/checkbox/debugmode"); }

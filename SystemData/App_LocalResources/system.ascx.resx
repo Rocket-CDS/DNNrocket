@@ -336,4 +336,7 @@
   <data name="clearmemcache.Text" xml:space="preserve">
     <value>Clear Memory Cache</value>
   </data>
+  <data name="tuencacheoff.Text" xml:space="preserve">
+    <value>Turn Cache Off</value>
+  </data>
 </root>

@@ -1,0 +1,62 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using RocketLicense.Componants;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketLicense/App_LocalResources/")
+
+@{
+    var systemData = new DNNrocketAPI.SystemData();
+    var list = systemData.GetSystemList();
+}
+
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/fa/css/all.min.css">
+<script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
+<script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<header class="w3-container ">
+    <h2>ZZZZZZZZZZZZZZZZZZZ</h2>
+</header>
+
+<div id="datasection" class="w3-row w3-margin-top">
+
+    <div class="w3-container w3-padding">
+
+        @foreach (SimplisityInfo nbi in list)
+        {
+            var lp1 = 0;
+            var adminurl = nbi.GetXmlProperty("genxml/textbox/adminurl");
+            if (adminurl != "" && !adminurl.Contains("[")) // check for admin link without parameters (for modules)
+            {
+                lp1 += 1;
+                var systemInfoData = new SystemInfoData(nbi.GetXmlProperty("genxml/textbox/ctrlkey"));
+        <div class="w3-padding w3-col m2 w3-center w3-border w3-margin">
+            <a href="@systemInfoData.AdminUrl" class="" target="_blank" style="cursor:pointer;">
+                <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
+                    <b class="w3-text-blue ">@systemInfoData.SystemName</b>
+                </div>
+                <img src="@ThumbnailImageUrl("",140,140)" style="width:60%;" class="w3-circle w3-hover-opacity" />
+                <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
+                    <b>@systemInfoData.SystemKey</b>
+                </div>
+            </a>
+        </div>
+
+            }
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('#updatelicensemodel').show();
+
+    });
+</script>
