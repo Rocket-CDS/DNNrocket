@@ -28,34 +28,9 @@ namespace DNNrocketAPI
                         var datain = File.ReadAllText(f);
                         try
                         {
-                            var nbi = new SimplisityInfo();
-                            nbi.XMLData = datain;
-                            // check if we are injecting multiple
-                            var nodlist = nbi.XMLDoc.SelectNodes("genxml");
-                            if (nodlist != null && nodlist.Count > 0)
-                            {
-                                foreach (XmlNode nod in nodlist)
-                                {
-                                    var nbi2 = new SimplisityInfo();
-                                    nbi2.XMLData = nod.OuterXml;
-                                    nbi2.ItemID = -1;
-                                    nbi2.GUIDKey = nbi.GetXmlProperty("genxml/textbox/ctrlkey");
-                                    nbi2.PortalId = 99999;
-                                    nbi2.Lang = "";
-                                    nbi2.ParentItemId = 0;
-                                    nbi2.ModuleId = -1;
-                                    nbi2.XrefItemId = 0;
-                                    nbi2.UserId = 0;
-                                    nbi2.TypeCode = "SYSTEM";
-
-                                    var s = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", nbi2.GUIDKey);
-
-                                    if (s != null) nbi2.ItemID = s.ItemID;
-
-                                    objCtrl.SaveRecord(nbi2);
-                                    upd = true;
-                                }
-                            }
+                            var systemData = new SystemData("");
+                            systemData.Import(datain);
+                            upd = true;
                         }
                         catch (Exception)
                         {

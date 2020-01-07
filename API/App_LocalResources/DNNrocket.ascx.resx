@@ -504,4 +504,7 @@
   <data name="validate.Text" xml:space="preserve">
     <value>Validate</value>
   </data>
+  <data name="export.Icon" xml:space="preserve">
+    <value>&lt;i class="fas fa-file-export fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
 </root>

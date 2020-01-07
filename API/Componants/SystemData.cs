@@ -31,6 +31,7 @@ namespace DNNrocketAPI
             if (systemInfo == null)
             {
                 systemInfo = new SimplisityInfo();
+                systemInfo.ItemID = -1;
                 Exists = false;
             }
             else
@@ -59,19 +60,29 @@ namespace DNNrocketAPI
             }
         }
 
-        public void Save(SimplisityInfo postInfo)
+        public void Import(string importXml)
         {
-            var objCtrl = new DNNrocketController();
+            var infoFromXml = new SimplisityInfo();
+            infoFromXml.FromXmlItem(importXml);
+            Info.XMLData = infoFromXml.XMLData;
+            Info.GUIDKey = Info.GetXmlProperty("genxml/textbox/ctrlkey");
+            Info.PortalId = 99999;
+            Info.TypeCode = "SYSTEM";
 
-            Info.XMLData = postInfo.XMLData;
-            Info.GUIDKey = postInfo.GetXmlProperty("genxml/textbox/ctrlkey");
+            var fileMapPath = DNNrocketUtils.MapPath(Info.GetXmlProperty("genxml/hidden/imagepathlogo"));
+            var base64 = Info.GetXmlProperty("genxml/hidden/logobase64");
+            FileUtils.SaveBase64ToFile(fileMapPath, base64);
 
-            if (Info.GetXmlProperty("genxml/textbox/defaultinterface") == "")
-            {
-                Info.SetXmlProperty("genxml/textbox/defaultinterface", Info.GetXmlProperty("genxml/interfacedata/genxml[1]/textbox/interfacekey"));
-            }
+            Info.SetXmlProperty("genxml/hidden/logobase64","");
 
-            var logoMapPath = DNNrocketUtils.MapPath(postInfo.GetXmlProperty("genxml/hidden/imagepathlogo"));
+            Update();
+            Exists = true;
+        }
+
+        public string Export()
+        {
+            var exportInfo = (SimplisityInfo)Info.Clone();
+            var logoMapPath = DNNrocketUtils.MapPath(Info.GetXmlProperty("genxml/hidden/imagepathlogo"));
             if (File.Exists(logoMapPath))
             {
                 var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));
@@ -81,8 +92,32 @@ namespace DNNrocketAPI
                 newImage.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
                 byte[] imageBytes = stream.ToArray();
                 string base64String = Convert.ToBase64String(imageBytes);
-                Info.SetXmlProperty("genxml/hidden/logobase64", base64String);
+                exportInfo.SetXmlProperty("genxml/hidden/logobase64", base64String, TypeCode.String, true);
             }
+
+            return exportInfo.ToXmlItem();
+        }
+
+        public void Save(SimplisityInfo postInfo)
+        {
+            var objCtrl = new DNNrocketController();
+
+            //remove any params
+            postInfo.RemoveXmlNode("genxml/postform");
+            postInfo.RemoveXmlNode("genxml/urlparams");
+
+            Info.XMLData = postInfo.XMLData;
+            Info.GUIDKey = postInfo.GetXmlProperty("genxml/textbox/ctrlkey");
+
+            if (Info.GetXmlProperty("genxml/textbox/defaultinterface") == "")
+            {
+                Info.SetXmlProperty("genxml/textbox/defaultinterface", Info.GetXmlProperty("genxml/interfacedata/genxml[1]/textbox/interfacekey"));
+            }
+
+            Info.SetXmlProperty("genxml/hidden/logobase64", "");
+
+            Info.PortalId = 99999;
+            Info.TypeCode = "SYSTEM";
 
             Update();
 

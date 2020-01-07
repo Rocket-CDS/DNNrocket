@@ -73,12 +73,15 @@
             </div>
         </div>
 
-        @if (sInfo.GetXmlProperty("genxml/textbox/adminurl") != "")
-        {
-            <div class="w3-row w3-padding">
-                <a class="w3-button w3-teal w3-padding-8 w3-margin-top" href="@sInfo.GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ButtonText(ButtonTypes.admin)</a>
-            </div>
-        }
+        <div class="w3-row w3-padding w3-margin-top">
+            @if (sInfo.GetXmlProperty("genxml/textbox/adminurl") != "")
+            {
+                <a class="w3-col m2 w3-button w3-teal w3-padding-8 w3-right" href="@sInfo.GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ButtonText(ButtonTypes.admin)</a>
+            }
+        <div class="w3-col m2 w3-button w3-blue w3-margin-left simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.export") ?" s-cmd="systemapi_export" s-fields='{"selecteditemid":"@(sInfo.ItemID)"}' s-post="" s-return="#exportreturn">@ButtonText(ButtonTypes.export)</div>
+        </div>
+
+        <div id="exportreturn"></div>
 
         <div class="w3-row-padding w3-right-align">
             @sInfo.GUIDKey / @sInfo.ItemID

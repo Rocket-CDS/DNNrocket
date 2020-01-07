@@ -77,6 +77,10 @@ namespace DNNrocket.System
                         SystemDelete(paramInfo);
                         strOut = SystemAdminList(paramInfo, _controlRelPath);
                         break;
+                    case "systemapi_export":
+                        SystemExport(paramInfo);
+                        strOut = "<h1>Exported System XML</h1>";
+                        break;                        
                     case "systemapi_addparam":
                         SystemAddListItem(paramInfo, "idxfielddata");
                         strOut = SystemAdminDetail(_controlRelPath);
@@ -541,15 +545,22 @@ namespace DNNrocket.System
             }
         }
 
+        public void SystemExport(SimplisityInfo paramInfo)
+        {
+            var selecteditemid = paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            if (selecteditemid > 0)
+            {
+                DNNrocketUtils.LogDebug("Export System:" + selecteditemid);
+                var systemData = new SystemData(selecteditemid);
+                var exportFileMapPath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/SystemData/Systems").TrimEnd('\\') + "\\" + systemData.SystemKey + "_system.xml";
+                FileUtils.SaveFile(exportFileMapPath, systemData.Export());
+            }
+        }
 
         public void SystemSave(SimplisityInfo postInfo, SimplisityInfo paramInfo)
         {
             // remove any debug logs created in debug mode.
             DNNrocketUtils.LogDebugClear();
-
-            //remove any params
-            postInfo.RemoveXmlNode("genxml/postform");
-            postInfo.RemoveXmlNode("genxml/urlparams");
 
             var selecteditemid = paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (selecteditemid > 0)
