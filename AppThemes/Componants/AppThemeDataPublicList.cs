@@ -26,7 +26,7 @@ namespace Rocket.AppThemes.Componants
                 SelectedSystemKey = selectedsystemkey;
 
                 var cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
-                if (useCache) SystemFolderList = (List<SystemInfoData>)CacheUtils.GetCache(cachekey, "apptheme");
+                if (useCache) SystemFolderList = (List<SystemData>)CacheUtils.GetCache(cachekey, "apptheme");
                 if (SystemFolderList == null) PopulateSystemFolderList();
 
                 cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
@@ -99,13 +99,13 @@ namespace Rocket.AppThemes.Componants
             var appSystemThemeFolderRootRel = "/DesktopModules/DNNrocket/SystemThemes";
             var appSystemThemeFolderRootMapPath = DNNrocketUtils.MapPath(appSystemThemeFolderRootRel);
 
-            SystemFolderList = new List<SystemInfoData>();
+            SystemFolderList = new List<SystemData>();
             var dirlist2 = System.IO.Directory.GetDirectories(appSystemThemeFolderRootMapPath);
             foreach (var d in dirlist2)
             {
                 var dr = new System.IO.DirectoryInfo(d);
-                var systemInfoData = new SystemInfoData(dr.Name);
-                if (systemInfoData.Exists) SystemFolderList.Add(systemInfoData);
+                var systemData = new SystemData(dr.Name);
+                if (systemData.Exists) SystemFolderList.Add(systemData);
             }
 
             var cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
@@ -122,7 +122,7 @@ namespace Rocket.AppThemes.Componants
         }
         public string SelectedSystemKey { get; set; }
         public List<SimplisityRecord> List { get; set; }
-        public List<SystemInfoData> SystemFolderList { get; set; }
+        public List<SystemData> SystemFolderList { get; set; }
         public bool Error { get; set; }
         public string ErrorMsg { get; set; }
 

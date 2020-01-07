@@ -1391,9 +1391,9 @@ namespace DNNrocketAPI
                 if (context.Request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
                 var inputStream = context.Request.Files[0].InputStream;
 
-                var systemData = new SystemData();
+                var systemDataList = new SystemDataList();
                 var systemkey = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "systemkey"));
-                var sInfoSystem = systemData.GetSystemByKey(systemkey);
+                var sInfoSystem = systemDataList.GetSystemByKey(systemkey);
                 var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
 
                 //var fn = EncryptFileName(encryptkey, fileName);
@@ -1425,9 +1425,9 @@ namespace DNNrocketAPI
         // Upload entire file
         public static string UploadWholeFile(HttpContext context, List<FilesStatus> statuses, string fileregexpr, int userid)
         {
-            var systemData = new SystemData();
+            var systemDataList = new SystemDataList();
             var systemkey = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "systemkey"));
-            var sInfoSystem = systemData.GetSystemByKey(systemkey);
+            var sInfoSystem = systemDataList.GetSystemByKey(systemkey);
             var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
             var flist = "";
 
@@ -1519,7 +1519,7 @@ namespace DNNrocketAPI
             }
             if (systemkey == "" || systemkey == "systemapi" || systemkey == "login")
             {
-                var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.StartConnect");
+                var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.System.StartConnect");
                 rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, editlang);
             }
             else
@@ -1569,11 +1569,11 @@ namespace DNNrocketAPI
             return rtnDic;
         }
 
-        public static Dictionary<string, SimplisityInfo> EventProviderBefore(string paramCmd, SystemInfoData systemInfoData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
+        public static Dictionary<string, SimplisityInfo> EventProviderBefore(string paramCmd, SystemData systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
         {
             var rtnDic = new Dictionary<string, SimplisityInfo>();
-            if (!systemInfoData.Exists) return rtnDic;  // for systemadmin this may be null
-            foreach (var rocketInterface in systemInfoData.EventList)
+            if (!systemData.Exists) return rtnDic;  // for systemadmin this may be null
+            foreach (var rocketInterface in systemData.EventList)
             {
                 if (rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
                 {
@@ -1586,7 +1586,7 @@ namespace DNNrocketAPI
                             ajaxprov = EventInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
                             CacheUtils.SetCache(cacheKey, ajaxprov);
                         }
-                        rtnDic = ajaxprov.BeforeEvent(paramCmd, systemInfoData, rocketInterface.Info, postInfo, paramInfo, editlang);
+                        rtnDic = ajaxprov.BeforeEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
                     }
                     catch (Exception ex)
                     {
@@ -1597,11 +1597,11 @@ namespace DNNrocketAPI
             return rtnDic;
         }
 
-        public static Dictionary<string, string> EventProviderAfter(string paramCmd, SystemInfoData systemInfoData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
+        public static Dictionary<string, string> EventProviderAfter(string paramCmd, SystemData systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
         {
             var rtnDic = new Dictionary<string, string>();
-            if (!systemInfoData.Exists) return rtnDic;  // for systemadmin this may be null
-            foreach (var rocketInterface in systemInfoData.EventList)
+            if (!systemData.Exists) return rtnDic;  // for systemadmin this may be null
+            foreach (var rocketInterface in systemData.EventList)
             {
                 if (rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
                 {
@@ -1614,7 +1614,7 @@ namespace DNNrocketAPI
                             ajaxprov = EventInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
                             CacheUtils.SetCache(cacheKey, ajaxprov);
                         }
-                        rtnDic = ajaxprov.AfterEvent(paramCmd, systemInfoData, rocketInterface.Info, postInfo, paramInfo, editlang);
+                        rtnDic = ajaxprov.AfterEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
                     }
                     catch (Exception ex)
                     {

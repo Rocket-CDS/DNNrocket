@@ -436,7 +436,7 @@
         <themeversion>1.0</themeversion>
         <defaulttemplate />
         <defaultcommand />
-        <namespaceclass>DNNrocket.SystemData.StartConnect</namespaceclass>
+        <namespaceclass>DNNrocket.System.StartConnect</namespaceclass>
         <assembly>DNNrocketSystemData</assembly>
         <databasetable />
         <relpath>/DesktopModules/DNNrocket/api/</relpath>

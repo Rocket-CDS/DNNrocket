@@ -3,14 +3,15 @@
 @using Simplisity;
 @using DNNrocketAPI.Componants;
 @using RocketLicense.Componants;
+@using DNNrocket.System;
 
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketLicense/App_LocalResources/")
 
 @{
-    var systemData = new DNNrocketAPI.SystemData();
-    var list = systemData.GetSystemList();
+    var systemDataList = new SystemDataList();
+    var list = systemDataList.GetSystemList();
 }
 
 <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -35,18 +36,18 @@
             if (adminurl != "" && !adminurl.Contains("[")) // check for admin link without parameters (for modules)
             {
                 lp1 += 1;
-                var systemInfoData = new SystemInfoData(nbi.GetXmlProperty("genxml/textbox/ctrlkey"));
-        <div class="w3-padding w3-col m2 w3-center w3-border w3-margin">
-            <a href="@systemInfoData.AdminUrl" class="" target="_blank" style="cursor:pointer;">
-                <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
-                    <b class="w3-text-blue ">@systemInfoData.SystemName</b>
+                var systemData = new SystemData(nbi.GetXmlProperty("genxml/textbox/ctrlkey"));
+                <div class="w3-padding w3-col m2 w3-center w3-border w3-margin">
+                    <a href="@systemData.AdminUrl" class="" target="_blank" style="cursor:pointer;">
+                        <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
+                            <b class="w3-text-blue ">@systemData.SystemName</b>
+                        </div>
+                        <img src="@ThumbnailImageUrl("",140,140)" style="width:60%;" class="w3-circle w3-hover-opacity" />
+                        <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
+                            <b>@systemData.SystemKey</b>
+                        </div>
+                    </a>
                 </div>
-                <img src="@ThumbnailImageUrl("",140,140)" style="width:60%;" class="w3-circle w3-hover-opacity" />
-                <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
-                    <b>@systemInfoData.SystemKey</b>
-                </div>
-            </a>
-        </div>
 
             }
         }

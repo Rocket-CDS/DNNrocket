@@ -10,7 +10,7 @@ namespace DNNrocket.TestList
     {
         private string _EntityTypeCode;
         private string _editlang;
-        private SystemInfoData _systemInfoData;
+        private SystemData _systemData;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
@@ -26,7 +26,7 @@ namespace DNNrocket.TestList
             commandSecurity.AddCommand("testlist_sort", false);
             commandSecurity.AddCommand("testlist_search", false);
 
-            _systemInfoData = new SystemInfoData(systemInfo);
+            _systemData = new SystemData(systemInfo);
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
             _editlang = editlang;
             if (_editlang == "") _editlang = DNNrocketUtils.GetEditCulture();

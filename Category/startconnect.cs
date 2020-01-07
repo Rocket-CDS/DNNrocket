@@ -17,12 +17,12 @@ namespace DNNrocket.Category
         private string _editlang;
         private string _systemkey;
         private SimplisityInfo _systemInfo;
-        private SystemInfoData _systemInfoData;
+        private SystemData _systemData;
 
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
-            _systemInfoData = new SystemInfoData(systemInfo);
+            _systemData = new SystemData(systemInfo);
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
             var commandSecurity = new CommandSecurity(-1,-1,rocketInterface);
             commandSecurity.AddCommand("category_add", true);
@@ -255,8 +255,8 @@ namespace DNNrocket.Category
                 }
 
                 var systemkey = postInfo.GetXmlProperty("genxml/systemkey");
-                var systemData = new SystemData();
-                var sInfoSystem = systemData.GetSystemByKey(systemkey);
+                var systemDataList = new SystemDataList();
+                var sInfoSystem = systemDataList.GetSystemByKey(systemkey);
                 var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
 
                 var strOut = "";

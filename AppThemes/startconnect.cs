@@ -15,7 +15,7 @@ namespace DNNrocket.AppThemes
         private SimplisityInfo _paramInfo;
         private DNNrocketInterface _rocketInterface;
         private string _editLang;
-        private SystemInfoData _systemInfoData;
+        private SystemData _systemData;
         private Dictionary<string, string> _passSettings;
         private string _appThemeFolder;
         private string _appVersionFolder;
@@ -29,7 +29,7 @@ namespace DNNrocket.AppThemes
             var strOut = "ERROR - Must be SuperUser"; // return ERROR if not matching commands.
 
             _passSettings = new Dictionary<string, string>(); 
-            _systemInfoData = new SystemInfoData(systemInfo);
+            _systemData = new SystemData(systemInfo);
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _postInfo = postInfo;
             _paramInfo = paramInfo;
@@ -47,12 +47,12 @@ namespace DNNrocket.AppThemes
 
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
                 {
-                    var menucmd = _userStorage.GetCommand(_systemInfoData.SystemKey);
+                    var menucmd = _userStorage.GetCommand(_systemData.SystemKey);
                     if (menucmd != "")
                     {
                         paramCmd = menucmd;
-                        _paramInfo = _userStorage.GetParamInfo(_systemInfoData.SystemKey);
-                        var interfacekey = _userStorage.GetInterfaceKey(_systemInfoData.SystemKey);
+                        _paramInfo = _userStorage.GetParamInfo(_systemData.SystemKey);
+                        var interfacekey = _userStorage.GetInterfaceKey(_systemData.SystemKey);
                         _rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
                     }
                 }
@@ -60,7 +60,7 @@ namespace DNNrocket.AppThemes
                 {
                     if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
                     {
-                        _userStorage.Track(_systemInfoData.SystemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
+                        _userStorage.Track(_systemData.SystemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
                     }
                 }
 
@@ -549,9 +549,9 @@ namespace DNNrocket.AppThemes
             systemGlobalData.FtpPassword = _postInfo.GetXmlProperty("genxml/textbox/ftppassword");
             systemGlobalData.Update();
 
-            var systemInfoData = new SystemInfoData(_selectedSystemKey);
-            systemInfoData.FtpRoot = _postInfo.GetXmlProperty("genxml/textbox/ftproot");
-            systemInfoData.Update();
+            var systemData = new SystemData(_selectedSystemKey);
+            systemData.FtpRoot = _postInfo.GetXmlProperty("genxml/textbox/ftproot");
+            systemData.Update();
 
             ClearServerCacheLists();
 

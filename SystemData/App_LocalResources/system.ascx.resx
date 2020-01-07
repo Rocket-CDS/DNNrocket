@@ -339,4 +339,7 @@
   <data name="tuencacheoff.Text" xml:space="preserve">
     <value>Turn Cache Off</value>
   </data>
+  <data name="colorclass.Text" xml:space="preserve">
+    <value>Color Class</value>
+  </data>
 </root>

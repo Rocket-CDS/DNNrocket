@@ -138,8 +138,8 @@ namespace DNNrocket.TestForm
             }
 
             var systemkey = postInfo.GetXmlProperty("genxml/systemkey");
-            var systemData = new SystemData();
-            var sInfoSystem = systemData.GetSystemByKey(systemkey);
+            var systemDataList = new SystemDataList();
+            var sInfoSystem = systemDataList.GetSystemByKey(systemkey);
             var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
 
             var strOut = "";
@@ -200,8 +200,8 @@ namespace DNNrocket.TestForm
             }
 
             var systemkey = postInfo.GetXmlProperty("genxml/systemkey");
-            var systemData = new SystemData();
-            var sInfoSystem = systemData.GetSystemByKey(systemkey);
+            var systemDataList = new SystemDataList();
+            var sInfoSystem = systemDataList.GetSystemByKey(systemkey);
             var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
 
             var strOut = "";

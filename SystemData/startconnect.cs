@@ -4,13 +4,14 @@ using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Xml;
 
-namespace DNNrocket.SystemData
+namespace DNNrocket.System
 {
     public class StartConnect : DNNrocketAPI.APInterface
     {
-        private SystemInfoData _systemInfoData;
+        private SystemData _systemData;
         private string _controlRelPath;
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
@@ -21,7 +22,7 @@ namespace DNNrocket.SystemData
         {
             _postInfo = postInfo;
             _paramInfo = paramInfo;
-            _systemInfoData = new SystemInfoData(systemInfo);
+            _systemData = new SystemData(systemInfo);
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             var commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
 
@@ -47,7 +48,7 @@ namespace DNNrocket.SystemData
 
             _controlRelPath = "/DesktopModules/DNNrocket/SystemData";
 
-            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemkey is defined. [SystemData]";
+            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemkey is defined. [SystemDataList]";
 
             var rtnInfo = new SimplisityInfo();
             // Security Check MUST be in the extension.
@@ -120,7 +121,7 @@ namespace DNNrocket.SystemData
                     case "systemapi_cleartempdb":
                         CacheFileUtils.ClearAllCache();
                         DNNrocketUtils.ClearAllCache();
-                        _systemInfoData.ClearTempDB();
+                        _systemData.ClearTempDB();
                         strOut = "<h1>DNNrocketTemp Database table clear</h1>";
                         break;                        
                     case "systemapi_globaldetail":
@@ -245,7 +246,7 @@ namespace DNNrocket.SystemData
                 var systemGlobalData = new SystemGlobalData();
                 var reqparm = new NameValueCollection();
                 reqparm.Add("sitekey", DNNrocketUtils.SiteGuid());
-                reqparm.Add("systemkey", _systemInfoData.SystemKey);
+                reqparm.Add("systemkey", _systemData.SystemKey);
                 reqparm.Add("domainurl", DNNrocketUtils.GetDefaultWebsiteDomainUrl());
                 var rtnLicenseStatus = SimplisityUtils.PostData(systemGlobalData.LicenseUrl.TrimEnd('/') + "/DesktopModules/DNNrocket/api/api.ashx", "rocketlicense", "clientlicense_getlicense", "", "", reqparm);
                 if (rtnLicenseStatus == "OK") return true;
@@ -343,7 +344,7 @@ namespace DNNrocket.SystemData
                 var licenseid = _paramInfo.GetXmlPropertyInt("genxml/hidden/licenseid");
                 var certificateKey = _postInfo.GetXmlProperty("genxml/hidden/certificatekey");
                 var domainurl = DNNrocketUtils.GetDefaultWebsiteDomainUrl(); ;
-                var systemkey = _systemInfoData.SystemKey;
+                var systemkey = _systemData.SystemKey;
                 var sitekey = DNNrocketUtils.SiteGuid();
                 if (licenseid > 0)
                 {
@@ -392,8 +393,8 @@ namespace DNNrocket.SystemData
         {
             try
             {
-                var systemData = new DNNrocketAPI.SystemData();
-                var list = systemData.GetSystemList();
+                var systemDataList = new SystemDataList();
+                var list = systemDataList.GetSystemList();
                 return RenderSystemAdminList(list, sInfo, 0, templateControlRelPath);
             }
             catch (Exception ex)
@@ -550,124 +551,11 @@ namespace DNNrocket.SystemData
             postInfo.RemoveXmlNode("genxml/postform");
             postInfo.RemoveXmlNode("genxml/urlparams");
 
-            var selecteditemid = paramInfo.GetXmlProperty("genxml/hidden/selecteditemid");
-            if (GeneralUtils.IsNumeric(selecteditemid))
+            var selecteditemid = paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            if (selecteditemid > 0)
             {
-                var objCtrl = new DNNrocketController();
-                var info = objCtrl.GetInfo(Convert.ToInt32(selecteditemid));
-                info.XMLData = postInfo.XMLData;
-                info.GUIDKey = postInfo.GetXmlProperty("genxml/textbox/ctrlkey");
-
-                if (info.GetXmlProperty("genxml/textbox/defaultinterface") == "")
-                {
-                    info.SetXmlProperty("genxml/textbox/defaultinterface", info.GetXmlProperty("genxml/interfacedata/genxml[1]/textbox/interfacekey"));
-                }
-
-                objCtrl.SaveRecord(info);
-
-                // Capture existing SYSTEMLINK records, so we can selectivly delete. To protect the system during operation, so records are always there.
-                var systemlinklist = objCtrl.GetList(info.PortalId, -1, "SYSTEMLINK");
-                var systemlinkidxlist = objCtrl.GetList(info.PortalId, -1, "SYSTEMLINKIDX");
-                var newsystemlinklist = new List<int>();
-                var newsystemlinkidxlist = new List<int>();
-
-                // make systemlink record
-                var entityList = new List<string>();
-                foreach (var i in info.GetList("idxfielddata"))
-                {
-                    var entitytypecode = i.GetXmlProperty("genxml/dropdownlist/entitytypecode");
-                    var xreftypecode = i.GetXmlProperty("genxml/dropdownlist/xreftypecode");
-                    var entityguidkey = entitytypecode;
-
-                    if (!entityList.Contains(entityguidkey))
-                    {
-                        //build xref list
-                        var xmldata = "<genxml>";
-                        foreach (XmlNode xrefnod in info.XMLDoc.SelectNodes("genxml/idxfielddata/genxml[dropdownlist/entitytypecode/text()='" + entitytypecode + "']"))
-                        {
-                            xmldata += xrefnod.OuterXml;
-                        }
-                        xmldata += "</genxml>";
-
-                        var idxinfo = objCtrl.GetByGuidKey(info.PortalId, info.ItemID, "SYSTEMLINK", entityguidkey); // use system id as moduleid
-                        if (idxinfo == null)
-                        {
-                            idxinfo = new SimplisityInfo();
-                            idxinfo.PortalId = info.PortalId;
-                            idxinfo.TypeCode = "SYSTEMLINK";
-                            idxinfo.GUIDKey = entityguidkey;
-                            idxinfo.XMLData = xmldata;
-                            idxinfo.ParentItemId = info.ItemID;
-                            idxinfo.ModuleId = info.ItemID;
-                            var itemid = objCtrl.SaveRecord(idxinfo).ItemID;
-                            idxinfo.ItemID = itemid;
-                        }
-                        else
-                        {
-                            idxinfo.ParentItemId = info.ItemID;
-                            idxinfo.XMLData = xmldata;
-                            objCtrl.SaveRecord(idxinfo);
-                        }
-                        newsystemlinklist.Add(idxinfo.ItemID);
-                        entityList.Add(entityguidkey);
-
-                        // SYSTEMLINKIDX
-                        foreach (XmlNode xrefnod in idxinfo.XMLDoc.SelectNodes("genxml/genxml"))
-                        {
-                            var i2 = new SimplisityRecord();
-                            i2.XMLData = xrefnod.OuterXml;
-
-                            var idxref = i2.GetXmlProperty("genxml/textbox/indexref");
-                            var typecodeIdx = i2.GetXmlProperty("genxml/dropdownlist/xreftypecode");
-                            if (typecodeIdx == "")
-                            {
-                                typecodeIdx = i2.GetXmlProperty("genxml/dropdownlist/entitytypecode");
-                            }
-                            var idxinfo2 = objCtrl.GetByGuidKey(info.PortalId, info.ItemID, "SYSTEMLINK" + typecodeIdx, idxref);
-                            if (idxinfo2 == null)
-                            {
-                                idxinfo2 = new SimplisityInfo();
-                                idxinfo2.PortalId = info.PortalId;
-                                idxinfo2.TypeCode = "SYSTEMLINK" + typecodeIdx;
-                                idxinfo2.GUIDKey = idxref;
-                                idxinfo2.ParentItemId = idxinfo.ItemID;
-                                idxinfo2.ModuleId = info.ItemID;
-                                idxinfo2.XMLData = i2.XMLData;
-                                idxinfo2.TextData = typecodeIdx;
-                                var itemid = objCtrl.SaveRecord(idxinfo2).ItemID;
-                                idxinfo2.ItemID = itemid;
-                            }
-                            else
-                            {
-                                idxinfo2.ParentItemId = idxinfo.ItemID;
-                                idxinfo2.XMLData = i2.XMLData;
-                                idxinfo2.TextData = typecodeIdx;
-                                objCtrl.SaveRecord(idxinfo2);
-                            }
-                            newsystemlinkidxlist.Add(idxinfo2.ItemID);
-                        }
-                    }
-                }
-
-                // delete any that have been remove.
-                foreach (var sl in systemlinklist)
-                {
-                    if (!newsystemlinklist.Contains(sl.ItemID))
-                    {
-                        objCtrl.Delete(sl.ItemID);
-                    }
-                }
-                foreach (var sl in systemlinkidxlist)
-                {
-                    if (!newsystemlinkidxlist.Contains(sl.ItemID))
-                    {
-                        objCtrl.Delete(sl.ItemID);
-                    }
-                }
-
-
-
-
+                var systemData = new SystemData(selecteditemid);
+                systemData.Save(postInfo);
                 CacheUtils.ClearAllCache();
             }
         }

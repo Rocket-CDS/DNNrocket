@@ -17,7 +17,7 @@
     var configinfo = new SimplisityInfo(moduleParams.Record);
     var dataModuleParams = new ModuleParams(moduleParams.DataSourceModId, moduleParams.SystemKey);
     var systemGlobalData = new SystemGlobalData();
-    var systemInfoData = new SystemInfoData(moduleParams.SystemKey);
+    var systemData = new SystemData(moduleParams.SystemKey);
     Model.SetSetting("licensetype", moduleParams.SystemKey);
     var licenseData = new LicenseData(moduleParams.SystemKey, DNNrocketUtils.SiteGuid());
 }
@@ -145,13 +145,13 @@
                 @{
                     var disablecheckbox = "";
                 }
-                @if (systemInfoData.DebugMode)
+                @if (systemData.DebugMode)
                 {
                     disablecheckbox = "disabled";
                 }
                 @CheckBox(configinfo, "genxml/hidden/disablecache", "", "class='w3-check' " + disablecheckbox, false)
                 <label>@ResourceKey("RocketMod.disablecache")</label>
-                @if (systemInfoData.DebugMode)
+                @if (systemData.DebugMode)
                 {
                     <b class="w3-text-red">&nbsp;&nbsp;@ResourceKey("DNNrocket.system")&nbsp;@ResourceKey("DNNrocket.debugmode"):&nbsp;@ResourceKey("DNNrocket.on")&nbsp;</b>
                 }

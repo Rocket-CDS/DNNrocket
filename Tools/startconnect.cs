@@ -11,7 +11,7 @@ namespace Rocket.Tools
     public class StartConnect : DNNrocketAPI.APInterface
     {
         private DNNrocketInterface _rocketInterface;
-        private SystemInfoData _systemInfoData;
+        private SystemData _systemData;
         private Dictionary<string, string> _passSettings;
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
@@ -111,7 +111,7 @@ namespace Rocket.Tools
             _paramInfo = paramInfo;
             _pageref = _paramInfo.GetXmlProperty("genxml/hidden/pageref");
 
-            _systemInfoData = new SystemInfoData(systemInfo);
+            _systemData = new SystemData(systemInfo);
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _passSettings = new Dictionary<string, string>();
 
@@ -119,12 +119,12 @@ namespace Rocket.Tools
 
             if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
             {
-                var menucmd = _userStorage.GetCommand(_systemInfoData.SystemKey);
+                var menucmd = _userStorage.GetCommand(_systemData.SystemKey);
                 if (menucmd != "")
                 {
                     paramCmd = menucmd;
-                    _paramInfo = _userStorage.GetParamInfo(_systemInfoData.SystemKey);
-                    var interfacekey = _userStorage.GetInterfaceKey(_systemInfoData.SystemKey);
+                    _paramInfo = _userStorage.GetParamInfo(_systemData.SystemKey);
+                    var interfacekey = _userStorage.GetInterfaceKey(_systemData.SystemKey);
                     _rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
                 }
             }
@@ -132,7 +132,7 @@ namespace Rocket.Tools
             {
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
                 {
-                    _userStorage.Track(_systemInfoData.SystemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
+                    _userStorage.Track(_systemData.SystemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
                 }
             }
 
@@ -170,10 +170,10 @@ namespace Rocket.Tools
                 var systemid = s.GetXmlPropertyInt("genxml/systemid");
                 if (systemid > 0)
                 {
-                    var systemInfoData = new SystemInfoData(systemid);
-                    if (systemInfoData.Exists)
+                    var systemData = new SystemData(systemid);
+                    if (systemData.Exists)
                     {
-                        foreach (var rocketInterface in systemInfoData.GetInterfaceList())
+                        foreach (var rocketInterface in systemData.GetInterfaceList())
                         {
                             if (rocketInterface.Exists && rocketInterface.IsProvider("copylanguage"))
                             {
@@ -183,7 +183,7 @@ namespace Rocket.Tools
                                 paramInfo.SetXmlProperty("genxml/hidden/backuprootfolder", _rocketInterface.InterfaceKey);
                                 paramInfo.SetXmlProperty("genxml/checkbox/backup", backup);
                                 paramInfo.SetXmlProperty("genxml/hidden/portalid", DNNrocketUtils.GetPortalId().ToString());
-                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfoData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
                             }
                         }
                     }
@@ -488,16 +488,16 @@ namespace Rocket.Tools
                 var systemid = s.GetXmlPropertyInt("genxml/systemid");
                 if (systemid > 0)
                 {
-                    var systemInfoData = new SystemInfoData(systemid);
-                    if (systemInfoData.Exists)
+                    var systemData = new SystemData(systemid);
+                    if (systemData.Exists)
                     {
-                        foreach (var rocketInterface in systemInfoData.GetInterfaceList())
+                        foreach (var rocketInterface in systemData.GetInterfaceList())
                         {
                             if (rocketInterface.Exists && rocketInterface.IsProvider("validatedata"))
                             {
                                 var paramInfo = new SimplisityInfo();
                                 paramInfo.SetXmlProperty("genxml/hidden/portalid", DNNrocketUtils.GetPortalId().ToString());
-                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfoData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
                             }
                         }
                     }

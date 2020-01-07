@@ -29,7 +29,7 @@ namespace RocketMod
         private ModuleParams _dataModuleParams;
         private int _tabid;
         private int _moduleid;
-        private SystemInfoData _systemInfoData;
+        private SystemData _systemData;
         private string _systemKey;
         private Dictionary<string, string> _passSettings;
         private SettingsData _settingsData;
@@ -207,7 +207,7 @@ namespace RocketMod
         public string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
 
-            _systemInfoData = new SystemInfoData(systemInfo);
+            _systemData = new SystemData(systemInfo);
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
@@ -218,7 +218,7 @@ namespace RocketMod
 
             _postInfo = postInfo;
             _systemInfo = systemInfo;
-            _systemKey = _systemInfoData.SystemKey;
+            _systemKey = _systemData.SystemKey;
             _tableName = _rocketInterface.DatabaseTable;
 
             // set editlang from url param or cache
@@ -309,8 +309,8 @@ namespace RocketMod
                 }
                 else
                 {
-                    _appThemeMod = new AppThemeModule(_moduleid, _systemInfoData.SystemKey);
-                    _dataAppThemeMod = new AppThemeModule(_moduleParams.DataSourceModId, _systemInfoData.SystemKey);
+                    _appThemeMod = new AppThemeModule(_moduleid, _systemData.SystemKey);
+                    _dataAppThemeMod = new AppThemeModule(_moduleParams.DataSourceModId, _systemData.SystemKey);
 
                     if (!_passSettings.ContainsKey("AppTheme")) _passSettings.Add("AppTheme", _moduleParams.AppThemeFolder);
                     if (!_passSettings.ContainsKey("AppThemeVersion")) _passSettings.Add("AppThemeVersion", _moduleParams.AppThemeVersion);
@@ -385,7 +385,7 @@ namespace RocketMod
 
         private void SaveConfig()
         {
-            var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder);
+            var appTheme = new AppTheme(_systemData.SystemKey, _moduleParams.AppThemeFolder);
             _moduleParams.AppThemeLogo = appTheme.Logo;
             _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
             _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
@@ -398,11 +398,11 @@ namespace RocketMod
             _moduleParams.Exists = true;
             _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disablecache");
 
-            if (_systemInfoData.DebugMode) _moduleParams.CacheDisbaled = true;
+            if (_systemData.DebugMode) _moduleParams.CacheDisbaled = true;
 
             _moduleParams.ShareData = _postInfo.GetXmlProperty("genxml/hidden/sharedata");
             _moduleParams.TabId = _tabid;
-            _moduleParams.SystemKey = _systemInfoData.SystemKey;
+            _moduleParams.SystemKey = _systemData.SystemKey;
             _moduleParams.ExportResourceFiles = _postInfo.GetXmlPropertyBool("genxml/hidden/exportresourcefiles");
 
             _moduleParams.Save();
@@ -416,7 +416,7 @@ namespace RocketMod
         private void SaveAppTheme()
         {
             _moduleParams.AppThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder);
+            var appTheme = new AppTheme(_systemData.SystemKey, _moduleParams.AppThemeFolder);
             _moduleParams.AppThemeLogo = appTheme.Logo;
             _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
             _moduleParams.AppThemeVersion = appTheme.LatestVersionFolder;
@@ -461,7 +461,7 @@ namespace RocketMod
                 _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
             }
             _passSettings.Add("saved", "true");
-            _articleData.DebugMode = _systemInfoData.DebugMode;
+            _articleData.DebugMode = _systemData.DebugMode;
             _articleData.Save(_postInfo);
             CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
         }
@@ -600,7 +600,7 @@ namespace RocketMod
                     if (!_passSettings.ContainsKey(s.Key)) _passSettings.Add(s.Key, s.Value);
                 }
 
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleData, _passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleData, _passSettings, new SimplisityInfo(), _systemData.DebugMode);
 
                 // if the module settings change to a single form, use the last edited record.
                 _settingsData.Info.SetXmlProperty("genxml/selecteditemid", _selectedItemId.ToString());
@@ -635,8 +635,8 @@ namespace RocketMod
                 }
                 articleDataList.Populate();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", "/DesktopModules/DNNrocket/SystemThemes/" + _systemInfoData.SystemKey, _dataModuleParams.AppThemeFolder, _editLang, _dataModuleParams.AppThemeVersion, _systemInfoData.DebugMode);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, _passSettings, articleDataList.Header, _systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", "/DesktopModules/DNNrocket/SystemThemes/" + _systemData.SystemKey, _dataModuleParams.AppThemeFolder, _editLang, _dataModuleParams.AppThemeVersion, _systemData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, _passSettings, articleDataList.Header, _systemData.DebugMode);
                 return strOut;
             }
             catch (Exception ex)
@@ -666,8 +666,8 @@ namespace RocketMod
                 var fieldsData = GetFieldsData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, _editLang, "1.0", _systemInfoData.DebugMode);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, fieldsData, passSettings,null, _systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, _editLang, "1.0", _systemData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, fieldsData, passSettings,null, _systemData.DebugMode);
 
                 if (strOut == "") strOut = "ERROR: No data returned for EditfieldsData() : " + _rocketInterface.TemplateRelPath + "/Themes/" + _rocketInterface.DefaultTheme + "/default/" + _rocketInterface.DefaultTemplate;
                 return strOut;
@@ -725,7 +725,7 @@ namespace RocketMod
                 var settingsData = GetSettingsData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetEditCulture(), "1.0", _systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetEditCulture(), "1.0", _systemData.DebugMode);
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, settingsData, passSettings);
 
                 if (strOut == "") strOut = "ERROR: No data returned for EditSettingsData() : " + _rocketInterface.TemplateRelPath + "/Themes/" + _rocketInterface.DefaultTheme + "/default/" + _rocketInterface.DefaultTemplate;
@@ -797,7 +797,7 @@ namespace RocketMod
             try
             {
                 AssignEditLang(); //check for change of langauge
-                var appTheme = new AppTheme(_systemInfoData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
+                var appTheme = new AppTheme(_systemData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
                 if (!appTheme.EnableSettings) return "";
                 var razorTempl = appTheme.GetTemplate("settings"); // new module, so settings theme will be systemtheme.
                 _settingsData = GetSettingsData();
@@ -877,7 +877,7 @@ namespace RocketMod
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "apptheme.cshtml";
-                var appThemeMod = new AppThemeModule(_moduleid, _systemInfoData.SystemKey);
+                var appThemeMod = new AppThemeModule(_moduleid, _systemData.SystemKey);
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
@@ -916,7 +916,7 @@ namespace RocketMod
                 {
                     var objCtrl = new DNNrocketController();
 
-                    _appThemeDataList = new AppThemeDataList(_systemInfoData.SystemKey);
+                    _appThemeDataList = new AppThemeDataList(_systemData.SystemKey);
 
                     var razortemplate = "selectapp.cshtml";
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(),"1.0", true);
@@ -954,7 +954,7 @@ namespace RocketMod
                     passSettings.Add("addeditscript", _commandSecurity.HasModuleEditRights().ToString());
                     var adminurl = "/DesktopModules/DNNrocket/RocketMod/admin.html?moduleid=" + _moduleid + "&tabid=" + _tabid;
                     passSettings.Add("adminurl", adminurl);
-                    var appTheme = new AppTheme(_systemInfoData.SystemKey, appthemefolder, _moduleParams.AppThemeVersion);
+                    var appTheme = new AppTheme(_systemData.SystemKey, appthemefolder, _moduleParams.AppThemeVersion);
                     passSettings.Add("datatype", appTheme.DataType.ToString());
 
                     if ((_paramInfo.GetXmlPropertyInt("genxml/urlparams/" + _moduleParams.DetailUrlParam) > 0) && _moduleParams.DetailView)
@@ -1024,8 +1024,8 @@ namespace RocketMod
             try
             {
                 _rocketInterface.Info.ModuleId = _moduleid;
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",_systemInfoData.DebugMode);                
-                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_passSettings, new SimplisityInfo(), _systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",_systemData.DebugMode);                
+                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_passSettings, new SimplisityInfo(), _systemData.DebugMode);
             }
             catch (Exception ex)
             {

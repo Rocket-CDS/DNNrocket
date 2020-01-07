@@ -57,7 +57,7 @@ namespace DNNrocketAPI
         private ModuleParams _moduleParams;
         private ModuleParams _dataModuleParams;
         private SimplisityInfo _systemInfo;
-        private SystemInfoData _systemInfoData;
+        private SystemData _systemData;
         private DNNrocketController _objCtrl;
 
         protected override void OnInit(EventArgs e)
@@ -80,13 +80,13 @@ namespace DNNrocketAPI
 
             InitSystemInfo();
 
-            _systemInfoData = new SystemInfoData(_systemInfo);
+            _systemData = new SystemData(_systemInfo);
             _interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
-            _moduleParams = new ModuleParams(ModuleId, _systemInfoData.SystemKey);
-            _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemInfoData.SystemKey);
+            _moduleParams = new ModuleParams(ModuleId, _systemData.SystemKey);
+            _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemData.SystemKey);
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
-            var systemInfoData = new SystemInfoData(_systemInfo);
-            _debugmode = systemInfoData.DebugMode;
+            var systemData = new SystemData(_systemInfo);
+            _debugmode = systemData.DebugMode;
             _activatedetail = _moduleParams.GetValueBool("activatedetail");
             _paramCmd = _moduleParams.GetValue("command");
 
@@ -107,7 +107,7 @@ namespace DNNrocketAPI
                         CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
                     }
 
-                    DNNrocketUtils.IncludePageHeaders(_moduleParams, this.Page, TabId, systemInfoData.DebugMode);
+                    DNNrocketUtils.IncludePageHeaders(_moduleParams, this.Page, TabId, systemData.DebugMode);
                 }
             }
         }
@@ -204,7 +204,7 @@ namespace DNNrocketAPI
                 var cacheOutPut = "";
                 var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
 
-                if (_moduleParams.CacheEnabled && _systemInfoData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
+                if (_moduleParams.CacheEnabled && _systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
 
                 if (String.IsNullOrEmpty(cacheOutPut))
                 {
@@ -216,11 +216,11 @@ namespace DNNrocketAPI
 
                     if (hasEditAccess)
                     {
-                        model.SetSetting("editiconcolor", _systemInfoData.GetSetting("editiconcolor"));
-                        model.SetSetting("editicontextcolor", _systemInfoData.GetSetting("editicontextcolor"));
+                        model.SetSetting("editiconcolor", _systemData.GetSetting("editiconcolor"));
+                        model.SetSetting("editicontextcolor", _systemData.GetSetting("editicontextcolor"));
                         strOut = "<div id='rocketmodcontentwrapper" + ModuleId + "' class=' w3-display-container'>";
-                        var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemInfoData.DebugMode);
-                        strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemInfoData.DebugMode);
+                        var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemData.DebugMode);
+                        strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemData.DebugMode);
                     }
 
                     if (returnDictionary.ContainsKey("outputhtml"))
@@ -231,8 +231,8 @@ namespace DNNrocketAPI
                     if (hasEditAccess)
                     {
                         strOut += "</div>";
-                        var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemInfoData.DebugMode);
-                        strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemInfoData.DebugMode);
+                        var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemData.DebugMode);
+                        strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemData.DebugMode);
                     }
                     CacheFileUtils.SetCache(cacheKey, strOut, _moduleParams.CacheGroupId);
                 }
@@ -274,7 +274,7 @@ namespace DNNrocketAPI
             if (_systemInfo == null)
             {
                 // no system data, so must be new install.
-                var sData = new SystemData(); // load XML files.
+                var sData = new SystemDataList(); // load XML files.
                 _systemInfo = _objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemkey);
                 if (_systemInfo != null) CacheUtils.GetCache(_systemkey + "modid" + ModuleId, _systemkey);
             }

@@ -134,10 +134,10 @@
     <Compile Include="Componants\PagesUtils.cs" />
     <Compile Include="Componants\FileStatus.cs" />
     <Compile Include="Componants\ImgUtils.cs" />
-    <Compile Include="Componants\SystemData.cs" />
+    <Compile Include="Componants\SystemDataList.cs" />
     <Compile Include="Componants\PageIncludes.cs" />
     <Compile Include="Componants\EmailUtils.cs" />
-    <Compile Include="Componants\SystemInfoData.cs" />
+    <Compile Include="Componants\SystemData.cs" />
     <Compile Include="Componants\UserUtils.cs" />
     <Compile Include="Componants\SideMenu.cs" />
     <Compile Include="Componants\DNNrocketInterface.cs" />

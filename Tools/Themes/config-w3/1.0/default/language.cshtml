@@ -23,12 +23,12 @@
             <ul id="systemlistdata" class="hummingbird-base">
 
                 @{
-                    var systemData = new DNNrocketAPI.SystemData();
-                    var list = systemData.GetSystemList();
+                    var systemDataList = new SystemDataList();
+                    var list = systemDataList.GetSystemList();
                     foreach (var sk in list)
                     {
-                        var systemInfoData = new SystemInfoData(sk.ItemID);
-                        if (systemInfoData.GetInterface("copylanguage") != null)
+                        var systemData = new SystemData(sk.ItemID);
+                        if (systemData.GetInterface("copylanguage") != null)
                         {
                             <li>
                                 <label>

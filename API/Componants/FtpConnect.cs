@@ -12,14 +12,14 @@ namespace DNNrocketAPI.Componants
 {
     public class FtpConnect
     {
-        private SystemInfoData _systemInfoData;
+        private SystemData _systemData;
         private SystemGlobalData _systemGlobalData;
         private string _baseuri;
         public FtpConnect(string selectedSystemKey)
         {
-            _systemInfoData = new SystemInfoData(selectedSystemKey);
+            _systemData = new SystemData(selectedSystemKey);
             _systemGlobalData = new SystemGlobalData();
-            _baseuri = "ftp://" + _systemGlobalData.FtpServer + "/" + _systemInfoData.FtpRoot.TrimStart('/').TrimEnd('/') + "/" + _systemInfoData.SystemKey;
+            _baseuri = "ftp://" + _systemGlobalData.FtpServer + "/" + _systemData.FtpRoot.TrimStart('/').TrimEnd('/') + "/" + _systemData.SystemKey;
             IsValid = true;
             if (String.IsNullOrEmpty(_systemGlobalData.FtpServer) || String.IsNullOrEmpty(_systemGlobalData.FtpUserName) || String.IsNullOrEmpty(_systemGlobalData.FtpPassword)) IsValid = false;
         }
@@ -33,7 +33,7 @@ namespace DNNrocketAPI.Componants
             var exportZipMapPath = appTheme.ExportZipFile();
             var filename = Path.GetFileName(exportZipMapPath);
 
-            var dirlist = (_systemInfoData.FtpRoot + "/" + _systemInfoData.SystemKey).Split('/');
+            var dirlist = (_systemData.FtpRoot + "/" + _systemData.SystemKey).Split('/');
             var createftpdir = "";
             foreach (var d in dirlist)
             {

@@ -24,9 +24,9 @@ namespace DNNrocketAPI
 
         #endregion
 
-        public abstract Dictionary<string, SimplisityInfo> BeforeEvent(string paramCmd, SystemInfoData systemInfoData, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "");
+        public abstract Dictionary<string, SimplisityInfo> BeforeEvent(string paramCmd, SystemData systemData, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "");
 
-        public abstract Dictionary<string, string> AfterEvent(string paramCmd, SystemInfoData systemInfoData, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "");
+        public abstract Dictionary<string, string> AfterEvent(string paramCmd, SystemData systemData, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "");
 
     }
 

@@ -1,104 +1,304 @@
-﻿using System;
+﻿using Simplisity;
+using System;
 using System.Collections.Generic;
+using System.Text;
+using DNNrocketAPI.Componants;
 using System.IO;
-using System.Linq;
 using System.Xml;
-using Simplisity;
 
 namespace DNNrocketAPI
 {
-
     public class SystemData
     {
-        private List<SimplisityInfo> _systemList;
-
-        public SystemData()
+        public SystemData(string systemKey)
         {
-            _systemList = new List<SimplisityInfo>();
             var objCtrl = new DNNrocketController();
-            var pluginfoldermappath = System.Web.Hosting.HostingEnvironment.MapPath("/DesktopModules/DNNrocket/api/Systems");
-            if (pluginfoldermappath != null && Directory.Exists(pluginfoldermappath))
+            var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemKey);
+            InitSystem(systemInfo);
+        }
+        public SystemData(int systemId)
+        {
+            var objCtrl = new DNNrocketController();
+            var systemInfo = objCtrl.GetInfo(systemId);
+            InitSystem(systemInfo);
+        }
+        public SystemData(SimplisityInfo systemInfo)
+        {
+            InitSystem(systemInfo);
+        }
+        private void InitSystem(SimplisityInfo systemInfo)
+        {
+            if (systemInfo == null)
             {
-                var upd = false;
-                var flist = Directory.GetFiles(pluginfoldermappath, "*.xml");
-                foreach (var f in flist)
+                systemInfo = new SimplisityInfo();
+                Exists = false;
+            }
+            else
+            {
+                Exists = true;
+            }
+            Info = systemInfo;
+            EventList = new List<DNNrocketInterface>();
+            InterfaceList = new Dictionary<string, DNNrocketInterface>();
+            Settings = new Dictionary<string, string>();
+            var l = Info.GetList("interfacedata");
+            foreach (var r in l)
+            {
+                var rocketInterface = new DNNrocketInterface(r);
+                if (rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
                 {
-                    if (f.ToLower().EndsWith(".xml"))
+                    EventList.Add(rocketInterface);
+                }
+                InterfaceList.Add(rocketInterface.InterfaceKey, rocketInterface);
+            }
+            var l2 = Info.GetList("settingsdata");
+            foreach (var s in l2)
+            {
+                var key = s.GetXmlProperty("genxml/textbox/name");
+                if (key != "" && !Settings.ContainsKey(key)) Settings.Add(key, s.GetXmlProperty("genxml/textbox/value"));
+            }
+        }
+
+        public void Save(SimplisityInfo postInfo)
+        {
+            var objCtrl = new DNNrocketController();
+
+            Info.XMLData = postInfo.XMLData;
+            Info.GUIDKey = postInfo.GetXmlProperty("genxml/textbox/ctrlkey");
+
+            if (Info.GetXmlProperty("genxml/textbox/defaultinterface") == "")
+            {
+                Info.SetXmlProperty("genxml/textbox/defaultinterface", Info.GetXmlProperty("genxml/interfacedata/genxml[1]/textbox/interfacekey"));
+            }
+
+            var logoMapPath = DNNrocketUtils.MapPath(postInfo.GetXmlProperty("genxml/hidden/imagepathlogo"));
+            if (File.Exists(logoMapPath))
+            {
+                var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));
+
+                // Convert the image to byte[]
+                System.IO.MemoryStream stream = new System.IO.MemoryStream();
+                newImage.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+                byte[] imageBytes = stream.ToArray();
+                string base64String = Convert.ToBase64String(imageBytes);
+                Info.SetXmlProperty("genxml/hidden/logobase64", base64String);
+            }
+
+            Update();
+
+            // Capture existing SYSTEMLINK records, so we can selectivly delete. To protect the system during operation, so records are always there.
+            var systemlinklist = objCtrl.GetList(Info.PortalId, -1, "SYSTEMLINK");
+            var systemlinkidxlist = objCtrl.GetList(Info.PortalId, -1, "SYSTEMLINKIDX");
+            var newsystemlinklist = new List<int>();
+            var newsystemlinkidxlist = new List<int>();
+
+            // make systemlink record
+            var entityList = new List<string>();
+            foreach (var i in Info.GetList("idxfielddata"))
+            {
+                var entitytypecode = i.GetXmlProperty("genxml/dropdownlist/entitytypecode");
+                var xreftypecode = i.GetXmlProperty("genxml/dropdownlist/xreftypecode");
+                var entityguidkey = entitytypecode;
+
+                if (!entityList.Contains(entityguidkey))
+                {
+                    //build xref list
+                    var xmldata = "<genxml>";
+                    foreach (XmlNode xrefnod in Info.XMLDoc.SelectNodes("genxml/idxfielddata/genxml[dropdownlist/entitytypecode/text()='" + entitytypecode + "']"))
                     {
-                        var datain = File.ReadAllText(f);
-                        try
-                        {
-                            var nbi = new SimplisityInfo();
-                            nbi.XMLData = datain;
-                            // check if we are injecting multiple
-                            var nodlist = nbi.XMLDoc.SelectNodes("genxml");
-                            if (nodlist != null && nodlist.Count > 0)
-                            {
-                                foreach (XmlNode nod in nodlist)
-                                {
-                                    var nbi2 = new SimplisityInfo();
-                                    nbi2.XMLData = nod.OuterXml;
-                                    nbi2.ItemID = -1;
-                                    nbi2.GUIDKey = nbi.GetXmlProperty("genxml/textbox/ctrlkey");
-                                    nbi2.PortalId = 99999;
-                                    nbi2.Lang = "";
-                                    nbi2.ParentItemId = 0;
-                                    nbi2.ModuleId = -1;
-                                    nbi2.XrefItemId = 0;
-                                    nbi2.UserId = 0;
-                                    nbi2.TypeCode = "SYSTEM";
-
-                                    var s = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", nbi2.GUIDKey);
-
-                                    if (s != null) nbi2.ItemID = s.ItemID;
-
-                                    objCtrl.SaveRecord(nbi2);
-                                    upd = true;
-                                }
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            // data might not be XML complient (ignore)
-                        }
-                        File.Delete(f);
+                        xmldata += xrefnod.OuterXml;
                     }
-                    if (upd)
+                    xmldata += "</genxml>";
+
+                    var idxinfo = objCtrl.GetByGuidKey(Info.PortalId, Info.ItemID, "SYSTEMLINK", entityguidkey); // use system id as moduleid
+                    if (idxinfo == null)
                     {
-                        CacheUtils.ClearAllCache();
+                        idxinfo = new SimplisityInfo();
+                        idxinfo.PortalId = Info.PortalId;
+                        idxinfo.TypeCode = "SYSTEMLINK";
+                        idxinfo.GUIDKey = entityguidkey;
+                        idxinfo.XMLData = xmldata;
+                        idxinfo.ParentItemId = Info.ItemID;
+                        idxinfo.ModuleId = Info.ItemID;
+                        var itemid = objCtrl.SaveRecord(idxinfo).ItemID;
+                        idxinfo.ItemID = itemid;
+                    }
+                    else
+                    {
+                        idxinfo.ParentItemId = Info.ItemID;
+                        idxinfo.XMLData = xmldata;
+                        objCtrl.SaveRecord(idxinfo);
+                    }
+                    newsystemlinklist.Add(idxinfo.ItemID);
+                    entityList.Add(entityguidkey);
+
+                    // SYSTEMLINKIDX
+                    foreach (XmlNode xrefnod in idxinfo.XMLDoc.SelectNodes("genxml/genxml"))
+                    {
+                        var i2 = new SimplisityRecord();
+                        i2.XMLData = xrefnod.OuterXml;
+
+                        var idxref = i2.GetXmlProperty("genxml/textbox/indexref");
+                        var typecodeIdx = i2.GetXmlProperty("genxml/dropdownlist/xreftypecode");
+                        if (typecodeIdx == "")
+                        {
+                            typecodeIdx = i2.GetXmlProperty("genxml/dropdownlist/entitytypecode");
+                        }
+                        var idxinfo2 = objCtrl.GetByGuidKey(Info.PortalId, Info.ItemID, "SYSTEMLINK" + typecodeIdx, idxref);
+                        if (idxinfo2 == null)
+                        {
+                            idxinfo2 = new SimplisityInfo();
+                            idxinfo2.PortalId = Info.PortalId;
+                            idxinfo2.TypeCode = "SYSTEMLINK" + typecodeIdx;
+                            idxinfo2.GUIDKey = idxref;
+                            idxinfo2.ParentItemId = idxinfo.ItemID;
+                            idxinfo2.ModuleId = Info.ItemID;
+                            idxinfo2.XMLData = i2.XMLData;
+                            idxinfo2.TextData = typecodeIdx;
+                            var itemid = objCtrl.SaveRecord(idxinfo2).ItemID;
+                            idxinfo2.ItemID = itemid;
+                        }
+                        else
+                        {
+                            idxinfo2.ParentItemId = idxinfo.ItemID;
+                            idxinfo2.XMLData = i2.XMLData;
+                            idxinfo2.TextData = typecodeIdx;
+                            objCtrl.SaveRecord(idxinfo2);
+                        }
+                        newsystemlinkidxlist.Add(idxinfo2.ItemID);
                     }
                 }
             }
 
-            var l = objCtrl.GetList(-1, -1, "SYSTEM");
-            foreach (var s in l)
+            // delete any that have been remove.
+            foreach (var sl in systemlinklist)
             {
-                _systemList.Add(s);
+                if (!newsystemlinklist.Contains(sl.ItemID))
+                {
+                    objCtrl.Delete(sl.ItemID);
+                }
+            }
+            foreach (var sl in systemlinkidxlist)
+            {
+                if (!newsystemlinkidxlist.Contains(sl.ItemID))
+                {
+                    objCtrl.Delete(sl.ItemID);
+                }
             }
 
+            Update();
         }
 
-        #region "base methods"
-
-        public List<SimplisityInfo> GetSystemList()
+        public SimplisityInfo SystemInfo { get { return Info; } }
+        public SimplisityInfo Info { get; set; }
+        public List<DNNrocketInterface> EventList { get; set;}
+        public bool Exists { get; set; }
+        public Dictionary<string, DNNrocketInterface> InterfaceList { get; set; }
+        public Dictionary<string, string> Settings { get; set; }
+        public string GetSetting(string key)
         {
-            return _systemList;
+            if (Settings.ContainsKey(key)) return Settings[key];
+            return "";
         }
-
-        public SimplisityInfo GetSystemByKey(String key)
+        public bool HasInterface(string interfaceKey)
         {
-            var ctrllist = from i in _systemList where i.GUIDKey == key select i;
-            if (ctrllist.Any()) return ctrllist.First(); 
-            return null;
+            return InterfaceList.ContainsKey(interfaceKey);
+        }
+        public List<DNNrocketInterface> GetInterfaceList()
+        {
+            var rtnList = new List<DNNrocketInterface>();
+            var s = Info.GetList("interfacedata");
+            if (s == null) return null;
+            foreach (var i in s)
+            {
+                var iface = new DNNrocketInterface(i);
+                rtnList.Add(iface);
+            }
+            return rtnList;
         }
 
+        public DNNrocketInterface GetInterface(string interfaceKey)
+        {
+            var s = Info.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfaceKey);
+            if (s == null) return null;
+            return new DNNrocketInterface(s);
+        }
+        public void ClearTempDB()
+        {
+            var objCtrl = new DNNrocketController();
+            objCtrl.DeleteAllData("DNNrocketTemp");
+        }
+        public void Update()
+        {
+            var objCtrl = new DNNrocketController();
+            objCtrl.Update(Info);
+        }
 
-
-
-        #endregion
-
-
+        public string SystemKey
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/ctrlkey"); }
+            set { Info.SetXmlProperty("genxml/textbox/ctrlkey", value); }
+        }
+        public string SystemName
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/systemname"); }
+            set { Info.SetXmlProperty("genxml/textbox/systemname", value); }
+        }
+        public string ApiUrl
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/apiurl"); }
+            set { Info.SetXmlProperty("genxml/textbox/apiurl", value); }
+        }
+        public string AdminUrl
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/adminurl"); }
+            set { Info.SetXmlProperty("genxml/textbox/adminurl", value); }
+        }
+        public bool CacheOff
+        {
+            get { return Info.GetXmlPropertyBool("genxml/checkbox/cacheoff"); }
+            set { Info.SetXmlProperty("genxml/checkbox/cacheoff", value.ToString()); }
+        }
+        public bool CacheOn
+        {
+            get { return !Info.GetXmlPropertyBool("genxml/checkbox/cacheoff"); }
+        }
+        public bool DebugMode
+        {
+            get { return Info.GetXmlPropertyBool("genxml/checkbox/debugmode"); }
+            set { Info.SetXmlProperty("genxml/checkbox/debugmode", value.ToString()); }
+        }
+        public string LicenseKey
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/licensekey"); }
+            set { Info.SetXmlProperty("genxml/textbox/licensekey", value); }
+        }
+        public string EncryptKey
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/encryptkey"); }
+            set { Info.SetXmlProperty("genxml/textbox/encryptkey", value); }
+        }
+        public int SystemId
+        {
+            get { return Info.ItemID; }
+        }
+        public string SystemRelPath
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/systemrelpath"); }
+        }
+        public string SystemMapPath
+        {
+            get { return DNNrocketUtils.MapPath(Info.GetXmlProperty("genxml/textbox/systemrelpath")); }
+        }
+        public string DefaultInterface
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/defaultinterface"); }
+        }
+        public string FtpRoot
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/ftproot"); }
+            set { Info.SetXmlProperty("genxml/textbox/ftproot", value); }
+        }
 
     }
-
 }

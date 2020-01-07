@@ -88,7 +88,7 @@ namespace DNNrocketAPI
                     if (systemkey == "" && paramCmd.Contains("_")) systemkey = paramCmd.Split('_')[0];
                     if (systemkey == "") systemkey = "dnnrocket";
                     var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
-                    var systemInfoData = new SystemInfoData(systemInfo);
+                    var systemData = new SystemData(systemInfo);
 
                     if (paramCmd == "admin_return")
                     {
@@ -163,7 +163,7 @@ namespace DNNrocketAPI
                             var returnDictionary = new Dictionary<string, string>();
                                 
                             // before event
-                            var rtnDictInfo = DNNrocketUtils.EventProviderBefore(paramCmd, systemInfoData, postInfo, paramInfo, _editlang);
+                            var rtnDictInfo = DNNrocketUtils.EventProviderBefore(paramCmd, systemData, postInfo, paramInfo, _editlang);
                             if (rtnDictInfo.ContainsKey("post")) postInfo = rtnDictInfo["post"];
                             if (rtnDictInfo.ContainsKey("param")) paramInfo = rtnDictInfo["param"];
 
@@ -195,7 +195,7 @@ namespace DNNrocketAPI
                                 // check for systemspi, does not exist.  It's used to create the systemprovders 
                                 if (systemkey == "" || systemkey == "systemapi" || systemkey == "login")
                                 {
-                                    var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.SystemData.StartConnect");
+                                    var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.System.StartConnect");
                                     returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, _editlang);
                                     strOut = returnDictionary["outputhtml"];
                                 }
@@ -206,7 +206,7 @@ namespace DNNrocketAPI
                             }
 
                             // after Event
-                            returnDictionary = DNNrocketUtils.EventProviderAfter(paramCmd, systemInfoData, postInfo, paramInfo, _editlang);
+                            returnDictionary = DNNrocketUtils.EventProviderAfter(paramCmd, systemData, postInfo, paramInfo, _editlang);
                             if (returnDictionary.ContainsKey("outputhtml")) strOut = returnDictionary["outputhtml"];
                             if (returnDictionary.ContainsKey("outputjson")) strJson = returnDictionary["outputjson"];
 
@@ -269,22 +269,22 @@ namespace DNNrocketAPI
 
                 var passSettings = sInfo.ToDictionary();
 
-                var systemData = new SystemData();
-                var sInfoSystem = systemData.GetSystemByKey(systemkey);
-                var systemInfoData = new SystemInfoData(sInfoSystem);
+                var systemDataList = new SystemDataList();
+                var sInfoSystem = systemDataList.GetSystemByKey(systemkey);
+                var systemData = new SystemData(sInfoSystem);
                 var sidemenu = new Componants.SideMenu(sInfoSystem);
                 var templateControlRelPath = sInfo.GetXmlProperty("genxml/hidden/relpath");
                 sidemenu.ModuleId = moduleid;
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(),"1.0", systemInfoData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(),"1.0", systemData.DebugMode);
 
                 if (razorTempl == "")
                 {
                     // no razor template for sidemenu, so use default.
-                    razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", systemInfoData.DebugMode);
+                    razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
                 }
 
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, sidemenu, passSettings, null, systemInfoData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, sidemenu, passSettings, null, systemData.DebugMode);
 
                 return strOut;
             }

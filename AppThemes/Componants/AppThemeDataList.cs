@@ -54,13 +54,13 @@ namespace Rocket.AppThemes.Componants
         }
         public void PopulateSystemFolderList()
         {
-            SystemFolderList = new List<SystemInfoData>();
+            SystemFolderList = new List<SystemData>();
             var dirlist2 = System.IO.Directory.GetDirectories(AppSystemThemeFolderRootMapPath);
             foreach (var d in dirlist2)
             {
                 var dr = new System.IO.DirectoryInfo(d);
-                var systemInfoData = new SystemInfoData(dr.Name);
-                if (systemInfoData.Exists) SystemFolderList.Add(systemInfoData);
+                var systemData = new SystemData(dr.Name);
+                if (systemData.Exists) SystemFolderList.Add(systemData);
             }
         }
 
@@ -99,12 +99,12 @@ namespace Rocket.AppThemes.Componants
                 CacheUtils.SetCache(cachekey, value, "apptheme");
             }
         }
-        public List<SystemInfoData> SystemFolderList {
+        public List<SystemData> SystemFolderList {
             get
             {
                 var cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
-                if (CacheUtils.GetCache(cachekey, "apptheme") == null) return new List<SystemInfoData>();
-                return (List<SystemInfoData>)CacheUtils.GetCache(cachekey, "apptheme");
+                if (CacheUtils.GetCache(cachekey, "apptheme") == null) return new List<SystemData>();
+                return (List<SystemData>)CacheUtils.GetCache(cachekey, "apptheme");
             }
             set
             {

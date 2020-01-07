@@ -27,7 +27,7 @@
         <themeversion>1.0</themeversion>
         <defaulttemplate>adminpanel.cshtml</defaulttemplate>
         <defaultcommand>rocketadmin_adminpanel</defaultcommand>
-        <namespaceclass>DNNrocket.SystemData.StartConnect</namespaceclass>
+        <namespaceclass>DNNrocket.System.StartConnect</namespaceclass>
         <assembly>DNNrocketSystemData</assembly>
         <databasetable />
         <relpath />

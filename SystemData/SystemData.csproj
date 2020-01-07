@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>DNNrocket.SystemData</RootNamespace>
+    <RootNamespace>DNNrocket.System</RootNamespace>
     <AssemblyName>DNNrocketSystemData</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
+    <ProjectReference Include="..\Images\Images.csproj" />
     <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
   </ItemGroup>
 

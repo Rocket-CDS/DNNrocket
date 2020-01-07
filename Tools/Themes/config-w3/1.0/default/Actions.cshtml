@@ -26,12 +26,12 @@
             <ul id="validatelistdata" class="hummingbird-base">
 
                 @{
-                    var systemData = new DNNrocketAPI.SystemData();
-                    var list = systemData.GetSystemList();
+                    var systemDataList = new SystemDataList();
+                    var list = systemDataList.GetSystemList();
                     foreach (var sk in list)
                     {
-                        var systemInfoData = new SystemInfoData(sk.ItemID);
-                        if (systemInfoData.GetInterface("validatedata") != null)
+                        var systemData = new SystemData(sk.ItemID);
+                        if (systemData.GetInterface("validatedata") != null)
                         {
                             <li>
                                 <label>

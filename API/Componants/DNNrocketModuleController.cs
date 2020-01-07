@@ -41,11 +41,11 @@ namespace DNNrocketAPI.Componants
             {
                 var portalId = objModInfo.PortalID;
                 var moduleParams = new ModuleParams(ModuleId);
-                var systemInfoData = new SystemInfoData(moduleParams.SystemKey);
-                if (systemInfoData.Exists)
+                var systemData = new SystemData(moduleParams.SystemKey);
+                if (systemData.Exists)
                 {
                     xmlOut += "<systemkey>" + moduleParams.SystemKey + "</systemkey>";
-                    foreach (var r in systemInfoData.InterfaceList)
+                    foreach (var r in systemData.InterfaceList)
                     {
                         var rocketInterface = r.Value;
                         if (rocketInterface.IsProvider("exportmodule"))
@@ -56,7 +56,7 @@ namespace DNNrocketAPI.Componants
                                 var paramInfo = new SimplisityInfo();
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
-                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfoData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
                                 if (returnDictionary.ContainsKey("outputhtml"))
                                 {
                                     xmlOut += returnDictionary["outputhtml"];
@@ -106,10 +106,10 @@ namespace DNNrocketAPI.Componants
                 var systemKey = postInfo.GetXmlProperty("export/systemkey");
                 var databasetable = postInfo.GetXmlProperty("export/databasetable");
 
-                var systemInfoData = new SystemInfoData(systemKey);
-                if (systemInfoData.Exists)
+                var systemData = new SystemData(systemKey);
+                if (systemData.Exists)
                 {
-                    foreach (var r in systemInfoData.InterfaceList)
+                    foreach (var r in systemData.InterfaceList)
                     {
                         var rocketInterface = r.Value;
                         if (rocketInterface.IsProvider("importmodule"))
@@ -120,7 +120,7 @@ namespace DNNrocketAPI.Componants
                                 paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
                                 paramInfo.SetXmlProperty("genxml/hidden/databasetable", databasetable);                                
-                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemInfoData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
+                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, "", "");
                             }
                         }
                     }

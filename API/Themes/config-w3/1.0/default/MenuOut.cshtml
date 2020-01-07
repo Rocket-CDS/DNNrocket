@@ -16,7 +16,7 @@
 @{
     var userStorage = new UserStorage();
     var sidemenu = (SideMenu)Model.List.First();
-    var systemInfoData = new SystemInfoData(sidemenu.SystemKey);
+    var systemData = new SystemData(sidemenu.SystemKey);
 
 
     var menuOut = "";
@@ -37,7 +37,7 @@
                 var interfaceName = ResourceKey(Model.GetSetting("resxfile") + "." + interfacekey).ToString();
                 if (interfaceName == "")
                 {
-                    interfaceName = systemInfoData.GetSetting(interfacekey + "MenuName");
+                    interfaceName = systemData.GetSetting(interfacekey + "MenuName");
                     if (interfaceName == "")
                     {
                         interfaceName = interfacekey;
@@ -72,7 +72,7 @@
                 var interfaceName = ResourceKey(Model.GetSetting("resxfile") + "." + interfacekey).ToString();
                 if (interfaceName == "")
                 {
-                    interfaceName = systemInfoData.GetSetting(interfacekey + "MenuName");
+                    interfaceName = systemData.GetSetting(interfacekey + "MenuName");
                     if (interfaceName == "")
                     {
                         interfaceName = interfacekey;

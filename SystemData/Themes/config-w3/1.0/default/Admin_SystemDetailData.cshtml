@@ -15,58 +15,62 @@
 
     <div class="w3-card w3-light-grey w3-padding-large">
 
-        <div class="w3-row-padding">
+        <div class="w3-row-padding ">
+            <div class="w3-quarter">
+                @ImageEdit(sInfo, "logo", 112, 112, " class='w3-circle' ")
+            </div>
             <div class="w3-quarter">
                 <label class="">@ResourceKey("system.ctrlkey")</label>
                 @TextBox(sInfo, "genxml/textbox/ctrlkey", "class='w3-input w3-border' maxlength='50'")
-            </div>
-            <div class="w3-quarter">
                 <label class="">@ResourceKey("system.systemname")</label>
                 @TextBox(sInfo, "genxml/textbox/systemname", "class='w3-input w3-border' maxlength='50'")
             </div>
             <div class="w3-half">
                 <label class="">@ResourceKey("system.adminurl")</label>
                 @TextBox(sInfo, "genxml/textbox/adminurl", "class='w3-input w3-border' ", "")
-            </div>
-        </div>
-        <div class="w3-row-padding">
-            <div class="w3-half">
                 <label class="">@ResourceKey("system.apiurl")</label>
                 @TextBox(sInfo, "genxml/textbox/apiurl", "class='w3-input w3-border'  ", "")
             </div>
-            <div class="w3-half">
+        </div>
+        
+        <div class="w3-row-padding">
+            <div class="w3-quarter">
                 <label class="">@ResourceKey("system.defaultinterface")</label>
                 @TextBox(sInfo, "genxml/textbox/defaultinterface", "class='w3-input w3-border' maxlength='350'")
             </div>
-        </div>
-        <div class="w3-row-padding">
+            <div class="w3-quarter">
+                <label class="">@ResourceKey("system.colorclass")</label>
+                @TextBox(sInfo, "genxml/textbox/colorclass", "class='w3-input w3-border' maxlength='350'", "w3-blue")
+            </div>
             <div class="w3-half">
                 <label class="">@ResourceKey("system.systemrelpath")</label>
                 @TextBox(sInfo, "genxml/textbox/systemrelpath", "class='w3-input w3-border' maxlength='350'")
             </div>
+        </div>
+        <div class="w3-row-padding ">
             <div class="w3-half">
                 <label class="">@ResourceKey("system.encryptkey")</label>
                 @TextBox(sInfo, "genxml/textbox/encryptkey", "class='w3-input w3-border required' maxlength='250' ", "")
             </div>
-        </div>
-
-        <div class="w3-row-padding">
             <div class="w3-half">
                 <label class="">@ResourceKey("system.ftproot")</label>
                 @TextBox(sInfo, "genxml/textbox/ftproot", "class='w3-input w3-border' maxlength='350'", "appthemes")
             </div>
-            <div class="w3-quarter">
+        </div>
+        <div class="w3-row-padding">
+            <div class="w3-half">
                 <br />
                 @CheckBox(sInfo, "genxml/checkbox/debugmode", "&nbsp;" + ResourceKey("system.debugmode"))
             </div>
-            <div class="w3-quarter">
+            <div class="w3-half">
                 <br />
                 @CheckBox(sInfo, "genxml/checkbox/proavailable", "&nbsp;" + ResourceKey("system.proavailable"))
             </div>
-        </div>
-        <div class="w3-row-padding">
-                <br />
+            <div class="w3-half">
                 @CheckBox(sInfo, "genxml/checkbox/cacheoff", "&nbsp;" + ResourceKey("system.tuencacheoff"))
+            </div>
+            <div class="w3-half">
+            </div>
         </div>
 
         @if (sInfo.GetXmlProperty("genxml/textbox/adminurl") != "")
@@ -94,3 +98,4 @@
     </div>
 </div>
 
+@RenderImageSelect(640, true, false)

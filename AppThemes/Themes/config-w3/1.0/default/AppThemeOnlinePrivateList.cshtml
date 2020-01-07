@@ -12,7 +12,7 @@
 @{
     var appThemeDataList = (AppThemeDataPrivateList)Model.List.First();
     var systemGlobalData = new SystemGlobalData();
-    var systemInfoData1 = new SystemInfoData(appThemeDataList.SelectedSystemKey);
+    var systemData1 = new SystemData(appThemeDataList.SelectedSystemKey);
 
 }
 
@@ -30,7 +30,7 @@
                     <label class="">@ResourceKey("system.ftpserver")</label>
                     @TextBox(systemGlobalData.Info, "genxml/textbox/ftpserver", "class='w3-input w3-border' maxlength='250' ", "")
                     <label class="">@ResourceKey("system.ftproot")</label>
-                    @TextBox(systemInfoData1.Info, "genxml/textbox/ftproot", "class='w3-input w3-border' maxlength='350'", "appthemes")
+                    @TextBox(systemData1.Info, "genxml/textbox/ftproot", "class='w3-input w3-border' maxlength='350'", "appthemes")
                 </div>
                 <div class="w3-half  w3-padding">
                     <label class="">@ResourceKey("system.ftpuser")</label>
@@ -65,11 +65,11 @@
             <div class="w3-row-padding w3-margin">
                 <ul class="w3-ul w3-border w3-hoverable w-margin">
 
-                    @foreach (SystemInfoData systemInfoData in appThemeDataList.SystemFolderList)
+                    @foreach (SystemData systemData in appThemeDataList.SystemFolderList)
                     {
-                        <li class="simplisity_click" s-cmd="rocketapptheme_getprivatelist" s-fields='{"selectedsystemkey":"@systemInfoData.SystemKey"}' onclick="document.getElementById('systemselect').style.display='none'">
-                            @systemInfoData.SystemName
-                        </li>
+                    <li class="simplisity_click" s-cmd="rocketapptheme_getprivatelist" s-fields='{"selectedsystemkey":"@systemData.SystemKey"}' onclick="document.getElementById('systemselect').style.display='none'">
+                        <b>@systemData.SystemName</b>
+                    </li>
                     }
 
                 </ul>

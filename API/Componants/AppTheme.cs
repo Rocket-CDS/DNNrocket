@@ -38,8 +38,8 @@ namespace DNNrocketAPI.Componants
         {
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
             SystemKey = systemKey;
-            var systemInfodata = new SystemInfoData(systemKey);
-            SystemId = systemInfodata.SystemId;
+            var systemData = new SystemData(systemKey);
+            SystemId = systemData.SystemId;
             _templateFileName = new List<string>();
             _cssFileName = new List<string>();
             _jsFileName = new List<string>();
@@ -1124,7 +1124,7 @@ namespace DNNrocketAPI.Componants
 
         private string GenerateEditForm(string listname, string basefile, int row)
         {
-            var systemInfoData = new SystemInfoData(SystemKey);
+            var systemData = new SystemData(SystemKey);
 
             List<SimplisityRecord> fieldList = Record.GetRecordList(listname);
             var resxItem = Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
@@ -1279,7 +1279,7 @@ namespace DNNrocketAPI.Componants
                         strFieldList += "@{" + Environment.NewLine;
                         strFieldList += " Model.SetSetting(\"imgfieldname\", \"" + fieldname + "\");" + Environment.NewLine;
                         strFieldList += "}" + Environment.NewLine;
-                        strFieldList += "\t\t\t@RenderTemplate(\"editimages.cshtml\", \"" + systemInfoData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
+                        strFieldList += "\t\t\t@RenderTemplate(\"editimages.cshtml\", \"" + systemData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "documentgallery")
@@ -1288,7 +1288,7 @@ namespace DNNrocketAPI.Componants
                         strFieldList += "@{" + Environment.NewLine;
                         strFieldList += " Model.SetSetting(\"docfieldname\", \"" + fieldname + "\");" + Environment.NewLine;
                         strFieldList += "}" + Environment.NewLine;
-                        strFieldList += "\t\t\t@RenderTemplate(\"editdocuments.cshtml\", \"" + systemInfoData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
+                        strFieldList += "\t\t\t@RenderTemplate(\"editdocuments.cshtml\", \"" + systemData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "linkgallery")
@@ -1297,7 +1297,7 @@ namespace DNNrocketAPI.Componants
                         strFieldList += "@{" + Environment.NewLine;
                         strFieldList += " Model.SetSetting(\"linkfieldname\", \"" + fieldname + "\");" + Environment.NewLine;
                         strFieldList += "}" + Environment.NewLine;
-                        strFieldList += "\t\t\t@RenderTemplate(\"editlinks.cshtml\", \"" + systemInfoData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
+                        strFieldList += "\t\t\t@RenderTemplate(\"editlinks.cshtml\", \"" + systemData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
                         strFieldList += "\t\t</div>" + Environment.NewLine;
                     }
 
@@ -1308,7 +1308,7 @@ namespace DNNrocketAPI.Componants
 
 
             // merge to template            
-            var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\" + basefile + ".cshtml");
+            var strOut = FileUtils.ReadFile(systemData.SystemMapPath + "\\AppThemeBase\\" + basefile + ".cshtml");
             if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\" + basefile + ".cshtml");
             if (strOut == "")
             {
@@ -1316,13 +1316,13 @@ namespace DNNrocketAPI.Componants
             }
             else
             {
-                strOut = ReplaceTemplateTokens(strOut, strFieldList, systemInfoData);
+                strOut = ReplaceTemplateTokens(strOut, strFieldList, systemData);
                 return strOut;
             }
 
         }
 
-        private string ReplaceTemplateTokens(string templateText, string strFieldList, SystemInfoData systemInfoData)
+        private string ReplaceTemplateTokens(string templateText, string strFieldList, SystemData systemData)
         {
             templateText = templateText.Replace("[Token:AppThemeFields]", strFieldList);
             templateText = templateText.Replace("[Token: AppThemeFields]", strFieldList);
@@ -1330,8 +1330,8 @@ namespace DNNrocketAPI.Componants
             templateText = templateText.Replace("[Token: List]", strFieldList);
             templateText = templateText.Replace("[Token:SystemKey]", SystemKey);
             templateText = templateText.Replace("[Token: SystemKey]", SystemKey);
-            templateText = templateText.Replace("[Token:DefaultInterface]", systemInfoData.DefaultInterface);
-            templateText = templateText.Replace("[Token: DefaultInterface]", systemInfoData.DefaultInterface);
+            templateText = templateText.Replace("[Token:DefaultInterface]", systemData.DefaultInterface);
+            templateText = templateText.Replace("[Token: DefaultInterface]", systemData.DefaultInterface);
             templateText = templateText.Replace("[Token:appthemeresx]", AppThemeVersionFolderRel + "/resx/");
             templateText = templateText.Replace("[Token: appthemeresx]", AppThemeVersionFolderRel + "/resx/");
 
@@ -1396,8 +1396,8 @@ namespace DNNrocketAPI.Componants
             }
 
             // merge to template
-            var systemInfoData = new SystemInfoData(SystemKey);
-            var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\editlist.cshtml");
+            var systemData = new SystemData(SystemKey);
+            var strOut = FileUtils.ReadFile(systemData.SystemMapPath + "\\AppThemeBase\\editlist.cshtml");
             if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\editlist.cshtml");
             if (strOut == "")
             {
@@ -1405,7 +1405,7 @@ namespace DNNrocketAPI.Componants
             }
             else
             {
-                strOut = ReplaceTemplateTokens(strOut, strFieldList, systemInfoData);
+                strOut = ReplaceTemplateTokens(strOut, strFieldList, systemData);
                 return strOut;
             }
 
@@ -1462,8 +1462,8 @@ namespace DNNrocketAPI.Componants
             }
 
             // merge to template
-            var systemInfoData = new SystemInfoData(SystemKey);
-            var strOut = FileUtils.ReadFile(systemInfoData.SystemMapPath + "\\AppThemeBase\\" + templatefilename);
+            var systemData = new SystemData(SystemKey);
+            var strOut = FileUtils.ReadFile(systemData.SystemMapPath + "\\AppThemeBase\\" + templatefilename);
             if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\" + templatefilename);
             if (strOut == "")
             {
@@ -1471,7 +1471,7 @@ namespace DNNrocketAPI.Componants
             }
             else
             {
-                strOut = ReplaceTemplateTokens(strOut, strFieldList, systemInfoData);
+                strOut = ReplaceTemplateTokens(strOut, strFieldList, systemData);
                 return strOut;
             }
 

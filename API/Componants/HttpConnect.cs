@@ -13,14 +13,14 @@ namespace DNNrocketAPI.Componants
 {
     public class HttpConnect
     {
-        private SystemInfoData _systemInfoData;
+        private SystemData _systemData;
         private SystemGlobalData _systemGlobalData;
         private string _baseuri;
         public HttpConnect(string selectedSystemKey)
         {
-            _systemInfoData = new SystemInfoData(selectedSystemKey);
+            _systemData = new SystemData(selectedSystemKey);
             _systemGlobalData = new SystemGlobalData();
-            _baseuri = _systemGlobalData.PublicAppThemeURI.TrimStart('/').TrimEnd('/') + "/" + _systemInfoData.SystemKey;
+            _baseuri = _systemGlobalData.PublicAppThemeURI.TrimStart('/').TrimEnd('/') + "/" + _systemData.SystemKey;
         }
         public string DownloadAppThemeToFile(string appThemeFolder, string destinationMapPath)
         {

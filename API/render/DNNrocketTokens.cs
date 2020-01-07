@@ -38,8 +38,8 @@ namespace DNNrocketAPI.render
         {
             var dataSytemKeys = new Dictionary<string, string>();
 
-            var systemData = new DNNrocketAPI.SystemData();
-            var list = systemData.GetSystemList();
+            var systemDataList = new SystemDataList();
+            var list = systemDataList.GetSystemList();
             foreach (var sk in list)
             {
                 if (!dataSytemKeys.ContainsKey(sk.GUIDKey) && sk.GetXmlPropertyBool("genxml/checkbox/proavailable"))
