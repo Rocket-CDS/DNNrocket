@@ -144,7 +144,14 @@ namespace DNNrocket.Images
                         var imageFile = imageDirectory + "\\" + friendlyname;
                         if (File.Exists(imageFile))
                         {
-                            File.Delete(imageFile);
+                            try
+                            {
+                                File.Delete(imageFile);
+                            }
+                            catch (Exception ex)
+                            {
+                                DNNrocketUtils.LogException(ex);
+                            }
                         }
                     }
                 }

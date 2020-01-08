@@ -17,6 +17,7 @@ namespace DNNrocket.System
         private SimplisityInfo _paramInfo;
         private DNNrocketInterface _rocketInterface;
         private UserStorage _userStorage;
+        private Dictionary<string, string> _passSettings;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
@@ -24,8 +25,10 @@ namespace DNNrocket.System
             _paramInfo = paramInfo;
             _systemData = new SystemData(systemInfo);
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
-            var commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
+            _passSettings = _paramInfo.ToDictionary();
 
+            var commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
+            
             DNNrocketUtils.CreateRocketDirectories();
 
             _userStorage = new UserStorage();
@@ -79,7 +82,7 @@ namespace DNNrocket.System
                         break;
                     case "systemapi_export":
                         SystemExport(paramInfo);
-                        strOut = "<h1>Exported System XML</h1>";
+                        strOut = "<i class='fas fa-file-export fa-fw fa-lg simplisity_fadeout '></i>";
                         break;                        
                     case "systemapi_addparam":
                         SystemAddListItem(paramInfo, "idxfielddata");
@@ -418,15 +421,12 @@ namespace DNNrocket.System
 
                 if (selecteditemid > 0)
                 {
-                    var passSettings = _paramInfo.ToDictionary();
-
-
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
                     var objCtrl = new DNNrocketController();
                     var info = objCtrl.GetInfo(selecteditemid);
 
-                    strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+                    strOut = DNNrocketUtils.RazorDetail(razorTempl, info, _passSettings);
                 }
 
 
@@ -568,6 +568,8 @@ namespace DNNrocket.System
                 var systemData = new SystemData(selecteditemid);
                 systemData.Save(postInfo);
                 CacheUtils.ClearAllCache();
+                _passSettings.Add("saved", "true");
+
             }
         }
 

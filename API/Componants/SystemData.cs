@@ -62,21 +62,41 @@ namespace DNNrocketAPI
 
         public void Import(string importXml)
         {
+            var objCtrl = new DNNrocketController();
+
             var infoFromXml = new SimplisityInfo();
             infoFromXml.FromXmlItem(importXml);
+
+            var systemKey = infoFromXml.GUIDKey;
+
+            // find if existing, so we can overwrite
+            var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemKey);
+            if (systemInfo != null) Info = systemInfo; // use existing
+
             Info.XMLData = infoFromXml.XMLData;
-            Info.GUIDKey = Info.GetXmlProperty("genxml/textbox/ctrlkey");
+            Info.GUIDKey = systemKey;
             Info.PortalId = 99999;
             Info.TypeCode = "SYSTEM";
 
             var fileMapPath = DNNrocketUtils.MapPath(Info.GetXmlProperty("genxml/hidden/imagepathlogo"));
             var base64 = Info.GetXmlProperty("genxml/hidden/logobase64");
-            FileUtils.SaveBase64ToFile(fileMapPath, base64);
+            try
+            {
+                FileUtils.SaveBase64ToFile(fileMapPath, base64);
+            }
+            catch (Exception ex)
+            {
+                DNNrocketUtils.LogException(ex);
+            }
 
-            Info.SetXmlProperty("genxml/hidden/logobase64","");
+            Info.SetXmlProperty("genxml/hidden/logobase64", "");
 
             Update();
-            Exists = true;
+
+            // reload
+            systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", Info.GUIDKey);
+            InitSystem(systemInfo);
+
         }
 
         public string Export()

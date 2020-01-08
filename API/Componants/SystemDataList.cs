@@ -32,8 +32,9 @@ namespace DNNrocketAPI
                             systemData.Import(datain);
                             upd = true;
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
+                            DNNrocketUtils.LogException(ex);
                             // data might not be XML complient (ignore)
                         }
                         File.Delete(f);
