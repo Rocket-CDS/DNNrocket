@@ -411,6 +411,9 @@ namespace RocketMod
             // update module with a better name
             DNNrocketUtils.UpdateModuleTitle(_tabid, _moduleid, _moduleParams.Name + ":" + _moduleid);
 
+            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+
+
         }
 
         private void SaveAppTheme()
@@ -432,6 +435,7 @@ namespace RocketMod
             _moduleParams.TabId = _tabid;
             _moduleParams.Exists = true;
             _moduleParams.Save();
+            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
         }
 
         #region "Articles"
@@ -463,7 +467,7 @@ namespace RocketMod
             _passSettings.Add("saved", "true");
             _articleData.DebugMode = _systemData.DebugMode;
             _articleData.Save(_postInfo);
-            CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
         }
 
         public void SaveArticleList()
@@ -485,7 +489,7 @@ namespace RocketMod
                     }
                 }
             }
-            CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
         }
 
         public void DeleteArticle()
@@ -500,6 +504,7 @@ namespace RocketMod
             }
             _articleData.Delete();
             _selectedItemId = -1;
+            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
         }
 
         public String AddArticle()
@@ -508,6 +513,9 @@ namespace RocketMod
             {
                 var articleData = new ArticleData(-1, _dataModuleParams.ModuleId, _editLang);
                 _selectedItemId = articleData.ItemId;
+
+                CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+
                 var strOut = GetArticle();
 
                 return strOut;
@@ -894,6 +902,7 @@ namespace RocketMod
             var filename = _postInfo.GetXmlProperty("genxml/hidden/editorfilenamesave");
             var editorfileext = _postInfo.GetXmlProperty("genxml/hidden/editorfileext");
             _appThemeMod.SaveEditor(filename, editorfileext, editorcode);
+            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
             return "OK";
         }
 
@@ -902,6 +911,7 @@ namespace RocketMod
             var filename = _postInfo.GetXmlProperty("genxml/hidden/editorfilenamesave");
             var editorfileext = _postInfo.GetXmlProperty("genxml/hidden/editorfileext");
             _appThemeMod.RemoveModuleTemplate(filename, editorfileext);
+            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
             return GetAppModTheme();
         }
 
