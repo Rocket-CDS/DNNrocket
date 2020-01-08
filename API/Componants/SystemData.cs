@@ -139,6 +139,8 @@ namespace DNNrocketAPI
             Info.PortalId = 99999;
             Info.TypeCode = "SYSTEM";
 
+            Info.SortOrder = Info.GetXmlPropertyInt("genxml/textbox/sortorder");
+
             Update();
 
             // Capture existing SYSTEMLINK records, so we can selectivly delete. To protect the system during operation, so records are always there.

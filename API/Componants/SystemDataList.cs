@@ -46,7 +46,7 @@ namespace DNNrocketAPI
                 }
             }
 
-            var l = objCtrl.GetList(-1, -1, "SYSTEM");
+            var l = objCtrl.GetList(-1, -1, "SYSTEM","","", " order by R1.SortOrder ");
             foreach (var s in l)
             {
                 _systemList.Add(s);
