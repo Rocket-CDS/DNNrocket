@@ -7,7 +7,8 @@
 
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
 
 @{
     var systemDataList = new SystemDataList();
@@ -22,7 +23,7 @@
 <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 <header class="w3-container ">
-    <h2>ZZZZZZZZZZZZZZZZZZZ</h2>
+    <h2>@ResourceKey("system.systems")</h2>
 </header>
 
 <div id="datasection" class="w3-row w3-margin-top">
@@ -37,10 +38,10 @@
             {
                 lp1 += 1;
                 var systemData = new SystemData(nbi.GetXmlProperty("genxml/textbox/ctrlkey"));
-                <div class="w3-padding w3-col m2 w3-center w3-border w3-margin">
+                <div class="w3-padding w3-col m2 w3-center w3-border w3-margin" style="background-color:@(systemData.Info.GetXmlProperty("genxml/textbox/colorhex"));">
                     <a href="@systemData.AdminUrl" class="" target="_blank" style="cursor:pointer;">
-                        <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
-                            <b class="w3-text-blue ">@systemData.SystemName</b>
+                        <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;" class="w3-margin-bottom">
+                            <b class=" w3-white w3-text-black w3-padding ">@systemData.SystemName</b>
                         </div>
                         <img src="@ThumbnailImageUrl(systemData.Logo,140,140)" style="width:60%;" class="w3-circle w3-hover-opacity" />
                     </a>
