@@ -109,8 +109,6 @@
           </assemblies>
 				</component>
 				<component type="Module">
-
-
           <desktopModule>
             <moduleName>rocketadmin</moduleName>
             <foldername>api</foldername>
@@ -139,8 +137,9 @@
               </moduleDefinition>
             </moduleDefinitions>
           </desktopModule>
+				</component>
 
-
+        <component type="Module">
           <desktopModule>
             <moduleName>rocketmod</moduleName>
             <foldername>RocketMod</foldername>
@@ -169,8 +168,7 @@
               </moduleDefinition>
             </moduleDefinitions>
           </desktopModule>
-
-				</component>
+        </component>
 
         <component type="File">
           <files>
