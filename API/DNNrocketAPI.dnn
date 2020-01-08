@@ -121,7 +121,7 @@
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>rocketsystem</friendlyName>
+                <friendlyName>systemapi</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
