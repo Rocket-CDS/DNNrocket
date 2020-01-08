@@ -155,10 +155,6 @@ namespace DNNrocket.System
                         DNNrocketUtils.RecycleApplicationPool();
                         strOut = "<h1>Recycle App Pool</h1>";
                         break;
-                    case "rocketadmin_adminpanel":
-                        strOut = AdminPanel();
-                        break;
-
                 }
             }
 
@@ -186,7 +182,11 @@ namespace DNNrocket.System
                     break;
                 case "systemapi_licensepopup":
                     strOut = LicensePopup();
-                    break;                    
+                    break;
+                case "rocketadmin_adminpanel":
+                    strOut = "";
+                    if (commandSecurity.SecurityCheckIsSuperUser()) strOut = AdminPanel();
+                    break;
                 default:
                     if (!commandSecurity.SecurityCheckIsSuperUser())
                     {

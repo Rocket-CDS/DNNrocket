@@ -39,8 +39,8 @@
                 @TextBox(sInfo, "genxml/textbox/defaultinterface", "class='w3-input w3-border' maxlength='350'")
             </div>
             <div class="w3-quarter">
-                <label class="">@ResourceKey("system.colorclass")</label>
-                @TextBox(sInfo, "genxml/textbox/colorclass", "class='w3-input w3-border' maxlength='350'", "w3-blue")
+                <label class="">@ResourceKey("system.colorhex")</label>
+                @TextBox(sInfo, "genxml/textbox/colorhex", "class='w3-input w3-border' maxlength='350'", "w3-blue")
             </div>
             <div class="w3-half">
                 <label class="">@ResourceKey("system.systemrelpath")</label>
@@ -48,9 +48,13 @@
             </div>
         </div>
         <div class="w3-row-padding ">
-            <div class="w3-half">
+            <div class="w3-quarter">
                 <label class="">@ResourceKey("system.encryptkey")</label>
                 @TextBox(sInfo, "genxml/textbox/encryptkey", "class='w3-input w3-border required' maxlength='250' ", "")
+            </div>
+            <div class="w3-quarter">
+                <label class="">@ResourceKey("DNNrocket.sortorder")</label>
+                @TextBox(sInfo, "genxml/textbox/sortorder", "class='w3-input w3-border' maxlength='350'", "1")
             </div>
             <div class="w3-half">
                 <label class="">@ResourceKey("system.ftproot")</label>

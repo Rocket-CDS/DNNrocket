@@ -24,6 +24,7 @@
                     <tr>
                         <th></th>
                         <th></th>
+                        <td style="width:30px;"></td>
                         <th></th>
                     </tr>
                 </thead>
@@ -31,13 +32,14 @@
 
                     @foreach (SimplisityInfo nbi in Model.List)
                     {
-                        <tr>
-                            <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/systemname")</td>
-                            <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/ctrlkey")</td>
-                            <td>
-                                <a class="simplisity_click" s-cmd="systemapi_admin_getdetail" s-fields='{"track":"true","selecteditemid":"@nbi.ItemID","theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.edit", "", "Icon")</a>
-                            </td><!-- editlink class added to show processing -->
-                        </tr>
+                    <tr>
+                        <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/systemname")</td>
+                        <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/ctrlkey")</td>
+                        <td style="width:30px;">@nbi.GetXmlProperty("genxml/textbox/sortorder")</td>
+                        <td>
+                            <a class="simplisity_click" s-cmd="systemapi_admin_getdetail" s-fields='{"track":"true","selecteditemid":"@nbi.ItemID","theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.edit", "", "Icon")</a>
+                        </td><!-- editlink class added to show processing -->
+                    </tr>
                     }
 
                 </tbody>

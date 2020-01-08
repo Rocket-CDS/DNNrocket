@@ -507,4 +507,7 @@
   <data name="export.Icon" xml:space="preserve">
     <value>&lt;i class="fas fa-file-export fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
+  <data name="sortorder.Text" xml:space="preserve">
+    <value>Sort Order</value>
+  </data>
 </root>
