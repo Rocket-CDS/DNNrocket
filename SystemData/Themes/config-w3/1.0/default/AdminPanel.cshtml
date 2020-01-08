@@ -22,40 +22,44 @@
 <script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
 <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-<header class="w3-container ">
-    <h2>@ResourceKey("system.systems")</h2>
-</header>
+
+<div class="w3-row">
+        <h2>@ResourceKey("system.systems")</h2>
+</div>
 
 <div id="datasection" class="w3-row w3-margin-top">
 
-    <div class="w3-container w3-padding">
+    <div id="datalist2" class="w3-container ">
 
         @foreach (SimplisityInfo nbi in list)
         {
-            var lp1 = 0;
             var adminurl = nbi.GetXmlProperty("genxml/textbox/adminurl");
             if (adminurl != "" && !adminurl.Contains("[")) // check for admin link without parameters (for modules)
             {
-                lp1 += 1;
                 var systemData = new SystemData(nbi.GetXmlProperty("genxml/textbox/ctrlkey"));
-                <div class="w3-padding w3-col m2 w3-center w3-border w3-margin" style="background-color:@(systemData.Info.GetXmlProperty("genxml/textbox/colorhex"));">
-                    <a href="@systemData.AdminUrl" class="" target="_blank" style="cursor:pointer;">
+
+                <a href="@systemData.AdminUrl" class="" target="_blank" style="text-decoration:none">
+                    <div class="w3-padding w3-col m2 w3-center w3-border w3-margin w3-hover-opacity" style="cursor:pointer;background-color:@(systemData.Info.GetXmlProperty("genxml/textbox/colorhex"));">
                         <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;" class="w3-margin-bottom">
-                            <b class=" w3-white w3-text-black w3-padding ">@systemData.SystemName</b>
+                            <b class=" w3-white w3-text-black w3-padding " title="@systemData.SystemName">@systemData.SystemName</b>
                         </div>
                         <img src="@ThumbnailImageUrl(systemData.Logo,140,140)" style="width:60%;" class="w3-circle w3-hover-opacity" />
-                    </a>
-                </div>
+                    </div>
+                </a>
 
             }
         }
     </div>
+
 </div>
+
+<hr />
+
 
 <script>
     $(document).ready(function () {
 
-        $('#updatelicensemodel').show();
 
     });
+
 </script>
