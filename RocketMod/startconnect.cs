@@ -504,6 +504,9 @@ namespace RocketMod
             }
             _articleData.Delete();
             _selectedItemId = -1;
+            _userStorage.TrackClear(_systemKey);
+            _userStorage.Save();
+
             CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
         }
 
