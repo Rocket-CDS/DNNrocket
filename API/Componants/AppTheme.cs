@@ -1207,6 +1207,10 @@ namespace DNNrocketAPI.Componants
                     {
                         strFieldList += "\t\t@TextBox(info,\"" + xpath + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
+                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "textboxdate")
+                    {
+                        strFieldList += "\t\t@TextBoxDate(info,\"" + xpath + "\",\"" + attributes + " s-datatype='date' \"," + localized + "," + row + ")" + Environment.NewLine;
+                    }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "textarea")
                     {
                         strFieldList += "\t\t@TextArea(info,\"" + xpath + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;

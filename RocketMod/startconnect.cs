@@ -748,6 +748,7 @@ namespace RocketMod
         {
             var settingsData = GetSettingsData();
             settingsData.Delete();
+            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
             return EditSettingsData();
         }
 
@@ -755,6 +756,7 @@ namespace RocketMod
         {
             var settingsData = GetSettingsData();
             settingsData.AddRow();
+            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
             return EditSettingsData();
         }
 
@@ -762,6 +764,7 @@ namespace RocketMod
         {
             var settingsData = GetSettingsData();
             settingsData.Save(_postInfo);
+            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
             return EditSettingsData();
         }
 
@@ -974,8 +977,7 @@ namespace RocketMod
 
                         var razorTempl = _appThemeMod.GetTemplateRazor("detail");
 
-                        var articleData = new ArticleData(_dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
-                        articleData.Populate(itemid);
+                        var articleData = new ArticleData(itemid, _dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
 
                         foreach (var s in _moduleParams.ModuleSettings)
                         {

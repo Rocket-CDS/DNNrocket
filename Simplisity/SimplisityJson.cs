@@ -12,6 +12,7 @@ namespace Simplisity
     {
         public const String checkbox = "checkbox";
         public const String textbox = "text";
+        public const String date = "date";
         public const String radio = "radio";
         public const String select = "select";
         public const String hidden = "hidden";
@@ -141,6 +142,9 @@ namespace Simplisity
             AddToSimplisty(ref xmlOut, requestJsonXml, postList, dataroot, lang);
 
             postList = GetPostXml(requestJsonXml, CtrlTypes.textbox, dataroot);
+            AddToSimplisty(ref xmlOut, requestJsonXml, postList, dataroot, lang);
+
+            postList = GetPostXml(requestJsonXml, CtrlTypes.date, dataroot);
             AddToSimplisty(ref xmlOut, requestJsonXml, postList, dataroot, lang);
 
             postList = GetPostXml(requestJsonXml, CtrlTypes.select, dataroot);

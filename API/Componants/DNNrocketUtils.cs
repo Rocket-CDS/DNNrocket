@@ -1808,6 +1808,10 @@ namespace DNNrocketAPI
                 {
                     xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                 }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "textboxdate")
+                {
+                    xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
                 if (f.GetXmlProperty("genxml/select/type").ToLower() == "textarea")
                 {
                     xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();

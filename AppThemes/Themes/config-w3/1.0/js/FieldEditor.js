@@ -262,15 +262,15 @@ $('.isonlist').unbind("click");
 
             jQuery.validator.addMethod("alphanumeric", function (value, element) {
             return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
-        }, '@ResourceKey("RocketMod.alphanumeric","", "Error")');
+        }, 'Error');
 
         jQuery.validator.addMethod("notnumeric", function (value, element) {
             return this.optional(element) || !$.isNumeric(value);
-        }, '@ResourceKey("RocketMod.alphanumeric", "", "Error")');
+        }, 'Error');
 
         jQuery.validator.addMethod("notstartnumeric", function (value, element) {
             return this.optional(element) || !$.isNumeric(value.substring(0, 1));
-        }, '@ResourceKey("RocketMod.alphanumeric", "", "Error")');
+        }, 'Error');
 
         jQuery.validator.setDefaults({
                 ignore: ":hidden:not(#fielddatasection input[type=text])",
@@ -279,7 +279,7 @@ $('.isonlist').unbind("click");
         $("#fielddatasection input[type=text]").each(function () {
             if (!$(this).valid()) {
                 $(this).css({ 'background-color': '#ffe6e6' });
-            $('.activatevalidation').attr('s-stop', 'stop')
+                $('.activatevalidation').attr('s-stop', 'stop');
             $('.validationfail').show();
         }
     });
