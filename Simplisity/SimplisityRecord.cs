@@ -77,6 +77,7 @@ namespace Simplisity
             this.UserId = info.UserId;
             this.RowCount = info.RowCount;
             this.EncodingKey = info.EncodingKey;
+            this.SortOrder = info.SortOrder;
         }
 
         public SimplisityRecord()
@@ -413,7 +414,7 @@ namespace Simplisity
         public string ToXmlItem(bool withTextData = true)
         {
             // don't use serlization, becuase depending what is in the TextData field could make it fail.
-            var xmlOut = new StringBuilder("<item><itemid>" + ItemID.ToString("") + "</itemid><portalid>" + PortalId.ToString("") + "</portalid><moduleid>" + ModuleId.ToString("") + "</moduleid><xrefitemid>" + XrefItemId.ToString("") + "</xrefitemid><parentitemid>" + ParentItemId.ToString("") + "</parentitemid><typecode>" + TypeCode + "</typecode><guidkey>" + GUIDKey + "</guidkey><lang>" + Lang + "</lang><userid>" + UserId.ToString("") + "</userid>" + XMLData);
+            var xmlOut = new StringBuilder("<item><itemid>" + ItemID.ToString("") + "</itemid><portalid>" + PortalId.ToString("") + "</portalid><moduleid>" + ModuleId.ToString("") + "</moduleid><xrefitemid>" + XrefItemId.ToString("") + "</xrefitemid><parentitemid>" + ParentItemId.ToString("") + "</parentitemid><typecode>" + TypeCode + "</typecode><guidkey>" + GUIDKey + "</guidkey><lang>" + Lang + "</lang><userid>" + UserId.ToString("") + "</userid>" + "<sortorder>" + SortOrder.ToString("") + "</sortorder>" + XMLData);
             if (withTextData && TextData != null)
             {
                 xmlOut.Append("<data><![CDATA[" + TextData.Replace("<![CDATA[", "***CDATASTART***").Replace("]]>", "***CDATAEND***") + "]]></data>");
@@ -475,6 +476,10 @@ namespace Simplisity
             if ((selectSingleNode != null) && (GeneralUtils.IsNumeric(selectSingleNode.InnerText)))
                 UserId = Convert.ToInt32(selectSingleNode.InnerText);
 
+            //sortorder
+            selectSingleNode = xmlDoc.SelectSingleNode("item/sortorder");
+            if ((selectSingleNode != null) && (GeneralUtils.IsNumeric(selectSingleNode.InnerText)))
+                SortOrder = Convert.ToInt32(selectSingleNode.InnerText);
         }
 
         /// <summary>

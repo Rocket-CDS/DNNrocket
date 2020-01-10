@@ -77,6 +77,9 @@ namespace DNNrocketAPI
             Info.GUIDKey = systemKey;
             Info.PortalId = 99999;
             Info.TypeCode = "SYSTEM";
+            Info.SortOrder = infoFromXml.SortOrder;
+            Info.ParentItemId = infoFromXml.ParentItemId;
+            Info.XrefItemId = infoFromXml.XrefItemId;
 
             var fileMapPath = DNNrocketUtils.MapPath(Info.GetXmlProperty("genxml/hidden/imagepathlogo"));
             var base64 = Info.GetXmlProperty("genxml/hidden/logobase64");

@@ -43,6 +43,7 @@ namespace DNNrocketAPI
             if (!Directory.Exists(TempDirectoryMapPath()))
             {
                 Directory.CreateDirectory(TempDirectoryMapPath());
+                Directory.CreateDirectory(TempDirectoryMapPath() + "\\debug");
             }
             if (!Directory.Exists(HomeDNNrocketDirectoryMapPath()))
             {
@@ -1859,9 +1860,11 @@ namespace DNNrocketAPI
         public static void LogDebugClear()
         {
             var mappath = TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
+            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
             System.IO.DirectoryInfo di = new DirectoryInfo(mappath);
             foreach (System.IO.FileInfo file in di.GetFiles())
             {
+
                 file.Delete();
             }
         }
