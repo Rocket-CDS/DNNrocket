@@ -42,6 +42,7 @@
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-reload="true" s-cmd="systemapi_recycleapppool"><i class="fas fa-sync"></i>&nbsp;@ResourceKey("system.recycleapppool")</div>
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="login_signout" s-return="#simplisity_startpanel"><i class="fas fa-sign-out-alt"></i>&nbsp;@ResourceKey("DNNrocket.signout")</div>
     <hr />
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d4 returnbutton" style="display:none;" onclick="returnclick();"><i class="fas fa-caret-left"></i>&nbsp;@ResourceKey("DNNrocket.back")</div>
 
 </div>
 
@@ -56,6 +57,11 @@
         });
 
         sidemenuchange();
+
+        var returnurl = sessionStorage.RocketModReturn;
+        if (typeof returnurl !== 'undefined' && returnurl !== '') {
+            $('.returnbutton').show();
+        }
 
     });
 

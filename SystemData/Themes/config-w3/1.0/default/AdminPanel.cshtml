@@ -23,12 +23,6 @@
 <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
-<div class="w3-row">
-        <h2>@ResourceKey("system.systems")</h2>
-</div>
-
-<div id="datasection" class="w3-row w3-margin-top">
-
     <div id="datalist2" class="w3-container ">
 
         @foreach (SimplisityInfo nbi in list)
@@ -38,34 +32,22 @@
             {
                 var systemData = new SystemData(nbi.GetXmlProperty("genxml/textbox/ctrlkey"));
 
-                <a href="@systemData.AdminUrl" class=" " target="_blank" style="text-decoration:none">
-
-                    <div class="w3-row w3-hover-opacity w3-border">
-                        <div class="w3-col m2 w3-padding" style="width:140px;">
-                            <div class="w3-padding w3-center w3-border " style="cursor:pointer;background-color:@(systemData.Info.GetXmlProperty("genxml/textbox/colorhex"));">
-                                <img src="@ThumbnailImageUrl(systemData.Logo,80,80)" class="w3-circle w3-hover-opacity" />
-                            </div>
+                <a href="@systemData.AdminUrl" class="" style="text-decoration:none">
+                    <div class="w3-col m2 w3-hover-opacity w3-padding" style="width:140px;">
+                        <div class="w3-padding w3-center w3-border " style="cursor:pointer;background-color:@(systemData.Info.GetXmlProperty("genxml/textbox/colorhex"));">
+                            <img src="@ThumbnailImageUrl(systemData.Logo,80,80)" class="w3-circle w3-hover-opacity" />
                         </div>
-                        <div class="w3-col m10 w3-padding">
-                            <b class=" w3-white w3-text-black w3-padding w3-large " title="@systemData.SystemName">@systemData.SystemName</b>
-                        </div>
+                        <b class=" w3-white w3-text-black w3-tiny " title="@systemData.SystemName" style="width:140px;">@systemData.SystemName</b>
                     </div>
-
                 </a>
 
             }
         }
     </div>
 
-</div>
-
-<hr />
-
 
 <script>
     $(document).ready(function () {
-
-
+        sessionStorage.RocketModReturn = window.location.href; // allow return to this page
     });
-
 </script>

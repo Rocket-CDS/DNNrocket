@@ -99,10 +99,6 @@
 {
     menuOut += "<a class='w3-bar-item w3-button w3-padding w3-theme ' href='/Desktopmodules/dnnrocket/AppThemes/admin.html' target='_blank'><i title='System' class='fas fa-file-code' style='width:20px;'></i>&nbsp;AppThemes</a>";
 }
-@if (Model.GetSettingBool("menu-backbutton"))
-{
-    menuOut += "<div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class=' w3-bar-item w3-button w3-theme w3-hover-theme simplisity_click'>" + ButtonText(ButtonTypes.back) + "</div>";
-}
 @if (Model.GetSettingBool("menu-signoutbutton"))
 {
     menuOut += "<div class='w3-bar-item w3-button w3-theme w3-hover-theme  simplisity_click' s-cmd='login_signout'><i class='fas fa-sign-out-alt'></i>&nbsp;" + ResourceKey("DNNrocket.signout") + "</div>";
@@ -110,6 +106,17 @@
 @{
     menuOut += "<div class='w3-border-top w3-bar-item'>&nbsp;</div>";
 }
+
+@if (Model.GetSettingBool("menu-backbutton"))
+{
+    menuOut += "<div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class=' w3-bar-item w3-button w3-theme w3-hover-theme simplisity_click'>" + ButtonText(ButtonTypes.back) + "</div>";
+}
+else
+{
+    menuOut += "<div class='w3-bar-item w3-button w3-padding w3-theme-d3 returnbutton' style='display:none;' onclick='returnclick();'>" + ButtonText(ButtonTypes.back) + "</div>";
+
+}
+
 
 <div class="menureturn" style="display:none;"></div>
 
@@ -133,6 +140,10 @@
         // turn off the reload flag
         simplisity_setParamField("reload", false)
 
+        var returnurl = sessionStorage.RocketModReturn;
+        if (typeof returnurl !== 'undefined' && returnurl !== '') {
+            $('.returnbutton').show();
+        }
 
         $('.menuaccordian').unbind('click');
         $('.menuaccordian').click(function () {
