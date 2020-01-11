@@ -216,6 +216,7 @@ namespace DNNrocketAPI
 
                     if (hasEditAccess)
                     {
+
                         model.SetSetting("editiconcolor", _systemData.GetSetting("editiconcolor"));
                         model.SetSetting("editicontextcolor", _systemData.GetSetting("editicontextcolor"));
                         strOut = "<div id='rocketmodcontentwrapper" + ModuleId + "' class=' w3-display-container'>";

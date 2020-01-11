@@ -59,7 +59,7 @@ namespace DNNrocketAPI.render
             if (model.SystemKey == "") rtn += "ERROR: no SystemKey";
             if (model.TabId <= 0) rtn += "ERROR: no TabId";
 
-            rtn += pageData.FullUrl + "/" + moduleParams.DetailUrlParam + "/" + itemid + "/" + GeneralUtils.UrlFriendly(title);
+            rtn += pageData.FullUrl.TrimEnd('/') + "/" + moduleParams.DetailUrlParam + "/" + itemid + "/" + GeneralUtils.UrlFriendly(title);
 
             return new RawString(rtn);
         }
