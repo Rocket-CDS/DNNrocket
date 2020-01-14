@@ -105,6 +105,9 @@
                 case "imagefull":
                     xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("Image", replaceData)) + "' />";
                     break;
+                case "image":
+                    xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("Image", replaceData)) + "' />";
+                    break;
                 case "linkgallery":
                     xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("LinkGallery", replaceData)) + "' />";
                     break;

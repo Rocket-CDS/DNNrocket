@@ -154,7 +154,7 @@
                         <div class="w3-row w3-padding">
                             <div class="w3-col m2 w3-button w3-khaki" onclick="showselect();">@ButtonText(ButtonTypes.back)</div>
                             @ButtonGap()
-                            <div class="w3-col m2 w3-button w3-green w3-padding-8 saveappthemeconfig" s-cmd="rocketmodedit_saveappthemeconfig" s-after="settingreturn" s-post=".postdatasection" s-return="#settingsection">@ButtonText(ButtonTypes.next)</div>
+                            <div class="w3-col m2 w3-button w3-green w3-padding-8 saveappthemeconfig" s-cmd="rocketmodedit_saveappthemeconfig" s-before="hideselectapptheme" s-after="settingreturn" s-post=".postdatasection" s-return="#settingsection">@ButtonText(ButtonTypes.next)</div>
                         </div>
                         <div class="w3-row">
                             <div class="w3-col m2 w3-margin appthemedisplay ">
@@ -236,7 +236,15 @@
 
     });
 
+    function hideselectapptheme() {
+        $('#selectapptheme').hide();
+    }    
+    function showselectapptheme() {
+        $('#selectapptheme').show();
+    }    
+
     function hidesettings() {
+        $('#selectapptheme').hide();
         $('#datasection3').hide();
     }
 
@@ -261,6 +269,7 @@
         } else {
             $('#datasection2').hide();
             $('#datasection3').show();
+            showselectapptheme();
         }
     }
 
