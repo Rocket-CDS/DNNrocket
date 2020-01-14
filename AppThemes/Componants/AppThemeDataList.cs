@@ -62,13 +62,22 @@ namespace Rocket.AppThemes.Componants
         public void PopulateSystemFolderList()
         {
             SystemFolderList = new List<SystemData>();
-            var dirlist2 = System.IO.Directory.GetDirectories(AppSystemThemeFolderRootMapPath);
-            foreach (var d in dirlist2)
+
+            // Get the system data from the DB SYSTEM records
+            var systemDataList = new SystemDataList();
+            foreach (var d in systemDataList.GetSystemList())
             {
-                var dr = new System.IO.DirectoryInfo(d);
-                var systemData = new SystemData(dr.Name);
-                if (systemData.Exists) SystemFolderList.Add(systemData);
+                var systemData = new SystemData(d);
+                if (systemData.Exists)
+                {
+                    SystemFolderList.Add(systemData);
+                    if (!Directory.Exists(AppSystemThemeFolderRootMapPath.TrimEnd('\\') + "\\" + systemData.SystemKey))
+                    {
+                        Directory.CreateDirectory(AppSystemThemeFolderRootMapPath.TrimEnd('\\') + "\\" + systemData.SystemKey);
+                    }
+                }
             }
+
         }
 
         public void ClearCacheLists()
