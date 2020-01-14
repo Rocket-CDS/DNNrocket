@@ -124,20 +124,26 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
-        public IEncodedString TextBoxDate(SimplisityInfo info, String xpath, String attributes = "", bool localized = false, int row = 0, string listname = "")
+        public IEncodedString TextBoxDate(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
             var value = info.GetXmlPropertyDate(xpath);
+            var valueStr = info.GetXmlProperty(xpath);
             if (localized && !xpath.StartsWith("genxml/lang/"))
             {
                 value = info.GetXmlPropertyDate("genxml/lang/" + xpath);
+                valueStr = info.GetXmlProperty("genxml/lang/" + xpath);
             }
             var upd = getUpdateAttr(xpath, attributes, localized);
             var id = getIdFromXpath(xpath, row, listname);
 
+            if (valueStr == "" && GeneralUtils.IsDate(defaultValue, "en-US"))
+            {
+                value = Convert.ToDateTime(defaultValue);
+            }
+
             var typeattr = "type='date'";
             if (attributes.ToLower().Contains(" type=")) typeattr = "";
-
 
             var strOut = "<input value='" + value.ToString("yyyy-MM-dd")+ "' id='" + id + "' s-xpath='" + xpath + "' " + attributes + " " + upd + " " + typeattr + " />";
 

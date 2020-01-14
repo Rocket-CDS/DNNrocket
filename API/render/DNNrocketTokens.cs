@@ -56,10 +56,13 @@ namespace DNNrocketAPI.render
             var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), model.TabId);
             var moduleParams = new ModuleParams(model.ModuleId, model.SystemKey);
 
-            if (model.SystemKey == "") rtn += "ERROR: no SystemKey";
-            if (model.TabId <= 0) rtn += "ERROR: no TabId";
+            if (model.SystemKey == "") return new RawString("ERROR: no SystemKey");
+            if (model.TabId <= 0) return new RawString("ERROR: no TabId");
 
-            rtn += pageData.FullUrl.TrimEnd('/') + "/" + moduleParams.DetailUrlParam + "/" + itemid + "/" + GeneralUtils.UrlFriendly(title);
+            string[] paramData = new string[1];
+            paramData[0] = moduleParams.DetailUrlParam + "=" + itemid;
+
+            rtn = PagesUtils.NavigateURL(model.TabId, "", paramData) + "/" + GeneralUtils.UrlFriendly(title);
 
             return new RawString(rtn);
         }
@@ -539,9 +542,11 @@ namespace DNNrocketAPI.render
 
         public IEncodedString LinkPageURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = "", string attributes = "")
         {
+            string[] paramData = new string[0];
+
             var tabid = info.GetXmlPropertyInt(xpath);
             if (tabid == 0) return new RawString("");
-            var url = PagesUtils.GetPageURL(tabid);
+            var url = PagesUtils.NavigateURL(tabid, "", paramData);
 
             return GetLinkURL(url, openInNewWindow, text, attributes);
         }

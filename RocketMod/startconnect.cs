@@ -966,7 +966,7 @@ namespace RocketMod
                     var objCtrl = new DNNrocketController();
 
                     var appthemefolder = _moduleParams.AppThemeFolder;
-                    var passSettings = _paramInfo.ToDictionary();                 
+                    var passSettings = new PassSettings(_paramInfo);                 
                     passSettings.Add("addeditscript", _commandSecurity.HasModuleEditRights().ToString());
                     var adminurl = "/DesktopModules/DNNrocket/RocketMod/admin.html?moduleid=" + _moduleid + "&tabid=" + _tabid;
                     passSettings.Add("adminurl", adminurl);
@@ -984,16 +984,16 @@ namespace RocketMod
 
                         foreach (var s in _moduleParams.ModuleSettings)
                         {
-                            if (!passSettings.ContainsKey(s.Key)) passSettings.Add(s.Key, s.Value);
+                            passSettings.Add(s.Key, s.Value);
                         }
 
                         passSettings.Add("DocumentFolderRel", _dataModuleParams.DocumentFolderRel);
                         passSettings.Add("ImageFolderRel", _dataModuleParams.ImageFolderRel);
+                        passSettings.Add("DetailView", _moduleParams.DetailView.ToString());
 
-                        if (passSettings.ContainsKey("tabid")) passSettings.Remove("tabid");
                         passSettings.Add("tabid", _tabid.ToString());
 
-                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, passSettings);
+                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, passSettings.DictionaryData);
 
                     }
                     else
@@ -1006,16 +1006,16 @@ namespace RocketMod
 
                         foreach (var s in _moduleParams.ModuleSettings)
                         {
-                            if (!passSettings.ContainsKey(s.Key)) passSettings.Add(s.Key, s.Value);
+                            passSettings.Add(s.Key, s.Value);
                         }
 
                         passSettings.Add("DocumentFolderRel", _dataModuleParams.DocumentFolderRel);
                         passSettings.Add("ImageFolderRel", _dataModuleParams.ImageFolderRel);
+                        passSettings.Add("DetailView", _moduleParams.DetailView.ToString());
 
-                        if (passSettings.ContainsKey("tabid")) passSettings.Remove("tabid");
                         passSettings.Add("tabid", _tabid.ToString());
 
-                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings, articleDataList.Header);
+                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings.DictionaryData, articleDataList.Header);
                     }
 
 

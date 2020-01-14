@@ -37,7 +37,6 @@ namespace DNNrocketAPI
 {
     public static class DNNrocketUtils
     {
-
         public static void CreateRocketDirectories()
         {
             if (!Directory.Exists(TempDirectoryMapPath()))
@@ -1005,6 +1004,11 @@ namespace DNNrocketAPI
         public static int GetPortalId()
         {
             return PortalSettings.Current.PortalId;
+        }
+
+        public static PortalSettings GetPortalSettings()
+        {
+            return GetPortalSettings(PortalSettings.Current.PortalId);
         }
 
         public static PortalSettings GetPortalSettings(int portalId)

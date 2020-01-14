@@ -314,4 +314,8 @@
   <data name="Razor.ListUrl" xml:space="preserve">
     <value>@ListUrl(SimplisityRazor model)</value>
   </data>
+  <data name="Razor.TextBoxDate" xml:space="preserve">
+    <value>@TextBox(info, "genxml/", String attributes = "", String defaultValue = "yyyy-MM-dd", bool localized = false, int row = 0, string listname = "")</value>
+    <comment>Display TextBox field</comment>
+  </data>
 </root>
