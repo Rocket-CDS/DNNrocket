@@ -133,6 +133,33 @@ namespace DNNrocketAPI
         private void PageLoad()
         {
 
+            var itemref = DNNrocketUtils.RequestQueryStringParam(Request, _moduleParams.DetailUrlParam);
+            // check for detail page display
+            if (GeneralUtils.IsNumeric(itemref) && _moduleParams.DetailView)
+            {
+                var info = _objCtrl.GetInfo(Convert.ToInt32(itemref), DNNrocketUtils.GetCurrentCulture());
+                if (info != null)
+                {
+                    var pagetitle = info.GetXmlProperty("genxml/lang/genxml/textbox/pagetitle");
+                    if (pagetitle == "") pagetitle = info.GetXmlProperty("genxml/textbox/pagetitle");
+                    if (pagetitle == "") pagetitle = info.GetXmlProperty("genxml/lang/genxml/textbox/title");
+                    if (pagetitle == "") pagetitle = info.GetXmlProperty("genxml/textbox/title");
+                    if (pagetitle == "") pagetitle = info.GetXmlProperty("genxml/textbox/pagename");
+                    if (pagetitle == "") pagetitle = info.GetXmlProperty("genxml/lang/genxml/textbox/pagename");
+
+                    var pagekeywords = info.GetXmlProperty("genxml/lang/genxml/textbox/pagekeywords");
+
+                    var pagedescription = info.GetXmlProperty("genxml/lang/genxml/textbox/pagedescription").Replace(Environment.NewLine," ");
+
+                    DotNetNuke.Framework.CDefault tp = (DotNetNuke.Framework.CDefault)this.Page;
+                    if (pagetitle != "") tp.Title = pagetitle;
+                    if (pagedescription != "") tp.MetaDescription = pagedescription;
+                    if (pagekeywords != "") tp.MetaKeywords = pagekeywords;
+                    if (pagedescription != "") tp.Description = pagedescription;
+                    if (pagekeywords != "") tp.KeyWords = pagekeywords;
+                }
+            }
+
 
         }
 
@@ -141,35 +168,6 @@ namespace DNNrocketAPI
         {
             var hasEditAccess = false;
             if (UserId > 0) hasEditAccess = DotNetNuke.Security.Permissions.ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration);
-
-           
-            var itemref = DNNrocketUtils.RequestQueryStringParam(Request, _moduleParams.DetailUrlParam);
-            // check for detail page display
-            if (GeneralUtils.IsNumeric(itemref) && _moduleParams.DetailView)
-            {
-                var info = _objCtrl.GetInfo(Convert.ToInt32(itemref), DNNrocketUtils.GetCurrentCulture());
-                if (info != null)
-                {
-                    var pagename = info.GetXmlProperty("genxml/lang/genxml/textbox/pagename");
-                    if (pagename == "") pagename = info.GetXmlProperty("genxml/textbox/pagename");
-                    if (pagename == "") pagename = info.GetXmlProperty("genxml/lang/genxml/textbox/title");
-                    if (pagename == "") pagename = info.GetXmlProperty("genxml/textbox/title");
-
-                    var pagetitle = info.GetXmlProperty("genxml/lang/genxml/textbox/pagetitle");
-                    if (pagetitle == "") pagetitle = info.GetXmlProperty("genxml/textbox/pagetitle");
-                    if (pagetitle == "") pagetitle = info.GetXmlProperty("genxml/lang/genxml/textbox/title");
-                    if (pagetitle == "") pagetitle = info.GetXmlProperty("genxml/textbox/title");
-
-                    var pagekeywords = info.GetXmlProperty("genxml/lang/genxml/textbox/pagekeywords");
-
-                    var pagedescription = info.GetXmlProperty("genxml/lang/genxml/textbox/pagedescription");
-
-                    DotNetNuke.Framework.CDefault tp = (DotNetNuke.Framework.CDefault)this.Page;
-                    if (pagetitle != "") tp.Title = pagetitle;
-                    if (pagedescription != "") tp.Description = pagedescription;
-                    if (pagekeywords != "") tp.KeyWords = pagekeywords;
-                }
-            }
 
             var postInfo = new SimplisityInfo();
             var paramInfo = new SimplisityInfo();
