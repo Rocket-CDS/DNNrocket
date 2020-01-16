@@ -516,6 +516,24 @@ namespace Simplisity
             return obj;
         }
 
+        public string PrettyXml()
+        {
+            var stringBuilder = new StringBuilder();
+
+            var element = XElement.Parse(XMLData);
+
+            var settings = new XmlWriterSettings();
+            settings.OmitXmlDeclaration = true;
+            settings.Indent = true;
+            settings.NewLineOnAttributes = true;
+
+            using (var xmlWriter = XmlWriter.Create(stringBuilder, settings))
+            {
+                element.Save(xmlWriter);
+            }
+
+            return stringBuilder.ToString();
+        }
 
 
         #region "private functions"

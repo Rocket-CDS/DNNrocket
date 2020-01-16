@@ -47,8 +47,13 @@
         <div id="datasection" class="">
             <!-- The Detail-->
             <div id="detailDisplay" class="w3-container">
-                [Token:AppThemeFields]
-                @RenderRocketModFields(Model, info.PortalId, info.ModuleId, info, 1)
+                <div id="editform">
+                    [Token:AppThemeFields]
+                    @RenderRocketModFields(Model, info.PortalId, info.ModuleId, info, 1)
+                </div>
+                <div id="editxml">
+                    @info.XMLData
+                </div>
             </div>
         </div>
         <div>

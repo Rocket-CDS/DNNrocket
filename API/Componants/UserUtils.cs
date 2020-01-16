@@ -58,6 +58,10 @@ namespace DNNrocketAPI
             }
             return false;
         }
+        public static bool GetCurrentUserIsSuperUser()
+        {
+            return UserController.Instance.GetCurrentUserInfo().IsSuperUser;
+        }
 
         public static List<string> GetCurrentUserRoles()
         {
