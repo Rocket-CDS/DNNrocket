@@ -177,6 +177,17 @@ namespace DNNrocketAPI
             return "";
         }
 
+        public static string RazorDetailByName(string razorTemplateName, object obj, string lang = "", string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string versionFolder = "1.0", Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        {
+            if (razorTemplateName != "")
+            {
+                if (lang == "") lang = GetCurrentCulture();
+                var razorTemplate = GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, lang, versionFolder, debugmode);
+                return RazorDetail(razorTemplate, obj, settings, headerData,debugmode);
+            }
+            return "";
+        }
+
         public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
         {
             var rtnStr = "";

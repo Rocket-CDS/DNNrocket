@@ -139,12 +139,17 @@ namespace DNNrocketAPI.render
             var strOut = DNNrocketUtils.RazorRender(model, razorTempl, debugMode);
             return new RawString(strOut);
         }
+        public IEncodedString RenderTemplateInfo(string razorTemplateName, SimplisityInfo info, string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string lang = "", string versionFolder = "1.0", Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        {
+            var strOut = DNNrocketUtils.RazorDetailByName(razorTemplateName, info, lang, templateControlRelPath, themeFolder, versionFolder, settings, headerData, debugmode);
+            return new RawString(strOut);
+        }
+
         public IEncodedString RenderTemplate(string razorTemplate, SimplisityRazor model, bool debugMode = false)
         {
             var strOut = DNNrocketUtils.RazorRender(model, razorTemplate, debugMode);
             return new RawString(strOut);
         }
-
         public IEncodedString RenderImageSelect(int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
         {
             return new RawString(DNNrocketUtils.RenderImageSelect(imagesize, selectsingle,autoreturn,uploadFolder,razorTemplateName,templateControlRelPath,themeFolder));

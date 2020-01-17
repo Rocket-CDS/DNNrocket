@@ -57,6 +57,14 @@
             </div>
         </div>
         <div>
+            @if (DNNrocketUtils.IsInRole("Administrator"))
+            {
+                <div class="w3-container">
+                    <div class="w3-right">
+                        @RenderTemplateInfo("XmlModelDisplay.cshtml", info)
+                    </div>
+                </div>
+            }
             <i>ID: </i> @info.ItemID
         </div>
 
