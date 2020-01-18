@@ -260,8 +260,7 @@ namespace DNNrocketAPI.Componants
             foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\js", "*.js", SearchOption.TopDirectoryOnly))
             {
                 var templateName = Path.GetFileName(newPath);
-                var templateText = FileUtils.ReadFile(newPath);
-                AddListJs(Path.GetFileNameWithoutExtension(templateName), templateText);
+                AddListJs(Path.GetFileNameWithoutExtension(templateName), newPath);
                 _jsFileName.Add(templateName);
             }
 
@@ -883,10 +882,9 @@ namespace DNNrocketAPI.Componants
         {
             AddListFile("csslist", filename, templateText, "css");
         }
-        public void AddListJs(string filename = "", string templateText = "")
-
+        public void AddListJs(string filename = "", string jsMapPath = "")
         {
-            AddListFile("jslist", filename, templateText, "javascript");
+            AddListFile("jslist", filename, jsMapPath, "javascript");
         }
         private void AddListFile(string listname, string filename = "", string templateText = "", string modeType = "")
         {

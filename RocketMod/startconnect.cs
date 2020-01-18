@@ -310,7 +310,14 @@ namespace RocketMod
                 else
                 {
                     _appThemeMod = new AppThemeModule(_moduleid, _systemData.SystemKey);
-                    _dataAppThemeMod = new AppThemeModule(_moduleParams.DataSourceModId, _systemData.SystemKey);
+                    if (_moduleParams.DataSourceModId == _moduleid)
+                    {
+                        _dataAppThemeMod = _appThemeMod;
+                    }
+                    else
+                    {
+                        _dataAppThemeMod = new AppThemeModule(_moduleParams.DataSourceModId, _systemData.SystemKey);
+                    }
 
                     if (!_passSettings.ContainsKey("AppTheme")) _passSettings.Add("AppTheme", _moduleParams.AppThemeFolder);
                     if (!_passSettings.ContainsKey("AppThemeVersion")) _passSettings.Add("AppThemeVersion", _moduleParams.AppThemeVersion);
