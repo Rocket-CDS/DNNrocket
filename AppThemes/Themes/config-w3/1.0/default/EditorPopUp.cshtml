@@ -188,6 +188,10 @@
 
 <script>
 
+    $(document).ready(function () {
+        $('#editorfilename').text($('#editorfilenamesave').val())
+    });
+
     function rightMenuAccFunc(elementid) {
         var x = document.getElementById(elementid);
         if (x.className.indexOf("w3-show") == -1) {

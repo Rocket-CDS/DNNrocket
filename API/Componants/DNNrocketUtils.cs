@@ -177,18 +177,23 @@ namespace DNNrocketAPI
             return "";
         }
 
-        public static string RazorDetailByName(string razorTemplateName, object obj, string lang = "", string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string versionFolder = "1.0", Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        public static string RazorDetailByName(string razorTemplateName, object obj, Dictionary<string, object> dataObjects = null, string lang = "", string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string versionFolder = "1.0", Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
         {
             if (razorTemplateName != "")
             {
                 if (lang == "") lang = GetCurrentCulture();
                 var razorTemplate = GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, lang, versionFolder, debugmode);
-                return RazorDetail(razorTemplate, obj, settings, headerData,debugmode);
+                return RazorObjectRender(razorTemplate, obj, dataObjects, settings, headerData,debugmode);
             }
             return "";
         }
 
         public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        {
+            return RazorObjectRender(razorTemplate, obj, null, settings, headerData, debugmode);
+        }
+
+        public static string RazorObjectRender(string razorTemplate, object obj, Dictionary<string, object> dataObjects = null, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
         {
             var rtnStr = "";
             if (razorTemplate != "")
@@ -202,8 +207,8 @@ namespace DNNrocketAPI
 
                 var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
                 nbRazor.HeaderData = headerData;
+                nbRazor.DataObjects = dataObjects;
                 rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
-
             }
 
             return rtnStr;

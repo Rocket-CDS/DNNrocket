@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="dnnrocketmodule.zip" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="DNNrocketAPI">
       <HintPath>..\..\..\bin\DNNrocketAPI.dll</HintPath>
     </Reference>

@@ -139,9 +139,9 @@ namespace DNNrocketAPI.render
             var strOut = DNNrocketUtils.RazorRender(model, razorTempl, debugMode);
             return new RawString(strOut);
         }
-        public IEncodedString RenderTemplateInfo(string razorTemplateName, SimplisityInfo info, string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string lang = "", string versionFolder = "1.0", Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        public IEncodedString RenderTemplateInfo(string razorTemplateName, SimplisityInfo info, Dictionary<string, object> dataObjects = null, string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string lang = "", string versionFolder = "1.0", Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
         {
-            var strOut = DNNrocketUtils.RazorDetailByName(razorTemplateName, info, lang, templateControlRelPath, themeFolder, versionFolder, settings, headerData, debugmode);
+            var strOut = DNNrocketUtils.RazorDetailByName(razorTemplateName, info, dataObjects, lang, templateControlRelPath, themeFolder, versionFolder, settings, headerData, debugmode);
             return new RawString(strOut);
         }
 

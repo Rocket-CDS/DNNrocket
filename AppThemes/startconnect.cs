@@ -105,21 +105,10 @@ namespace DNNrocket.AppThemes
                         AddListImage();
                         strOut = GetDetail();
                         break;
-                    case "rocketapptheme_addtemplate":
-                        SaveData();
-                        strOut = AddListTemplate();
-                        break;
-                    case "rocketapptheme_addcss":
-                        SaveData();
-                        strOut = AddListCss();
-                        break;
-                    case "rocketapptheme_addjs":
-                        SaveData();
-                        strOut = AddListJs();
-                        break;
                     case "rocketapptheme_addresx":
                         SaveData();
-                        strOut = AddListResx();
+                        AddResxFile();
+                        strOut = GetDetail();
                         break;
                     case "rocketapptheme_rebuildresx":
                         strOut = RebuildResx();
@@ -195,7 +184,21 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_downloadallprivate":
                         strOut = GetAllPrivateAppThemes();
                         break;
-
+                    case "rocketapptheme_getfiledata":
+                        strOut = GetFileData();
+                        break;
+                    case "rocketapptheme_getresxdata":
+                        strOut = GetResxDetail();
+                        break;
+                    case "rocketapptheme_addresxdata":
+                        strOut = AddResxDetail();
+                        break;
+                    case "rocketapptheme_removeresxdata":
+                        strOut = RemoveResxDetail();
+                        break;
+                    case "rocketapptheme_saveresxdata":
+                        strOut = SaveResxDetail();
+                        break;
                 }
             }
             else
@@ -206,6 +209,24 @@ namespace DNNrocket.AppThemes
             return DNNrocketUtils.ReturnString(strOut);
         }
 
+
+        public string GetFileData()
+        {
+            try
+            {
+                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+
+                // output json, so we can get filename and filedata.
+                var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+                var ext = Path.GetExtension(fname);
+                var strOut = "{\"editorfilename\":\"" + fname + "\",\"editorfiledata\":\"" + GeneralUtils.EnCode(appTheme.GetTemplate(fname)) + "\"}";
+                return strOut;
+            }
+            catch (Exception ex)
+            {
+                return GeneralUtils.EnCode(ex.ToString());
+            }
+        }
 
         public string CreateNewVersion()
         {
@@ -298,6 +319,88 @@ namespace DNNrocket.AppThemes
                 return ex.ToString();
             }
         }
+
+        public String GetResxDetail()
+        {
+            try
+            {
+                var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                var resxData = new ResxData(appTheme.GetFileMapPath(fname));
+                var dataObjects = new Dictionary<string, object>();
+                dataObjects.Add("resxData", resxData);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("ResxPopUp.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+                return DNNrocketUtils.RazorObjectRender(razorTempl, appTheme, dataObjects, _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        public String AddResxDetail()
+        {
+            try
+            {
+                var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                var resxData = new ResxData(appTheme.GetFileMapPath(fname));
+
+                var key = "new" + (resxData.DataDictionary.Count + 1).ToString() + ".Text";
+                var lp = (resxData.DataDictionary.Count + 1);
+                while (resxData.DataDictionary.ContainsKey(key))
+                {
+                    lp += 1;
+                    key = "new" + (lp).ToString() + ".Text";
+                }
+                resxData.AddField(key, "");
+                resxData.Save();
+                return GetResxDetail();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        public String RemoveResxDetail()
+        {
+            try
+            {
+                var key = _paramInfo.GetXmlProperty("genxml/hidden/key");
+                var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                var resxData = new ResxData(appTheme.GetFileMapPath(fname));
+                resxData.RemoveField(key);
+                resxData.Save();
+                return GetResxDetail();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        public String SaveResxDetail()
+        {
+            try
+            {
+                var key = _paramInfo.GetXmlProperty("genxml/hidden/key");
+                var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                var resxData = new ResxData(appTheme.GetFileMapPath(fname));
+                resxData.RemoveAllFields();
+                var resxlist = _postInfo.GetRecordList("resxdictionarydata");
+                foreach (var r in resxlist)
+                {
+                    resxData.AddField(r.GetXmlProperty("genxml/key"), r.GetXmlProperty("genxml/value"));
+                }
+                resxData.Save();
+                return GetResxDetail();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
 
         public String GetDetail()
         {
@@ -563,9 +666,8 @@ namespace DNNrocket.AppThemes
         {
             var editorcode = _postInfo.GetXmlProperty("genxml/hidden/editorcodesave");
             var filename = _postInfo.GetXmlProperty("genxml/hidden/editorfilenamesave");
-            var listname = _postInfo.GetXmlProperty("genxml/hidden/editorlistnamesave");
             var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
-            appTheme.SaveEditor(listname, filename, editorcode);
+            appTheme.SaveEditor(filename, editorcode);
             return "OK";
         }
 
@@ -575,38 +677,42 @@ namespace DNNrocket.AppThemes
             appTheme.AddListImage();
         }
 
-        public string AddListTemplate()
-        {
-            var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
-            appTheme.AddListTemplate();
-            return GetEditTemplate(appTheme);
-        }
-        public string AddListCss()
-        {
-            var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
-            appTheme.AddListCss();
-            return GetEditTemplate(appTheme);
-        }
-        public string AddListJs()
-        {
-            var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
-            appTheme.AddListJs();
-            return GetEditTemplate(appTheme);
-        }
-        public string AddListResx()
-        {
-            var culturecoderesx = _paramInfo.GetXmlProperty("genxml/hidden/culturecoderesx");
-            var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
-            appTheme.AddListResx(culturecoderesx);
-            return GetEditTemplate(appTheme);
-        }
         public string RebuildResx()
         {
             var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
             var culturecoderesx = _paramInfo.GetXmlProperty("genxml/hidden/culturecoderesx");
-            appTheme.ReBuildResx(culturecoderesx);
+
+            // [TODO: rebuild resx]
+            //appTheme.ReBuildResx(culturecoderesx);
+
             return GetEditTemplate(appTheme);
         }
+
+        private void AddResxFile()
+        {
+            var culturecoderesx = _paramInfo.GetXmlProperty("genxml/hidden/culturecoderesx");
+            var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+            if (culturecoderesx != "") culturecoderesx = "." + culturecoderesx;
+            var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\resx\\" + appTheme.AppThemeFolder + culturecoderesx + ".resx";
+            var resxData = new ResxData(fileMapPath);
+            if (!resxData.Exists)
+            {
+                // save a base (or default) resx file, to we get the format easier.
+                var defaultrexFileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\resx\\" + appTheme.AppThemeFolder + ".resx";
+                var resxFileData = "";
+                if (File.Exists(defaultrexFileMapPath))
+                {
+                    resxFileData = FileUtils.ReadFile(defaultrexFileMapPath);
+                }
+                else
+                {
+                    var baserexFileMapPath = appTheme.AppProjectFolderMapPath + "\\AppThemeBase\\resxtemplate.xml";
+                    resxFileData = FileUtils.ReadFile(baserexFileMapPath);
+                }
+                FileUtils.SaveFile(fileMapPath, resxFileData);
+            }
+        }
+
         private string AddListField()
         {
             var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
@@ -626,10 +732,6 @@ namespace DNNrocket.AppThemes
         }
         private string GetEditTemplate(AppTheme appTheme)
         {
-            var defaultjsonresxItem = appTheme.Record.GetRecordListItem("resxlist", "genxml/resxlist/genxml/hidden/culturecode", "");
-            var defaultjsonresx = defaultjsonresxItem.GetXmlProperty("genxml/hidden/jsonresx");
-            if (!_passSettings.ContainsKey("defaultjsonresx")) _passSettings.Add("defaultjsonresx", defaultjsonresx);
-
             var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
             return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
         }

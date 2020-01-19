@@ -18,10 +18,6 @@ namespace DNNrocketAPI.Componants
         private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "APPTHEME";
         private readonly DNNrocketController _objCtrl;
-        private List<string> _templateFileName;
-        private List<string> _cssFileName;
-        private List<string> _jsFileName;
-        private List<string> _resxFileName;
  
         public AppTheme(string zipMapPath)
         {
@@ -40,10 +36,7 @@ namespace DNNrocketAPI.Componants
             SystemKey = systemKey;
             var systemData = new SystemData(systemKey);
             SystemId = systemData.SystemId;
-            _templateFileName = new List<string>();
-            _cssFileName = new List<string>();
-            _jsFileName = new List<string>();
-            _resxFileName = new List<string>();
+            FileNameList = new Dictionary<string, string>();
 
             AppSummary = "";
             AppThemeFolder = appThemeFolder;
@@ -111,19 +104,6 @@ namespace DNNrocketAPI.Componants
             // logo
             Logo = Record.GetXmlProperty("genxml/imagelist/genxml[1]/hidden/*[1]");
 
-            // RESX Default
-            var resxList = Record.GetRecordList("resxlist");
-            if (resxList.Count == 0) // create default
-            {
-                AddListResx("");
-                resxList = Record.GetRecordList("resxlist");
-            }
-
-            foreach (var r in resxList)
-            {
-                _resxFileName.Add(r.GetXmlProperty("genxml/hidden/fullfilename"));
-            }
-
             TemplateDefaults();
 
             // add snippetText
@@ -172,67 +152,58 @@ namespace DNNrocketAPI.Componants
         {
             // Tempalte Defaults
             var tempMapPath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
-            if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
+
+            if (!File.Exists(tempMapPath))
             {
-                var formHtml = GenerateEditForm("fielddata", "edit",0);
+                var formHtml = GenerateEditForm("fielddata", "edit", 0);
                 FileUtils.SaveFile(tempMapPath, formHtml);
-                _templateFileName.Add(Path.GetFileName(tempMapPath));
-                AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), formHtml);
             }
+
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\editlist.cshtml";
-            if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
+            if (!File.Exists(tempMapPath))
             {
                 var listHtml = GenerateEditList(0);
                 FileUtils.SaveFile(tempMapPath, listHtml);
-                _templateFileName.Add(Path.GetFileName(tempMapPath));
-                AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), listHtml);
             }
+
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
-            if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
+            if (!File.Exists(tempMapPath))
             {
                 var viewHtml = GenerateView(0, "view.cshtml");
                 FileUtils.SaveFile(tempMapPath, viewHtml);
-                _templateFileName.Add(Path.GetFileName(tempMapPath));
-                AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), viewHtml);
             }
+
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\detail.cshtml";
-            if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
+            if (!File.Exists(tempMapPath))
             {
                 var viewHtml = GenerateView(0, "detail.cshtml");
                 FileUtils.SaveFile(tempMapPath, viewHtml);
-                _templateFileName.Add(Path.GetFileName(tempMapPath));
-                AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), viewHtml);
             }
+
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\pageheader.cshtml";
-            if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
-            {
-                //var formHtml = AppThemeUtils.GeneraateEditForm(Record.GetList("fielddata"), 0);
-                FileUtils.SaveFile(tempMapPath, "");
-                _templateFileName.Add(Path.GetFileName(tempMapPath));
-                AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), "");
-            }
+            if (!File.Exists(tempMapPath)) FileUtils.SaveFile(tempMapPath, "");
+
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\settings.cshtml";
-            if (!_templateFileName.Contains(Path.GetFileName(tempMapPath)))
+            if (!File.Exists(tempMapPath))
             {
-                var formHtml = GenerateEditForm("settingfielddata", "settings",0);
+                var formHtml = GenerateEditForm("settingfielddata", "settings", 0);
                 FileUtils.SaveFile(tempMapPath, formHtml);
-                _templateFileName.Add(Path.GetFileName(tempMapPath));
-                AddListTemplate(Path.GetFileNameWithoutExtension(tempMapPath), formHtml);
             }
             tempMapPath = AppThemeVersionFolderMapPath + "\\css\\" + AppThemeFolder + ".css";
-            if (!_cssFileName.Contains(Path.GetFileName(tempMapPath)))
-            {
-                FileUtils.SaveFile(tempMapPath, "");
-                _cssFileName.Add(Path.GetFileName(tempMapPath));
-                AddListCss(Path.GetFileNameWithoutExtension(tempMapPath), "");
-            }
+            if (!File.Exists(tempMapPath)) FileUtils.SaveFile(tempMapPath, "");
+
             tempMapPath = AppThemeVersionFolderMapPath + "\\js\\" + AppThemeFolder + ".js";
-            if (!_jsFileName.Contains(Path.GetFileName(tempMapPath)))
+            if (!File.Exists(tempMapPath)) FileUtils.SaveFile(tempMapPath, "");
+
+            tempMapPath = AppThemeVersionFolderMapPath + "\\resx\\" + AppThemeFolder + ".resx";
+            if (!File.Exists(tempMapPath))
             {
-                FileUtils.SaveFile(tempMapPath, "");
-                _jsFileName.Add(Path.GetFileName(tempMapPath));
-                AddListJs(Path.GetFileNameWithoutExtension(tempMapPath), "");
+                // we need to use the base resx file, so format is easy.
+                var baserexFileMapPath = AppProjectFolderMapPath + "\\AppThemeBase\\resxtemplate.xml";
+                var resxFileData = FileUtils.ReadFile(baserexFileMapPath);
+                FileUtils.SaveFile(tempMapPath, resxFileData);
             }
+
         }
 
         private void SyncFiles()
@@ -241,51 +212,34 @@ namespace DNNrocketAPI.Componants
             if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\default")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\default");
             foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\default", "*.cshtml", SearchOption.TopDirectoryOnly))
             {
-                var templateName = Path.GetFileName(newPath);
-                var templateText = FileUtils.ReadFile(newPath);
-                AddListTemplate(Path.GetFileNameWithoutExtension(templateName), templateText);
-                _templateFileName.Add(templateName);
+                var fname = Path.GetFileName(newPath);
+                if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
+                FileNameList.Add(fname, newPath);
             }
 
             if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\css")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\css");
             foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\css", "*.css", SearchOption.TopDirectoryOnly))
             {
-                var templateName = Path.GetFileName(newPath);
-                var templateText = FileUtils.ReadFile(newPath);
-                AddListCss(Path.GetFileNameWithoutExtension(templateName), templateText);
-                _cssFileName.Add(templateName);
+                var fname = Path.GetFileName(newPath);
+                if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
+                FileNameList.Add(fname, newPath);
             }
 
             if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\js")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\js");
             foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\js", "*.js", SearchOption.TopDirectoryOnly))
             {
-                var templateName = Path.GetFileName(newPath);
-                AddListJs(Path.GetFileNameWithoutExtension(templateName), newPath);
-                _jsFileName.Add(templateName);
+                var fname = Path.GetFileName(newPath);
+                if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
+                FileNameList.Add(fname, newPath);
             }
 
             if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\resx")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\resx");
             foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\resx", "*.resx", SearchOption.TopDirectoryOnly))
             {
-                var templateName = Path.GetFileName(newPath);
-                var culturecode = "";
-                var templateNameWithoutExtension = Path.GetFileNameWithoutExtension(newPath);
-                var t = templateNameWithoutExtension.Split('.');
-                if (t.Length == 2) culturecode = t[1];
-                var templateText = FileUtils.ReadFile(newPath);
-                var sRec = new SimplisityRecord();
-                sRec.XMLData = templateText;
-                var nodList = sRec.XMLDoc.SelectNodes("root/data");
-                var resxDict = new Dictionary<string, string>();
-                foreach (XmlNode n in nodList)
-                {
-                    resxDict.Add(n.SelectSingleNode("@name").InnerText, n.SelectSingleNode("value").InnerText);
-                }
-                AddListResx(culturecode, resxDict);
-                _resxFileName.Add(templateName);
+                var fname = Path.GetFileName(newPath);
+                if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
+                FileNameList.Add(fname, newPath);
             }
-
-
 
         }
         private void CreateVersionFolders(string versionFolder)
@@ -303,53 +257,22 @@ namespace DNNrocketAPI.Componants
             }
         }
 
-        public Dictionary<string,string> GetTemplateDictionaryRazor()
+        public string GetFileMapPath(string fileName)
         {
-            if (Record == null) return null;
-            var tList = Record.GetRecordList("templatelist");
-            // get defaultDict
-            var defaultDict = new Dictionary<string, string>();
-            foreach (SimplisityRecord templateInfo in tList)
+            if (FileNameList.ContainsKey(fileName))
             {
-                if (!defaultDict.ContainsKey(templateInfo.GetXmlProperty("genxml/hidden/filename")))
-                    defaultDict.Add(templateInfo.GetXmlProperty("genxml/hidden/filename"),GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodehtmlmixed")));
+                return FileNameList[fileName];
             }
-            return defaultDict;
-        }
-        public Dictionary<string, string> GetTemplateDictionaryCSS()
-        {
-            if (Record == null) return null;
-            var tList = Record.GetRecordList("csslist");
-            // get defaultDict
-            var defaultDict = new Dictionary<string, string>();
-            foreach (SimplisityRecord templateInfo in tList)
-            {
-                if (!defaultDict.ContainsKey(templateInfo.GetXmlProperty("genxml/hidden/filename")))
-                    defaultDict.Add(templateInfo.GetXmlProperty("genxml/hidden/filename"), GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodecss")));
-            }
-            return defaultDict;
-        }
-        public Dictionary<string, string> GetTemplateDictionaryJS()
-        {
-            if (Record == null) return null;
-            var tList = Record.GetRecordList("jslist");
-            // get defaultDict
-            var defaultDict = new Dictionary<string, string>();
-            foreach (SimplisityRecord templateInfo in tList)
-            {
-                if (!defaultDict.ContainsKey(templateInfo.GetXmlProperty("genxml/hidden/filename")))
-                    defaultDict.Add(templateInfo.GetXmlProperty("genxml/hidden/filename"), GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodejavascript")));
-            }
-            return defaultDict;
+            return "";
         }
 
-        public string GetTemplate(string templateName)
+        public string GetTemplate(string templateFileName)
         {
-            if (Path.GetExtension(templateName) != "") templateName += Path.GetFileNameWithoutExtension(templateName);
-            if (!_templateFileName.Contains(templateName + ".cshtml")) return "";
-            var rtnItem = Record.GetRecordListItem("templatelist", "genxml/hidden/filename", templateName);
-            if (rtnItem == null) return "";
-            return GeneralUtils.DeCode(rtnItem.GetXmlProperty("genxml/hidden/editorcodehtmlmixed"));
+            if (FileNameList.ContainsKey(templateFileName))
+            {
+                return FileUtils.ReadFile(FileNameList[templateFileName]);
+            }
+            return "";
         }
 
         public void DeleteTheme()
@@ -433,11 +356,6 @@ namespace DNNrocketAPI.Componants
                 lp += 1;
             }
 
-            postInfo = ActionListTemplateFiles(postInfo);
-            postInfo = ActionListCssFiles(postInfo);
-            postInfo = ActionListJsFiles(postInfo);
-            postInfo = ActionListResxFiles(postInfo);
-
             var dbInfo = _objCtrl.GetRecord(_entityTypeCode, Record.ItemID, -1, true, _tableName);
             if (dbInfo != null)
             {
@@ -453,35 +371,32 @@ namespace DNNrocketAPI.Componants
                 Record = DNNrocketUtils.UpdateFieldXpath(Record, "settingfielddata");
                 _objCtrl.Update(Record, _tableName);
 
-                SyncFiles();
-
                 // output generated template.
-                var formHtml = GetTemplate("edit");
+                var formHtml = "";
                 if (RegenerateEdit) formHtml = GenerateEditForm("fielddata", "edit",0);
                 var tempMapPath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
                 if (formHtml != "") FileUtils.SaveFile(tempMapPath, formHtml);
 
-                formHtml = GetTemplate("settings");
+                formHtml = "";
                 if (RegenerateSettings) formHtml = GenerateEditForm("settingfielddata", "settings", 0);
                 tempMapPath = AppThemeVersionFolderMapPath + "\\default\\settings.cshtml";
                 if (formHtml != "") FileUtils.SaveFile(tempMapPath, formHtml);
 
-                var listHtml = GetTemplate("editlist");
+                var listHtml = "";
                 if (RegenerateEditList) listHtml = GenerateEditList(0);
                 tempMapPath = AppThemeVersionFolderMapPath + "\\default\\editlist.cshtml";
                 if (listHtml != "") FileUtils.SaveFile(tempMapPath, listHtml);
 
-                var viewHtml = GetTemplate("view");
+                var viewHtml = "";
                 if (RegenerateView) viewHtml = GenerateView(0, "view.cshtml");
                 tempMapPath = AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
                 if (viewHtml != "") FileUtils.SaveFile(tempMapPath, viewHtml);
 
-                var detailHtml = GetTemplate("detail");
+                var detailHtml = "";
                 if (RegenerateDetail) detailHtml = GenerateView(0, "detail.cshtml");
                 tempMapPath = AppThemeVersionFolderMapPath + "\\default\\detail.cshtml";
                 if (detailHtml != "") FileUtils.SaveFile(tempMapPath, detailHtml);
 
-                SyncFiles();
             }
 
             var appthemeprefix = "";
@@ -499,120 +414,16 @@ namespace DNNrocketAPI.Componants
 
         }
 
-        public void SaveEditor(string listname, string filename, string editorcode)
+        public void SaveEditor(string filename, string editorcode)
         {
-            var editortype = "htmlmixed";
-            var fileext = ".cshtml";
-            var folder = "default";
-            if (listname == "csslist")
+            if (FileNameList.ContainsKey(filename))
             {
-                editortype = "css";
-                fileext = ".css";
-                folder = "css";
-            }
-            if (listname == "jslist")
-            {
-                editortype = "javascript";
-                fileext = ".js";
-                folder = "js";
+                var fileMapPath = FileNameList[filename];
+
+                var formHtml = GeneralUtils.DeCode(editorcode);
+                FileUtils.SaveFile(fileMapPath, formHtml);
             }
 
-            var sr = new SimplisityRecord();
-            sr.SetXmlProperty("genxml/hidden/filename", filename);
-            sr.SetXmlProperty("genxml/hidden/editorcode" + editortype, editorcode);
-
-            Record.RemoveRecordListItem(listname, "genxml/hidden/filename", filename);
-            Record.AddRecordListItem(listname, sr);
-
-            var formHtml = GeneralUtils.DeCode(editorcode);
-            var tempMapPath = AppThemeVersionFolderMapPath + "\\" + folder + "\\" + filename + fileext;
-            FileUtils.SaveFile(tempMapPath, formHtml);
-
-        }
-
-
-        private SimplisityInfo ActionListTemplateFiles(SimplisityInfo postInfo)
-        {
-            foreach (var t in _templateFileName)
-            {
-                var filename = Path.GetFileNameWithoutExtension(t);
-                var delItem = postInfo.GetListItem("templatelist", "genxml/hidden/filename", filename);
-                if (delItem == null && File.Exists(AppThemeVersionFolderMapPath + "\\default\\" + t)) File.Delete(AppThemeVersionFolderMapPath + "\\default\\" + t);
-            }
-            //create any new files. (will be added to template list when populate syncs files)
-            var tList = postInfo.GetList("templatelist"); // save list
-            postInfo.RemoveList("templatelist"); // remove list
-             
-            // repopulate list with valid filenames
-            var idx = 1;
-            foreach (SimplisityInfo templateInfo in tList)
-            {
-                var postFileName = templateInfo.GetXmlProperty("genxml/hidden/filename");
-                var fname = FileUtils.RemoveInvalidFileChars(postFileName).Replace(".", "");
-                var filename = Path.GetFileNameWithoutExtension(fname);                
-                templateInfo.SetXmlProperty("genxml/hidden/filename", filename);
-                postInfo.AddListItem("templatelist", templateInfo);
-                fname = filename + ".cshtml";
-                FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\default\\" + fname, GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodehtmlmixed")));
-                idx += 1;
-            }
-            return postInfo;
-        }
-        private SimplisityInfo ActionListCssFiles(SimplisityInfo postInfo)
-        {
-            foreach (var t in _cssFileName)
-            {
-                var filename = Path.GetFileNameWithoutExtension(t);
-                var delItem = postInfo.GetListItem("csslist", "genxml/hidden/filename", filename);
-                if (delItem == null && File.Exists(AppThemeVersionFolderMapPath + "\\css\\" + t)) File.Delete(AppThemeVersionFolderMapPath + "\\css\\" + t);
-            }
-
-            //create any new files. (will be added to template list when populate syncs files)
-            var tList = postInfo.GetList("csslist");
-            postInfo.RemoveList("csslist"); // remove list
-
-            // repopulate list with valid filenames
-            var idx = 1;
-            foreach (SimplisityInfo templateInfo in tList)
-            {
-                var postFileName = templateInfo.GetXmlProperty("genxml/hidden/filename");
-                var fname = FileUtils.RemoveInvalidFileChars(postFileName).Replace(".", "");
-                var filename = Path.GetFileNameWithoutExtension(fname);
-                templateInfo.SetXmlProperty("genxml/hidden/filename", filename);
-                postInfo.AddListItem("csslist", templateInfo);
-                fname = filename + ".css";
-                FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\css\\" + fname, GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodecss")));
-                idx += 1;
-            }
-            return postInfo;
-        }
-        private SimplisityInfo ActionListJsFiles(SimplisityInfo postInfo)
-        {
-            foreach (var t in _jsFileName)
-            {
-                var filename = Path.GetFileNameWithoutExtension(t);
-                var delItem = postInfo.GetListItem("jslist", "genxml/hidden/filename", filename);
-                if (delItem == null && File.Exists(AppThemeVersionFolderMapPath + "\\js\\" + t)) File.Delete(AppThemeVersionFolderMapPath + "\\js\\" + t);
-            }
-
-            //create any new files. (will be added to template list when populate syncs files)
-            var tList = postInfo.GetList("jslist");
-            postInfo.RemoveList("jslist"); // remove list
-
-            // repopulate list with valid filenames
-            var idx = 1;
-            foreach (SimplisityInfo templateInfo in tList)
-            {
-                var postFileName = templateInfo.GetXmlProperty("genxml/hidden/filename");
-                var fname = FileUtils.RemoveInvalidFileChars(postFileName).Replace(".", "");
-                var filename = Path.GetFileNameWithoutExtension(fname);
-                templateInfo.SetXmlProperty("genxml/hidden/filename", filename);
-                postInfo.AddListItem("jslist", templateInfo);
-                fname = filename + ".js";
-                FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\js\\" + fname, GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/editorcodejavascript")));
-                idx += 1;
-            }
-            return postInfo;
         }
 
         public Dictionary<string, string> GetFieldDictionaryFields(bool withExt = true)
@@ -712,158 +523,6 @@ namespace DNNrocketAPI.Componants
             return fieldNames;
         }
 
-        private SimplisityInfo ActionListResxFiles(SimplisityInfo postInfo)
-        {
-            var fileList = Directory.GetFiles(AppThemeVersionFolderMapPath + "\\resx", "*.resx");
-            foreach (var filenamepath in fileList)
-            {
-                if (File.Exists(filenamepath)) File.Delete(filenamepath);
-            }
-
-            // get fields
-            var fieldNames = GetFieldDictionaryAll(new SimplisityRecord(postInfo));
-
-            // get defaultDict
-            var defaultDict = GetResxDictionary(new SimplisityRecord(postInfo));
-            if (defaultDict.Count() == 0)
-            {
-                foreach (var f in fieldNames)
-                {
-                    defaultDict.Add(f.Key,f.Value);
-                }
-            }
-
-            // write localized fieldname list, so we can disable default resx fiedls if they exist as a field.
-            var fieldlocalizedlist = "";
-            foreach (var f in fieldNames)
-            {
-                fieldlocalizedlist += f.Key + ",";
-            }
-            postInfo.SetXmlProperty("genxml/hidden/fieldlocalizedlist", fieldlocalizedlist);
-
-            var tList = postInfo.GetList("resxlist");
-
-            //Write files.
-            var idx = 1;
-            foreach (SimplisityInfo templateInfo in tList)
-            {
-                var fileFields = "";
-                var fname = templateInfo.GetXmlProperty("genxml/hidden/fullfilename");
-                var culturecode = templateInfo.GetXmlProperty("genxml/hidden/culturecode");
-                var jsonDict = GetResxDictionary(new SimplisityRecord(postInfo), culturecode);
-                if (culturecode == "")
-                {
-                    // build default with current field names.
-                    foreach (var f in fieldNames)
-                    {
-                        var keyname = f.Key;
-                        if (defaultDict.ContainsKey(keyname))
-                        {
-                            defaultDict[f.Key] = f.Value;
-                        }
-                        else
-                        {
-                            defaultDict.Add(f.Key, f.Value);
-                        }
-                    }
-                    jsonDict = new Dictionary<string, string>();
-                    foreach (var d in defaultDict)
-                    {
-                        var keyname = d.Key;
-                        jsonDict.Add(keyname, defaultDict[keyname].Replace("]]>", "").Replace("\"", ""));
-                        fileFields += "  <data name=\"" + keyname + "\" xml:space=\"preserve\"><value><![CDATA[" + defaultDict[keyname].Replace("]]>", "").Replace("\"", "") + "]]></value></data>";
-                    }
-                }
-                else
-                {
-                    if (jsonDict.Count() == 0)
-                    {
-                        // build empty resx from default.
-                        foreach (var d in defaultDict)
-                        {
-                            var keyname = d.Key;
-                            jsonDict.Add(keyname, defaultDict[keyname].Replace("]]>", "").Replace("\"", ""));
-                            fileFields += "  <data name=\"" + keyname + "\" xml:space=\"preserve\"><value><![CDATA[" + defaultDict[keyname].Replace("]]>", "").Replace("\"", "") + "]]></value></data>";
-                        }
-                    }
-                    else
-                    {
-                        // put default values in any empty values.
-                        foreach (var f in jsonDict)
-                        {
-                            var keyname = f.Key;
-                            if (jsonDict.ContainsKey(keyname))
-                            {
-                                var valueString = jsonDict[keyname].Replace("]]>", "");
-                                if (valueString == "") valueString = defaultDict[keyname].Replace("]]>", "").Replace("\"", "");
-                                fileFields += "  <data name=\"" + keyname + "\" xml:space=\"preserve\"><value><![CDATA[" + valueString + "]]></value></data>";
-                            }
-                        }
-                    }
-                }
-
-                // build json and save.
-                var jsonStr = BuildJsonResx(jsonDict);
-                postInfo.SetXmlProperty("genxml/resxlist/genxml[" + idx + "]/hidden/jsonresx", GeneralUtils.EnCode(jsonStr));
-
-                // Save to file
-                var resxtemplate = FileUtils.ReadFile(AppProjectFolderMapPath + @"\AppThemeBase\resxtemplate.xml");
-                if (resxtemplate != "")
-                {
-                    resxtemplate = resxtemplate.Replace("<injectdatanodes/>", fileFields);
-                    FileUtils.SaveFile(AppThemeVersionFolderMapPath + "\\resx\\" + fname, resxtemplate);
-                }
-                idx += 1;
-            }
-            return postInfo;
-        }
-
-        private string BuildJsonResx(Dictionary<string,string> jsonDict)
-        {
-            var jsonStr = "{\"listdata\":[";
-            var lp = 1;
-            foreach (var j in jsonDict)
-            {
-                jsonStr += "{\"id\":\"name_" + lp + "\",\"value\":\"" + j.Key.Replace("\"", "") + "\",\"row\":\"" + lp + "\",\"listname\":\".resxlistvalues\",\"type\":\"text\"},";
-                jsonStr += "{\"id\":\"value_" + lp + "\",\"value\":\"" + j.Value.Replace("\"", "") + "\",\"row\":\"" + lp + "\",\"listname\":\".resxlistvalues\",\"type\":\"text\"},";
-                lp += 1;
-            }
-            jsonStr = jsonStr.TrimEnd(',') + "]}";
-            return jsonStr;
-        }
-
-        private Dictionary<string,string> GetResxDictionary(SimplisityRecord appThemeRecord, string culturecode = "")
-        {
-            var tList = appThemeRecord.GetRecordList("resxlist");
-            // get defaultDict
-            var defaultDict = new Dictionary<string, string>();
-            foreach (SimplisityRecord templateInfo in tList)
-            {
-                var culturecode1 = templateInfo.GetXmlProperty("genxml/hidden/culturecode");
-                if (culturecode1 == culturecode)
-                {
-                    var jsondata = GeneralUtils.DeCode(templateInfo.GetXmlProperty("genxml/hidden/jsonresx"));
-                    if (jsondata != "")
-                    {
-                        var jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, DNNrocketUtils.GetEditCulture());
-                        var row = 1;
-                        foreach (var i in jasonInfo.GetList("resxlistvalues"))
-                        {
-                            var keyname = i.GetXmlProperty("genxml/text/*[1]").Replace("\"", "");
-                            if (keyname != "")
-                            {
-                                if (!defaultDict.ContainsKey(keyname))
-                                {
-                                    defaultDict.Add(keyname, i.GetXmlProperty("genxml/text/*[2]").Replace("\"",""));
-                                }
-                            }
-                            row += 1;
-                        }
-                    }
-                }
-            }
-            return defaultDict;
-        }
 
         public void Update()
         {
@@ -874,118 +533,11 @@ namespace DNNrocketAPI.Componants
             Record.AddListItem("imagelist");
             Update();
         }
-        public void AddListTemplate(string filename = "", string templateText = "")
+        public void UpdateListFileName(string filename, string mapPath)
         {
-            AddListFile("templatelist", filename, templateText, "htmlmixed");
+            if (!FileNameList.ContainsKey(filename)) FileNameList.Remove(filename);
+            FileNameList.Add(filename, mapPath);
         }
-        public void AddListCss(string filename = "", string templateText = "")
-        {
-            AddListFile("csslist", filename, templateText, "css");
-        }
-        public void AddListJs(string filename = "", string jsMapPath = "")
-        {
-            AddListFile("jslist", filename, jsMapPath, "javascript");
-        }
-        private void AddListFile(string listname, string filename = "", string templateText = "", string modeType = "")
-        {
-            filename = Path.GetFileNameWithoutExtension(filename);
-            if (filename != "")
-            {
-                Record.RemoveRecordListItem(listname, "genxml/hidden/filename", filename);
-                var nbi = new SimplisityRecord();
-                nbi.SetXmlProperty("genxml/hidden/filename", filename);
-                nbi.SetXmlProperty("genxml/hidden/editorcode" + modeType, GeneralUtils.EnCode(templateText));
-                Record.AddListItem(listname, nbi.XMLData);
-            }
-            else
-            {
-                Record.AddListItem(listname);
-            }
-            Update();
-        }
-
-        public void ReBuildResx(string culturecode)
-        {
-            var listname = "resxlist";
-            var nbi = new SimplisityRecord();
-            if (culturecode == "")
-            {
-                nbi.SetXmlProperty("genxml/hidden/fullfilename", AppThemeFolder + ".resx");
-            }
-            else
-            {
-                nbi.SetXmlProperty("genxml/hidden/fullfilename", AppThemeFolder + "." + culturecode + ".resx");
-            }
-            nbi.SetXmlProperty("genxml/hidden/culturecode", culturecode);
-            nbi.SetXmlProperty("genxml/hidden/filefolder", "resx");
-
-            var jsonDict = new Dictionary<string, string>();
-            var rtnDict = GetFieldDictionaryAll();
-            var resxDict = GetResxDictionary(Record, culturecode);
-            foreach (var d in rtnDict)
-            {
-                jsonDict.Add(d.Key, d.Value);
-            }
-            foreach (var d in resxDict)
-            {
-                if (jsonDict.ContainsKey(d.Key)) jsonDict.Remove(d.Key);
-                jsonDict.Add(d.Key, d.Value);
-            }
-            var jsonStr = BuildJsonResx(jsonDict);
-            nbi.SetXmlProperty("genxml/hidden/jsonresx", GeneralUtils.EnCode(jsonStr));
-
-            var l = Record.GetRecordList(listname);
-            var idx = 1;
-            var rtnidx = -1;
-            foreach (var r in l)
-            {
-                if (r.GetXmlProperty("genxml/hidden/culturecode") == culturecode) rtnidx = idx;
-                idx += 1;
-            }
-            if (rtnidx >= 1)
-            {
-                Record.RemoveRecordListItem(listname, rtnidx);
-                Record.AddListItem(listname, nbi.XMLData);
-                Update();
-            }
-        }
-
-        public void AddListResx(string culturecode, Dictionary<string, string> resxDict = null)
-        {
-            if (resxDict == null) resxDict = new Dictionary<string, string>();
-            var listname = "resxlist";
-            var nbi = new SimplisityRecord();
-            if (culturecode == "")
-            {
-                nbi.SetXmlProperty("genxml/hidden/fullfilename", AppThemeFolder + ".resx");
-            }
-            else
-            {
-                nbi.SetXmlProperty("genxml/hidden/fullfilename", AppThemeFolder + "." + culturecode + ".resx");
-            }
-            nbi.SetXmlProperty("genxml/hidden/culturecode", culturecode);
-            nbi.SetXmlProperty("genxml/hidden/filefolder", "resx");
-
-            if (resxDict.Count == 0)
-            {
-                // no file data, so take anythign we have in DB
-                var rtnDict = GetResxDictionary(Record);
-                foreach (var d in rtnDict)
-                {
-                    if (!resxDict.ContainsKey(d.Key)) resxDict.Add(d.Key, d.Value);
-                }
-            }
-
-            var jsonStr = BuildJsonResx(resxDict);
-            nbi.SetXmlProperty("genxml/hidden/jsonresx", GeneralUtils.EnCode(jsonStr));
-
-            Record.RemoveRecordListItem(listname,"genxml/hidden/culturecode",culturecode);
-            Record.AddListItem(listname, nbi.XMLData);
-            Update();
-        }
-
-
-
         public void AddListField()
         {
             var listname = "fielddata";
@@ -1129,7 +681,9 @@ namespace DNNrocketAPI.Componants
 
             List<SimplisityRecord> fieldList = Record.GetRecordList(listname);
             var resxItem = Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
-            var jsondata = GeneralUtils.DeCode(resxItem.GetXmlProperty("genxml/hidden/jsonresx"));
+            if (resxItem == null) return "";
+            var jsonresx = resxItem.GetXmlProperty("genxml/hidden/jsonresx");
+            var jsondata = GeneralUtils.DeCode(jsonresx);
             var jasonInfo = new SimplisityInfo();
             if (jsondata != "")
             {
@@ -1681,6 +1235,45 @@ namespace DNNrocketAPI.Componants
             }
         }
 
+        public Dictionary<string,string> GetTemplatesRazor()
+        {
+            var rtnDict = new Dictionary<string, string>();
+            foreach (var t in FileNameList)
+            {
+                if (t.Key.ToLower().EndsWith(".cshtml")) rtnDict.Add(t.Key, t.Value);
+            }
+            return rtnDict;
+        }
+        public Dictionary<string, string> GetTemplatesJS()
+        {
+            var rtnDict = new Dictionary<string, string>();
+            foreach (var t in FileNameList)
+            {
+                if (t.Key.ToLower().EndsWith(".js")) rtnDict.Add(t.Key, t.Value);
+            }
+            return rtnDict;
+        }
+        public Dictionary<string, string> GetTemplatesCSS()
+        {
+            var rtnDict = new Dictionary<string, string>();
+            foreach (var t in FileNameList)
+            {
+                if (t.Key.ToLower().EndsWith(".css")) rtnDict.Add(t.Key, t.Value);
+            }
+            return rtnDict;
+        }
+
+        public Dictionary<string, string> GetTemplatesResx()
+        {
+            var rtnDict = new Dictionary<string, string>();
+            foreach (var t in FileNameList)
+            {
+                if (t.Key.ToLower().EndsWith(".resx")) rtnDict.Add(t.Key, t.Value);
+            }
+            return rtnDict;
+        }
+
+
         #region "properties"
 
         public string AppProjectFolderRel { get; set; }
@@ -1716,6 +1309,7 @@ namespace DNNrocketAPI.Componants
         public bool RegenerateSettings { get { return Record.GetXmlPropertyBool("genxml/checkbox/regeneratesettings"); } }
         public bool RegenerateView { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateview"); } }
         public bool RegenerateDetail { get { return Record.GetXmlPropertyBool("genxml/checkbox/regeneratedetail"); } }
+        public Dictionary<string, string> FileNameList { get; set; }
 
         public int DataType { get { return Record.GetXmlPropertyInt("genxml/radio/themetype"); } }
         public bool EnableSettings { get { return Record.GetXmlPropertyBool("genxml/checkbox/enablesettings"); } }

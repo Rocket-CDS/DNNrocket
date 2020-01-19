@@ -1,0 +1,94 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using System.IO;
+@using DNNrocketAPI.Componants;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+
+@{
+    var appTheme = (AppTheme)Model.List.First();
+    var resxData = (ResxData)Model.DataObjects["resxData"];
+
+    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + resxData.CultureCode + ".png";
+    var listname = "resxlist";
+    var lp = 1;
+
+}
+
+
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 w3-button w3-khaki " onclick="location.reload();">@ButtonText(ButtonTypes.cancel)</div>
+        @ButtonGap()
+        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketapptheme_saveresxdata" s-post="" s-list=".resxdictionarydata" s-fields='{"filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
+        @ButtonGap()
+        @if (Model.GetSettingBool("moduletemplatebutton"))
+        {
+            <div class="w3-col m3 w3-button w3-blue w3-padding-8 moduletemplatebutton simplisity_confirmclick" s-before="saveeditorcall" s-confirm="@ResourceKey("DNNrocket.removemoduletemplate")" s-cmd="@(Model.GetSetting("interfacekey"))_removemodtemplate" s-post="#editorsave" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-minus-square fa-fw fa-lg"></i>@ResourceKey("DNNrocket.removemoduletemplate")</div>
+        }
+        @ButtonGap()
+        <div class="w3-col m3 w3-right">
+            <h5 id="resxfilename" class="" style="">@resxData.FileName</h5>
+        </div>
+
+    </div>
+
+
+<div id="resxdatasection" class="w3-container">
+
+        <div id="resxdictionarydisplay" class="w3-row " >
+            <div class="w3-container">
+                <div class="w3-display-container ">
+
+                    <div class="w3-text-teal w3-padding-8 w3-display-left w3-margin simplisity_click" s-cmd="rocketapptheme_addresxdata" s-fields='{"filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.add", "", "Icon")</div>
+
+                    <div class="w3-col m4 w3-center">
+                        Key
+                    </div>
+                    <div class="w3-col m8 w3-center">
+                        Value&nbsp;<img class='' src='@flagurl' alt='' />
+                    </div>
+                </div>
+            </div>
+            <div class="w3-container">
+                <div class=" ">
+                    <ul id="resxdatadictionarylist" class="w3-ul w3-padding" >
+                        @foreach (var r in resxData.DataDictionary)
+                        {
+
+                            <li class="resxdictionarydata w3-card w3-margin-bottom w3-display-container">
+                             <div class="w3-row">
+		                            <div class="w3-col w3-padding m4"> 
+                                        @TextBox(new SimplisityInfo(),"genxml/key"," class='w3-input w3-border' autocomplete='off' ",r.Key,false,lp, listname)
+		                            </div>
+                                    <div class="w3-col w3-padding m7">
+                                        @TextBox(new SimplisityInfo(), "genxml/value", " class='w3-input w3-border' autocomplete='off' ", r.Value, false, lp, listname)
+                                    </div>
+                                    <div class="w3-col w3-padding m1">
+                                        <div class="w3-transparent w3-button w3-padding-8 simplisity_click" s-cmd="rocketapptheme_removeresxdata" s-fields='{"key":"@r.Key","filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>&times;</div>
+                                    </div>
+	                            </div>
+                            </li>
+
+                            lp += 1;
+
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+    });
+
+</script>
