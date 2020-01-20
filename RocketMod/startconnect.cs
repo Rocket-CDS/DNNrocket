@@ -168,7 +168,13 @@ namespace RocketMod
                     rtnDic = DownloadDocument();
                     break;
 
+                case "rocketmodapptheme_geteditor":
+                    strOut = GetEditorDetail();
+                    break;
                 case "rocketmodapptheme_apptheme":
+                    strOut = GetAppModTheme();
+                    break;
+                case "rocketmodapptheme_getdetail":
                     strOut = GetAppModTheme();
                     break;
                 case "rocketmodapptheme_saveeditor":
@@ -568,10 +574,10 @@ namespace RocketMod
         {
             try
             {
-                var razorTempl = _appThemeMod.GetTemplateRazor("edit");
+                var razorTempl = _appThemeMod.GetTemplateRazor("edit.cshtml");
                 if (_moduleParams.DataSourceExternal)
                 {
-                    razorTempl = _dataAppThemeMod.GetTemplateRazor("edit");
+                    razorTempl = _dataAppThemeMod.GetTemplateRazor("edit.cshtml");
                 }
 
                 var strOut = "-- NO DATA -- Itemid: " + _selectedItemId;
@@ -912,18 +918,16 @@ namespace RocketMod
         public string SaveEditor()
         {
             var editorcode = _postInfo.GetXmlProperty("genxml/hidden/editorcodesave");
-            var filename = _postInfo.GetXmlProperty("genxml/hidden/editorfilenamesave");
-            var editorfileext = _postInfo.GetXmlProperty("genxml/hidden/editorfileext");
-            _appThemeMod.SaveEditor(filename, editorfileext, editorcode);
+            var filename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+            _appThemeMod.SaveEditor(filename, editorcode);
             CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
             return "OK";
         }
 
         public string RemoveTemplate()
         {
-            var filename = _postInfo.GetXmlProperty("genxml/hidden/editorfilenamesave");
-            var editorfileext = _postInfo.GetXmlProperty("genxml/hidden/editorfileext");
-            _appThemeMod.RemoveModuleTemplate(filename, editorfileext);
+            var filename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+            _appThemeMod.RemoveModuleTemplate(filename);
             CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
             return GetAppModTheme();
         }
@@ -1006,7 +1010,7 @@ namespace RocketMod
                     else
                     {
                         // list display
-                        var razorTempl = _appThemeMod.GetTemplateRazor("view");
+                        var razorTempl = _appThemeMod.GetTemplateRazor("view.cshtml");
 
                         var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
                         articleDataList.Populate(appTheme.DataType);
@@ -1174,6 +1178,35 @@ namespace RocketMod
             }
 
         }
+
+        public String GetEditorDetail()
+        {
+            try
+            {
+                var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+                var jsonString = GeneralUtils.EnCode(_appThemeMod.AppTheme.GetTemplate(fname));
+                _passSettings.Add("filename", fname);
+                _passSettings.Add("jsonFileData", jsonString);
+
+                var editormode = "htmlmixed";
+                if (Path.GetExtension(fname) == ".js") editormode = "javascript";
+                if (Path.GetExtension(fname) == ".css") editormode = "css";
+                _passSettings.Add("editormode", editormode);
+
+                _passSettings.Add("interfacekey", _rocketInterface.InterfaceKey);
+                _passSettings.Add("moduleref", _moduleParams.ModuleRef);
+
+                if (_appThemeMod.IsModuleLevelTemplate(fname)) _passSettings.Add("moduletemplatebutton", "True");
+
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("EditorPopUp.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return DNNrocketUtils.RazorObjectRender(razorTempl, _appThemeMod.AppTheme, null, _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
 
     }
 }

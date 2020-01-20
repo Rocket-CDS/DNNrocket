@@ -675,7 +675,7 @@ namespace DNNrocket.AppThemes
         public string SaveEditor()
         {
             var editorcode = _postInfo.GetXmlProperty("genxml/hidden/editorcodesave");
-            var filename = _postInfo.GetXmlProperty("genxml/hidden/editorfilenamesave");
+            var filename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
             var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
 
             if (filename.ToLower() == "detail.cshtml") appTheme.RegenerateDetail = false;

@@ -13,11 +13,8 @@ namespace DNNrocketAPI.Componants
         {
             ModuleId = moduleId;
             _systemKey = systemKey;
-
             _modellevelTemplates = new Dictionary<string, bool>();
-
             InitAppThemeMod();
-            LoadTemplates();
         }
 
         private void InitAppThemeMod() {
@@ -38,7 +35,8 @@ namespace DNNrocketAPI.Componants
             if (!Directory.Exists(ModuleTemplateFolderCSSMapPath)) Directory.CreateDirectory(ModuleTemplateFolderCSSMapPath);
             if (!Directory.Exists(ModuleTemplateFolderJSMapPath)) Directory.CreateDirectory(ModuleTemplateFolderJSMapPath);
 
-            
+            LoadTemplates();
+
         }
 
         private void LoadTemplates()
@@ -50,24 +48,27 @@ namespace DNNrocketAPI.Componants
                 var flist = Directory.GetFiles(ModuleTemplateFolderRazorMapPath, ModuleParams.ModuleRef + "_*.cshtml");
                 foreach (var f in flist)
                 {
-                    var fname = Path.GetFileNameWithoutExtension(f).Replace(ModuleParams.ModuleRef + "_", "");
+                    var fname = Path.GetFileName(f).Replace(ModuleParams.ModuleRef + "_", "");
                     AppTheme.UpdateListFileName(fname, f);
+                    _modellevelTemplates.Remove(fname);
                     _modellevelTemplates.Add(fname, true);
                 }
                 // get css
                 flist = Directory.GetFiles(ModuleTemplateFolderCSSMapPath, ModuleParams.ModuleRef + "_*.css");
                 foreach (var f in flist)
                 {
-                    var fname = Path.GetFileNameWithoutExtension(f).Replace(ModuleParams.ModuleRef + "_", "");
+                    var fname = Path.GetFileName(f).Replace(ModuleParams.ModuleRef + "_", "");
                     AppTheme.UpdateListFileName(fname, f);
+                    _modellevelTemplates.Remove(fname);
                     _modellevelTemplates.Add(fname, true);
                 }
                 // get js
                 flist = Directory.GetFiles(ModuleTemplateFolderJSMapPath, ModuleParams.ModuleRef + "_*.js");
                 foreach (var f in flist)
                 {
-                    var fname = Path.GetFileNameWithoutExtension(f).Replace(ModuleParams.ModuleRef + "_", "");
+                    var fname = Path.GetFileName(f).Replace(ModuleParams.ModuleRef + "_", "");
                     AppTheme.UpdateListFileName(fname, f);
+                    _modellevelTemplates.Remove(fname);
                     _modellevelTemplates.Add(fname, true);
                 }
             }
@@ -78,56 +79,32 @@ namespace DNNrocketAPI.Componants
             return _modellevelTemplates.ContainsKey(templatename);
         }
 
-        public void SaveEditor(string filename, string fileExtension, string editorcode)
+        public void SaveEditor(string filename, string editorcode)
         {
             var folder = ModuleTemplateFolderRazorMapPath;
-            if (fileExtension.Trim('.') == "css") folder = ModuleTemplateFolderCSSMapPath;
-            if (fileExtension.Trim('.') == "js") folder = ModuleTemplateFolderJSMapPath;
+            if (Path.GetExtension(filename) == ".css") folder = ModuleTemplateFolderCSSMapPath;
+            if (Path.GetExtension(filename) == ".js") folder = ModuleTemplateFolderJSMapPath;
 
             var formHtml = GeneralUtils.DeCode(editorcode);
-            var templatefileMapPath = folder + "\\" + ModuleParams.ModuleRef + "_" + filename + "." + fileExtension.Trim('.');
+            var templatefileMapPath = folder + "\\" + ModuleParams.ModuleRef + "_" + filename;
 
             FileUtils.SaveFile(templatefileMapPath, formHtml);
+            InitAppThemeMod();
         }
         public string GetTemplateRazor(string templatename)
         {
-            var template = "";
-            if (ModuleTemplateListRazor.ContainsKey(templatename))
-            {
-                template = ModuleTemplateListRazor[templatename];
-            }
-            return template;
+            return AppTheme.GetTemplate(templatename);
         }
-        public void RemoveModuleTemplate(string filename, string fileExtension)
+        public void RemoveModuleTemplate(string filename)
         {
             var folder = ModuleTemplateFolderRazorMapPath;
-            if (fileExtension.Trim('.') == "css") folder = ModuleTemplateFolderCSSMapPath;
-            if (fileExtension.Trim('.') == "js") folder = ModuleTemplateFolderJSMapPath;
+            if (Path.GetExtension(filename) == ".css") folder = ModuleTemplateFolderCSSMapPath;
+            if (Path.GetExtension(filename) == ".js") folder = ModuleTemplateFolderJSMapPath;
 
-            var templatefileMapPath = folder + "\\" + ModuleParams.ModuleRef + "_" + filename + "." + fileExtension.Trim('.');
-            File.Delete(templatefileMapPath);
-            LoadTemplates();
+            var templatefileMapPath = folder + "\\" + ModuleParams.ModuleRef + "_" + filename;
+            if (File.Exists(templatefileMapPath)) File.Delete(templatefileMapPath);
+            InitAppThemeMod();
         }
-        public string GetTemplateCSS(string templatename)
-        {
-            var template = "";
-            if (ModuleTemplateListCSS.ContainsKey(templatename))
-            {
-                template = ModuleTemplateListCSS[templatename];
-            }
-            return template;
-        }
-        public string GetTemplateJS(string templatename)
-        {
-            var template = "";
-            if (ModuleTemplateListJS.ContainsKey(templatename))
-            {
-                var fMapPath = ModuleTemplateListJS[templatename];
-                template = FileUtils.ReadFile(fMapPath);
-            }
-            return template;
-        }
-
 
         public ModuleParams ModuleParams { get; private set; }
         public AppTheme AppTheme { get; private set; }
@@ -138,8 +115,5 @@ namespace DNNrocketAPI.Componants
         public string ModuleTemplateFolderRazorMapPath { get { return ModuleTemplateFolderMapPath + "\\default"; } }
         public string ModuleTemplateFolderCSSMapPath { get { return ModuleTemplateFolderMapPath + "\\css"; } }
         public string ModuleTemplateFolderJSMapPath { get { return ModuleTemplateFolderMapPath + "\\js"; } }
-        public Dictionary<string, string> ModuleTemplateListRazor { get; private set; }
-        public Dictionary<string, string> ModuleTemplateListJS { get; private set; }
-        public Dictionary<string, string> ModuleTemplateListCSS { get; private set; }
     }
 }

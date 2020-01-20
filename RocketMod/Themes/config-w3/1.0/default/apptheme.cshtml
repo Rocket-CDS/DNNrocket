@@ -35,243 +35,118 @@
 }
 
 
-<div id="detailsection">
-
-    <div class="w3-container">
-
-        <div class="w3-display-container">
-            <div class="w3-col m2" style="width:140px">
-                <img src="@ThumbnailImageUrl(appThemeMod.AppTheme.Logo,140,140)" alt="" style="width:60%;" class="w3-circle w3-hover-opacity w3-margin-bottom">
-            </div>
-            <div class="w3-col m8">
-                <h2>@(appThemeMod.AppTheme.AppThemeFolder)&nbsp;v@(appThemeMod.AppTheme.AppVersionFolder)&nbsp;<span class="validationfail w3-margin-left " style="display:none;"><i class='fas fa-exclamation-triangle' style='font-size:24px;color:red;'></i></span></h2>
-            </div>
-        </div>
-
-        <div id="appthemedetails">
-
-
-            <div id="editorsave" style="display:none;">
-                @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appThemeMod.AppTheme.SystemKey)
-                <input id="editorfilenamesave" type="hidden" value="" />
-                <input id="editorcodesave" type="hidden" value="" />
-                <input id="editorfileext" type="hidden" value="" />
-            </div>
-        </div>
-
+    <div id="detailsection">
 
         <div class="w3-container">
-            <div class="w3-row w3-padding"">
-                <div class="w3-container w3-theme w3-padding">
-                    <label>@ResourceKey("AppThemes.templates")</label>
+
+            <div class="w3-display-container">
+                <div class="w3-col m2" style="width:140px">
+                    <img src="@ThumbnailImageUrl(appThemeMod.AppTheme.Logo,140,140)" alt="" style="width:60%;" class="w3-circle w3-hover-opacity w3-margin-bottom">
                 </div>
-                <div id="Templates" class="w3-container">
-                    <div id="templatedatasection" class="w3-row templatelistdatasection">
+                <div class="w3-col m8">
+                    <h2>@(appThemeMod.AppTheme.AppThemeFolder)&nbsp;v@(appThemeMod.AppTheme.AppVersionFolder)&nbsp;<span class="validationfail w3-margin-left " style="display:none;"><i class='fas fa-exclamation-triangle' style='font-size:24px;color:red;'></i></span></h2>
+                </div>
+            </div>
 
-                        <ul id="templatelistdata" class="w3-ul">
+            <div id="appthemedetails">
 
-                            @foreach (var templateRecord in templatedatalist)
+
+                <div id="editorsave" style="display:none;">
+                    @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appThemeMod.AppTheme.SystemKey)
+                    <input id="editorfilenamesave" type="hidden" value="" />
+                    <input id="editorcodesave" type="hidden" value="" />
+                    <input id="editorfileext" type="hidden" value="" />
+                </div>
+            </div>
+
+
+            <div class="w3-container">
+                <div class="w3-row w3-padding" ">
+                    <div class="w3-container w3-theme w3-padding">
+                        <label>@ResourceKey("AppThemes.templates")</label>
+                    </div>
+                    <div class="w3-container ">
+                        <ul class="w3-ul">
+                            @foreach (var templateDict in appThemeMod.AppTheme.GetTemplatesRazor())
                             {
-                                var templateInfo = new SimplisityInfo(templateRecord);
-                            <li class="templatelist w3-col m4 w3-border-0">
-                                @HiddenField(templateInfo, "genxml/hidden/editorcodehtmlmixed", "", "", false, templateLP)
-                                @HiddenField(templateInfo, "genxml/hidden/filefolder", "", "default", false, templateLP)
-                                @HiddenField(templateInfo, "genxml/hidden/filenamehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/filename"), false, templateLP)
-                                @HiddenField(templateInfo, "genxml/hidden/moduletemplatehtmlmixed", "s-update='ignore'", templateInfo.GetXmlProperty("genxml/hidden/moduletemplate"), false, templateLP)
-
-                                @{
-                                    var hideicon = "display:none;";
-                                    var moduletemplate = "";
-                                    if (templateInfo.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
-                                    {
-                                        moduletemplate = "w3-pale-green";
-                                    }
-                                    var filename = templateInfo.GetXmlProperty("genxml/hidden/filename");
-                                }
-                                @if (filename != "")
+                                var bcolor = "";
+                                if (appThemeMod.IsModuleLevelTemplate(templateDict.Key))
                                 {
-                                    hideicon = "";
+                                    bcolor = "w3-pale-green";
                                 }
-                                @if (appThemeMod.ModuleParams.DataSourceExternal && (filename == "edit" || filename == "editlist"))
-                                {
-                                    hideicon = "display:none;";
-                                }
-
-
-                                <div class="w3-row w3-display-container @moduletemplate w3-padding w3-card">
-                                    <div>
-                                        <i class="w3-display-top fas fa-edit filenameicon@(templateLP) " onclick="edittemplate(@(templateLP));" style='font-size:12px;@(hideicon);cursor:pointer;'></i>
+                                <li class="w3-col m4 w3-display-container w3-padding w3-border-0 ">
+                                    <div class="w3-row w3-display-container w3-padding  w3-card @bcolor">
+                                        <i class="fas fa-edit simplisity_click" s-cmd="rocketmodapptheme_geteditor" s-fields='{"filename":"@templateDict.Key","appthemefolder":"@appThemeMod.AppTheme.AppThemeFolder","appversionfolder":"@appThemeMod.AppTheme.AppVersionFolder"}' style="cursor:pointer;"></i>
                                         &nbsp;
-                                        @templateInfo.GetXmlProperty("genxml/hidden/filename")
+                                        @templateDict.Key
                                     </div>
-                                </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
 
-                            </li>
+                <div class="w3-row w3-padding">
+                    <div class="w3-container w3-theme w3-padding">
+                        <label>@ResourceKey("AppThemes.css")</label>
+                    </div>
+                    <div class="w3-container">
+                        <ul class="w3-ul">
+                            @foreach (var templateDict in appThemeMod.AppTheme.GetTemplatesCSS())
+                            {
+                                var bcolor = "";
+                                if (appThemeMod.IsModuleLevelTemplate(templateDict.Key))
+                                {
+                                    bcolor = "w3-pale-green";
+                                }
+                                <li class="w3-col m4 w3-display-container w3-padding w3-border-0 ">
+                                    <div class="w3-row w3-display-container w3-padding  w3-card @bcolor">
+                                        <i class="fas fa-edit simplisity_click" s-cmd="rocketmodapptheme_geteditor" s-fields='{"filename":"@templateDict.Key","appthemefolder":"@appThemeMod.AppTheme.AppThemeFolder","appversionfolder":"@appThemeMod.AppTheme.AppVersionFolder"}' style="cursor:pointer;"></i>
+                                        &nbsp;
+                                        @templateDict.Key
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
 
-                                templateLP += 1;
+
+                <div class="w3-row w3-padding">
+                    <div class="w3-container w3-theme w3-padding">
+                        <label>@ResourceKey("AppThemes.javascript")</label>
+                    </div>
+                    <div class="w3-container">
+                        <ul class="w3-ul">
+                            @foreach (var templateDict in appThemeMod.AppTheme.GetTemplatesJS())
+                            {
+                                var bcolor = "";
+                                if (appThemeMod.IsModuleLevelTemplate(templateDict.Key))
+                                {
+                                    bcolor = "w3-pale-green";
+                                }
+                                <li class="w3-col m4 w3-display-container w3-padding w3-border-0 ">
+                                    <div class="w3-row w3-display-container w3-padding  w3-card @bcolor">
+                                        <i class="fas fa-edit simplisity_click" s-cmd="rocketmodapptheme_geteditor" s-fields='{"filename":"@templateDict.Key","appthemefolder":"@appThemeMod.AppTheme.AppThemeFolder","appversionfolder":"@appThemeMod.AppTheme.AppVersionFolder"}' style="cursor:pointer;"></i>
+                                        &nbsp;
+                                        @templateDict.Key
+                                    </div>
+                                </li>
                             }
                         </ul>
                     </div>
                 </div>
             </div>
-
-            @if (cssdatalist.Count > 0)
-            {
-                <div class="w3-row w3-padding">
-                    <div class="w3-container w3-theme w3-padding">
-                        <label>@ResourceKey("AppThemes.css")</label>
-                    </div>
-                    <div id="CSS" class="w3-container">
-                        <div id="cssdatasection" class="w3-row csslistdatasection">
-
-                            <ul id="csslistdata" class="w3-ul">
-
-                                @foreach (var cssRecord in cssdatalist)
-                                {
-                                    var cssInfo = new SimplisityInfo(cssRecord);
-                                <li class="csslist w3-col m4 w3-display-container w3-padding w3-border-0">
-                                    @HiddenField(cssInfo, "genxml/hidden/editorcodecss", "", "", false, cssLP)
-                                    @HiddenField(cssInfo, "genxml/hidden/filefolder", "", "css", false, cssLP)
-                                    @HiddenField(cssInfo, "genxml/hidden/filenamecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/filename"), false, cssLP)
-                                    @HiddenField(cssInfo, "genxml/hidden/moduletemplatecss", "s-update='ignore'", cssInfo.GetXmlProperty("genxml/hidden/moduletemplate"), false, cssLP)
-
-                                    @{
-                                        var hideicon = "display:none;";
-                                        var moduletemplate = "";
-                                        if (cssRecord.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
-                                        {
-                                            moduletemplate = "w3-pale-green";
-                                        }
-                                    }
-                                    @if (cssInfo.GetXmlProperty("genxml/hidden/filename") != "")
-                                    {
-                                        hideicon = "";
-                                    }
-
-                                    <div class="w3-row w3-display-container @moduletemplate w3-padding w3-card">
-                                        <div>
-                                            <i class="w3-display-top fas fa-edit filenameicon@(cssLP) " onclick="editcss(@(cssLP));" style='font-size:12px;@(hideicon);cursor:pointer;'></i>
-                                            &nbsp;
-                                            @cssInfo.GetXmlProperty("genxml/hidden/filename")
-                                        </div>
-                                    </div>
-
-                                </li>
-
-                                    cssLP += 1;
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            }
-
-
-            @if (jsdatalist.Count > 0)
-            {
-                <div class="w3-row w3-padding">
-                    <div class="w3-container w3-theme w3-padding">
-                        <label>@ResourceKey("AppThemes.javascript")</label>
-                    </div>
-                    <div id="Javascript" class="w3-container">
-                        <div id="jsdatasection" class="w3-row jslistdatasection">
-
-                            <ul id="jslistdata" class="w3-ul">
-
-                                @foreach (var jsRecord in jsdatalist)
-                                {
-                                    var jsInfo = new SimplisityInfo(jsRecord);
-                                <li class="jslist w3-col m4 w3-display-container w3-padding w3-border-0">
-                                    @HiddenField(jsInfo, "genxml/hidden/editorcodejavascript", "", "", false, jsLP)
-                                    @HiddenField(jsInfo, "genxml/hidden/filefolder", "", "js", false, jsLP)
-                                    @HiddenField(jsInfo, "genxml/hidden/filenamejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/filename"), false, jsLP)
-                                    @HiddenField(jsInfo, "genxml/hidden/moduletemplatejavascript", "s-update='ignore'", jsInfo.GetXmlProperty("genxml/hidden/moduletemplate"), false, jsLP)
-
-                                    @{
-                                        var hideicon = "display:none;";
-                                        var moduletemplate = "";
-                                        if (jsRecord.GetXmlPropertyBool("genxml/hidden/moduletemplate"))
-                                        {
-                                            moduletemplate = "w3-pale-green";
-                                        }
-                                    }
-                                    @if (jsInfo.GetXmlProperty("genxml/hidden/filename") != "")
-                                    {
-                                        hideicon = "";
-                                    }
-
-                                    <div class="w3-row w3-display-container @moduletemplate w3-padding w3-card">
-                                        <div>
-                                            <i class="w3-display-top fas fa-edit filenameicon@(jsLP)" onclick="editjs(@(jsLP));" style='font-size:12px;@(hideicon);cursor:pointer;'></i>
-                                            &nbsp;
-                                            @jsInfo.GetXmlProperty("genxml/hidden/filename")
-                                        </div>
-                                    </div>
-
-                                </li>
-
-                                    jsLP += 1;
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            }
         </div>
-
-            </div>
-</div>
+    </div>
 <div class="w3-right">
     <i>ID: </i> @info.ItemID
 </div>
 
-@{
-    var l = new List<object>();
-    l.Add(appThemeMod.AppTheme);
-    var m = new SimplisityRazor(l, Model.Settings);
-    m.SetSetting("interfacekey", "rocketmodapptheme");
-    m.SetSetting("moduletemplatebutton", "True");
-    m.ModuleId = appThemeMod.ModuleId;
-
-    var objCtrl = new DNNrocketController();
-    var fieldInfo = objCtrl.GetByType(info.PortalId, m.ModuleId, "ROCKETMODFIELDS", "", "");
-    if (fieldInfo != null)
-    {
-        m.SetDataObject("modulefieldlist", fieldInfo.GetRecordList("fielddata"));
-    }
-
-}
-@RenderTemplate("EditorPopUp.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", m, "1.0", true)
-
-<div id="dnnrocket_imageselectwrapper">
-    @RenderImageSelect(200, true, false, appThemeMod.AppTheme.ImageFolderRel)
-</div>
-
-<style>
-    .CodeMirror {
-        border: 1px solid #eee;
-        height: auto;
-    }
-</style>
 
 <script>
 
-    var myCodeMirror;
-    var defaultNamedata = [];
-    var defaultValuedata = [];
-
     $(document).ready(function () {
-
-        $('.filenametext').unbind("keyup");
-        $(".filenametext").keyup(function (event) {
-            var idx = $(this).attr('index');
-            if ($(this).val() == '') {
-                $('.filenameicon' + idx).hide();
-            }
-            else {
-                $('.filenameicon' + idx).show();
-            }
-        });
 
         $('input[type=radio][name=themetyperadio]').unbind("change");
         $('input[type=radio][name=themetyperadio]').change(function () {
@@ -295,143 +170,11 @@
         }
 
 
-        if (typeof myCodeMirror !== 'undefined') {
-            window.onresize = function (event) {
-                myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
-            };
-        }
-
-        $('.fieldsnippet').unbind('click');
-        $('.fieldsnippet').click(function () {
-            if (typeof myCodeMirror !== 'undefined') {
-                var snip = simplisity_decode($('#' + $(this).attr('snipname')).val());
-                var position = myCodeMirror.getCursor();
-                myCodeMirror.replaceRange(snip, CodeMirror.Pos(position.line));
-            }
-        });
-
     });
-
-    function quickresxedit() {
-        $('.saveresxquickedit').show();
-        $('#quickresxedit').show();
-        //if ($('#culturecodeselected').val() === '') {
-        //    $('.saveresxquickedit').hide();
-        //}
-    }
 
     function changeversionaction() {
         var newversion = $('.changeversionclass').val();
         $('.changeversionclass').attr('s-fields', '{"appthemefolder":"@appThemeMod.AppTheme.AppThemeFolder","appversionfolder":"' + newversion + '"}');
-    }
-
-    function edittemplate(idx) {
-        editeditor(idx, 'htmlmixed','templatelist');
-    }
-    function editcss(idx) {
-        editeditor(idx, 'css','csslist');
-    }
-    function editjs(idx) {
-        editeditor(idx, 'javascript','jslist');
-    }
-
-    function saveeditordata() {
-        var modetype = $('#razoreditor').attr('modetype');
-        if ($('#editorfilenamesave').val() === 'view') {
-            $('#regenerateview').prop('checked', false);
-        }
-        if ($('#editorfilenamesave').val() === 'edit') {
-            $('#regenerateedit').prop('checked', false);
-        }
-        if ($('#editorfilenamesave').val() === 'editlist') {
-            $('#regenerateeditlist').prop('checked', false);
-        }
-
-        var fileext = 'cshtml';
-        if (modetype == 'css') {
-            fileext = "css"
-        }
-        if (modetype == 'javascript') {
-            fileext = "js"
-        }
-        $('#editorfileext').val(fileext);
-
-        var idx = $('#editorwrapper').attr("index");
-        $('#editorcode' + modetype + '_' + idx).val(simplisity_encode(myCodeMirror.getValue()));
-        $('#editorcodesave').val(simplisity_encode(myCodeMirror.getValue()));
-
-        $('.moduletemplatebutton').show();
-        $('#reloadaftersave').val('True');
-    }
-
-    function saveeditorcall() {
-        saveeditordata();
-    }
-
-    function saveeditorreturn() {
-        $('#saveicon').show();
-        $('#saveicon').addClass('simplisity_fadeout');
-    }
-
-    function editeditor(idx, modetype, listname) {
-
-        $('#detailsection').hide();
-        $('#editorpopup').show();
-
-        $("#razoreditor").remove();
-        $(".CodeMirror").remove();
-
-        var newHeight = $(window).height() - 100;
-        $('#editorwrapper').css("height", newHeight);;
-
-        var textArea = $('<textarea id="razoreditor" class="w3-input w3-border" modetype="' + modetype + '" spellcheck="false" />');
-        $('#editorwrapper').append(textArea);
-
-        myCodeMirror = CodeMirror.fromTextArea(document.getElementById("razoreditor"), {
-            lineNumbers: true,
-            mode: modetype,
-            theme: "night"
-        });
-        var editorcode = $('#editorcode' + modetype + '_' + idx).val();
-        myCodeMirror.setValue(simplisity_decode(editorcode));
-
-        myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
-
-        $('#editorlistnamesave').val(listname);
-        $('#editorfilenamesave').val($('#filename' + modetype + '_' + idx).val());
-
-        $('#editorfilename').text($('#filename' + modetype + '_' + idx).val());
-
-        if ($('#moduletemplate' + modetype + '_' + idx).val() === 'True') {
-            $('.moduletemplatebutton').show();
-        }
-        else {
-            $('.moduletemplatebutton').hide();
-        }
-
-        if ($('#razoreditor').attr('modetype') === 'htmlmixed') {
-            $('.editorviewmenu').show();
-        } else {
-            $('.editorviewmenu').hide();
-        }
-        $('#editorwrapper').attr("index", idx);
-
-        $('#razoreditor').focus();
-    }
-
-    function cancelleditor() {
-        if ($('#reloadaftersave').val() === 'True') {
-            location.reload(); 
-        } else {
-            $('#editorpopup').hide();
-            $('#detailsection').show();
-        }
-    }
-    function cancelresx() {
-        $('#dnnrocket_resxeditwrapper').hide();
-        $('#detailsection').show();
-        $("#resxvalues").find("tr:gt(0)").remove();
-        simplisity_emptyrecyclebin('resxlistvaluesbin');
     }
 
 
@@ -454,17 +197,6 @@
                 $(this).parent().hide();
             }
         });
-    }
-
-    function actionlanguageselect(culturecode) {
-        $('#languageselector').hide();
-        simplisity_setParamField('culturecoderesx',culturecode);
-        simplisity_callserver($('#resxaddbutton'))
-    }
-
-    function saveeditorreturn() {
-        $('#saveicon').show();
-        $('#saveicon').addClass('simplisity_fadeout');
     }
 
 

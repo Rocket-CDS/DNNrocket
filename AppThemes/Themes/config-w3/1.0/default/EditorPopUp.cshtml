@@ -19,13 +19,13 @@
 
 <div id="editorpopup">
     <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-khaki simplisity_click " s-cmd="rocketapptheme_getdetail" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonText(ButtonTypes.cancel)</div>
+        <div class="w3-col m2 w3-button w3-khaki simplisity_click " s-cmd="@(Model.GetSetting("interfacekey"))_getdetail" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonText(ButtonTypes.cancel)</div>
         @ButtonGap()
-        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditordata" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
+        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditordata" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
         @ButtonGap()
         @if (Model.GetSettingBool("moduletemplatebutton"))
         {
-            <div class="w3-col m3 w3-button w3-blue w3-padding-8 moduletemplatebutton simplisity_confirmclick" s-before="saveeditordata" s-confirm="@ResourceKey("DNNrocket.removemoduletemplate")" s-cmd="@(Model.GetSetting("interfacekey"))_removemodtemplate" s-post="#editorsave" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-minus-square fa-fw fa-lg"></i>@ResourceKey("DNNrocket.removemoduletemplate")</div>
+            <div class="w3-col m3 w3-button w3-blue w3-padding-8 moduletemplatebutton simplisity_confirmclick" s-before="saveeditordata" s-confirm="@ResourceKey("DNNrocket.removemoduletemplate")" s-cmd="@(Model.GetSetting("interfacekey"))_removemodtemplate" s-post="#editorsave" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-minus-square fa-fw fa-lg"></i>@ResourceKey("DNNrocket.removemoduletemplate")</div>
         }
         @ButtonGap()
         <i id="saveicon" class='fas fa-save ' style="display:none;font-size:24px"></i>
@@ -182,7 +182,6 @@
 
     <div id="editorsave" style="display:none;">
         @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appTheme.SystemKey)
-        <input id="editorfilenamesave" type="hidden" value="" />
         <input id="editorcodesave" type="hidden" value="" />
     </div>
 
@@ -257,7 +256,6 @@
 
     function saveeditordata() {
         $('#editorcodesave').val(simplisity_encode(myCodeMirror.getValue()));
-        $('#editorfilenamesave').val($('#editorfilename').text());
     }
 
     function rightMenuAccFunc(elementid) {

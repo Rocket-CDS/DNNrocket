@@ -535,7 +535,7 @@ namespace DNNrocketAPI.Componants
         }
         public void UpdateListFileName(string filename, string mapPath)
         {
-            if (!FileNameList.ContainsKey(filename)) FileNameList.Remove(filename);
+            if (FileNameList.ContainsKey(filename)) FileNameList.Remove(filename);
             FileNameList.Add(filename, mapPath);
         }
         public void AddListField()

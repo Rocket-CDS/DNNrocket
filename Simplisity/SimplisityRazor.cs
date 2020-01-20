@@ -40,6 +40,7 @@ namespace Simplisity
             ModuleIdDataSource = 0;
 
             if (settings.ContainsKey("modref")) ModuleRef = settings["modref"];
+            if (settings.ContainsKey("moduleref")) ModuleRef = settings["moduleref"];
             if (settings.ContainsKey("moduleid") && GeneralUtils.IsNumeric(settings["moduleid"]))
             {
                 ModuleId = Convert.ToInt32(settings["moduleid"]);
