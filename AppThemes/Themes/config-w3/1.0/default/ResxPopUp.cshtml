@@ -14,7 +14,11 @@
     var appTheme = (AppTheme)Model.List.First();
     var resxData = (ResxData)Model.DataObjects["resxData"];
 
-    var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + resxData.CultureCode + ".png";
+    var flagurl = "";
+    if (resxData.CultureCode != "")
+    {
+        flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + resxData.CultureCode + ".png";
+    }
     var listname = "resxlist";
     var lp = 1;
 

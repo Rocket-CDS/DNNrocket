@@ -510,4 +510,7 @@
   <data name="sortorder.Text" xml:space="preserve">
     <value>Sort Order</value>
   </data>
+  <data name="deletethemeerror.Text" xml:space="preserve">
+    <value>An Error has occured with the file system.  This may be caused by locked files.  Restart AppPool and Retry.</value>
+  </data>
 </root>

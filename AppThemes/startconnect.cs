@@ -239,9 +239,12 @@ namespace DNNrocket.AppThemes
                 ClearServerCacheLists();
                 return GetDetail();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return ex.ToString();
+                var strErr = "<div class='w3-panel w3-red'>";
+                strErr += "<p>" + DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/Api/App_LocalResources", "DNNrocket.deletethemeerror") + "</p>";
+                strErr += "</div>";
+                return strErr;
             }
         }
         public string DeleteTheme()
@@ -253,9 +256,12 @@ namespace DNNrocket.AppThemes
                 ClearServerCacheLists();
                 return GetList();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return ex.ToString();
+                var strErr = "<div class='w3-panel w3-red'>";
+                strErr += "<p>" + DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/Api/App_LocalResources", "DNNrocket.deletethemeerror") + "</p>";
+                strErr += "</div>";
+                return strErr;
             }
         }
 
