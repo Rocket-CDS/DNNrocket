@@ -155,7 +155,7 @@ namespace DNNrocketAPI.Componants
 
             if (!File.Exists(tempMapPath))
             {
-                var formHtml = GenerateEditForm("fielddata", "edit", 0);
+                var formHtml = GenerateEditForm("fielddata", "edit.cshtml", 0);
                 FileUtils.SaveFile(tempMapPath, formHtml);
             }
 
@@ -186,7 +186,7 @@ namespace DNNrocketAPI.Componants
             tempMapPath = AppThemeVersionFolderMapPath + "\\default\\settings.cshtml";
             if (!File.Exists(tempMapPath))
             {
-                var formHtml = GenerateEditForm("settingfielddata", "settings", 0);
+                var formHtml = GenerateEditForm("settingfielddata", "settings.cshtml", 0);
                 FileUtils.SaveFile(tempMapPath, formHtml);
             }
             tempMapPath = AppThemeVersionFolderMapPath + "\\css\\" + AppThemeFolder + ".css";
@@ -373,12 +373,12 @@ namespace DNNrocketAPI.Componants
 
                 // output generated template.
                 var formHtml = "";
-                if (RegenerateEdit) formHtml = GenerateEditForm("fielddata", "edit",0);
+                if (RegenerateEdit) formHtml = GenerateEditForm("fielddata", "edit.cshtml", 0);
                 var tempMapPath = AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
                 if (formHtml != "") FileUtils.SaveFile(tempMapPath, formHtml);
 
                 formHtml = "";
-                if (RegenerateSettings) formHtml = GenerateEditForm("settingfielddata", "settings", 0);
+                if (RegenerateSettings) formHtml = GenerateEditForm("settingfielddata", "settings.cshtml", 0);
                 tempMapPath = AppThemeVersionFolderMapPath + "\\default\\settings.cshtml";
                 if (formHtml != "") FileUtils.SaveFile(tempMapPath, formHtml);
 
@@ -681,9 +681,12 @@ namespace DNNrocketAPI.Componants
 
             List<SimplisityRecord> fieldList = Record.GetRecordList(listname);
             var resxItem = Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
-            if (resxItem == null) return "";
-            var jsonresx = resxItem.GetXmlProperty("genxml/hidden/jsonresx");
-            var jsondata = GeneralUtils.DeCode(jsonresx);
+            var jsondata = "";
+            if (resxItem != null)
+            {
+                var jsonresx = resxItem.GetXmlProperty("genxml/hidden/jsonresx");
+                jsondata = GeneralUtils.DeCode(jsonresx);
+            }
             var jasonInfo = new SimplisityInfo();
             if (jsondata != "")
             {
@@ -867,8 +870,8 @@ namespace DNNrocketAPI.Componants
 
 
             // merge to template            
-            var strOut = FileUtils.ReadFile(systemData.SystemMapPath + "\\AppThemeBase\\" + basefile + ".cshtml");
-            if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\" + basefile + ".cshtml");
+            var strOut = FileUtils.ReadFile(systemData.SystemMapPath + "\\AppThemeBase\\" + basefile);
+            if (strOut == "") strOut = FileUtils.ReadFile(AppProjectFolderMapPath + "\\AppThemeBase\\" + basefile);
             if (strOut == "")
             {
                 return strFieldList;
@@ -1304,11 +1307,11 @@ namespace DNNrocketAPI.Componants
         public string JsFolderRel { get; set; }
         public string ResxFolderRel { get; set; }
         public SimplisityRecord Record { get; set; }
-        public bool RegenerateEditList { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateeditlist"); } }
-        public bool RegenerateEdit { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateedit"); } }
-        public bool RegenerateSettings { get { return Record.GetXmlPropertyBool("genxml/checkbox/regeneratesettings"); } }
-        public bool RegenerateView { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateview"); } }
-        public bool RegenerateDetail { get { return Record.GetXmlPropertyBool("genxml/checkbox/regeneratedetail"); } }
+        public bool RegenerateEditList { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateeditlist"); } set { Record.SetXmlProperty("genxml/checkbox/regenerateeditlist", value.ToString()); } }
+        public bool RegenerateEdit { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateedit"); } set { Record.SetXmlProperty("genxml/checkbox/regenerateedit", value.ToString()); } }
+        public bool RegenerateSettings { get { return Record.GetXmlPropertyBool("genxml/checkbox/regeneratesettings"); } set { Record.SetXmlProperty("genxml/checkbox/regeneratesettings", value.ToString()); } }
+        public bool RegenerateView { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateview"); } set { Record.SetXmlProperty("genxml/checkbox/regenerateview", value.ToString()); } }
+        public bool RegenerateDetail { get { return Record.GetXmlPropertyBool("genxml/checkbox/regeneratedetail"); } set { Record.SetXmlProperty("genxml/checkbox/regeneratedetail", value.ToString()); } }
         public Dictionary<string, string> FileNameList { get; set; }
 
         public int DataType { get { return Record.GetXmlPropertyInt("genxml/radio/themetype"); } }

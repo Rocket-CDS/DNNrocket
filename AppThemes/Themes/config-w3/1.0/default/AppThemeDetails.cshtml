@@ -141,13 +141,6 @@
             <div id="appthemedetails">
 
 
-                <div id="editorsave" style="display:none;">
-                    @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appTheme.SystemKey)
-                    <input id="editorfilenamesave" type="hidden" value="" />
-                    <input id="editorcodesave" type="hidden" value="" />
-                </div>
-
-
                 <div class="w3-container ">
                     <div class="w3-row w3-padding">
                         @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
@@ -280,13 +273,15 @@
 
                             @foreach (var templateDict in appTheme.GetTemplatesRazor())
                             {
+
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     <div class="w3-row w3-display-container w3-padding  w3-card">
-                                        <i class="fas fa-edit simplisity_click" s-cmd="rocketapptheme_getfiledata" s-return="#editorrazor" s-fields='{"filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;"></i>
+                                        <i class="fas fa-edit simplisity_click" s-cmd="rocketapptheme_geteditor" s-fields='{"filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;"></i>
                                         &nbsp;
                                         @templateDict.Key
                                     </div>
                                 </li>
+
                             }
                         </ul>
                     </div>
@@ -341,13 +336,15 @@
 
                             @foreach (var templateDict in appTheme.GetTemplatesCSS())
                             {
+
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     <div class="w3-row w3-display-container w3-padding  w3-card">
-                                        <i class="fas fa-edit simplisity_click" s-cmd="rocketapptheme_getfiledata" s-return="#editorcss" s-fields='{"filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;"></i>
+                                        <i class="fas fa-edit simplisity_click" s-cmd="rocketapptheme_geteditor" s-fields='{"filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;"></i>
                                         &nbsp;
                                         @templateDict.Key
                                     </div>
                                 </li>
+
                             }
                         </ul>
 
@@ -367,13 +364,15 @@
 
                             @foreach (var templateDict in appTheme.GetTemplatesJS())
                             {
+
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     <div class="w3-row w3-display-container w3-padding  w3-card">
-                                        <i class="fas fa-edit simplisity_click" s-cmd="rocketapptheme_getfiledata" s-return="#editorjs" s-fields='{"filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;"></i>
+                                        <i class="fas fa-edit simplisity_click" s-cmd="rocketapptheme_geteditor" s-fields='{"filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;"></i>
                                         &nbsp;
                                         @templateDict.Key
                                     </div>
                                 </li>
+
                             }
 
                         </ul>
@@ -411,11 +410,6 @@
 
         </div>
     </div>
-
-    @{
-        Model.SetSetting("interfacekey", "rocketapptheme");
-    }
-    @RenderTemplate("EditorPopUp.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", Model, "1.0", true)
 
 
     <div id="dnnrocket_imageselectwrapper">
@@ -523,10 +517,6 @@
 </div>
 
 
-<div id="editorrazor" style="display:none;"></div>
-<div id="editorjs" style="display:none;"></div>
-<div id="editorcss" style="display:none;"></div>
-
 <style>
     .CodeMirror {
         border: 1px solid #eee;
@@ -536,18 +526,12 @@
 
 <script>
 
-    var myCodeMirror;
-    var defaultNamedata = [];
-    var defaultValuedata = [];
     var progressbarid = '';
 
     $(document).ready(function () {
 
         $("#imagelistdata").sortable();
         $("#imagelistdata").disableSelection();
-
-        $("#resxlistdata").sortable();
-        $("#resxlistdata").disableSelection();
 
         $('.filenametext').unbind("keyup");
         $(".filenametext").keyup(function (event) {
@@ -582,21 +566,6 @@
         }
 
 
-        if (typeof myCodeMirror !== 'undefined') {
-            window.onresize = function (event) {
-                myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
-            };
-        }
-
-        $('.fieldsnippet').unbind('click');
-        $('.fieldsnippet').click(function () {
-            if (typeof myCodeMirror !== 'undefined') {
-                var snip = simplisity_decode($('#' + $(this).attr('snipname')).val());
-                var position = myCodeMirror.getCursor();
-                myCodeMirror.replaceRange(snip, CodeMirror.Pos(position.line));
-            }
-        });
-
         $('.uploadappthemereturn').unbind('change');
         $('.uploadappthemereturn').change(function () {
             var rtn = $(this).text();
@@ -616,20 +585,6 @@
 
         showDataTab();
 
-        $('#editorrazor').unbind('change');
-        $('#editorrazor').change(function () {
-            editeditor('htmlmixed',$(this).text());
-        });
-        $('#editorjs').unbind('change');
-        $('#editorjs').change(function () {
-            editeditor('javascript',$(this).text());
-        });
-        $('#editorcss').unbind('change');
-        $('#editorcss').change(function () {
-            editeditor('css',$(this).text());
-        });
-
-
     });
 
     function quickresxedit() {
@@ -643,171 +598,6 @@
     function changeversionaction() {
         var newversion = $('.changeversionclass').val();
         $('.changeversionclass').attr('s-fields', '{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"' + newversion + '"}');
-    }
-
-    function editresx(idx) {
-        $('#detailsection').hide();
-        $('#dnnrocket_resxeditwrapper').show();
-
-        var culturecode = $('#culturecode_' + idx).val();
-
-        var defaultjsonstr = $('#defaultjsonresx').val();
-        defaultNamedata = [];
-        defaultValuedata = [];
-        defaultjsonstr = simplisity_decode(defaultjsonstr);
-        if (defaultjsonstr !== '') {
-            var obj = JSON.parse(defaultjsonstr);
-            var len = obj.listdata.length;
-            for (var i = 0; i < len; i++) {
-                var itemobj = obj.listdata[i];
-                if (itemobj.id.startsWith("name")) {
-                    defaultNamedata.push(itemobj.value);
-                }
-                if (itemobj.id.startsWith("value")) {
-                    defaultValuedata.push(itemobj.value);
-                }
-            }
-        }
-
-        $('#resxvaluesstring').empty();
-        $('#resxkeysstring').empty();
-
-        var fieldkeylist = $('#fieldlocalizedlist').val().split(',');
-        var jsonstr = $('#jsonresx_' + idx).val();
-        jsonstr = simplisity_decode(jsonstr);
-        if (jsonstr !== '') {
-
-            //console.log('jsonstr:', jsonstr);
-
-            var namedata = [];
-            var valuedata = [];
-            var obj = JSON.parse(jsonstr);
-            var len = obj.listdata.length;
-            for (var i = 0; i < len; i++) {
-                var itemobj = obj.listdata[i];
-                if (itemobj.id.startsWith("name")) {
-                    namedata.push(itemobj.value);
-                }
-                if (itemobj.id.startsWith("value")) {
-                    valuedata.push(itemobj.value);
-                }
-            }
-            len = namedata.length;
-            for (var i = 0; i < len; i++) {
-                var disabled = false;
-                if (culturecode === '') {
-                    if ($.inArray(namedata[i], fieldkeylist) >= 0) {
-                        disabled = true;
-                    }
-                }
-                addresxvalue(namedata[i], valuedata[i], disabled);
-            }
-            $('#resxvaluesstring').attr("rows", len + 1);
-            $('#resxkeysstring').attr("rows", len + 1);
-        }
-
-        $('#resxfilename').text($('#fullfilename_' + idx).val());
-        $('#dnnrocket_resxeditwrapper').attr("index", idx);
-        if (culturecode === '') {
-            culturecode = 'none';
-        }
-        $('#resxflag').attr("src", "/DesktopModules/DNNrocket/API/images/flags/32/" + culturecode + ".png");
-        $('#culturecoderesx').text($('#culturecodedisplayname' + idx).text());
-        $('#culturecode').val(culturecode);
-
-        simplisity_setParamField('culturecoderesx', $('#culturecode_' + idx).val());  // send culture code to server when we add resx value.
-
-    }
-
-    function saveeditordata() {
-        var modetype = $('#razoreditor').attr('modetype');
-        if ($('#editorfilenamesave').val() === 'view.cshtml') {
-            $('#regenerateview').prop('checked', false);
-        }
-        if ($('#editorfilenamesave').val() === 'detail.cshtml') {
-            $('#regeneratedetail').prop('checked', false);
-        }
-        if ($('#editorfilenamesave').val() === 'edit.cshtml') {
-            $('#regenerateedit').prop('checked', false);
-        }
-        if ($('#editorfilenamesave').val() === 'editlist.cshtml') {
-            $('#regenerateeditlist').prop('checked', false);
-        }
-        if ($('#editorfilenamesave').val() === 'settings.cshtml') {
-            $('#regeneratesettings').prop('checked', false);
-        }
-        if ($('#editorfilenamesave').val() === 'pageheader.cshtml') {
-            $('#regeneratesettings').prop('checked', false);
-        }
-
-        $('#editorcodesave').val(simplisity_encode(myCodeMirror.getValue()));
-        $('#editorfilenamesave').val($('#editorfilename').text());
-    }
-
-    function saveeditorcall() {
-        saveeditordata();
-    }
-
-    function saveeditorreturn() {
-        $('#saveicon').show();
-        $('#saveicon').addClass('simplisity_fadeout');
-    }
-
-    function saveresx() {
-        var jsonListData = simplisity_encode(simplisity_getlistjson('.resxlistvalues'));
-        var idx = $('#dnnrocket_resxeditwrapper').attr("index");
-        $('#jsonresx_' + idx).val(jsonListData);
-        $('#dnnrocket_resxeditwrapper').hide();
-        $('#detailsection').show();
-        $("#resxvalues").find("tr:gt(0)").remove();
-    }
-
-    function editeditor(modetype, jsonString) {
-
-        var jsonData = JSON.parse(jsonString);
-
-        var editorcode = jsonData['editorfiledata'];
-        var editorfilename = jsonData['editorfilename'];
-        $('#editorfilename').text(editorfilename);
-
-        $('#detailsection').hide();
-        $('#editorpopup').show();
-
-        $("#razoreditor").remove();
-        $(".CodeMirror").remove();
-
-        var newHeight = $(window).height() - 100;
-        $('#editorwrapper').css("height", newHeight);;
-
-        var textArea = $('<textarea id="razoreditor" class="w3-input w3-border" modetype="' + modetype + '" spellcheck="false" />');
-        $('#editorwrapper').append(textArea);
-
-        myCodeMirror = CodeMirror.fromTextArea(document.getElementById("razoreditor"), {
-            lineNumbers: true,
-            mode: modetype,
-            theme: "night"
-        });
-        myCodeMirror.setValue(simplisity_decode(editorcode));
-
-        myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
-
-        if ($('#razoreditor').attr('modetype') === 'htmlmixed') {
-            $('.editorviewmenu').show();
-        } else {
-            $('.editorviewmenu').hide();
-        }
-        $('#razoreditor').focus();
-    }
-
-    function cancelleditor() {
-        $('#editorpopup').hide();
-        $('#detailsection').show();
-    }
-    function cancelresx() {
-        $('#dnnrocket_resxeditwrapper').hide();
-        $('#detailsection').show();
-        $("#resxvalues").find("tr:gt(0)").remove();
-        simplisity_emptyrecyclebin('resxlistvaluesbin');
     }
 
     function selectlanguage() {
@@ -832,48 +622,6 @@
         simplisity_setParamField('culturecoderesx',culturecode);
         simplisity_callserver($('#resxaddbutton'))
     }
-
-    function addresxvalue(name, value, disabled) {
-        var disabledvalue = '';
-        if (disabled) {
-            disabledvalue = 'disabled';
-        }
-
-        var rowCount = $('#resxvalues tr').length;
-
-        var tblrow = '<tr class="resxlistvalues">';
-        tblrow += '	<td class="w3-third"> <input id="name_' + rowCount + '" ' + disabledvalue + ' s-xpath="genxml/text/name" placeholder="@ResourceKey("AppThemes.enterkey")" class="w3-input w3-border resxnameinput" type="text" value="' + name + '"/>';
-        tblrow += '	</td>';
-        tblrow += '	<td class="w3-half">  <input id="value_' + rowCount + '" ' + disabledvalue + ' s-xpath="genxml/text/value" placeholder="@ResourceKey("AppThemes.entervalue")" class="w3-input w3-border" type="text" value="' + value + '"/>';
-        tblrow += '	</td>';
-        tblrow += '	<td style="width:20px;">';
-        tblrow += '		<a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".resxlistvalues" s-recylebin="resxlistvaluesbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>';
-        tblrow += '	</td>';
-        tblrow += '</tr>';
-
-        $('#resxvalues tr:last').after(tblrow);
-        $('#resxkeysstring').append(name + ":  &#13;&#10");
-        $('#resxvaluesstring').append(value + "&#13;&#10");
-
-        $('#simplisity_startpanel').activateSimplisityPanel()
-
-        $('.resxnameinput').unbind("focusout");
-        $('.resxnameinput').focusout(function () {
-            if ($(this).val().indexOf(".") === -1) {
-                $(this).val($(this).val() + '.Text');
-            }
-        });
-
-        $('.resxnameinput').unbind("focusout");
-        $('.resxnameinput').focusout(function () {
-            if ($(this).val().indexOf(".") === -1) {
-                $(this).val($(this).val() + '.Text');
-            }
-        });
-
-
-    }
-
 
     function openDataTab(target, tabName) {
         var i, x, tablinks;

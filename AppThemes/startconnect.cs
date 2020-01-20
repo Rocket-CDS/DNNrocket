@@ -146,9 +146,6 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_import":
                         strOut = ImportAppTheme();
                         break;
-                    case "rocketapptheme_saveeditor":
-                        strOut = SaveEditor();
-                        break;
                     case "rocketapptheme_docopy":
                         strOut = DoCopyAppTheme();
                         break;
@@ -184,9 +181,7 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_downloadallprivate":
                         strOut = GetAllPrivateAppThemes();
                         break;
-                    case "rocketapptheme_getfiledata":
-                        strOut = GetFileData();
-                        break;
+
                     case "rocketapptheme_getresxdata":
                         strOut = GetResxDetail();
                         break;
@@ -199,6 +194,14 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_saveresxdata":
                         strOut = SaveResxDetail();
                         break;
+
+                    case "rocketapptheme_geteditor":
+                        strOut = GetEditorDetail();
+                        break;
+                    case "rocketapptheme_saveeditor":
+                        strOut = SaveEditor();
+                        break;
+
                 }
             }
             else
@@ -207,25 +210,6 @@ namespace DNNrocket.AppThemes
             }
 
             return DNNrocketUtils.ReturnString(strOut);
-        }
-
-
-        public string GetFileData()
-        {
-            try
-            {
-                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
-
-                // output json, so we can get filename and filedata.
-                var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
-                var ext = Path.GetExtension(fname);
-                var strOut = "{\"editorfilename\":\"" + fname + "\",\"editorfiledata\":\"" + GeneralUtils.EnCode(appTheme.GetTemplate(fname)) + "\"}";
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return GeneralUtils.EnCode(ex.ToString());
-            }
         }
 
         public string CreateNewVersion()
@@ -662,11 +646,44 @@ namespace DNNrocket.AppThemes
             return "OK";
         }
 
+        public String GetEditorDetail()
+        {
+            try
+            {
+                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+                var jsonString = GeneralUtils.EnCode(appTheme.GetTemplate(fname));
+                _passSettings.Add("filename", fname);
+                _passSettings.Add("jsonFileData", jsonString);
+
+                var editormode = "htmlmixed";
+                if (Path.GetExtension(fname) == ".js") editormode = "javascript";
+                if (Path.GetExtension(fname) == ".css") editormode = "css";
+                _passSettings.Add("editormode", editormode);
+
+                _passSettings.Add("interfacekey", _rocketInterface.InterfaceKey);
+
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("EditorPopUp.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+                return DNNrocketUtils.RazorObjectRender(razorTempl, appTheme, null, _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
         public string SaveEditor()
         {
             var editorcode = _postInfo.GetXmlProperty("genxml/hidden/editorcodesave");
             var filename = _postInfo.GetXmlProperty("genxml/hidden/editorfilenamesave");
             var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+
+            if (filename.ToLower() == "detail.cshtml") appTheme.RegenerateDetail = false;
+            if (filename.ToLower() == "edit.cshtml") appTheme.RegenerateEdit = false;
+            if (filename.ToLower() == "editlist.cshtml") appTheme.RegenerateEditList = false;
+            if (filename.ToLower() == "settings.cshtml") appTheme.RegenerateSettings = false;
+            if (filename.ToLower() == "view.cshtml") appTheme.RegenerateView = false;
+            appTheme.Update();
             appTheme.SaveEditor(filename, editorcode);
             return "OK";
         }

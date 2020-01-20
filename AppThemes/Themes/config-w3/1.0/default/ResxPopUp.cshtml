@@ -22,7 +22,7 @@
 
 
     <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-khaki " onclick="location.reload();">@ButtonText(ButtonTypes.cancel)</div>
+        <div class="w3-col m2 w3-button w3-khaki simplisity_click " s-cmd="rocketapptheme_getdetail" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonText(ButtonTypes.cancel)</div>
         @ButtonGap()
         <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-cmd="rocketapptheme_saveresxdata" s-post="" s-list=".resxdictionarydata" s-fields='{"filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
         @ButtonGap()
@@ -55,23 +55,24 @@
                 </div>
             </div>
             <div class="w3-container">
-                <div class=" ">
-                    <ul id="resxdatadictionarylist" class="w3-ul w3-padding" >
+                <div class="w3-margin-top ">
+                    <ul id="resxdatadictionarylist" class="w3-ul w3-border" >
                         @foreach (var r in resxData.DataDictionary)
                         {
 
-                            <li class="resxdictionarydata w3-card w3-margin-bottom w3-display-container">
-                             <div class="w3-row">
-		                            <div class="w3-col w3-padding m4"> 
-                                        @TextBox(new SimplisityInfo(),"genxml/key"," class='w3-input w3-border' autocomplete='off' ",r.Key,false,lp, listname)
-		                            </div>
-                                    <div class="w3-col w3-padding m7">
+                            <li class="resxdictionarydata w3-display-container">
+                                <div class="w3-row">
+                                    <div class="w3-col m3 w3-margin-right">
+                                        @TextBox(new SimplisityInfo(), "genxml/key", " class='w3-input w3-border' autocomplete='off' ", r.Key, false, lp, listname)
+                                    </div>
+                                    <div class="w3-col m8 ">
                                         @TextBox(new SimplisityInfo(), "genxml/value", " class='w3-input w3-border' autocomplete='off' ", r.Value, false, lp, listname)
                                     </div>
-                                    <div class="w3-col w3-padding m1">
+                                    <div class="w3-col m1" style="width:64px">
+                                        &nbsp;
                                         <div class="w3-transparent w3-button w3-padding-8 simplisity_click" s-cmd="rocketapptheme_removeresxdata" s-fields='{"key":"@r.Key","filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>&times;</div>
                                     </div>
-	                            </div>
+                                </div>
                             </li>
 
                             lp += 1;
@@ -88,6 +89,9 @@
 <script>
 
     $(document).ready(function () {
+
+        $("#resxdatadictionarylist").sortable();
+        $("#resxdatadictionarylist").disableSelection();
 
     });
 
