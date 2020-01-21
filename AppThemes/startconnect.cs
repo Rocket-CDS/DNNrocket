@@ -343,7 +343,7 @@ namespace DNNrocket.AppThemes
                     key = "new" + (lp).ToString() + ".Text";
                 }
                 resxData.AddField(key, "");
-                resxData.Save();
+                resxData.Update();
                 return GetResxDetail();
             }
             catch (Exception ex)
@@ -360,7 +360,7 @@ namespace DNNrocket.AppThemes
                 var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
                 var resxData = new ResxData(appTheme.GetFileMapPath(fname));
                 resxData.RemoveField(key);
-                resxData.Save();
+                resxData.Update();
                 return GetResxDetail();
             }
             catch (Exception ex)
@@ -382,7 +382,7 @@ namespace DNNrocket.AppThemes
                 {
                     resxData.AddField(r.GetXmlProperty("genxml/key"), r.GetXmlProperty("genxml/value"));
                 }
-                resxData.Save();
+                resxData.Update();
                 return GetResxDetail();
             }
             catch (Exception ex)
@@ -705,10 +705,10 @@ namespace DNNrocket.AppThemes
             var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
             var culturecoderesx = _paramInfo.GetXmlProperty("genxml/hidden/culturecoderesx");
 
-            // [TODO: rebuild resx]
-            //appTheme.ReBuildResx(culturecoderesx);
-
-            return GetEditTemplate(appTheme);
+            var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+            var resxData = new ResxData(appTheme.GetFileMapPath(fname));
+            resxData.Rebuild(appTheme);
+            return GetResxDetail();
         }
 
         private void AddResxFile()

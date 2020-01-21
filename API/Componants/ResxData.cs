@@ -87,19 +87,27 @@ namespace DNNrocketAPI.Componants
                 if (childNode != null) childNode.ParentNode.RemoveChild(childNode);
             }
             DataDictionary = new Dictionary<string, string>();
-            Save();
+            Update();
             ResxXmlData.Load(FileMapPath);
             BuildDictionary();
         }
-
-
-        public void Save()
+        public void Rebuild(AppTheme appTheme)
+        {
+            var fieldData = appTheme.GetFieldDictionaryFields();
+            foreach (var r in fieldData)
+            {
+                AddField(r.Key, r.Value);
+            }
+            Update();
+            ResxXmlData.Load(FileMapPath);
+            BuildDictionary();
+        }
+        public void Update()
         {
             ResxXmlData.Save(FileMapPath);
             ResxXmlData.Load(FileMapPath);
             BuildDictionary();
         }
-
         public string GetJsonResx()
         {
             var jsonStr = "{\"resx\":[";

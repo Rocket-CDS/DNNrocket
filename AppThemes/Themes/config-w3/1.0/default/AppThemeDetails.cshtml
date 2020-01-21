@@ -435,7 +435,6 @@
 
             <div class="w3-margin">
                 <div class="w3-button w3-teal w3-padding-8" onclick="addresxvalue('','')">@ButtonText(ButtonTypes.add)</div>
-                <div class="w3-button w3-teal w3-padding-8" onclick="quickresxedit()"><i class='fas fa-bolt  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.quickedit")</div>
                 <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_rebuildresx" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-wrench  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.rebuild")</div>
                 <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistvaluesbin" s-return="#resxvalues" s-removelist=".resxlistvalues" style="display: none;">@ButtonText(ButtonTypes.undo)</div>
             </div>
@@ -453,36 +452,6 @@
                 </table>
 
             </div>
-
-            <div id="quickresxedit" class="w3-modal">
-                <div class="w3-modal-content" style="width:70%;">
-                    <input id="culturecodeselected" s-update="ignore" type="hidden" value="" />
-
-                    <header class="w3-container w3-theme">
-                        <span onclick="document.getElementById('quickresxedit').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                        <h2><i class='fas fa-bolt  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.quickedit")</h2>
-                    </header>
-
-                    <div class="w3-container w3-margin">
-                        <div id="resxstring" class="w3-row">
-                            <div class="w3-quarter">
-                                <textarea id="resxkeysstring" style="border: none;width: 100%;" class="w3-right-align" disabled></textarea>
-                            </div>
-                            <div class="w3-twothird">
-                                <textarea id="resxvaluesstring" style="width: 100%;" class=""></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <footer class="w3-container w3-theme w3-padding">
-                        <div class="w3-col m2 w3-button w3-pale-green w3-padding-8 saveresxquickedit" onclick="saveresxquickedit()">@ButtonText(ButtonTypes.ok)</div>
-                    </footer>
-
-                </div>
-            </div>
-
 
 
         </div>
@@ -587,14 +556,6 @@
 
     });
 
-    function quickresxedit() {
-        $('.saveresxquickedit').show();
-        $('#quickresxedit').show();
-        //if ($('#culturecodeselected').val() === '') {
-        //    $('.saveresxquickedit').hide();
-        //}
-    }
-
     function changeversionaction() {
         var newversion = $('.changeversionclass').val();
         $('.changeversionclass').attr('s-fields', '{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"' + newversion + '"}');
@@ -645,20 +606,6 @@
             tabName = "Fields";
         }
         openDataTab('tab' + tabName, tabName);
-    }
-
-    function saveresxquickedit() {
-        document.getElementById('quickresxedit').style.display = 'none'
-
-        var row = 1;
-        var lines = $('#resxvaluesstring').val().split('\n');
-        for (var i = 0; i < lines.length; i++){
-            if ($('#value_' + row).length) {
-                $('#value_' + row).val(lines[i]);
-            }
-            row += 1;
-        }
-
     }
 
     function moveprogressbarupload() {

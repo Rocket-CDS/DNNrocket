@@ -264,6 +264,9 @@
   <data name="rebuild.Text" xml:space="preserve">
     <value>Rebuild</value>
   </data>
+  <data name="rebuildfromfieldsmsg.Text" xml:space="preserve">
+    <value>Rebuild from Field list ?  (Keys matching fields will be updated, missing keys will be added, all other keys will be untouched.)</value>
+  </data>
   <data name="regenerate.Text" xml:space="preserve">
     <value>Regenerate Templates</value>
   </data>
