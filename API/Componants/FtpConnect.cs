@@ -134,7 +134,10 @@ namespace DNNrocketAPI.Componants
                     client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
                     var idxMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\list.xml";
 
-                    FileUtils.SaveFile(idxMapPath, fulllistxml);
+                    var sInfo = new SimplisityInfo();
+                    sInfo.XMLData = fulllistxml;
+
+                    FileUtils.SaveFile(idxMapPath, sInfo.XMLData);
                     client.UploadFile(uriidx + "/list.xml", WebRequestMethods.Ftp.UploadFile, idxMapPath);
                 }
             }
@@ -143,12 +146,16 @@ namespace DNNrocketAPI.Componants
         {
             if (IsValid)
             {
+                var idxMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\list.xml";
+                if (File.Exists(idxMapPath)) File.Delete(idxMapPath);
+
                 var ftpidx = "<genxml>";
                 ftpidx += "<idx list=\"true\">";
 
                 var l = DownloadAppThemeXmlList();
                 foreach (var x in l)
                 {
+                    x.SetXmlProperty("genxml/hidden/logobase64", "");
                     ftpidx += x.XMLData;
                 }
                 ftpidx += "</idx>";

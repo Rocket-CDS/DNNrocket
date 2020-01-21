@@ -1048,13 +1048,10 @@ namespace DNNrocketAPI.Componants
             foreach (SimplisityInfo i in l)
             {
                 var r = new SimplisityRecord(i);
-                if (r.GetXmlProperty("genxml/hidden/selectedsystemkey") == SystemKey) // only export if we have a systemkey.
-                {
-                    var appVersionFolder = r.GetXmlProperty("genxml/select/versionfolder");
-                    r.ItemID = -1;
-                    r.SetXmlProperty("genxml/hidden/appthemefolder", AppThemeFolder);
-                    exportData += r.ToXmlItem();
-                }
+                var appVersionFolder = r.GetXmlProperty("genxml/select/versionfolder");
+                r.ItemID = -1;
+                r.SetXmlProperty("genxml/hidden/appthemefolder", AppThemeFolder);
+                exportData += r.ToXmlItem();
             }
             exportData += "</root>";
 

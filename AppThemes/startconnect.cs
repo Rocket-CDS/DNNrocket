@@ -559,7 +559,9 @@ namespace DNNrocket.AppThemes
         private Dictionary<string, string> ExportAppTheme()
         {
             var appThemeFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appthemefolder");
+            if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
             var appVersionFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder");
+            if (appVersionFolder == "") appVersionFolder = _appVersionFolder;
             var appTheme = new AppTheme(_selectedSystemKey, appThemeFolder, appVersionFolder);
 
             var exportZipMapPath = appTheme.ExportZipFile();
