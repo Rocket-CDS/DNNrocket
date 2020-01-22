@@ -64,6 +64,14 @@ namespace Rocket.AppThemes.Componants
                     if (Directory.Exists(localdirMapPath))
                     {
                         var appTheme = new AppTheme(SelectedSystemKey, a.GetXmlProperty("genxml/hidden/appthemefolder"));
+
+                        var imageFileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\img" + a.GetXmlProperty("genxml/hidden/logo");
+                        if (!File.Exists(imageFileMapPath))
+                        {
+                            // download theme xml with image and save image
+                            var themeXml = HttpConnect.
+                        }
+
                         a.SetXmlProperty("genxml/hidden/localversion", appTheme.LatestVersionFolder);
                         a.SetXmlProperty("genxml/hidden/localrev", appTheme.LatestRev.ToString());
                         a.SetXmlProperty("genxml/hidden/islatestversion", "False");
