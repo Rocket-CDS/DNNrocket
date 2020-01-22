@@ -43,6 +43,21 @@ namespace DNNrocketAPI.Componants
             client.DownloadFile(uri, destinationmapPath);
         }
 
+        public string DownloadAppThemeXml(string appThemeFolder)
+        {
+            try
+            {
+                var uri = _baseuri + "/xml/" + appThemeFolder + ".xml";
+                return Download(uri);
+            }
+            catch (Exception exc)
+            {
+                DNNrocketUtils.LogException(exc);
+            }
+            return "<genxml></genxml>";
+        }
+
+
         public string Download(string uri)
         {
             try

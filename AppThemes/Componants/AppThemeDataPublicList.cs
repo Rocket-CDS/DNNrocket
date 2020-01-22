@@ -69,7 +69,9 @@ namespace Rocket.AppThemes.Componants
                         if (!File.Exists(imageFileMapPath))
                         {
                             // download theme xml with image and save image
-                            var themeXml = HttpConnect.
+                            var httpConnect = new HttpConnect(SelectedSystemKey);
+                            var themeXml = httpConnect.DownloadAppThemeXml(appTheme.AppThemeFolder);
+
                         }
 
                         a.SetXmlProperty("genxml/hidden/localversion", appTheme.LatestVersionFolder);
