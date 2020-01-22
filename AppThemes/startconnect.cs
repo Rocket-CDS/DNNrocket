@@ -471,7 +471,7 @@ namespace DNNrocket.AppThemes
             var userid = DNNrocketUtils.GetCurrentUserId();
             var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + appThemeFolder + ".zip";
             httpConnect.DownloadAppThemeToFile(appThemeFolder, destinationMapPath);
-            var appTheme = new AppTheme(destinationMapPath);
+            var appTheme = new AppTheme(_selectedSystemKey, destinationMapPath, true);
             appTheme.Update();
             File.Delete(destinationMapPath);
             ClearServerCacheLists();
@@ -518,9 +518,12 @@ namespace DNNrocket.AppThemes
             var userid = DNNrocketUtils.GetCurrentUserId();
             var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + appThemeFolder + ".zip";
             ftpConnect.DownloadAppThemeToFile(appThemeFolder, destinationMapPath);
-            var appTheme = new AppTheme(destinationMapPath);
-            appTheme.Update();
-            File.Delete(destinationMapPath);
+            if (File.Exists(destinationMapPath))
+            {
+                var appTheme = new AppTheme(_selectedSystemKey, destinationMapPath, true);
+                appTheme.Update();
+                File.Delete(destinationMapPath);
+            }
             ClearServerCacheLists();
         }
         public string GetPrivateAppTheme(string appThemeFolder = "")
@@ -601,7 +604,7 @@ namespace DNNrocket.AppThemes
                         var userFolder = DNNrocketUtils.TempDirectoryMapPath();
                         var friendlyname = GeneralUtils.DeCode(f);
                         var fname = userFolder + "\\" + userid + "_" + friendlyname;
-                        var _appTheme = new AppTheme(fname);
+                        var _appTheme = new AppTheme(_selectedSystemKey, fname, true);
                         // delete import file
                         File.Delete(fname);
                     }

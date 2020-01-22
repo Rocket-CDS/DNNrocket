@@ -19,8 +19,9 @@ namespace DNNrocketAPI.Componants
         private const string _entityTypeCode = "APPTHEME";
         private readonly DNNrocketController _objCtrl;
  
-        public AppTheme(string zipMapPath)
+        public AppTheme(string systemKey, string zipMapPath, bool isImport)
         {
+            SystemKey = systemKey;
             _objCtrl = new DNNrocketController();
             ImportXmlFile(zipMapPath);
         }
@@ -289,6 +290,13 @@ namespace DNNrocketAPI.Componants
                         string currentDirectory = Directory.GetCurrentDirectory();
                         Directory.SetCurrentDirectory(currentDirectory);
                         Directory.Delete(folderToDelete,true);
+
+                        // remove index xml
+                        var privateonlineIndex = new OnlineAppThemeIndex(SystemKey, "private");
+                        privateonlineIndex.DeleteIndex(AppThemeFolder);
+                        var publiconlineIndex = new OnlineAppThemeIndex(SystemKey, "public");
+                        publiconlineIndex.DeleteIndex(AppThemeFolder);
+
                     }
 
                     _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + v;
@@ -526,11 +534,11 @@ namespace DNNrocketAPI.Componants
 
         public void Update()
         {
-            _objCtrl.SaveRecord(Record, _tableName);
+            if (Record != null) _objCtrl.SaveRecord(Record, _tableName);
         }
         public void AddListImage()
         {
-            Record.AddListItem("imagelist");
+            if (Record != null) Record.AddListItem("imagelist");
             Update();
         }
         public void UpdateListFileName(string filename, string mapPath)
@@ -1093,7 +1101,7 @@ namespace DNNrocketAPI.Componants
             {
 
                 // import DB records.
-                var systemKey = "";
+                var systemKey = SystemKey;
                 var lastversion = 1.0;
                 var nodList = iRec.XMLDoc.SelectNodes("root/item");
                 foreach (XmlNode nod in nodList)

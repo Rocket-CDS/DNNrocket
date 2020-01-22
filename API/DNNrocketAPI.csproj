@@ -125,6 +125,7 @@
     <Compile Include="Componants\ModuleParamList.cs" />
     <Compile Include="Componants\ModuleParams.cs" />
     <Compile Include="Componants\LicenseListData.cs" />
+    <Compile Include="Componants\OnlineAppThemeIndex.cs" />
     <Compile Include="Componants\PassSettings.cs" />
     <Compile Include="Componants\ResxData.cs" />
     <Compile Include="Componants\RetryableAction.cs" />

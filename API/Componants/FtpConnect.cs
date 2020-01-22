@@ -229,6 +229,35 @@ namespace DNNrocketAPI.Componants
             }
         }
 
+        public string DownloadAppThemeXml(string appThemeFolder)
+        {
+            try
+            {
+                var uri = _baseuri + "/xml/" + appThemeFolder + ".xml";
+                return Download(uri);
+            }
+            catch (Exception exc)
+            {
+                DNNrocketUtils.LogException(exc);
+            }
+            return "<genxml></genxml>";
+        }
+
+        public void DownloadAppThemeXmlToFile(string appThemeFolder, string destinatioFileMapPath)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
+                var uri = _baseuri + "/xml/" + appThemeFolder + ".xml";
+                client.DownloadFile(uri, destinatioFileMapPath);
+            }
+            catch (Exception exc)
+            {
+                DNNrocketUtils.LogException(exc);
+            }
+        }
+
         public string Download(string uri)
         {
             if (!IsValid) return "FAIL";

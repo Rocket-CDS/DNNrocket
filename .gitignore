@@ -338,3 +338,7 @@ AppThemes/SystemThemes/
 SystemThemes/dnnrocketmodule/**
 Uninstall.SqlDataProvider
 Resource.zip.manifest
+SystemThemes/dnnrocketmodule_privateIndex/
+SystemThemes/dnnrocketmodule_publicIndex/Rocket_DocMenu.xml
+SystemThemes/dnnrocketmodule_publicIndex/Rocket_LightBox.xml
+SystemThemes/dnnrocketmodule_publicIndex/
