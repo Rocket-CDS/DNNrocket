@@ -107,7 +107,10 @@ namespace DNNrocketAPI
                         CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
                     }
 
-                    DNNrocketUtils.IncludePageHeaders(_moduleParams, this.Page, TabId, systemData.DebugMode);
+                    if (!this.Page.Items.Contains("dnnrocket_pageheader")) // flag to insure we only inject once for page load.
+                    {
+                        DNNrocketUtils.IncludePageHeaders(_moduleParams, this.Page, TabId, systemData.DebugMode);
+                    }
                 }
             }
         }

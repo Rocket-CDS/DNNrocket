@@ -1500,32 +1500,46 @@ namespace DNNrocketAPI
             return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
         }
 
+        public static List<int> GetAllModulesOnPage(int tabId)
+        {
+            var rtn = new List<int>();
+            var l = ModuleController.Instance.GetTabModules(tabId);
+            foreach (var m in l)
+            {
+                rtn.Add(m.Value.ModuleID);
+            }
+            return rtn;
+        }
+
         public static void IncludePageHeaders(ModuleParams moduleParams, Page page, int tabId, bool debugMode = false)
         {
-            var cachekey = moduleParams.ModuleId + "." + moduleParams.ModuleRef + ".pageheader.cshtml";
+            page.Items.Add("dnnrocket_pageheader", true);
+            var cachekey = tabId + ".pageheader.cshtml";
             string cacheHead = null;
-            if (moduleParams.CacheEnabled) cacheHead = (string)CacheFileUtils.GetCache(cachekey, moduleParams.CacheGroupId);
+            cacheHead = (string)CacheFileUtils.GetCache(cachekey, "pageheader");
             if (!String.IsNullOrEmpty(cacheHead))
             {
                 PageIncludes.IncludeTextInHeader(page, cacheHead);
             }
             else
             {
-                var appThemeMod = new AppThemeModule(moduleParams.ModuleId, moduleParams.SystemKey);
-                var templatelist = new List<string>();
-
-                var activePageHeaderTemplate = appThemeMod.GetTemplateRazor("pageheader");
-                if (activePageHeaderTemplate != "")
+                var modulesOnPage = GetAllModulesOnPage(tabId);
+                foreach (var modId in modulesOnPage)
                 {
-                    var settings = new Dictionary<string, string>();
-                    var l = new List<object>();
-                    l.Add(new SimplisityInfo());
-                    var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
-                    nbRazor.TabId = tabId;
-                    cacheHead = RazorRender(nbRazor, activePageHeaderTemplate, false);
+                    var appThemeMod = new AppThemeModule(modId, moduleParams.SystemKey);
+                    var activePageHeaderTemplate = appThemeMod.GetTemplateRazor("pageheader.cshtml");
+                    if (activePageHeaderTemplate != "")
+                    {
+                        var settings = new Dictionary<string, string>();
+                        var l = new List<object>();
+                        l.Add(new SimplisityInfo());
+                        var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
+                        nbRazor.TabId = tabId;
+                        cacheHead += RazorRender(nbRazor, activePageHeaderTemplate, false);
+                    }
                 }
 
-                CacheFileUtils.SetCache(cachekey, cacheHead, moduleParams.CacheGroupId);
+                CacheFileUtils.SetCache(cachekey, cacheHead, "pageheader");
                 PageIncludes.IncludeTextInHeader(page, cacheHead);
             }
         }
