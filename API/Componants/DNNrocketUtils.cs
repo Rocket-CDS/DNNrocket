@@ -1517,11 +1517,7 @@ namespace DNNrocketAPI
             var cachekey = tabId + ".pageheader.cshtml";
             string cacheHead = null;
             cacheHead = (string)CacheFileUtils.GetCache(cachekey, "pageheader");
-            if (!String.IsNullOrEmpty(cacheHead))
-            {
-                PageIncludes.IncludeTextInHeader(page, cacheHead);
-            }
-            else
+            if (String.IsNullOrEmpty(cacheHead) || moduleParams.CacheDisbaled)
             {
                 var modulesOnPage = GetAllModulesOnPage(tabId);
                 foreach (var modId in modulesOnPage)
@@ -1535,6 +1531,10 @@ namespace DNNrocketAPI
                         l.Add(new SimplisityInfo());
                         var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
                         nbRazor.TabId = tabId;
+                        nbRazor.ModuleRef = moduleParams.ModuleRef;
+                        nbRazor.ModuleId = moduleParams.ModuleId;
+                        nbRazor.ModuleRefDataSource = moduleParams.ModuleRefDataSource;
+                        nbRazor.ModuleIdDataSource = moduleParams.ModuleIdDataSource;
                         cacheHead += RazorRender(nbRazor, activePageHeaderTemplate, false);
                     }
                 }
@@ -1542,6 +1542,11 @@ namespace DNNrocketAPI
                 CacheFileUtils.SetCache(cachekey, cacheHead, "pageheader");
                 PageIncludes.IncludeTextInHeader(page, cacheHead);
             }
+            else
+            {
+                PageIncludes.IncludeTextInHeader(page, cacheHead);
+            }
+
         }
 
         public static Dictionary<string, string> GetProviderReturn(string paramCmd, SimplisityInfo systemInfo, DNNrocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)

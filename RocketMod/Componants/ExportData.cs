@@ -22,7 +22,7 @@ namespace RocketMod.Componants
         {
             _rocketInterface = rocketInterface;
             _moduleParams = new ModuleParams(moduleid, systemKey);
-            _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, systemKey);
+            _dataModuleParams = new ModuleParams(_moduleParams.ModuleIdDataSource, systemKey);
             _objCtrl = new DNNrocketController();
             _documentRelList = new List<string>();
             _imageRelList = new List<string>();

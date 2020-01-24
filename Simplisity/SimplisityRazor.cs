@@ -14,6 +14,7 @@ namespace Simplisity
         public int ModuleId { get; set; }
         public String ModuleRef { get; set; }
         public int ModuleIdDataSource { get; set; }
+        public String ModuleRefDataSource { get; set; }
 
         public String FullTemplateName { get; set; }
         public String TemplateName { get; set; }

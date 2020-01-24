@@ -286,7 +286,7 @@ namespace RocketMod
             _passSettings.Add("moduleid", _moduleid.ToString());
 
             _moduleParams = new ModuleParams(_moduleid, _systemKey);
-            _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemKey);
+            _dataModuleParams = new ModuleParams(_moduleParams.ModuleIdDataSource, _systemKey);
 
             if (!CheckSecurity(paramCmd))
             {
@@ -316,13 +316,13 @@ namespace RocketMod
                 else
                 {
                     _appThemeMod = new AppThemeModule(_moduleid, _systemData.SystemKey);
-                    if (_moduleParams.DataSourceModId == _moduleid)
+                    if (_moduleParams.ModuleIdDataSource == _moduleid)
                     {
                         _dataAppThemeMod = _appThemeMod;
                     }
                     else
                     {
-                        _dataAppThemeMod = new AppThemeModule(_moduleParams.DataSourceModId, _systemData.SystemKey);
+                        _dataAppThemeMod = new AppThemeModule(_moduleParams.ModuleIdDataSource, _systemData.SystemKey);
                     }
 
                     if (!_passSettings.ContainsKey("AppTheme")) _passSettings.Add("AppTheme", _moduleParams.AppThemeFolder);
@@ -885,8 +885,8 @@ namespace RocketMod
                 {
                     _moduleParams.ShareData = "0";
                 }
-                _moduleParams.DataSourceModId = selectmoduleid;
-                _moduleParams.DataSourceModRef = selectmoduleref;
+                _moduleParams.ModuleIdDataSource = selectmoduleid;
+                _moduleParams.ModuleRefDataSource = selectmoduleref;
                 _moduleParams.Save();
                 return GetDashBoard();
             }

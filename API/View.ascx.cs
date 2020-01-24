@@ -83,7 +83,7 @@ namespace DNNrocketAPI
             _systemData = new SystemData(_systemInfo);
             _interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
             _moduleParams = new ModuleParams(ModuleId, _systemData.SystemKey);
-            _dataModuleParams = new ModuleParams(_moduleParams.DataSourceModId, _systemData.SystemKey);
+            _dataModuleParams = new ModuleParams(_moduleParams.ModuleIdDataSource, _systemData.SystemKey);
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
             var systemData = new SystemData(_systemInfo);
             _debugmode = systemData.DebugMode;
@@ -104,6 +104,12 @@ namespace DNNrocketAPI
                         // change of page for module
                         _moduleParams.TabId = PortalSettings.Current.ActiveTab.TabID; 
                         _moduleParams.Save();
+                        CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+                    }
+
+                    if (_moduleParams.CacheDisbaled)
+                    {
+                        CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
                         CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
                     }
 

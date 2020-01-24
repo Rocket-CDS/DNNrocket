@@ -15,7 +15,7 @@
 @{
     var moduleParams = (ModuleParams)Model.List.First();
     var configinfo = new SimplisityInfo(moduleParams.Record);
-    var dataModuleParams = new ModuleParams(moduleParams.DataSourceModId, moduleParams.SystemKey);
+    var dataModuleParams = new ModuleParams(moduleParams.ModuleIdDataSource, moduleParams.SystemKey);
     var systemGlobalData = new SystemGlobalData();
     var systemData = new SystemData(moduleParams.SystemKey);
     Model.SetSetting("licensetype", moduleParams.SystemKey);
@@ -116,11 +116,11 @@
                                 </tr>
                                 <tr>
                                     <td>@ResourceKey("RocketMod.ref"):</td>
-                                    <td><b>@moduleParams.DataSourceModRef</b></td>
+                                    <td><b>@moduleParams.ModuleRefDataSource</b></td>
                                 </tr>
                                 <tr>
                                     <td>ModuleId:</td>
-                                    <td><b>@(moduleParams.DataSourceModId)</b></td>
+                                    <td><b>@(moduleParams.ModuleIdDataSource)</b></td>
                                 </tr>
                                 <tr>
                                     <td>AppTheme:</td>

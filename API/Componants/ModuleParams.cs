@@ -59,10 +59,10 @@ namespace DNNrocketAPI.Componants
             DataSourceExternal = false;
             if (_systemKey == "") _systemKey = SystemKey; // to get export data when we don't know the systemid, so use the DB one.
             SystemKey = _systemKey;
-            if (DataSourceModId != _moduleid) DataSourceExternal = true;
+            if (ModuleIdDataSource != _moduleid) DataSourceExternal = true;
             if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueKey();
-            if (DataSourceModId <= 0) DataSourceModId = _moduleid;
-            if (DataSourceModRef == "") DataSourceModRef = ModuleRef;
+            if (ModuleIdDataSource <= 0) ModuleIdDataSource = _moduleid;
+            if (ModuleRefDataSource == "") ModuleRefDataSource = ModuleRef;
 
             // Get module settings
             ModuleSettings = new Dictionary<string, string>();
@@ -94,7 +94,7 @@ namespace DNNrocketAPI.Componants
             var objCtrl = new DNNrocketController();
 
             DataSourceExternal = false;
-            if (DataSourceModId != _moduleid) DataSourceExternal = true;
+            if (ModuleIdDataSource != _moduleid) DataSourceExternal = true;
 
             _moduleParamsRec = objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _moduleid, _tableName);
             CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
@@ -164,16 +164,16 @@ namespace DNNrocketAPI.Componants
         public string SystemKey { get { return GetValue("SystemKey", ""); } set { SetValue("SystemKey", value); } }
         public int TabId { get { return GetValueInt("TabId"); } set { SetValue("TabId", value.ToString()); } }
         public string ShareData { get { return GetValue("sharedata", ""); } set { SetValue("sharedata", value); } }
-        public string DataSourceModRef { get { return GetValue("DataSourceModRef"); } set { SetValue("DataSourceModRef", value.ToString()); } }
-        public int DataSourceModId
+        public string ModuleRefDataSource { get { return GetValue("ModuleRefDataSource"); } set { SetValue("ModuleRefDataSource", value.ToString()); } }
+        public int ModuleIdDataSource
         {
             get
             {
-                var dv = GetValueInt("DataSourceModId");
+                var dv = GetValueInt("ModuleIdDataSource");
                 if (dv == 0) dv = _moduleid;
                 return dv;
             }
-            set { SetValue("DataSourceModId", value.ToString()); }
+            set { SetValue("ModuleIdDataSource", value.ToString()); }
         }
         public bool DataSourceExternal { get; set; }
         public string ModuleRef { get { return GetValue("ModuleRef"); } set { SetValue("ModuleRef", value); } }
@@ -181,7 +181,7 @@ namespace DNNrocketAPI.Componants
         public bool CacheEnabled { get { return !GetValueBool("disablecache"); } }
         public bool ExportResourceFiles { get { return GetValueBool("exportresourcefiles"); } set { SetValue("exportresourcefiles", value.ToString()); } }
         public Dictionary<string,string> ModuleSettings { get; private set; }
-        public string CacheGroupId { get { return "datamoduleid:" + DataSourceModId; } }        
+        public string CacheGroupId { get { return "datamoduleid:" + ModuleIdDataSource; } }        
 
     }
 
