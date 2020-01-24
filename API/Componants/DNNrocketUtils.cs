@@ -1577,25 +1577,31 @@ namespace DNNrocketAPI
             cacheHead = (string)CacheFileUtils.GetCache(cachekey, "pageheader");
             if (String.IsNullOrEmpty(cacheHead))
             {
+                var fileList = new List<string>();
                 var modulesOnPage = GetAllModulesOnPage(tabId);
                 foreach (var modId in modulesOnPage)
                 {
                     if (GetModuleSystemInfo(systemKey, modId, false) != null)
                     {
                         var appThemeMod = new AppThemeModule(modId, systemKey);
-                        var activePageHeaderTemplate = appThemeMod.GetTemplateRazor("pageheader.cshtml");
-                        if (activePageHeaderTemplate != "")
+                        var fileMapPath = appThemeMod.AppTheme.GetFileMapPath("pageheader.cshtml");
+                        if (!fileList.Contains(fileMapPath))
                         {
-                            var settings = new Dictionary<string, string>();
-                            var l = new List<object>();
-                            l.Add(appThemeMod);
-                            var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
-                            nbRazor.TabId = tabId;
-                            nbRazor.ModuleRef = appThemeMod.ModuleParams.ModuleRef;
-                            nbRazor.ModuleId = appThemeMod.ModuleParams.ModuleId;
-                            nbRazor.ModuleRefDataSource = appThemeMod.ModuleParams.ModuleRefDataSource;
-                            nbRazor.ModuleIdDataSource = appThemeMod.ModuleParams.ModuleIdDataSource;
-                            cacheHead += RazorRender(nbRazor, activePageHeaderTemplate, false);
+                            fileList.Add(fileMapPath);
+                            var activePageHeaderTemplate = appThemeMod.GetTemplateRazor("pageheader.cshtml");
+                            if (activePageHeaderTemplate != "")
+                            {
+                                var settings = new Dictionary<string, string>();
+                                var l = new List<object>();
+                                l.Add(appThemeMod);
+                                var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
+                                nbRazor.TabId = tabId;
+                                nbRazor.ModuleRef = appThemeMod.ModuleParams.ModuleRef;
+                                nbRazor.ModuleId = appThemeMod.ModuleParams.ModuleId;
+                                nbRazor.ModuleRefDataSource = appThemeMod.ModuleParams.ModuleRefDataSource;
+                                nbRazor.ModuleIdDataSource = appThemeMod.ModuleParams.ModuleIdDataSource;
+                                cacheHead += RazorRender(nbRazor, activePageHeaderTemplate, false);
+                            }
                         }
                     }
                 }

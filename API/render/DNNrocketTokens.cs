@@ -639,26 +639,6 @@ namespace DNNrocketAPI.render
             return RenderTemplate("MenuOut.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model, "1.0", true);
         }
 
-        public IEncodedString AddPageCssLinkHeader(string pageId, string cssRelPath, string attributes = "")
-        {
-            var cachekey = "rocketlinkcssdata*" + pageId + "*" + cssRelPath;
-            var rtn = (string)CacheUtils.GetCache(cachekey);
-            //if (!String.IsNullOrEmpty(rtn)) return new RawString("");
-            rtn = "<link rel='stylesheet' href='" + cssRelPath + "' " + attributes + " />";
-            CacheUtils.SetCache(cachekey, rtn);
-            return new RawString(rtn);
-        }
-
-        public IEncodedString AddPageJsScriptHeader(string pageId, string jsRelPath, string attributes = "")
-        {
-            var cachekey = "rocketlinkjsdata*" + pageId + "*" + jsRelPath;
-            var rtn = (string)CacheUtils.GetCache(cachekey);
-            //if (!String.IsNullOrEmpty(rtn)) return new RawString("");
-            rtn = "<script type='text/javascript' src='" + jsRelPath + "' " + attributes + " ></script>";
-            CacheUtils.SetCache(cachekey, rtn);
-            return new RawString(rtn);
-        }
-
         public IEncodedString GetTreeTabList(int portalId, List<int> selectedTabIdList, string treeviewId, string lang = "", string attributes = "", bool showAllTabs = false)
         {
             if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
