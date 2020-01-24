@@ -1499,6 +1499,44 @@ namespace DNNrocketAPI
             var objCtrl = new DNNrocketController();
             return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
         }
+        /// <summary>
+        /// Use the First DNN Module definition as the DNNrocket systemkey
+        /// </summary>
+        /// <param name="moduleId"></param>
+        /// <param name="tabId"></param>
+        /// <returns></returns>
+        public static string GetModuleSystemKey(int moduleId, int tabId)
+        {
+            var cacheKey = "systemkey.moduleid" + moduleId + ".tabid" + tabId;
+            var systemKey = (string)CacheUtils.GetCache(cacheKey);
+            if (systemKey == null)
+            {
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
+                var desktopModule = moduleInfo.DesktopModule;
+                systemKey = desktopModule.ModuleDefinitions.First().Key.ToLower();  // Use the First DNN Module definition as the DNNrocket systemkey
+                CacheUtils.SetCache(cacheKey, systemKey);
+            }
+            return  systemKey;
+        }
+        /// <summary>
+        /// Use the module name as DNNrocket interface key.
+        /// </summary>
+        /// <param name="moduleId"></param>
+        /// <param name="tabId"></param>
+        /// <returns></returns>
+        public static string GetModuleInterfaceKey(int moduleId, int tabId)
+        {
+            var cacheKey = "interfacekey.moduleid" + moduleId + ".tabid" + tabId;
+            var interfacekey = (string)CacheUtils.GetCache(cacheKey);
+            if (interfacekey == null)
+            {
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
+                var desktopModule = moduleInfo.DesktopModule;
+                interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
+                CacheUtils.SetCache(cacheKey, interfacekey);
+            }
+            return interfacekey;
+        }
 
         public static List<int> GetAllModulesOnPage(int tabId)
         {
@@ -1506,36 +1544,59 @@ namespace DNNrocketAPI
             var l = ModuleController.Instance.GetTabModules(tabId);
             foreach (var m in l)
             {
-                rtn.Add(m.Value.ModuleID);
+                 rtn.Add(m.Value.ModuleID);
             }
             return rtn;
         }
 
-        public static void IncludePageHeaders(ModuleParams moduleParams, Page page, int tabId, bool debugMode = false)
+        public static SimplisityInfo GetModuleSystemInfo(string systemkey, int moduleId, bool loadSystemXml = true)
+        {
+            var objCtrl = new DNNrocketController();
+
+            var systemInfo = (SimplisityInfo)CacheUtils.GetCache(systemkey + "modid" + moduleId);
+            if (systemInfo == null)
+            {
+                systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
+                if (systemInfo != null) CacheUtils.SetCache(systemkey + "modid" + moduleId, systemInfo);
+            }
+            if (systemInfo == null && loadSystemXml)
+            {
+                // no system data, so must be new install.
+                var sData = new SystemDataList(); // load XML files.
+                systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
+                if (systemInfo != null) CacheUtils.SetCache(systemkey + "modid" + moduleId, systemInfo);
+            }
+            return systemInfo;
+        }
+
+        public static void IncludePageHeaders(string systemKey, Page page, int tabId, bool debugMode = false)
         {
             page.Items.Add("dnnrocket_pageheader", true);
             var cachekey = tabId + ".pageheader.cshtml";
             string cacheHead = null;
             cacheHead = (string)CacheFileUtils.GetCache(cachekey, "pageheader");
-            if (String.IsNullOrEmpty(cacheHead) || moduleParams.CacheDisbaled)
+            if (String.IsNullOrEmpty(cacheHead))
             {
                 var modulesOnPage = GetAllModulesOnPage(tabId);
                 foreach (var modId in modulesOnPage)
                 {
-                    var appThemeMod = new AppThemeModule(modId, moduleParams.SystemKey);
-                    var activePageHeaderTemplate = appThemeMod.GetTemplateRazor("pageheader.cshtml");
-                    if (activePageHeaderTemplate != "")
+                    if (GetModuleSystemInfo(systemKey, modId, false) != null)
                     {
-                        var settings = new Dictionary<string, string>();
-                        var l = new List<object>();
-                        l.Add(new SimplisityInfo());
-                        var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
-                        nbRazor.TabId = tabId;
-                        nbRazor.ModuleRef = moduleParams.ModuleRef;
-                        nbRazor.ModuleId = moduleParams.ModuleId;
-                        nbRazor.ModuleRefDataSource = moduleParams.ModuleRefDataSource;
-                        nbRazor.ModuleIdDataSource = moduleParams.ModuleIdDataSource;
-                        cacheHead += RazorRender(nbRazor, activePageHeaderTemplate, false);
+                        var appThemeMod = new AppThemeModule(modId, systemKey);
+                        var activePageHeaderTemplate = appThemeMod.GetTemplateRazor("pageheader.cshtml");
+                        if (activePageHeaderTemplate != "")
+                        {
+                            var settings = new Dictionary<string, string>();
+                            var l = new List<object>();
+                            l.Add(appThemeMod);
+                            var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
+                            nbRazor.TabId = tabId;
+                            nbRazor.ModuleRef = appThemeMod.ModuleParams.ModuleRef;
+                            nbRazor.ModuleId = appThemeMod.ModuleParams.ModuleId;
+                            nbRazor.ModuleRefDataSource = appThemeMod.ModuleParams.ModuleRefDataSource;
+                            nbRazor.ModuleIdDataSource = appThemeMod.ModuleParams.ModuleIdDataSource;
+                            cacheHead += RazorRender(nbRazor, activePageHeaderTemplate, false);
+                        }
                     }
                 }
 

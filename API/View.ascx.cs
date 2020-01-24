@@ -50,14 +50,11 @@ namespace DNNrocketAPI
 
         private string _interfacekey;
         private string _templateRelPath;
-        private string _entiytypecode;
 
         private DNNrocketInterface _rocketInterface;
 
         private ModuleParams _moduleParams;
-        private ModuleParams _dataModuleParams;
         private SimplisityInfo _systemInfo;
-        private SystemData _systemData;
         private DNNrocketController _objCtrl;
 
         protected override void OnInit(EventArgs e)
@@ -74,16 +71,11 @@ namespace DNNrocketAPI
                 CacheFileUtils.ClearAllCache();
             }
 
-            var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
-            var desktopModule = moduleInfo.DesktopModule;
-            _systemkey = desktopModule.ModuleDefinitions.First().Key.ToLower(); // Use the First DNN Module definition as the DNNrocket systemkey
+            _systemkey = DNNrocketUtils.GetModuleSystemKey(ModuleId, TabId);
+            _interfacekey = DNNrocketUtils.GetModuleInterfaceKey(ModuleId, TabId);
+            _systemInfo = DNNrocketUtils.GetModuleSystemInfo(_systemkey, ModuleId);
 
-            InitSystemInfo();
-
-            _systemData = new SystemData(_systemInfo);
-            _interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
-            _moduleParams = new ModuleParams(ModuleId, _systemData.SystemKey);
-            _dataModuleParams = new ModuleParams(_moduleParams.ModuleIdDataSource, _systemData.SystemKey);
+            _moduleParams = new ModuleParams(ModuleId, _systemkey);
             _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
             var systemData = new SystemData(_systemInfo);
             _debugmode = systemData.DebugMode;
@@ -93,7 +85,6 @@ namespace DNNrocketAPI
             if (_rocketInterface != null && _rocketInterface.Exists)
             {
                 _templateRelPath = _rocketInterface.TemplateRelPath;
-                _entiytypecode = _rocketInterface.EntityTypeCode;
                 _paramCmd = _rocketInterface.DefaultCommand;
                 if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we don't define template path in the interface assume it's the control path.
 
@@ -115,7 +106,7 @@ namespace DNNrocketAPI
 
                     if (!this.Page.Items.Contains("dnnrocket_pageheader")) // flag to insure we only inject once for page load.
                     {
-                        DNNrocketUtils.IncludePageHeaders(_moduleParams, this.Page, TabId, systemData.DebugMode);
+                        DNNrocketUtils.IncludePageHeaders(_systemkey, this.Page, TabId, systemData.DebugMode);
                     }
                 }
             }
@@ -211,10 +202,13 @@ namespace DNNrocketAPI
                 var cacheOutPut = "";
                 var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
 
-                if (_moduleParams.CacheEnabled && _systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
+                var systemData = new SystemData(_systemInfo);
+
+                if (_moduleParams.CacheEnabled && systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
 
                 if (String.IsNullOrEmpty(cacheOutPut))
                 {
+
                     var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, paramInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
 
                     var model = new SimplisityRazor();
@@ -224,11 +218,11 @@ namespace DNNrocketAPI
                     if (hasEditAccess)
                     {
 
-                        model.SetSetting("editiconcolor", _systemData.GetSetting("editiconcolor"));
-                        model.SetSetting("editicontextcolor", _systemData.GetSetting("editicontextcolor"));
+                        model.SetSetting("editiconcolor", systemData.GetSetting("editiconcolor"));
+                        model.SetSetting("editicontextcolor", systemData.GetSetting("editicontextcolor"));
                         strOut = "<div id='rocketmodcontentwrapper" + ModuleId + "' class=' w3-display-container'>";
-                        var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemData.DebugMode);
-                        strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemData.DebugMode);
+                        var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
+                        strOut += DNNrocketUtils.RazorRender(model, razorTempl, systemData.DebugMode);
                     }
 
                     if (returnDictionary.ContainsKey("outputhtml"))
@@ -239,8 +233,8 @@ namespace DNNrocketAPI
                     if (hasEditAccess)
                     {
                         strOut += "</div>";
-                        var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", _systemData.DebugMode);
-                        strOut += DNNrocketUtils.RazorRender(model, razorTempl, _systemData.DebugMode);
+                        var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
+                        strOut += DNNrocketUtils.RazorRender(model, razorTempl, systemData.DebugMode);
                     }
                     CacheFileUtils.SetCache(cacheKey, strOut, _moduleParams.CacheGroupId);
                 }
@@ -270,24 +264,6 @@ namespace DNNrocketAPI
 
 
         #endregion
-
-        private void InitSystemInfo()
-        {
-            _systemInfo = (SimplisityInfo)CacheUtils.GetCache(_systemkey + "modid" + ModuleId);
-            if (_systemInfo == null)
-            {
-                _systemInfo = _objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemkey);
-                if (_systemInfo != null) CacheUtils.GetCache(_systemkey + "modid" + ModuleId, _systemkey);
-            }
-            if (_systemInfo == null)
-            {
-                // no system data, so must be new install.
-                var sData = new SystemDataList(); // load XML files.
-                _systemInfo = _objCtrl.GetByGuidKey(-1, -1, "SYSTEM", _systemkey);
-                if (_systemInfo != null) CacheUtils.GetCache(_systemkey + "modid" + ModuleId, _systemkey);
-            }
-
-        }
 
 
         #region Optional Interfaces

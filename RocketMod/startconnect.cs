@@ -436,6 +436,7 @@ namespace RocketMod
             _moduleParams.AppThemeLogo = appTheme.Logo;
             _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
             _moduleParams.AppThemeVersion = appTheme.LatestVersionFolder;
+            _moduleParams.LatestRev = appTheme.LatestRev;
             _moduleParams.ModuleType = "RocketMod";
             _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
             _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
@@ -446,6 +447,7 @@ namespace RocketMod
             _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
             _moduleParams.ShareData = "1";
             _moduleParams.TabId = _tabid;
+            _moduleParams.SystemKey = appTheme.SystemKey;
             _moduleParams.Exists = true;
             _moduleParams.Save();
             CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
@@ -989,7 +991,7 @@ namespace RocketMod
                         // detail display
                         var itemid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/" + _moduleParams.DetailUrlParam);
 
-                        var razorTempl = _appThemeMod.GetTemplateRazor("detail");
+                        var razorTempl = _appThemeMod.GetTemplateRazor("detail.cshtml");
 
                         var articleData = new ArticleData(itemid, _dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
 
