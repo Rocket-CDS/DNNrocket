@@ -24,7 +24,7 @@
         var l = new List<object>();
         l.Add(settingsData);
         var m = new SimplisityRazor(l, Model.Settings);
-        var razorTempl = appThemeMod.GetTemplateRazor("settings");
+        var razorTempl = appThemeMod.GetTemplateRazor("settings.cshtml");
     }
     @RenderTemplate(razorTempl, m, true)
 
