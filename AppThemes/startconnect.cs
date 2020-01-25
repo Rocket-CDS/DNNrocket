@@ -696,6 +696,7 @@ namespace DNNrocket.AppThemes
             if (filename.ToLower() == "view.cshtml") appTheme.RegenerateView = false;
             appTheme.Update();
             appTheme.SaveEditor(filename, editorcode);
+            CacheFileUtils.ClearAllCache();
             return "OK";
         }
 
