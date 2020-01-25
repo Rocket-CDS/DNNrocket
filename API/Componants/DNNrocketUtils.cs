@@ -1581,8 +1581,15 @@ namespace DNNrocketAPI
                 var modulesOnPage = GetAllModulesOnPage(tabId);
                 foreach (var modId in modulesOnPage)
                 {
-                    if (GetModuleSystemInfo(systemKey, modId, false) != null)
+                    var systemInfo = GetModuleSystemInfo(systemKey, modId, false);
+                    if (systemInfo != null)
                     {
+                        if (!fileList.Contains("GlobalPageHeading"))
+                        {
+                            fileList.Add("GlobalPageHeading");
+                            var systemGlobalData = new SystemGlobalData();
+                            cacheHead += systemGlobalData.GlobalPageHeading;
+                        }
                         var appThemeMod = new AppThemeModule(modId, systemKey);
                         var fileMapPath = appThemeMod.AppTheme.GetFileMapPath("pageheader.cshtml");
                         if (!fileList.Contains(fileMapPath))

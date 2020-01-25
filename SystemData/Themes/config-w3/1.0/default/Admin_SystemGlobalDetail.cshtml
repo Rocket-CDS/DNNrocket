@@ -35,6 +35,12 @@
                 @TextBox(info, "genxml/textbox/ftppassword", "class='w3-input w3-border' type='password'  maxlength='50' ", "")
             </div>
         </div>
+        <h1>@ResourceKey("system.globalheading")</h1>
+        <div class="w3-row-padding">
+            <label class="">@ResourceKey("system.globalheading","","Help")</label>
+            @TextArea(info, "genxml/textbox/globalheading", "class='w3-input w3-border' maxlength='250' rows='5' ", "<link rel='stylesheet' href='/DesktopModules/DNNrocket/css/w3.css'>")
+        </div>
+    </div>
 
         <h1>@ResourceKey("system.settings")</h1>
         <div class="w3-row-padding">

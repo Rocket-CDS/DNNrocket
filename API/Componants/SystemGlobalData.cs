@@ -72,5 +72,12 @@ namespace DNNrocketAPI.Componants
         public string LicenseUrl { get { return ConfigInfo.GetXmlProperty("genxml/hidden/licenseurl"); } }
         public string PublicAppThemeURI { get { return ConfigInfo.GetXmlProperty("genxml/hidden/publicappthemeuri"); } }
 
+        public string GlobalPageHeading
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/globalheading"); }
+            set { Info.SetXmlProperty("genxml/textbox/globalheading", value); }
+        }
+
+
     }
 }

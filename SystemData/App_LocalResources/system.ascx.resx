@@ -342,4 +342,10 @@
   <data name="colorhex.Text" xml:space="preserve">
     <value>Color Hex Code</value>
   </data>
+  <data name="globalheading.Help" xml:space="preserve">
+    <value>The Global HTML page header will be injected into ALL pages where a DNNrocket module exists and across ALL websites in the DNN installation.  The idea of this setting is to help inject the required css without changing the skin.  By default DNNrocket uses &lt;a href='https://www.w3schools.com/w3css/' target='_blank' &gt;W3.CSS&lt;/a&gt;, this is a lightweight responsive CSS framework.  </value>
+  </data>
+  <data name="globalheading.Text" xml:space="preserve">
+    <value>Global HTML page header</value>
+  </data>
 </root>

@@ -462,6 +462,8 @@ namespace DNNrocket.System
         {
             var globalData = new SystemGlobalData();
             globalData.Save(_postInfo);
+            CacheFileUtils.ClearAllCache();
+            DNNrocketUtils.ClearAllCache();
         }
 
         public String RenderSystemAdminList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath)
