@@ -264,4 +264,10 @@
   <data name="detailview.Text" xml:space="preserve">
     <value>Detail View</value>
   </data>
+  <data name="autobackup.Text" xml:space="preserve">
+    <value>Auto BackUp</value>
+  </data>
+  <data name="backup.Text" xml:space="preserve">
+    <value>BackUp</value>
+  </data>
 </root>

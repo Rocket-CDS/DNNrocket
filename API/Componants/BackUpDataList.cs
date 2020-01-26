@@ -21,7 +21,8 @@ namespace DNNrocketAPI.Componants
             if (!Directory.Exists(BackupRootFolderMapPath)) Directory.CreateDirectory(BackupRootFolderMapPath);
 
             List = new Dictionary<string, List<BackUpData>>();
-            ModuleFolderList = new List<string>();
+            ListFileMapPath = new Dictionary<string, List<string>>();            
+            SystemKeyFolderList = new List<string>();
 
             var l = Directory.GetDirectories(BackupRootFolderMapPath);
             foreach (var d in l)
@@ -30,22 +31,33 @@ namespace DNNrocketAPI.Componants
                 string projectName = Path.GetFileName(fullPath);
 
                 var fileList = new List<BackUpData>();
-                ModuleFolderList.Add(projectName);
-                var l2 = Directory.GetFiles(d);
+                var fileMapPathList = new List<string>();                
+                SystemKeyFolderList.Add(projectName);
+                var l2 = Directory.GetFiles(d).Reverse();
                 foreach (var f in l2)
                 {
                     var BackUpData = new BackUpData(f);
                     fileList.Add(BackUpData);
+                    fileMapPathList.Add(f);
                 }
                 List.Add(projectName, fileList);
+                ListFileMapPath.Add(projectName, fileMapPathList);
             }
         }
 
-        public List<BackUpData> GetBackUpList(string moduleFolder)
+        public List<string> GetBackUpFileMapPathList(string systemKeyFolder)
         {
-            if (List.ContainsKey(moduleFolder))
+            if (List.ContainsKey(systemKeyFolder))
             {
-                return List[moduleFolder];
+                return ListFileMapPath[systemKeyFolder];
+            }
+            return null;
+        }
+        public List<BackUpData> GetBackUpList(string systemKeyFolder)
+        {
+            if (List.ContainsKey(systemKeyFolder))
+            {
+                return List[systemKeyFolder];
             }
             return null;
         }
@@ -58,7 +70,7 @@ namespace DNNrocketAPI.Componants
         }
         public void DeleteAllBackUpFiles()
         {
-            foreach (var moduleFolder in ModuleFolderList)
+            foreach (var moduleFolder in SystemKeyFolderList)
             {
                 foreach (var BackUpData in GetBackUpList(moduleFolder))
                 {
@@ -67,8 +79,9 @@ namespace DNNrocketAPI.Componants
             }
         }
 
+        public Dictionary<string, List<string>> ListFileMapPath { get; set; }        
         public Dictionary<string, List<BackUpData>> List { get; set; }
-        public List<string> ModuleFolderList { get; set; }
+        public List<string> SystemKeyFolderList { get; set; }
         public string BackupRootFolder { get; set; }
         public string BackupRootFolderMapPath { get; set; }
     }

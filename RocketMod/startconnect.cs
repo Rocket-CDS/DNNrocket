@@ -199,6 +199,22 @@ namespace RocketMod
                     ValidateData();
                     break;
 
+                case "backup_get":
+                    strOut = GetBackUp();
+                    break;
+                case "backup_dobackup":
+                    DoBackUp();
+                    strOut = GetBackUp();
+                    break;
+                case "backup_deletebackup":
+                    strOut = DeleteBackUp();
+                    break;
+                case "backup_restorebackup":
+                    strOut = RestoreBackUp();
+                    break;
+                case "backup_deletebackupall":
+                    strOut = DeleteAllBackUp();
+                    break;
             }
 
             if (strOut == "" && !_moduleParams.Exists)
@@ -373,7 +389,9 @@ namespace RocketMod
 
             _commandSecurity.AddCommand("rocketmodapptheme_apptheme", true);
             _commandSecurity.AddCommand("rocketmodapptheme_saveeditor", true);
-            
+
+            _commandSecurity.AddCommand("backup_get", true);
+
             return _commandSecurity.HasSecurityAccess(paramCmd);
         }
 
@@ -398,6 +416,9 @@ namespace RocketMod
 
         private void SaveConfig()
         {
+            // do Backup
+            DoBackUp();
+
             var appTheme = new AppTheme(_systemData.SystemKey, _moduleParams.AppThemeFolder);
             _moduleParams.AppThemeLogo = appTheme.Logo;
             _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
@@ -410,6 +431,7 @@ namespace RocketMod
             _moduleParams.ModuleType = "RocketMod";
             _moduleParams.Exists = true;
             _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disablecache");
+            _moduleParams.AutoBackUp = _postInfo.GetXmlPropertyBool("genxml/hidden/autobackup");
 
             if (_systemData.DebugMode) _moduleParams.CacheDisbaled = true;
 
@@ -471,6 +493,9 @@ namespace RocketMod
         }
         public void SaveArticle()
         {
+            // do Backup
+            DoBackUp();
+
             if (_dataAppThemeMod.AppTheme.DataType == 1)
             {
                 _articleData = new ArticleData(_dataModuleParams.ModuleId, _editLang);
@@ -479,6 +504,8 @@ namespace RocketMod
             {
                 _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
             }
+
+            // do Save
             _passSettings.Add("saved", "true");
             _articleData.DebugMode = _systemData.DebugMode;
             _articleData.Save(_postInfo);
@@ -487,6 +514,9 @@ namespace RocketMod
 
         public void SaveArticleList()
         {
+            // do Backup
+            DoBackUp();
+
             var listNames = _postInfo.GetLists();
             foreach (var listName in listNames)
             {
@@ -1126,7 +1156,6 @@ namespace RocketMod
                             foreach (var s in exportData.GetList())
                             {
                                 saveList.Add(s);
-
                             }
                         }
                     }
@@ -1208,6 +1237,104 @@ namespace RocketMod
                 return ex.ToString();
             }
         }
+        #region "BackUP"
+
+        private String GetBackUp()
+        {
+            try
+            {
+                _rocketInterface.Info.ModuleId = _moduleid;
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("backup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", _systemData.DebugMode);
+                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info, _passSettings, new SimplisityInfo(), _systemData.DebugMode);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        private string DeleteBackUp()
+        {
+            var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/hidden/filemappath"));
+            var backUpDataList = new BackUpDataList("rocketmod" + _moduleid);
+            backUpDataList.DeleteBackUpFile(filemappath);
+            return GetBackUp();
+        }
+        private string DeleteAllBackUp()
+        {
+            var backUpDataList = new BackUpDataList("rocketmod" + _moduleid);
+            backUpDataList.DeleteAllBackUpFiles();
+            return GetBackUp();
+        }
+
+        private string RestoreBackUp()
+        {
+            var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/hidden/filemappath"));
+            if (File.Exists(filemappath))
+            {
+                DoBackUp();
+
+                var backupData = new BackUpData(filemappath);
+                backupData.RestoreData();
+                CacheUtils.ClearAllCache();
+                DNNrocketUtils.ClearAllCache();
+            }
+
+            return GetBackUp();
+        }
+
+        private void DoBackUp()
+        {
+            // BackUp data to file 
+            if (_moduleParams.AutoBackUp)
+            {
+                var saveList = new List<SimplisityInfo>();
+                if (DNNrocketUtils.ModuleExists(_moduleParams.TabId, _moduleid) && !DNNrocketUtils.ModuleIsDeleted(_moduleParams.TabId, _moduleParams.ModuleId))
+                {
+                    var exportData = new ExportData(_rocketInterface, _moduleParams.ModuleId, _moduleParams.SystemKey);
+                    foreach (var s in exportData.GetList())
+                    {
+                        saveList.Add(s);
+                    }
+                }
+
+                // check if previous backup is same
+                var BackUpDataList = new BackUpDataList("rocketmod" + _moduleid);
+
+                var fileNameTemp = DNNrocketUtils.TempDirectoryMapPath() + "\\" + ("rocketmod" + _moduleid + GeneralUtils.GetUniqueKey());
+                var backupData = new BackUpData(fileNameTemp);
+                backupData.BackUp(saveList);
+
+                var l = BackUpDataList.GetBackUpFileMapPathList("dnnrocketmodule");
+                if (l.Count > 0)
+                {
+                    var lastBackupFileMapPath = l.First(); // take shte first file.  If the system returns in wrong order the file compare may fail.
+                    try
+                    {
+                        if (!FileUtils.CompareAreSame(lastBackupFileMapPath, fileNameTemp))
+                        {
+                            // move new file and remove temp file
+                            var fileName = DNNrocketUtils.BackUpNewFileName("rocketmod" + _moduleid, _systemKey);
+                            File.Copy(fileNameTemp, fileName);
+                        }
+                        File.Delete(fileNameTemp);
+                    }
+                    catch (Exception)
+                    {
+                        // ignore
+                    }
+                }
+                else
+                {
+                    // move new file and remove temp file
+                    var fileName = DNNrocketUtils.BackUpNewFileName("rocketmod" + _moduleid, _systemKey);
+                    File.Copy(fileNameTemp, fileName);
+                }
+
+            }
+        }
+
+        #endregion 
 
 
     }

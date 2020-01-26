@@ -149,11 +149,17 @@
                 {
                     disablecheckbox = "disabled";
                 }
-                @CheckBox(configinfo, "genxml/hidden/disablecache", "", "class='w3-check' " + disablecheckbox, false)
-                <label>@ResourceKey("RocketMod.disablecache")</label>
+                <div>
+                    @CheckBox(configinfo, "genxml/hidden/disablecache", "", "class='w3-check' " + disablecheckbox, false)
+                    <label>@ResourceKey("RocketMod.disablecache")</label>
+                </div>
+                <div>
+                    @CheckBox(configinfo, "genxml/hidden/autobackup", "", "class='w3-check' ", true)
+                    <label>@ResourceKey("RocketMod.autobackup")</label>
+                </div>
                 @if (systemData.DebugMode)
                 {
-                    <b class="w3-text-red">&nbsp;&nbsp;@ResourceKey("DNNrocket.system")&nbsp;@ResourceKey("DNNrocket.debugmode"):&nbsp;@ResourceKey("DNNrocket.on")&nbsp;</b>
+                <b class="w3-text-red">&nbsp;&nbsp;@ResourceKey("DNNrocket.system")&nbsp;@ResourceKey("DNNrocket.debugmode"):&nbsp;@ResourceKey("DNNrocket.on")&nbsp;</b>
                 }
 
             </div>
