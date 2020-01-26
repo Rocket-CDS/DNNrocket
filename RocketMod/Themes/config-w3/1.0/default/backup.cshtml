@@ -9,56 +9,58 @@
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 
-<h1>@ResourceKey("RocketMod.backup")</h1>
-<p>@ResourceKey("RocketMod.backup", "", "Help")</p>
 
 
-<div class="w3-row w3-padding">
-    <div class="w3-row w3-padding ">
-        <div class="w3-col m2 w3-button w3-blue simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.backup") ?" s-cmd="backup_dobackup" s-fields=''><i class="fas fa-backup"></i>&nbsp;@ResourceKey("DNNrocket.backup")</div>
-    </div>
+    <div class="w3-row w3-padding">
+        <div class="w3-row w3-padding ">
+            <div class="w3-col m2 w3-button w3-blue simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.backup") ?" s-cmd="backup_dobackup" s-fields=''><i class="fas fa-backup"></i>&nbsp;@ResourceKey("DNNrocket.backup")</div>
+        </div>
+        <div class="w3-row w3-padding w3-small w3-light-grey">
+            @ResourceKey("RocketMod.backup", "", "Help")
+        </div>
 
-    <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
-        <b class="w3-large">@ResourceKey("DNNrocket.backup")</b>
-        <div class="w3-button w3-right w3-padding simplisity_confirmclick" title="@ResourceKey("DNNrocket.delete")" s-confirm="@ResourceKey("RocketTools.deletebackupall", "", "Confirm")" s-cmd="backup_deletebackupall" s-fields=''><i class="fas fa-trash-alt"></i></div>
-    </div>
-    <div class="w3-row historydatasection">
+        <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
+            <b class="w3-large">@ResourceKey("DNNrocket.backup")</b>
+            <div class="w3-button w3-right w3-padding simplisity_confirmclick" title="@ResourceKey("DNNrocket.delete")" s-confirm="@ResourceKey("RocketTools.deletebackupall", "", "Confirm")" s-cmd="backup_deletebackupall" s-fields=''><i class="fas fa-trash-alt"></i></div>
+        </div>
+        <div class="w3-row historydatasection">
 
-        <table class="w3-table w3-bordered">
-            <tr>
-                <th style="width:200px;">@ResourceKey("DNNrocket.date")</th>
-                <th>@ResourceKey("DNNrocket.systemkey")</th>
-                <th></th>
-                <th></th>
-            </tr>
+            <table class="w3-table w3-bordered">
+                <tr>
+                    <th style="width:200px;">@ResourceKey("DNNrocket.date")</th>
+                    <th>@ResourceKey("DNNrocket.systemkey")</th>
+                    <th></th>
+                    <th></th>
+                </tr>
 
-            @{
-                var BackUpDataList = new BackUpDataList("rocketmod" + Model.ModuleId);
-                foreach (var moduleFolder in BackUpDataList.SystemKeyFolderList)
-                {
-                    foreach (var BackUpData in BackUpDataList.GetBackUpList(moduleFolder))
+                @{
+                    var BackUpDataList = new BackUpDataList("rocketmod" + Model.ModuleId);
+                    foreach (var moduleFolder in BackUpDataList.SystemKeyFolderList)
                     {
-                        <tr>
-                            <td>
-                                @BackUpData.BackUpDate.ToString("yyyy-MM-dd HH:mm:ss")
-                            </td>
-                            <td>@moduleFolder</td>
-                            <td style="width:74px;">
-                                <div class="w3-button w3-padding simplisity_confirmclick" title="@ResourceKey("DNNrocket.restore")" s-confirm="@ResourceKey("RocketTools.restorebackup", "", "Confirm")" s-cmd="backup_restorebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-recycle"></i></div>
-                            </td>
-                            <td style="width:74px;">
-                                <div class="w3-button w3-padding simplisity_confirmclick" title="@ResourceKey("DNNrocket.delete")" s-confirm="@ResourceKey("RocketTools.deletebackup", "", "Confirm")" s-cmd="backup_deletebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-trash-alt"></i></div>
-                            </td>
-                        </tr>
+                        foreach (var BackUpData in BackUpDataList.GetBackUpList(moduleFolder))
+                        {
+                            <tr>
+                                <td>
+                                    @BackUpData.BackUpDate.ToString("yyyy-MM-dd HH:mm:ss")
+                                </td>
+                                <td>@moduleFolder</td>
+                                <td style="width:74px;">
+                                    <div class="w3-button w3-padding simplisity_confirmclick" title="@ResourceKey("DNNrocket.restore")" s-confirm="@ResourceKey("RocketTools.restorebackup", "", "Confirm")" s-cmd="backup_restorebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-recycle"></i></div>
+                                </td>
+                                <td style="width:74px;">
+                                    <div class="w3-button w3-padding simplisity_confirmclick" title="@ResourceKey("DNNrocket.delete")" s-confirm="@ResourceKey("RocketTools.deletebackup", "", "Confirm")" s-cmd="backup_deletebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-trash-alt"></i></div>
+                                </td>
+                            </tr>
+                        }
                     }
                 }
-            }
-        </table>
+            </table>
 
+        </div>
     </div>
-</div>
 
 
 <script>
