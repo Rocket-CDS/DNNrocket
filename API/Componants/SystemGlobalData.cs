@@ -52,6 +52,10 @@ namespace DNNrocketAPI.Componants
                 Info.ItemID = -1;
                 Info.PortalId = DNNrocketUtils.GetPortalId();
                 Info.TypeCode = "GLOBALSETTINGS";
+
+                // add any MUST have settings.
+                Info.SetXmlProperty("genxml/textbox/globalheading", "<link rel='stylesheet' href='/DesktopModules/DNNrocket/css/w3.css'>");
+
                 Info.ItemID = objCtrl.Update(Info);
             }
             CacheUtils.SetCache(_cacheKey, Info);

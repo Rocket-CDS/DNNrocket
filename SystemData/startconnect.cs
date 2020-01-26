@@ -205,6 +205,7 @@ namespace DNNrocket.System
         {
             try
             {
+                var systemGlobalData = new SystemGlobalData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("adminpanel.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
