@@ -12,6 +12,7 @@ namespace DNNrocketAPI.Componants
     {
         private const string AppSystemFolderRel = "/DesktopModules/DNNrocket/SystemThemes";
         private FtpConnect _ftpConnect;
+        private HttpConnect _httpConnect;
         /// <summary>
         /// The Index is a list of XML file, which contain the dat from AppTheme.
         /// This is normally used to ensure we have an image on the fileystsem to display the appThemes from the Online AppTheme server.
@@ -26,7 +27,14 @@ namespace DNNrocketAPI.Componants
             if (!Directory.Exists(IndexFolderMapPath)) Directory.CreateDirectory(IndexFolderMapPath);
             ListData = new Dictionary<string, SimplisityInfo>();
             LoadLocalIndex();
-            _ftpConnect = new FtpConnect(systemKey);
+            if (OnlineIndexType == "public")
+            {
+                _httpConnect = new HttpConnect(systemKey);
+            }
+            else
+            {
+                _ftpConnect = new FtpConnect(systemKey);
+            }
         }
         private void LoadLocalIndex()
         {
@@ -78,11 +86,16 @@ namespace DNNrocketAPI.Componants
             if (ListData.ContainsKey(filename)) return ListData[filename];
 
             var fMapPath = IndexFolderMapPath + "\\" + filename;
-            if (_ftpConnect.IsValid)
+            if (OnlineIndexType == "public")
             {
-                // download theme xml with image and save image
-                _ftpConnect.DownloadAppThemeXmlToFile(appThemeFolder, fMapPath);
+                _httpConnect.DownloadAppThemeXmlToFile(appThemeFolder, fMapPath);
             }
+            else
+            {
+                if (_ftpConnect.IsValid) _ftpConnect.DownloadAppThemeXmlToFile(appThemeFolder, fMapPath);
+            }
+
+
             if (File.Exists(fMapPath))
             {
                 var xmlData = FileUtils.ReadFile(fMapPath);
