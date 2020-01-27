@@ -25,6 +25,8 @@ namespace DNNrocketAPI.Componants
             OnlineIndexType = onlineIndexType.ToLower();
             IndexFolderMapPath = DNNrocketUtils.MapPath(AppSystemFolderRel) + "\\" + systemKey + "_" + OnlineIndexType + "Index";
             if (!Directory.Exists(IndexFolderMapPath)) Directory.CreateDirectory(IndexFolderMapPath);
+            IndexImgFolderMapPath = IndexFolderMapPath + "\\img";
+            if (!Directory.Exists(IndexImgFolderMapPath)) Directory.CreateDirectory(IndexImgFolderMapPath);
             ListData = new Dictionary<string, SimplisityInfo>();
             LoadLocalIndex();
             if (OnlineIndexType == "public")
@@ -46,6 +48,24 @@ namespace DNNrocketAPI.Componants
                 var fname = Path.GetFileName(f);
                 if (ListData.ContainsKey(fname)) ListData.Remove(fname);
                 ListData.Add(fname, sInfo);
+
+
+                var base64 = sInfo.GetXmlProperty("genxml/hidden/logobase64");
+                try
+                {
+                    // save image, so we can cache it on the browser. (Speed updisplay time)
+                    var fileMapPath = IndexImgFolderMapPath + "\\" + sInfo.GetXmlProperty("genxml/hidden/logo");
+                    if (!File.Exists(fileMapPath))
+                    {
+                        FileUtils.SaveBase64ToFile(fileMapPath, base64);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DNNrocketUtils.LogException(ex);
+                }
+
+
             }
         }
         public void DeleteAll()
@@ -104,6 +124,7 @@ namespace DNNrocketAPI.Componants
                 var fname = Path.GetFileName(fMapPath);
                 if (ListData.ContainsKey(fname)) ListData.Remove(fname);
                 ListData.Add(fname, sInfo);
+
                 return sInfo;
             }
             return new SimplisityInfo(); ;
@@ -116,8 +137,9 @@ namespace DNNrocketAPI.Componants
         }
 
         public Dictionary<string, SimplisityInfo> ListData { set; get; }
+        public string IndexImgFolderMapPath { set; get; }
         public string IndexFolderMapPath { set; get; }
         public string OnlineIndexType { set; get; }
-
+        
     }
 }

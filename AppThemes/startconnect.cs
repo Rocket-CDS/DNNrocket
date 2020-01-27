@@ -436,7 +436,7 @@ namespace DNNrocket.AppThemes
                         DownloadPublicAppTheme(a.GetXmlProperty("genxml/hidden/appthemefolder"));
                     }
                 }
-                return GetPublicListAppTheme(false);
+                return GetPublicListAppTheme(true);
             }
             catch (Exception ex)
             {
@@ -456,7 +456,7 @@ namespace DNNrocket.AppThemes
                         DownloadPrivateAppTheme(a.GetXmlProperty("genxml/hidden/appthemefolder"));
                     }
                 }
-                return GetPublicListAppTheme(false);
+                return GetPrivateListAppTheme(true);
             }
             catch (Exception ex)
             {
@@ -482,7 +482,7 @@ namespace DNNrocket.AppThemes
             try
             {
                 DownloadPublicAppTheme(appThemeFolder);
-                return GetPublicListAppTheme(false);
+                return GetPublicListAppTheme(true);
             }
             catch (Exception ex)
             {
@@ -495,13 +495,23 @@ namespace DNNrocket.AppThemes
         {
             try
             {
+                // use cache on lists, because of time to build
+                var strOut = "";
+                var cacheKey = "dnnrocket*GetPublicListAppTheme*" + _selectedSystemKey;
+                if (useCache)
+                {
+                    strOut = (string)CacheUtils.GetCache(cacheKey);
+                    if (!String.IsNullOrEmpty(strOut)) return strOut;
+                }
                 var appThemeDataList = new AppThemeDataList(_selectedSystemKey);
                 var appThemeDataPublicList = new AppThemeDataPublicList(_selectedSystemKey, useCache);
                 var template = "AppThemeOnlinePublicList.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var passSettings = _postInfo.ToDictionary();
 
-                return DNNrocketUtils.RazorDetail(razorTempl, appThemeDataPublicList, passSettings, null, true);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, appThemeDataPublicList, passSettings, null, true);
+                CacheUtils.SetCache(cacheKey, strOut);
+                return strOut;
             }
             catch (Exception ex)
             {
@@ -531,7 +541,7 @@ namespace DNNrocket.AppThemes
             try
             {
                 DownloadPrivateAppTheme(appThemeFolder);
-                return GetPrivateListAppTheme(false);
+                return GetPrivateListAppTheme(true);
             }
             catch (Exception ex)
             {
@@ -544,13 +554,23 @@ namespace DNNrocket.AppThemes
         {
             try
             {
+                // use cache on lists, because of time to build
+                var strOut = "";
+                var cacheKey = "dnnrocket*GetPrivateListAppTheme*" + _selectedSystemKey;
+                if (useCache)
+                {
+                    strOut = (string)CacheUtils.GetCache(cacheKey);
+                    if (!String.IsNullOrEmpty(strOut)) return strOut;
+                }
                 var appThemeDataList = new AppThemeDataList(_selectedSystemKey);
                 var appThemeDataPrivateList = new AppThemeDataPrivateList(appThemeDataList.SelectedSystemKey, useCache);
                 var template = "AppThemeOnlinePrivateList.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var passSettings = _postInfo.ToDictionary();
 
-                return DNNrocketUtils.RazorDetail(razorTempl, appThemeDataPrivateList, passSettings, null, true);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, appThemeDataPrivateList, passSettings, null, true);
+                CacheUtils.SetCache(cacheKey, strOut);
+                return strOut;
             }
             catch (Exception ex)
             {

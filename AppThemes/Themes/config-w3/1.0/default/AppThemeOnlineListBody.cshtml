@@ -47,7 +47,7 @@ else
                     <div class="listrow w3-row">
 
                         <div class=" w3-col w3-padding  w3-hide-small " style="width: 100px;">
-                            <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60px;height:60px;" class="w3-circle" />
+                            <img src="@Model.GetSetting("logorelfolder")/@info.GetXmlProperty("genxml/hidden/logo")" style="width:60px;height:60px;" class="w3-circle" />
                         </div>
                         <div class=" w3-col m6 w3-padding">
                             <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
@@ -138,44 +138,44 @@ else
                         <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
                             <b class="w3-left w3-text-blue ">@info.GetXmlProperty("genxml/hidden/appthemeprefix")</b>
                         </div>
-                        <img src="data:image/png;base64,@info.GetXmlProperty("genxml/hidden/logobase64")" style="width:60%;" class="w3-circle w3-hover-opacity" />
+                        <img src="@Model.GetSetting("logorelfolder")/@info.GetXmlProperty("genxml/hidden/logo")" style="width:60%;" class="w3-circle w3-hover-opacity" />
                         <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
                             <b>@info.GetXmlProperty("genxml/hidden/appthemename") &nbsp; @info.GetXmlProperty("genxml/hidden/latestversion")</b>
                         </div>
 
                         @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
                         {
-                            <div class="w3-button w3-text-light-grey w3-display-topright simplisity_click" s-cmd="@Model.GetSetting("s-cmd-download")" s-fields='{"systemkey":"dnnrocketapptheme","appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;">
-                                <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
-                            </div>
+                        <div class="w3-button w3-text-light-grey w3-display-topright simplisity_click" s-cmd="@Model.GetSetting("s-cmd-download")" s-fields='{"systemkey":"dnnrocketapptheme","appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;">
+                            <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
+                        </div>
                         }
                         else
                         {
-                            <div class="w3-button w3-display-topright simplisity_click" s-cmd="@Model.GetSetting("s-cmd-download")" s-fields='{"systemkey":"dnnrocketapptheme","appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;">
-                                <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
-                            </div>
+                        <div class="w3-button w3-display-topright simplisity_click" s-cmd="@Model.GetSetting("s-cmd-download")" s-fields='{"systemkey":"dnnrocketapptheme","appthemefolder":"@info.GetXmlProperty("genxml/hidden/appthemefolder")"}' style="width: 64px;">
+                            <i class='fas fa-download' title="@ResourceKey("DNNRocket.download")" style='font-size:32px'></i>
+                        </div>
                         }
 
 
                         <div class="">
                             @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
                             {
-                                <i class='w3-text-green fas fa-hdd' style='font-size:16px'></i>
+                            <i class='w3-text-green fas fa-hdd' style='font-size:16px'></i>
                             }
                             else
                             {
-                                <i class='w3-text-red fas fa-hdd' style='font-size:16px'></i>
+                            <i class='w3-text-red fas fa-hdd' style='font-size:16px'></i>
                             }
                             @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@localversion.@info.GetXmlPropertyInt("genxml/hidden/localrev")
                         </div>
                         <div class="">
                             @if (info.GetXmlPropertyBool("genxml/hidden/localupdated"))
                             {
-                                <i class='w3-text-red fas fa-exclamation-triangle' style='font-size:16px'></i>
+                            <i class='w3-text-red fas fa-exclamation-triangle' style='font-size:16px'></i>
                             }
                             else
                             {
-                                <i class='fas fa-check' style='font-size:16px'></i>
+                            <i class='fas fa-check' style='font-size:16px'></i>
                             }
                             @ResourceKey("AppThemes.serverversion")&nbsp;:&nbsp;@version.@(info.GetXmlPropertyInt("genxml/hidden/latestrev"))
                         </div>
