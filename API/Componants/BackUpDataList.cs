@@ -51,7 +51,7 @@ namespace DNNrocketAPI.Componants
             {
                 return ListFileMapPath[systemKeyFolder];
             }
-            return null;
+            return new List<string>();
         }
         public List<BackUpData> GetBackUpList(string systemKeyFolder)
         {
@@ -59,7 +59,7 @@ namespace DNNrocketAPI.Componants
             {
                 return List[systemKeyFolder];
             }
-            return null;
+            return new List<BackUpData>();
         }
         public void DeleteBackUpFile(string fileMapPath)
         {

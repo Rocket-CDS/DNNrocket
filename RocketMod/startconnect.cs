@@ -1330,7 +1330,6 @@ namespace RocketMod
                     var fileName = DNNrocketUtils.BackUpNewFileName("rocketmod" + _moduleid, _systemKey);
                     File.Copy(fileNameTemp, fileName);
                 }
-
             }
         }
 
