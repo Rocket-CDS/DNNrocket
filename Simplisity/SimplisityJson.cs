@@ -112,6 +112,10 @@ namespace Simplisity
 
             rtnInfo.Lang = editlang;
 
+            // tidy the data.
+            rtnInfo.RemoveXmlNode("genxml/postform/paramjson");
+            rtnInfo.RemoveXmlNode("genxml/postform/inputjson");
+
             return rtnInfo;
         }
 

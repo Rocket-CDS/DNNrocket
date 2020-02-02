@@ -122,10 +122,6 @@ function simplisity_nbxgetCompleted(e) {
         }
     }
 
-    if (e.sloader === true) {
-        $('#simplisity_loader').hide();
-    }
-
     // clear any uploaded files after completed call
     $('input[id*="simplisity_fileuploadlist"]').val('');
        
@@ -137,6 +133,10 @@ function simplisity_nbxgetCompleted(e) {
     panelAjaxFunction(ajaxPostCmd[ajaxPostCmd.length - 1]);
 
     $('.simplisity_fadeout').fadeOut(2000);
+
+    if (e.sloader === true) {
+        $('#simplisity_loader').hide();
+    }
 
  }
 
