@@ -92,6 +92,11 @@
             </assembly>
             <assembly>
               <path>bin</path>
+              <name>DNNrocketDocuments.dll</name>
+              <sourceFileName>DNNrocketDocuments.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
               <name>RocketSettings.dll</name>
               <sourceFileName>RocketSettings.dll</sourceFileName>
             </assembly>

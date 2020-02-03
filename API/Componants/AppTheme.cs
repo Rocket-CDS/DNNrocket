@@ -788,20 +788,32 @@ namespace DNNrocketAPI.Componants
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
                     {
                         var datavalue = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        var datatext = "ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString()";
-                        strFieldList += "\t\t@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\"," + datatext + ",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
+                        strFieldList += "@{ var datatext = ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString();}";
+                        strFieldList += "@if (datatext == \"\") ";
+                        strFieldList += "{ ";
+                        strFieldList += " datatext = \"" + datavalue + "\"; ";
+                        strFieldList += "} ";
+                        strFieldList += "\t\t@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\",datatext,\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
                     {
                         var datavalue = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        var datatext = "ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString()";
-                        strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue.Replace("\"", "\\\"") + "\"," + datatext + ",\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
+                        strFieldList += "@{ var datatext = ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString();}";
+                        strFieldList += "@if (datatext == \"\") ";
+                        strFieldList += "{ ";
+                        strFieldList += " datatext = \"" + datavalue + "\"; ";
+                        strFieldList += "} ";
+                        strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue.Replace("\"", "\\\"") + "\",datatext,\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
                     {
                         var datavalue = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        var datatext = "ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString()";
-                        strFieldList += "\t\t@CheckBoxList(info,\"" + xpath + "\",\"" + datavalue + "\"," + datatext + ",\"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
+                        strFieldList += "@{ var datatext = ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString();}";
+                        strFieldList += "@if (datatext == \"\") ";
+                        strFieldList += "{ ";
+                        strFieldList += " datatext = \"" + datavalue + "\"; ";
+                        strFieldList += "} ";
+                        strFieldList += "\t\t@CheckBoxList(info,\"" + xpath + "\",\"" + datavalue + "\",datatext,\"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
                     }
                     if (f.GetXmlProperty("genxml/select/type").ToLower() == "image")
                     {
