@@ -203,7 +203,7 @@ namespace RocketMod
                     strOut = GetBackUp();
                     break;
                 case "backup_dobackup":
-                    DoBackUp();
+                    DoBackUp(true);
                     strOut = GetBackUp();
                     break;
                 case "backup_deletebackup":
@@ -1283,7 +1283,7 @@ namespace RocketMod
             return GetBackUp();
         }
 
-        private void DoBackUp()
+        private void DoBackUp(bool forcebackup = false)
         {
             // BackUp data to file 
             if (_moduleParams.Exists && _moduleParams.AutoBackUp)
@@ -1308,10 +1308,10 @@ namespace RocketMod
                 var l = BackUpDataList.GetBackUpFileMapPathList("dnnrocketmodule");
                 if (l.Count > 0)
                 {
-                    var lastBackupFileMapPath = l.First(); // take shte first file.  If the system returns in wrong order the file compare may fail.
+                    var lastBackupFileMapPath = l.First(); // take first file.  If the system returns in wrong order the file compare may fail.
                     try
                     {
-                        if (!FileUtils.CompareAreSame(lastBackupFileMapPath, fileNameTemp))
+                        if (!FileUtils.CompareAreSame(lastBackupFileMapPath, fileNameTemp) || forcebackup)
                         {
                             // move new file and remove temp file
                             var fileName = DNNrocketUtils.BackUpNewFileName("rocketmod" + _moduleid, _systemKey);

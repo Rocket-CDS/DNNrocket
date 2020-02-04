@@ -213,9 +213,18 @@ else
         simplisity_setCookieValue('@(sidemenu.SystemKey)-menuindex',''); // so we do not get wrong menu on admin entry.
         $('#simplisity_loader').show();
         $('.simplisity_panel').hide();
+        $('#mySidebar').removeClass('w3-theme');
+        $('#mySidebar').removeClass('w3-border-right');        
+        $('#mySidebar').add('w3-white');
         var returnurl = sessionStorage.RocketModReturn;
         if (typeof returnurl === 'undefined' || returnurl === '') {
-            window.history.back();
+            if (typeof window.history.back() === 'undefined') {
+                var rtn = location.protocol + '//' + location.host;
+                window.location.href = rtn;
+            }
+            else {
+                window.history.back();
+            }
         }
         else {
             window.location = returnurl;
