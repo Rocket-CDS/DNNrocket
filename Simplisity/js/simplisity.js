@@ -153,7 +153,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
         reload = 'false';
     }
 
-    var cmdupdate = scmdurl + '?cmd=' + scmd + '&systemkey=' + systemkey;
+    var cmdupdate = scmdurl + '?cmd=' + scmd + '&systemkey=' + simplisity_encode(systemkey);
 
     var jsonData = ConvertFormToJSON(spost, slist);
     var jsonParam = ConvertParamToJSON(sfields);

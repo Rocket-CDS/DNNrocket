@@ -41,6 +41,7 @@ namespace DNNrocketAPI.ApiControllers
             var paramCmd = context.Request.QueryString["cmd"];
             var systemkey = "";
             if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
+            systemkey = GeneralUtils.DeCode(systemkey);
 
             return Action(paramCmd, systemkey);
         }
