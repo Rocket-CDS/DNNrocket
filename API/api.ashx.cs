@@ -30,13 +30,6 @@ namespace DNNrocketAPI
             {
                 var objCtrl = new DNNrocketController();
 
-                // Do file upload is this is a file upload request.
-                if (context.Request.Files.Count > 0)
-                {
-                    var fileout = DNNrocketUtils.FileUpload(context);
-                }
-                else
-                {
                     var paramCmd = context.Request.QueryString["cmd"];
 
                     _editlang = DNNrocketUtils.GetEditCulture();
@@ -213,8 +206,6 @@ namespace DNNrocketAPI
                             break;
                         }
                     }
-
-                }
             }
             catch (Exception ex)
             {

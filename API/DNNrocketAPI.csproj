@@ -160,6 +160,7 @@
     <Compile Include="DNNrocketThumb.ashx.cs">
       <DependentUpon>DNNrocketThumb.ashx</DependentUpon>
     </Compile>
+    <Compile Include="ApiControllers\FileUploadController.cs" />
     <Compile Include="Interfaces\EventInterface.cs" />
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\DataInterface.cs" />
@@ -172,8 +173,8 @@
       <DependentUpon>Meta.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="render\DNNrocketTokens.cs" />
-    <Compile Include="RocketController.cs" />
-    <Compile Include="RouteMapper.cs" />
+    <Compile Include="ApiControllers\RocketController.cs" />
+    <Compile Include="ApiControllers\RouteMapper.cs" />
     <Compile Include="SqlDataProvider\DataProvider.cs" />
     <Compile Include="SqlDataProvider\DNNrocketController.cs" />
     <Compile Include="SqlDataProvider\SqlDataProvider.cs" />
@@ -190,7 +191,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Documents\DNNrocket-File-Download.docx" />
     <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
     <None Include="downloadfile.ashx" />

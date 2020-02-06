@@ -34,7 +34,7 @@
 
                 <div class="w3-container">
                     <div class="w3-col m4 w3-white" style="border-style:dotted;">
-                        <input id="imagefileupload" class="simplisity_fileupload" s-cmd="rocketimages_upload" s-reload="false" s-after="dnnrocketimages_showthelist" s-before="dnnrocketimages_beforeupload" s-return="#dnnrocket_imageselectwrapper" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields='{"createseo":"false","theme":"config-w3","template":"imagelist.cshtml","interfacekey":"imageupload","imagerootfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imagerootfolder")","imagefolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
+                        <input id="imagefileupload" class="simplisity_fileupload" s-cmd="rocketimages_upload" s-reload="false" s-after="dnnrocketimages_showthelist" s-before="dnnrocketimages_beforeupload" s-return="#dnnrocket_imageselectwrapper" s-cmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"createseo":"false","theme":"config-w3","template":"imagelist.cshtml","interfacekey":"imageupload","imagerootfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imagerootfolder")","imagefolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
                         <p><i>@ResourceKey("DNNrocket.dropimage")...</i></p>
                     </div>
                     <div class="w3-col m3 w3-right-align ">

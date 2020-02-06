@@ -70,16 +70,16 @@ namespace Rocket.AppThemes.Componants
                         a.SetXmlProperty("genxml/hidden/localrev", appTheme.LatestRev.ToString());
                         a.SetXmlProperty("genxml/hidden/islatestversion", "False");
                         a.SetXmlProperty("genxml/hidden/exists", "True");
-                        if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") == Convert.ToDouble(appTheme.LatestVersionFolder))
+                        if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") == a.GetXmlPropertyDouble("genxml/hidden/localversion"))
                         {
-                            if (a.GetXmlPropertyDouble("genxml/hidden/latestrev") == Convert.ToDouble(appTheme.LatestRev))
+                            if (a.GetXmlPropertyDouble("genxml/hidden/latestrev") == a.GetXmlPropertyDouble("genxml/hidden/localrev"))
                             {
                                 a.SetXmlProperty("genxml/hidden/islatestversion", "True");
                             }
                         }
 
                         a.SetXmlProperty("genxml/hidden/localupdated", "False");
-                        if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") < Convert.ToDouble(appTheme.LatestVersionFolder))
+                        if (a.GetXmlPropertyDouble("genxml/hidden/latestversion") < a.GetXmlPropertyDouble("genxml/hidden/localversion"))
                         {
                             a.SetXmlProperty("genxml/hidden/localupdated", "True");
                         }

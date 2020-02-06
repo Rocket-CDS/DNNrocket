@@ -26,7 +26,7 @@
                 </span>
 
                 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
-                    <input id="documentfileupload" class="simplisity_fileupload" s-cmd="rocketdocs_upload" s-reload="false" s-after="dnnrocketdocs_showthelist"  s-return="#dnnrocket_documentselectwrapper" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-fields='{"theme":"config-w3","interfacekey":"documentupload","documentfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/documentselectfolder")","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
+                    <input id="documentfileupload" class="simplisity_fileupload" s-cmd="rocketdocs_upload" s-reload="false" s-after="dnnrocketdocs_showthelist"  s-return="#dnnrocket_documentselectwrapper" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-fields='{"theme":"config-w3","interfacekey":"documentupload","documentfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/documentselectfolder")","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
                     <p><i>@ResourceKey("DNNrocket.drophere")...</i></p>
                 </div>
 
