@@ -80,7 +80,8 @@
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.TypeExtensions, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reflection.TypeExtensions.4.7.0\lib\net461\System.Reflection.TypeExtensions.dll</HintPath>
@@ -130,6 +131,7 @@
     <Compile Include="Componants\DNNrocketModuleController.cs" />
     <Compile Include="Componants\FtpConnect.cs" />
     <Compile Include="Componants\HttpConnect.cs" />
+    <Compile Include="Componants\HttpContentExtensions.cs" />
     <Compile Include="Componants\LicenseData.cs" />
     <Compile Include="Componants\ModuleParamList.cs" />
     <Compile Include="Componants\ModuleParams.cs" />

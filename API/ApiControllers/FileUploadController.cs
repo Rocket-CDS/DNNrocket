@@ -17,51 +17,33 @@ namespace DNNrocketAPI.ApiControllers
 {
     public class FileUploadController : DnnApiController
     {
-        public async Task<bool> Upload()
+
+        [AllowAnonymous]
+        [HttpGet]
+        [HttpPost]
+        public async Task<HttpResponseMessage> Upload(HttpRequestMessage request)
         {
-            try
-            {
+            if (!Directory.Exists(DNNrocketUtils.TempDirectoryMapPath())) Directory.CreateDirectory(DNNrocketUtils.TempDirectoryMapPath());
+            if (!Directory.Exists(DNNrocketUtils.HomeDNNrocketDirectoryMapPath())) Directory.CreateDirectory(DNNrocketUtils.HomeDNNrocketDirectoryMapPath());
+            var fileuploadPath = DNNrocketUtils.TempDirectoryMapPath();
 
-                if (!Directory.Exists(DNNrocketUtils.TempDirectoryMapPath()))
-                {
-                    Directory.CreateDirectory(DNNrocketUtils.TempDirectoryMapPath());
-                }
-                if (!Directory.Exists(DNNrocketUtils.HomeDNNrocketDirectoryMapPath()))
-                {
-                    Directory.CreateDirectory(DNNrocketUtils.HomeDNNrocketDirectoryMapPath());
-                }
+            if (!request.Content.IsMimeMultipartContent())
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 
-                var fileuploadPath = DNNrocketUtils.TempDirectoryMapPath();
+                var data = await Request.Content.ParseMultipartAsync();
 
-                var provider = new MultipartFormDataStreamProvider(fileuploadPath);
-                var content = new StreamContent(HttpContext.Current.Request.GetBufferlessInputStream(true));
-                foreach (var header in Request.Content.Headers)
+                foreach (var f in data.Files)
                 {
-                    content.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                    if (f.Value.File.Length > 0)
+                    {
+                        var fileName = f.Value.Filename;
+                        FileUtils.SaveFile(fileuploadPath + "\\" + fileName, f.Value.File);
+                    }
                 }
 
-                await content.ReadAsMultipartAsync(provider);
-
-                //Code for renaming the random file to Original file name  
-                string uploadingFileName = provider.FileData.Select(x => x.LocalFileName).FirstOrDefault();
-                string originalFileName = String.Concat(fileuploadPath, "\\" + (provider.Contents[0].Headers.ContentDisposition.FileName).Trim(new Char[] { '"' }));
-
-                //if (File.Exists(originalFileName))
-                //{
-                //    File.Delete(originalFileName);
-                //}
-
-                //File.Move(uploadingFileName, originalFileName);
-                //Code renaming ends...  
-
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
     }
+
 }
