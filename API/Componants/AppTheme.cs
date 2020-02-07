@@ -58,6 +58,10 @@ namespace DNNrocketAPI.Componants
                 AppVersionFolder = versionFolder;
                 if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
 
+                AppVersion = Convert.ToDouble(AppVersionFolder, CultureInfo.GetCultureInfo("en-US"));
+                LatestVersion = Convert.ToDouble(LatestVersionFolder, CultureInfo.GetCultureInfo("en-US"));
+
+
                 _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
 
                 AssignVersionFolders();
@@ -243,8 +247,10 @@ namespace DNNrocketAPI.Componants
             }
 
         }
-        private void CreateVersionFolders(string versionFolder)
+        private void CreateVersionFolders(double dblVersionFolder)
         {
+            var versionFolder = dblVersionFolder.ToString("0.0", CultureInfo.GetCultureInfo("en-US"));
+
             if (!Directory.Exists(AppThemeFolderMapPath + "\\" + versionFolder))
             {
                 Directory.CreateDirectory(AppThemeFolderMapPath + "\\" + versionFolder);
@@ -603,14 +609,17 @@ namespace DNNrocketAPI.Componants
             if (!Directory.Exists(AppThemeFolderMapPath))
             {
                 Directory.CreateDirectory(AppThemeFolderMapPath);
-                if (!Directory.Exists(AppThemeVersionFolderMapPath)) CreateVersionFolders(AppVersionFolder);
+                if (!Directory.Exists(AppThemeVersionFolderMapPath)) CreateVersionFolders(AppVersion);
             }
         }
 
-        public string CopyVersion(string sourceVersionFolder, string destVersionFolder)
+        public string CopyVersion(double sourceVersionFolder, double destVersionFolder)
         {
-            var sourceVersionFolderMapPath = AppThemeFolderMapPath + "\\" + sourceVersionFolder;
-            var destVersionFolderMapPath = AppThemeFolderMapPath + "\\" + destVersionFolder;
+            var strdestVersionFolder = destVersionFolder.ToString("0.0", CultureInfo.GetCultureInfo("en-US"));
+            var strsourceVersionFolder = sourceVersionFolder.ToString("0.0", CultureInfo.GetCultureInfo("en-US"));
+
+            var sourceVersionFolderMapPath = AppThemeFolderMapPath + "\\" + strsourceVersionFolder;
+            var destVersionFolderMapPath = AppThemeFolderMapPath + "\\" + strdestVersionFolder;
             if (!Directory.Exists(destVersionFolderMapPath)) Directory.CreateDirectory(destVersionFolderMapPath);
             if (Directory.Exists(sourceVersionFolderMapPath) && !Directory.EnumerateFileSystemEntries(destVersionFolderMapPath).Any())
             {
@@ -622,14 +631,12 @@ namespace DNNrocketAPI.Componants
                 foreach (string newPath in Directory.GetFiles(sourceVersionFolderMapPath, "*.*", SearchOption.AllDirectories))
                     File.Copy(newPath, newPath.Replace(sourceVersionFolderMapPath, destVersionFolderMapPath), true);
 
-                AppVersionFolder = destVersionFolder;
-
                 // copy DB record
                 var versionCopyRecord = _objCtrl.GetRecordByGuidKey(Record.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
-                _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
+                _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + strdestVersionFolder;
                 versionCopyRecord.GUIDKey = _guidKey;
                 versionCopyRecord.ItemID = -1;
-                versionCopyRecord.SetXmlProperty("genxml/select/versionfolder", AppVersionFolder);
+                versionCopyRecord.SetXmlProperty("genxml/select/versionfolder", strdestVersionFolder);
 
                 versionCopyRecord = _objCtrl.SaveRecord(versionCopyRecord, _tableName);
 
@@ -1306,9 +1313,11 @@ namespace DNNrocketAPI.Componants
         public string AppThemeFolderRel { get; set; }
         public string AppThemeFolderMapPath { get; set; }
         public string AppVersionFolder { get; set; }
+        public double AppVersion { get; set; }
         public string AppThemeVersionFolderRel { get; set; }
         public string AppThemeVersionFolderMapPath { get; set; }
         public List<string> VersionList { get; set; }
+        public double LatestVersion { get; set; }
         public string LatestVersionFolder { get; set; }
         public int LatestRev { get { return Record.GetXmlPropertyInt("genxml/hidden/latestrev"); } }
         public string ImageFolderMapPath { get; set; }

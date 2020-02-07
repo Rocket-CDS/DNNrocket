@@ -4,6 +4,7 @@ using Rocket.AppThemes.Componants;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 
@@ -217,8 +218,8 @@ namespace DNNrocket.AppThemes
             try
             {
                 var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
-                var rtn = appTheme.CopyVersion(appTheme.AppVersionFolder, (Convert.ToDouble(appTheme.LatestVersionFolder) + 1).ToString("0.0"));
-                _appVersionFolder = appTheme.AppVersionFolder;
+                var rtn = appTheme.CopyVersion(appTheme.AppVersion, appTheme.LatestVersion + 1);
+                _appVersionFolder = appTheme.AppVersionFolder.ToString();
                 _userStorage.Set("selectedappversion", _appVersionFolder);
                 ClearServerCacheLists();
                 if (rtn != "") return rtn;

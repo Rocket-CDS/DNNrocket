@@ -68,7 +68,7 @@
         $('.rocket_cultureselect').click(function () {
             simplisity_setCookieValue('editlang', $(this).attr('culturecode'));
             $('#rocket_cultureselect').attr("s-fields", "culturecode:" + $(this).attr('culturecode') + ",interfacekey:dashboard");
-            simplisity_callserver($('#rocket_cultureselect'), '/DesktopModules/DNNrocket/API/api.ashx', '', false);
+            simplisity_callserver($('#rocket_cultureselect'), '/Desktopmodules/dnnrocket/api/rocket/action', '', false);
         });
 
 

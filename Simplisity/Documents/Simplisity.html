@@ -197,7 +197,7 @@
                 <b>debug:</b> Puts the JS in debug mode.  The browser console log will contain data to help debuging.<br />
             </p>
             <i>Example:</i><br />
-            $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemkey: 'rocketexample', usehistory: true, overlayclass:'w3-overlay w3-theme' });;
+            $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketexample', usehistory: true, overlayclass:'w3-overlay w3-theme' });;
             <hr />
 
             <p><b>$('#mycontainer').activateSimplisityPanel()</b></p>
@@ -213,7 +213,7 @@
             <p>If we have already called simplisity server then the last command url used will be activate.  Therefore we can call this function with the minimum of parameters.  i.e. only the html element.</p>
             <p>WARNING!!  When used with simplisity_panel on the same page, multiple calls may be made to the server.  This can lead to unexpected results and race conditions. </p>
             <H4>Examples</H4>
-            simplisity_callserver(this, '/DesktopModules/DNNrocket/API/api.ashx', '#myreturn', false)<br />
+            simplisity_callserver(this, '/Desktopmodules/dnnrocket/api/rocket/action', '#myreturn', false)<br />
             <br />
             <i>Minimum call parameters</i><br />
             simplisity_callserver(this)

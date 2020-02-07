@@ -731,7 +731,7 @@ async function initFileUpload(fileuploadselector) {
     $(fileuploadselector).off();
 
         $(fileuploadselector).fileupload({
-            url: $(fileuploadselector).attr('s-cmdurl'),
+            url: $(fileuploadselector).attr('s-uploadcmdurl'),
             maxFileSize: maxFileSize,
             acceptFileTypes: rexpr,
             dataType: 'json',

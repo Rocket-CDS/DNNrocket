@@ -31,13 +31,15 @@ namespace DNNrocketAPI.ApiControllers
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 
                 var data = await Request.Content.ParseMultipartAsync();
+            var userid = DNNrocketUtils.GetCurrentUserId();
 
                 foreach (var f in data.Files)
                 {
                     if (f.Value.File.Length > 0)
                     {
                         var fileName = f.Value.Filename;
-                        FileUtils.SaveFile(fileuploadPath + "\\" + fileName, f.Value.File);
+                        FileUtils.SaveFile(fileuploadPath + "\\" + userid + "_" + fileName, f.Value.File);
+
                     }
                 }
 

@@ -256,7 +256,7 @@ namespace DNNrocket.System
                 reqparm.Add("sitekey", DNNrocketUtils.SiteGuid());
                 reqparm.Add("systemkey", _systemData.SystemKey);
                 reqparm.Add("domainurl", DNNrocketUtils.GetDefaultWebsiteDomainUrl());
-                var rtnLicenseStatus = SimplisityUtils.PostData(systemGlobalData.LicenseUrl.TrimEnd('/') + "/DesktopModules/DNNrocket/api/api.ashx", "rocketlicense", "clientlicense_getlicense", "", "", reqparm);
+                var rtnLicenseStatus = SimplisityUtils.PostData(systemGlobalData.LicenseUrl.TrimEnd('/') + "/Desktopmodules/dnnrocket/api/rocket/action", "rocketlicense", "clientlicense_getlicense", "", "", reqparm);
                 if (rtnLicenseStatus == "OK") return true;
                 return false;
             }

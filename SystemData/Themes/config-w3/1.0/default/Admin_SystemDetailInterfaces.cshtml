@@ -164,7 +164,7 @@
 
                                 $(".getsystemlist").unbind("click");
                                 $(".getsystemlist").click(function () {
-                                    $('#systemselect').getSimplisity('/DesktopModules/DNNrocket/api/api.ashx', 'systemapi_admin_getsystemlist', '{"theme":"config-w3","template":"Admin_SystemSelect.cshtml","systemid":"' + $(this).attr('systemid') + '","interfacekey":"' + $(this).attr('interfacekey') + '"}')
+                                    $('#systemselect').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'systemapi_admin_getsystemlist', '{"theme":"config-w3","template":"Admin_SystemSelect.cshtml","systemid":"' + $(this).attr('systemid') + '","interfacekey":"' + $(this).attr('interfacekey') + '"}')
                                     document.getElementById('systemselect').style.display = 'block';
                                 });
 

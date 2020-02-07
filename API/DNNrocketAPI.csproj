@@ -181,9 +181,6 @@
     <Compile Include="SqlDataProvider\DNNrocketController.cs" />
     <Compile Include="SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="api.ashx.cs">
-      <DependentUpon>api.ashx</DependentUpon>
-    </Compile>
     <Compile Include="View.ascx.cs">
       <DependentUpon>View.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -196,7 +193,6 @@
     <None Include="Documents\DNNrocket-File-Download.docx" />
     <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
     <None Include="downloadfile.ashx" />
-    <None Include="api.ashx" />
     <None Include="BuildScripts\build.bat" />
     <None Include="BuildScripts\ModulePackage.targets">
       <SubType>Designer</SubType>
