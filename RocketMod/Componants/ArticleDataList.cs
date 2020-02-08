@@ -44,7 +44,7 @@ namespace RocketMod
                 searchFilter += " or [XMLData].value('(genxml/lang/genxml/textbox/name)[1]', 'nvarchar(100)') like '%" + Header.GetXmlProperty("genxml/textbox/searchtext") + "%' ) ";
             }
             var searchOrderBy = " " + Header.GetXmlProperty("genxml/hidden/orderby");
-            if (searchOrderBy == "") searchOrderBy = " order by R1.[SortOrder] ";
+            if (String.IsNullOrWhiteSpace(searchOrderBy)) searchOrderBy = " order by R1.[SortOrder] ";
 
             var rowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, _tableName);
             DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, returnLimit, Page, PageSize, rowCount, _tableName);
