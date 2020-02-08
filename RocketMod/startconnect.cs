@@ -137,7 +137,16 @@ namespace RocketMod
                     strOut = GetDataSourceSelect();
                     break;
                 case "rocketmodedit_reindexsortorder":
-                    strOut = ReIndexSortOrder(_moduleid);
+                    strOut = ReIndexSortOrder();
+                    break;
+                case "rocketmodedit_activatesortorder":
+                    strOut = ActivateSortOrder();
+                    break;
+                case "rocketmodedit_setsortorder":
+                    strOut = SetSortOrder();
+                    break;
+                case "rocketmodedit_cancelsortorder":
+                    strOut = CancelSortOrder();
                     break;
 
 
@@ -840,11 +849,11 @@ namespace RocketMod
                 return ex.ToString();
             }
         }
-        public String ReIndexSortOrder(int moduleid)
+        public String ReIndexSortOrder()
         {
             try
             {
-                var articleDataList = new ArticleDataList(moduleid, _editLang);
+                var articleDataList = new ArticleDataList(_moduleid, _editLang);
                 articleDataList.Populate();
                 articleDataList.ReIndexSortOrder();
                 return GetDashBoard();
@@ -853,6 +862,42 @@ namespace RocketMod
             {
                 return ex.ToString();
             }
+        }
+        public String ActivateSortOrder()
+        {
+            var cacheKey = _moduleid + "*activatedsortorder";
+            CacheUtils.SetCache(cacheKey, _paramInfo.GetXmlProperty("genxml/hidden/itemid"));
+            return GetArticleList(true);
+        }
+        public String CancelSortOrder()
+        {
+            var cacheKey = _moduleid + "*activatedsortorder";
+            CacheUtils.RemoveCache(cacheKey);
+            return GetArticleList(true);
+        }
+        public String SetSortOrder()
+        {
+            var cacheKey = _moduleid + "*activatedsortorder";
+            var moveid = CacheUtils.GetCache(cacheKey);
+            if (moveid != null && GeneralUtils.IsNumeric(moveid))
+            {
+                var itemid = Convert.ToInt32(moveid);
+                if (Convert.ToInt32(moveid) > 0)
+                {
+                    var moveData = new ArticleData(itemid, _moduleid, _editLang);
+                    var toId = _paramInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+                    if (toId > 0)
+                    {
+                        var toData = new ArticleData(toId, _moduleid, _editLang);
+                        moveData.SortOrder = toData.SortOrder;
+                        moveData.Update();
+                        toData.SortOrder = toData.SortOrder + 1;
+                        toData.Update();
+                    }
+                }
+                CancelSortOrder();
+            }
+            return GetArticleList(true);
         }
 
         public String ResetDataRocketMod(int moduleid)

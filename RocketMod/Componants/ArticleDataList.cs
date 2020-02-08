@@ -81,7 +81,7 @@ namespace RocketMod
         {
             foreach (var s in DataList)
             {
-                s.SortOrder = s.ItemID;
+                s.SortOrder = s.ItemID * 10;
                 _objCtrl.Update(s);
             }
         }
