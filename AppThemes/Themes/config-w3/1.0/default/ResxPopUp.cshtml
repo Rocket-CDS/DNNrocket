@@ -109,16 +109,14 @@
             quickEdit += r.Value + Environment.NewLine;
         }
 
-        <div class="w3-container w3-margin">
             <div id="resxstring" class="w3-row">
                 <div class="w3-quarter w3-margin-right">
                     <textarea id="resxkeysstring" style="border: none;width: 100%;" class="w3-right-align" disabled>@quickKey</textarea>
                 </div>
                 <div class="w3-twothird">
-                    <textarea id="resxvaluesstring" style="width: 100%;" class="">@quickEdit</textarea>
+                    <textarea id="resxvaluesstring" style="width: 100%;" >@quickEdit</textarea>
                 </div>
             </div>
-        </div>
 
 
 
@@ -136,12 +134,17 @@
 
         $("#resxdatadictionarylist").sortable();
         $("#resxdatadictionarylist").disableSelection();
-
     });
+
+    function setHeight(fieldId){
+       document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight+'px';
+    }
 
     function quickresxedit() {
         $('.saveresxquickedit').show();
         $('#quickresxedit').show();
+        setHeight('resxvaluesstring');
+        setHeight('resxkeysstring');        
     }
 
     function saveresxquickedit() {

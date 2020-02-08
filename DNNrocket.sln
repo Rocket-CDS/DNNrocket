@@ -9,10 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		admin.html = admin.html
 		adminsystem.html = adminsystem.html
-		AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\1.0\default\edit.cshtml = AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\1.0\default\edit.cshtml
-		AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\2.0\default\edit.cshtml = AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\2.0\default\edit.cshtml
 		globalconfig.xml = globalconfig.xml
-		..\..\Portals\_default\Skins\LeftMenuContent\LeftMenuContent.ascx = ..\..\Portals\_default\Skins\LeftMenuContent\LeftMenuContent.ascx
 		README.md = README.md
 		rocketadmin_system.xml = rocketadmin_system.xml
 		rocketappthemes_system.xml = rocketappthemes_system.xml
@@ -20,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		rockettools_system.xml = rockettools_system.xml
 		..\..\simplisitydemo.ashx = ..\..\simplisitydemo.ashx
 		..\..\simplisitydemo.html = ..\..\simplisitydemo.html
-		AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\2.0\default\view.cshtml = AppThemes\SystemThemes\dnnrocketmodule\HtmlContent\2.0\default\view.cshtml
-		AppThemes\SystemThemes\dnnrocketmodule\Rocket_DocMenu\1.0\default\view.cshtml = AppThemes\SystemThemes\dnnrocketmodule\Rocket_DocMenu\1.0\default\view.cshtml
 		css\w3.css = css\w3.css
 	EndProjectSection
 EndProject
