@@ -432,10 +432,7 @@ namespace DNNrocket.AppThemes
                 var appThemeDataPublicList = new AppThemeDataPublicList(_selectedSystemKey, true);
                 foreach (var a in appThemeDataPublicList.List)
                 {
-                    if (!a.GetXmlPropertyBool("genxml/hidden/islatestversion") && !a.GetXmlPropertyBool("genxml/hidden/localupdated"))
-                    {
-                        DownloadPublicAppTheme(a.GetXmlProperty("genxml/hidden/appthemefolder"));
-                    }
+                    DownloadPublicAppTheme(a.GetXmlProperty("genxml/hidden/appthemefolder"));
                 }
                 return GetPublicListAppTheme(true);
             }
