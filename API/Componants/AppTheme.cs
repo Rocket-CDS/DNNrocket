@@ -1106,7 +1106,12 @@ namespace DNNrocketAPI.Componants
         {
             var tempDir = DNNrocketUtils.TempDirectoryMapPath();
             var tempZipFolder = tempDir + "\\TempImport";
-            if (Directory.Exists(tempZipFolder)) Directory.Delete(tempZipFolder, true);
+            if (Directory.Exists(tempZipFolder))
+            {
+                Directory.Delete(tempZipFolder, true);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
             ZipFile.ExtractToDirectory(zipMapPath, tempZipFolder);
 
             var xmlImport = FileUtils.ReadFile(tempZipFolder + "\\export.xml");
@@ -1141,9 +1146,19 @@ namespace DNNrocketAPI.Componants
                     var appSystemThemeFolderMapPath = DNNrocketUtils.MapPath(appSystemThemeFolderRel);
 
                     var destinationFolder = appSystemThemeFolderMapPath + "\\" + appThemeFolder;
-                    if (Directory.Exists(destinationFolder)) Directory.Delete(destinationFolder, true);
+                    if (Directory.Exists(destinationFolder))
+                    {
+                        Directory.Delete(destinationFolder, true);
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                    }
                     DirectoryCopy(tempZipFolder, destinationFolder, true);
-                    if (Directory.Exists(tempZipFolder)) Directory.Delete(tempZipFolder, true);
+                    if (Directory.Exists(tempZipFolder))
+                    {
+                        Directory.Delete(tempZipFolder, true);
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                    }
 
                     InitAppTheme(systemKey, appThemeFolder, lastversion.ToString("F1", CultureInfo.InvariantCulture));
                 }
@@ -1226,6 +1241,10 @@ namespace DNNrocketAPI.Componants
 
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
         {
+            // we need to make sure the filesystem is not doing anything before we continue.
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
 
@@ -1241,6 +1260,8 @@ namespace DNNrocketAPI.Componants
             if (!Directory.Exists(destDirName))
             {
                 Directory.CreateDirectory(destDirName);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
 
             // Get the files in the directory and copy them to the new location.
@@ -1249,6 +1270,8 @@ namespace DNNrocketAPI.Componants
             {
                 string temppath = Path.Combine(destDirName, file.Name);
                 file.CopyTo(temppath, false);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
 
             // If copying subdirectories, copy them and their contents to new location.
@@ -1260,6 +1283,10 @@ namespace DNNrocketAPI.Componants
                     DirectoryCopy(subdir.FullName, temppath, copySubDirs);
                 }
             }
+
+            // we need to make sure the filesystem is not doing anything before we continue.
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         public Dictionary<string,string> GetTemplatesRazor()

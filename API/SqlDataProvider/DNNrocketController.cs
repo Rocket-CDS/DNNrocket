@@ -616,6 +616,8 @@ namespace DNNrocketAPI
                 info.ModuleId = moduleId;
                 info.PortalId = PortalSettings.Current.PortalId;
                 info.ItemID = Update(info, tableName);
+                info.SortOrder = info.ItemID;
+                info.ItemID = Update(info, tableName); // save default sortorder.
             }
             if (info != null)
             {

@@ -43,7 +43,8 @@ namespace RocketMod
                 searchFilter += " and ( [XMLData].value('(genxml/textbox/ref)[1]', 'nvarchar(100)') like '%" + Header.GetXmlProperty("genxml/textbox/searchtext") + "%' ";
                 searchFilter += " or [XMLData].value('(genxml/lang/genxml/textbox/name)[1]', 'nvarchar(100)') like '%" + Header.GetXmlProperty("genxml/textbox/searchtext") + "%' ) ";
             }
-            var searchOrderBy = " order by R1.[SortOrder] ";
+            var searchOrderBy = " " + Header.GetXmlProperty("genxml/hidden/orderby");
+            if (searchOrderBy == "") searchOrderBy = " order by R1.[SortOrder] ";
 
             var rowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, _tableName);
             DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, returnLimit, Page, PageSize, rowCount, _tableName);
@@ -76,6 +77,14 @@ namespace RocketMod
             return _articleList;
         }
 
+        public void ReIndexSortOrder()
+        {
+            foreach (var s in DataList)
+            {
+                s.SortOrder = s.ItemID;
+                _objCtrl.Update(s);
+            }
+        }
 
         public string Export()
         {

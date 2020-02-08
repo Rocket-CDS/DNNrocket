@@ -136,6 +136,9 @@ namespace RocketMod
                 case "rocketmodedit_datasourceselect":
                     strOut = GetDataSourceSelect();
                     break;
+                case "rocketmodedit_reindexsortorder":
+                    strOut = ReIndexSortOrder(_moduleid);
+                    break;
 
 
                 case "rocketmodsettings_edit":
@@ -831,6 +834,20 @@ namespace RocketMod
                 if (info != null) objCtrl.Delete(info.ItemID);
 
                 return GetSelectApp();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        public String ReIndexSortOrder(int moduleid)
+        {
+            try
+            {
+                var articleDataList = new ArticleDataList(moduleid, _editLang);
+                articleDataList.Populate();
+                articleDataList.ReIndexSortOrder();
+                return GetDashBoard();
             }
             catch (Exception ex)
             {

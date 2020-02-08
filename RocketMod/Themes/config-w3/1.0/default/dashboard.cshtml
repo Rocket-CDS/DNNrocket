@@ -31,6 +31,7 @@
     <div class="w3-button">@ResourceKey("DNNrocket.more")...</div>
     <div class="w3-dropdown-content w3-bar-block w3-card">
         <div class="w3-bar-item w3-button w3-blue w3-padding-8 simplisity_click" s-cmd="rocketmodedit_datasourcelist" s-return="#datasourcelist" s-fields='{"moduleid":"@(Model.ModuleId)"}'><i class="fas fa-share-alt-square fa-fw fa-lg"></i>@ResourceKey("RocketMod.datasource")</div>
+        <div class="w3-bar-item w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.reindexsortorder","","Confirm")" s-cmd="rocketmodedit_reindexsortorder" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'><i class="fas fa-sort-numeric-down fa-fw fa-lg"></i>@ResourceKey("RocketMod.reindexsortorder")</div>
         <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmodedit_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetconfig")</div>
         <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmodedit_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetdata")</div>
     </div>
