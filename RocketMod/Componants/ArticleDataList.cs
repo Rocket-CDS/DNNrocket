@@ -124,7 +124,9 @@ namespace RocketMod
 
         public void SortOrderReIndex()
         {
-            var sortOrderList = GetAllArticlesForModule();
+            var searchFilter = " and R1.ModuleId = " + _moduleid + " ";
+            var searchOrderBy = " order by R1.[SortOrder] ";
+            var sortOrderList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, "", searchOrderBy, 0, 0, 0, 0, _tableName);
             var lp = 1;
             foreach (var s in sortOrderList)
             {
