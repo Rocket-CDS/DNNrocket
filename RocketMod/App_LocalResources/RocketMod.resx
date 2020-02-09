@@ -274,7 +274,7 @@
     <value>If the setting for Auto Backup is turned on then a backup of the data will be made after each save.  If the previous backup is the same as the new backup, no backup is done.  If a backup is restored then the current module data will be overwritten, however a backup is made before the restore is done.</value>
   </data>
   <data name="reindexsortorder.Confirm" xml:space="preserve">
-    <value>ReIndex Sort Order?  This will reset the data sort order to the default database sequence.</value>
+    <value>ReIndex Sort Order?  This will resequence the data sort order to allow a gap between sortorder numbers, this removes duplicate sort numbers and helps keep the manual sort working.</value>
   </data>
   <data name="reindexsortorder.Text" xml:space="preserve">
     <value>ReIndex Sort Order</value>

@@ -41,7 +41,6 @@ namespace RocketMod
         private AppThemeDataList _appThemeDataList;
         private UserStorage _userStorage;
         private string _tableName;
-        private string _sortOrderCacheKey;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -241,8 +240,6 @@ namespace RocketMod
 
         public string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
-            _sortOrderCacheKey = _moduleid + "*activatedsortorder";
-
             _systemData = new SystemData(systemInfo);
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
@@ -691,7 +688,7 @@ namespace RocketMod
             try
             {
                 var strOut = "";
-                var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, _editLang);
+                var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, _editLang, false);
                 if (loadCachedHeader)
                 {
                     articleDataList.LoadCacheHeader();
@@ -704,9 +701,6 @@ namespace RocketMod
                     articleDataList.SaveCacheHeader();
                 }
                 articleDataList.Populate();
-
-                var sortorderitemid = CacheUtils.GetCache(_sortOrderCacheKey);
-                if (sortorderitemid != null && GeneralUtils.IsNumeric(sortorderitemid)) _passSettings.Add("sortorderitemid", sortorderitemid.ToString());
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", "/DesktopModules/DNNrocket/SystemThemes/" + _systemData.SystemKey, _dataModuleParams.AppThemeFolder, _editLang, _dataModuleParams.AppThemeVersion, _systemData.DebugMode);
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, _passSettings, articleDataList.Header, _systemData.DebugMode);
@@ -858,9 +852,8 @@ namespace RocketMod
         {
             try
             {
-                var articleDataList = new ArticleDataList(_moduleid, _editLang);
-                articleDataList.Populate();
-                articleDataList.ReIndexSortOrder();
+                var articleDataList = new ArticleDataList(_moduleid, _editLang, false);
+                articleDataList.SortOrderReIndex();
                 return GetDashBoard();
             }
             catch (Exception ex)
@@ -870,35 +863,21 @@ namespace RocketMod
         }
         public String ActivateSortOrder()
         {
-            CacheUtils.SetCache(_sortOrderCacheKey, _paramInfo.GetXmlProperty("genxml/hidden/itemid"));
+            var articleDataList = new ArticleDataList(_moduleid, _editLang, false);
+            articleDataList.SortOrderActivate(_paramInfo.GetXmlPropertyInt("genxml/hidden/itemid"));
             return GetArticleList(true);
         }
         public String CancelSortOrder()
         {
-            CacheUtils.RemoveCache(_sortOrderCacheKey);
+            var articleDataList = new ArticleDataList(_moduleid, _editLang, false);
+            articleDataList.SortOrderCancel();
             return GetArticleList(true);
         }
         public String SetSortOrder()
         {
-            var moveid = CacheUtils.GetCache(_sortOrderCacheKey);
-            if (moveid != null && GeneralUtils.IsNumeric(moveid))
-            {
-                var itemid = Convert.ToInt32(moveid);
-                if (Convert.ToInt32(moveid) > 0)
-                {
-                    var moveData = new ArticleData(itemid, _moduleid, _editLang);
-                    var toId = _paramInfo.GetXmlPropertyInt("genxml/hidden/itemid");
-                    if (toId > 0)
-                    {
-                        var toData = new ArticleData(toId, _moduleid, _editLang);
-                        moveData.SortOrder = toData.SortOrder;
-                        moveData.Update();
-                        toData.SortOrder += 1;
-                        toData.Update();
-                    }
-                }
-                CancelSortOrder();
-            }
+            var articleDataList = new ArticleDataList(_moduleid, _editLang, false);
+            var toId = _paramInfo.GetXmlPropertyInt("genxml/hidden/itemid");
+            articleDataList.SortOrderMove(toId);
             return GetArticleList(true);
         }
 
@@ -906,7 +885,7 @@ namespace RocketMod
         {
             try
             {
-                var articleDataList = new ArticleDataList(moduleid, _editLang);
+                var articleDataList = new ArticleDataList(moduleid, _editLang, false);
                 articleDataList.DeleteAll();
                 return GetDashBoard();
             }
@@ -1108,8 +1087,7 @@ namespace RocketMod
                         // list display
                         var razorTempl = _appThemeMod.GetTemplateRazor("view.cshtml");
 
-                        var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
-                        articleDataList.Populate(appTheme.DataType);
+                        var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture(),true);
 
                         foreach (var s in _moduleParams.ModuleSettings)
                         {
