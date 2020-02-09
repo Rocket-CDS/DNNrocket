@@ -89,12 +89,6 @@ namespace RocketMod
         {
             if (ItemId > 0) CacheUtils.SetCache(_sortOrderCacheKey, ItemId);
         }
-        public int SortOrderActiveItemId()
-        {
-            var rtn = CacheUtils.GetCache(_sortOrderCacheKey);
-            if (rtn == null) return 0;
-            return Convert.ToInt32(rtn);
-        }
         public void SortOrderCancel()
         {
             CacheUtils.RemoveCache(_sortOrderCacheKey);
@@ -102,7 +96,7 @@ namespace RocketMod
 
         public void SortOrderMove(int toItemId)
         {
-            SortOrderMove(SortOrderActiveItemId(), toItemId);
+            SortOrderMove(SortOrderActiveItemId, toItemId);
         }
         public void SortOrderMove(int fromItemId, int toItemId)
         {
@@ -196,6 +190,16 @@ namespace RocketMod
         }
 
         #endregion
+
+        public int SortOrderActiveItemId
+        {
+            get
+            {
+                var rtn = CacheUtils.GetCache(_sortOrderCacheKey);
+                if (rtn == null) return 0;
+                return Convert.ToInt32(rtn);
+            }
+        }
 
 
     }
