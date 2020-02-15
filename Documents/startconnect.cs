@@ -44,8 +44,8 @@ namespace DNNrocket.Documents
             switch (paramCmd)
             {
                 case "rocketdocs_upload":
-                    UploadDocumentToFolder();
-                    strOut = ListData();
+                    strOut = UploadDocumentToFolder();
+                    if (strOut == "") strOut = ListData();
                     break;
                 case "rocketdocs_delete":
                     DeleteDocs();
@@ -72,7 +72,19 @@ namespace DNNrocket.Documents
         {
             try
             {
-                return DNNrocketUtils.RenderDocumentSelect(_paramInfo.GetXmlPropertyBool("genxml/hidden/singleselect"), _paramInfo.GetXmlPropertyBool("genxml/hidden/autoreturn"), _paramInfo.GetXmlProperty("genxml/hidden/documentfolder"));
+                var moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+                if (moduleid == 0)
+                {
+                    return "Invalid or Missing: ModuleId";
+                }
+                else
+                {
+                    var moduleParams = new ModuleParams(moduleid);
+                    var singleselect = _paramInfo.GetXmlPropertyBool("genxml/hidden/singleselect");
+                    var autoreturn = _paramInfo.GetXmlPropertyBool("genxml/hidden/autoreturn");
+
+                    return DNNrocketUtils.RenderDocumentSelect(moduleParams, singleselect, autoreturn);
+                }
             }
             catch (Exception ex)
             {
@@ -82,28 +94,28 @@ namespace DNNrocket.Documents
 
         public string UploadDocumentToFolder()
         {
-            var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
-
-            var documentfolder = _paramInfo.GetXmlProperty("genxml/hidden/documentfolder");
-            if (documentfolder == "") documentfolder = "docs";
-            var docDirectory = DNNrocketUtils.HomeDNNrocketDirectoryMapPath() + "\\" + documentfolder;
-            if (!Directory.Exists(docDirectory)) Directory.CreateDirectory(docDirectory);
-
             var strOut = "";
-            var fileuploadlist = _paramInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
-            if (fileuploadlist != "")
+            var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
+            var moduleId = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            if (moduleId > 0)
             {
-                foreach (var f in fileuploadlist.Split(';'))
+                var modParams = new ModuleParams(moduleId);
+                if (!Directory.Exists(modParams.DocumentFolderMapPath)) Directory.CreateDirectory(modParams.DocumentFolderMapPath);
+                var fileuploadlist = _paramInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+                if (fileuploadlist != "")
                 {
-                    if (f != "")
+                    foreach (var f in fileuploadlist.Split(';'))
                     {
-                        var friendlyname = GeneralUtils.DeCode(f);
-                        var userfilename = userid + "_" + friendlyname;
-                        File.Copy(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename, docDirectory + "\\" + friendlyname,true);
-                        File.Delete(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename);
+                        if (f != "")
+                        {
+                            var friendlyname = GeneralUtils.DeCode(f);
+                            var userfilename = userid + "_" + friendlyname;
+                            File.Copy(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename, modParams.DocumentFolderMapPath + "\\" + friendlyname, true);
+                            File.Delete(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename);
+                        }
                     }
-                }
 
+                }
             }
 
             return strOut;

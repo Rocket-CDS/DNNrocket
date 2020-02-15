@@ -80,7 +80,20 @@ namespace DNNrocket.Images
         {
             try
             {
-                return DNNrocketUtils.RenderImageSelect(100, _paramInfo.GetXmlPropertyBool("genxml/hidden/singleselect"), _paramInfo.GetXmlPropertyBool("genxml/hidden/autoreturn"), _paramInfo.GetXmlProperty("genxml/hidden/imagefolder"));
+                var moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+                if (moduleid == 0)
+                {
+                    return "Invalid or Missing: ModuleId";
+                }
+                else
+                {
+                    var moduleParams = new ModuleParams(moduleid);
+                    var singleselect = _paramInfo.GetXmlPropertyBool("genxml/hidden/singleselect");
+                    var autoreturn = _paramInfo.GetXmlPropertyBool("genxml/hidden/autoreturn");
+                    var imagesize = _paramInfo.GetXmlPropertyInt("genxml/hidden/imagesize");
+                    if (imagesize == 0) imagesize = 100;
+                    return DNNrocketUtils.RenderImageSelect(moduleParams, 100, singleselect, autoreturn);
+                }
             }
             catch (Exception ex)
             {

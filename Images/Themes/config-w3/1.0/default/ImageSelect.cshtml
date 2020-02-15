@@ -7,6 +7,7 @@
 
 @{
     var globalSettings = new SystemGlobalData();
+    var moduleParams = (ModuleParams)Model.GetDataObject("moduleparams");
 }
 
 <div id="dnnrocket_deleteimagelist">
@@ -34,7 +35,7 @@
 
                 <div class="w3-container">
                     <div class="w3-col m4 w3-white" style="border-style:dotted;">
-                        <input id="imagefileupload" class="simplisity_fileupload" s-cmd="rocketimages_upload" s-reload="false" s-after="dnnrocketimages_showthelist" s-before="dnnrocketimages_beforeupload" s-return="#dnnrocket_imageselectwrapper" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"createseo":"false","theme":"config-w3","template":"imagelist.cshtml","interfacekey":"imageupload","imagerootfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imagerootfolder")","imagefolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
+                        <input id="imagefileupload" class="simplisity_fileupload" s-cmd="rocketimages_upload" s-reload="false" s-after="dnnrocketimages_showthelist" s-before="dnnrocketimages_beforeupload" s-return="#dnnrocket_imageselectwrapper" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"moduleid":"@Model.ModuleId","template":"imagelist.cshtml","interfacekey":"imageupload","singleselect":"true","autoreturn":"false","createseo":"false"}' type="file" name="files[]" multiple style="display:none;">
                         <p><i>@ResourceKey("DNNrocket.dropimage")...</i></p>
                     </div>
                     <div class="w3-col m3 w3-right-align ">
@@ -62,8 +63,8 @@
                             var imagecount = Model.List.Count();
                             foreach (string imageName in Model.List)
                             {
-                                <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder")/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName)" selectorcount="@(lp)">
-                                    <img src="@ThumbnailImageUrl(Model.HeaderData.GetXmlProperty("genxml/hidden/imageselectfolder") + "/" + imageName, 150, 150,"", globalSettings.PngImage)" class="w3-border w3-padding" style="width:100%" />
+                                <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@(moduleParams.ImageFolderRel)/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(moduleParams.ImageFolderRel + "/" + imageName)" selectorcount="@(lp)">
+                                    <img src="@ThumbnailImageUrl(moduleParams.ImageFolderRel + "/" + imageName, 150, 150,"", globalSettings.PngImage)" class="w3-border w3-padding" style="width:100%" />
                                     <span class="w3-display-topright dnnrocket-imageselected " title="" style="display:none;"><i class="fas fa-check-circle"></i></span>
                                 </div>
                                 lp += 1;

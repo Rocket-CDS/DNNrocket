@@ -1624,23 +1624,24 @@ namespace DNNrocketAPI
         /// <param name="templateControlRelPath"></param>
         /// <param name="themeFolder"></param>
         /// <returns></returns>
-        public static string RenderImageSelect(int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadRelFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
+        public static string RenderImageSelect(ModuleParams moduleParams, int imagesize, bool selectsingle = true, bool autoreturn = false)
         {
-            if (!uploadRelFolder.Contains("/")) uploadRelFolder = DNNrocketUtils.HomeDNNrocketDirectoryRel() + "/" + uploadRelFolder;
-            var uploadFolderPath = DNNrocketUtils.MapPath(uploadRelFolder);
+
+            string razorTemplateName = "ImageSelect.cshtml";
+            string templateControlRelPath = "/DesktopModules/DNNrocket/images/";
+            string themeFolder = "config-w3";
 
             var imageModel = new SimplisityRazor();
 
-            imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectfolder", uploadRelFolder);
-            imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectsingle", selectsingle.ToString());
-            imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectautoreturn", autoreturn.ToString());
-            imageModel.HeaderData.SetXmlProperty("genxml/hidden/imageselectsize", imagesize.ToString());
+            imageModel.ModuleId = moduleParams.ModuleId;
+            imageModel.GetSettingBool("selectsingle", selectsingle);
+            imageModel.GetSettingBool("autoreturn", autoreturn);
+            imageModel.GetSettingInt("imagesize", imagesize);
 
-            imageModel.HeaderData.SetXmlProperty("genxml/hidden/uploadfolderpath", uploadFolderPath);
-            imageModel.HeaderData.SetXmlProperty("genxml/hidden/uploadrelfolder", uploadRelFolder);
+            imageModel.SetDataObject("moduleparams", moduleParams);
 
             var imgList = new List<object>();
-            foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
+            foreach (var i in DNNrocketUtils.GetFiles(moduleParams.ImageFolderMapPath))
             {
                 imgList.Add(i.Name);
             }
@@ -1653,31 +1654,30 @@ namespace DNNrocketAPI
             return strOut;
         }
 
-        public static string RenderDocumentSelect(bool selectsingle = true, bool autoreturn = false, string uploadFolder = "docs", string razorTemplateName = "DocSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/documents/", string themeFolder = "config-w3")
+        public static string RenderDocumentSelect(ModuleParams moduleParams, bool selectsingle = true, bool autoreturn = false)
         {
+            string razorTemplateName = "DocSelect.cshtml";
+            string templateControlRelPath = "/DesktopModules/DNNrocket/documents/";
+            string themeFolder = "config-w3";
+
             var docModel = new SimplisityRazor();
 
-            docModel.HeaderData.SetXmlProperty("genxml/hidden/documentselectfolder", uploadFolder);
-            docModel.HeaderData.SetXmlProperty("genxml/hidden/documentselectsingle", selectsingle.ToString());
-            docModel.HeaderData.SetXmlProperty("genxml/hidden/documentselectautoreturn", autoreturn.ToString());
+            docModel.ModuleId = moduleParams.ModuleId;
+            docModel.GetSettingBool("selectsingle", selectsingle);
+            docModel.GetSettingBool("autoreturn", autoreturn);
 
-            var uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectoryMapPath() + "\\" + uploadFolder;
-            if (uploadFolder.Contains("//")) uploadFolderPath = uploadFolder;
-
-            var uploadRelFolderPath = DNNrocketUtils.HomeDNNrocketDirectoryRel() + "/" + uploadFolder;
-            if (uploadFolder.Contains("//")) uploadRelFolderPath = DNNrocketUtils.MapPath(uploadFolder);
+            docModel.SetDataObject("moduleparams", moduleParams);
 
             var docList = new List<object>();
-            foreach (var i in DNNrocketUtils.GetFiles(uploadFolderPath))
+            foreach (var i in DNNrocketUtils.GetFiles(moduleParams.DocumentFolderMapPath))
             {
                 var sInfo = new SimplisityInfo();
                 sInfo.SetXmlProperty("genxml/name", i.Name);
+                sInfo.SetXmlProperty("genxml/relname", moduleParams.DocumentFolderRel + "/" + i.Name);
                 sInfo.SetXmlProperty("genxml/fullname", i.FullName);
                 sInfo.SetXmlProperty("genxml/extension", i.Extension);
                 sInfo.SetXmlProperty("genxml/directoryname", i.DirectoryName);
                 sInfo.SetXmlProperty("genxml/lastwritetime", i.LastWriteTime.ToShortDateString());
-                sInfo.SetXmlProperty("genxml/relfolder", uploadRelFolderPath);
-                sInfo.SetXmlProperty("genxml/relname", uploadRelFolderPath + "/" + i.Name);
                 docList.Add(sInfo);
             }
             docModel.List = docList;

@@ -145,19 +145,29 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        public IEncodedString RenderTemplate(string razorTemplate, SimplisityRazor model, bool debugMode = false)
+        public IEncodedString RenderImageSelect(int moduleid)
         {
-            var strOut = DNNrocketUtils.RazorRender(model, razorTemplate, debugMode);
-            return new RawString(strOut);
+            var moduleParams = new ModuleParams(moduleid);
+            return RenderImageSelect(moduleParams, 100, true, false);
         }
-        public IEncodedString RenderImageSelect(int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")
+        public IEncodedString RenderImageSelect(int moduleid, int imagesize, bool singleselect = true, bool autoreturn = false)
         {
-            return new RawString(DNNrocketUtils.RenderImageSelect(imagesize, selectsingle,autoreturn,uploadFolder,razorTemplateName,templateControlRelPath,themeFolder));
+            var moduleParams = new ModuleParams(moduleid);
+            return RenderImageSelect(moduleParams, imagesize, singleselect, autoreturn);
+        }
+        public IEncodedString RenderImageSelect(ModuleParams moduleParams, int imagesize, bool singleselect = true, bool autoreturn = false)
+        {
+            return new RawString(DNNrocketUtils.RenderImageSelect(moduleParams, imagesize, singleselect, autoreturn));
         }
 
-        public IEncodedString RenderDocumentSelect(bool selectsingle = true, bool autoreturn = false, string uploadFolder = "docs", string razorTemplateName = "DocSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/documents/", string themeFolder = "config-w3")
+        public IEncodedString RenderDocumentSelect(int moduleid, bool singleselect = true, bool autoreturn = false)
         {
-            return new RawString(DNNrocketUtils.RenderDocumentSelect(selectsingle, autoreturn, uploadFolder, razorTemplateName, templateControlRelPath, themeFolder));
+            var moduleParams = new ModuleParams(moduleid);
+            return RenderDocumentSelect(moduleParams, singleselect, autoreturn);
+        }
+        public IEncodedString RenderDocumentSelect(ModuleParams moduleParams, bool singleselect = true, bool autoreturn = false)
+        {
+            return new RawString(DNNrocketUtils.RenderDocumentSelect(moduleParams, singleselect, autoreturn));
         }
 
 

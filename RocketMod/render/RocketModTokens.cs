@@ -16,21 +16,6 @@ namespace RocketMod
     public class RocketModTokens<T> : DNNrocketAPI.render.DNNrocketTokens<T>
     {
 
-        public IEncodedString RenderImageSelect(int moduleid)
-        {
-            var moduleParams = new ModuleParams(moduleid);
-            var strOut = "";
-            strOut += "<div id=\"dnnrocket_imageselectwrapper\">" + RenderImageSelect(100, true, false, moduleParams.ImageFolderRel) + "</div>";
-            return new RawString(strOut);
-        }
-        public IEncodedString RenderDocumentSelect( int moduleid)
-        {
-            var moduleParams = new ModuleParams(moduleid);
-            var strOut = "";
-            strOut += "<div id=\"dnnrocket_documentselectwrapper\">" + RenderDocumentSelect(true, false, moduleParams.DocumentFolderRel) + "</div>";
-            return new RawString(strOut);
-        }
-
         public IEncodedString RenderRocketModFields(SimplisityRazor model, int portalid, int moduleid, SimplisityInfo info, int row, string lang = "")
         {
             var strOut = BuildRocketForm(model, portalid, moduleid, info, row, lang);

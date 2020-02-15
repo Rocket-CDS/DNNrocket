@@ -1,6 +1,8 @@
-@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
 @using Simplisity;
+@using DNNrocketAPI.Componants;
+
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
@@ -22,11 +24,11 @@
                 <span class="w3-section">
                     <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#documentfileupload').trigger('click')">@ButtonText(ButtonTypes.upload)</span>
                     <span class="w3-button w3-green w3-padding-8" onclick="dnnrocketdocs_usedocument()">@ButtonText(ButtonTypes.use)</span>
-                    <span class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketdocs_delete" s-before="dnnrocketdocs_deletedocument" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-post="#dnnrocket_deletedocumentlist"  s-fields='{"theme":"config-w3","interfacekey":"documentupload","documentfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/documentfolder")","singleselect":"true","autoreturn":"false"}'>@ButtonText(ButtonTypes.delete)</span>
+                    <span class="w3-button w3-red w3-padding-8 simplisity_click" s-cmd="rocketdocs_delete" s-before="dnnrocketdocs_deletedocument" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-post="#dnnrocket_deletedocumentlist" s-fields='{"theme":"config-w3","interfacekey":"documentupload","documentfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")","singleselect":"true","autoreturn":"false"}'>@ButtonText(ButtonTypes.delete)</span>
                 </span>
 
                 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
-                    <input id="documentfileupload" class="simplisity_fileupload" s-cmd="rocketdocs_upload" s-reload="false" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"theme":"config-w3","template":"documentlist.cshtml","interfacekey":"documentupload","documentrootfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/documentrootfolder")","imagefolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/documentselectfolder")","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
+                    <input id="documentfileupload" class="simplisity_fileupload" s-cmd="rocketdocs_upload" s-reload="false" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"moduleid":"@Model.ModuleId","template":"documentlist.cshtml","interfacekey":"documentupload","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
                     <p><i>@ResourceKey("DNNrocket.drophere")...</i></p>
                 </div>
 
@@ -145,6 +147,7 @@
                 $('#' + idx).parent().find(".dnnrocket-documentchange").removeClass('dnnrocket-documentchange');
                 dnnrocketdocs_removeevent();
 
+
                 $(this).removeClass('w3-theme');
                 $(this).find('.dnnrocket-docselector').hide();
             }
@@ -163,7 +166,9 @@
     }
 
     function dnnrocketdocs_showthelist() {
-        document.getElementById('rocketdocumentselect').style.display = 'block';
+        $('#rocketdocumentselect').show();
     }
+
+
 
 </script>
