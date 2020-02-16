@@ -67,6 +67,8 @@
     <Copy SourceFiles="$(MSBuildDnnBinPath)\RocketSettings.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\RocketAppThemes.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\RocketTools.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\Newtonsoft.Json.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+
 
     <Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
 

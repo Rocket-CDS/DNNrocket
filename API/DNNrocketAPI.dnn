@@ -84,6 +84,7 @@
               <path>bin</path>
               <name>RazorEngine.dll</name>
               <sourceFileName>RazorEngine.dll</sourceFileName>
+              <version>3.10.0</version>
             </assembly>
             <assembly>
               <path>bin</path>
@@ -110,6 +111,12 @@
               <name>RocketTools.dll</name>
               <sourceFileName>RocketTools.dll</sourceFileName>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Newtonsoft.Json.dll</name>
+              <sourceFileName>Newtonsoft.Json.dll</sourceFileName>
+              <version>10.0.3</version>
+            </assembly>            
 
           </assemblies>
 				</component>

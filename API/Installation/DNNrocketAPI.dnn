@@ -1,28 +1,24 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNNrocketMod" type="Module" version="1.0.0">
-			<friendlyName>DNNrocketMod</friendlyName>
-			<description>DNNrocket Module</description>
-			<iconFile />
-			<owner>
+		<package name="RocketSystem" type="Module" version="1.0.0">
+			<friendlyName>RocketSystem</friendlyName>
+			<description>Rocket System</description>
+      <iconFile>DesktopModules/DNNrocket/api/images/dnnrocketadminlogo.jpg</iconFile>
+      <owner>
 				<name>Charles France</name>
 				<organization>DNN Rocket</organization>
 				<url>www.dnnrocket.com</url>
-				<email></email>
+				<email>support@dnnrocket.com</email>
 			</owner>
 			<license>
-        Copyright (c) 2015, www.dnnrocket.com
+        Copyright (c) 2019, www.dnnrocket.com
         All rights reserved.
 
         THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       </license>
 			<releaseNotes>
 
-Assemblies:
-
-DNNrocketAPI
-
-			</releaseNotes>
+      </releaseNotes>
       <dependencies>
       </dependencies>
       <components>
@@ -91,24 +87,127 @@ DNNrocketAPI
             </assembly>
             <assembly>
               <path>bin</path>
-              <name>RocketMod.dll</name>
-              <sourceFileName>RocketMod.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
               <name>DNNrocketImages.dll</name>
               <sourceFileName>DNNrocketImages.dll</sourceFileName>
             </assembly>
             <assembly>
               <path>bin</path>
+              <name>DNNrocketDocuments.dll</name>
+              <sourceFileName>DNNrocketDocuments.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
               <name>RocketSettings.dll</name>
               <sourceFileName>RocketSettings.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>RocketAppThemes.dll</name>
+              <sourceFileName>RocketAppThemes.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>RocketTools.dll</name>
+              <sourceFileName>RocketTools.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Newtonsoft.Json.dll</name>
+              <sourceFileName>Newtonsoft.Json.dll</sourceFileName>
             </assembly>            
 
           </assemblies>
 				</component>
 				<component type="Module">
+          <desktopModule>
+            <moduleName>rocketadmin</moduleName>
+            <foldername>api</foldername>
+            <businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Portable" />
+              <supportedFeature type="Searchable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>systemapi</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/DNNrocket/API/View.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile>DesktopModules/DNNrocket/api/images/dnnrocketadminlogo.jpg</iconFile>
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+				</component>
 
+        <component type="File">
+          <files>
+            <basePath>DesktopModules\DNNrocket\API\Systems\</basePath>
+            <file>
+              <name>dnnrocketapptheme_system.xml</name>
+            </file>
+            <file>
+              <name>rockettools_system.xml</name>
+            </file>
+            <file>
+              <name>systemapi_system.xml</name>
+            </file>
+          </files>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>DesktopModules\DNNrocket\</basePath>
+            <file>
+              <name>globalconfig.xml</name>
+            </file>
+          </files>
+        </component>
+
+
+      </components>
+		</package>
+
+    <package name="RocketMod" type="Module" version="1.0.0">
+      <friendlyName>RocketMod</friendlyName>
+      <description>Rocket Generic Module</description>
+      <iconFile>DesktopModules/DNNrocket/RocketMod/dnnrocketlogo2.jpg</iconFile>
+      <owner>
+        <name>Charles France</name>
+        <organization>DNN Rocket</organization>
+        <url>www.dnnrocket.com</url>
+        <email>support@dnnrocket.com</email>
+      </owner>
+      <license>
+        Copyright (c) 2019, www.dnnrocket.com
+        All rights reserved.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      </license>
+      <releaseNotes>
+
+      </releaseNotes>
+      <dependencies>
+      </dependencies>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>RocketMod.dll</name>
+              <sourceFileName>RocketMod.dll</sourceFileName>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="Module">
           <desktopModule>
             <moduleName>rocketmod</moduleName>
             <foldername>RocketMod</foldername>
@@ -128,7 +227,7 @@ DNNrocketAPI
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
-                    <iconFile />
+                    <iconFile>DesktopModules/DNNrocket/RocketMod/dnnrocketlogo2.jpg</iconFile>
                     <helpUrl />
                     <supportsPopUps>False</supportsPopUps>
                     <viewOrder>0</viewOrder>
@@ -137,23 +236,18 @@ DNNrocketAPI
               </moduleDefinition>
             </moduleDefinitions>
           </desktopModule>
-
-				</component>
+        </component>
 
         <component type="File">
           <files>
             <basePath>DesktopModules\DNNrocket\API\Systems\</basePath>
             <file>
-              <name>dnnrocket_system.xml</name>
-            </file>
-            <file>
-              <name>rocketmod_system.xml</name>
+              <name>dnnrocketmodule_system.xml</name>
             </file>
           </files>
         </component>
 
-
       </components>
-		</package>	
-	</packages>
+    </package>
+  </packages>
 </dotnetnuke>
