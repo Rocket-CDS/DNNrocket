@@ -44,36 +44,52 @@
 
         <h1>@ResourceKey("system.settings")</h1>
         <div class="w3-row-padding">
-            <div class="w3-half">
-                <div class="w3-col m6 w3-right-align w3-padding">
-                    <label class="">@ResourceKey("system.imagetype")</label>
+
+            <div class="w3-row-padding w3-margin-bottom">
+                <div class="w3-half">
+                    <label class=""><b>@ResourceKey("system.imagetype")</b></label>
+                    <p class="w3-small">
+                        @ResourceKey("system.imagetype", "", "Help")
+                    </p>
                 </div>
-                <div class="w3-col m6  w3-padding">
-                    @DropDownList(info, "genxml/select/imagetype", "png,jpg", "png,jpg", "class='w3-input w3-border'", "png")
+                <div class="w3-half">
+                    <br/>
+                    @DropDownList(info, "genxml/select/imagetype", "png,jpg", "png,jpg", "class='w3-input w3-border' style='width:96px'", "png")
                 </div>
             </div>
-            <div class="w3-half">
-                <p class="w3-small">
-                    @ResourceKey("system.imagetype", "", "Help")
-                </p>
+            <div class="w3-row-padding w3-margin-bottom">
+                <div class="w3-half">
+                    <label class=""><b>@ResourceKey("system.ckeditorcsslist")</b></label>
+                    <p class="w3-small">
+                        @ResourceKey("system.ckeditorcsslist", "", "Help")
+                    </p>
+                </div>
+                <div class="w3-half">
+                    <br />
+                    @TextArea(info, "genxml/textbox/ckeditorcsslist", "class='w3-input w3-border' rows='3' ", "")
+                </div>
             </div>
-            <div class="w3-half">
-                <label class="">@ResourceKey("system.ckeditorcsslist")</label>
-                @TextBox(info, "genxml/textbox/ckeditorcsslist", "class='w3-input w3-border' ", "")
+            <div class="w3-row-padding w3-margin-bottom">
+                <div class="w3-half">
+                    <label class=""><b>@ResourceKey("system.backuplimit")</b></label>
+                    <p class="w3-small">
+                        @ResourceKey("system.backuplimit", "", "Help")
+                    </p>
+                </div>
+                <div class="w3-half ">
+                    <br />
+                    @TextBox(info, "genxml/textbox/backuplimit", "class='w3-input w3-border ' style='width:96px' ", "20")
+                </div>
             </div>
-            <div class="w3-half">
-                <p class="w3-small">
-                    @ResourceKey("system.ckeditorcsslist", "", "Help")
-                </p>
-            </div>
+
         </div>
 
-        <div class="w3-row-padding w3-right-align w3-margin-top">
-            @info.ItemID
+            <div class="w3-row-padding w3-right-align w3-margin-top">
+                @info.ItemID
+            </div>
+
+
         </div>
-
-
-    </div>
 </div>
 
 <script type="text/javascript">

@@ -348,4 +348,10 @@
   <data name="globalheading.Text" xml:space="preserve">
     <value>Global HTML page header</value>
   </data>
+  <data name="backuplimit.Text" xml:space="preserve">
+    <value>Backup Limit</value>
+  </data>
+  <data name="backuplimit.Help" xml:space="preserve">
+    <value>If any module has an auto backup facility, this is the amount of backup files that will be kept.  If a module creates more than this the oldest backups will be removed from the file system.  </value>
+  </data>
 </root>

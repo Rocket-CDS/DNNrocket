@@ -133,6 +133,11 @@ namespace DNNrocketAPI.render
             return RenderTemplate("Paging.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model, versionFolder);
         }
 
+        public IEncodedString RenderTemplate(string razorTemplate, SimplisityRazor model, bool debugMode = false)
+        {
+            var strOut = DNNrocketUtils.RazorRender(model, razorTemplate, debugMode);
+            return new RawString(strOut);
+        }
         public IEncodedString RenderTemplate(string razorTemplateName, string templateControlRelPath, string themeFolder, SimplisityRazor model, string versionFolder = "1.0", bool debugMode = false)
         {
             var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), versionFolder, debugMode);
