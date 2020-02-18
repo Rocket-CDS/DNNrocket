@@ -12,18 +12,21 @@
 
 @{
 
-var editicontextcolor = Model.GetSetting("editicontextcolor");
-var editiconcolor = Model.GetSetting("editiconcolor");
-if (editiconcolor == "")
-{
- editiconcolor = " w3-pale-blue ";
-}
+    var editicontextcolor = Model.GetSetting("editicontextcolor");
+    var editiconcolor = Model.GetSetting("editiconcolor");
+    if (editiconcolor == "")
+    {
+        editiconcolor = "blue";
+    }
 
 }
 
-    <div id="rocketmodcontentediticons@(Model.ModuleId)" class='w3-display-topleft w3-padding ' style='display:none;z-index:99;'>
-        <a href='javascript:rocketmodeditiframe_@(Model.ModuleId)()' class=''><i class='w3-small @(editiconcolor) @(editicontextcolor) w3-border w3-circle w3-card-4 w3-padding fas fa-edit'></i></a>
-        <a href='/desktopmodules/dnnrocket/rocketmod/admin.html?moduleid=@(Model.ModuleId)&amp;tabid=@(Model.TabId)'><i class="w3-small @(editiconcolor) @(editicontextcolor) w3-border w3-circle w3-card-4 w3-padding fas fa-layer-group"></i></a>
-        <span onclick="$('#rocketmodcontentediticons@(Model.ModuleId)').hide();"><i class='w3-small @(editiconcolor) @(editicontextcolor) w3-border w3-circle w3-card-4 w3-padding fas fa-times'></i></span>
+
+    <div id="rocketmodcontentediticons@(Model.ModuleId)" class='w3-display-topleft w3-margin' style='display:none;z-index:99;'>
+
+        <a href='javascript:rocketmodeditiframe_@(Model.ModuleId)()' class='w3-button w3-white w3-border w3-border-@(editiconcolor) w3-round-large  w3-tiny'><i class='fas fa-edit'></i></a>
+        <a href='/desktopmodules/dnnrocket/rocketmod/admin.html?moduleid=@(Model.ModuleId)&amp;tabid=@(Model.TabId)' class="w3-button w3-white w3-border w3-border-@(editiconcolor) w3-round-large  w3-tiny"><i class="fas fa-layer-group"></i></a>
+        <span onclick="$('#rocketmodcontentediticons@(Model.ModuleId)').hide();" class="w3-button w3-white w3-border w3-border-@(editiconcolor) w3-round-large w3-tiny"><i class='fas fa-times'></i></span>
+
     </div>
 
