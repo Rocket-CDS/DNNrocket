@@ -262,7 +262,7 @@
     <value>@RenderDocumentSelect(bool selectsingle = true, bool autoreturn = false, string uploadFolder = "docs", string razorTemplateName = "DocSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/documents/", string themeFolder = "config-w3")</value>
   </data>
   <data name="Razor.RenderImageSelect" xml:space="preserve">
-    <value>@RenderImageSelect(int imagesize, bool selectsingle = true, bool autoreturn = false, string uploadFolder = "images", string razorTemplateName = "ImageSelect.cshtml", string templateControlRelPath = "/DesktopModules/DNNrocket/images/", string themeFolder = "config-w3")</value>
+    <value>@RenderImageSelect(ModuleParams moduleParams, int imagesize, bool singleselect = true, bool autoreturn = false)</value>
   </data>
   <data name="Razor.RenderPagingTemplate" xml:space="preserve">
     <value>@RenderPagingTemplate(string scmd, string spost, string sfields, string sreturn, SimplisityRazor model, string versionFolder = "1.0")</value>

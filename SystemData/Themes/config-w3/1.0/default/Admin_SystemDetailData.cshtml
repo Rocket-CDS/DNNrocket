@@ -7,6 +7,7 @@
 
 @{
     var sInfo = (SimplisityInfo)Model.List.First();
+    var systemData = new SystemData(sInfo);
 }
 
 <input id="index" type="hidden" value="@sInfo.GetXmlPropertyInt("genxml/hidden/index").ToString()" />
@@ -97,5 +98,5 @@
 </div>
 
 <div>
-    @RenderImageSelect(-1, 640)
+    @RenderSystemImageSelect(systemData, 640)
 </div>

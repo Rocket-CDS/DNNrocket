@@ -1640,8 +1640,10 @@ namespace DNNrocketAPI
 
             imageModel.SetDataObject("moduleparams", moduleParams);
 
+            var imageFolderMapPath = moduleParams.ImageFolderMapPath;
+
             var imgList = new List<object>();
-            foreach (var i in DNNrocketUtils.GetFiles(moduleParams.ImageFolderMapPath))
+            foreach (var i in DNNrocketUtils.GetFiles(imageFolderMapPath))
             {
                 imgList.Add(i.Name);
             }
@@ -1653,7 +1655,6 @@ namespace DNNrocketAPI
             strOut += "</div>";
             return strOut;
         }
-
         public static string RenderDocumentSelect(ModuleParams moduleParams, bool selectsingle = true, bool autoreturn = false)
         {
             string razorTemplateName = "DocSelect.cshtml";

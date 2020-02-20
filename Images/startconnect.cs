@@ -15,6 +15,7 @@ namespace DNNrocket.Images
         private SimplisityInfo _paramInfo;
         private CommandSecurity _commandSecurity;
         private DNNrocketInterface _rocketInterface;
+        private SystemData _systemData;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -22,6 +23,7 @@ namespace DNNrocket.Images
 
             paramCmd = paramCmd.ToLower();
 
+            _systemData = new SystemData(systemInfo);
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
 
             var appPath = _rocketInterface.TemplateRelPath;
@@ -81,19 +83,13 @@ namespace DNNrocket.Images
             try
             {
                 var moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-                if (moduleid == 0)
-                {
-                    return "Invalid or Missing: ModuleId";
-                }
-                else
-                {
-                    var moduleParams = new ModuleParams(moduleid);
-                    var singleselect = _paramInfo.GetXmlPropertyBool("genxml/hidden/singleselect");
-                    var autoreturn = _paramInfo.GetXmlPropertyBool("genxml/hidden/autoreturn");
-                    var imagesize = _paramInfo.GetXmlPropertyInt("genxml/hidden/imagesize");
-                    if (imagesize == 0) imagesize = 100;
-                    return DNNrocketUtils.RenderImageSelect(moduleParams, 100, singleselect, autoreturn);
-                }
+                var editsystemkey = _paramInfo.GetXmlProperty("genxml/hidden/editsystemkey"); // if we are adding an image to the systemData
+                var moduleParams = new ModuleParams(moduleid, editsystemkey);
+                var singleselect = _paramInfo.GetXmlPropertyBool("genxml/hidden/singleselect");
+                var autoreturn = _paramInfo.GetXmlPropertyBool("genxml/hidden/autoreturn");
+                var imagesize = _paramInfo.GetXmlPropertyInt("genxml/hidden/imagesize");
+                if (imagesize == 0) imagesize = 100;
+                return DNNrocketUtils.RenderImageSelect(moduleParams, 100, singleselect, autoreturn);
             }
             catch (Exception ex)
             {
@@ -103,12 +99,10 @@ namespace DNNrocket.Images
 
         public string UploadImageToFolder()
         {
+
             var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
-            var imagefolder = _paramInfo.GetXmlProperty("genxml/hidden/imagefolder");
-            if (imagefolder == "") imagefolder = "images";
-            var uploadFolderPath = imagefolder;
-            if (!uploadFolderPath.Contains("/")) uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectoryRel() + "/" + imagefolder;
-            var imageDirectory = DNNrocketUtils.MapPath(uploadFolderPath);
+            var imageDirectory = getImageDirectory();
+
             if (!Directory.Exists(imageDirectory)) Directory.CreateDirectory(imageDirectory);
             var strOut = "";
             var createseo = _paramInfo.GetXmlPropertyBool("genxml/hidden/createseo");
@@ -144,10 +138,9 @@ namespace DNNrocket.Images
 
         public void DeleteImages()
         {
-            var uploadrelfolder = _paramInfo.GetXmlProperty("genxml/hidden/uploadrelfolder");
-            if (uploadrelfolder != "")
+            var imageDirectory = getImageDirectory();
+            if (Directory.Exists(imageDirectory))
             {
-                var imageDirectory = DNNrocketUtils.MapPath(uploadrelfolder);
                 var imageList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-imagelist").Split(';');
                 foreach (var i in imageList)
                 {
@@ -171,11 +164,24 @@ namespace DNNrocket.Images
 
                 CacheUtils.ClearAllCache();
                 DNNrocketUtils.ClearPortalCache();
-
             }
 
         }
 
+        private string getImageDirectory()
+        {
+            var moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            var imagefolder = _paramInfo.GetXmlProperty("genxml/hidden/imagefolder");
+            if (imagefolder == "")
+            {
+                var editsystemkey = _paramInfo.GetXmlProperty("genxml/hidden/editsystemkey"); // if we are adding an image to the systemData
+                var moduleParams = new ModuleParams(moduleid, editsystemkey);
+                imagefolder = moduleParams.ImageFolderRel;
+            }
+            var uploadFolderPath = imagefolder;
+            if (!uploadFolderPath.Contains("/")) uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectoryRel() + "/" + imagefolder;
+            return DNNrocketUtils.MapPath(uploadFolderPath);
+        }
 
 
     }

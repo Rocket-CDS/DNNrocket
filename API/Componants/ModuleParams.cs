@@ -22,11 +22,9 @@ namespace DNNrocketAPI.Componants
         private string _cacheKey;
         private string _tableName;
         private int _moduleid;
-        private string _systemKey;
 
         public ModuleParams(int moduleId, string systemKey = "", bool useCache = true, string tableName = "DNNrocket")
         {
-            _systemKey = systemKey;
             _tableName = tableName;
             _moduleid = moduleId;
             _moduleParamsRec = new SimplisityRecord();
@@ -57,8 +55,7 @@ namespace DNNrocketAPI.Componants
                 }
             }
             DataSourceExternal = false;
-            if (_systemKey == "") _systemKey = SystemKey; // to get export data when we don't know the systemid, so use the DB one.
-            SystemKey = _systemKey;
+            SystemKey = systemKey;
             if (ModuleIdDataSource != _moduleid) DataSourceExternal = true;
             if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueKey();
             if (ModuleIdDataSource <= 0) ModuleIdDataSource = _moduleid;
@@ -148,15 +145,28 @@ namespace DNNrocketAPI.Componants
         public string AppSystemThemeFolderMapPath { get { return DNNrocketUtils.MapPath(AppSystemThemeFolderRel); } }
         public string AppThemeVersion { get { return GetValue("AppThemeVersion"); } set { SetValue("AppThemeVersion", value); } }
         public int LatestRev { get { return GetValueInt("LatestRev"); } set { SetValue("LatestRev", value.ToString()); } }
-        public string ImageFolderRel { get{ return DNNrocketUtils.HomeDNNrocketDirectoryRel().TrimEnd('/') + "/" + ImageFolder; } }
+        public string ImageFolderRel
+        {
+            get
+            {
+                if (!Exists)
+                {
+                    // we do not have any module data, so assume this is a system upload.
+                    if (SystemKey != "")
+                    {
+                        var systemData = new SystemData(SystemKey);
+                        if (systemData.Exists) return systemData.ImageFolderRelPath;
+                    }
+                    return "/DesktopModules/DNNrocket/SystemData/images";
+                }
+                return DNNrocketUtils.HomeDNNrocketDirectoryRel().TrimEnd('/') + "/" + ImageFolder;
+            }
+        }
         public string DocumentFolderRel { get{ return DNNrocketUtils.HomeDNNrocketDirectoryRel().TrimEnd('/') + "/" + DocumentFolder;} }
-
         public string DocumentFolder { get { return GetValue("documentfolder", "");} set { SetValue("DocumentFolder", value); } }
         public string ImageFolder { get { return GetValue("imagefolder", ""); } set { SetValue("ImageFolder", value); } }
-
         public string DocumentFolderMapPath { get { return DNNrocketUtils.MapPath(DocumentFolderRel); } }
         public string ImageFolderMapPath { get { return DNNrocketUtils.MapPath(ImageFolderRel); } }
-
         public bool Exists { get { return GetValueBool("Exists"); } set { SetValue("Exists", value.ToString()); } }
         public string Name { get { return GetValue("Name", ""); } set { SetValue("Name", value); } }
         public string ModuleType { get { return GetValue("ModuleType", ""); } set { SetValue("ModuleType", value); } }

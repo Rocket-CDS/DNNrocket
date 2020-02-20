@@ -355,6 +355,14 @@ namespace DNNrocketAPI
         {
             get { return DNNrocketUtils.MapPath(Info.GetXmlProperty("genxml/textbox/systemrelpath")); }
         }
+        public string ImageFolderRelPath
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/systemrelpath").TrimEnd('/') + "/images"; }
+        }
+        public string ImageFolderMapPath
+        {
+            get { return DNNrocketUtils.MapPath(Info.GetXmlProperty("genxml/textbox/systemrelpath").TrimEnd('/') + "/images"); }
+        }
         public string DefaultInterface
         {
             get { return Info.GetXmlProperty("genxml/textbox/defaultinterface"); }
