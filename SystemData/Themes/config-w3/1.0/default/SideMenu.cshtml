@@ -32,7 +32,10 @@
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-before="tuenoffreload" s-cmd="systemapi_admin_getsystemlist" s-fields='{"track":"true","theme":"config-w3","template":"Admin_Systems.cshtml"}'><i title="System" class='fas fa-rocket' style='width:20px;'></i>&nbsp;System</div>
 
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-before="tuenoffreload" s-cmd="systemapi_globaldetail" s-fields='{"track":"true"}'><i class="fas fa-globe"></i>&nbsp;@ResourceKey("system.globalsettings")</div>
+
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-before="tuenoffreload" s-cmd="systemapi_licenselist" s-fields='{"track":"true"}'><i class="fas fa-key"></i>&nbsp;@ResourceKey("system.licenses")</div>
+
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-before="tuenoffreload" s-cmd="systemapi_plugins" s-fields='{"track":"true"}'><i class="fas fa-charging-station"></i>&nbsp;@ResourceKey("system.plugins")</div>    
 
     <hr />
     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_clearmemcache" s-reload="true" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("system.clearmemcache")</div>

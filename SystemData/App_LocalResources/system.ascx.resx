@@ -354,4 +354,7 @@
   <data name="backuplimit.Help" xml:space="preserve">
     <value>If any module has an auto backup facility, this is the amount of backup files that will be kept.  If a module creates more than this the oldest backups will be removed from the file system.  </value>
   </data>
+  <data name="plugins.Text" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
 </root>

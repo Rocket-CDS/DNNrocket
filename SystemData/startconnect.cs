@@ -1,5 +1,6 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Componants;
+using Rocket.AppThemes.Componants;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -155,6 +156,11 @@ namespace DNNrocket.System
                         DNNrocketUtils.RecycleApplicationPool();
                         strOut = "<h1>Recycle App Pool</h1>";
                         break;
+
+                    case "systemapi_plugins":
+                        strOut = GetPluginList();
+                        break;
+
                 }
             }
 
@@ -379,7 +385,6 @@ namespace DNNrocket.System
 
         }
 
-
         public String GetLicenseList()
         {
             try
@@ -388,6 +393,21 @@ namespace DNNrocket.System
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("Admin_SystemLicense.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var passSettings = _postInfo.ToDictionary();
                 return DNNrocketUtils.RazorDetail(razorTempl, LicenseListData, passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+
+            }
+        }
+        public String GetPluginList()
+        {
+            try
+            {
+                var pluginDataList = new PluginDataList();
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("Admin_Plugins.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var passSettings = _postInfo.ToDictionary();
+                return DNNrocketUtils.RazorDetail(razorTempl, pluginDataList, passSettings, null, true);
             }
             catch (Exception ex)
             {
