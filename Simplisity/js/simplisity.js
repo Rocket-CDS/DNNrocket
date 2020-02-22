@@ -153,7 +153,14 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
         reload = 'false';
     }
 
-    var cmdupdate = scmdurl + '?cmd=' + scmd + '&systemkey=' + simplisity_encode(systemkey);
+    var cmdupdate = '';
+    if (scmdurl.includes("?")) {
+        // possible external call and cmd param not required.
+        cmdupdate = scmdurl;
+    }
+    else {
+        cmdupdate = scmdurl + '?cmd=' + scmd + '&systemkey=' + simplisity_encode(systemkey);
+    }
 
     var jsonData = ConvertFormToJSON(spost, slist);
     var jsonParam = ConvertParamToJSON(sfields);
@@ -292,27 +299,28 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
         var shideloader = $(element).attr("s-hideloader");
         var sdropdownlist = $(element).attr("s-dropdownlist");
 
-        if (typeof scmd !== 'undefined' && scmd !== '') {
-
-            if (typeof sfields === 'undefined') {
-                sfields = '';
-            }
-
-            simplisity_setParamField('activevalue',$(element).val());
-
-            if (typeof shideloader === 'undefined') {
-                shideloader = true;
-            }
-            if ($('input[id*="simplisity_fileuploadlist"]').val() !== '') {
-                if (typeof sfields === 'undefined') {
-                    sfields = '{"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
-                } else {
-                    sfields = sfields.substring(0, sfields.length - 1) + ',"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
-                }
-            }
-
-            simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload);
+        if (typeof scmd === 'undefined') {
+            scmd = '';
         }
+
+        if (typeof sfields === 'undefined') {
+            sfields = '';
+        }
+
+        simplisity_setParamField('activevalue',$(element).val());
+
+        if (typeof shideloader === 'undefined') {
+            shideloader = true;
+        }
+        if ($('input[id*="simplisity_fileuploadlist"]').val() !== '') {
+            if (typeof sfields === 'undefined') {
+                sfields = '{"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
+            } else {
+                sfields = sfields.substring(0, sfields.length - 1) + ',"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
+            }
+        }
+
+        simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload);
     }
     else {
         $(element).attr('s-stop', '');
