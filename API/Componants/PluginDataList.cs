@@ -23,7 +23,7 @@ namespace Rocket.AppThemes.Componants
 
                 _pluginCacheGroupId = "plugins";
                 _listCacheKey = "PluginList" + DNNrocketUtils.GetCurrentUserId();
-                
+
                 if (useCache)
                 {
                     PluginList = (List<SimplisityRecord>)CacheUtils.GetCache(_listCacheKey, _pluginCacheGroupId);
@@ -33,7 +33,7 @@ namespace Rocket.AppThemes.Componants
             catch (Exception exc)
             {
                 ErrorMsg = exc.ToString();
-                Error = true; 
+                Error = true;
             }
         }
         public void PopulateList()
@@ -64,6 +64,28 @@ namespace Rocket.AppThemes.Componants
         public SystemDataList SystemList { get; set; }
         public bool Error { get; set; }
         public string ErrorMsg { get; set; }
+
+    }
+
+    public class PluginData
+    {
+
+        public PluginData(string systemKey)
+        {
+            SystemKey = systemKey;
+            DownloadPlugin();
+            System = new SystemData(SystemKey);
+
+        }
+        private void DownloadPlugin()
+        {
+
+
+        }
+
+
+        public SystemData System { get; set; }
+        public string SystemKey { get; set; }
 
     }
 
