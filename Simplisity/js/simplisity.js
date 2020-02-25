@@ -162,7 +162,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
         cmdupdate = scmdurl + '?cmd=' + scmd + '&systemkey=' + simplisity_encode(systemkey);
     }
 
-    var jsonData = ConvertFormToJSON(spost, slist);
+    var jsonData = ConvertFormToJSON(spost, slist, sfields);
     var jsonParam = ConvertParamToJSON(sfields);
 
     if ((typeof sdropdownlist !== 'undefined') && sdropdownlist !== '') {
@@ -373,8 +373,10 @@ function ConvertParamToJSON(sfields) {
 }
 
 
-function ConvertFormToJSON(spost, slist) {
+function ConvertFormToJSON(spost, slist, sfields) {
     var viewData = {
+        sfield: [],
+        system: [],
         postdata: [],
         listdata: []        
     };
@@ -456,6 +458,34 @@ function ConvertFormToJSON(spost, slist) {
 
         });
     }
+
+    // Put s-fields into the json object.
+    var jsonDataF = {};
+    if (typeof sfields !== 'undefined' && sfields !== '') {
+        var obj = JSON.parse(sfields);
+        jsonDataF = mergeJson({}, jsonDataF, obj);
+    }
+
+    // add any search fields
+    var searchfields = $('#simplisity_searchfields').val();
+    if (typeof searchfields !== 'undefined' && searchfields !== '') {
+        var obj1 = JSON.parse(searchfields);
+        jsonDataF = mergeJson({}, jsonDataF, obj1);
+    }
+
+    // add param fields
+    var paramfields = $('#simplisity_params').val();
+    if (typeof paramfields !== 'undefined' && paramfields !== '') {
+        var obj2 = JSON.parse(paramfields);
+        jsonDataF = mergeJson({}, jsonDataF, obj2);
+    }
+
+    viewData.sfield.push(jsonDataF);
+
+    var system = '{"systemkey":"' + simplisity_getsystemkey(sfields) + '"}';
+    var systemobj = JSON.parse(system);
+    viewData.system.push(systemobj);
+
 
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++

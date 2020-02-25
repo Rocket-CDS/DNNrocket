@@ -25,9 +25,6 @@ namespace Simplisity
         public int RowCount { get; set; }
         public string EncodingKey { get; set; }
         public int SortOrder { get; set; }
-        public string RootNodeName { get; set; }
-
-        private string _xmlData;
 
         public SimplisityRecord(
             int ItemID,
@@ -42,7 +39,7 @@ namespace Simplisity
             string XMLData,
             string Lang,
             int UserId,
-            int RowCount,            
+            int RowCount,
             string EncodingKey)
         {
             this.ItemID = ItemID;
@@ -83,32 +80,32 @@ namespace Simplisity
 
         public SimplisityRecord()
         {
-            RootNodeName = "genxml";
             this.Lang = "en-US"; // we need a langauge for formating data, default to en-US, but the language should be passed when we need formatted date.
-            if (XMLDoc == null) XMLData = "<" + RootNodeName + "></" + RootNodeName + ">"; // if we don;t have anything, create an empty default to stop errors.
+            if (XMLDoc == null) XMLDoc = new XmlDocument();
         }
 
         public SimplisityRecord(string rootNodeName)
         {
-            RootNodeName = rootNodeName;
             this.Lang = "en-US"; // we need a langauge for formating data, default to en-US, but the language should be passed when we need formatted date.
-            if (XMLDoc == null) XMLData = "<" + RootNodeName + "></" + RootNodeName + ">"; // if we don;t have anything, create an empty default to stop errors.
+            if (XMLDoc == null) XMLDoc = new XmlDocument();
         }
 
 
         public string XMLData
         {
-            get { return _xmlData; }
+            get
+            {
+                return XMLDoc.OuterXml;
+            }
             set
             {
                 XMLDoc = null;
-                _xmlData = value;
                 try
                 {
-                    if (!String.IsNullOrEmpty(_xmlData))
+                    if (!String.IsNullOrEmpty(value))
                     {
                         XMLDoc = new XmlDocument();
-                        XMLDoc.LoadXml(_xmlData);
+                        XMLDoc.LoadXml(value);
                     }
                 }
                 catch (Exception)
@@ -121,14 +118,25 @@ namespace Simplisity
 
         public XDocument XDocument
         {
-            get {
-               return XDocument.Load(new XmlNodeReader(XMLDoc));
+            get
+            {
+                return XDocument.Load(new XmlNodeReader(XMLDoc));
+            }
+        }
+
+        public string RootNodeName
+        {
+            get
+            {
+                XmlElement rootNode = XMLDoc.DocumentElement;
+                if (rootNode == null) return "genxml"; // return default
+                return rootNode.Name;
             }
         }
 
         public string GetXmlNode(string xpath)
         {
-            if (!string.IsNullOrEmpty(_xmlData) & XMLDoc != null)
+            if (XMLDoc != null && !string.IsNullOrEmpty(XMLDoc.OuterXml))
             {
                 try
                 {
@@ -162,23 +170,26 @@ namespace Simplisity
         /// <param name="xPathRootDestination">parent xpath in destination</param>
         public void AddXmlNode(string strXml, string xPathSource, string xPathRootDestination)
         {
-            var xmlDocNew = new XmlDocument();
-            xmlDocNew.LoadXml(strXml);
+            if (!String.IsNullOrEmpty(strXml))
+            {
+                var xmlDocNew = new XmlDocument();
+                xmlDocNew.LoadXml(strXml);
 
-            var xmlTarget = XMLDoc.SelectSingleNode(xPathRootDestination);
-            if (xmlTarget == null)
-            {
-                SetXmlProperty(xPathRootDestination, "");
-                xmlTarget = XMLDoc.SelectSingleNode(xPathRootDestination);
-            }
-            if (xmlTarget != null)
-            {
-                var xmlNod2 = xmlDocNew.SelectSingleNode(xPathSource);
-                if (xmlNod2 != null)
+                var xmlTarget = XMLDoc.SelectSingleNode(xPathRootDestination);
+                if (xmlTarget == null)
                 {
-                    var newNod = XMLDoc.ImportNode(xmlNod2, true);
-                    xmlTarget.AppendChild(newNod);
-                    XMLData = XMLDoc.OuterXml;
+                    SetXmlProperty(xPathRootDestination, "");
+                    xmlTarget = XMLDoc.SelectSingleNode(xPathRootDestination);
+                }
+                if (xmlTarget != null)
+                {
+                    var xmlNod2 = xmlDocNew.SelectSingleNode(xPathSource);
+                    if (xmlNod2 != null)
+                    {
+                        var newNod = XMLDoc.ImportNode(xmlNod2, true);
+                        xmlTarget.AppendChild(newNod);
+                        XMLData = XMLDoc.OuterXml;
+                    }
                 }
             }
         }
@@ -372,7 +383,7 @@ namespace Simplisity
 
         public void SetXmlProperty(string xpath, string Value, System.TypeCode DataTyp = System.TypeCode.String, bool cdata = true, bool ignoresecurityfilter = false, bool filterlinks = false)
         {
-            if (xpath != "" && !string.IsNullOrEmpty(XMLData))
+            if (xpath != "")
             {
                 if (DataTyp == System.TypeCode.Double)
                 {
@@ -396,15 +407,11 @@ namespace Simplisity
                 }
                 try
                 {
-                    XMLData = SetGenXmlValue(XMLData, xpath, Value, cdata, ignoresecurityfilter, filterlinks);
+                    SetGenXmlValue(xpath, Value, cdata, ignoresecurityfilter, filterlinks);
 
                     // do the datatype after the node is created
-                    if (DataTyp == System.TypeCode.DateTime)
-                        XMLData = SetGenXmlValue(XMLData, xpath + "/@datatype", "date", cdata);
-
-                    if (DataTyp == System.TypeCode.Double)
-                        XMLData = SetGenXmlValue(XMLData, xpath + "/@datatype", "double", cdata);
-
+                    if (DataTyp == System.TypeCode.DateTime) SetGenXmlValue(xpath + "/@datatype", "date", cdata);
+                    if (DataTyp == System.TypeCode.Double) SetGenXmlValue(xpath + "/@datatype", "double", cdata);
                 }
                 catch
                 {
@@ -496,14 +503,14 @@ namespace Simplisity
             var rtnDictionary = new Dictionary<string, string>();
             if (XMLDoc != null)
             {
-                var nods = XMLDoc.SelectNodes("genxml/*");
+                var nods = XMLDoc.SelectNodes(RootNodeName + "/*");
                 if (nods != null)
                 {
                     foreach (XmlNode nod in nods)
                     {
                         if (nod.Attributes["list"] == null)
                         {
-                            rtnDictionary = AddToDictionary(rtnDictionary, "genxml/" + nod.Name + "/*");
+                            rtnDictionary = AddToDictionary(rtnDictionary, RootNodeName + "/" + nod.Name + "/*");
                         }
                     }
                 }
@@ -585,7 +592,7 @@ namespace Simplisity
             return xmlNod.InnerText;
         }
 
-        private static XmlNode GetGenXmlNodeData(string dataXml, string xPath, string xmlRootName = "genxml")
+        private static XmlNode GetGenXmlNodeData(string dataXml, string xPath)
         {
             try
             {
@@ -597,13 +604,6 @@ namespace Simplisity
                 var xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(dataXml);
                 var xmlNod = xmlDoc.SelectSingleNode(xPath);
-                // check we don;t have a language node
-                if (xmlNod == null)
-                {
-                    //this leads to confusion.
-
-                    //xmlNod = xmlDoc.SelectSingleNode(xmlRootName + "/lang/" + xPath);
-                }
                 return xmlNod;
             }
             catch (Exception)
@@ -668,7 +668,7 @@ namespace Simplisity
         }
 
 
-        private static string SetGenXmlValue(string dataXml, string xpath, string Value, bool cdata = true, bool ignoresecurityfilter = false, bool filterlinks = false)
+        private void SetGenXmlValue(string xpath, string Value, bool cdata = true, bool ignoresecurityfilter = false, bool filterlinks = false)
         {
             if (ignoresecurityfilter)
             {
@@ -676,18 +676,15 @@ namespace Simplisity
                 Value = GeneralUtils.FormatDisableScripting(Value, filterlinks);
             }
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(dataXml);
             if (xpath.Contains("@"))
-                ReplaceXmLatt(xmlDoc, xpath, Value);
+                ReplaceXmLatt(xpath, Value);
             else
-                internalReplaceXmlNode(xmlDoc, xpath, Value, cdata);
-            return xmlDoc.OuterXml;
+                internalReplaceXmlNode(xpath, Value, cdata);
         }
 
-        private static void ReplaceXmLatt(XmlDocument xmlDoc, string xPath, string newValue)
+        private void ReplaceXmLatt(string xPath, string newValue)
         {
-            var nod = xmlDoc.SelectSingleNode(xPath);
+            var nod = XMLDoc.SelectSingleNode(xPath);
             if ((nod != null))
             {
                 if (nod.Attributes != null)
@@ -701,18 +698,18 @@ namespace Simplisity
                 if (xpatharray.Length == 2)
                 {
                     var attrName = xpatharray[1];
-                    var oAtt = xmlDoc.CreateAttribute(attrName);
+                    var oAtt = XMLDoc.CreateAttribute(attrName);
                     oAtt.Value = newValue;
 
-                    nod = xmlDoc.SelectSingleNode(xpatharray[0].TrimEnd('/'));
+                    nod = XMLDoc.SelectSingleNode(xpatharray[0].TrimEnd('/'));
                     if (nod != null) nod.Attributes.Append(oAtt);
                 }
             }
         }
 
-        private static void internalReplaceXmlNode(XmlDocument xmlDoc, string xPath, string newValue, bool cdata)
+        private void internalReplaceXmlNode(string xPath, string newValue, bool cdata)
         {
-            var nod = xmlDoc.SelectSingleNode(xPath);
+            var nod = XMLDoc.SelectSingleNode(xPath);
             if ((nod != null))
             {
                 if (newValue == "") cdata = false; //stops invalid "<" char error
@@ -729,7 +726,14 @@ namespace Simplisity
             {
                 string[] partsOfXPath = xPath.Trim('/').Split('/');
 
-                // Build full path so we can append.
+                // check for root element
+                XmlElement rootNode = XMLDoc.DocumentElement;
+                // if root does not exist create it, base on the first element of the xml.
+                if (rootNode == null) XMLDoc.CreateElement(partsOfXPath[0]);
+                // if xpath root does not match document root element, make xpath root same as document root. (To make it valid XmlDocument)
+                if (partsOfXPath.Length >= 1 && rootNode != null) partsOfXPath[0] = rootNode.Name;
+
+                // Build full path so we can append. (Include "root" node, this may give multiple root nodes!!)
                 var xPathTest = "";
                 var xPathPrevious = "";
                 var lp = 1;
@@ -739,16 +743,16 @@ namespace Simplisity
                     {
                         xPathTest += "/" + p;
                         xPathTest = xPathTest.TrimStart('/');
-                        var nodtest = xmlDoc.SelectSingleNode(xPathTest);
+                        var nodtest = XMLDoc.SelectSingleNode(xPathTest);
                         if ((nodtest == null))
                         {
-                            var elemtest = xmlDoc.CreateElement(p);
-                            var selectSingleNodeTest = xmlDoc.SelectSingleNode(xPathPrevious);
+                            var elemtest = XMLDoc.CreateElement(p);
+                            if (xPathPrevious == "") xPathPrevious = "/";
+                            var selectSingleNodeTest = XMLDoc.SelectSingleNode(xPathPrevious);
                             if (selectSingleNodeTest != null)
                             {
                                 selectSingleNodeTest.AppendChild(elemtest);
                             }
-
                         }
                         xPathPrevious = xPathTest;
                     }
@@ -758,7 +762,7 @@ namespace Simplisity
 
 
                 //Create a new node.
-                var elem = xmlDoc.CreateElement(partsOfXPath[partsOfXPath.Length - 1]);
+                var elem = XMLDoc.CreateElement(partsOfXPath[partsOfXPath.Length - 1]);
                 if (cdata)
                 {
                     elem.InnerXml = "<![CDATA[" + newValue + "]]>";
@@ -769,7 +773,7 @@ namespace Simplisity
                 }
 
                 //Add the node to the document.
-                var selectSingleNode = xmlDoc.SelectSingleNode(GeneralUtils.ReplaceLastOccurrence(xPath, partsOfXPath[partsOfXPath.Length - 1], "").TrimEnd('/'));
+                var selectSingleNode = XMLDoc.SelectSingleNode(GeneralUtils.ReplaceLastOccurrence(xPath, partsOfXPath[partsOfXPath.Length - 1], "").TrimEnd('/'));
                 if (selectSingleNode != null)
                 {
                     selectSingleNode.AppendChild(elem);
@@ -789,7 +793,7 @@ namespace Simplisity
             if (XMLDoc != null)
             {
                 var lp = 1;
-                var listNames = XMLDoc.SelectNodes("genxml/*[@list]");
+                var listNames = XMLDoc.SelectNodes(RootNodeName + "/*[@list]");
                 foreach (XmlNode i in listNames)
                 {
                     rtnList.Add(i.Name);
@@ -807,7 +811,7 @@ namespace Simplisity
             if (XMLDoc != null)
             {
                 var lp = 1;
-                var listRecords = XMLDoc.SelectNodes("genxml/" + listName + "/*");
+                var listRecords = XMLDoc.SelectNodes(RootNodeName + "/" + listName + "/*");
                 if (listRecords != null)
                 {
                     foreach (XmlNode i in listRecords)
@@ -828,7 +832,7 @@ namespace Simplisity
         {
             if (XMLDoc != null)
             {
-                RemoveXmlNode("genxml/" + listName);
+                RemoveXmlNode(RootNodeName + "/" + listName);
             }
         }
 
@@ -836,7 +840,7 @@ namespace Simplisity
         {
             if (XMLDoc != null && index > 0)
             {
-                RemoveXmlNode("genxml/" + listName + "/genxml[" + index + "]");
+                RemoveXmlNode(RootNodeName + "/" + listName + "/*[" + index + "]");
             }
         }
         public void RemoveRecordListItem(string listName, string itemkeyxpath, string itemkey)
@@ -850,7 +854,7 @@ namespace Simplisity
                 {
                     if (itemkey == i.GetXmlProperty(itemkeyxpath))
                     {
-                        RemoveXmlNode("genxml/" + listName + "/genxml[" + lp + "]");
+                        RemoveXmlNode(RootNodeName + "/" + listName + "/*[" + lp + "]");
                     }
                     lp += 1;
                 }
@@ -892,7 +896,7 @@ namespace Simplisity
             }
         }
 
-        public void AddListItem(string listName, string xmldata = "<genxml></genxml>")
+        public void AddListItem(string listName, string xmlData, string xpathSource = "/")
         {
             if (XMLDoc != null)
             {
@@ -900,14 +904,15 @@ namespace Simplisity
                 var l = GetRecordList(listName);
                 var sortcount = l.Count;
 
-                if (XMLDoc.SelectSingleNode("genxml/" + listName) == null)
+                if (XMLDoc.SelectSingleNode(RootNodeName + "/" + listName) == null)
                 {
-                    SetXmlProperty("genxml/" + listName, "", System.TypeCode.String, false);
-                    SetXmlProperty("genxml/" + listName + "/@list", "true", System.TypeCode.String, false);
+                    SetXmlProperty(RootNodeName + "/" + listName, "", System.TypeCode.String, false);
+                    SetXmlProperty(RootNodeName + "/" + listName + "/@list", "true", System.TypeCode.String, false);
                 }
 
-                AddXmlNode(xmldata, "genxml", "genxml/" + listName);
-                SetXmlProperty("genxml/" + listName + "/genxml[position() = last()]/index", sortcount.ToString(), System.TypeCode.String, false);
+                AddXmlNode(xmlData, xpathSource, RootNodeName + " / " + listName);
+
+                SetXmlProperty(RootNodeName + "/" + listName + "/*[position() = last()]/index", sortcount.ToString(), System.TypeCode.String, false);
             }
         }
 
@@ -915,5 +920,6 @@ namespace Simplisity
 
 
     }
+
 
 }

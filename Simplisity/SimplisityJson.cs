@@ -18,7 +18,6 @@ namespace Simplisity
         public const String hidden = "hidden";
     }
 
-
     public class SimplisityJson
     {
 
@@ -51,7 +50,7 @@ namespace Simplisity
 
 
 
-            var rtnInfo = ConvertJsonToSimplisityInfo(sInfo, editlang, "postdata",false);
+            var rtnInfo = ConvertJsonToSimplisityInfo(sInfo, editlang, "postdata", false);
             var langInfo = ConvertJsonToSimplisityInfo(sInfo, editlang, "postdata", true);
 
 
@@ -73,28 +72,27 @@ namespace Simplisity
             {
                 var listname = lnameselector.Replace(".", "");
                 // --------- Stadard Data
-                rtnInfo.SetXmlProperty("genxml/" + listname, "", TypeCode.String, false);
-                rtnInfo.SetXmlProperty("genxml/" + listname + "/@list", "true", TypeCode.String, false);
-                var listInfoList = ConvertJsonToSimplisityInfoList(sInfo, editlang, lnameselector,false);
+                rtnInfo.SetXmlProperty(rtnInfo.RootNodeName + "/" + listname, "", TypeCode.String, false);
+                rtnInfo.SetXmlProperty(rtnInfo.RootNodeName + "/" + listname + "/@list", "true", TypeCode.String, false);
+                var listInfoList = ConvertJsonToSimplisityInfoList(sInfo, editlang, lnameselector, false);
                 foreach (var listInfo in listInfoList)
                 {
-                    rtnInfo.AddXmlNode(listInfo.XMLData, "genxml", "genxml/" + listname);
+                    rtnInfo.AddXmlNode(listInfo.XMLData, "/", rtnInfo.RootNodeName + "/" + listname);
                 }
                 // --------- Localized data
-                langInfo.SetXmlProperty("genxml/" + listname, "", TypeCode.String, false);
-                langInfo.SetXmlProperty("genxml/" + listname + "/@list", "true", TypeCode.String, false);
+                langInfo.SetXmlProperty(langInfo.RootNodeName + "/" + listname, "", TypeCode.String, false);
+                langInfo.SetXmlProperty(langInfo.RootNodeName + "/" + listname + "/@list", "true", TypeCode.String, false);
                 listInfoList = ConvertJsonToSimplisityInfoList(sInfo, editlang, lnameselector, true);
                 foreach (var listInfo in listInfoList)
                 {
-                    langInfo.AddXmlNode(listInfo.XMLData, "genxml", "genxml/" + listname);
+                    langInfo.AddXmlNode(listInfo.XMLData, "/", langInfo.RootNodeName + "/" + listname);
                 }
 
             }
 
             // merge localized data into SimplisityInfo
-            rtnInfo.SetXmlProperty("genxml/lang", "", TypeCode.String, false);
-            rtnInfo.AddXmlNode(langInfo.XMLData, "genxml", "genxml/lang");
-
+            rtnInfo.SetXmlProperty(rtnInfo.RootNodeName + "/lang", "", TypeCode.String, false);
+            rtnInfo.AddXmlNode(langInfo.XMLData, "/", rtnInfo.RootNodeName + "/lang");
 
             // -------------------------------------------------------------
             // -------------- OUTPUT TEST DATA -----------------------------
@@ -113,8 +111,8 @@ namespace Simplisity
             rtnInfo.Lang = editlang;
 
             // tidy the data.
-            rtnInfo.RemoveXmlNode("genxml/postform/paramjson");
-            rtnInfo.RemoveXmlNode("genxml/postform/inputjson");
+            rtnInfo.RemoveXmlNode(sInfo.RootNodeName + "/postform/paramjson");
+            rtnInfo.RemoveXmlNode(sInfo.RootNodeName + "/postform/inputjson");
 
             return rtnInfo;
         }
@@ -122,6 +120,12 @@ namespace Simplisity
         private static SimplisityInfo ConvertJsonToSimplisityInfo(SimplisityInfo requestJsonXml, string editlang, string dataroot, bool lang)
         {
             var xmlOut = new SimplisityInfo();
+
+            // Set a blank field on the s-xpath.
+            // This is so we set a RootNodeName, based on the xpath of the element selected by the dataroot.
+            var xpathNode = requestJsonXml.XMLDoc.SelectSingleNode("root/" + dataroot + "[1]");
+            if (xpathNode != null && xpathNode.SelectSingleNode("s-xpath") != null) xmlOut.SetXmlProperty(xpathNode.SelectSingleNode("s-xpath").InnerText, "");
+
             xmlOut.Lang = editlang;
             if (!lang) // only save s-fields in standard data.
             {
@@ -129,13 +133,13 @@ namespace Simplisity
                 var sfieldList = requestJsonXml.XMLDoc.SelectNodes("root/sfield/*");
                 foreach (XmlNode nod in sfieldList)
                 {
-                    var xpath = "genxml/hidden/" + nod.Name;
+                    var xpath = xmlOut.RootNodeName + "/hidden/" + nod.Name;
                     xmlOut.SetXmlProperty(xpath, nod.InnerText);
                 }
                 var systemList = requestJsonXml.XMLDoc.SelectNodes("root/system/*");
                 foreach (XmlNode nod in systemList)
                 {
-                    var xpath = "genxml/hidden/" + nod.Name;
+                    var xpath = xmlOut.RootNodeName + "/hidden/" + nod.Name;
                     xmlOut.SetXmlProperty(xpath, nod.InnerText);
                 }
             }
@@ -182,7 +186,7 @@ namespace Simplisity
                 rowInfojoined.XMLData = rowXml;
                 rtnList.Add(ConvertJsonToSimplisityInfo(rowInfojoined, editlang, "listdata", lang));
                 row += 1;
-                listrow = GetListXml(requestJsonXml, lnameselector,row);
+                listrow = GetListXml(requestJsonXml, lnameselector, row);
             }
 
             return rtnList;
@@ -205,7 +209,7 @@ namespace Simplisity
             return postdataList;
         }
 
-        private static List<SimplisityInfo> GetListXml(SimplisityInfo JsonConvertToXml, string listname = "",int row = 0)
+        private static List<SimplisityInfo> GetListXml(SimplisityInfo JsonConvertToXml, string listname = "", int row = 0)
         {
             // get listdata list
             var postdataList = new List<SimplisityInfo>();
@@ -265,12 +269,12 @@ namespace Simplisity
                     {
                         // try and build the xpath.
                         var id = smi.GetXmlProperty(dataroot + "/id");
-                        xpath = "genxml/" + type + "/" + id;
+                        xpath = xmlOut.RootNodeName + "/" + type + "/" + id;
                     }
 
                     if (xpath != "")
                     {
-                        if (xpath.StartsWith("genxml/lang"))
+                        if (xpath.StartsWith(xmlOut.RootNodeName + "/lang"))
                         {
                             supdate = "lang";
                             xpath = xpath.Substring(12);
@@ -288,7 +292,6 @@ namespace Simplisity
 
                         if (addNode)
                         {
-
                             var val = smi.GetXmlProperty(dataroot + "/value");
                             switch (smi.GetXmlProperty(dataroot + "/s-datatype").ToLower())
                             {
@@ -324,7 +327,7 @@ namespace Simplisity
                 var type = smi.GetXmlProperty(dataroot + "/type");
                 var checkfield = smi.GetXmlPropertyBool(dataroot + "/checked");
 
-                if (xpath.StartsWith("genxml/lang"))
+                if (xpath.StartsWith(xmlOut.RootNodeName + "/lang"))
                 {
                     supdate = "lang";
                     xpath = xpath.Substring(12);
@@ -351,7 +354,7 @@ namespace Simplisity
                     }
                     else
                     {
-                        if (xpath == "") xpath = "genxml/checkbox/" + ctrlname;
+                        if (xpath == "") xpath = xmlOut.RootNodeName + "/checkbox/" + ctrlname;
                         // checkbox list, select siblings.
                         if (!doneCheckboxes.Contains(xpath))
                         {
@@ -372,4 +375,5 @@ namespace Simplisity
 
 
     }
+
 }

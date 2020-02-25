@@ -7,7 +7,7 @@ using System.Xml;
 namespace Simplisity
 {
 
-    public class SimplisityInfo : SimplisityRecord, ICloneable 
+    public class SimplisityInfo : SimplisityRecord, ICloneable
     {
         public object CloneInfo()
         {
@@ -18,21 +18,14 @@ namespace Simplisity
 
         public SimplisityInfo()
         {
-            RootNodeName = "genxml";
-            if (XMLDoc == null) XMLData = "<" + RootNodeName + "></" + RootNodeName + ">"; // if we don;t have anything, create an empty default to stop errors.
+            this.Lang = "en-US"; // default language format
+            if (XMLDoc == null) XMLDoc = new XmlDocument();
         }
 
         public SimplisityInfo(string lang)
         {
-            RootNodeName = "genxml";
             this.Lang = lang;
-            if (XMLDoc == null) XMLData = "<" + RootNodeName + "></" + RootNodeName + ">"; // if we don;t have anything, create an empty default to stop errors.
-        }
-        public SimplisityInfo(string lang, string rootNodeName)
-        {
-            RootNodeName = rootNodeName;
-            this.Lang = lang;
-            if (XMLDoc == null) XMLData = "<" + RootNodeName + "></" + RootNodeName + ">"; // if we don;t have anything, create an empty default to stop errors.
+            if (XMLDoc == null) XMLDoc = new XmlDocument();
         }
 
         public SimplisityInfo(SimplisityRecord simplisityRecord)
@@ -58,15 +51,15 @@ namespace Simplisity
         public SimplisityRecord GetLangRecord()
         {
             var rtn = (SimplisityRecord)base.Clone();
-            rtn.XMLData = GetXmlNode("genxml/lang");
-            if (rtn.XMLData == "") rtn.XMLData = "<genxml/>";
+            rtn.XMLData = GetXmlNode(RootNodeName + "lang");
+            if (rtn.XMLData == "") rtn.XMLData = "<" + RootNodeName + "/>";
             return rtn;
         }
 
         public string GetLangXml()
         {
-            var rtn = GetXmlNode("genxml/lang");
-            if (rtn == "") rtn = "<genxml/>";
+            var rtn = GetXmlNode(RootNodeName + "/lang");
+            if (rtn == "") rtn = "<" + RootNodeName + "/>";
             return rtn;
         }
 
@@ -81,16 +74,16 @@ namespace Simplisity
 
         public void SetLangXml(string strXml)
         {
-            if (XMLDoc.SelectSingleNode("genxml/lang") == null)
+            if (XMLDoc.SelectSingleNode(RootNodeName + "/lang") == null)
             {
-                SetXmlProperty("genxml/lang", "", System.TypeCode.String, false);
+                SetXmlProperty(RootNodeName + "/lang", "", System.TypeCode.String, false);
             }
-            AddXmlNode(strXml, "genxml", "genxml/lang");
+            AddXmlNode(strXml, "/", RootNodeName + "/lang");
         }
 
         public void RemoveLangRecord()
         {
-            RemoveXmlNode("genxml/lang");
+            RemoveXmlNode(RootNodeName + "/lang");
         }
 
         #region "Lists"
@@ -102,7 +95,7 @@ namespace Simplisity
             if (XMLDoc != null)
             {
                 var lp = 1;
-                var listNames = XMLDoc.SelectNodes("genxml/*[@list]");
+                var listNames = XMLDoc.SelectNodes(RootNodeName + "/*[@list]");
                 foreach (XmlNode i in listNames)
                 {
                     rtnList.Add(i.Name);
@@ -120,7 +113,7 @@ namespace Simplisity
             if (XMLDoc != null)
             {
                 var lp = 1;
-                var listRecords = XMLDoc.SelectNodes("genxml/" + listName + "/*");
+                var listRecords = XMLDoc.SelectNodes(RootNodeName + "/" + listName + "/*");
                 if (listRecords != null)
                 {
                     foreach (XmlNode i in listRecords)
@@ -131,17 +124,17 @@ namespace Simplisity
                         nbi.GUIDKey = listName;
 
                         var listXmlNode = "";
-                        var listitemref = nbi.GetXmlProperty("genxml/hidden/simplisity-listitemref");
+                        var listitemref = nbi.GetXmlProperty(RootNodeName + "/hidden/simplisity-listitemref");
                         if (listitemref == "")
                         {
-                            listXmlNode = GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + lp + "]");
+                            listXmlNode = GetXmlNode(RootNodeName + "/lang/" + RootNodeName + "/" + listName + "/*[" + lp + "]");
                         }
                         else
                         {
-                            listXmlNode = GetXmlNode("genxml/lang/genxml/" + listName + "/genxml[hidden/simplisity-listitemreflang='" + listitemref + "']");
+                            listXmlNode = GetXmlNode(RootNodeName + "/lang/" + RootNodeName + "/" + listName + "/*[hidden/simplisity-listitemreflang='" + listitemref + "']");
                         }
 
-                        nbi.SetLangXml("<genxml>" + listXmlNode + "</genxml>");
+                        nbi.SetLangXml("<" + RootNodeName + ">" + listXmlNode + "</" + RootNodeName + ">");
                         rtnList.Add(nbi);
                         lp += 1;
                     }
@@ -154,8 +147,8 @@ namespace Simplisity
         {
             if (XMLDoc != null)
             {
-                RemoveXmlNode("genxml/" + listName);
-                RemoveXmlNode("genxml/lang/genxml/" + listName);
+                RemoveXmlNode(RootNodeName + "/" + listName);
+                RemoveXmlNode(RootNodeName + "/lang/" + RootNodeName + "/" + listName);
             }
         }
 
@@ -163,8 +156,8 @@ namespace Simplisity
         {
             if (XMLDoc != null && index > 0)
             {
-                RemoveXmlNode("genxml/" + listName + "/genxml[" + index + "]");
-                RemoveXmlNode("genxml/lang/genxml/" + listName + "/genxml[" + index + "]");
+                RemoveXmlNode(RootNodeName + "/" + listName + "/*[" + index + "]");
+                RemoveXmlNode(RootNodeName + "/lang/" + RootNodeName + "/" + listName + "/*[" + index + "]");
             }
         }
 
@@ -209,34 +202,37 @@ namespace Simplisity
             }
         }
 
-        public void AddListItem(string listName, string xmldata = "<genxml></genxml>", string xmllangdata = "<genxml></genxml>")
+        public void AddListItem(string listName, string xmldata = "", string xmllangdata = "")
         {
             if (XMLDoc != null)
             {
+                if (xmldata == "") xmldata = "<" + RootNodeName + "></" + RootNodeName + ">";
+                if (xmllangdata == "") xmllangdata = "<" + RootNodeName + "></" + RootNodeName + ">";
+
                 // get listcount, so we can add a sort value
                 var l = GetList(listName);
                 var sortcount = l.Count + 1;
 
-                if (XMLDoc.SelectSingleNode("genxml/" + listName) == null)
+                if (XMLDoc.SelectSingleNode(RootNodeName + "/" + listName) == null)
                 {
-                    SetXmlProperty("genxml/" + listName, "", System.TypeCode.String, false);
+                    SetXmlProperty(RootNodeName + "/" + listName, "", System.TypeCode.String, false);
                 }
 
-                AddXmlNode(xmldata, "genxml", "genxml/" + listName);
+                AddXmlNode(xmldata, "/", RootNodeName + "/" + listName);
 
-                SetXmlProperty("genxml/" + listName + "/genxml[last()]/index", sortcount.ToString(), System.TypeCode.String, false);
+                SetXmlProperty(RootNodeName + "/" + listName + "/*[last()]/index", sortcount.ToString(), System.TypeCode.String, false);
 
-                if (XMLDoc.SelectSingleNode("genxml/lang") == null)
+                if (XMLDoc.SelectSingleNode(RootNodeName + "/lang") == null)
                 {
-                    SetXmlProperty("genxml/lang", "", System.TypeCode.String, false);
-                    SetXmlProperty("genxml/lang/genxml", "", System.TypeCode.String, false);
+                    SetXmlProperty(RootNodeName + "/lang", "", System.TypeCode.String, false);
+                    SetXmlProperty(RootNodeName + "/lang/" + RootNodeName, "", System.TypeCode.String, false);
                 }
-                if (XMLDoc.SelectSingleNode("genxml/lang/genxml/" + listName) == null)
+                if (XMLDoc.SelectSingleNode(RootNodeName + "/lang/" + RootNodeName + "/" + listName) == null)
                 {
-                    SetXmlProperty("genxml/lang/genxml/" + listName, "", System.TypeCode.String, false);
+                    SetXmlProperty(RootNodeName + "/lang/" + RootNodeName + "/" + listName, "", System.TypeCode.String, false);
                 }
 
-                AddXmlNode(xmllangdata, "genxml", "genxml/lang/genxml/" + listName);
+                AddXmlNode(xmllangdata, "/", RootNodeName + "/lang/" + RootNodeName + "/" + listName);
 
             }
         }
