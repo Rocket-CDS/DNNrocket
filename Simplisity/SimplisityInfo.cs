@@ -18,13 +18,21 @@ namespace Simplisity
 
         public SimplisityInfo()
         {
-            if (XMLDoc == null) XMLData = "<genxml></genxml>"; // if we don;t have anything, create an empty default to stop errors.
+            RootNodeName = "genxml";
+            if (XMLDoc == null) XMLData = "<" + RootNodeName + "></" + RootNodeName + ">"; // if we don;t have anything, create an empty default to stop errors.
         }
 
         public SimplisityInfo(string lang)
         {
+            RootNodeName = "genxml";
             this.Lang = lang;
-            if (XMLDoc == null) XMLData = "<genxml></genxml>"; // if we don;t have anything, create an empty default to stop errors.
+            if (XMLDoc == null) XMLData = "<" + RootNodeName + "></" + RootNodeName + ">"; // if we don;t have anything, create an empty default to stop errors.
+        }
+        public SimplisityInfo(string lang, string rootNodeName)
+        {
+            RootNodeName = rootNodeName;
+            this.Lang = lang;
+            if (XMLDoc == null) XMLData = "<" + RootNodeName + "></" + RootNodeName + ">"; // if we don;t have anything, create an empty default to stop errors.
         }
 
         public SimplisityInfo(SimplisityRecord simplisityRecord)

@@ -25,6 +25,7 @@ namespace Simplisity
         public int RowCount { get; set; }
         public string EncodingKey { get; set; }
         public int SortOrder { get; set; }
+        public string RootNodeName { get; set; }
 
         private string _xmlData;
 
@@ -82,14 +83,16 @@ namespace Simplisity
 
         public SimplisityRecord()
         {
+            RootNodeName = "genxml";
             this.Lang = "en-US"; // we need a langauge for formating data, default to en-US, but the language should be passed when we need formatted date.
-            if (XMLDoc == null) XMLData = "<genxml></genxml>"; // if we don;t have anything, create an empty default to stop errors.
+            if (XMLDoc == null) XMLData = "<" + RootNodeName + "></" + RootNodeName + ">"; // if we don;t have anything, create an empty default to stop errors.
         }
 
-        public SimplisityRecord(string lang)
+        public SimplisityRecord(string rootNodeName)
         {
-            this.Lang = lang;
-            if (XMLDoc == null) XMLData = "<genxml></genxml>"; // if we don;t have anything, create an empty default to stop errors.
+            RootNodeName = rootNodeName;
+            this.Lang = "en-US"; // we need a langauge for formating data, default to en-US, but the language should be passed when we need formatted date.
+            if (XMLDoc == null) XMLData = "<" + RootNodeName + "></" + RootNodeName + ">"; // if we don;t have anything, create an empty default to stop errors.
         }
 
 
