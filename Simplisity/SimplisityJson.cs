@@ -126,8 +126,16 @@ namespace Simplisity
             if (xpathNode != null && xpathNode.SelectSingleNode("s-xpath") != null)
             {
                 var xPath = xpathNode.SelectSingleNode("s-xpath").InnerText;
-                string[] partsOfXPath = xPath.Trim('/').Split('/');
-                xmlOut.XMLData = "<" + partsOfXPath[0] + "/>";
+                if (xPath == "")
+                {
+                    // we have no xpath, so default to <genxml>
+                    xmlOut.XMLData = "<genxml/>";
+                }
+                else
+                {
+                    string[] partsOfXPath = xPath.Trim('/').Split('/');
+                    xmlOut.XMLData = "<" + partsOfXPath[0] + "/>";
+                }
             }
 
             xmlOut.Lang = editlang;

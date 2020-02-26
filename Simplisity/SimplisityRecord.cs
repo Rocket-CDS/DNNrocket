@@ -130,6 +130,7 @@ namespace Simplisity
             {
                 if (_rootNodeName == "")
                 {
+                    if (XMLDoc == null || XMLDoc.DocumentElement == null) XMLData = "<genxml/>";
                     XmlElement rootNode = XMLDoc.DocumentElement;
                     if (rootNode == null) return "genxml"; // return default
                     _rootNodeName = rootNode.Name;                    

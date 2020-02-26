@@ -45,6 +45,7 @@ namespace Simplisity
             this.RowCount = simplisityRecord.RowCount;
             this.EncodingKey = simplisityRecord.EncodingKey;
             this.SortOrder = simplisityRecord.SortOrder;
+            if (XMLDoc == null) XMLDoc = new XmlDocument();
         }
 
 
