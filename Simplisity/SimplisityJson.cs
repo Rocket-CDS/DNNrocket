@@ -121,10 +121,14 @@ namespace Simplisity
         {
             var xmlOut = new SimplisityInfo();
 
-            // Set a blank field on the s-xpath.
-            // This is so we set a RootNodeName, based on the xpath of the element selected by the dataroot.
+            // Use s-xpath to set a RootNodeName, based on the xpath of the element selected by the dataroot.
             var xpathNode = requestJsonXml.XMLDoc.SelectSingleNode("root/" + dataroot + "[1]");
-            if (xpathNode != null && xpathNode.SelectSingleNode("s-xpath") != null) xmlOut.SetXmlProperty(xpathNode.SelectSingleNode("s-xpath").InnerText, "");
+            if (xpathNode != null && xpathNode.SelectSingleNode("s-xpath") != null)
+            {
+                var xPath = xpathNode.SelectSingleNode("s-xpath").InnerText;
+                string[] partsOfXPath = xPath.Trim('/').Split('/');
+                xmlOut.XMLData = "<" + partsOfXPath[0] + "/>";
+            }
 
             xmlOut.Lang = editlang;
             if (!lang) // only save s-fields in standard data.
