@@ -77,7 +77,7 @@ namespace Simplisity
                 var listInfoList = ConvertJsonToSimplisityInfoList(sInfo, editlang, lnameselector, false);
                 foreach (var listInfo in listInfoList)
                 {
-                    rtnInfo.AddXmlNode(listInfo.XMLData, "/", rtnInfo.RootNodeName + "/" + listname);
+                    rtnInfo.AddXmlNode(listInfo.XMLData, "/*", rtnInfo.RootNodeName + "/" + listname);
                 }
                 // --------- Localized data
                 langInfo.SetXmlProperty(langInfo.RootNodeName + "/" + listname, "", TypeCode.String, false);
@@ -85,14 +85,14 @@ namespace Simplisity
                 listInfoList = ConvertJsonToSimplisityInfoList(sInfo, editlang, lnameselector, true);
                 foreach (var listInfo in listInfoList)
                 {
-                    langInfo.AddXmlNode(listInfo.XMLData, "/", langInfo.RootNodeName + "/" + listname);
+                    langInfo.AddXmlNode(listInfo.XMLData, "/*", langInfo.RootNodeName + "/" + listname);
                 }
 
             }
 
             // merge localized data into SimplisityInfo
             rtnInfo.SetXmlProperty(rtnInfo.RootNodeName + "/lang", "", TypeCode.String, false);
-            rtnInfo.AddXmlNode(langInfo.XMLData, "/", rtnInfo.RootNodeName + "/lang");
+            rtnInfo.AddXmlNode(langInfo.XMLData, "/*", rtnInfo.RootNodeName + "/lang");
 
             // -------------------------------------------------------------
             // -------------- OUTPUT TEST DATA -----------------------------

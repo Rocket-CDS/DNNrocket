@@ -51,7 +51,7 @@ namespace Simplisity
         public SimplisityRecord GetLangRecord()
         {
             var rtn = (SimplisityRecord)base.Clone();
-            rtn.XMLData = GetXmlNode(RootNodeName + "lang");
+            rtn.XMLData = GetXmlNode(RootNodeName + "/lang");
             if (rtn.XMLData == "") rtn.XMLData = "<" + RootNodeName + "/>";
             return rtn;
         }
@@ -78,7 +78,7 @@ namespace Simplisity
             {
                 SetXmlProperty(RootNodeName + "/lang", "", System.TypeCode.String, false);
             }
-            AddXmlNode(strXml, "/", RootNodeName + "/lang");
+            AddXmlNode(strXml, "/*", RootNodeName + "/lang");
         }
 
         public void RemoveLangRecord()
@@ -206,8 +206,8 @@ namespace Simplisity
         {
             if (XMLDoc != null)
             {
-                if (xmldata == "") xmldata = "<" + RootNodeName + "></" + RootNodeName + ">";
-                if (xmllangdata == "") xmllangdata = "<" + RootNodeName + "></" + RootNodeName + ">";
+                if (xmldata == "") xmldata = "<" + listName + "row></" + listName + "row>";
+                if (xmllangdata == "") xmllangdata = "<" + listName + "row></" + listName + "row>";
 
                 // get listcount, so we can add a sort value
                 var l = GetList(listName);
@@ -218,7 +218,7 @@ namespace Simplisity
                     SetXmlProperty(RootNodeName + "/" + listName, "", System.TypeCode.String, false);
                 }
 
-                AddXmlNode(xmldata, "/", RootNodeName + "/" + listName);
+                AddXmlNode(xmldata, "/*", RootNodeName + "/" + listName);
 
                 SetXmlProperty(RootNodeName + "/" + listName + "/*[last()]/index", sortcount.ToString(), System.TypeCode.String, false);
 
@@ -232,7 +232,7 @@ namespace Simplisity
                     SetXmlProperty(RootNodeName + "/lang/" + RootNodeName + "/" + listName, "", System.TypeCode.String, false);
                 }
 
-                AddXmlNode(xmllangdata, "/", RootNodeName + "/lang/" + RootNodeName + "/" + listName);
+                AddXmlNode(xmllangdata, "/*", RootNodeName + "/lang/" + RootNodeName + "/" + listName);
 
             }
         }

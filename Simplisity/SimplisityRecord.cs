@@ -26,6 +26,8 @@ namespace Simplisity
         public string EncodingKey { get; set; }
         public int SortOrder { get; set; }
 
+        private string _rootNodeName;  // for speed on reading property
+
         public SimplisityRecord(
             int ItemID,
             int PortalId,
@@ -56,6 +58,9 @@ namespace Simplisity
             this.UserId = UserId;
             this.RowCount = RowCount;
             this.EncodingKey = EncodingKey;
+
+            _rootNodeName = "";
+            if (XMLDoc == null) XMLDoc = new XmlDocument();
         }
 
         public SimplisityRecord(SimplisityInfo info)
@@ -76,20 +81,17 @@ namespace Simplisity
             this.RowCount = info.RowCount;
             this.EncodingKey = info.EncodingKey;
             this.SortOrder = info.SortOrder;
+
+            _rootNodeName = "";
+            if (XMLDoc == null) XMLDoc = new XmlDocument();
         }
 
         public SimplisityRecord()
         {
             this.Lang = "en-US"; // we need a langauge for formating data, default to en-US, but the language should be passed when we need formatted date.
             if (XMLDoc == null) XMLDoc = new XmlDocument();
+            _rootNodeName = "";
         }
-
-        public SimplisityRecord(string rootNodeName)
-        {
-            this.Lang = "en-US"; // we need a langauge for formating data, default to en-US, but the language should be passed when we need formatted date.
-            if (XMLDoc == null) XMLDoc = new XmlDocument();
-        }
-
 
         public string XMLData
         {
@@ -99,14 +101,12 @@ namespace Simplisity
             }
             set
             {
-                XMLDoc = null;
                 try
                 {
-                    if (!String.IsNullOrEmpty(value))
-                    {
-                        XMLDoc = new XmlDocument();
-                        XMLDoc.LoadXml(value);
-                    }
+                    var v = value;
+                    if (String.IsNullOrEmpty(v)) v = "<" + RootNodeName + "/>";
+                    XMLDoc = new XmlDocument();
+                    XMLDoc.LoadXml(v);
                 }
                 catch (Exception)
                 {
@@ -128,9 +128,13 @@ namespace Simplisity
         {
             get
             {
-                XmlElement rootNode = XMLDoc.DocumentElement;
-                if (rootNode == null) return "genxml"; // return default
-                return rootNode.Name;
+                if (_rootNodeName == "")
+                {
+                    XmlElement rootNode = XMLDoc.DocumentElement;
+                    if (rootNode == null) return "genxml"; // return default
+                    _rootNodeName = rootNode.Name;                    
+                }
+                return _rootNodeName;
             }
         }
 
@@ -896,7 +900,7 @@ namespace Simplisity
             }
         }
 
-        public void AddListItem(string listName, string xmlData, string xpathSource = "/")
+        public void AddListItem(string listName, string xmlData = "", string xpathSource = "/")
         {
             if (XMLDoc != null)
             {
@@ -910,7 +914,9 @@ namespace Simplisity
                     SetXmlProperty(RootNodeName + "/" + listName + "/@list", "true", System.TypeCode.String, false);
                 }
 
-                AddXmlNode(xmlData, xpathSource, RootNodeName + " / " + listName);
+                if (xmlData == "") xmlData = "<" + listName + "row></" + listName + "row>";
+
+                AddXmlNode(xmlData, listName + "row", RootNodeName + " / " + listName);
 
                 SetXmlProperty(RootNodeName + "/" + listName + "/*[position() = last()]/index", sortcount.ToString(), System.TypeCode.String, false);
             }
