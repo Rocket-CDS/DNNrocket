@@ -1025,7 +1025,7 @@ namespace RocketMod
                     var razortemplate = "selectapp.cshtml";
                     var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(),"1.0", true);
                     var passSettings = _postInfo.ToDictionary();
-                    passSettings.Add("moduleid", _moduleParams.ModuleId.ToString());
+                    if (!passSettings.ContainsKey("moduleid")) passSettings.Add("moduleid", _moduleParams.ModuleId.ToString());
 
                     return DNNrocketUtils.RazorDetail(razorTempl, _appThemeDataList, passSettings, null, true);
                 }
