@@ -193,6 +193,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Documents\Build-DNNrocket-EventPlugin.docx" />
     <None Include="Documents\DNNrocket-File-Download.docx" />
     <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
     <None Include="downloadfile.ashx" />

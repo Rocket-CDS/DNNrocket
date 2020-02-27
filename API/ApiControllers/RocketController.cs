@@ -112,23 +112,8 @@ namespace DNNrocketAPI.ApiControllers
                 {
                     requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
 
-                    // ---- START: DEBUG POST ------
-                    var debugSystemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
-                    if (debugSystemInfo != null && debugSystemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
-                    {
-                        DNNrocketUtils.LogDebug("===== requestJson =====" + Environment.NewLine + requestJson);
-                    }
-                    // ---- END: DEBUG POST ------
-
                     postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
                     postInfo.PortalId = DNNrocketUtils.GetPortalId();
-
-                    // ---- START: DEBUG POST ------
-                    if (debugSystemInfo != null && debugSystemInfo.GetXmlPropertyBool("genxml/checkbox/debugmode"))
-                    {
-                        DNNrocketUtils.LogDebug("===== postInfo.XMLData =====" + Environment.NewLine + postInfo.XMLData);
-                    }
-                    // ---- END: DEBUG POST ------
 
                 }
 
