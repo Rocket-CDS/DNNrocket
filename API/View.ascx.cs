@@ -209,7 +209,17 @@ namespace DNNrocketAPI
                 if (String.IsNullOrEmpty(cacheOutPut))
                 {
 
+                    // before event
+                    var rtnDictInfo = DNNrocketUtils.EventProviderBefore(_paramCmd, systemData, postInfo, paramInfo, DNNrocketUtils.GetCurrentCulture());
+                    if (rtnDictInfo.ContainsKey("post")) postInfo = rtnDictInfo["post"];
+                    if (rtnDictInfo.ContainsKey("param")) paramInfo = rtnDictInfo["param"];
+
                     var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, paramInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
+
+                    // after Event
+                    var eventDictionary = DNNrocketUtils.EventProviderAfter(_paramCmd, systemData, postInfo, paramInfo, DNNrocketUtils.GetCurrentCulture());
+                    if (eventDictionary.ContainsKey("outputhtml")) returnDictionary["outputhtml"] = eventDictionary["outputhtml"];
+                    if (eventDictionary.ContainsKey("outputjson")) returnDictionary["outputjson"] = eventDictionary["outputjson"];
 
                     var model = new SimplisityRazor();
                     model.ModuleId = ModuleId;
