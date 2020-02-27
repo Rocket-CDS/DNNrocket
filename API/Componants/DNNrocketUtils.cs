@@ -1563,7 +1563,7 @@ namespace DNNrocketAPI
             if (!systemData.Exists) return rtnDic;  // for systemadmin this may be null
             foreach (var rocketInterface in systemData.EventList)
             {
-                if (rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                if (rocketInterface.IsActive && rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
                 {
                     try
                     {
@@ -1591,7 +1591,7 @@ namespace DNNrocketAPI
             if (!systemData.Exists) return rtnDic;  // for systemadmin this may be null
             foreach (var rocketInterface in systemData.EventList)
             {
-                if (rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                if (rocketInterface.IsActive && rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
                 {
                     try
                     {
