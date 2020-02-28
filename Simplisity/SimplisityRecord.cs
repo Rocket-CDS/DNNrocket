@@ -735,10 +735,10 @@ namespace Simplisity
                 XmlElement rootNode = XMLDoc.DocumentElement;
                 // if root does not exist create it, base on the first element of the xml.
                 if (rootNode == null) XMLDoc.CreateElement(partsOfXPath[0]);
-                // if xpath root does not match document root element, make xpath root same as document root. (To make it valid XmlDocument)
+                // if xpath root does not match document root element, make xpath root same as document root. (To make it valid XmlDocument and avoid multiple root nodes)
                 if (partsOfXPath.Length >= 1 && rootNode != null) partsOfXPath[0] = rootNode.Name;
 
-                // Build full path so we can append. (Include "root" node, this may give multiple root nodes!!)
+                // Build full path so we can append. 
                 var xPathTest = "";
                 var xPathPrevious = "";
                 var lp = 1;
@@ -917,7 +917,7 @@ namespace Simplisity
 
                 if (xmlData == "") xmlData = "<" + listName + "row></" + listName + "row>";
 
-                AddXmlNode(xmlData, listName + "row", RootNodeName + " / " + listName);
+                AddXmlNode(xmlData,"/*", RootNodeName + "/" + listName);
 
                 SetXmlProperty(RootNodeName + "/" + listName + "/*[position() = last()]/index", sortcount.ToString(), System.TypeCode.String, false);
             }
