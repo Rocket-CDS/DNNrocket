@@ -513,4 +513,7 @@
   <data name="deletethemeerror.Text" xml:space="preserve">
     <value>An Error has occured with the file system.  This may be caused by locked files.  Restart AppPool and Retry.</value>
   </data>
+  <data name="accountkey.Text" xml:space="preserve">
+    <value>Account Key</value>
+  </data>
 </root>

@@ -97,6 +97,11 @@ namespace Rocket.Tools
                         strOut = AccountAdmin();
                         break;
 
+                    case "rocketaccount_savecompanykey":
+                        SaveCompanyKey();
+                        strOut = "";
+                        break;
+
                 }
             }
             else
@@ -532,6 +537,14 @@ namespace Rocket.Tools
                 return ex.ToString();
             }
         }
+
+        private void SaveCompanyKey()
+        {
+            var webSiteData = new WebSiteData(false);
+            webSiteData.CompanyKey = _postInfo.GetXmlProperty("genxml/companykey");
+            webSiteData.Update();
+        }
+
 
         #endregion
 

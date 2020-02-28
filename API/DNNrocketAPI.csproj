@@ -143,6 +143,7 @@
     <Compile Include="Componants\PassSettings.cs" />
     <Compile Include="Componants\ResxData.cs" />
     <Compile Include="Componants\RetryableAction.cs" />
+    <Compile Include="Componants\WebSiteData.cs" />
     <Compile Include="Componants\SystemGlobalData.cs" />
     <Compile Include="Componants\PageRecordData.cs" />
     <Compile Include="Componants\UserStorage.cs" />
