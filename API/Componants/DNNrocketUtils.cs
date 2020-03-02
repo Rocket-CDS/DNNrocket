@@ -1920,6 +1920,43 @@ namespace DNNrocketAPI
             }
 
         }
+        public static int CreateUser(int portalId, string username, string email)
+        {
+            if (portalId >= 0 && username != "" && email != "")
+            {
+                var userInfo = new UserInfo();
+                userInfo.PortalID = portalId;
+                userInfo.Username = username;
+                userInfo.DisplayName = username;
+                userInfo.Membership.Approved = true;
+                userInfo.Membership.Password = UserController.GeneratePassword();
+                userInfo.FirstName = username;
+                userInfo.LastName = username;
+                userInfo.Email = email;
+
+                userInfo.Profile.PreferredLocale = GetCurrentCulture();
+                userInfo.Profile.PreferredTimeZone = PortalSettings.Current.TimeZone;
+                userInfo.Profile.FirstName = userInfo.FirstName;
+                userInfo.Profile.LastName = userInfo.LastName;
+
+                var status = UserController.CreateUser(ref userInfo);
+                if (status == DotNetNuke.Security.Membership.UserCreateStatus.Success) return userInfo.UserID;
+                if (status == DotNetNuke.Security.Membership.UserCreateStatus.DuplicateUserName
+                    || status == DotNetNuke.Security.Membership.UserCreateStatus.UserAlreadyRegistered 
+                    || status == DotNetNuke.Security.Membership.UserCreateStatus.UsernameAlreadyExists)
+                {
+                    var objUser = UserController.GetUserByName(portalId, username);
+                    if (objUser != null) return objUser.UserID;
+                }
+                if (status == DotNetNuke.Security.Membership.UserCreateStatus.DuplicateEmail)
+                {
+                    var objUser = UserController.GetUserByEmail(portalId, email);
+                    if (objUser != null) return objUser.UserID;
+                }
+            }
+            return -1;
+        }
+
 
     }
 }
