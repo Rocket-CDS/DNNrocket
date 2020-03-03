@@ -968,6 +968,21 @@ namespace DNNrocketAPI
             }
         }
 
+        public static int GetUserIdByUserName(int portalId, string username)
+        {
+            try
+            {
+                var objUser = UserController.GetUserByName(portalId, username);
+                if (objUser != null) return objUser.UserID;
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                var ms = ex.ToString();
+                return 0; // use zero;
+            }
+        }
+
         public static string GetCurrentUsername()
         {
             try
