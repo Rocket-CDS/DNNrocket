@@ -21,7 +21,7 @@ namespace DNNrocketAPI.ApiControllers
         [AllowAnonymous]
         [HttpGet]
         [HttpPost]
-        public async Task<bool> Upload()
+        public async Task<string> Upload()
         {
             try
             {
@@ -44,14 +44,16 @@ namespace DNNrocketAPI.ApiControllers
                 if (File.Exists(originalFileName)) File.Delete(originalFileName);
                 File.Move(uploadingFileName, originalFileName);
 
-                return true;
+                return "OK";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return ex.ToString();
             }
 
         }
+
+
 
     }
 
