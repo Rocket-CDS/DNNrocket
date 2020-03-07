@@ -27,18 +27,35 @@ namespace DNNrocketAPI.ApiControllers
         {
             if (!Directory.Exists(DNNrocketUtils.TempDirectoryMapPath())) Directory.CreateDirectory(DNNrocketUtils.TempDirectoryMapPath());
             if (!Directory.Exists(DNNrocketUtils.HomeDNNrocketDirectoryMapPath())) Directory.CreateDirectory(DNNrocketUtils.HomeDNNrocketDirectoryMapPath());
-            var fileuploadPath = DNNrocketUtils.TempDirectoryMapPath();
 
-            var uploadFileService = new UploadFileService();
-            UploadProcessingResult uploadResult = await uploadFileService.HandleRequest(Request);
-
-            if (uploadResult.IsComplete)
+            if (request.IsChunkUpload())
             {
-                // do other stuff here after file upload complete    
+                var uploadFileService = new UploadFileService();
+                UploadProcessingResult uploadResult = await uploadFileService.HandleRequest(Request);
+
+                if (uploadResult.IsComplete)
+                {
+                    // do other stuff here after file upload complete    
+                    return Ok();
+                }
+
+                return Ok(HttpStatusCode.Continue);
+            }
+            else
+            {
+                var data = await Request.Content.ParseMultipartAsync();
+                var userid = DNNrocketUtils.GetCurrentUserId();
+                foreach (var f in data.Files)
+                {
+                    if (f.Value.File.Length > 0)
+                    {
+                        var fileName = f.Value.Filename;
+                        FileUtils.SaveFile(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + fileName, f.Value.File);
+                    }
+                }
                 return Ok();
             }
 
-            return Ok(HttpStatusCode.Continue);
         }
 
     }
