@@ -761,7 +761,11 @@ async function initFileUpload(fileuploadselector) {
     }
     var maxFileSize = $(fileuploadselector).attr('s-maxfilesize');
     if (maxFileSize === '') {
-        maxFileSize = 5000000;
+        maxFileSize = 5000000000; // 5GB
+    }
+    var maxChunkSize = $(fileuploadselector).attr('s-maxchunksize');
+    if (maxChunkSize === '') {
+        maxChunkSize = 10000000; //10MB 
     }
 
     $.cleanData($(fileuploadselector));
@@ -771,6 +775,7 @@ async function initFileUpload(fileuploadselector) {
         $(fileuploadselector).fileupload({
             url: $(fileuploadselector).attr('s-uploadcmdurl'),
             maxFileSize: maxFileSize,
+            maxChunkSize: maxChunkSize,
             acceptFileTypes: rexpr,
             dataType: 'json',
             dropZone: $(fileuploadselector).parent(),
@@ -779,6 +784,10 @@ async function initFileUpload(fileuploadselector) {
             .bind('fileuploadprogressall', function (e, data) {
                 var progress = parseInt(data.loaded / data.total * 100, 10);
                 $('#progress .progress-bar').css('width', progress + '%');
+            })
+            .bind('fileuploadsubmit', function (e, data) {
+                var identifier = generateFileUniqueIdentifier(data);
+                data.headers = $.extend(data.headers, { "X-File-Identifier": identifier });
             })
             .bind('fileuploadadd', function (e, data) {
                 $('input[id*="simplisity_fileuploadlist"]').val('');
@@ -809,8 +818,15 @@ async function initFileUpload(fileuploadselector) {
                 }
             });
 
+
+
 }
 
+function generateFileUniqueIdentifier(data) {
+    var file = data.files[0];
+    result = file.relativePath || file.webkitRelativePath || file.fileName || file.name;
+    return result;
+}
 
 function simplisity_assignevents(cmdurl) {
 

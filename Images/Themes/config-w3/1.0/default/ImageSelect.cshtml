@@ -35,7 +35,7 @@
 
                 <div class="w3-container">
                     <div class="w3-col m4 w3-white" style="border-style:dotted;">
-                        <input id="imagefileupload" class="simplisity_fileupload" s-cmd="rocketimages_upload" s-reload="false" s-after="dnnrocketimages_showthelist" s-before="dnnrocketimages_beforeupload" s-return="#dnnrocket_imageselectwrapper" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"moduleid":"@Model.ModuleId","editsystemkey":"@(moduleParams.SystemKey)","template":"imagelist.cshtml","interfacekey":"imageupload","singleselect":"true","autoreturn":"false","createseo":"false"}' type="file" name="files[]" multiple style="display:none;">
+                        <input id="imagefileupload" class="simplisity_fileupload" s-maxchunksize="10000000" s-cmd="rocketimages_upload" s-reload="false" s-after="dnnrocketimages_showthelist" s-before="dnnrocketimages_beforeupload" s-return="#dnnrocket_imageselectwrapper" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"moduleid":"@Model.ModuleId","editsystemkey":"@(moduleParams.SystemKey)","template":"imagelist.cshtml","interfacekey":"imageupload","singleselect":"true","autoreturn":"false","createseo":"false"}' type="file" name="files[]" multiple style="display:none;">
                         <p><i>@ResourceKey("DNNrocket.dropimage")...</i></p>
                     </div>
                     <div class="w3-col m3 w3-right-align ">
