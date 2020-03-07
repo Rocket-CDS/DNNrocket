@@ -25,18 +25,29 @@ namespace DNNrocketAPI.ApiControllers
         {
             try
             {
+                HttpRequestMessage request = this.Request;
+
                 if (!Directory.Exists(DNNrocketUtils.TempDirectoryMapPath())) Directory.CreateDirectory(DNNrocketUtils.TempDirectoryMapPath());
                 if (!Directory.Exists(DNNrocketUtils.HomeDNNrocketDirectoryMapPath())) Directory.CreateDirectory(DNNrocketUtils.HomeDNNrocketDirectoryMapPath());
                 var fileuploadPath = DNNrocketUtils.TempDirectoryMapPath();
 
+                if (requestBase.GetBufferedInputStream().Position > 0)
+                {
+                    // If GetBufferedInputStream() was completely read, we can continue accessing it via Request.InputStream.
+                    // If it was partially read, accessing InputStream will throw, but at that point we have no
+                    // way of recovering.
+                    requestBase.InputStream.Position = 0;
+                    return requestBase.InputStream;
+                }
+
                 var provider = new MultipartFormDataStreamProvider(fileuploadPath);
-                var content = new StreamContent(HttpContext.Current.Request.GetBufferlessInputStream(true));
-                foreach (var header in Request.Content.Headers)
+                var content = new StreamContent(Request.Content.)
                 {
                     content.Headers.TryAddWithoutValidation(header.Key, header.Value);
                 }
 
                 await content.ReadAsMultipartAsync(provider);
+
 
                 var userid = DNNrocketUtils.GetCurrentUserId();
                 string uploadingFileName = provider.FileData.Select(x => x.LocalFileName).FirstOrDefault();
