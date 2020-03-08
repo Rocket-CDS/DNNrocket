@@ -313,7 +313,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
             shideloader = true;
         }
         if ($('input[id*="simplisity_fileuploadlist"]').val() !== '') {
-            if (typeof sfields === 'undefined') {
+            if (typeof sfields === 'undefined' || sfields === '') {
                 sfields = '{"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
             } else {
                 sfields = sfields.substring(0, sfields.length - 1) + ',"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
