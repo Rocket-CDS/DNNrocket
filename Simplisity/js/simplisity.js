@@ -759,11 +759,11 @@ async function initFileUpload(fileuploadselector) {
     if (rexpr === '') {
         rexpr = '/(\.|\/)(gif|jpe?g|png|pdf|zip|xml|json)$/i';
     }
-    var maxFileSize = $(fileuploadselector).attr('s-maxfilesize');
+    var maxFileSize = parseInt($(fileuploadselector).attr('s-maxfilesize'));
     if (maxFileSize === '') {
         maxFileSize = 5000000000; // 5GB
     }
-    var maxChunkSize = $(fileuploadselector).attr('s-maxchunksize');
+    var maxChunkSize = parseInt($(fileuploadselector).attr('s-maxchunksize'));
     if (maxChunkSize === '') {
         maxChunkSize = 10000000; //10MB 
     }
