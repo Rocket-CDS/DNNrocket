@@ -27,11 +27,11 @@
                     @ButtonGap()
                     <span class="w3-col m2 w3-button w3-green w3-padding-8" onclick="dnnrocketdocs_usedocument()">@ButtonText(ButtonTypes.use)</span>
                     @ButtonGap()
-                    <span class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketdocs_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist" s-fields='{"theme":"config-w3","interfacekey":"documentupload","documentfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")","singleselect":"true","autoreturn":"false"}'>@ButtonText(ButtonTypes.delete)</span>
+                    <span class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketdocs_delete" s-before="dnnrocketdocs_deletedocument" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-post="#dnnrocket_deletedocumentlist" s-fields='{"theme":"config-w3","interfacekey":"documentupload","documentfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")","singleselect":"true","autoreturn":"false"}'>@ButtonText(ButtonTypes.delete)</span>
                 </div>
 
                 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
-                    <input id="documentfileupload" class="simplisity_fileupload" s-maxchunksize="100000000" s-cmd="rocketdocs_upload" s-reload="false" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"moduleid":"@Model.ModuleId","template":"documentlist.cshtml","interfacekey":"documentupload","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
+                    <input id="documentfileupload" class="simplisity_fileupload" s-maxchunksize="10000000" s-cmd="rocketdocs_upload" s-reload="false" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"moduleid":"@Model.ModuleId","template":"documentlist.cshtml","interfacekey":"documentupload","singleselect":"true","autoreturn":"false"}' type="file" name="files[]" multiple style="display:none;">
                     <p><i>@ResourceKey("DNNrocket.drophere")...</i></p>
                 </div>
 
