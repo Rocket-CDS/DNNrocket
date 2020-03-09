@@ -783,7 +783,8 @@ async function initFileUpload(fileuploadselector) {
         }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled')
             .bind('fileuploadprogressall', function (e, data) {
                 var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('#progress .progress-bar').css('width', progress + '%');
+                $('.simplisity-file-progress-bar').css('width', progress + '%');
+                $('.simplisity-file-progress-bar').text(progress + '%');
             })
             .bind('fileuploadsubmit', function (e, data) {
                 var identifier = generateFileUniqueIdentifier(data);
