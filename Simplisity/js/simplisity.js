@@ -783,6 +783,7 @@ async function initFileUpload(fileuploadselector) {
         }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled')
             .bind('fileuploadprogressall', function (e, data) {
                 var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#simplisity-file-progress-bar').show();
                 $('.simplisity-file-progress-bar').css('width', progress + '%');
                 $('.simplisity-file-progress-bar').text(progress + '%');
             })
@@ -798,6 +799,7 @@ async function initFileUpload(fileuploadselector) {
                 });
             })
             .bind('fileuploaddrop', function (e, data) {
+                    $('#simplisity-file-progress-bar').show();
                     filecount = data.files.length;
                     $('.processing').show();
             })
