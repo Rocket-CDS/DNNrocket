@@ -682,7 +682,7 @@ namespace DNNrocket.System
                 var sysInfo = objCtrl.GetInfo(Convert.ToInt32(itemid));
                 if (sysInfo != null)
                 {
-                    var interfacekey = postInfo.GetXmlProperty("genxml/hidden/interfacekey");
+                    var interfacekey = postInfo.GetXmlProperty("genxml/hidden/selectedinterfacekey");
                     var tosystemid = postInfo.GetXmlProperty("genxml/hidden/tosystemid");
 
                     var sysInfoTo = objCtrl.GetInfo(Convert.ToInt32(tosystemid));

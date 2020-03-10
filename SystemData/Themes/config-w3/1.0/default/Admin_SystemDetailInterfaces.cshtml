@@ -137,7 +137,7 @@
 
 
                     <div class="w3-padding w3-border w3-margin-top">
-                        <i class="far fa-copy fa-lg w3-padding getsystemlist" aria-hidden="true" interfacekey="@i.GetXmlProperty("genxml/textbox/interfacekey")" systemid="@sInfo.ItemID"></i>
+                        <i class="far fa-copy fa-lg w3-padding getsystemlist" aria-hidden="true" selectedinterfacekey="@i.GetXmlProperty("genxml/textbox/interfacekey")" systemid="@sInfo.ItemID"></i>
                         <label class="">@ResourceKey("DNNrocket.Active")</label>
                         @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border'", true, false, lp1)
                     </div>
@@ -164,7 +164,7 @@
 
                                 $(".getsystemlist").unbind("click");
                                 $(".getsystemlist").click(function () {
-                                    $('#systemselect').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'systemapi_admin_getsystemlist', '{"theme":"config-w3","template":"Admin_SystemSelect.cshtml","systemid":"' + $(this).attr('systemid') + '","interfacekey":"' + $(this).attr('interfacekey') + '"}')
+                                    $('#systemselect').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'systemapi_admin_getsystemlist', '{"theme":"config-w3","template":"Admin_SystemSelect.cshtml","systemid":"' + $(this).attr('systemid') + '","selectedinterfacekey":"' + $(this).attr('selectedinterfacekey') + '"}')
                                     document.getElementById('systemselect').style.display = 'block';
                                 });
 

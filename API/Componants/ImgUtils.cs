@@ -74,7 +74,6 @@ namespace DNNrocketAPI
             // convert to jpeg
             return BmpToBytesMemStream(bmp, ImageFormat.Jpeg);
         }
-
         private static byte[] BmpToBytesMemStream(Bitmap bmp, ImageFormat imgFormat)
         {
             var ms = new MemoryStream();
@@ -126,14 +125,22 @@ namespace DNNrocketAPI
             return strExtension.ToLower() == ".jpg" | strExtension.ToLower() == ".jpeg" | strExtension.ToLower() == ".gif" | strExtension.ToLower() == ".png" | strExtension.ToLower() == ".tiff" | strExtension.ToLower() == ".bmp";
         }
 
-        public static void AddWatermark(string imageFilePath, string waterMarkImagePath)
+        public static void AddWatermark(string imageFilePath, string waterMarkImagePath, string newImageMapPath)
         {
             //add watermark if needed
             if (!string.IsNullOrEmpty(waterMarkImagePath))
             {
-                var output = new ImgWaterMark(imageFilePath, waterMarkImagePath, true);
-                output.AddWaterMark();
-                FileUtils.SaveFile(imageFilePath, BmpToBytesMemStream(output.Image));
+                using (var output = new ImgWaterMark(imageFilePath, waterMarkImagePath, true))
+                {
+                    output.AddWaterMark();
+                    ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+                    System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+                    EncoderParameters myEncoderParameters = new EncoderParameters(1);
+                    var myEncoderParameter = new EncoderParameter(myEncoder, 100L);
+                    myEncoderParameters.Param[0] = myEncoderParameter;
+
+                    output.Image.Save(newImageMapPath, jpgEncoder, myEncoderParameters);
+                }
             }
         }
 
@@ -505,7 +512,7 @@ namespace DNNrocketAPI
     }
 
 
-    public class ImgWaterMark
+    public class ImgWaterMark : IDisposable
     {
 
 
@@ -553,6 +560,7 @@ namespace DNNrocketAPI
             // ReSharper restore PossibleLossOfFraction
 
             Graphics canvas;
+
             try
             {
                 canvas = Graphics.FromImage(_bmp);
@@ -570,21 +578,28 @@ namespace DNNrocketAPI
                 //paint the entire region of the old bitmap to the 
                 //new bitmap..use the rectangle type to 
                 //select area of the source image
-                canvas.DrawImage(_bmp, new Rectangle(0, 0, bmpNew.Width, bmpNew.Height), 0, 0, _bmp.Width, _bmp.Height,
-                                 GraphicsUnit.Pixel);
+                canvas.DrawImage(_bmp, new Rectangle(0, 0, bmpNew.Width, bmpNew.Height), 0, 0, _bmp.Width, _bmp.Height, GraphicsUnit.Pixel);
                 _bmp = bmpNew;
             }
 
-            canvas.DrawImage(DrawWatermark(_wbmp), x, y, _wbmp.Width, _wbmp.Height);
+            var wb = DrawWatermark(_wbmp);
+            canvas.DrawImage(wb, x, y, _wbmp.Width, _wbmp.Height);
 
             //release image
+            wb.Dispose();
             _wbmp.Dispose();
+            canvas.Dispose();
 
         }
 
         public Bitmap Image
         {
             get { return _bmp; }
+        }
+
+        public bool IsPng
+        {
+            get { return _isPng; }
         }
 
         private Bitmap DrawWatermark(Bitmap watermarkBm)
@@ -596,6 +611,12 @@ namespace DNNrocketAPI
             return watermarkBm;
         }
 
+        public void Dispose()
+        {
+            // dispose
+            _bmp.Dispose();
+            _wbmp.Dispose();
+        }
     }
 
 
