@@ -1330,7 +1330,11 @@ namespace DNNrocketAPI
             if (String.IsNullOrWhiteSpace(relpath)) return "";
             return System.Web.Hosting.HostingEnvironment.MapPath(relpath);
         }
-
+        public static string MapPathReverse(string fullMapPath)
+        {
+            if (String.IsNullOrWhiteSpace(fullMapPath)) return "";
+            return @"~\" + fullMapPath.Replace(HttpContext.Current.Request.PhysicalApplicationPath, String.Empty);
+        }
         public static string Email()
         {
             return PortalSettings.Current.Email;

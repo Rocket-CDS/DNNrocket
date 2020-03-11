@@ -772,6 +772,13 @@ async function initFileUpload(fileuploadselector) {
 
     $(fileuploadselector).off();
 
+
+    $(fileuploadselector).parent().unbind("fileuploadprogressall");
+    $(fileuploadselector).parent().unbind("fileuploadsubmit");
+    $(fileuploadselector).parent().unbind("fileuploadadd");
+    $(fileuploadselector).parent().unbind("fileuploaddrop");
+    $(fileuploadselector).parent().unbind("fileuploadstop");
+
         $(fileuploadselector).fileupload({
             url: $(fileuploadselector).attr('s-uploadcmdurl'),
             maxFileSize: maxFileSize,
