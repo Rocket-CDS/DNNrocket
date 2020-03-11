@@ -50,6 +50,7 @@ namespace DNNrocketAPI
                     try
                     {
                         newImage.Save(context.Response.OutputStream, useEncoder, encoderParameters);
+                        newImage.Dispose();
                     }
                     catch (Exception exc)
                     {
