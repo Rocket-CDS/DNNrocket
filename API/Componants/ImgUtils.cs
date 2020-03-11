@@ -125,14 +125,20 @@ namespace DNNrocketAPI
             return strExtension.ToLower() == ".jpg" | strExtension.ToLower() == ".jpeg" | strExtension.ToLower() == ".gif" | strExtension.ToLower() == ".png" | strExtension.ToLower() == ".tiff" | strExtension.ToLower() == ".bmp";
         }
 
-        public static void AddWatermark(string imageFilePath, string waterMarkImagePath, string newImageMapPath)
+        /// <summary>
+        /// Add watermark.  Becuase of file locking we need to create a new image with the watermark and not replace the source image.
+        /// </summary>
+        /// <param name="imageFilePath"></param>
+        /// <param name="waterMarkImagePath"></param>
+        /// <param name="newImageMapPath"></param>
+        public static void AddWatermark(string imageFilePath, string waterMarkImagePath, string newImageMapPath, int watermarksize = 24, string watermarkposition = "C")
         {
             //add watermark if needed
             if (!string.IsNullOrEmpty(waterMarkImagePath))
             {
                 using (var output = new ImgWaterMark(imageFilePath, waterMarkImagePath, true))
                 {
-                    output.AddWaterMark();
+                    output.AddWaterMark(watermarksize, watermarkposition);
                     ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
                     System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
                     EncoderParameters myEncoderParameters = new EncoderParameters(1);
@@ -160,13 +166,13 @@ namespace DNNrocketAPI
             return b;
         }
 
-        public static void AddToCanvas(string imageFilePath, string canvasImagePath)
+        public static void AddToCanvas(string imageFilePath, string canvasImagePath, int watermarksize = 24, string watermarkposition = "C")
         {
             //add watermark if needed
             if (!string.IsNullOrEmpty(canvasImagePath))
             {
                 var output = new ImgWaterMark(canvasImagePath, imageFilePath, false);
-                output.AddWaterMark();
+                output.AddWaterMark(watermarksize, watermarkposition);
                 FileUtils.SaveFile(imageFilePath, BmpToBytesMemStream(output.Image));
             }
         }
@@ -548,16 +554,61 @@ namespace DNNrocketAPI
             }
         }
 
-        public void AddWaterMark()
+        public void AddWaterMark(int watermarkpercent = 24, string watermarkposition = "C")
         {
-            //get the drawing canvas (graphics object) from the bitmap
+            // set size
+            var watermarkwidth = 0;
+            var watermarkheight = 0;
 
-            // ReSharper disable PossibleLossOfFraction
-            float x = (_bmp.Width - _wbmp.Width) / 2;
-            // ReSharper restore PossibleLossOfFraction
-            // ReSharper disable PossibleLossOfFraction
-            float y = (_bmp.Height - _wbmp.Height) / 2;
-            // ReSharper restore PossibleLossOfFraction
+            watermarkwidth = (_bmp.Width / 100) * watermarkpercent;
+            var watermarkmargin = (_bmp.Width / 100) * 4;
+
+            // Resize image:
+            double aspect = _wbmp.PhysicalDimension.Width / _wbmp.PhysicalDimension.Height;
+
+            var intMaxHeight = Convert.ToInt32(watermarkwidth / aspect);
+
+            if (_wbmp.PhysicalDimension.Height < _wbmp.PhysicalDimension.Width)
+            {
+                watermarkwidth = Convert.ToInt32(intMaxHeight * aspect);
+                watermarkheight = intMaxHeight;
+            }
+            else
+            {
+                watermarkheight = Convert.ToInt32(watermarkwidth / aspect);
+            }
+
+            if (watermarkheight < intMaxHeight)
+            {
+                watermarkheight = intMaxHeight;
+                watermarkwidth = Convert.ToInt32(intMaxHeight * aspect);
+            }
+
+            if (watermarkwidth > _bmp.Width || watermarkwidth <= 0) watermarkwidth = _bmp.Width;
+            if (watermarkheight > _bmp.Height || watermarkheight <= 0) watermarkheight = _bmp.Height;
+
+            // Set position
+            float x = (_bmp.Width - watermarkwidth) / 2;
+            float y = (_bmp.Height - watermarkheight) / 2;
+            switch (watermarkposition.ToUpper())
+            {
+                case "TL":
+                    x = watermarkmargin;
+                    y = watermarkmargin;
+                    break;
+                case "TR":
+                    x = _bmp.Width - (watermarkmargin + watermarkwidth);
+                    y = watermarkmargin;
+                    break;
+                case "BL":
+                    x = watermarkmargin;
+                    y = _bmp.Height - (watermarkmargin + watermarkheight);
+                    break;
+                case "BR":
+                    x = _bmp.Width - (watermarkmargin + watermarkwidth);
+                    y = _bmp.Height - (watermarkmargin + watermarkheight);
+                    break;
+            }
 
             Graphics canvas;
 
@@ -583,7 +634,7 @@ namespace DNNrocketAPI
             }
 
             var wb = DrawWatermark(_wbmp);
-            canvas.DrawImage(wb, x, y, _wbmp.Width, _wbmp.Height);
+            canvas.DrawImage(wb, x, y, watermarkwidth, watermarkheight);
 
             //release image
             wb.Dispose();
