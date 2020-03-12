@@ -23,6 +23,29 @@ namespace Simplisity
             }
             return cache.GetCacheItem(cacheKey).Value;
         }
+        public static List<object> GetGroupCache(string groupid)
+        {
+            try
+            {
+                var rtnList = new List<object>();
+                ObjectCache cache = MemoryCache.Default;
+                List<string> cacheKeys = cache.Select(kvp => kvp.Key).ToList();
+                foreach (string cacheKey in cacheKeys)
+                {
+                    if (cacheKey.EndsWith("_groupid:" + groupid))
+                    {
+                        if (cache.GetCacheItem(cacheKey) != null)  rtnList.Add(cache.GetCacheItem(cacheKey).Value);
+                    }
+                }
+                return rtnList;
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                return null;
+            }
+        }
+
 
         public static void SetCache(string cacheKey, object objObject, string groupid = "")
         {

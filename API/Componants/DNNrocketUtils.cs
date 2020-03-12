@@ -35,6 +35,7 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules.Definitions;
+using System.Drawing;
 
 namespace DNNrocketAPI
 {
@@ -1977,6 +1978,17 @@ namespace DNNrocketAPI
                 }
             }
             return -1;
+        }
+
+        public static void ClearThumbnailLock()
+        {
+            //Images in Cache still retain the file lock, we must dispose of then out of cache.
+            var l = CacheUtils.GetGroupCache("DNNrocketThumb");
+            foreach (Bitmap i in l)
+            {
+                i.Dispose();
+            }
+            CacheUtils.ClearAllCache("DNNrocketThumb");
         }
 
         public static bool CreateModuleDefinition(SimplisityRecord sRec)

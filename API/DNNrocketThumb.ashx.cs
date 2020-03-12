@@ -27,12 +27,15 @@ namespace DNNrocketAPI
                 src = HttpContext.Current.Server.MapPath(src);
 
                 var strCacheKey = context.Request.Url.Host.ToLower() + "*" + src + "*" + DNNrocketUtils.GetCurrentCulture() + "*img:" + w + "*" + h + "*";
-                var newImage = (Bitmap) CacheUtils.GetCache(strCacheKey);
+                var newImage = (Bitmap) CacheUtils.GetCache(strCacheKey, "DNNrocketThumb");
+                //IMPORTANT: If you need to delete the image file you MUST remove the cache first.
+                //The cache holds a link to the locked image file.
+                //CacheUtils.ClearAllCache("DNNrocketThumb")
 
                 if (newImage == null)
                 {
                     newImage = ImgUtils.CreateThumbnail(src, Convert.ToInt32(w), Convert.ToInt32(h));
-                    CacheUtils.SetCache(strCacheKey, newImage);
+                    CacheUtils.SetCache(strCacheKey, newImage, "DNNrocketThumb");
                 }
 
                 if ((newImage != null))
@@ -50,7 +53,6 @@ namespace DNNrocketAPI
                     try
                     {
                         newImage.Save(context.Response.OutputStream, useEncoder, encoderParameters);
-                        newImage.Dispose();
                     }
                     catch (Exception exc)
                     {
