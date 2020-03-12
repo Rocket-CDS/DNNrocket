@@ -12,7 +12,7 @@
 <div class="w3-container">
 
     <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-green w3-margin-left simplisity_click" s-cmd="systemapi_admin_save" s-fields='{"selecteditemid":"@(sInfo.ItemID)","theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-post="#pluginsdatasection" s-list=".interfacedata,.idxfielddata,.settingsdata,.groupsdata,.provtypesdata">@ButtonText(ButtonTypes.save)</div>
+        <div class="w3-col m2 w3-button w3-green w3-margin-left simplisity_click" s-cmd="systemapi_admin_save" s-fields='{"selecteditemid":"@(sInfo.ItemID)","theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-post="#pluginsdatasection" s-list=".interfacedata,.idxfielddata,.settingsdata,.groupsdata,.provtypesdata,.dnninstall">@ButtonText(ButtonTypes.save)</div>
         @ButtonGap()
         <div class="w3-col m2 w3-button w3-red w3-margin-left simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="systemapi_admin_delete" s-fields='{"selecteditemid":"@(sInfo.ItemID)"}' s-post="#pluginsdatasection" s-return="#simplisity_startpanel" s-after="reloadpluginlist">@ButtonText(ButtonTypes.delete)</div>
         @ButtonGap()
@@ -29,28 +29,35 @@
 
         <div class="w3-row">
             <a href="javascript:void(0)" onclick="openSection(event, 'pluginsdatasection');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding w3-border-blue w3-light-blue " style="width:15%"><i class="fas fa-home"></i>&nbsp;@ResourceKey("system.systemdata")</div>
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding w3-border-blue w3-light-blue " style="height:80px;width:14%"><i class="fas fa-home"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.systemdata")</span></div>
+            </a>
+            <a href="javascript:void(0)" onclick="openSection(event, 'dnninstallsection');">
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding" style="height:80px;width:14%"><i class="fas fa-cubes"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.dnnmodules")</span></div>
             </a>
             <a href="javascript:void(0)" onclick="openSection(event, 'Groups');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-cubes"></i>&nbsp;@ResourceKey("system.menugroups")</div>
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding" style="height:80px;width:14%"><i class="fas fa-layer-group"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.menugroups")</span></div>
             </a>
             <a href="javascript:void(0)" onclick="openSection(event, 'provtypes');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-handshake-o"></i>&nbsp;@ResourceKey("system.provtypes")</div>
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding" style="height:80px;width:14%"><i class="fas fa-handshake"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.provtypes")</span></div>
             </a>
             <a href="javascript:void(0)" onclick="openSection(event, 'Interface');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-link"></i>&nbsp;@ResourceKey("system.interfaces")</div>
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding" style="height:80px;width:14%"><i class="fas fa-link"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.interfaces")</span></div>
             </a>
             <a href="javascript:void(0)" onclick="openSection(event, 'parameters');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-indent"></i>&nbsp;@ResourceKey("system.idxfield")</div>
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding" style="height:80px;width:14%"><i class="fas fa-indent"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.idxfield")</span></div>
             </a>
             <a href="javascript:void(0)" onclick="openSection(event, 'settings');">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding" style="width:15%"><i class="fas fa-cog"></i>&nbsp;@ResourceKey("system.settings")</div>
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding" style="height:80px;width:14%"><i class="fas fa-cog"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.settings")</span></div>
             </a>
         </div>
 
         <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
         <div id="pluginsdatasection" class="w3-container w3-margin tabsection" style="display:block;">
             @RenderTemplate("Admin_SystemDetailData.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model, "1.0", true)
+        </div>
+        
+        <div id="dnninstallsection" class="w3-container tabsection" style="display:none">
+            @RenderTemplate("Admin_SystemDetailDNNmodules.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model, "1.0", true)
         </div>
 
         <div id="Groups" class="w3-container tabsection" style="display:none">

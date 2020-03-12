@@ -96,6 +96,10 @@ namespace DNNrocket.System
                     case "systemapi_addgroup":
                         SystemAddListItem(paramInfo, "groupsdata");
                         strOut = SystemAdminDetail(_controlRelPath);
+                        break;                        
+                    case "systemapi_adddnninstall":
+                        SystemAddListItem(paramInfo, "dnninstall");
+                        strOut = SystemAdminDetail(_controlRelPath);
                         break;
                     case "systemapi_addprovtype":
                         SystemAddListItem(paramInfo, "provtypesdata");

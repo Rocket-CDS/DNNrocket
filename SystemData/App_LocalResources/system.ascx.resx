@@ -357,4 +357,25 @@
   <data name="plugins.Text" xml:space="preserve">
     <value>Plugins</value>
   </data>
+  <data name="dnnmodules.Text" xml:space="preserve">
+    <value>DNN Modules</value>
+  </data>
+  <data name="moduledescription.Text" xml:space="preserve">
+    <value>Module Description</value>
+  </data>
+  <data name="modulefolder.Text" xml:space="preserve">
+    <value>Module Folder</value>
+  </data>
+  <data name="modulefriendlyname.Text" xml:space="preserve">
+    <value>Module Friendly Name</value>
+  </data>
+  <data name="modulename.Text" xml:space="preserve">
+    <value>Module Name</value>
+  </data>
+  <data name="moduleowner.Text" xml:space="preserve">
+    <value>Module Owner</value>
+  </data>
+  <data name="moduletitle.Text" xml:space="preserve">
+    <value>Module Title</value>
+  </data>
 </root>
