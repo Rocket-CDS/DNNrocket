@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Simplisity;
 using System;  
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;  
 using System.Net;  
@@ -85,6 +86,20 @@ namespace DNNrocketAPI.ApiControllers
                 {
                     paramInfo.SetXmlProperty("genxml/postform/" + key.Replace("_", "-"), context.Request.Form[key]); // remove '_' from xpath
                 }
+                foreach (string key in context.Request.QueryString.AllKeys)
+                {
+                    var keyValue = context.Request.QueryString[key];
+                    try
+                    {
+                        keyValue = GeneralUtils.DeCode(keyValue);
+                    }
+                    catch (Exception ex)
+                    {
+                        // ignore, if not in an encoded format it will give an error, so use the base value.
+                    }
+                    paramInfo.SetXmlProperty("genxml/urlparams/" + key.ToLower(), keyValue);
+                }
+                
 
                 systemkey = systemkey.Trim(' ');
                 if (systemkey == "") paramInfo.GetXmlProperty("genxml/hidden/systemkey").Trim(' ');
@@ -166,11 +181,15 @@ namespace DNNrocketAPI.ApiControllers
                                 }
                                 if (returnDictionary.ContainsKey("filenamepath"))
                                 {
-                                    DownloadFile(returnDictionary["filenamepath"], returnDictionary["downloadname"]);
+                                    var downloadname = "download.zip";
+                                    if (returnDictionary.ContainsKey("downloadname")) downloadname = returnDictionary["downloadname"];
+                                    DownloadFile(returnDictionary["filenamepath"], downloadname);
                                 }
                                 if (returnDictionary.ContainsKey("downloadfiledata"))
                                 {
-                                    DownloadStringAsFile(returnDictionary["downloadfiledata"], returnDictionary["downloadname"]);
+                                    var downloadname = "download.zip";
+                                    if (returnDictionary.ContainsKey("downloadname")) downloadname = returnDictionary["downloadname"];
+                                    DownloadStringAsFile(returnDictionary["downloadfiledata"], downloadname);
                                 }
                                 if (returnDictionary.ContainsKey("outputjson"))
                                 {

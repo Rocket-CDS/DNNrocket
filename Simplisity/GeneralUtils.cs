@@ -585,17 +585,45 @@ namespace Simplisity
                 }
             return sb.ToString();
         }
-
-
+        /// <summary>
+        /// Get unique string based on ticks and a random numer.  The random number is to try and stop clashes when processing on the same tick.
+        /// This method has a VERY HIGH chance of being unique, but if processing on the same tick a duplicate could be generate.
+        /// </summary>
+        /// <param name="maxSize">0= Guid (Unique across machines),#= size of return string</param>
+        /// <returns></returns>
+        public static string GetUniqueString()
+        {
+            var strticks = DateTime.Now.Ticks.ToString() + GetRandomKey(1, true);
+            long ticks = Convert.ToInt64(strticks);
+            byte[] bytes = BitConverter.GetBytes(ticks);
+            return Convert.ToBase64String(bytes).Replace('+', '_').Replace('/', '-').TrimEnd('=');
+        }
+        /// <summary>
+        /// This mehtod may NOT be unique, use GetUniqueString().
+        /// </summary>
+        /// <param name="maxSize"></param>
+        /// <returns></returns>
+        [Obsolete("GetUniqueKey() is deprecated, please use GetUniqueString() instead.")]
         public static string GetUniqueKey(int maxSize = 0)
+        {
+            return GetRandomKey(maxSize);
+        }
+        /// <summary>
+        /// Get a random string. However the code MAY NOT be unique.  Do not use this method if you MUST have a unique string, try GetUniqueString()
+        /// </summary>
+        /// <param name="maxSize">0= Guid (Unique across machines),#= size of return string, larger return strings have more chance to be unique</param>
+        /// <param name="lowercaseonly">Only use lowercase and numeric in the return string</param>
+        /// <returns></returns>
+        public static string GetRandomKey(int maxSize = 0, bool numericOnly = false)
         {
             if (maxSize == 0)
             {
-                return Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
+                return GetGuidKey();
             }
             else
             {
                 var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+                if (numericOnly) a = "1234567890";
                 var chars = a.ToCharArray();
                 var data = new byte[1];
                 var crypto = new RNGCryptoServiceProvider();
@@ -609,6 +637,10 @@ namespace Simplisity
                 }
                 return result.ToString();
             }
+        }
+        public static string GetGuidKey()
+        {
+            return Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
         }
 
         public static string ReplaceFirstOccurrence(string source, string find, string replace)
