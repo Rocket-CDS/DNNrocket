@@ -143,6 +143,7 @@
     <Compile Include="Componants\PassSettings.cs" />
     <Compile Include="Componants\ResxData.cs" />
     <Compile Include="Componants\RetryableAction.cs" />
+    <Compile Include="Componants\EmailSender.cs" />
     <Compile Include="Componants\WebSiteData.cs" />
     <Compile Include="Componants\SystemGlobalData.cs" />
     <Compile Include="Componants\PageRecordData.cs" />
@@ -158,7 +159,6 @@
     <Compile Include="Componants\ImgUtils.cs" />
     <Compile Include="Componants\SystemDataList.cs" />
     <Compile Include="Componants\PageIncludes.cs" />
-    <Compile Include="Componants\EmailUtils.cs" />
     <Compile Include="Componants\SystemData.cs" />
     <Compile Include="Componants\UserUtils.cs" />
     <Compile Include="Componants\SideMenu.cs" />
