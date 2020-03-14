@@ -507,6 +507,15 @@ namespace DNNrocketAPI
             }
             return false;
         }
+        public static bool IsValidUser(int portalId, int userId)
+        {
+            var u = UserController.GetUserById(portalId, userId);
+            if (u != null)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public static string GetLocalizedString(string Key, string resourceFileRoot, string lang)
         {
