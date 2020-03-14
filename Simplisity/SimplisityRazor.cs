@@ -33,39 +33,18 @@ namespace Simplisity
             Settings = settings;
             UrlParams = urlParams;
             List = list;
-
-            DataObjects = new Dictionary<string, object>();
-
-            ModuleRef = "";
-            ModuleId = 0;
-            ModuleIdDataSource = 0;
-
-            if (settings.ContainsKey("modref")) ModuleRef = settings["modref"];
-            if (settings.ContainsKey("moduleref")) ModuleRef = settings["moduleref"];
-            if (settings.ContainsKey("moduleid") && GeneralUtils.IsNumeric(settings["moduleid"]))
-            {
-                ModuleId = Convert.ToInt32(settings["moduleid"]);
-                ModuleIdDataSource = ModuleId;
-            }
-            if (settings.ContainsKey("moduleiddatasource") && !String.IsNullOrWhiteSpace(settings["moduleiddatasource"]))
-            {
-                ModuleIdDataSource = Convert.ToInt32(settings["moduleiddatasource"]);
-            }
-
-            if (settings.ContainsKey("tabid") && GeneralUtils.IsNumeric(settings["tabid"])) TabId = Convert.ToInt32(settings["tabid"]);
-            if (settings.ContainsKey("systemkey")) SystemKey = settings["systemkey"];
-
+            Init();
         }
 
         public SimplisityRazor()
         {
             Settings = new Dictionary<string, string>();
-            DataObjects = new Dictionary<string, object>();  
             HeaderData = new SimplisityInfo();
             var obj = new SimplisityInfo();
             var l = new List<object>();
             l.Add(obj);
             List = l;
+            Init();
         }
 
         public SimplisityRazor(List<object> list, Dictionary<String, String> settings)
@@ -73,12 +52,58 @@ namespace Simplisity
             Settings = settings;
             UrlParams = new NameValueCollection();
             List = list;
+            Init();
         }
         public SimplisityRazor(List<object> list, NameValueCollection urlParams)
         {
             Settings = new Dictionary<string, string>();
             UrlParams = urlParams;
             List = list;
+            Init();
+        }
+        public SimplisityRazor(object listobj, Dictionary<String, String> settings)
+        {
+            var list = new List<object>();
+            list.Add(listobj);
+            Settings = settings;
+            UrlParams = new NameValueCollection();
+            List = list;
+            Init();
+        }
+        public SimplisityRazor(object listobj, Dictionary<String, String> settings, NameValueCollection urlParams)
+        {
+            var list = new List<object>();
+            list.Add(listobj);
+            Settings = settings;
+            UrlParams = urlParams;
+            List = list;
+            Init();
+        }
+
+        private void Init()
+        {
+
+            DataObjects = new Dictionary<string, object>();
+
+            ModuleRef = "";
+            ModuleId = 0;
+            ModuleIdDataSource = 0;
+
+            if (Settings.ContainsKey("modref")) ModuleRef = Settings["modref"];
+            if (Settings.ContainsKey("moduleref")) ModuleRef = Settings["moduleref"];
+            if (Settings.ContainsKey("moduleid") && GeneralUtils.IsNumeric(Settings["moduleid"]))
+            {
+                ModuleId = Convert.ToInt32(Settings["moduleid"]);
+                ModuleIdDataSource = ModuleId;
+            }
+            if (Settings.ContainsKey("moduleiddatasource") && !String.IsNullOrWhiteSpace(Settings["moduleiddatasource"]))
+            {
+                ModuleIdDataSource = Convert.ToInt32(Settings["moduleiddatasource"]);
+            }
+
+            if (Settings.ContainsKey("tabid") && GeneralUtils.IsNumeric(Settings["tabid"])) TabId = Convert.ToInt32(Settings["tabid"]);
+            if (Settings.ContainsKey("systemkey")) SystemKey = Settings["systemkey"];
+
         }
 
         public void SetSetting(String key, String value)

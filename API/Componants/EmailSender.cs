@@ -12,11 +12,17 @@ namespace DNNrocketAPI.Componants
         public EmailSender(EmailSenderData emailData)
         {
             EmailData = emailData;
+            RenderEmailBody();
+        }
+        public string RenderEmailBody()
+        {
             if (EmailData.RazorTemplateName != "")
             {
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(EmailData.RazorTemplateName, EmailData.TemplateControlRelPath, EmailData.ThemeFolder, EmailData.CultureCode, EmailData.VersionFolder, EmailData.DebugMode);
                 EmailData.EmailBody = DNNrocketUtils.RazorRender(EmailData.Model, razorTempl, EmailData.DebugMode);
+                return EmailData.EmailBody;
             }
+            return "";
         }
 
         public bool SendEmail()
@@ -57,7 +63,6 @@ namespace DNNrocketAPI.Componants
 
         public EmailSenderData EmailData { get; set; }
         public string Error { get; set; }
-
 
     }
 
