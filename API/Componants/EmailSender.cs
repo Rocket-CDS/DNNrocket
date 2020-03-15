@@ -27,11 +27,13 @@ namespace DNNrocketAPI.Componants
 
         public bool SendEmail()
         {
+            Error = "";
             EmailData.ToEmail = EmailData.ToEmail.Trim();
             EmailData.FromEmail = EmailData.FromEmail.Trim();
             if (EmailData.EmailBody == "") Error = "Missing EmailBody";
             if (EmailData.ToEmail == "") Error = "Missing ToEmail";
             if (EmailData.FromEmail == "") Error = "Missing FromEmail";
+            if (EmailData.Attchments == null) EmailData.Attchments = "";
 
             if (Error == "")
             {
