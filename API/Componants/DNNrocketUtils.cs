@@ -1346,7 +1346,7 @@ namespace DNNrocketAPI
         public static string MapPathReverse(string fullMapPath)
         {
             if (String.IsNullOrWhiteSpace(fullMapPath)) return "";
-            return @"\" + fullMapPath.Replace(HttpContext.Current.Request.PhysicalApplicationPath, String.Empty);
+            return @"\" + fullMapPath.Replace(HttpContext.Current.Request.PhysicalApplicationPath, String.Empty).Replace("\\", "/");
         }
         public static string Email()
         {
