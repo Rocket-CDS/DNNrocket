@@ -40,6 +40,7 @@ namespace DNNrocketAPI
             }
             Info = systemInfo;
             EventList = new List<DNNrocketInterface>();
+            SchedulerList = new List<DNNrocketInterface>();            
             InterfaceList = new Dictionary<string, DNNrocketInterface>();
             Settings = new Dictionary<string, string>();
             var l = Info.GetList("interfacedata");

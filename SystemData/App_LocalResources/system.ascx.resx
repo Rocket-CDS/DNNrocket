@@ -253,7 +253,7 @@
     <value>Database TypeCode</value>
   </data>
   <data name="onmenu.Text" xml:space="preserve">
-    <value>Display On Admin Menu</value>
+    <value>On Menu</value>
   </data>
   <data name="debugmode.Text" xml:space="preserve">
     <value>Debug Mode (TURN OFF for production)</value>
