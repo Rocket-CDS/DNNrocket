@@ -144,6 +144,7 @@
     <Compile Include="Componants\ResxData.cs" />
     <Compile Include="Componants\RetryableAction.cs" />
     <Compile Include="Componants\EmailSender.cs" />
+    <Compile Include="Componants\Scheduler.cs" />
     <Compile Include="Componants\WebSiteData.cs" />
     <Compile Include="Componants\SystemGlobalData.cs" />
     <Compile Include="Componants\PageRecordData.cs" />
@@ -167,6 +168,7 @@
       <DependentUpon>DNNrocketThumb.ashx</DependentUpon>
     </Compile>
     <Compile Include="ApiControllers\FileUploadController.cs" />
+    <Compile Include="Interfaces\SchedulerInterface.cs" />
     <Compile Include="Interfaces\EventInterface.cs" />
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\DataInterface.cs" />

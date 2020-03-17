@@ -50,6 +50,10 @@ namespace DNNrocketAPI
                 {
                     EventList.Add(rocketInterface);
                 }
+                if (rocketInterface.IsProvider("scheduler") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                {
+                    SchedulerList.Add(rocketInterface);
+                }
                 InterfaceList.Add(rocketInterface.InterfaceKey, rocketInterface);
             }
             var l2 = Info.GetList("settingsdata");
@@ -252,6 +256,7 @@ namespace DNNrocketAPI
         public SimplisityInfo SystemInfo { get { return Info; } }
         public SimplisityInfo Info { get; set; }
         public List<DNNrocketInterface> EventList { get; set;}
+        public List<DNNrocketInterface> SchedulerList { get; set; }
         public bool Exists { get; set; }
         public Dictionary<string, DNNrocketInterface> InterfaceList { get; set; }
         public Dictionary<string, string> Settings { get; set; }
