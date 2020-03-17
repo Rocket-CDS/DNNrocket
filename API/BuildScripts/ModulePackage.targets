@@ -59,7 +59,7 @@
     <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketSystemData.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Simplisity.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(OutputPath)\System.Drawing.Common.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
-    <Copy SourceFiles="$(OutputPath)\netstandard.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(OutputPath)..\..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\ref\netstandard.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(OutputPath)\RazorEngine.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\RocketMod.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketImages.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
