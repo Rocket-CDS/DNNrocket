@@ -29,7 +29,7 @@ namespace DNNrocketAPI
                             ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
                             CacheUtils.SetCache(cacheKey, ajaxprov);
                         }
-                        ajaxprov.DoWork(rocketInterface.DefaultCommand, systemData, rocketInterface);
+                        ajaxprov.DoWork(systemData, rocketInterface);
                     }
                 }
 
