@@ -36,6 +36,7 @@ using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules.Definitions;
 using System.Drawing;
+using DotNetNuke.Services.Scheduling;
 
 namespace DNNrocketAPI
 {
@@ -60,6 +61,15 @@ namespace DNNrocketAPI
             {
                 Directory.CreateDirectory(BackUpDirectoryMapPath());
             }
+        }
+        public static void CreateRocketScheduler()
+        {
+
+
+            var objCtrl = new SchedulingController();
+
+            objCtrl.AddSchedule();
+
         }
 
         public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
