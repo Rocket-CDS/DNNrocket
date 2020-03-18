@@ -15,7 +15,7 @@ using DotNetNuke.Common;
 
 namespace DNNrocketAPI
 {
-    public class PagesUtils
+    public static class PagesUtils
     {
 
         public static void SaveTabUrls(int tabId, string pageUrl, int portalId, string Lang)

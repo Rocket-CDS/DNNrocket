@@ -516,4 +516,16 @@
   <data name="accountkey.Text" xml:space="preserve">
     <value>Account Key</value>
   </data>
+  <data name="enabled.Text" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="install.Text" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="installed.Text" xml:space="preserve">
+    <value>Installed</value>
+  </data>
+  <data name="uninstall.Text" xml:space="preserve">
+    <value>UnInstall</value>
+  </data>
 </root>

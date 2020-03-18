@@ -62,16 +62,6 @@ namespace DNNrocketAPI
                 Directory.CreateDirectory(BackUpDirectoryMapPath());
             }
         }
-        public static void CreateRocketScheduler()
-        {
-
-
-            var objCtrl = new SchedulingController();
-
-            objCtrl.AddSchedule();
-
-        }
-
         public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
         {
             var rtnDic = new Dictionary<string, string>();

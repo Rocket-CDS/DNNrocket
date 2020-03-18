@@ -31,7 +31,6 @@ namespace DNNrocket.System
             var commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
             
             DNNrocketUtils.CreateRocketDirectories();
-            DNNrocketUtils.CreateRocketScheduler();
 
             _userStorage = new UserStorage();
             if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
@@ -161,6 +160,18 @@ namespace DNNrocket.System
                         DNNrocketUtils.RecycleApplicationPool();
                         strOut = "<h1>Recycle App Pool</h1>";
                         break;
+                    case "systemapi_installscheduler":
+                        SchedulerUtils.SchedulerInstall();
+                        strOut = SystemGlobalDetail();
+                        break;
+                    case "systemapi_uninstallscheduler":
+                        SchedulerUtils.SchedulerUnInstall();
+                        strOut = SystemGlobalDetail();
+                        break;
+
+
+
+
 
                     case "systemapi_plugins":
                         strOut = GetPluginList();
@@ -229,8 +240,6 @@ namespace DNNrocket.System
             }
 
         }
-
-
 
         public String LicensePopup()
         {
@@ -471,6 +480,8 @@ namespace DNNrocket.System
                 var passSettings = _paramInfo.ToDictionary();
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("Admin_SystemGlobalDetail.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+
+                SchedulerUtils.SchedulerIsInstalled();
 
                 var globalData = new SystemGlobalData();
 
