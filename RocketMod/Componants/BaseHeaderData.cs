@@ -22,12 +22,12 @@ namespace RocketMod
         {
             get {
                 var ps = _header.GetXmlPropertyInt("genxml/hidden/pagesize");
-                if (ps == 0) ps = 20;
+                if (ps == 0) ps = 0;  // unlimited
                 return ps;
             }
             set {
                 var v = value;
-                if (v == 0) v = 20;
+                if (v == 0) v = 0; // unlimited
                 _header.SetXmlProperty("genxml/hidden/pagesize", v.ToString());
             }
         }
