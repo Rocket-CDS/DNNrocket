@@ -21,6 +21,16 @@ namespace Simplisity
     public class SimplisityJson
     {
 
+        public static SimplisityInfo DeserializeJson(string requestJson)
+        {
+            XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode(requestJson);
+            var sInfo = new SimplisityInfo();
+            sInfo.ItemID = -1;
+            sInfo.TypeCode = "JSONCONVERT";
+            sInfo.XMLData = doc.OuterXml;
+            return sInfo;
+        }
+
         public static SimplisityInfo GetSimplisityInfoFromJson(string requestJson, string editlang)
         {
             requestJson = "{'?xml': {'@version': '1.0','@standalone': 'no'},'root' :" + requestJson + "}";
@@ -113,6 +123,8 @@ namespace Simplisity
             // tidy the data.
             rtnInfo.RemoveXmlNode(sInfo.RootNodeName + "/postform/paramjson");
             rtnInfo.RemoveXmlNode(sInfo.RootNodeName + "/postform/inputjson");
+            rtnInfo.RemoveXmlNode(rtnInfo.RootNodeName + "/postform/paramjson");
+            rtnInfo.RemoveXmlNode(rtnInfo.RootNodeName + "/postform/inputjson");
 
             return rtnInfo;
         }

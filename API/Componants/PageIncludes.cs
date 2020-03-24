@@ -146,7 +146,7 @@ namespace DNNrocketAPI
 
         public static void IncludeTextInHeader(Page page, string TextToInclude)
         {
-            if (TextToInclude != "") page.Header.Controls.Add(new LiteralControl(TextToInclude));
+            if (TextToInclude != "") page.Header.Controls.AddAt(0,new LiteralControl(TextToInclude));
         }
     }
 }

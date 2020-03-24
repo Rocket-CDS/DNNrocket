@@ -41,6 +41,7 @@ namespace RocketMod
         private AppThemeDataList _appThemeDataList;
         private UserStorage _userStorage;
         private string _tableName;
+        private ArticleDataList _articleDataList;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -143,7 +144,7 @@ namespace RocketMod
                     strOut = ActivateSortOrder();
                     break;
                 case "rocketmodedit_setsortorder":
-                    strOut = SetSortOrder();
+                    strOut = MoveSortOrder();
                     break;
                 case "rocketmodedit_cancelsortorder":
                     strOut = CancelSortOrder();
@@ -357,6 +358,9 @@ namespace RocketMod
                     if (!_passSettings.ContainsKey("AppThemeRelPath")) _passSettings.Add("AppThemeRelPath", _moduleParams.AppThemeFolderRel);
                 }
             }
+
+            _articleDataList = new ArticleDataList(_postInfo, _paramInfo, _editLang, false);
+
 
             return paramCmd;
         }
@@ -688,24 +692,13 @@ namespace RocketMod
             try
             {
                 var strOut = "";
-                var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, _editLang, false);
-                if (loadCachedHeader)
-                {
-                    articleDataList.LoadCacheHeader();
-                }
-                else
-                {
-                    articleDataList.PageSize = _postInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
-                    articleDataList.Page = _paramInfo.GetXmlPropertyInt("genxml/hidden/page");
-                    articleDataList.SearchText = _postInfo.GetXmlProperty("genxml/textbox/searchtext");
-                    articleDataList.SaveCacheHeader();
-                }
-                articleDataList.Populate();
+
+                _articleDataList.Populate();
 
                 var debugmode = false;
                 if (_systemData.DebugMode || _moduleParams.CacheDisbaled) debugmode = true;
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", "/DesktopModules/DNNrocket/SystemThemes/" + _systemData.SystemKey, _dataModuleParams.AppThemeFolder, _editLang, _dataModuleParams.AppThemeVersion, debugmode);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, _passSettings, articleDataList.Header, _systemData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleDataList, _passSettings, _articleDataList.Header.Info, _systemData.DebugMode);
                 return strOut;
             }
             catch (Exception ex)
@@ -854,8 +847,7 @@ namespace RocketMod
         {
             try
             {
-                var articleDataList = new ArticleDataList(_moduleid, _editLang, false);
-                articleDataList.SortOrderReIndex();
+                _articleDataList.SortOrderReIndex();
                 return GetDashBoard();
             }
             catch (Exception ex)
@@ -865,21 +857,18 @@ namespace RocketMod
         }
         public String ActivateSortOrder()
         {
-            var articleDataList = new ArticleDataList(_moduleid, _editLang, false);
-            articleDataList.SortOrderActivate(_paramInfo.GetXmlPropertyInt("genxml/hidden/itemid"));
+            _articleDataList.Header.ActivateItemSort(_paramInfo.GetXmlPropertyInt("genxml/hidden/itemid"));
             return GetArticleList(true);
         }
         public String CancelSortOrder()
         {
-            var articleDataList = new ArticleDataList(_moduleid, _editLang, false);
-            articleDataList.SortOrderCancel();
+            _articleDataList.Header.CancelItemSort();
             return GetArticleList(true);
         }
-        public String SetSortOrder()
+        public String MoveSortOrder()
         {
-            var articleDataList = new ArticleDataList(_moduleid, _editLang, false);
             var toId = _paramInfo.GetXmlPropertyInt("genxml/hidden/itemid");
-            articleDataList.SortOrderMove(toId);
+            _articleDataList.SortOrderMove(toId);
             return GetArticleList(true);
         }
 
@@ -887,8 +876,7 @@ namespace RocketMod
         {
             try
             {
-                var articleDataList = new ArticleDataList(moduleid, _editLang, false);
-                articleDataList.DeleteAll();
+                _articleDataList.DeleteAll();
                 return GetDashBoard();
             }
             catch (Exception ex)
@@ -1089,7 +1077,7 @@ namespace RocketMod
                         // list display
                         var razorTempl = _appThemeMod.GetTemplateRazor("view.cshtml");
 
-                        var articleDataList = new ArticleDataList(_dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture(),true);
+                        var articleDataList = new ArticleDataList(_postInfo, _paramInfo, DNNrocketUtils.GetCurrentCulture(),true);
 
                         foreach (var s in _moduleParams.ModuleSettings)
                         {
@@ -1102,7 +1090,7 @@ namespace RocketMod
 
                         passSettings.Add("tabid", _tabid.ToString());
 
-                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings.DictionaryData, articleDataList.Header);
+                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings.DictionaryData, articleDataList.Header.Info);
                     }
 
 

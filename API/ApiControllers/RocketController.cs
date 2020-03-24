@@ -77,15 +77,9 @@ namespace DNNrocketAPI.ApiControllers
                 {
                     paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
                     paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, _editlang);
-                    paramInfo.RemoveXmlNode("genxml/postform/paramjson");
-                    paramInfo.RemoveXmlNode("genxml/postform/inputjson");
                     paramInfo.PortalId = DNNrocketUtils.GetPortalId();
                 }
 
-                foreach (string key in context.Request.Form)
-                {
-                    paramInfo.SetXmlProperty("genxml/postform/" + key.Replace("_", "-"), context.Request.Form[key]); // remove '_' from xpath
-                }
                 foreach (string key in context.Request.QueryString.AllKeys)
                 {
                     var keyValue = context.Request.QueryString[key];
@@ -99,7 +93,6 @@ namespace DNNrocketAPI.ApiControllers
                     }
                     paramInfo.SetXmlProperty("genxml/urlparams/" + key.ToLower(), keyValue);
                 }
-                
 
                 systemkey = systemkey.Trim(' ');
                 if (systemkey == "") paramInfo.GetXmlProperty("genxml/hidden/systemkey").Trim(' ');

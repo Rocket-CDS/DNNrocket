@@ -201,6 +201,8 @@
     <None Include="Documents\DNNrocket-File-Download.docx" />
     <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
     <None Include="Documents\File-Upload.docx" />
+    <None Include="Documents\HeaderData.docx" />
+    <None Include="Documents\ManualSortList.docx" />
     <None Include="downloadfile.ashx" />
     <None Include="BuildScripts\build.bat" />
     <None Include="BuildScripts\ModulePackage.targets">

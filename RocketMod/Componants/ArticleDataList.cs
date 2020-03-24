@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI;
+using DNNrocketAPI.Componants;
 using RocketSettings;
 using Simplisity;
 using System;
@@ -13,42 +14,38 @@ using System.Xml;
 namespace RocketMod
 {
 
-    public class ArticleDataList : BaseHeaderData
+    public class ArticleDataList
     {
-        private int _moduleid;
         private string _langRequired;
         private List<ArticleData> _articleList;
         private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "ROCKETMOD";
         private DNNrocketController _objCtrl;
-        private string _headerCacheKey;
-        private string _sortOrderCacheKey;
 
-        public ArticleDataList(int moduleid, string langRequired, bool populate)
+
+        public ArticleDataList(SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired, bool populate)
         {
-            _moduleid = moduleid;
+            ModuleId = paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+            if (ModuleId == 0) ModuleId = paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
+
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetCurrentCulture();
             _objCtrl = new DNNrocketController();
-            Header = new SimplisityInfo();
-            _headerCacheKey = "rocketmodArtcleHEADER" + DNNrocketUtils.GetCurrentUserId();
-            _sortOrderCacheKey = _moduleid + "*activatedsortorder";
+
+            Header = new HeaderData(paramInfo);
+            if (Header.PageSize == 0) Header.PageSize = 20;
+
             if (populate) Populate();
         }
         public void Populate()
         {
-            var searchFilter = " and R1.ModuleId = " + _moduleid + " ";
-            if (Header.GetXmlProperty("genxml/textbox/searchtext") != "")
+            var searchFilter = " and R1.ModuleId = " + ModuleId;
+            if (Header.Info.GetXmlProperty("genxml/hidden/searchtext") != "")
             {
-                searchFilter += " and ( [XMLData].value('(genxml/textbox/ref)[1]', 'nvarchar(100)') like '%" + Header.GetXmlProperty("genxml/textbox/searchtext") + "%' ";
-                searchFilter += " or [XMLData].value('(genxml/lang/genxml/textbox/name)[1]', 'nvarchar(100)') like '%" + Header.GetXmlProperty("genxml/textbox/searchtext") + "%' ) ";
+                searchFilter += " and [XMLData].value('(genxml/lang/genxml/textbox/title)[1]','nvarchar(max)') like '%" + Header.Info.GetXmlProperty("genxml/hidden/searchtext") + "%' ";
             }
-            var searchOrderBy = " " + Header.GetXmlProperty("genxml/hidden/orderby");
-            if (String.IsNullOrWhiteSpace(searchOrderBy)) searchOrderBy = " order by R1.[SortOrder] ";
-
-            var rowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, _tableName);
-            DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, 0, Page, PageSize, rowCount, _tableName);
-            RowCount = rowCount;
+            Header.RowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, _tableName);
+            DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, Header.OrderBySQL, 0, Header.Page, Header.PageSize, Header.RowCount, _tableName);
 
         }
         public void DeleteAll()
@@ -60,6 +57,8 @@ namespace RocketMod
             }
         }
 
+        public int ModuleId { get; set; }
+        public HeaderData Header { get; set; }
         public List<SimplisityInfo> DataList { get; private set; }
 
         public List<ArticleData> GetArticleList()
@@ -67,7 +66,7 @@ namespace RocketMod
             _articleList = new List<ArticleData>();
             foreach (var o in DataList)
             {
-                var articleData = new ArticleData(o.ItemID, _moduleid, _langRequired);
+                var articleData = new ArticleData(o.ItemID, ModuleId, _langRequired);
                 _articleList.Add(articleData);
             }
             return _articleList;
@@ -78,55 +77,43 @@ namespace RocketMod
             _articleList = new List<ArticleData>();
             foreach (var o in l)
             {
-                var articleData = new ArticleData(o.ItemID, _moduleid, _langRequired);
+                var articleData = new ArticleData(o.ItemID, ModuleId, _langRequired);
                 _articleList.Add(articleData);
             }
             return _articleList;
         }
 
 
-        public void SortOrderActivate(int ItemId)
-        {
-            if (ItemId > 0) CacheUtils.SetCache(_sortOrderCacheKey, ItemId);
-        }
-        public void SortOrderCancel()
-        {
-            CacheUtils.RemoveCache(_sortOrderCacheKey);
-        }
-
         public void SortOrderMove(int toItemId)
         {
-            SortOrderMove(SortOrderActiveItemId, toItemId);
+            SortOrderMove(Header.SortActivate, toItemId);
         }
         public void SortOrderMove(int fromItemId, int toItemId)
         {
             if (fromItemId > 0 && toItemId > 0)
             {
-                var moveData = new ArticleData(fromItemId, _moduleid, _langRequired);
-                var toData = new ArticleData(toItemId, _moduleid, _langRequired);
-                var newSortOrder = toData.SortOrder + 1;
-                if (moveData.SortOrder < toData.SortOrder) newSortOrder = toData.SortOrder -1;
+                var moveData = new ArticleData(fromItemId, ModuleId, _langRequired);
+                var toData = new ArticleData(toItemId, ModuleId, _langRequired);
 
-                moveData.SortOrder = toData.SortOrder;
+                var newSortOrder = toData.SortOrder - 1;
+                if (moveData.SortOrder < toData.SortOrder) newSortOrder = toData.SortOrder + 1;
+
+                moveData.SortOrder = newSortOrder;
                 moveData.Update();
-                toData.SortOrder = newSortOrder;
-                toData.Update();
-                SortOrderCancel();
+                Header.CancelItemSort();
             }
         }
 
         public List<SimplisityInfo> GetAllArticlesForModule()
         {
-            var searchFilter = " and R1.ModuleId = " + _moduleid + " ";
-            var searchOrderBy = " order by R1.[SortOrder] ";
-            return _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, searchOrderBy, 0, 0, 0, 0, _tableName);
+            var searchFilter = " and R1.ModuleId = " + ModuleId + " ";
+            return _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, Header.OrderBySQL, 0, 0, 0, 0, _tableName);
         }
 
         public void SortOrderReIndex()
         {
-            var searchFilter = " and R1.ModuleId = " + _moduleid + " ";
-            var searchOrderBy = " order by R1.[SortOrder] ";
-            var sortOrderList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, "", searchOrderBy, 0, 0, 0, 0, _tableName);
+            var searchFilter = " and R1.ModuleId = " + ModuleId + " ";
+            var sortOrderList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, "", Header.OrderBySQL, 0, 0, 0, 0, _tableName);
             var lp = 1;
             foreach (var s in sortOrderList)
             {
@@ -141,12 +128,13 @@ namespace RocketMod
             // Export DB
             var exportData = "<root>";
             foreach (var s in DataList)
+
             {
                 exportData += s.ToXmlItem();
             }
             exportData += "</root>";
 
-            var exportDirMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\export_" + _moduleid;
+            var exportDirMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\export_" + ModuleId;
             Directory.Delete(exportDirMapPath, true);
             Directory.CreateDirectory(exportDirMapPath);
 
@@ -158,7 +146,7 @@ namespace RocketMod
 
 
             // Create zip
-            var exportZipMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\export_" + _moduleid + ".zip";
+            var exportZipMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\export_" + ModuleId + ".zip";
             if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
             ZipFile.CreateFromDirectory(exportDirMapPath, exportZipMapPath);
 
@@ -166,43 +154,6 @@ namespace RocketMod
 
             return exportZipMapPath;
         }
-
-
-
-        #region "HEADER"
-
-        public void CacheHeaderDelete()
-        {
-            CacheUtils.RemoveCache(_headerCacheKey);
-        }
-
-        public void SaveCacheHeader()
-        {
-            CacheUtils.SetCache(_headerCacheKey, Header);
-        }
-        public void LoadCacheHeader()
-        {
-            Header = (SimplisityInfo)CacheUtils.GetCache(_headerCacheKey);
-            if (Header == null) Header = new SimplisityInfo();
-        }
-        public void LoadViewHeader(SimplisityInfo header)
-        {
-            Header = header;
-            if (Header == null) Header = new SimplisityInfo();
-        }
-
-        #endregion
-
-        public int SortOrderActiveItemId
-        {
-            get
-            {
-                var rtn = CacheUtils.GetCache(_sortOrderCacheKey);
-                if (rtn == null) return 0;
-                return Convert.ToInt32(rtn);
-            }
-        }
-
 
     }
 

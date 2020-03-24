@@ -206,11 +206,31 @@ namespace DNNrocketAPI.render
             if (pngImage && url.ToLower().EndsWith(".png")) pngType = "&imgtype=png";
             if (width > 0 || height > 0)
             {
-                url = "//" + DNNrocketUtils.GetDefaultWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
+                url = "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
             }
             else
             {
-                url = "//" + DNNrocketUtils.GetDefaultWebsiteDomainUrl() + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
+                url = "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
+            }
+            return new RawString(url);
+        }
+        public IEncodedString ThumbnailImageWebsiteDomainUrl(string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
+        {
+            return ThumbnailImageWebsiteDomainUrl(DNNrocketUtils.GetDefaultWebsiteDomainUrl(), url, width, height, extraurlparams, pngImage);
+        }
+
+        public IEncodedString ThumbnailImageWebsiteDomainUrl(string websiteDomainUrl, string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
+        {
+            var pngType = "";
+            if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
+            if (pngImage && url.ToLower().EndsWith(".png")) pngType = "&imgtype=png";
+            if (width > 0 || height > 0)
+            {
+                url = "//" + websiteDomainUrl + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
+            }
+            else
+            {
+                url = "//" + websiteDomainUrl + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
             }
             return new RawString(url);
         }
