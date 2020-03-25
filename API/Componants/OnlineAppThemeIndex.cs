@@ -50,20 +50,20 @@ namespace DNNrocketAPI.Componants
                 ListData.Add(fname, sInfo);
 
 
-                var base64 = sInfo.GetXmlProperty("genxml/hidden/logobase64");
-                try
-                {
-                    // save image, so we can cache it on the browser. (Speed updisplay time)
-                    var fileMapPath = IndexImgFolderMapPath + "\\" + sInfo.GetXmlProperty("genxml/hidden/logo");
-                    if (!File.Exists(fileMapPath))
-                    {
-                        FileUtils.SaveBase64ToFile(fileMapPath, base64);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    DNNrocketUtils.LogException(ex);
-                }
+                //var base64 = sInfo.GetXmlProperty("genxml/hidden/logobase64");
+                //try
+                //{
+                //    // save image, so we can cache it on the browser. (Speed updisplay time)
+                //    var fileMapPath = IndexImgFolderMapPath + "\\" + sInfo.GetXmlProperty("genxml/hidden/logo");
+                //    if (!File.Exists(fileMapPath))
+                //    {
+                //        FileUtils.SaveBase64ToFile(fileMapPath, base64);
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    DNNrocketUtils.LogException(ex);
+                //}
 
 
             }

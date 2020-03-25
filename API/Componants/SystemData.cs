@@ -87,15 +87,15 @@ namespace DNNrocketAPI
             Info.XrefItemId = infoFromXml.XrefItemId;
 
             var fileMapPath = DNNrocketUtils.MapPath(Info.GetXmlProperty("genxml/hidden/imagepathlogo"));
-            var base64 = Info.GetXmlProperty("genxml/hidden/logobase64");
-            try
-            {
-                FileUtils.SaveBase64ToFile(fileMapPath, base64);
-            }
-            catch (Exception ex)
-            {
-                DNNrocketUtils.LogException(ex);
-            }
+            //var base64 = Info.GetXmlProperty("genxml/hidden/logobase64");
+            //try
+            //{
+            //    FileUtils.SaveBase64ToFile(fileMapPath, base64);
+            //}
+            //catch (Exception ex)
+            //{
+            //    DNNrocketUtils.LogException(ex);
+            //}
 
             Info.SetXmlProperty("genxml/hidden/logobase64", "");
 
@@ -113,14 +113,14 @@ namespace DNNrocketAPI
             var logoMapPath = DNNrocketUtils.MapPath(Info.GetXmlProperty("genxml/hidden/imagepathlogo"));
             if (File.Exists(logoMapPath))
             {
-                var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));
+                //var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));
 
                 // Convert the image to byte[]
-                System.IO.MemoryStream stream = new System.IO.MemoryStream();
-                newImage.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
-                byte[] imageBytes = stream.ToArray();
-                string base64String = Convert.ToBase64String(imageBytes);
-                exportInfo.SetXmlProperty("genxml/hidden/logobase64", base64String, TypeCode.String, true);
+                //System.IO.MemoryStream stream = new System.IO.MemoryStream();
+                //newImage.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+                //byte[] imageBytes = stream.ToArray();
+                //string base64String = Convert.ToBase64String(imageBytes);
+                //exportInfo.SetXmlProperty("genxml/hidden/logobase64", base64String, TypeCode.String, true);
             }
 
             return exportInfo.ToXmlItem();

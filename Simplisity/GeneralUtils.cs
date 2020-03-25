@@ -589,11 +589,11 @@ namespace Simplisity
         /// Get unique string based on ticks and a random numer.  The random number is to try and stop clashes when processing on the same tick.
         /// This method has a VERY HIGH chance of being unique, but if processing on the same tick a duplicate could be generate.
         /// </summary>
-        /// <param name="maxSize">0= Guid (Unique across machines),#= size of return string</param>
+        /// <param name="randomsize">RandomKey size, the ramdon key is added to the tick string. 0= Guid (Unique across machines),#= size of random key</param>
         /// <returns></returns>
-        public static string GetUniqueString()
+        public static string GetUniqueString(int randomsize = 8)
         {
-            var strticks = DateTime.Now.Ticks.ToString() + GetRandomKey(1, true);
+            var strticks = DateTime.Now.Ticks.ToString() + GetRandomKey(randomsize, true);
             long ticks = Convert.ToInt64(strticks);
             byte[] bytes = BitConverter.GetBytes(ticks);
             return Convert.ToBase64String(bytes).Replace('+', '_').Replace('/', '-').TrimEnd('=');
@@ -603,7 +603,7 @@ namespace Simplisity
         /// </summary>
         /// <param name="maxSize"></param>
         /// <returns></returns>
-        [Obsolete("GetUniqueKey() is deprecated, please use GetUniqueString() instead.")]
+        [Obsolete("GetUniqueKey() is deprecated, please use GetUniqueString() or GetGuidKey() instead.")]
         public static string GetUniqueKey(int maxSize = 0)
         {
             return GetRandomKey(maxSize);

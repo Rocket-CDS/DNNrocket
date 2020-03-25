@@ -102,7 +102,7 @@ namespace Rocket.AppThemes.Componants
                             CacheUtils.SetCache(appTheme.SystemKey + "_privateIndex", onlineIndex);
                         }
 
-                        a.SetXmlProperty("genxml/hidden/logobase64", onlineIndex.GetLogoBase64String(appTheme.AppThemeFolder));
+                        //a.SetXmlProperty("genxml/hidden/logobase64", onlineIndex.GetLogoBase64String(appTheme.AppThemeFolder));
 
                         List.Add(a);
                     }

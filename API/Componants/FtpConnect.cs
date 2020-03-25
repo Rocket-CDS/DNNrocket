@@ -70,14 +70,14 @@ namespace DNNrocketAPI.Componants
                     sInfo.SetXmlProperty("genxml/hidden/logo", Path.GetFileName(logoMapPath));
                     if (File.Exists(logoMapPath))
                     {
-                        var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));
+                        //var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));
 
-                        // Convert the image to byte[]
-                        System.IO.MemoryStream stream = new System.IO.MemoryStream();
-                        newImage.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
-                        byte[] imageBytes = stream.ToArray();
-                        string base64String = Convert.ToBase64String(imageBytes);
-                        sInfo.SetXmlProperty("genxml/hidden/logobase64", base64String);   
+                        //// Convert the image to byte[]
+                        //System.IO.MemoryStream stream = new System.IO.MemoryStream();
+                        //newImage.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+                        //byte[] imageBytes = stream.ToArray();
+                        //string base64String = Convert.ToBase64String(imageBytes);
+                        //sInfo.SetXmlProperty("genxml/hidden/logobase64", base64String);   
                     }
 
                     var updateXml = sInfo.ToXmlItem();

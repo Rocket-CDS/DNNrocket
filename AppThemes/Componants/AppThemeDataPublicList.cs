@@ -101,7 +101,7 @@ namespace Rocket.AppThemes.Componants
                         onlineIndex = new OnlineAppThemeIndex(appTheme.SystemKey, "public");
                         CacheUtils.SetCache(appTheme.SystemKey + "_publicIndex", onlineIndex);
                     }
-                    a.SetXmlProperty("genxml/hidden/logobase64", onlineIndex.GetLogoBase64String(appTheme.AppThemeFolder));
+                    //a.SetXmlProperty("genxml/hidden/logobase64", onlineIndex.GetLogoBase64String(appTheme.AppThemeFolder));
 
                     List.Add(a);
                 }
