@@ -96,12 +96,11 @@
             <div id="exportdownloadedurl" class="w3-hide"></div>
 
             <div class="w3-row w3-padding">
-                <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearselectedsystemkey":"true"}'>@ButtonText(ButtonTypes.back)</div>
-                @ButtonGap()
-                <div class="w3-col m2 w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'">@ButtonText(ButtonTypes.create)</div>
-                @ButtonGap()
+                <div class="w3-col m2 rocket-buttonbar w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearselectedsystemkey":"true"}'>@ButtonText(ButtonTypes.back)</div>                
+                <div class="w3-col m2 rocket-buttonbar w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'">@ButtonText(ButtonTypes.create)</div>
+                
                 <div class="w3-col m6 w3-dropdown-hover">
-                    <button class="w3-button">More...</button>
+                    <button class="w3-button" style="border-top: 6px solid #fff !important;">More...</button>
                     <div class="w3-dropdown-content w3-bar-block w3-card">
                         <div class="w3-bar-item w3-button w3-padding-8 " onclick="document.getElementById('importapptheme').style.display='block'"><i class="w3-text-teal fas fa-file-import fa-fw fa-lg"></i>@ResourceKey("DNNrocket.import")</div>
                         <div class="w3-bar-item w3-button w3-padding-8 refreshlist simplisity_click" s-track="clear" s-cmd="rocketapptheme_getlist" s-fields='' style="display:none;"></div>

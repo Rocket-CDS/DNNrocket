@@ -21,12 +21,12 @@
 
 
 <div class="w3-row w3-padding">
-    <a class="w3-col m2 w3-button w3-teal simplisity_click" s-cmd="rocketmodfields_add" s-fields=''>@ButtonText(ButtonTypes.add)</a>
-    @ButtonGap()
-    <span class="w3-col m2 w3-button w3-green simplisity_click langchangesave" s-before="validateform" s-cmd="rocketmodfields_save" s-fields='' s-post="" s-list=".fielddata">@ButtonText(ButtonTypes.save)</span>
+    <a class="w3-col m2 w3-button rocket-buttonbar w3-teal simplisity_click" s-cmd="rocketmodfields_add" s-fields=''>@ButtonText(ButtonTypes.add)</a>
+    
+    <span class="w3-col m2 rocket-buttonbar w3-button w3-green simplisity_click langchangesave" s-before="validateform" s-cmd="rocketmodfields_save" s-fields='' s-post="" s-list=".fielddata">@ButtonText(ButtonTypes.save)</span>
     @if (Model.GetSettingBool("saved"))
     {
-        <i class='fas fa-save w3-right simplisity_fadeout' style="font-size:24px"></i>
+        <i class='fas fa-save w3-right rocket-buttonbar simplisity_fadeout' style="font-size:24px"></i>
     }
 </div>
 

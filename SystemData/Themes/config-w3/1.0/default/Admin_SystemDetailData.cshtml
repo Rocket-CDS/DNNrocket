@@ -85,7 +85,7 @@
                 <a class="w3-col m2 w3-button w3-teal w3-padding-8 w3-right" href="@sInfo.GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ButtonText(ButtonTypes.admin)</a>
             }
             <div class="w3-col m2 w3-button w3-blue w3-margin-left simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.export") ?" s-cmd="systemapi_export" s-fields='{"selecteditemid":"@(sInfo.ItemID)"}' s-post="" s-return="#exportreturn">@ButtonText(ButtonTypes.export)</div>
-            @ButtonGap()
+            
             <div id="exportreturn"></div>
         </div>
 

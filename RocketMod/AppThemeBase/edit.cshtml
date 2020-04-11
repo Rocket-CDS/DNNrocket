@@ -30,16 +30,13 @@
         <div class="w3-row w3-padding ">
             @if (Model.GetSettingInt("datatype") == 2)
             {
-                <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketmodedit_editarticlelist" s-fields='{"track":"true"}'>@ButtonText(ButtonTypes.back)</div>
-                @ButtonGap()
+                <div class="w3-col m2 w3-button rocket-buttonbar w3-khaki simplisity_click" s-cmd="rocketmodedit_editarticlelist" s-fields='{"track":"true"}'>@ButtonText(ButtonTypes.back)</div>                
             }
-            <div class="w3-col m2 w3-button w3-green langchangesave simplisity_click" s-cmd="rocketmodedit_savearticle" s-fields='{"selecteditemid":"@info.ItemID"}' s-post="#datasection" s-list="@Model.GetSetting("s-list-csv")">@ButtonText(ButtonTypes.save)</div>
-            @ButtonGap()
-            <div class="w3-col m2 w3-button w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="rocketmodedit_deletearticle" s-fields='{"selecteditemid":"@info.ItemID"}'>@ButtonText(ButtonTypes.delete)</div>
-            @ButtonGap()
+            <div class="w3-col m2 w3-button rocket-buttonbar w3-green langchangesave simplisity_click" s-cmd="rocketmodedit_savearticle" s-fields='{"selecteditemid":"@info.ItemID"}' s-post="#datasection" s-list="@Model.GetSetting("s-list-csv")">@ButtonText(ButtonTypes.save)</div>            
+            <div class="w3-col m2 w3-button rocket-buttonbar w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="rocketmodedit_deletearticle" s-fields='{"selecteditemid":"@info.ItemID"}'>@ButtonText(ButtonTypes.delete)</div>            
             @if (Model.GetSettingBool("saved"))
             {
-                <i class='fas fa-save w3-right simplisity_fadeout' style="font-size:24px"></i>
+                <i class='fas fa-save w3-right rocket-buttonbar simplisity_fadeout' style="font-size:24px"></i>
             }
         </div>
 

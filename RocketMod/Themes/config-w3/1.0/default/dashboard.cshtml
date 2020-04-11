@@ -24,22 +24,22 @@
 
 
 
-<div class="w3-row w3-padding">
-    <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketmodedit_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","selecteditemid":"@configinfo.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.save)</div>
-    @ButtonGap()
-<div class="w3-col m6 w3-dropdown-hover">
-    <div class="w3-button">@ResourceKey("DNNrocket.more")...</div>
-    <div class="w3-dropdown-content w3-bar-block w3-card">
-        <div class="w3-bar-item w3-button w3-blue w3-padding-8 simplisity_click" s-cmd="rocketmodedit_datasourcelist" s-return="#datasourcelist" s-fields='{"moduleid":"@(Model.ModuleId)"}'><i class="fas fa-share-alt-square fa-fw fa-lg"></i>@ResourceKey("RocketMod.datasource")</div>
-        <div class="w3-bar-item w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.reindexsortorder","","Confirm")" s-cmd="rocketmodedit_reindexsortorder" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'><i class="fas fa-sort-numeric-down fa-fw fa-lg"></i>@ResourceKey("RocketMod.reindexsortorder")</div>
-        <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmodedit_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetconfig")</div>
-        <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmodedit_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetdata")</div>
+<div class="w3-row w3-padding ">
+    <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketmodedit_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","selecteditemid":"@configinfo.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.save)</div>
+
+    <div class="w3-col m6 w3-dropdown-hover">
+        <div class="w3-button " style="border-top: 6px solid #fff !important;">@ResourceKey("DNNrocket.more")...</div>
+        <div class="w3-dropdown-content w3-bar-block w3-card">
+            <div class="w3-bar-item w3-button w3-blue w3-padding-8 simplisity_click" s-cmd="rocketmodedit_datasourcelist" s-return="#datasourcelist" s-fields='{"moduleid":"@(Model.ModuleId)"}'><i class="fas fa-share-alt-square fa-fw fa-lg"></i>@ResourceKey("RocketMod.datasource")</div>
+            <div class="w3-bar-item w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.reindexsortorder","","Confirm")" s-cmd="rocketmodedit_reindexsortorder" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'><i class="fas fa-sort-numeric-down fa-fw fa-lg"></i>@ResourceKey("RocketMod.reindexsortorder")</div>
+            <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmodedit_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetconfig")</div>
+            <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmodedit_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetdata")</div>
+        </div>
+        @if (Model.GetSettingBool("saved"))
+        {
+            <i class='fas fa-save simplisity_fadeout' style="font-size:24px"></i>
+        }
     </div>
-    @if (Model.GetSettingBool("saved"))
-    {
-        <i class='fas fa-save simplisity_fadeout' style="font-size:24px"></i>
-    }
-</div>
     <div class="w3-right">
         @if (moduleParams.ShareData != "0" && !moduleParams.DataSourceExternal)
         {
@@ -160,7 +160,7 @@
                 </div>
                 @if (systemData.DebugMode)
                 {
-                <b class="w3-text-red">&nbsp;&nbsp;@ResourceKey("DNNrocket.system")&nbsp;@ResourceKey("DNNrocket.debugmode"):&nbsp;@ResourceKey("DNNrocket.on")&nbsp;</b>
+                    <b class="w3-text-red">&nbsp;&nbsp;@ResourceKey("DNNrocket.system")&nbsp;@ResourceKey("DNNrocket.debugmode"):&nbsp;@ResourceKey("DNNrocket.on")&nbsp;</b>
                 }
 
             </div>
@@ -241,7 +241,7 @@
             else {
                 $('.detailurlparam').hide();
             }
-        });        
+        });
 
         if ($('.detailviewcheckbox').prop('checked')) {
             $('.detailurlparam').show();

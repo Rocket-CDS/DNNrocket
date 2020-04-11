@@ -24,9 +24,9 @@
 
                 <div class="w3-row w3-margin-bottom">
                     <span class="w3-col m2 w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#documentfileupload').trigger('click')">@ButtonText(ButtonTypes.upload)</span>
-                    @ButtonGap()
+                    
                     <span class="w3-col m2 w3-button w3-green w3-padding-8" onclick="dnnrocketdocs_usedocument()">@ButtonText(ButtonTypes.use)</span>
-                    @ButtonGap()
+                    
                     <span class="w3-col m2 w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketdocs_delete" s-before="dnnrocketdocs_deletedocument" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-post="#dnnrocket_deletedocumentlist" s-fields='{"theme":"config-w3","interfacekey":"documentupload","documentfolder":"@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")","singleselect":"true","autoreturn":"false"}'>@ButtonText(ButtonTypes.delete)</span>
                 </div>
 

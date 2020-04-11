@@ -661,6 +661,7 @@
     </Content>
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
     <None Include="Themes\config-w3\1.0\css\green-theme.css" />
+    <Content Include="Themes\config-w3\1.0\css\dnnrocket.css" />
     <Content Include="View.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>

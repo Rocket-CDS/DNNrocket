@@ -50,10 +50,10 @@
                             <div id="progressBarDownload" class="w3-container w3-green" style="height:24px;width:1%;display:none;"></div>
                         </div>
                     </div>
-                    @ButtonGap()
+                    
                     <div class="w3-container  w3-margin  bottombuttons">
                         <div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class='w3-col m2 w3-button w3-theme w3-hover-theme simplisity_click'>@ButtonText(ButtonTypes.back)</div>
-                        @ButtonGap()
+                        
                         <a href="/Desktopmodules/dnnrocket/AppThemes/admin.html?selectedsystemkey=dnnrocketmodule" class="w3-right w3-button w3-col m2 w3-theme w3-hover-theme" target="_blank"><i class='fas fa-download'></i>&nbsp;@ResourceKey("DNNrocket.appthemeadmin")</a>
                     </div>
 
@@ -64,7 +64,7 @@
 
             <div class="w3-row">
                 <div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class='w3-col m2 w3-button w3-theme w3-hover-theme simplisity_click'>@ButtonText(ButtonTypes.back)</div>
-                @ButtonGap()
+                
                 <div class="w3-padding w3-right-align">
                     <i class="griddisplayicon fas fa-th fa-2x"></i>
                     &nbsp;
@@ -153,7 +153,7 @@
                     <div id="datasection2" class="w3-row w3-margin-top" style="display:none;">
                         <div class="w3-row w3-padding">
                             <div class="w3-col m2 w3-button w3-khaki" onclick="showselect();">@ButtonText(ButtonTypes.back)</div>
-                            @ButtonGap()
+                            
                             <div class="w3-col m2 w3-button w3-green w3-padding-8 saveappthemeconfig" s-cmd="rocketmodedit_saveappthemeconfig" s-before="hideselectapptheme" s-after="settingreturn" s-post=".postdatasection" s-return="#settingsection">@ButtonText(ButtonTypes.next)</div>
                         </div>
                         <div class="w3-row">
@@ -188,7 +188,7 @@
                     <div id="datasection3" class="w3-row" style="display:none;">
                         <div class="w3-row w3-padding">
                             <div class="w3-col m2 w3-button w3-khaki" onclick="showdetail(simplisity_getParamField('appthemefolder'));">@ButtonText(ButtonTypes.back)</div>
-                            @ButtonGap()
+                            
                             <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="hidesettings" s-cmd="rocketmodedit_saveappthemesetting" s-post="#settingsection">@ButtonText(ButtonTypes.save)</div>
                         </div>
                         <div id="settingsection">

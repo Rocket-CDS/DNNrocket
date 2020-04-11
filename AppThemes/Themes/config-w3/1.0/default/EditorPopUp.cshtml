@@ -20,14 +20,14 @@
 <div id="editorpopup">
     <div class="w3-row w3-padding">
         <div class="w3-col m2 w3-button w3-khaki simplisity_click " s-cmd="@(Model.GetSetting("interfacekey"))_getdetail" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonText(ButtonTypes.cancel)</div>
-        @ButtonGap()
+        
         <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditordata" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
-        @ButtonGap()
+        
         @if (Model.GetSettingBool("moduletemplatebutton"))
         {
             <div class="w3-col m3 w3-button w3-blue w3-padding-8 moduletemplatebutton simplisity_confirmclick" s-before="saveeditordata" s-confirm="@ResourceKey("DNNrocket.removemoduletemplate")" s-cmd="@(Model.GetSetting("interfacekey"))_removemodtemplate" s-post="#editorsave" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-minus-square fa-fw fa-lg"></i>@ResourceKey("DNNrocket.removemoduletemplate")</div>
         }
-        @ButtonGap()
+        
         <i id="saveicon" class='fas fa-save ' style="display:none;font-size:24px"></i>
         <div class="editorviewmenu w3-col m1 w3-xlarge w3-right">
             <div class="w3-button w3-xlarge" id="openRightMenuButton" onclick="openRightMenu()">&#9776;</div>
@@ -157,7 +157,7 @@
     <div class="w3-sidebar w3-bar-block w3-card w3-animate-right w3-light-grey " style="display:none;right:0;z-index:9999;width:300px" id="rightMenuTokens">
         <div id="searchbar" class="w3-bar-item">
             <input class="w3-col w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.search")..." id="rightmenusearchtext" onkeyup="rightmenusearchFunction()" style="width:200px;">
-            @ButtonGap()
+            
             <div onclick="closeRightMenu()" class="w3-col w3-right-align w3-button w3-large" style="width:40px">&times;</div>
         </div>
 

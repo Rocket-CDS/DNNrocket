@@ -108,13 +108,11 @@
     <div id="detailsection">
 
         <div class="w3-row w3-padding">
-            <div class="w3-col m2 w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"track":"true","clearlistcache":"true"}'>@ButtonText(ButtonTypes.back)</div>
-            @ButtonGap()
-            <div class="w3-col m2 w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
-            @ButtonGap()
+            <div class="w3-col m2 rocket-buttonbar w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"track":"true","clearlistcache":"true"}'>@ButtonText(ButtonTypes.back)</div>            
+            <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
 
             <div class="w3-col m2 w3-dropdown-hover">
-                <div class="w3-button">@ResourceKey("DNNrocket.more")...</div>
+                <div class="w3-button" style="border-top: 6px solid #fff !important;">@ResourceKey("DNNrocket.more")...</div>
                 <div class="w3-dropdown-content w3-bar-block w3-card" style="width:340px;">
                     <div class="w3-bar-item w3-button simplisity_confirmclick" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-blue fas fa-newspaper fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
                     <div class="w3-bar-item w3-button" onclick="document.getElementById('copyapptheme').style.display = 'block';"><i class="w3-text-blue fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copyapptheme")</div>
@@ -196,7 +194,7 @@
 
             <div class="w3-container w3-margin-top">
 
-                <div class="w3-bar w3-theme">
+                <div class="rocket-buttonbar w3-theme">
                     <div class="w3-bar-item w3-button tablink w3-theme-d5 tabFields" onclick="openDataTab('tabFields','Fields')">@ResourceKey("AppThemes.datafields")</div>
                     <div class="w3-bar-item w3-button tablink tabSettingFields" onclick="openDataTab('tabSettingFields','SettingFields')">@ResourceKey("AppThemes.settingfields")</div>
                     <div class="w3-bar-item w3-button tablink tabTemplates" onclick="openDataTab('tabTemplates','Templates')">@ResourceKey("AppThemes.templates")</div>
@@ -419,14 +417,14 @@
     <div id="dnnrocket_resxeditwrapper" style="display:none;">
         <div class="w3-row w3-padding">
             <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="saveresx()">@ButtonText(ButtonTypes.ok)</div>
-            @ButtonGap()
+            
             <div class="w3-col m2 w3-button w3-khaki " onclick="cancelresx();">@ButtonText(ButtonTypes.cancel)</div>
-            @ButtonGap()
+            
             <div class="w3-col m3 w3-center">
                 <image id="resxflag" src="/DesktopModules/DNNrocket/API/images/flags/32/none.png"></image>
                 <span id="culturecoderesx"></span>
             </div>
-            @ButtonGap()
+            
             <div class="w3-col m4 w3-center">
                 <h5 id="resxfilename" class="" style=""></h5>
             </div>
