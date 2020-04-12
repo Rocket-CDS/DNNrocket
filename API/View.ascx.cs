@@ -190,13 +190,6 @@ namespace DNNrocketAPI
                         paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), Request.QueryString[key]);
                     }
                 }
-                foreach (string key in Request.Form)
-                {
-                    if (key != null && !key.StartsWith("_")) // null can happen and don't bother with system form keys, we don;t use those.
-                    {
-                        paramInfo.SetXmlProperty("genxml/postform/" + key.Replace("_", "-"), Request.Form[key]); // remove '_' from xpath
-                    }
-                }
 
                 var strOut = "";
                 var cacheOutPut = "";

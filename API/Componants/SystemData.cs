@@ -131,7 +131,6 @@ namespace DNNrocketAPI
             var objCtrl = new DNNrocketController();
 
             //remove any params
-            postInfo.RemoveXmlNode("genxml/postform");
             postInfo.RemoveXmlNode("genxml/urlparams");
 
             Info.XMLData = postInfo.XMLData;

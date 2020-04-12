@@ -187,7 +187,7 @@ namespace DNNrocket.System
                     break;
                 case "systemapi_licenserecieveremote":
                     strOut = "FAIL";
-                    var licenseXml = _paramInfo.GetXmlProperty("genxml/postform/licensecode");
+                    var licenseXml = _paramInfo.GetXmlProperty("genxml/hidden/licensecode");
                     if (SaveRemoteLicense(licenseXml)) strOut = "OK";
                     break;
                 case "systemapi_licenseverify":
@@ -293,7 +293,7 @@ namespace DNNrocket.System
             {
                 var getremote = GetRemoteLicense();
                 if (!getremote) return false;
-                var licensecode = _paramInfo.GetXmlProperty("genxml/postform/licensecode");
+                var licensecode = _paramInfo.GetXmlProperty("genxml/hidden/licensecode");
                 if (licensecode != "")
                 {
                     var licenseInfo = new SimplisityInfo();
