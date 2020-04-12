@@ -593,8 +593,9 @@ namespace Simplisity
         /// <returns></returns>
         public static string GetUniqueString(int randomsize = 8)
         {
-            var strticks = DateTime.Now.Ticks.ToString() + GetRandomKey(randomsize, true);
-            long ticks = Convert.ToInt64(strticks);
+            int timeStamp = (int)(DateTime.Now.Ticks >> 23); // retain bits 23 to 55
+            var strticks = timeStamp.ToString() + GetRandomKey(randomsize, true);
+            long ticks = Convert.ToInt64(Convert.ToDecimal(strticks));
             byte[] bytes = BitConverter.GetBytes(ticks);
             return Convert.ToBase64String(bytes).Replace('+', '_').Replace('/', '-').TrimEnd('=');
         }

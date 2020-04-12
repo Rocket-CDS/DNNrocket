@@ -57,7 +57,7 @@ namespace Simplisity
 
         public string HeaderCacheKey { get { return Info.GUIDKey; } set { Info.GUIDKey = value.ToString(); } }
         //Order by
-        public string OrderBySQL { get {if (Info.GetXmlProperty("genxml/hidden/orderbysql") != "") return Info.GetXmlProperty("genxml/hidden/orderbysql"); else return " order by R1.[SortOrder] ";} set { Info.SetXmlProperty("genxml/hidden/orderbysql", value); } }
+        public int OrderByIndex { get { return Info.GetXmlPropertyInt("genxml/hidden/orderbyindex"); } set { Info.SetXmlProperty("genxml/hidden/orderbyindex", value.ToString()); } }
         public int SortActivate { get { return Info.GetXmlPropertyInt("genxml/hidden/sortorderactivate"); } set { Info.SetXmlProperty("genxml/hidden/sortorderactivate", value.ToString()); } }
         // Paging
         public int PageSize { get { return Info.GetXmlPropertyInt("genxml/hidden/pagesize"); } set { Info.SetXmlProperty("genxml/hidden/pagesize", value.ToString()); } }

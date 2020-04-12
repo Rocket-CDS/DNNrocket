@@ -21,12 +21,14 @@ namespace RocketMod
         private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "ROCKETMOD";
         private DNNrocketController _objCtrl;
-
+        private ModuleParams _moduleParams;
 
         public ArticleDataList(SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired, bool populate)
         {
             ModuleId = paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (ModuleId == 0) ModuleId = paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
+
+            _moduleParams = new ModuleParams(ModuleId);
 
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetCurrentCulture();
@@ -39,14 +41,13 @@ namespace RocketMod
         }
         public void Populate()
         {
-            var moduleParams = new ModuleParams(ModuleId);
-            var searchFilter = " and R1.ModuleId = " + moduleParams.ModuleIdDataSource;
+            var searchFilter = " and R1.ModuleId = " + _moduleParams.ModuleIdDataSource;
             if (Header.Info.GetXmlProperty("genxml/hidden/searchtext") != "")
             {
                 searchFilter += " and [XMLData].value('(genxml/lang/genxml/textbox/title)[1]','nvarchar(max)') like '%" + Header.Info.GetXmlProperty("genxml/hidden/searchtext") + "%' ";
             }
             Header.RowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, _tableName);
-            DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, Header.OrderBySQL, 0, Header.Page, Header.PageSize, Header.RowCount, _tableName);
+            DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(Header.OrderByIndex), 0, Header.Page, Header.PageSize, Header.RowCount, _tableName);
 
         }
         public void DeleteAll()
@@ -108,13 +109,13 @@ namespace RocketMod
         public List<SimplisityInfo> GetAllArticlesForModule()
         {
             var searchFilter = " and R1.ModuleId = " + ModuleId + " ";
-            return _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, Header.OrderBySQL, 0, 0, 0, 0, _tableName);
+            return _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(Header.OrderByIndex), 0, 0, 0, 0, _tableName);
         }
 
         public void SortOrderReIndex()
         {
             var searchFilter = " and R1.ModuleId = " + ModuleId + " ";
-            var sortOrderList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, "", Header.OrderBySQL, 0, 0, 0, 0, _tableName);
+            var sortOrderList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, "", _moduleParams.OrderBySQL(Header.OrderByIndex), 0, 0, 0, 0, _tableName);
             var lp = 1;
             foreach (var s in sortOrderList)
             {
