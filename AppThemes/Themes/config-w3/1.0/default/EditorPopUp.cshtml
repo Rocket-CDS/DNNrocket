@@ -19,16 +19,14 @@
 
 <div id="editorpopup">
     <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-khaki simplisity_click " s-cmd="@(Model.GetSetting("interfacekey"))_getdetail" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonText(ButtonTypes.cancel)</div>
-        
-        <div class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditordata" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
-        
+        <div class="w3-col m2 rocket-buttonbar w3-button w3-khaki simplisity_click " s-cmd="@(Model.GetSetting("interfacekey"))_getdetail" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonText(ButtonTypes.cancel)</div>        
+        <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditordata" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>        
         @if (Model.GetSettingBool("moduletemplatebutton"))
         {
-            <div class="w3-col m3 w3-button w3-blue w3-padding-8 moduletemplatebutton simplisity_confirmclick" s-before="saveeditordata" s-confirm="@ResourceKey("DNNrocket.removemoduletemplate")" s-cmd="@(Model.GetSetting("interfacekey"))_removemodtemplate" s-post="#editorsave" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-minus-square fa-fw fa-lg"></i>@ResourceKey("DNNrocket.removemoduletemplate")</div>
+            <div class="w3-col m3 rocket-buttonbar w3-button w3-blue w3-padding-8 moduletemplatebutton simplisity_confirmclick" s-before="saveeditordata" s-confirm="@ResourceKey("DNNrocket.removemoduletemplate")" s-cmd="@(Model.GetSetting("interfacekey"))_removemodtemplate" s-post="#editorsave" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-minus-square fa-fw fa-lg"></i>@ResourceKey("DNNrocket.removemoduletemplate")</div>
         }
         
-        <i id="saveicon" class='fas fa-save ' style="display:none;font-size:24px"></i>
+        <i id="saveicon" class='fas fa-save  rocket-buttonbar' style="display:none;font-size:24px"></i>
         <div class="editorviewmenu w3-col m1 w3-xlarge w3-right">
             <div class="w3-button w3-xlarge" id="openRightMenuButton" onclick="openRightMenu()">&#9776;</div>
             <div class="w3-button w3-xlarge" id="closeRightMenuButton" onclick="closeRightMenu()" style="display:none;">&#9776;</div>

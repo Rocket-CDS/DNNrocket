@@ -77,8 +77,7 @@ namespace DNNrocketAPI.Componants
                         {
                             var settingvalue = s.GetXmlProperty("genxml/textbox/value");
                             if (s.GetXmlPropertyBool("genxml/checkbox/localized")) settingvalue = s.GetXmlProperty("genxml/lang/genxml/textbox/valuelang");
-
-                            settingsDict.Add(s.GetXmlProperty("genxml/textbox/name"), settingvalue);
+                            if (!settingsDict.ContainsKey(s.GetXmlProperty("genxml/textbox/name"))) settingsDict.Add(s.GetXmlProperty("genxml/textbox/name"), settingvalue);
                         }
                         ModuleSettings = settingsDict;
                     }

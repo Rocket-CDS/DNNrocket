@@ -33,13 +33,14 @@ namespace RocketMod
             _objCtrl = new DNNrocketController();
 
             Header = new HeaderData(paramInfo);
-            if (Header.PageSize == 0) Header.PageSize = 20;
+            //if (Header.PageSize == 0) Header.PageSize = 20;
 
             if (populate) Populate();
         }
         public void Populate()
         {
-            var searchFilter = " and R1.ModuleId = " + ModuleId;
+            var moduleParams = new ModuleParams(ModuleId);
+            var searchFilter = " and R1.ModuleId = " + moduleParams.ModuleIdDataSource;
             if (Header.Info.GetXmlProperty("genxml/hidden/searchtext") != "")
             {
                 searchFilter += " and [XMLData].value('(genxml/lang/genxml/textbox/title)[1]','nvarchar(max)') like '%" + Header.Info.GetXmlProperty("genxml/hidden/searchtext") + "%' ";

@@ -321,7 +321,7 @@ namespace Simplisity
         public IEncodedString SortableListIndex(SimplisityInfo info, int row)
         {
             var listitemref = info.GetXmlProperty("genxml/hidden/simplisity-listitemref");
-            if (listitemref == "") listitemref = GeneralUtils.GetUniqueKey();
+            if (listitemref == "") listitemref = GeneralUtils.GetUniqueString();
             var strOut = "<input value='" + listitemref + "' id='simplisity-listitemref_" + row + "' s-xpath='genxml/hidden/simplisity-listitemref' s-update='save' type='hidden'>";
             strOut += "<input value='" + listitemref + "' id='simplisity-listitemreflang_" + row + "' s-xpath='genxml/lang/genxml/hidden/simplisity-listitemreflang' s-update='lang' type='hidden'>";
             strOut += "<input value='" + row + "' id='index_" + row + "' s-xpath='genxml/index' s-update='save' type='hidden'>";

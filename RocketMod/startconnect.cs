@@ -268,11 +268,7 @@ namespace RocketMod
             _userStorage = new UserStorage();
             _userStorage.ModuleId = _moduleid; // use moduleid for tracking commands. 
 
-            if (!CheckSecurity(paramCmd))
-            {
-                paramCmd = "rocketmodedit_editarticlelist";
-            }
-            else
+            if (CheckSecurity(paramCmd))
             {
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
                 {
@@ -315,14 +311,6 @@ namespace RocketMod
 
             _moduleParams = new ModuleParams(_moduleid, _systemKey);
             _dataModuleParams = new ModuleParams(_moduleParams.ModuleIdDataSource, _systemKey);
-
-            if (!CheckSecurity(paramCmd))
-            {
-                // default to see if the user has access, but last login was a different user.
-                // The client cookie for simplisity will try and run the last users command.
-                paramCmd = "rocketmodedit_editarticlelist";
-                _rocketInterface = new DNNrocketInterface(systemInfo, "rocketmodedit");
-            }
 
             if (!CheckSecurity(paramCmd))
             {
