@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DNNrocketAPI;
 using DNNrocketAPI.Componants;
-using RocketSettings;
 using Simplisity;
 using Rocket.AppThemes.Componants;
 using RocketMod.Componants;
@@ -302,7 +301,7 @@ namespace RocketMod
             _editLang = DNNrocketUtils.GetEditCulture();
 
             _settingsData = GetSettingsData();
-            _passSettings = LocalUtils.SettingsToDictionary(_settingsData);
+            _passSettings = _settingsData.ToDictionary();
 
             _passSettings.Remove("tabid");
             _passSettings.Add("tabid", _tabid.ToString());
@@ -449,7 +448,7 @@ namespace RocketMod
             // update module with a better name
             DNNrocketUtils.UpdateModuleTitle(_tabid, _moduleid, _moduleParams.Name + ":" + _moduleid);
 
-            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheFileUtils.ClearAllCache();
 
 
         }
@@ -475,7 +474,7 @@ namespace RocketMod
             _moduleParams.SystemKey = appTheme.SystemKey;
             _moduleParams.Exists = true;
             _moduleParams.Save();
-            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheFileUtils.ClearAllCache();
         }
 
         #region "Articles"
@@ -512,7 +511,7 @@ namespace RocketMod
             _passSettings.Add("saved", "true");
             _articleData.DebugMode = _systemData.DebugMode;
             _articleData.Save(_postInfo);
-            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheFileUtils.ClearAllCache();
         }
 
         public void SaveArticleList()
@@ -537,7 +536,7 @@ namespace RocketMod
                     }
                 }
             }
-            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheFileUtils.ClearAllCache();
         }
 
         public void DeleteArticle()
@@ -555,7 +554,7 @@ namespace RocketMod
             _userStorage.TrackClear(_systemKey);
             _userStorage.Save();
 
-            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheFileUtils.ClearAllCache();
         }
 
         public String AddArticle()
@@ -565,7 +564,7 @@ namespace RocketMod
                 var articleData = new ArticleData(-1, _dataModuleParams.ModuleId, _editLang);
                 _selectedItemId = articleData.ItemId;
 
-                CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+                CacheFileUtils.ClearAllCache();
 
                 var strOut = GetArticle();
 
@@ -790,7 +789,7 @@ namespace RocketMod
         {
             var settingsData = GetSettingsData();
             settingsData.Delete();
-            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheFileUtils.ClearAllCache();
             return EditSettingsData();
         }
 
@@ -798,7 +797,7 @@ namespace RocketMod
         {
             var settingsData = GetSettingsData();
             settingsData.AddRow();
-            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheFileUtils.ClearAllCache();
             return EditSettingsData();
         }
 
@@ -806,7 +805,7 @@ namespace RocketMod
         {
             var settingsData = GetSettingsData();
             settingsData.Save(_postInfo);
-            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheFileUtils.ClearAllCache();
             return EditSettingsData();
         }
 
@@ -973,7 +972,7 @@ namespace RocketMod
             var editorcode = _postInfo.GetXmlProperty("genxml/hidden/editorcodesave");
             var filename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
             _appThemeMod.SaveEditor(filename, editorcode);
-            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheFileUtils.ClearAllCache();
             return "OK";
         }
 
@@ -981,7 +980,7 @@ namespace RocketMod
         {
             var filename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
             _appThemeMod.RemoveModuleTemplate(filename);
-            CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheFileUtils.ClearAllCache();
             return GetAppModTheme();
         }
 
@@ -1141,7 +1140,7 @@ namespace RocketMod
             var oldmoduleid = _postInfo.GetXmlPropertyInt("export/moduleid");
             var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
             var importData = new ImportData(_rocketInterface, portalid, _moduleid, oldmoduleid, _postInfo.XMLData);
-            CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
+            CacheUtilsDNN.ClearAllCache();
             DNNrocketUtils.ClearAllCache();
         }
 
@@ -1203,7 +1202,7 @@ namespace RocketMod
 
                 }
 
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
                 DNNrocketUtils.ClearAllCache();
 
             }
@@ -1296,7 +1295,7 @@ namespace RocketMod
 
                 var backupData = new BackUpData(filemappath);
                 backupData.RestoreData();
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
                 DNNrocketUtils.ClearAllCache();
             }
 

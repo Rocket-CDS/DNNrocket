@@ -20,7 +20,7 @@ namespace DNNrocket.Country
             commandSecurity.AddCommand("settingcountry_get", true);
             commandSecurity.AddCommand("settingcountry_getregion", false);
 
-            //CacheUtils.ClearAllCache();
+            //CacheUtilsDNN.ClearAllCache();
             _systemInfo = systemInfo;
             var controlRelPath = "/DesktopModules/DNNrocket/Country";
 

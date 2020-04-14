@@ -55,7 +55,7 @@ namespace DNNrocketAPI
                     globalData.SchedulerIsEnabled = true;
                     globalData.Update();
 
-                    CacheUtils.ClearAllCache();
+                    CacheUtilsDNN.ClearAllCache();
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace DNNrocketAPI
                 globalData.SchedulerIsEnabled = false;
                 globalData.Update();
 
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
             }
         }
 
@@ -94,7 +94,7 @@ namespace DNNrocketAPI
                 globalData.SchedulerIsEnabled = enabled;
                 globalData.Update();
 
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
             }
         }
 

@@ -222,7 +222,7 @@ namespace Rocket.Tools
             {
                 var backupData = new BackUpData(filemappath);
                 backupData.RestoreData();
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
                 DNNrocketUtils.ClearAllCache();
             }
 
@@ -275,7 +275,7 @@ namespace Rocket.Tools
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "clonesmodulesection.cshtml";
 
-                CacheUtils.SetCache(_pageref, info, "rockettools");
+                CacheUtilsDNN.SetCache(_pageref, info);
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 return DNNrocketUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
@@ -551,7 +551,7 @@ namespace Rocket.Tools
         #region "general"
         public SimplisityInfo GetCachedInfo()
         {
-            var info = (SimplisityInfo)CacheUtils.GetCache(_pageref, "rockettools");
+            var info = (SimplisityInfo)CacheUtilsDNN.GetCache(_pageref);
             if (info == null)
             {
                 info = new SimplisityInfo();
@@ -576,7 +576,7 @@ namespace Rocket.Tools
                     info.AddRecordListItem(listName, sRec);
                 }
             }
-            CacheUtils.SetCache(_pageref, info, "rockettools");
+            CacheUtilsDNN.SetCache(_pageref, info);
         }
         public void SaveModules(string listName)
         {
@@ -595,7 +595,7 @@ namespace Rocket.Tools
                     info.AddRecordListItem(listName, sRec);
                 }
             }
-            CacheUtils.SetCache(_pageref, info, "rockettools");
+            CacheUtilsDNN.SetCache(_pageref, info);
         }
 
         public void SaveTreeView(string listName)
@@ -623,7 +623,7 @@ namespace Rocket.Tools
                     }
                 }
             }
-            CacheUtils.SetCache(_pageref, info, "rockettools");
+            CacheUtilsDNN.SetCache(_pageref, info);
         }
 
         #endregion

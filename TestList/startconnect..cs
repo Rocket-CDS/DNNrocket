@@ -193,7 +193,7 @@ var rtnDic = new Dictionary<string, string>();
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
                 info.XMLData = postInfo.XMLData;
                 objCtrl.SaveData(info);
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
             }
         }
 
@@ -230,7 +230,7 @@ var rtnDic = new Dictionary<string, string>();
                 rec.GUIDKey = "testrecord";
                 objCtrl.SaveRecord(rec);
             }
-             CacheUtils.ClearAllCache();
+             CacheUtilsDNN.ClearAllCache();
         }
 
 
@@ -241,7 +241,7 @@ var rtnDic = new Dictionary<string, string>();
             {
                 var objCtrl = new DNNrocketController();
                 objCtrl.Delete(selecteditemid);
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
             }
         }
 

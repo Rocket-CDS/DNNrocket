@@ -229,7 +229,7 @@ namespace DNNrocket.Category
                 info.XMLData = postInfo.XMLData;
                 info.ModuleId = systemInfo.ItemID;
                 objCtrl.SaveData(info);
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
             }
         }
 
@@ -240,7 +240,7 @@ namespace DNNrocket.Category
             {
                 var objCtrl = new DNNrocketController();
                 objCtrl.Delete(selecteditemid);
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
             }
         }
 
@@ -340,7 +340,7 @@ namespace DNNrocket.Category
             info.ModuleId = systemInfo.ItemID;
             objCtrl.SaveData(info);
 
-            CacheUtils.ClearAllCache();
+            CacheUtilsDNN.ClearAllCache();
         }
 
         private void RecursiveUpdateParent(XmlNodeList xmlNodList, int parentid, ref int index, int level)

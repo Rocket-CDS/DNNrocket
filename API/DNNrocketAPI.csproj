@@ -125,6 +125,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Componants\AppTheme.cs" />
+    <Compile Include="Componants\CacheUtilsDNN.cs" />
+    <Compile Include="Componants\FastReplacer.cs" />
+    <Compile Include="Componants\FastReplacerSnippet.cs" />
+    <Compile Include="Componants\HeaderData.cs" />
     <Compile Include="Componants\SchedulerUtils.cs" />
     <Compile Include="Componants\PluginDataList.cs" />
     <Compile Include="Componants\AppThemeModule.cs" />
@@ -146,6 +150,7 @@
     <Compile Include="Componants\RetryableAction.cs" />
     <Compile Include="Componants\EmailSender.cs" />
     <Compile Include="Componants\Scheduler.cs" />
+    <Compile Include="Componants\SettingsData.cs" />
     <Compile Include="Componants\WebSiteData.cs" />
     <Compile Include="Componants\SystemGlobalData.cs" />
     <Compile Include="Componants\PageRecordData.cs" />

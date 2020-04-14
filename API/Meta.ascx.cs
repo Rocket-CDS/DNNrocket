@@ -23,6 +23,7 @@ using DNNrocketAPI;
 using DataProvider = DotNetNuke.Data.DataProvider;
 using DotNetNuke.Framework;
 using System.Linq;
+using DNNrocketAPI.Componants;
 
 namespace DNNrocketAPI
 {
@@ -77,7 +78,7 @@ namespace DNNrocketAPI
             var cachekey = "rocketPL*hreflang*" + PortalSettings.Current.PortalId + "*" + DNNrocketUtils.GetCurrentCulture() + "*" + PortalSettings.Current.ActiveTab.TabID; // use nodeTablist incase the DDRMenu has a selector.
             var pagename = "";
             var canonicalurl = "";
-            var hreflangobj = CacheUtils.GetCache(cachekey);
+            var hreflangobj = CacheUtilsDNN.GetCache(cachekey);
             if (hreflangobj != null) hreflangtext = hreflangobj.ToString();
             if (hreflangtext == "" || _debugmode)
             {
@@ -108,7 +109,7 @@ namespace DNNrocketAPI
 
 
                 }
-                CacheUtils.SetCache(cachekey, hreflangtext);
+                CacheUtilsDNN.SetCache(cachekey, hreflangtext);
             }
 
             return hreflangtext;
@@ -119,7 +120,7 @@ namespace DNNrocketAPI
         {
             var cachekey = "rocketPL*canonicalurl*" + PortalSettings.Current.PortalId + "*" + DNNrocketUtils.GetCurrentCulture() + "*" + PortalSettings.Current.ActiveTab.TabID; // use nodeTablist incase the DDRMenu has a selector.
             var pagename = "";
-            var canonicalurl = (string)CacheUtils.GetCache(cachekey);
+            var canonicalurl = (string)CacheUtilsDNN.GetCache(cachekey);
             if (canonicalurl == "" || _debugmode)
             {
                 canonicalurl = "";
@@ -141,7 +142,7 @@ namespace DNNrocketAPI
                         canonicalurl = urldata;
                     }
                 }
-                CacheUtils.SetCache(cachekey, canonicalurl);
+                CacheUtilsDNN.SetCache(cachekey, canonicalurl);
             }
 
             return canonicalurl;

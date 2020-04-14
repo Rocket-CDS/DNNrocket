@@ -162,6 +162,23 @@ namespace Simplisity
             }
         }
 
+        public void RemoveListItem(string listName, string itemkeyxpath, string itemkey)
+        {
+            if (XMLDoc != null)
+            {
+                var lp = 1;
+                var list = GetList(listName);
+                foreach (var i in list)
+                {
+                    if (itemkey == i.GetXmlProperty(itemkeyxpath))
+                    {
+                        RemoveListItem(listName, lp);
+                    }
+                    lp += 1;
+                }
+            }
+        }
+
         public SimplisityInfo GetListItem(string listName, int index)
         {
             if (XMLDoc != null)

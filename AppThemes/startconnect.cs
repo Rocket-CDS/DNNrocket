@@ -41,7 +41,7 @@ namespace DNNrocket.AppThemes
             if (DNNrocketUtils.IsSuperUser())
             {
                 // Do NOT globally clear cache, performace drop on external call for FTP and HTML AppTheme Lists
-                //CacheUtils.ClearAllCache("apptheme");
+                //CacheUtilsDNN.ClearAllCache("apptheme");
 
                 _paramCmd = paramCmd;
                 _userStorage = new UserStorage();
@@ -269,7 +269,7 @@ namespace DNNrocket.AppThemes
         public void ClearServerCacheLists()
         {
             // clear all cache for aptheme
-            CacheUtils.ClearAllCache();
+            CacheUtilsDNN.ClearAllCache();
             CacheFileUtils.ClearAllCache();
             DNNrocketUtils.ClearPortalCache();
         }
@@ -498,7 +498,7 @@ namespace DNNrocket.AppThemes
                 var cacheKey = "dnnrocket*GetPublicListAppTheme*" + _selectedSystemKey;
                 if (useCache)
                 {
-                    strOut = (string)CacheUtils.GetCache(cacheKey);
+                    strOut = (string)CacheUtilsDNN.GetCache(cacheKey);
                     if (!String.IsNullOrEmpty(strOut)) return strOut;
                 }
                 var appThemeDataList = new AppThemeDataList(_selectedSystemKey);
@@ -508,7 +508,7 @@ namespace DNNrocket.AppThemes
                 var passSettings = _postInfo.ToDictionary();
 
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, appThemeDataPublicList, passSettings, null, true);
-                CacheUtils.SetCache(cacheKey, strOut);
+                CacheUtilsDNN.SetCache(cacheKey, strOut);
                 return strOut;
             }
             catch (Exception ex)
@@ -557,7 +557,7 @@ namespace DNNrocket.AppThemes
                 var cacheKey = "dnnrocket*GetPrivateListAppTheme*" + _selectedSystemKey;
                 if (useCache)
                 {
-                    strOut = (string)CacheUtils.GetCache(cacheKey);
+                    strOut = (string)CacheUtilsDNN.GetCache(cacheKey);
                     if (!String.IsNullOrEmpty(strOut)) return strOut;
                 }
                 var appThemeDataList = new AppThemeDataList(_selectedSystemKey);
@@ -567,7 +567,7 @@ namespace DNNrocket.AppThemes
                 var passSettings = _postInfo.ToDictionary();
 
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, appThemeDataPrivateList, passSettings, null, true);
-                CacheUtils.SetCache(cacheKey, strOut);
+                CacheUtilsDNN.SetCache(cacheKey, strOut);
                 return strOut;
             }
             catch (Exception ex)

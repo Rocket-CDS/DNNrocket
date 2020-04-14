@@ -1,6 +1,5 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Componants;
-using RocketSettings;
 using Simplisity;
 using System;
 using System.Collections.Concurrent;
@@ -42,10 +41,7 @@ namespace RocketMod
         public void Populate()
         {
             var searchFilter = " and R1.ModuleId = " + _moduleParams.ModuleIdDataSource;
-            if (Header.Info.GetXmlProperty("genxml/hidden/searchtext") != "")
-            {
-                searchFilter += " and [XMLData].value('(genxml/lang/genxml/textbox/title)[1]','nvarchar(max)') like '%" + Header.Info.GetXmlProperty("genxml/hidden/searchtext") + "%' ";
-            }
+            searchFilter += _moduleParams.GetFilterSQL(Header.Info, Header.FilterIndex);
             Header.RowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, _tableName);
             DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(Header.OrderByIndex), 0, Header.Page, Header.PageSize, Header.RowCount, _tableName);
 

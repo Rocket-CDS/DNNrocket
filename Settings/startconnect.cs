@@ -91,29 +91,6 @@ namespace RocketSettings
 
             switch (paramCmd)
             {
-                case "rocketsettings_edit":
-                    strOut = EditData();
-                    break;
-                case "rocketsettings_add":
-                    _settingsData.AddRow();
-                    strOut = EditData();
-                    break;
-                case "rocketsettings_save":
-                    _passSettings.Add("saved", "true");
-                    _settingsData.Save(postInfo);
-                    if (_settingsData.InvalidKeyValues)
-                    {
-                        strOut = "Invalid Key Values in Template.  '@HiddenField(i, \"genxml/key1\", \"\", \"\", false, lp3)' and '@HiddenField(i, \"genxml/lang/genxml/key2\", \"\", \"\", true, lp3)' must be in the template for each setting row.";
-                    }
-                    else
-                    {
-                        strOut = EditData();
-                    }
-                    break;
-                case "rocketsettings_delete":
-                    _settingsData.Delete();
-                    strOut = EditData();
-                    break;
             }
 
             return ReturnString(strOut);

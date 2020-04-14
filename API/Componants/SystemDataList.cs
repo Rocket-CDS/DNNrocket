@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using DNNrocketAPI.Componants;
 using Simplisity;
 
 namespace DNNrocketAPI
@@ -41,7 +42,7 @@ namespace DNNrocketAPI
                     }
                     if (upd)
                     {
-                        CacheUtils.ClearAllCache();
+                        CacheUtilsDNN.ClearAllCache();
                     }
                 }
             }

@@ -1,4 +1,5 @@
-﻿using Simplisity;
+﻿using DNNrocketAPI.Componants;
+using Simplisity;
 using System;
 using System.IO;
 using System.Runtime.Remoting;
@@ -23,11 +24,11 @@ namespace DNNrocketAPI
                     foreach (var rocketInterface in systemData.SchedulerList)
                     {
                         var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
-                        var ajaxprov = (SchedulerInterface)CacheUtils.GetCache(cacheKey);
+                        var ajaxprov = (SchedulerInterface)CacheUtilsDNN.GetCache(cacheKey);
                         if (ajaxprov == null)
                         {
                             ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                            CacheUtils.SetCache(cacheKey, ajaxprov);
+                            CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
                         }
                         ajaxprov.DoWork(systemData, rocketInterface);
                     

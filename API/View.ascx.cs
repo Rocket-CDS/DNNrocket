@@ -95,13 +95,14 @@ namespace DNNrocketAPI
                         // change of page for module
                         _moduleParams.TabId = PortalSettings.Current.ActiveTab.TabID; 
                         _moduleParams.Save();
-                        CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+                        CacheFileUtils.ClearAllCache();
                     }
 
                     if (_moduleParams.CacheDisbaled)
                     {
                         CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
-                        CacheFileUtils.ClearAllCache(_moduleParams.CacheGroupId);
+                        CacheUtilsDNN.ClearAllCache();
+                        CacheFileUtils.ClearAllCache();
                     }
 
                     if (!this.Page.Items.Contains("dnnrocket_pageheader")) // flag to insure we only inject once for page load.
@@ -239,7 +240,7 @@ namespace DNNrocketAPI
                         var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
                         strOut += DNNrocketUtils.RazorRender(model, razorTempl, systemData.DebugMode);
                     }
-                    CacheFileUtils.SetCache(cacheKey, strOut, _moduleParams.CacheGroupId);
+                    CacheFileUtils.SetCache(cacheKey, strOut);
                 }
                 else
                 {

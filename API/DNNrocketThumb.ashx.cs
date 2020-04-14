@@ -30,7 +30,7 @@ namespace DNNrocketAPI
                 var newImage = (Bitmap) CacheUtils.GetCache(strCacheKey, "DNNrocketThumb");
                 //IMPORTANT: If you need to delete the image file you MUST remove the cache first.
                 //The cache holds a link to the locked image file.
-                //CacheUtils.ClearAllCache("DNNrocketThumb")
+                //CacheUtilsDNN.ClearAllCache("DNNrocketThumb")
 
                 if (newImage == null)
                 {

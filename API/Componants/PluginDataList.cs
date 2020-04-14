@@ -26,7 +26,7 @@ namespace Rocket.AppThemes.Componants
 
                 if (useCache)
                 {
-                    PluginList = (List<SimplisityRecord>)CacheUtils.GetCache(_listCacheKey, _pluginCacheGroupId);
+                    PluginList = (List<SimplisityRecord>)CacheUtilsDNN.GetCache(_listCacheKey);
                 }
                 if (PluginList == null) PopulateList();
             }
@@ -54,11 +54,11 @@ namespace Rocket.AppThemes.Componants
                 Error = true;
                 ErrorMsg = "";
             }
-            CacheUtils.SetCache(_listCacheKey, PluginList, _pluginCacheGroupId);
+            CacheUtilsDNN.SetCache(_listCacheKey, PluginList);
         }
         public void ClearCache()
         {
-            CacheUtils.RemoveCache(_listCacheKey, _pluginCacheGroupId);
+            CacheUtilsDNN.RemoveCache(_listCacheKey);
         }
         public List<SimplisityRecord> PluginList { get; set; }
         public SystemDataList SystemList { get; set; }

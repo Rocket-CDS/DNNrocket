@@ -595,7 +595,7 @@ namespace DNNrocketAPI
                 RebuildIndex(sInfo, tableName);
                 RebuildLangIndex(sInfo.PortalId, itemId, tableName);
 
-                //CacheUtils.ClearAllCache(); // clear ALL cache.
+                //CacheUtilsDNN.ClearAllCache(); // clear ALL cache.
                 info = GetInfo(info.ItemID, sInfo.Lang, tableName);
             }
 
@@ -662,7 +662,7 @@ namespace DNNrocketAPI
 
         public SimplisityRecord GetRecord(string GuidKey, string typeCode, int moduleId = -1, bool readOnly = false, string tableName = "DNNrocket")
         {
-            //CacheUtils.ClearAllCache(); // clear ALL cache.
+            //CacheUtilsDNN.ClearAllCache(); // clear ALL cache.
             var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey,"", tableName);
             if (info == null && !readOnly)
             {

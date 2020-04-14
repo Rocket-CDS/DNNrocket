@@ -130,12 +130,12 @@ namespace DNNrocketAPI
                 Engine.Razor = service;
                 var hashCacheKey = GetMd5Hash(razorTempl);
 
-                var israzorCached = CacheUtils.GetCache(razorTempl); // get a cache flag for razor compile.
+                var israzorCached = CacheUtilsDNN.GetCache(razorTempl); // get a cache flag for razor compile.
                 if (israzorCached == null || (string)israzorCached != razorTempl || debugMode)
                 {
                     errorPath += "RunCompile1>";
                     result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                    CacheUtils.SetCache(razorTempl, razorTempl);
+                    CacheUtilsDNN.SetCache(razorTempl, razorTempl);
                 }
                 else
                 {
@@ -149,14 +149,14 @@ namespace DNNrocketAPI
                         errmsg = ex.ToString();
                         errorPath += "RunCompile2>";
                         result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                        CacheUtils.SetCache(razorTempl, razorTempl);
+                        CacheUtilsDNN.SetCache(razorTempl, razorTempl);
                     }
                 }
 
             }
             catch (Exception ex)
             {
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
                 result = "CANNOT REBUILD TEMPLATE: errorPath=" + errorPath + " - " + ex.ToString() + " -------> " + result + " [" + errmsg + "]";
             }
 
@@ -242,7 +242,7 @@ namespace DNNrocketAPI
         public static TemplateGetter GetTemplateEngine(string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
         {
             var cacheKey = templateControlPath + "*" + themeFolder + "*" + lang + "*" + versionFolder + "*" + debugMode;
-            var templCtrl = CacheUtils.GetCache(cacheKey);
+            var templCtrl = CacheUtilsDNN.GetCache(cacheKey);
             if (templCtrl == null)
             {
                 var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
@@ -251,7 +251,7 @@ namespace DNNrocketAPI
                 if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder;
                 var RocketThemes = DNNrocketThemesDirectoryMapPath();
                 templCtrl = new TemplateGetter(RocketThemes, themeFolderPath, controlMapPath, debugMode);
-                CacheUtils.SetCache(cacheKey, templCtrl);
+                CacheUtilsDNN.SetCache(cacheKey, templCtrl);
             }
             return (TemplateGetter)templCtrl;
         }
@@ -1083,7 +1083,7 @@ namespace DNNrocketAPI
         {
             if (lang == "") lang = GetCurrentCulture();
             var ckey = resourcePath + resourceKey + lang;
-            var obj = CacheUtils.GetCache(ckey);
+            var obj = CacheUtilsDNN.GetCache(ckey);
             if (obj != null) return (Dictionary<String, String>)obj;
 
             var rtnList = new Dictionary<String, String>();
@@ -1122,7 +1122,7 @@ namespace DNNrocketAPI
                     }
                 }
 
-                CacheUtils.SetCache(ckey, rtnList);
+                CacheUtilsDNN.SetCache(ckey, rtnList);
             }
             return rtnList;
         }
@@ -1223,7 +1223,7 @@ namespace DNNrocketAPI
         {
             var cachekey = "editlang*" + DNNrocketUtils.GetCurrentUserId();
             if (String.IsNullOrEmpty(editlang)) editlang = GetCurrentCulture();
-            CacheUtils.SetCache(cachekey, editlang);
+            CacheUtilsDNN.SetCache(cachekey, editlang);
             return editlang;
         }
 
@@ -1233,7 +1233,7 @@ namespace DNNrocketAPI
             var rtnLang = HttpContext.Current.Request.QueryString["editlang"];
             if (String.IsNullOrEmpty(rtnLang))
             {
-                var obj = CacheUtils.GetCache(cachekey);
+                var obj = CacheUtilsDNN.GetCache(cachekey);
                 if (obj != null) rtnLang = obj.ToString();
                 if (String.IsNullOrEmpty(rtnLang)) rtnLang = GetCurrentCulture();
             }
@@ -1405,13 +1405,13 @@ namespace DNNrocketAPI
         public static string GetModuleSystemKey(int moduleId, int tabId)
         {
             var cacheKey = "systemkey.moduleid" + moduleId + ".tabid" + tabId;
-            var systemKey = (string)CacheUtils.GetCache(cacheKey);
+            var systemKey = (string)CacheUtilsDNN.GetCache(cacheKey);
             if (systemKey == null)
             {
                 var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
                 var desktopModule = moduleInfo.DesktopModule;
                 systemKey = desktopModule.ModuleDefinitions.First().Key.ToLower();  // Use the First DNN Module definition as the DNNrocket systemkey
-                CacheUtils.SetCache(cacheKey, systemKey);
+                CacheUtilsDNN.SetCache(cacheKey, systemKey);
             }
             return  systemKey;
         }
@@ -1424,13 +1424,13 @@ namespace DNNrocketAPI
         public static string GetModuleInterfaceKey(int moduleId, int tabId)
         {
             var cacheKey = "interfacekey.moduleid" + moduleId + ".tabid" + tabId;
-            var interfacekey = (string)CacheUtils.GetCache(cacheKey);
+            var interfacekey = (string)CacheUtilsDNN.GetCache(cacheKey);
             if (interfacekey == null)
             {
                 var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
                 var desktopModule = moduleInfo.DesktopModule;
                 interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
-                CacheUtils.SetCache(cacheKey, interfacekey);
+                CacheUtilsDNN.SetCache(cacheKey, interfacekey);
             }
             return interfacekey;
         }
@@ -1450,18 +1450,18 @@ namespace DNNrocketAPI
         {
             var objCtrl = new DNNrocketController();
 
-            var systemInfo = (SimplisityInfo)CacheUtils.GetCache(systemkey + "modid" + moduleId);
+            var systemInfo = (SimplisityInfo)CacheUtilsDNN.GetCache(systemkey + "modid" + moduleId);
             if (systemInfo == null)
             {
                 systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
-                if (systemInfo != null) CacheUtils.SetCache(systemkey + "modid" + moduleId, systemInfo);
+                if (systemInfo != null) CacheUtilsDNN.SetCache(systemkey + "modid" + moduleId, systemInfo);
             }
             if (systemInfo == null && loadSystemXml)
             {
                 // no system data, so must be new install.
                 var sData = new SystemDataList(); // load XML files.
                 systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
-                if (systemInfo != null) CacheUtils.SetCache(systemkey + "modid" + moduleId, systemInfo);
+                if (systemInfo != null) CacheUtilsDNN.SetCache(systemkey + "modid" + moduleId, systemInfo);
             }
             return systemInfo;
         }
@@ -1510,7 +1510,7 @@ namespace DNNrocketAPI
                     }
                 }
 
-                CacheFileUtils.SetCache(cachekey, cacheHead, "pageheader");
+                CacheFileUtils.SetCache(cachekey, cacheHead);
                 PageIncludes.IncludeTextInHeader(page, cacheHead);
             }
             else
@@ -1600,11 +1600,11 @@ namespace DNNrocketAPI
                     try
                     {
                         var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
-                        var ajaxprov = (EventInterface)CacheUtils.GetCache(cacheKey);
+                        var ajaxprov = (EventInterface)CacheUtilsDNN.GetCache(cacheKey);
                         if (ajaxprov == null)
                         {
                             ajaxprov = EventInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                            CacheUtils.SetCache(cacheKey, ajaxprov);
+                            CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
                         }
                         rtnDic = ajaxprov.BeforeEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
                     }
@@ -1628,11 +1628,11 @@ namespace DNNrocketAPI
                     try
                     {
                         var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
-                        var ajaxprov = (EventInterface)CacheUtils.GetCache(cacheKey);
+                        var ajaxprov = (EventInterface)CacheUtilsDNN.GetCache(cacheKey);
                         if (ajaxprov == null)
                         {
                             ajaxprov = EventInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                            CacheUtils.SetCache(cacheKey, ajaxprov);
+                            CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
                         }
                         rtnDic = ajaxprov.AfterEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
                     }
@@ -2134,6 +2134,27 @@ namespace DNNrocketAPI
             return false;
         }
 
+
+        #region "DNN cache"
+
+        public static void SetCache(string cacheKey, object objObject)
+        {
+            DataCache.SetCache(cacheKey, objObject, DateTime.Now + new TimeSpan(2, 0, 0, 0));
+        }
+        public static object GetCache(string cacheKey)
+        {
+            return DataCache.GetCache(cacheKey);
+        }
+        public static void RemoveCache(string cacheKey)
+        {
+            DataCache.RemoveCache(cacheKey);
+        }
+        public static void ClearCache()
+        {
+            DataCache.ClearCache(); // clear ALL cache.
+        }
+
+        #endregion
 
     }
 }

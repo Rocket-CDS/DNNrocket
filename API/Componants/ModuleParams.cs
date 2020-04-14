@@ -29,7 +29,7 @@ namespace DNNrocketAPI.Componants
             _moduleid = moduleId;
             _moduleParamsRec = new SimplisityRecord();
             _cacheKey = "moduleparams*" + moduleId;
-            _moduleParamsRec = (SimplisityRecord)CacheUtils.GetCache(_cacheKey);
+            _moduleParamsRec = (SimplisityRecord)CacheUtilsDNN.GetCache(_cacheKey);
             var objCtrl = new DNNrocketController();
             if ((_moduleParamsRec == null || !useCache))
             {
@@ -51,7 +51,7 @@ namespace DNNrocketAPI.Componants
                         _moduleParamsRec = objCtrl.SaveRecord(_moduleParamsRec);
                         Exists = false;
                     }
-                    CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
+                    CacheUtilsDNN.SetCache(_cacheKey, _moduleParamsRec);
                 }
             }
             DataSourceExternal = false;
@@ -93,14 +93,14 @@ namespace DNNrocketAPI.Componants
             if (ModuleIdDataSource != _moduleid) DataSourceExternal = true;
 
             _moduleParamsRec = objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _moduleid, _tableName);
-            CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
+            CacheUtilsDNN.SetCache(_cacheKey, _moduleParamsRec);
         }
         public void Delete()
         {
             var objCtrl = new DNNrocketController();
             objCtrl.Delete(Record.ItemID, _tableName);
             Exists = false;
-            CacheUtils.RemoveCache(_cacheKey);
+            CacheUtilsDNN.RemoveCache(_cacheKey);
         }
         public string GetValue(string key, string defaultValue = "")
         {
@@ -203,6 +203,26 @@ namespace DNNrocketAPI.Componants
             }
             if (orderbysql == null || orderbysql == "") return " order by R1.[SortOrder] ";
             return orderbysql;
+        }
+
+        public string GetFilterSQL(SimplisityInfo paramInfo, int index = 0)
+        {
+            var key = "filter" + index;
+            var filtersql = "";
+            if (ModuleSettings.ContainsKey(key))
+            {
+                filtersql = ModuleSettings[key];
+                FastReplacer fr = new FastReplacer("{", "}", false);
+                fr.Append(filtersql);
+                var tokenList = fr.GetTokenStrings();
+                foreach (var token in tokenList)
+                {
+                    if (paramInfo.GetXmlProperty(token) == "") return ""; // no data so ignore filter
+                    fr.Replace("{" + token + "}", paramInfo.GetXmlProperty(token));
+                }
+                filtersql = " " + fr.ToString() + " ";
+            }
+            return filtersql;
         }
 
 

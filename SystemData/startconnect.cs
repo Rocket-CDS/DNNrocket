@@ -122,7 +122,7 @@ namespace DNNrocket.System
                         strOut = SystemAdminList(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_clearmemcache":
-                        CacheUtils.ClearAllCache();
+                        CacheUtilsDNN.ClearAllCache();
                         DNNrocketUtils.ClearAllCache();
                         strOut = SystemAdminList(paramInfo, _controlRelPath);
                         break;
@@ -155,7 +155,7 @@ namespace DNNrocket.System
                         strOut = GetLicenseList();
                         break;
                     case "systemapi_recycleapppool":
-                        CacheUtils.ClearAllCache();
+                        CacheUtilsDNN.ClearAllCache();
                         DNNrocketUtils.ClearAllCache();
                         DNNrocketUtils.RecycleApplicationPool();
                         strOut = "<h1>Recycle App Pool</h1>";
@@ -606,7 +606,7 @@ namespace DNNrocket.System
             {
                 var systemData = new SystemData(selecteditemid);
                 systemData.Save(postInfo);
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
                 _passSettings.Add("saved", "true");
 
             }
@@ -620,7 +620,7 @@ namespace DNNrocket.System
                 var objCtrl = new DNNrocketController();
                 objCtrl.Delete(Convert.ToInt32(itemid));
 
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
             }
         }
 
@@ -680,7 +680,7 @@ namespace DNNrocket.System
                     }
                 }
 
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
             }
 
         }
@@ -739,7 +739,7 @@ namespace DNNrocket.System
                         info.SetXmlProperty("genxml/color", "w3-pale-red");
                     }
                 }
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
                 var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
                 var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);

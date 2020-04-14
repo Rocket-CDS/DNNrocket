@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI;
+using DNNrocketAPI.Componants;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace DNNrocketAPI
 
         public static string GetCache(string cacheKey, string groupid = "")
         {
-            var cacheData = (string)CacheUtils.GetCache(cacheKey, groupid);
+            var cacheData = (string)CacheUtilsDNN.GetCache(cacheKey);
             if (cacheData == null)
             {
                 var cacheFile = GetMd5Hash(cacheKey + "_groupid:" + groupid);
@@ -28,25 +29,25 @@ namespace DNNrocketAPI
             return cacheData;
         }
 
-        public static void SetCache(string cacheKey, string objObject, string groupid = "")
+        public static void SetCache(string cacheKey, string objObject)
         {
             if (!String.IsNullOrEmpty(objObject))
             {
-                CacheUtils.SetCache(cacheKey, objObject, groupid);
+                CacheUtilsDNN.SetCache(cacheKey, objObject);
 
                 if (!Directory.Exists(DNNrocketUtils.TempDirectoryMapPath().Trim('\\') + "\\cache"))
                 {
                     Directory.CreateDirectory(DNNrocketUtils.TempDirectoryMapPath().Trim('\\') + "\\cache");
                 }
-                var cacheFile = GetMd5Hash(cacheKey + "_groupid:" + groupid);
+                var cacheFile = GetMd5Hash(cacheKey);
                 FileUtils.SaveFile(DNNrocketUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile, objObject);
             }
         }
 
-        public static void RemoveCache(string cacheKey, string groupid = "")
+        public static void RemoveCache(string cacheKey)
         {
-            CacheUtils.RemoveCache(cacheKey, groupid);
-            var cacheFile = GetMd5Hash(cacheKey + "_groupid:" + groupid);
+            CacheUtilsDNN.RemoveCache(cacheKey);
+            var cacheFile = GetMd5Hash(cacheKey);
 
             if (File.Exists(DNNrocketUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile))
             {
@@ -54,12 +55,12 @@ namespace DNNrocketAPI
             }
         }
 
-        public static void ClearAllCache(string groupid = "")
+        public static void ClearAllCache()
         {
             try
             {
                 ClearFileCache();
-                CacheUtils.ClearAllCache(groupid);
+                CacheUtilsDNN.ClearAllCache();
             }
             catch (Exception ex)
             {

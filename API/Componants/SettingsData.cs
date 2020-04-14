@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace RocketSettings
+namespace DNNrocketAPI.Componants
 {
 
     public class SettingsData
@@ -151,6 +151,26 @@ namespace RocketSettings
                 Info.FromXmlItem(nod.OuterXml);
             }
         }
+        private void AddRow(string key, string value)
+        {
+            var sInfo = new SimplisityInfo();
+            sInfo.SetXmlProperty("genxml/textbox/name", key);
+            sInfo.SetXmlProperty("genxml/textbox/value", value);
+            sInfo.SetXmlProperty("genxml/hidden/simplisity-listitemref/", GeneralUtils.GetUniqueString());
+            sInfo.SetXmlProperty("genxml/checkbox/localized", "false");
+            Info.RemoveListItem(_listName, "genxml/textbox/name", key);
+            Info.AddListItem(_listName, sInfo);
+            _objCtrl.SaveData(Info, _tableName);
+            CreateMissingLanguageRecords();
+        }
+        public void SetValue(string key, string value)
+        {
+            AddRow(key, value);
+        }
+        public string GetValue(string key)
+        {
+            return Info.GetXmlProperty("genxml/textbox/" + key);
+        }
 
         public string Get(string xpath)
         {
@@ -168,8 +188,8 @@ namespace RocketSettings
         {
             return Info.GetXmlPropertyDouble(xpath);
         }
-        
-        public Dictionary<string,string> ToDictionary()
+
+        public Dictionary<string, string> ToDictionary()
         {
             var rtnDict = new Dictionary<string, string>();
             foreach (var s in List)
@@ -192,14 +212,15 @@ namespace RocketSettings
 
         #region "properties"
 
-        public int ModuleId { get {return _moduleid;} }
+        public int ModuleId { get { return _moduleid; } }
         public int TabId { get { return _tabid; } }
         public string EntityTypeCode { get { return _entityTypeCode; } set { _entityTypeCode = value; } }
         public bool InvalidKeyValues { get; set; }
 
         public List<SimplisityInfo> List
         {
-            get {
+            get
+            {
                 if (Info == null) return new List<SimplisityInfo>();
                 var l = Info.GetList(_listName);
                 if (l == null) return new List<SimplisityInfo>();

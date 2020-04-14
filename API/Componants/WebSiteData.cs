@@ -15,14 +15,14 @@ namespace DNNrocketAPI.Componants
         {
             _portalid = DNNrocketUtils.GetPortalId();
             _cacheKey = "rocketWebSiteData" + _portalid;
-            if (cache) Info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
+            if (cache) Info = (SimplisityInfo)CacheUtilsDNN.GetCache(_cacheKey);
             if (Info == null) LoadData();
         }
         public WebSiteData(int Portalid, bool cache = true)
         {
             _portalid = Portalid;
             _cacheKey = "rocketWebSiteData" + _portalid;
-            if (cache) Info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
+            if (cache) Info = (SimplisityInfo)CacheUtilsDNN.GetCache(_cacheKey);
             if (Info == null) LoadData();
         }
 
@@ -35,8 +35,8 @@ namespace DNNrocketAPI.Componants
         {
             var objCtrl = new DNNrocketController();
             objCtrl.Update(Info);
-            CacheUtils.RemoveCache(_cacheKey);
-            CacheUtils.SetCache(_cacheKey, Info);
+            CacheUtilsDNN.RemoveCache(_cacheKey);
+            CacheUtilsDNN.SetCache(_cacheKey, Info);
         }
 
         private void LoadData()
@@ -55,7 +55,7 @@ namespace DNNrocketAPI.Componants
 
                 Info.ItemID = objCtrl.Update(Info);
             }
-            CacheUtils.SetCache(_cacheKey, Info);
+            CacheUtilsDNN.SetCache(_cacheKey, Info);
         }
 
         public SimplisityInfo Info { get; set; }

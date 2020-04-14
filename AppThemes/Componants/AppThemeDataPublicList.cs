@@ -26,11 +26,11 @@ namespace Rocket.AppThemes.Componants
                 SelectedSystemKey = selectedsystemkey;
 
                 var cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
-                if (useCache) SystemFolderList = (List<SystemData>)CacheUtils.GetCache(cachekey, "apptheme");
+                if (useCache) SystemFolderList = (List<SystemData>)CacheUtilsDNN.GetCache(cachekey);
                 if (SystemFolderList == null) PopulateSystemFolderList();
 
                 cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
-                if (useCache) List = (List<SimplisityRecord>)CacheUtils.GetCache(cachekey, "apptheme");
+                if (useCache) List = (List<SimplisityRecord>)CacheUtilsDNN.GetCache(cachekey);
                 if (List == null) PopulateAppThemeList();
             }
             catch (Exception exc)
@@ -95,18 +95,18 @@ namespace Rocket.AppThemes.Componants
                     }
 
                     // ensure we have the image from the xml file
-                    var onlineIndex = (OnlineAppThemeIndex)CacheUtils.GetCache(appTheme.SystemKey + "_publicIndex");
+                    var onlineIndex = (OnlineAppThemeIndex)CacheUtilsDNN.GetCache(appTheme.SystemKey + "_publicIndex");
                     if (onlineIndex == null)
                     {
                         onlineIndex = new OnlineAppThemeIndex(appTheme.SystemKey, "public");
-                        CacheUtils.SetCache(appTheme.SystemKey + "_publicIndex", onlineIndex);
+                        CacheUtilsDNN.SetCache(appTheme.SystemKey + "_publicIndex", onlineIndex);
                     }
                     //a.SetXmlProperty("genxml/hidden/logobase64", onlineIndex.GetLogoBase64String(appTheme.AppThemeFolder));
 
                     List.Add(a);
                 }
                 var cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
-                CacheUtils.SetCache(cachekey, List, "apptheme");
+                CacheUtilsDNN.SetCache(cachekey, List);
             }
         }
         public void PopulateSystemFolderList()
@@ -124,16 +124,16 @@ namespace Rocket.AppThemes.Componants
             }
 
             var cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
-            CacheUtils.SetCache(cachekey, SystemFolderList, "apptheme");
+            CacheUtilsDNN.SetCache(cachekey, SystemFolderList);
 
         }
         public void ClearCache()
         {
             SelectedSystemKey = "";
             var cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
-            CacheUtils.RemoveCache(cachekey, "apptheme");
+            CacheUtilsDNN.RemoveCache(cachekey);
             cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
-            CacheUtils.RemoveCache(cachekey, "apptheme");
+            CacheUtilsDNN.RemoveCache(cachekey);
         }
         public string SelectedSystemKey { get; set; }
         public List<SimplisityRecord> List { get; set; }

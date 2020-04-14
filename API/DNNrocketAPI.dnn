@@ -98,11 +98,6 @@
             </assembly>
             <assembly>
               <path>bin</path>
-              <name>RocketSettings.dll</name>
-              <sourceFileName>RocketSettings.dll</sourceFileName>
-            </assembly>
-            <assembly>
-              <path>bin</path>
               <name>RocketAppThemes.dll</name>
               <sourceFileName>RocketAppThemes.dll</sourceFileName>
             </assembly>

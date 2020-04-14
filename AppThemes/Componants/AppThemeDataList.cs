@@ -83,9 +83,9 @@ namespace Rocket.AppThemes.Componants
         public void ClearCacheLists()
         {
             var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath;
-            CacheUtils.RemoveCache(cachekey, "apptheme");
+            CacheUtilsDNN.RemoveCache(cachekey);
             cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
-            CacheUtils.RemoveCache(cachekey, "apptheme");
+            CacheUtilsDNN.RemoveCache(cachekey);
             PopulateSystemFolderList();
             PopulateAppThemeList();
         }
@@ -106,26 +106,26 @@ namespace Rocket.AppThemes.Componants
             get
             {
                 var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath;
-                if (CacheUtils.GetCache(cachekey, "apptheme") == null) return new List<AppTheme>();
-                return (List<AppTheme>)CacheUtils.GetCache(cachekey, "apptheme");
+                if (CacheUtilsDNN.GetCache(cachekey) == null) return new List<AppTheme>();
+                return (List<AppTheme>)CacheUtilsDNN.GetCache(cachekey);
             }
             set
             {
                 var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath;
-                CacheUtils.SetCache(cachekey, value, "apptheme");
+                CacheUtilsDNN.SetCache(cachekey, value);
             }
         }
         public List<SystemData> SystemFolderList {
             get
             {
                 var cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
-                if (CacheUtils.GetCache(cachekey, "apptheme") == null) return new List<SystemData>();
-                return (List<SystemData>)CacheUtils.GetCache(cachekey, "apptheme");
+                if (CacheUtilsDNN.GetCache(cachekey) == null) return new List<SystemData>();
+                return (List<SystemData>)CacheUtilsDNN.GetCache(cachekey);
             }
             set
             {
                 var cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
-                CacheUtils.SetCache(cachekey, value, "apptheme");
+                CacheUtilsDNN.SetCache(cachekey, value);
             }
         }
 

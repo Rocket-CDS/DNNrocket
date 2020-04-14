@@ -22,7 +22,7 @@ namespace DNNrocket.TestForm
             commandSecurity.AddCommand("testform_get", false);
             commandSecurity.AddCommand("testform_download", false);
 
-            //CacheUtils.ClearAllCache();
+            //CacheUtilsDNN.ClearAllCache();
 
             var rtnDic = new Dictionary<string, string>();
 

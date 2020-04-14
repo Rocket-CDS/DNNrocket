@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simplisity
+namespace DNNrocketAPI.Componants
 {
     public class HeaderData
     {
@@ -22,7 +22,7 @@ namespace Simplisity
             var headerCacheKey = paramInfo.GetXmlProperty("genxml/hidden/headercachekey"); // use headerCacheKey so we don't use Info when new assigned
             if (headerCacheKey == "") headerCacheKey = GeneralUtils.GetGuidKey();
 
-            Info = (SimplisityInfo)CacheUtils.GetCache(headerCacheKey, "headerdata");
+            Info = (SimplisityInfo)CacheUtilsDNN.GetCache(headerCacheKey);
             if (Info == null) Info = new SimplisityInfo();
             HeaderCacheKey = headerCacheKey;
 
@@ -31,17 +31,17 @@ namespace Simplisity
             {
                 Info.SetXmlProperty("genxml/hidden/" + d.Key, d.Value);
             }
-            CacheUtils.SetCache(HeaderCacheKey, Info, "headerdata");
+            CacheUtilsDNN.SetCache(HeaderCacheKey, Info);
         }
         public SimplisityInfo Info { get; set; }
 
         public void Update()
         {
-            CacheUtils.SetCache(HeaderCacheKey, Info, "headerdata");
+            CacheUtilsDNN.SetCache(HeaderCacheKey, Info);
         }
         public void Delete()
         {
-            CacheUtils.RemoveCache(HeaderCacheKey, "headerdata");
+            CacheUtilsDNN.RemoveCache(HeaderCacheKey);
         }
 
         public void ActivateItemSort(int itemid)
@@ -65,7 +65,7 @@ namespace Simplisity
         public int RowCount { get { return Info.GetXmlPropertyInt("genxml/hidden/rowcount"); } set { Info.SetXmlProperty("genxml/hidden/rowcount", value.ToString()); } }
 
         //Filter SQL
-        public string FilterSQLref { get { return Info.GetXmlProperty("genxml/hidden/filtersqlref"); } set { Info.SetXmlProperty("genxml/hidden/filtersqlref", value); } }
+        public int FilterIndex { get { return Info.GetXmlPropertyInt("genxml/hidden/filterindex"); } set { Info.SetXmlProperty("genxml/hidden/filterindex", value.ToString()); } }
 
         #endregion
 

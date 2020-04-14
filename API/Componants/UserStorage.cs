@@ -21,7 +21,7 @@ namespace DNNrocketAPI.Componants
             _guidKey = _entityTypeCode + "*" + UserId;
             _objCtrl = new DNNrocketController();
 
-            Record = (SimplisityRecord)CacheUtils.GetCache(_guidKey);
+            Record = (SimplisityRecord)CacheUtilsDNN.GetCache(_guidKey);
             if (Record == null)
             {
                 Record = _objCtrl.GetRecordByGuidKey(-1, -1, _entityTypeCode, _guidKey, UserId.ToString(), _tableName);
@@ -36,7 +36,7 @@ namespace DNNrocketAPI.Componants
 
                     Record = _objCtrl.SaveRecord(Record, _tableName);
                 }
-                CacheUtils.SetCache(_guidKey, Record);
+                CacheUtilsDNN.SetCache(_guidKey, Record);
             }
         }
         public string GetCommand(string systemKey)
@@ -68,7 +68,7 @@ namespace DNNrocketAPI.Componants
         public void Save()
         {
             _objCtrl.SaveRecord(Record, _tableName);
-            CacheUtils.SetCache(_guidKey, Record);
+            CacheUtilsDNN.SetCache(_guidKey, Record);
         }
         public void Delete()
         {
@@ -77,7 +77,7 @@ namespace DNNrocketAPI.Componants
         }
         public void ClearCache()
         {
-            CacheUtils.RemoveCache(_guidKey);
+            CacheUtilsDNN.RemoveCache(_guidKey);
         }
 
         public void Set(string nodename,string value)
