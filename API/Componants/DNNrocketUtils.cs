@@ -1127,20 +1127,6 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public static void ClearAllCache()
-        {
-            DataCache.ClearCache();
-        }
-        public static void ClearPortalCache()
-        {
-            DataCache.ClearPortalCache(PortalSettings.Current.PortalId, true);
-        }
-
-        public static void ClearPortalCache(int portalId)
-        {
-            DataCache.ClearPortalCache(portalId, true);
-        }
-
         public static bool IsInRole(string role)
         {
             return UserController.Instance.GetCurrentUserInfo().IsInRole(role);
@@ -2149,9 +2135,18 @@ namespace DNNrocketAPI
         {
             DataCache.RemoveCache(cacheKey);
         }
-        public static void ClearCache()
+        public static void ClearAllCache()
         {
-            DataCache.ClearCache(); // clear ALL cache.
+            DataCache.ClearCache();
+        }
+        public static void ClearPortalCache()
+        {
+            DataCache.ClearPortalCache(PortalSettings.Current.PortalId, true);
+        }
+
+        public static void ClearPortalCache(int portalId)
+        {
+            DataCache.ClearPortalCache(portalId, true);
         }
 
         #endregion

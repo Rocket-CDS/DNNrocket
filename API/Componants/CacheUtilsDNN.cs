@@ -37,7 +37,7 @@ namespace DNNrocketAPI.Componants
         {
             try
             {
-                DNNrocketUtils.ClearCache();
+                DNNrocketUtils.ClearAllCache();
             }
             catch (Exception ex)
             {

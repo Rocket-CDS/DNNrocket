@@ -141,6 +141,7 @@ namespace DNNrocket.Images
             var imageDirectory = getImageDirectory();
             if (Directory.Exists(imageDirectory))
             {
+                DNNrocketUtils.ClearThumbnailLock();
                 var imageList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-imagelist").Split(';');
                 foreach (var i in imageList)
                 {
