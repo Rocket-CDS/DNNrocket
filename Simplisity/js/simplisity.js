@@ -28,7 +28,7 @@ var debugmode = false;
 
     };
 
-    }(jQuery));
+}(jQuery));
 
 (function ($) {
 
@@ -124,7 +124,7 @@ function simplisity_nbxgetCompleted(e) {
 
     // clear any uploaded files after completed call
     $('input[id*="simplisity_fileuploadlist"]').val('');
-       
+
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
         console.log('-------END AJAX CALL------- ');
@@ -138,9 +138,9 @@ function simplisity_nbxgetCompleted(e) {
         $('#simplisity_loader').hide();
     }
 
- }
+}
 
-function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload) {
+function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype) {
 
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
@@ -211,6 +211,10 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
 
         request.done(function (data) {
             if (data !== 'noaction') {
+                if (sreturntype === 'json') {
+                    data = JSON.stringify(data);
+                }
+
                 if ((typeof sreturn !== 'undefined') && sreturn !== '') {
                     if ((typeof sappend === 'undefined') || sappend === '' || sappend === false) {
                         $(sreturn).children().remove();
@@ -298,6 +302,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
         var safter = $(element).attr("s-after");
         var shideloader = $(element).attr("s-hideloader");
         var sdropdownlist = $(element).attr("s-dropdownlist");
+        var sreturntype = $(element).attr("s-returntype");
 
         if (typeof scmd === 'undefined') {
             scmd = '';
@@ -307,7 +312,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
             sfields = '';
         }
 
-        simplisity_setParamField('activevalue',$(element).val());
+        simplisity_setParamField('activevalue', $(element).val());
 
         if (typeof shideloader === 'undefined') {
             shideloader = true;
@@ -320,7 +325,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
             }
         }
 
-        simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload);
+        simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype);
     }
     else {
         $(element).attr('s-stop', '');
@@ -378,7 +383,7 @@ function ConvertFormToJSON(spost, slist, sfields) {
         sfield: [],
         system: [],
         postdata: [],
-        listdata: []        
+        listdata: []
     };
 
     // put input fields into the json object
@@ -616,7 +621,7 @@ function simplisity_removelistitem(item) {
 }
 
 function simplisity_remove(item, tagName) {
-    var slist = $(item).attr('s-removelist').replace('.','');
+    var slist = $(item).attr('s-removelist').replace('.', '');
     var sindex = $(item).attr('s-index');
     var liItem = $(item).parents(tagName + "[s-index=" + sindex + "]").first().removeClass(slist).addClass(slist + '_deleted');
     var recylebin = $(item).attr('s-recylebin');
@@ -697,7 +702,7 @@ function simplisity_getsystemkey(sfields) {
 
 var simplisity_isTextInput = function (element) {
     var nodeName = element.nodeName;
-    return (nodeName === 'INPUT' &&  element.type.toLowerCase() === 'text');
+    return (nodeName === 'INPUT' && element.type.toLowerCase() === 'text');
 };
 
 var simplisity_isSelect = function (element) {
@@ -745,6 +750,13 @@ function simplisity_decode(value) {
     return rtn;
 }
 
+function simplisity_injectlink(value) {
+    var link = '<link rel="stylesheet" href="' + value + '">';
+    $('head').append(link);
+}
+function simplisity_injectscript(value) {
+    $.getScript(value, function () { console.log('script inject'); });
+}
 
 async function initFileUpload(fileuploadselector) {
 
@@ -779,54 +791,54 @@ async function initFileUpload(fileuploadselector) {
     $(fileuploadselector).parent().unbind("fileuploaddrop");
     $(fileuploadselector).parent().unbind("fileuploadstop");
 
-        $(fileuploadselector).fileupload({
-            url: $(fileuploadselector).attr('s-uploadcmdurl'),
-            maxFileSize: maxFileSize,
-            maxChunkSize: maxChunkSize,
-            acceptFileTypes: rexpr,
-            dataType: 'json',
-            dropZone: $(fileuploadselector).parent(),
-            formData: { systemkey: systemkey }
-        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled')
-            .bind('fileuploadprogressall', function (e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('#simplisity-file-progress-bar').show();
-                $('.simplisity-file-progress-bar').css('width', progress + '%');
-                $('.simplisity-file-progress-bar').text(progress + '%');
-            })
-            .bind('fileuploadsubmit', function (e, data) {
-                var identifier = generateFileUniqueIdentifier(data);
-                data.headers = $.extend(data.headers, { "X-File-Identifier": identifier });
-            })
-            .bind('fileuploadadd', function (e, data) {
-                $('input[id*="simplisity_fileuploadlist"]').val('');
-                $.each(data.files, function (index, file) {
-                    $('input[id*="simplisity_fileuploadlist"]').val($('input[id*="simplisity_fileuploadlist"]').val() + simplisity_encode(file.name) + ';');
-                    filesdone = filesdone + 1;
-                });
-            })
-            .bind('fileuploaddrop', function (e, data) {
-                    $('#simplisity-file-progress-bar').show();
-                    filecount = data.files.length;
-                    $('.processing').show();
-            })
-            .bind('fileuploadstop', function (e) {
-                if (filesdone === filecount) {
-                    if ($('input[id*="simplisity_fileuploadlist"]').val() !== '') {
-
-                        var reload = $(fileuploadselector).attr('s-reload');
-                        if (typeof reload === 'undefined' || reload === '') {
-                            reload = 'true';
-                        }
-                        simplisity_callserver($(fileuploadselector), '', '', reload);
-
-                        filesdone = 0;
-                        $('.processing').hide();
-                        $('#progress .progress-bar').css('width', '0');
-
-                    }
-                }
+    $(fileuploadselector).fileupload({
+        url: $(fileuploadselector).attr('s-uploadcmdurl'),
+        maxFileSize: maxFileSize,
+        maxChunkSize: maxChunkSize,
+        acceptFileTypes: rexpr,
+        dataType: 'json',
+        dropZone: $(fileuploadselector).parent(),
+        formData: { systemkey: systemkey }
+    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled')
+        .bind('fileuploadprogressall', function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#simplisity-file-progress-bar').show();
+            $('.simplisity-file-progress-bar').css('width', progress + '%');
+            $('.simplisity-file-progress-bar').text(progress + '%');
+        })
+        .bind('fileuploadsubmit', function (e, data) {
+            var identifier = generateFileUniqueIdentifier(data);
+            data.headers = $.extend(data.headers, { "X-File-Identifier": identifier });
+        })
+        .bind('fileuploadadd', function (e, data) {
+            $('input[id*="simplisity_fileuploadlist"]').val('');
+            $.each(data.files, function (index, file) {
+                $('input[id*="simplisity_fileuploadlist"]').val($('input[id*="simplisity_fileuploadlist"]').val() + simplisity_encode(file.name) + ';');
+                filesdone = filesdone + 1;
             });
+        })
+        .bind('fileuploaddrop', function (e, data) {
+            $('#simplisity-file-progress-bar').show();
+            filecount = data.files.length;
+            $('.processing').show();
+        })
+        .bind('fileuploadstop', function (e) {
+            if (filesdone === filecount) {
+                if ($('input[id*="simplisity_fileuploadlist"]').val() !== '') {
+
+                    var reload = $(fileuploadselector).attr('s-reload');
+                    if (typeof reload === 'undefined' || reload === '') {
+                        reload = 'true';
+                    }
+                    simplisity_callserver($(fileuploadselector), '', '', reload);
+
+                    filesdone = 0;
+                    $('.processing').hide();
+                    $('#progress .progress-bar').css('width', '0');
+
+                }
+            }
+        });
 
 
 
@@ -840,103 +852,103 @@ function generateFileUniqueIdentifier(data) {
 
 function simplisity_assignevents(cmdurl) {
 
-        $('.simplisity_change').each(function (index) {
+    $('.simplisity_change').each(function (index) {
 
-            $(this).attr("s-index", index);
+        $(this).attr("s-index", index);
 
-            $(this).unbind("change");
-            $(this).change(function () {
+        $(this).unbind("change");
+        $(this).change(function () {
 
-                simplisity_searchfields();
+            simplisity_searchfields();
 
+            simplisity_callserver(this, cmdurl);
+        });
+
+    });
+
+    $('.simplisity_click').each(function (index) {
+
+        $(this).attr("s-index", index);
+
+        $(this).unbind("click");
+        $(this).click(function () {
+            simplisity_searchfields();
+            simplisity_callserver(this, cmdurl);
+        });
+
+    });
+
+    $('.simplisity_confirmclick').each(function (index) {
+
+        $(this).attr("s-index", index);
+
+        $(this).unbind("click");
+        $(this).click(function () {
+            if (confirm($(this).attr("s-confirm"))) {
                 simplisity_callserver(this, cmdurl);
-            });
-
-        });
-
-        $('.simplisity_click').each(function (index) {
-
-            $(this).attr("s-index", index);
-
-            $(this).unbind("click");
-            $(this).click(function () {
-                simplisity_searchfields();
-                simplisity_callserver(this, cmdurl);
-            });
-
-        });
-
-        $('.simplisity_confirmclick').each(function (index) {
-
-            $(this).attr("s-index", index);
-
-            $(this).unbind("click");
-            $(this).click(function () {
-                if (confirm($(this).attr("s-confirm"))) {
-                    simplisity_callserver(this, cmdurl);
-                }
-            });
-
-        });
-
-
-        $('.simplisity_removelistitem').each(function (index) {
-            $(this).attr("s-index", index);
-            $(this).parents('li').first().attr("s-index", index);
-
-            $(this).unbind("click");
-            $(this).click(function () {
-                simplisity_removelistitem(this);
-            });
-        });
-
-        $('.simplisity_removetablerow').each(function (index) {
-            $(this).attr("s-index", index);
-            $(this).parents('tr').first().attr("s-index", index);
-
-            $(this).unbind("click");
-            $(this).click(function () {
-                simplisity_removetablerow(this);
-            });
-        });
-
-        $('.simplisity_itemundo').each(function (index) {
-            if (typeof $(this).attr("s-recylebin") !== 'undefined') {
-                if (typeof $('#simplisity_recyclebin_' + $(this).attr("s-recylebin")).val() === 'undefined') {
-                    var elementstr = '<div id="simplisity_recyclebin_' + $(this).attr("s-recylebin") + '" style="display:none;" ></div>';
-                    var elem = document.createElement('span');
-                    elem.innerHTML = elementstr;
-                    document.body.appendChild(elem);
-                }
             }
-            $(this).unbind("click");
-            $(this).click(function () {
-                simplisity_undoremovelistitem(this);
-            });
         });
 
-        $('.simplisity_fileupload').each(function (index) {
-            initFileUpload('#' + $(this).attr('id'));
+    });
+
+
+    $('.simplisity_removelistitem').each(function (index) {
+        $(this).attr("s-index", index);
+        $(this).parents('li').first().attr("s-index", index);
+
+        $(this).unbind("click");
+        $(this).click(function () {
+            simplisity_removelistitem(this);
         });
+    });
 
-        $('.simplisity_filedownload').each(function (index) {
-            var params = "cmd=" + $(this).attr('s-cmd');
-            var sfields = $(this).attr('s-fields');
+    $('.simplisity_removetablerow').each(function (index) {
+        $(this).attr("s-index", index);
+        $(this).parents('tr').first().attr("s-index", index);
 
-            if (typeof sfields !== 'undefined' && sfields !== '') {
+        $(this).unbind("click");
+        $(this).click(function () {
+            simplisity_removetablerow(this);
+        });
+    });
 
-                var obj = JSON.parse(sfields);
-                for (x in obj) {
-                    params = params + '&' + x + '=' + simplisity_encode(simplisity_getField(sfields, x));
-                }
-
-                var systemkey = simplisity_getsystemkey(sfields);  // use systemkey so we can have multiple cookie for Different systems.
-                params = params + '&systemkey=' + simplisity_encode(systemkey);
+    $('.simplisity_itemundo').each(function (index) {
+        if (typeof $(this).attr("s-recylebin") !== 'undefined') {
+            if (typeof $('#simplisity_recyclebin_' + $(this).attr("s-recylebin")).val() === 'undefined') {
+                var elementstr = '<div id="simplisity_recyclebin_' + $(this).attr("s-recylebin") + '" style="display:none;" ></div>';
+                var elem = document.createElement('span');
+                elem.innerHTML = elementstr;
+                document.body.appendChild(elem);
             }
-            var cmdurl = $("#simplisity_cmdurl").val();
-            $(this).attr({
-                href: cmdurl + '?' + params
-            });
+        }
+        $(this).unbind("click");
+        $(this).click(function () {
+            simplisity_undoremovelistitem(this);
         });
+    });
+
+    $('.simplisity_fileupload').each(function (index) {
+        initFileUpload('#' + $(this).attr('id'));
+    });
+
+    $('.simplisity_filedownload').each(function (index) {
+        var params = "cmd=" + $(this).attr('s-cmd');
+        var sfields = $(this).attr('s-fields');
+
+        if (typeof sfields !== 'undefined' && sfields !== '') {
+
+            var obj = JSON.parse(sfields);
+            for (x in obj) {
+                params = params + '&' + x + '=' + simplisity_encode(simplisity_getField(sfields, x));
+            }
+
+            var systemkey = simplisity_getsystemkey(sfields);  // use systemkey so we can have multiple cookie for Different systems.
+            params = params + '&systemkey=' + simplisity_encode(systemkey);
+        }
+        var cmdurl = $("#simplisity_cmdurl").val();
+        $(this).attr({
+            href: cmdurl + '?' + params
+        });
+    });
 
 }
