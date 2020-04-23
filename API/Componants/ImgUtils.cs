@@ -346,6 +346,10 @@ namespace DNNrocketAPI
 
         public static void CreateThumbOnDisk(string imgPathName, string thumbSizeCsv)
         {
+            CreateThumbOnDisk(imgPathName, thumbSizeCsv, "");
+        }
+        public static void CreateThumbOnDisk(string imgPathName, string thumbSizeCsv, string outMapPath)
+        {
 
             if (!string.IsNullOrEmpty(thumbSizeCsv))
             {
@@ -359,6 +363,7 @@ namespace DNNrocketAPI
                         var thumbW = GetThumbWidth(thumbSizeList[lp]);
                         var thumbH = GetThumbHeight(thumbSizeList[lp]);
                         var filePathOut = GetThumbFilePathName(imgPathName, thumbW, thumbH);
+                        if (outMapPath != "") filePathOut = outMapPath;
 
                         using (var newImage = CreateThumbnail(imgPathName, Convert.ToInt32(thumbW), Convert.ToInt32(thumbH)))
                         {

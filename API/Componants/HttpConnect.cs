@@ -85,7 +85,18 @@ namespace DNNrocketAPI.Componants
                 return "FAIL";
             }
         }
-
+        public void DownloadImageToFile(string uri, string destinationMapPath)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.DownloadFile(uri, destinationMapPath);
+            }
+            catch (Exception exc)
+            {
+                DNNrocketUtils.LogException(exc);
+            }
+        }
         public List<SimplisityRecord> DownloadAppThemeXmlList()
         {
             try
@@ -94,7 +105,20 @@ namespace DNNrocketAPI.Componants
                 var xmlIndexList = Download(uri);
                 var sRec = new SimplisityRecord();
                 sRec.XMLData = xmlIndexList;
-                return sRec.GetRecordList("idx");
+                var idxList =  sRec.GetRecordList("idx");
+
+                // download index image, to display on list.
+                foreach (var sRec2 in idxList)
+                {
+                    var imgLogo = sRec2.GetXmlNode("genxml/hidden/logo");
+                    var localMapPath = DNNrocketUtils.SystemThemeImgDirectoryMapPath() + "\\" + imgLogo;
+                    if (!File.Exists(localMapPath))
+                    {
+                        uri = _baseuri + "/idx/" + imgLogo;
+                        DownloadImageToFile(uri, localMapPath);
+                    }
+                }
+                return idxList;
             }
             catch (Exception exc)
             {

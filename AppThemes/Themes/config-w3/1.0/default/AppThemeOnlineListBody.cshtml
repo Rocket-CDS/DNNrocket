@@ -47,7 +47,7 @@ else
                     <div class="listrow w3-row">
 
                         <div class=" w3-col w3-padding  w3-hide-small " style="width: 100px;">
-                            <img src="@Model.GetSetting("logorelfolder")/@info.GetXmlProperty("genxml/hidden/logo")" style="width:60px;height:60px;" class="w3-circle" />
+                            <img src="@DNNrocketUtils.SystemThemeImgDirectoryRel()/@info.GetXmlProperty("genxml/hidden/logo")" style="width:60px;height:60px;" class="w3-circle" />
                         </div>
                         <div class=" w3-col m6 w3-padding">
                             <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
@@ -138,7 +138,7 @@ else
                         <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
                             <b class="w3-left w3-text-blue ">@info.GetXmlProperty("genxml/hidden/appthemeprefix")</b>
                         </div>
-                        <img src="@Model.GetSetting("logorelfolder")/@info.GetXmlProperty("genxml/hidden/logo")" style="width:60%;" class="w3-circle w3-hover-opacity" />
+                        <img src="@DNNrocketUtils.SystemThemeImgDirectoryRel()/@info.GetXmlProperty("genxml/hidden/logo")" style="width:60%;" class="w3-circle w3-hover-opacity" />
                         <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
                             <b>@info.GetXmlProperty("genxml/hidden/appthemename") &nbsp; @info.GetXmlProperty("genxml/hidden/latestversion")</b>
                         </div>

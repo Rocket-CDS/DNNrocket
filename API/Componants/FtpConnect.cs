@@ -1,6 +1,7 @@
 ﻿using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -68,22 +69,26 @@ namespace DNNrocketAPI.Componants
                     sInfo.SetXmlProperty("genxml/hidden/latestrev", appTheme.LatestRev.ToString());
                     var logoMapPath = DNNrocketUtils.MapPath(appTheme.Logo);
                     sInfo.SetXmlProperty("genxml/hidden/logo", Path.GetFileName(logoMapPath));
+                    var outMapPath = "";
                     if (File.Exists(logoMapPath))
                     {
-                        //var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));
-
-                        //// Convert the image to byte[]
-                        //System.IO.MemoryStream stream = new System.IO.MemoryStream();
-                        //newImage.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
-                        //byte[] imageBytes = stream.ToArray();
-                        //string base64String = Convert.ToBase64String(imageBytes);
-                        //sInfo.SetXmlProperty("genxml/hidden/logobase64", base64String);   
+                        var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));
+                        var imgidxFolder = DNNrocketUtils.SystemThemeImgDirectoryMapPath();
+                        if (!Directory.Exists(imgidxFolder)) Directory.CreateDirectory(imgidxFolder);
+                        outMapPath = imgidxFolder + "\\" + Path.GetFileName(logoMapPath);
+                        ImgUtils.CreateThumbOnDisk(logoMapPath, "80,80", outMapPath);
                     }
 
                     var updateXml = sInfo.ToXmlItem();
                     FileUtils.SaveFile(xmlMapPath, updateXml);
                     client.UploadFile(urixml + "/" + Path.GetFileName(xmlMapPath), WebRequestMethods.Ftp.UploadFile, xmlMapPath);
                     UploadChangedXmlIndex(appTheme.AppThemeFolder, updateXml);
+
+                    if (outMapPath != "")
+                    {
+                        // upload idx image
+                        client.UploadFile(urixml + "/" + Path.GetFileName(outMapPath), WebRequestMethods.Ftp.UploadFile, outMapPath);
+                    }
                 }
             }
             catch (Exception ex)
@@ -257,6 +262,19 @@ namespace DNNrocketAPI.Componants
                 DNNrocketUtils.LogException(exc);
             }
         }
+        public void DownloadImageToFile(string uri, string destinationMapPath)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
+                client.DownloadFile(uri, destinationMapPath);
+            }
+            catch (Exception exc)
+            {
+                DNNrocketUtils.LogException(exc);
+            }
+        }
 
         public string Download(string uri)
         {
@@ -320,6 +338,14 @@ namespace DNNrocketAPI.Componants
                     var sInfo = new SimplisityRecord();
                     sInfo.FromXmlItem(xmlDownload);
                     rtnList.Add(sInfo);
+                    // download index image, to display on list.
+                    var imgLogo = sInfo.GetXmlNode("genxml/hidden/logo");
+                    var localMapPath = DNNrocketUtils.SystemThemeImgDirectoryMapPath() + "\\" + imgLogo;
+                    if (!File.Exists(localMapPath))
+                    {
+                        uri = _baseuri + "/idx/" + imgLogo;
+                        DownloadImageToFile(uri, localMapPath);
+                    }
                 }
             }
             return rtnList;

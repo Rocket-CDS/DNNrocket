@@ -1305,7 +1305,7 @@ namespace RocketMod
         private void DoBackUp(bool forcebackup = false)
         {
             // BackUp data to file 
-            if (_moduleParams.Exists && _moduleParams.AutoBackUp)
+            if ((_moduleParams.Exists && _moduleParams.AutoBackUp) || forcebackup)
             {
                 var saveList = new List<SimplisityInfo>();
                 if (DNNrocketUtils.ModuleExists(_moduleParams.TabId, _moduleid) && !DNNrocketUtils.ModuleIsDeleted(_moduleParams.TabId, _moduleParams.ModuleId))

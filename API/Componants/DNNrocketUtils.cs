@@ -1305,7 +1305,14 @@ namespace DNNrocketAPI
         {
             return PortalSettings.Current.HomeDirectory;
         }
-
+        public static string SystemThemeImgDirectoryRel()
+        {
+            return "/DesktopModules/DNNrocket/SystemThemes/idximg";
+        }
+        public static string SystemThemeImgDirectoryMapPath()
+        {
+            return DNNrocketUtils.MapPath(SystemThemeImgDirectoryRel());
+        }
         public static string DNNrocketThemesDirectoryMapPath()
         {
             return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketThemes";
