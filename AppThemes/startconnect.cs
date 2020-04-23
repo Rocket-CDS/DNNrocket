@@ -150,6 +150,9 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_docopy":
                         strOut = DoCopyAppTheme();
                         break;
+                    case "rocketapptheme_uploadversioncheck":
+                        strOut = CheckServerVersion();
+                        break;
                     case "rocketapptheme_uploadapptheme":
                         strOut = UploadAppTheme();
                         break;
@@ -593,6 +596,33 @@ namespace DNNrocket.AppThemes
 
             return rtnDic;
         }
+        private string CheckServerVersion()
+        {
+            var rtnDic = ExportAppTheme();
+            if (rtnDic["filenamepath"] != null && rtnDic["filenamepath"] != "")
+            {
+                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                var ftpConnect = new FtpConnect(_selectedSystemKey);
+
+                var serverxml = ftpConnect.DownloadAppThemeXml(_appThemeFolder);
+                var sRec = new SimplisityRecord();
+                sRec.XMLData = serverxml;
+                var version = sRec.GetXmlPropertyDouble("item/genxml/hidden/latestversion");
+                var rev = sRec.GetXmlPropertyDouble("item/genxml/hidden/latestrev");
+                if (appTheme.LatestVersion > version)
+                {
+                    return UploadAppTheme();
+                }
+                if (appTheme.LatestVersion == version && appTheme.LatestRev > rev)
+                {
+                    return UploadAppTheme();
+                }
+                var razorTempl1 = DNNrocketUtils.GetRazorTemplateData("versioncheck.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+                return DNNrocketUtils.RazorDetail(razorTempl1, new SimplisityInfo(sRec), _passSettings, null, true);
+            }
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData("ftpfail.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+            return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+        }
         private string UploadAppTheme()
         {
             var rtnDic = ExportAppTheme();
@@ -606,7 +636,8 @@ namespace DNNrocket.AppThemes
                 ClearServerCacheLists();
                 return rtn;
             }
-            return "FTP Failed, No AppTheme export file found.";
+            var razorTempl = DNNrocketUtils.GetRazorTemplateData("ftpfail.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+            return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
         }
 
         private string ImportAppTheme()

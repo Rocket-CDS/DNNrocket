@@ -216,6 +216,9 @@
   <data name="filename.Text" xml:space="preserve">
     <value>File Name</value>
   </data>
+  <data name="ftpfail.Text" xml:space="preserve">
+    <value>FTP Failed, No AppTheme export file found.</value>
+  </data>
   <data name="images.Text" xml:space="preserve">
     <value>Images</value>
   </data>
@@ -338,6 +341,12 @@
   </data>
   <data name="version.Text" xml:space="preserve">
     <value>Version</value>
+  </data>
+  <data name="versioncheck.Text" xml:space="preserve">
+    <value>Version Check</value>
+  </data>
+  <data name="versioncheckmsg.Text" xml:space="preserve">
+    <value>The current verison of the AppTheme on the server is newer than this version.  If you upload you will delete the AppTheme on the server.  If you want to continue with the upload, click the upload button.</value>
   </data>
   <data name="versionmsg.Text" xml:space="preserve">
     <value>Create a new version of this AppTheme.</value>

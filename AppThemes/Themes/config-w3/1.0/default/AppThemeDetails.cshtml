@@ -90,13 +90,13 @@
             </div>
 
 
-            <div class="w3-row-padding">
+            <div class="w3-row-padding uploadbutton">
                 <div class="w3-col m3 w3-padding">
-                    <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-before="moveprogressbarupload" s-cmd="rocketapptheme_uploadapptheme" s-post="#uploadapptheme" s-return=".uploadappthemereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class="fas fa-upload fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.upload")</div>
+                    <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-before="moveprogressbarupload" s-cmd="rocketapptheme_uploadversioncheck" s-post="#uploadapptheme" s-return=".uploadappthemereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class="fas fa-upload fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.upload")</div>
                 </div>
             </div>
             <div class="w3-row w3-padding">
-                <div class="w3-row w3-panel w3-red w3-padding uploadappthemereturn" style="display:none;">
+                <div class="w3-row w3-panel w3-padding uploadappthemereturn" style="display:none;">
                 </div>
             </div>
 
@@ -545,6 +545,7 @@
                 document.getElementById('uploadapptheme').style.display = 'none';
             }
             else {
+                $('.uploadbutton').hide();
                 $('.uploadappthemereturn').show();
             }
 
