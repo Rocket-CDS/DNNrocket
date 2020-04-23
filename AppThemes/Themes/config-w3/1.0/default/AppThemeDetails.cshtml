@@ -90,7 +90,7 @@
             </div>
 
 
-            <div class="w3-row-padding uploadbutton">
+            <div class="w3-row-padding uploadbutton1">
                 <div class="w3-col m3 w3-padding">
                     <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-before="moveprogressbarupload" s-cmd="rocketapptheme_uploadversioncheck" s-post="#uploadapptheme" s-return=".uploadappthemereturn" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class="fas fa-upload fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.upload")</div>
                 </div>
@@ -535,6 +535,8 @@
 
         $('.uploadappthemereturn').unbind('change');
         $('.uploadappthemereturn').change(function () {
+            $('.uploadbutton').show();
+
             var rtn = $(this).text();
             clearInterval(progressbarid);
 
@@ -545,7 +547,7 @@
                 document.getElementById('uploadapptheme').style.display = 'none';
             }
             else {
-                $('.uploadbutton').hide();
+                $('.uploadbutton1').hide();
                 $('.uploadappthemereturn').show();
             }
 
@@ -608,6 +610,8 @@
     }
 
     function moveprogressbarupload() {
+        $('.uploadbutton1').hide();
+        $('.uploadbutton').hide();
         var elem = document.getElementById("progressBarUpload");
         var width = 1;
         progressbarid = setInterval(frame, 50);

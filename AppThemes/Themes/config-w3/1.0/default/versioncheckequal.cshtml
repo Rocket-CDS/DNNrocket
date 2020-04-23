@@ -1,0 +1,27 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using RocketMod;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+
+@{
+    var info = (SimplisityInfo)Model.List.First();
+    var version = info.GetXmlPropertyDouble("item/genxml/hidden/latestversion");
+    var rev = info.GetXmlPropertyDouble("item/genxml/hidden/latestrev");
+    var appthemefolder = info.GetXmlProperty("item/genxml/hidden/appthemefolder");
+}
+
+    <div class="w3-row-padding">
+        <div class="w3-text-blue"><b>@ResourceKey("AppThemes.versioncheck"): v@(version) rev@(rev)</b></div>
+        <div class="w3-text-black">@ResourceKey("AppThemes.versioncheckequal")</div>
+        <div class="w3-col m3 w3-padding uploadbutton">
+            <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-before="moveprogressbarupload" s-cmd="rocketapptheme_uploadapptheme" s-post="#uploadapptheme" s-return=".uploadappthemereturn" s-fields='{"appthemefolder":"@appthemefolder"}'><i class="fas fa-upload fa-fw fa-lg"></i>&nbsp;@ResourceKey("AppThemes.upload")</div>
+        </div>
+    </div>
+
+

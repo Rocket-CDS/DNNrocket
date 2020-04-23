@@ -617,6 +617,11 @@ namespace DNNrocket.AppThemes
                 {
                     return UploadAppTheme();
                 }
+                if (appTheme.LatestVersion == version && appTheme.LatestRev == rev)
+                {
+                    var razorTempl2 = DNNrocketUtils.GetRazorTemplateData("versioncheckequal.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+                    return DNNrocketUtils.RazorDetail(razorTempl2, new SimplisityInfo(sRec), _passSettings, null, true);
+                }
                 var razorTempl1 = DNNrocketUtils.GetRazorTemplateData("versioncheck.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
                 return DNNrocketUtils.RazorDetail(razorTempl1, new SimplisityInfo(sRec), _passSettings, null, true);
             }

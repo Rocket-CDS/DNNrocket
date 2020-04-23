@@ -160,7 +160,6 @@ namespace DNNrocketAPI.Componants
                 var l = DownloadAppThemeXmlList();
                 foreach (var x in l)
                 {
-                    x.SetXmlProperty("genxml/hidden/logobase64", "");
                     ftpidx += x.XMLData;
                 }
                 ftpidx += "</idx>";
@@ -333,7 +332,7 @@ namespace DNNrocketAPI.Componants
             {
                 var uri = _baseuri + "/xml/" + n;
                 var xmlDownload = Download(uri);
-                if (xmlDownload != "FAIL")
+                if (xmlDownload != "FAIL" && Path.GetExtension(n).ToLower() == ".xml")
                 {
                     var sInfo = new SimplisityRecord();
                     sInfo.FromXmlItem(xmlDownload);
