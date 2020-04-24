@@ -12,11 +12,9 @@
 <div class="w3-container">
 
     <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-green w3-margin-left simplisity_click" s-cmd="systemapi_admin_save" s-fields='{"selecteditemid":"@(sInfo.ItemID)","theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-post="#pluginsdatasection" s-list=".interfacedata,.idxfielddata,.settingsdata,.groupsdata,.provtypesdata,.dnninstall">@ButtonText(ButtonTypes.save)</div>
-        
-        <div class="w3-col m2 w3-button w3-red w3-margin-left simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="systemapi_admin_delete" s-fields='{"selecteditemid":"@(sInfo.ItemID)"}' s-post="#pluginsdatasection" s-return="#simplisity_startpanel" s-after="reloadpluginlist">@ButtonText(ButtonTypes.delete)</div>
-        
-        <div class="w3-col m2 w3-button w3-sand w3-margin-left simplisity_click" s-cmd="systemapi_admin_getsystemlist" s-fields='{"track":"true","theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel">@ButtonText(ButtonTypes.back)</div>
+        <div class="w3-col m2 w3-button rocket-buttonbar w3-green simplisity_click" s-cmd="systemapi_admin_save" s-fields='{"selecteditemid":"@(sInfo.ItemID)","theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-post="#pluginsdatasection" s-list=".interfacedata,.idxfielddata,.settingsdata,.groupsdata,.provtypesdata,.dnninstall">@ButtonText(ButtonTypes.save)</div>        
+        <div class="w3-col m2 w3-button rocket-buttonbar w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="systemapi_admin_delete" s-fields='{"selecteditemid":"@(sInfo.ItemID)"}' s-post="#pluginsdatasection" s-return="#simplisity_startpanel" s-after="reloadpluginlist">@ButtonText(ButtonTypes.delete)</div>        
+        <div class="w3-col m2 w3-button rocket-buttonbar w3-sand simplisity_click" s-cmd="systemapi_admin_getsystemlist" s-fields='{"track":"true","theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel">@ButtonText(ButtonTypes.back)</div>
         @if (Model.GetSettingBool("saved"))
         {
             
