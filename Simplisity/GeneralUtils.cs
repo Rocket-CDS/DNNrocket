@@ -335,6 +335,18 @@ namespace Simplisity
             return DateTime.TryParse(Convert.ToString(expression), CultureInfo.CreateSpecificCulture(cultureCode),
                 DateTimeStyles.None, out rtnD);
         }
+        /// <summary>
+        /// Test date in these formats nby default: { "yyyy-MM-dd", "yyyy/MM/dd", "MM-dd-yyyy", "MM/dd/yyyy", "dd/MM/yyyy", "dd-MM-yyyy" }
+        /// Use IsDate function if you know the culturecode.
+        /// </summary>
+        /// <param name="datevalue">Date value (converted to string)</param>
+        /// <returns></returns>
+        public static bool IsDateInvariantCulture(object expression)
+        {
+            DateTime dt;
+            string[] formats = { "yyyy-MM-dd", "yyyy/MM/dd", "MM-dd-yyyy", "MM/dd/yyyy", "dd/MM/yyyy", "dd-MM-yyyy", "yyyy-MM-d", "yyyy/MM/d", "MM-d-yyyy", "MM/d/yyyy", "d/MM/yyyy", "d-MM-yyyy" };
+            return DateTime.TryParseExact(Convert.ToString(expression), formats, System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.None, out dt);
+        }
 
 
         public static string FormatAsMailTo(string email)

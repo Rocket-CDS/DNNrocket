@@ -208,6 +208,7 @@
     <None Include="Documents\File-Upload.docx" />
     <None Include="Documents\HeaderData.docx" />
     <None Include="Documents\ManualSortList.docx" />
+    <None Include="Documents\RocketScheduler.docx" />
     <None Include="downloadfile.ashx" />
     <None Include="BuildScripts\build.bat" />
     <None Include="BuildScripts\ModulePackage.targets">
