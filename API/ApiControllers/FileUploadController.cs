@@ -44,7 +44,7 @@ namespace DNNrocketAPI.ApiControllers
             else
             {
                 var data = await Request.Content.ParseMultipartAsync();
-                var userid = DNNrocketUtils.GetCurrentUserId();
+                var userid = UserUtils.GetCurrentUserId();
                 foreach (var f in data.Files)
                 {
                     if (f.Value.File.Length > 0)
@@ -69,7 +69,7 @@ namespace DNNrocketAPI.ApiControllers
     //        if (!request.Content.IsMimeMultipartContent()) throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 
     //            var data = await Request.Content.ParseMultipartAsync();
-    //            var userid = DNNrocketUtils.GetCurrentUserId();
+    //            var userid = UserUtils.GetCurrentUserId();
 
     //            foreach (var f in data.Files)
     //            {
@@ -130,7 +130,7 @@ namespace DNNrocketAPI.ApiControllers
         private async Task<UploadProcessingResult> ProcessChunk(HttpRequestMessage request)
         {
             //use the unique identifier sent from client to identify the file
-            var userid = DNNrocketUtils.GetCurrentUserId();
+            var userid = UserUtils.GetCurrentUserId();
             FileChunkMetaData chunkMetaData = request.GetChunkMetaData();
             string filePath = Path.Combine(_uploadPath, string.Format("{0}", userid + "_" + chunkMetaData.ChunkIdentifier));
 

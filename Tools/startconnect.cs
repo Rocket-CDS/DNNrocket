@@ -24,7 +24,7 @@ namespace Rocket.Tools
 
             paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
 
-            if (DNNrocketUtils.IsSuperUser())
+            if (UserUtils.IsSuperUser())
             {
 
                 switch (paramCmd)
@@ -349,7 +349,7 @@ namespace Rocket.Tools
                 if (info.GUIDKey == "new") return "reload"; // we have lost the cache and page data, reload and start agian.
 
                 info.RemoveRecordList("rolelist");
-                var l = DNNrocketUtils.GetRoles(DNNrocketUtils.GetPortalId());
+                var l = UserUtils.GetRoles(DNNrocketUtils.GetPortalId());
                 foreach (var m in l)
                 {
                     var sRec = new SimplisityRecord();

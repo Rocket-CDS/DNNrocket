@@ -492,31 +492,6 @@ namespace DNNrocketAPI
         }
 
 
-        public static DotNetNuke.Entities.Users.UserInfo GetValidUser(int PortalId, string username, string password)
-        {
-            var userLoginStatus = new DotNetNuke.Security.Membership.UserLoginStatus();
-            return DotNetNuke.Entities.Users.UserController.ValidateUser(PortalId, username, password, "", "", "", ref userLoginStatus);
-        }
-
-        public static bool IsValidUser(int PortalId, string username, string password)
-        {
-            var u = GetValidUser(PortalId, username, password);
-            if (u != null)
-            {
-                return true;
-            }
-            return false;
-        }
-        public static bool IsValidUser(int portalId, int userId)
-        {
-            var u = UserController.GetUserById(portalId, userId);
-            if (u != null)
-            {
-                return true;
-            }
-            return false;
-        }
-
         public static string GetLocalizedString(string Key, string resourceFileRoot, string lang)
         {
             return Localization.GetString(Key, resourceFileRoot, lang);
@@ -802,26 +777,6 @@ namespace DNNrocketAPI
 
         }
 
-        public static SimplisityRecord GetRoleById(int portalId, int roleId)
-        {
-            var r = RoleController.Instance.GetRoleById(portalId, roleId);
-            var rtnRec = new SimplisityRecord();
-            rtnRec.ItemID = roleId;
-            rtnRec.SetXmlProperty("genxml/rolename", r.RoleName);
-            rtnRec.SetXmlProperty("genxml/roleid", roleId.ToString());
-            return rtnRec;
-        }
-
-        public static Dictionary<int, string> GetRoles(int portalId)
-        {
-            var rtnDic = new Dictionary<int, string>();
-            var l = RoleController.Instance.GetRoles(portalId);
-            foreach (RoleInfo r in l)
-            {
-                rtnDic.Add(r.RoleID, r.RoleName);
-            }
-            return rtnDic;
-        }
         public static Dictionary<int,string> GetTabModuleTitles(int tabid, bool getDeleted = false)
         {
             var rtnDic = new Dictionary<int, string>();
@@ -958,81 +913,6 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public static Dictionary<string, string> GetUserProfileProperties(UserInfo userInfo)
-        {
-            var prop = new Dictionary<string, string>();
-            foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition p in userInfo.Profile.ProfileProperties)
-            {
-                prop.Add(p.PropertyName, p.PropertyValue);
-            }
-            return prop;
-        }
-
-        public static int GetCurrentUserId()
-        {
-            try
-            {
-                return UserController.Instance.GetCurrentUserInfo().UserID;
-            }
-            catch (Exception ex)
-            {
-                var ms = ex.ToString();
-                return 0; // use zero;
-            }
-        }
-
-        public static int GetUserIdByUserName(int portalId, string username)
-        {
-            try
-            {
-                var objUser = UserController.GetUserByName(portalId, username);
-                if (objUser != null) return objUser.UserID;
-                return -1;
-            }
-            catch (Exception ex)
-            {
-                var ms = ex.ToString();
-                return 0; // use zero;
-            }
-        }
-
-        public static string GetCurrentUsername()
-        {
-            try
-            {
-                return UserController.Instance.GetCurrentUserInfo().Username;
-            }
-            catch (Exception ex)
-            {
-                var ms = ex.ToString();
-                return ""; // use zero;
-            }
-        }
-
-
-        public static Dictionary<string, string> GetUserProfileProperties(String userId)
-        {
-            if (!GeneralUtils.IsNumeric(userId)) return null;
-            var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
-            return GetUserProfileProperties(userInfo);
-        }
-
-        public static void SetUserProfileProperties(UserInfo userInfo, Dictionary<string, string> properties)
-        {
-            foreach (var p in properties)
-            {
-                userInfo.Profile.SetProfileProperty(p.Key, p.Value);
-                UserController.UpdateUser(PortalSettings.Current.PortalId, userInfo);
-            }
-        }
-        public static void SetUserProfileProperties(String userId, Dictionary<string, string> properties)
-        {
-            if (GeneralUtils.IsNumeric(userId))
-            {
-                var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
-                SetUserProfileProperties(userInfo, properties);
-            }
-        }
 
         public static List<int> GetPortals()
         {
@@ -1047,7 +927,15 @@ namespace DNNrocketAPI
 
         public static int GetPortalId()
         {
-            return PortalSettings.Current.PortalId;
+            if (PortalSettings.Current == null)
+            {
+                // don't return a null or cause error by accident.  The calling mathod should test and deal with it.
+                return -1;  
+            }
+            else
+            {
+                return PortalSettings.Current.PortalId;
+            }
         }
 
         public static PortalSettings GetPortalSettings()
@@ -1127,24 +1015,6 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-        public static bool IsInRole(string role)
-        {
-            return UserController.Instance.GetCurrentUserInfo().IsInRole(role);
-        }
-
-        public static bool IsSuperUser()
-        {
-            return UserController.Instance.GetCurrentUserInfo().IsSuperUser;
-        }
-
-        public static Boolean IsClientOnly()
-        {
-            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ClientEditor) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators)))
-            {
-                return true;
-            }
-            return false;
-        }
 
         #region "encryption"
 
@@ -1207,7 +1077,7 @@ namespace DNNrocketAPI
 
         public static string SetEditCulture(string editlang)
         {
-            var cachekey = "editlang*" + DNNrocketUtils.GetCurrentUserId();
+            var cachekey = "editlang*" + UserUtils.GetCurrentUserId();
             if (String.IsNullOrEmpty(editlang)) editlang = GetCurrentCulture();
             CacheUtilsDNN.SetCache(cachekey, editlang);
             return editlang;
@@ -1215,7 +1085,7 @@ namespace DNNrocketAPI
 
         public static string GetEditCulture()
         {
-            var cachekey = "editlang*" + DNNrocketUtils.GetCurrentUserId();
+            var cachekey = "editlang*" + UserUtils.GetCurrentUserId();
             var rtnLang = HttpContext.Current.Request.QueryString["editlang"];
             if (String.IsNullOrEmpty(rtnLang))
             {
@@ -1233,24 +1103,27 @@ namespace DNNrocketAPI
 
         public static string GetCurrentCulture()
         {
-            // use url param first.  This is important on changing languages through DNN.
-            if (HttpContext.Current.Request.QueryString["language"] != null)
+            if (HttpContext.Current != null && HttpContext.Current.Request != null)
             {
-                return HttpContext.Current.Request.QueryString["language"];
-            }
-            // no url language, look in the cookies.
-            if (HttpContext.Current.Request.Cookies["language"] != null)
-            {
-                var l = GetCultureCodeList();
-                var rtnlang = HttpContext.Current.Request.Cookies["language"].Value;
-                if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
+                // use url param first.  This is important on changing languages through DNN.
+                if (HttpContext.Current.Request.QueryString["language"] != null)
                 {
-                    if (l.Count >= 1)
-                    {
-                        rtnlang = l.First();
-                    }
+                    return HttpContext.Current.Request.QueryString["language"];
                 }
-                return rtnlang;
+                // no url language, look in the cookies.
+                if (HttpContext.Current.Request.Cookies["language"] != null)
+                {
+                    var l = GetCultureCodeList();
+                    var rtnlang = HttpContext.Current.Request.Cookies["language"].Value;
+                    if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
+                    {
+                        if (l.Count >= 1)
+                        {
+                            rtnlang = l.First();
+                        }
+                    }
+                    return rtnlang;
+                }
             }
             // default to system thread, but in API this may be wrong.
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
@@ -1276,34 +1149,47 @@ namespace DNNrocketAPI
         }
 
         [Obsolete("Please use TempDirectoryMapPath() instead.")]
-        public static string TempDirectory()
+        public static string TempDirectory(int portalId = -1)
         {
-            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketTemp";
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectoryMapPath + "DNNrocketTemp";
+            else
+                return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketTemp";
         }        
-        public static string TempDirectoryMapPath()
+        public static string TempDirectoryMapPath(int portalId = -1)
         {
-            return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketTemp";
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketTemp";
+            else
+                return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketTemp";
         }
-        public static string BackUpDirectory()
+        public static string BackUpDirectoryMapPath(int portalId = -1)
         {
-            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketBackUp";
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketBackUp";
+            else
+                return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketBackUp";
         }
-        public static string BackUpDirectoryMapPath()
+        public static string TempDirectoryRel(int portalId = -1)
         {
-            return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketBackUp";
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectory.TrimEnd('/') + "/DNNrocketTemp";
+            else
+                return PortalSettings.Current.HomeDirectory.TrimEnd('/') + "/DNNrocketTemp";
         }
-        public static string TempDirectoryRel()
+        public static string HomeDirectoryMapPath(int portalId = -1)
         {
-            return PortalSettings.Current.HomeDirectory.TrimEnd('/') + "/DNNrocketTemp";
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectoryMapPath;
+            else
+                return PortalSettings.Current.HomeDirectoryMapPath;
         }
-
-        public static string HomeDirectoryMapPath()
+        public static string HomeDirectoryRel(int portalId = -1)
         {
-            return PortalSettings.Current.HomeDirectoryMapPath;
-        }
-        public static string HomeDirectoryRel()
-        {
-            return PortalSettings.Current.HomeDirectory;
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectory;
+            else
+                return PortalSettings.Current.HomeDirectory;
         }
         public static string SystemThemeImgDirectoryRel()
         {
@@ -1313,22 +1199,34 @@ namespace DNNrocketAPI
         {
             return DNNrocketUtils.MapPath(SystemThemeImgDirectoryRel());
         }
-        public static string DNNrocketThemesDirectoryMapPath()
+        public static string DNNrocketThemesDirectoryMapPath(int portalId = -1)
         {
-            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketThemes";
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectoryMapPath + "DNNrocketThemes";
+            else
+                return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketThemes";
         }
-        public static string DNNrocketThemesDirectoryRel()
+        public static string DNNrocketThemesDirectoryRel(int portalId = -1)
         {
-            return PortalSettings.Current.HomeDirectory + "DNNrocketThemes";
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectory + "DNNrocketThemes";
+            else
+                return PortalSettings.Current.HomeDirectory + "DNNrocketThemes";
         }
 
-        public static string HomeDNNrocketDirectoryMapPath()
+        public static string HomeDNNrocketDirectoryMapPath(int portalId = -1)
         {
-            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocket";
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectoryMapPath + "DNNrocket";
+            else
+                return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocket";
         }
-        public static string HomeDNNrocketDirectoryRel()
+        public static string HomeDNNrocketDirectoryRel(int portalId = -1)
         {
-            return PortalSettings.Current.HomeDirectory + "DNNrocket";
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectory + "DNNrocket";
+            else
+                return PortalSettings.Current.HomeDirectory + "DNNrocket";
         }
 
         public static string MapPath(string relpath)
@@ -1341,9 +1239,12 @@ namespace DNNrocketAPI
             if (String.IsNullOrWhiteSpace(fullMapPath)) return "";
             return @"\" + fullMapPath.Replace(HttpContext.Current.Request.PhysicalApplicationPath, String.Empty).Replace("\\", "/");
         }
-        public static string Email()
+        public static string Email(int portalId = -1)
         {
-            return PortalSettings.Current.Email;
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).Email;
+            else
+                return PortalSettings.Current.Email;
         }
 
         public static string GetEntityTypeCode(SimplisityInfo interfaceInfo)
@@ -1945,42 +1846,7 @@ namespace DNNrocketAPI
             }
 
         }
-        public static int CreateUser(int portalId, string username, string email)
-        {
-            if (portalId >= 0 && username != "" && email != "")
-            {
-                var userInfo = new UserInfo();
-                userInfo.PortalID = portalId;
-                userInfo.Username = username;
-                userInfo.DisplayName = username;
-                userInfo.Membership.Approved = true;
-                userInfo.Membership.Password = UserController.GeneratePassword();
-                userInfo.FirstName = username;
-                userInfo.LastName = username;
-                userInfo.Email = email;
 
-                userInfo.Profile.PreferredLocale = GetCurrentCulture();
-                userInfo.Profile.PreferredTimeZone = PortalSettings.Current.TimeZone;
-                userInfo.Profile.FirstName = userInfo.FirstName;
-                userInfo.Profile.LastName = userInfo.LastName;
-
-                var status = UserController.CreateUser(ref userInfo);
-                if (status == DotNetNuke.Security.Membership.UserCreateStatus.Success) return userInfo.UserID;
-                if (status == DotNetNuke.Security.Membership.UserCreateStatus.DuplicateUserName
-                    || status == DotNetNuke.Security.Membership.UserCreateStatus.UserAlreadyRegistered 
-                    || status == DotNetNuke.Security.Membership.UserCreateStatus.UsernameAlreadyExists)
-                {
-                    var objUser = UserController.GetUserByName(portalId, username);
-                    if (objUser != null) return objUser.UserID;
-                }
-                if (status == DotNetNuke.Security.Membership.UserCreateStatus.DuplicateEmail)
-                {
-                    var objUser = UserController.GetUserByEmail(portalId, email);
-                    if (objUser != null) return objUser.UserID;
-                }
-            }
-            return -1;
-        }
 
         public static void ClearThumbnailLock()
         {
@@ -2155,6 +2021,16 @@ namespace DNNrocketAPI
         {
             DataCache.ClearPortalCache(portalId, true);
         }
+
+        /// <summary>
+        /// Synchronizes the module content between cache and database. + Update ModifiedContentDate
+        /// </summary>
+        /// <param name="moduleID">The module ID.</param>
+        public static void SynchronizeModule(int moduleId)
+        {
+            ModuleController.SynchronizeModule(moduleId);
+        }
+
 
         #endregion
 

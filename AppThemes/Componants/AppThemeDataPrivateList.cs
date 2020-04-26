@@ -23,11 +23,11 @@ namespace Rocket.AppThemes.Componants
                 Error = false;
                 SelectedSystemKey = selectedsystemkey;
 
-                var cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
+                var cachekey = AppThemeListType + "*SystemFolders" + UserUtils.GetCurrentUserId();
                 if (useCache) SystemFolderList = (List<SystemData>)CacheUtilsDNN.GetCache(cachekey);
                 if (SystemFolderList == null) PopulateSystemFolderList();
 
-                cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
+                cachekey = AppThemeListType + "*" + UserUtils.GetCurrentUserId();
                 if (useCache)
                 {
                     List = (List<SimplisityRecord>)CacheUtilsDNN.GetCache(cachekey);
@@ -112,7 +112,7 @@ namespace Rocket.AppThemes.Componants
                     Error = true;
                     ErrorMsg = "";
                 }
-                var cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
+                var cachekey = AppThemeListType + "*" + UserUtils.GetCurrentUserId();
                 CacheUtilsDNN.SetCache(cachekey, List);
                 CacheUtilsDNN.SetCache(cachekey + "ERROR", Error);
             }
@@ -131,16 +131,16 @@ namespace Rocket.AppThemes.Componants
                 if (systemData.Exists) SystemFolderList.Add(systemData);
             }
 
-            var cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
+            var cachekey = AppThemeListType + "*SystemFolders" + UserUtils.GetCurrentUserId();
             CacheUtilsDNN.SetCache(cachekey, SystemFolderList);
 
         }
         public void ClearCache()
         {
             SelectedSystemKey = "";
-            var cachekey = AppThemeListType + "*" + DNNrocketUtils.GetCurrentUserId();
+            var cachekey = AppThemeListType + "*" + UserUtils.GetCurrentUserId();
             CacheUtilsDNN.RemoveCache(cachekey);
-            cachekey = AppThemeListType + "*SystemFolders" + DNNrocketUtils.GetCurrentUserId();
+            cachekey = AppThemeListType + "*SystemFolders" + UserUtils.GetCurrentUserId();
             CacheUtilsDNN.RemoveCache(cachekey);
         }
         public string SelectedSystemKey { get; set; }

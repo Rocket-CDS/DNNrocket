@@ -27,6 +27,7 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Common;
 using DotNetNuke.UI.UserControls;
+using DotNetNuke.Security.Roles;
 
 namespace DNNrocketAPI
 {
@@ -34,11 +35,36 @@ namespace DNNrocketAPI
     {
         public static int GetCurrentUserId()
         {
-            if (UserController.Instance.GetCurrentUserInfo() != null)
+            try
             {
-                return UserController.Instance.GetCurrentUserInfo().UserID;
+                if (UserController.Instance.GetCurrentUserInfo() != null)
+                {
+                    return UserController.Instance.GetCurrentUserInfo().UserID;
+                }
+                return -1;
             }
-            return -1;
+            catch (Exception ex)
+            {
+                var ms = ex.ToString();
+                return -1; 
+            }
+        }
+
+        public static void DeleteUser(int portalId, int userId, bool notify = false, bool deleteAdmin = false)
+        {
+            try
+            {
+                if (UserController.Instance.GetCurrentUserInfo() != null)
+                {
+                    var userInfo = UserController.Instance.GetUserById(portalId, userId);
+                    UserController.DeleteUser(ref userInfo, notify, deleteAdmin);
+                }
+            }
+            catch (Exception ex)
+            {
+                DNNrocketUtils.LogException(ex);
+            }
+
         }
 
         public static string GetCurrentUserName()
@@ -182,6 +208,8 @@ namespace DNNrocketAPI
 
         public static string RegisterUser(SimplisityInfo sInfo, string currentCulture = "")
         {
+            //TODO: IMPORTANT check security for this. (dcl)
+
             if (currentCulture == "") currentCulture = "en-US";
 
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(currentCulture);
@@ -264,7 +292,170 @@ namespace DNNrocketAPI
             }
         }
 
+        public static int CreateUser(int portalId, string username, string email)
+        {
+            if (portalId >= 0 && username != "" && email != "")
+            {
+                var userInfo = new UserInfo();
+                userInfo.PortalID = portalId;
+                userInfo.Username = username;
+                userInfo.DisplayName = username;
+                userInfo.Membership.Approved = true;
+                userInfo.Membership.Password = UserController.GeneratePassword();
+                userInfo.FirstName = username;
+                userInfo.LastName = username;
+                userInfo.Email = email;
 
+                userInfo.Profile.PreferredLocale = DNNrocketUtils.GetCurrentCulture();
+                userInfo.Profile.PreferredTimeZone = PortalSettings.Current.TimeZone;
+                userInfo.Profile.FirstName = userInfo.FirstName;
+                userInfo.Profile.LastName = userInfo.LastName;
+
+                var status = UserController.CreateUser(ref userInfo);
+                if (status == DotNetNuke.Security.Membership.UserCreateStatus.Success) return userInfo.UserID;
+                if (status == DotNetNuke.Security.Membership.UserCreateStatus.DuplicateUserName
+                    || status == DotNetNuke.Security.Membership.UserCreateStatus.UserAlreadyRegistered
+                    || status == DotNetNuke.Security.Membership.UserCreateStatus.UsernameAlreadyExists)
+                {
+                    var objUser = UserController.GetUserByName(portalId, username);
+                    if (objUser != null) return objUser.UserID;
+                }
+                if (status == DotNetNuke.Security.Membership.UserCreateStatus.DuplicateEmail)
+                {
+                    var objUser = UserController.GetUserByEmail(portalId, email);
+                    if (objUser != null) return objUser.UserID;
+                }
+            }
+            return -1;
+        }
+
+
+        public static Dictionary<string, string> GetUserProfileProperties(String userId)
+        {
+            if (!GeneralUtils.IsNumeric(userId)) return null;
+            var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
+            return GetUserProfileProperties(userInfo);
+        }
+
+        public static Dictionary<string, string> GetUserProfileProperties(UserInfo userInfo)
+        {
+            var prop = new Dictionary<string, string>();
+            foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition p in userInfo.Profile.ProfileProperties)
+            {
+                prop.Add(p.PropertyName, p.PropertyValue);
+            }
+            return prop;
+        }
+
+        public static void SetUserProfileProperties(UserInfo userInfo, Dictionary<string, string> properties)
+        {
+            foreach (var p in properties)
+            {
+                userInfo.Profile.SetProfileProperty(p.Key, p.Value);
+                UserController.UpdateUser(PortalSettings.Current.PortalId, userInfo);
+            }
+        }
+        public static void SetUserProfileProperties(String userId, Dictionary<string, string> properties)
+        {
+            if (GeneralUtils.IsNumeric(userId))
+            {
+                var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
+                SetUserProfileProperties(userInfo, properties);
+            }
+        }
+
+        public static int GetUserIdByUserName(int portalId, string username)
+        {
+            try
+            {
+                var objUser = UserController.GetUserByName(portalId, username);
+                if (objUser != null) return objUser.UserID;
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                var ms = ex.ToString();
+                return 0; // use zero;
+            }
+        }
+
+        public static string GetCurrentUsername()
+        {
+            try
+            {
+                return UserController.Instance.GetCurrentUserInfo().Username;
+            }
+            catch (Exception ex)
+            {
+                var ms = ex.ToString();
+                return ""; // use zero;
+            }
+        }
+
+        public static bool IsInRole(string role)
+        {
+            return UserController.Instance.GetCurrentUserInfo().IsInRole(role);
+        }
+
+        public static bool IsSuperUser()
+        {
+            return UserController.Instance.GetCurrentUserInfo().IsSuperUser;
+        }
+
+        public static Boolean IsClientOnly()
+        {
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ClientEditor) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators)))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static DotNetNuke.Entities.Users.UserInfo GetValidUser(int PortalId, string username, string password)
+        {
+            var userLoginStatus = new DotNetNuke.Security.Membership.UserLoginStatus();
+            return DotNetNuke.Entities.Users.UserController.ValidateUser(PortalId, username, password, "", "", "", ref userLoginStatus);
+        }
+
+        public static bool IsValidUser(int PortalId, string username, string password)
+        {
+            var u = GetValidUser(PortalId, username, password);
+            if (u != null)
+            {
+                return true;
+            }
+            return false;
+        }
+        public static bool IsValidUser(int portalId, int userId)
+        {
+            var u = UserController.GetUserById(portalId, userId);
+            if (u != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static SimplisityRecord GetRoleById(int portalId, int roleId)
+        {
+            var r = RoleController.Instance.GetRoleById(portalId, roleId);
+            var rtnRec = new SimplisityRecord();
+            rtnRec.ItemID = roleId;
+            rtnRec.SetXmlProperty("genxml/rolename", r.RoleName);
+            rtnRec.SetXmlProperty("genxml/roleid", roleId.ToString());
+            return rtnRec;
+        }
+
+        public static Dictionary<int, string> GetRoles(int portalId)
+        {
+            var rtnDic = new Dictionary<int, string>();
+            var l = RoleController.Instance.GetRoles(portalId);
+            foreach (RoleInfo r in l)
+            {
+                rtnDic.Add(r.RoleID, r.RoleName);
+            }
+            return rtnDic;
+        }
 
     }
 }

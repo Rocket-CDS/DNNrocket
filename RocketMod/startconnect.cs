@@ -511,7 +511,10 @@ namespace RocketMod
             _passSettings.Add("saved", "true");
             _articleData.DebugMode = _systemData.DebugMode;
             _articleData.Save(_postInfo);
+
+            DNNrocketUtils.SynchronizeModule(_moduleid); // Modified Date
             CacheFileUtils.ClearAllCache();
+
         }
 
         public void SaveArticleList()

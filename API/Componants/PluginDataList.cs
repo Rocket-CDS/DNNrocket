@@ -22,7 +22,7 @@ namespace Rocket.AppThemes.Componants
                 SystemList = new SystemDataList();
 
                 _pluginCacheGroupId = "plugins";
-                _listCacheKey = "PluginList" + DNNrocketUtils.GetCurrentUserId();
+                _listCacheKey = "PluginList" + UserUtils.GetCurrentUserId();
 
                 if (useCache)
                 {

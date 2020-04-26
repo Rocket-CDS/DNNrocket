@@ -9,6 +9,7 @@ using DNNrocketAPI.Interfaces;
 using Simplisity;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Search.Entities;
+using DotNetNuke.Entities.Content.Taxonomy;
 
 namespace DNNrocketAPI.Componants
 {
@@ -132,11 +133,96 @@ namespace DNNrocketAPI.Componants
 
         #region ModuleSearchBase
 
-        public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo modInfo, DateTime beginDate)
+        public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
             var searchDocuments = new List<SearchDocument>();
 
+            if (moduleInfo != null)
+            {
+                var lastContentModifiedOnDate = moduleInfo.LastContentModifiedOnDate;
+                if (lastContentModifiedOnDate == null) lastContentModifiedOnDate = DateTime.Now;
+
+                // "lastContentModifiedOnDate" is the date when content was updated and is updated by using DNNrocketUtils.SynchronizeModule(_moduleid); on Content save.
+                if ((lastContentModifiedOnDate.ToUniversalTime() > beginDateUtc && lastContentModifiedOnDate.ToUniversalTime() < DateTime.UtcNow))
+                {
+                    var portalId = moduleInfo.PortalID;
+                    var systemKey = moduleInfo.DesktopModule.ModuleName;
+                    var systemData = new SystemData(systemKey);
+                    if (systemData.Exists)
+                    {
+                        foreach (var r in systemData.InterfaceList)
+                        {
+                            var rocketInterface = r.Value;
+                            if (rocketInterface.IsProvider("searchindex"))
+                            {
+                                if (rocketInterface.Exists)
+                                {
+                                    var returnDictionary = (Dictionary<string, string>)CacheUtils.GetCache("searchindex_module_" + moduleInfo.ModuleID.ToString());
+                                    if (returnDictionary == null)
+                                    {
+                                        var paramInfo = new SimplisityInfo();
+                                        paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleInfo.ModuleID.ToString());
+                                        paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
+                                        paramInfo.SetXmlProperty("genxml/hidden/databasetable", rocketInterface.DatabaseTable);
+                                        // We should return ALL languages into the dictionary
+                                        returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
+                                        CacheUtils.SetCache("searchindex_module_" + moduleInfo.ModuleID.ToString(), returnDictionary);
+                                    }
+                                    var description = "";
+                                    var body = "";
+                                    var moddate = DateTime.Now;
+                                    var updatesearch = false;
+                                    if (returnDictionary.ContainsKey("description")) description = returnDictionary["description"];
+                                    if (returnDictionary.ContainsKey("body")) body = returnDictionary["body"];
+                                    if (returnDictionary.ContainsKey("modifieddate"))
+                                    {
+                                        var strDate = returnDictionary["modifieddate"];
+                                        if (GeneralUtils.IsDateInvariantCulture(strDate)) moddate = Convert.ToDateTime(strDate);
+                                        updatesearch = true;
+                                    }
+                                    var searchDoc = new SearchDocument
+                                    {
+                                        UniqueKey = moduleInfo.ModuleID.ToString(),
+                                        PortalId = moduleInfo.PortalID,
+                                        Title = moduleInfo.ModuleTitle,
+                                        Description = description,
+                                        Body = body,
+                                        ModifiedTimeUtc = moddate.ToUniversalTime()
+                                    };
+
+                                    if (moduleInfo.Terms != null && moduleInfo.Terms.Count > 0)
+                                    {
+                                        searchDoc.Tags = CollectHierarchicalTags(moduleInfo.Terms);
+                                    }
+
+                                    searchDocuments.Add(searchDoc);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             return searchDocuments;
+        }
+
+
+        private static List<string> CollectHierarchicalTags(List<Term> terms)
+        {
+            Func<List<Term>, List<string>, List<string>> collectTagsFunc = null;
+            collectTagsFunc = (ts, tags) =>
+            {
+                if (ts != null && ts.Count > 0)
+                {
+                    foreach (var t in ts)
+                    {
+                        tags.Add(t.Name);
+                        tags.AddRange(collectTagsFunc(t.ChildTerms, new List<string>()));
+                    }
+                }
+                return tags;
+            };
+
+            return collectTagsFunc(terms, new List<string>());
         }
 
         #endregion

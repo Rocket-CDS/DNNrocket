@@ -38,7 +38,7 @@ namespace DNNrocket.AppThemes
             _editLang = langRequired;
             if (_editLang == "") _editLang = DNNrocketUtils.GetEditCulture();
 
-            if (DNNrocketUtils.IsSuperUser())
+            if (UserUtils.IsSuperUser())
             {
                 // Do NOT globally clear cache, performace drop on external call for FTP and HTML AppTheme Lists
                 //CacheUtilsDNN.ClearAllCache("apptheme");
@@ -469,7 +469,7 @@ namespace DNNrocket.AppThemes
         {
             if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
             var httpConnect = new HttpConnect(_selectedSystemKey);
-            var userid = DNNrocketUtils.GetCurrentUserId();
+            var userid = UserUtils.GetCurrentUserId();
             var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + appThemeFolder + ".zip";
             httpConnect.DownloadAppThemeToFile(appThemeFolder, destinationMapPath);
             var appTheme = new AppTheme(_selectedSystemKey, destinationMapPath, true);
@@ -526,7 +526,7 @@ namespace DNNrocket.AppThemes
             if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
 
             var ftpConnect = new FtpConnect(_selectedSystemKey);
-            var userid = DNNrocketUtils.GetCurrentUserId();
+            var userid = UserUtils.GetCurrentUserId();
             var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + appThemeFolder + ".zip";
             ftpConnect.DownloadAppThemeToFile(appThemeFolder, destinationMapPath);
             if (File.Exists(destinationMapPath))
@@ -654,7 +654,7 @@ namespace DNNrocket.AppThemes
                 {
                     if (f != "")
                     {
-                        var userid = DNNrocketUtils.GetCurrentUserId();
+                        var userid = UserUtils.GetCurrentUserId();
                         var userFolder = DNNrocketUtils.TempDirectoryMapPath();
                         var friendlyname = GeneralUtils.DeCode(f);
                         var fname = userFolder + "\\" + userid + "_" + friendlyname;

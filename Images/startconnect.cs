@@ -40,7 +40,7 @@ namespace DNNrocket.Images
 
             if (!_commandSecurity.HasSecurityAccess(paramCmd))
             {
-                strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, DNNrocketUtils.GetCurrentUserId());
+                strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                 return ReturnString(strOut);
             }
 
@@ -100,7 +100,7 @@ namespace DNNrocket.Images
         public string UploadImageToFolder()
         {
 
-            var userid = DNNrocketUtils.GetCurrentUserId(); // prefix to filename on upload.
+            var userid = UserUtils.GetCurrentUserId(); // prefix to filename on upload.
             var imageDirectory = getImageDirectory();
 
             if (!Directory.Exists(imageDirectory)) Directory.CreateDirectory(imageDirectory);

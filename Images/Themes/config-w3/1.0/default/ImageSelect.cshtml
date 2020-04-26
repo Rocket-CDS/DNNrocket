@@ -71,7 +71,7 @@
                     </div>
                     <div class="w3-row">
                         <p>@imagecount</p>
-                        @if (DNNrocketUtils.IsInRole("Administrator"))
+                        @if (UserUtils.IsInRole("Administrator"))
                         {
                             <p class="w3-small  w3-hide-small">@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")</p>
                         }
