@@ -71,23 +71,11 @@ namespace DNNrocketAPI.Componants
 
         public void Save(SimplisityInfo postInfo)
         {
-            var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, _langRequired, _moduleid, true, _tableName);
-            if (dbInfo == null)
-            {
-                dbInfo = new SimplisityInfo();
-                dbInfo.ItemID = -1;
-                dbInfo.TypeCode = _entityTypeCode;
-                dbInfo.Lang = _langRequired;
-                dbInfo.ModuleId = _moduleid;
-                dbInfo.GUIDKey = "moduleid" + _moduleid;
-            }
-            if (dbInfo != null)
-            {
-                dbInfo.XMLData = postInfo.XMLData;
-                Info = _objCtrl.SaveData(dbInfo, _tableName);
-                CreateMissingLanguageRecords(postInfo.XMLData);
-            }
-
+            var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, _langRequired, _moduleid, _tableName);
+            dbInfo.GUIDKey = "moduleid" + _moduleid;
+            dbInfo.XMLData = postInfo.XMLData;
+            Info = _objCtrl.SaveData(dbInfo, _tableName);
+            CreateMissingLanguageRecords(postInfo.XMLData);
         }
 
         public void Update()

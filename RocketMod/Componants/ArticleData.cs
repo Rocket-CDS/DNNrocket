@@ -44,9 +44,7 @@ namespace RocketMod
 
         public void Save(SimplisityInfo postInfo)
         {
-            var dbInfo = _objCtrl.GetData( _entityTypeCode, Info.ItemID, _langRequired, _moduleid, true, _tableName);
-            if (dbInfo != null)
-            {
+            var dbInfo = _objCtrl.GetData( _entityTypeCode, Info.ItemID, _langRequired, _moduleid, _tableName);
                 // update all langauge record which are empty.
                 var cc = DNNrocketUtils.GetCultureCodeList();
                 foreach (var l in cc)
@@ -65,7 +63,7 @@ namespace RocketMod
                     var nodList = dbRecord.XMLDoc.SelectNodes("genxml/*");
                     if (nodList.Count == 0)
                     {
-                        var dbInfo2 = _objCtrl.GetData(_entityTypeCode, Info.ItemID, l, _moduleid, true, _tableName);
+                        var dbInfo2 = _objCtrl.GetData(_entityTypeCode, Info.ItemID, l, _moduleid, _tableName);
                         if (dbInfo2 != null)
                         {
                             dbInfo2.XMLData = postInfo.XMLData;
@@ -76,8 +74,6 @@ namespace RocketMod
 
                 dbInfo.XMLData = postInfo.XMLData;
                 _objCtrl.SaveData(dbInfo, _tableName); // save before list sort, so we have hte data in DB.
-
-            }
         }
         public void Update()
         {
@@ -92,26 +88,26 @@ namespace RocketMod
 
         private void AddArticle()
         {
-            Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, _moduleid, false, _tableName);    
+            Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, _moduleid, _tableName);
+            _objCtrl.SaveData(Info, _tableName);
         }
         private void AddArticle(string guidkey)
         {
-            Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, _moduleid, false, _tableName);
+            Info = _objCtrl.GetData(_entityTypeCode, -1, _langRequired, _moduleid, _tableName);
             Info.GUIDKey = guidkey;
             _objCtrl.SaveData(Info, _tableName);
         }
 
         public bool Populate(int ItemId)
         {
-            Info = _objCtrl.GetData(_entityTypeCode, ItemId, _langRequired, _moduleid, true, _tableName);
-            if (Info == null) return false;
+            Info = _objCtrl.GetData(_entityTypeCode, ItemId, _langRequired, _moduleid, _tableName);
             return true;
         }
         public bool Populate(string guidkey)
         {
             var tempInfo = _objCtrl.GetByGuidKey(-1, _moduleid, _entityTypeCode, guidkey, "", _tableName);
             if (tempInfo == null) return false;
-            Info = _objCtrl.GetData(_entityTypeCode, tempInfo.ItemID, _langRequired, _moduleid, true, _tableName);
+            Info = _objCtrl.GetData(_entityTypeCode, tempInfo.ItemID, _langRequired, _moduleid, _tableName);
             return true;
         }
 

@@ -59,11 +59,11 @@ namespace Rocket.AppThemes.Componants
                 foreach (SimplisityRecord a in SortedList)
                 {
                     //get local directory and check if exists
-                    var appTheme = new AppTheme(SelectedSystemKey, a.GetXmlProperty("genxml/hidden/appthemefolder"));
                     var localdir = AppSystemFolderRel + "/" + SelectedSystemKey + "/" + a.GetXmlProperty("genxml/hidden/appthemefolder");
                     var localdirMapPath = DNNrocketUtils.MapPath(localdir);
                     if (Directory.Exists(localdirMapPath))
                     {
+                        var appTheme = new AppTheme(SelectedSystemKey, a.GetXmlProperty("genxml/hidden/appthemefolder"));
 
                         // update list data
                         a.SetXmlProperty("genxml/hidden/localversion", appTheme.LatestVersionFolder);
@@ -95,11 +95,11 @@ namespace Rocket.AppThemes.Componants
                     }
 
                     // ensure we have the image from the xml file
-                    var onlineIndex = (OnlineAppThemeIndex)CacheUtilsDNN.GetCache(appTheme.SystemKey + "_publicIndex");
+                    var onlineIndex = (OnlineAppThemeIndex)CacheUtilsDNN.GetCache(SelectedSystemKey + "_publicIndex");
                     if (onlineIndex == null)
                     {
-                        onlineIndex = new OnlineAppThemeIndex(appTheme.SystemKey, "public");
-                        CacheUtilsDNN.SetCache(appTheme.SystemKey + "_publicIndex", onlineIndex);
+                        onlineIndex = new OnlineAppThemeIndex(SelectedSystemKey, "public");
+                        CacheUtilsDNN.SetCache(SelectedSystemKey + "_publicIndex", onlineIndex);
                     }
                     //a.SetXmlProperty("genxml/hidden/logobase64", onlineIndex.GetLogoBase64String(appTheme.AppThemeFolder));
 

@@ -118,6 +118,7 @@ namespace DNNrocket.System
                         break;
                     case "systemapi_clearallcache":
                         CacheFileUtils.ClearAllCache();
+                        CacheUtilsDNN.ClearAllCache();
                         DNNrocketUtils.ClearAllCache();
                         strOut = SystemAdminList(paramInfo, _controlRelPath);
                         break;
@@ -132,6 +133,7 @@ namespace DNNrocket.System
                         break;
                     case "systemapi_cleartempdb":
                         CacheFileUtils.ClearAllCache();
+                        CacheUtilsDNN.ClearAllCache();
                         DNNrocketUtils.ClearAllCache();
                         _systemData.ClearTempDB();
                         strOut = "<h1>DNNrocketTemp Database table clear</h1>";

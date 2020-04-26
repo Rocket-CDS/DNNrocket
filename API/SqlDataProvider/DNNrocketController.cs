@@ -561,8 +561,8 @@ namespace DNNrocketAPI
             var info = GetInfo(sInfo.ItemID, sInfo.Lang, tableName);
             if (info == null)
             {
-                // do read, so it creates the record and do a new read.
-                info = GetData(sInfo.TypeCode, sInfo.ItemID, sInfo.Lang, sInfo.ModuleId, false, tableName);
+                // create Info class in memory
+                info = GetData(sInfo.TypeCode, sInfo.ItemID, sInfo.Lang, sInfo.ModuleId, tableName);
             }
             if (info != null)
             {
@@ -595,7 +595,6 @@ namespace DNNrocketAPI
                 RebuildIndex(sInfo, tableName);
                 RebuildLangIndex(sInfo.PortalId, itemId, tableName);
 
-                //CacheUtilsDNN.ClearAllCache(); // clear ALL cache.
                 info = GetInfo(info.ItemID, sInfo.Lang, tableName);
             }
 
@@ -603,11 +602,10 @@ namespace DNNrocketAPI
         }
 
 
-        public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int moduleId = -1, bool readOnly = false, string tableName = "DNNrocket")
+        public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int moduleId = -1, string tableName = "DNNrocket")
         {
-            SimplisityInfo nbi = null;
             var info = GetInfo(ItemId, lang, tableName);
-            if (info == null && !readOnly)
+            if (info == null)
             {
                 // create record if not in DB
                 info = new SimplisityInfo();
@@ -617,33 +615,20 @@ namespace DNNrocketAPI
                 info.PortalId = PortalSettings.Current.PortalId;
                 info.ItemID = Update(info, tableName);
                 info.SortOrder = info.ItemID * 100;
-                info.ItemID = Update(info, tableName); // save default sortorder.
+
+                var nbilang = new SimplisityRecord();
+                nbilang.GUIDKey = "";
+                nbilang.TypeCode = typeCode + "LANG";
+                nbilang.ParentItemId = info.ItemID;
+                nbilang.Lang = lang;
+                info.ModuleId = moduleId;
+                nbilang.PortalId = PortalSettings.Current.PortalId;
+
+                info.SetLangRecord(nbilang);
+
+                // DO NOT UPDATE, updating at this point can product invalid blank records.
             }
-            if (info != null)
-            {
-                var nbilang = GetRecordLang(info.ItemID, lang,false, tableName);
-                if (nbilang == null)
-                {
-                    // create lang records if not in DB
-                    foreach (var lg in DNNrocketUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
-                    {
-                        nbilang = GetRecordLang(info.ItemID, lg, false, tableName);
-                        if (nbilang == null)
-                        {
-                            nbilang = new SimplisityInfo();
-                            nbilang.GUIDKey = "";
-                            nbilang.TypeCode = typeCode + "LANG";
-                            nbilang.ParentItemId = info.ItemID;
-                            nbilang.Lang = lg;
-                            info.ModuleId = moduleId;
-                            nbilang.PortalId = PortalSettings.Current.PortalId;
-                            nbilang.ItemID = Update(nbilang, tableName);
-                        }
-                    }
-                }
-                nbi = GetInfo(info.ItemID, lang, tableName);
-            }
-            return nbi;
+            return info;
         }
 
         public  List<SimplisityInfo> GetUsersCMS(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
