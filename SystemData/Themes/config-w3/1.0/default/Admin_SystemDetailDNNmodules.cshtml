@@ -1,6 +1,7 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
 @using Simplisity;
+@using DNNrocketAPI.Componants;
 
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
@@ -26,41 +27,41 @@
             @foreach (var i in sInfo.GetList("dnninstall"))
             {
                 lp7 += 1;
-            <li class="dnninstall w3-card w3-margin w3-display-container">
+                <li class="dnninstall w3-card w3-margin w3-display-container">
 
-                <div class="w3-row w3-padding w3-margin-top w3-padding">
-                    <div class="w3-quarter w3-padding">
-                        <label class="">@ResourceKey("system.moduleowner")</label>
-                        @TextBox(i, "genxml/moduleowner", "class='w3-input w3-border' maxlength='350'", "DNNrocket", false, lp7)
+                    <div class="w3-row w3-padding w3-margin-top w3-padding">
+                        <div class="w3-quarter w3-padding">
+                            <label class="">@ResourceKey("system.moduleowner")</label>
+                            @TextBox(i, "genxml/moduleowner", "class='w3-input w3-border' maxlength='350'", "DNNrocket", false, lp7)
+                        </div>
+                        <div class="w3-quarter w3-padding">
+                            <label class="">@ResourceKey("system.modulefolder")</label>
+                            @TextBox(i, "genxml/modulefolder", "class='w3-input w3-border' maxlength='350'", "", false, lp7)
+                        </div>
+                        <div class="w3-quarter w3-padding">
+                            <label class="">@ResourceKey("system.modulename")</label>
+                            @TextBox(i, "genxml/modulename", "class='w3-input w3-border' maxlength='350'", "", false, lp7)
+                        </div>
+                        <div class="w3-quarter w3-padding">
+                            <label class="">@ResourceKey("system.modulefriendlyname")</label>
+                            @TextBox(i, "genxml/modulefriendlyname", "class='w3-input w3-border' maxlength='350'", "", false, lp7)
+                        </div>
+                        <div class="w3-quarter w3-padding">
+                            <label class="">@ResourceKey("system.moduledescription")</label>
+                            @TextBox(i, "genxml/moduledescription", "class='w3-input w3-border' maxlength='350'", "", false, lp7)
+                        </div>
+                        <div class="w3-quarter w3-padding">
+                            <label class="">@ResourceKey("system.moduletitle")</label>
+                            @TextBox(i, "genxml/moduletitle", "class='w3-input w3-border' maxlength='350'", "", false, lp7)
+                        </div>
+                        <div class="w3-quarter w3-padding">
+                        </div>
+                        <div class="w3-quarter w3-padding">
+                            <a href="javascript:void(0)" class="simplisity_removelistitem" s-removelist=".dnninstall" s-recylebin="dnninstallbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
+                        </div>
                     </div>
-                    <div class="w3-quarter w3-padding">
-                        <label class="">@ResourceKey("system.modulefolder")</label>
-                        @TextBox(i, "genxml/modulefolder", "class='w3-input w3-border' maxlength='350'", "", false, lp7)
-                    </div>
-                    <div class="w3-quarter w3-padding">
-                        <label class="">@ResourceKey("system.modulename")</label>
-                        @TextBox(i, "genxml/modulename", "class='w3-input w3-border' maxlength='350'", "", false, lp7)
-                    </div>
-                    <div class="w3-quarter w3-padding">
-                        <label class="">@ResourceKey("system.modulefriendlyname")</label>
-                        @TextBox(i, "genxml/modulefriendlyname", "class='w3-input w3-border' maxlength='350'", "", false, lp7)
-                    </div>
-                    <div class="w3-quarter w3-padding">
-                        <label class="">@ResourceKey("system.moduledescription")</label>
-                        @TextBox(i, "genxml/moduledescription", "class='w3-input w3-border' maxlength='350'", "", false, lp7)
-                    </div>
-                    <div class="w3-quarter w3-padding">
-                        <label class="">@ResourceKey("system.moduletitle")</label>
-                        @TextBox(i, "genxml/moduletitle", "class='w3-input w3-border' maxlength='350'", "", false, lp7)
-                    </div>
-                    <div class="w3-quarter w3-padding">
-                    </div>
-                    <div class="w3-quarter w3-padding">
-                        <a href="javascript:void(0)" class="simplisity_removelistitem" s-removelist=".dnninstall" s-recylebin="dnninstallbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
-                    </div>
-                </div>
 
-            </li>
+                </li>
             }
         </ul>
     </div>

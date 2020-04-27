@@ -1,6 +1,7 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
 @using Simplisity;
+@using DNNrocketAPI.Componants;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
@@ -40,7 +41,7 @@
                 var l2 = sInfo.GetList("interfacedata");
                 foreach (var g in l2)
                 {
-                    if (g.GetXmlProperty("genxml/textbox/entitytypecode") != ""  && !interfacekey.Contains("," + g.GetXmlProperty("genxml/textbox/entitytypecode")))
+                    if (g.GetXmlProperty("genxml/textbox/entitytypecode") != "" && !interfacekey.Contains("," + g.GetXmlProperty("genxml/textbox/entitytypecode")))
                     {
                         interfacekey += "," + g.GetXmlProperty("genxml/textbox/entitytypecode");
 

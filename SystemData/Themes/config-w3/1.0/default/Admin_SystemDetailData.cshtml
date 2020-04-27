@@ -1,6 +1,7 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
 @using Simplisity;
+@using DNNrocketAPI.Componants;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
@@ -85,7 +86,7 @@
                 <a class="w3-col m2 rocket-buttonbar w3-button w3-teal w3-padding-8 w3-right" href="@sInfo.GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ButtonText(ButtonTypes.admin)</a>
             }
             <div class="w3-col m2 rocket-buttonbar w3-button w3-blue w3-margin-right simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.export") ?" s-cmd="systemapi_export" s-fields='{"selecteditemid":"@(sInfo.ItemID)"}' s-post="" s-return="#exportreturn">@ButtonText(ButtonTypes.export)</div>
-            
+
             <div id="exportreturn"></div>
         </div>
 

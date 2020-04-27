@@ -1,5 +1,6 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using Simplisity;
+@using DNNrocketAPI.Componants;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
@@ -15,11 +16,11 @@
         <ul class="w3-ul w3-border w3-hoverable w-margin">
 
             @foreach (SimplisityInfo nbi in Model.List)
-{
-            <li class="selectsystem simplisity_click" s-cmd="systemapi_copyinterface" s-return="#messagecontainer" s-fields='{"theme":"config-w3","template":"Admin_Message.cshtml","fromsystemid":"@Model.GetSetting("systemid")","tosystemid":"@nbi.ItemID","selectedinterfacekey":"@(Model.GetSetting("selectedinterfacekey"))"}' onclick="document.getElementById('systemselect').style.display='none'" ctrlkey="@nbi.GetXmlProperty("genxml/textbox/ctrlkey")">
-                @nbi.GetXmlProperty("genxml/textbox/systemname")
-            </li>
-}
+            {
+                <li class="selectsystem simplisity_click" s-cmd="systemapi_copyinterface" s-return="#messagecontainer" s-fields='{"theme":"config-w3","template":"Admin_Message.cshtml","fromsystemid":"@Model.GetSetting("systemid")","tosystemid":"@nbi.ItemID","selectedinterfacekey":"@(Model.GetSetting("selectedinterfacekey"))"}' onclick="document.getElementById('systemselect').style.display='none'" ctrlkey="@nbi.GetXmlProperty("genxml/textbox/ctrlkey")">
+                    @nbi.GetXmlProperty("genxml/textbox/systemname")
+                </li>
+            }
 
         </ul>
     </div>
