@@ -21,7 +21,7 @@ namespace DNNrocket.AppThemes
         private string _appThemeFolder;
         private string _appVersionFolder;
         private const string _tableName = "DNNRocket";
-        private UserStorage _userStorage;
+        private UserParams _UserParams;
         private string _selectedSystemKey;
         private string _paramCmd;
 
@@ -44,16 +44,16 @@ namespace DNNrocket.AppThemes
                 //CacheUtilsDNN.ClearAllCache("apptheme");
 
                 _paramCmd = paramCmd;
-                _userStorage = new UserStorage();
+                _UserParams = new UserParams();
 
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
                 {
-                    var menucmd = _userStorage.GetCommand(_systemData.SystemKey);
+                    var menucmd = _UserParams.GetCommand(_systemData.SystemKey);
                     if (menucmd != "")
                     {
                         paramCmd = menucmd;
-                        _paramInfo = _userStorage.GetParamInfo(_systemData.SystemKey);
-                        var interfacekey = _userStorage.GetInterfaceKey(_systemData.SystemKey);
+                        _paramInfo = _UserParams.GetParamInfo(_systemData.SystemKey);
+                        var interfacekey = _UserParams.GetInterfaceKey(_systemData.SystemKey);
                         _rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
                     }
                 }
@@ -61,31 +61,31 @@ namespace DNNrocket.AppThemes
                 {
                     if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
                     {
-                        _userStorage.Track(_systemData.SystemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
+                        _UserParams.Track(_systemData.SystemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
                     }
                 }
 
 
                 _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
-                if (_appVersionFolder == "") _appVersionFolder = _userStorage.Get("selectedappversion");
+                if (_appVersionFolder == "") _appVersionFolder = _UserParams.Get("selectedappversion");
                 if (_appVersionFolder == "") _appVersionFolder = "1.0";
-                _userStorage.Set("selectedappversion", _appVersionFolder);
+                _UserParams.Set("selectedappversion", _appVersionFolder);
 
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/clearselectedsystemkey"))
                 {
-                    _userStorage.Set("selectedsystemkey", "");
+                    _UserParams.Set("selectedsystemkey", "");
                 }
 
                 _selectedSystemKey = _paramInfo.GetXmlProperty("genxml/hidden/urlparamsystemkey");
                 if (_selectedSystemKey == "")  _selectedSystemKey = _paramInfo.GetXmlProperty("genxml/hidden/selectedsystemkey");
                 if (_selectedSystemKey == "")
                 {
-                    _selectedSystemKey = _userStorage.Record.GetXmlProperty("genxml/hidden/selectedsystemkey");
+                    _selectedSystemKey = _UserParams.Record.GetXmlProperty("genxml/hidden/selectedsystemkey");
                 }
                 else
                 {
-                    _userStorage.Set("selectedsystemkey", _selectedSystemKey);
+                    _UserParams.Set("selectedsystemkey", _selectedSystemKey);
                 }
 
                 AssignEditLang();
@@ -130,7 +130,7 @@ namespace DNNrocket.AppThemes
                         var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
                         appTheme.Record.SetXmlProperty("genxml/select/versionfolder", _appVersionFolder);
                         appTheme.Update();
-                        _userStorage.Set("selectedappversion", _appVersionFolder);
+                        _UserParams.Set("selectedappversion", _appVersionFolder);
                         strOut = GetDetail();
                         break;
                     case "rocketapptheme_deleteversion":
@@ -223,7 +223,7 @@ namespace DNNrocket.AppThemes
                 var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
                 var rtn = appTheme.CopyVersion(appTheme.AppVersion, appTheme.LatestVersion + 1);
                 _appVersionFolder = appTheme.AppVersionFolder.ToString();
-                _userStorage.Set("selectedappversion", _appVersionFolder);
+                _UserParams.Set("selectedappversion", _appVersionFolder);
                 ClearServerCacheLists();
                 if (rtn != "") return rtn;
                 return GetDetail();
@@ -302,7 +302,7 @@ namespace DNNrocket.AppThemes
                 appTheme.AppThemeName = newAppThemeName;
                 appTheme.Update();
 
-                _userStorage.Set("selectedappversion", "1.0");
+                _UserParams.Set("selectedappversion", "1.0");
 
                 ClearServerCacheLists();
 

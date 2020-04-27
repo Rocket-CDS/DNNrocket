@@ -23,7 +23,7 @@ using DotNetNuke.Common.Lists;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public class PageIncludes
     {

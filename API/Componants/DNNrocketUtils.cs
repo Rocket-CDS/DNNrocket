@@ -38,7 +38,7 @@ using DotNetNuke.Entities.Modules.Definitions;
 using System.Drawing;
 using DotNetNuke.Services.Scheduling;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public static class DNNrocketUtils
     {
@@ -181,36 +181,36 @@ namespace DNNrocketAPI
             return "";
         }
 
-        public static string RazorDetailByName(string razorTemplateName, object obj, Dictionary<string, object> dataObjects = null, string lang = "", string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string versionFolder = "1.0", Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        public static string RazorDetailByName(string razorTemplateName, object obj, Dictionary<string, object> dataObjects = null, string lang = "", string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string versionFolder = "1.0", Dictionary<string, string> settings = null, SimplisityInfo SessionParams = null, bool debugmode = false)
         {
             if (razorTemplateName != "")
             {
                 if (lang == "") lang = GetCurrentCulture();
                 var razorTemplate = GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, lang, versionFolder, debugmode);
-                return RazorObjectRender(razorTemplate, obj, dataObjects, settings, headerData,debugmode);
+                return RazorObjectRender(razorTemplate, obj, dataObjects, settings, SessionParams,debugmode);
             }
             return "";
         }
 
-        public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, string> settings = null, SimplisityInfo SessionParams = null, bool debugmode = false)
         {
-            return RazorObjectRender(razorTemplate, obj, null, settings, headerData, debugmode);
+            return RazorObjectRender(razorTemplate, obj, null, settings, SessionParams, debugmode);
         }
 
-        public static string RazorObjectRender(string razorTemplate, object obj, Dictionary<string, object> dataObjects = null, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        public static string RazorObjectRender(string razorTemplate, object obj, Dictionary<string, object> dataObjects = null, Dictionary<string, string> settings = null, SimplisityInfo SessionParams = null, bool debugmode = false)
         {
             var rtnStr = "";
             if (razorTemplate != "")
             {
                 if (settings == null) settings = new Dictionary<string, string>();
-                if (headerData == null) headerData = new SimplisityInfo();
+                if (SessionParams == null) SessionParams = new SimplisityInfo();
 
                 if (obj == null) obj = new SimplisityInfo();
                 var l = new List<object>();
                 l.Add(obj);
 
                 var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
-                nbRazor.HeaderData = headerData;
+                nbRazor.SessionParams = SessionParams;
                 nbRazor.DataObjects = dataObjects;
                 rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
             }
@@ -219,20 +219,20 @@ namespace DNNrocketAPI
         }
 
 
-        public static string RazorList(string razorTemplate, List<SimplisityInfo> objList, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        public static string RazorList(string razorTemplate, List<SimplisityInfo> objList, Dictionary<string, string> settings = null, SimplisityInfo SessionParams = null, bool debugmode = false)
         {
-            return RazorList(razorTemplate, objList.Cast<object>().ToList(), settings, headerData, debugmode);
+            return RazorList(razorTemplate, objList.Cast<object>().ToList(), settings, SessionParams, debugmode);
         }
 
-        public static string RazorList(string razorTemplate, List<object> objList, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        public static string RazorList(string razorTemplate, List<object> objList, Dictionary<string, string> settings = null, SimplisityInfo SessionParams = null, bool debugmode = false)
         {
             var rtnStr = "";
             if (razorTemplate != "")
             {
                 if (settings == null) settings = new Dictionary<string, string>();
-                if (headerData == null) headerData = new SimplisityInfo();
+                if (SessionParams == null) SessionParams = new SimplisityInfo();
                 var nbRazor = new SimplisityRazor(objList, settings, HttpContext.Current.Request.QueryString);
-                nbRazor.HeaderData = headerData;
+                nbRazor.SessionParams = SessionParams;
                 rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
             }
             return rtnStr;

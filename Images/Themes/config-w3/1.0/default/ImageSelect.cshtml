@@ -42,11 +42,11 @@
                     <div class="w3-col m4 ">
                         <div class="w3-col m12 w3-padding">
                             <div class="w3-col m5">
-                                @DropDownList(Model.HeaderData, "genxml/hidden/resizedropdown", "0,160,320,640,960,1280,-1", "None,XS,S,M,L,XL,Other", "class='w3-select w3-border imageresizedropdown' s-update='ignore' ", "640")
+                                @DropDownList(Model.SessionParams, "genxml/hidden/resizedropdown", "0,160,320,640,960,1280,-1", "None,XS,S,M,L,XL,Other", "class='w3-select w3-border imageresizedropdown' s-update='ignore' ", "640")
                             </div>
                             
                             <div class="w3-col m5">
-                                @TextBox(Model.HeaderData, "genxml/hidden/resize", "disabled class='w3-input w3-border resizevalue' MaxLength='5'", "640")
+                                @TextBox(Model.SessionParams, "genxml/hidden/resize", "disabled class='w3-input w3-border resizevalue' MaxLength='5'", "640")
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                         <p>@imagecount</p>
                         @if (UserUtils.IsInRole("Administrator"))
                         {
-                            <p class="w3-small  w3-hide-small">@Model.HeaderData.GetXmlProperty("genxml/hidden/uploadrelfolder")</p>
+                            <p class="w3-small  w3-hide-small">@Model.SessionParams.GetXmlProperty("genxml/hidden/uploadrelfolder")</p>
                         }
                     </div>
                 </div>
@@ -166,7 +166,7 @@
 
 function dnnrocketimages_selectimage(element) {
 
-    @if (Model.HeaderData.GetXmlPropertyBool("genxml/hidden/imageselectsingle")) {
+    @if (Model.SessionParams.GetXmlPropertyBool("genxml/hidden/imageselectsingle")) {
         @: dnnrocketimages_clearselection();
     }
 
@@ -179,7 +179,7 @@ function dnnrocketimages_selectimage(element) {
         $(element).find('.dnnrocket-imageselected').show();
     }
 
-    @if (Model.HeaderData.GetXmlPropertyBool("genxml/hidden/imageselectautoreturn")) {
+    @if (Model.SessionParams.GetXmlPropertyBool("genxml/hidden/imageselectautoreturn")) {
         @: dnnrocketimages_useimages();
     }
 }

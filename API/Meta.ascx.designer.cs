@@ -7,7 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DNNrocketAPI {
+namespace DNNrocketAPI
+{
     
     
     public partial class Meta {

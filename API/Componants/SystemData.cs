@@ -6,7 +6,7 @@ using DNNrocketAPI.Componants;
 using System.IO;
 using System.Xml;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public class SystemData
     {

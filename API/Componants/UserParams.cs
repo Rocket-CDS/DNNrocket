@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace DNNrocketAPI.Componants
 {
-    public class UserStorage
+    public class UserParams
     {
         private const string _tableName = "DNNRocketTemp";
-        private const string _entityTypeCode = "USERSTORAGE";
+        private const string _entityTypeCode = "UserParams";
         private DNNrocketController _objCtrl;
         private string _guidKey;
-        public UserStorage(int userId = -1)
+        public UserParams(int userId = -1)
         {
             UserId = userId;
             if (userId <= 0) UserId = UserUtils.GetCurrentUserId();

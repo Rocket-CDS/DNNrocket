@@ -5,7 +5,7 @@ using System.Text;
 using DNNrocketAPI.Componants;
 using DotNetNuke.Entities.Tabs;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public class PageRecordData
     {

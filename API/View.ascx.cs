@@ -265,7 +265,7 @@ namespace DNNrocketAPI
 
                 PageIncludes.IncludeTextInHeaderAt(Page, "<link rel='stylesheet' href='/DesktopModules/DNNrocket/fa/css/all.min.css'><link rel='stylesheet' href='/DesktopModules/DNNrocket/css/w3.css'>", 1);
 
-                //insert at end of head section, we have a dependancy on JQuery, so we need to inject AFTER jquery.  This may cause a conflict we dependancy file load before this.
+                //insert at end of head section, we have a dependancy on JQuery, so we need to inject AFTER jquery.  This may cause a conflict we dependancy files loaded before this.
                 PageIncludes.IncludeTextInHeaderAt(Page, "<script type='text/javascript' src='/DesktopModules/DNNrocket/Simplisity/js/simplisity.js'></script>",0);
             }
         }

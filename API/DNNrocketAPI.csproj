@@ -154,7 +154,7 @@
     <Compile Include="Componants\WebSiteData.cs" />
     <Compile Include="Componants\SystemGlobalData.cs" />
     <Compile Include="Componants\PageRecordData.cs" />
-    <Compile Include="Componants\UserStorage.cs" />
+    <Compile Include="Componants\UserParams.cs" />
     <Compile Include="downloadfile.ashx.cs">
       <DependentUpon>downloadfile.ashx</DependentUpon>
     </Compile>
@@ -207,6 +207,7 @@
     <None Include="Documents\DNNrocket-File-Download.docx" />
     <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
     <None Include="Documents\File-Upload.docx" />
+    <None Include="Documents\Filtering_Sorting_Data.docx" />
     <None Include="Documents\HeaderData.docx" />
     <None Include="Documents\ManualSortList.docx" />
     <None Include="Documents\RocketScheduler.docx" />

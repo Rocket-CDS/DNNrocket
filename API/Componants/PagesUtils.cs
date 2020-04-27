@@ -13,7 +13,7 @@ using DataProvider = DotNetNuke.Data.DataProvider;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Common;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public static class PagesUtils
     {

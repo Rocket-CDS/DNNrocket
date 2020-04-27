@@ -9,7 +9,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
 @{
-    var info = Model.HeaderData;
+    var info = Model.SessionParams;
 
     var paging_return = info.GetXmlProperty("genxml/s-paging-return");
     var paging_cmd = info.GetXmlProperty("genxml/s-paging-cmd");

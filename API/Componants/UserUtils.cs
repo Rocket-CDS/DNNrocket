@@ -29,7 +29,7 @@ using DotNetNuke.Common;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.Security.Roles;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public static class UserUtils
     {

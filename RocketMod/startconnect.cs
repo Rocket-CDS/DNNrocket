@@ -38,7 +38,7 @@ namespace RocketMod
         private AppThemeModule _dataAppThemeMod;
         private ArticleData _articleData;
         private AppThemeDataList _appThemeDataList;
-        private UserStorage _userStorage;
+        private UserParams _UserParams;
         private string _tableName;
         private ArticleDataList _articleDataList;
 
@@ -264,8 +264,8 @@ namespace RocketMod
             _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
             if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid");
 
-            _userStorage = new UserStorage();
-            _userStorage.ModuleId = _moduleid; // use moduleid for tracking commands. 
+            _UserParams = new UserParams();
+            _UserParams.ModuleId = _moduleid; // use moduleid for tracking commands. 
 
             if (CheckSecurity(paramCmd))
             {
@@ -277,12 +277,12 @@ namespace RocketMod
                     }
                     else
                     {
-                        var menucmd = _userStorage.GetCommand(_systemKey);
+                        var menucmd = _UserParams.GetCommand(_systemKey);
                         if (menucmd != "")
                         {
                             paramCmd = menucmd;
-                            _paramInfo = _userStorage.GetParamInfo(_systemKey);
-                            var interfacekey = _userStorage.GetInterfaceKey(_systemKey);
+                            _paramInfo = _UserParams.GetParamInfo(_systemKey);
+                            var interfacekey = _UserParams.GetInterfaceKey(_systemKey);
                             _rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
                         }
                     }
@@ -291,7 +291,7 @@ namespace RocketMod
                 {
                     if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
                     {
-                        _userStorage.Track(_systemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
+                        _UserParams.Track(_systemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
                     }
                 }
             }
@@ -346,7 +346,7 @@ namespace RocketMod
                 }
             }
 
-            _articleDataList = new ArticleDataList(_postInfo, _paramInfo, _editLang, false);
+            _articleDataList = new ArticleDataList(_paramInfo, _editLang, false);
 
 
             return paramCmd;
@@ -554,8 +554,8 @@ namespace RocketMod
             }
             _articleData.Delete();
             _selectedItemId = -1;
-            _userStorage.TrackClear(_systemKey);
-            _userStorage.Save();
+            _UserParams.TrackClear(_systemKey);
+            _UserParams.Save();
 
             CacheFileUtils.ClearAllCache();
         }
@@ -1067,7 +1067,7 @@ namespace RocketMod
                         // list display
                         var razorTempl = _appThemeMod.GetTemplateRazor("view.cshtml");
 
-                        var articleDataList = new ArticleDataList(_postInfo, _paramInfo, DNNrocketUtils.GetCurrentCulture(),true);
+                        var articleDataList = new ArticleDataList(_paramInfo, DNNrocketUtils.GetCurrentCulture(),true);
 
                         foreach (var s in _moduleParams.ModuleSettings)
                         {

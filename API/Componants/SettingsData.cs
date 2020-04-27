@@ -157,26 +157,20 @@ namespace DNNrocketAPI.Componants
         }
         public string GetValue(string key)
         {
-            return Info.GetXmlProperty("genxml/textbox/" + key);
+            return Info.GetListItem("rocketmodsettings", "genxml/textbox/name", key).GetXmlProperty("genxml/textbox/value"); ;
         }
-
-        public string Get(string xpath)
+        public bool GetValueBool(string key)
         {
-            return Info.GetXmlProperty(xpath);
+            return Info.GetListItem("rocketmodsettings", "genxml/textbox/name", key).GetXmlPropertyBool("genxml/textbox/value"); ;
         }
-        public bool GetBool(string xpath)
+        public int GetValueInt(string key)
         {
-            return Info.GetXmlPropertyBool(xpath);
+            return Info.GetListItem("rocketmodsettings", "genxml/textbox/name", key).GetXmlPropertyInt("genxml/textbox/value"); ;
         }
-        public int GetInt(string xpath)
+        public double GetValueDouble(string key)
         {
-            return Info.GetXmlPropertyInt(xpath);
+            return Info.GetListItem("rocketmodsettings", "genxml/textbox/name", key).GetXmlPropertyDouble("genxml/textbox/value"); ;
         }
-        public double GetDouble(string xpath)
-        {
-            return Info.GetXmlPropertyDouble(xpath);
-        }
-
         public Dictionary<string, string> ToDictionary()
         {
             var rtnDict = new Dictionary<string, string>();

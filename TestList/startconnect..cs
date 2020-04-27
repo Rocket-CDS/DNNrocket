@@ -105,13 +105,13 @@ var rtnDic = new Dictionary<string, string>();
                 var listcount = objCtrl.GetListCount(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang);
                 var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang, "",0, page, pagesize, listcount);
 
-                var headerData = new SimplisityInfo();
-                headerData.SetXmlProperty("genxml/hidden/rowcount", listcount.ToString());
-                headerData.SetXmlProperty("genxml/hidden/page", page.ToString());
-                headerData.SetXmlProperty("genxml/hidden/pagesize", pagesize.ToString());
-                headerData.SetXmlProperty("genxml/textbox/searchtext", searchtext);
+                var SessionParams = new SimplisityInfo();
+                SessionParams.SetXmlProperty("genxml/hidden/rowcount", listcount.ToString());
+                SessionParams.SetXmlProperty("genxml/hidden/page", page.ToString());
+                SessionParams.SetXmlProperty("genxml/hidden/pagesize", pagesize.ToString());
+                SessionParams.SetXmlProperty("genxml/textbox/searchtext", searchtext);
 
-                return RenderList(list, paramInfo, 0, template, headerData);
+                return RenderList(list, paramInfo, 0, template, SessionParams);
             }
             catch (Exception ex)
             {
@@ -119,7 +119,7 @@ var rtnDic = new Dictionary<string, string>();
             }
         }
 
-        public String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string template, SimplisityInfo headerData)
+        public String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string template, SimplisityInfo SessionParams)
         {
             try
             {
@@ -135,7 +135,7 @@ var rtnDic = new Dictionary<string, string>();
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, template, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
-                strOut = DNNrocketUtils.RazorList(razorTempl, list, passSettings,headerData);
+                strOut = DNNrocketUtils.RazorList(razorTempl, list, passSettings,SessionParams);
 
                 return strOut;
             }

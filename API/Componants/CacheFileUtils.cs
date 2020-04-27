@@ -9,7 +9,7 @@ using System.Runtime.Caching;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public class CacheFileUtils
     {

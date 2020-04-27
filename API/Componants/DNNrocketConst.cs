@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public static class DNNrocketRoles
     {

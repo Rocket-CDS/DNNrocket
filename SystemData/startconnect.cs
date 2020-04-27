@@ -17,7 +17,7 @@ namespace DNNrocket.System
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
         private DNNrocketInterface _rocketInterface;
-        private UserStorage _userStorage;
+        private UserParams _UserParams;
         private Dictionary<string, string> _passSettings;
 
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
@@ -32,21 +32,21 @@ namespace DNNrocket.System
             
             DNNrocketUtils.CreateRocketDirectories();
 
-            _userStorage = new UserStorage();
+            _UserParams = new UserParams();
             if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
             {
-                var menucmd = _userStorage.GetCommand("systemapi");
+                var menucmd = _UserParams.GetCommand("systemapi");
                 if (menucmd != "")
                 {
                     paramCmd = menucmd;
-                    _paramInfo = _userStorage.GetParamInfo("systemapi");
+                    _paramInfo = _UserParams.GetParamInfo("systemapi");
                 }
             }
             else
             {
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
                 {
-                    _userStorage.Track("systemapi", paramCmd, _paramInfo, "");
+                    _UserParams.Track("systemapi", paramCmd, _paramInfo, "");
                 }
             }
 

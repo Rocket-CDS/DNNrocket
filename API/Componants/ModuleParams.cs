@@ -10,7 +10,7 @@ namespace DNNrocketAPI.Componants
 {
     /// <summary>
     /// This class is used to pass data from modules in the system to the API, where any normal usage would cause a circular reference.
-    /// The moduel code should save the dtaa as a simplisityInfo class, using "portalId, "systemkey", "tabId", "moduleId", "requiredCultureCode".
+    /// The module code should save the data as a simplisityInfo class, using "portalId, "systemkey", "tabId", "moduleId", "requiredCultureCode".
     /// This class will then use the database record to create the paramaters.
     /// Some params are standard and have a property to help identify data, others use normal xpath.
     /// Data can also be read using hte "GetValue" method, or Written using the "SetValue" method.

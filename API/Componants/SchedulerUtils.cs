@@ -16,7 +16,7 @@ using DNNrocketAPI.Componants;
 using DotNetNuke.Services.Scheduling;
 using Simplisity;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public static class SchedulerUtils
     {

@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Runtime.Remoting;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public class RocketScheduler : DotNetNuke.Services.Scheduling.SchedulerClient
     {

@@ -22,7 +22,7 @@ namespace RocketMod
         private DNNrocketController _objCtrl;
         private ModuleParams _moduleParams;
 
-        public ArticleDataList(SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired, bool populate)
+        public ArticleDataList(SimplisityInfo paramInfo, string langRequired, bool populate)
         {
             ModuleId = paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (ModuleId == 0) ModuleId = paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
@@ -33,7 +33,7 @@ namespace RocketMod
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetCurrentCulture();
             _objCtrl = new DNNrocketController();
 
-            Header = new HeaderData(paramInfo);
+            Header = new SessionParams(paramInfo);
             //if (Header.PageSize == 0) Header.PageSize = 20;
 
             if (populate) Populate();
@@ -56,7 +56,7 @@ namespace RocketMod
         }
 
         public int ModuleId { get; set; }
-        public HeaderData Header { get; set; }
+        public SessionParams Header { get; set; }
         public List<SimplisityInfo> DataList { get; private set; }
 
         public List<ArticleData> GetArticleList()

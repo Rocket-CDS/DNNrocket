@@ -15,7 +15,7 @@ using DNNrocketAPI.Componants;
 using System.Collections.Specialized;
 using System.Text;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public class ProcessDownloadFile : IHttpHandler
     {

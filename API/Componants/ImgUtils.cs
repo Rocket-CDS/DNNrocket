@@ -8,7 +8,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using Simplisity;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public class ImgUtils
     {

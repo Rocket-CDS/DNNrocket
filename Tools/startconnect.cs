@@ -16,7 +16,7 @@ namespace Rocket.Tools
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
         private string _pageref;
-        private UserStorage _userStorage;
+        private UserParams _UserParams;
         public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = ""; // return nothing if not matching commands.
@@ -125,16 +125,16 @@ namespace Rocket.Tools
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _passSettings = new Dictionary<string, string>();
 
-            _userStorage = new UserStorage();
+            _UserParams = new UserParams();
 
             if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
             {
-                var menucmd = _userStorage.GetCommand(_systemData.SystemKey);
+                var menucmd = _UserParams.GetCommand(_systemData.SystemKey);
                 if (menucmd != "")
                 {
                     paramCmd = menucmd;
-                    _paramInfo = _userStorage.GetParamInfo(_systemData.SystemKey);
-                    var interfacekey = _userStorage.GetInterfaceKey(_systemData.SystemKey);
+                    _paramInfo = _UserParams.GetParamInfo(_systemData.SystemKey);
+                    var interfacekey = _UserParams.GetInterfaceKey(_systemData.SystemKey);
                     _rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
                 }
             }
@@ -142,7 +142,7 @@ namespace Rocket.Tools
             {
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
                 {
-                    _userStorage.Track(_systemData.SystemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
+                    _UserParams.Track(_systemData.SystemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
                 }
             }
 

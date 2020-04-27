@@ -9,7 +9,7 @@ using System.Net.Http.Formatting;
 using System.Web.Http;
 using DotNetNuke.Web.Api;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.ApiControllers
 {
     public class RouteMapper : IServiceRouteMapper
     {

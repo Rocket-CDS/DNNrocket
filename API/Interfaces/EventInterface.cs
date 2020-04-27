@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Remoting;
 using Simplisity;
+using DNNrocketAPI.Componants;
 
 namespace DNNrocketAPI
 {

@@ -7,6 +7,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DNNrocketAPI.Interfaces;
 using Simplisity;
+using DNNrocketAPI.Componants;
 
 namespace DNNrocketAPI
 {

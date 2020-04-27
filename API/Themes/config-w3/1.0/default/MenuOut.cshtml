@@ -1,5 +1,4 @@
 ﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
-
 @using DNNrocketAPI;
 @using System
 @using System.Linq
@@ -8,13 +7,12 @@
 @using DNNrocketAPI.Componants;
 
 
-
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/" + Model.GetSetting("projectfolder") + "/App_LocalResources/")
 
 
 @{
-    var userStorage = new UserStorage();
+    var UserParams = new UserParams();
     var sidemenu = (SideMenu)Model.List.First();
     var systemData = new SystemData(sidemenu.SystemKey);
 

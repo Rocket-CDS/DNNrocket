@@ -575,7 +575,7 @@ DEALLOCATE idx_cursor
 		BEGIN
 			IF (@TypeCode = '')
 			BEGIN
-				set @STMT = @STMT + 'WHERE R1.TypeCode != ''''' + @Filter  
+				set @STMT = @STMT + 'WHERE R1.TypeCode != '''' ' + @Filter  
 			END ELSE
 			BEGIN
 				set @STMT = @STMT + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  

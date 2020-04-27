@@ -111,12 +111,12 @@ namespace DNNrocket.Category
                 var pagesize = postInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
 
                 var searchtext = postInfo.GetXmlProperty("genxml/textbox/searchtext");
-                var headerData = new SimplisityInfo();
-                headerData.SetXmlProperty("genxml/textbox/searchtext", searchtext);
+                var SessionParams = new SimplisityInfo();
+                SessionParams.SetXmlProperty("genxml/textbox/searchtext", searchtext);
 
                 var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, -1, _editlang, searchtext,"",true,true, systemInfo.ItemID);
 
-                return RenderList(categoryList, postInfo, 0, templateControlRelPath, headerData);
+                return RenderList(categoryList, postInfo, 0, templateControlRelPath, SessionParams);
             }
             catch (Exception ex)
             {
@@ -124,7 +124,7 @@ namespace DNNrocket.Category
             }
         }
 
-        public String RenderList(List<Category> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath, SimplisityInfo headerData)
+        public String RenderList(List<Category> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath, SimplisityInfo SessionParams)
         {
             try
             {
@@ -140,7 +140,7 @@ namespace DNNrocket.Category
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
-                strOut = DNNrocketUtils.RazorList(razorTempl, list.Cast<object>().ToList(), passSettings, headerData);
+                strOut = DNNrocketUtils.RazorList(razorTempl, list.Cast<object>().ToList(), passSettings, SessionParams);
 
                 return strOut;
             }

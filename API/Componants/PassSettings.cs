@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     /// <summary>
     /// This is a simple helper class, to wrapper the settings for the razor templates.

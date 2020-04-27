@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public class FilesStatus
     {

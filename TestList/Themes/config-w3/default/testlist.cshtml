@@ -7,10 +7,10 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/testlist/App_LocalResources/")
 
 @{
-    var headerData = Model.HeaderData;
-    var rowcount = headerData.GetXmlPropertyInt("genxml/hidden/rowcount");
-    var page = headerData.GetXmlPropertyInt("genxml/hidden/page");
-    var pagesize = headerData.GetXmlPropertyInt("genxml/hidden/pagesize");
+    var SessionParams = Model.SessionParams;
+    var rowcount = SessionParams.GetXmlPropertyInt("genxml/hidden/rowcount");
+    var page = SessionParams.GetXmlPropertyInt("genxml/hidden/page");
+    var pagesize = SessionParams.GetXmlPropertyInt("genxml/hidden/pagesize");
     var lastpage = System.Convert.ToInt32(rowcount / pagesize);
 }
 
@@ -37,13 +37,13 @@
 
             <div class="w3-row w3-padding">
                 <div class="w3-col m2 w3-padding">
-                    @TextBox(headerData, "genxml/textbox/searchtext", "class='w3-input w3-border simplisity_searchfield'")
+                    @TextBox(SessionParams, "genxml/textbox/searchtext", "class='w3-input w3-border simplisity_searchfield'")
                 </div>
                 <div class="w3-col m8 w3-padding">
                     <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_search" s-post=".searchdata" s-fields="theme:config-w3,template:TestList.cshtml,interfacekey:testlist">@ButtonText(ButtonTypes.search)</span>
                 </div>
                 <div class="w3-col m2 w3-padding w3-right-align" style="width: 100px">
-                    @DropDownList(headerData, "genxml/hidden/pagesize", "5,10,20,50,100", "5,10,20,50,100", "class='w3-input w3-border simplisity_pagesize ' title='Page Size'", "20")
+                    @DropDownList(SessionParams, "genxml/hidden/pagesize", "5,10,20,50,100", "5,10,20,50,100", "class='w3-input w3-border simplisity_pagesize ' title='Page Size'", "20")
                 </div>
             </div>
 
