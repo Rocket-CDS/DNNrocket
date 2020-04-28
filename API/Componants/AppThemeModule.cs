@@ -1,6 +1,7 @@
 ﻿using Simplisity;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 
 namespace DNNrocketAPI.Componants
 {
@@ -72,6 +73,47 @@ namespace DNNrocketAPI.Componants
                     _modellevelTemplates.Add(fname, true);
                 }
             }
+        }
+
+        public string ExportModuleLevelTemplateXml()
+        {
+            var exportXml = "";
+            if (_modellevelTemplates.Count > 0)
+            {
+                exportXml += "<templates moduleid='" + ModuleId + "'>";
+                foreach (var templateDict in AppTheme.GetTemplatesMapPath)
+                {
+                    if (IsModuleLevelTemplate(templateDict.Key))
+                    {
+                        var sRec2 = new SimplisityRecord();
+                        var templateText = FileUtils.ReadFile(templateDict.Value);
+                        sRec2.SetXmlProperty("template/name", templateDict.Key);
+                        sRec2.SetXmlProperty("template/mappath", templateDict.Value);
+                        sRec2.SetXmlProperty("template/text", GeneralUtils.EnCode(templateText));
+                        exportXml += sRec2.ToXmlItem();
+                    }
+                }
+                exportXml += "</templates>";
+            }
+            return exportXml;
+        }
+        public void ImportModuleLevelTemplateXml(string importXml)
+        {
+            var sRec = new SimplisityRecord();
+            sRec.XMLData = importXml;
+            var nodList = sRec.XMLDoc.SelectNodes("templates/*");
+            foreach (XmlNode nod in nodList)
+            {
+                var sRec2 = new SimplisityRecord();
+                sRec2.FromXmlItem(nod.OuterXml);
+                var mappath = sRec2.GetXmlProperty("template/mappath");
+                var text = sRec2.GetXmlProperty("template/text");
+                if (text != "")
+                {
+                    FileUtils.SaveFile(mappath, GeneralUtils.DeCode(text));
+                }
+            }
+
         }
 
         public bool IsModuleLevelTemplate(string templatename)

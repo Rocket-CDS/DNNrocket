@@ -1366,6 +1366,7 @@ namespace DNNrocketAPI.Componants
         public bool RegenerateView { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateview"); } set { Record.SetXmlProperty("genxml/checkbox/regenerateview", value.ToString()); } }
         public bool RegenerateDetail { get { return Record.GetXmlPropertyBool("genxml/checkbox/regeneratedetail"); } set { Record.SetXmlProperty("genxml/checkbox/regeneratedetail", value.ToString()); } }
         public Dictionary<string, string> FileNameList { get; set; }
+        public Dictionary<string, string> GetTemplatesMapPath { get { return FileNameList; } }
 
         public int DataType { get { return Record.GetXmlPropertyInt("genxml/radio/themetype"); } }
         public bool EnableSettings { get { return Record.GetXmlPropertyBool("genxml/checkbox/enablesettings"); } }

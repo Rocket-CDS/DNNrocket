@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simplisity;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,8 +10,10 @@ namespace DNNrocketAPI.Componants
 {
     public class BackUpDataList
     {
-        public BackUpDataList(string backupRootFolder)
+        private string _searchpattern; 
+        public BackUpDataList(string backupRootFolder, string searchpattern)
         {
+            _searchpattern = searchpattern;
             BackupRootFolder = backupRootFolder;
             BackupRootFolderMapPath = DNNrocketUtils.BackUpDirectoryMapPath() + "\\" + BackupRootFolder;
             LoadData();
@@ -23,6 +26,9 @@ namespace DNNrocketAPI.Componants
             List = new Dictionary<string, List<BackUpData>>();
             ListFileMapPath = new Dictionary<string, List<string>>();            
             SystemKeyFolderList = new List<string>();
+            var globalSettings = new SystemGlobalData();
+            var backuplimit = globalSettings.Info.GetXmlPropertyInt("genxml/textbox/backuplimit");
+            if (backuplimit <= 0) backuplimit = 1;
 
             var l = Directory.GetDirectories(BackupRootFolderMapPath);
             foreach (var d in l)
@@ -33,12 +39,21 @@ namespace DNNrocketAPI.Componants
                 var fileList = new List<BackUpData>();
                 var fileMapPathList = new List<string>();                
                 SystemKeyFolderList.Add(projectName);
-                var l2 = Directory.GetFiles(d).Reverse();
+                var l2 = Directory.GetFiles(d, _searchpattern).Reverse();
+                var lp = 1;
                 foreach (var f in l2)
                 {
-                    var BackUpData = new BackUpData(f);
-                    fileList.Add(BackUpData);
-                    fileMapPathList.Add(f);
+                    if (lp <= backuplimit)
+                    {
+                        var BackUpData = new BackUpData(f);
+                        fileList.Add(BackUpData);
+                        fileMapPathList.Add(f);
+                    }
+                    else
+                    {
+                        File.Delete(f);
+                    }
+                    lp += 1;
                 }
                 List.Add(projectName, fileList);
                 ListFileMapPath.Add(projectName, fileMapPathList);

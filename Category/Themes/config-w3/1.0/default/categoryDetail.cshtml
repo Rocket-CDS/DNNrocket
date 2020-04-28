@@ -32,7 +32,7 @@
                 <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fas fa-image"></i>&nbsp;@ResourceKey("category.images")</div>
             </a>
 
-            @foreach (var i in Model.SessionParams.GetList("interfacedata"))
+            @foreach (var i in Model.SessionParamData.GetList("interfacedata"))
             {
                 if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
                 {
@@ -106,7 +106,7 @@
 
             </div>
 
-            @foreach (var i in Model.SessionParams.GetList("interfacedata"))
+            @foreach (var i in Model.SessionParamData.GetList("interfacedata"))
             {
                 if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
                 {
@@ -141,12 +141,12 @@
         }
 
         // load interfaces
-            @foreach (var i in Model.SessionParams.GetList("interfacedata"))
+            @foreach (var i in Model.SessionParamData.GetList("interfacedata"))
             {
                 if (i.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='categoryentry']/@value"))
                 {
                     var runcmd = "";
-                    var settingValueInfo = Model.SessionParams.GetListItem("settingsdata", "genxml/textbox/name", i.GetXmlProperty("genxml/textbox/interfacekey") + "_catcmd");
+                    var settingValueInfo = Model.SessionParamData.GetListItem("settingsdata", "genxml/textbox/name", i.GetXmlProperty("genxml/textbox/interfacekey") + "_catcmd");
                     if (settingValueInfo != null)
                     {
                         runcmd = settingValueInfo.GetXmlProperty("genxml/textbox/value");
@@ -155,7 +155,7 @@
                     {
                         runcmd = i.GetXmlProperty("genxml/textbox/defaultcommand");
                     }
-                   @: $('#@i.GetXmlProperty("genxml/textbox/interfacekey")section').getSimplisity('@Model.SessionParams.GetXmlProperty("genxml/textbox/apiurl")', '@runcmd', 'theme:@i.GetXmlProperty("genxml/textbox/defaulttheme"),template:@i.GetXmlProperty("genxml/textbox/defaulttemplate").Replace(".cshtml", "_CategorySelect.cshtml"),interfacekey:@i.GetXmlProperty("genxml/textbox/interfacekey"),categorylist:@info.ItemID', '');
+                   @: $('#@i.GetXmlProperty("genxml/textbox/interfacekey")section').getSimplisity('@Model.SessionParamData.GetXmlProperty("genxml/textbox/apiurl")', '@runcmd', 'theme:@i.GetXmlProperty("genxml/textbox/defaulttheme"),template:@i.GetXmlProperty("genxml/textbox/defaulttemplate").Replace(".cshtml", "_CategorySelect.cshtml"),interfacekey:@i.GetXmlProperty("genxml/textbox/interfacekey"),categorylist:@info.ItemID', '');
                 }
             }
 

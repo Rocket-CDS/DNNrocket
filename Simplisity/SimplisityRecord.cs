@@ -429,7 +429,18 @@ namespace Simplisity
         public string ToXmlItem(bool withTextData = true)
         {
             // don't use serlization, becuase depending what is in the TextData field could make it fail.
-            var xmlOut = new StringBuilder("<item><itemid>" + ItemID.ToString("") + "</itemid><portalid>" + PortalId.ToString("") + "</portalid><moduleid>" + ModuleId.ToString("") + "</moduleid><xrefitemid>" + XrefItemId.ToString("") + "</xrefitemid><parentitemid>" + ParentItemId.ToString("") + "</parentitemid><typecode>" + TypeCode + "</typecode><guidkey>" + GUIDKey + "</guidkey><lang>" + Lang + "</lang><userid>" + UserId.ToString("") + "</userid>" + "<sortorder>" + SortOrder.ToString("") + "</sortorder>" + XMLData);
+            var xmlOut = new StringBuilder("<item><itemid>" + ItemID.ToString("") + "</itemid><portalid>" + PortalId.ToString("") + "</portalid><moduleid>" + ModuleId.ToString("") + "</moduleid><xrefitemid>" + XrefItemId.ToString("") + "</xrefitemid><parentitemid>" + ParentItemId.ToString("") + "</parentitemid><typecode>" + TypeCode + "</typecode><guidkey>" + GUIDKey + "</guidkey><lang>" + Lang + "</lang><userid>" + UserId.ToString("") + "</userid>" + "<sortorder>" + SortOrder.ToString("") + "</sortorder>");
+            if (XMLData.StartsWith("<genxml>"))
+            {
+                xmlOut.Append(XMLData);
+            }
+            else
+            {
+                // non standard XML.  Add the dgenxml for import and add a remove sttribute, so it imports correctly in the FromXmlItem method.
+                xmlOut.Append("<genxml remove='true'>" + XMLData + "</genxml>");
+            }
+
+
             if (withTextData && TextData != null)
             {
                 xmlOut.Append("<data><![CDATA[" + TextData.Replace("<![CDATA[", "***CDATASTART***").Replace("]]>", "***CDATAEND***") + "]]></data>");
@@ -474,7 +485,13 @@ namespace Simplisity
 
             //XmlData
             selectSingleNode = xmlDoc.SelectSingleNode("item/genxml");
-            if (selectSingleNode != null) XMLData = selectSingleNode.OuterXml;
+            if (selectSingleNode != null)
+            {
+                if (selectSingleNode.Attributes["remove"] != null && selectSingleNode.Attributes["remove"].Value  != "")
+                    XMLData = selectSingleNode.InnerXml;
+                else
+                    XMLData = selectSingleNode.OuterXml;
+            }
 
             //TextData
             selectSingleNode = xmlDoc.SelectSingleNode("item/data");

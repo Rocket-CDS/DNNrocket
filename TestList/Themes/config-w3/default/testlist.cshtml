@@ -7,7 +7,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/testlist/App_LocalResources/")
 
 @{
-    var SessionParams = Model.SessionParams;
+    var SessionParams = Model.SessionParamData;
     var rowcount = SessionParams.GetXmlPropertyInt("genxml/hidden/rowcount");
     var page = SessionParams.GetXmlPropertyInt("genxml/hidden/page");
     var pagesize = SessionParams.GetXmlPropertyInt("genxml/hidden/pagesize");

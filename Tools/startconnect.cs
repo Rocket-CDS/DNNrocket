@@ -204,13 +204,13 @@ namespace Rocket.Tools
         private string DeleteBackUp()
         {
             var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/hidden/filemappath"));
-            var backUpDataList = new BackUpDataList(_rocketInterface.InterfaceKey);
+            var backUpDataList = new BackUpDataList(_rocketInterface.InterfaceKey, "*_BackUp.xml");
             backUpDataList.DeleteBackUpFile(filemappath);
             return LangAdmin();
         }
         private string DeleteAllBackUp()
         {
-            var backUpDataList = new BackUpDataList(_rocketInterface.InterfaceKey);
+            var backUpDataList = new BackUpDataList(_rocketInterface.InterfaceKey, "*_BackUp.xml");
             backUpDataList.DeleteAllBackUpFiles();
             return LangAdmin();
         }

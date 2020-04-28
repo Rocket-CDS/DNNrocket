@@ -210,7 +210,7 @@ namespace DNNrocketAPI.Componants
                 l.Add(obj);
 
                 var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
-                nbRazor.SessionParams = SessionParams;
+                nbRazor.SessionParamData = SessionParams;
                 nbRazor.DataObjects = dataObjects;
                 rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
             }
@@ -232,7 +232,7 @@ namespace DNNrocketAPI.Componants
                 if (settings == null) settings = new Dictionary<string, string>();
                 if (SessionParams == null) SessionParams = new SimplisityInfo();
                 var nbRazor = new SimplisityRazor(objList, settings, HttpContext.Current.Request.QueryString);
-                nbRazor.SessionParams = SessionParams;
+                nbRazor.SessionParamData = SessionParams;
                 rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
             }
             return rtnStr;
@@ -1785,7 +1785,7 @@ namespace DNNrocketAPI.Componants
         /// Generates a new backup file name, based on the date and time.  (May not be unique)
         /// </summary>
         /// <returns></returns>
-        public static string BackUpNewFileName(string backupRootFolder, string moduleName)
+        public static string BackUpNewFileName(string backupRootFolder, string moduleName, string fileAppendix = "BackUp.xml")
         {
             if (!Directory.Exists(BackUpDirectoryMapPath() + "\\" +  backupRootFolder))
             {
@@ -1795,7 +1795,7 @@ namespace DNNrocketAPI.Componants
             {
                 Directory.CreateDirectory(BackUpDirectoryMapPath() + "\\" + backupRootFolder + "\\" + moduleName);
             }
-            return BackUpDirectoryMapPath() + "\\" + backupRootFolder + "\\" + moduleName + "\\" + DateTime.Now.ToFileTime() + "_BackUp.xml";
+            return BackUpDirectoryMapPath() + "\\" + backupRootFolder + "\\" + moduleName + "\\" + DateTime.Now.ToFileTime() + "_" + fileAppendix;
         }
 
 

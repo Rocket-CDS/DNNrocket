@@ -528,4 +528,13 @@
   <data name="uninstall.Text" xml:space="preserve">
     <value>UnInstall</value>
   </data>
+  <data name="backupdata.Text" xml:space="preserve">
+    <value>Data BackUp</value>
+  </data>
+  <data name="backuptemplates.Help" xml:space="preserve">
+    <value>There is a backup of module levels templates every time a template is saved.  You can delete or restore existing backups.</value>
+  </data>
+  <data name="backuptemplates.Text" xml:space="preserve">
+    <value>Template BackUp</value>
+  </data>
 </root>

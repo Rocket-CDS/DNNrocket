@@ -123,13 +123,13 @@ namespace DNNrocketAPI.render
 
         public IEncodedString RenderPagingTemplate(string scmd, string spost, SimplisityRazor model, string sreturn = "", string versionFolder = "1.0")
         {
-            if (model.SessionParams == null)
+            if (model.SessionParamData == null)
             {
-                model.SessionParams = new SimplisityInfo();
+                model.SessionParamData = new SimplisityInfo();
             }
-            model.SessionParams.SetXmlProperty("genxml/s-paging-return", sreturn);
-            model.SessionParams.SetXmlProperty("genxml/s-paging-cmd", scmd);
-            model.SessionParams.SetXmlProperty("genxml/s-paging-post", spost);
+            model.SessionParamData.SetXmlProperty("genxml/s-paging-return", sreturn);
+            model.SessionParamData.SetXmlProperty("genxml/s-paging-cmd", scmd);
+            model.SessionParamData.SetXmlProperty("genxml/s-paging-post", spost);
             return RenderTemplate("Paging.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model, versionFolder);
         }
 

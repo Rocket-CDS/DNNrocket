@@ -23,7 +23,7 @@
         </div>
 
         <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
-            <b class="w3-large">@ResourceKey("DNNrocket.backup")</b>
+            <b class="w3-large">@ResourceKey("DNNrocket.backupdata")</b>
             <div class="w3-button w3-right w3-padding simplisity_confirmclick" title="@ResourceKey("DNNrocket.delete")" s-confirm="@ResourceKey("RocketTools.deletebackupall", "", "Confirm")" s-cmd="backup_deletebackupall" s-fields=''><i class="fas fa-trash-alt"></i></div>
         </div>
         <div class="w3-row historydatasection">
@@ -37,7 +37,7 @@
                 </tr>
 
                 @{
-                    var BackUpDataList = new BackUpDataList("rocketmod" + Model.ModuleId);
+                    var BackUpDataList = new BackUpDataList("rocketmod" + Model.ModuleId, Model.GetSetting("searchpattern"));
                     foreach (var moduleFolder in BackUpDataList.SystemKeyFolderList)
                     {
                         foreach (var BackUpData in BackUpDataList.GetBackUpList(moduleFolder))

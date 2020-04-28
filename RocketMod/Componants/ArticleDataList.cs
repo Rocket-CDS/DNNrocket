@@ -33,18 +33,16 @@ namespace RocketMod
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetCurrentCulture();
             _objCtrl = new DNNrocketController();
 
-            Header = new SessionParams(paramInfo);
-            //if (Header.PageSize == 0) Header.PageSize = 20;
+            SessionParamData = new SessionParams(paramInfo);
 
             if (populate) Populate();
         }
         public void Populate()
         {
             var searchFilter = " and R1.ModuleId = " + _moduleParams.ModuleIdDataSource;
-            searchFilter += _moduleParams.GetFilterSQL(Header.Info, Header.FilterIndex);
-            Header.RowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, _tableName);
-            DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(Header.OrderByIndex), 0, Header.Page, Header.PageSize, Header.RowCount, _tableName);
-
+            searchFilter += _moduleParams.GetFilterSQL(SessionParamData.Info, SessionParamData.FilterIndex);
+            SessionParamData.RowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, _tableName);
+            DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(SessionParamData.OrderByIndex), 0, SessionParamData.Page, SessionParamData.PageSize, SessionParamData.RowCount, _tableName);
         }
         public void DeleteAll()
         {
@@ -56,7 +54,7 @@ namespace RocketMod
         }
 
         public int ModuleId { get; set; }
-        public SessionParams Header { get; set; }
+        public SessionParams SessionParamData { get; set; }
         public List<SimplisityInfo> DataList { get; private set; }
 
         public List<ArticleData> GetArticleList()
@@ -84,7 +82,7 @@ namespace RocketMod
 
         public void SortOrderMove(int toItemId)
         {
-            SortOrderMove(Header.SortActivate, toItemId);
+            SortOrderMove(SessionParamData.SortActivate, toItemId);
         }
         public void SortOrderMove(int fromItemId, int toItemId)
         {
@@ -98,20 +96,20 @@ namespace RocketMod
 
                 moveData.SortOrder = newSortOrder;
                 moveData.Update();
-                Header.CancelItemSort();
+                SessionParamData.CancelItemSort();
             }
         }
 
         public List<SimplisityInfo> GetAllArticlesForModule()
         {
             var searchFilter = " and R1.ModuleId = " + ModuleId + " ";
-            return _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(Header.OrderByIndex), 0, 0, 0, 0, _tableName);
+            return _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(SessionParamData.OrderByIndex), 0, 0, 0, 0, _tableName);
         }
 
         public void SortOrderReIndex()
         {
             var searchFilter = " and R1.ModuleId = " + ModuleId + " ";
-            var sortOrderList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, "", _moduleParams.OrderBySQL(Header.OrderByIndex), 0, 0, 0, 0, _tableName);
+            var sortOrderList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, "", _moduleParams.OrderBySQL(SessionParamData.OrderByIndex), 0, 0, 0, 0, _tableName);
             var lp = 1;
             foreach (var s in sortOrderList)
             {

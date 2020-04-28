@@ -2,6 +2,7 @@
 @using Simplisity;
 @using RocketMod;
 @using DNNrocketAPI;
+@using DNNrocketAPI.Componants;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "[Token:appthemeresx]")
@@ -13,8 +14,8 @@
 <div class=''>
 
     <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodedit_addarticle"  s-fields='{"track":"false"}'>@ButtonText(ButtonTypes.add)</div>
-        
+        <div class="w3-col m2 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodedit_addarticle" s-fields='{"track":"false"}'>@ButtonText(ButtonTypes.add)</div>
+
         <div class="w3-col m2 w3-button w3-blue langchangesave simplisity_click" s-cmd="rocketmodedit_editarticlelist">@ButtonText(ButtonTypes.refresh)</div>
     </div>
 
@@ -41,7 +42,7 @@
                 lp1 += 1;
                 <li class="datalistitem w3-display-container">
                     <div class="listrow w3-row w3-padding">
-                        <div class="w3-col w3-button simplisity_click w3-margin-right " s-cmd="rocketmodedit_editarticle"  s-fields='{"track":"true","selecteditemid":"@info.ItemID"}' style="width: 64px;">
+                        <div class="w3-col w3-button simplisity_click w3-margin-right " s-cmd="rocketmodedit_editarticle" s-fields='{"track":"true","selecteditemid":"@info.ItemID"}' style="width: 64px;">
                             <i class="fas fa-edit w3-center" style='font-size:32px'></i>
                         </div>
                         [Token:List]
