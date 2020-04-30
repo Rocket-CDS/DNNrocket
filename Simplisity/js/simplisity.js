@@ -757,6 +757,10 @@ function simplisity_injectlink(value) {
 function simplisity_injectscript(value) {
     $.getScript(value, function () { console.log('script inject'); });
 }
+function simplisity_systemkey() {
+    return $('#simplisity_systemkey').val();
+}
+
 
 async function initFileUpload(fileuploadselector) {
 

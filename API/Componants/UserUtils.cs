@@ -368,6 +368,7 @@ namespace DNNrocketAPI.Componants
         {
             try
             {
+                if (username == "") return -1;
                 var objUser = UserController.GetUserByName(portalId, username);
                 if (objUser != null) return objUser.UserID;
                 return -1;
