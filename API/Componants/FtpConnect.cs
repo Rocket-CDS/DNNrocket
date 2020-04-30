@@ -23,6 +23,10 @@ namespace DNNrocketAPI.Componants
             _baseuri = "ftp://" + _systemGlobalData.FtpServer + "/" + _systemData.FtpRoot.TrimStart('/').TrimEnd('/') + "/" + _systemData.SystemKey;
             IsValid = true;
             if (String.IsNullOrEmpty(_systemGlobalData.FtpServer) || String.IsNullOrEmpty(_systemGlobalData.FtpUserName) || String.IsNullOrEmpty(_systemGlobalData.FtpPassword)) IsValid = false;
+
+            var imgidxFolder = DNNrocketUtils.SystemThemeImgDirectoryMapPath();
+            if (!Directory.Exists(imgidxFolder)) Directory.CreateDirectory(imgidxFolder);
+
         }
 
         public bool IsValid { get; private set; }

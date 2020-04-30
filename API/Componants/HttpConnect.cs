@@ -18,6 +18,9 @@ namespace DNNrocketAPI.Componants
         private string _baseuri;
         public HttpConnect(string selectedSystemKey)
         {
+            var imgidxFolder = DNNrocketUtils.SystemThemeImgDirectoryMapPath();
+            if (!Directory.Exists(imgidxFolder)) Directory.CreateDirectory(imgidxFolder);
+
             _systemData = new SystemData(selectedSystemKey);
             _systemGlobalData = new SystemGlobalData();
             _baseuri = _systemGlobalData.PublicAppThemeURI.TrimStart('/').TrimEnd('/') + "/" + _systemData.SystemKey;
