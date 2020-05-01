@@ -108,7 +108,10 @@ namespace DNNrocket.Country
         {
             _passSettings.Add("saved", "true");
             var objCtrl = new DNNrocketController();
-            objCtrl.SaveData("countrysettings", "SETTINGS", postInfo, -1, _rocketInterface.DatabaseTable);
+            postInfo.GUIDKey = "countrysettings";
+            postInfo.TypeCode = "SETTINGS";
+            postInfo.ModuleId = -1;
+            objCtrl.SaveData(postInfo, _rocketInterface.DatabaseTable);
         }
 
     }

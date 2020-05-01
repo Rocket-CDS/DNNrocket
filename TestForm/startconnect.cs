@@ -83,7 +83,10 @@ namespace DNNrocket.TestForm
 
             info.AddListItem(listname);
 
-            objCtrl.SaveData("testform", "TEST", info);  //TestFormSave so if we add multiple it works correct.
+            info.GUIDKey = "testform";
+            info.TypeCode = "TEST";
+            info.ModuleId = -1;
+            objCtrl.SaveData(info);
 
             var passSettings = postInfo.ToDictionary();
 
@@ -118,7 +121,10 @@ namespace DNNrocket.TestForm
         public void TestFormSave(SimplisityInfo postInfo)
         {
             var objCtrl = new DNNrocketController();
-            objCtrl.SaveData("testform", "TEST", postInfo);
+            postInfo.GUIDKey = "testform";
+            postInfo.TypeCode = "TEST";
+            postInfo.ModuleId = -1;
+            objCtrl.SaveData(postInfo);
         }
 
         public void Delete(SimplisityInfo postInfo)
@@ -179,8 +185,10 @@ namespace DNNrocket.TestForm
                     }
                 }
 
-                objCtrl.SaveData("testform", "TEST", info);  //TestFormSave so if we add multiple it works correct.
-
+                info.GUIDKey = "testform";
+                info.TypeCode = "TEST";
+                info.ModuleId = -1;
+                objCtrl.SaveData(info);
             }
 
             var passSettings = postInfo.ToDictionary();
@@ -242,8 +250,10 @@ namespace DNNrocket.TestForm
 
                 }
 
-                objCtrl.SaveData("testform", "TEST", info);  //TestFormSave so if we add multiple it works correct.
-
+                info.GUIDKey = "testform";
+                info.TypeCode = "TEST";
+                info.ModuleId = -1;
+                objCtrl.SaveData(info);
             }
 
             var passSettings = postInfo.ToDictionary();

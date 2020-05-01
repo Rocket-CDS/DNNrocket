@@ -513,58 +513,19 @@ namespace DNNrocketAPI
             return nbi;
         }
 
-        public SimplisityInfo SaveData(string GuidKey, string typeCode, SimplisityInfo sInfo, int moduleId = -1, string tableName = "DNNrocket")
-        {
-            var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey,"", tableName);
-            if (info == null)
-            {
-                // do read, so it creates the record and do a new read.
-                info = GetData(GuidKey, typeCode, sInfo.Lang, moduleId ,false, tableName);
-            }
-            if (info != null)
-            {
-                info.PortalId = sInfo.PortalId;
-                info.ModuleId = moduleId;
-                info.TypeCode = typeCode;
-                info.XMLData = sInfo.XMLData;
-                info.GUIDKey = GuidKey;
-                info.TextData = sInfo.TextData;
-                info.ParentItemId = sInfo.ParentItemId;
-                info.XrefItemId = sInfo.XrefItemId;
-                info.Lang = "";
-                info.UserId = sInfo.UserId;
-                info.SortOrder = sInfo.SortOrder;
-
-                info.RemoveLangRecord();
-                var itemId = Update(info, tableName);
-                var nbi2 = GetRecordLang(itemId, sInfo.Lang, false, tableName);
-                if (nbi2 != null)
-                {
-                    nbi2.XMLData = sInfo.GetLangXml();
-                    nbi2.TypeCode = info.TypeCode + "LANG";
-                    nbi2.GUIDKey = "";
-                    nbi2.ModuleId = moduleId;
-                    nbi2.ParentItemId = itemId;
-                    Update(nbi2, tableName);
-                }
-
-                RebuildIndex(sInfo, tableName);
-                RebuildLangIndex(sInfo.PortalId, itemId, tableName);
-
-                info = GetData(GuidKey, typeCode, sInfo.Lang, moduleId, false, tableName);
-            }
-
-            return info;
-        }
-
+        /// <summary>
+        /// Save SimplsityInfo class into base data and lang data.
+        /// </summary>
+        /// <param name="sInfo"></param>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
         public SimplisityInfo SaveData(SimplisityInfo sInfo, string tableName = "DNNrocket")
         {
-            var info = GetInfo(sInfo.ItemID, sInfo.Lang, tableName);
-            if (info == null)
-            {
-                // create Info class in memory
-                info = GetData(sInfo.TypeCode, sInfo.ItemID, sInfo.Lang, sInfo.ModuleId, tableName);
-            }
+            var requiredLang =  sInfo.Lang;
+            if (requiredLang == "") requiredLang = DNNrocketUtils.GetEditCulture();
+
+            var info = GetInfo(sInfo.ItemID, requiredLang, tableName);
+            if (info == null) info = sInfo;
             if (info != null)
             {
                 info.PortalId = sInfo.PortalId;
@@ -582,7 +543,7 @@ namespace DNNrocketAPI
                 info.RemoveLangRecord();
                 var itemId = Update(info, tableName);
 
-                var nbi2 = GetRecordLang(itemId, sInfo.Lang, false, tableName);
+                var nbi2 = GetRecordLang(itemId, requiredLang);
                 if (nbi2 != null)
                 {
                     nbi2.XMLData = sInfo.GetLangXml();
@@ -590,19 +551,39 @@ namespace DNNrocketAPI
                     nbi2.GUIDKey = "";
                     nbi2.ModuleId = sInfo.ModuleId;
                     nbi2.ParentItemId = itemId;
+                    nbi2.Lang = requiredLang;
+                    Update(nbi2, tableName);
+                }
+                else
+                {
+                    nbi2 = new SimplisityRecord();
+                    nbi2.XMLData = sInfo.GetLangXml();
+                    nbi2.TypeCode = info.TypeCode + "LANG";
+                    nbi2.GUIDKey = "";
+                    nbi2.ModuleId = sInfo.ModuleId;
+                    nbi2.ParentItemId = itemId;
+                    nbi2.Lang = requiredLang;
                     Update(nbi2, tableName);
                 }
 
                 RebuildIndex(sInfo, tableName);
                 RebuildLangIndex(sInfo.PortalId, itemId, tableName);
 
-                info = GetInfo(info.ItemID, sInfo.Lang, tableName);
+                info = GetInfo(itemId, requiredLang, tableName);
             }
 
             return info;
         }
 
-
+        /// <summary>
+        /// Get SimplisityInfo and return a memory class if not in DB.
+        /// </summary>
+        /// <param name="typeCode"></param>
+        /// <param name="ItemId"></param>
+        /// <param name="lang"></param>
+        /// <param name="moduleId"></param>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
         public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int moduleId = -1, string tableName = "DNNrocket")
         {
             var info = GetInfo(ItemId, lang, tableName);
@@ -614,13 +595,11 @@ namespace DNNrocketAPI
                 info.TypeCode = typeCode;
                 info.ModuleId = moduleId;
                 info.PortalId = PortalSettings.Current.PortalId;
-                info.ItemID = Update(info, tableName);
                 info.SortOrder = info.ItemID * 100;
 
                 var nbilang = new SimplisityRecord();
                 nbilang.GUIDKey = "";
                 nbilang.TypeCode = typeCode + "LANG";
-                nbilang.ParentItemId = info.ItemID;
                 nbilang.Lang = lang;
                 info.ModuleId = moduleId;
                 nbilang.PortalId = PortalSettings.Current.PortalId;

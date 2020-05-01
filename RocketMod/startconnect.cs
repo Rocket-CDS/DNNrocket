@@ -514,15 +514,8 @@ namespace RocketMod
             // do Backup
             DoBackUp();
 
-            if (_dataAppThemeMod.AppTheme.DataType == 1)
-            {
-                _articleData = new ArticleData(_dataModuleParams.ModuleId, _editLang);
-            }
-            else
-            {
-                _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
-            }
-
+             _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
+            
             // do Save
             _passSettings.Add("saved", "true");
             _articleData.DebugMode = _systemData.DebugMode;
@@ -560,14 +553,7 @@ namespace RocketMod
 
         public void DeleteArticle()
         {
-            if (_appThemeMod.AppTheme.DataType == 1)
-            {
-                _articleData = new ArticleData(_dataModuleParams.ModuleId, _editLang);
-            }
-            else
-            {
-                _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
-            }
+            _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
             _articleData.Delete();
             _selectedItemId = -1;
             _UserParams.TrackClear(_systemKey);
@@ -581,7 +567,7 @@ namespace RocketMod
             try
             {
                 var articleData = new ArticleData(-1, _dataModuleParams.ModuleId, _editLang);
-                _selectedItemId = articleData.ItemId;
+                _selectedItemId = articleData.ItemID;
 
                 CacheFileUtils.ClearAllCache();
 
@@ -635,20 +621,23 @@ namespace RocketMod
 
                 var strOut = "-- NO DATA -- Itemid: " + _selectedItemId;
 
-                if (_dataAppThemeMod.AppTheme.DataType == 1)
+                if (_selectedItemId <= 0)
                 {
-                    _articleData = new ArticleData(_dataModuleParams.ModuleId, _editLang);
-                }
-                else
-                {
-                    _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
+                    _articleDataList.Populate();
+                    if (_articleDataList.DataList.Count() > 0)
+                    {
+                        var articleData = _articleDataList.GetArticleList().First();
+                        _selectedItemId = articleData.ItemID;
+                    }
                 }
 
+                 _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
                 _articleData.ImageFolder = _dataModuleParams.ImageFolder;
                 _articleData.DocumentFolder = _dataModuleParams.DocumentFolder;
                 _articleData.AppTheme = _dataModuleParams.AppThemeFolder;
                 _articleData.AppThemeVersion = _dataModuleParams.AppThemeVersion;
                 _articleData.AppThemeRelPath = _dataModuleParams.AppThemeFolderRel;
+                _articleData.AppThemeDataType = _dataAppThemeMod.AppTheme.DataType;
 
                 _passSettings.Add("datatype", _dataAppThemeMod.AppTheme.DataType.ToString());
 
@@ -678,10 +667,6 @@ namespace RocketMod
                 }
 
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleData, _passSettings, new SimplisityInfo(), _systemData.DebugMode);
-
-                // if the module settings change to a single form, use the last edited record.
-                _settingsData.Info.SetXmlProperty("genxml/selecteditemid", _selectedItemId.ToString());
-                _settingsData.Update();
 
                 return strOut;
             }
@@ -897,7 +882,7 @@ namespace RocketMod
                 AssignEditLang(); //check for change of langauge
                 var appTheme = new AppTheme(_systemData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
                 if (!appTheme.EnableSettings) return "";
-                var razorTempl = appTheme.GetTemplate("settings"); // new module, so settings theme will be systemtheme.
+                var razorTempl = appTheme.GetTemplate("settings.cshtml"); // new module, so settings theme will be systemtheme.
                 _settingsData = GetSettingsData();
                 return DNNrocketUtils.RazorDetail(razorTempl, _settingsData, _passSettings, null, true);
             }
