@@ -283,7 +283,7 @@ namespace Simplisity
                 var l = recLang.ToDictionary();
                 foreach (var d in l)
                 {
-                    rtnDictionary.Add(d.Key,d.Value);
+                    if (!rtnDictionary.ContainsKey(d.Key)) rtnDictionary.Add(d.Key,d.Value);
                 }
             }
             return rtnDictionary;
