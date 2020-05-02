@@ -276,18 +276,14 @@ namespace Simplisity
                         {
                             rtnDictionary = AddToDictionary(rtnDictionary, RootNodeName + "/" + nod.Name + "/*");
                         }
-                    }
+                    }                
                 }
-                nods = XMLDoc.SelectNodes(RootNodeName + "/lang/*");
-                if (nods != null)
+
+                var recLang = GetLangRecord();
+                var l = recLang.ToDictionary();
+                foreach (var d in l)
                 {
-                    foreach (XmlNode nod in nods)
-                    {
-                        if (nod.Attributes["list"] == null)
-                        {
-                            rtnDictionary = AddToDictionary(rtnDictionary, RootNodeName + "/" + nod.Name + "/*");
-                        }
-                    }
+                    rtnDictionary.Add(d.Key,d.Value);
                 }
             }
             return rtnDictionary;
