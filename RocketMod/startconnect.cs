@@ -49,6 +49,7 @@ namespace RocketMod
             paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
 
             var rtnDic = new Dictionary<string, string>();
+            var downloadDict = new Dictionary<string, string>();
 
             switch (paramCmd)
             {
@@ -227,6 +228,12 @@ namespace RocketMod
                 case "backup_deletebackupall":
                     strOut = DeleteAllBackUp();
                     break;
+                case "backup_save":
+                    strOut = SaveBackUp();
+                    break;
+                case "backup_downloadbackup":
+                    downloadDict =  DownloadBackUp();
+                    break;                    
 
 
                 case "templatebackup_dobackup":
@@ -245,13 +252,21 @@ namespace RocketMod
 
             }
 
-            if (strOut == "" && !_moduleParams.Exists)
+            if (downloadDict.Count > 0)
             {
-                return DNNrocketUtils.ReturnString(GetSetup());
+                return downloadDict;
+            }
+            else
+            {
+                if (strOut == "" && !_moduleParams.Exists)
+                {
+                    return DNNrocketUtils.ReturnString(GetSetup());
+                }
+
+                rtnDic.Add("outputhtml", strOut);
+                return rtnDic;
             }
 
-            rtnDic.Add("outputhtml", strOut);
-            return rtnDic;
         }
 
         public string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
@@ -340,6 +355,7 @@ namespace RocketMod
                     paramCmd != "rocketmod_getdata" &&
                     paramCmd != "rocketmodedit_saveapptheme" &&
                     paramCmd != "rocketmodedit_saveconfig" &&
+                    paramCmd != "backup_downloadbackup" &&
                     paramCmd != "rocketmodedit_saveappthemeconfig")
                 {
                     return "rocketmodedit_selectapptheme";
@@ -408,7 +424,29 @@ namespace RocketMod
             _commandSecurity.AddCommand("rocketmodapptheme_apptheme", true);
             _commandSecurity.AddCommand("rocketmodapptheme_saveeditor", true);
 
+            _commandSecurity.AddCommand("rocketmodapptheme_geteditor", true);
+            _commandSecurity.AddCommand("rocketmodapptheme_apptheme", true);
+            _commandSecurity.AddCommand("rocketmodapptheme_getdetail", true);
+            _commandSecurity.AddCommand("rocketmodapptheme_saveeditor", true);
+            _commandSecurity.AddCommand("rocketmodapptheme_removemodtemplate", true);
+            _commandSecurity.AddCommand("module_export", true);
+            _commandSecurity.AddCommand("module_import", true);
+            _commandSecurity.AddCommand("module_copylanguage", true);
+            _commandSecurity.AddCommand("module_validate", true);
+
             _commandSecurity.AddCommand("backup_get", true);
+            _commandSecurity.AddCommand("backup_dobackup", true);
+            _commandSecurity.AddCommand("backup_deletebackup", true);
+            _commandSecurity.AddCommand("backup_restorebackup", true);
+            _commandSecurity.AddCommand("backup_deletebackupall", true);
+            _commandSecurity.AddCommand("backup_save", true);
+            _commandSecurity.AddCommand("backup_downloadbackup", true);
+
+            _commandSecurity.AddCommand("templatebackup_dobackup", true);
+            _commandSecurity.AddCommand("templatebackup_deletebackup", true);
+            _commandSecurity.AddCommand("templatebackup_restorebackup", true);
+            _commandSecurity.AddCommand("templatebackup_deletebackupall", true);
+
 
             return _commandSecurity.HasSecurityAccess(paramCmd);
         }
@@ -1271,8 +1309,8 @@ namespace RocketMod
                 _rocketInterface.Info.ModuleId = _moduleid;
                 if (_passSettings.ContainsKey("searchpattern")) _passSettings.Remove("searchpattern");
                 _passSettings.Add("searchpattern", "*_backup.xml");
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("backup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", _systemData.DebugMode);
-                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info, _passSettings, new SimplisityInfo(), _systemData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("backup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info, _passSettings, new SimplisityInfo(), true);
             }
             catch (Exception ex)
             {
@@ -1318,6 +1356,21 @@ namespace RocketMod
                 DNNrocketUtils.ClearAllCache();
             }
             return GetAppModTheme();
+        }
+        private string SaveBackUp()
+        {
+            var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/hidden/filemappath"));
+            if (File.Exists(filemappath))
+            {
+
+                var backupData = new BackUpData(filemappath);
+                backupData.BackUpText = _postInfo.GetXmlProperty("backup/backuptext");
+                backupData.Save();
+                CacheUtilsDNN.ClearAllCache();
+                DNNrocketUtils.ClearAllCache();
+            }
+
+            return GetBackUp();
         }
 
         private string RestoreBackUp()
@@ -1393,9 +1446,23 @@ namespace RocketMod
             var backupTemplates = new BackUpModuleTemplates(fileMapPath, _moduleid, _systemKey);
             backupTemplates.BackUp();
         }
+        private Dictionary<string, string> DownloadBackUp()
+        {
+            var rtnDic = new Dictionary<string, string>();
+            var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/filemappath"));
+            if (File.Exists(filemappath))
+            {
+                var backupData = new BackUpModuleTemplates(filemappath, _moduleid, _systemKey);
 
-            #endregion
-
-
+                rtnDic.Add("filenamepath", backupData.FileMapPath);
+                rtnDic.Add("downloadname", "DataBackUp" + backupData.ModuleId + ".xml");
+            }
+            return rtnDic;
         }
+
+
+        #endregion
+
+
     }
+}

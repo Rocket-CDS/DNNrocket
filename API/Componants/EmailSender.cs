@@ -19,7 +19,7 @@ namespace DNNrocketAPI.Componants
             if (EmailData.RazorTemplateName != "")
             {
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(EmailData.RazorTemplateName, EmailData.TemplateControlRelPath, EmailData.ThemeFolder, EmailData.CultureCode, EmailData.VersionFolder, EmailData.DebugMode);
-                EmailData.EmailBody = DNNrocketUtils.RazorRender(EmailData.Model, razorTempl, EmailData.DebugMode);
+                EmailData.EmailBody = DNNrocketUtils.RazorRender(EmailData.Model, razorTempl, true);
                 return EmailData.EmailBody;
             }
             return "";

@@ -53,7 +53,7 @@ namespace Simplisity
         {
             var rtn = (SimplisityRecord)base.Clone();
             rtn.XMLData = GetXmlNode(RootNodeName + "/lang");
-            if (rtn.XMLData == "") rtn.XMLData = "<" + RootNodeName + "/>";
+            if (rtn != null && rtn.XMLData == "") rtn.XMLData = "<" + RootNodeName + "/>";
             return rtn;
         }
 
@@ -264,14 +264,31 @@ namespace Simplisity
         /// <returns></returns>
         public new Dictionary<string, string> ToDictionary()
         {
-            var temp = new SimplisityInfo();
-            temp.XMLData = XMLData;
-            var tempRec = new SimplisityRecord(temp);
-            var rtnDictionary = tempRec.ToDictionary();
-            var langRecord = GetLangRecord();
-            foreach (var d in langRecord.ToDictionary())
+            var rtnDictionary = new Dictionary<string, string>();
+            if (XMLDoc != null)
             {
-                if (!rtnDictionary.ContainsKey(d.Key)) rtnDictionary.Add(d.Key, d.Value);
+                var nods = XMLDoc.SelectNodes(RootNodeName + "/*");
+                if (nods != null)
+                {
+                    foreach (XmlNode nod in nods)
+                    {
+                        if (nod.Attributes["list"] == null)
+                        {
+                            rtnDictionary = AddToDictionary(rtnDictionary, RootNodeName + "/" + nod.Name + "/*");
+                        }
+                    }
+                }
+                nods = XMLDoc.SelectNodes(RootNodeName + "/lang/*");
+                if (nods != null)
+                {
+                    foreach (XmlNode nod in nods)
+                    {
+                        if (nod.Attributes["list"] == null)
+                        {
+                            rtnDictionary = AddToDictionary(rtnDictionary, RootNodeName + "/" + nod.Name + "/*");
+                        }
+                    }
+                }
             }
             return rtnDictionary;
         }

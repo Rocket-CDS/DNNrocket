@@ -650,7 +650,7 @@ namespace Simplisity
         }
 
 
-        private Dictionary<string, string> AddToDictionary(Dictionary<string, string> inpDictionary, string xpath)
+        protected Dictionary<string, string> AddToDictionary(Dictionary<string, string> inpDictionary, string xpath)
         {
             if (XMLDoc != null)
             {

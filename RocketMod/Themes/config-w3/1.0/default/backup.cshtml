@@ -34,26 +34,37 @@
                     <th>@ResourceKey("DNNrocket.systemkey")</th>
                     <th></th>
                     <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
 
                 @{
                     var BackUpDataList = new BackUpDataList("rocketmod" + Model.ModuleId, Model.GetSetting("searchpattern"));
+                    var lp = 1;
                     foreach (var moduleFolder in BackUpDataList.SystemKeyFolderList)
                     {
                         foreach (var BackUpData in BackUpDataList.GetBackUpList(moduleFolder))
                         {
-                            <tr>
-                                <td>
-                                    @BackUpData.BackUpDate.ToString("yyyy-MM-dd HH:mm:ss")
-                                </td>
-                                <td>@moduleFolder</td>
-                                <td style="width:74px;">
-                                    <div class="w3-button w3-padding simplisity_confirmclick" title="@ResourceKey("DNNrocket.restore")" s-confirm="@ResourceKey("RocketTools.restorebackup", "", "Confirm")" s-cmd="backup_restorebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-recycle"></i></div>
-                                </td>
-                                <td style="width:74px;">
-                                    <div class="w3-button w3-padding simplisity_confirmclick" title="@ResourceKey("DNNrocket.delete")" s-confirm="@ResourceKey("RocketTools.deletebackup", "", "Confirm")" s-cmd="backup_deletebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-trash-alt"></i></div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        @BackUpData.BackUpDate.ToString("yyyy-MM-dd HH:mm:ss")
+                                    </td>
+                                    <td>@moduleFolder</td>
+                                    <td style="width:74px;">
+                                        <div class="w3-button w3-padding savebutton@(lp) simplisity_click" style="display:none;" title="@ResourceKey("DNNrocket.save")" s-post=".backuptext@(lp)" s-cmd="backup_save" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-save"></i></div>
+                                    </td>
+                                    <td class="backuptext@(lp)">@TextBox(BackUpData.Info, "backup/backuptext", "class='w3-input w3-border backuptextbox ' idx='" + lp + "' maxlength='500' autocomplete='off' ","",false,lp)</td>
+                                    <td style="width:74px;">
+                                        <a class="w3-button w3-padding simplisity_filedownload" title="@ResourceKey("DNNrocket.download")" s-cmd="backup_downloadbackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-download"></i></a>
+                                    </td>
+                                    <td style="width:74px;">
+                                        <div class="w3-button w3-padding w3-text-green simplisity_confirmclick" title="@ResourceKey("DNNrocket.restore")" s-confirm="@ResourceKey("RocketTools.restorebackup", "", "Confirm")" s-cmd="backup_restorebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-recycle"></i></div>
+                                    </td>
+                                    <td style="width:74px;">
+                                        <div class="w3-button w3-padding w3-text-red simplisity_confirmclick" title="@ResourceKey("DNNrocket.delete")" s-confirm="@ResourceKey("RocketTools.deletebackup", "", "Confirm")" s-cmd="backup_deletebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-trash-alt"></i></div>
+                                    </td>
+                                </tr>
+                            lp += 1;
                         }
                     }
                 }
@@ -66,6 +77,11 @@
 <script>
 
     $(document).ready(function () {
+
+        $(".backuptextbox").keypress(function () {
+            var idx = $(this).attr('idx');
+            $('.savebutton' + idx).show();
+        });
 
     });
 

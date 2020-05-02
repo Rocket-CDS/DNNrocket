@@ -84,6 +84,8 @@ namespace RocketMod.Componants
 
         private string GetXMLExportRecords(string entityTypeCode, string searchFilter)
         {
+            if (searchFilter == "") searchFilter = " and R1.ModuleId = " + _moduleParams.ModuleId + " ";
+
             var tablename = _rocketInterface.DatabaseTable;
             if (tablename == "") tablename = "DNNrocket";
             var dataList = _objCtrl.GetList(-1, _moduleParams.ModuleId, entityTypeCode, searchFilter, "", "", 0, 0, 0, 0, tablename);
@@ -124,6 +126,8 @@ namespace RocketMod.Componants
 
         private List<SimplisityInfo> GetExportList(string entityTypeCode, string searchFilter)
         {
+            if (searchFilter == "") searchFilter = " and R1.ModuleId = " + _moduleParams.ModuleId + " ";
+
             var rtnList = new List<SimplisityInfo>();
             var tablename = _rocketInterface.DatabaseTable;
             if (tablename == "") tablename = "DNNrocket";

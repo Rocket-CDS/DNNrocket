@@ -38,7 +38,7 @@ namespace DNNrocketAPI.Componants
                 var BackUpXml = FileUtils.ReadFile(FileMapPath);
                 Info = new SimplisityInfo();
                 Info.XMLData = BackUpXml;
-                var nodList = Info.XMLDoc.SelectNodes("backup/*");
+                var nodList = Info.XMLDoc.SelectNodes("backup/item");
                 foreach (XmlNode nod in nodList)
                 {
                     var importXml = nod.OuterXml;
@@ -81,6 +81,7 @@ namespace DNNrocketAPI.Componants
         public void Save()
         {
             var backUpData = "<backup>";
+            backUpData += "<backuptext><![CDATA[" + BackUpText + "]]></backuptext>";
             foreach (var i in ItemList)
             {
                 backUpData += i.ToXmlItem();
@@ -95,6 +96,7 @@ namespace DNNrocketAPI.Componants
         public SimplisityInfo Info { get; set; }
         public DateTime BackUpDate { get; set; }
         public string SystemKey { get; set; }
+        public string BackUpText { get; set; }
         public string DatabaseTable
         {
             get
