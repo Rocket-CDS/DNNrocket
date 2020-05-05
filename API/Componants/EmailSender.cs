@@ -14,11 +14,11 @@ namespace DNNrocketAPI.Componants
             EmailData = emailData;
             RenderEmailBody();
         }
-        public string RenderEmailBody()
+        public string RenderEmailBody(bool debugmode = true)
         {
             if (EmailData.RazorTemplateName != "")
             {
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(EmailData.RazorTemplateName, EmailData.TemplateControlRelPath, EmailData.ThemeFolder, EmailData.CultureCode, EmailData.VersionFolder, EmailData.DebugMode);
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(EmailData.RazorTemplateName, EmailData.TemplateControlRelPath, EmailData.ThemeFolder, EmailData.CultureCode, EmailData.VersionFolder, debugmode);
                 EmailData.EmailBody = DNNrocketUtils.RazorRender(EmailData.Model, razorTempl, true);
                 return EmailData.EmailBody;
             }

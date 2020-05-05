@@ -52,8 +52,9 @@ namespace Simplisity
         public SimplisityRecord GetLangRecord()
         {
             var rtn = (SimplisityRecord)base.Clone();
-            rtn.XMLData = GetXmlNode(RootNodeName + "/lang");
-            if (rtn != null && rtn.XMLData == "") rtn.XMLData = "<" + RootNodeName + "/>";
+            var xmlData = GetXmlNode(RootNodeName + "/lang");
+            if (xmlData == null || xmlData == "") xmlData = "<" + RootNodeName + "/>";
+            rtn.XMLData = xmlData;
             return rtn;
         }
 
