@@ -114,6 +114,10 @@ $(document).on("simplisitypostgetcompleted", simplisity_nbxgetCompleted); // ass
 
 function simplisity_nbxgetCompleted(e) {
 
+    // see if we need sessionParams saved on return
+    if ((typeof e.sviewstate !== 'undefined') && e.sviewstate !== "") {        
+        window.localStorage.setItem('simplisity_sessionparams', $(e.sviewstate).val());
+    }
 
     if ((typeof e.safter !== 'undefined') && e.safter !== '') {
         var funclist = e.safter.split(',');
@@ -140,7 +144,7 @@ function simplisity_nbxgetCompleted(e) {
 
 }
 
-function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype) {
+function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, sviewstate) {
 
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
@@ -239,7 +243,8 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                         sindex: sindex,
                         sloader: shideloader,
                         sreturn: sreturn,
-                        safter: safter
+                        safter: safter,
+                        sviewstate: sviewstate
                     });
                 }
             }
@@ -303,7 +308,8 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
         var shideloader = $(element).attr("s-hideloader");
         var sdropdownlist = $(element).attr("s-dropdownlist");
         var sreturntype = $(element).attr("s-returntype");
-
+        var sviewstate = $(element).attr("s-viewstate");
+        
         if (typeof scmd === 'undefined') {
             scmd = '';
         }
@@ -325,7 +331,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
             }
         }
 
-        simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype);
+        simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, sviewstate);
     }
     else {
         $(element).attr('s-stop', '');
@@ -760,7 +766,29 @@ function simplisity_injectscript(value) {
 function simplisity_systemkey() {
     return $('#simplisity_systemkey').val();
 }
-
+function simplisity_sessionjson() {
+    var rtn = window.localStorage.getItem('simplisity_sessionparams');
+    var out = '{"null":"null"}';
+    if (rtn && typeof rtn !== 'undefined' && rtn !== '') {
+        out = simplisity_decode(rtn);
+    }
+    try {
+        var json = JSON.stringify(eval("(" + out + ")"));
+        return json;
+    }
+    catch (err) {
+        var json2 = JSON.stringify(eval("({'null':'null'})"));
+        return json2;
+    }
+}
+function simplisity_sessionvalue(key) {
+    var result = JSON.parse(simplisity_sessionjson());
+    x = result[key];
+    return JSON.stringify(x);
+}
+function simplisity_sessionremove() {
+    window.localStorage.setItem('simplisity_sessionparams','');
+}
 
 async function initFileUpload(fileuploadselector) {
 

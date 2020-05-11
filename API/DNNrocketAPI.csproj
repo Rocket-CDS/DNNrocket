@@ -129,7 +129,6 @@
     <Compile Include="Componants\CacheUtilsDNN.cs" />
     <Compile Include="Componants\FastReplacer.cs" />
     <Compile Include="Componants\FastReplacerSnippet.cs" />
-    <Compile Include="Componants\SessionParams.cs" />
     <Compile Include="Componants\SchedulerUtils.cs" />
     <Compile Include="Componants\PluginDataList.cs" />
     <Compile Include="Componants\AppThemeModule.cs" />
@@ -209,7 +208,7 @@
     <None Include="Documents\DNNrocket-Module-Interfaces-DNN.docx" />
     <None Include="Documents\File-Upload.docx" />
     <None Include="Documents\Filtering_Sorting_Data.docx" />
-    <None Include="Documents\UserParams.docx" />
+    <None Include="Documents\SessionParams.docx" />
     <None Include="Documents\ManualSortList.docx" />
     <None Include="Documents\RocketScheduler.docx" />
     <None Include="downloadfile.ashx" />

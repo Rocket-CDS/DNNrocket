@@ -123,13 +123,13 @@ namespace DNNrocketAPI.render
 
         public IEncodedString RenderPagingTemplate(string scmd, string spost, SimplisityRazor model, string sreturn = "", string versionFolder = "1.0")
         {
-            if (model.SessionParamData == null)
+            if (model.SessionParamViewState != "")
             {
-                model.SessionParamData = new SimplisityInfo();
+                //var info = new SimplisityInfo(GeneralUtils.DeCode(model.SessionParamViewState));
+                //info.SetXmlProperty("genxml/s-paging-return", sreturn);
+                //info.SetXmlProperty("genxml/s-paging-cmd", scmd);
+                //info.SetXmlProperty("genxml/s-paging-post", spost);
             }
-            model.SessionParamData.SetXmlProperty("genxml/s-paging-return", sreturn);
-            model.SessionParamData.SetXmlProperty("genxml/s-paging-cmd", scmd);
-            model.SessionParamData.SetXmlProperty("genxml/s-paging-post", spost);
             return RenderTemplate("Paging.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model, versionFolder);
         }
 
@@ -144,7 +144,7 @@ namespace DNNrocketAPI.render
             var strOut = DNNrocketUtils.RazorRender(model, razorTempl, debugMode);
             return new RawString(strOut);
         }
-        public IEncodedString RenderTemplateInfo(string razorTemplateName, SimplisityInfo info, Dictionary<string, object> dataObjects = null, string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string lang = "", string versionFolder = "1.0", Dictionary<string, string> settings = null, SimplisityInfo SessionParams = null, bool debugmode = false)
+        public IEncodedString RenderTemplateInfo(string razorTemplateName, SimplisityInfo info, Dictionary<string, object> dataObjects = null, string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string lang = "", string versionFolder = "1.0", Dictionary<string, string> settings = null, SessionParams SessionParams = null, bool debugmode = false)
         {
             var strOut = DNNrocketUtils.RazorDetailByName(razorTemplateName, info, dataObjects, lang, templateControlRelPath, themeFolder, versionFolder, settings, SessionParams, debugmode);
             return new RawString(strOut);

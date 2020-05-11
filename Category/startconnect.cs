@@ -107,16 +107,17 @@ namespace DNNrocket.Category
             try
             {
 
-                var page = postInfo.GetXmlPropertyInt("genxml/hidden/page");
-                var pagesize = postInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
+                //var page = postInfo.GetXmlPropertyInt("genxml/hidden/page");
+                //var pagesize = postInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
 
-                var searchtext = postInfo.GetXmlProperty("genxml/textbox/searchtext");
-                var SessionParams = new SimplisityInfo();
-                SessionParams.SetXmlProperty("genxml/textbox/searchtext", searchtext);
+                //var searchtext = postInfo.GetXmlProperty("genxml/textbox/searchtext");
+                //var SessionParams = new SessionParams(postInfo);
+                //SessionParams.SetXmlProperty("genxml/textbox/searchtext", searchtext);
 
-                var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, -1, _editlang, searchtext,"",true,true, systemInfo.ItemID);
+                //var categoryList = CategoryUtils.GetCategoryList(postInfo.PortalId, -1, _editlang, searchtext,"",true,true, systemInfo.ItemID);
 
-                return RenderList(categoryList, postInfo, 0, templateControlRelPath, SessionParams);
+                //return RenderList(categoryList, postInfo, 0, templateControlRelPath, SessionParams);
+                return "UNDER DEV";
             }
             catch (Exception ex)
             {
@@ -124,7 +125,7 @@ namespace DNNrocket.Category
             }
         }
 
-        public String RenderList(List<Category> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath, SimplisityInfo SessionParams)
+        public String RenderList(List<Category> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath, string sessionParamViewState = "")
         {
             try
             {
@@ -140,7 +141,7 @@ namespace DNNrocket.Category
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
-                strOut = DNNrocketUtils.RazorList(razorTempl, list.Cast<object>().ToList(), passSettings, SessionParams);
+                strOut = DNNrocketUtils.RazorList(razorTempl, list.Cast<object>().ToList(), passSettings, sessionParamViewState);
 
                 return strOut;
             }
@@ -166,7 +167,7 @@ namespace DNNrocket.Category
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings, systemInfo);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings, null);
 
                 return strOut;
             }

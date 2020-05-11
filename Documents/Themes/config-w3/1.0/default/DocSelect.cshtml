@@ -25,7 +25,7 @@
                 <div class="w3-row w3-margin-bottom">
                     <span class="w3-col m2 rocket-buttonbar w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#documentfileupload').trigger('click')">@ButtonText(ButtonTypes.upload)</span>                    
                     <span class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8" onclick="dnnrocketdocs_usedocument()">@ButtonText(ButtonTypes.use)</span>
-                    <span class="w3-col m2 rocket-buttonbar w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketdocs_delete" s-before="dnnrocketdocs_deletedocument" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-post="#dnnrocket_deletedocumentlist" s-fields='{"theme":"config-w3","interfacekey":"documentupload","documentfolder":"@Model.SessionParamData.GetXmlProperty("genxml/hidden/uploadrelfolder")","singleselect":"true","autoreturn":"false"}'>@ButtonText(ButtonTypes.delete)</span>
+                    <span class="w3-col m2 rocket-buttonbar w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketdocs_delete" s-before="dnnrocketdocs_deletedocument" s-after="dnnrocketdocs_showthelist" s-return="#dnnrocket_documentselectwrapper" s-post="#dnnrocket_deletedocumentlist" s-fields='{"theme":"config-w3","interfacekey":"documentupload","documentfolder":"@Model.GetSetting("genxml/hidden/uploadrelfolder")","singleselect":"true","autoreturn":"false"}'>@ButtonText(ButtonTypes.delete)</span>
                 </div>
 
                 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
@@ -53,7 +53,7 @@
                         <p>@lp</p>
                         @if (UserUtils.IsInRole("Administrator"))
                         {
-                            <p class="w3-small  w3-hide-small">@Model.SessionParamData.GetXmlProperty("genxml/hidden/documentfolder")</p>
+                    <p class="w3-small  w3-hide-small">@Model.GetSetting("genxml/hidden/documentfolder")</p>
                         }
                     </div>
                 </div>
@@ -102,7 +102,7 @@
 
     function dnnrocketdocs_selectdocument(element) {
 
-    @if (Model.SessionParamData.GetXmlPropertyBool("genxml/hidden/documentselectsingle")) {
+    @if (Model.GetSettingBool("genxml/hidden/documentselectsingle")) {
         @: dnnrocketdocs_clearselection();
     }
 
@@ -115,7 +115,7 @@
         $(element).find('.dnnrocket-docselector').show();
     }
 
-    @if (Model.SessionParamData.GetXmlPropertyBool("genxml/hidden/documentselectautoreturn")) {
+    @if (Model.GetSettingBool("genxml/hidden/documentselectautoreturn")) {
         @: dnnrocketdocs_usedocument();
     }
 }

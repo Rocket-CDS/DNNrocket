@@ -83,10 +83,10 @@ namespace RocketMod
                     strOut = GetDashBoard();
                     break;
                 case "rocketmodedit_editarticlelist":
-                    strOut = GetArticleEdit(true);
+                    strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_articlesearch":
-                    strOut = GetArticleEdit(false);
+                    strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_addarticle":
                     strOut = AddArticle();
@@ -100,11 +100,11 @@ namespace RocketMod
                     break;
                 case "rocketmodedit_savearticlelist":
                     SaveArticleList();
-                    strOut = GetArticleEdit(true);
+                    strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_deletearticle":
                     DeleteArticle();
-                    strOut = GetArticleEdit(true);
+                    strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_addimage":
                     SaveArticle();
@@ -620,7 +620,7 @@ namespace RocketMod
 
         }
 
-        public String GetArticleEdit(bool loadCachedHeader = true)
+        public String GetArticleEdit()
         {
             try
             {
@@ -633,7 +633,7 @@ namespace RocketMod
                 {
                     if (_selectedItemId <= 0)
                     {
-                        return GetArticleList(loadCachedHeader);
+                        return GetArticleList();
                     }
 
                     return GetArticle();
@@ -704,7 +704,7 @@ namespace RocketMod
                     if (!_passSettings.ContainsKey(s.Key)) _passSettings.Add(s.Key, s.Value);
                 }
 
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleData, _passSettings, new SimplisityInfo(), _systemData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleData, _passSettings, new SessionParams(_paramInfo), _systemData.DebugMode);
 
                 return strOut;
             }
@@ -715,7 +715,7 @@ namespace RocketMod
 
         }
 
-        public String GetArticleList(bool loadCachedHeader)
+        public String GetArticleList()
         {
 
             try
@@ -727,7 +727,7 @@ namespace RocketMod
                 var debugmode = false;
                 if (_systemData.DebugMode || _moduleParams.CacheDisbaled) debugmode = true;
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", "/DesktopModules/DNNrocket/SystemThemes/" + _systemData.SystemKey, _dataModuleParams.AppThemeFolder, _editLang, _dataModuleParams.AppThemeVersion, debugmode);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleDataList, _passSettings, _articleDataList.SessionParamData.Info, _systemData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleDataList, _passSettings, new SessionParams(_paramInfo), _systemData.DebugMode);
                 return strOut;
             }
             catch (Exception ex)
@@ -758,7 +758,7 @@ namespace RocketMod
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, _editLang, "1.0", _systemData.DebugMode);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, fieldsData, passSettings,null, _systemData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, fieldsData, passSettings, null, _systemData.DebugMode);
 
                 if (strOut == "") strOut = "ERROR: No data returned for EditfieldsData() : " + _rocketInterface.TemplateRelPath + "/Themes/" + _rocketInterface.DefaultTheme + "/default/" + _rocketInterface.DefaultTemplate;
                 return strOut;
@@ -887,18 +887,18 @@ namespace RocketMod
         public String ActivateSortOrder()
         {
             _articleDataList.SessionParamData.ActivateItemSort(_paramInfo.GetXmlPropertyInt("genxml/hidden/itemid"));
-            return GetArticleList(true);
+            return GetArticleList();
         }
         public String CancelSortOrder()
         {
             _articleDataList.SessionParamData.CancelItemSort();
-            return GetArticleList(true);
+            return GetArticleList();
         }
         public String MoveSortOrder()
         {
             var toId = _paramInfo.GetXmlPropertyInt("genxml/hidden/itemid");
             _articleDataList.SortOrderMove(toId);
-            return GetArticleList(true);
+            return GetArticleList();
         }
 
         public String ResetDataRocketMod(int moduleid)
@@ -1108,7 +1108,7 @@ namespace RocketMod
                         // list display
                         var razorTempl = _appThemeMod.GetTemplateRazor("view.cshtml");
 
-                        var articleDataList = new ArticleDataList(_paramInfo, DNNrocketUtils.GetCurrentCulture(),true);
+                        var articleDataList = new ArticleDataList(_paramInfo, DNNrocketUtils.GetCurrentCulture(), true);
 
                         foreach (var s in _moduleParams.ModuleSettings)
                         {
@@ -1121,7 +1121,7 @@ namespace RocketMod
 
                         passSettings.Add("tabid", _tabid.ToString());
 
-                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings.DictionaryData, articleDataList.SessionParamData.Info);
+                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings.DictionaryData, new SessionParams(_paramInfo));
                     }
 
 
@@ -1146,7 +1146,7 @@ namespace RocketMod
             {
                 _rocketInterface.Info.ModuleId = _moduleid;
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",_systemData.DebugMode);                
-                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_passSettings, new SimplisityInfo(), _systemData.DebugMode);
+                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_passSettings, null, _systemData.DebugMode);
             }
             catch (Exception ex)
             {
@@ -1310,7 +1310,7 @@ namespace RocketMod
                 if (_passSettings.ContainsKey("searchpattern")) _passSettings.Remove("searchpattern");
                 _passSettings.Add("searchpattern", "*_backup.xml");
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("backup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info, _passSettings, new SimplisityInfo(), true);
+                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info, _passSettings, null, true);
             }
             catch (Exception ex)
             {

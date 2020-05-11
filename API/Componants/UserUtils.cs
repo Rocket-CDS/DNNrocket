@@ -412,12 +412,21 @@ namespace DNNrocketAPI.Componants
             return false;
         }
 
-        public static DotNetNuke.Entities.Users.UserInfo GetValidUser(int PortalId, string username, string password)
+        public static UserInfo GetValidUser(int PortalId, string username, string password)
         {
-            var userLoginStatus = new DotNetNuke.Security.Membership.UserLoginStatus();
-            return DotNetNuke.Entities.Users.UserController.ValidateUser(PortalId, username, password, "", "", "", ref userLoginStatus);
+            var userLoginStatus = new UserLoginStatus();
+            return UserController.ValidateUser(PortalId, username, password, "", "", "", ref userLoginStatus);
         }
 
+        public static bool IsValidUser(int PortalId, string username)
+        {
+            var u = UserController.GetUserByName(PortalId, username);
+            if (u != null)
+            {
+                return true;
+            }
+            return false;
+        }
         public static bool IsValidUser(int PortalId, string username, string password)
         {
             var u = GetValidUser(PortalId, username, password);
