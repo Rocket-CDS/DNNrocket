@@ -45,7 +45,6 @@ var debugmode = false;
         $('#simplisity_loader').remove();
         $('#simplisity_fileuploadlist').remove();
         $('#simplisity_params').remove();
-        $('#simplisity_searchfields').remove();
         $('#simplisity_systemkey').remove();
         $('#simplisity_cmdurl').remove();
 
@@ -57,7 +56,6 @@ var debugmode = false;
 
         elementstr += '<input id="simplisity_fileuploadlist" type="hidden" value="" />';
         elementstr += '<input id="simplisity_params" type="hidden" value="" />';
-        elementstr += '<input id="simplisity_searchfields" type="hidden" value="" />';
         elementstr += '<input id="simplisity_systemkey" type="hidden" value="' + settings.systemkey + '" />';
         elementstr += '<input id="simplisity_cmdurl" type="hidden" value="' + cmdurl + '" />';
 
@@ -98,26 +96,9 @@ function panelAjaxFunction(panelelement) {
     }
 }
 
-function IsValidTrackCmd(cmd) {
-    var tcmd = $('#simplisity_validtrackcmd').val();
-    if (tcmd === ',,') {
-        return true;
-    }
-    if (tcmd.includes(',' + cmd + ',')) {
-        return true;
-    }
-    return false;
-}
-
-
 $(document).on("simplisitypostgetcompleted", simplisity_nbxgetCompleted); // assign a completed event for the ajax calls
 
 function simplisity_nbxgetCompleted(e) {
-
-    // see if we need sessionParams saved on return
-    if ((typeof e.sviewstate !== 'undefined') && e.sviewstate !== "") {        
-        window.localStorage.setItem('simplisity_sessionparams', $(e.sviewstate).val());
-    }
 
     if ((typeof e.safter !== 'undefined') && e.safter !== '') {
         var funclist = e.safter.split(',');
@@ -125,6 +106,13 @@ function simplisity_nbxgetCompleted(e) {
             window[funclist[i]]();
         }
     }
+
+    $('.simplisity_sessionfield').each(function () {
+        var v = simplisity_getSessionField($(this).attr('id'));
+        if (v !== '') {
+            $(this).val(v);
+        }
+    });
 
     // clear any uploaded files after completed call
     $('input[id*="simplisity_fileuploadlist"]').val('');
@@ -144,12 +132,16 @@ function simplisity_nbxgetCompleted(e) {
 
 }
 
-function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, sviewstate) {
+function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype) {
 
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
         console.log('[simplisityPost()] scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist:--->    ', scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist);
     }
+
+    // Load sessionParams into fieldParams to post to server. 
+    // These are to persist data across session, for search, sort, paging, etc.
+    simplisity_sessionpost();
 
     var systemkey = simplisity_getsystemkey(sfields);
 
@@ -243,8 +235,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                         sindex: sindex,
                         sloader: shideloader,
                         sreturn: sreturn,
-                        safter: safter,
-                        sviewstate: sviewstate
+                        safter: safter
                     });
                 }
             }
@@ -270,11 +261,23 @@ async function callBeforeFunction(element) {
     return;
 }
 
+function callSessionFields(element) {
+    if ((typeof $(element).attr('s-sessionfield') !== 'undefined') && $(element).attr('s-sessionfield') !== '') {
+        var funclist = $(element).attr('s-sessionfield').split(',');
+        for (var i = 0; i < funclist.length; i++) {
+            simplisity_setSessionField(funclist[i].replace('#', ''), $(funclist[i]).val());
+        }
+    }
+    return;
+}
+
 async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
 
     $('#simplisity_loader').show();
 
     await callBeforeFunction(element);
+
+    await callSessionFields(element);
 
     if ($(element).attr("s-stop") !== 'stop') {
 
@@ -308,7 +311,6 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
         var shideloader = $(element).attr("s-hideloader");
         var sdropdownlist = $(element).attr("s-dropdownlist");
         var sreturntype = $(element).attr("s-returntype");
-        var sviewstate = $(element).attr("s-viewstate");
         
         if (typeof scmd === 'undefined') {
             scmd = '';
@@ -331,7 +333,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
             }
         }
 
-        simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, sviewstate);
+        simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype);
     }
     else {
         $(element).attr('s-stop', '');
@@ -353,13 +355,6 @@ function ConvertParamToJSON(sfields) {
     if (typeof sfields !== 'undefined' && sfields !== '') {
         var obj = JSON.parse(sfields);
         jsonDataF = mergeJson({}, jsonDataF, obj);
-    }
-
-    // add any search fields
-    var searchfields = $('#simplisity_searchfields').val();
-    if (typeof searchfields !== 'undefined' && searchfields !== '') {
-        var obj1 = JSON.parse(searchfields);
-        jsonDataF = mergeJson({}, jsonDataF, obj1);
     }
 
     // add param fields
@@ -475,13 +470,6 @@ function ConvertFormToJSON(spost, slist, sfields) {
     if (typeof sfields !== 'undefined' && sfields !== '') {
         var obj = JSON.parse(sfields);
         jsonDataF = mergeJson({}, jsonDataF, obj);
-    }
-
-    // add any search fields
-    var searchfields = $('#simplisity_searchfields').val();
-    if (typeof searchfields !== 'undefined' && searchfields !== '') {
-        var obj1 = JSON.parse(searchfields);
-        jsonDataF = mergeJson({}, jsonDataF, obj1);
     }
 
     // add param fields
@@ -716,23 +704,6 @@ var simplisity_isSelect = function (element) {
     return nodeName === 'SELECT';
 };
 
-function simplisity_searchfields() {
-    // save and search fields to cookie.
-    var searchfields = '{';
-    var found = false;
-    $('.simplisity_searchfield').each(function (index) {
-        searchfields = searchfields + '"' + $(this).attr('id') + '":"' + $(this).val() + '",';
-        found = true;
-    });
-    searchfields = searchfields.substring(0, searchfields.length - 1) + '}';
-
-    if (found) {
-        $('#simplisity_searchfields').val(searchfields);
-        return searchfields;
-    }
-    return '';
-}
-
 function simplisity_encode(value) {
     var rtn = '';
     if (typeof value !== 'undefined' && value !== '') {
@@ -767,10 +738,10 @@ function simplisity_systemkey() {
     return $('#simplisity_systemkey').val();
 }
 function simplisity_sessionjson() {
-    var rtn = window.localStorage.getItem('simplisity_sessionparams');
+    var rtn = window.sessionStorage.getItem('simplisity_sessionparams');
     var out = '{"null":"null"}';
     if (rtn && typeof rtn !== 'undefined' && rtn !== '') {
-        out = simplisity_decode(rtn);
+        out = rtn;
     }
     try {
         var json = JSON.stringify(eval("(" + out + ")"));
@@ -781,14 +752,34 @@ function simplisity_sessionjson() {
         return json2;
     }
 }
-function simplisity_sessionvalue(key) {
-    var result = JSON.parse(simplisity_sessionjson());
-    x = result[key];
-    return JSON.stringify(x);
-}
 function simplisity_sessionremove() {
-    window.localStorage.setItem('simplisity_sessionparams','');
+    window.sessionStorage.removeItem('simplisity_sessionparams');
 }
+function simplisity_sessionpost() {
+    // This will post ALL data fields in the sessionParams back to the server in the param fields.
+    var p = JSON.parse(simplisity_sessionjson());
+    for (var key of Object.keys(p)) {
+        simplisity_setParamField(key, p[key]);
+    }
+}
+function simplisity_setSessionField(fieldkey, fieldvalue) {
+    if (typeof fieldvalue !== 'undefined' && typeof fieldkey !== 'undefined') {
+        var jsonParams = simplisity_sessionjson();
+        var obj = {};
+        if (typeof jsonParams !== 'undefined' && jsonParams !== '') {
+            obj = JSON.parse(jsonParams);
+        }
+        obj[fieldkey] = fieldvalue;
+        window.sessionStorage.setItem('simplisity_sessionparams', JSON.stringify(obj));
+    }
+}
+function simplisity_getSessionField(fieldkey) {
+    var result = JSON.parse(simplisity_sessionjson());
+    return simplisity_getField(JSON.stringify(result), fieldkey);
+}
+
+
+
 
 async function initFileUpload(fileuploadselector) {
 
@@ -882,32 +873,25 @@ function generateFileUniqueIdentifier(data) {
     return result;
 }
 
+
 function simplisity_assignevents(cmdurl) {
 
     $('.simplisity_change').each(function (index) {
-
         $(this).attr("s-index", index);
 
         $(this).unbind("change");
         $(this).change(function () {
-
-            simplisity_searchfields();
-
             simplisity_callserver(this, cmdurl);
         });
-
     });
 
     $('.simplisity_click').each(function (index) {
-
         $(this).attr("s-index", index);
 
         $(this).unbind("click");
         $(this).click(function () {
-            simplisity_searchfields();
             simplisity_callserver(this, cmdurl);
         });
-
     });
 
     $('.simplisity_confirmclick').each(function (index) {
@@ -922,7 +906,6 @@ function simplisity_assignevents(cmdurl) {
         });
 
     });
-
 
     $('.simplisity_removelistitem').each(function (index) {
         $(this).attr("s-index", index);

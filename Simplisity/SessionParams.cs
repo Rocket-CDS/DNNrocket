@@ -24,6 +24,10 @@ namespace Simplisity
                 Set(d.Key, d.Value);
             }
         }
+        public string GetCommand()
+        {
+            return Get("s-cmd");
+        }
         public void Set(string key, string value)
         {
             Info.SetXmlProperty("r/" + key, value);
@@ -55,7 +59,10 @@ namespace Simplisity
             {
                 foreach (XmlNode nod in nodList)
                 {
-                    jsonText += "'" + nod.Name + "':'" + nod.InnerText + "',";
+                    if (nod.InnerText != "")
+                    {
+                        jsonText += "'" + nod.Name + "':'" + nod.InnerText + "',";
+                    }
                 }
                 jsonText = jsonText.TrimEnd(',');
             }
