@@ -342,11 +342,11 @@ namespace DNNrocketAPI.Componants
                     sInfo.FromXmlItem(xmlDownload);
                     rtnList.Add(sInfo);
                     // download index image, to display on list.
-                    var imgLogo = sInfo.GetXmlNode("genxml/hidden/logo");
+                    var imgLogo = sInfo.GetXmlProperty("genxml/hidden/logo");
                     var localMapPath = DNNrocketUtils.SystemThemeImgDirectoryMapPath() + "\\" + imgLogo;
                     if (!File.Exists(localMapPath))
                     {
-                        uri = _baseuri + "/idx/" + imgLogo;
+                        uri = _baseuri + "/xml/" + imgLogo;
                         DownloadImageToFile(uri, localMapPath);
                     }
                 }
