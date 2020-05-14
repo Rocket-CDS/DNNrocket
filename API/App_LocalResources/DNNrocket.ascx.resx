@@ -537,4 +537,10 @@
   <data name="backuptemplates.Text" xml:space="preserve">
     <value>Template BackUp</value>
   </data>
+  <data name="cancelsearch.Icon" xml:space="preserve">
+    <value>&lt;i  title="Cancel Search" class="fas fa-times fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cancelsearch.Text" xml:space="preserve">
+    <value>Cancel Search</value>
+  </data>
 </root>
