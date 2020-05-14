@@ -109,7 +109,7 @@ function simplisity_nbxgetCompleted(e) {
 
     $('.simplisity_sessionfield').each(function () {
         var v = simplisity_getSessionField($(this).attr('id'));
-        if (v !== '') {
+        if (typeof v !== 'undefined' && v !== '') {
             $(this).val(v);
         }
     });

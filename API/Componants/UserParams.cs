@@ -34,7 +34,7 @@ namespace DNNrocketAPI.Componants
                     Record.GUIDKey = _guidKey;
                     Record.UserId = UserId;
 
-                    Record = _objCtrl.SaveRecord(Record, _tableName);
+                    Record = Save();
                 }
                 CacheUtilsDNN.SetCache(_guidKey, Record);
             }
@@ -65,10 +65,14 @@ namespace DNNrocketAPI.Componants
             Set(systemKey + "-s-menu-cmd" + ModuleId, "");
             Set(systemKey + "-s-menu-paraminfo" + ModuleId, "");
         }
-        public void Save()
+        public SimplisityRecord Save()
         {
-            _objCtrl.SaveRecord(Record, _tableName);
-            CacheUtilsDNN.SetCache(_guidKey, Record);
+            if (UserId > 0)
+            {
+                CacheUtilsDNN.SetCache(_guidKey, Record);
+                return _objCtrl.SaveRecord(Record, _tableName);
+            }
+            return new SimplisityRecord();
         }
         public void Delete()
         {
