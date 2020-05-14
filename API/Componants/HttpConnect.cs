@@ -113,11 +113,11 @@ namespace DNNrocketAPI.Componants
                 // download index image, to display on list.
                 foreach (var sRec2 in idxList)
                 {
-                    var imgLogo = sRec2.GetXmlNode("genxml/hidden/logo");
+                    var imgLogo = sRec2.GetXmlProperty("genxml/hidden/logo");
                     var localMapPath = DNNrocketUtils.SystemThemeImgDirectoryMapPath() + "\\" + imgLogo;
                     if (!File.Exists(localMapPath))
                     {
-                        uri = _baseuri + "/idx/" + imgLogo;
+                        uri = _baseuri + "/xml/" + imgLogo;
                         DownloadImageToFile(uri, localMapPath);
                     }
                 }
