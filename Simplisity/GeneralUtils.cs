@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -326,6 +328,25 @@ namespace Simplisity
             }
 
             return isNum;
+        }
+        public static bool IsUriValid(string uri, UriKind uriKind  = UriKind.RelativeOrAbsolute, bool checkexists = false)
+        {
+            var isformatted = Uri.IsWellFormedUriString(uri, uriKind);            
+            if (checkexists)
+            {
+                bool br = false;
+                try
+                {
+                    IPHostEntry ipHost = Dns.GetHostEntry(uri);
+                    br = true;
+                }
+                catch (SocketException se)
+                {
+                    br = false;
+                }
+                return br;
+            }
+            return isformatted;
         }
 
         // IsDate culture Function
