@@ -560,6 +560,7 @@ namespace DNNrocketAPI.Componants
                 var r = new SimplisityRecord();
                 r.PortalId = p.PortalID;
                 r.SetXmlProperty("genxml/portalname", p.PortalName);
+                r.SetXmlProperty("genxml/email", p.Email);
                 rtnList.Add(r);
             }
             return rtnList;
