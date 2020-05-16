@@ -11,8 +11,9 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
-
-
+@{ 
+    var backupidentical = (string)CacheUtils.GetCache("backupidentical");
+}
 
     <div class="w3-row w3-padding">
         <div class="w3-row w3-padding ">
@@ -21,6 +22,11 @@
         <div class="w3-row w3-padding w3-small w3-light-grey">
             @ResourceKey("RocketMod.backup", "", "Help")
         </div>
+
+        @if (backupidentical != "" && GeneralUtils.IsDate(backupidentical, DNNrocketUtils.GetCurrentCulture()))
+        {
+    <div class="w3-row w3-padding w3-text-blue">@ResourceKey("RocketMod.lastbackupidentical")&nbsp;:&nbsp;@Convert.ToDateTime(backupidentical).ToShortDateString() @Convert.ToDateTime(backupidentical).ToShortTimeString()</div>
+        }
 
         <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
             <b class="w3-large">@ResourceKey("DNNrocket.backupdata")</b>
@@ -45,25 +51,25 @@
                     {
                         foreach (var BackUpData in BackUpDataList.GetBackUpList(moduleFolder))
                         {
-                                <tr>
-                                    <td>
-                                        @BackUpData.BackUpDate.ToString("yyyy-MM-dd HH:mm:ss")
-                                    </td>
-                                    <td>@moduleFolder</td>
-                                    <td style="width:74px;">
-                                        <div class="w3-button w3-padding savebutton@(lp) simplisity_click" style="display:none;" title="@ResourceKey("DNNrocket.save")" s-post=".backuptext@(lp)" s-cmd="backup_save" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-save"></i></div>
-                                    </td>
-                                    <td class="backuptext@(lp)">@TextBox(BackUpData.Info, "backup/backuptext", "class='w3-input w3-border backuptextbox ' idx='" + lp + "' maxlength='500' autocomplete='off' ","",false,lp)</td>
-                                    <td style="width:74px;">
-                                        <a class="w3-button w3-padding simplisity_filedownload" title="@ResourceKey("DNNrocket.download")" s-cmd="backup_downloadbackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-download"></i></a>
-                                    </td>
-                                    <td style="width:74px;">
-                                        <div class="w3-button w3-padding w3-text-green simplisity_confirmclick" title="@ResourceKey("DNNrocket.restore")" s-confirm="@ResourceKey("RocketTools.restorebackup", "", "Confirm")" s-cmd="backup_restorebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-recycle"></i></div>
-                                    </td>
-                                    <td style="width:74px;">
-                                        <div class="w3-button w3-padding w3-text-red simplisity_confirmclick" title="@ResourceKey("DNNrocket.delete")" s-confirm="@ResourceKey("RocketTools.deletebackup", "", "Confirm")" s-cmd="backup_deletebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-trash-alt"></i></div>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    @BackUpData.BackUpDate.ToString("yyyy-MM-dd HH:mm:ss")
+                                </td>
+                                <td>@moduleFolder</td>
+                                <td style="width:74px;">
+                                    <div class="w3-button w3-padding savebutton@(lp) simplisity_click" style="display:none;" title="@ResourceKey("DNNrocket.save")" s-post=".backuptext@(lp)" s-cmd="backup_save" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-save"></i></div>
+                                </td>
+                                <td class="backuptext@(lp)">@TextBox(BackUpData.Info, "backup/backuptext", "class='w3-input w3-border backuptextbox ' idx='" + lp + "' maxlength='500' autocomplete='off' ", "", false, lp)</td>
+                                <td style="width:74px;">
+                                    <a class="w3-button w3-padding simplisity_filedownload" title="@ResourceKey("DNNrocket.download")" s-cmd="backup_downloadbackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-download"></i></a>
+                                </td>
+                                <td style="width:74px;">
+                                    <div class="w3-button w3-padding w3-text-green simplisity_confirmclick" title="@ResourceKey("DNNrocket.restore")" s-confirm="@ResourceKey("RocketTools.restorebackup", "", "Confirm")" s-cmd="backup_restorebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-recycle"></i></div>
+                                </td>
+                                <td style="width:74px;">
+                                    <div class="w3-button w3-padding w3-text-red simplisity_confirmclick" title="@ResourceKey("DNNrocket.delete")" s-confirm="@ResourceKey("RocketTools.deletebackup", "", "Confirm")" s-cmd="backup_deletebackup" s-fields='{"filemappath":"@GeneralUtils.EnCode(BackUpData.FileMapPath)"}'><i class="fas fa-trash-alt"></i></div>
+                                </td>
+                            </tr>
                             lp += 1;
                         }
                     }

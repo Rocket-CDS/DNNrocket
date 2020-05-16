@@ -279,4 +279,7 @@
   <data name="reindexsortorder.Text" xml:space="preserve">
     <value>ReIndex Sort Order</value>
   </data>
+  <data name="lastbackupidentical.Text" xml:space="preserve">
+    <value>The last attempted Backup was identical to the previous backup.</value>
+  </data>
 </root>

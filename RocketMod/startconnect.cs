@@ -38,7 +38,7 @@ namespace RocketMod
         private AppThemeModule _dataAppThemeMod;
         private ArticleData _articleData;
         private AppThemeDataList _appThemeDataList;
-        private UserParams _UserParams;
+        private UserParams _userParams;
         private string _tableName;
         private ArticleDataList _articleDataList;
 
@@ -95,7 +95,7 @@ namespace RocketMod
                     strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_savearticle":
-                    SaveArticle();
+                    SaveArticle(true);
                     strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_savearticlelist":
@@ -107,17 +107,17 @@ namespace RocketMod
                     strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_addimage":
-                    SaveArticle();
+                    SaveArticle(false);
                     RocketModAddListItem("imagelist" + _paramInfo.GetXmlProperty("genxml/hidden/imgfieldname"));
                     strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_adddocument":
-                    SaveArticle();
+                    SaveArticle(false);
                     RocketModAddListItem("documentlist" + _paramInfo.GetXmlProperty("genxml/hidden/docfieldname"));
                     strOut = GetArticleEdit();
                     break;
                 case "rocketmodedit_addlink":
-                    SaveArticle();
+                    SaveArticle(false);
                     RocketModAddListItem("linklist" + _paramInfo.GetXmlProperty("genxml/hidden/linkfieldname"));
                     strOut = GetArticleEdit();
                     break;
@@ -295,8 +295,8 @@ namespace RocketMod
             _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
             if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid");
 
-            _UserParams = new UserParams();
-            _UserParams.ModuleId = _moduleid; // use moduleid for tracking commands. 
+            _userParams = new UserParams();
+            _userParams.ModuleId = _moduleid; // use moduleid for tracking commands. 
 
             if (CheckSecurity(paramCmd))
             {
@@ -308,12 +308,12 @@ namespace RocketMod
                     }
                     else
                     {
-                        var menucmd = _UserParams.GetCommand(_systemKey);
+                        var menucmd = _userParams.GetCommand(_systemKey);
                         if (menucmd != "")
                         {
                             paramCmd = menucmd;
-                            _paramInfo = _UserParams.GetParamInfo(_systemKey);
-                            var interfacekey = _UserParams.GetInterfaceKey(_systemKey);
+                            _paramInfo = _userParams.GetParamInfo(_systemKey);
+                            var interfacekey = _userParams.GetInterfaceKey(_systemKey);
                             _rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
                         }
                     }
@@ -322,7 +322,7 @@ namespace RocketMod
                 {
                     if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
                     {
-                        _UserParams.Track(_systemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
+                        _userParams.Track(_systemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
                     }
                 }
             }
@@ -547,10 +547,10 @@ namespace RocketMod
             rtnDic.Add("fileext", "");
             return rtnDic;
         }
-        public void SaveArticle()
+        public void SaveArticle(bool doBackup)
         {
             // do Backup
-            DoBackUp();
+            if (doBackup) DoBackUp();
 
              _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
             
@@ -594,8 +594,8 @@ namespace RocketMod
             _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
             _articleData.Delete();
             _selectedItemId = -1;
-            _UserParams.TrackClear(_systemKey);
-            _UserParams.Save();
+            _userParams.TrackClear(_systemKey);
+            _userParams.Save();
 
             CacheFileUtils.ClearAllCache();
         }
@@ -1412,6 +1412,8 @@ namespace RocketMod
                 var backupData = new BackUpData(fileNameTemp);
                 backupData.BackUp(saveList);
 
+                CacheUtils.SetCache("backupidentical", "");
+
                 var l = BackUpDataList.GetBackUpFileMapPathList("dnnrocketmodule");
                 if (l.Count > 0)
                 {
@@ -1423,6 +1425,10 @@ namespace RocketMod
                             // move new file and remove temp file
                             var fileName = DNNrocketUtils.BackUpNewFileName("rocketmod" + _moduleid, _systemKey);
                             File.Copy(fileNameTemp, fileName);
+                        }
+                        else
+                        {
+                            CacheUtils.SetCache("backupidentical", DateTime.Now.ToString("O"));
                         }
                         File.Delete(fileNameTemp);
                     }
