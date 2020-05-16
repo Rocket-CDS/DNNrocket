@@ -47,27 +47,26 @@ namespace DNNrocketAPI.Componants
             // ************THIS DOES NOT WORK************
             // we seem to be missing some data format.
 
-            var portalId = -1;
-            //var portalSettings = DNNrocketUtils.GetCurrentPortalSettings();
-            //var serverPath = "";
-            //var childPath = "";
-            //var description = "RocketECommerce";
-            //var keyWords = "";
-            //var homeDirectory = "Portals/[PortalID]";
-            //var template = new PortalController.PortalTemplateInfo("Blank Website.template", DNNrocketUtils.GetCurrentCulture());
-            //var isChild = false;
+            var portalSettings = DNNrocketUtils.GetCurrentPortalSettings();
+            var serverPath = "";
+            var childPath = "";
+            var description = "RocketECommerce";
+            var keyWords = "";
+            var homeDirectory = "";
+            var template = new PortalController.PortalTemplateInfo(DNNrocketUtils.MapPath("/Portals/_default/Blank Website.template"), DNNrocketUtils.GetCurrentCulture());
+            var isChild = false;
 
-            ////Create Portal
-            //var portalId = PortalController.Instance.CreatePortal(portalName,
-            //                                         UserUtils.GetCurrentUserId(),
-            //                                         description,
-            //                                         keyWords,
-            //                                         template,
-            //                                         homeDirectory,
-            //                                         strPortalAlias,
-            //                                         serverPath,
-            //                                         serverPath + childPath,
-            //                                         isChild);
+            //Create Portal
+            var portalId = PortalController.Instance.CreatePortal(portalName,
+                                                     UserUtils.GetCurrentUserId(),
+                                                     description,
+                                                     keyWords,
+                                                     template,
+                                                     homeDirectory,
+                                                     strPortalAlias,
+                                                     serverPath,
+                                                     "",
+                                                     isChild);
             return portalId;
         }
 
