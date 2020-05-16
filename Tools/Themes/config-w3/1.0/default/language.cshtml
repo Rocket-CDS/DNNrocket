@@ -79,7 +79,7 @@
             </tr>
 
             @{
-                var BackUpDataList = new BackUpDataList("rocketlang");
+                var BackUpDataList = new BackUpDataList("rocketlang","*.*");
                 foreach (var moduleFolder in BackUpDataList.SystemKeyFolderList)
                 {
                     foreach (var BackUpData in BackUpDataList.GetBackUpList(moduleFolder))

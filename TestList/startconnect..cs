@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DNNrocketAPI;
 using DNNrocketAPI.Componants;
 using Simplisity;
@@ -88,30 +89,15 @@ var rtnDic = new Dictionary<string, string>();
         {
             try
             {
-
-                var page = paramInfo.GetXmlPropertyInt("genxml/hidden/page");
-                var pagesize = paramInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
-
-                var searchtext = postInfo.GetXmlProperty("genxml/textbox/searchtext");
-
+                var sessionParams = new SessionParams(paramInfo);
                 var filter = "";
-                if (searchtext != "")
-                {
-                   // filter = " and inputlang1.GuidKey like '%" + searchtext + "%'";
-                }
-
 
                 var objCtrl = new DNNrocketController();
                 var listcount = objCtrl.GetListCount(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang);
-                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang, "",0, page, pagesize, listcount);
+                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang, "",0, sessionParams.Page, sessionParams.PageSize, listcount);
+                sessionParams.RowCount = listcount;
 
-                var SessionParams = new SimplisityInfo();
-                SessionParams.SetXmlProperty("genxml/hidden/rowcount", listcount.ToString());
-                SessionParams.SetXmlProperty("genxml/hidden/page", page.ToString());
-                SessionParams.SetXmlProperty("genxml/hidden/pagesize", pagesize.ToString());
-                SessionParams.SetXmlProperty("genxml/textbox/searchtext", searchtext);
-
-                return RenderList(list, paramInfo, 0, template, SessionParams);
+                return RenderList(list, paramInfo, 0, template, sessionParams);
             }
             catch (Exception ex)
             {
@@ -119,7 +105,7 @@ var rtnDic = new Dictionary<string, string>();
             }
         }
 
-        public String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string template, SimplisityInfo SessionParams)
+        public String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string template, SessionParams SessionParams)
         {
             try
             {
@@ -135,7 +121,7 @@ var rtnDic = new Dictionary<string, string>();
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, template, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
-                strOut = DNNrocketUtils.RazorList(razorTempl, list, passSettings,SessionParams);
+                strOut = DNNrocketUtils.RazorList(razorTempl, list.Cast<object>().ToList(), passSettings, SessionParams);
 
                 return strOut;
             }

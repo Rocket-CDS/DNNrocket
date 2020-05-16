@@ -189,18 +189,16 @@ namespace DNNrocketAPI.Componants
                 var razorTemplate = GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, lang, versionFolder, debugmode);
                 var sessionParamViewState = "";
                 if (sessionParams != null) sessionParamViewState = sessionParams.ViewStateOut();
-                return RazorObjectRender(razorTemplate, obj, dataObjects, settings, sessionParamViewState, debugmode);
+                return RazorObjectRender(razorTemplate, obj, dataObjects, settings, sessionParams, debugmode);
             }
             return "";
         }
 
         public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
         {
-            var sessionParamViewState = "";
-            if (sessionParams != null) sessionParamViewState = sessionParams.ViewStateOut();
-            return RazorObjectRender(razorTemplate, obj, null, settings, sessionParamViewState, debugmode);
+            return RazorObjectRender(razorTemplate, obj, null, settings, sessionParams, debugmode);
         }
-        public static string RazorObjectRender(string razorTemplate, object obj, Dictionary<string, object> dataObjects = null, Dictionary<string, string> settings = null, string sessionParamViewState = "", bool debugmode = false)
+        public static string RazorObjectRender(string razorTemplate, object obj, Dictionary<string, object> dataObjects = null, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
         {
             var rtnStr = "";
             if (razorTemplate != "")
@@ -212,7 +210,7 @@ namespace DNNrocketAPI.Componants
                 l.Add(obj);
 
                 var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
-                nbRazor.SessionParamViewState = sessionParamViewState;
+                nbRazor.SessionParamsData = sessionParams;
                 nbRazor.DataObjects = dataObjects;
                 rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
             }
@@ -220,20 +218,14 @@ namespace DNNrocketAPI.Componants
             return rtnStr;
         }
 
-        [Obsolete("RazorList is deprecated, please use RazorList(string razorTemplate, List<object> objList, Dictionary<string, string> settings = null, string sessionParamViewState, bool debugmode = false) instead.")]
-        public static string RazorList(string razorTemplate, List<SimplisityInfo> objList, Dictionary<string, string> settings = null, SimplisityInfo SessionParams = null, bool debugmode = false)
-        {
-            return RazorList(razorTemplate, objList.Cast<object>().ToList(), settings, "", debugmode);
-        }
-
-        public static string RazorList(string razorTemplate, List<object> objList, Dictionary<string, string> settings = null, string sessionParamViewState = "", bool debugmode = false)
+        public static string RazorList(string razorTemplate, List<object> objList, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
         {
             var rtnStr = "";
             if (razorTemplate != "")
             {
                 if (settings == null) settings = new Dictionary<string, string>();
                 var nbRazor = new SimplisityRazor(objList, settings, HttpContext.Current.Request.QueryString);
-                nbRazor.SessionParamViewState = sessionParamViewState;
+                nbRazor.SessionParamsData = sessionParams;
                 rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
             }
             return rtnStr;

@@ -1412,7 +1412,7 @@ namespace RocketMod
                 var backupData = new BackUpData(fileNameTemp);
                 backupData.BackUp(saveList);
 
-                CacheUtils.SetCache("backupidentical", "");
+                CacheUtils.SetCache("backupidentical" + _moduleid, "");
 
                 var l = BackUpDataList.GetBackUpFileMapPathList("dnnrocketmodule");
                 if (l.Count > 0)
@@ -1428,7 +1428,7 @@ namespace RocketMod
                         }
                         else
                         {
-                            CacheUtils.SetCache("backupidentical", DateTime.Now.ToString("O"));
+                            CacheUtils.SetCache("backupidentical" + _moduleid, DateTime.Now.ToString("O"));
                         }
                         File.Delete(fileNameTemp);
                     }

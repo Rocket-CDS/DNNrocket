@@ -26,7 +26,7 @@ namespace Simplisity
         public int TabId { get; set; }
 
         public SimplisityInfo Datainfo { get; set; }
-        public string SessionParamViewState { get; set; }
+        public SessionParams SessionParamsData { get; set; }
 
         public SimplisityRazor(List<object> list, Dictionary<String, String> settings, NameValueCollection urlParams)
         {
@@ -39,7 +39,7 @@ namespace Simplisity
         public SimplisityRazor()
         {
             Settings = new Dictionary<string, string>();
-            SessionParamViewState = "";
+            SessionParamsData = null;
             var obj = new SimplisityInfo();
             var l = new List<object>();
             l.Add(obj);

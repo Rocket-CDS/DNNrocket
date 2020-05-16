@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Xml;
 
 namespace DNNrocket.System
@@ -522,7 +523,7 @@ namespace DNNrocket.System
 
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
-                strOut = DNNrocketUtils.RazorList(razorTempl, list, passSettings);
+                strOut = DNNrocketUtils.RazorList(razorTempl, list.Cast<object>().ToList(), passSettings);
 
                 return strOut;
             }
