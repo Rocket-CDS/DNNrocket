@@ -491,81 +491,6 @@ namespace DNNrocketAPI.Componants
             return Localization.GetString(Key, resourceFileRoot, lang);
         }
 
-        public static int GetPortalByModuleID(int moduleId)
-        {
-            var objMCtrl = new DotNetNuke.Entities.Modules.ModuleController();
-            var objMInfo = objMCtrl.GetModule(moduleId);
-            if (objMInfo == null) return -1;
-            return objMInfo.PortalID;
-        }
-
-        /// <summary>
-        /// GET Portals 
-        /// </summary>
-        /// <returns></returns>
-        public static List<PortalInfo> GetAllPortals()
-        {
-            var pList = new List<PortalInfo>();
-            var objPC = new DotNetNuke.Entities.Portals.PortalController();
-
-            var list = objPC.GetPortals();
-
-            if (list == null || list.Count == 0)
-            {
-                //Problem with DNN6 GetPortals when ran from scheduler.
-                PortalInfo objPInfo;
-                var flagdeleted = 0;
-
-                for (var lp = 0; lp <= 500; lp++)
-                {
-                    objPInfo = objPC.GetPortal(lp);
-                    if ((objPInfo != null))
-                    {
-                        pList.Add(objPInfo);
-                    }
-                    else
-                    {
-                        // some portals may be deleted, skip 3 to see if we've got to the end of the list.
-                        // VERY weak!!! shame!! but issue with a DNN6 version only.
-                        if (flagdeleted == 3) break;
-                        flagdeleted += 1;
-                    }
-                }
-            }
-            else
-            {
-                foreach (PortalInfo p in list)
-                {
-                    pList.Add(p);
-                }
-            }
-
-
-            return pList;
-        }
-        public static List<int> GetAllPortalIds()
-        {
-            var rtnList = new List<int>();
-            var allportals = GetAllPortals();
-            foreach (var p in allportals)
-            {
-                rtnList.Add(p.PortalID);
-            }
-            return rtnList;
-        }
-        public static List<SimplisityRecord> GetAllPortalRecords()
-        {
-            var rtnList = new List<SimplisityRecord>();
-            var allportals = GetAllPortals();
-            foreach (var p in allportals)
-            {
-                var r = new SimplisityRecord();
-                r.PortalId = p.PortalID;
-                r.XMLData = ConvertObjectToXMLString(p);
-                rtnList.Add(r);
-            }
-            return rtnList;
-        }
         /// <summary>
         /// Convert Object to XML.
         /// Exmaple:
@@ -650,59 +575,6 @@ namespace DNNrocketAPI.Componants
             }
         }
 
-        public static void CreatePortalFolder(DotNetNuke.Entities.Portals.PortalSettings PortalSettings, string FolderName)
-        {
-            bool blnCreated = false;
-
-            //try normal test (doesn;t work on medium trust, but avoids waiting for GetFolder.)
-            try
-            {
-                blnCreated = System.IO.Directory.Exists(PortalSettings.HomeDirectoryMapPath + FolderName);
-            }
-            catch (Exception ex)
-            {
-                var errmsg = ex.ToString();
-                blnCreated = false;
-            }
-
-            if (!blnCreated)
-            {
-                FolderManager.Instance.Synchronize(PortalSettings.PortalId, PortalSettings.HomeDirectory, true, true);
-                var folderInfo = FolderManager.Instance.GetFolder(PortalSettings.PortalId, FolderName);
-                if (folderInfo == null & !string.IsNullOrEmpty(FolderName))
-                {
-                    //add folder and permissions
-                    try
-                    {
-                        FolderManager.Instance.AddFolder(PortalSettings.PortalId, FolderName);
-                    }
-                    catch (Exception ex)
-                    {
-                        var errmsg = ex.ToString();
-                    }
-                    folderInfo = FolderManager.Instance.GetFolder(PortalSettings.PortalId, FolderName);
-                    if ((folderInfo != null))
-                    {
-                        int folderid = folderInfo.FolderID;
-                        DotNetNuke.Security.Permissions.PermissionController objPermissionController = new DotNetNuke.Security.Permissions.PermissionController();
-                        var arr = objPermissionController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "");
-                        foreach (DotNetNuke.Security.Permissions.PermissionInfo objpermission in arr)
-                        {
-                            if (objpermission.PermissionKey == "WRITE")
-                            {
-                                // add READ permissions to the All Users Role
-                                FolderManager.Instance.SetFolderPermission(folderInfo, objpermission.PermissionID, int.Parse(DotNetNuke.Common.Globals.glbRoleAllUsers));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        public static DotNetNuke.Entities.Portals.PortalSettings GetCurrentPortalSettings()
-        {
-            return (DotNetNuke.Entities.Portals.PortalSettings)System.Web.HttpContext.Current.Items["PortalSettings"];
-        }
 
         public static void AddRoleToModule(int portalId, int moduleid, int roleid)
         {
@@ -956,41 +828,6 @@ namespace DNNrocketAPI.Componants
         }
 
 
-        public static List<int> GetPortals()
-        {
-            var rtnList = new List<int>();
-            var controller = new PortalController();
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
-            {
-                rtnList.Add(portal.PortalID);
-            }
-            return rtnList;
-        }
-
-        public static int GetPortalId()
-        {
-            if (PortalSettings.Current == null)
-            {
-                // don't return a null or cause error by accident.  The calling mathod should test and deal with it.
-                return -1;  
-            }
-            else
-            {
-                return PortalSettings.Current.PortalId;
-            }
-        }
-
-        public static PortalSettings GetPortalSettings()
-        {
-            return GetPortalSettings(PortalSettings.Current.PortalId);
-        }
-
-        public static PortalSettings GetPortalSettings(int portalId)
-        {
-            var controller = new PortalController();
-            var portal = controller.GetPortal(portalId);
-            return new PortalSettings(portal);
-        }
 
         public static String GetResourceString(String resourcePath, String resourceKey, String resourceExt = "Text", String lang = "")
         {
@@ -1688,59 +1525,6 @@ namespace DNNrocketAPI.Componants
             response.End();
         }
 
-        [Obsolete("Method1 is deprecated, please use DefaultPortalAlias() instead.")]
-        public static string GetDefaultWebsiteDomainUrl(int portalId = -1)
-        {
-            return DefaultPortalAlias(portalId);
-        }
-
-        public static List<string> GetPortalAliases(int portalId)
-        {
-            var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
-            var rtnList = new List<string>();
-            foreach (var pa in padic)
-            {
-                if (pa.Value.PortalID == portalId)
-                {
-                    rtnList.Add(pa.Key);
-                }
-            }
-            return rtnList;
-        }
-        public static string DefaultPortalAlias(int portalId = -1)
-        {
-            if (portalId < 0)
-            {
-                return PortalSettings.Current.DefaultPortalAlias;
-            }
-            else
-            {
-                var ps = GetPortalSettings(portalId);
-                return ps.DefaultPortalAlias;
-            }
-        }
-        public static string SiteGuid()
-        {
-            return PortalSettings.Current.GUID.ToString();
-        }
-
-        public static string GetPortalAlias(string lang, int portal = -1)
-        {
-            var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
-
-            var portalalias = DefaultPortalAlias(portal);
-            foreach (var pa in padic)
-            {
-                if (pa.Value.PortalID == PortalSettings.Current.PortalId)
-                {
-                    if (lang == pa.Value.CultureCode)
-                    {
-                        portalalias = pa.Key;
-                    }
-                }
-            }
-            return portalalias;
-        }
         public static void LogException(Exception exc)
         {
             Exceptions.LogException(exc);
@@ -2080,6 +1864,71 @@ namespace DNNrocketAPI.Componants
         public static void SynchronizeModule(int moduleId)
         {
             ModuleController.SynchronizeModule(moduleId);
+        }
+
+
+        #endregion
+
+
+        #region "Portal - obsolete"
+
+        [Obsolete("Use PortalUtils instead")]
+        public static List<int> GetPortals() { return PortalUtils.GetPortals(); }
+        [Obsolete("Use PortalUtils instead")]
+        public static int GetPortalId(){return PortalUtils.GetPortalId();}
+        [Obsolete("Use PortalUtils instead")]
+        public static PortalSettings GetPortalSettings(){return PortalUtils.GetPortalSettings();}
+        [Obsolete("Use PortalUtils instead")]
+        public static PortalSettings GetPortalSettings(int portalId){return PortalUtils.GetPortalSettings(portalId);}
+        [Obsolete("Use PortalUtils instead")]
+        public static int GetPortalByModuleID(int moduleId)
+        {
+             return PortalUtils.GetPortalByModuleID(moduleId);
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static List<int> GetAllPortalIds()
+        {
+            return PortalUtils.GetAllPortalIds();
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static List<SimplisityRecord> GetAllPortalRecords()
+        {
+            return PortalUtils.GetAllPortalRecords();
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static void CreatePortalFolder(PortalSettings PortalSettings, string FolderName)
+        {
+            PortalUtils.CreatePortalFolder(PortalSettings, FolderName);
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static PortalSettings GetCurrentPortalSettings()
+        {
+            return PortalUtils.GetCurrentPortalSettings();
+        }
+        [Obsolete("Method1 is deprecated, please use PortalUtils.DefaultPortalAlias(portalId) instead.")]
+        public static string GetDefaultWebsiteDomainUrl(int portalId = -1)
+        {
+            return PortalUtils.DefaultPortalAlias(portalId);
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static List<string> GetPortalAliases(int portalId)
+        {
+            return PortalUtils.GetPortalAliases(portalId);
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static string DefaultPortalAlias(int portalId = -1)
+        {
+            return PortalUtils.DefaultPortalAlias(portalId);
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static string SiteGuid()
+        {
+            return PortalUtils.SiteGuid();
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static string GetPortalAlias(string lang, int portalid = -1)
+        {
+            return PortalUtils.GetPortalAlias(lang, portalid);
         }
 
 
