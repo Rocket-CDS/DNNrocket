@@ -129,11 +129,19 @@ namespace DNNrocketAPI.Componants
                     //  Mail.SendMail(objUser, MessageType.PasswordReminder, portalSettings);
 
                     // ************* Send email causes error in DNN ***************
-
                 }
             }
             return "";
 
+        }
+        public static bool ResetAndChangePassword(int userId, string newPassword)
+        {
+            var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, userId);
+            if (objUser != null)
+            {
+                return UserController.ResetAndChangePassword(objUser, newPassword);
+            }
+            return false;
         }
 
         public static string DoLogin(SimplisityInfo systemInfo, SimplisityInfo sInfo, string userHostAddress)
@@ -465,6 +473,15 @@ namespace DNNrocketAPI.Componants
                 rtnDic.Add(r.RoleID, r.RoleName);
             }
             return rtnDic;
+        }
+
+        public static void AddUserRole(int portalId, int userId, int roleId)
+        {
+            var u = UserController.GetUserById(portalId, userId);
+            if (u != null)
+            {
+                RoleController.Instance.AddUserRole(portalId, userId, roleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+            }
         }
 
     }

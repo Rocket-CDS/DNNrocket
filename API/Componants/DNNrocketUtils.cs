@@ -37,6 +37,7 @@ using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules.Definitions;
 using System.Drawing;
 using DotNetNuke.Services.Scheduling;
+using System.Xml.Serialization;
 
 namespace DNNrocketAPI.Componants
 {
@@ -542,7 +543,16 @@ namespace DNNrocketAPI.Componants
 
             return pList;
         }
-
+        public static List<int> GetAllPortalIds()
+        {
+            var rtnList = new List<int>();
+            var allportals = GetAllPortals();
+            foreach (var p in allportals)
+            {
+                rtnList.Add(p.PortalID);
+            }
+            return rtnList;
+        }
         public static List<SimplisityRecord> GetAllPortalRecords()
         {
             var rtnList = new List<SimplisityRecord>();
@@ -551,11 +561,49 @@ namespace DNNrocketAPI.Componants
             {
                 var r = new SimplisityRecord();
                 r.PortalId = p.PortalID;
-                r.SetXmlProperty("genxml/portalname", p.PortalName);
-                r.SetXmlProperty("genxml/email", p.Email);
+                r.XMLData = ConvertObjectToXMLString(p);
                 rtnList.Add(r);
             }
             return rtnList;
+        }
+        /// <summary>
+        /// Convert Object to XML.
+        /// Exmaple:
+        ///     var xmlString = ConvertObjectToXMLString(p);
+        ///     XElement xElement = XElement.Parse(xmlString);
+        /// </summary>
+        /// <param name="classObject"></param>
+        /// <returns></returns>
+        public static string ConvertObjectToXMLString(object classObject)
+        {
+            string xmlString = null;
+            XmlSerializer xmlSerializer = new XmlSerializer(classObject.GetType());
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                xmlSerializer.Serialize(memoryStream, classObject);
+                memoryStream.Position = 0;
+                xmlString = new StreamReader(memoryStream).ReadToEnd();
+            }
+            return xmlString;
+        }
+        /// <summary>
+        /// Convert XML to Object.
+        /// Exmaple:
+        ///     UserDetail userDetail = (UserDetail)ConvertXmlStringtoObject<UserDetail>(xmlString);
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="xmlString"></param>
+        /// <returns></returns>
+        public static T ConvertXmlStringtoObject<T>(string xmlString)
+        {
+            T classObject;
+
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+            using (StringReader stringReader = new StringReader(xmlString))
+            {
+                classObject = (T)xmlSerializer.Deserialize(stringReader);
+            }
+            return classObject;
         }
         public static string GetModuleVersion(int moduleId)
         {
@@ -1640,9 +1688,10 @@ namespace DNNrocketAPI.Componants
             response.End();
         }
 
-        public static string GetDefaultWebsiteDomainUrl()
+        [Obsolete("Method1 is deprecated, please use DefaultPortalAlias() instead.")]
+        public static string GetDefaultWebsiteDomainUrl(int portalId = -1)
         {
-            return PortalSettings.Current.DefaultPortalAlias;
+            return DefaultPortalAlias(portalId);
         }
 
         public static List<string> GetPortalAliases(int portalId)
@@ -1658,20 +1707,28 @@ namespace DNNrocketAPI.Componants
             }
             return rtnList;
         }
-        public static string DefaultPortalAlias()
+        public static string DefaultPortalAlias(int portalId = -1)
         {
-            return PortalSettings.Current.DefaultPortalAlias;
+            if (portalId < 0)
+            {
+                return PortalSettings.Current.DefaultPortalAlias;
+            }
+            else
+            {
+                var ps = GetPortalSettings(portalId);
+                return ps.DefaultPortalAlias;
+            }
         }
         public static string SiteGuid()
         {
             return PortalSettings.Current.GUID.ToString();
         }
 
-        public static string GetPortalAlias(string lang)
+        public static string GetPortalAlias(string lang, int portal = -1)
         {
             var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
 
-            var portalalias = PortalSettings.Current.DefaultPortalAlias;
+            var portalalias = DefaultPortalAlias(portal);
             foreach (var pa in padic)
             {
                 if (pa.Value.PortalID == PortalSettings.Current.PortalId)
