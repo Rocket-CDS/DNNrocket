@@ -93,7 +93,7 @@ namespace DNNrocketAPI.Componants
             {
                 if (Info.Lang != l)
                 {
-                    var dbRecord = _objCtrl.GetRecordLang(Info.ItemID, l, false, _tableName);
+                    var dbRecord = _objCtrl.GetRecordLang(Info.ItemID, l, _tableName);
                     var nodcount = 0;
                     if (dbRecord != null)
                     {

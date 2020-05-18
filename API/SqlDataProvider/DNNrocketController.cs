@@ -54,7 +54,7 @@ namespace DNNrocketAPI
             return CBO.FillObject<SimplisityRecord>(DataProvider.Instance().GetRecord(itemId, tableName));
         }
 
-        public SimplisityRecord GetRecordLang(int parentitemId, string lang = "", bool debugMode = false, string tableName = "DNNrocket")
+        public SimplisityRecord GetRecordLang(int parentitemId, string lang = "", string tableName = "DNNrocket")
         {
             if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
             SimplisityRecord rtnInfo = null;
@@ -122,7 +122,7 @@ namespace DNNrocketAPI
             {
                 foreach (var l in DNNrocketUtils.GetCultureCodeList(portalId))
                 {
-                    var objRecLang = GetRecordLang(itemId, l, true, tableName);
+                    var objRecLang = GetRecordLang(itemId, l, tableName);
                     if (objRecLang == null) objRecLang = new SimplisityInfo();
                     var info = new SimplisityInfo(objRec);
                     info.SetLangRecord(objRecLang);
@@ -343,7 +343,7 @@ namespace DNNrocketAPI
 
         public void FillEmptyLanguageFields(int baseParentItemId, String baseLang, string tableName = "DNNrocket")
         {
-            var baseInfo = GetRecordLang(baseParentItemId, baseLang, true, tableName); // do NOT take cache
+            var baseInfo = GetRecordLang(baseParentItemId, baseLang, tableName); // do NOT take cache
             if (baseInfo != null)
             {              
                 foreach (var toLang in DNNrocketUtils.GetCultureCodeList(baseInfo.PortalId))
@@ -351,7 +351,7 @@ namespace DNNrocketAPI
                     if (toLang != baseInfo.Lang)
                     {
                         var updatedata = false;
-                        var dlang = GetRecordLang(baseParentItemId, toLang, true, tableName); // do NOT take cache
+                        var dlang = GetRecordLang(baseParentItemId, toLang, tableName); // do NOT take cache
                         if (dlang != null)
                         {
                             var nodList = baseInfo.XMLDoc.SelectNodes("genxml/textbox/*");
@@ -468,7 +468,7 @@ namespace DNNrocketAPI
 
             if (info != null)
             {
-                var nbilang = GetRecordLang(info.ItemID, lang,false, tableName);
+                var nbilang = GetRecordLang(info.ItemID, lang, tableName);
                 if (nbilang == null && !readOnly)
                 {
                     //create in DB if lang is NOT in portal languages.
@@ -492,7 +492,7 @@ namespace DNNrocketAPI
                     // create portal lang records if not in DB
                     foreach (var lg in DNNrocketUtils.GetCultureCodeList(PortalSettings.Current.PortalId))
                     {
-                        nbilang = GetRecordLang(info.ItemID, lg, false, tableName);
+                        nbilang = GetRecordLang(info.ItemID, lg, tableName);
                         if (nbilang == null)
                         {
                             nbilang = new SimplisityInfo();
@@ -543,7 +543,7 @@ namespace DNNrocketAPI
                 info.RemoveLangRecord();
                 var itemId = Update(info, tableName);
 
-                var nbi2 = GetRecordLang(itemId, requiredLang);
+                var nbi2 = GetRecordLang(itemId, requiredLang, tableName);
                 if (nbi2 != null)
                 {
                     nbi2.XMLData = sInfo.GetLangXml();
@@ -552,6 +552,7 @@ namespace DNNrocketAPI
                     nbi2.ModuleId = sInfo.ModuleId;
                     nbi2.ParentItemId = itemId;
                     nbi2.Lang = requiredLang;
+                    nbi2.PortalId = info.PortalId;
                     Update(nbi2, tableName);
                 }
                 else
@@ -563,6 +564,7 @@ namespace DNNrocketAPI
                     nbi2.ModuleId = sInfo.ModuleId;
                     nbi2.ParentItemId = itemId;
                     nbi2.Lang = requiredLang;
+                    nbi2.PortalId = info.PortalId;
                     Update(nbi2, tableName);
                 }
 
