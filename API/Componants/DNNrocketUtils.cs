@@ -582,7 +582,7 @@ namespace DNNrocketAPI.Componants
             CreateRole(portalId, DNNrocketRoles.Premium);
             CreateRole(portalId, DNNrocketRoles.Administrators);
         }
-        public static void CreateRole(int portalId, string roleName, string description = "", float serviceFee = 0, int billingPeriod = -1, string billingFrequency = "N", float trialFee = 0, int trialPeriod = -1, string trialFrequency = "N", bool isPublic = false, bool isAuto = false)
+        public static void CreateRole(int portalId, string roleName, string description = "", float serviceFee = 0, int billingPeriod = 0, string billingFrequency = "M", float trialFee = 0, int trialPeriod = 0, string trialFrequency = "N", bool isPublic = false, bool isAuto = false)
         {
             var role = RoleController.Instance.GetRoleByName(portalId, roleName);
             if (role == null)

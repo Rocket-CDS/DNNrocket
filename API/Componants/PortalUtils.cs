@@ -270,9 +270,17 @@ namespace DNNrocketAPI.Componants
                 return ps.DefaultPortalAlias;
             }
         }
-        public static string SiteGuid()
+        public static string SiteGuid(int portalId = -1)
         {
-            return PortalSettings.Current.GUID.ToString();
+            if (portalId < 0)
+            {
+                return PortalSettings.Current.GUID.ToString();
+            }
+            else
+            {
+                var ps = GetPortalSettings(portalId);
+                return ps.GUID.ToString();
+            }
         }
 
         public static string GetPortalAlias(string lang, int portalid = -1)
