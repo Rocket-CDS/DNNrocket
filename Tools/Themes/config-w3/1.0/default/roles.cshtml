@@ -10,9 +10,17 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
 
+    <div class="w3-row">
+        <div class="w3-col m6 w3-xxlarge">
+            Module Roles
+        </div>
+        <div class="w3-col m6">
+            <div class="w3-button w3-blue w3-right  simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.adddefaultroles","","Confirm")" s-cmd="rocketroles_createdefaultroles"  >@ResourceKey("RocketTools.adddefaultroles")</div>
+        </div>
+    </div>
 
-<h1>Module Roles</h1>
-<p>@ResourceKey("RocketTools.moduleroles","","Help")</p>
+<p>@ResourceKey("RocketTools.moduleroles", "", "Help")</p>
+
 
 <div class="w3-row">
 
@@ -77,15 +85,15 @@
             $("#treeview2").hummingbird("collapseAll");
         });
 
-        $("#treeview2").on("nodeChecked", function(){
+        $("#treeview2").on("nodeChecked", function () {
             $('.nextbuttonpage').show();
             $('.moduledatasection').text('');
-            $('.rolesdatasection').text('');            
+            $('.rolesdatasection').text('');
         });
-        $("#treeview2").on("nodeUnchecked", function(){
+        $("#treeview2").on("nodeUnchecked", function () {
             $('.nextbuttonpage').show();
             $('.moduledatasection').text('');
-            $('.rolesdatasection').text('');            
+            $('.rolesdatasection').text('');
         });
     });
 

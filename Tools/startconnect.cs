@@ -47,6 +47,10 @@ namespace Rocket.Tools
                         SaveModules("tabmodules");
                         strOut = ApplyRoles();
                         break;
+                    case "rocketroles_createdefaultroles":
+                        DNNrocketUtils.CreateDefaultRocketRoles(PortalUtils.GetPortalId());
+                        strOut = RolesAdmin();
+                        break;
 
 
                     case "rocketclones_getdisplay":

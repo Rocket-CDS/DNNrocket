@@ -75,7 +75,6 @@ namespace DNNrocketAPI.Componants
             }
             return "";
         }
-
         public static bool GetCurrentUserIsInRole(string role)
         {
             if (UserController.Instance.GetCurrentUserInfo() != null)
@@ -385,19 +384,6 @@ namespace DNNrocketAPI.Componants
             {
                 var ms = ex.ToString();
                 return 0; // use zero;
-            }
-        }
-
-        public static string GetCurrentUsername()
-        {
-            try
-            {
-                return UserController.Instance.GetCurrentUserInfo().Username;
-            }
-            catch (Exception ex)
-            {
-                var ms = ex.ToString();
-                return ""; // use zero;
             }
         }
 

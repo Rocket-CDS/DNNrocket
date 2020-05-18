@@ -574,8 +574,35 @@ namespace DNNrocketAPI.Componants
                 }
             }
         }
-
-
+        public static void CreateDefaultRocketRoles(int portalId)
+        {
+            CreateRole(portalId, DNNrocketRoles.ClientEditor);
+            CreateRole(portalId, DNNrocketRoles.Editor);
+            CreateRole(portalId, DNNrocketRoles.Manager);
+            CreateRole(portalId, DNNrocketRoles.Premium);
+            CreateRole(portalId, DNNrocketRoles.Administrators);
+        }
+        public static void CreateRole(int portalId, string roleName, string description = "", float serviceFee = 0, int billingPeriod = -1, string billingFrequency = "N", float trialFee = 0, int trialPeriod = -1, string trialFrequency = "N", bool isPublic = false, bool isAuto = false)
+        {
+            var role = RoleController.Instance.GetRoleByName(portalId, roleName);
+            if (role == null)
+            {
+                RoleInfo objRoleInfo = new RoleInfo();
+                objRoleInfo.PortalID = portalId;
+                objRoleInfo.RoleName = roleName;
+                objRoleInfo.RoleGroupID = Null.NullInteger;
+                objRoleInfo.Description = description;
+                objRoleInfo.ServiceFee = Convert.ToSingle(serviceFee < 0 ? 0 : serviceFee);
+                objRoleInfo.BillingPeriod = billingPeriod;
+                objRoleInfo.BillingFrequency = billingFrequency;
+                objRoleInfo.TrialFee = Convert.ToSingle(trialFee < 0 ? 0 : trialFee);
+                objRoleInfo.TrialPeriod = trialPeriod;
+                objRoleInfo.TrialFrequency = trialFrequency;
+                objRoleInfo.IsPublic = isPublic;
+                objRoleInfo.AutoAssignment = isAuto;
+                RoleController.Instance.AddRole(objRoleInfo);
+            }
+        }
         public static void AddRoleToModule(int portalId, int moduleid, int roleid)
         {
             var moduleInfo = GetModuleInfo(moduleid);

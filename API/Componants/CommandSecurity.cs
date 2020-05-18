@@ -135,6 +135,7 @@ namespace DNNrocketAPI.Componants
             {
                 return true;
             }
+            if (_userInfo == null) return false;
             if (HasModuleEditRights() && _interfaceInfo.SecurityCheckUser(_userInfo.PortalID, _userId))
             {
                 return true;

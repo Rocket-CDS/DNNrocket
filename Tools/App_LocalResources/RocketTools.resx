@@ -120,6 +120,12 @@
   <data name="actions.Text" xml:space="preserve">
     <value>Actions</value>
   </data>
+  <data name="adddefaultroles.Confirm" xml:space="preserve">
+    <value>This will create all the default roles that the Rocket Framework uses.</value>
+  </data>
+  <data name="adddefaultroles.Text" xml:space="preserve">
+    <value>Add Default Rocket Roles</value>
+  </data>
   <data name="applyroles.Confirm" xml:space="preserve">
     <value>This action with add and remove EDIT permissions to the modules selected. Are you sure?</value>
   </data>
