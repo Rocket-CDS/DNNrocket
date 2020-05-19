@@ -90,28 +90,34 @@ namespace DNNrocketAPI.Componants
 
         public void Set(string nodename,string value, string systemKey = "", System.TypeCode DataTyp = System.TypeCode.String)
         {
-            Record.SetXmlProperty("genxml/hidden/" + systemKey + "-" + nodename, value, DataTyp);
+            if (systemKey != "") nodename = systemKey + "-" + nodename;
+            Record.SetXmlProperty("genxml/hidden/" + nodename, value, DataTyp);
             Save();
         }
         public string Get(string nodename, string systemKey = "")
         {
-            return Record.GetXmlProperty("genxml/hidden/" + systemKey + "-" + nodename);
+            if (systemKey != "") nodename = systemKey + "-" + nodename;
+            return Record.GetXmlProperty("genxml/hidden/" + nodename);
         }
         public int GetInt(string nodename, string systemKey = "")
         {
-            return Record.GetXmlPropertyInt("genxml/hidden/" + systemKey + "-" + nodename);
+            if (systemKey != "") nodename = systemKey + "-" + nodename;
+            return Record.GetXmlPropertyInt("genxml/hidden/" + nodename);
         }
         public bool GetBool(string nodename, string systemKey = "")
         {
-            return Record.GetXmlPropertyBool("genxml/hidden/" + systemKey + "-" + nodename);
+            if (systemKey != "") nodename = systemKey + "-" + nodename;
+            return Record.GetXmlPropertyBool("genxml/hidden/" + nodename);
         }
         public double GetDouble(string nodename, string systemKey = "")
         {
-            return Record.GetXmlPropertyDouble("genxml/hidden/" + systemKey + "-" + nodename);
+            if (systemKey != "") nodename = systemKey + "-" + nodename;
+            return Record.GetXmlPropertyDouble("genxml/hidden/"  + nodename);
         }
         public DateTime GetDate(string nodename, string systemKey = "")
         {
-            return Record.GetXmlPropertyDate("genxml/hidden/" + systemKey + "-" + nodename);
+            if (systemKey != "") nodename = systemKey + "-" + nodename;
+            return Record.GetXmlPropertyDate("genxml/hidden/" + nodename);
         }
 
         public int ModuleId { get; set; }

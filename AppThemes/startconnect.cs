@@ -86,6 +86,7 @@ namespace DNNrocket.AppThemes
                 else
                 {
                     _UserParams.Set("selectedsystemkey", _selectedSystemKey);
+                    _UserParams.Update();
                 }
 
                 AssignEditLang();
