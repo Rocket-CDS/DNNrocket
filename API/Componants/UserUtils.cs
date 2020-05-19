@@ -239,7 +239,7 @@ namespace DNNrocketAPI.Componants
             UserInfo objUser;
             objUser = new UserInfo
             {
-                PortalID = DNNrocketUtils.GetPortalId(),
+                PortalID = PortalUtils.GetPortalId(),
                 UserID = Null.NullInteger,
                 Username = username,
                 Email = useremail,

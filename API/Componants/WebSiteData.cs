@@ -13,7 +13,7 @@ namespace DNNrocketAPI.Componants
         private static int _portalid;
         public WebSiteData(bool cache = true)
         {
-            _portalid = DNNrocketUtils.GetPortalId();
+            _portalid = PortalUtils.GetPortalId();
             _cacheKey = "rocketWebSiteData" + _portalid;
             if (cache) Info = (SimplisityInfo)CacheUtilsDNN.GetCache(_cacheKey);
             if (Info == null) LoadData();

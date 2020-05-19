@@ -50,7 +50,7 @@ namespace DNNrocketAPI.Componants
                     {
                         var userid = UserUtils.GetCurrentUserId();
                         var rocketinterface = new DNNrocketInterface(i);
-                        if (rocketinterface.SecurityCheckUser(DNNrocketUtils.GetPortalId(), userid))
+                        if (rocketinterface.SecurityCheckUser(PortalUtils.GetPortalId(), userid))
                         {
                             rtnList.Add(i);
                         }

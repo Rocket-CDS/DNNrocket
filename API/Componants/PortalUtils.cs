@@ -35,7 +35,7 @@ namespace DNNrocketAPI.Componants
     {
         public static int GetCurrentPortalId()
         {
-            return DNNrocketUtils.GetPortalId();
+            return PortalUtils.GetPortalId();
         }
         public static void  DeletePortal(int portalId)   
         {

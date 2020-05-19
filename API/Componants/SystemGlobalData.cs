@@ -45,12 +45,12 @@ namespace DNNrocketAPI.Componants
         private void LoadData()
         {
             var objCtrl = new DNNrocketController();
-            Info = objCtrl.GetByType(DNNrocketUtils.GetPortalId(), -1, "GLOBALSETTINGS");
+            Info = objCtrl.GetByType(PortalUtils.GetPortalId(), -1, "GLOBALSETTINGS");
             if (Info == null)
             {
                 Info = new SimplisityInfo();
                 Info.ItemID = -1;
-                Info.PortalId = DNNrocketUtils.GetPortalId();
+                Info.PortalId = PortalUtils.GetPortalId();
                 Info.TypeCode = "GLOBALSETTINGS";
 
                 // add any MUST have settings.

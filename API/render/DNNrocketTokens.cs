@@ -53,7 +53,7 @@ namespace DNNrocketAPI.render
         public IEncodedString DetailUrl(SimplisityRazor model, int itemid, string title)
         {
             var rtn = "";
-            var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), model.TabId);
+            var pageData = new PageRecordData(PortalUtils.GetPortalId(), model.TabId);
             var moduleParams = new ModuleParams(model.ModuleId, model.SystemKey);
 
             if (model.SystemKey == "") return new RawString("ERROR: no SystemKey");
@@ -69,7 +69,7 @@ namespace DNNrocketAPI.render
         public IEncodedString ListUrl(SimplisityRazor model)
         {
             var rtn = "";
-            var pageData = new PageRecordData(DNNrocketUtils.GetPortalId(), model.TabId);
+            var pageData = new PageRecordData(PortalUtils.GetPortalId(), model.TabId);
 
             if (model.TabId <= 0) rtn += "ERROR: no TabId";
 

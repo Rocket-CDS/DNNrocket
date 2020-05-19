@@ -77,7 +77,7 @@ namespace DNNrocketAPI.ApiControllers
                 {
                     paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
                     paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, _editlang);
-                    paramInfo.PortalId = DNNrocketUtils.GetPortalId();
+                    paramInfo.PortalId = PortalUtils.GetPortalId();
                 }
 
                 foreach (string key in context.Request.QueryString.AllKeys)
@@ -121,7 +121,7 @@ namespace DNNrocketAPI.ApiControllers
                     requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
 
                     postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
-                    postInfo.PortalId = DNNrocketUtils.GetPortalId();
+                    postInfo.PortalId = PortalUtils.GetPortalId();
 
                 }
 

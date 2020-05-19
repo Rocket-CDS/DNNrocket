@@ -19,7 +19,7 @@ namespace DNNrocketAPI.Componants
         private void LoadData()
         {
             List = new List<LicenseData>();
-            var l = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "LICENSE");
+            var l = _objCtrl.GetList(PortalUtils.GetPortalId(), -1, "LICENSE");
             foreach (var d in l)
             {
                 var licenseData = new LicenseData(d.ItemID);
