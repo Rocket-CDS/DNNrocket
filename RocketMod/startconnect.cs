@@ -1232,7 +1232,7 @@ namespace RocketMod
                 var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANG", " and r1.Lang = '" + copylanguage + "'","","",0,0,0,0, _tableName);
                 foreach (var sInfo in l)
                 {
-                    var objRecLang = objCtrl.GetRecordLang(sInfo.ParentItemId, destinationlanguage, true, _tableName);
+                    var objRecLang = objCtrl.GetRecordLang(sInfo.ParentItemId, destinationlanguage, _tableName);
                     if (objRecLang != null)
                     {
                         objRecLang.XMLData = sInfo.XMLData;
