@@ -132,14 +132,14 @@ else
                 {
                     localversion = "0.0";
                 }
-                <div class="w3-padding w3-col m2 " style="height:280px;">
+                <div class="w3-padding w3-col l3 m4 " style="height:280px;">
 
                     <div class="w3-padding w3-panel w3-display-container w3-border" style="height:260px;">
                         <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
                             <b class="w3-left w3-text-blue ">@info.GetXmlProperty("genxml/hidden/appthemeprefix")</b>
                         </div>
                         <img src="@DNNrocketUtils.SystemThemeImgDirectoryRel()/@info.GetXmlProperty("genxml/hidden/logo")" style="width:50%;" class="w3-circle w3-hover-opacity" />
-                        <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
+                        <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis" class="w3-small">
                             <b>@info.GetXmlProperty("genxml/hidden/appthemename") &nbsp; @info.GetXmlProperty("genxml/hidden/latestversion")</b>
                         </div>
 
@@ -157,7 +157,7 @@ else
                         }
 
 
-                        <div class="">
+                        <div class="w3-small">
                             @if (info.GetXmlPropertyBool("genxml/hidden/islatestversion"))
                             {
                             <i class='w3-text-green fas fa-hdd' style='font-size:16px'></i>
@@ -168,7 +168,7 @@ else
                             }
                             @ResourceKey("AppThemes.localversion")&nbsp;:&nbsp;@localversion.@info.GetXmlPropertyInt("genxml/hidden/localrev")
                         </div>
-                        <div class="">
+                        <div class="w3-small">
                             @if (info.GetXmlPropertyBool("genxml/hidden/localupdated"))
                             {
                             <i class='w3-text-red fas fa-exclamation-triangle' style='font-size:16px'></i>

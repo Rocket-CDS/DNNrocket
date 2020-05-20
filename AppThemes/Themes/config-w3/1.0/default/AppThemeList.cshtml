@@ -96,8 +96,8 @@
             <div id="exportdownloadedurl" class="w3-hide"></div>
 
             <div class="w3-row w3-padding">
-                <div class="w3-col m2 rocket-buttonbar w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearselectedsystemkey":"true"}'>@ButtonText(ButtonTypes.back)</div>                
-                <div class="w3-col m2 rocket-buttonbar w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'">@ButtonText(ButtonTypes.create)</div>
+                <div class="w3-col m3 rocket-buttonbar w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearselectedsystemkey":"true"}'>@ButtonText(ButtonTypes.back)</div>                
+                <div class="w3-col m3 rocket-buttonbar w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'">@ButtonText(ButtonTypes.create)</div>
                 
                 <div class="w3-col m6 w3-dropdown-hover">
                     <button class="w3-button" style="border-top: 6px solid #fff !important;">More...</button>
@@ -198,7 +198,7 @@
                         {
                             lp1 += 1;
 
-                            <div class="w3-padding w3-col m2 w3-center ">
+                            <div class="w3-padding w3-col m2 m3 w3-center ">
                                 <div class="w3-padding w3-panel w3-display-container w3-border simplisity_click " s-cmd="rocketapptheme_getdetail" s-fields='{"track":"true","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="cursor:pointer;">
                                     <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
                                         <b class="w3-left w3-text-blue ">@appTheme.AppThemePrefix</b>
