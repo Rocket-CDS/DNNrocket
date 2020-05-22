@@ -540,16 +540,18 @@ namespace DNNrocketAPI
                 info.UserId = sInfo.UserId;
                 info.SortOrder = sInfo.SortOrder;
 
+                var storeLang = (SimplisityInfo)info.Clone(); // Get Language record before we remove and save.
+
                 info.RemoveLangRecord();
                 var itemId = Update(info, tableName);
 
-                var nbi2 = GetRecordLang(itemId, requiredLang, tableName);
+                var nbi2 = GetRecordLang(itemId, requiredLang, tableName); 
                 if (nbi2 != null)
                 {
-                    nbi2.XMLData = sInfo.GetLangXml();
-                    nbi2.TypeCode = info.TypeCode + "LANG";
+                    nbi2.XMLData = storeLang.GetLangXml();
+                    nbi2.TypeCode = storeLang.TypeCode + "LANG";
                     nbi2.GUIDKey = "";
-                    nbi2.ModuleId = sInfo.ModuleId;
+                    nbi2.ModuleId = storeLang.ModuleId;
                     nbi2.ParentItemId = itemId;
                     nbi2.Lang = requiredLang;
                     nbi2.PortalId = info.PortalId;
@@ -558,10 +560,10 @@ namespace DNNrocketAPI
                 else
                 {
                     nbi2 = new SimplisityRecord();
-                    nbi2.XMLData = sInfo.GetLangXml();
-                    nbi2.TypeCode = info.TypeCode + "LANG";
+                    nbi2.XMLData = storeLang.GetLangXml();
+                    nbi2.TypeCode = storeLang.TypeCode + "LANG";
                     nbi2.GUIDKey = "";
-                    nbi2.ModuleId = sInfo.ModuleId;
+                    nbi2.ModuleId = storeLang.ModuleId;
                     nbi2.ParentItemId = itemId;
                     nbi2.Lang = requiredLang;
                     nbi2.PortalId = info.PortalId;
