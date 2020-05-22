@@ -258,6 +258,10 @@ namespace DNNrocketAPI.render
         {
             return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "name", listname, pngImage);
         }
+        public IEncodedString ImageEditFullAlt(SimplisityInfo info, string fieldId, int width = 150, int height = 150, string attributes = "", bool localized = false, int row = 0, string listname = "", bool pngImage = true)
+        {
+            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "alt", listname, pngImage);
+        }
 
         private IEncodedString ImageEditToken(SimplisityInfo info, string fieldId, int width, int height, string attributes, bool localized, int row, string uiType, string listname, bool pngImage)
         {
@@ -307,6 +311,19 @@ namespace DNNrocketAPI.render
             strOut += "</div>";
 
             //Text seciton
+            if (uiType == "alt")
+            {
+                strOut += "<div class='w3-rest'>";
+                strOut += "<div class='w3-row'>";
+
+                strOut += "<div class='w3-rest w3-padding' style='min-width:100px;'>";
+                strOut += "<label class=''>" + ResourceKey("DNNrocketImages.alt") + "</label>&nbsp;" + EditFlag();
+                strOut += TextBox(info, xpathalt, " class='w3-input w3-border' autocomplete='off'", "", true, row);
+                strOut += "</div>";
+
+                strOut += "</div>";
+                strOut += "</div>";
+            }
 
             if (uiType == "full")
             {
