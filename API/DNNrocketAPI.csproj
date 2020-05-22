@@ -125,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Componants\AppTheme.cs" />
+    <Compile Include="Componants\ArticleImage.cs" />
     <Compile Include="Componants\BackUpModuleTemplates.cs" />
     <Compile Include="Componants\CacheUtilsDNN.cs" />
     <Compile Include="Componants\FastReplacer.cs" />
