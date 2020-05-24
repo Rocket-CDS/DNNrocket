@@ -1456,7 +1456,8 @@ namespace DNNrocketAPI.Componants
         /// <param name="templateControlRelPath"></param>
         /// <param name="themeFolder"></param>
         /// <returns></returns>
-        public static string RenderImageSelect(ModuleParams moduleParams, int imagesize, bool selectsingle = true, bool autoreturn = false)
+        public static string RenderImageSelect(ModuleParams 
+            , int imagesize, bool selectsingle = true, bool autoreturn = false)
         {
 
             string razorTemplateName = "ImageSelect.cshtml";

@@ -150,14 +150,14 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        public IEncodedString RenderImageSelect(int moduleid)
+        public IEncodedString RenderImageSelect(int moduleid, string systemKey = "", bool useCache = true, string tableName = "DNNrocket")
         {
-            var moduleParams = new ModuleParams(moduleid);
+            var moduleParams = new ModuleParams(moduleid, systemKey, useCache, tableName);
             return RenderImageSelect(moduleParams, 100, true, false);
         }
-        public IEncodedString RenderImageSelect(int moduleid, int imagesize, bool singleselect = true, bool autoreturn = false)
+        public IEncodedString RenderImageSelect(int moduleid, int imagesize, bool singleselect = true, bool autoreturn = false, string systemKey = "", bool useCache = true, string tableName = "DNNrocket")
         {
-            var moduleParams = new ModuleParams(moduleid);
+            var moduleParams = new ModuleParams(moduleid, systemKey, useCache, tableName);
             return RenderImageSelect(moduleParams, imagesize, singleselect, autoreturn);
         }
         public IEncodedString RenderImageSelect(ModuleParams moduleParams, int imagesize, bool singleselect = true, bool autoreturn = false)

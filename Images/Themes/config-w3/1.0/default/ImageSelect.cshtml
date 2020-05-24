@@ -83,7 +83,7 @@
                         <p>@imagecount</p>
                         @if (UserUtils.IsInRole("Administrator"))
                         {
-                            <p class="w3-small  w3-hide-small">@Model.GetSetting("genxml/hidden/uploadrelfolder")</p>
+                            <p class="w3-small  w3-hide-small">@Model.GetSetting("genxml/hidden/uploadrelfolder")&nbsp;Folder:@moduleParams.ImageFolderRel</p>
                         }
                     </div>
                 </div>
