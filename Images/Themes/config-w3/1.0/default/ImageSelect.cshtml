@@ -7,7 +7,9 @@
 
 @{
     var globalSettings = new SystemGlobalData();
-    var moduleParams = (ModuleParams)Model.GetDataObject("moduleparams");
+    var systemKey = Model.GetSetting("systemkey");
+    var imageFolderRel = Model.GetSetting("imagefolderrel");
+    var imagesize = Model.GetSettingInt("imagesize");
 }
 
 <div id="dnnrocket_deleteimagelist">
@@ -28,12 +30,12 @@
                 <div class="w3-row w3-margin-bottom">
                     <span class="w3-col m2 rocket-buttonbar w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')">@ButtonText(ButtonTypes.upload)</span>
                     <span class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8" onclick="dnnrocketimages_useimages()">@ButtonText(ButtonTypes.use)</span>
-                    <span class="w3-col m2 rocket-buttonbar w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketimages_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist" s-fields='{"moduleid":"@Model.ModuleId","editsystemkey":"@(moduleParams.SystemKey)","template":"imagelist.cshtml","interfacekey":"imageupload"}'>@ButtonText(ButtonTypes.delete)</span>
+                    <span class="w3-col m2 rocket-buttonbar w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketimages_delete" s-before="dnnrocketimages_deleteimages" s-after="dnnrocketimages_showthelist" s-return="#dnnrocket_imageselectwrapper" s-post="#dnnrocket_deleteimagelist" s-fields='{"moduleid":"@Model.ModuleId","editsystemkey":"@(systemKey)","template":"imagelist.cshtml","interfacekey":"imageupload"}'>@ButtonText(ButtonTypes.delete)</span>
                 </div>
 
                 <div class="w3-container">
                     <div class="w3-col m4 w3-white" style="border-style:dotted;">
-                        <input id="imagefileupload" class="simplisity_fileupload" s-maxchunksize="10000000" s-cmd="rocketimages_upload" s-reload="false" s-after="dnnrocketimages_showthelist" s-before="dnnrocketimages_beforeupload" s-return="#dnnrocket_imageselectwrapper" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"moduleid":"@Model.ModuleId","editsystemkey":"@(moduleParams.SystemKey)","template":"imagelist.cshtml","interfacekey":"imageupload","singleselect":"true","autoreturn":"false","createseo":"false"}' type="file" name="files[]" multiple style="display:none;">
+                        <input id="imagefileupload" class="simplisity_fileupload" s-maxchunksize="10000000" s-cmd="rocketimages_upload" s-reload="false" s-after="dnnrocketimages_showthelist" s-before="dnnrocketimages_beforeupload" s-return="#dnnrocket_imageselectwrapper" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"moduleid":"@Model.ModuleId","editsystemkey":"@(systemKey)","template":"imagelist.cshtml","interfacekey":"imageupload","singleselect":"true","autoreturn":"false","createseo":"false","imagefolderrel":"@imageFolderRel"}' type="file" name="files[]" multiple style="display:none;">
                         <p><i>@ResourceKey("DNNrocket.dropimage")...</i></p>
                     </div>
                     <div class="w3-col m3 w3-right-align ">
@@ -71,8 +73,8 @@
                             var imagecount = Model.List.Count();
                             foreach (string imageName in Model.List)
                             {
-                                <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@(moduleParams.ImageFolderRel)/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(moduleParams.ImageFolderRel + "/" + imageName)" selectorcount="@(lp)">
-                                    <img src="@ThumbnailImageUrl(moduleParams.ImageFolderRel + "/" + imageName, 150, 150,"", globalSettings.PngImage)" class="w3-border w3-padding" style="width:100%" />
+                                <div class="w3-display-container w3-col m2 dnnrocket-imageselector" dnnrocket-imagename="@imageName" dnnrocket-imageurl="@(imageFolderRel)/@imageName" dnnrocket-imagethumburl="@ThumbnailImageUrl(imageFolderRel + "/" + imageName)" selectorcount="@(lp)">
+                                    <img src="@ThumbnailImageUrl(imageFolderRel + "/" + imageName, imagesize, imagesize,"", globalSettings.PngImage)" class="w3-border w3-padding" style="width:100%" />
                                     <span class="w3-display-topright dnnrocket-imageselected " title="" style="display:none;"><i class="fas fa-check-circle"></i></span>
                                 </div>
                                 lp += 1;
@@ -83,7 +85,7 @@
                         <p>@imagecount</p>
                         @if (UserUtils.IsInRole("Administrator"))
                         {
-                            <p class="w3-small  w3-hide-small">@Model.GetSetting("genxml/hidden/uploadrelfolder")&nbsp;Folder:@moduleParams.ImageFolderRel</p>
+                            <p class="w3-small  w3-hide-small">Folder:@imageFolderRel</p>
                         }
                     </div>
                 </div>

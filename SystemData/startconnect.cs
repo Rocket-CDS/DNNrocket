@@ -31,7 +31,7 @@ namespace DNNrocket.System
 
             var commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
             
-            DNNrocketUtils.CreateRocketDirectories();
+            PortalUtils.CreateRocketDirectories();
 
             _UserParams = new UserParams();
             if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))

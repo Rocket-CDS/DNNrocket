@@ -25,8 +25,8 @@ namespace DNNrocketAPI.ApiControllers
         [HttpPost]
         public async Task<IHttpActionResult> Upload(HttpRequestMessage request)
         {
-            if (!Directory.Exists(DNNrocketUtils.TempDirectoryMapPath())) Directory.CreateDirectory(DNNrocketUtils.TempDirectoryMapPath());
-            if (!Directory.Exists(DNNrocketUtils.HomeDNNrocketDirectoryMapPath())) Directory.CreateDirectory(DNNrocketUtils.HomeDNNrocketDirectoryMapPath());
+            if (!Directory.Exists(PortalUtils.TempDirectoryMapPath())) Directory.CreateDirectory(PortalUtils.TempDirectoryMapPath());
+            if (!Directory.Exists(PortalUtils.HomeDNNrocketDirectoryMapPath())) Directory.CreateDirectory(PortalUtils.HomeDNNrocketDirectoryMapPath());
 
             if (request.IsChunkUpload())
             {
@@ -50,7 +50,7 @@ namespace DNNrocketAPI.ApiControllers
                     if (f.Value.File.Length > 0)
                     {
                         var fileName = f.Value.Filename;
-                        FileUtils.SaveFile(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + fileName, f.Value.File);
+                        FileUtils.SaveFile(PortalUtils.TempDirectoryMapPath() + "\\" + userid + "_" + fileName, f.Value.File);
                     }
                 }
                 return Ok();
@@ -62,9 +62,9 @@ namespace DNNrocketAPI.ApiControllers
 
     //public async Task<HttpResponseMessage> Upload(HttpRequestMessage request)
     //    {
-    //        if (!Directory.Exists(DNNrocketUtils.TempDirectoryMapPath())) Directory.CreateDirectory(DNNrocketUtils.TempDirectoryMapPath());
-    //        if (!Directory.Exists(DNNrocketUtils.HomeDNNrocketDirectoryMapPath())) Directory.CreateDirectory(DNNrocketUtils.HomeDNNrocketDirectoryMapPath());
-    //        var fileuploadPath = DNNrocketUtils.TempDirectoryMapPath();
+    //        if (!Directory.Exists(PortalUtils.TempDirectoryMapPath())) Directory.CreateDirectory(PortalUtils.TempDirectoryMapPath());
+    //        if (!Directory.Exists(PortalUtils.HomeDNNrocketDirectoryMapPath())) Directory.CreateDirectory(PortalUtils.HomeDNNrocketDirectoryMapPath());
+    //        var fileuploadPath = PortalUtils.TempDirectoryMapPath();
 
     //        if (!request.Content.IsMimeMultipartContent()) throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 
@@ -186,7 +186,7 @@ namespace DNNrocketAPI.ApiControllers
         {
             get
             {
-                return DNNrocketUtils.TempDirectoryMapPath();
+                return PortalUtils.TempDirectoryMapPath();
             }
         }
 

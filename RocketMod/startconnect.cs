@@ -1408,7 +1408,7 @@ namespace RocketMod
                 // check if previous backup is same
                 var BackUpDataList = new BackUpDataList("rocketmod" + _moduleid, "*_BackUp.xml");
 
-                var fileNameTemp = DNNrocketUtils.TempDirectoryMapPath() + "\\" + ("rocketmod" + _moduleid + GeneralUtils.GetUniqueKey());
+                var fileNameTemp = PortalUtils.TempDirectoryMapPath() + "\\" + ("rocketmod" + _moduleid + GeneralUtils.GetUniqueKey());
                 var backupData = new BackUpData(fileNameTemp);
                 backupData.BackUp(saveList);
 

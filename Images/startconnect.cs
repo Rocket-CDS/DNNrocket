@@ -82,14 +82,11 @@ namespace DNNrocket.Images
         {
             try
             {
-                var moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
                 var editsystemkey = _paramInfo.GetXmlProperty("genxml/hidden/editsystemkey"); // if we are adding an image to the systemData
-                var moduleParams = new ModuleParams(moduleid, editsystemkey);
                 var singleselect = _paramInfo.GetXmlPropertyBool("genxml/hidden/singleselect");
                 var autoreturn = _paramInfo.GetXmlPropertyBool("genxml/hidden/autoreturn");
-                var imagesize = _paramInfo.GetXmlPropertyInt("genxml/hidden/imagesize");
-                if (imagesize == 0) imagesize = 100;
-                return DNNrocketUtils.RenderImageSelect(moduleParams, 100, singleselect, autoreturn);
+                var imagefolderrel = _paramInfo.GetXmlProperty("genxml/hidden/imagefolderrel");
+                return DNNrocketUtils.RenderImageSelect(editsystemkey, imagefolderrel, singleselect, autoreturn);
             }
             catch (Exception ex)
             {
@@ -118,16 +115,16 @@ namespace DNNrocket.Images
                         var friendlyname = GeneralUtils.DeCode(f);
                         var userfilename = userid + "_" + friendlyname;
                         var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname, imageDirectory);
-                        var fname = ImgUtils.ResizeImage(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectory + "\\" + unqName, resize);
+                        var fname = ImgUtils.ResizeImage(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectory + "\\" + unqName, resize);
                         if (!File.Exists(fname)) return "ERROR: " + fname;
                         if (createseo)
                         {
                             var imageDirectorySEO = imageDirectory + "\\seo";
                             if (!Directory.Exists(imageDirectorySEO)) Directory.CreateDirectory(imageDirectorySEO);
-                            ImgUtils.CopyImageForSEO(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectorySEO, unqName);
+                            ImgUtils.CopyImageForSEO(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectorySEO, unqName);
                         }
 
-                        File.Delete(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename);
+                        File.Delete(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename);
                     }
                 }
 
@@ -171,16 +168,9 @@ namespace DNNrocket.Images
 
         private string getImageDirectory()
         {
-            var moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-            var imagefolder = _paramInfo.GetXmlProperty("genxml/hidden/imagefolder");
-            if (imagefolder == "")
-            {
-                var editsystemkey = _paramInfo.GetXmlProperty("genxml/hidden/editsystemkey"); // if we are adding an image to the systemData
-                var moduleParams = new ModuleParams(moduleid, editsystemkey);
-                imagefolder = moduleParams.ImageFolderRel;
-            }
-            var uploadFolderPath = imagefolder;
-            if (!uploadFolderPath.Contains("/")) uploadFolderPath = DNNrocketUtils.HomeDNNrocketDirectoryRel() + "/" + imagefolder;
+            var imagefolderrel = _paramInfo.GetXmlProperty("genxml/hidden/imagefolderrel");
+            var uploadFolderPath = imagefolderrel;
+            if (!uploadFolderPath.Contains("/")) uploadFolderPath = PortalUtils.HomeDNNrocketDirectoryRel() + "/" + imagefolderrel;
             return DNNrocketUtils.MapPath(uploadFolderPath);
         }
 

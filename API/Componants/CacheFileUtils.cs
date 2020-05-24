@@ -22,7 +22,7 @@ namespace DNNrocketAPI.Componants
             if (cacheData == null)
             {
                 var cacheFile = GetMd5Hash(cacheKey + "_groupid:" + groupid);
-                var cacheDataStr = FileUtils.ReadFile(DNNrocketUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile);
+                var cacheDataStr = FileUtils.ReadFile(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile);
                 if (String.IsNullOrEmpty(cacheDataStr)) return "";
                 return cacheDataStr;
             }
@@ -35,12 +35,12 @@ namespace DNNrocketAPI.Componants
             {
                 CacheUtilsDNN.SetCache(cacheKey, objObject);
 
-                if (!Directory.Exists(DNNrocketUtils.TempDirectoryMapPath().Trim('\\') + "\\cache"))
+                if (!Directory.Exists(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache"))
                 {
-                    Directory.CreateDirectory(DNNrocketUtils.TempDirectoryMapPath().Trim('\\') + "\\cache");
+                    Directory.CreateDirectory(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache");
                 }
                 var cacheFile = GetMd5Hash(cacheKey);
-                FileUtils.SaveFile(DNNrocketUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile, objObject);
+                FileUtils.SaveFile(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile, objObject);
             }
         }
 
@@ -49,9 +49,9 @@ namespace DNNrocketAPI.Componants
             CacheUtilsDNN.RemoveCache(cacheKey);
             var cacheFile = GetMd5Hash(cacheKey);
 
-            if (File.Exists(DNNrocketUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile))
+            if (File.Exists(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile))
             {
-                File.Delete(DNNrocketUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile);
+                File.Delete(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile);
             }
         }
 
@@ -72,9 +72,9 @@ namespace DNNrocketAPI.Componants
         {
             try
             {
-                if (Directory.Exists(DNNrocketUtils.TempDirectoryMapPath().Trim('\\') + "\\cache"))
+                if (Directory.Exists(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache"))
                 {
-                    Directory.Delete(DNNrocketUtils.TempDirectoryMapPath().Trim('\\') + "\\cache", true);
+                    Directory.Delete(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache", true);
                 }
             }
             catch (Exception ex)

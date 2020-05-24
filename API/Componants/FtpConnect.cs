@@ -63,7 +63,7 @@ namespace DNNrocketAPI.Componants
                 using (var client = new WebClient())
                 {
                     client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-                    var xmlMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + appTheme.AppThemeFolder + ".xml";
+                    var xmlMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + appTheme.AppThemeFolder + ".xml";
                     var sInfo = new SimplisityRecord();
                     sInfo.SetXmlProperty("genxml/hidden/appthemefolder", appTheme.AppThemeFolder);
                     sInfo.SetXmlProperty("genxml/hidden/appthemename", appTheme.AppThemeName);
@@ -141,7 +141,7 @@ namespace DNNrocketAPI.Componants
                 using (var client = new WebClient())
                 {
                     client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-                    var idxMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\list.xml";
+                    var idxMapPath = PortalUtils.TempDirectoryMapPath() + "\\list.xml";
 
                     var sInfo = new SimplisityInfo();
                     sInfo.XMLData = fulllistxml;
@@ -155,7 +155,7 @@ namespace DNNrocketAPI.Componants
         {
             if (IsValid)
             {
-                var idxMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\list.xml";
+                var idxMapPath = PortalUtils.TempDirectoryMapPath() + "\\list.xml";
                 if (File.Exists(idxMapPath)) File.Delete(idxMapPath);
 
                 var ftpidx = "<genxml>";

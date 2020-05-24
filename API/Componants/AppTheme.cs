@@ -1095,7 +1095,7 @@ namespace DNNrocketAPI.Componants
             FileUtils.SaveFile(exportMapPath, exportData);
 
             // Create zip
-            var exportZipMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + AppThemeFolder + ".zip";
+            var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + AppThemeFolder + ".zip";
             if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
             ZipFile.CreateFromDirectory(AppThemeFolderMapPath, exportZipMapPath);
 
@@ -1104,7 +1104,7 @@ namespace DNNrocketAPI.Componants
 
         private void ImportXmlFile(string zipMapPath)
         {
-            var tempDir = DNNrocketUtils.TempDirectoryMapPath();
+            var tempDir = PortalUtils.TempDirectoryMapPath();
             var tempZipFolder = tempDir + "\\TempImport";
             if (Directory.Exists(tempZipFolder))
             {

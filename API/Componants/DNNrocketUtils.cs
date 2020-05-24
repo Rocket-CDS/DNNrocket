@@ -43,26 +43,6 @@ namespace DNNrocketAPI.Componants
 {
     public static class DNNrocketUtils
     {
-        public static void CreateRocketDirectories()
-        {
-            if (!Directory.Exists(TempDirectoryMapPath()))
-            {
-                Directory.CreateDirectory(TempDirectoryMapPath());
-                Directory.CreateDirectory(TempDirectoryMapPath() + "\\debug");
-            }
-            if (!Directory.Exists(HomeDNNrocketDirectoryMapPath()))
-            {
-                Directory.CreateDirectory(HomeDNNrocketDirectoryMapPath());
-            }
-            if (!Directory.Exists(DNNrocketThemesDirectoryMapPath()))
-            {
-                Directory.CreateDirectory(DNNrocketThemesDirectoryMapPath());
-            }
-            if (!Directory.Exists(BackUpDirectoryMapPath()))
-            {
-                Directory.CreateDirectory(BackUpDirectoryMapPath());
-            }
-        }
         public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
         {
             var rtnDic = new Dictionary<string, string>();
@@ -243,7 +223,7 @@ namespace DNNrocketAPI.Componants
                 var themeFolderPath = themeFolder + "\\" + versionFolder;
                 if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder + "\\" + versionFolder;
                 if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder;
-                var RocketThemes = DNNrocketThemesDirectoryMapPath();
+                var RocketThemes = PortalUtils.DNNrocketThemesDirectoryMapPath();
                 templCtrl = new TemplateGetter(RocketThemes, themeFolderPath, controlMapPath, debugMode);
                 CacheUtilsDNN.SetCache(cacheKey, templCtrl);
             }
@@ -1053,50 +1033,6 @@ namespace DNNrocketAPI.Componants
             if (c.Length > 0) rtn = c[0];
             return rtn;
         }
-
-        [Obsolete("Please use TempDirectoryMapPath() instead.")]
-        public static string TempDirectory(int portalId = -1)
-        {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectoryMapPath + "DNNrocketTemp";
-            else
-                return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketTemp";
-        }        
-        public static string TempDirectoryMapPath(int portalId = -1)
-        {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketTemp";
-            else
-                return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketTemp";
-        }
-        public static string BackUpDirectoryMapPath(int portalId = -1)
-        {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketBackUp";
-            else
-                return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketBackUp";
-        }
-        public static string TempDirectoryRel(int portalId = -1)
-        {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectory.TrimEnd('/') + "/DNNrocketTemp";
-            else
-                return PortalSettings.Current.HomeDirectory.TrimEnd('/') + "/DNNrocketTemp";
-        }
-        public static string HomeDirectoryMapPath(int portalId = -1)
-        {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectoryMapPath;
-            else
-                return PortalSettings.Current.HomeDirectoryMapPath;
-        }
-        public static string HomeDirectoryRel(int portalId = -1)
-        {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectory;
-            else
-                return PortalSettings.Current.HomeDirectory;
-        }
         public static string SystemThemeImgDirectoryRel()
         {
             return "/DesktopModules/DNNrocket/SystemThemes/idximg";
@@ -1105,39 +1041,10 @@ namespace DNNrocketAPI.Componants
         {
             return DNNrocketUtils.MapPath(SystemThemeImgDirectoryRel());
         }
-        public static string DNNrocketThemesDirectoryMapPath(int portalId = -1)
-        {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectoryMapPath + "DNNrocketThemes";
-            else
-                return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketThemes";
-        }
-        public static string DNNrocketThemesDirectoryRel(int portalId = -1)
-        {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectory + "DNNrocketThemes";
-            else
-                return PortalSettings.Current.HomeDirectory + "DNNrocketThemes";
-        }
-
-        public static string HomeDNNrocketDirectoryMapPath(int portalId = -1)
-        {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectoryMapPath + "DNNrocket";
-            else
-                return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocket";
-        }
-        public static string HomeDNNrocketDirectoryRel(int portalId = -1)
-        {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectory + "DNNrocket";
-            else
-                return PortalSettings.Current.HomeDirectory + "DNNrocket";
-        }
-
         public static string MapPath(string relpath)
         {
             if (String.IsNullOrWhiteSpace(relpath)) return "";
+            relpath = "/" + relpath.TrimStart('/');
             return System.Web.Hosting.HostingEnvironment.MapPath(relpath);
         }
         public static string MapPathReverse(string fullMapPath)
@@ -1456,24 +1363,21 @@ namespace DNNrocketAPI.Componants
         /// <param name="templateControlRelPath"></param>
         /// <param name="themeFolder"></param>
         /// <returns></returns>
-        public static string RenderImageSelect(ModuleParams 
-            , int imagesize, bool selectsingle = true, bool autoreturn = false)
+        public static string RenderImageSelect(string systemkey, string imageFolderRel, bool selectsingle = true, bool autoreturn = false)
         {
 
             string razorTemplateName = "ImageSelect.cshtml";
             string templateControlRelPath = "/DesktopModules/DNNrocket/images/";
             string themeFolder = "config-w3";
+            var imageFolderMapPath = DNNrocketUtils.MapPath(imageFolderRel);
 
             var imageModel = new SimplisityRazor();
 
-            imageModel.ModuleId = moduleParams.ModuleId;
-            imageModel.GetSettingBool("selectsingle", selectsingle);
-            imageModel.GetSettingBool("autoreturn", autoreturn);
-            imageModel.GetSettingInt("imagesize", imagesize);
-
-            imageModel.SetDataObject("moduleparams", moduleParams);
-
-            var imageFolderMapPath = moduleParams.ImageFolderMapPath;
+            imageModel.SetSetting("selectsingle", selectsingle.ToString());
+            imageModel.SetSetting("autoreturn", autoreturn.ToString());
+            imageModel.SetSetting("imagesize", "120");
+            imageModel.SetSetting("imagefolderrel", imageFolderRel);
+            imageModel.SetSetting("systemkey", systemkey);            
 
             var imgList = new List<object>();
             foreach (var i in DNNrocketUtils.GetFiles(imageFolderMapPath))
@@ -1488,6 +1392,9 @@ namespace DNNrocketAPI.Componants
             strOut += "</div>";
             return strOut;
         }
+
+
+
         public static string RenderDocumentSelect(ModuleParams moduleParams, bool selectsingle = true, bool autoreturn = false)
         {
             string razorTemplateName = "DocSelect.cshtml";
@@ -1621,13 +1528,13 @@ namespace DNNrocketAPI.Componants
         //  --------------------- Debug Log files ------------------------------
         public static void LogDebug(string message)
         {
-            var mappath = TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
+            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
             if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
             FileUtils.AppendToLog(mappath, "debug", message);
         }
         public static void LogDebugClear()
         {
-            var mappath = TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
+            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
             if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
             System.IO.DirectoryInfo di = new DirectoryInfo(mappath);
             foreach (System.IO.FileInfo file in di.GetFiles())
@@ -1639,7 +1546,7 @@ namespace DNNrocketAPI.Componants
 
         public static void LogTracking(string message, string logName = "Log")
         {
-            var mappath = HomeDNNrocketDirectoryMapPath().TrimEnd('\\') + "\\logs";
+            var mappath = PortalUtils.HomeDNNrocketDirectoryMapPath().TrimEnd('\\') + "\\logs";
             if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
             FileUtils.AppendToLog(mappath, logName, message);
         }
@@ -1650,15 +1557,15 @@ namespace DNNrocketAPI.Componants
         /// <returns></returns>
         public static string BackUpNewFileName(string backupRootFolder, string moduleName, string fileAppendix = "BackUp.xml")
         {
-            if (!Directory.Exists(BackUpDirectoryMapPath() + "\\" +  backupRootFolder))
+            if (!Directory.Exists(PortalUtils.BackUpDirectoryMapPath() + "\\" +  backupRootFolder))
             {
-                Directory.CreateDirectory(BackUpDirectoryMapPath() + "\\" + backupRootFolder);
+                Directory.CreateDirectory(PortalUtils.BackUpDirectoryMapPath() + "\\" + backupRootFolder);
             }            
-            if (!Directory.Exists(BackUpDirectoryMapPath() + "\\" + backupRootFolder + "\\" + moduleName))
+            if (!Directory.Exists(PortalUtils.BackUpDirectoryMapPath() + "\\" + backupRootFolder + "\\" + moduleName))
             {
-                Directory.CreateDirectory(BackUpDirectoryMapPath() + "\\" + backupRootFolder + "\\" + moduleName);
+                Directory.CreateDirectory(PortalUtils.BackUpDirectoryMapPath() + "\\" + backupRootFolder + "\\" + moduleName);
             }
-            return BackUpDirectoryMapPath() + "\\" + backupRootFolder + "\\" + moduleName + "\\" + DateTime.Now.ToFileTime() + "_" + fileAppendix;
+            return PortalUtils.BackUpDirectoryMapPath() + "\\" + backupRootFolder + "\\" + moduleName + "\\" + DateTime.Now.ToFileTime() + "_" + fileAppendix;
         }
 
 

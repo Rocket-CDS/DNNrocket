@@ -15,7 +15,7 @@ namespace DNNrocketAPI.Componants
         {
             _searchpattern = searchpattern;
             BackupRootFolder = backupRootFolder;
-            BackupRootFolderMapPath = DNNrocketUtils.BackUpDirectoryMapPath() + "\\" + BackupRootFolder;
+            BackupRootFolderMapPath = PortalUtils.BackUpDirectoryMapPath() + "\\" + BackupRootFolder;
             LoadData();
         }
 

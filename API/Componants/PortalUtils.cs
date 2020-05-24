@@ -300,7 +300,89 @@ namespace DNNrocketAPI.Componants
             }
             return portalalias;
         }
-
+        public static string HomeDNNrocketDirectoryMapPath(int portalId = -1)
+        {
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectoryMapPath + "DNNrocket";
+            else
+                return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocket";
+        }
+        public static string HomeDNNrocketDirectoryRel(int portalId = -1)
+        {
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectory + "DNNrocket";
+            else
+                return PortalSettings.Current.HomeDirectory + "DNNrocket";
+        }
+        public static string DNNrocketThemesDirectoryMapPath(int portalId = -1)
+        {
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectoryMapPath + "DNNrocketThemes";
+            else
+                return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketThemes";
+        }
+        public static string DNNrocketThemesDirectoryRel(int portalId = -1)
+        {
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectory + "DNNrocketThemes";
+            else
+                return PortalSettings.Current.HomeDirectory + "DNNrocketThemes";
+        }
+        public static string TempDirectoryMapPath(int portalId = -1)
+        {
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketTemp";
+            else
+                return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketTemp";
+        }
+        public static string BackUpDirectoryMapPath(int portalId = -1)
+        {
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketBackUp";
+            else
+                return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketBackUp";
+        }
+        public static string TempDirectoryRel(int portalId = -1)
+        {
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectory.TrimEnd('/') + "/DNNrocketTemp";
+            else
+                return PortalSettings.Current.HomeDirectory.TrimEnd('/') + "/DNNrocketTemp";
+        }
+        public static string HomeDirectoryMapPath(int portalId = -1)
+        {
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectoryMapPath;
+            else
+                return PortalSettings.Current.HomeDirectoryMapPath;
+        }
+        public static string HomeDirectoryRel(int portalId = -1)
+        {
+            if (portalId >= 0)
+                return GetPortalSettings(portalId).HomeDirectory;
+            else
+                return PortalSettings.Current.HomeDirectory;
+        }
+        public static void CreateRocketDirectories(int portalId = -1)
+        {
+            if (!Directory.Exists(TempDirectoryMapPath(portalId)))
+            {
+                Directory.CreateDirectory(TempDirectoryMapPath(portalId));
+                Directory.CreateDirectory(TempDirectoryMapPath(portalId) + "\\debug");
+            }
+            if (!Directory.Exists(HomeDNNrocketDirectoryMapPath(portalId)))
+            {
+                Directory.CreateDirectory(HomeDNNrocketDirectoryMapPath(portalId));
+            }
+            if (!Directory.Exists(DNNrocketThemesDirectoryMapPath(portalId)))
+            {
+                Directory.CreateDirectory(DNNrocketThemesDirectoryMapPath(portalId));
+            }
+            if (!Directory.Exists(BackUpDirectoryMapPath(portalId)))
+            {
+                Directory.CreateDirectory(BackUpDirectoryMapPath(portalId));
+            }
+        }
 
 
     }

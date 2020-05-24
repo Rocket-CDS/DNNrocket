@@ -249,7 +249,7 @@ namespace DNNrocket.Category
         {
 
 
-                var imageDirectory = DNNrocketUtils.HomeDNNrocketDirectoryMapPath() + "\\images";
+                var imageDirectory = PortalUtils.HomeDNNrocketDirectoryMapPath() + "\\images";
                 if (!Directory.Exists(imageDirectory))
                 {
                     Directory.CreateDirectory(imageDirectory);
@@ -285,13 +285,13 @@ namespace DNNrocket.Category
                             var newfilename = GeneralUtils.GetUniqueKey();
 
                             var imgInfo = new SimplisityInfo();
-                            var imagerelpath = DNNrocketUtils.HomeDirectoryRel() + "/images/" + newfilename;
+                            var imagerelpath = PortalUtils.HomeDirectoryRel() + "/images/" + newfilename;
                             var imagepath = imageDirectory + "\\" + newfilename;
 
-                            if (File.Exists(DNNrocketUtils.TempDirectoryMapPath() + "\\" + encryptName))
+                            if (File.Exists(PortalUtils.TempDirectoryMapPath() + "\\" + encryptName))
                             {
 
-                                File.Move(DNNrocketUtils.TempDirectoryMapPath() + "\\" + encryptName, imagepath);
+                                File.Move(PortalUtils.TempDirectoryMapPath() + "\\" + encryptName, imagepath);
 
                                 imgInfo.SetXmlProperty("genxml/hidden", "");
                                 imgInfo.SetXmlProperty("genxml/hidden/imagerelpath", imagerelpath);

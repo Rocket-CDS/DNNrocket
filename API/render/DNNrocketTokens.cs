@@ -149,37 +149,9 @@ namespace DNNrocketAPI.render
             var strOut = DNNrocketUtils.RazorDetailByName(razorTemplateName, info, dataObjects, lang, templateControlRelPath, themeFolder, versionFolder, settings, SessionParams, debugmode);
             return new RawString(strOut);
         }
-
-        public IEncodedString RenderImageSelect(int moduleid, string systemKey = "", bool useCache = true, string tableName = "DNNrocket")
+        public IEncodedString RenderImageSelect(string systemKey, string imageFolderRel, bool singleselect = true, bool autoreturn = false)
         {
-            var moduleParams = new ModuleParams(moduleid, systemKey, useCache, tableName);
-            return RenderImageSelect(moduleParams, 100, true, false);
-        }
-        public IEncodedString RenderImageSelect(int moduleid, int imagesize, bool singleselect = true, bool autoreturn = false, string systemKey = "", bool useCache = true, string tableName = "DNNrocket")
-        {
-            var moduleParams = new ModuleParams(moduleid, systemKey, useCache, tableName);
-            return RenderImageSelect(moduleParams, imagesize, singleselect, autoreturn);
-        }
-        public IEncodedString RenderImageSelect(ModuleParams moduleParams, int imagesize, bool singleselect = true, bool autoreturn = false)
-        {
-            return new RawString(DNNrocketUtils.RenderImageSelect(moduleParams, imagesize, singleselect, autoreturn));
-        }
-        /// <summary>
-        /// If we have no moduleParams class (moduleid = -1, moduleParams.Exists = false)
-        /// We will be editing systemData, so we want to upload the image to the correct folder.  In the system folder.
-        /// We use this token to pass the systemkey we are editing.
-        /// We have to create a fake "moduleParams" class with the correct "editsystemkey", which is passed to the image template and the image startconnect code via the template.
-        /// </summary>
-        /// <param name="systemData"></param>
-        /// <param name="imagesize"></param>
-        /// <param name="singleselect"></param>
-        /// <param name="autoreturn"></param>
-        /// <returns></returns>
-        public IEncodedString RenderSystemImageSelect(SystemData systemData, int imagesize, bool singleselect = true, bool autoreturn = false)
-        {
-            var moduleParams = new ModuleParams(-1);
-            moduleParams.SystemKey = systemData.SystemKey;
-            return new RawString(DNNrocketUtils.RenderImageSelect(moduleParams, imagesize, singleselect, autoreturn));
+            return new RawString(DNNrocketUtils.RenderImageSelect(systemKey, imageFolderRel, singleselect, autoreturn));
         }
         public IEncodedString RenderDocumentSelect(int moduleid, bool singleselect = true, bool autoreturn = false)
         {

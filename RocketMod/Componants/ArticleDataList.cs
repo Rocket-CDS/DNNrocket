@@ -130,7 +130,7 @@ namespace RocketMod
             }
             exportData += "</root>";
 
-            var exportDirMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\export_" + ModuleId;
+            var exportDirMapPath = PortalUtils.TempDirectoryMapPath() + "\\export_" + ModuleId;
             Directory.Delete(exportDirMapPath, true);
             Directory.CreateDirectory(exportDirMapPath);
 
@@ -142,7 +142,7 @@ namespace RocketMod
 
 
             // Create zip
-            var exportZipMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\export_" + ModuleId + ".zip";
+            var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\export_" + ModuleId + ".zip";
             if (File.Exists(exportZipMapPath)) File.Delete(exportZipMapPath);
             ZipFile.CreateFromDirectory(exportDirMapPath, exportZipMapPath);
 

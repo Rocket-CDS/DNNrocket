@@ -158,10 +158,10 @@ namespace DNNrocketAPI.Componants
                     }
                     return "/DesktopModules/DNNrocket/SystemData/images";
                 }
-                return DNNrocketUtils.HomeDNNrocketDirectoryRel().TrimEnd('/') + "/" + ImageFolder;
+                return PortalUtils.HomeDNNrocketDirectoryRel().TrimEnd('/') + "/" + ImageFolder;
             }
         }
-        public string DocumentFolderRel { get{ return DNNrocketUtils.HomeDNNrocketDirectoryRel().TrimEnd('/') + "/" + DocumentFolder;} }
+        public string DocumentFolderRel { get{ return PortalUtils.HomeDNNrocketDirectoryRel().TrimEnd('/') + "/" + DocumentFolder;} }
         public string DocumentFolder { get { return GetValue("documentfolder", "");} set { SetValue("DocumentFolder", value); } }
         public string ImageFolder { get { return GetValue("imagefolder", ""); } set { SetValue("ImageFolder", value); } }
         public string DocumentFolderMapPath { get { return DNNrocketUtils.MapPath(DocumentFolderRel); } }

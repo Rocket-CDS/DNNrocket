@@ -471,7 +471,7 @@ namespace DNNrocket.AppThemes
             if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
             var httpConnect = new HttpConnect(_selectedSystemKey);
             var userid = UserUtils.GetCurrentUserId();
-            var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + appThemeFolder + ".zip";
+            var destinationMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + userid + "_" + appThemeFolder + ".zip";
             httpConnect.DownloadAppThemeToFile(appThemeFolder, destinationMapPath);
             var appTheme = new AppTheme(_selectedSystemKey, destinationMapPath, true);
             appTheme.Update();
@@ -528,7 +528,7 @@ namespace DNNrocket.AppThemes
 
             var ftpConnect = new FtpConnect(_selectedSystemKey);
             var userid = UserUtils.GetCurrentUserId();
-            var destinationMapPath = DNNrocketUtils.TempDirectoryMapPath() + "\\" + userid + "_" + appThemeFolder + ".zip";
+            var destinationMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + userid + "_" + appThemeFolder + ".zip";
             ftpConnect.DownloadAppThemeToFile(appThemeFolder, destinationMapPath);
             if (File.Exists(destinationMapPath))
             {
@@ -656,7 +656,7 @@ namespace DNNrocket.AppThemes
                     if (f != "")
                     {
                         var userid = UserUtils.GetCurrentUserId();
-                        var userFolder = DNNrocketUtils.TempDirectoryMapPath();
+                        var userFolder = PortalUtils.TempDirectoryMapPath();
                         var friendlyname = GeneralUtils.DeCode(f);
                         var fname = userFolder + "\\" + userid + "_" + friendlyname;
                         var _appTheme = new AppTheme(_selectedSystemKey, fname, true);

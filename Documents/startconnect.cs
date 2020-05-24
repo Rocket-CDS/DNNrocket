@@ -110,8 +110,8 @@ namespace DNNrocket.Documents
                         {
                             var friendlyname = GeneralUtils.DeCode(f);
                             var userfilename = userid + "_" + friendlyname;
-                            File.Copy(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename, modParams.DocumentFolderMapPath + "\\" + friendlyname, true);
-                            File.Delete(DNNrocketUtils.TempDirectoryMapPath() + "\\" + userfilename);
+                            File.Copy(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, modParams.DocumentFolderMapPath + "\\" + friendlyname, true);
+                            File.Delete(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename);
                         }
                     }
 
@@ -125,7 +125,7 @@ namespace DNNrocket.Documents
         {
             var docfolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
             if (docfolder == "") docfolder = "docs";
-            var docDirectory = DNNrocketUtils.HomeDNNrocketDirectoryMapPath() + "\\" + docfolder;
+            var docDirectory = PortalUtils.HomeDNNrocketDirectoryMapPath() + "\\" + docfolder;
             var docList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-documentlist").Split(';');
             foreach (var i in docList)
             {

@@ -137,7 +137,7 @@ namespace DNNrocket.TestForm
         public string AddImageToList(SimplisityInfo postInfo, string templateControlRelPath)
         {
 
-            var imageDirectory =  DNNrocketUtils.HomeDNNrocketDirectoryMapPath() + "\\images";
+            var imageDirectory =  PortalUtils.HomeDNNrocketDirectoryMapPath() + "\\images";
             if (!Directory.Exists(imageDirectory))
             {
                 Directory.CreateDirectory(imageDirectory);
@@ -169,10 +169,10 @@ namespace DNNrocket.TestForm
                         var newfilename = GeneralUtils.GetUniqueKey();
 
                         var imgInfo = new SimplisityInfo();
-                        var imagerelpath = DNNrocketUtils.HomeDirectoryRel() + "/images/" + newfilename;
+                        var imagerelpath = PortalUtils.HomeDirectoryRel() + "/images/" + newfilename;
                         var imagepath = imageDirectory + "\\" + newfilename;
 
-                        File.Move(DNNrocketUtils.TempDirectoryMapPath() + "\\" + encryptName, imagepath);
+                        File.Move(PortalUtils.TempDirectoryMapPath() + "\\" + encryptName, imagepath);
 
                         imgInfo.SetXmlProperty("genxml/hidden", "");
                         imgInfo.SetXmlProperty("genxml/hidden/imagerelpath", imagerelpath);
@@ -201,7 +201,7 @@ namespace DNNrocket.TestForm
 
         public string AddDocToList(SimplisityInfo postInfo, string templateControlRelPath)
         {
-            var docDirectory = DNNrocketUtils.HomeDNNrocketDirectoryMapPath() + "\\docs";
+            var docDirectory = PortalUtils.HomeDNNrocketDirectoryMapPath() + "\\docs";
             if (!Directory.Exists(docDirectory))
             {
                 Directory.CreateDirectory(docDirectory);
@@ -233,10 +233,10 @@ namespace DNNrocket.TestForm
                         var newfilename = GeneralUtils.GetUniqueKey();
 
                         var docInfo = new SimplisityInfo();
-                        var docrelpath = DNNrocketUtils.HomeDirectoryRel() + "/docs/" + newfilename;
+                        var docrelpath = PortalUtils.HomeDirectoryRel() + "/docs/" + newfilename;
                         var docpath = docDirectory + "\\" + newfilename;
 
-                        File.Move(DNNrocketUtils.TempDirectoryMapPath() + "\\" + encryptName, docpath);
+                        File.Move(PortalUtils.TempDirectoryMapPath() + "\\" + encryptName, docpath);
 
                         docInfo.SetXmlProperty("genxml/hidden", "");
                         docInfo.SetXmlProperty("genxml/hidden/docrelpath", docrelpath);
