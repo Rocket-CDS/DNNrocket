@@ -50,7 +50,6 @@
 
 
     // get sub group interfaces
-    lp = 1;
     foreach (SimplisityRecord g in sidemenu.GetGroups())
     {
         var groupref = g.GetXmlProperty("genxml/textbox/groupref");
@@ -58,8 +57,8 @@
         interfacelist = sidemenu.GetInterfaces(groupref);
         if (interfacelist.Count() > 0)
         {
-            menuOut += "<div class='w3-bar-item w3-button w3-padding menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey("RocketMod." + groupref) + "&nbsp;<i class='fas fa-caret-down'></i></div>";
-            menuOut += "<div id='" + groupref + "' class='w3-hide'>";
+            menuOut += "<div class='w3-bar-item w3-button w3-padding menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey(Model.GetSetting("resxfile") + "." + groupref) + "&nbsp;<i class='fas fa-caret-down'></i></div>";
+            menuOut += "<div id='" +  groupref + "' class='w3-hide'>";
             foreach (var i in interfacelist)
             {
                 var defaulttheme = i.GetXmlProperty("genxml/textbox/defaulttheme");
@@ -149,12 +148,12 @@ else
             if ($('#' + actionid).hasClass('w3-show')) {
                 $('#' + actionid).addClass('w3-hide');
                 $('#' + actionid).removeClass('w3-show');
-                $(this).removeClass('w3-theme-d3');
+                $(this).removeClass('w3-theme-d1');
             }
             else {
                 $('#' + actionid).addClass('w3-show');
                 $('#' + actionid).removeClass('w3-hide');
-                $(this).addClass('w3-theme-d3');
+                $(this).addClass('w3-theme-d1');
             }
         });
 
