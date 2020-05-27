@@ -279,7 +279,7 @@ namespace DNNrocket.System
             {
                 var systemGlobalData = new SystemGlobalData();
                 var reqparm = new NameValueCollection();
-                reqparm.Add("sitekey", DNNrocketUtils.SiteGuid());
+                reqparm.Add("sitekey", PortalUtils.SiteGuid());
                 reqparm.Add("systemkey", _systemData.SystemKey);
                 reqparm.Add("domainurl", DNNrocketUtils.GetDefaultWebsiteDomainUrl());
                 var rtnLicenseStatus = SimplisityUtils.PostData(systemGlobalData.LicenseUrl.TrimEnd('/') + "/Desktopmodules/dnnrocket/api/rocket/action", "rocketlicense", "clientlicense_getlicense", "", "", reqparm);
@@ -379,7 +379,7 @@ namespace DNNrocket.System
                 var certificateKey = _postInfo.GetXmlProperty("genxml/hidden/certificatekey");
                 var domainurl = DNNrocketUtils.GetDefaultWebsiteDomainUrl(); ;
                 var systemkey = _systemData.SystemKey;
-                var sitekey = DNNrocketUtils.SiteGuid();
+                var sitekey = PortalUtils.SiteGuid();
                 if (licenseid > 0)
                 {
                     var licenseData = new LicenseData(licenseid);

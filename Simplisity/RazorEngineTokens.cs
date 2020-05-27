@@ -180,7 +180,18 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
-        public IEncodedString CheckBoxList(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "", Boolean defaultValue = false, bool localized = false, int row = 0, string listname = "")
+        public IEncodedString CheckBoxList(SimplisityInfo info, string xpath, Dictionary<string, string> dataDictionary, string attributes = "", bool defaultValue = false, bool localized = false, int row = 0, string listname = "")
+        {
+            var datatext = "";
+            var datavalue = "";
+            foreach (var d in dataDictionary)
+            {
+                datatext += d.Value.Replace(",",".") + ",";
+                datavalue += d.Key.Replace(",", ".") + ",";
+            }
+            return CheckBoxList(info, xpath, datavalue.TrimEnd(','), datatext.TrimEnd(','), attributes, defaultValue, localized, row, listname);
+        }
+        public IEncodedString CheckBoxList(SimplisityInfo info, string xpath, string datavalue, string datatext, string attributes = "", bool defaultValue = false, bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
 
@@ -224,7 +235,18 @@ namespace Simplisity
             return new RawString(strOut);
         }
 
-        public IEncodedString RadioButtonList(SimplisityInfo info, String xpath, String datavalue, String datatext, String attributes = "", String defaultValue = "",String labelattributes = "", bool localized = false, int row = 0, string listname = "")
+        public IEncodedString RadioButtonList(SimplisityInfo info, string xpath, Dictionary<string, string> dataDictionary, string attributes = "", string defaultValue = "", string labelattributes = "", bool localized = false, int row = 0, string listname = "")
+        {
+            var datatext = "";
+            var datavalue = "";
+            foreach (var d in dataDictionary)
+            {
+                datatext += d.Value.Replace(",", ".") + ",";
+                datavalue += d.Key.Replace(",", ".") + ",";
+            }
+            return RadioButtonList(info, xpath, datavalue.TrimEnd(','), datatext.TrimEnd(','), attributes, defaultValue, labelattributes, localized, row, listname);
+        }
+        public IEncodedString RadioButtonList(SimplisityInfo info, string xpath, string datavalue, string datatext, string attributes = "", string defaultValue = "",string labelattributes = "", bool localized = false, int row = 0, string listname = "")
         {
             if (info == null) info = new SimplisityInfo();
             var strOut = "";

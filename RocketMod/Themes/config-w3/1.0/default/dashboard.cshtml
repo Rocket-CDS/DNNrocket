@@ -19,7 +19,7 @@
     var systemGlobalData = new SystemGlobalData();
     var systemData = new SystemData(moduleParams.SystemKey);
     Model.SetSetting("licensetype", moduleParams.SystemKey);
-    var licenseData = new LicenseData(moduleParams.SystemKey, DNNrocketUtils.SiteGuid());
+    var licenseData = new LicenseData(moduleParams.SystemKey, PortalUtils.SiteGuid());
 }
 
 
@@ -170,7 +170,7 @@
             </div>
             <div class="w3-col m12 w3-padding">
                 <label>@ResourceKey("DNNrocket.sitekey")</label>
-                <div class="w3-border w3-padding  w3-light-grey">@DNNrocketUtils.SiteGuid()</div>
+                <div class="w3-border w3-padding  w3-light-grey">@PortalUtils.SiteGuid()</div>
             </div>
         </div>
     </div>

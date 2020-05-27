@@ -30,7 +30,7 @@
         <div class="w3-row">
             <div class="w3-padding">
                 <label><b>@ResourceKey("DNNrocket.sitekey")</b></label>
-                @TextBox(new SimplisityInfo(), "genxml/hidden/sitekey", "class='w3-input w3-border' disabled", DNNrocketUtils.SiteGuid())
+                @TextBox(new SimplisityInfo(), "genxml/hidden/sitekey", "class='w3-input w3-border' disabled", PortalUtils.SiteGuid())
             </div>
         </div>
 
@@ -55,7 +55,7 @@
     function doRedirection() {
         var currentURL = window.location.href;
         var url = "@(systemGlobalData.LicenseUrl.TrimEnd('/'))/DesktopModules/DNNrocketModules/RocketLicense/newlicense.html";
-        url += "?sitekey=@(DNNrocketUtils.SiteGuid())";
+        url += "?sitekey=@(PortalUtils.SiteGuid())";
         url += "&licensetype=@(Model.GetSetting("licensetype"))";
         url += "&domainurl=@GeneralUtils.EnCode(DNNrocketUtils.GetDefaultWebsiteDomainUrl())";
         url += "&returnurl=" + simplisity_encode(currentURL);
