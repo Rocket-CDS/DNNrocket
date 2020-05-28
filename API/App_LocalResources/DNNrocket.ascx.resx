@@ -543,4 +543,10 @@
   <data name="cancelsearch.Text" xml:space="preserve">
     <value>Cancel Search</value>
   </data>
+  <data name="key.Text" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="value.Text" xml:space="preserve">
+    <value>Value</value>
+  </data>
 </root>

@@ -94,11 +94,19 @@ namespace DNNrocketAPI.Componants
         }
         public static int GetPortalIdBySiteKey(string siteKey)
         {
-            var guid = new Guid(siteKey);
-            var controller = new PortalController();
-            var portal = controller.GetPortal(guid);
-            if (portal == null) return -1;
-            return portal.PortalID;
+            try
+            {
+                var guid = new Guid(siteKey);
+                var controller = new PortalController();
+                var portal = controller.GetPortal(guid);
+                if (portal == null) return -1;
+                return portal.PortalID;
+            }
+            catch (Exception)
+            {
+                ///DNNrocketUtils.LogException(ex);
+                return -1; // Invalid Guid.
+            }
         }
         public static PortalInfo GetPortal(int portalId)
         {
