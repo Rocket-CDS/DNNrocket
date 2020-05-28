@@ -620,8 +620,10 @@ begin
 
  set @TableName = '{databaseOwner}' + @TableName
 
-	SET @Filter = REPLACE(@Filter,'[XMLData]','{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData])')
-
+ 	if NOT(@Lang = '')
+	begin
+		SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}DNNrocketLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+	end
 
 ------------------------------------------------------------------------------------
 --- Cursor for INDEX records.
@@ -704,6 +706,7 @@ DEALLOCATE idx_cursor
 			if NOT(@Lang = '')
 			begin
 				set @countselect = @countselect + ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+				set @countselect = @countselect + ' left join ' + @TableName + ' as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
 			end
 	
 			set @countselect = @countselect + @JoinIndex
