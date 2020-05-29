@@ -42,7 +42,7 @@ namespace RocketMod
             var searchFilter = " and R1.ModuleId = " + _moduleParams.ModuleIdDataSource;
             searchFilter += _moduleParams.GetFilterSQL(SessionParamData.Info, SessionParamData.FilterIndex);
             SessionParamData.RowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, _tableName);
-            DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(SessionParamData.OrderByIndex), 0, SessionParamData.Page, SessionParamData.PageSize, SessionParamData.RowCount, _tableName);
+            DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(SessionParamData.OrderByRef), 0, SessionParamData.Page, SessionParamData.PageSize, SessionParamData.RowCount, _tableName);
         }
         public void DeleteAll()
         {
@@ -103,13 +103,13 @@ namespace RocketMod
         public List<SimplisityInfo> GetAllArticlesForModule()
         {
             var searchFilter = " and R1.ModuleId = " + ModuleId + " ";
-            return _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(SessionParamData.OrderByIndex), 0, 0, 0, 0, _tableName);
+            return _objCtrl.GetList(PortalUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(SessionParamData.OrderByRef), 0, 0, 0, 0, _tableName);
         }
 
         public void SortOrderReIndex()
         {
             var searchFilter = " and R1.ModuleId = " + ModuleId + " ";
-            var sortOrderList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, "", _moduleParams.OrderBySQL(SessionParamData.OrderByIndex), 0, 0, 0, 0, _tableName);
+            var sortOrderList = _objCtrl.GetList(PortalUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, "", _moduleParams.OrderBySQL(SessionParamData.OrderByRef), 0, 0, 0, 0, _tableName);
             var lp = 1;
             foreach (var s in sortOrderList)
             {

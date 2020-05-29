@@ -72,7 +72,7 @@ namespace Simplisity
 
         #region "properties"
         //Order by
-        public int OrderByIndex { get { return Info.GetXmlPropertyInt("r/orderbyindex"); } set { Info.SetXmlProperty("r/orderbyindex", value.ToString()); } }
+        public string OrderByRef { get { return Info.GetXmlProperty("r/orderbyref"); } set { Info.SetXmlProperty("r/orderbyref", value.ToString()); } }
         public int SortActivate { get { return Info.GetXmlPropertyInt("r/sortorderactivate"); } set { Info.SetXmlProperty("r/sortorderactivate", value.ToString()); } }
         // Paging
         public int PageSize { get { return Info.GetXmlPropertyInt("r/pagesize"); } set { Info.SetXmlProperty("r/pagesize", value.ToString()); } }

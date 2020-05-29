@@ -193,13 +193,12 @@ namespace DNNrocketAPI.Componants
         public string CacheGroupId { get { return "datamoduleid:" + ModuleIdDataSource; } }
         public bool AutoBackUp { get { return GetValueBool("autobackup"); } set { SetValue("autobackup", value.ToString()); } }
 
-        public string OrderBySQL(int index = 0)
+        public string OrderBySQL(string orderbyref = "")
         { 
-            var key = "orderby" + index;
             var orderbysql = "";
-            if (ModuleSettings.ContainsKey(key))
+            if (ModuleSettings.ContainsKey(orderbyref))
             {
-                orderbysql = ModuleSettings[key];
+                orderbysql = ModuleSettings[orderbyref];
             }
             if (orderbysql == null || orderbysql == "") return " order by R1.[SortOrder] ";
             return orderbysql;
