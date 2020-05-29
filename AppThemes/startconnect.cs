@@ -606,10 +606,15 @@ namespace DNNrocket.AppThemes
                 var ftpConnect = new FtpConnect(_selectedSystemKey);
 
                 var serverxml = ftpConnect.DownloadAppThemeXml(_appThemeFolder);
+                double version = -1;
+                double rev = -1;
                 var sRec = new SimplisityRecord();
-                sRec.XMLData = serverxml;
-                var version = sRec.GetXmlPropertyDouble("item/genxml/hidden/latestversion");
-                var rev = sRec.GetXmlPropertyDouble("item/genxml/hidden/latestrev");
+                if (!String.IsNullOrEmpty(serverxml) && serverxml.ToUpper() != "FAIL")
+                {
+                    sRec.XMLData = serverxml;
+                    version = sRec.GetXmlPropertyDouble("item/genxml/hidden/latestversion");
+                    rev = sRec.GetXmlPropertyDouble("item/genxml/hidden/latestrev");
+                }
                 if (appTheme.LatestVersion > version)
                 {
                     return UploadAppTheme();
