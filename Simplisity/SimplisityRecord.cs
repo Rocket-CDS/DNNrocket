@@ -857,7 +857,6 @@ namespace Simplisity
                 RemoveXmlNode(RootNodeName + "/" + listName);
             }
         }
-
         public void RemoveRecordListItem(string listName, int index)
         {
             if (XMLDoc != null && index > 0)
@@ -882,12 +881,17 @@ namespace Simplisity
                 }
             }
         }
-
+        /// <summary>
+        /// Get record list item
+        /// </summary>
+        /// <param name="listName">Name of list</param>
+        /// <param name="index">1 based index</param>
         public SimplisityRecord GetRecordListItem(string listName, int index)
         {
             if (XMLDoc != null)
             {
                 var list = GetRecordList(listName);
+                if (index > (list.Count - 1)) return new SimplisityInfo();
                 return list[index];
             }
             return null;
