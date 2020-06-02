@@ -200,19 +200,6 @@ namespace Simplisity
         }
 
         /// <summary>
-        /// Replace xml node in SimplisityInfo structure
-        /// </summary>
-        /// <param name="strXml">New XML, must be in NBright Strucutre (genxml/...)</param>
-        /// <param name="xPathSource">Source path of the xml, this is for the new node and the old existing node</param>
-        /// <param name="xPathRootDestination">parent node to place the new node onto</param>
-        public void ReplaceXmlNode(string strXml, string xPathSource, string xPathRootDestination)
-        {
-            RemoveXmlNode(xPathRootDestination);
-            SetXmlProperty(xPathRootDestination, "");
-            AddXmlNode(strXml, xPathSource, xPathRootDestination);
-        }
-
-        /// <summary>
         /// return int data type from XML
         /// </summary>
         /// <param name="xpath"></param>
