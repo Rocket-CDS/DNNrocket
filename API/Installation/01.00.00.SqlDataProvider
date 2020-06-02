@@ -338,7 +338,7 @@ CREATE    PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetList]
 @PortalId int, 
 @ModuleId int,
 @TypeCode nvarchar(50),
-@Filter nvarchar(1000),
+@Filter nvarchar(max),
 @OrderBy nvarchar(500),
 @ReturnLimit int = 0,
 @pageNum int = 0,
@@ -611,7 +611,7 @@ CREATE    PROCEDURE {databaseOwner}[{objectQualifier}DNNrocket_GetListCount]
 @PortalId int, 
 @ModuleId int,
 @TypeCode nvarchar(50),
-@Filter nvarchar(1000),
+@Filter nvarchar(max),
 @Lang nvarchar(50),
 @RecordCount int OUTPUT,
 @TableName nvarchar(100)
