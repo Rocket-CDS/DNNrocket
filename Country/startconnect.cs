@@ -83,7 +83,7 @@ namespace DNNrocket.Country
             {
                 var strOut = "";
                 var objCtrl = new DNNrocketController();
-                var smi = objCtrl.GetData("countrysettings", "SETTINGS", editlang, -1, false, _rocketInterface.DatabaseTable);
+                var smi = objCtrl.GetData(_rocketInterface.InterfaceKey, _rocketInterface.EntityTypeCode, editlang, -1, false, _rocketInterface.DatabaseTable);
                 if (smi != null)
                 {
                     var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
@@ -106,12 +106,20 @@ namespace DNNrocket.Country
 
         public void CountrySave(SimplisityInfo postInfo)
         {
-            _passSettings.Add("saved", "true");
             var objCtrl = new DNNrocketController();
-            postInfo.GUIDKey = "countrysettings";
-            postInfo.TypeCode = "SETTINGS";
-            postInfo.ModuleId = -1;
-            objCtrl.SaveData(postInfo, _rocketInterface.DatabaseTable);
+            var smi = objCtrl.GetData(_rocketInterface.InterfaceKey, _rocketInterface.EntityTypeCode, DNNrocketUtils.GetEditCulture(), -1, false, _rocketInterface.DatabaseTable);
+            if (smi == null)
+            {
+                smi = new SimplisityInfo();
+                smi.ItemID = -1;
+                smi.GUIDKey = _rocketInterface.InterfaceKey;
+                smi.TypeCode = _rocketInterface.EntityTypeCode;
+                smi.ModuleId = -1;
+            }
+            smi.XMLData = postInfo.XMLData;
+            objCtrl.SaveData(smi, _rocketInterface.DatabaseTable);
+
+            _passSettings.Add("saved", "true");
         }
 
     }
