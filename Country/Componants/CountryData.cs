@@ -50,6 +50,19 @@ namespace DNNrocket.Country.Componants
         {
             return Info.GetList("countrylist");
         }
+        public Dictionary<string,string> GetSelectedDictCountries()
+        {
+            var clist = DNNrocketUtils.GetCountryCodeList();
+            var rtn = new Dictionary<string, string>();
+            foreach (var i in Info.GetList("countrylist"))
+            {
+                var ccode = i.GetXmlProperty("genxml/hidden/countrycode");
+                var countryname = "";
+                if (clist.ContainsKey(ccode)) countryname = clist[ccode];
+                rtn.Add(ccode,countryname);
+            }
+            return rtn;
+        }
 
         public SimplisityInfo Info { get; set; }
         public DNNrocketInterface RocketInterface { get; set; }

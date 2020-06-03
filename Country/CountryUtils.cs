@@ -65,52 +65,36 @@ namespace DNNrocket.Country
 
         #endregion
 
-        public static string[] CountryListCSV(DNNrocketInterface rocketInterface, bool allowempty = true)
+        public static string CountryListJson(DNNrocketInterface rocketInterface, bool allowempty = true)
         {
-            var rtn = new string[2];
             var countryData = new CountryData(PortalUtils.GetPortalId(), rocketInterface);
-            var countrycode_csv = "";
-            var countryname_csv = "";
+            var rtn = "";
             if (allowempty)
             {
-                countrycode_csv = "'',";
-                countryname_csv = "'',";
+                rtn += "{'':'','':''},";
             }
-
-            foreach (var i in countryData.GetSelectedCountries())
+            foreach (var i in countryData.GetSelectedDictCountries())
             {
-                countrycode_csv += "'" + i.GetXmlProperty("genxml/hidden/countrycode").Replace("'", "") + "',";
-                countryname_csv += "'" + DNNrocketUtils.GetCountryName(i.GetXmlProperty("genxml/hidden/countrycode")).Replace("'", "") + "',";
+                rtn += "{'key':'" + i.Key.Replace("'", "") + "','name':'" + i.Value.Replace("'", "") + "'},";
             }
+            rtn = rtn.TrimEnd(',');
 
-            countryname_csv = countryname_csv.TrimEnd(',');
-            countrycode_csv = countrycode_csv.TrimEnd(',');
-
-            rtn[1] = countryname_csv;
-            rtn[0] = countrycode_csv;
             return rtn;
         }
 
-        public static string[] RegionListCSV(string countrycode, bool allowempty = true)
+        public static string RegionListJson(string countrycode, bool allowempty = true)
         {
-            var rtn = new string[2];
-            var code_csv = "";
-            var name_csv = "";
+            var rtn = "";
             if (allowempty)
             {
-                code_csv = "'',";
-                name_csv = "'',";
+                rtn += "{'':'','':''},";
             }
             foreach (var i in DNNrocketUtils.GetRegionList(countrycode))
-                {
-                    code_csv += "'" + i.Key.Replace("'","") + "',";
-                    name_csv += "'" + i.Value.Replace("'", "") + "',";
-                }
-                name_csv = name_csv.TrimEnd(',');
-                code_csv = code_csv.TrimEnd(',');
+            {
+                rtn += "{'key':'" + i.Key.Replace("'", "") + "','name':'" + i.Value.Replace("'", "") + "'},";
+            }
+            rtn = rtn.TrimEnd(',');
 
-                rtn[0] = code_csv;
-                rtn[1] = name_csv;
             return rtn;
         }
 

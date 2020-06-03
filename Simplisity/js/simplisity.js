@@ -180,6 +180,15 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                 var jsontest = JSON.stringify(eval("(" + json + ")"));
                 var obj = JSON.parse(jsontest);
                 // populate linked dropdownlist
+
+                alert(jsontest);
+                var myObject = eval('(' + json + ')');
+                for (i in obj) {
+
+                    console.log(obj[i]["key"] + ' ' + obj[i]["name"]);
+
+                }
+
                 var len = obj.listkey.length;
                 $(sdropdownlist).empty();
                 for (var i = 0; i < len; i++) {
