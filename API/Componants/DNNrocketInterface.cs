@@ -11,10 +11,11 @@ using System.Text;
 namespace DNNrocketAPI.Componants
 {
 
-    public class DNNrocketInterface  
+    public class DNNrocketInterface
     {
         public DNNrocketInterface(SimplisityInfo systemInfo, string interfaceKey)
         {
+            SystemKey = systemInfo.GetXmlProperty("genxml/textbox/ctrlkey");
             Exists = true;
             if (systemInfo == null)
             {
@@ -46,7 +47,7 @@ namespace DNNrocketAPI.Componants
                 Info = interfaceInfo;
             }
         }
-
+        public string SystemKey { get; set; }
         public bool IsProvider(string providerType)
         {
             return Info.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='"+ providerType + "']/@value");

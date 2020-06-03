@@ -13,11 +13,6 @@
     {
         clist.Add(i.GetXmlProperty("genxml/hidden/countrycode"));
     }
-    var animate = "w3-animate-bottom";
-    if (Model.GetSettingBool("stopanimate"))
-    {
-        animate = "";
-    }
 }
 
 <div class="w3-row w3-padding">
@@ -29,7 +24,7 @@
 </div>
 
 
-<div class="w3-container @animate">
+<div class="w3-container ">
 
     <div class="w3-container">
         <h2>@ResourceKey("country.countrysettings")</h2>
