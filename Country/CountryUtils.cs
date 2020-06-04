@@ -75,7 +75,7 @@ namespace DNNrocket.Country
             }
             foreach (var i in countryData.GetSelectedDictCountries())
             {
-                rtn += "{'key':'" + i.Key.Replace("'", "") + "','name':'" + i.Value.Replace("'", "") + "'},";
+                rtn += "{\"key\":\"" + i.Key.Replace("\"", "") + "\",\"name\":\"" + i.Value.Replace("\"", "") + "\"},";
             }
             rtn = rtn.TrimEnd(',');
 
@@ -87,11 +87,11 @@ namespace DNNrocket.Country
             var rtn = "";
             if (allowempty)
             {
-                rtn += "{'':'','':''},";
+                rtn += "{\"\":\"\",\"\":\"\"},";
             }
             foreach (var i in DNNrocketUtils.GetRegionList(countrycode))
             {
-                rtn += "{'key':'" + i.Key.Replace("'", "") + "','name':'" + i.Value.Replace("'", "") + "'},";
+                rtn += "{\"key\":\"" + i.Key.Replace("\"", "") + "\",\"name\":\"" + i.Value.Replace("\"", "") + "\"},";
             }
             rtn = rtn.TrimEnd(',');
 

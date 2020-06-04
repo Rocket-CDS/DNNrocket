@@ -177,20 +177,20 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             timeout: 120000,
             data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd },
             success: function (json) {
-                var jsontest = JSON.stringify(eval("(" + json + ")"));
-                var obj = JSON.parse(jsontest);
-                // populate linked dropdownlist
 
-                alert(jsontest);
-                var myObject = eval('(' + json + ')');
-                for (i in obj) {
+                var jsonObj = $.parseJSON('[' + json + ']');
 
-                    console.log(obj[i]["key"] + ' ' + obj[i]["name"]);
-
+                for (i in jsonObj) {
+                    console.log(jsonObj[i]["key"] + ' ' + jsonObj[i]["name"]);
                 }
 
-                var len = obj.listkey.length;
-                $(sdropdownlist).empty();
+                var str = '{"key":"1","name":"Test1"},{"key":"2","name":"Test2"}';
+                var jsonObj = $.parseJSON('[' +  jasontext + ']');
+                for (i in jsonObj) {
+                    console.log(jsonObj[i]["key"] + ' ' + jsonObj[i]["name"]);
+                }
+
+                var len = obj.length;
                 for (var i = 0; i < len; i++) {
                     $(sdropdownlist).append("<option value='" + obj.listkey[i] + "'>" + obj.listvalue[i] + "</option>");
                 }
