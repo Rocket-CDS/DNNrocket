@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,15 @@ namespace DNNrocketAPI.Componants
     }
 
     public enum ButtonTypes { add, admin, back, cancel, close, create, delete, download, edit, export, next, ok, print, refresh, remove, reset, save, search, cancelsearch, setup, undo, upload, use };
+
+
+    public class ValuePair
+    {
+        [JsonProperty("key")]
+        public string Key;
+        [JsonProperty("value")]
+        public string Value;
+    }
 
 
 }

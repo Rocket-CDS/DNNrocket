@@ -17,7 +17,7 @@ namespace DNNrocket.Images
         private DNNrocketInterface _rocketInterface;
         private SystemData _systemData;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = "ERROR"; // return ERROR if not matching commands.
 
@@ -41,7 +41,7 @@ namespace DNNrocket.Images
             if (!_commandSecurity.HasSecurityAccess(paramCmd))
             {
                 strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
-                return ReturnString(strOut);
+                return DNNrocketUtils.ReturnString(strOut);
             }
 
             try
@@ -66,17 +66,8 @@ namespace DNNrocket.Images
                 strOut = ex.ToString();
             }
 
-            return ReturnString(strOut);
+            return DNNrocketUtils.ReturnString(strOut);
         }
-
-        public Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
-        {
-            var rtnDic = new Dictionary<string, string>();
-            rtnDic.Add("outputhtml", strOut);
-            rtnDic.Add("outputjson", jsonOut);
-            return rtnDic;
-        }
-
 
         public String ListData()
         {

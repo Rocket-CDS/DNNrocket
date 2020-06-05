@@ -43,9 +43,9 @@ namespace DNNrocketAPI.Componants
 {
     public static class DNNrocketUtils
     {
-        public static Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
+        public static Dictionary<string, object> ReturnString(string strOut, string jsonOut = null)
         {
-            var rtnDic = new Dictionary<string, string>();
+            var rtnDic = new Dictionary<string, object>();
             rtnDic.Add("outputhtml", strOut);
             rtnDic.Add("outputjson", jsonOut);
             return rtnDic;
@@ -1227,9 +1227,9 @@ namespace DNNrocketAPI.Componants
 
         }
 
-        public static Dictionary<string, string> GetProviderReturn(string paramCmd, SimplisityInfo systemInfo, DNNrocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
+        public static Dictionary<string, object> GetProviderReturn(string paramCmd, SimplisityInfo systemInfo, DNNrocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
         {
-            var rtnDic = new Dictionary<string, string>();
+            var rtnDic = new Dictionary<string, object>();
             var systemkey = "";
             if (systemInfo != null)
             {
@@ -1296,9 +1296,9 @@ namespace DNNrocketAPI.Componants
             return rtnDic;
         }
 
-        public static Dictionary<string, SimplisityInfo> EventProviderBefore(string paramCmd, SystemData systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
+        public static Dictionary<string, object> EventProviderBefore(string paramCmd, SystemData systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
         {
-            var rtnDic = new Dictionary<string, SimplisityInfo>();
+            var rtnDic = new Dictionary<string, object>();
             if (!systemData.Exists) return rtnDic;  // for systemadmin this may be null
             foreach (var rocketInterface in systemData.EventList)
             {
@@ -1324,9 +1324,9 @@ namespace DNNrocketAPI.Componants
             return rtnDic;
         }
 
-        public static Dictionary<string, string> EventProviderAfter(string paramCmd, SystemData systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
+        public static Dictionary<string, object> EventProviderAfter(string paramCmd, SystemData systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
         {
-            var rtnDic = new Dictionary<string, string>();
+            var rtnDic = new Dictionary<string, object>();
             if (!systemData.Exists) return rtnDic;  // for systemadmin this may be null
             foreach (var rocketInterface in systemData.EventList)
             {

@@ -42,14 +42,14 @@ namespace RocketMod
         private string _tableName;
         private ArticleDataList _articleDataList;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = ""; // return nothing if not matching commands.
 
             paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
 
-            var rtnDic = new Dictionary<string, string>();
-            var downloadDict = new Dictionary<string, string>();
+            var rtnDic = new Dictionary<string, object>();
+            var downloadDict = new Dictionary<string, object>();
 
             switch (paramCmd)
             {
@@ -533,7 +533,7 @@ namespace RocketMod
 
         #region "Articles"
 
-        public Dictionary<string,string> DownloadDocument()
+        public Dictionary<string, object> DownloadDocument()
         {
             var documentref = _paramInfo.GetXmlProperty("genxml/hidden/document");
             var documentlistname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
@@ -541,7 +541,7 @@ namespace RocketMod
             var docInfo = _articleData.Info.GetListItem(documentlistname, "genxml/lang/genxml/hidden/document", documentref);
             var filepath = docInfo.GetXmlProperty("genxml/lang/genxml/hidden/reldocument");
             var namedocument = docInfo.GetXmlProperty("genxml/lang/genxml/hidden/namedocument");
-            var rtnDic = new Dictionary<string, string>();
+            var rtnDic = new Dictionary<string, object>();
             rtnDic.Add("filenamepath", filepath);
             rtnDic.Add("downloadname", namedocument);
             rtnDic.Add("fileext", "");
@@ -1452,9 +1452,9 @@ namespace RocketMod
             var backupTemplates = new BackUpModuleTemplates(fileMapPath, _moduleid, _systemKey);
             backupTemplates.BackUp();
         }
-        private Dictionary<string, string> DownloadBackUp()
+        private Dictionary<string, object> DownloadBackUp()
         {
-            var rtnDic = new Dictionary<string, string>();
+            var rtnDic = new Dictionary<string, object>();
             var filemappath = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/filemappath"));
             if (File.Exists(filemappath))
             {

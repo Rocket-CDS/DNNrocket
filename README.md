@@ -32,7 +32,7 @@ copy "$(ProjectDir)$(OutDir)$(AssemblyName).pdb" "$(ProjectDir)..\\..\\..\bin\$(
         private static DNNrocketInterface _rocketInterface;
         private static string _editLang;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string langRequired = "")
+        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string langRequired = "")
         {
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
 

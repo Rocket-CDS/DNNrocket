@@ -177,22 +177,11 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             timeout: 120000,
             data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd },
             success: function (json) {
-
-                var jsonObj = $.parseJSON('[' + json + ']');
-
-                for (i in jsonObj) {
-                    console.log(jsonObj[i]["key"] + ' ' + jsonObj[i]["name"]);
-                }
-
-                var str = '{"key":"1","name":"Test1"},{"key":"2","name":"Test2"}';
-                var jsonObj = $.parseJSON('[' +  jasontext + ']');
-                for (i in jsonObj) {
-                    console.log(jsonObj[i]["key"] + ' ' + jsonObj[i]["name"]);
-                }
-
-                var len = obj.length;
-                for (var i = 0; i < len; i++) {
-                    $(sdropdownlist).append("<option value='" + obj.listkey[i] + "'>" + obj.listvalue[i] + "</option>");
+                $(sdropdownlist).html('');
+                var jsonObj = simplisity_parsejson(json);
+                for (var i = 0; i < jsonObj.length; i++) {
+                    var obj = jsonObj[i];
+                    $(sdropdownlist).append("<option value='" + obj.key + "'>" + obj.value + "</option>");
                 }
                 $('#simplisity_loader').hide();
             }
@@ -787,8 +776,16 @@ function simplisity_getSessionField(fieldkey) {
     return simplisity_getField(JSON.stringify(result), fieldkey);
 }
 
-
-
+function simplisity_parsejson(json) {
+    var retval;
+    if (typeof (json) === "string") {
+        retval = JSON.parse(json);
+    } else {
+        // it's probably already an object
+        retval = json;
+    }
+    return retval;
+}
 
 async function initFileUpload(fileuploadselector) {
 

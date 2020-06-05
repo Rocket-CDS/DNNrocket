@@ -50,6 +50,13 @@ namespace DNNrocket.Country.Componants
         {
             return Info.GetList("countrylist");
         }
+
+        public string GetPrimaryCountry()
+        {
+            var i = Info.GetListItem("countrylist",0);
+            return i.GetXmlProperty("genxml/hidden/countrycode");
+        }
+
         public Dictionary<string,string> GetSelectedDictCountries()
         {
             var clist = DNNrocketUtils.GetCountryCodeList();
@@ -62,6 +69,18 @@ namespace DNNrocket.Country.Componants
                 rtn.Add(ccode,countryname);
             }
             return rtn;
+        }
+        public string CountryName(string countrycode)
+        {
+            return DNNrocketUtils.GetCountryName(countrycode);
+        }
+        public Dictionary<string,string> RegionDictionary(string countrycode)
+        {
+            return DNNrocketUtils.GetRegionList(countrycode);
+        }
+        public Dictionary<string, string> CountryCodeList()
+        {
+            return DNNrocketUtils.GetCountryCodeList(PortalId);
         }
 
         public SimplisityInfo Info { get; set; }

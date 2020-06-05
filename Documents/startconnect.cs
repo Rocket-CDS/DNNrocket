@@ -16,7 +16,7 @@ namespace DNNrocket.Documents
         private CommandSecurity _commandSecurity;
         private DNNrocketInterface _rocketInterface;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = "ERROR"; // return ERROR if not matching commands.
 
@@ -38,7 +38,7 @@ namespace DNNrocket.Documents
             if (!_commandSecurity.HasSecurityAccess(paramCmd))
             {
                 strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
-                return ReturnString(strOut);
+                return DNNrocketUtils.ReturnString(strOut);
             }
 
             switch (paramCmd)
@@ -56,17 +56,8 @@ namespace DNNrocket.Documents
                     break;
             }
 
-            return ReturnString(strOut);
+            return DNNrocketUtils.ReturnString(strOut);
         }
-
-        public Dictionary<string, string> ReturnString(string strOut, string jsonOut = "")
-        {
-            var rtnDic = new Dictionary<string, string>();
-            rtnDic.Add("outputhtml", strOut);
-            rtnDic.Add("outputjson", jsonOut);
-            return rtnDic;
-        }
-
 
         public String ListData()
         {

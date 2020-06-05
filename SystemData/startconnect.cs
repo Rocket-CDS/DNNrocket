@@ -21,7 +21,7 @@ namespace DNNrocket.System
         private UserParams _UserParams;
         private Dictionary<string, string> _passSettings;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
+        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
             _postInfo = postInfo;
             _paramInfo = paramInfo;
@@ -223,7 +223,7 @@ namespace DNNrocket.System
                     break;
             }
 
-            var rtnDic = new Dictionary<string, string>();
+            var rtnDic = new Dictionary<string, object>();
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;            
         }

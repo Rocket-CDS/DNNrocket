@@ -10,7 +10,7 @@ namespace DNNrocket.TestForm
     public class StartConnect : DNNrocketAPI.APInterface
     {
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
+        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
             var commandSecurity = new CommandSecurity(-1,-1, rocketInterface);
@@ -24,7 +24,7 @@ namespace DNNrocket.TestForm
 
             //CacheUtilsDNN.ClearAllCache();
 
-            var rtnDic = new Dictionary<string, string>();
+            var rtnDic = new Dictionary<string, object>();
 
             var strOut = "";
 

@@ -205,8 +205,8 @@ namespace DNNrocketAPI
 
                     // before event
                     var rtnDictInfo = DNNrocketUtils.EventProviderBefore(_paramCmd, systemData, postInfo, paramInfo, DNNrocketUtils.GetCurrentCulture());
-                    if (rtnDictInfo.ContainsKey("post")) postInfo = rtnDictInfo["post"];
-                    if (rtnDictInfo.ContainsKey("param")) paramInfo = rtnDictInfo["param"];
+                    if (rtnDictInfo.ContainsKey("post")) postInfo = (SimplisityInfo)rtnDictInfo["post"];
+                    if (rtnDictInfo.ContainsKey("param")) paramInfo = (SimplisityInfo)rtnDictInfo["param"];
 
                     var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, paramInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
 

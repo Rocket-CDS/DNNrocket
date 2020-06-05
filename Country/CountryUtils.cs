@@ -5,6 +5,7 @@ using System.Text;
 using DNNrocketAPI.Componants;
 using Simplisity;
 using DNNrocket.Country.Componants;
+using Newtonsoft.Json;
 
 namespace DNNrocket.Country
 {
@@ -68,34 +69,42 @@ namespace DNNrocket.Country
         public static string CountryListJson(DNNrocketInterface rocketInterface, bool allowempty = true)
         {
             var countryData = new CountryData(PortalUtils.GetPortalId(), rocketInterface);
-            var rtn = "";
+            var jsonList = new List<ValuePair>();
+            var valuePair = new ValuePair();
             if (allowempty)
             {
-                rtn += "{'':'','':''},";
+                valuePair.Key = "";
+                valuePair.Value = "";
+                jsonList.Add(valuePair);
             }
             foreach (var i in countryData.GetSelectedDictCountries())
             {
-                rtn += "{\"key\":\"" + i.Key.Replace("\"", "") + "\",\"name\":\"" + i.Value.Replace("\"", "") + "\"},";
+                valuePair.Key = i.Key;
+                valuePair.Value = i.Value;
+                jsonList.Add(valuePair);
             }
-            rtn = rtn.TrimEnd(',');
-
-            return rtn;
+            string result = JsonConvert.SerializeObject(jsonList);
+            return result;
         }
 
-        public static string RegionListJson(string countrycode, bool allowempty = true)
+        public static object RegionListJson(string countrycode, bool allowempty = true)
         {
-            var rtn = "";
+            var jsonList = new List<ValuePair>();
+            var valuePair = new ValuePair();
             if (allowempty)
             {
-                rtn += "{\"\":\"\",\"\":\"\"},";
+                valuePair.Key = "";
+                valuePair.Value = "";
+                jsonList.Add(valuePair);
             }
             foreach (var i in DNNrocketUtils.GetRegionList(countrycode))
             {
-                rtn += "{\"key\":\"" + i.Key.Replace("\"", "") + "\",\"name\":\"" + i.Value.Replace("\"", "") + "\"},";
+                valuePair = new ValuePair();
+                valuePair.Key = i.Key;
+                valuePair.Value = i.Value;
+                jsonList.Add(valuePair);
             }
-            rtn = rtn.TrimEnd(',');
-
-            return rtn;
+            return jsonList;
         }
 
     }

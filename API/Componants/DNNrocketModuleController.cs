@@ -157,7 +157,7 @@ namespace DNNrocketAPI.Componants
                             {
                                 if (rocketInterface.Exists)
                                 {
-                                    var returnDictionary = (Dictionary<string, string>)CacheUtils.GetCache("searchindex_module_" + moduleInfo.ModuleID.ToString());
+                                    var returnDictionary = (Dictionary<string, object>)CacheUtils.GetCache("searchindex_module_" + moduleInfo.ModuleID.ToString());
                                     if (returnDictionary == null)
                                     {
                                         var paramInfo = new SimplisityInfo();
@@ -172,8 +172,8 @@ namespace DNNrocketAPI.Componants
                                     var body = "";
                                     var moddate = DateTime.Now;
                                     var updatesearch = false;
-                                    if (returnDictionary.ContainsKey("description")) description = returnDictionary["description"];
-                                    if (returnDictionary.ContainsKey("body")) body = returnDictionary["body"];
+                                    if (returnDictionary.ContainsKey("description")) description = (string)returnDictionary["description"];
+                                    if (returnDictionary.ContainsKey("body")) body = (string)returnDictionary["body"];
                                     if (returnDictionary.ContainsKey("modifieddate"))
                                     {
                                         var strDate = returnDictionary["modifieddate"];

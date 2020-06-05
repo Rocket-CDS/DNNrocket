@@ -25,7 +25,7 @@ namespace DNNrocket.AppThemes
         private string _selectedSystemKey;
         private string _paramCmd;
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = "ERROR - Must be SuperUser"; // return ERROR if not matching commands.
 
@@ -581,7 +581,7 @@ namespace DNNrocket.AppThemes
             }
         }
 
-        private Dictionary<string, string> ExportAppTheme()
+        private Dictionary<string, object> ExportAppTheme()
         {
             var appThemeFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appthemefolder");
             if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
@@ -591,7 +591,7 @@ namespace DNNrocket.AppThemes
 
             var exportZipMapPath = appTheme.ExportZipFile();
 
-            var rtnDic = new Dictionary<string, string>();
+            var rtnDic = new Dictionary<string, object>();
             rtnDic.Add("filenamepath", exportZipMapPath);
             rtnDic.Add("downloadname", appTheme.AppThemeFolder + ".zip");
 

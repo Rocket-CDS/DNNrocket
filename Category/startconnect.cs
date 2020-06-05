@@ -20,7 +20,7 @@ namespace DNNrocket.Category
         private SystemData _systemData;
 
 
-        public override Dictionary<string, string> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
+        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
             _systemData = new SystemData(systemInfo);
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
@@ -97,7 +97,7 @@ namespace DNNrocket.Category
                 }
             }
 
-            var rtnDic = new Dictionary<string, string>();
+            var rtnDic = new Dictionary<string, object>();
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;
         }

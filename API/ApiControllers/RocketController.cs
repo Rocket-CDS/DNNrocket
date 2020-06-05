@@ -50,7 +50,7 @@ namespace DNNrocketAPI.ApiControllers
         private HttpResponseMessage Action(string paramCmd, string systemkey)
         {
             var strOut = "ERROR: Invalid.";
-            var strJson = "";
+            object json = null;
             var context = HttpContext.Current;
 
             try
@@ -156,12 +156,12 @@ namespace DNNrocketAPI.ApiControllers
                             break;
                         default:
                             var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
-                            var returnDictionary = new Dictionary<string, string>();
+                            var returnDictionary = new Dictionary<string, object>();
 
                             // before event
                             var rtnDictInfo = DNNrocketUtils.EventProviderBefore(paramCmd, systemData, postInfo, paramInfo, _editlang);
-                            if (rtnDictInfo.ContainsKey("post")) postInfo = rtnDictInfo["post"];
-                            if (rtnDictInfo.ContainsKey("param")) paramInfo = rtnDictInfo["param"];
+                            if (rtnDictInfo.ContainsKey("post")) postInfo = (SimplisityInfo)rtnDictInfo["post"];
+                            if (rtnDictInfo.ContainsKey("param")) paramInfo = (SimplisityInfo)rtnDictInfo["param"];
 
                             // command action
                             if (rocketInterface.Exists)
@@ -170,23 +170,23 @@ namespace DNNrocketAPI.ApiControllers
 
                                 if (returnDictionary.ContainsKey("outputhtml"))
                                 {
-                                    strOut = returnDictionary["outputhtml"];
+                                    strOut = (string)returnDictionary["outputhtml"];
                                 }
                                 if (returnDictionary.ContainsKey("filenamepath"))
                                 {
                                     var downloadname = "download.zip";
-                                    if (returnDictionary.ContainsKey("downloadname")) downloadname = returnDictionary["downloadname"];
-                                    DownloadFile(returnDictionary["filenamepath"], downloadname);
+                                    if (returnDictionary.ContainsKey("downloadname")) downloadname = (string)returnDictionary["downloadname"];
+                                    DownloadFile((string)returnDictionary["filenamepath"], downloadname);
                                 }
                                 if (returnDictionary.ContainsKey("downloadfiledata"))
                                 {
                                     var downloadname = "download.zip";
-                                    if (returnDictionary.ContainsKey("downloadname")) downloadname = returnDictionary["downloadname"];
-                                    DownloadStringAsFile(returnDictionary["downloadfiledata"], downloadname);
+                                    if (returnDictionary.ContainsKey("downloadname")) downloadname = (string)returnDictionary["downloadname"];
+                                    DownloadStringAsFile((string)returnDictionary["downloadfiledata"], downloadname);
                                 }
                                 if (returnDictionary.ContainsKey("outputjson"))
                                 {
-                                    strJson = returnDictionary["outputjson"];
+                                    json = returnDictionary["outputjson"];
                                 }
 
                             }
@@ -197,7 +197,7 @@ namespace DNNrocketAPI.ApiControllers
                                 {
                                     var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.System.StartConnect");
                                     returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, _editlang);
-                                    strOut = returnDictionary["outputhtml"];
+                                    strOut = (string)returnDictionary["outputhtml"];
                                 }
                                 else
                                 {
@@ -207,8 +207,8 @@ namespace DNNrocketAPI.ApiControllers
 
                             // after Event
                             returnDictionary = DNNrocketUtils.EventProviderAfter(paramCmd, systemData, postInfo, paramInfo, _editlang);
-                            if (returnDictionary.ContainsKey("outputhtml")) strOut = returnDictionary["outputhtml"];
-                            if (returnDictionary.ContainsKey("outputjson")) strJson = returnDictionary["outputjson"];
+                            if (returnDictionary.ContainsKey("outputhtml")) strOut = (string)returnDictionary["outputhtml"];
+                            if (returnDictionary.ContainsKey("outputjson")) json = returnDictionary["outputjson"];
 
                             break;
                     }
@@ -222,11 +222,11 @@ namespace DNNrocketAPI.ApiControllers
 
             #region "return results"
 
-            if (strJson != "")
+            if (json != null)
             {
-                strOut = JsonConvert.SerializeObject(strJson);
+                //strOut = JsonConvert.SerializeObject(json);
                 //return this.Request.CreateResponse(HttpStatusCode.OK, strOut, System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
-                return this.Request.CreateResponse(HttpStatusCode.OK, strOut);
+                return this.Request.CreateResponse(HttpStatusCode.OK, json);
             }
             else
             {
