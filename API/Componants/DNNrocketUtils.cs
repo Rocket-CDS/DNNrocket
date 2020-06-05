@@ -328,10 +328,11 @@ namespace DNNrocketAPI.Componants
             }
             return rtnDic;
         }
-        public static string GetCountryName(string CountryCode, int portalId = -1)
+        public static string GetCountryName(string countryCode, int portalId = -1)
         {
             var l = GetCountryCodeList(portalId);
-            return l[CountryCode]; ;
+            if (l.ContainsKey(countryCode)) return l[countryCode];
+            return "";
         }
 
 
