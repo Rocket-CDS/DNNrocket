@@ -125,6 +125,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Componants\AppTheme.cs" />
+    <Compile Include="Componants\ArticleLink.cs" />
+    <Compile Include="Componants\ArticleDoc.cs" />
     <Compile Include="Componants\ArticleImage.cs" />
     <Compile Include="Componants\BackUpModuleTemplates.cs" />
     <Compile Include="Componants\CacheUtilsDNN.cs" />

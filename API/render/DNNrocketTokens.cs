@@ -153,6 +153,10 @@ namespace DNNrocketAPI.render
         {
             return new RawString(DNNrocketUtils.RenderImageSelect(systemKey, imageFolderRel, singleselect, autoreturn));
         }
+        public IEncodedString RenderDocumentSelect(string systemKey, string imageFolderRel, bool singleselect = true, bool autoreturn = false)
+        {
+            return new RawString(DNNrocketUtils.RenderDocumentSelect(systemKey, imageFolderRel, singleselect, autoreturn));
+        }
         public IEncodedString RenderDocumentSelect(int moduleid, bool singleselect = true, bool autoreturn = false)
         {
             var moduleParams = new ModuleParams(moduleid);

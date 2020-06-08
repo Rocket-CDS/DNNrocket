@@ -1395,8 +1395,11 @@ namespace DNNrocketAPI.Componants
         }
 
 
-
         public static string RenderDocumentSelect(ModuleParams moduleParams, bool selectsingle = true, bool autoreturn = false)
+        {
+            return RenderDocumentSelect(moduleParams.SystemKey, moduleParams.DocumentFolderRel, selectsingle, autoreturn);
+        }
+        public static string RenderDocumentSelect(string systemkey, string documentFolderRel, bool selectsingle = true, bool autoreturn = false)
         {
             string razorTemplateName = "DocSelect.cshtml";
             string templateControlRelPath = "/DesktopModules/DNNrocket/documents/";
@@ -1404,18 +1407,17 @@ namespace DNNrocketAPI.Componants
 
             var docModel = new SimplisityRazor();
 
-            docModel.ModuleId = moduleParams.ModuleId;
             docModel.GetSettingBool("selectsingle", selectsingle);
             docModel.GetSettingBool("autoreturn", autoreturn);
-
-            docModel.SetDataObject("moduleparams", moduleParams);
+            docModel.SetSetting("documentfolderrel", documentFolderRel);
+            docModel.SetSetting("systemkey", systemkey);
 
             var docList = new List<object>();
-            foreach (var i in DNNrocketUtils.GetFiles(moduleParams.DocumentFolderMapPath))
+            foreach (var i in DNNrocketUtils.GetFiles(DNNrocketUtils.MapPath(documentFolderRel)))
             {
                 var sInfo = new SimplisityInfo();
                 sInfo.SetXmlProperty("genxml/name", i.Name);
-                sInfo.SetXmlProperty("genxml/relname", moduleParams.DocumentFolderRel + "/" + i.Name);
+                sInfo.SetXmlProperty("genxml/relname", documentFolderRel + "/" + i.Name);
                 sInfo.SetXmlProperty("genxml/fullname", i.FullName);
                 sInfo.SetXmlProperty("genxml/extension", i.Extension);
                 sInfo.SetXmlProperty("genxml/directoryname", i.DirectoryName);
