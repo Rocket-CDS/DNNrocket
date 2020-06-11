@@ -1463,9 +1463,10 @@ namespace DNNrocketAPI.Componants
             response.End();
         }
 
-        public static void LogException(Exception exc)
+        public static string LogException(Exception exc)
         {
             Exceptions.LogException(exc);
+            return exc.ToString();
         }
         public static SimplisityRecord UpdateFieldXpath(SimplisityRecord record, string listname)
         {
