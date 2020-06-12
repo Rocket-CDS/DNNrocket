@@ -40,8 +40,7 @@ namespace DNNrocketAPI.Componants
 
                 try
                 {
-                    var emailarray = EmailData.ToEmail.Split(',');
-                    if (emailarray.Length == 0) emailarray = EmailData.ToEmail.Split(';');
+                    var emailarray = EmailData.ToEmail.Replace(';',',').Split(',');
                     foreach (var email in emailarray)
                     {
                         if (!string.IsNullOrEmpty(email.Trim()) && GeneralUtils.IsEmail(EmailData.FromEmail) && GeneralUtils.IsEmail(email.Trim()))

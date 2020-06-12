@@ -759,6 +759,14 @@ function simplisity_sessionpost() {
     for (var key of Object.keys(p)) {
         simplisity_setParamField(key, p[key]);
     }
+
+    // set a browser sessionid, to use serverside to identify the browser session
+    var browser_sessionid = window.sessionStorage.getItem('browsersessionid');
+    if (typeof browser_sessionid === 'undefined' || browser_sessionid === '' || browser_sessionid === null) {
+        browser_sessionid = Math.random();
+        window.sessionStorage.setItem('browsersessionid', browser_sessionid);
+    }
+    simplisity_setParamField('browsersessionid', browser_sessionid); // return browser_sessionid
 }
 function simplisity_setSessionField(fieldkey, fieldvalue) {
     if (typeof fieldvalue !== 'undefined' && typeof fieldkey !== 'undefined') {

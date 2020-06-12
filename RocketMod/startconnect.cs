@@ -295,7 +295,7 @@ namespace RocketMod
             _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
             if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid");
 
-            _userParams = new UserParams();
+            _userParams = new UserParams(new SessionParams(_paramInfo).BrowserSessionId);
             _userParams.ModuleId = _moduleid; // use moduleid for tracking commands. 
 
             if (CheckSecurity(paramCmd))

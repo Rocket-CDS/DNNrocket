@@ -7,24 +7,26 @@ using System.Threading.Tasks;
 
 namespace DNNrocketAPI.Componants
 {
+    /// <summary>
+    /// The UserParams class saves user data to Cache.
+    /// </summary>
     public class UserParams
     {
-        private const string _tableName = "DNNRocketTemp";
         private const string _entityTypeCode = "UserParams";
-        private DNNrocketController _objCtrl;
         private string _guidKey;
-        public UserParams(int userId = -1)
+        public UserParams(string browserSessionId, int userId = -1)
         {
             UserId = userId;
             if (userId <= 0) UserId = UserUtils.GetCurrentUserId();
 
-            _guidKey = _entityTypeCode + "*" + UserId;
-            _objCtrl = new DNNrocketController();
+            _guidKey = _entityTypeCode + "*" + UserId + "*" + browserSessionId;
 
-            Record = (SimplisityRecord)CacheUtilsDNN.GetCache(_guidKey);
-            if (Record == null)
+            Record = new SimplisityRecord();
+
+            // only put into memeory for users in Rocket Roles.
+            if (UserUtils.IsEditor())
             {
-                Record = _objCtrl.GetRecordByGuidKey(-1, -1, _entityTypeCode, _guidKey, UserId.ToString(), _tableName);
+                Record = (SimplisityRecord)CacheUtilsDNN.GetCache(_guidKey);
                 if (Record == null)
                 {
                     Record = new SimplisityRecord();
@@ -33,10 +35,9 @@ namespace DNNrocketAPI.Componants
                     Record.TypeCode = _entityTypeCode;
                     Record.GUIDKey = _guidKey;
                     Record.UserId = UserId;
-
-                    Record = Save();
                 }
-                CacheUtilsDNN.SetCache(_guidKey, Record);
+
+                Save();
             }
         }
         public string GetCommand(string systemKey)
@@ -65,29 +66,25 @@ namespace DNNrocketAPI.Componants
             Set(systemKey + "-s-menu-cmd" + ModuleId, "");
             Set(systemKey + "-s-menu-paraminfo" + ModuleId, "");
         }
-        public SimplisityRecord Save()
+        public void Save()
         {
-            if (UserId > 0)
+            if (UserUtils.IsEditor())
             {
                 CacheUtilsDNN.SetCache(_guidKey, Record);
-                return _objCtrl.SaveRecord(Record, _tableName);
             }
-            return new SimplisityRecord();
         }
-        public SimplisityRecord Update()
+        public void Update()
         {
-            return Save();
+            Save();
         }
         public void Delete()
         {
-            _objCtrl.Delete(Record.ItemID, _tableName);
             ClearCache();
         }
         public void ClearCache()
         {
             CacheUtilsDNN.RemoveCache(_guidKey);
         }
-
         public void Set(string nodename,string value, string systemKey = "", System.TypeCode DataTyp = System.TypeCode.String)
         {
             if (systemKey != "") nodename = systemKey + "-" + nodename;
@@ -123,7 +120,8 @@ namespace DNNrocketAPI.Componants
         public int ModuleId { get; set; }
 
         public int UserId { get; set; }
-        public SimplisityRecord Record { get; set; } 
+        public SimplisityRecord Record { get; set; }
+        public SimplisityRecord Storage { get; set; }
 
 
     }

@@ -44,7 +44,7 @@ namespace DNNrocket.AppThemes
                 //CacheUtilsDNN.ClearAllCache("apptheme");
 
                 _paramCmd = paramCmd;
-                _UserParams = new UserParams();
+                _UserParams = new UserParams(new SessionParams(_paramInfo).BrowserSessionId);
 
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
                 {

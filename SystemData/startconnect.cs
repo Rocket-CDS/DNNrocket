@@ -33,7 +33,7 @@ namespace DNNrocket.System
             
             PortalUtils.CreateRocketDirectories();
 
-            _UserParams = new UserParams();
+            _UserParams = new UserParams(new SessionParams(_paramInfo).BrowserSessionId);
             if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
             {
                 var menucmd = _UserParams.GetCommand("systemapi");

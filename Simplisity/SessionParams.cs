@@ -23,6 +23,9 @@ namespace Simplisity
             {
                 Set(d.Key, d.Value);
             }
+
+            BrowserSessionId = Get("browsersessionid");
+
         }
         public string GetCommand()
         {
@@ -51,25 +54,6 @@ namespace Simplisity
             SortActivate = 0;
         }
 
-        public string ViewStateOut()
-        {
-            string jsonText = "{";
-            var nodList = Info.XMLDoc.SelectNodes("r/*");
-            if (nodList != null)
-            {
-                foreach (XmlNode nod in nodList)
-                {
-                    if (nod.InnerText != "")
-                    {
-                        jsonText += "'" + nod.Name + "':'" + nod.InnerText + "',";
-                    }
-                }
-                jsonText = jsonText.TrimEnd(',');
-            }
-            jsonText += "}";
-            return GeneralUtils.EnCode(jsonText);
-        }
-
         #region "properties"
         //Order by
         public string OrderByRef { get { return Info.GetXmlProperty("r/orderbyref"); } set { Info.SetXmlProperty("r/orderbyref", value.ToString()); } }
@@ -80,6 +64,7 @@ namespace Simplisity
         public int RowCount { get { return Info.GetXmlPropertyInt("r/rowcount"); } set { Info.SetXmlProperty("r/rowcount", value.ToString()); } }
         //Filter SQL
         public int FilterIndex { get { return Info.GetXmlPropertyInt("r/filterindex"); } set { Info.SetXmlProperty("r/filterindex", value.ToString()); } }
+        public string BrowserSessionId { get; set; }
 
         #endregion
 

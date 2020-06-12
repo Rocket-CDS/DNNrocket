@@ -75,31 +75,17 @@ namespace DNNrocketAPI.Componants
             }
             return "";
         }
-        public static bool GetCurrentUserIsInRole(string role)
-        {
-            if (UserController.Instance.GetCurrentUserInfo() != null)
-            {
-                return UserController.Instance.GetCurrentUserInfo().IsInRole(role);
-            }
-            return false;
-        }
-        public static bool GetCurrentUserIsSuperUser()
-        {
-            return UserController.Instance.GetCurrentUserInfo().IsSuperUser;
-        }
-
-        public static List<string> GetCurrentUserRoles()
+        public static List<string> GetUserRoles(int portalid = -1, int userId = -1)
         {
             var rtnList = new List<string>();
             var u = UserController.Instance.GetCurrentUserInfo();
+            if (portalid >= 0 && userId > 0) u = UserController.Instance.GetUserById(portalid, userId);
             foreach (var r in u.Roles)
             {
                 rtnList.Add(r);
             }
             return rtnList;
         }
-
-
         public static string ResetPass(SimplisityInfo sInfo)
         {
 
@@ -400,6 +386,17 @@ namespace DNNrocketAPI.Componants
         public static Boolean IsClientOnly()
         {
             if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ClientEditor) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators)))
+            {
+                return true;
+            }
+            return false;
+        }
+        public static Boolean IsEditor()
+        {
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ClientEditor) || 
+                UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) || 
+                UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) || 
+                UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators))
             {
                 return true;
             }

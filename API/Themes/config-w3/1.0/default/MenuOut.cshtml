@@ -12,7 +12,6 @@
 
 
 @{
-    var UserParams = new UserParams();
     var sidemenu = (SideMenu)Model.List.First();
     var systemData = new SystemData(sidemenu.SystemKey);
 
@@ -21,7 +20,7 @@
     // get action interfaces. (no group)
     var lp = 1;
     var interfacelist = sidemenu.GetInterfaces("");
-    if (interfacelist.Count() > 0)
+    if (interfacelist.Count > 0)
     {
         foreach (var i in interfacelist)
         {
@@ -55,7 +54,7 @@
         var groupref = g.GetXmlProperty("genxml/textbox/groupref");
         var groupicon = g.GetXmlProperty("genxml/textbox/groupicon");
         interfacelist = sidemenu.GetInterfaces(groupref);
-        if (interfacelist.Count() > 0)
+        if (interfacelist.Count > 0)
         {
             menuOut += "<div class='w3-bar-item w3-button w3-padding menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey(Model.GetSetting("resxfile") + "." + groupref) + "&nbsp;<i class='fas fa-caret-down'></i></div>";
             menuOut += "<div id='" +  groupref + "' class='w3-hide'>";

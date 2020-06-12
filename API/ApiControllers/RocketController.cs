@@ -103,11 +103,12 @@ namespace DNNrocketAPI.ApiControllers
 
                 if (paramCmd == "admin_return")
                 {
+                    var sessionParams = new SessionParams(paramInfo);
                     var moduleid = paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
                     if (moduleid == 0) moduleid = paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
                     // we need to clear the tracking of commands on return to view.
                     // This command is usually called from "MenuOut.cshtml" and triggers the "returnclick()" function.
-                    var UserParams = new UserParams();
+                    var UserParams = new UserParams(sessionParams.BrowserSessionId);
                     UserParams.ModuleId = moduleid;  // use moduleid for tracking to stop mized content on modules.
                     UserParams.TrackClear(systemkey);
                     context.Response.ContentType = "text/plain";

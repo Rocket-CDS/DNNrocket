@@ -129,7 +129,7 @@ namespace Rocket.Tools
             _rocketInterface = new DNNrocketInterface(interfaceInfo);
             _passSettings = new Dictionary<string, string>();
 
-            _UserParams = new UserParams();
+            _UserParams = new UserParams(new SessionParams(_paramInfo).BrowserSessionId);
 
             if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
             {

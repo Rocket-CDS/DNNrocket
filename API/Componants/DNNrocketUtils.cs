@@ -168,8 +168,6 @@ namespace DNNrocketAPI.Componants
             {
                 if (lang == "") lang = GetCurrentCulture();
                 var razorTemplate = GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, lang, versionFolder, debugmode);
-                var sessionParamViewState = "";
-                if (sessionParams != null) sessionParamViewState = sessionParams.ViewStateOut();
                 return RazorObjectRender(razorTemplate, obj, dataObjects, settings, sessionParams, debugmode);
             }
             return "";
