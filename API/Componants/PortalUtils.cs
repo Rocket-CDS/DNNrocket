@@ -372,24 +372,33 @@ namespace DNNrocketAPI.Componants
                 return PortalSettings.Current.HomeDirectory;
         }
         public static void CreateRocketDirectories(int portalId = -1)
+        {            
+            if (PortalExists(portalId)) // check we have a portal, could be deleted
+            {
+                if (!Directory.Exists(TempDirectoryMapPath(portalId)))
+                {
+                    Directory.CreateDirectory(TempDirectoryMapPath(portalId));
+                    Directory.CreateDirectory(TempDirectoryMapPath(portalId) + "\\debug");
+                }
+                if (!Directory.Exists(HomeDNNrocketDirectoryMapPath(portalId)))
+                {
+                    Directory.CreateDirectory(HomeDNNrocketDirectoryMapPath(portalId));
+                }
+                if (!Directory.Exists(DNNrocketThemesDirectoryMapPath(portalId)))
+                {
+                    Directory.CreateDirectory(DNNrocketThemesDirectoryMapPath(portalId));
+                }
+                if (!Directory.Exists(BackUpDirectoryMapPath(portalId)))
+                {
+                    Directory.CreateDirectory(BackUpDirectoryMapPath(portalId));
+                }
+            }
+        }
+        public static bool PortalExists(int portalId = -1)
         {
-            if (!Directory.Exists(TempDirectoryMapPath(portalId)))
-            {
-                Directory.CreateDirectory(TempDirectoryMapPath(portalId));
-                Directory.CreateDirectory(TempDirectoryMapPath(portalId) + "\\debug");
-            }
-            if (!Directory.Exists(HomeDNNrocketDirectoryMapPath(portalId)))
-            {
-                Directory.CreateDirectory(HomeDNNrocketDirectoryMapPath(portalId));
-            }
-            if (!Directory.Exists(DNNrocketThemesDirectoryMapPath(portalId)))
-            {
-                Directory.CreateDirectory(DNNrocketThemesDirectoryMapPath(portalId));
-            }
-            if (!Directory.Exists(BackUpDirectoryMapPath(portalId)))
-            {
-                Directory.CreateDirectory(BackUpDirectoryMapPath(portalId));
-            }
+            var p = PortalUtils.GetPortal(portalId); // check we have a portal, could be deleted
+            if (p == null) return false;
+            return true;
         }
 
 
