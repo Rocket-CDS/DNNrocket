@@ -278,6 +278,13 @@ namespace DNNrocketAPI.Componants
                 return ps.DefaultPortalAlias;
             }
         }
+        public static string RootDomain(int portalId = -1)
+        {
+            var da = DefaultPortalAlias(portalId);
+            var daarray = da.Split('.');
+            if (daarray.Length <= 2) return da;
+            return daarray[daarray.Length - 2] + "." + daarray[daarray.Length - 1];
+        }
         public static string SiteGuid(int portalId = -1)
         {
             if (portalId < 0)
