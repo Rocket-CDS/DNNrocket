@@ -278,6 +278,42 @@ namespace DNNrocketAPI.Componants
                 return ps.DefaultPortalAlias;
             }
         }
+        public static void AddPortalAlias(int portalId, string portalAlias)
+        {
+            PortalController.Instance.AddPortalAlias(portalId, portalAlias);
+        }
+        public static void DeletePortalAlias(int portalId, string portalAlias)
+        {
+            var pa = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalId);
+            if (pa != null) PortalAliasController.Instance.DeletePortalAlias(pa);
+        }
+        public static void SetPrimaryPortalAlias(int portalId, string portalAlias)
+        {
+            PortalAliasInfo newPrimaryPortalAlias = null;
+            var paList = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            foreach (var pa in paList)
+            {
+                if (pa.HTTPAlias == portalAlias)
+                {
+                    newPrimaryPortalAlias = pa;
+                }
+            }
+            if (newPrimaryPortalAlias != null)
+            {
+                foreach (var pa in paList)
+                {
+                    if (pa.PortalAliasID == newPrimaryPortalAlias.PortalAliasID)
+                    {
+                        pa.IsPrimary = true;
+                    }
+                    else
+                    {
+                        pa.IsPrimary = false;
+                    }
+                    PortalAliasController.Instance.UpdatePortalAlias(pa);
+                }
+            }
+        }
         public static string RootDomain(int portalId = -1)
         {
             var da = DefaultPortalAlias(portalId);
