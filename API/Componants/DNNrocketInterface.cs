@@ -143,11 +143,20 @@ namespace DNNrocketAPI.Componants
                 var securityrolesall = Info.GetXmlPropertyInt("genxml/radio/securityrolesall");
 
                 var roleAdministrators = userInfo.IsInRole("Administrators");
-                var roleManager = userInfo.IsInRole("Manager") || userInfo.IsInRole("manager");
-                var roleEditor = userInfo.IsInRole("Editor") || userInfo.IsInRole("editor");
-                var roleClientEditor = userInfo.IsInRole("ClientEditor") || userInfo.IsInRole("clienteditor");
+                var roleManager = userInfo.IsInRole("Manager") || userInfo.IsInRole("manager") || userInfo.IsInRole("MANAGER");
+                var roleEditor = userInfo.IsInRole("Editor") || userInfo.IsInRole("editor") || userInfo.IsInRole("EDITOR");
+                var roleClientEditor = userInfo.IsInRole("ClientEditor") || userInfo.IsInRole("clienteditor") || userInfo.IsInRole("CLIENTEDITOR");
                 var roleRegisteredUsers = userInfo.IsInRole("Registered Users");
                 var roleSubscribers = userInfo.IsInRole("Subscribers");
+
+                // ##### Allow #####  (Do before block, so we allow access if 1 roles has acccess and another does not.)
+                if (securityrolesall == 1) return true;
+                if (roleAdministrators && securityrolesadministrators == 1) return true;
+                if (roleManager && securityrolesmanager == 1) return true;
+                if (roleEditor && securityroleseditor == 1) return true;
+                if (roleClientEditor && securityrolesclienteditor == 1) return true;
+                if (roleRegisteredUsers && securityrolesregisteredusers == 1) return true;
+                if (roleSubscribers && securityrolessubscribers == 1) return true;
 
                 // ##### block #####
                 if (roleAdministrators && securityrolesadministrators == 2) return false;
@@ -158,15 +167,7 @@ namespace DNNrocketAPI.Componants
                 if (roleSubscribers && securityrolessubscribers == 2) return false;
                 if (securityrolesall == 2) return false; // su only
 
-                // ##### Allow #####
-                if (securityrolesall == 1) return true;
-                if (roleAdministrators && securityrolesadministrators == 1) return true;
-                if (roleManager && securityrolesmanager == 1) return true;
-                if (roleEditor && securityroleseditor == 1) return true;
-                if (roleClientEditor && securityrolesclienteditor == 1) return true;
-                if (roleRegisteredUsers && securityrolesregisteredusers == 1) return true;
-                if (roleSubscribers && securityrolessubscribers == 1) return true;
-            }
+           }
 
             return false;
         }

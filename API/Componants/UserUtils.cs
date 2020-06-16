@@ -289,6 +289,8 @@ namespace DNNrocketAPI.Componants
         {
             if (portalId >= 0 && username != "" && email != "")
             {
+                UserInfo objUser = null;
+
                 var userInfo = new UserInfo();
                 userInfo.PortalID = portalId;
                 userInfo.Username = username;
@@ -305,18 +307,30 @@ namespace DNNrocketAPI.Componants
                 userInfo.Profile.LastName = userInfo.LastName;
 
                 var status = UserController.CreateUser(ref userInfo);
-                if (status == DotNetNuke.Security.Membership.UserCreateStatus.Success) return userInfo.UserID;
-                if (status == DotNetNuke.Security.Membership.UserCreateStatus.DuplicateUserName
-                    || status == DotNetNuke.Security.Membership.UserCreateStatus.UserAlreadyRegistered
-                    || status == DotNetNuke.Security.Membership.UserCreateStatus.UsernameAlreadyExists)
-                {
-                    var objUser = UserController.GetUserByName(portalId, username);
-                    if (objUser != null) return objUser.UserID;
+                if (status == UserCreateStatus.Success
+                    || status == UserCreateStatus.DuplicateUserName
+                    || status == UserCreateStatus.UserAlreadyRegistered
+                    || status == UserCreateStatus.UsernameAlreadyExists)
+                {                    
+                    objUser = UserController.GetUserByName(username);
+                    UserController.AddUserPortal(portalId, objUser.UserID);
                 }
-                if (status == DotNetNuke.Security.Membership.UserCreateStatus.DuplicateEmail)
+                if (status == UserCreateStatus.DuplicateEmail)
                 {
-                    var objUser = UserController.GetUserByEmail(portalId, email);
-                    if (objUser != null) return objUser.UserID;
+                    objUser = UserController.GetUserByEmail(portalId, email);
+                    UserController.AddUserPortal(portalId, objUser.UserID);
+                }
+                if (objUser != null)
+                {
+                    var l = RoleController.Instance.GetRoles(portalId);
+                    foreach (RoleInfo r in l)
+                    {
+                        if (r.AutoAssignment || r.RoleName == DNNrocketRoles.Manager)
+                        {
+                            UserUtils.AddUserRole(portalId, objUser.UserID, r.RoleID);
+                        }
+                    }
+                    return objUser.UserID;
                 }
             }
             return -1;

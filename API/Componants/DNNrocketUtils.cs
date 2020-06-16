@@ -579,6 +579,7 @@ namespace DNNrocketAPI.Componants
                 objRoleInfo.TrialFrequency = trialFrequency;
                 objRoleInfo.IsPublic = isPublic;
                 objRoleInfo.AutoAssignment = isAuto;
+                objRoleInfo.Status = RoleStatus.Approved;
                 RoleController.Instance.AddRole(objRoleInfo);
             }
         }
