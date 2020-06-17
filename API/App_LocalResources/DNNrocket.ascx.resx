@@ -549,4 +549,10 @@
   <data name="value.Text" xml:space="preserve">
     <value>Value</value>
   </data>
+  <data name="send.Icon" xml:space="preserve">
+    <value>&lt;i  title="Send" class="far  fa-paper-plane fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="send.Text" xml:space="preserve">
+    <value>Send</value>
+  </data>
 </root>
