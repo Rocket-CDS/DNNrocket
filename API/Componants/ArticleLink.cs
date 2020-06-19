@@ -8,7 +8,7 @@ namespace DNNrocketAPI.Componants
 {
     public class ArticleLink
     {
-        public ArticleLink(SimplisityInfo info, string fieldId)
+        public ArticleLink(SimplisityInfo info, string fieldId = "")
         {
             Info = info;
             FieldId = fieldId;
@@ -21,8 +21,17 @@ namespace DNNrocketAPI.Componants
         {
             get
             {
-                var rtn = Info.GetXmlProperty("genxml/hidden/url" + FieldId);
-                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/hidden/url" + FieldId);
+                string rtn;
+                if (LinkType == 1)
+                {
+                    var internallink = Info.GetXmlPropertyInt("genxml/select/internallink" + FieldId);
+                    rtn = PagesUtils.GetPageURL(internallink);
+                }
+                else
+                {
+                    rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/externallink" + FieldId);
+                }
+                if (Anchor != "") rtn += "#" + Anchor;
                 return rtn;
             }
         }
@@ -33,6 +42,35 @@ namespace DNNrocketAPI.Componants
                 var rtn = Info.GetXmlProperty("genxml/textbox/name" + FieldId);
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/name" + FieldId);
                 return rtn;
+            }
+        }
+        public int LinkType
+        {
+            get
+            {
+                return Info.GetXmlPropertyInt("genxml/select/internallink" + FieldId);
+            }
+        }
+        public string Ref
+        {
+            get
+            {
+                return Info.GetXmlProperty("genxml/textbox/ref" + FieldId);
+            }
+        }
+        public string Anchor
+        {
+            get
+            {
+                return Info.GetXmlProperty("genxml/textbox/anchor" + FieldId);
+            }
+        }
+        public string Target
+        {
+            get
+            {
+                if (Info.GetXmlPropertyBool("genxml/checkbox/blank" + FieldId)) return "_blank";
+                return "";
             }
         }
     }

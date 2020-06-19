@@ -98,6 +98,7 @@ namespace DNNrocketAPI.Componants
 
         public void AddCommand(string commandKey,bool requiresSecurity)
         {
+            if (_commandSecurity.ContainsKey(commandKey)) RemoveCommand(commandKey);
             if (!_commandSecurity.ContainsKey(commandKey))
             {
                 _commandSecurity.AddOrUpdate(commandKey, requiresSecurity, (key, existingVal) => {return existingVal;});

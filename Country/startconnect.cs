@@ -45,8 +45,15 @@ namespace DNNrocket.Country
                         break;
                     case "settingcountry_selectculturecode":
                         rtnDic.Add("outputhtml", CountryUtils.CultureSelect(postInfo, langRequired, _rocketInterface));
-                        break;                        
+                        break;
                 }
+            }
+            switch (paramCmd)
+            {
+                case "settingcountry_changeculture":
+                    DNNrocketUtils.SetCookieValue("language", paramInfo.GetXmlProperty("genxml/hidden/language"));
+                    rtnDic.Add("outputhtml", paramInfo.GetXmlProperty("genxml/hidden/language"));
+                    break;
             }
             return rtnDic;
         }

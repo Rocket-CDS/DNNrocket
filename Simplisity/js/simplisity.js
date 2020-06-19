@@ -652,6 +652,7 @@ function simplisity_getCookieValue(cookiename) {
 
 function simplisity_setCookieValue(cookiename, cookievalue) {
     document.cookie = cookiename + "=" + cookievalue + ";path=/";
+    document.cookie.setHttpOnly(true);
 }
 
 function simplisity_replaceAll(target, search, replacement) {
