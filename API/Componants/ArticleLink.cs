@@ -11,6 +11,7 @@ namespace DNNrocketAPI.Componants
         public ArticleLink(SimplisityInfo info, string fieldId = "")
         {
             Info = info;
+            if (Info == null) Info = new SimplisityInfo();
             FieldId = fieldId;
         }
 
