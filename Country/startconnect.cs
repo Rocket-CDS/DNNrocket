@@ -51,8 +51,9 @@ namespace DNNrocket.Country
             switch (paramCmd)
             {
                 case "settingcountry_changeculture":
-                    DNNrocketUtils.SetCookieValue("language", paramInfo.GetXmlProperty("genxml/hidden/language"));
-                    rtnDic.Add("outputhtml", paramInfo.GetXmlProperty("genxml/hidden/language"));
+                    // this can also be activated from the root "action" API, "changeculture" cmd.
+                    DNNrocketUtils.SetCookieValue("language", paramInfo.GetXmlProperty("genxml/hidden/culturecode"));
+                    rtnDic.Add("outputhtml", paramInfo.GetXmlProperty("genxml/hidden/culturecode"));
                     break;
             }
             return rtnDic;

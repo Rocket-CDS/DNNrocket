@@ -148,6 +148,12 @@ namespace DNNrocketAPI.ApiControllers
                     UserUtils.DoLogin(systemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
                     strOut = ""; // the page will rteload after the call
                 }
+                else if (paramCmd == "changeculture")
+                {
+                    var lang = paramInfo.GetXmlProperty("genxml/hidden/culturecode");
+                    DNNrocketUtils.SetCookieValue("language", lang);
+                    strOut = lang; // the page will reload after the call
+                }
                 else
                 {
                     switch (paramCmd)

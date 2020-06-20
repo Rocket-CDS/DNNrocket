@@ -15,7 +15,7 @@
                         var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
                         foreach (var l in enabledlanguages)
                         {
-                            <div class="w3-bar-item w3-button selectlang w3-border-bottom " lang="@l" style="width:270px;" s-cmd="settingcountry_changeculture" s-reload="true" s-fields='{"language":"@(l)"}'  ><img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/@(l).png' alt='@(l)' /><span class="w3-small">&nbsp;@DNNrocketUtils.GetCultureCodeName(l)</span></div>
+                            <div class="w3-bar-item w3-button selectlang w3-border-bottom " lang="@l" style="width:270px;" s-cmd="settingcountry_changeculture" s-reload="true" s-fields='{"culturecode":"@(l)"}'  ><img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/@(l).png' alt='@(l)' /><span class="w3-small">&nbsp;@DNNrocketUtils.GetCultureCodeName(l)</span></div>
                         }
                     }
                 </div>
