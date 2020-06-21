@@ -18,7 +18,7 @@
         <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-removelist=".interfacedata" s-recylebin="interfacesbin" s-return="#plugininterfaces" style="display: none;">@ButtonText(ButtonTypes.undo)</a>
     </div>
 
-    <ul id="plugininterfaces" class="w3-ul">
+    <ul id="plugininterfaces" class="w3-ul w3-border">
 
         @{
             var lp1 = 0;
@@ -26,28 +26,27 @@
         @foreach (var i in sInfo.GetList("interfacedata"))
         {
             lp1 += 1;
-            <li class="interfacedata w3-card w3-margin w3-display-container">
+            <li class="interfacedata w3-display-container">
                 <a href="javascript:void(0)" class="w3-display-topright"><i title="Remove" class="fas fa-arrows "></i></a>
 
                 <div class="w3-row">
 
                     <div class="w3-row">
-                        <div class="w3-padding w3-col m1">
+                        <div class=" w3-col m1">
                             <div class="w3-button showdetail@(lp1)"><i title="Show Detail" class="far fa-window-maximize fa-fw fa-lg"></i></div>
                             <div class="w3-button  hidedetail@(lp1)" style="display:none;"><i title="Less Detail" class="fas fa-window-maximize fa-fw fa-lg"></i></div>
                         </div>
-                        <div class="w3-padding w3-col m6">
-                            <label class="">@ResourceKey("system.interfacekey")</label>
+                        <div class=" w3-col m6">
                             @TextBox(i, "genxml/textbox/interfacekey", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
                         </div>
-                        <div class="w3-padding w3-col m2 w3-right-align">
+                        <div class=" w3-col m2 w3-right-align">
                             <label class="">@ResourceKey("system.onmenu")</label>
                             @CheckBox(i, "genxml/checkbox/onmenu", "", "class='w3-input w3-border'", true, false, lp1)
                             <label class="">@ResourceKey("DNNrocket.Active")</label>
                             @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border'", true, false, lp1)
                         </div>
-                        <div class="w3-right simplisity_removelistitem w3-margin" s-removelist=".interfacedata" s-recylebin="interfacesbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></div>
-                        <div class="w3-right getsystemlist w3-margin" selectedinterfacekey="@i.GetXmlProperty("genxml/textbox/interfacekey")" systemid="@sInfo.ItemID"><i title="Copy" class="far fa-copy fa-fw fa-lg"></i></div>
+                        <div class="w3-button w3-right simplisity_removelistitem" s-removelist=".interfacedata" s-recylebin="interfacesbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></div>
+                        <div class="w3-button w3-right getsystemlist" selectedinterfacekey="@i.GetXmlProperty("genxml/textbox/interfacekey")" systemid="@sInfo.ItemID"><i title="Copy" class="far fa-copy fa-fw fa-lg"></i></div>
                     </div>
 
                     <div class="w3-row detailrows@(lp1)" style="display:none;">
