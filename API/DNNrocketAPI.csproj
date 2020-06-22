@@ -155,6 +155,7 @@
     <Compile Include="Componants\Scheduler.cs" />
     <Compile Include="Componants\SettingsData.cs" />
     <Compile Include="Componants\PortalUtils.cs" />
+    <Compile Include="Componants\ModuleUtils.cs" />
     <Compile Include="Componants\WebSiteData.cs" />
     <Compile Include="Componants\SystemGlobalData.cs" />
     <Compile Include="Componants\PageRecordData.cs" />
