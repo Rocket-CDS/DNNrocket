@@ -15,22 +15,16 @@ namespace DNNrocketAPI.Componants
     {
         public DNNrocketInterface(SimplisityInfo systemInfo, string interfaceKey)
         {
-            SystemKey = systemInfo.GetXmlProperty("genxml/textbox/ctrlkey");
-            Exists = true;
-            if (systemInfo == null)
+            Exists = false;
+            Info = new SimplisityInfo();
+            if (systemInfo != null)
             {
-                Exists = false;
-            }
-            else
-            {
+                SystemKey = systemInfo.GetXmlProperty("genxml/textbox/ctrlkey");
                 var interfaceInfo = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfaceKey);
-                if (interfaceInfo == null)
-                {
-                    Exists = false;
-                }
-                else
+                if (interfaceInfo != null)
                 {
                     Info = interfaceInfo;
+                    Exists = true;
                 }
             }
         }

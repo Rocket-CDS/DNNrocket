@@ -1115,10 +1115,16 @@ namespace DNNrocketAPI.Componants
             var systemKey = (string)CacheUtilsDNN.GetCache(cacheKey);
             if (systemKey == null)
             {
+                systemKey = "";
                 var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
                 var desktopModule = moduleInfo.DesktopModule;
-                systemKey = desktopModule.ModuleDefinitions.First().Key.ToLower();  // Use the First DNN Module definition as the DNNrocket systemkey
-                CacheUtilsDNN.SetCache(cacheKey, systemKey);
+                var moduleName = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
+                var mlist = moduleName.Split('_');
+                if (mlist.Length == 2)
+                {
+                    systemKey = mlist[0];
+                    CacheUtilsDNN.SetCache(cacheKey, systemKey);
+                }
             }
             return  systemKey;
         }
@@ -1134,10 +1140,16 @@ namespace DNNrocketAPI.Componants
             var interfacekey = (string)CacheUtilsDNN.GetCache(cacheKey);
             if (interfacekey == null)
             {
+                interfacekey = "";
                 var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
                 var desktopModule = moduleInfo.DesktopModule;
-                interfacekey = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
-                CacheUtilsDNN.SetCache(cacheKey, interfacekey);
+                var moduleName = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
+                var mlist = moduleName.Split('_');
+                if (mlist.Length == 2)
+                {
+                    interfacekey = mlist[1];
+                    CacheUtilsDNN.SetCache(cacheKey, interfacekey);
+                }
             }
             return interfacekey;
         }
@@ -1630,140 +1642,6 @@ namespace DNNrocketAPI.Componants
                 i.Dispose();
             }
             CacheUtils.ClearAllCache("DNNrocketThumb");
-        }
-
-        public static bool CreateModuleDefinition(SimplisityRecord sRec)
-        {
-            try
-            {
-
-                //<genxml>
-                //    <moduleowner>ModuleCompany</moduleowner>
-                //    <modulefolder>ModuleFolder</modulefolder>
-                //    <modulename>ModuleName</modulename>
-                //    <modulefriendlyname>Firendly Module Name</modulefriendlyname>
-                //    <moduledescription>Rocket Module</moduledescription>
-                //    <moduletitle>Module Title</moduletitle>
-                //</genxml>
-
-                var className = sRec.GetXmlProperty("genxml/moduleowner") + "." + sRec.GetXmlProperty("genxml/modulename");
-                var controlName = sRec.GetXmlProperty("genxml/modulename");
-                var moduleOwner = sRec.GetXmlProperty("genxml/moduleowner");
-                var moduleFolder = sRec.GetXmlProperty("genxml/modulefolder");
-                var moduleFriendlyName = sRec.GetXmlProperty("genxml/modulefriendlyname");
-                var moduleDescription = sRec.GetXmlProperty("genxml/moduledescription");
-                var moduleFullFolderMapPath = moduleOwner.Replace("/", "\\") + "\\" + moduleFolder.Replace("/", "\\");
-                var moduleFullFolderRel = moduleOwner + "/" + moduleFolder;
-                var moduleTitle = sRec.GetXmlProperty("genxml/moduletitle");
-
-                if (PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == className) == null)
-                {
-                    //Create module folder
-                    var moduleFolderPath = Globals.ApplicationMapPath + "\\DesktopModules\\" + moduleFullFolderMapPath;
-
-                    if (!Directory.Exists(moduleFolderPath))
-                    {
-                        Directory.CreateDirectory(moduleFolderPath);
-                    }
-
-                    //Create module control
-                    if (controlName != "")
-                    {
-                        //Create package
-                        var objPackage = new PackageInfo();
-                        objPackage.Name = className;
-                        objPackage.FriendlyName = moduleFriendlyName;
-                        objPackage.Description = moduleDescription;
-                        objPackage.Version = new Version(1, 0, 0);
-                        objPackage.PackageType = "Module";
-                        objPackage.License = "";
-                        objPackage.Owner = moduleOwner;
-                        objPackage.Organization = moduleOwner;
-                        objPackage.FolderName = "DesktopModules/" + moduleFullFolderRel;
-                        objPackage.License = "The license for this package is not currently included within the installation file, please check with the vendor for full license details.";
-                        objPackage.ReleaseNotes = "This package has no Release Notes.";
-                        PackageController.Instance.SaveExtensionPackage(objPackage);
-
-                        //Create desktopmodule
-                        var objDesktopModule = new DesktopModuleInfo();
-                        objDesktopModule.DesktopModuleID = Null.NullInteger;
-                        objDesktopModule.ModuleName = className;
-                        objDesktopModule.FolderName = moduleFullFolderRel;
-                        objDesktopModule.FriendlyName = moduleFriendlyName;
-                        objDesktopModule.Description = moduleDescription;
-                        objDesktopModule.IsPremium = false;
-                        objDesktopModule.IsAdmin = false;
-                        objDesktopModule.Version = "01.00.00";
-                        objDesktopModule.BusinessControllerClass = "";
-                        objDesktopModule.CompatibleVersions = "";
-                        objDesktopModule.AdminPage = "";
-                        objDesktopModule.HostPage = "";
-                        objDesktopModule.Dependencies = "";
-                        objDesktopModule.Permissions = "";
-                        objDesktopModule.PackageID = objPackage.PackageID;
-                        objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
-                        objDesktopModule = DesktopModuleController.GetDesktopModule(objDesktopModule.DesktopModuleID, Null.NullInteger);
-
-                        //Add OwnerName to the DesktopModule taxonomy and associate it with this module
-                        var vocabularyId = -1;
-                        var termId = -1;
-                        var objTermController = DotNetNuke.Entities.Content.Common.Util.GetTermController();
-                        var objTerms = objTermController.GetTermsByVocabulary("Module_Categories");
-                        foreach (Term term in objTerms)
-                        {
-                            vocabularyId = term.VocabularyId;
-                            if (term.Name == moduleOwner)
-                            {
-                                termId = term.TermId;
-                            }
-                        }
-                        if (termId == -1)
-                        {
-                            termId = objTermController.AddTerm(new Term(vocabularyId) { Name = moduleOwner });
-                        }
-                        var objTerm = objTermController.GetTerm(termId);
-                        var objContentController = DotNetNuke.Entities.Content.Common.Util.GetContentController();
-                        var objContent = objContentController.GetContentItem(objDesktopModule.ContentItemId);
-                        objTermController.AddTermToContent(objTerm, objContent);
-
-                        //Add desktopmodule to all portals
-                        DesktopModuleController.AddDesktopModuleToPortals(objDesktopModule.DesktopModuleID);
-
-                        //Create module definition
-                        var objModuleDefinition = new ModuleDefinitionInfo();
-                        objModuleDefinition.ModuleDefID = Null.NullInteger;
-                        objModuleDefinition.DesktopModuleID = objDesktopModule.DesktopModuleID;
-                        // need core enhancement to have a unique DefinitionName  
-                        objModuleDefinition.FriendlyName = className;
-                        //objModuleDefinition.FriendlyName = txtModule.Text;
-                        //objModuleDefinition.DefinitionName = GetClassName();
-                        objModuleDefinition.DefaultCacheTime = 0;
-                        objModuleDefinition.ModuleDefID = ModuleDefinitionController.SaveModuleDefinition(objModuleDefinition, false, true);
-
-                        //Create modulecontrol
-                        var objModuleControl = new ModuleControlInfo();
-                        objModuleControl.ModuleControlID = Null.NullInteger;
-                        objModuleControl.ModuleDefID = objModuleDefinition.ModuleDefID;
-                        objModuleControl.ControlKey = "";
-                        objModuleControl.ControlSrc = "DesktopModules/" + moduleFullFolderRel + "/" + controlName;
-                        objModuleControl.ControlTitle = "";
-                        objModuleControl.ControlType = SecurityAccessLevel.View;
-                        objModuleControl.HelpURL = "";
-                        objModuleControl.IconFile = "";
-                        objModuleControl.ViewOrder = 0;
-                        objModuleControl.SupportsPartialRendering = false;
-                        objModuleControl.SupportsPopUps = false;
-                        ModuleControlController.AddModuleControl(objModuleControl);
-
-                        return true;
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                LogException(exc);
-            }
-            return false;
         }
 
 
