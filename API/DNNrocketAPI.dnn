@@ -118,7 +118,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
 				</component>
 				<component type="Module">
           <desktopModule>
-            <moduleName>rocketadmin</moduleName>
+            <moduleName>systemapi_rocketadmin</moduleName>
             <foldername>api</foldername>
             <businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
             <supportedFeatures>
@@ -127,7 +127,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>systemapi</friendlyName>
+                <friendlyName>System Admin</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
@@ -136,7 +136,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
-                    <iconFile>DesktopModules/DNNrocket/api/images/dnnrocketadminlogo.jpg</iconFile>
+                    <iconFile />
                     <helpUrl />
                     <supportsPopUps>False</supportsPopUps>
                     <viewOrder>0</viewOrder>
@@ -176,26 +176,40 @@ It also contains the popular RocketMod modules, which is a dynamic content build
 
     <package name="RocketMod" type="Module" version="1.0.0">
       <friendlyName>RocketMod</friendlyName>
-      <description>Rocket Generic Module</description>
-      <iconFile>DesktopModules/DNNrocket/RocketMod/dnnrocketlogo2.jpg</iconFile>
+      <description>DNNrocket Module </description>
+      <iconFile />
       <owner>
         <name>Charles France</name>
         <organization>DNN Rocket</organization>
         <url>www.dnnrocket.com</url>
-        <email>support@dnnrocket.com</email>
+        <email></email>
       </owner>
       <license>
-        Copyright (c) 2019, www.dnnrocket.com
+        Copyright (c) 2015, www.dnnrocket.com
         All rights reserved.
 
         THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       </license>
       <releaseNotes>
 
+        Assemblies:
+
+        DNNrocketAPI
+
       </releaseNotes>
       <dependencies>
       </dependencies>
       <components>
+        <component type="Script">
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules\DNNrocket</basePath>
+            <resourceFile>
+              <name>Resource.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
         <component type="Assembly">
           <assemblies>
             <assembly>
@@ -207,16 +221,16 @@ It also contains the popular RocketMod modules, which is a dynamic content build
         </component>
         <component type="Module">
           <desktopModule>
-            <moduleName>rocketmod</moduleName>
+            <moduleName>dnnrocketmodule_rocketmod</moduleName>
             <foldername>RocketMod</foldername>
-            <businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
+            <businessControllerClass>DNNrocketAPI.Componants.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Portable" />
               <supportedFeature type="Searchable" />
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>dnnrocketmodule</friendlyName>
+                <friendlyName>Rocket Mod</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
@@ -225,7 +239,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
-                    <iconFile>DesktopModules/DNNrocket/RocketMod/dnnrocketlogo2.jpg</iconFile>
+                    <iconFile />
                     <helpUrl />
                     <supportsPopUps>False</supportsPopUps>
                     <viewOrder>0</viewOrder>
@@ -236,16 +250,8 @@ It also contains the popular RocketMod modules, which is a dynamic content build
           </desktopModule>
         </component>
 
-        <component type="File">
-          <files>
-            <basePath>DesktopModules\DNNrocket\API\Systems\</basePath>
-            <file>
-              <name>dnnrocketmodule_system.xml</name>
-            </file>
-          </files>
-        </component>
-
       </components>
     </package>
+
   </packages>
 </dotnetnuke>
