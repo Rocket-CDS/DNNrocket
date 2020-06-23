@@ -47,7 +47,7 @@ DNNrocketAPI
 				</component>
 				<component type="Module">
 					<desktopModule>
-						<moduleName>rocketmod</moduleName>
+						<moduleName>dnnrocketmodule_rocketmod</moduleName>
 						<foldername>RocketMod</foldername>
 						<businessControllerClass>DNNrocketAPI.Componants.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
 						<supportedFeatures>
@@ -56,7 +56,7 @@ DNNrocketAPI
 						</supportedFeatures>
 						<moduleDefinitions>
 							<moduleDefinition>
-								<friendlyName>dnnrocketmodule</friendlyName>
+								<friendlyName>Rocket Mod</friendlyName>
 								<defaultCacheTime>0</defaultCacheTime>
 								<moduleControls>
 									<moduleControl>

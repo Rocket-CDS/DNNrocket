@@ -479,10 +479,11 @@ namespace DNNrocket.AppThemes
             ClearServerCacheLists();
         }
 
-        public string GetPublicAppTheme(string appThemeFolder = "")
+        public string GetPublicAppTheme()
         {
             try
             {
+                var appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 DownloadPublicAppTheme(appThemeFolder);
                 return GetPublicListAppTheme(true);
             }

@@ -49,7 +49,7 @@ namespace DNNrocketAPI.Componants
         {
             get
             {
-                return Info.GetXmlPropertyInt("genxml/select/internallink" + FieldId);
+                return Info.GetXmlPropertyInt("genxml/radio/linktype" + FieldId);
             }
         }
         public string Ref

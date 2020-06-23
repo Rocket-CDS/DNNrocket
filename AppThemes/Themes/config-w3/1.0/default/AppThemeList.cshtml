@@ -112,11 +112,6 @@
                 <div class="w3-half">
                     <h2>@systemData2.SystemName</h2>
                 </div>
-                <div class="w3-half w3-padding w3-right-align">
-                    <i class="griddisplayicon fas fa-th fa-2x"></i>
-                    &nbsp;
-                    <i class="listdisplayicon w3-text-blue fas fa-th-list fa-2x"></i>
-                </div>
             </div>
 
             if (appThemeDataList.List.Count == 0)
@@ -146,53 +141,9 @@
 
                 <div id="datasection" class="w3-row w3-margin-top">
 
-                    <ul id="datalist" class="w3-ul w3-border" style="display:none;">
-
+                    <div id="datalist2" class="w3-container">
                         @{
                             var lp1 = 0;
-                        }
-                        @foreach (AppTheme appTheme in appThemeDataList.List)
-                        {
-                            lp1 += 1;
-                            <li class="datalistitem w3-display-container">
-
-                                <div class="listrow w3-cell-row">
-
-                                    <div class=" w3-cell w3-padding w3-button rocket_animation simplisity_click " s-cmd="rocketapptheme_getdetail" s-fields='{"track":"true","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="width: 64px;">
-                                        <i class="fas fa-edit w3-center" title="@ResourceKey("DNNRocket.edit")" style='font-size:32px'></i>
-                                    </div>
-                                    <div class=" w3-cell w3-padding  w3-hide-small " style="width: 100px;">
-                                        <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" class="w3-circle" />
-                                    </div>
-                                    <div class=" w3-cell w3-padding">
-                                        <div class="">
-                                            <b class="w3-text-blue ">@appTheme.AppThemePrefix</b>
-                                            &nbsp;
-                                            <b class="">@appTheme.AppThemeName</b>
-                                            &nbsp;
-                                            <b class="">@appTheme.LatestVersionFolder.@appTheme.LatestRev </b>
-                                        </div>
-                                        <div class="w3-hide-small ">
-
-                                            @{
-                                                var summary = appTheme.AppSummary;
-                                                if (summary.Length > 120)
-                                                {
-                                                    summary = summary.Substring(0, 120) + "...";
-                                                }
-                                            }
-                                            @summary
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                        }
-                    </ul>
-
-                    <div id="datalist2" class="w3-container" style="display:none;">
-                        @{
-                            lp1 = 0;
                         }
                         @foreach (AppTheme appTheme in appThemeDataList.List)
                         {
@@ -203,8 +154,8 @@
                                     <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
                                         <b class="w3-left w3-text-blue ">@appTheme.AppThemePrefix</b>
                                         <b class="w3-right">@appTheme.LatestVersionFolder.@appTheme.LatestRev </b>
+                                        <b>@appTheme.AppThemeFolder</b>
                                     </div>
-                                    <img src="@ThumbnailImageUrl(appTheme.Logo,140,140)" style="width:60%;" class="w3-circle w3-hover-opacity" />
                                     <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
                                         <b>@appTheme.AppThemeName</b>
                                     </div>
@@ -222,59 +173,16 @@
             <script>
                 $(document).ready(function () {
                     $("#datalist").disableSelection();
-
-                    var displayviewtype = localStorage.getItem("displayviewtype");
-                    if (displayviewtype === 'listdisplayicon') {
-                        showlist();
-                    }
-                    else {
-                        showgrid();
-                    }
-
-                    $('.griddisplayicon').unbind('click');
-                    $('.griddisplayicon').click(function () {
-                        showgrid();
-                        localStorage.setItem("displayviewtype", "griddisplayicon");
-                    });
-                    $('.listdisplayicon').unbind('click');
-                    $('.listdisplayicon').click(function () {
-                        showlist();
-                        localStorage.setItem("displayviewtype", "listdisplayicon");
-                    });
-
                 });
 
                 function closeimportmodal() {
                     $('#importapptheme').hide();
                 }
 
-                function showgrid() {
-                    $('.griddisplayicon').addClass('w3-text-blue');
-                    $('.listdisplayicon').removeClass('w3-text-blue');
-                    $('#datalist2').show();
-                    $('#datalist').hide();
-                }
-                function showlist() {
-                    $('.griddisplayicon').removeClass('w3-text-blue');
-                    $('.listdisplayicon').addClass('w3-text-blue');
-                    $('#datalist2').hide();
-                    $('#datalist').show();
-                }
-
                 function searchFunction() {
                     var input, filter, ul, li, a, i;
                     input = document.getElementById("searchtext");
                     filter = input.value.toUpperCase();
-                    ul = document.getElementById("datalist");
-                    li = ul.getElementsByTagName("li");
-                    for (i = 0; i < li.length; i++) {
-                        txtValue = li[i].textContent || li[i].innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            li[i].style.display = "";
-                        } else {
-                            li[i].style.display = "none";
-                        }
-                    }
                     ul = document.getElementById("datalist2");
                     li = ul.getElementsByTagName("div");
                     for (i = 0; i < li.length; i++) {

@@ -95,11 +95,6 @@
             <div class="w3-half">
                 <h2>@ResourceKey("Appthemes.onlineprivatelist") - @appThemeDataList.SelectedSystemKey</h2>
             </div>
-            <div class="w3-half w3-padding w3-right-align">
-                <i class="griddisplayicon fas fa-th fa-2x"></i>
-                &nbsp;
-                <i class="listdisplayicon w3-text-blue fas fa-th-list fa-2x"></i>
-            </div>
         </div>
         <div class="w3-row w3-card searchdata w3-margin-top">
 
@@ -124,24 +119,6 @@
             $(document).ready(function () {
                 $("#datalist").disableSelection();
 
-                    var displayviewtype = localStorage.getItem("displayviewtype");
-                    if (displayviewtype === 'listdisplayicon') {
-                        showlist();
-                    }
-                    else {
-                        showgrid();
-                    }
-
-                $('.griddisplayicon').unbind('click');
-                $('.griddisplayicon').click(function () {
-                    showgrid();
-                        localStorage.setItem("displayviewtype", "griddisplayicon");
-                });
-                $('.listdisplayicon').unbind('click');
-                $('.listdisplayicon').click(function () {
-                    showlist();
-                        localStorage.setItem("displayviewtype", "listdisplayicon");
-                });
                 $('.ftpdetailsreturn').unbind('change');
                 $('.ftpdetailsreturn').change(function () {
                     location.reload();
@@ -153,33 +130,10 @@
                 $('#importapptheme').hide();
             }
 
-            function showgrid() {
-                $('.griddisplayicon').addClass('w3-text-blue');
-                $('.listdisplayicon').removeClass('w3-text-blue');
-                $('#datalist2').show();
-                $('#datalist').hide();
-            }
-            function showlist() {
-                $('.griddisplayicon').removeClass('w3-text-blue');
-                $('.listdisplayicon').addClass('w3-text-blue');
-                $('#datalist2').hide();
-                $('#datalist').show();
-            }
-
             function searchFunction() {
                 var input, filter, ul, li, a, i;
                 input = document.getElementById("searchtext");
                 filter = input.value.toUpperCase();
-                ul = document.getElementById("datalist");
-                li = ul.getElementsByTagName("li");
-                for (i = 0; i < li.length; i++) {
-                    txtValue = li[i].textContent || li[i].innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        li[i].style.display = "";
-                    } else {
-                        li[i].style.display = "none";
-                    }
-                }
                 ul = document.getElementById("datalist2");
                 li = ul.getElementsByTagName("div");
                 for (i = 0; i < li.length; i++) {
