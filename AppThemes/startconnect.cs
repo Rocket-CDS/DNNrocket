@@ -44,7 +44,7 @@ namespace DNNrocket.AppThemes
                 //CacheUtilsDNN.ClearAllCache("apptheme");
 
                 _paramCmd = paramCmd;
-                _UserParams = new UserParams(new SessionParams(_paramInfo).BrowserSessionId);
+                _UserParams = new UserParams(UserUtils.GetCurrentUserId());
 
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
                 {
@@ -74,6 +74,7 @@ namespace DNNrocket.AppThemes
 
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/clearselectedsystemkey"))
                 {
+                    _UserParams.Delete();
                     _UserParams.Set("selectedsystemkey", "");
                 }
 

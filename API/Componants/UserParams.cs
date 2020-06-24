@@ -14,12 +14,30 @@ namespace DNNrocketAPI.Componants
     {
         private const string _entityTypeCode = "UserParams";
         private string _guidKey;
-        public UserParams(string browserSessionId, int userId = -1)
+        private bool _useDB;
+        private const string _tableName = "DNNrocketTemp";
+        private DNNrocketController _objCtrl;
+
+        public UserParams(int userId)
         {
             UserId = userId;
             if (userId <= 0) UserId = UserUtils.GetCurrentUserId();
-
-            _guidKey = _entityTypeCode + "*" + UserId + "*" + browserSessionId;
+            initUserParams(UserId.ToString(), true);
+        }
+        public UserParams(string browserSessionId)
+        {
+            initUserParams(browserSessionId, false);
+        }
+        /// <summary>
+        /// Setup user session class to keep track of session
+        /// </summary>
+        /// <param name="browserSessionId"></param>
+        /// <param name="saveToDB">ONLY save to DB if the UserId is used as a sessionid.  Stop DB filling.</param>
+        private void initUserParams(string browserSessionId, bool useDB = false)
+        {
+            _objCtrl = new DNNrocketController();
+            _useDB = useDB;
+            _guidKey = _entityTypeCode + "*" + UserUtils.GetCurrentUserId() + "*" + browserSessionId;
 
             Record = new SimplisityRecord();
 
@@ -29,12 +47,19 @@ namespace DNNrocketAPI.Componants
                 Record = (SimplisityRecord)CacheUtilsDNN.GetCache(_guidKey);
                 if (Record == null)
                 {
-                    Record = new SimplisityRecord();
-                    Record.PortalId = -1;
-                    Record.ModuleId = -1;
-                    Record.TypeCode = _entityTypeCode;
-                    Record.GUIDKey = _guidKey;
-                    Record.UserId = UserId;
+                    if (_useDB)
+                    {
+                        Record = _objCtrl.GetRecordByGuidKey(-1, -1, _entityTypeCode, _guidKey, UserId.ToString(), _tableName);
+                    }
+                    if (Record == null)
+                    {
+                        Record = new SimplisityRecord();
+                        Record.PortalId = -1;
+                        Record.ModuleId = -1;
+                        Record.TypeCode = _entityTypeCode;
+                        Record.GUIDKey = _guidKey;
+                        Record.UserId = UserId;
+                    }
                 }
 
                 Save();
@@ -70,6 +95,10 @@ namespace DNNrocketAPI.Componants
         {
             if (UserUtils.IsEditor())
             {
+                if (_useDB)
+                {
+                    Record.ItemID = _objCtrl.Update(Record, _tableName);
+                }                                       
                 CacheUtilsDNN.SetCache(_guidKey, Record);
             }
         }
@@ -79,6 +108,7 @@ namespace DNNrocketAPI.Componants
         }
         public void Delete()
         {
+            if (_useDB && Record != null) _objCtrl.Delete(Record.ItemID);
             ClearCache();
         }
         public void ClearCache()
