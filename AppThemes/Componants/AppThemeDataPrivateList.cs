@@ -96,12 +96,12 @@ namespace Rocket.AppThemes.Componants
                         }
 
                         // ensure we have the image from the xml file
-                        var onlineIndex = (OnlineAppThemeIndex)CacheUtilsDNN.GetCache(SelectedSystemKey + "_privateIndex");
-                        if (onlineIndex == null)
-                        {
-                            onlineIndex = new OnlineAppThemeIndex(SelectedSystemKey, "private");
-                            CacheUtilsDNN.SetCache(SelectedSystemKey + "_privateIndex", onlineIndex);
-                        }
+                        ////var onlineIndex = (OnlineAppThemeIndex)CacheUtilsDNN.GetCache(SelectedSystemKey + "_privateIndex");
+                        ////if (onlineIndex == null)
+                        ////{
+                        ////    onlineIndex = new OnlineAppThemeIndex(SelectedSystemKey, "private");
+                        ////    CacheUtilsDNN.SetCache(SelectedSystemKey + "_privateIndex", onlineIndex);
+                        ////}
 
                         //a.SetXmlProperty("genxml/hidden/logobase64", onlineIndex.GetLogoBase64String(appTheme.AppThemeFolder));
 

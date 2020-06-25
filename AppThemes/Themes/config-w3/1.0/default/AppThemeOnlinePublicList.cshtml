@@ -32,7 +32,7 @@
 
                     @foreach (SystemData systemData in appThemeDataList.SystemFolderList)
                     {
-                        <li class="simplisity_click" s-cmd="rocketapptheme_getpubliclist" s-fields='{"selectedsystemkey":"@systemData.SystemKey"}' onclick="document.getElementById('systemselect').style.display='none'">
+                        <li class="simplisity_click" s-cmd="rocketapptheme_getpubliclist" s-fields='{"changesystemkey":"true","selectedsystemkey":"@systemData.SystemKey"}' onclick="document.getElementById('systemselect').style.display='none'">
                             <b>@systemData.SystemName</b>
                         </li>
                     }

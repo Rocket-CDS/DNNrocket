@@ -502,6 +502,8 @@ namespace DNNrocket.AppThemes
                 // use cache on lists, because of time to build
                 var strOut = "";
                 var cacheKey = "dnnrocket*GetPublicListAppTheme*" + _selectedSystemKey;
+                var changesystemkey = _paramInfo.GetXmlPropertyBool("genxml/hidden/changesystemkey");
+                useCache = (useCache && !changesystemkey);
                 if (useCache)
                 {
                     strOut = (string)CacheUtilsDNN.GetCache(cacheKey);
@@ -512,6 +514,15 @@ namespace DNNrocket.AppThemes
                 var template = "AppThemeOnlinePublicList.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var passSettings = _postInfo.ToDictionary();
+
+                if (changesystemkey)
+                {
+                    // clear privatre cache
+                    var cachekey = "AppThemeDataPrivateList" + "*" + UserUtils.GetCurrentUserId();
+                    CacheUtilsDNN.RemoveCache(cachekey);
+                    cachekey = "AppThemeDataPrivateList" + "*SystemFolders" + UserUtils.GetCurrentUserId();
+                    CacheUtilsDNN.RemoveCache(cachekey);
+                }
 
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, appThemeDataPublicList, passSettings, null, true);
                 CacheUtilsDNN.SetCache(cacheKey, strOut);
@@ -561,6 +572,8 @@ namespace DNNrocket.AppThemes
                 // use cache on lists, because of time to build
                 var strOut = "";
                 var cacheKey = "dnnrocket*GetPrivateListAppTheme*" + _selectedSystemKey;
+                var changesystemkey = _paramInfo.GetXmlPropertyBool("genxml/hidden/changesystemkey");
+                useCache = (useCache && !changesystemkey);
                 if (useCache)
                 {
                     strOut = (string)CacheUtilsDNN.GetCache(cacheKey);
@@ -571,6 +584,16 @@ namespace DNNrocket.AppThemes
                 var template = "AppThemeOnlinePrivateList.cshtml";
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var passSettings = _postInfo.ToDictionary();
+
+                if (changesystemkey)
+                {
+                    // clear public cache
+                    var cachekey = "AppThemeDataPublicList" + "*" + UserUtils.GetCurrentUserId();
+                    CacheUtilsDNN.RemoveCache(cachekey);
+                    cachekey = "AppThemeDataPublicList" + "*SystemFolders" + UserUtils.GetCurrentUserId();
+                    CacheUtilsDNN.RemoveCache(cachekey);
+                }
+
 
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, appThemeDataPrivateList, passSettings, null, true);
                 CacheUtilsDNN.SetCache(cacheKey, strOut);
@@ -602,7 +625,7 @@ namespace DNNrocket.AppThemes
         private string CheckServerVersion()
         {
             var rtnDic = ExportAppTheme();
-            if (rtnDic["filenamepath"] != null && rtnDic["filenamepath"] != "")
+            if (rtnDic["filenamepath"] != null && (string)rtnDic["filenamepath"] != "")
             {
                 var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
                 var ftpConnect = new FtpConnect(_selectedSystemKey);
@@ -639,7 +662,7 @@ namespace DNNrocket.AppThemes
         private string UploadAppTheme()
         {
             var rtnDic = ExportAppTheme();
-            if (rtnDic["filenamepath"] != null && rtnDic["filenamepath"] != "")
+            if (rtnDic["filenamepath"] != null && (string)rtnDic["filenamepath"] != "")
             {
                 var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
                 var ftpConnect = new FtpConnect(_selectedSystemKey);

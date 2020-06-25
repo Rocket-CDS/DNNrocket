@@ -73,26 +73,26 @@ namespace DNNrocketAPI.Componants
                     sInfo.SetXmlProperty("genxml/hidden/latestrev", appTheme.LatestRev.ToString());
                     var logoMapPath = DNNrocketUtils.MapPath(appTheme.Logo);
                     sInfo.SetXmlProperty("genxml/hidden/logo", Path.GetFileName(logoMapPath));
-                    var outMapPath = "";
-                    if (File.Exists(logoMapPath))
-                    {
-                        var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));
-                        var imgidxFolder = DNNrocketUtils.SystemThemeImgDirectoryMapPath();
-                        if (!Directory.Exists(imgidxFolder)) Directory.CreateDirectory(imgidxFolder);
-                        outMapPath = imgidxFolder + "\\" + Path.GetFileName(logoMapPath);
-                        ImgUtils.CreateThumbOnDisk(logoMapPath, "80,80", outMapPath);
-                    }
+                    //var outMapPath = "";
+                    //if (File.Exists(logoMapPath))
+                    //{
+                    //    //var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));
+                    //    //var imgidxFolder = DNNrocketUtils.SystemThemeImgDirectoryMapPath();
+                    //    //if (!Directory.Exists(imgidxFolder)) Directory.CreateDirectory(imgidxFolder);
+                    //    //outMapPath = imgidxFolder + "\\" + Path.GetFileName(logoMapPath);
+                    //    //ImgUtils.CreateThumbOnDisk(logoMapPath, "80,80", outMapPath);
+                    //}
 
                     var updateXml = sInfo.ToXmlItem();
                     FileUtils.SaveFile(xmlMapPath, updateXml);
                     client.UploadFile(urixml + "/" + Path.GetFileName(xmlMapPath), WebRequestMethods.Ftp.UploadFile, xmlMapPath);
                     UploadChangedXmlIndex(appTheme.AppThemeFolder, updateXml);
 
-                    if (outMapPath != "")
-                    {
-                        // upload idx image
-                        client.UploadFile(urixml + "/" + Path.GetFileName(outMapPath), WebRequestMethods.Ftp.UploadFile, outMapPath);
-                    }
+                    ////if (outMapPath != "")
+                    ////{
+                    ////    // upload idx image
+                    ////    client.UploadFile(urixml + "/" + Path.GetFileName(outMapPath), WebRequestMethods.Ftp.UploadFile, outMapPath);
+                    ////}
                 }
             }
             catch (Exception ex)

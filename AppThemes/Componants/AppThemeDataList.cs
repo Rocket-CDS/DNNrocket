@@ -22,7 +22,7 @@ namespace Rocket.AppThemes.Componants
 
             SelectedSystemKey = selectedsystemkey;
 
-            if (List.Count == 0) PopulateAppThemeList();
+            PopulateAppThemeList();
         }
         private void AssignFolders()
         {
