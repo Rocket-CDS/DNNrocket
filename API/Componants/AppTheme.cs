@@ -56,9 +56,7 @@ namespace DNNrocketAPI.Componants
                 if (Directory.Exists(sourceDirectory) && !Directory.Exists(AppThemeFolderMapPath))
                 {
                     // copy the base AppTheme for this system.
-                    var diSource = new DirectoryInfo(sourceDirectory);
-                    var diTarget = new DirectoryInfo(AppThemeFolderMapPath);
-                    GeneralUtils.CopyAll(diSource, diTarget);
+                    GeneralUtils.CopyAll(sourceDirectory, AppThemeFolderMapPath);
                 }
 
                 PopulateVersionList();
@@ -698,7 +696,7 @@ namespace DNNrocketAPI.Componants
                         GC.Collect();
                         GC.WaitForPendingFinalizers();
                     }
-                    DirectoryCopy(tempZipFolder, destinationFolder, true);
+                    DirectoryCopy(tempZipFolder, destinationFolder);
                     if (Directory.Exists(tempZipFolder))
                     {
                         Directory.Delete(tempZipFolder, true);
@@ -715,7 +713,7 @@ namespace DNNrocketAPI.Componants
         {
             // copy folder
             var newAppThemeFolder = AppSystemThemeFolderMapPath + "\\" + appThemeName;
-            DirectoryCopy(AppThemeFolderMapPath, newAppThemeFolder, true);
+            DirectoryCopy(AppThemeFolderMapPath, newAppThemeFolder);
             // rename
             var l = _objCtrl.GetList(-1, -1, "APPTHEME", "and guidkey like 'appTheme*" + SystemKey + "*" + AppThemeFolder + "*%' ");
             foreach (SimplisityInfo i in l)
@@ -785,7 +783,7 @@ namespace DNNrocketAPI.Componants
             }
         }
 
-        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        private static void DirectoryCopy(string sourceDirName, string destDirName)
         {
             // we need to make sure the filesystem is not doing anything before we continue.
             GC.Collect();
@@ -810,25 +808,7 @@ namespace DNNrocketAPI.Componants
                 GC.WaitForPendingFinalizers();
             }
 
-            // Get the files in the directory and copy them to the new location.
-            FileInfo[] files = dir.GetFiles();
-            foreach (FileInfo file in files)
-            {
-                string temppath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(temppath, false);
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            }
-
-            // If copying subdirectories, copy them and their contents to new location.
-            if (copySubDirs)
-            {
-                foreach (DirectoryInfo subdir in dirs)
-                {
-                    string temppath = Path.Combine(destDirName, subdir.Name);
-                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
-                }
-            }
+            GeneralUtils.CopyAll(sourceDirName, destDirName);
 
             // we need to make sure the filesystem is not doing anything before we continue.
             GC.Collect();

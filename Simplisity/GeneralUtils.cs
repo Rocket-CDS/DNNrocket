@@ -821,6 +821,12 @@ namespace Simplisity
             return encoding.GetBytes(str);
         }
 
+        public static void CopyAll(string source, string target)
+        {
+            var diSource = new DirectoryInfo(source);
+            var diTarget = new DirectoryInfo(target);
+            GeneralUtils.CopyAll(diSource, diTarget);
+        }
         public static void CopyAll(DirectoryInfo source, DirectoryInfo target)
         {
             Directory.CreateDirectory(target.FullName);

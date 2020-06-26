@@ -113,6 +113,16 @@ namespace DNNrocket.AppThemes
                         AddResxFile();
                         strOut = GetDetail();
                         break;
+                    case "rocketapptheme_addcss":
+                        SaveData();
+                        AddCssFile();
+                        strOut = GetDetail();
+                        break;
+                    case "rocketapptheme_addjs":
+                        SaveData();
+                        AddJsFile();
+                        strOut = GetDetail();
+                        break;
                     case "rocketapptheme_rebuildresx":
                         strOut = RebuildResx();
                         break;  
@@ -801,7 +811,6 @@ namespace DNNrocket.AppThemes
             resxData.Rebuild(appTheme);
             return GetResxDetail();
         }
-
         private void AddResxFile()
         {
             var culturecoderesx = _paramInfo.GetXmlProperty("genxml/hidden/culturecoderesx");
@@ -826,7 +835,22 @@ namespace DNNrocket.AppThemes
                 FileUtils.SaveFile(fileMapPath, resxFileData);
             }
         }
-
+        private void AddCssFile()
+        {
+            var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+            var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\css\\" + appTheme.AppThemeFolder + ".css";
+            var cssFileData = "";
+            if (File.Exists(fileMapPath)) cssFileData = FileUtils.ReadFile(fileMapPath);
+            FileUtils.SaveFile(fileMapPath, cssFileData);
+        }
+        private void AddJsFile()
+        {
+            var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+            var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\js\\" + appTheme.AppThemeFolder + ".js";
+            var jsFileData = "";
+            if (File.Exists(fileMapPath)) jsFileData = FileUtils.ReadFile(fileMapPath);
+            FileUtils.SaveFile(fileMapPath, jsFileData);
+        }
         private string AddListField()
         {
             var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);

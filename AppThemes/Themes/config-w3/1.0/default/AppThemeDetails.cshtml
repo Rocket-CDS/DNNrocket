@@ -163,28 +163,6 @@
                         </div>
                     </div>
 
-                    <div class="w3-row ">
-                        <div class="w3-col m12 w3-padding">
-                            <label>@ResourceKey("AppThemes.regenerate")</label>
-                            <div class="w3-row ">
-                                <div class="w3-col m2 w3-padding ">
-                                    @CheckBox(info, "genxml/checkbox/regenerateview", ResourceKey("AppThemes.autoregenerateview").ToString(), "", true)
-                                </div>
-                                <div class="w3-col m2 w3-padding ">
-                                    @CheckBox(info, "genxml/checkbox/regeneratedetail", ResourceKey("AppThemes.autoregeneratedetail").ToString(), "", true)
-                                </div>
-                                <div class="w3-col m2 w3-padding ">
-                                    @CheckBox(info, "genxml/checkbox/regenerateedit", ResourceKey("AppThemes.autoregenerateedit").ToString(), "", true)
-                                </div>
-                                <div class="w3-col m2 w3-padding ">
-                                    @CheckBox(info, "genxml/checkbox/regeneratesettings", ResourceKey("AppThemes.autoregeneratesettings").ToString(), "", true)
-                                </div>
-                                <div class="w3-col m2 w3-padding regenerateeditlist" style="display:none;">
-                                    @CheckBox(info, "genxml/checkbox/regenerateeditlist", ResourceKey("AppThemes.autoregenerateeditlist").ToString(), "", true)
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -320,16 +298,26 @@
                 <div id="CSS" class="w3-container w3-border city" style="display:none">
                     <div id="cssdatasection" class="w3-row csslistdatasection">
 
+                        @{ 
+                            var cssList = appTheme.GetTemplatesCSS();
+                        }
+
                         <div class="w3-container">
                             <div class="w3-col w3-padding" style="width:160px;">
-                                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="csslistbin" s-return="#csslistdata" s-removelist=".csslist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                                @if (cssList.Count > 0)
+                                {
+                                    <div id="cssaddbutton" class="w3-button w3-grey w3-padding-8"><i class='fas fa-plus-circle'></i></div>
+                                }
+                                else
+                                {
+                                    <div id="cssaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addcss" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                                }
                             </div>
                         </div>
 
-
                         <ul id="csslistdata" class="w3-ul">
 
-                            @foreach (var templateDict in appTheme.GetTemplatesCSS())
+                            @foreach (var templateDict in cssList)
                             {
 
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
@@ -349,15 +337,27 @@
                 <div id="Javascript" class="w3-container w3-border city" style="display:none">
                     <div id="jsdatasection" class="w3-row jslistdatasection">
 
+
+                        @{
+                            var jsList = appTheme.GetTemplatesJS();
+                        }
+
                         <div class="w3-container">
                             <div class="w3-col w3-padding" style="width:160px;">
-                                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="jslistbin" s-return="#jslistdata" s-removelist=".jslist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                                @if (jsList.Count > 0)
+                                {
+                                    <div id="jsaddbutton" class="w3-button w3-grey w3-padding-8"><i class='fas fa-plus-circle'></i></div>
+                                }
+                                else
+                                {
+                                    <div id="jsaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addjs" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
+                                }
                             </div>
                         </div>
 
                         <ul id="jslistdata" class="w3-ul">
 
-                            @foreach (var templateDict in appTheme.GetTemplatesJS())
+                            @foreach (var templateDict in jsList)
                             {
 
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
