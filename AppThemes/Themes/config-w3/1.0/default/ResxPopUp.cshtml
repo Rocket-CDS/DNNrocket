@@ -27,17 +27,13 @@
 
 <div class="w3-row w3-padding">
     <div class="w3-col m2 w3-button rocket-buttonbar w3-khaki simplisity_click " s-cmd="rocketapptheme_getdetail" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonText(ButtonTypes.cancel)</div>
-    
     <div class="w3-col m2 w3-button rocket-buttonbar w3-green w3-padding-8 simplisity_click" s-cmd="rocketapptheme_saveresxdata" s-post="" s-list=".resxdictionarydata" s-fields='{"filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
-    
     <div class="w3-col m2 w3-button rocket-buttonbar w3-blue w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("AppThemes.rebuildfromfieldsmsg")" s-cmd="rocketapptheme_rebuildresx" s-fields='{"filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-sync fa-fw fa-lg"></i>&nbsp;@ResourceKey("AppThemes.rebuild")</div>
-    
     <div class="w3-col m2 w3-button rocket-buttonbar w3-teal w3-padding-8" onclick="quickresxedit()"><i class='fas fa-bolt  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.quickedit")</div>
-    
-    <div class="w3-col m3 w3-right">
-        <h5 id="resxfilename" class="" style="">@resxData.FileName</h5>
-    </div>
-
+    <div class="w3-col m2 w3-button rocket-buttonbar w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketapptheme_deletefile" s-fields='{"filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.delete)</div>
+</div>
+<div class="w3-row ">
+    <h5 id="resxfilename" class="" style="">@resxData.FileName</h5>
 </div>
 
 
@@ -61,7 +57,7 @@
             <div class="w3-margin-top ">
                 <ul id="resxdatadictionarylist" class="w3-ul w3-border">
                     @foreach (var r in resxData.DataDictionary)
-{
+                    {
 
                         <li class="resxdictionarydata w3-display-container">
                             <div class="w3-row">
@@ -78,9 +74,9 @@
                             </div>
                         </li>
 
-    lp += 1;
+                        lp += 1;
 
-}
+                    }
                 </ul>
             </div>
         </div>
@@ -109,14 +105,14 @@
             quickEdit += r.Value + Environment.NewLine;
         }
 
-            <div id="resxstring" class="w3-row">
-                <div class="w3-quarter w3-margin-right">
-                    <textarea id="resxkeysstring" style="border: none;width: 100%;" class="w3-right-align" disabled>@quickKey</textarea>
-                </div>
-                <div class="w3-twothird">
-                    <textarea id="resxvaluesstring" style="width: 100%;" >@quickEdit</textarea>
-                </div>
+        <div id="resxstring" class="w3-row">
+            <div class="w3-quarter w3-margin-right">
+                <textarea id="resxkeysstring" style="border: none;width: 100%;" class="w3-right-align" disabled>@quickKey</textarea>
             </div>
+            <div class="w3-twothird">
+                <textarea id="resxvaluesstring" style="width: 100%;">@quickEdit</textarea>
+            </div>
+        </div>
 
 
 
@@ -136,15 +132,15 @@
         $("#resxdatadictionarylist").disableSelection();
     });
 
-    function setHeight(fieldId){
-       document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight+'px';
+    function setHeight(fieldId) {
+        document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight + 'px';
     }
 
     function quickresxedit() {
         $('.saveresxquickedit').show();
         $('#quickresxedit').show();
         setHeight('resxvaluesstring');
-        setHeight('resxkeysstring');        
+        setHeight('resxkeysstring');
     }
 
     function saveresxquickedit() {
@@ -152,7 +148,7 @@
 
         var row = 1;
         var lines = $('#resxvaluesstring').val().split('\n');
-        for (var i = 0; i < lines.length; i++){
+        for (var i = 0; i < lines.length; i++) {
             if ($('.value_' + row).length) {
                 $('.value_' + row).val(lines[i]);
             }

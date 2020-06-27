@@ -109,7 +109,6 @@ namespace DNNrocket.AppThemes
                         strOut = GetDetail();
                         break;
                     case "rocketapptheme_addresx":
-                        SaveData();
                         AddResxFile();
                         strOut = GetDetail();
                         break;
@@ -119,6 +118,10 @@ namespace DNNrocket.AppThemes
                         break;
                     case "rocketapptheme_addjs":
                         AddJsFile();
+                        strOut = GetDetail();
+                        break;
+                    case "rocketapptheme_addtemplate":
+                        AddTemplateFile();
                         strOut = GetDetail();
                         break;
                     case "rocketapptheme_rebuildresx":
@@ -226,7 +229,7 @@ namespace DNNrocket.AppThemes
                         strOut = AppThemeUtils.GenerateSettingForm(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
                         break;
                     case "rocketapptheme_deletefile":
-                        //TODO: add delete file.
+                        DeleteFile();
                         strOut = GetDetail();
                         break;
                         
@@ -238,6 +241,28 @@ namespace DNNrocket.AppThemes
             }
 
             return DNNrocketUtils.ReturnString(strOut);
+        }
+
+        public void DeleteFile()
+        {
+            var filename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+            if (filename != "")
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                var fileNameMapPath = "";
+                if (Path.GetExtension(filename) == ".css") fileNameMapPath = appTheme.AppThemeVersionFolderMapPath.Trim('\\') + "\\css\\" + filename;
+                if (Path.GetExtension(filename) == ".resx") fileNameMapPath = appTheme.AppThemeVersionFolderMapPath.Trim('\\') + "\\resx\\" + filename;
+                if (Path.GetExtension(filename) == ".js") fileNameMapPath = appTheme.AppThemeVersionFolderMapPath.Trim('\\') + "\\js\\" + filename;
+                if (Path.GetExtension(filename) == ".cshtml") fileNameMapPath = appTheme.AppThemeVersionFolderMapPath.Trim('\\') + "\\default\\" + filename;
+
+                File.Delete(fileNameMapPath);
+
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
         }
 
         public string CreateNewVersion()
@@ -820,26 +845,31 @@ namespace DNNrocket.AppThemes
         }
         private void AddResxFile()
         {
-            var culturecoderesx = _paramInfo.GetXmlProperty("genxml/hidden/culturecoderesx");
-            var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
-            if (culturecoderesx != "") culturecoderesx = "." + culturecoderesx;
-            var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\resx\\" + appTheme.AppThemeFolder + culturecoderesx + ".resx";
-            var resxData = new ResxData(fileMapPath);
-            if (!resxData.Exists)
+            var resxfilename = _postInfo.GetXmlProperty("genxml/textbox/resxfilename");
+            if (resxfilename != "")
             {
-                // save a base (or default) resx file, to we get the format easier.
-                var defaultrexFileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\resx\\" + appTheme.AppThemeFolder + ".resx";
+                var culturecoderesx = _paramInfo.GetXmlProperty("genxml/hidden/culturecoderesx");
+                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                if (culturecoderesx != "") culturecoderesx = "." + culturecoderesx;
+
+                if (Path.GetExtension(resxfilename) != ".resx") resxfilename = Path.GetFileNameWithoutExtension(resxfilename) + culturecoderesx + ".resx";
+                var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\resx\\" + resxfilename;
                 var resxFileData = "";
-                if (File.Exists(defaultrexFileMapPath))
+
+                var resxData = new ResxData(fileMapPath);
+                if (!resxData.Exists)
                 {
-                    resxFileData = FileUtils.ReadFile(defaultrexFileMapPath);
+                    if (File.Exists(fileMapPath))
+                    {
+                        resxFileData = FileUtils.ReadFile(fileMapPath);
+                    }
+                    else
+                    {
+                        var baserexFileMapPath = appTheme.AppProjectFolderMapPath + "\\AppThemeBase\\resxtemplate.xml";
+                        resxFileData = FileUtils.ReadFile(baserexFileMapPath);
+                    }
+                    FileUtils.SaveFile(fileMapPath, resxFileData);
                 }
-                else
-                {
-                    var baserexFileMapPath = appTheme.AppProjectFolderMapPath + "\\AppThemeBase\\resxtemplate.xml";
-                    resxFileData = FileUtils.ReadFile(baserexFileMapPath);
-                }
-                FileUtils.SaveFile(fileMapPath, resxFileData);
             }
         }
         private void AddCssFile()
@@ -857,11 +887,29 @@ namespace DNNrocket.AppThemes
         }
         private void AddJsFile()
         {
-            var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
-            var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\js\\" + appTheme.AppThemeFolder + ".js";
-            var jsFileData = "";
-            if (File.Exists(fileMapPath)) jsFileData = FileUtils.ReadFile(fileMapPath);
-            FileUtils.SaveFile(fileMapPath, jsFileData);
+            var jsfilename = _postInfo.GetXmlProperty("genxml/textbox/jsfilename");
+            if (jsfilename != "")
+            {
+                if (Path.GetExtension(jsfilename) != ".js") jsfilename = Path.GetFileNameWithoutExtension(jsfilename) + ".js";
+                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\js\\" + jsfilename;
+                var jsFileData = "";
+                if (File.Exists(fileMapPath)) jsFileData = FileUtils.ReadFile(fileMapPath);
+                FileUtils.SaveFile(fileMapPath, jsFileData);
+            }
+        }
+        private void AddTemplateFile()
+        {
+            var templatefilename = _postInfo.GetXmlProperty("genxml/textbox/templatefilename");
+            if (templatefilename != "")
+            {
+                if (Path.GetExtension(templatefilename) != ".cshtml") templatefilename = Path.GetFileNameWithoutExtension(templatefilename) + ".cshtml";
+                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\default\\" + templatefilename;
+                var templateFileData = "";
+                if (File.Exists(fileMapPath)) templateFileData = FileUtils.ReadFile(fileMapPath);
+                FileUtils.SaveFile(fileMapPath, templateFileData);
+            }
         }
         private string AddListField()
         {

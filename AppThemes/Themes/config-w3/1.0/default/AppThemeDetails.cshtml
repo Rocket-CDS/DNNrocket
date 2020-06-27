@@ -106,7 +106,10 @@
                 </div>
                 <div class="w3-col m3 w3-padding">
 
-                    <div id="resxaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addresx" s-post="#resxfilename" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ButtonText(ButtonTypes.add)</div>
+                    <!-- Hide and call from the language select -->
+                    <div id="resxaddbutton" class="w3-button w3-hide w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addresx" s-post="#resxfilename" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'></div>
+
+                    <div class="w3-button w3-teal w3-padding-8 " onclick="selectlanguage()">@ButtonText(ButtonTypes.add)</div>
 
                 </div>
             </div>
@@ -317,7 +320,10 @@
                     <div id="templatedatasection" class="w3-row templatelistdatasection">
 
                         <div class="w3-container">
-                            <div class="w3-col w3-padding" style="">
+                            <div class="w3-col m3 w3-padding" style="width:160px;">
+                                <div class="w3-button w3-teal w3-padding-8 " onclick="$('#templatefilename').show();"><i class='fas fa-plus-circle'></i></div>
+                            </div>
+                            <div class="w3-col m3 w3-padding w3-right" style="">
                                 <div class="w3-button w3-teal w3-padding-8 w3-right" onclick="location.reload();"><i class='fas fa-sync'></i></div>
                                 <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="templatelistbin" s-return="#templatelistdata" s-removelist=".templatelist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
                             </div>
@@ -419,14 +425,7 @@
 
                         <div class="w3-container">
                             <div class="w3-col w3-padding" style="width:160px;">
-                                @if (jsList.Count > 0)
-                                {
-                                    <div id="jsaddbutton" class="w3-button w3-grey w3-padding-8"><i class='fas fa-plus-circle'></i></div>
-                                }
-                                else
-                                {
-                                    <div id="jsaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addjs" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                                }
+                                <div class="w3-button w3-teal w3-padding-8 " onclick="$('#jsfilename').show();"><i class='fas fa-plus-circle'></i></div>
                             </div>
                         </div>
 
@@ -455,10 +454,7 @@
 
                         <div class="w3-container">
                             <div class="w3-col w3-padding" style="width:160px;">
-                                <div id="resxaddbutton" class="w3-hide w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addresx" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-
-                                <div class="w3-button w3-teal w3-padding-8 " onclick="selectlanguage()"><i class='fas fa-plus-circle'></i></div>
-                                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistbin" s-return="#resxlistdata" s-removelist=".resxlist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
+                                <div class="w3-button w3-teal w3-padding-8 " onclick="$('#resxfilename').show();"><i class='fas fa-plus-circle'></i></div>
                             </div>
                         </div>
 
