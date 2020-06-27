@@ -52,6 +52,88 @@
 
 <div class=''>
 
+    <div id="cssfilename" class="w3-modal">
+        <div class="w3-modal-content w3-card w3-animate-zoom">
+
+            <header class="w3-container  w3-theme">
+                <span onclick="document.getElementById('cssfilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>@ResourceKey("Appthemes.filename")</h2>
+            </header>
+
+            <div class="w3-row w3-padding">
+                <div class="w3-col m8 w3-padding">
+                    <input value="" id="cssfilename" s-xpath="genxml/textbox/cssfilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                </div>
+                <div class="w3-col m3 w3-padding">
+
+                    <div id="cssaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addcss" s-post="#cssfilename" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ButtonText(ButtonTypes.add)</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="jsfilename" class="w3-modal">
+        <div class="w3-modal-content w3-card w3-animate-zoom">
+
+            <header class="w3-container  w3-theme">
+                <span onclick="document.getElementById('jsfilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>@ResourceKey("Appthemes.filename")</h2>
+            </header>
+
+            <div class="w3-row w3-padding">
+                <div class="w3-col m8 w3-padding">
+                    <input value="" id="jsfilename" s-xpath="genxml/textbox/jsfilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                </div>
+                <div class="w3-col m3 w3-padding">
+
+                    <div id="jsaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addjs" s-post="#jsfilename" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ButtonText(ButtonTypes.add)</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="resxfilename" class="w3-modal">
+        <div class="w3-modal-content w3-card w3-animate-zoom">
+
+            <header class="w3-container  w3-theme">
+                <span onclick="document.getElementById('resxfilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>@ResourceKey("Appthemes.filename")</h2>
+            </header>
+
+            <div class="w3-row w3-padding">
+                <div class="w3-col m8 w3-padding">
+                    <input value="" id="resxfilename" s-xpath="genxml/textbox/resxfilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                </div>
+                <div class="w3-col m3 w3-padding">
+
+                    <div id="resxaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addresx" s-post="#resxfilename" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ButtonText(ButtonTypes.add)</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="templatefilename" class="w3-modal">
+        <div class="w3-modal-content w3-card w3-animate-zoom">
+
+            <header class="w3-container  w3-theme">
+                <span onclick="document.getElementById('templatefilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>@ResourceKey("Appthemes.filename")</h2>
+            </header>
+
+            <div class="w3-row w3-padding">
+                <div class="w3-col m8 w3-padding">
+                    <input value="" id="templatefilename" s-xpath="genxml/textbox/templatefilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                </div>
+                <div class="w3-col m3 w3-padding">
+
+                    <div id="templateaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addtemplate" s-post="#templatefilename" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'>@ButtonText(ButtonTypes.add)</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div id="copyapptheme" class="w3-modal">
         <div class="w3-modal-content w3-card w3-animate-zoom">
 
@@ -108,7 +190,7 @@
     <div id="detailsection">
 
         <div class="w3-row w3-padding">
-            <div class="w3-col m2 rocket-buttonbar w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"track":"true","clearlistcache":"true"}'>@ButtonText(ButtonTypes.back)</div>            
+            <div class="w3-col m2 rocket-buttonbar w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"track":"true","clearlistcache":"true"}'>@ButtonText(ButtonTypes.back)</div>
             <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
 
             <div class="w3-col m2 w3-dropdown-hover">
@@ -298,20 +380,13 @@
                 <div id="CSS" class="w3-container w3-border city" style="display:none">
                     <div id="cssdatasection" class="w3-row csslistdatasection">
 
-                        @{ 
+                        @{
                             var cssList = appTheme.GetTemplatesCSS();
                         }
 
                         <div class="w3-container">
                             <div class="w3-col w3-padding" style="width:160px;">
-                                @if (cssList.Count > 0)
-                                {
-                                    <div id="cssaddbutton" class="w3-button w3-grey w3-padding-8"><i class='fas fa-plus-circle'></i></div>
-                                }
-                                else
-                                {
-                                    <div id="cssaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addcss" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                                }
+                                <div class="w3-button w3-teal w3-padding-8 " onclick="$('#cssfilename').show();"><i class='fas fa-plus-circle'></i></div>
                             </div>
                         </div>
 
@@ -381,7 +456,7 @@
                         <div class="w3-container">
                             <div class="w3-col w3-padding" style="width:160px;">
                                 <div id="resxaddbutton" class="w3-hide w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addresx" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-plus-circle'></i></div>
-                                
+
                                 <div class="w3-button w3-teal w3-padding-8 " onclick="selectlanguage()"><i class='fas fa-plus-circle'></i></div>
                                 <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistbin" s-return="#resxlistdata" s-removelist=".resxlist" style="display: none;"><i title="Undo" class="fas fa-undo fa-fw fa-lg"></i></div>
                             </div>
@@ -414,14 +489,14 @@
     <div id="dnnrocket_resxeditwrapper" style="display:none;">
         <div class="w3-row w3-padding">
             <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="saveresx()">@ButtonText(ButtonTypes.ok)</div>
-            
+
             <div class="w3-col m2 w3-button w3-khaki " onclick="cancelresx();">@ButtonText(ButtonTypes.cancel)</div>
-            
+
             <div class="w3-col m3 w3-center">
                 <image id="resxflag" src="/DesktopModules/DNNrocket/API/images/flags/32/none.png"></image>
                 <span id="culturecoderesx"></span>
             </div>
-            
+
             <div class="w3-col m4 w3-center">
                 <h5 id="resxfilename" class="" style=""></h5>
             </div>

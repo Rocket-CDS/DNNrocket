@@ -114,12 +114,10 @@ namespace DNNrocket.AppThemes
                         strOut = GetDetail();
                         break;
                     case "rocketapptheme_addcss":
-                        SaveData();
                         AddCssFile();
                         strOut = GetDetail();
                         break;
                     case "rocketapptheme_addjs":
-                        SaveData();
                         AddJsFile();
                         strOut = GetDetail();
                         break;
@@ -227,7 +225,11 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_gensettingform":
                         strOut = AppThemeUtils.GenerateSettingForm(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
                         break;
-
+                    case "rocketapptheme_deletefile":
+                        //TODO: add delete file.
+                        strOut = GetDetail();
+                        break;
+                        
                 }
             }
             else
@@ -842,11 +844,16 @@ namespace DNNrocket.AppThemes
         }
         private void AddCssFile()
         {
-            var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
-            var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\css\\" + appTheme.AppThemeFolder + ".css";
-            var cssFileData = "";
-            if (File.Exists(fileMapPath)) cssFileData = FileUtils.ReadFile(fileMapPath);
-            FileUtils.SaveFile(fileMapPath, cssFileData);
+            var cssfilename = _postInfo.GetXmlProperty("genxml/textbox/cssfilename");
+            if (cssfilename != "")
+            {
+                if (Path.GetExtension(cssfilename) != ".css") cssfilename =  Path.GetFileNameWithoutExtension(cssfilename) + ".css";
+                var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                var fileMapPath = appTheme.AppThemeVersionFolderMapPath + "\\css\\" + cssfilename;
+                var cssFileData = "";
+                if (File.Exists(fileMapPath)) cssFileData = FileUtils.ReadFile(fileMapPath);
+                FileUtils.SaveFile(fileMapPath, cssFileData);
+            }
         }
         private void AddJsFile()
         {
