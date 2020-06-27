@@ -219,6 +219,15 @@
   <data name="ftpfail.Text" xml:space="preserve">
     <value>FTP Failed, No AppTheme export file found.</value>
   </data>
+  <data name="geneditform.Text" xml:space="preserve">
+    <value>Generate Edit</value>
+  </data>
+  <data name="gensettingform.Text" xml:space="preserve">
+    <value>Generate Settings</value>
+  </data>
+  <data name="genviewform.Text" xml:space="preserve">
+    <value>Generate View</value>
+  </data>
   <data name="images.Text" xml:space="preserve">
     <value>Images</value>
   </data>

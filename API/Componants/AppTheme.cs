@@ -886,11 +886,6 @@ namespace DNNrocketAPI.Componants
         public string JsFolderRel { get; set; }
         public string ResxFolderRel { get; set; }
         public SimplisityRecord Record { get; set; }
-        public bool RegenerateEditList { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateeditlist"); } set { Record.SetXmlProperty("genxml/checkbox/regenerateeditlist", value.ToString()); } }
-        public bool RegenerateEdit { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateedit"); } set { Record.SetXmlProperty("genxml/checkbox/regenerateedit", value.ToString()); } }
-        public bool RegenerateSettings { get { return Record.GetXmlPropertyBool("genxml/checkbox/regeneratesettings"); } set { Record.SetXmlProperty("genxml/checkbox/regeneratesettings", value.ToString()); } }
-        public bool RegenerateView { get { return Record.GetXmlPropertyBool("genxml/checkbox/regenerateview"); } set { Record.SetXmlProperty("genxml/checkbox/regenerateview", value.ToString()); } }
-        public bool RegenerateDetail { get { return Record.GetXmlPropertyBool("genxml/checkbox/regeneratedetail"); } set { Record.SetXmlProperty("genxml/checkbox/regeneratedetail", value.ToString()); } }
         public Dictionary<string, string> FileNameList { get; set; }
         public Dictionary<string, string> GetTemplatesMapPath { get { return FileNameList; } }
 

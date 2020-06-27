@@ -11,94 +11,21 @@ namespace Rocket.AppThemes.Componants
 {
     public static class AppThemeUtils
     {
-        public static void GenerateTemplates(AppTheme appTheme)
+        public static string GenerateEditForm(string selectedSystemKey, string appThemeFolder, string appVersionFolder)
         {
-            // output generated template.
-            var formHtml = "";
-            if (appTheme.RegenerateEdit) formHtml = GenerateEditForm(appTheme, "fielddata", "edit.cshtml", 0);
-            var tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
-            if (formHtml != "") FileUtils.SaveFile(tempMapPath, formHtml);
-
-            formHtml = "";
-            if (appTheme.RegenerateSettings) formHtml = GenerateEditForm(appTheme, "settingfielddata", "settings.cshtml", 0);
-            tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\default\\settings.cshtml";
-            if (formHtml != "") FileUtils.SaveFile(tempMapPath, formHtml);
-
-            var listHtml = "";
-            if (appTheme.RegenerateEditList) listHtml = GenerateEditList(appTheme, 0);
-            tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\default\\editlist.cshtml";
-            if (listHtml != "") FileUtils.SaveFile(tempMapPath, listHtml);
-
-            var viewHtml = "";
-            if (appTheme.RegenerateView) viewHtml = GenerateView(appTheme, 0, "view.cshtml");
-            tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
-            if (viewHtml != "") FileUtils.SaveFile(tempMapPath, viewHtml);
-
-            var detailHtml = "";
-            if (appTheme.RegenerateDetail) detailHtml = GenerateView(appTheme, 0, "detail.cshtml");
-            tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\default\\detail.cshtml";
-            if (detailHtml != "") FileUtils.SaveFile(tempMapPath, detailHtml);
-
+            var appTheme = new AppTheme(selectedSystemKey, appThemeFolder, appVersionFolder);
+            return GenerateFields(appTheme, "fielddata");
         }
-        public static void TemplateDefaults(AppTheme appTheme, string listname)
+        public static string GenerateSettingForm(string selectedSystemKey, string appThemeFolder, string appVersionFolder)
         {
-            // Tempalte Defaults
-            var tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\default\\edit.cshtml";
-
-            if (!File.Exists(tempMapPath))
-            {
-                var formHtml = GenerateEditForm(appTheme, "fielddata", "edit.cshtml", 0);
-                FileUtils.SaveFile(tempMapPath, formHtml);
-            }
-
-            tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\default\\editlist.cshtml";
-            if (!File.Exists(tempMapPath))
-            {
-                var listHtml = GenerateEditList(appTheme, 0);
-                FileUtils.SaveFile(tempMapPath, listHtml);
-            }
-
-            tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\default\\view.cshtml";
-            if (!File.Exists(tempMapPath))
-            {
-                var viewHtml = GenerateView(appTheme, 0, "view.cshtml");
-                FileUtils.SaveFile(tempMapPath, viewHtml);
-            }
-
-            tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\default\\detail.cshtml";
-            if (!File.Exists(tempMapPath))
-            {
-                var viewHtml = GenerateView(appTheme, 0, "detail.cshtml");
-                FileUtils.SaveFile(tempMapPath, viewHtml);
-            }
-
-            tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\default\\pageheader.cshtml";
-            if (!File.Exists(tempMapPath)) FileUtils.SaveFile(tempMapPath, "");
-
-            tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\default\\settings.cshtml";
-            if (!File.Exists(tempMapPath))
-            {
-                var formHtml = GenerateEditForm(appTheme, "settingfielddata", "settings.cshtml", 0);
-                FileUtils.SaveFile(tempMapPath, formHtml);
-            }
-            tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\css\\" + appTheme.AppThemeFolder + ".css";
-            if (!File.Exists(tempMapPath)) FileUtils.SaveFile(tempMapPath, "");
-
-            tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\js\\" + appTheme.AppThemeFolder + ".js";
-            if (!File.Exists(tempMapPath)) FileUtils.SaveFile(tempMapPath, "");
-
-            tempMapPath = appTheme.AppThemeVersionFolderMapPath + "\\resx\\" + appTheme.AppThemeFolder + ".resx";
-            if (!File.Exists(tempMapPath))
-            {
-                // we need to use the base resx file, so format is easy.
-                var baserexFileMapPath = appTheme.AppProjectFolderMapPath + "\\AppThemeBase\\resxtemplate.xml";
-                var resxFileData = FileUtils.ReadFile(baserexFileMapPath);
-                FileUtils.SaveFile(tempMapPath, resxFileData);
-            }
-
+            var appTheme = new AppTheme(selectedSystemKey, appThemeFolder, appVersionFolder);
+            return GenerateFields(appTheme, "settingfielddata");
         }
-        public static string GenerateEditForm(AppTheme appTheme, string listname, string basefile, int row)
+
+        public static string GenerateFields(AppTheme appTheme, string listname)
         {
+            var row = 0;
+
             List<SimplisityRecord> fieldList = appTheme.Record.GetRecordList(listname);
             var systemData = new SystemData(appTheme.SystemKey);
 
@@ -303,109 +230,14 @@ namespace Rocket.AppThemes.Componants
             }
 
 
-            // merge to template            
-            var strOut = FileUtils.ReadFile(systemData.SystemMapPath + "\\AppThemeBase\\" + basefile);
-            if (strOut == "") strOut = FileUtils.ReadFile(appTheme.AppProjectFolderMapPath + "\\AppThemeBase\\" + basefile);
-            if (strOut == "")
-            {
-                return strFieldList;
-            }
-            else
-            {
-                strOut = ReplaceTemplateTokens(appTheme, strOut, strFieldList, systemData);
-                return strOut;
-            }
+            return strFieldList;
 
         }
-        public static string ReplaceTemplateTokens(AppTheme appTheme, string templateText, string strFieldList, SystemData systemData)
+        public static string GenerateView(string selectedSystemKey, string appThemeFolder, string appVersionFolder)
         {
-            templateText = templateText.Replace("[Token:AppThemeFields]", strFieldList);
-            templateText = templateText.Replace("[Token: AppThemeFields]", strFieldList);
-            templateText = templateText.Replace("[Token:List]", strFieldList);
-            templateText = templateText.Replace("[Token: List]", strFieldList);
-            templateText = templateText.Replace("[Token:SystemKey]", appTheme.SystemKey);
-            templateText = templateText.Replace("[Token: SystemKey]", appTheme.SystemKey);
-            templateText = templateText.Replace("[Token:DefaultInterface]", systemData.DefaultInterface);
-            templateText = templateText.Replace("[Token: DefaultInterface]", systemData.DefaultInterface);
-            templateText = templateText.Replace("[Token:appthemeresx]", appTheme.AppThemeVersionFolderRel + "/resx/");
-            templateText = templateText.Replace("[Token: appthemeresx]", appTheme.AppThemeVersionFolderRel + "/resx/");
+            var row = 0;
+            var appTheme = new AppTheme(selectedSystemKey, appThemeFolder, appVersionFolder);
 
-            return templateText;
-        }
-        public static string GenerateEditList(AppTheme appTheme, int row)
-        {
-
-            List<SimplisityRecord> fieldList = appTheme.Record.GetRecordList("fielddata");
-
-            var strFieldList = "";
-            var sortedList = new List<SimplisityRecord>();
-            for (int i = 1; i < 12; i++)
-            {
-                foreach (var f in fieldList)
-                {
-                    var isonlist = f.GetXmlPropertyBool("genxml/checkbox/isonlist");
-                    if (isonlist && f.GetXmlPropertyInt("genxml/select/listcol") == i)
-                    {
-                        sortedList.Add(f);
-                    }
-                }
-            }
-
-            foreach (var f in sortedList)
-            {
-                var localized = f.GetXmlPropertyBool("genxml/checkbox/localized");
-                var xpath = f.GetXmlProperty("genxml/hidden/xpath");
-                var size = f.GetXmlProperty("genxml/select/size");
-                var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
-                var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
-                var defaultBool = f.GetXmlPropertyBool("genxml/textbox/defaultvalue");
-                var attributes = f.GetXmlProperty("genxml/textbox/attributes");
-                var isonlist = f.GetXmlPropertyBool("genxml/checkbox/isonlist");
-                var fieldname = f.GetXmlProperty("genxml/textbox/name");
-
-                if (isonlist)
-                {
-                    if (xpath != "")
-                    {
-                        strFieldList += "\t<div class='w3-col m2 w3-padding'>" + Environment.NewLine;
-                        strFieldList += "\t\t@info.GetXmlProperty(\"" + xpath + "\")" + Environment.NewLine;
-                        strFieldList += "\t</div>" + Environment.NewLine;
-
-                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull" || f.GetXmlProperty("genxml/select/type").ToLower() == "image")
-                        {
-                            strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
-                            strFieldList += "<img src=\"@ThumbnailImageUrl(info.GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
-                            strFieldList += "\t</div>" + Environment.NewLine;
-                        }
-
-                        if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
-                        {
-                            strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
-                            strFieldList += "<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
-                            strFieldList += "\t</div>" + Environment.NewLine;
-                        }
-                    }
-
-                }
-            }
-
-            // merge to template
-            var systemData = new SystemData(appTheme.SystemKey);
-            var strOut = FileUtils.ReadFile(systemData.SystemMapPath + "\\AppThemeBase\\editlist.cshtml");
-            if (strOut == "") strOut = FileUtils.ReadFile(appTheme.AppProjectFolderMapPath + "\\AppThemeBase\\editlist.cshtml");
-            if (strOut == "")
-            {
-                return strFieldList;
-            }
-            else
-            {
-                strOut = ReplaceTemplateTokens(appTheme, strOut, strFieldList, systemData);
-                return strOut;
-            }
-
-        }
-        public static string GenerateView(AppTheme appTheme, int row, string templatefilename)
-        {
             List<SimplisityRecord> fieldList = appTheme.Record.GetRecordList("fielddata");
 
             var strFieldList = "";
@@ -454,19 +286,7 @@ namespace Rocket.AppThemes.Componants
 
             }
 
-            // merge to template
-            var systemData = new SystemData(appTheme.SystemKey);
-            var strOut = FileUtils.ReadFile(systemData.SystemMapPath + "\\AppThemeBase\\" + templatefilename);
-            if (strOut == "") strOut = FileUtils.ReadFile(appTheme.AppProjectFolderMapPath + "\\AppThemeBase\\" + templatefilename);
-            if (strOut == "")
-            {
-                return strFieldList;
-            }
-            else
-            {
-                strOut = ReplaceTemplateTokens(appTheme, strOut, strFieldList, systemData);
-                return strOut;
-            }
+            return strFieldList;
 
         }
     }

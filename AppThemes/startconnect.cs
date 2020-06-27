@@ -218,6 +218,16 @@ namespace DNNrocket.AppThemes
                         strOut = SaveEditor();
                         break;
 
+                    case "rocketapptheme_geneditform":
+                        strOut = AppThemeUtils.GenerateEditForm(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                        break;
+                    case "rocketapptheme_genviewform":
+                        strOut = AppThemeUtils.GenerateView(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                        break;
+                    case "rocketapptheme_gensettingform":
+                        strOut = AppThemeUtils.GenerateSettingForm(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
+                        break;
+
                 }
             }
             else
@@ -784,11 +794,6 @@ namespace DNNrocket.AppThemes
             var filename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
             var appTheme = new AppTheme(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
 
-            if (filename.ToLower() == "detail.cshtml") appTheme.RegenerateDetail = false;
-            if (filename.ToLower() == "edit.cshtml") appTheme.RegenerateEdit = false;
-            if (filename.ToLower() == "editlist.cshtml") appTheme.RegenerateEditList = false;
-            if (filename.ToLower() == "settings.cshtml") appTheme.RegenerateSettings = false;
-            if (filename.ToLower() == "view.cshtml") appTheme.RegenerateView = false;
             appTheme.Update();
             appTheme.SaveEditor(filename, editorcode);
             CacheFileUtils.ClearAllCache();
