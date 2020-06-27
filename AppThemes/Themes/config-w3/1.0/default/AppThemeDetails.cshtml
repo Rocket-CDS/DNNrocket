@@ -230,7 +230,10 @@
                     </div>
 
                     <div class="w3-row w3-padding w3-border-bottom">
-                        <div class="w3-col m8 w3-padding">
+                        <div class="w3-col m2 w3-padding w3-hide-small " style="width:144px;height:124px;">
+                            <img src="@ThumbnailImageUrl(appTheme.Logo,120,120)" class="w3-circle" />
+                        </div>
+                        <div class="w3-col m6 w3-padding">
                             <label>@ResourceKey("AppThemes.summary")</label>
                             @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border' rows='4'", "", false)
                         </div>
