@@ -196,7 +196,6 @@ namespace DNNrocketAPI.Componants
 
             return rtnStr;
         }
-
         public static string RazorList(string razorTemplate, List<object> objList, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
         {
             var rtnStr = "";
@@ -1642,6 +1641,29 @@ namespace DNNrocketAPI.Componants
                 i.Dispose();
             }
             CacheUtils.ClearAllCache("DNNrocketThumb");
+        }
+        public static string GetAdminMenu(int tabId, int moduleid, DNNrocketInterface rocketInterface, Dictionary<string, string> passSettings = null, SessionParams sessionParams = null)
+        {
+            try
+            {
+                if (passSettings == null) passSettings = new Dictionary<string, string>();
+                rocketInterface.Info.ModuleId = moduleid;
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData("adminmenu.cshtml", rocketInterface.TemplateRelPath, rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                if (razorTempl == "") return "No 'adminmenu.cshtml' found in " + rocketInterface.TemplateRelPath + " : " + rocketInterface.DefaultTheme;
+                var l = new List<object>();
+                l.Add(rocketInterface);
+                var nbRazor = new SimplisityRazor(l, passSettings, null);
+                nbRazor.SessionParamsData = sessionParams;
+
+                nbRazor.ModuleId = moduleid;
+                nbRazor.TabId = tabId;
+
+                return RazorRender(nbRazor, razorTempl, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
         }
 
 

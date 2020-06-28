@@ -84,6 +84,7 @@ namespace DNNrocketAPI
 
             if (_rocketInterface != null && _rocketInterface.Exists)
             {
+
                 _templateRelPath = _rocketInterface.TemplateRelPath;
                 _paramCmd = _rocketInterface.DefaultCommand;
                 if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we don't define template path in the interface assume it's the control path.
@@ -178,27 +179,30 @@ namespace DNNrocketAPI
             paramInfo.SetXmlProperty("genxml/hidden/tabid", _moduleParams.TabId.ToString());
             paramInfo.SetXmlProperty("genxml/hidden/systemkey", _systemkey);
 
+            var adminmenu = DNNrocketUtils.RequestParam(Context, "adminmenu");
+
             if (_rocketInterface != null && _rocketInterface.Exists)
             {
-                // add parameters to postInfo and cachekey
-                var paramString = "";
-                foreach (String key in Request.QueryString.AllKeys)
-                {
-                    if (key != null) // test for null, but should not happen.   
-                    {
-                        paramString += key + "=" + Request.QueryString[key];
-                        // we need this if we need to process url parmas on the APInterface.  In the cshtml we can use (Model.GetUrlParam("????"))
-                        paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), Request.QueryString[key]);
-                    }
-                }
-
                 var strOut = "";
-                var cacheOutPut = "";
-                var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
 
-                var systemData = new SystemData(_systemInfo);
+                    // add parameters to postInfo and cachekey
+                    var paramString = "";
+                    foreach (String key in Request.QueryString.AllKeys)
+                    {
+                        if (key != null) // test for null, but should not happen.   
+                        {
+                            paramString += key + "=" + Request.QueryString[key];
+                            // we need this if we need to process url parmas on the APInterface.  In the cshtml we can use (Model.GetUrlParam("????"))
+                            paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), Request.QueryString[key]);
+                        }
+                    }
 
-                if (_moduleParams.CacheEnabled && systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
+                    var cacheOutPut = "";
+                    var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess + adminmenu;
+
+                    var systemData = new SystemData(_systemInfo);
+
+                    if (_moduleParams.CacheEnabled && systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
 
                 if (String.IsNullOrEmpty(cacheOutPut))
                 {
@@ -240,12 +244,21 @@ namespace DNNrocketAPI
                         var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
                         strOut += DNNrocketUtils.RazorRender(model, razorTempl, systemData.DebugMode);
                     }
+
+                    if (adminmenu == ModuleId.ToString())
+                    {
+                        // this extends the DNN action menu, to make it more flexable and allow reuse of this view.ascx
+                        strOut += DNNrocketUtils.GetAdminMenu(TabId, ModuleId, _rocketInterface);
+                    }
+
                     CacheFileUtils.SetCache(cacheKey, strOut);
+
                 }
                 else
                 {
                     strOut = cacheOutPut;
                 }
+
 
                 var lit = new Literal();
                 lit.Text = strOut;
@@ -265,7 +278,7 @@ namespace DNNrocketAPI
 
                 PageIncludes.IncludeTextInHeaderAt(Page, "<link rel='stylesheet' href='/DesktopModules/DNNrocket/fa/css/all.min.css'><link rel='stylesheet' href='/DesktopModules/DNNrocket/css/w3.css'>", 1);
 
-                //insert at end of head section, we have a dependancy on JQuery, so we need to inject AFTER jquery.  This may cause a conflict we dependancy files loaded before this.
+                //insert at end of head section, we have a dependancy on JQuery, so we need to inject AFTER jquery.  [This may "possible" cause a conflict with dependancy files loaded before this.]
                 PageIncludes.IncludeTextInHeaderAt(Page, "<script type='text/javascript' src='/DesktopModules/DNNrocket/Simplisity/js/simplisity.js'></script>",0);
             }
         }
@@ -281,29 +294,10 @@ namespace DNNrocketAPI
             get
             {
                 var actions = new ModuleActionCollection();
-                if (!_moduleParams.GetValueBool("noiframeedit"))
-                {
-                    actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.edit") , "", "", "register.gif", "javascript:" + _interfacekey + "editiframe_" + ModuleId + "()", false, SecurityAccessLevel.Edit, true, false);
-                }
 
                 if (_systemInfo != null) // might be null of initialization
                 {
-                    var adminurl = _systemInfo.GetXmlProperty("genxml/textbox/adminurl");
-                    adminurl = adminurl.ToLower().Replace("[moduleid]", ModuleId.ToString());
-                    adminurl = adminurl.ToLower().Replace("[tabid]", TabId.ToString());
-                    if (adminurl != "")
-                    {
-                        actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmin"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
-                        if (adminurl.Contains("?"))
-                        {
-                            adminurl += "&newpage=1";
-                        }
-                        else
-                        {
-                            adminurl += "?newpage=1";
-                        }
-                        actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmintab"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, true);
-                    }
+                    actions.Add(GetNextActionID(), "<i class='fas fa-user-cog fa-lg'></i>&nbsp;" + DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.admin"), "", "", "", "?adminmenu=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);
                     actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearallcache"), "", "", "action_refresh.gif", "?clearallcache=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);
                 }
                 return actions;

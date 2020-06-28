@@ -149,10 +149,21 @@ namespace DNNrocketAPI.render
             var strOut = DNNrocketUtils.RazorDetailByName(razorTemplateName, info, dataObjects, lang, templateControlRelPath, themeFolder, versionFolder, settings, SessionParams, debugmode);
             return new RawString(strOut);
         }
+        
         public IEncodedString RenderImageSelect(string systemKey, string imageFolderRel, bool singleselect = true, bool autoreturn = false)
         {
             return new RawString(DNNrocketUtils.RenderImageSelect(systemKey, imageFolderRel, singleselect, autoreturn));
         }
+        public IEncodedString RenderImageSelect(int moduleid, bool singleselect = true, bool autoreturn = false)
+        {
+            var moduleParams = new ModuleParams(moduleid);
+            return RenderImageSelect(moduleParams, singleselect, autoreturn);
+        }
+        public IEncodedString RenderImageSelect(ModuleParams moduleParams, bool singleselect = true, bool autoreturn = false)
+        {
+            return RenderImageSelect(moduleParams.SystemKey, moduleParams.ImageFolder, singleselect, autoreturn);
+        }
+
         public IEncodedString RenderDocumentSelect(string systemKey, string imageFolderRel, bool singleselect = true, bool autoreturn = false)
         {
             return new RawString(DNNrocketUtils.RenderDocumentSelect(systemKey, imageFolderRel, singleselect, autoreturn));

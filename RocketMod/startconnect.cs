@@ -261,7 +261,7 @@ namespace RocketMod
                 if (strOut == "" && !_moduleParams.Exists)
                 {
                     return DNNrocketUtils.ReturnString(GetSetup());
-                }
+                }               
 
                 rtnDic.Add("outputhtml", strOut);
                 return rtnDic;
