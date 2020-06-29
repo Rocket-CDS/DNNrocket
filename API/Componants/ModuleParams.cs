@@ -25,9 +25,9 @@ namespace DNNrocketAPI.Componants
 
         public ModuleParams(int moduleId, string systemKey = "", bool useCache = true, string tableName = "DNNrocket")
         {
+            _moduleParamsRec = new SimplisityRecord();
             _tableName = tableName;
             _moduleid = moduleId;
-            _moduleParamsRec = new SimplisityRecord();
             _cacheKey = "moduleparams*" + moduleId;
             _moduleParamsRec = (SimplisityRecord)CacheUtilsDNN.GetCache(_cacheKey);
             var objCtrl = new DNNrocketController();
@@ -35,7 +35,7 @@ namespace DNNrocketAPI.Componants
             {
                 if (moduleId <= 0)
                 {
-                    _moduleParamsRec = new SimplisityRecord(); // sto error when no moduleid
+                    _moduleParamsRec = new SimplisityRecord();
                     Exists = false;
                 }
                 else
@@ -91,6 +91,8 @@ namespace DNNrocketAPI.Componants
 
             DataSourceExternal = false;
             if (ModuleIdDataSource != _moduleid) DataSourceExternal = true;
+
+            Exists = true;
 
             _moduleParamsRec = objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _moduleid, _tableName);
             CacheUtilsDNN.SetCache(_cacheKey, _moduleParamsRec);

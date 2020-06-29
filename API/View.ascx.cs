@@ -89,27 +89,24 @@ namespace DNNrocketAPI
                 _paramCmd = _rocketInterface.DefaultCommand;
                 if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we don't define template path in the interface assume it's the control path.
 
-                if (_moduleParams.Exists)
+                if (_moduleParams.TabId != PortalSettings.Current.ActiveTab.TabID)
                 {
-                    if (_moduleParams.TabId != PortalSettings.Current.ActiveTab.TabID)
-                    {
-                        // change of page for module
-                        _moduleParams.TabId = PortalSettings.Current.ActiveTab.TabID; 
-                        _moduleParams.Save();
-                        CacheFileUtils.ClearAllCache();
-                    }
+                    // change of page for module
+                    _moduleParams.TabId = PortalSettings.Current.ActiveTab.TabID; 
+                    _moduleParams.Save();
+                    CacheFileUtils.ClearAllCache();
+                }
 
-                    if (_moduleParams.CacheDisbaled)
-                    {
-                        CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
-                        CacheUtilsDNN.ClearAllCache();
-                        CacheFileUtils.ClearAllCache();
-                    }
+                if (_moduleParams.CacheDisbaled)
+                {
+                    CacheUtils.ClearAllCache(_moduleParams.CacheGroupId);
+                    CacheUtilsDNN.ClearAllCache();
+                    CacheFileUtils.ClearAllCache();
+                }
 
-                    if (!this.Page.Items.Contains("dnnrocket_pageheader")) // flag to insure we only inject once for page load.
-                    {
-                        DNNrocketUtils.IncludePageHeaders(_systemkey, this.Page, TabId, systemData.DebugMode);
-                    }
+                if (!this.Page.Items.Contains("dnnrocket_pageheader")) // flag to insure we only inject once for page load.
+                {
+                    DNNrocketUtils.IncludePageHeaders(_systemkey, this.Page, TabId, systemData.DebugMode);
                 }
             }
         }
