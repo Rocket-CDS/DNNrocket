@@ -50,10 +50,10 @@
                             <div id="progressBarDownload" class="w3-container w3-green" style="height:24px;width:1%;display:none;"></div>
                         </div>
                     </div>
-                    
+
                     <div class="w3-container  w3-margin  bottombuttons">
                         <div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class='w3-col m2 w3-button rocket-buttonbar w3-theme w3-hover-theme simplisity_click'>@ButtonText(ButtonTypes.back)</div>
-                        
+
                         <a href="/Desktopmodules/dnnrocket/AppThemes/admin.html?selectedsystemkey=dnnrocketmodule" class="w3-right w3-button rocket-buttonbar w3-col m2 w3-theme w3-hover-theme" target="_blank"><i class='fas fa-download'></i>&nbsp;@ResourceKey("DNNrocket.appthemeadmin")</a>
                     </div>
 
@@ -62,15 +62,9 @@
                 else
                 {
 
-            <div class="w3-row">
-                <div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class='w3-col m2 w3-button w3-theme w3-hover-theme rocket-buttonbar simplisity_click'>@ButtonText(ButtonTypes.back)</div>
-                
-                <div class="w3-padding w3-right-align">
-                    <i class="griddisplayicon fas fa-th fa-2x"></i>
-                    &nbsp;
-                    <i class="listdisplayicon w3-text-blue fas fa-th-list fa-2x"></i>
-                </div>
-            </div>
+                    <div class="w3-row">
+                        <div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class='w3-col m2 w3-button w3-theme w3-hover-theme rocket-buttonbar simplisity_click'>@ButtonText(ButtonTypes.back)</div>
+                    </div>
                     <div class="w3-row w3-card searchdata w3-margin-top">
 
                         <div class="">
@@ -82,67 +76,34 @@
                     </div>
 
 
-                    <ul id="datalist" class="w3-ul w3-border" style="display:none;">
-
+                    <div id="datalist" class="w3-container">
                         @{
                             var lp1 = 0;
                         }
                         @foreach (AppTheme appTheme in appThemeDataList.List)
                         {
                             lp1 += 1;
-                            <li class="datalistitem w3-display-container">
 
-                                <div class="listrow w3-cell-row">
+                            <div class="w3-col l3 m4 w3-padding searchdiv datalistitem " style="">
+                                <div title="@appTheme.AppThemeName" class="w3-row w3-border "  onclick="showdetail('@(appTheme.AppThemeFolder)');" appthemefolder="@appTheme.AppThemeFolder" style="cursor:pointer;">
 
-                                    <div class=" w3-cell w3-padding w3-button " onclick="showdetail('@(appTheme.AppThemeFolder)');" style="width: 64px;">
-                                        <i class="fas fa-arrow-alt-circle-right" style='font-size:32px'></i>
+                                    <div class="w3-col m8 w3-padding ">
+                                        <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
+                                            <b class="w3-left w3-text-blue ">@appTheme.AppThemePrefix</b>
+                                            <b class="w3-right">@appTheme.LatestVersionFolder.@appTheme.LatestRev </b>
+                                        </div>
+                                        <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
+                                            <b>@appTheme.AppThemeName</b>
+                                        </div>
                                     </div>
-                                    <div class=" w3-cell w3-padding  w3-hide-small " style="width: 100px;">
+                                    <div class="w3-col m2 w3-padding w3-hide-small " style="min-width:76px;height:76px;">
                                         <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" class="w3-circle" />
                                     </div>
-                                    <div class=" w3-cell w3-padding">
-                                        <div class="">
-                                            <b>
-                                                @appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder
-                                            </b>
-                                        </div>
-                                        <div class="w3-hide-small ">
-
-                                            @{
-                                                var summary = appTheme.AppSummary;
-                                                if (summary.Length > 120)
-                                                {
-                                                    summary = summary.Substring(0, 120) + "...";
-                                                }
-                                            }
-                                            @summary
-                                        </div>
-                                    </div>
-                                    <div class=" w3-cell w3-right w3-hide-small" style="width: 240px;">
-                                        <div class="w3-row">
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                        }
-                    </ul>
-
-                    <div id="datalist2" class="w3-container" style="display:none;">
-                        @{
-                            lp1 = 0;
-                        }
-                        @foreach (AppTheme appTheme in appThemeDataList.List)
-                        {
-                            lp1 += 1;
-                            <div title="@appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder" class="w3-padding w3-button w3-col m2 w3-panel " onclick="showdetail('@(appTheme.AppThemeFolder)');" appthemefolder="@appTheme.AppThemeFolder" style="cursor:pointer;">
-                                <div class="appthemedisplay_@(appTheme.AppThemeFolder)">
-                                    <img src="@ThumbnailImageUrl(appTheme.Logo,140,140)" alt="" style="width:60%;" class="w3-circle w3-hover-opacity">
-                                    <div><b>@appTheme.AppThemeFolder &nbsp; @appTheme.LatestVersionFolder</b></div>
                                 </div>
                             </div>
                         }
                     </div>
+
 
                     <hr />
 
@@ -157,10 +118,7 @@
                             <div class="w3-col m2 w3-button w3-green w3-padding-8 rocket-buttonbar saveappthemeconfig" s-cmd="rocketmodedit_saveappthemeconfig" s-before="hideselectapptheme" s-after="settingreturn" s-post=".postdatasection" s-return="#settingsection">@ButtonText(ButtonTypes.next)</div>
                         </div>
                         <div class="w3-row">
-                            <div class="w3-col m2 w3-margin appthemedisplay ">
-
-                            </div>
-                            <div class="w3-col m9">
+                            <div class="w3-col m12">
                                 <div class="w3-row">
                                     <div class="w3-col m12">
                                         <label>@ResourceKey("RocketMod.name")</label>
@@ -208,28 +166,9 @@
     $(document).ready(function () {
         $("#datalist").disableSelection();
 
-        var displayviewtype = simplisity_getCookieValue('displayviewtype');
-        if (displayviewtype === 'griddisplayicon') {
-            showgrid();
-        }
-        else {
-            showlist();
-        }
-
         $('.saveappthemeconfig').unbind('click');
         $('.saveappthemeconfig').click(function () {
             simplisity_callserver(this);
-        });
-
-        $('.griddisplayicon').unbind('click');
-        $('.griddisplayicon').click(function () {
-            showgrid();
-            simplisity_setCookieValue('displayviewtype', 'griddisplayicon');
-        });
-        $('.listdisplayicon').unbind('click');
-        $('.listdisplayicon').click(function () {
-            showlist();
-            simplisity_setCookieValue('displayviewtype', 'listdisplayicon');
         });
 
         $('#selectapptheme').show();
@@ -273,35 +212,13 @@
         }
     }
 
-    function showgrid() {
-        $('.griddisplayicon').addClass('w3-text-blue');
-        $('.listdisplayicon').removeClass('w3-text-blue');
-        $('#datalist2').show();
-        $('#datalist').hide();
-    }
-    function showlist() {
-        $('.griddisplayicon').removeClass('w3-text-blue');
-        $('.listdisplayicon').addClass('w3-text-blue');
-        $('#datalist2').hide();
-        $('#datalist').show();
-    }
 
     function searchFunction() {
         var input, filter, ul, li, a, i;
         input = document.getElementById("searchtext");
         filter = input.value.toUpperCase();
         ul = document.getElementById("datalist");
-        li = ul.getElementsByTagName("li");
-        for (i = 0; i < li.length; i++) {
-            txtValue = li[i].textContent || li[i].innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
-            }
-        }
-        ul = document.getElementById("datalist2");
-        li = ul.getElementsByTagName("div");
+        li = $('.searchdiv');
         for (i = 0; i < li.length; i++) {
             txtValue = li[i].textContent || li[i].innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {

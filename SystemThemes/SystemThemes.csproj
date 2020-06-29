@@ -27,4 +27,8 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="rocketecommerce\test_copy3\1.0\js\" />
+  </ItemGroup>
+
 </Project>
