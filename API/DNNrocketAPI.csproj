@@ -132,6 +132,7 @@
     <Compile Include="Componants\CacheUtilsDNN.cs" />
     <Compile Include="Componants\FastReplacer.cs" />
     <Compile Include="Componants\FastReplacerSnippet.cs" />
+    <Compile Include="Componants\RemoteData.cs" />
     <Compile Include="Componants\SchedulerUtils.cs" />
     <Compile Include="Componants\PluginDataList.cs" />
     <Compile Include="Componants\AppThemeModule.cs" />
@@ -198,6 +199,13 @@
     <Compile Include="SqlDataProvider\DNNrocketController.cs" />
     <Compile Include="SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewRemote.ascx.cs">
+      <DependentUpon>ViewRemote.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewRemote.ascx.designer.cs">
+      <DependentUpon>ViewRemote.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="View.ascx.cs">
       <DependentUpon>View.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -675,6 +683,9 @@
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
     <None Include="Themes\config-w3\1.0\css\green-theme.css" />
     <Content Include="Themes\config-w3\1.0\css\dnnrocket.css" />
+    <Content Include="ViewRemote.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="View.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
