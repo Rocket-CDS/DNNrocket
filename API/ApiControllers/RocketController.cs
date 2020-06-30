@@ -22,6 +22,8 @@ namespace DNNrocketAPI.ApiControllers
         public static string TemplateRelPath = "/DesktopModules/DNNrocket/api";
 
         [AllowAnonymous]
+        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage GetTest()
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, "Test API2");
@@ -44,10 +46,64 @@ namespace DNNrocketAPI.ApiControllers
             if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
             systemkey = GeneralUtils.DeCode(systemkey);
 
-            return Action(paramCmd, systemkey);
+            var paramJson = "";
+            var paramInfo = new SimplisityInfo(_editlang);
+            if (DNNrocketUtils.RequestParam(context, "paramjson") != "")
+            {
+                paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
+                paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, _editlang);
+                paramInfo.PortalId = PortalUtils.GetPortalId();
+            }
+
+            var requestJson = "";
+            var postInfo = new SimplisityInfo(_editlang);
+            if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
+            {
+                requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
+                postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
+                postInfo.PortalId = PortalUtils.GetPortalId();
+
+            }
+            return ActionSimplisityInfo(postInfo, paramInfo, paramCmd, systemkey);
+        }
+        [AllowAnonymous]
+        [HttpGet]
+        [HttpPost]
+        public HttpResponseMessage ActionRemote()
+        {
+            var context = HttpContext.Current;
+
+            if (!context.Request.QueryString.AllKeys.Contains("cmd"))
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' parameter in url.  Unable to process action.");
+            }
+
+            var paramCmd = context.Request.QueryString["cmd"];
+            var systemkey = "";
+            if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
+            systemkey = GeneralUtils.DeCode(systemkey);
+
+            var paramInfo = new SimplisityInfo(_editlang);
+            if (DNNrocketUtils.RequestParam(context, "paramjson") != "")
+            {
+                var paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
+                paramInfo.FromXmlItem(paramJson);
+            }
+            var portalId = PortalUtils.GetPortalIdBySiteKey(paramInfo.GetXmlProperty("genxml/hidden/sitekey"));
+            paramInfo.PortalId = portalId;
+
+            var postInfo = new SimplisityInfo(_editlang);
+            if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
+            {
+                var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
+                postInfo.FromXmlItem(requestJson);
+                postInfo.PortalId = portalId;
+
+            }
+            return ActionSimplisityInfo(postInfo, paramInfo, paramCmd, systemkey);
         }
 
-        private HttpResponseMessage Action(string paramCmd, string systemkey)
+        private HttpResponseMessage ActionSimplisityInfo(SimplisityInfo postInfo, SimplisityInfo paramInfo, string paramCmd, string systemkey)
         {
             var strOut = "ERROR: Invalid.";
             object json = null;
@@ -71,14 +127,6 @@ namespace DNNrocketAPI.ApiControllers
 
                 var requestJson = "";
                 var paramJson = "";
-
-                var paramInfo = new SimplisityInfo(_editlang);
-                if (DNNrocketUtils.RequestParam(context, "paramjson") != "")
-                {
-                    paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
-                    paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, _editlang);
-                    paramInfo.PortalId = PortalUtils.GetPortalId();
-                }
 
                 foreach (string key in context.Request.QueryString.AllKeys)
                 {
@@ -115,18 +163,6 @@ namespace DNNrocketAPI.ApiControllers
                     context.Response.Write("OK");
                     context.Response.End();
                 }
-
-                var postInfo = new SimplisityInfo(_editlang);
-                if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
-                {
-                    requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
-
-                    postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
-                    postInfo.PortalId = PortalUtils.GetPortalId();
-
-                }
-
-
 
                 var interfacekey = paramInfo.GetXmlProperty("genxml/hidden/interfacekey");
                 if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
