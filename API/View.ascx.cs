@@ -187,8 +187,7 @@ namespace DNNrocketAPI
                 var postInfoSend = new SimplisityInfo();
                 var paramInfoSend = new SimplisityInfo();
                 paramInfo.SetXmlProperty("genxml/hidden/sitekey", _moduleParams.RemoteSiteKey);
-                paramInfo.SetXmlProperty("genxml/hidden/systemkey", _moduleParams.SystemKey);
-                paramInfo.SetXmlProperty("genxml/hidden/remotesystemkey", _moduleParams.RemoteSystemKey);
+                paramInfo.SetXmlProperty("genxml/hidden/systemkey", _moduleParams.RemoteSystemKey);
                 paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
                 paramInfo.SetXmlProperty("genxml/hidden/disablecache", _moduleParams.CacheDisbaled.ToString());
                 strOut = _moduleParams.CallAPI(_moduleParams.APIurl, _moduleParams.RemoteCmd, GeneralUtils.EnCode(_moduleParams.RemoteSystemKey), postInfoSend, paramInfoSend, "", "POST");
