@@ -485,7 +485,6 @@ namespace RocketMod
             _moduleParams.DetailUrlParam = GeneralUtils.UrlFriendly(_postInfo.GetXmlProperty("genxml/hidden/detailurlparam"));
             _moduleParams.DetailView = _postInfo.GetXmlPropertyBool("genxml/hidden/detailview");
             _moduleParams.ModuleType = "RocketMod";
-            _moduleParams.Exists = true;
             _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disablecache");
             _moduleParams.AutoBackUp = _postInfo.GetXmlPropertyBool("genxml/hidden/autobackup");
 
@@ -526,7 +525,6 @@ namespace RocketMod
             _moduleParams.ShareData = "1";
             _moduleParams.TabId = _tabid;
             _moduleParams.SystemKey = appTheme.SystemKey;
-            _moduleParams.Exists = true;
             _moduleParams.Save();
             CacheFileUtils.ClearAllCache();
         }

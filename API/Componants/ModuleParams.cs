@@ -36,7 +36,6 @@ namespace DNNrocketAPI.Componants
                 if (moduleId <= 0)
                 {
                     _moduleParamsRec = new SimplisityRecord();
-                    Exists = false;
                 }
                 else
                 {
@@ -49,7 +48,6 @@ namespace DNNrocketAPI.Componants
                         _moduleParamsRec.GUIDKey = _cacheKey;
                         _moduleParamsRec.ModuleId = _moduleid;
                         _moduleParamsRec = objCtrl.SaveRecord(_moduleParamsRec);
-                        Exists = false;
                     }
                     CacheUtilsDNN.SetCache(_cacheKey, _moduleParamsRec);
                 }
@@ -91,9 +89,6 @@ namespace DNNrocketAPI.Componants
 
             DataSourceExternal = false;
             if (ModuleIdDataSource != _moduleid) DataSourceExternal = true;
-
-            Exists = true;
-
             _moduleParamsRec = objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _moduleid, _tableName);
             CacheUtilsDNN.SetCache(_cacheKey, _moduleParamsRec);
         }
@@ -101,7 +96,7 @@ namespace DNNrocketAPI.Componants
         {
             var objCtrl = new DNNrocketController();
             objCtrl.Delete(Record.ItemID, _tableName);
-            Exists = false;
+            _moduleParamsRec = new SimplisityRecord();
             CacheUtilsDNN.RemoveCache(_cacheKey);
         }
         public string GetValue(string key, string defaultValue = "")
@@ -168,7 +163,17 @@ namespace DNNrocketAPI.Componants
         public string ImageFolder { get { return GetValue("imagefolder", ""); } set { SetValue("ImageFolder", value); } }
         public string DocumentFolderMapPath { get { return DNNrocketUtils.MapPath(DocumentFolderRel); } }
         public string ImageFolderMapPath { get { return DNNrocketUtils.MapPath(ImageFolderRel); } }
-        public bool Exists { get { return GetValueBool("Exists"); } set { SetValue("Exists", value.ToString()); } }
+        public bool Exists
+        {
+            get
+            {
+                if (Record.ItemID <= 0 || AppThemeFolder == "")
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
         public string Name { get { return GetValue("Name", ""); } set { SetValue("Name", value); } }
         public string ModuleType { get { return GetValue("ModuleType", ""); } set { SetValue("ModuleType", value); } }
         public int ModuleId { get {return _moduleid; } }
