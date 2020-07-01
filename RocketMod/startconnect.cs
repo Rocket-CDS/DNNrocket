@@ -496,6 +496,7 @@ namespace RocketMod
             _moduleParams.ExportResourceFiles = _postInfo.GetXmlPropertyBool("genxml/hidden/exportresourcefiles");
 
             _moduleParams.Save();
+            _passSettings.Remove("saved");
             _passSettings.Add("saved", "true");
 
             // update module with a better name

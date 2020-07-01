@@ -11,6 +11,7 @@
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketRemoteMod/App_LocalResources/")
 
 @{
     var moduleParams = (ModuleParams)Model.List.First();
@@ -25,118 +26,73 @@
 
 
 <div class="w3-row w3-padding ">
-    <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketmodedit_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","selecteditemid":"@configinfo.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.save)</div>
-
-    <div class="w3-col m6 w3-dropdown-hover">
-        <div class="w3-button " style="border-top: 6px solid #fff !important;">@ResourceKey("DNNrocket.more")...</div>
-        <div class="w3-dropdown-content w3-bar-block w3-card">
-            <div class="w3-bar-item w3-button w3-blue w3-padding-8 simplisity_click" s-cmd="rocketmodedit_datasourcelist" s-return="#datasourcelist" s-fields='{"moduleid":"@(Model.ModuleId)"}'><i class="fas fa-share-alt-square fa-fw fa-lg"></i>@ResourceKey("RocketMod.datasource")</div>
-            <div class="w3-bar-item w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.reindexsortorder","","Confirm")" s-cmd="rocketmodedit_reindexsortorder" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'><i class="fas fa-sort-numeric-down fa-fw fa-lg"></i>@ResourceKey("RocketMod.reindexsortorder")</div>
-            <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketmodedit_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetconfig")</div>
-            <div class="w3-bar-item w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("RocketMod.resetdatamsg")" s-cmd="rocketmodedit_resetdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","interfacekey":"rocketmod"}'>@ResourceKey("RocketMod.resetdata")</div>
-        </div>
-        @if (Model.GetSettingBool("saved"))
-        {
-            <i class='fas fa-save simplisity_fadeout' style="font-size:24px"></i>
-        }
-    </div>
-    <div class="w3-right">
-        @if (moduleParams.ShareData != "0" && !moduleParams.DataSourceExternal)
-        {
-            var sharecolor = "teal";
-            if (moduleParams.ShareData == "2")
-            {
-                sharecolor = "red";
-            }
-            <i class='fas fa-share-alt-square sharedataicon' style='font-size:36px;color:@(sharecolor)'></i>
-        }
-
-    </div>
-
+    <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketremotemod_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","selecteditemid":"@configinfo.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.save)</div>
+    <div class="w3-col m2 rocket-buttonbar w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketremotemod_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)"}'>@ResourceKey("RocketMod.resetconfig")</div>
+    @if (Model.GetSettingBool("saved"))
+    {
+        <i class='fas fa-save simplisity_fadeout' style="font-size:24px"></i>
+    }
 </div>
 
 <h1>@ResourceKey("RocketMod.config")</h1>
 
 <div id="configdata" class="w3-container simplisity_panel">
 
-    <div class="w3-row">
-        <div class="w3-col m2 w3-margin-top " style="width:120px;height:120px;">
-            <img src="@ThumbnailImageUrl(moduleParams.AppThemeLogo,120,120,"", systemGlobalData.PngImage)" class="w3-circle" />
+    <div class="w3-row w3-padding">
+        <div class="w3-col m6">
+            <label>@ResourceKey("RocketMod.name")</label>
+            @TextBox(configinfo, "genxml/hidden/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
         </div>
-        <div class="w3-col m5">
-            <div class="w3-row">
-                <div class="w3-col m9 w3-padding">
-                    <label>@ResourceKey("RocketMod.name")</label>
-                    @TextBox(configinfo, "genxml/hidden/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
-                </div>
-                <div class="w3-col m3 w3-padding">
-                    <label>@ResourceKey("RocketMod.version")</label>
-                    @FolderSelectList(configinfo, "genxml/hidden/appthemeversion", moduleParams.AppThemeFolderMapPath, "class='w3-input w3-border'", false, false)
-                </div>
-            </div>
-            <div class="w3-row">
-                <div class="w3-col m6 w3-padding">
-                    <label>@ResourceKey("RocketMod.imagefolder")</label>
-                    @TextBox(configinfo, "genxml/hidden/imagefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "images", false)
-                </div>
-                <div class="w3-col m6 w3-padding">
-                    <label>@ResourceKey("RocketMod.documentfolder")</label>
-                    @TextBox(configinfo, "genxml/hidden/documentfolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "docs", false)
-                </div>
-            </div>
-            <div class="w3-row">
-                <div class="w3-col m6 w3-padding" style="height:78px;">
-                    @CheckBox(configinfo, "genxml/hidden/detailview", "&nbsp;" + ResourceKey("RocketMod.detailview").ToString(), "class='w3-check detailviewcheckbox' ", false)
-                </div>
-                <div class="w3-col m6 w3-padding detailurlparam" style="display:none;">
-                    <label class="w3-tooltip">@ResourceKey("RocketMod.detailurlparam")</label>
-                    @TextBox(configinfo, "genxml/hidden/detailurlparam", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "refid", false)
-                </div>
-            </div>
-
-        </div>
-        <div class="w3-col m4">
-            <div class="w3-row">
-                <div class="w3-col m12 w3-padding">
-                    @if (!moduleParams.DataSourceExternal)
-                    {
-                        <label>@ResourceKey("RocketMod.sharedata")</label><br />
-                        @RadioButtonList(configinfo, "genxml/hidden/sharedata", "0,1,2", ResourceKey("RocketMod.sharedataoptions").ToString(), " class='sharedataaction' ", "1", "")
-                    }
-                    else
-                    {
-                        <div class="w3-col m3 w3-padding w3-margin" style="width:80px;height:80px;">
-                            <br />
-                            <img src="@ThumbnailImageUrl(dataModuleParams.AppThemeLogo,80,80)" class="w3-circle" />
-                        </div>
-                        <div class="w3-col m8 w3-margin w3-padding">
-                            <table class="">
-                                <tr>
-                                    <td>@ResourceKey("RocketMod.datasource"):</td>
-                                    <td><b>@HtmlOf(dataModuleParams.Name)</b></td>
-                                </tr>
-                                <tr>
-                                    <td>@ResourceKey("RocketMod.ref"):</td>
-                                    <td><b>@moduleParams.ModuleRefDataSource</b></td>
-                                </tr>
-                                <tr>
-                                    <td>ModuleId:</td>
-                                    <td><b>@(moduleParams.ModuleIdDataSource)</b></td>
-                                </tr>
-                                <tr>
-                                    <td>AppTheme:</td>
-                                    <td><b>@dataModuleParams.AppThemeFolder</b></td>
-                                </tr>
-                            </table>
-                        </div>
-                    }
-                </div>
-            </div>
+        <div class="w3-col m6">
 
         </div>
     </div>
-
     <div class="w3-row w3-padding">
+        <div class="w3-col m12">
+            <label>@ResourceKey("RRM.apiurl")</label>
+            @TextBox(configinfo, "genxml/hidden/apiurl", "class='w3-input w3-border' maxlength='1024' autocomplete='off'", "https://<domain>/Desktopmodules/dnnrocket/api/rocket/actionremote", false)
+        </div>
+        <div class="w3-col m12 w3-padding">
+            <i>
+                @ResourceKey("RRM.apiurl", "", "Help")
+            </i>
+        </div>
+    </div>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m6">
+            <label>@ResourceKey("RRM.remotesitekey")</label>
+            @TextBox(configinfo, "genxml/hidden/remotesitekey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+        </div>
+        <div class="w3-col m6 w3-padding">
+            <i>
+                @ResourceKey("RRM.remotesitekey", "", "Help")
+            </i>
+        </div>
+    </div>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m6">
+            <label>@ResourceKey("RRM.remotesystemkey")</label>
+            @TextBox(configinfo, "genxml/hidden/remotesystemkey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+        </div>
+        <div class="w3-col m6 w3-padding">
+            <i>
+                @ResourceKey("RRM.remotesystemkey", "", "Help")
+            </i>
+        </div>
+    </div>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m6">
+            <label>@ResourceKey("RRM.remotecmd")</label>
+            @TextBox(configinfo, "genxml/hidden/remotecmd", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+        </div>
+        <div class="w3-col m6 w3-padding">
+            <i>
+                @ResourceKey("RRM.remotecmd", "", "Help")
+            </i>
+        </div>
+    </div>
+
+    <div class="w3-row">
         <div class="w3-col m6 w3-padding">
             <label>@ResourceKey("RocketMod.notes")</label>
             @TextArea(configinfo, "genxml/hidden/appthemenotes", "class='w3-input w3-border' rows=5 ", "", false)
@@ -154,15 +110,6 @@
                     @CheckBox(configinfo, "genxml/hidden/disablecache", "", "class='w3-check' " + disablecheckbox, false)
                     <label>@ResourceKey("RocketMod.disablecache")</label>
                 </div>
-                <div>
-                    @CheckBox(configinfo, "genxml/hidden/autobackup", "", "class='w3-check' ", true)
-                    <label>@ResourceKey("RocketMod.autobackup")</label>
-                </div>
-                @if (systemData.DebugMode)
-                {
-                    <b class="w3-text-red">&nbsp;&nbsp;@ResourceKey("DNNrocket.system")&nbsp;@ResourceKey("DNNrocket.debugmode"):&nbsp;@ResourceKey("DNNrocket.on")&nbsp;</b>
-                }
-
             </div>
             <div class="w3-col m6 w3-padding " style="display:none;">
                 @CheckBox(configinfo, "genxml/hidden/exportresourcefiles", "", "class='w3-check'", false)
@@ -174,24 +121,6 @@
             </div>
         </div>
     </div>
-
-    @if (licenseData.Exists)
-    {
-
-        if (licenseData.ExpireDate < DateTime.Now)
-        {
-            <h2>Inclusive Upgrade Expired</h2>
-        }
-
-    }
-    else
-    {
-
-    }
-
-
-    @RenderTemplate("LicenseInject.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
-
 
     <div class="w3-container w3-border w3-margin-top">
         <div class="w3-col m3 w3-padding">

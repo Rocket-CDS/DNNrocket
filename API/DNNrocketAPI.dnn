@@ -254,9 +254,9 @@ It also contains the popular RocketMod modules, which is a dynamic content build
     </package>
 
 
-    <package name="RocketRemote" type="Module" version="1.0.0">
-      <friendlyName>RocketRemote</friendlyName>
-      <description>DNNrocket Remote Module </description>
+    <package name="RocketRemoteMod" type="Module" version="1.0.0">
+      <friendlyName>RocketRemoteMod</friendlyName>
+      <description>Rocket Remote Module </description>
       <iconFile />
       <owner>
         <name>Charles France</name>
@@ -273,7 +273,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
       <components>
         <component type="Module">
           <desktopModule>
-            <moduleName>systemapi_rocketremote</moduleName>
+            <moduleName>rocketremotemod_rocketremotemod</moduleName>
             <foldername>RocketRemote</foldername>
             <businessControllerClass>DNNrocketAPI.Componants.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
             <supportedFeatures>

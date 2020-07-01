@@ -176,12 +176,32 @@ namespace DNNrocketAPI
             paramInfo.SetXmlProperty("genxml/hidden/tabid", _moduleParams.TabId.ToString());
             paramInfo.SetXmlProperty("genxml/hidden/systemkey", _systemkey);
 
-            var adminmenu = DNNrocketUtils.RequestParam(Context, "adminmenu");
+            var strOut = "";
 
-            if (_rocketInterface != null && _rocketInterface.Exists)
+            if (_moduleParams.RemoteSiteKey != "")
             {
-                var strOut = "";
+                // -------------------------------------------------------------------------------------------------------
+                // -------------------------- do call to remote server ---------------------------------------------------
+                // -------------------------------------------------------------------------------------------------------
 
+                var postInfoSend = new SimplisityInfo();
+                var paramInfoSend = new SimplisityInfo();
+                paramInfo.SetXmlProperty("genxml/hidden/sitekey", _moduleParams.RemoteSiteKey);
+                paramInfo.SetXmlProperty("genxml/hidden/systemkey", _moduleParams.SystemKey);
+                paramInfo.SetXmlProperty("genxml/hidden/remotesystemkey", _moduleParams.RemoteSystemKey);
+                paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
+                paramInfo.SetXmlProperty("genxml/hidden/disablecache", _moduleParams.CacheDisbaled.ToString());
+                strOut = _moduleParams.CallAPI(_moduleParams.APIurl, _moduleParams.RemoteCmd, GeneralUtils.EnCode(_moduleParams.RemoteSystemKey), postInfoSend, paramInfoSend, "", "POST");
+            }
+            else
+            {
+                // -------------------------------------------------------------------------------------------------------
+                // -------------------------- Remote Call not setup, do normal actions. ----------------------------------
+                // -------------------------------------------------------------------------------------------------------
+
+
+                if (_rocketInterface != null && _rocketInterface.Exists)
+                {
                     // add parameters to postInfo and cachekey
                     var paramString = "";
                     foreach (String key in Request.QueryString.AllKeys)
@@ -195,79 +215,71 @@ namespace DNNrocketAPI
                     }
 
                     var cacheOutPut = "";
-                    var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess + adminmenu;
+                    var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
 
                     var systemData = new SystemData(_systemInfo);
 
                     if (_moduleParams.CacheEnabled && systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
 
-                if (String.IsNullOrEmpty(cacheOutPut))
-                {
-
-                    // before event
-                    var rtnDictInfo = DNNrocketUtils.EventProviderBefore(_paramCmd, systemData, postInfo, paramInfo, DNNrocketUtils.GetCurrentCulture());
-                    if (rtnDictInfo.ContainsKey("post")) postInfo = (SimplisityInfo)rtnDictInfo["post"];
-                    if (rtnDictInfo.ContainsKey("param")) paramInfo = (SimplisityInfo)rtnDictInfo["param"];
-
-                    var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, paramInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
-
-                    // after Event
-                    var eventDictionary = DNNrocketUtils.EventProviderAfter(_paramCmd, systemData, postInfo, paramInfo, DNNrocketUtils.GetCurrentCulture());
-                    if (eventDictionary.ContainsKey("outputhtml")) returnDictionary["outputhtml"] = eventDictionary["outputhtml"];
-                    if (eventDictionary.ContainsKey("outputjson")) returnDictionary["outputjson"] = eventDictionary["outputjson"];
-
-                    var model = new SimplisityRazor();
-                    model.ModuleId = ModuleId;
-                    model.TabId = TabId;
-
-                    if (hasEditAccess)
+                    if (String.IsNullOrEmpty(cacheOutPut))
                     {
 
-                        model.SetSetting("editiconcolor", systemData.GetSetting("editiconcolor"));
-                        model.SetSetting("editicontextcolor", systemData.GetSetting("editicontextcolor"));
-                        strOut = "<div id='rocketmodcontentwrapper" + ModuleId + "' class=' w3-display-container'>";
-                        var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
-                        strOut += DNNrocketUtils.RazorRender(model, razorTempl, systemData.DebugMode);
-                    }
+                        // before event
+                        var rtnDictInfo = DNNrocketUtils.EventProviderBefore(_paramCmd, systemData, postInfo, paramInfo, DNNrocketUtils.GetCurrentCulture());
+                        if (rtnDictInfo.ContainsKey("post")) postInfo = (SimplisityInfo)rtnDictInfo["post"];
+                        if (rtnDictInfo.ContainsKey("param")) paramInfo = (SimplisityInfo)rtnDictInfo["param"];
 
-                    if (returnDictionary.ContainsKey("outputhtml"))
+                        var returnDictionary = DNNrocketUtils.GetProviderReturn(_paramCmd, _systemInfo, _rocketInterface, postInfo, paramInfo, _templateRelPath, DNNrocketUtils.GetCurrentCulture());
+
+                        // after Event
+                        var eventDictionary = DNNrocketUtils.EventProviderAfter(_paramCmd, systemData, postInfo, paramInfo, DNNrocketUtils.GetCurrentCulture());
+                        if (eventDictionary.ContainsKey("outputhtml")) returnDictionary["outputhtml"] = eventDictionary["outputhtml"];
+                        if (eventDictionary.ContainsKey("outputjson")) returnDictionary["outputjson"] = eventDictionary["outputjson"];
+
+                        var model = new SimplisityRazor();
+                        model.ModuleId = ModuleId;
+                        model.TabId = TabId;
+
+                        if (hasEditAccess)
+                        {
+
+                            model.SetSetting("editiconcolor", systemData.GetSetting("editiconcolor"));
+                            model.SetSetting("editicontextcolor", systemData.GetSetting("editicontextcolor"));
+                            strOut = "<div id='rocketmodcontentwrapper" + ModuleId + "' class=' w3-display-container'>";
+                            var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
+                            strOut += DNNrocketUtils.RazorRender(model, razorTempl, systemData.DebugMode);
+                        }
+
+                        if (returnDictionary.ContainsKey("outputhtml"))
+                        {
+                            strOut += returnDictionary["outputhtml"];
+                        }
+
+                        if (hasEditAccess)
+                        {
+                            strOut += "</div>";
+                            var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
+                            strOut += DNNrocketUtils.RazorRender(model, razorTempl, systemData.DebugMode);
+                        }
+
+                        CacheFileUtils.SetCache(cacheKey, strOut);
+
+                    }
+                    else
                     {
-                        strOut += returnDictionary["outputhtml"];
+                        strOut = cacheOutPut;
                     }
-
-                    if (hasEditAccess)
-                    {
-                        strOut += "</div>";
-                        var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
-                        strOut += DNNrocketUtils.RazorRender(model, razorTempl, systemData.DebugMode);
-                    }
-
-                    if (adminmenu == ModuleId.ToString())
-                    {
-                        // this extends the DNN action menu, to make it more flexable and allow reuse of this view.ascx
-                        strOut += DNNrocketUtils.GetAdminMenu(TabId, ModuleId, _rocketInterface);
-                    }
-
-                    CacheFileUtils.SetCache(cacheKey, strOut);
-
                 }
                 else
                 {
-                    strOut = cacheOutPut;
+                    strOut = "Invalid Interface: systemkey: " + _systemkey + "  interfacekey: " + _interfacekey;
                 }
 
+            }
 
-                var lit = new Literal();
-                lit.Text = strOut;
-                phData.Controls.Add(lit);
-            }
-            else
-            {
-                var strOut = "Invalid Interface: systemkey: " + _systemkey + "  interfacekey: " + _interfacekey;
-                var lit = new Literal();
-                lit.Text = strOut;
-                phData.Controls.Add(lit);
-            }
+            var lit = new Literal();
+            lit.Text = strOut;
+            phData.Controls.Add(lit);
 
             if (hasEditAccess && (!Page.Items.Contains("dnnrocketview-addedheader") || !(bool)Page.Items["dnnrocketview-addedheader"]))
             {
@@ -294,8 +306,22 @@ namespace DNNrocketAPI
 
                 if (_systemInfo != null) // might be null of initialization
                 {
-                    actions.Add(GetNextActionID(), "<i class='fas fa-user-cog fa-lg'></i>&nbsp;" + DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.admin"), "", "", "", "?adminmenu=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);
-                    actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearallcache"), "", "", "action_refresh.gif", "?clearallcache=" + ModuleId, false, SecurityAccessLevel.Edit, true, false);
+                    var adminurl = _systemInfo.GetXmlProperty("genxml/textbox/adminurl");
+                    adminurl = adminurl.ToLower().Replace("[moduleid]", ModuleId.ToString());
+                    adminurl = adminurl.ToLower().Replace("[tabid]", TabId.ToString());
+                    if (adminurl != "")
+                    {
+                        actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmin"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
+                        if (adminurl.Contains("?"))
+                        {
+                            adminurl += "&newpage=1";
+                        }
+                        else
+                        {
+                            adminurl += "?newpage=1";
+                        }
+                        actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmintab"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, true);
+                    }
                 }
                 return actions;
             }

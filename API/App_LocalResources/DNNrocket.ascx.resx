@@ -555,4 +555,7 @@
   <data name="send.Text" xml:space="preserve">
     <value>Send</value>
   </data>
+  <data name="hide.Text" xml:space="preserve">
+    <value>Hide</value>
+  </data>
 </root>

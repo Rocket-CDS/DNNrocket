@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/dnnrocket-theme.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/grey.css">
     <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/dnnrocket.css">
 
     <!-- CDN -->
@@ -58,7 +58,7 @@
 
     <!-- Side Navigation (use mask div if in iframe editmode)-->
     <nav class="w3-sidebar w3-collapse w3-theme w3-animate-left w3-border-right" style="z-index:3;width:270px;top:0px;" id="mySidebar">
-        <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="getsidemenu" s-fields='{"theme":"config-w3","template":"SideMenu.cshtml","relpath":"/DesktopModules/DNNrocket/RocketMod/"}'></div>
+        <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="getsidemenu" s-fields='{"theme":"config-w3","template":"SideMenu.cshtml","relpath":"/DesktopModules/DNNrocket/RocketRemoteMod/"}'></div>
     </nav>
     <div class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-grey" onclick="w3_open();"><i class="fas fa-bars"></i></div>
 
@@ -74,7 +74,7 @@
 
         <form id="rocketmod_form">
 
-            <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketserver_test" s-fields=''>
+            <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketremotemod_getdashboard" s-fields=''>
                 <div class="">
                     <i class='fa fa-spinner fa-spin w3-display-middle' style='font-size:48px'></i>
                 </div>
@@ -88,7 +88,7 @@
 
     <script>
         $(document).ready(function () {
-            $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'dnnrocketmodule', debug: false });
+            $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketremotemod', debug: false });
             var urlParams = new URLSearchParams(window.location.search);
             simplisity_setParamField("reload", true)
             simplisity_setParamField("moduleid", urlParams.get('moduleid'))

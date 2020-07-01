@@ -3,8 +3,12 @@ using DotNetNuke.Entities.Modules;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Web;
 
 namespace DNNrocketAPI.Componants
 {
@@ -99,6 +103,48 @@ namespace DNNrocketAPI.Componants
             _moduleParamsRec = new SimplisityRecord();
             CacheUtilsDNN.RemoveCache(_cacheKey);
         }
+        public string CallAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string body = "", string httpMethod = "POST")
+        {
+            try
+            {
+                NameValueCollection outgoingQueryString = HttpUtility.ParseQueryString(String.Empty);
+                outgoingQueryString.Add("inputjson", postInfo.ToXmlItem());
+                outgoingQueryString.Add("paramjson", paramInfo.ToXmlItem());
+                string postdata = outgoingQueryString.ToString();
+
+                var webReq = WebRequest.Create($"{apiurl}?cmd={cmd}&systemkey={systemkey}&{postdata}");
+                webReq.Method = httpMethod;
+                webReq.ContentType = "application/json";
+
+                if (String.IsNullOrEmpty(body)) body = PortalUtils.SiteGuid().ToString();
+
+                ASCIIEncoding encoding = new ASCIIEncoding();
+                byte[] byte1 = encoding.GetBytes(body);
+                // Set the content length of the string being posted.
+                webReq.ContentLength = byte1.Length;
+                // get the request stream
+                Stream newStream = webReq.GetRequestStream();
+                // write the content to the stream
+                newStream.Write(byte1, 0, byte1.Length);
+
+                var webResp = (HttpWebResponse)webReq.GetResponse();
+
+                if (webResp.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    DNNrocketUtils.LogDebug("CallAPI() Login expired. Please start over.");
+                    return "";
+                }
+
+                var readStream = new StreamReader(webResp.GetResponseStream(), Encoding.UTF8);
+                return readStream.ReadToEnd();
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+
         public string GetValue(string key, string defaultValue = "")
         {
             var rtn = _moduleParamsRec.GetXmlProperty("genxml/hidden/" + key.ToLower());
@@ -199,6 +245,10 @@ namespace DNNrocketAPI.Componants
         public Dictionary<string,string> ModuleSettings { get; private set; }
         public string CacheGroupId { get { return "datamoduleid:" + ModuleIdDataSource; } }
         public bool AutoBackUp { get { return GetValueBool("autobackup"); } set { SetValue("autobackup", value.ToString()); } }
+        public string RemoteSiteKey { get { return GetValue("remotesitekey", ""); } set { SetValue("remotesitekey", value); } }
+        public string RemoteSystemKey { get { return GetValue("remotesystemkey", ""); } set { SetValue("remotesystemkey", value); } }
+        public string APIurl { get { return GetValue("APIurl", ""); } set { SetValue("APIurl", value); } }
+        public string RemoteCmd { get { return GetValue("RemoteCmd", ""); } set { SetValue("RemoteCmd", value); } }
 
         public string OrderBySQL(string orderbyref = "")
         { 
@@ -230,6 +280,7 @@ namespace DNNrocketAPI.Componants
             }
             return filtersql;
         }
+
 
 
     }

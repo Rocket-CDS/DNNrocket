@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppThemes\AppThemes.csproj" />
+    <ProjectReference Include="..\RocketMod\RocketMod.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="DNNrocketAPI">
       <HintPath>..\..\..\bin\DNNrocketAPI.dll</HintPath>
     </Reference>
@@ -12,5 +17,9 @@
       <HintPath>..\..\..\bin\Simplisity.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(ProjectDir)..\..\..\bin\$(TargetFileName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(AssemblyName).pdb&quot; &quot;$(ProjectDir)..\..\..\bin\$(AssemblyName).pdb&quot;&#xD;&#xA;" />
+  </Target>
 
 </Project>
