@@ -38,6 +38,7 @@ using DotNetNuke.Entities.Modules.Definitions;
 using System.Drawing;
 using DotNetNuke.Services.Scheduling;
 using System.Xml.Serialization;
+using System.Collections.Specialized;
 
 namespace DNNrocketAPI.Componants
 {
@@ -1747,6 +1748,62 @@ namespace DNNrocketAPI.Componants
 
 
         #endregion
+
+        #region "web request"
+
+        public static string htmlAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string body = "", string httpMethod = "POST")
+        {
+            return CallAPI(apiurl, cmd, systemkey, postInfo, paramInfo, body, httpMethod, "text/html");
+        }
+        public static string jsonAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string body = "", string httpMethod = "POST")
+        {
+            return CallAPI(apiurl, cmd, systemkey, postInfo, paramInfo, body, httpMethod, "application/json");
+        }
+        private static string CallAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string body = "", string httpMethod = "POST", string contentType = "text/html")
+        {
+            try
+            {
+                NameValueCollection outgoingQueryString = HttpUtility.ParseQueryString(String.Empty);
+                outgoingQueryString.Add("inputjson", postInfo.ToXmlItem());
+                outgoingQueryString.Add("paramjson", paramInfo.ToXmlItem());
+                string postdata = outgoingQueryString.ToString();
+
+                var webReq = WebRequest.Create($"{apiurl}?cmd={cmd}&systemkey={systemkey}&{postdata}");
+                webReq.Method = httpMethod;
+                webReq.ContentType = contentType;
+
+                if (String.IsNullOrEmpty(body)) body = PortalUtils.SiteGuid().ToString();
+
+                ASCIIEncoding encoding = new ASCIIEncoding();
+                byte[] byte1 = encoding.GetBytes(body);
+                // Set the content length of the string being posted.
+                webReq.ContentLength = byte1.Length;
+                // get the request stream
+                Stream newStream = webReq.GetRequestStream();
+                // write the content to the stream
+                newStream.Write(byte1, 0, byte1.Length);
+
+                var webResp = (HttpWebResponse)webReq.GetResponse();
+
+                if (webResp.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    DNNrocketUtils.LogDebug("CallAPI() Login expired. Please start over.");
+                    return "";
+                }
+
+                var readStream = new StreamReader(webResp.GetResponseStream(), System.Text.Encoding.UTF8);
+                var rtnStr = readStream.ReadToEnd();
+
+                return rtnStr;
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        #endregion
+
 
     }
 }

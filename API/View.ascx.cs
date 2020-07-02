@@ -183,22 +183,21 @@ namespace DNNrocketAPI
                 // -------------------------------------------------------------------------------------------------------
                 // -------------------------- do call to remote server ---------------------------------------------------
                 // -------------------------------------------------------------------------------------------------------
-
                 var postInfoSend = new SimplisityInfo();
                 var paramInfoSend = new SimplisityInfo();
-                paramInfo.SetXmlProperty("genxml/hidden/sitekey", _moduleParams.RemoteSiteKey);
-                paramInfo.SetXmlProperty("genxml/hidden/systemkey", _moduleParams.RemoteSystemKey);
-                paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
-                paramInfo.SetXmlProperty("genxml/hidden/disablecache", _moduleParams.CacheDisbaled.ToString());
-                strOut = _moduleParams.CallAPI(_moduleParams.APIurl, _moduleParams.RemoteCmd, GeneralUtils.EnCode(_moduleParams.RemoteSystemKey), postInfoSend, paramInfoSend, "", "POST");
+                paramInfoSend.SetXmlProperty("genxml/hidden/sitekey", _moduleParams.RemoteSiteKey);
+                paramInfoSend.SetXmlProperty("genxml/hidden/systemkey", _moduleParams.RemoteSystemKey);
+                paramInfoSend.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
+                paramInfoSend.SetXmlProperty("genxml/hidden/disablecache", _moduleParams.CacheDisbaled.ToString());
+                paramInfoSend.SetXmlProperty("genxml/moduleparams", _moduleParams.Record.ToXmlItem());
+
+                strOut = DNNrocketUtils.htmlAPI(_moduleParams.APIurl, _moduleParams.RemoteCmd, GeneralUtils.EnCode(_moduleParams.RemoteSystemKey), postInfoSend, paramInfoSend, "", "POST");
             }
             else
             {
                 // -------------------------------------------------------------------------------------------------------
                 // -------------------------- Remote Call not setup, do normal actions. ----------------------------------
                 // -------------------------------------------------------------------------------------------------------
-
-
                 if (_rocketInterface != null && _rocketInterface.Exists)
                 {
                     // add parameters to postInfo and cachekey

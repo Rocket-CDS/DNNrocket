@@ -103,47 +103,6 @@ namespace DNNrocketAPI.Componants
             _moduleParamsRec = new SimplisityRecord();
             CacheUtilsDNN.RemoveCache(_cacheKey);
         }
-        public string CallAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string body = "", string httpMethod = "POST")
-        {
-            try
-            {
-                NameValueCollection outgoingQueryString = HttpUtility.ParseQueryString(String.Empty);
-                outgoingQueryString.Add("inputjson", postInfo.ToXmlItem());
-                outgoingQueryString.Add("paramjson", paramInfo.ToXmlItem());
-                string postdata = outgoingQueryString.ToString();
-
-                var webReq = WebRequest.Create($"{apiurl}?cmd={cmd}&systemkey={systemkey}&{postdata}");
-                webReq.Method = httpMethod;
-                webReq.ContentType = "application/json";
-
-                if (String.IsNullOrEmpty(body)) body = PortalUtils.SiteGuid().ToString();
-
-                ASCIIEncoding encoding = new ASCIIEncoding();
-                byte[] byte1 = encoding.GetBytes(body);
-                // Set the content length of the string being posted.
-                webReq.ContentLength = byte1.Length;
-                // get the request stream
-                Stream newStream = webReq.GetRequestStream();
-                // write the content to the stream
-                newStream.Write(byte1, 0, byte1.Length);
-
-                var webResp = (HttpWebResponse)webReq.GetResponse();
-
-                if (webResp.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    DNNrocketUtils.LogDebug("CallAPI() Login expired. Please start over.");
-                    return "";
-                }
-
-                var readStream = new StreamReader(webResp.GetResponseStream(), Encoding.UTF8);
-                return readStream.ReadToEnd();
-            }
-            catch (Exception e)
-            {
-                return e.ToString();
-            }
-        }
-
 
         public string GetValue(string key, string defaultValue = "")
         {
