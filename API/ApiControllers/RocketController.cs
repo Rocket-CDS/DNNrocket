@@ -76,7 +76,10 @@ namespace DNNrocketAPI.ApiControllers
             if (!context.Request.QueryString.AllKeys.Contains("cmd"))
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' parameter in url.  Unable to process action.");
+
             }
+
+            var body = context.Request.Form;
 
             var paramCmd = context.Request.QueryString["cmd"];
             var systemkey = "";

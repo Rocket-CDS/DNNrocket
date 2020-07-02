@@ -176,6 +176,19 @@ namespace DNNrocketAPI
             paramInfo.SetXmlProperty("genxml/hidden/tabid", _moduleParams.TabId.ToString());
             paramInfo.SetXmlProperty("genxml/hidden/systemkey", _systemkey);
 
+
+            // add parameters to postInfo and cachekey
+            var paramString = "";
+            foreach (String key in Request.QueryString.AllKeys)
+            {
+                if (key != null) // test for null, but should not happen.   
+                {
+                    paramString += key + "=" + Request.QueryString[key];
+                    // we need this if we need to process url parmas on the APInterface.  In the cshtml we can use (Model.GetUrlParam("????"))
+                    paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), Request.QueryString[key]);
+                }
+            }
+
             var strOut = "";
 
             if (_moduleParams.RemoteSiteKey != "")
@@ -183,15 +196,19 @@ namespace DNNrocketAPI
                 // -------------------------------------------------------------------------------------------------------
                 // -------------------------- do call to remote server ---------------------------------------------------
                 // -------------------------------------------------------------------------------------------------------
-                var postInfoSend = new SimplisityInfo();
-                var paramInfoSend = new SimplisityInfo();
-                paramInfoSend.SetXmlProperty("genxml/hidden/sitekey", _moduleParams.RemoteSiteKey);
-                paramInfoSend.SetXmlProperty("genxml/hidden/systemkey", _moduleParams.RemoteSystemKey);
-                paramInfoSend.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
-                paramInfoSend.SetXmlProperty("genxml/hidden/disablecache", _moduleParams.CacheDisbaled.ToString());
-                paramInfoSend.SetXmlProperty("genxml/moduleparams", _moduleParams.Record.ToXmlItem());
-
-                strOut = DNNrocketUtils.htmlAPI(_moduleParams.APIurl, _moduleParams.RemoteCmd, GeneralUtils.EnCode(_moduleParams.RemoteSystemKey), postInfoSend, paramInfoSend, "", "POST");
+                paramInfo.SetXmlProperty("genxml/hidden/sitekey", _moduleParams.RemoteSiteKey);
+                paramInfo.SetXmlProperty("genxml/hidden/systemkey", _moduleParams.RemoteSystemKey);
+                paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
+                paramInfo.SetXmlProperty("genxml/hidden/disablecache", _moduleParams.CacheDisbaled.ToString());
+                var l = _moduleParams.Record.ToDictionary();
+                foreach (var d in l)
+                {
+                    if (d.Value != null) 
+                    {
+                        paramInfo.SetXmlProperty("genxml/moduleparams/" + d.Key.Replace("_", "-"), d.Value);
+                    }
+                }
+                strOut = DNNrocketUtils.htmlAPI(_moduleParams.APIurl, _moduleParams.RemoteCmd, GeneralUtils.EnCode(_moduleParams.RemoteSystemKey), postInfo, paramInfo, "POST");
             }
             else
             {
@@ -200,18 +217,6 @@ namespace DNNrocketAPI
                 // -------------------------------------------------------------------------------------------------------
                 if (_rocketInterface != null && _rocketInterface.Exists)
                 {
-                    // add parameters to postInfo and cachekey
-                    var paramString = "";
-                    foreach (String key in Request.QueryString.AllKeys)
-                    {
-                        if (key != null) // test for null, but should not happen.   
-                        {
-                            paramString += key + "=" + Request.QueryString[key];
-                            // we need this if we need to process url parmas on the APInterface.  In the cshtml we can use (Model.GetUrlParam("????"))
-                            paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), Request.QueryString[key]);
-                        }
-                    }
-
                     var cacheOutPut = "";
                     var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
 

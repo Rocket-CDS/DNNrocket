@@ -1751,26 +1751,25 @@ namespace DNNrocketAPI.Componants
 
         #region "web request"
 
-        public static string htmlAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string body = "", string httpMethod = "POST")
+        public static string htmlAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string httpMethod = "POST")
         {
-            return CallAPI(apiurl, cmd, systemkey, postInfo, paramInfo, body, httpMethod, "text/html");
+            var body = "<items>" + paramInfo.ToXmlItem() + postInfo.ToXmlItem() + "</items>";
+            return CallAPI(apiurl, cmd, systemkey, body, httpMethod, "text/html");
         }
-        public static string jsonAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string body = "", string httpMethod = "POST")
+        public static string jsonAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string httpMethod = "POST")
         {
-            return CallAPI(apiurl, cmd, systemkey, postInfo, paramInfo, body, httpMethod, "application/json");
+            var body = "<items>" + paramInfo.ToXmlItem() + postInfo.ToXmlItem() + "</items>";
+            return CallAPI(apiurl, cmd, systemkey, body, httpMethod, "application/json");
         }
-        private static string CallAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string body = "", string httpMethod = "POST", string contentType = "text/html")
+        private static string CallAPI(string apiurl, string cmd, string systemkey, string body = "", string httpMethod = "POST", string contentType = "text/html")
         {
             try
             {
-                NameValueCollection outgoingQueryString = HttpUtility.ParseQueryString(String.Empty);
-                outgoingQueryString.Add("inputjson", postInfo.ToXmlItem());
-                outgoingQueryString.Add("paramjson", paramInfo.ToXmlItem());
-                string postdata = outgoingQueryString.ToString();
-
-                var webReq = WebRequest.Create($"{apiurl}?cmd={cmd}&systemkey={systemkey}&{postdata}");
+                var weburl = $"{apiurl}?cmd={cmd}&systemkey={systemkey}";
+                var webReq = WebRequest.Create(weburl);
                 webReq.Method = httpMethod;
                 webReq.ContentType = contentType;
+
 
                 if (String.IsNullOrEmpty(body)) body = PortalUtils.SiteGuid().ToString();
 
