@@ -80,14 +80,16 @@ namespace RocketRemoteMod
         private void SaveConfig()
         {
             _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
-            _moduleParams.RemoteSiteKey = _postInfo.GetXmlProperty("genxml/hidden/remotesitekey");
             _moduleParams.RemotePortalKey = _postInfo.GetXmlProperty("genxml/hidden/remoteportalkey");
             _moduleParams.RemoteSystemKey = _postInfo.GetXmlProperty("genxml/hidden/remotesystemkey");            
             _moduleParams.RemoteCmd = _postInfo.GetXmlProperty("genxml/hidden/remotecmd");
             _moduleParams.RemoteHeaderCmd = _postInfo.GetXmlProperty("genxml/hidden/remoteheadercmd");
             _moduleParams.ModuleType = "RocketRemoteMod";
             _moduleParams.APIurl = _postInfo.GetXmlProperty("genxml/hidden/apiurl");
-            _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disablecache");            
+            _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disablecache");
+
+            _moduleParams.AppThemeFolder = _postInfo.GetXmlProperty("genxml/hidden/appthemefolder");
+            _moduleParams.AppThemeVersion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
 
             if (_systemData.DebugMode) _moduleParams.CacheDisbaled = true;
             _moduleParams.TabId = _tabid;

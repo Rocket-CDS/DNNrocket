@@ -108,7 +108,7 @@ namespace DNNrocketAPI
                 {
                     DNNrocketUtils.IncludePageHeaders(_systemkey, this.Page, TabId, systemData.DebugMode);
 
-                    if (_moduleParams.RemoteSiteKey != "")
+                    if (_moduleParams.RemotePortalKey != "")
                     {
                         // -------------------------- do call to remote server ---------------------------------------------------
                         DNNrocketUtils.IncludeRemotePageHeaders(this.Page, TabId, systemData.DebugMode);
@@ -197,14 +197,13 @@ namespace DNNrocketAPI
 
             var strOut = "";
 
-            if (_moduleParams.RemoteSiteKey != "")
+            if (_moduleParams.RemotePortalKey != "")
             {
                 // -------------------------------------------------------------------------------------------------------
                 // -------------------------- do call to remote server ---------------------------------------------------
                 // -------------------------------------------------------------------------------------------------------
                 postInfo.TypeCode = "postInfo";
                 paramInfo.TypeCode = "paramInfo";
-                paramInfo.SetXmlProperty("genxml/hidden/remotesitekey", _moduleParams.RemoteSiteKey);
                 paramInfo.SetXmlProperty("genxml/hidden/remoteportalkey", _moduleParams.RemotePortalKey);
                 paramInfo.SetXmlProperty("genxml/hidden/remotesystemkey", _moduleParams.RemoteSystemKey);
                 paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());

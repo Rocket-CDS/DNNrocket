@@ -123,6 +123,18 @@
   <data name="apiurl.Text" xml:space="preserve">
     <value>API URL</value>
   </data>
+  <data name="appthemefolder.Help" xml:space="preserve">
+    <value>The name of the AppTheme folder on the remote server.  This will be used for the template display and offer different functionality based on the selection.</value>
+  </data>
+  <data name="appthemefolder.Text" xml:space="preserve">
+    <value>Remote AppTheme Folder</value>
+  </data>
+  <data name="appthemeversion.Help" xml:space="preserve">
+    <value>The version of the AppTheme to be used.  The format is "0.0", if empty the lastest AppTheme version is used.</value>
+  </data>
+  <data name="appthemeversion.Text" xml:space="preserve">
+    <value>AppTheme version</value>
+  </data>
   <data name="dashboard.Text" xml:space="preserve">
     <value>Dashboard</value>
   </data>
@@ -143,12 +155,6 @@
   </data>
   <data name="remoteportalkey.Text" xml:space="preserve">
     <value>Remote Portal Key</value>
-  </data>
-  <data name="remotesitekey.Help" xml:space="preserve">
-    <value>The "Remote SiteKey" is the GUID of the DNN portal that is being used as an Engine.  The data displayed by this module is fetched from this Engine Site/Portal.</value>
-  </data>
-  <data name="remotesitekey.Text" xml:space="preserve">
-    <value>Remote SiteKey</value>
   </data>
   <data name="remotesystemkey.Help" xml:space="preserve">
     <value>The remote system key of the system which the remote connection should use.</value>

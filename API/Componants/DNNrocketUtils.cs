@@ -1203,7 +1203,6 @@ namespace DNNrocketAPI.Componants
                         var paramInfo = new SimplisityInfo();
                         postInfo.TypeCode = "postInfo";
                         paramInfo.TypeCode = "paramInfo";
-                        paramInfo.SetXmlProperty("genxml/hidden/remotesitekey", moduleParams.RemoteSiteKey);
                         paramInfo.SetXmlProperty("genxml/hidden/remoteportalkey", moduleParams.RemotePortalKey);
                         paramInfo.SetXmlProperty("genxml/hidden/remotesystemkey", moduleParams.RemoteSystemKey);
                         paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
