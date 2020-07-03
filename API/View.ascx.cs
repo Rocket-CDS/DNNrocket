@@ -198,18 +198,11 @@ namespace DNNrocketAPI
                 // -------------------------------------------------------------------------------------------------------
                 postInfo.TypeCode = "postInfo";
                 paramInfo.TypeCode = "paramInfo";
-                paramInfo.SetXmlProperty("genxml/hidden/sitekey", _moduleParams.RemoteSiteKey);
-                paramInfo.SetXmlProperty("genxml/hidden/systemkey", _moduleParams.RemoteSystemKey);
+                paramInfo.SetXmlProperty("genxml/hidden/remotesitekey", _moduleParams.RemoteSiteKey);
+                paramInfo.SetXmlProperty("genxml/hidden/remotesystemkey", _moduleParams.RemoteSystemKey);
                 paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
                 paramInfo.SetXmlProperty("genxml/hidden/disablecache", _moduleParams.CacheDisbaled.ToString());
-                var l = _moduleParams.Record.ToDictionary();
-                foreach (var d in l)
-                {
-                    if (d.Value != null) 
-                    {
-                        paramInfo.SetXmlProperty("genxml/moduleparams/" + d.Key.Replace("_", "-"), d.Value);
-                    }
-                }
+                paramInfo.SetXmlProperty("genxml/hidden/moduleparams", GeneralUtils.EnCode(_moduleParams.Record.ToXmlItem()));
                 strOut = DNNrocketUtils.htmlAPI(_moduleParams.APIurl, _moduleParams.RemoteCmd, GeneralUtils.EnCode(_moduleParams.RemoteSystemKey), postInfo, paramInfo, "POST");
             }
             else

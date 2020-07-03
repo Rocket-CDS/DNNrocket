@@ -101,12 +101,25 @@ namespace DNNrocketAPI.ApiControllers
                 }
             }
 
+            var remoteSystemKey = paramInfo.GetXmlProperty("genxml/hidden/remotesystemkey");
+            var remoteSiteKey = paramInfo.GetXmlProperty("genxml/hidden/remotesitekey");
+            if (remoteSystemKey == "" || remoteSiteKey == "")
+            {
+                var moduleParamXml = paramInfo.GetXmlProperty("genxml/hidden/moduleparams");
+                if (moduleParamXml != "")
+                {
+                    moduleParamXml = GeneralUtils.DeCode(moduleParamXml);
+                    var moduleParam = new ModuleParams(-1);
+                    moduleParam.Record.FromXmlItem(moduleParamXml);
+                    if (moduleParam.RemoteSystemKey != "") remoteSystemKey = moduleParam.RemoteSystemKey;
+                    if (moduleParam.RemoteSiteKey != "") remoteSiteKey = moduleParam.RemoteSiteKey;
+                }
+            }
+            if (remoteSiteKey == "") return this.Request.CreateResponse(HttpStatusCode.OK, "RemoteSiteKey not found");
+            if (remoteSystemKey == "") return this.Request.CreateResponse(HttpStatusCode.OK, "RemoteSystemKey not found");
+
             var paramCmd = context.Request.QueryString["cmd"];
-            var systemkey = "";
-            if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
-            systemkey = GeneralUtils.DeCode(systemkey);
-            var remoteSystemKey = paramInfo.GetXmlProperty("genxml/moduleparams/remotesystemkey");
-            var portalId = PortalUtils.GetPortalIdBySiteKey(remoteSystemKey);
+            var portalId = PortalUtils.GetPortalIdBySiteKey(remoteSiteKey);
             paramInfo.PortalId = portalId;
 
             return ActionSimplisityInfo(postInfo, paramInfo, paramCmd, remoteSystemKey);

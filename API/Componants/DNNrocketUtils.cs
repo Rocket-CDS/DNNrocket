@@ -1753,7 +1753,7 @@ namespace DNNrocketAPI.Componants
 
         public static string htmlAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string httpMethod = "POST")
         {
-            var body = "<items>" + paramInfo.ToXmlItem() + postInfo.ToXmlItem() + "</items>";
+            var body = "<items>" + paramInfo.ToXmlItem() + postInfo.ToXmlItem() +  "</items>";
             return CallAPI(apiurl, cmd, systemkey, body, httpMethod, "text/html");
         }
         public static string jsonAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string httpMethod = "POST")
