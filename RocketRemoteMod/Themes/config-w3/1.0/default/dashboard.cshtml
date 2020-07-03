@@ -71,6 +71,17 @@
     </div>
     <div class="w3-row w3-padding">
         <div class="w3-col m6">
+            <label>@ResourceKey("RRM.remoteportalkey")</label>
+            @TextBox(configinfo, "genxml/hidden/remoteportalkey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+        </div>
+        <div class="w3-col m6 w3-padding">
+            <i>
+                @ResourceKey("RRM.remoteportalkey", "", "Help")
+            </i>
+        </div>
+    </div>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m6">
             <label>@ResourceKey("RRM.remotesystemkey")</label>
             @TextBox(configinfo, "genxml/hidden/remotesystemkey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
         </div>
@@ -88,6 +99,17 @@
         <div class="w3-col m6 w3-padding">
             <i>
                 @ResourceKey("RRM.remotecmd", "", "Help")
+            </i>
+        </div>
+    </div>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m6">
+            <label>@ResourceKey("RRM.remoteheadercmd")</label>
+            @TextBox(configinfo, "genxml/hidden/remoteheadercmd", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+        </div>
+        <div class="w3-col m6 w3-padding">
+            <i>
+                @ResourceKey("RRM.remoteheadercmd", "", "Help")
             </i>
         </div>
     </div>

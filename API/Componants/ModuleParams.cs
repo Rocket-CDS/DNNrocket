@@ -205,9 +205,11 @@ namespace DNNrocketAPI.Componants
         public string CacheGroupId { get { return "datamoduleid:" + ModuleIdDataSource; } }
         public bool AutoBackUp { get { return GetValueBool("autobackup"); } set { SetValue("autobackup", value.ToString()); } }
         public string RemoteSiteKey { get { return GetValue("remotesitekey", ""); } set { SetValue("remotesitekey", value); } }
+        public string RemotePortalKey { get { return GetValue("remoteportalkey", ""); } set { SetValue("remoteportalkey", value); } }
         public string RemoteSystemKey { get { return GetValue("remotesystemkey", ""); } set { SetValue("remotesystemkey", value); } }
         public string APIurl { get { return GetValue("APIurl", ""); } set { SetValue("APIurl", value); } }
         public string RemoteCmd { get { return GetValue("RemoteCmd", ""); } set { SetValue("RemoteCmd", value); } }
+        public string RemoteHeaderCmd { get { return GetValue("RemoteHeaderCmd", ""); } set { SetValue("RemoteHeaderCmd", value); } }
 
         public string OrderBySQL(string orderbyref = "")
         { 

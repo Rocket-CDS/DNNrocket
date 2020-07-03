@@ -1185,6 +1185,49 @@ namespace DNNrocketAPI.Componants
             return systemInfo;
         }
 
+        public static void IncludeRemotePageHeaders(Page page, int tabId, bool debugMode = false)
+        {
+            page.Items.Add("dnnrocket_remotepageheader", true);
+            var cachekey = tabId + ".remotepageheader.cshtml";
+            string cacheHead = null;
+            cacheHead = (string)CacheFileUtils.GetCache(cachekey, "remotepageheader");
+            if (String.IsNullOrEmpty(cacheHead))
+            {
+                var modulesOnPage = GetAllModulesOnPage(tabId);
+                foreach (var modId in modulesOnPage)
+                {
+                    var moduleParams = new ModuleParams(modId);
+                    if (moduleParams.RemoteHeaderCmd != "")
+                    {
+                        var postInfo = new SimplisityInfo();
+                        var paramInfo = new SimplisityInfo();
+                        postInfo.TypeCode = "postInfo";
+                        paramInfo.TypeCode = "paramInfo";
+                        paramInfo.SetXmlProperty("genxml/hidden/remotesitekey", moduleParams.RemoteSiteKey);
+                        paramInfo.SetXmlProperty("genxml/hidden/remoteportalkey", moduleParams.RemotePortalKey);
+                        paramInfo.SetXmlProperty("genxml/hidden/remotesystemkey", moduleParams.RemoteSystemKey);
+                        paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
+                        paramInfo.SetXmlProperty("genxml/hidden/disablecache", moduleParams.CacheDisbaled.ToString());
+                        paramInfo.SetXmlProperty("genxml/hidden/moduleparams", GeneralUtils.EnCode(moduleParams.Record.ToXmlItem()));
+                        var strOut = DNNrocketUtils.htmlAPI(moduleParams.APIurl, moduleParams.RemoteHeaderCmd, GeneralUtils.EnCode(moduleParams.RemoteSystemKey), postInfo, paramInfo, "POST");
+                        if (strOut != "")
+                        {
+                            cacheHead += strOut;
+                        }
+                    }
+                }
+
+                CacheFileUtils.SetCache(cachekey, cacheHead);
+                PageIncludes.IncludeTextInHeader(page, cacheHead);
+            }
+            else
+            {
+                PageIncludes.IncludeTextInHeader(page, cacheHead);
+            }
+
+        }
+
+
         public static void IncludePageHeaders(string systemKey, Page page, int tabId, bool debugMode = false)
         {
             page.Items.Add("dnnrocket_pageheader", true);

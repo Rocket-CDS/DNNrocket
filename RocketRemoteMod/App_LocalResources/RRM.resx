@@ -132,6 +132,18 @@
   <data name="remotecmd.Text" xml:space="preserve">
     <value>Remote Command</value>
   </data>
+  <data name="remoteheadercmd.Help" xml:space="preserve">
+    <value>A remote header html can be added to the page header, the remote header html needs an individual call to the required API.</value>
+  </data>
+  <data name="remoteheadercmd.Text" xml:space="preserve">
+    <value>Remote Header Command</value>
+  </data>
+  <data name="remoteportalkey.Help" xml:space="preserve">
+    <value>The remote portal will have a list of portal keys, this portal key MUST be in the list on the remote server.  Otherwise the call will be rejected by the remote server.</value>
+  </data>
+  <data name="remoteportalkey.Text" xml:space="preserve">
+    <value>Remote Portal Key</value>
+  </data>
   <data name="remotesitekey.Help" xml:space="preserve">
     <value>The "Remote SiteKey" is the GUID of the DNN portal that is being used as an Engine.  The data displayed by this module is fetched from this Engine Site/Portal.</value>
   </data>

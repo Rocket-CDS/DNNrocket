@@ -121,6 +121,7 @@ namespace DNNrocketAPI.ApiControllers
             var paramCmd = context.Request.QueryString["cmd"];
             var portalId = PortalUtils.GetPortalIdBySiteKey(remoteSiteKey);
             paramInfo.PortalId = portalId;
+            paramInfo.SetXmlProperty("genxml/remotecall","True");
 
             return ActionSimplisityInfo(postInfo, paramInfo, paramCmd, remoteSystemKey);
         }

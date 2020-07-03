@@ -107,6 +107,12 @@ namespace DNNrocketAPI
                 if (!this.Page.Items.Contains("dnnrocket_pageheader")) // flag to insure we only inject once for page load.
                 {
                     DNNrocketUtils.IncludePageHeaders(_systemkey, this.Page, TabId, systemData.DebugMode);
+
+                    if (_moduleParams.RemoteSiteKey != "")
+                    {
+                        // -------------------------- do call to remote server ---------------------------------------------------
+                        DNNrocketUtils.IncludeRemotePageHeaders(this.Page, TabId, systemData.DebugMode);
+                    }
                 }
             }
         }
@@ -199,6 +205,7 @@ namespace DNNrocketAPI
                 postInfo.TypeCode = "postInfo";
                 paramInfo.TypeCode = "paramInfo";
                 paramInfo.SetXmlProperty("genxml/hidden/remotesitekey", _moduleParams.RemoteSiteKey);
+                paramInfo.SetXmlProperty("genxml/hidden/remoteportalkey", _moduleParams.RemotePortalKey);
                 paramInfo.SetXmlProperty("genxml/hidden/remotesystemkey", _moduleParams.RemoteSystemKey);
                 paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
                 paramInfo.SetXmlProperty("genxml/hidden/disablecache", _moduleParams.CacheDisbaled.ToString());
