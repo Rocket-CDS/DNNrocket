@@ -287,7 +287,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
                 <moduleControls>
                   <moduleControl>
                     <controlKey />
-                    <controlSrc>DesktopModules/DNNrocket/API/ViewRemote.ascx</controlSrc>
+                    <controlSrc>DesktopModules/DNNrocket/API/View.ascx</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>

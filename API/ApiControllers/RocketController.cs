@@ -11,7 +11,8 @@ using System.Linq;
 using System.Net;  
 using System.Net.Http;
 using System.Web;
-using System.Web.Http;  
+using System.Web.Http;
+using System.Xml;
 
 namespace DNNrocketAPI.ApiControllers
 {
@@ -79,31 +80,36 @@ namespace DNNrocketAPI.ApiControllers
 
             }
 
-            var body = context.Request.Form;
+            string rawData = Request.Content.ReadAsStringAsync().Result;
+
+            var postInfo = new SimplisityInfo();
+            var paramInfo = new SimplisityInfo();
+            var rawInfo = new SimplisityRecord();
+            if (rawData != "")
+            {
+                rawInfo.XMLData = rawData;
+                var nodList = rawInfo.XMLDoc.SelectNodes("items/item");
+                if (nodList != null)
+                {
+                    foreach (XmlNode nod in nodList)
+                    {
+                        var inputInfo = new SimplisityInfo();
+                        inputInfo.FromXmlItem(nod.OuterXml);
+                        if (inputInfo.TypeCode == "postInfo") postInfo = inputInfo;
+                        if (inputInfo.TypeCode == "paramInfo") paramInfo = inputInfo;
+                    }
+                }
+            }
 
             var paramCmd = context.Request.QueryString["cmd"];
             var systemkey = "";
             if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
             systemkey = GeneralUtils.DeCode(systemkey);
-
-            var paramInfo = new SimplisityInfo(_editlang);
-            if (DNNrocketUtils.RequestParam(context, "paramjson") != "")
-            {
-                var paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
-                paramInfo.FromXmlItem(paramJson);
-            }
-            var portalId = PortalUtils.GetPortalIdBySiteKey(paramInfo.GetXmlProperty("genxml/hidden/sitekey"));
+            var remoteSystemKey = paramInfo.GetXmlProperty("genxml/moduleparams/remotesystemkey");
+            var portalId = PortalUtils.GetPortalIdBySiteKey(remoteSystemKey);
             paramInfo.PortalId = portalId;
 
-            var postInfo = new SimplisityInfo(_editlang);
-            if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
-            {
-                var requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
-                postInfo.FromXmlItem(requestJson);
-                postInfo.PortalId = portalId;
-
-            }
-            return ActionSimplisityInfo(postInfo, paramInfo, paramCmd, systemkey);
+            return ActionSimplisityInfo(postInfo, paramInfo, paramCmd, remoteSystemKey);
         }
 
         private HttpResponseMessage ActionSimplisityInfo(SimplisityInfo postInfo, SimplisityInfo paramInfo, string paramCmd, string systemkey)

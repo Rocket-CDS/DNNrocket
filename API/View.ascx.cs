@@ -196,6 +196,8 @@ namespace DNNrocketAPI
                 // -------------------------------------------------------------------------------------------------------
                 // -------------------------- do call to remote server ---------------------------------------------------
                 // -------------------------------------------------------------------------------------------------------
+                postInfo.TypeCode = "postInfo";
+                paramInfo.TypeCode = "paramInfo";
                 paramInfo.SetXmlProperty("genxml/hidden/sitekey", _moduleParams.RemoteSiteKey);
                 paramInfo.SetXmlProperty("genxml/hidden/systemkey", _moduleParams.RemoteSystemKey);
                 paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
