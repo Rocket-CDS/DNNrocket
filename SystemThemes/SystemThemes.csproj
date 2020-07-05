@@ -19,6 +19,9 @@
     <Reference Include="RazorEngine">
       <HintPath>..\..\..\bin\RazorEngine.dll</HintPath>
     </Reference>
+    <Reference Include="RocketEcommerce">
+      <HintPath>..\..\..\bin\RocketEcommerce.dll</HintPath>
+    </Reference>
     <Reference Include="RocketMod">
       <HintPath>..\..\..\bin\RocketMod.dll</HintPath>
     </Reference>
