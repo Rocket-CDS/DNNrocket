@@ -177,7 +177,7 @@
   <data name="reset.Icon" xml:space="preserve">
     <value>&lt;i title="Reset" class="fas fa-sync-alt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
-  <data name="Active.Text" xml:space="preserve">
+  <data name="active.Text" xml:space="preserve">
     <value>Active</value>
   </data>
   <data name="default.Text" xml:space="preserve">
