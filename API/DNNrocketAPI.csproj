@@ -693,12 +693,6 @@
     <Folder Include="Themes\config-w3\1.0\img\" />
     <Folder Include="Themes\config-w3\1.0\js\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Simplisity\Simplisity.csproj">
-      <Project>{ea312f3d-9284-4f1f-b395-879721415573}</Project>
-      <Name>Simplisity</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
