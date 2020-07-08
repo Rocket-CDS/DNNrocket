@@ -83,7 +83,9 @@ namespace RocketRemoteMod
             _moduleParams.RemotePortalKey = _postInfo.GetXmlProperty("genxml/hidden/remoteportalkey");
             _moduleParams.RemoteSystemKey = _postInfo.GetXmlProperty("genxml/hidden/remotesystemkey");            
             _moduleParams.RemoteCmd = _postInfo.GetXmlProperty("genxml/hidden/remotecmd");
+            _moduleParams.RemoteTemplate = _postInfo.GetXmlProperty("genxml/hidden/remotetemplate");
             _moduleParams.RemoteHeaderCmd = _postInfo.GetXmlProperty("genxml/hidden/remoteheadercmd");
+            _moduleParams.RemoteHeaderTemplate = _postInfo.GetXmlProperty("genxml/hidden/remoteheadertemplate");
             _moduleParams.ModuleType = "RocketRemoteMod";
             _moduleParams.APIurl = _postInfo.GetXmlProperty("genxml/hidden/apiurl");
             _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disablecache");

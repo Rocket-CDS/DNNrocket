@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;  
 using System.Net;  
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Xml;
@@ -65,7 +66,11 @@ namespace DNNrocketAPI.ApiControllers
                 postInfo.PortalId = PortalUtils.GetPortalId();
 
             }
-            return ActionSimplisityInfo(postInfo, paramInfo, paramCmd, systemkey);
+
+            var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, systemkey);
+            if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
+            rtn.Headers.Add("Access-Control-Allow-Origin", "http://dev.dnnrocket.com");
+            return rtn;
         }
         [AllowAnonymous]
         [HttpGet]
@@ -120,9 +125,11 @@ namespace DNNrocketAPI.ApiControllers
             paramInfo.PortalId = portalId;
             paramInfo.SetXmlProperty("genxml/remotecall","True");
 
-            return ActionSimplisityInfo(postInfo, paramInfo, paramCmd, remoteSystemKey);
+            var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, remoteSystemKey);
+            if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
+            rtn.Headers.Add("Access-Control-Allow-Origin", "http://dev.dnnrocket.com");
+            return rtn;
         }
-
         private HttpResponseMessage ActionSimplisityInfo(SimplisityInfo postInfo, SimplisityInfo paramInfo, string paramCmd, string systemkey)
         {
             var strOut = "ERROR: Invalid.";

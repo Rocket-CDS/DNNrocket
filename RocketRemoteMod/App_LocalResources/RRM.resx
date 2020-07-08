@@ -150,6 +150,12 @@
   <data name="remoteheadercmd.Text" xml:space="preserve">
     <value>Remote Header Command</value>
   </data>
+  <data name="remoteheadertemplate.Help" xml:space="preserve">
+    <value>The name of the remote template that will be used to inject any page header data.</value>
+  </data>
+  <data name="remoteheadertemplate.Text" xml:space="preserve">
+    <value>Remote Header Template</value>
+  </data>
   <data name="remoteportalkey.Help" xml:space="preserve">
     <value>The remote portal will have a list of portal keys, this portal key MUST be in the list on the remote server.  Otherwise the call will be rejected by the remote server.</value>
   </data>
@@ -161,5 +167,11 @@
   </data>
   <data name="remotesystemkey.Text" xml:space="preserve">
     <value>Remote SystemKey</value>
+  </data>
+  <data name="remotetemplate.Help" xml:space="preserve">
+    <value>The name of the remote template that will be used to display content on this website.</value>
+  </data>
+  <data name="remotetemplate.Text" xml:space="preserve">
+    <value>Remote Template</value>
   </data>
 </root>
