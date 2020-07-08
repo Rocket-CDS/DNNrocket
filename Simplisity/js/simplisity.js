@@ -210,11 +210,17 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                 }
 
                 if ((typeof sreturn !== 'undefined') && sreturn !== '') {
-                    if ((typeof sappend === 'undefined') || sappend === '' || sappend === false) {
-                        $(sreturn).children().remove();
-                        $(sreturn).html(data).trigger('change');
+                    if (sreturn === 'document') {
+                        document.open();
+                        document.write("New API html document");
+                        document.close();
                     } else {
-                        $(sreturn).append(data).trigger('change');
+                        if ((typeof sappend === 'undefined') || sappend === '' || sappend === false) {
+                            $(sreturn).children().remove();
+                            $(sreturn).html(data).trigger('change');
+                        } else {
+                            $(sreturn).append(data).trigger('change');
+                        }
                     }
                 }
 
