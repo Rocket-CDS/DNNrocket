@@ -214,8 +214,9 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
 
                     if ((typeof sreturn !== 'undefined') && sreturn !== '') {
                         if (sreturn === 'document') {
+                            // replace the document (new FULL html page)
                             document.open();
-                            document.write("New API html document");
+                            document.write(data);
                             document.close();
                         } else {
                             if ((typeof sappend === 'undefined') || sappend === '' || sappend === false) {
