@@ -211,7 +211,6 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                     if (sreturntype === 'json') {
                         data = JSON.stringify(data);
                     }
-
                     if ((typeof sreturn !== 'undefined') && sreturn !== '') {
                         if (sreturn === 'document') {
                             // replace the document (new FULL html page)

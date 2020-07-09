@@ -100,8 +100,7 @@ namespace Simplisity
 
             return new RawString(strOut);
         }
-
-        public IEncodedString TextBox(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+        public IEncodedString TextBox(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "", string type = "text")
         {
             if (info == null) info = new SimplisityInfo();
             var value = info.GetXmlProperty(xpath);
@@ -116,7 +115,7 @@ namespace Simplisity
             //var value = encrypted ? NBrightCore.common.Security.Decrypt(PortalController.Instance.GetCurrentPortalSettings().GUID.ToString(), info.GetXmlProperty(xpath)) : info.GetXmlProperty(xpath);
             if (value == "") value = defaultValue;
 
-            var typeattr = "type='text'";
+            var typeattr = "type='" + type + "'";
             if (attributes.ToLower().Contains(" type=")) typeattr = "";
 
             var strOut = "<input value='" + value.Replace("'", "&#39;") + "' id='" + id + "' s-xpath='" + xpath + "' " + attributes + " " + upd + " " + typeattr + " />";
