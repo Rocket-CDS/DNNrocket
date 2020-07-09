@@ -69,7 +69,7 @@ namespace DNNrocketAPI.ApiControllers
 
             var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, systemkey);
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
-            rtn.Headers.Add("Access-Control-Allow-Origin", "http://dev.dnnrocket.com");
+            rtn.Headers.Add("Access-Control-Allow-Origin", "*");
             return rtn;
         }
         [AllowAnonymous]
@@ -127,7 +127,7 @@ namespace DNNrocketAPI.ApiControllers
 
             var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, remoteSystemKey);
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
-            rtn.Headers.Add("Access-Control-Allow-Origin", "http://dev.dnnrocket.com");
+            rtn.Headers.Add("Access-Control-Allow-Origin", "*");
             return rtn;
         }
         private HttpResponseMessage ActionSimplisityInfo(SimplisityInfo postInfo, SimplisityInfo paramInfo, string paramCmd, string systemkey)
@@ -271,7 +271,9 @@ namespace DNNrocketAPI.ApiControllers
                                 }
                                 else
                                 {
-                                    strOut = "ERROR: Invalid systemkey: " + systemkey + "  interfacekey: " + interfacekey + " cmd: " + paramCmd + " - Check Database for SYSTEM,'" + systemkey + "' (No spaces) - Check 'simplisity_startpanel' and 'simplisity_panel' for correct s-cmd.  ";
+                                    strOut = "ERROR: Invalid systemkey: " + systemkey + "  interfacekey: " + interfacekey + " cmd: " + paramCmd + " <br/> - Check Database for SYSTEM,'" + systemkey + "' (No spaces) - Check 'simplisity_startpanel' and 'simplisity_panel' for correct s-cmd.  ";
+                                    strOut += "<br/> - Ensure you do not have an infinate loop by activating a simplisity_panel within the returning template, on the document ready JS function.";
+                                    CacheUtils.ClearAllCache();
                                 }
                             }
 
