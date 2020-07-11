@@ -196,36 +196,46 @@ namespace DNNrocketAPI
             }
 
             var strOut = "";
+            var systemData = new SystemData(_systemInfo);
+            var cacheOutPut = "";
+            var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
+            var model = new SimplisityRazor();
+            model.ModuleId = ModuleId;
+            model.TabId = TabId;
+            if (_moduleParams.CacheEnabled && systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
+            if (String.IsNullOrEmpty(cacheOutPut))
+            {
 
-            if (_moduleParams.RemotePortalKey != "")
-            {
-                // -------------------------------------------------------------------------------------------------------
-                // -------------------------- do call to remote server ---------------------------------------------------
-                // -------------------------------------------------------------------------------------------------------
-                postInfo.TypeCode = "postInfo";
-                paramInfo.TypeCode = "paramInfo";
-                paramInfo.SetXmlProperty("genxml/hidden/remoteportalkey", _moduleParams.RemotePortalKey);
-                paramInfo.SetXmlProperty("genxml/hidden/remotesystemkey", _moduleParams.RemoteSystemKey);
-                paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
-                paramInfo.SetXmlProperty("genxml/hidden/disablecache", _moduleParams.CacheDisbaled.ToString());
-                paramInfo.SetXmlProperty("genxml/hidden/moduleparams", GeneralUtils.EnCode(_moduleParams.Record.ToXmlItem()));
-                strOut = DNNrocketUtils.htmlAPI(_moduleParams.APIurl, _moduleParams.RemoteCmd, GeneralUtils.EnCode(_moduleParams.RemoteSystemKey), postInfo, paramInfo, "POST");
-            }
-            else
-            {
-                // -------------------------------------------------------------------------------------------------------
-                // -------------------------- Remote Call not setup, do normal actions. ----------------------------------
-                // -------------------------------------------------------------------------------------------------------
-                if (_rocketInterface != null && _rocketInterface.Exists)
+                if (hasEditAccess)
                 {
-                    var cacheOutPut = "";
-                    var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
+                    model.SetSetting("editiconcolor", systemData.GetSetting("editiconcolor"));
+                    model.SetSetting("editicontextcolor", systemData.GetSetting("editicontextcolor"));
+                    strOut = "<div id='rocketcontentwrapper" + ModuleId + "' class=' w3-display-container '>";
+                    var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                    strOut += DNNrocketUtils.RazorRender(model, razorTempl, true);
+                }
 
-                    var systemData = new SystemData(_systemInfo);
 
-                    if (_moduleParams.CacheEnabled && systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
-
-                    if (String.IsNullOrEmpty(cacheOutPut))
+                if (_moduleParams.RemotePortalKey != "")
+                {
+                    // -------------------------------------------------------------------------------------------------------
+                    // -------------------------- do call to remote server ---------------------------------------------------
+                    // -------------------------------------------------------------------------------------------------------
+                    postInfo.TypeCode = "postInfo";
+                    paramInfo.TypeCode = "paramInfo";
+                    paramInfo.SetXmlProperty("genxml/hidden/remoteportalkey", _moduleParams.RemotePortalKey);
+                    paramInfo.SetXmlProperty("genxml/hidden/remotesystemkey", _moduleParams.RemoteSystemKey);
+                    paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
+                    paramInfo.SetXmlProperty("genxml/hidden/disablecache", _moduleParams.CacheDisbaled.ToString());
+                    paramInfo.SetXmlProperty("genxml/hidden/moduleparams", GeneralUtils.EnCode(_moduleParams.Record.ToXmlItem()));
+                    strOut += DNNrocketUtils.htmlAPI(_moduleParams.APIurl, _moduleParams.RemoteCmd, GeneralUtils.EnCode(_moduleParams.RemoteSystemKey), postInfo, paramInfo, "POST");
+                }
+                else
+                {
+                    // -------------------------------------------------------------------------------------------------------
+                    // -------------------------- Remote Call not setup, do normal actions. ----------------------------------
+                    // -------------------------------------------------------------------------------------------------------
+                    if (_rocketInterface != null && _rocketInterface.Exists)
                     {
 
                         // before event
@@ -240,48 +250,37 @@ namespace DNNrocketAPI
                         if (eventDictionary.ContainsKey("outputhtml")) returnDictionary["outputhtml"] = eventDictionary["outputhtml"];
                         if (eventDictionary.ContainsKey("outputjson")) returnDictionary["outputjson"] = eventDictionary["outputjson"];
 
-                        var model = new SimplisityRazor();
-                        model.ModuleId = ModuleId;
-                        model.TabId = TabId;
-
-                        if (hasEditAccess)
-                        {
-
-                            model.SetSetting("editiconcolor", systemData.GetSetting("editiconcolor"));
-                            model.SetSetting("editicontextcolor", systemData.GetSetting("editicontextcolor"));
-                            strOut = "<div id='rocketmodcontentwrapper" + ModuleId + "' class=' w3-display-container'>";
-                            var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
-                            strOut += DNNrocketUtils.RazorRender(model, razorTempl, systemData.DebugMode);
-                        }
-
                         if (returnDictionary.ContainsKey("outputhtml"))
                         {
                             strOut += returnDictionary["outputhtml"];
                         }
 
-                        if (hasEditAccess)
-                        {
-                            strOut += "</div>";
-                            var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
-                            strOut += DNNrocketUtils.RazorRender(model, razorTempl, systemData.DebugMode);
-                        }
-
-                        CacheFileUtils.SetCache(cacheKey, strOut);
-
                     }
                     else
                     {
-                        strOut = cacheOutPut;
+                        strOut = "Invalid Interface: systemkey: " + _systemkey + "  interfacekey: " + _interfacekey;
                     }
-                }
-                else
-                {
-                    strOut = "Invalid Interface: systemkey: " + _systemkey + "  interfacekey: " + _interfacekey;
+
                 }
 
+                if (hasEditAccess)
+                {
+                    strOut += "</div>";
+                    var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
+                    strOut += DNNrocketUtils.RazorRender(model, razorTempl, systemData.DebugMode);
+                }
+
+                CacheFileUtils.SetCache(cacheKey, strOut);
+
+            }
+            else
+            {
+                strOut = cacheOutPut;
             }
 
             var lit = new Literal();
+            strOut = "<div id='simplisitymodulewrapper" + ModuleId + "' class=' simplisity_panel '>" + strOut;
+            strOut += "</div>";
             lit.Text = strOut;
             phData.Controls.Add(lit);
 

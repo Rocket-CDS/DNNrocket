@@ -115,12 +115,34 @@
     </div>
     <div class="w3-row w3-padding">
         <div class="w3-col m6">
+            <label>@ResourceKey("RRM.remotetemplate")</label>
+            @TextBox(configinfo, "genxml/hidden/remotetemplate", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+        </div>
+        <div class="w3-col m6 w3-padding">
+            <i>
+                @ResourceKey("RRM.remotetemplate", "", "Help")
+            </i>
+        </div>
+    </div>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m6">
             <label>@ResourceKey("RRM.remoteheadercmd")</label>
             @TextBox(configinfo, "genxml/hidden/remoteheadercmd", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
         </div>
         <div class="w3-col m6 w3-padding">
             <i>
                 @ResourceKey("RRM.remoteheadercmd", "", "Help")
+            </i>
+        </div>
+    </div>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m6">
+            <label>@ResourceKey("RRM.remoteheadertemplate")</label>
+            @TextBox(configinfo, "genxml/hidden/remoteheadertemplate", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "pageheader.cshtml", false)
+        </div>
+        <div class="w3-col m6 w3-padding">
+            <i>
+                @ResourceKey("RRM.remoteheadertemplate", "", "Help")
             </i>
         </div>
     </div>

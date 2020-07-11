@@ -51,13 +51,17 @@ namespace DNNrocketAPI.Componants
 
         public bool Exists { get; }
 
-        
+
+        public string InterfaceIcon
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/interfaceicon"); }
+            set { Info.SetXmlProperty("genxml/textbox/interfaceicon", value.ToString()); }
+        }
         public string InterfaceKey
         {
             get { return Info.GetXmlProperty("genxml/textbox/interfacekey"); }
             set { Info.SetXmlProperty("genxml/textbox/interfacekey", value.ToString()); }
         }
-
         public string EntityTypeCode
         {
             get { return Info.GetXmlProperty("genxml/textbox/entitytypecode"); }

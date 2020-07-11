@@ -208,7 +208,9 @@ namespace DNNrocketAPI.Componants
         public string RemoteSystemKey { get { return GetValue("remotesystemkey", ""); } set { SetValue("remotesystemkey", value); } }
         public string APIurl { get { return GetValue("APIurl", ""); } set { SetValue("APIurl", value); } }
         public string RemoteCmd { get { return GetValue("RemoteCmd", ""); } set { SetValue("RemoteCmd", value); } }
+        public string RemoteTemplate { get { return GetValue("RemoteTemplate", ""); } set { SetValue("RemoteTemplate", value); } }
         public string RemoteHeaderCmd { get { return GetValue("RemoteHeaderCmd", ""); } set { SetValue("RemoteHeaderCmd", value); } }
+        public string RemoteHeaderTemplate { get { return GetValue("RemoteHeaderTemplate", ""); } set { SetValue("RemoteHeaderTemplate", value); } }
 
         public string OrderBySQL(string orderbyref = "")
         { 

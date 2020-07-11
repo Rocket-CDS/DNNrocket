@@ -558,7 +558,7 @@
   <data name="hide.Text" xml:space="preserve">
     <value>Hide</value>
   </data>
-  <data name="disactivate.Text" xml:space="preserve">
-    <value>Disactivate</value>
+  <data name="disactive.Text" xml:space="preserve">
+    <value>Disactive</value>
   </data>
 </root>

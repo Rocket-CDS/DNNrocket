@@ -139,114 +139,122 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
         console.log('[simplisityPost()] scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist:--->    ', scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist);
     }
 
-    // Load sessionParams into fieldParams to post to server. 
-    // These are to persist data across session, for search, sort, paging, etc.
-    simplisity_sessionpost();
+    if (typeof scmd !== 'undefined' && scmd !== '') {
 
-    var systemkey = simplisity_getsystemkey(sfields);
+        // Load sessionParams into fieldParams to post to server. 
+        // These are to persist data across session, for search, sort, paging, etc.
+        simplisity_sessionpost();
 
-    if (typeof reload === 'undefined' || reload === '') {
-        reload = 'false';
-    }
+        var systemkey = simplisity_getsystemkey(sfields);
 
-    var cmdupdate = '';
-    if (scmdurl.includes("?")) {
-        // possible external call and cmd param not required.
-        cmdupdate = scmdurl;
-    }
-    else {
-        cmdupdate = scmdurl + '?cmd=' + scmd + '&systemkey=' + simplisity_encode(systemkey);
-    }
-
-    var jsonData = ConvertFormToJSON(spost, slist, sfields);
-    var jsonParam = ConvertParamToJSON(sfields);
-
-    if ((typeof sdropdownlist !== 'undefined') && sdropdownlist !== '') {
-
-        if (debugmode) {
-            // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
-            console.log('------- START AJAX CALL [dropdown] ------- ' + scmd);
+        if (typeof reload === 'undefined' || reload === '') {
+            reload = 'false';
         }
 
-        $.ajax({
-            type: "POST",
-            url: cmdupdate,
-            cache: false,
-            async: true,
-            dataType: 'json',
-            timeout: 120000,
-            data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd },
-            success: function (json) {
-                $(sdropdownlist).html('');
-                var jsonObj = simplisity_parsejson(json);
-                for (var i = 0; i < jsonObj.length; i++) {
-                    var obj = jsonObj[i];
-                    $(sdropdownlist).append("<option value='" + obj.key + "'>" + obj.value + "</option>");
-                }
-                $('#simplisity_loader').hide();
+        var cmdupdate = '';
+        if (scmdurl.includes("?")) {
+            // possible external call and cmd param not required.
+            cmdupdate = scmdurl;
+        }
+        else {
+            cmdupdate = scmdurl + '?cmd=' + scmd + '&systemkey=' + simplisity_encode(systemkey);
+        }
+
+        var jsonData = ConvertFormToJSON(spost, slist, sfields);
+        var jsonParam = ConvertParamToJSON(sfields);
+
+        if ((typeof sdropdownlist !== 'undefined') && sdropdownlist !== '') {
+
+            if (debugmode) {
+                // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+                console.log('------- START AJAX CALL [dropdown] ------- ' + scmd);
             }
-        });
-    }
-    else {
 
-        if (debugmode) {
-            // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
-            console.log('------- START AJAX CALL------- ' + scmd);
-        }
-
-        var request = $.ajax({
-            type: "POST",
-            url: cmdupdate,
-            async: true,
-            cache: false,
-            timeout: 120000,
-            data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd }
-        });
-
-        request.done(function (data) {
-            if (data !== 'noaction') {
-                if (sreturntype === 'json') {
-                    data = JSON.stringify(data);
+            $.ajax({
+                type: "POST",
+                url: cmdupdate,
+                cache: false,
+                async: true,
+                dataType: 'json',
+                timeout: 120000,
+                data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd },
+                success: function (json) {
+                    $(sdropdownlist).html('');
+                    var jsonObj = simplisity_parsejson(json);
+                    for (var i = 0; i < jsonObj.length; i++) {
+                        var obj = jsonObj[i];
+                        $(sdropdownlist).append("<option value='" + obj.key + "'>" + obj.value + "</option>");
+                    }
+                    $('#simplisity_loader').hide();
                 }
+            });
+        }
+        else {
 
-                if ((typeof sreturn !== 'undefined') && sreturn !== '') {
-                    if ((typeof sappend === 'undefined') || sappend === '' || sappend === false) {
-                        $(sreturn).children().remove();
-                        $(sreturn).html(data).trigger('change');
+            if (debugmode) {
+                // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+                console.log('------- START AJAX CALL------- ' + scmd);
+            }
+
+            var request = $.ajax({
+                type: "POST",
+                url: cmdupdate,
+                async: true,
+                cache: false,
+                timeout: 120000,
+                data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd }
+            });
+
+            request.done(function (data) {
+
+                if (data !== 'noaction') {
+                    if (sreturntype === 'json') {
+                        data = JSON.stringify(data);
+                    }
+                    if ((typeof sreturn !== 'undefined') && sreturn !== '') {
+                        if (sreturn === 'document') {
+                            // replace the document (new FULL html page)
+                            document.open();
+                            document.write(data);
+                            document.close();
+                        } else {
+                            if ((typeof sappend === 'undefined') || sappend === '' || sappend === false) {
+                                $(sreturn).children().remove();
+                                $(sreturn).html(data).trigger('change');
+                            } else {
+                                $(sreturn).append(data).trigger('change');
+                            }
+                        }
+                    }
+
+                    if (debugmode) {
+                        // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+                        //console.log('returned data: ' + data);
+                    }
+
+                    if (reload === 'true') {
+                        location.reload();
                     } else {
-                        $(sreturn).append(data).trigger('change');
+                        // trigger completed.
+                        $.event.trigger({
+                            type: "simplisitypostgetcompleted",
+                            cmd: scmd,
+                            sindex: sindex,
+                            sloader: shideloader,
+                            sreturn: sreturn,
+                            safter: safter
+                        });
                     }
                 }
+            });
 
-                if (debugmode) {
-                    // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
-                    //console.log('returned data: ' + data);
-                }
+            request.fail(function (jqXHR, textStatus) {
+                $('#simplisity_loader').hide();
+            });
 
-                if (reload === 'true') {
-                    location.reload();
-                } else {
-                    // trigger completed.
-                    $.event.trigger({
-                        type: "simplisitypostgetcompleted",
-                        cmd: scmd,
-                        sindex: sindex,
-                        sloader: shideloader,
-                        sreturn: sreturn,
-                        safter: safter
-                    });
-                }
-            }
-        });
-
-        request.fail(function (jqXHR, textStatus) {
-            $('#simplisity_loader').hide();
-        });
-
+        }
 
     }
-
-
 }
 
 async function callBeforeFunction(element) {
