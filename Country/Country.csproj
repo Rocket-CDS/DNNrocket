@@ -23,6 +23,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Simplisity">
+      <HintPath>..\..\..\bin\Simplisity.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
