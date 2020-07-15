@@ -13,16 +13,16 @@ using System.Xml;
 namespace RocketMod
 {
 
-    public class ArticleDataList
+    public class ArticleLimpetList
     {
         private string _langRequired;
-        private List<ArticleData> _articleList;
+        private List<ArticleLimpet> _articleList;
         private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "ROCKETMOD";
         private DNNrocketController _objCtrl;
         private ModuleParams _moduleParams;
 
-        public ArticleDataList(SimplisityInfo paramInfo, string langRequired, bool populate)
+        public ArticleLimpetList(SimplisityInfo paramInfo, string langRequired, bool populate)
         {
             ModuleId = paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (ModuleId == 0) ModuleId = paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
@@ -42,7 +42,7 @@ namespace RocketMod
             var searchFilter = " and R1.ModuleId = " + _moduleParams.ModuleIdDataSource;
             searchFilter += _moduleParams.GetFilterSQL(SessionParamData.Info, SessionParamData.FilterIndex);
             SessionParamData.RowCount = _objCtrl.GetListCount(-1, -1, _entityTypeCode, searchFilter, _langRequired, _tableName);
-            DataList = _objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(SessionParamData.OrderByRef), 0, SessionParamData.Page, SessionParamData.PageSize, SessionParamData.RowCount, _tableName);
+            DataList = _objCtrl.GetList(PortalUtils.GetPortalId(), -1, _entityTypeCode, searchFilter, _langRequired, _moduleParams.OrderBySQL(SessionParamData.OrderByRef), 0, SessionParamData.Page, SessionParamData.PageSize, SessionParamData.RowCount, _tableName);
         }
         public void DeleteAll()
         {
@@ -57,24 +57,24 @@ namespace RocketMod
         public SessionParams SessionParamData { get; set; }
         public List<SimplisityInfo> DataList { get; private set; }
 
-        public List<ArticleData> GetArticleList()
+        public List<ArticleLimpet> GetArticleList()
         {
-            _articleList = new List<ArticleData>();
+            _articleList = new List<ArticleLimpet>();
             foreach (var o in DataList)
             {
-                var articleData = new ArticleData(o.ItemID, ModuleId, _langRequired);
-                _articleList.Add(articleData);
+                var articleLimpet = new ArticleLimpet(o.ItemID, ModuleId, _langRequired);
+                _articleList.Add(articleLimpet);
             }
             return _articleList;
         }
-        public List<ArticleData> GetAllArticleListForModule()
+        public List<ArticleLimpet> GetAllArticleListForModule()
         {
             var l = GetAllArticlesForModule();
-            _articleList = new List<ArticleData>();
+            _articleList = new List<ArticleLimpet>();
             foreach (var o in l)
             {
-                var articleData = new ArticleData(o.ItemID, ModuleId, _langRequired);
-                _articleList.Add(articleData);
+                var articleLimpet = new ArticleLimpet(o.ItemID, ModuleId, _langRequired);
+                _articleList.Add(articleLimpet);
             }
             return _articleList;
         }
@@ -88,8 +88,8 @@ namespace RocketMod
         {
             if (fromItemId > 0 && toItemId > 0)
             {
-                var moveData = new ArticleData(fromItemId, ModuleId, _langRequired);
-                var toData = new ArticleData(toItemId, ModuleId, _langRequired);
+                var moveData = new ArticleLimpet(fromItemId, ModuleId, _langRequired);
+                var toData = new ArticleLimpet(toItemId, ModuleId, _langRequired);
 
                 var newSortOrder = toData.SortOrder - 1;
                 if (moveData.SortOrder < toData.SortOrder) newSortOrder = toData.SortOrder + 1;

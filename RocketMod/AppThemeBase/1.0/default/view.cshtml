@@ -12,14 +12,14 @@
 @RenderTemplate("editiframe.cshtml", "/DesktopModules/DNNrocket/rocketmod", "config-w3", Model)
 
 @{
-    var articleDataList = (ArticleDataList)Model.List.First();
+    var articleLimpetList = (ArticleLimpetList)Model.List.First();
 }
 <br />
 <br />
 
 <div class="w3-row w3-margin-top">
 
-    @foreach (var info in articleDataList.DataList)
+    @foreach (var info in articleLimpetList.DataList)
     {
         <div class="w3-row w3-padding ">
             <div class="w3-col m1">

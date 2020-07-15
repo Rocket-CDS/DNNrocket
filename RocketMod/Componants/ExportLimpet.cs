@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RocketMod.Componants
 {
-    public class ExportData
+    public class ExportLimpet
     {
         private ModuleParams _moduleParams;
         private ModuleParams _dataModuleParams;
@@ -18,7 +18,7 @@ namespace RocketMod.Componants
 
 
 
-        public ExportData(DNNrocketInterface rocketInterface, int moduleid, string systemKey)
+        public ExportLimpet(DNNrocketInterface rocketInterface, int moduleid, string systemKey)
         {
             _rocketInterface = rocketInterface;
             _moduleParams = new ModuleParams(moduleid, systemKey);

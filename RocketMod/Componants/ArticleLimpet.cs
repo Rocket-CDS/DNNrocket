@@ -11,33 +11,46 @@ using DNNrocketAPI.Componants;
 namespace RocketMod
 {
 
-    public class ArticleData
+    public class ArticleLimpet
     {
         private string _langRequired;
         private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "ROCKETMOD";
         private DNNrocketController _objCtrl;
+        private int _articleId;
 
-        public ArticleData(int itemId, int moduleid, string langRequired)
+        public ArticleLimpet(string xmlExportItem)
         {
             Info = new SimplisityInfo();
-            Info.ItemID = itemId;
+            Info.FromXmlItem(xmlExportItem);
+        }
+        public ArticleLimpet(int articleId, int moduleid, string langRequired)
+        {
+            if (articleId <= 0) articleId = -1;  // create new record.
+            _articleId = articleId;
+            Info = new SimplisityInfo();
+            Info.ItemID = articleId;
             Info.TypeCode = _entityTypeCode;
             Info.ModuleId = moduleid;
+            Info.UserId = -1;
+            Info.PortalId = PortalUtils.GetPortalId();
 
             _objCtrl = new DNNrocketController();
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
-            Populate();
+            Populate(_langRequired);
         }
-        private void Populate()
+        private void Populate(string langRequired)
         {
-            if (ItemID <= 0)
-            {
-                    Update(); // create new record
-            }
-            Info = _objCtrl.GetData(_entityTypeCode, ItemID, _langRequired, ModuleId, _tableName); // get existing record.
+            _objCtrl = new DNNrocketController();
+            _langRequired = langRequired;
+            if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
+
+            var info = _objCtrl.GetData(_entityTypeCode, _articleId, _langRequired, ModuleId, _tableName); // get existing record.
+            if (info != null && info.ItemID > 0) Info = info; // check if we have a real record, or a dummy being created and not saved yet.
         }
+
+
         public void Delete()
         {
             _objCtrl.Delete(Info.ItemID, _tableName);
@@ -62,7 +75,7 @@ namespace RocketMod
         public int ModuleId { get { return Info.ModuleId; } set { Info.ModuleId = value; } }
         public int XrefItemId { get { return Info.XrefItemId; } set { Info.XrefItemId = value; } }
         public int ParentItemId { get { return Info.ParentItemId; } set { Info.ParentItemId = value; } }
-        public int ItemID { get { return Info.ItemID; } set { Info.ItemID = value; } }
+        public int ArticleId { get { return Info.ItemID; } set { Info.ItemID = value; } }
         public string GUIDKey { get { return Info.GUIDKey; } set { Info.GUIDKey = value; } }
         public int SortOrder { get { return Info.SortOrder; } set { Info.SortOrder = value; } }
         public string ImageFolder { get; set; }

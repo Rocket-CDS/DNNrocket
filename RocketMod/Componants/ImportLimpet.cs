@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace RocketMod.Componants
 {
-    public class ImportData
+    public class ImportLimpet
     {
         private DNNrocketController _objCtrl;
         private SimplisityInfo _importInfo;
@@ -18,7 +18,7 @@ namespace RocketMod.Componants
         private string _tablename;
 
 
-        public ImportData(DNNrocketInterface rocketInterface, int portalid, int moduleId, int oldmoduleId, string content)
+        public ImportLimpet(DNNrocketInterface rocketInterface, int portalid, int moduleId, int oldmoduleId, string content)
         {
             _rocketInterface = rocketInterface;
             _importInfo = new SimplisityInfo();

@@ -8,7 +8,7 @@
 @AddProcessData("resourcepath", "[Token:appthemeresx]")
 
 @{
-    var articleDataList = (ArticleDataList)Model.List.First();
+    var articleLimpetList = (ArticleLimpetList)Model.List.First();
 }
 
 <div class=''>
@@ -37,7 +37,7 @@
             @{
                 var lp1 = 0;
             }
-            @foreach (SimplisityInfo info in articleDataList.DataList)
+            @foreach (SimplisityInfo info in articleLimpetList.DataList)
             {
                 lp1 += 1;
                 <li class="datalistitem w3-display-container">

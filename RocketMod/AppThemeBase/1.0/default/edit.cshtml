@@ -12,10 +12,10 @@
 
 @{
     var info = new SimplisityInfo();
-    var articleData = (ArticleData)Model.List.First();
-    if (articleData.Info != null)
+    var articleLimpet = (ArticleLimpet)Model.List.First();
+    if (articleLimpet.Info != null)
     {
-        info = articleData.Info;
+        info = articleLimpet.Info;
     }
     var animate = "w3-animate-right";
     if (Model.GetSettingBool("stopanimate"))

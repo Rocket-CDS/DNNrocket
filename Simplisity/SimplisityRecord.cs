@@ -539,19 +539,23 @@ namespace Simplisity
         {
             var stringBuilder = new StringBuilder();
 
-            var element = XElement.Parse(XMLData);
-
-            var settings = new XmlWriterSettings();
-            settings.OmitXmlDeclaration = true;
-            settings.Indent = true;
-            settings.NewLineOnAttributes = true;
-
-            using (var xmlWriter = XmlWriter.Create(stringBuilder, settings))
+            if (XMLData != "")
             {
-                element.Save(xmlWriter);
-            }
+                var element = XElement.Parse(XMLData);
 
-            return stringBuilder.ToString();
+                var settings = new XmlWriterSettings();
+                settings.OmitXmlDeclaration = true;
+                settings.Indent = true;
+                settings.NewLineOnAttributes = true;
+
+                using (var xmlWriter = XmlWriter.Create(stringBuilder, settings))
+                {
+                    element.Save(xmlWriter);
+                }
+
+                return stringBuilder.ToString();
+            }
+            return "";
         }
 
 

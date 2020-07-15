@@ -36,11 +36,11 @@ namespace RocketMod
         private int _selectedItemId;
         private AppThemeModule _appThemeMod;
         private AppThemeModule _dataAppThemeMod;
-        private ArticleData _articleData;
+        private ArticleLimpet _articleLimpet;
         private AppThemeDataList _appThemeDataList;
         private UserParams _userParams;
         private string _tableName;
-        private ArticleDataList _articleDataList;
+        private ArticleLimpetList _articleLimpetList;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -290,6 +290,9 @@ namespace RocketMod
 
             _paramInfo = paramInfo;
 
+            var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
+            if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
+
             _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
             _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
@@ -378,7 +381,7 @@ namespace RocketMod
                 }
             }
 
-            _articleDataList = new ArticleDataList(_paramInfo, _editLang, false);
+            _articleLimpetList = new ArticleLimpetList(_paramInfo, _editLang, false);
 
 
             return paramCmd;
@@ -536,8 +539,8 @@ namespace RocketMod
         {
             var documentref = _paramInfo.GetXmlProperty("genxml/hidden/document");
             var documentlistname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
-            _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
-            var docInfo = _articleData.Info.GetListItem(documentlistname, "genxml/lang/genxml/hidden/document", documentref);
+            _articleLimpet = new ArticleLimpet(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
+            var docInfo = _articleLimpet.Info.GetListItem(documentlistname, "genxml/lang/genxml/hidden/document", documentref);
             var filepath = docInfo.GetXmlProperty("genxml/lang/genxml/hidden/reldocument");
             var namedocument = docInfo.GetXmlProperty("genxml/lang/genxml/hidden/namedocument");
             var rtnDic = new Dictionary<string, object>();
@@ -551,12 +554,12 @@ namespace RocketMod
             // do Backup
             if (doBackup) DoBackUp();
 
-             _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
+             _articleLimpet = new ArticleLimpet(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
             
             // do Save
             _passSettings.Add("saved", "true");
-            _articleData.DebugMode = _systemData.DebugMode;
-            _articleData.Save(_postInfo);
+            _articleLimpet.DebugMode = _systemData.DebugMode;
+            _articleLimpet.Save(_postInfo);
 
             DNNrocketUtils.SynchronizeModule(_moduleid); // Modified Date
             CacheFileUtils.ClearAllCache();
@@ -578,7 +581,7 @@ namespace RocketMod
                     var selectitemid = info.GetXmlPropertyInt("genxml/hidden/itemid");
                     if (selectitemid > 0)
                     {
-                        var art = new ArticleData(selectitemid, _dataModuleParams.ModuleId, _editLang);
+                        var art = new ArticleLimpet(selectitemid, _dataModuleParams.ModuleId, _editLang);
                         art.SortOrder = lp;
                         art.Update();
                         lp += 1;
@@ -590,8 +593,8 @@ namespace RocketMod
 
         public void DeleteArticle()
         {
-            _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
-            _articleData.Delete();
+            _articleLimpet = new ArticleLimpet(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
+            _articleLimpet.Delete();
             _selectedItemId = -1;
             _userParams.TrackClear(_systemKey);
             _userParams.Save();
@@ -603,13 +606,9 @@ namespace RocketMod
         {
             try
             {
-                var articleData = new ArticleData(-1, _dataModuleParams.ModuleId, _editLang);
-                _selectedItemId = articleData.ItemID;
-
+                var articleLimpet = new ArticleLimpet(-1, _dataModuleParams.ModuleId, _editLang);
                 CacheFileUtils.ClearAllCache();
-
-                var strOut = GetArticle();
-
+                var strOut = GetArticle(articleLimpet);
                 return strOut;
             }
             catch (Exception ex)
@@ -623,20 +622,10 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang(); //check for change of langauge
-                if (_dataAppThemeMod.AppTheme.DataType == 1)
-                {
-                    return GetArticle();
-                }
+                if (_selectedItemId <= 0) 
+                    return GetArticleList();
                 else
-                {
-                    if (_selectedItemId <= 0)
-                    {
-                        return GetArticleList();
-                    }
-
                     return GetArticle();
-                }
             }
             catch (Exception ex)
             {
@@ -646,10 +635,11 @@ namespace RocketMod
         }
 
 
-        public String GetArticle()
+        public String GetArticle(ArticleLimpet articleLimpet = null)
         {
             try
             {
+                _articleLimpet = articleLimpet;
                 var razorTempl = _appThemeMod.GetTemplateRazor("edit.cshtml");
                 if (_moduleParams.DataSourceExternal)
                 {
@@ -658,23 +648,14 @@ namespace RocketMod
 
                 var strOut = "-- NO DATA -- Itemid: " + _selectedItemId;
 
-                if (_selectedItemId <= 0)
-                {
-                    _articleDataList.Populate();
-                    if (_articleDataList.DataList.Count() > 0)
-                    {
-                        var articleData = _articleDataList.GetArticleList().First();
-                        _selectedItemId = articleData.ItemID;
-                    }
-                }
+                if (_articleLimpet == null) _articleLimpet = new ArticleLimpet(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
 
-                 _articleData = new ArticleData(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
-                _articleData.ImageFolder = _dataModuleParams.ImageFolder;
-                _articleData.DocumentFolder = _dataModuleParams.DocumentFolder;
-                _articleData.AppTheme = _dataModuleParams.AppThemeFolder;
-                _articleData.AppThemeVersion = _dataModuleParams.AppThemeVersion;
-                _articleData.AppThemeRelPath = _dataModuleParams.AppThemeFolderRel;
-                _articleData.AppThemeDataType = _dataAppThemeMod.AppTheme.DataType;
+                _articleLimpet.ImageFolder = _dataModuleParams.ImageFolder;
+                _articleLimpet.DocumentFolder = _dataModuleParams.DocumentFolder;
+                _articleLimpet.AppTheme = _dataModuleParams.AppThemeFolder;
+                _articleLimpet.AppThemeVersion = _dataModuleParams.AppThemeVersion;
+                _articleLimpet.AppThemeRelPath = _dataModuleParams.AppThemeFolderRel;
+                _articleLimpet.AppThemeDataType = _dataAppThemeMod.AppTheme.DataType;
 
                 _passSettings.Add("datatype", _dataAppThemeMod.AppTheme.DataType.ToString());
 
@@ -703,7 +684,7 @@ namespace RocketMod
                     if (!_passSettings.ContainsKey(s.Key)) _passSettings.Add(s.Key, s.Value);
                 }
 
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleData, _passSettings, new SessionParams(_paramInfo), _systemData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleLimpet, _passSettings, new SessionParams(_paramInfo), _systemData.DebugMode);
 
                 return strOut;
             }
@@ -721,12 +702,12 @@ namespace RocketMod
             {
                 var strOut = "";
 
-                _articleDataList.Populate();
+                _articleLimpetList.Populate();
 
                 var debugmode = false;
                 if (_systemData.DebugMode || _moduleParams.CacheDisbaled) debugmode = true;
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", "/DesktopModules/DNNrocket/SystemThemes/" + _systemData.SystemKey, _dataModuleParams.AppThemeFolder, _editLang, _dataModuleParams.AppThemeVersion, debugmode);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleDataList, _passSettings, new SessionParams(_paramInfo), _systemData.DebugMode);
+                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleLimpetList, _passSettings, new SessionParams(_paramInfo), _systemData.DebugMode);
                 return strOut;
             }
             catch (Exception ex)
@@ -752,7 +733,6 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang(); //check for change of langauge
                 var fieldsData = GetFieldsData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
@@ -811,7 +791,6 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang(); //check for change of langauge
                 var settingsData = GetSettingsData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
@@ -875,7 +854,7 @@ namespace RocketMod
         {
             try
             {
-                _articleDataList.SortOrderReIndex();
+                _articleLimpetList.SortOrderReIndex();
                 return GetDashBoard();
             }
             catch (Exception ex)
@@ -885,18 +864,18 @@ namespace RocketMod
         }
         public String ActivateSortOrder()
         {
-            _articleDataList.SessionParamData.ActivateItemSort(_paramInfo.GetXmlPropertyInt("genxml/hidden/itemid"));
+            _articleLimpetList.SessionParamData.ActivateItemSort(_paramInfo.GetXmlPropertyInt("genxml/hidden/itemid"));
             return GetArticleList();
         }
         public String CancelSortOrder()
         {
-            _articleDataList.SessionParamData.CancelItemSort();
+            _articleLimpetList.SessionParamData.CancelItemSort();
             return GetArticleList();
         }
         public String MoveSortOrder()
         {
             var toId = _paramInfo.GetXmlPropertyInt("genxml/hidden/itemid");
-            _articleDataList.SortOrderMove(toId);
+            _articleLimpetList.SortOrderMove(toId);
             return GetArticleList();
         }
 
@@ -904,7 +883,7 @@ namespace RocketMod
         {
             try
             {
-                _articleDataList.DeleteAll();
+                _articleLimpetList.DeleteAll();
                 return GetDashBoard();
             }
             catch (Exception ex)
@@ -916,7 +895,6 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang(); //check for change of langauge
                 var appTheme = new AppTheme(_systemData.SystemKey, _moduleParams.AppThemeFolder, _moduleParams.AppThemeVersion);
                 if (!appTheme.EnableSettings) return "";
                 var razorTempl = appTheme.GetTemplate("settings.cshtml"); // new module, so settings theme will be systemtheme.
@@ -933,7 +911,6 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang(); //check for change of langauge
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "dashboard.cshtml";
@@ -993,7 +970,6 @@ namespace RocketMod
         {
             try
             {
-                AssignEditLang(); //check for change of langauge
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "apptheme.cshtml";
@@ -1086,7 +1062,7 @@ namespace RocketMod
 
                         var razorTempl = _appThemeMod.GetTemplateRazor("detail.cshtml");
 
-                        var articleData = new ArticleData(itemid, _dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
+                        var articleLimpet = new ArticleLimpet(itemid, _dataModuleParams.ModuleId, DNNrocketUtils.GetCurrentCulture());
 
                         foreach (var s in _moduleParams.ModuleSettings)
                         {
@@ -1099,7 +1075,7 @@ namespace RocketMod
 
                         passSettings.Add("tabid", _tabid.ToString());
 
-                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleData, passSettings.DictionaryData);
+                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleLimpet, passSettings.DictionaryData);
 
                     }
                     else
@@ -1107,7 +1083,7 @@ namespace RocketMod
                         // list display
                         var razorTempl = _appThemeMod.GetTemplateRazor("view.cshtml");
 
-                        var articleDataList = new ArticleDataList(_paramInfo, DNNrocketUtils.GetCurrentCulture(), true);
+                        var articleLimpetList = new ArticleLimpetList(_paramInfo, DNNrocketUtils.GetCurrentCulture(), true);
 
                         foreach (var s in _moduleParams.ModuleSettings)
                         {
@@ -1120,7 +1096,7 @@ namespace RocketMod
 
                         passSettings.Add("tabid", _tabid.ToString());
 
-                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleDataList, passSettings.DictionaryData, new SessionParams(_paramInfo));
+                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleLimpetList, passSettings.DictionaryData, new SessionParams(_paramInfo));
                     }
 
 
@@ -1175,23 +1151,18 @@ namespace RocketMod
 
         private string ExportData()
         {
-            var exportData = new ExportData(_rocketInterface, _moduleid, _systemKey);
+            var exportData = new ExportLimpet(_rocketInterface, _moduleid, _systemKey);
             return exportData.GetXml();
         }
         private void ImportData()
         {
             var oldmoduleid = _postInfo.GetXmlPropertyInt("export/moduleid");
             var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
-            var importData = new ImportData(_rocketInterface, portalid, _moduleid, oldmoduleid, _postInfo.XMLData);
+            var importData = new ImportLimpet(_rocketInterface, portalid, _moduleid, oldmoduleid, _postInfo.XMLData);
             CacheUtilsDNN.ClearAllCache();
             DNNrocketUtils.ClearAllCache();
         }
 
-        private void AssignEditLang()
-        {
-            var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
-            if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
-        }
         private void CopyLanguage()
         {
             var objCtrl = new DNNrocketController();
@@ -1208,13 +1179,13 @@ namespace RocketMod
                 if (backup)
                 {
                     var saveList = new List<SimplisityInfo>();
-                    var l2 = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "MODULEPARAMS", " and r1.XmlData.value('(genxml/hidden/moduletype)[1]','nvarchar(max)') = 'RocketMod'");
+                    var l2 = objCtrl.GetList(PortalUtils.GetPortalId(), -1, "MODULEPARAMS", " and r1.XmlData.value('(genxml/hidden/moduletype)[1]','nvarchar(max)') = 'RocketMod'");
                     foreach (var sInfo in l2)
                     {
                         var moduleParams = new ModuleParams(sInfo.ModuleId, _systemKey);
                         if (DNNrocketUtils.ModuleExists(moduleParams.TabId, sInfo.ModuleId) && !DNNrocketUtils.ModuleIsDeleted(moduleParams.TabId, sInfo.ModuleId))
                         {
-                            var exportData = new ExportData(_rocketInterface, moduleParams.ModuleId, moduleParams.SystemKey);
+                            var exportData = new ExportLimpet(_rocketInterface, moduleParams.ModuleId, moduleParams.SystemKey);
                             foreach (var s in exportData.GetList())
                             {
                                 saveList.Add(s);
@@ -1228,7 +1199,7 @@ namespace RocketMod
 
 
                 // copy language
-                var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "ROCKETMODLANG", " and r1.Lang = '" + copylanguage + "'","","",0,0,0,0, _tableName);
+                var l = objCtrl.GetList(PortalUtils.GetPortalId(), -1, "ROCKETMODLANG", " and r1.Lang = '" + copylanguage + "'","","",0,0,0,0, _tableName);
                 foreach (var sInfo in l)
                 {
                     var objRecLang = objCtrl.GetRecordLang(sInfo.ParentItemId, destinationlanguage, _tableName);
@@ -1259,7 +1230,7 @@ namespace RocketMod
 
             // remove deleted modules
             var filter = "and r1.XMlData.value('(genxml/hidden/systemkey)[1]','nvarchar(max)') = '" + _systemKey + "' ";
-            var dirlist = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, "MODULEPARAMS", filter);
+            var dirlist = objCtrl.GetList(PortalUtils.GetPortalId(), -1, "MODULEPARAMS", filter);
             foreach (var sInfo in dirlist)
             {
                 var moduleParams = new ModuleParams(sInfo.ModuleId, _systemKey);
@@ -1397,7 +1368,7 @@ namespace RocketMod
                 var saveList = new List<SimplisityInfo>();
                 if (DNNrocketUtils.ModuleExists(_moduleParams.TabId, _moduleid) && !DNNrocketUtils.ModuleIsDeleted(_moduleParams.TabId, _moduleParams.ModuleId))
                 {
-                    var exportData = new ExportData(_rocketInterface, _moduleParams.ModuleId, _moduleParams.SystemKey);
+                    var exportData = new ExportLimpet(_rocketInterface, _moduleParams.ModuleId, _moduleParams.SystemKey);
                     foreach (var s in exportData.GetList())
                     {
                         saveList.Add(s);
