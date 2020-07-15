@@ -45,7 +45,7 @@ namespace DNNrocket.Country
             try
             {
                 var razorTempl = DNNrocketUtils.GetRazorTemplateData(rocketInterface.DefaultTemplate, rocketInterface.TemplateRelPath, rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                var countryData = new CountryData(PortalUtils.GetPortalId(), rocketInterface);
+                var countryData = new CountryLimpet(PortalUtils.GetPortalId(), rocketInterface);
 
                 var passSettings = new Dictionary<string, string>();
                 if (saved) passSettings.Add("saved", "true");
@@ -60,7 +60,7 @@ namespace DNNrocket.Country
 
         public static void CountrySave(SimplisityInfo postInfo, DNNrocketInterface rocketInterface)
         {
-            var countryData = new CountryData(PortalUtils.GetPortalId(), rocketInterface);
+            var countryData = new CountryLimpet(PortalUtils.GetPortalId(), rocketInterface);
             countryData.Save(postInfo);
         }
 
@@ -68,7 +68,7 @@ namespace DNNrocket.Country
 
         public static string CountryListJson(DNNrocketInterface rocketInterface, bool allowempty = true)
         {
-            var countryData = new CountryData(PortalUtils.GetPortalId(), rocketInterface);
+            var countryData = new CountryLimpet(PortalUtils.GetPortalId(), rocketInterface);
             var jsonList = new List<ValuePair>();
             var valuePair = new ValuePair();
             if (allowempty)

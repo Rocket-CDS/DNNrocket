@@ -7,11 +7,11 @@ using System.Text;
 
 namespace DNNrocket.Country.Componants
 {
-    public class CountryData
+    public class CountryLimpet
     {
         private DNNrocketController _objCtrl;
 
-        public CountryData(int portalId, DNNrocketInterface rocketInterface, string cultureCode = "")
+        public CountryLimpet(int portalId, DNNrocketInterface rocketInterface, string cultureCode = "")
         {
             RocketInterface = rocketInterface;
             SystemKey = RocketInterface.SystemKey;
