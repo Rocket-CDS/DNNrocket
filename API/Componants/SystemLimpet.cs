@@ -10,21 +10,27 @@ namespace DNNrocketAPI.Componants
 {
     public class SystemLimpet
     {
+        private DNNrocketController _objCtrl;
         public SystemLimpet(string systemKey)
         {
-            var objCtrl = new DNNrocketController();
-            var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemKey);
+            var systemInfo = (SimplisityInfo)CacheUtils.GetCache(systemKey); // use cache for SystemKey read.
+            if (systemInfo == null)
+            {
+                _objCtrl = new DNNrocketController();
+                systemInfo = _objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemKey);
+            }
             InitSystem(systemInfo);
         }
         public SystemLimpet(int systemId)
         {
-            var objCtrl = new DNNrocketController();
-            var systemInfo = objCtrl.GetInfo(systemId);
+            // always read from DB when systemId is used to construct Limpet
+            _objCtrl = new DNNrocketController();
+            var systemInfo = _objCtrl.GetInfo(systemId);
             InitSystem(systemInfo);
         }
         public SystemLimpet(SimplisityInfo systemInfo)
         {
-            InitSystem(systemInfo);
+            InitSystem(systemInfo);        
         }
         private void InitSystem(SimplisityInfo systemInfo)
         {
@@ -128,8 +134,6 @@ namespace DNNrocketAPI.Componants
 
         public void Save(SimplisityInfo postInfo)
         {
-            var objCtrl = new DNNrocketController();
-
             //remove any params
             postInfo.RemoveXmlNode("genxml/urlparams");
 
@@ -151,8 +155,8 @@ namespace DNNrocketAPI.Componants
             Update();
 
             // Capture existing SYSTEMLINK records, so we can selectivly delete. To protect the system during operation, so records are always there.
-            var systemlinklist = objCtrl.GetList(Info.PortalId, -1, "SYSTEMLINK");
-            var systemlinkidxlist = objCtrl.GetList(Info.PortalId, -1, "SYSTEMLINKIDX");
+            var systemlinklist = _objCtrl.GetList(Info.PortalId, -1, "SYSTEMLINK");
+            var systemlinkidxlist = _objCtrl.GetList(Info.PortalId, -1, "SYSTEMLINKIDX");
             var newsystemlinklist = new List<int>();
             var newsystemlinkidxlist = new List<int>();
 
@@ -174,7 +178,7 @@ namespace DNNrocketAPI.Componants
                     }
                     xmldata += "</genxml>";
 
-                    var idxinfo = objCtrl.GetByGuidKey(Info.PortalId, Info.ItemID, "SYSTEMLINK", entityguidkey); // use system id as moduleid
+                    var idxinfo = _objCtrl.GetByGuidKey(Info.PortalId, Info.ItemID, "SYSTEMLINK", entityguidkey); // use system id as moduleid
                     if (idxinfo == null)
                     {
                         idxinfo = new SimplisityInfo();
@@ -184,14 +188,14 @@ namespace DNNrocketAPI.Componants
                         idxinfo.XMLData = xmldata;
                         idxinfo.ParentItemId = Info.ItemID;
                         idxinfo.ModuleId = Info.ItemID;
-                        var itemid = objCtrl.SaveRecord(idxinfo).ItemID;
+                        var itemid = _objCtrl.SaveRecord(idxinfo).ItemID;
                         idxinfo.ItemID = itemid;
                     }
                     else
                     {
                         idxinfo.ParentItemId = Info.ItemID;
                         idxinfo.XMLData = xmldata;
-                        objCtrl.SaveRecord(idxinfo);
+                        _objCtrl.SaveRecord(idxinfo);
                     }
                     newsystemlinklist.Add(idxinfo.ItemID);
                     entityList.Add(entityguidkey);
@@ -208,7 +212,7 @@ namespace DNNrocketAPI.Componants
                         {
                             typecodeIdx = i2.GetXmlProperty("genxml/dropdownlist/entitytypecode");
                         }
-                        var idxinfo2 = objCtrl.GetByGuidKey(Info.PortalId, Info.ItemID, "SYSTEMLINK" + typecodeIdx, idxref);
+                        var idxinfo2 = _objCtrl.GetByGuidKey(Info.PortalId, Info.ItemID, "SYSTEMLINK" + typecodeIdx, idxref);
                         if (idxinfo2 == null)
                         {
                             idxinfo2 = new SimplisityInfo();
@@ -219,7 +223,7 @@ namespace DNNrocketAPI.Componants
                             idxinfo2.ModuleId = Info.ItemID;
                             idxinfo2.XMLData = i2.XMLData;
                             idxinfo2.TextData = typecodeIdx;
-                            var itemid = objCtrl.SaveRecord(idxinfo2).ItemID;
+                            var itemid = _objCtrl.SaveRecord(idxinfo2).ItemID;
                             idxinfo2.ItemID = itemid;
                         }
                         else
@@ -227,7 +231,7 @@ namespace DNNrocketAPI.Componants
                             idxinfo2.ParentItemId = idxinfo.ItemID;
                             idxinfo2.XMLData = i2.XMLData;
                             idxinfo2.TextData = typecodeIdx;
-                            objCtrl.SaveRecord(idxinfo2);
+                            _objCtrl.SaveRecord(idxinfo2);
                         }
                         newsystemlinkidxlist.Add(idxinfo2.ItemID);
                     }
@@ -239,14 +243,14 @@ namespace DNNrocketAPI.Componants
             {
                 if (!newsystemlinklist.Contains(sl.ItemID))
                 {
-                    objCtrl.Delete(sl.ItemID);
+                    _objCtrl.Delete(sl.ItemID);
                 }
             }
             foreach (var sl in systemlinkidxlist)
             {
                 if (!newsystemlinkidxlist.Contains(sl.ItemID))
                 {
-                    objCtrl.Delete(sl.ItemID);
+                    _objCtrl.Delete(sl.ItemID);
                 }
             }
 
@@ -297,6 +301,7 @@ namespace DNNrocketAPI.Componants
         {
             var objCtrl = new DNNrocketController();
             objCtrl.Update(Info);
+            if (SystemKey != "") CacheUtils.SetCache(SystemKey, Info);
         }
 
         public string SystemKey
