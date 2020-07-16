@@ -175,9 +175,9 @@ namespace DNNrocketAPI.Componants
             {
                 sInfo.SetXmlProperty("genxml/securityaccess", "You do not have security access");
             }
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData("LoginForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData("LoginForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
             sInfo.SetXmlProperty("genxml/interfacekey", interfacekey); // make sure the login form has the correct interface command.
-            return DNNrocketUtils.RazorDetail(razorTempl, sInfo);
+            return RenderRazorUtils.RazorDetail(razorTempl, sInfo);
         }
 
         public static string RegisterForm(SimplisityInfo systemInfo, SimplisityInfo sInfo, string interfacekey, int userid)
@@ -194,9 +194,9 @@ namespace DNNrocketAPI.Componants
             {
                 sInfo.SetXmlProperty("genxml/securityaccess", "You do not have security access");
             }
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData("RegisterForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData("RegisterForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
             sInfo.SetXmlProperty("genxml/interfacekey", interfacekey); // make sure the login form has the correct interface command.
-            return DNNrocketUtils.RazorDetail(razorTempl, sInfo);
+            return RenderRazorUtils.RazorDetail(razorTempl, sInfo);
         }
 
         public static string RegisterUser(SimplisityInfo sInfo, string currentCulture = "")

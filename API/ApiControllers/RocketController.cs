@@ -328,15 +328,15 @@ namespace DNNrocketAPI.ApiControllers
                 var templateControlRelPath = sInfo.GetXmlProperty("genxml/hidden/relpath");
                 sidemenu.ModuleId = moduleid;
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
 
                 if (razorTempl == "")
                 {
                     // no razor template for sidemenu, so use default.
-                    razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
+                    razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
                 }
 
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, sidemenu, passSettings, null, systemData.DebugMode);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, sidemenu, passSettings, null, systemData.DebugMode);
 
                 return strOut;
             }

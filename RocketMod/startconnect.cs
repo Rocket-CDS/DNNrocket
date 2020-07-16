@@ -684,7 +684,7 @@ namespace RocketMod
                     if (!_passSettings.ContainsKey(s.Key)) _passSettings.Add(s.Key, s.Value);
                 }
 
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleLimpet, _passSettings, new SessionParams(_paramInfo), _systemData.DebugMode);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, _articleLimpet, _passSettings, new SessionParams(_paramInfo), _systemData.DebugMode);
 
                 return strOut;
             }
@@ -706,8 +706,8 @@ namespace RocketMod
 
                 var debugmode = false;
                 if (_systemData.DebugMode || _moduleParams.CacheDisbaled) debugmode = true;
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", "/DesktopModules/DNNrocket/SystemThemes/" + _systemData.SystemKey, _dataModuleParams.AppThemeFolder, _editLang, _dataModuleParams.AppThemeVersion, debugmode);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, _articleLimpetList, _passSettings, new SessionParams(_paramInfo), _systemData.DebugMode);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData("editlist.cshtml", "/DesktopModules/DNNrocket/SystemThemes/" + _systemData.SystemKey, _dataModuleParams.AppThemeFolder, _editLang, _dataModuleParams.AppThemeVersion, debugmode);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, _articleLimpetList, _passSettings, new SessionParams(_paramInfo), _systemData.DebugMode);
                 return strOut;
             }
             catch (Exception ex)
@@ -736,8 +736,8 @@ namespace RocketMod
                 var fieldsData = GetFieldsData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, _editLang, "1.0", _systemData.DebugMode);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, fieldsData, passSettings, null, _systemData.DebugMode);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, _editLang, "1.0", _systemData.DebugMode);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, fieldsData, passSettings, null, _systemData.DebugMode);
 
                 if (strOut == "") strOut = "ERROR: No data returned for EditfieldsData() : " + _rocketInterface.TemplateRelPath + "/Themes/" + _rocketInterface.DefaultTheme + "/default/" + _rocketInterface.DefaultTemplate;
                 return strOut;
@@ -794,8 +794,8 @@ namespace RocketMod
                 var settingsData = GetSettingsData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetEditCulture(), "1.0", _systemData.DebugMode);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, settingsData, passSettings);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(_rocketInterface.DefaultTemplate, _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetEditCulture(), "1.0", _systemData.DebugMode);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, settingsData, passSettings);
 
                 if (strOut == "") strOut = "ERROR: No data returned for EditSettingsData() : " + _rocketInterface.TemplateRelPath + "/Themes/" + _rocketInterface.DefaultTheme + "/default/" + _rocketInterface.DefaultTemplate;
                 return strOut;
@@ -899,7 +899,7 @@ namespace RocketMod
                 if (!appTheme.EnableSettings) return "";
                 var razorTempl = appTheme.GetTemplate("settings.cshtml"); // new module, so settings theme will be systemtheme.
                 _settingsData = GetSettingsData();
-                return DNNrocketUtils.RazorDetail(razorTempl, _settingsData, _passSettings, null, true);
+                return RenderRazorUtils.RazorDetail(razorTempl, _settingsData, _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -914,8 +914,8 @@ namespace RocketMod
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "dashboard.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, _moduleParams, _passSettings,null,true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, _moduleParams, _passSettings,null,true);
             }
             catch (Exception ex)
             {
@@ -932,8 +932,8 @@ namespace RocketMod
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "selectdatasource.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, mp, _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, mp, _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -975,9 +975,9 @@ namespace RocketMod
                 var razortemplate = "apptheme.cshtml";
                 var appThemeMod = new AppThemeModule(_moduleid, _systemData.SystemKey);
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, appThemeMod, _passSettings, null, true);
+                return RenderRazorUtils.RazorDetail(razorTempl, appThemeMod, _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -1017,11 +1017,11 @@ namespace RocketMod
                     _appThemeDataList = new AppThemeDataList(_systemData.SystemKey);
 
                     var razortemplate = "selectapp.cshtml";
-                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(),"1.0", true);
+                    var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, _rocketModRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(),"1.0", true);
                     var passSettings = _postInfo.ToDictionary();
                     if (!passSettings.ContainsKey("moduleid")) passSettings.Add("moduleid", _moduleParams.ModuleId.ToString());
 
-                    return DNNrocketUtils.RazorDetail(razorTempl, _appThemeDataList, passSettings, null, true);
+                    return RenderRazorUtils.RazorDetail(razorTempl, _appThemeDataList, passSettings, null, true);
                 }
                 else
                 {
@@ -1075,7 +1075,7 @@ namespace RocketMod
 
                         passSettings.Add("tabid", _tabid.ToString());
 
-                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleLimpet, passSettings.DictionaryData);
+                        strOut = RenderRazorUtils.RazorDetail(razorTempl, articleLimpet, passSettings.DictionaryData);
 
                     }
                     else
@@ -1096,7 +1096,7 @@ namespace RocketMod
 
                         passSettings.Add("tabid", _tabid.ToString());
 
-                        strOut = DNNrocketUtils.RazorDetail(razorTempl, articleLimpetList, passSettings.DictionaryData, new SessionParams(_paramInfo));
+                        strOut = RenderRazorUtils.RazorDetail(razorTempl, articleLimpetList, passSettings.DictionaryData, new SessionParams(_paramInfo));
                     }
 
 
@@ -1120,8 +1120,8 @@ namespace RocketMod
             try
             {
                 _rocketInterface.Info.ModuleId = _moduleid;
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",_systemData.DebugMode);                
-                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info,_passSettings, null, _systemData.DebugMode);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",_systemData.DebugMode);                
+                return RenderRazorUtils.RazorDetail(razorTempl, _rocketInterface.Info,_passSettings, null, _systemData.DebugMode);
             }
             catch (Exception ex)
             {
@@ -1136,7 +1136,7 @@ namespace RocketMod
                 if (_moduleParams.Exists)
                 {
                     var themeFolder = _moduleParams.AppThemeFolder;
-                    var razorTempl = DNNrocketUtils.GetRazorTemplateData("editlist.cshtml", _appthemeRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                    var razorTempl = RenderRazorUtils.GetRazorTemplateData("editlist.cshtml", _appthemeRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
                     if (razorTempl != "") return true;
                 }
                 return false;
@@ -1262,8 +1262,8 @@ namespace RocketMod
 
                 if (_appThemeMod.IsModuleLevelTemplate(fname)) _passSettings.Add("moduletemplatebutton", "True");
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("EditorPopUp.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorObjectRender(razorTempl, _appThemeMod.AppTheme, null, _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData("EditorPopUp.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorObjectRender(razorTempl, _appThemeMod.AppTheme, null, _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -1279,8 +1279,8 @@ namespace RocketMod
                 _rocketInterface.Info.ModuleId = _moduleid;
                 if (_passSettings.ContainsKey("searchpattern")) _passSettings.Remove("searchpattern");
                 _passSettings.Add("searchpattern", "*_backup.xml");
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("backup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info, _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData("backup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, _rocketInterface.Info, _passSettings, null, true);
             }
             catch (Exception ex)
             {

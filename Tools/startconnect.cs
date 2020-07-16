@@ -163,8 +163,8 @@ namespace Rocket.Tools
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "language.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -244,8 +244,8 @@ namespace Rocket.Tools
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "clones.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -281,8 +281,8 @@ namespace Rocket.Tools
 
                 CacheUtilsDNN.SetCache(_pageref, info);
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -298,8 +298,8 @@ namespace Rocket.Tools
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "clonesdestination.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -331,8 +331,8 @@ namespace Rocket.Tools
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "clonesok.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -366,8 +366,8 @@ namespace Rocket.Tools
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "roleselectsection.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -399,8 +399,8 @@ namespace Rocket.Tools
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "rolesmodulesection.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, info, _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -415,8 +415,8 @@ namespace Rocket.Tools
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "roles.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -430,8 +430,8 @@ namespace Rocket.Tools
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "rolesok.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -483,8 +483,8 @@ namespace Rocket.Tools
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "actions.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -533,8 +533,8 @@ namespace Rocket.Tools
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "account.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
             }
             catch (Exception ex)
             {

@@ -91,151 +91,6 @@ namespace DNNrocketAPI.Componants
         }
 
 
-        public static string RazorRender(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
-        {
-            var errorPath = "";
-            var result = "";
-            var errmsg = "";
-            try
-            {
-                if (razorTempl == null || razorTempl == "") return "";
-                var service = (IRazorEngineService)HttpContext.Current.Application.Get("DNNrocketIRazorEngineService");
-                if (service == null)
-                {
-                    // do razor test
-                    var config = new TemplateServiceConfiguration();
-                    config.Debug = debugMode;
-                    config.BaseTemplateType = typeof(RazorEngineTokens<>);
-                    service = RazorEngineService.Create(config);
-                    HttpContext.Current.Application.Set("DNNrocketIRazorEngineService", service);
-                }
-                Engine.Razor = service;
-                var hashCacheKey = GetMd5Hash(razorTempl);
-
-                var israzorCached = CacheUtilsDNN.GetCache(razorTempl); // get a cache flag for razor compile.
-                if (israzorCached == null || (string)israzorCached != razorTempl || debugMode)
-                {
-                    errorPath += "RunCompile1>";
-                    result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                    CacheUtilsDNN.SetCache(razorTempl, razorTempl);
-                }
-                else
-                {
-                    try
-                    {
-                        errorPath += "Run>";
-                        result = Engine.Razor.Run(hashCacheKey, null, model);
-                    }
-                    catch (Exception ex)
-                    {
-                        errmsg = ex.ToString();
-                        errorPath += "RunCompile2>";
-                        result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                        CacheUtilsDNN.SetCache(razorTempl, razorTempl);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                CacheUtilsDNN.ClearAllCache();
-                result = "CANNOT REBUILD TEMPLATE: errorPath=" + errorPath + " - " + ex.ToString() + " -------> " + result + " [" + errmsg + "]";
-            }
-
-            return result;
-        }
-
-
-        public static string GetMd5Hash(string input)
-        {
-            if (input != "")
-            {
-                var md5 = MD5.Create();
-                var inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-                var hash = md5.ComputeHash(inputBytes);
-                var sb = new StringBuilder();
-                foreach (byte t in hash)
-                {
-                    sb.Append(t.ToString("X2"));
-                }
-                return sb.ToString();
-            }
-            return "";
-        }
-
-        public static string RazorDetailByName(string razorTemplateName, object obj, Dictionary<string, object> dataObjects = null, string lang = "", string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string versionFolder = "1.0", Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
-        {
-            if (razorTemplateName != "")
-            {
-                if (lang == "") lang = GetCurrentCulture();
-                var razorTemplate = GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, lang, versionFolder, debugmode);
-                return RazorObjectRender(razorTemplate, obj, dataObjects, settings, sessionParams, debugmode);
-            }
-            return "";
-        }
-
-        public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
-        {
-            return RazorObjectRender(razorTemplate, obj, null, settings, sessionParams, debugmode);
-        }
-        public static string RazorObjectRender(string razorTemplate, object obj, Dictionary<string, object> dataObjects = null, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
-        {
-            var rtnStr = "";
-            if (razorTemplate != "")
-            {
-                if (settings == null) settings = new Dictionary<string, string>();
-
-                if (obj == null) obj = new SimplisityInfo();
-                var l = new List<object>();
-                l.Add(obj);
-
-                var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
-                nbRazor.SessionParamsData = sessionParams;
-                nbRazor.DataObjects = dataObjects;
-                rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
-            }
-
-            return rtnStr;
-        }
-        public static string RazorList(string razorTemplate, List<object> objList, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
-        {
-            var rtnStr = "";
-            if (razorTemplate != "")
-            {
-                if (settings == null) settings = new Dictionary<string, string>();
-                var nbRazor = new SimplisityRazor(objList, settings, HttpContext.Current.Request.QueryString);
-                nbRazor.SessionParamsData = sessionParams;
-                rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
-            }
-            return rtnStr;
-        }
-
-
-        public static TemplateGetter GetTemplateEngine(string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
-        {
-            var cacheKey = templateControlPath + "*" + themeFolder + "*" + lang + "*" + versionFolder + "*" + debugMode;
-            var templCtrl = CacheUtilsDNN.GetCache(cacheKey);
-            if (templCtrl == null)
-            {
-                var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
-                var themeFolderPath = themeFolder + "\\" + versionFolder;
-                if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder + "\\" + versionFolder;
-                if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder;
-                var RocketThemes = PortalUtils.DNNrocketThemesDirectoryMapPath();
-                templCtrl = new TemplateGetter(RocketThemes, themeFolderPath, controlMapPath, debugMode);
-                CacheUtilsDNN.SetCache(cacheKey, templCtrl);
-            }
-            return (TemplateGetter)templCtrl;
-        }
-
-        public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
-        {
-            var templCtrl = GetTemplateEngine(templateControlPath, themeFolder, lang, versionFolder, debugMode);
-            var templ = templCtrl.GetTemplateData(templatename, lang);
-            return templ;
-        }
-
-
         public static void ZipFolder(string folderMapPath, string zipFileMapPath)
         {
             ZipFile.CreateFromDirectory(folderMapPath, zipFileMapPath);
@@ -1265,7 +1120,7 @@ namespace DNNrocketAPI.Componants
                                 nbRazor.ModuleId = appThemeMod.ModuleParams.ModuleId;
                                 nbRazor.ModuleRefDataSource = appThemeMod.ModuleParams.ModuleRefDataSource;
                                 nbRazor.ModuleIdDataSource = appThemeMod.ModuleParams.ModuleIdDataSource;
-                                cacheHead += RazorRender(nbRazor, activePageHeaderTemplate, false);
+                                cacheHead += RenderRazorUtils.RazorRender(nbRazor, activePageHeaderTemplate, false);
                             }
                         }
                     }
@@ -1441,8 +1296,8 @@ namespace DNNrocketAPI.Componants
             imageModel.List = imgList;
 
             var strOut = "<div id='dnnrocket_imageselectwrapper'>";
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-            strOut += DNNrocketUtils.RazorRender(imageModel, razorTempl, true);
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+            strOut += RenderRazorUtils.RazorRender(imageModel, razorTempl, true);
             strOut += "</div>";
             return strOut;
         }
@@ -1480,8 +1335,8 @@ namespace DNNrocketAPI.Componants
             docModel.List = docList;
 
             var strOut = "<div id='dnnrocket_documentselectwrapper'>";
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut += DNNrocketUtils.RazorRender(docModel, razorTempl, false);
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            strOut += RenderRazorUtils.RazorRender(docModel, razorTempl, false);
             strOut += "</div>";
             return strOut;
         }

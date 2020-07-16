@@ -139,7 +139,7 @@ namespace DNNrocket.Category
 
                 var passSettings = sInfo.ToDictionary();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
                 strOut = DNNrocketUtils.RazorList(razorTempl, list.Cast<object>().ToList(), passSettings, sessionParams);
 
@@ -164,10 +164,10 @@ namespace DNNrocket.Category
 
                 var passSettings = postInfo.ToDictionary();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings, null);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, info, passSettings, null);
 
                 return strOut;
             }
@@ -311,8 +311,8 @@ namespace DNNrocket.Category
 
                 var passSettings = postInfo.ToDictionary();
                 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, info, passSettings);
 
             }
 

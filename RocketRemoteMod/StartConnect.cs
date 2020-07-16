@@ -114,8 +114,8 @@ namespace RocketRemoteMod
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "dashboard.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return DNNrocketUtils.RazorDetail(razorTempl, _moduleParams, _passSettings, null, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, _moduleParams, _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -131,8 +131,8 @@ namespace RocketRemoteMod
                 _passSettings.Add("moduleid", _moduleid.ToString());
                 _passSettings.Remove("tabid");
                 _passSettings.Add("tabid", _tabid.ToString());
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", _systemData.DebugMode);
-                return DNNrocketUtils.RazorDetail(razorTempl, _rocketInterface.Info, _passSettings, null, _systemData.DebugMode);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData("setup.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", _systemData.DebugMode);
+                return RenderRazorUtils.RazorDetail(razorTempl, _rocketInterface.Info, _passSettings, null, _systemData.DebugMode);
             }
             catch (Exception ex)
             {

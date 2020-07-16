@@ -135,21 +135,20 @@ namespace DNNrocketAPI.render
 
         public IEncodedString RenderTemplate(string razorTemplate, SimplisityRazor model, bool debugMode = false)
         {
-            var strOut = DNNrocketUtils.RazorRender(model, razorTemplate, debugMode);
+            var strOut = RenderRazorUtils.RazorRender(model, razorTemplate, debugMode);
             return new RawString(strOut);
         }
         public IEncodedString RenderTemplate(string razorTemplateName, string templateControlRelPath, string themeFolder, SimplisityRazor model, string versionFolder = "1.0", bool debugMode = false)
         {
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), versionFolder, debugMode);
-            var strOut = DNNrocketUtils.RazorRender(model, razorTempl, debugMode);
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), versionFolder, debugMode);
+            var strOut = RenderRazorUtils.RazorRender(model, razorTempl, debugMode);
             return new RawString(strOut);
         }
-        public IEncodedString RenderTemplateInfo(string razorTemplateName, SimplisityInfo info, Dictionary<string, object> dataObjects = null, string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string lang = "", string versionFolder = "1.0", Dictionary<string, string> settings = null, SessionParams SessionParams = null, bool debugmode = false)
+        public IEncodedString RenderTemplateInfo(string razorTemplateName, SimplisityInfo info, Dictionary<string, object> dataObjects = null, string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string lang = "", string versionFolder = "1.0", Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugMode = false)
         {
-            var strOut = DNNrocketUtils.RazorDetailByName(razorTemplateName, info, dataObjects, lang, templateControlRelPath, themeFolder, versionFolder, settings, SessionParams, debugmode);
-            return new RawString(strOut);
-        }
-        
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), versionFolder, debugMode);
+            return new RawString(RenderRazorUtils.RazorObjectRender(razorTempl, info, dataObjects, settings, sessionParams, debugMode));
+        }        
         public IEncodedString RenderImageSelect(string systemKey, string imageFolderRel, bool singleselect = true, bool autoreturn = false)
         {
             return new RawString(DNNrocketUtils.RenderImageSelect(systemKey, imageFolderRel, singleselect, autoreturn));

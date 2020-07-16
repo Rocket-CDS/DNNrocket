@@ -21,7 +21,7 @@ namespace DNNrocket.Country
                 var strOut = "";
                 var objCtrl = new DNNrocketController();
                 var passSettings = sInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("CultureCodeSelect.cshtml", rocketInterface.TemplateRelPath, "config-w3", langRequired);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData("CultureCodeSelect.cshtml", rocketInterface.TemplateRelPath, "config-w3", langRequired);
 
                 var l = DNNrocketUtils.GetCultureCodeList();
                 var objl = new List<object>();
@@ -29,7 +29,7 @@ namespace DNNrocket.Country
                 {
                     objl.Add(s);
                 }
-                strOut = DNNrocketUtils.RazorList(razorTempl, objl, passSettings);
+                strOut = RenderRazorUtils.RazorList(razorTempl, objl, passSettings);
 
                 return strOut;
             }
@@ -44,13 +44,13 @@ namespace DNNrocket.Country
         {
             try
             {
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(rocketInterface.DefaultTemplate, rocketInterface.TemplateRelPath, rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(rocketInterface.DefaultTemplate, rocketInterface.TemplateRelPath, rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var countryData = new CountryLimpet(PortalUtils.GetPortalId(), rocketInterface);
 
                 var passSettings = new Dictionary<string, string>();
                 if (saved) passSettings.Add("saved", "true");
 
-                return DNNrocketUtils.RazorDetail(razorTempl, countryData.Info, passSettings, null, true);
+                return RenderRazorUtils.RazorDetail(razorTempl, countryData.Info, passSettings, null, true);
             }
             catch (Exception ex)
             {

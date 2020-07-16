@@ -372,7 +372,7 @@ namespace DNNrocket.AppThemes
                 var resxData = new ResxData(appTheme.GetFileMapPath(fname));
                 var dataObjects = new Dictionary<string, object>();
                 dataObjects.Add("resxData", resxData);
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("ResxPopUp.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData("ResxPopUp.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
                 return DNNrocketUtils.RazorObjectRender(razorTempl, appTheme, dataObjects, _passSettings, null, true);
             }
             catch (Exception ex)
@@ -464,11 +464,11 @@ namespace DNNrocket.AppThemes
                 var appThemeDataList = new AppThemeDataList(_selectedSystemKey);
                 var template = _rocketInterface.DefaultTemplate;
                 if (template == "") template = "appthemelist.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(template, appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",true);
                 var passSettings = _postInfo.ToDictionary();
                 passSettings.Add("AppProjectThemesFolderMapPath", appThemeDataList.AppProjectThemesFolderMapPath);
 
-                return DNNrocketUtils.RazorDetail(razorTempl, appThemeDataList, passSettings,null,true);
+                return RenderRazorUtils.RazorDetail(razorTempl, appThemeDataList, passSettings,null,true);
             }
             catch (Exception ex)
             {
@@ -559,7 +559,7 @@ namespace DNNrocket.AppThemes
                 var appThemeDataList = new AppThemeDataList(_selectedSystemKey);
                 var appThemeDataPublicList = new AppThemeDataPublicList(_selectedSystemKey, useCache);
                 var template = "AppThemeOnlinePublicList.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(template, appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var passSettings = _postInfo.ToDictionary();
 
                 if (changesystemkey)
@@ -571,7 +571,7 @@ namespace DNNrocket.AppThemes
                     CacheUtilsDNN.RemoveCache(cachekey);
                 }
 
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, appThemeDataPublicList, passSettings, null, true);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, appThemeDataPublicList, passSettings, null, true);
                 CacheUtilsDNN.SetCache(cacheKey, strOut);
                 return strOut;
             }
@@ -629,7 +629,7 @@ namespace DNNrocket.AppThemes
                 var appThemeDataList = new AppThemeDataList(_selectedSystemKey);
                 var appThemeDataPrivateList = new AppThemeDataPrivateList(appThemeDataList.SelectedSystemKey, useCache);
                 var template = "AppThemeOnlinePrivateList.cshtml";
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(template, appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(template, appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var passSettings = _postInfo.ToDictionary();
 
                 if (changesystemkey)
@@ -642,7 +642,7 @@ namespace DNNrocket.AppThemes
                 }
 
 
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, appThemeDataPrivateList, passSettings, null, true);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, appThemeDataPrivateList, passSettings, null, true);
                 CacheUtilsDNN.SetCache(cacheKey, strOut);
                 return strOut;
             }
@@ -697,14 +697,14 @@ namespace DNNrocket.AppThemes
                 }
                 if (appTheme.LatestVersion == version && appTheme.LatestRev == rev)
                 {
-                    var razorTempl2 = DNNrocketUtils.GetRazorTemplateData("versioncheckequal.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
-                    return DNNrocketUtils.RazorDetail(razorTempl2, new SimplisityInfo(sRec), _passSettings, null, true);
+                    var razorTempl2 = RenderRazorUtils.GetRazorTemplateData("versioncheckequal.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+                    return RenderRazorUtils.RazorDetail(razorTempl2, new SimplisityInfo(sRec), _passSettings, null, true);
                 }
-                var razorTempl1 = DNNrocketUtils.GetRazorTemplateData("versioncheck.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
-                return DNNrocketUtils.RazorDetail(razorTempl1, new SimplisityInfo(sRec), _passSettings, null, true);
+                var razorTempl1 = RenderRazorUtils.GetRazorTemplateData("versioncheck.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+                return RenderRazorUtils.RazorDetail(razorTempl1, new SimplisityInfo(sRec), _passSettings, null, true);
             }
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData("ftpfail.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
-            return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData("ftpfail.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+            return RenderRazorUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
         }
         private string UploadAppTheme()
         {
@@ -719,8 +719,8 @@ namespace DNNrocket.AppThemes
                 ClearServerCacheLists();
                 return rtn;
             }
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData("ftpfail.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
-            return DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData("ftpfail.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+            return RenderRazorUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
         }
 
         private string ImportAppTheme()
@@ -806,7 +806,7 @@ namespace DNNrocket.AppThemes
 
                 _passSettings.Add("interfacekey", _rocketInterface.InterfaceKey);
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("EditorPopUp.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData("EditorPopUp.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
                 return DNNrocketUtils.RazorObjectRender(razorTempl, appTheme, null, _passSettings, null, true);
             }
             catch (Exception ex)
@@ -930,8 +930,8 @@ namespace DNNrocket.AppThemes
         }
         private string GetEditTemplate(AppTheme appTheme)
         {
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
-            return DNNrocketUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData("AppThemeDetails.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+            return RenderRazorUtils.RazorDetail(razorTempl, appTheme, _passSettings, null, true);
         }
 
 

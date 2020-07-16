@@ -236,8 +236,8 @@ namespace DNNrocket.System
                 var systemGlobalData = new SystemGlobalData();
                 var strOut = "";
                 var passSettings = _paramInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("adminpanel.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, new SimplisityInfo(), passSettings);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData("adminpanel.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, new SimplisityInfo(), passSettings);
                 return strOut;
             }
             catch (Exception ex)
@@ -258,8 +258,8 @@ namespace DNNrocket.System
                 if (licenseid > 0)
                 {
                     var licenseData = new LicenseData(licenseid);
-                    var razorTempl = DNNrocketUtils.GetRazorTemplateData("LicensePopup.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                    strOut = DNNrocketUtils.RazorDetail(razorTempl, licenseData, passSettings);
+                    var razorTempl = RenderRazorUtils.GetRazorTemplateData("LicensePopup.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                    strOut = RenderRazorUtils.RazorDetail(razorTempl, licenseData, passSettings);
                 }
 
 
@@ -410,9 +410,9 @@ namespace DNNrocket.System
             try
             {
                 var LicenseListData = new LicenseListData();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("Admin_SystemLicense.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData("Admin_SystemLicense.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var passSettings = _postInfo.ToDictionary();
-                return DNNrocketUtils.RazorDetail(razorTempl, LicenseListData, passSettings, null, true);
+                return RenderRazorUtils.RazorDetail(razorTempl, LicenseListData, passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -425,9 +425,9 @@ namespace DNNrocket.System
             try
             {
                 var pluginDataList = new PluginDataList();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("Admin_Plugins.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData("Admin_Plugins.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var passSettings = _postInfo.ToDictionary();
-                return DNNrocketUtils.RazorDetail(razorTempl, pluginDataList, passSettings, null, true);
+                return RenderRazorUtils.RazorDetail(razorTempl, pluginDataList, passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -462,12 +462,12 @@ namespace DNNrocket.System
 
                 if (selecteditemid > 0)
                 {
-                    var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                    var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
                     var objCtrl = new DNNrocketController();
                     var info = objCtrl.GetInfo(selecteditemid);
 
-                    strOut = DNNrocketUtils.RazorDetail(razorTempl, info, _passSettings);
+                    strOut = RenderRazorUtils.RazorDetail(razorTempl, info, _passSettings);
                 }
 
 
@@ -485,13 +485,13 @@ namespace DNNrocket.System
             {
                 var passSettings = _paramInfo.ToDictionary();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData("Admin_SystemGlobalDetail.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData("Admin_SystemGlobalDetail.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
                 SchedulerUtils.SchedulerIsInstalled();
 
                 var globalData = new SystemGlobalData();
 
-                var strOut = DNNrocketUtils.RazorDetail(razorTempl, globalData, passSettings);
+                var strOut = RenderRazorUtils.RazorDetail(razorTempl, globalData, passSettings);
                 return strOut;
             }
             catch (Exception ex)
@@ -524,9 +524,9 @@ namespace DNNrocket.System
 
                 var passSettings = sInfo.ToDictionary();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
-                strOut = DNNrocketUtils.RazorList(razorTempl, list.Cast<object>().ToList(), passSettings);
+                strOut = RenderRazorUtils.RazorList(razorTempl, list.Cast<object>().ToList(), passSettings);
 
                 return strOut;
             }
@@ -559,9 +559,9 @@ namespace DNNrocket.System
                 var objCtrl = new DNNrocketController();
                 info.ItemID = objCtrl.SaveRecord(info).ItemID;
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, info, passSettings);
 
                 return strOut;
             }
@@ -748,8 +748,8 @@ namespace DNNrocket.System
                 CacheUtilsDNN.ClearAllCache();
                 var themeFolder = postInfo.GetXmlProperty("genxml/hidden/theme");
                 var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, info);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, info);
 
             }
             return strOut;

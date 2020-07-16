@@ -18,8 +18,8 @@ namespace DNNrocketAPI.Componants
         {
             if (EmailData.RazorTemplateName != "")
             {
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(EmailData.RazorTemplateName, EmailData.TemplateControlRelPath, EmailData.ThemeFolder, EmailData.CultureCode, EmailData.VersionFolder, debugmode);
-                EmailData.EmailBody = DNNrocketUtils.RazorRender(EmailData.Model, razorTempl, true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(EmailData.RazorTemplateName, EmailData.TemplateControlRelPath, EmailData.ThemeFolder, EmailData.CultureCode, EmailData.VersionFolder, debugmode);
+                EmailData.EmailBody = RenderRazorUtils.RazorRender(EmailData.Model, razorTempl, true);
                 return EmailData.EmailBody;
             }
             return "";

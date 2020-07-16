@@ -90,8 +90,8 @@ namespace DNNrocket.TestForm
 
             var passSettings = postInfo.ToDictionary();
 
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            strOut = RenderRazorUtils.RazorDetail(razorTempl, info, passSettings);
 
             return strOut;
         }
@@ -105,10 +105,10 @@ namespace DNNrocket.TestForm
                 var razortemplate = postInfo.GetXmlProperty("genxml/hidden/template");
 
                 var passSettings = postInfo.ToDictionary();
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetData("testform", "TEST", DNNrocketUtils.GetEditCulture());
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, info, passSettings);
 
                 return strOut;
             }
@@ -193,8 +193,8 @@ namespace DNNrocket.TestForm
 
             var passSettings = postInfo.ToDictionary();
 
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            strOut = RenderRazorUtils.RazorDetail(razorTempl, info, passSettings);
 
             return strOut;
         }
@@ -258,8 +258,8 @@ namespace DNNrocket.TestForm
 
             var passSettings = postInfo.ToDictionary();
 
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            strOut = RenderRazorUtils.RazorDetail(razorTempl, info, passSettings);
 
             return strOut;
         }

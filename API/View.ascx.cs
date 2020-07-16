@@ -211,8 +211,8 @@ namespace DNNrocketAPI
                     model.SetSetting("editiconcolor", systemData.GetSetting("editiconcolor"));
                     model.SetSetting("editicontextcolor", systemData.GetSetting("editicontextcolor"));
                     strOut = "<div id='rocketcontentwrapper" + ModuleId + "' class=' w3-display-container '>";
-                    var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                    strOut += DNNrocketUtils.RazorRender(model, razorTempl, true);
+                    var razorTempl = RenderRazorUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                    strOut += RenderRazorUtils.RazorRender(model, razorTempl, true);
                 }
 
 
@@ -266,8 +266,8 @@ namespace DNNrocketAPI
                 if (hasEditAccess)
                 {
                     strOut += "</div>";
-                    var razorTempl = DNNrocketUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
-                    strOut += DNNrocketUtils.RazorRender(model, razorTempl, systemData.DebugMode);
+                    var razorTempl = RenderRazorUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
+                    strOut += RenderRazorUtils.RazorRender(model, razorTempl, systemData.DebugMode);
                 }
 
                 CacheFileUtils.SetCache(cacheKey, strOut);
