@@ -21,7 +21,7 @@ namespace DNNrocketAPI.Componants
         private void InitAppThemeMod() {
 
             ModuleParams = new ModuleParams(ModuleId, _systemKey);
-            systemData = new SystemData(_systemKey);
+            systemData = new SystemLimpet(_systemKey);
             AppTheme = new AppTheme(systemData.SystemKey, ModuleParams.AppThemeFolder, ModuleParams.AppThemeVersion);
 
             ModuleTemplateFolderMapPath = PortalUtils.HomeDirectoryMapPath().Trim('\\') + "\\DNNrocketThemes";
@@ -150,7 +150,7 @@ namespace DNNrocketAPI.Componants
 
         public ModuleParams ModuleParams { get; private set; }
         public AppTheme AppTheme { get; private set; }
-        public SystemData systemData { get; private set; }
+        public SystemLimpet systemData { get; private set; }
         public int ModuleId { get; private set; }
         public int SystemId { get; private set; }
         public string ModuleTemplateFolderMapPath { get; private set; }

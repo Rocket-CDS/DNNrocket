@@ -27,7 +27,7 @@ namespace Rocket.AppThemes.Componants
             var row = 0;
 
             List<SimplisityRecord> fieldList = appTheme.Record.GetRecordList(listname);
-            var systemData = new SystemData(appTheme.SystemKey);
+            var systemData = new SystemLimpet(appTheme.SystemKey);
 
             var resxItem = appTheme.Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
             var jsondata = "";

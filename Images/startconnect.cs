@@ -14,8 +14,8 @@ namespace DNNrocket.Images
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
         private CommandSecurity _commandSecurity;
-        private DNNrocketInterface _rocketInterface;
-        private SystemData _systemData;
+        private RocketInterface _rocketInterface;
+        private SystemLimpet _systemData;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -23,8 +23,8 @@ namespace DNNrocket.Images
 
             paramCmd = paramCmd.ToLower();
 
-            _systemData = new SystemData(systemInfo);
-            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            _systemData = new SystemLimpet(systemInfo);
+            _rocketInterface = new RocketInterface(interfaceInfo);
 
             var appPath = _rocketInterface.TemplateRelPath;
             if (appPath == "") appPath = "/DesktopModules/DNNrocket/Images";

@@ -11,11 +11,11 @@ namespace DNNrocket.Country
     public class StartConnect : APInterface
     {
         private SimplisityInfo _systemInfo;
-        private DNNrocketInterface _rocketInterface;
+        private RocketInterface _rocketInterface;
         private Dictionary<string,string> _passSettings; 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
-            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            _rocketInterface = new RocketInterface(interfaceInfo);
             var commandSecurity = new CommandSecurity(-1,-1, _rocketInterface);
             commandSecurity.AddCommand("settingcountry_save", true);
             commandSecurity.AddCommand("settingcountry_get", true);

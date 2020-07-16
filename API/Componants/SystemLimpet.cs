@@ -8,21 +8,21 @@ using System.Xml;
 
 namespace DNNrocketAPI.Componants
 {
-    public class SystemData
+    public class SystemLimpet
     {
-        public SystemData(string systemKey)
+        public SystemLimpet(string systemKey)
         {
             var objCtrl = new DNNrocketController();
             var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemKey);
             InitSystem(systemInfo);
         }
-        public SystemData(int systemId)
+        public SystemLimpet(int systemId)
         {
             var objCtrl = new DNNrocketController();
             var systemInfo = objCtrl.GetInfo(systemId);
             InitSystem(systemInfo);
         }
-        public SystemData(SimplisityInfo systemInfo)
+        public SystemLimpet(SimplisityInfo systemInfo)
         {
             InitSystem(systemInfo);
         }
@@ -39,14 +39,14 @@ namespace DNNrocketAPI.Componants
                 Exists = true;
             }
             Info = systemInfo;
-            EventList = new List<DNNrocketInterface>();
-            SchedulerList = new List<DNNrocketInterface>();            
-            InterfaceList = new Dictionary<string, DNNrocketInterface>();
+            EventList = new List<RocketInterface>();
+            SchedulerList = new List<RocketInterface>();            
+            InterfaceList = new Dictionary<string, RocketInterface>();
             Settings = new Dictionary<string, string>();
             var l = Info.GetList("interfacedata");
             foreach (var r in l)
             {
-                var rocketInterface = new DNNrocketInterface(r);
+                var rocketInterface = new RocketInterface(r);
                 if (rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
                 {
                     EventList.Add(rocketInterface);
@@ -255,10 +255,10 @@ namespace DNNrocketAPI.Componants
 
         public SimplisityInfo SystemInfo { get { return Info; } }
         public SimplisityInfo Info { get; set; }
-        public List<DNNrocketInterface> EventList { get; set;}
-        public List<DNNrocketInterface> SchedulerList { get; set; }
+        public List<RocketInterface> EventList { get; set;}
+        public List<RocketInterface> SchedulerList { get; set; }
         public bool Exists { get; set; }
-        public Dictionary<string, DNNrocketInterface> InterfaceList { get; set; }
+        public Dictionary<string, RocketInterface> InterfaceList { get; set; }
         public Dictionary<string, string> Settings { get; set; }
         public string GetSetting(string key)
         {
@@ -269,24 +269,24 @@ namespace DNNrocketAPI.Componants
         {
             return InterfaceList.ContainsKey(interfaceKey);
         }
-        public List<DNNrocketInterface> GetInterfaceList()
+        public List<RocketInterface> GetInterfaceList()
         {
-            var rtnList = new List<DNNrocketInterface>();
+            var rtnList = new List<RocketInterface>();
             var s = Info.GetList("interfacedata");
             if (s == null) return null;
             foreach (var i in s)
             {
-                var iface = new DNNrocketInterface(i);
+                var iface = new RocketInterface(i);
                 rtnList.Add(iface);
             }
             return rtnList;
         }
 
-        public DNNrocketInterface GetInterface(string interfaceKey)
+        public RocketInterface GetInterface(string interfaceKey)
         {
             var s = Info.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfaceKey);
             if (s == null) return null;
-            return new DNNrocketInterface(s);
+            return new RocketInterface(s);
         }
         public void ClearTempDB()
         {

@@ -101,7 +101,7 @@ namespace DNNrocketAPI.Componants
         {
             get
             {
-                var s = new SystemData(SystemKey);
+                var s = new SystemLimpet(SystemKey);
                 if (s == null || !s.Exists) return "";
                 var r = s.GetInterface(s.DefaultInterface);
                 if (r == null || !r.Exists) return "";

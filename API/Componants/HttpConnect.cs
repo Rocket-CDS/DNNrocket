@@ -13,7 +13,7 @@ namespace DNNrocketAPI.Componants
 {
     public class HttpConnect
     {
-        private SystemData _systemData;
+        private SystemLimpet _systemData;
         private SystemGlobalData _systemGlobalData;
         private string _baseuri;
         public HttpConnect(string selectedSystemKey)
@@ -21,7 +21,7 @@ namespace DNNrocketAPI.Componants
             var imgidxFolder = DNNrocketUtils.SystemThemeImgDirectoryMapPath();
             if (!Directory.Exists(imgidxFolder)) Directory.CreateDirectory(imgidxFolder);
 
-            _systemData = new SystemData(selectedSystemKey);
+            _systemData = new SystemLimpet(selectedSystemKey);
             _systemGlobalData = new SystemGlobalData();
             _baseuri = _systemGlobalData.PublicAppThemeURI.TrimStart('/').TrimEnd('/') + "/" + _systemData.SystemKey;
         }

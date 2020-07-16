@@ -51,7 +51,7 @@ namespace DNNrocketAPI
         private string _interfacekey;
         private string _templateRelPath;
 
-        private DNNrocketInterface _rocketInterface;
+        private RocketInterface _rocketInterface;
 
         private ModuleParams _moduleParams;
         private SimplisityInfo _systemInfo;
@@ -76,8 +76,8 @@ namespace DNNrocketAPI
             _systemInfo = DNNrocketUtils.GetModuleSystemInfo(_systemkey, ModuleId);
 
             _moduleParams = new ModuleParams(ModuleId, _systemkey);
-            _rocketInterface = new DNNrocketInterface(_systemInfo, _interfacekey);
-            var systemData = new SystemData(_systemInfo);
+            _rocketInterface = new RocketInterface(_systemInfo, _interfacekey);
+            var systemData = new SystemLimpet(_systemInfo);
             _debugmode = systemData.DebugMode;
             _activatedetail = _moduleParams.GetValueBool("activatedetail");
             _paramCmd = _moduleParams.GetValue("command");
@@ -196,7 +196,7 @@ namespace DNNrocketAPI
             }
 
             var strOut = "";
-            var systemData = new SystemData(_systemInfo);
+            var systemData = new SystemLimpet(_systemInfo);
             var cacheOutPut = "";
             var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
             var model = new SimplisityRazor();

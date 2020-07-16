@@ -14,7 +14,7 @@ namespace DNNrocket.Documents
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
         private CommandSecurity _commandSecurity;
-        private DNNrocketInterface _rocketInterface;
+        private RocketInterface _rocketInterface;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -22,7 +22,7 @@ namespace DNNrocket.Documents
 
             paramCmd = paramCmd.ToLower();
 
-            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            _rocketInterface = new RocketInterface(interfaceInfo);
 
             var appPath = _rocketInterface.TemplateRelPath;
             if (appPath == "") appPath = "/DesktopModules/DNNrocket/Documents";

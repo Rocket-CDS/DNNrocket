@@ -61,13 +61,13 @@ namespace Rocket.AppThemes.Componants
         }
         public void PopulateSystemFolderList()
         {
-            SystemFolderList = new List<SystemData>();
+            SystemFolderList = new List<SystemLimpet>();
 
             // Get the system data from the DB SYSTEM records
-            var systemDataList = new SystemDataList();
+            var systemDataList = new SystemLimpetList();
             foreach (var d in systemDataList.GetSystemList())
             {
-                var systemData = new SystemData(d);
+                var systemData = new SystemLimpet(d);
                 if (systemData.Exists)
                 {
                     SystemFolderList.Add(systemData);
@@ -115,12 +115,12 @@ namespace Rocket.AppThemes.Componants
                 CacheUtilsDNN.SetCache(cachekey, value);
             }
         }
-        public List<SystemData> SystemFolderList {
+        public List<SystemLimpet> SystemFolderList {
             get
             {
                 var cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
-                if (CacheUtilsDNN.GetCache(cachekey) == null) return new List<SystemData>();
-                return (List<SystemData>)CacheUtilsDNN.GetCache(cachekey);
+                if (CacheUtilsDNN.GetCache(cachekey) == null) return new List<SystemLimpet>();
+                return (List<SystemLimpet>)CacheUtilsDNN.GetCache(cachekey);
             }
             set
             {

@@ -26,11 +26,11 @@
             <ul id="validatelistdata" class="hummingbird-base">
 
                 @{
-                    var systemDataList = new SystemDataList();
+                    var systemDataList = new SystemLimpetList();
                     var list = systemDataList.GetSystemList();
                     foreach (var sk in list)
                     {
-                        var systemData = new SystemData(sk.ItemID);
+                        var systemData = new SystemLimpet(sk.ItemID);
                         if (systemData.GetInterface("validatedata") != null)
                         {
                             <li>

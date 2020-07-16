@@ -13,7 +13,7 @@ namespace RocketSettings
         private static SimplisityInfo _postInfo;
         private static SimplisityInfo _paramInfo;
         private static CommandSecurity _commandSecurity;
-        private static DNNrocketInterface _rocketInterface;
+        private static RocketInterface _rocketInterface;
         private static SettingsData _settingsData;
         private static Dictionary<string, string> _passSettings;
 
@@ -23,7 +23,7 @@ namespace RocketSettings
 
             paramCmd = paramCmd.ToLower();
 
-            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            _rocketInterface = new RocketInterface(interfaceInfo);
 
             var appPath = _rocketInterface.TemplateRelPath;
             if (appPath == "") appPath = "/DesktopModules/DNNrocket/Settings";
@@ -116,8 +116,8 @@ namespace RocketSettings
                 if (razortemplate == "") razortemplate = _rocketInterface.DefaultTemplate;                
                 if (razortemplate == "") razortemplate = "settings.cshtml";
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, theme, DNNrocketUtils.GetEditCulture());
-                strOut = DNNrocketUtils.RazorDetail(razorTempl, _settingsData, _passSettings);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, _appthemeRelPath, theme, DNNrocketUtils.GetEditCulture());
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, _settingsData, _passSettings);
 
                 if (strOut == "") strOut = "ERROR: No data returned for " + _appthemeMapPath + "\\Themes\\" + theme + "\\default\\" + razortemplate;
                 return strOut;

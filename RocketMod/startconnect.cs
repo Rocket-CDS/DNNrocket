@@ -22,13 +22,13 @@ namespace RocketMod
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
         private CommandSecurity _commandSecurity;
-        private DNNrocketInterface _rocketInterface;
+        private RocketInterface _rocketInterface;
         private SimplisityInfo _systemInfo;
         private ModuleParams _moduleParams;
         private ModuleParams _dataModuleParams;
         private int _tabid;
         private int _moduleid;
-        private SystemData _systemData;
+        private SystemLimpet _systemData;
         private string _systemKey;
         private Dictionary<string, string> _passSettings;
         private SettingsData _settingsData;
@@ -271,8 +271,8 @@ namespace RocketMod
 
         public string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
-            _systemData = new SystemData(systemInfo);
-            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            _systemData = new SystemLimpet(systemInfo);
+            _rocketInterface = new RocketInterface(interfaceInfo);
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _appthemeSystemRelPath = "/DesktopModules/DNNrocket/SystemThemes";
@@ -317,7 +317,7 @@ namespace RocketMod
                             paramCmd = menucmd;
                             _paramInfo = _userParams.GetParamInfo(_systemKey);
                             var interfacekey = _userParams.GetInterfaceKey(_systemKey);
-                            _rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
+                            _rocketInterface = new RocketInterface(systemInfo, interfacekey);
                         }
                     }
                 }

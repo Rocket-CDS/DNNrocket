@@ -10,8 +10,8 @@ namespace Rocket.Tools
 {
     public class StartConnect : DNNrocketAPI.APInterface
     {
-        private DNNrocketInterface _rocketInterface;
-        private SystemData _systemData;
+        private RocketInterface _rocketInterface;
+        private SystemLimpet _systemData;
         private Dictionary<string, string> _passSettings;
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
@@ -125,8 +125,8 @@ namespace Rocket.Tools
             _paramInfo = paramInfo;
             _pageref = _paramInfo.GetXmlProperty("genxml/hidden/pageref");
 
-            _systemData = new SystemData(systemInfo);
-            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            _systemData = new SystemLimpet(systemInfo);
+            _rocketInterface = new RocketInterface(interfaceInfo);
             _passSettings = new Dictionary<string, string>();
 
             _UserParams = new UserParams(new SessionParams(_paramInfo).BrowserSessionId);
@@ -139,7 +139,7 @@ namespace Rocket.Tools
                     paramCmd = menucmd;
                     _paramInfo = _UserParams.GetParamInfo(_systemData.SystemKey);
                     var interfacekey = _UserParams.GetInterfaceKey(_systemData.SystemKey);
-                    _rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
+                    _rocketInterface = new RocketInterface(systemInfo, interfacekey);
                 }
             }
             else
@@ -184,7 +184,7 @@ namespace Rocket.Tools
                 var systemid = s.GetXmlPropertyInt("genxml/systemid");
                 if (systemid > 0)
                 {
-                    var systemData = new SystemData(systemid);
+                    var systemData = new SystemLimpet(systemid);
                     if (systemData.Exists)
                     {
                         foreach (var rocketInterface in systemData.GetInterfaceList())
@@ -502,7 +502,7 @@ namespace Rocket.Tools
                 var systemid = s.GetXmlPropertyInt("genxml/systemid");
                 if (systemid > 0)
                 {
-                    var systemData = new SystemData(systemid);
+                    var systemData = new SystemLimpet(systemid);
                     if (systemData.Exists)
                     {
                         foreach (var rocketInterface in systemData.GetInterfaceList())

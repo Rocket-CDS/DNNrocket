@@ -1033,7 +1033,7 @@ namespace DNNrocketAPI.Componants
             if (systemInfo == null && loadSystemXml)
             {
                 // no system data, so must be new install.
-                var sData = new SystemDataList(); // load XML files.
+                var sData = new SystemLimpetList(); // load XML files.
                 systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
                 if (systemInfo != null) CacheUtilsDNN.SetCache(systemkey + "modid" + moduleId, systemInfo);
             }
@@ -1136,7 +1136,7 @@ namespace DNNrocketAPI.Componants
 
         }
 
-        public static Dictionary<string, object> GetProviderReturn(string paramCmd, SimplisityInfo systemInfo, DNNrocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
+        public static Dictionary<string, object> GetProviderReturn(string paramCmd, SimplisityInfo systemInfo, RocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
         {
             var rtnDic = new Dictionary<string, object>();
             var systemkey = "";
@@ -1205,7 +1205,7 @@ namespace DNNrocketAPI.Componants
             return rtnDic;
         }
 
-        public static Dictionary<string, object> EventProviderBefore(string paramCmd, SystemData systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
+        public static Dictionary<string, object> EventProviderBefore(string paramCmd, SystemLimpet systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
         {
             var rtnDic = new Dictionary<string, object>();
             if (!systemData.Exists) return rtnDic;  // for systemadmin this may be null
@@ -1233,7 +1233,7 @@ namespace DNNrocketAPI.Componants
             return rtnDic;
         }
 
-        public static Dictionary<string, object> EventProviderAfter(string paramCmd, SystemData systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
+        public static Dictionary<string, object> EventProviderAfter(string paramCmd, SystemLimpet systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
         {
             var rtnDic = new Dictionary<string, object>();
             if (!systemData.Exists) return rtnDic;  // for systemadmin this may be null

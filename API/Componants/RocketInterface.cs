@@ -11,14 +11,16 @@ using System.Text;
 namespace DNNrocketAPI.Componants
 {
 
-    public class DNNrocketInterface
+    public class RocketInterface
     {
-        public DNNrocketInterface(SimplisityInfo systemInfo, string interfaceKey)
+        public RocketInterface(SimplisityInfo systemInfo, string interfaceKey)
         {
             Exists = false;
             Info = new SimplisityInfo();
             if (systemInfo != null)
             {
+                SystemData = new SystemLimpet(systemInfo);
+
                 SystemKey = systemInfo.GetXmlProperty("genxml/textbox/ctrlkey");
                 var interfaceInfo = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfaceKey);
                 if (interfaceInfo != null)
@@ -29,7 +31,7 @@ namespace DNNrocketAPI.Componants
             }
         }
 
-        public DNNrocketInterface(SimplisityInfo interfaceInfo)
+        public RocketInterface(SimplisityInfo interfaceInfo)
         {
             Exists = true;
             if (interfaceInfo == null)
@@ -42,6 +44,7 @@ namespace DNNrocketAPI.Componants
             }
         }
         public string SystemKey { get; set; }
+        public SystemLimpet SystemData { get; }
         public bool IsProvider(string providerType)
         {
             return Info.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='"+ providerType + "']/@value");

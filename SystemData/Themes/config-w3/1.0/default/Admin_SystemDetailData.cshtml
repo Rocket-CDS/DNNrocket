@@ -8,7 +8,7 @@
 
 @{
     var sInfo = (SimplisityInfo)Model.List.First();
-    var systemData = new SystemData(sInfo);
+    var systemData = new SystemLimpet(sInfo);
 }
 
 <input id="index" type="hidden" value="@sInfo.GetXmlPropertyInt("genxml/hidden/index").ToString()" />

@@ -14,11 +14,11 @@ namespace RocketMod.Componants
         private List<string> _documentRelList;
         private List<string> _imageRelList;
         private DNNrocketController _objCtrl;
-        private static DNNrocketInterface _rocketInterface;
+        private static RocketInterface _rocketInterface;
 
 
 
-        public ExportLimpet(DNNrocketInterface rocketInterface, int moduleid, string systemKey)
+        public ExportLimpet(RocketInterface rocketInterface, int moduleid, string systemKey)
         {
             _rocketInterface = rocketInterface;
             _moduleParams = new ModuleParams(moduleid, systemKey);

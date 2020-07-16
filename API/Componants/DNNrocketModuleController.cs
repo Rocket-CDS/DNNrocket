@@ -42,7 +42,7 @@ namespace DNNrocketAPI.Componants
             {
                 var portalId = objModInfo.PortalID;
                 var moduleParams = new ModuleParams(ModuleId);
-                var systemData = new SystemData(moduleParams.SystemKey);
+                var systemData = new SystemLimpet(moduleParams.SystemKey);
                 if (systemData.Exists)
                 {
                     xmlOut += "<systemkey>" + moduleParams.SystemKey + "</systemkey>";
@@ -107,7 +107,7 @@ namespace DNNrocketAPI.Componants
                 var systemKey = postInfo.GetXmlProperty("export/systemkey");
                 var databasetable = postInfo.GetXmlProperty("export/databasetable");
 
-                var systemData = new SystemData(systemKey);
+                var systemData = new SystemLimpet(systemKey);
                 if (systemData.Exists)
                 {
                     foreach (var r in systemData.InterfaceList)
@@ -147,7 +147,7 @@ namespace DNNrocketAPI.Componants
                 {
                     var portalId = moduleInfo.PortalID;
                     var systemKey = moduleInfo.DesktopModule.ModuleName;
-                    var systemData = new SystemData(systemKey);
+                    var systemData = new SystemLimpet(systemKey);
                     if (systemData.Exists)
                     {
                         foreach (var r in systemData.InterfaceList)

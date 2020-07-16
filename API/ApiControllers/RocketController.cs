@@ -174,7 +174,7 @@ namespace DNNrocketAPI.ApiControllers
                 if (systemkey == "" && paramCmd.Contains("_")) systemkey = paramCmd.Split('_')[0];
                 if (systemkey == "") systemkey = "dnnrocket";
                 var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
-                var systemData = new SystemData(systemInfo);
+                var systemData = new SystemLimpet(systemInfo);
 
                 if (paramCmd == "admin_return")
                 {
@@ -225,7 +225,7 @@ namespace DNNrocketAPI.ApiControllers
                             strOut = GetSideMenu(paramInfo, systemkey);
                             break;
                         default:
-                            var rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
+                            var rocketInterface = new RocketInterface(systemInfo, interfacekey);
                             var returnDictionary = new Dictionary<string, object>();
 
                             // before event
@@ -321,9 +321,9 @@ namespace DNNrocketAPI.ApiControllers
 
                 var passSettings = sInfo.ToDictionary();
 
-                var systemDataList = new SystemDataList();
+                var systemDataList = new SystemLimpetList();
                 var sInfoSystem = systemDataList.GetSystemByKey(systemkey);
-                var systemData = new SystemData(sInfoSystem);
+                var systemData = new SystemLimpet(sInfoSystem);
                 var sidemenu = new Componants.SideMenu(sInfoSystem);
                 var templateControlRelPath = sInfo.GetXmlProperty("genxml/hidden/relpath");
                 sidemenu.ModuleId = moduleid;

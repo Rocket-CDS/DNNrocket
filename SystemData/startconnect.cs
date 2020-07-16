@@ -13,11 +13,11 @@ namespace DNNrocket.System
 {
     public class StartConnect : DNNrocketAPI.APInterface
     {
-        private SystemData _systemData;
+        private SystemLimpet _systemData;
         private string _controlRelPath;
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
-        private DNNrocketInterface _rocketInterface;
+        private RocketInterface _rocketInterface;
         private UserParams _UserParams;
         private Dictionary<string, string> _passSettings;
 
@@ -25,8 +25,8 @@ namespace DNNrocket.System
         {
             _postInfo = postInfo;
             _paramInfo = paramInfo;
-            _systemData = new SystemData(systemInfo);
-            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            _systemData = new SystemLimpet(systemInfo);
+            _rocketInterface = new RocketInterface(interfaceInfo);
             _passSettings = _paramInfo.ToDictionary();
 
             var commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
@@ -441,7 +441,7 @@ namespace DNNrocket.System
         {
             try
             {
-                var systemDataList = new SystemDataList();
+                var systemDataList = new SystemLimpetList();
                 var list = systemDataList.GetSystemList();
                 return RenderSystemAdminList(list, sInfo, 0, templateControlRelPath);
             }
@@ -596,7 +596,7 @@ namespace DNNrocket.System
             if (selecteditemid > 0)
             {
                 DNNrocketUtils.LogDebug("Export System:" + selecteditemid);
-                var systemData = new SystemData(selecteditemid);
+                var systemData = new SystemLimpet(selecteditemid);
                 var exportFileMapPath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/SystemData/Systems").TrimEnd('\\') + "\\" + systemData.SystemKey + "_system.xml";
                 FileUtils.SaveFile(exportFileMapPath, systemData.Export());
             }
@@ -610,7 +610,7 @@ namespace DNNrocket.System
             var selecteditemid = paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (selecteditemid > 0)
             {
-                var systemData = new SystemData(selecteditemid);
+                var systemData = new SystemLimpet(selecteditemid);
                 systemData.Save(postInfo);
                 CacheUtilsDNN.ClearAllCache();
                 _passSettings.Add("saved", "true");

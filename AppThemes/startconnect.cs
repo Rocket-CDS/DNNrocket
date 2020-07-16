@@ -14,9 +14,9 @@ namespace DNNrocket.AppThemes
     {
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
-        private DNNrocketInterface _rocketInterface;
+        private RocketInterface _rocketInterface;
         private string _editLang;
-        private SystemData _systemData;
+        private SystemLimpet _systemData;
         private Dictionary<string, string> _passSettings;
         private string _appThemeFolder;
         private string _appVersionFolder;
@@ -30,8 +30,8 @@ namespace DNNrocket.AppThemes
             var strOut = "ERROR - Must be SuperUser"; // return ERROR if not matching commands.
 
             _passSettings = new Dictionary<string, string>(); 
-            _systemData = new SystemData(systemInfo);
-            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            _systemData = new SystemLimpet(systemInfo);
+            _rocketInterface = new RocketInterface(interfaceInfo);
             _postInfo = postInfo;
             _paramInfo = paramInfo;
 
@@ -54,7 +54,7 @@ namespace DNNrocket.AppThemes
                         paramCmd = menucmd;
                         _paramInfo = _UserParams.GetParamInfo(_systemData.SystemKey);
                         var interfacekey = _UserParams.GetInterfaceKey(_systemData.SystemKey);
-                        _rocketInterface = new DNNrocketInterface(systemInfo, interfacekey);
+                        _rocketInterface = new RocketInterface(systemInfo, interfacekey);
                     }
                 }
                 else
@@ -373,7 +373,7 @@ namespace DNNrocket.AppThemes
                 var dataObjects = new Dictionary<string, object>();
                 dataObjects.Add("resxData", resxData);
                 var razorTempl = RenderRazorUtils.GetRazorTemplateData("ResxPopUp.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
-                return DNNrocketUtils.RazorObjectRender(razorTempl, appTheme, dataObjects, _passSettings, null, true);
+                return RenderRazorUtils.RazorObjectRender(razorTempl, appTheme, dataObjects, _passSettings, null, true);
             }
             catch (Exception ex)
             {
@@ -780,7 +780,7 @@ namespace DNNrocket.AppThemes
             systemGlobalData.FtpPassword = _postInfo.GetXmlProperty("genxml/textbox/ftppassword");
             systemGlobalData.Update();
 
-            var systemData = new SystemData(_selectedSystemKey);
+            var systemData = new SystemLimpet(_selectedSystemKey);
             systemData.FtpRoot = _postInfo.GetXmlProperty("genxml/textbox/ftproot");
             systemData.Update();
 
@@ -807,7 +807,7 @@ namespace DNNrocket.AppThemes
                 _passSettings.Add("interfacekey", _rocketInterface.InterfaceKey);
 
                 var razorTempl = RenderRazorUtils.GetRazorTemplateData("EditorPopUp.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
-                return DNNrocketUtils.RazorObjectRender(razorTempl, appTheme, null, _passSettings, null, true);
+                return RenderRazorUtils.RazorObjectRender(razorTempl, appTheme, null, _passSettings, null, true);
             }
             catch (Exception ex)
             {

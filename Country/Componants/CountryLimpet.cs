@@ -11,7 +11,7 @@ namespace DNNrocket.Country.Componants
     {
         private DNNrocketController _objCtrl;
 
-        public CountryLimpet(int portalId, DNNrocketInterface rocketInterface, string cultureCode = "")
+        public CountryLimpet(int portalId, RocketInterface rocketInterface, string cultureCode = "")
         {
             RocketInterface = rocketInterface;
             SystemKey = RocketInterface.SystemKey;
@@ -84,7 +84,7 @@ namespace DNNrocket.Country.Componants
         }
 
         public SimplisityInfo Info { get; set; }
-        public DNNrocketInterface RocketInterface { get; set; }
+        public RocketInterface RocketInterface { get; set; }
         public int PortalId { get { return Info.PortalId; } }
         public string CultureCode { get; set; }
         public string SystemKey { get; set; }

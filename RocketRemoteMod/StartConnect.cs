@@ -12,8 +12,8 @@ namespace RocketRemoteMod
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
         private CommandSecurity _commandSecurity;
-        private DNNrocketInterface _rocketInterface;
-        private SystemData _systemData;
+        private RocketInterface _rocketInterface;
+        private SystemLimpet _systemData;
         private Dictionary<string, string> _passSettings;
         private ModuleParams _moduleParams;
         private string _editLang;
@@ -54,8 +54,8 @@ namespace RocketRemoteMod
 
         public string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
-            _systemData = new SystemData(systemInfo);
-            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            _systemData = new SystemLimpet(systemInfo);
+            _rocketInterface = new RocketInterface(interfaceInfo);
 
             _postInfo = postInfo;
             // set editlang from url param or cache

@@ -9,11 +9,11 @@ using Simplisity;
 namespace DNNrocketAPI.Componants
 {
 
-    public class SystemDataList
+    public class SystemLimpetList
     {
         private List<SimplisityInfo> _systemList;
 
-        public SystemDataList()
+        public SystemLimpetList()
         {
             _systemList = new List<SimplisityInfo>();
             var objCtrl = new DNNrocketController();
@@ -29,7 +29,7 @@ namespace DNNrocketAPI.Componants
                         var datain = File.ReadAllText(f);
                         try
                         {
-                            var systemData = new SystemData("");
+                            var systemData = new SystemLimpet("");
                             systemData.Import(datain);
                             upd = true;
                         }

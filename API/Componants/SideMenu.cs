@@ -49,7 +49,7 @@ namespace DNNrocketAPI.Componants
                     if (groupref == i.GetXmlProperty("genxml/dropdownlist/group"))
                     {
                         var userid = UserUtils.GetCurrentUserId();
-                        var rocketinterface = new DNNrocketInterface(i);
+                        var rocketinterface = new RocketInterface(i);
                         if (rocketinterface.SecurityCheckUser(PortalUtils.GetPortalId(), userid))
                         {
                             rtnList.Add(i);

@@ -29,12 +29,12 @@ copy "$(ProjectDir)$(OutDir)$(AssemblyName).pdb" "$(ProjectDir)..\\..\\..\bin\$(
 7. Implement abstract class.
 8. Add process code: EXAMPLE
 
-        private static DNNrocketInterface _rocketInterface;
+        private static RocketInterface _rocketInterface;
         private static string _editLang;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string langRequired = "")
         {
-            _rocketInterface = new DNNrocketInterface(interfaceInfo);
+            _rocketInterface = new RocketInterface(interfaceInfo);
 
             _editLang = langRequired;
             if (_editLang == "") _editLang = DNNrocketUtils.GetEditCulture();

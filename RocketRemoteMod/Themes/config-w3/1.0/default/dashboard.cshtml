@@ -18,7 +18,7 @@
     var configinfo = new SimplisityInfo(moduleParams.Record);
     var dataModuleParams = new ModuleParams(moduleParams.ModuleIdDataSource, moduleParams.SystemKey);
     var systemGlobalData = new SystemGlobalData();
-    var systemData = new SystemData(moduleParams.SystemKey);
+    var systemData = new SystemLimpet(moduleParams.SystemKey);
     Model.SetSetting("licensetype", moduleParams.SystemKey);
     var licenseData = new LicenseData(moduleParams.SystemKey, PortalUtils.SiteGuid());
 }

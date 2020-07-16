@@ -24,7 +24,7 @@ namespace Rocket.AppThemes.Componants
                 SelectedSystemKey = selectedsystemkey;
 
                 var cachekey = AppThemeListType + "*SystemFolders" + UserUtils.GetCurrentUserId();
-                if (useCache) SystemFolderList = (List<SystemData>)CacheUtilsDNN.GetCache(cachekey);
+                if (useCache) SystemFolderList = (List<SystemLimpet>)CacheUtilsDNN.GetCache(cachekey);
                 if (SystemFolderList == null) PopulateSystemFolderList();
 
                 cachekey = AppThemeListType + "*" + UserUtils.GetCurrentUserId();
@@ -123,12 +123,12 @@ namespace Rocket.AppThemes.Componants
             var appSystemThemeFolderRootRel = "/DesktopModules/DNNrocket/SystemThemes";
             var appSystemThemeFolderRootMapPath = DNNrocketUtils.MapPath(appSystemThemeFolderRootRel);
 
-            SystemFolderList = new List<SystemData>();
+            SystemFolderList = new List<SystemLimpet>();
             var dirlist2 = System.IO.Directory.GetDirectories(appSystemThemeFolderRootMapPath);
             foreach (var d in dirlist2)
             {
                 var dr = new System.IO.DirectoryInfo(d);
-                var systemData = new SystemData(dr.Name);
+                var systemData = new SystemLimpet(dr.Name);
                 if (systemData.Exists) SystemFolderList.Add(systemData);
             }
 
@@ -146,7 +146,7 @@ namespace Rocket.AppThemes.Componants
         }
         public string SelectedSystemKey { get; set; }
         public List<SimplisityRecord> List { get; set; }
-        public List<SystemData> SystemFolderList { get; set; }
+        public List<SystemLimpet> SystemFolderList { get; set; }
         public bool Error { get; set; }
         public string ErrorMsg { get; set; }
 

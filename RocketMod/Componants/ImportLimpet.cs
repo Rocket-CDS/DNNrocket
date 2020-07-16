@@ -14,11 +14,11 @@ namespace RocketMod.Componants
         private SimplisityInfo _importInfo;
         private int _moduleId;
         private int _oldmoduleId;
-        private static DNNrocketInterface _rocketInterface;
+        private static RocketInterface _rocketInterface;
         private string _tablename;
 
 
-        public ImportLimpet(DNNrocketInterface rocketInterface, int portalid, int moduleId, int oldmoduleId, string content)
+        public ImportLimpet(RocketInterface rocketInterface, int portalid, int moduleId, int oldmoduleId, string content)
         {
             _rocketInterface = rocketInterface;
             _importInfo = new SimplisityInfo();

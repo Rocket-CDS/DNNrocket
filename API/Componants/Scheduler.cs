@@ -17,10 +17,10 @@ namespace DNNrocketAPI.Componants
         {
             try
             {
-                var systemDataList = new SystemDataList();
+                var systemDataList = new SystemLimpetList();
                 foreach (var sInfo in systemDataList.GetSystemList())
                 {
-                    var systemData = new SystemData(sInfo.ItemID);
+                    var systemData = new SystemLimpet(sInfo.ItemID);
                     foreach (var rocketInterface in systemData.SchedulerList)
                     {
                         var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;

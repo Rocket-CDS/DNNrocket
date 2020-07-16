@@ -35,7 +35,7 @@ namespace DNNrocketAPI.Componants
         {
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
             SystemKey = systemKey;
-            var systemData = new SystemData(systemKey);
+            var systemData = new SystemLimpet(systemKey);
             SystemId = systemData.SystemId;
             FileNameList = new Dictionary<string, string>();
 

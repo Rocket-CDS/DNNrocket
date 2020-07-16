@@ -12,7 +12,7 @@
 @{
     var appThemeDataList = (AppThemeDataPrivateList)Model.List.First();
     var systemGlobalData = new SystemGlobalData();
-    var systemData1 = new SystemData(appThemeDataList.SelectedSystemKey);
+    var systemData1 = new SystemLimpet(appThemeDataList.SelectedSystemKey);
 
 }
 
@@ -65,7 +65,7 @@
             <div class="w3-row-padding w3-margin">
                 <ul class="w3-ul w3-border w3-hoverable w-margin">
 
-                    @foreach (SystemData systemData in appThemeDataList.SystemFolderList)
+                    @foreach (SystemLimpet systemData in appThemeDataList.SystemFolderList)
                     {
                     <li class="simplisity_click" s-cmd="rocketapptheme_getprivatelist" s-fields='{"changesystemkey":"true","selectedsystemkey":"@systemData.SystemKey"}' onclick="document.getElementById('systemselect').style.display='none'">
                         <b>@systemData.SystemName</b>

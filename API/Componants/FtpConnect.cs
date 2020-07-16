@@ -13,12 +13,12 @@ namespace DNNrocketAPI.Componants
 {
     public class FtpConnect
     {
-        private SystemData _systemData;
+        private SystemLimpet _systemData;
         private SystemGlobalData _systemGlobalData;
         private string _baseuri;
         public FtpConnect(string selectedSystemKey)
         {
-            _systemData = new SystemData(selectedSystemKey);
+            _systemData = new SystemLimpet(selectedSystemKey);
             _systemGlobalData = new SystemGlobalData();
             _baseuri = "ftp://" + _systemGlobalData.FtpServer + "/" + _systemData.FtpRoot.TrimStart('/').TrimEnd('/') + "/" + _systemData.SystemKey;
             IsValid = true;

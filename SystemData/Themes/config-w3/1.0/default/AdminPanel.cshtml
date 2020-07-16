@@ -11,7 +11,7 @@
 
 
 @{
-    var systemDataList = new SystemDataList();
+    var systemDataList = new SystemLimpetList();
     var list = systemDataList.GetSystemList();
 }
 
@@ -28,7 +28,7 @@
             var adminurl = nbi.GetXmlProperty("genxml/textbox/adminurl");
             if (adminurl != "" && !adminurl.Contains("[")) // check for admin link without parameters (for modules)
             {
-                var systemData = new SystemData(nbi.GetXmlProperty("genxml/textbox/ctrlkey"));
+                var systemData = new SystemLimpet(nbi.GetXmlProperty("genxml/textbox/ctrlkey"));
 
                 <a href="@systemData.AdminUrl" class="" style="text-decoration:none">
                     <div class="w3-col m2 w3-hover-opacity w3-padding" style="width:140px;">

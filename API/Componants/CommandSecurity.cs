@@ -17,11 +17,11 @@ namespace DNNrocketAPI.Componants
         private int _userId;
         private UserInfo _userInfo;
         static ConcurrentDictionary<string, bool> _commandSecurity;  // thread safe dictionary.
-        private DNNrocketInterface _interfaceInfo;
+        private RocketInterface _interfaceInfo;
         private int _tabid;
         private int _moduleid;
 
-        public CommandSecurity(DNNrocketInterface interfaceInfo)
+        public CommandSecurity(RocketInterface interfaceInfo)
         {
             _commandSecurity = new ConcurrentDictionary<string, bool>();
             _tabid = -1;
@@ -32,7 +32,7 @@ namespace DNNrocketAPI.Componants
         }
 
 
-        public CommandSecurity(int tabId, int moduleId, DNNrocketInterface interfaceInfo)
+        public CommandSecurity(int tabId, int moduleId, RocketInterface interfaceInfo)
         {
             _commandSecurity = new ConcurrentDictionary<string, bool>();
             _tabid = tabId;
@@ -42,7 +42,7 @@ namespace DNNrocketAPI.Componants
             ValidateUser();
         }
 
-        public CommandSecurity(int portalid, int userid, int tabId, int moduleId, DNNrocketInterface interfaceInfo)
+        public CommandSecurity(int portalid, int userid, int tabId, int moduleId, RocketInterface interfaceInfo)
         {
             _commandSecurity = new ConcurrentDictionary<string, bool>();
             _tabid = tabId;

@@ -19,7 +19,7 @@ namespace Rocket.AppThemes.Componants
         {
             try
             {
-                SystemList = new SystemDataList();
+                SystemList = new SystemLimpetList();
 
                 _pluginCacheGroupId = "plugins";
                 _listCacheKey = "PluginList" + UserUtils.GetCurrentUserId();
@@ -61,7 +61,7 @@ namespace Rocket.AppThemes.Componants
             CacheUtilsDNN.RemoveCache(_listCacheKey);
         }
         public List<SimplisityRecord> PluginList { get; set; }
-        public SystemDataList SystemList { get; set; }
+        public SystemLimpetList SystemList { get; set; }
         public bool Error { get; set; }
         public string ErrorMsg { get; set; }
 
@@ -74,7 +74,7 @@ namespace Rocket.AppThemes.Componants
         {
             SystemKey = systemKey;
             DownloadPlugin();
-            System = new SystemData(SystemKey);
+            System = new SystemLimpet(SystemKey);
 
         }
         private void DownloadPlugin()
@@ -84,7 +84,7 @@ namespace Rocket.AppThemes.Componants
         }
 
 
-        public SystemData System { get; set; }
+        public SystemLimpet System { get; set; }
         public string SystemKey { get; set; }
 
     }

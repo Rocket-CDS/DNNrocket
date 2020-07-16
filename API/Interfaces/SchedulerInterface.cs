@@ -25,7 +25,7 @@ namespace DNNrocketAPI
 
         #endregion
 
-        public abstract void DoWork(SystemData systemData, DNNrocketInterface rocketInterface);
+        public abstract void DoWork(SystemLimpet systemData, RocketInterface rocketInterface);
 
     }
 

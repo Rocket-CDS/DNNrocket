@@ -14,7 +14,7 @@ namespace DNNrocket.Country
 
         #region "API"
 
-        public static String CultureSelect(SimplisityInfo sInfo, string langRequired, DNNrocketInterface rocketInterface)
+        public static String CultureSelect(SimplisityInfo sInfo, string langRequired, RocketInterface rocketInterface)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace DNNrocket.Country
         }
 
 
-        public static String CountryDetail(DNNrocketInterface rocketInterface, bool saved)
+        public static String CountryDetail(RocketInterface rocketInterface, bool saved)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace DNNrocket.Country
             }
         }
 
-        public static void CountrySave(SimplisityInfo postInfo, DNNrocketInterface rocketInterface)
+        public static void CountrySave(SimplisityInfo postInfo, RocketInterface rocketInterface)
         {
             var countryData = new CountryLimpet(PortalUtils.GetPortalId(), rocketInterface);
             countryData.Save(postInfo);
@@ -66,7 +66,7 @@ namespace DNNrocket.Country
 
         #endregion
 
-        public static string CountryListJson(DNNrocketInterface rocketInterface, bool allowempty = true)
+        public static string CountryListJson(RocketInterface rocketInterface, bool allowempty = true)
         {
             var countryData = new CountryLimpet(PortalUtils.GetPortalId(), rocketInterface);
             var jsonList = new List<ValuePair>();

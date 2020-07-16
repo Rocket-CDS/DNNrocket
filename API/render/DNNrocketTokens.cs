@@ -38,7 +38,7 @@ namespace DNNrocketAPI.render
         {
             var dataSytemKeys = new Dictionary<string, string>();
 
-            var systemDataList = new SystemDataList();
+            var systemDataList = new SystemLimpetList();
             var list = systemDataList.GetSystemList();
             foreach (var sk in list)
             {

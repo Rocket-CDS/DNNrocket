@@ -173,12 +173,12 @@
     <Compile Include="Componants\PagesUtils.cs" />
     <Compile Include="Componants\FileStatus.cs" />
     <Compile Include="Componants\ImgUtils.cs" />
-    <Compile Include="Componants\SystemDataList.cs" />
+    <Compile Include="Componants\SystemLimpetList.cs" />
     <Compile Include="Componants\PageIncludes.cs" />
-    <Compile Include="Componants\SystemData.cs" />
+    <Compile Include="Componants\SystemLimpet.cs" />
     <Compile Include="Componants\UserUtils.cs" />
     <Compile Include="Componants\SideMenu.cs" />
-    <Compile Include="Componants\DNNrocketInterface.cs" />
+    <Compile Include="Componants\RocketInterface.cs" />
     <Compile Include="DNNrocketThumb.ashx.cs">
       <DependentUpon>DNNrocketThumb.ashx</DependentUpon>
     </Compile>
