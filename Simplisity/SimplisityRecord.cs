@@ -248,6 +248,33 @@ namespace Simplisity
             }
             return 0;
         }
+        /// <summary>
+        /// return decimal data type from XML.
+        /// Slower than double for calculation, but useful for percission like currency.
+        /// </summary>
+        /// <param name="xpath"></param>
+        /// <returns></returns>
+        public decimal GetXmlPropertyDecimal(string xpath)
+        {
+            if (!string.IsNullOrEmpty(XMLData))
+            {
+                try
+                {
+                    var x = GetGenXmlValueRawFormat(XMLData, xpath);
+                    if (GeneralUtils.IsNumeric(x))
+                    {
+                        return Convert.ToDecimal(x, CultureInfo.GetCultureInfo("en-US"));
+                        // double should always be saved as en-US                        
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var ms = ex.ToString();
+                    return 0;
+                }
+            }
+            return 0;
+        }
         public DateTime GetXmlPropertyDate(string xpath)
         {
             if (!string.IsNullOrEmpty(XMLData))
@@ -353,11 +380,18 @@ namespace Simplisity
             return "";
         }
 
-        public void SetXmlPropertyDouble(string xpath, Double value, int precision = 2)
+        public void SetXmlPropertyDecimal(string xpath, decimal value)
         {
-            SetXmlPropertyDouble(xpath, Math.Round(value, precision).ToString(""));
+            SetXmlProperty(xpath, value.ToString(), System.TypeCode.Decimal, false);
         }
-
+        public void SetXmlPropertyDecimal(string xpath, string value)
+        {
+            SetXmlProperty(xpath, value, System.TypeCode.Decimal, false);
+        }
+        public void SetXmlPropertyDouble(string xpath, double value)
+        {
+            SetXmlProperty(xpath, value.ToString(), System.TypeCode.Double, false);
+        }
         public void SetXmlPropertyDouble(string xpath, string value)
         {
             SetXmlProperty(xpath, value, System.TypeCode.Double, false);
@@ -384,6 +418,15 @@ namespace Simplisity
                     {
                         var dbl = Convert.ToDouble(Value, CultureInfo.GetCultureInfo(Lang));
                         Value = dbl.ToString(CultureInfo.GetCultureInfo("en-US"));
+                    }
+                }
+                if (DataTyp == System.TypeCode.Decimal)
+                {
+                    // always save decimal in en-US format
+                    if (GeneralUtils.IsNumeric(Value, Lang))
+                    {
+                        var dec = Convert.ToDecimal(Value, CultureInfo.GetCultureInfo(Lang));
+                        Value = dec.ToString(CultureInfo.GetCultureInfo("en-US"));
                     }
                 }
                 if (DataTyp == System.TypeCode.DateTime)

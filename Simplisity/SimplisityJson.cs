@@ -319,6 +319,9 @@ namespace Simplisity
                                 case "double":
                                     xmlOut.SetXmlProperty(xpath, val, TypeCode.Double);
                                     break;
+                                case "decimal":
+                                    xmlOut.SetXmlProperty(xpath, val, TypeCode.Decimal);
+                                    break;
                                 case "coded":
                                     xmlOut.SetXmlProperty(xpath, GeneralUtils.DeCode(val));
                                     break;
