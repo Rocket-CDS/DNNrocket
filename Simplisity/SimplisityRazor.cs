@@ -61,6 +61,15 @@ namespace Simplisity
             List = list;
             Init();
         }
+        public SimplisityRazor(object listobj)
+        {
+            var list = new List<object>();
+            list.Add(listobj);
+            Settings = new Dictionary<String, String>();
+            UrlParams = new NameValueCollection();
+            List = list;
+            Init();
+        }
         public SimplisityRazor(object listobj, Dictionary<String, String> settings)
         {
             var list = new List<object>();
