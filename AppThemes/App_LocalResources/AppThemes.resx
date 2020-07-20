@@ -355,7 +355,7 @@
     <value>Version Check</value>
   </data>
   <data name="versioncheckequal.Text" xml:space="preserve">
-    <value>The server version of this AppTheme is the same as the local AppTheme, there is no need to upload.  If you want to continue with the upload, click the upload button.</value>
+    <value>The server version of this AppTheme is the same as the local AppTheme.  If you want to continue with the upload, click the upload button.</value>
   </data>
   <data name="versioncheckmsg.Text" xml:space="preserve">
     <value>The verison of the AppTheme on the server is newer than this version.  If you upload you will delete the AppTheme on the server.  If you want to continue with the upload, click the upload button.</value>
