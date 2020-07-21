@@ -70,6 +70,7 @@ namespace DNNrocketAPI.Componants
 
     public class EmailSenderData
     {
+        private AppTheme _appTheme;
         public EmailSenderData(string cultureCode = "")
         {
             ThemeFolder = "config-w3";
@@ -96,6 +97,14 @@ namespace DNNrocketAPI.Componants
         public string ThemeFolder { get; set; }
         public string VersionFolder { get; set; }
         public bool DebugMode { get; set; }
+
+        public AppTheme AppTheme { get { return _appTheme; } set {
+
+                ThemeFolder = value.AppThemeFolder;
+                TemplateControlRelPath = value.AppSystemThemeFolderRel;
+                VersionFolder = value.AppVersionFolder;
+            }
+        }
 
     }
 

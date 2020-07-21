@@ -102,6 +102,20 @@ namespace Rocket.AppThemes.Componants
         public string AppProjectThemesFolderRel { get; set; }
         public string AppProjectThemesFolderMapPath { get; set; }
         public string SelectedSystemKey { get; set; }
+        public Dictionary<string,string> NameList
+        {
+            get
+            {
+                var rtn = new Dictionary<string, string>();
+                foreach (var a in List)
+                {
+                    var n = a.AppThemeName;
+                    if (n == "") n = a.AppThemeFolder;
+                    rtn.Add(a.AppThemeFolder, n);
+                }
+                return rtn;
+            }
+        }
         public List<AppTheme> List {
             get
             {
