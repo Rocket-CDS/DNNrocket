@@ -62,7 +62,7 @@ namespace DNNrocketAPI.Componants
                 //}
                 //catch (Exception ex)
                 //{
-                //    DNNrocketUtils.LogException(ex);
+                //    LogUtils.LogException(ex);
                 //}
 
 
@@ -81,7 +81,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception exc)
             {
-                DNNrocketUtils.LogException(exc);
+                LogUtils.LogException(exc);
             }
 
         }
@@ -96,7 +96,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception exc)
             {
-                DNNrocketUtils.LogException(exc);
+                LogUtils.LogException(exc);
             }
 
         }

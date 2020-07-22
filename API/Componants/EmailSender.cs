@@ -37,7 +37,6 @@ namespace DNNrocketAPI.Componants
 
             if (Error == "")
             {
-
                 try
                 {
                     var emailarray = EmailData.ToEmail.Replace(';',',').Split(',');
@@ -46,6 +45,10 @@ namespace DNNrocketAPI.Componants
                         if (!string.IsNullOrEmpty(email.Trim()) && GeneralUtils.IsEmail(EmailData.FromEmail) && GeneralUtils.IsEmail(email.Trim()))
                         {
                             DotNetNuke.Services.Mail.Mail.SendMail(EmailData.FromEmail, email.Trim(), "", EmailData.EmailSubject, EmailData.EmailBody, EmailData.Attchments, "HTML", "", "", "", "");
+                        }
+                        else
+                        {
+                            LogUtils.LogDebug("Invalid Email: " + email + "   FromEmail: " + EmailData.FromEmail);
                         }
                     }
                 }

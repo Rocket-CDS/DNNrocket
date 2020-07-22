@@ -469,7 +469,7 @@ namespace RocketMod
             }
             catch (Exception ex)
             {
-                DNNrocketUtils.LogException(ex);
+                LogUtils.LogException(ex);
             }
         }
 

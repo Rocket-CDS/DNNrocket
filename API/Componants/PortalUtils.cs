@@ -104,7 +104,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception)
             {
-                ///DNNrocketUtils.LogException(ex);
+                ///LogUtils.LogException(ex);
                 return -1; // Invalid Guid.
             }
         }

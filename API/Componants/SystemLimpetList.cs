@@ -35,7 +35,7 @@ namespace DNNrocketAPI.Componants
                         }
                         catch (Exception ex)
                         {
-                            DNNrocketUtils.LogException(ex);
+                            LogUtils.LogException(ex);
                             // data might not be XML complient (ignore)
                         }
                         File.Delete(f);

@@ -135,6 +135,7 @@
     <Compile Include="Componants\CacheUtilsDNN.cs" />
     <Compile Include="Componants\FastReplacer.cs" />
     <Compile Include="Componants\FastReplacerSnippet.cs" />
+    <Compile Include="Componants\LogUtils.cs" />
     <Compile Include="Componants\SchedulerUtils.cs" />
     <Compile Include="Componants\PluginDataList.cs" />
     <Compile Include="Componants\AppThemeModule.cs" />

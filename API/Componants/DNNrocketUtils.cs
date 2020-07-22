@@ -1371,11 +1371,6 @@ namespace DNNrocketAPI.Componants
             response.End();
         }
 
-        public static string LogException(Exception exc)
-        {
-            Exceptions.LogException(exc);
-            return exc.ToString();
-        }
         public static SimplisityRecord UpdateFieldXpath(SimplisityRecord record, string listname)
         {
             List<SimplisityRecord> fieldList = record.GetRecordList(listname);
@@ -1436,32 +1431,6 @@ namespace DNNrocketAPI.Componants
             return record;
         }
 
-
-        //  --------------------- Debug Log files ------------------------------
-        public static void LogDebug(string message)
-        {
-            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
-            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-            FileUtils.AppendToLog(mappath, "debug", message);
-        }
-        public static void LogDebugClear()
-        {
-            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
-            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-            System.IO.DirectoryInfo di = new DirectoryInfo(mappath);
-            foreach (System.IO.FileInfo file in di.GetFiles())
-            {
-
-                file.Delete();
-            }
-        }
-
-        public static void LogTracking(string message, string logName = "Log")
-        {
-            var mappath = PortalUtils.HomeDNNrocketDirectoryMapPath().TrimEnd('\\') + "\\logs";
-            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-            FileUtils.AppendToLog(mappath, logName, message);
-        }
 
         /// <summary>
         /// Generates a new backup file name, based on the date and time.  (May not be unique)
@@ -1683,7 +1652,7 @@ namespace DNNrocketAPI.Componants
 
                 if (webResp.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    DNNrocketUtils.LogDebug("CallAPI() Login expired. Please start over.");
+                    LogUtils.LogDebug("CallAPI() Login expired. Please start over.");
                     return "";
                 }
 

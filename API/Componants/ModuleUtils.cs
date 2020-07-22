@@ -155,7 +155,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception exc)
             {
-                DNNrocketUtils.LogException(exc);
+                LogUtils.LogException(exc);
             }
             return false;
         }

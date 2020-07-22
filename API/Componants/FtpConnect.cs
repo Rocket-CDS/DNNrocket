@@ -97,7 +97,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception ex)
             {
-                DNNrocketUtils.LogException(ex);
+                LogUtils.LogException(ex);
                 return "[FAIL]  uri:" + _baseuri + " exportZipMapPath:" + exportZipMapPath + " Error:" + ex.ToString();
             }
             return "OK";
@@ -197,7 +197,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (WebException ex)
             {
-                //DNNrocketUtils.LogException(ex);
+                //LogUtils.LogException(ex);
                 FtpWebResponse response = (FtpWebResponse)ex.Response;
                 if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
                 {
@@ -221,7 +221,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception exc)
             {
-                DNNrocketUtils.LogException(exc);
+                LogUtils.LogException(exc);
                 return "FAIL";
             }
             return "OK";
@@ -246,7 +246,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception exc)
             {
-                DNNrocketUtils.LogException(exc);
+                LogUtils.LogException(exc);
             }
             return "<genxml></genxml>";
         }
@@ -262,7 +262,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception exc)
             {
-                DNNrocketUtils.LogException(exc);
+                LogUtils.LogException(exc);
             }
         }
         public void DownloadImageToFile(string uri, string destinationMapPath)
@@ -275,7 +275,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception exc)
             {
-                DNNrocketUtils.LogException(exc);
+                LogUtils.LogException(exc);
             }
         }
 

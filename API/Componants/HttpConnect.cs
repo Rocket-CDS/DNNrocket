@@ -34,7 +34,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception exc)
             {
-                DNNrocketUtils.LogException(exc);
+                LogUtils.LogException(exc);
                 return "FAIL";
             }
             return "OK";
@@ -55,7 +55,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception exc)
             {
-                DNNrocketUtils.LogException(exc);
+                LogUtils.LogException(exc);
             }
             return "<genxml></genxml>";
         }
@@ -70,7 +70,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception exc)
             {
-                DNNrocketUtils.LogException(exc);
+                LogUtils.LogException(exc);
             }
         }
 
@@ -97,7 +97,7 @@ namespace DNNrocketAPI.Componants
             }
             catch (Exception exc)
             {
-                DNNrocketUtils.LogException(exc);
+                LogUtils.LogException(exc);
             }
         }
         public List<SimplisityRecord> DownloadAppThemeXmlList()
