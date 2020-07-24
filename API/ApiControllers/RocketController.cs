@@ -194,6 +194,8 @@ namespace DNNrocketAPI.ApiControllers
                 var interfacekey = paramInfo.GetXmlProperty("genxml/hidden/interfacekey");
                 if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
                 if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
+                if (interfacekey == "") interfacekey = systemData.DefaultInterface;
+                if (interfacekey == "") interfacekey = systemkey;
 
                 paramInfo.SetXmlProperty("genxml/systemkey", systemkey);
 
