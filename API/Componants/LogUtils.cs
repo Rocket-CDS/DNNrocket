@@ -12,6 +12,29 @@ namespace DNNrocketAPI.Componants
     public class LogUtils
     {
         //  --------------------- Debug Log files ------------------------------
+        public static void LogTest(string filename, string datatext)
+        {
+            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\test";
+            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
+
+            using (StreamWriter w = File.AppendText(mappath.TrimEnd('\\') + "\\" + Path.GetFileNameWithoutExtension(filename) + ".txt")) 
+            {
+                w.WriteLine(datatext);
+                w.WriteLine("-------------------------------");
+            }
+        }
+        public static void LogTestClear()
+        {
+            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\test";
+            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
+            System.IO.DirectoryInfo di = new DirectoryInfo(mappath);
+            foreach (System.IO.FileInfo file in di.GetFiles())
+            {
+
+                file.Delete();
+            }
+        }
+        //  --------------------- Debug Log files ------------------------------
         public static void LogDebug(string message)
         {
             var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
