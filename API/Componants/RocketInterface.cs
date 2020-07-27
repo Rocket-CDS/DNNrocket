@@ -110,6 +110,11 @@ namespace DNNrocketAPI.Componants
             get { return Info.GetXmlPropertyBool("genxml/checkbox/active"); }
             set { Info.SetXmlProperty("genxml/checkbox/active", value.ToString()); }
         }
+        public bool IsOnMenu
+        {
+            get { return Info.GetXmlPropertyBool("genxml/checkbox/onmenu"); }
+            set { Info.SetXmlProperty("genxml/checkbox/onmenu", value.ToString()); }
+        }
         public string DatabaseTable
         {
             get {
