@@ -7,7 +7,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 
 <div class="w3-dropdown-click">
-    <button onclick="LanguageClickSelect()" class="w3-button w3-theme-l4 languageFlag"><img class='languageFlagImg' src='/DesktopModules/DNNrocket/API/images/flags/16/@(DNNrocketUtils.GetEditCulture()).png' alt='@(DNNrocketUtils.GetEditCulture())' /><span class="w3-small languageFlagText">&nbsp;@DNNrocketUtils.GetCultureCodeName(DNNrocketUtils.GetEditCulture())</span></button>
+    <button onclick="LanguageClickSelect()" style="width:270px;" class="w3-button w3-theme-l4 languageFlag"><img class='languageFlagImg' src='/DesktopModules/DNNrocket/API/images/flags/16/@(DNNrocketUtils.GetEditCulture()).png' alt='@(DNNrocketUtils.GetEditCulture())' /><span class="w3-small languageFlagText">&nbsp;@DNNrocketUtils.GetCultureCodeName(DNNrocketUtils.GetEditCulture())</span></button>
     <div class="LanguageClickShow w3-dropdown-content w3-bar-block w3-border w3-theme-l5">
         @{
             var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
