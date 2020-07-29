@@ -44,13 +44,18 @@ namespace DNNrocketAPI.Componants
         public string SystemKey { get; set; }
         public bool IsProvider(string providerType)
         {
-            return Info.GetXmlPropertyBool("genxml/checkboxlist/providertype/chk[@data='"+ providerType + "']/@value");
+            return (Info.GetXmlProperty("genxml/providertype") == providerType) ;
         }
 
         public SimplisityInfo Info { get; }
 
         public bool Exists { get; }
 
+        public string ProviderType
+        {
+            get { return Info.GetXmlProperty("genxml/providertype"); }
+            set { Info.SetXmlProperty("genxml/providertype", value.ToString()); }
+        }
 
         public string InterfaceIcon
         {
@@ -78,6 +83,11 @@ namespace DNNrocketAPI.Componants
         {
             get { return Info.GetXmlProperty("genxml/textbox/namespaceclass"); }
             set { Info.SetXmlProperty("genxml/textbox/namespaceclass", value.ToString()); }
+        }
+        public string ProviderNameSpaceClass
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/providernamespaceclass"); }
+            set { Info.SetXmlProperty("genxml/textbox/providernamespaceclass", value.ToString()); }
         }
         public string Assembly
         {

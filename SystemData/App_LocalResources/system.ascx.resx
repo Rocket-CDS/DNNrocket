@@ -160,7 +160,7 @@
     <value>Interfaces</value>
   </data>
   <data name="namespaceclass.Text" xml:space="preserve">
-    <value>Namespace and Class</value>
+    <value>Admin Namespace class API (StartConnect)</value>
   </data>
   <data name="parameters.Text" xml:space="preserve">
     <value>Parameters</value>
@@ -377,5 +377,8 @@
   </data>
   <data name="moduletitle.Text" xml:space="preserve">
     <value>Module Title</value>
+  </data>
+  <data name="providernamespaceclass.Text" xml:space="preserve">
+    <value>Provider namespace class API</value>
   </data>
 </root>

@@ -67,6 +67,30 @@ namespace DNNrocketAPI.ApiControllers
 
             }
 
+            // get all query string params
+            foreach (string key in context.Request.QueryString.AllKeys)
+            {
+                var keyValue = context.Request.QueryString[key];
+                try
+                {
+                    keyValue = GeneralUtils.DeCode(keyValue);
+                }
+                catch (Exception ex)
+                {
+                    // ignore, if not in an encoded format it will give an error, so use the base value.
+                }
+                paramInfo.SetXmlProperty("genxml/urlparams/" + key.ToLower(), keyValue);
+            }
+            // get all form data (drop the ones we already processed) 
+            foreach (string key in context.Request.Form.AllKeys)
+            {
+                var keyValue = context.Request.QueryString[key];
+                if (key.ToLower() != "paramjson" && key.ToLower() != "inputjson")
+                {
+                    paramInfo.SetXmlProperty("genxml/form/" + key.ToLower(), keyValue);
+                }
+            }
+
             var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, systemkey);
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
             rtn.Headers.Add("Access-Control-Allow-Origin", "*");
@@ -150,23 +174,6 @@ namespace DNNrocketAPI.ApiControllers
                     context.Response.ContentType = "text/plain";
                     context.Response.Write(strOut);
                     context.Response.End();
-                }
-
-                var requestJson = "";
-                var paramJson = "";
-
-                foreach (string key in context.Request.QueryString.AllKeys)
-                {
-                    var keyValue = context.Request.QueryString[key];
-                    try
-                    {
-                        keyValue = GeneralUtils.DeCode(keyValue);
-                    }
-                    catch (Exception ex)
-                    {
-                        // ignore, if not in an encoded format it will give an error, so use the base value.
-                    }
-                    paramInfo.SetXmlProperty("genxml/urlparams/" + key.ToLower(), keyValue);
                 }
 
                 systemkey = systemkey.Trim(' ');

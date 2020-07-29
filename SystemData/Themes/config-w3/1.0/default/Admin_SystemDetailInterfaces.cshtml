@@ -85,10 +85,22 @@
                             {
                                 <div class="w3-padding w3-border w3-margin-top">
                                     <label class=""><b>@ResourceKey("system.providertype")</b></label>
-                                    @CheckBoxList(i, "genxml/checkboxlist/providertype", providertyperef.TrimEnd(','), providertypelist.TrimEnd(','), "", false, false, lp1)
+                                    @DropDownList(i, "genxml/providertype", "," + providertyperef.TrimEnd(','), "," + providertypelist.TrimEnd(','), "class='w3-input w3-border '", "", false, lp1)
                                 </div>
                             }
 
+                            <div class="w3-padding w3-col m12">
+                                <label class="">@ResourceKey("system.namespaceclass")</label>
+                                @TextBox(i, "genxml/textbox/namespaceclass", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                            </div>
+                            <div class="w3-padding w3-col m12">
+                                <label class="">@ResourceKey("system.providernamespaceclass")</label>
+                                @TextBox(i, "genxml/textbox/providernamespaceclass", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                            </div>
+                            <div class="w3-padding w3-col m12">
+                                <label class="">@ResourceKey("system.assembly")</label>
+                                @TextBox(i, "genxml/textbox/assembly", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                            </div>
                         </div>
                         <div class="w3-col m6">
                             <div class="w3-padding w3-col m12">
@@ -116,14 +128,6 @@
                                 @TextBox(i, "genxml/textbox/defaultcommand", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
                             </div>
 
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.namespaceclass")</label>
-                                @TextBox(i, "genxml/textbox/namespaceclass", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
-                            </div>
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.assembly")</label>
-                                @TextBox(i, "genxml/textbox/assembly", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
-                            </div>
                             <div class="w3-padding  w3-col m12">
                                 <label class="">@ResourceKey("system.databasetable")</label>
                                 @TextBox(i, "genxml/textbox/databasetable", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
