@@ -34,23 +34,42 @@ namespace DNNrocketAPI.Componants
                 file.Delete();
             }
         }
+
         //  --------------------- Debug Log files ------------------------------
-        public static void LogDebug(string message)
+        private static void Log(string message, string folderName)
         {
-            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
+            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\" + folderName;
             if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
             FileUtils.AppendToLog(mappath, "debug", message);
         }
-        public static void LogDebugClear()
+        private static void LogClear(string folderName)
         {
-            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
+            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\" + folderName;
             if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
             System.IO.DirectoryInfo di = new DirectoryInfo(mappath);
             foreach (System.IO.FileInfo file in di.GetFiles())
             {
-
                 file.Delete();
             }
+        }
+
+
+        //  --------------------- Debug Log files ------------------------------
+        public static void LogDebug(string message)
+        {
+            Log(message, "debug");
+        }
+        public static void LogDebugClear()
+        {
+            LogClear("debug");
+        }
+        public static void LogMessage(string message)
+        {
+            Log(message, "message");
+        }
+        public static void LogMessageClear()
+        {
+            LogClear("message");
         }
         /// <summary>
         /// Output a data file, if the given name to the Portal \DNNrocketTemp\debug folder.
