@@ -667,7 +667,7 @@ function simplisity_replaceAll(target, search, replacement) {
 }
 
 function simplisity_setParamField(fieldkey, fieldvalue) {
-    if (typeof fieldvalue !== 'undefined' && typeof fieldkey !== 'undefined') {
+    if (typeof fieldvalue !== 'undefined' && typeof fieldkey !== 'undefined' && fieldkey !== null) {
         var jsonParams = $('#simplisity_params').val();
         var obj = {};
         if (typeof jsonParams !== 'undefined' && jsonParams !== '') {
