@@ -37,31 +37,32 @@ var debugmode = false;
         var settings = $.extend({
             activatepanel: true,
             overlayclass: 'w3-overlay',
-            debug: false
+            debug: false,
+            resetfields: true
         }, options);
 
         debugmode = settings.debug;
 
         $('#simplisity_loader').remove();
-        $('#simplisity_fileuploadlist').remove();
-        $('#simplisity_params').remove();
         $('#simplisity_systemkey').remove();
         $('#simplisity_cmdurl').remove();
 
         var elementstr = '<div class="' + settings.overlayclass + ' " style="" id="simplisity_loader">';
         elementstr += '<i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i>';
         elementstr += '</div>';
-
         elementstr += '<div class="' + settings.overlayclass + '" style="" id="simplisity_fullloader"></div>';
-
-        elementstr += '<input id="simplisity_fileuploadlist" type="hidden" value="" />';
-        elementstr += '<input id="simplisity_params" type="hidden" value="" />';
         elementstr += '<input id="simplisity_systemkey" type="hidden" value="' + settings.systemkey + '" />';
         elementstr += '<input id="simplisity_cmdurl" type="hidden" value="' + cmdurl + '" />';
 
         var elem = document.createElement('span');
         elem.innerHTML = elementstr;
         document.body.appendChild(elem);
+
+        if (settings.resetfields) {
+            removeTempPageFields()
+        }
+
+        createTempPageFields()
 
         $('.simplisity_panel').each(function () {
             $(this).attr('s-activepanel', settings.activatepanel);
@@ -74,6 +75,25 @@ var debugmode = false;
 
     };
 }(jQuery));
+
+function createTempPageFields() {
+    // inject any temporary fields that simplisity needs.
+    var elementstr = '';
+    if ($('#simplisity_fileuploadlist').length === 0) {
+        elementstr += '<input id="simplisity_fileuploadlist" type="hidden" value="" />';
+    }
+    if ($('#simplisity_params').length === 0) {
+        elementstr += '<input id="simplisity_params" type="hidden" value="" />';
+    }
+    var elem = document.createElement('span');
+    elem.innerHTML = elementstr;
+    document.body.appendChild(elem);
+}
+function removeTempPageFields() {
+    // remove temporary fields that simplisity needs.
+    $('#simplisity_fileuploadlist').remove();
+    $('#simplisity_params').remove();
+}
 
 function panelAjaxFunction(panelelement) {
     if ((typeof panelelement !== 'undefined') && panelelement !== '') {
