@@ -62,6 +62,7 @@ function simplisity_createStaticPageFields(cmdurl, settings) {
     $('#simplisity_loader').remove();
     $('#simplisity_systemkey').remove();
     $('#simplisity_cmdurl').remove();
+    $('#simplisity_fileuploadlist').remove();
 
     var elementstr = '<div class="' + settings.overlayclass + ' " style="" id="simplisity_loader">';
     elementstr += '<i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i>';
@@ -69,6 +70,7 @@ function simplisity_createStaticPageFields(cmdurl, settings) {
     elementstr += '<div class="' + settings.overlayclass + '" style="" id="simplisity_fullloader"></div>';
     elementstr += '<input id="simplisity_systemkey" type="hidden" value="' + settings.systemkey + '" />';
     elementstr += '<input id="simplisity_cmdurl" type="hidden" value="' + cmdurl + '" />';
+    elementstr += '<input id="simplisity_fileuploadlist" type="hidden" value="" />';
 
     var elem = document.createElement('span');
     elem.innerHTML = elementstr;
@@ -79,12 +81,6 @@ function simplisity_createStaticPageFields(cmdurl, settings) {
 function simplisity_createTempPageFields() {
     // inject any temporary fields that simplisity needs.
     var elementstr = '';
-    if ($('#simplisity_fileuploadlist').length === 0) {
-        elementstr += '<input id="simplisity_fileuploadlist" type="hidden" value="" />';
-        var elem = document.createElement('span');
-        elem.innerHTML = elementstr;
-        document.body.appendChild(elem);
-    }
     if ($('#simplisity_params').length === 0) {
         elementstr += '<input id="simplisity_params" type="hidden" value="" />';
         var elem = document.createElement('span');
@@ -94,7 +90,6 @@ function simplisity_createTempPageFields() {
 }
 function simplisity_removepagefields() {
     // remove temporary fields that simplisity needs.
-    $('#simplisity_fileuploadlist').remove();
     $('#simplisity_params').remove();
 }
 

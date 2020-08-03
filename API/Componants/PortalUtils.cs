@@ -280,15 +280,18 @@ namespace DNNrocketAPI.Componants
         }
         public static void AddPortalAlias(int portalId, string portalAlias)
         {
+            portalAlias = portalAlias.ToLower().Replace("http://", "").Replace("https://", "");
             PortalController.Instance.AddPortalAlias(portalId, portalAlias);
         }
         public static void DeletePortalAlias(int portalId, string portalAlias)
         {
+            portalAlias = portalAlias.ToLower().Replace("http://", "").Replace("https://", "");
             var pa = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalId);
             if (pa != null) PortalAliasController.Instance.DeletePortalAlias(pa);
         }
         public static void SetPrimaryPortalAlias(int portalId, string portalAlias)
         {
+            portalAlias = portalAlias.ToLower().Replace("http://", "").Replace("https://", "");
             PortalAliasInfo newPrimaryPortalAlias = null;
             var paList = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
             foreach (var pa in paList)
