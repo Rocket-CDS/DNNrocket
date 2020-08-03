@@ -42,23 +42,22 @@ var debugmode = false;
 
         debugmode = settings.debug;
 
-        createStaticPageFields(cmdurl, settings);
-        removeTempPageFields();
-        createTempPageFields();
+        simplisity_createStaticPageFields(cmdurl, settings);
+        simplisity_createTempPageFields();
 
         $('.simplisity_panel').each(function () {
             $(this).attr('s-activepanel', settings.activatepanel);
             ajaxPostCmd.push(this);
         });
 
-        panelAjaxFunction(ajaxPostCmd[ajaxPostCmd.length - 1]);
+        simplisity_panelAjaxFunction(ajaxPostCmd[ajaxPostCmd.length - 1]);
 
         $('#simplisity_loader').hide();
 
     };
 }(jQuery));
 
-function createStaticPageFields(cmdurl, settings) {
+function simplisity_createStaticPageFields(cmdurl, settings) {
     // inject static fields.
     $('#simplisity_loader').remove();
     $('#simplisity_systemkey').remove();
@@ -77,26 +76,29 @@ function createStaticPageFields(cmdurl, settings) {
 
 }
 
-function createTempPageFields() {
+function simplisity_createTempPageFields() {
     // inject any temporary fields that simplisity needs.
     var elementstr = '';
     if ($('#simplisity_fileuploadlist').length === 0) {
         elementstr += '<input id="simplisity_fileuploadlist" type="hidden" value="" />';
+        var elem = document.createElement('span');
+        elem.innerHTML = elementstr;
+        document.body.appendChild(elem);
     }
     if ($('#simplisity_params').length === 0) {
         elementstr += '<input id="simplisity_params" type="hidden" value="" />';
+        var elem = document.createElement('span');
+        elem.innerHTML = elementstr;
+        document.body.appendChild(elem);
     }
-    var elem = document.createElement('span');
-    elem.innerHTML = elementstr;
-    document.body.appendChild(elem);
 }
-function removeTempPageFields() {
+function simplisity_removepagefields() {
     // remove temporary fields that simplisity needs.
     $('#simplisity_fileuploadlist').remove();
     $('#simplisity_params').remove();
 }
 
-function panelAjaxFunction(panelelement) {
+function simplisity_panelAjaxFunction(panelelement) {
     if ((typeof panelelement !== 'undefined') && panelelement !== '') {
         ajaxPostCmd.pop();
 
@@ -112,7 +114,7 @@ function panelAjaxFunction(panelelement) {
 
         if (debugmode) {
             // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
-            console.log('[panelAjaxFunction()] s-cmd: ', $(panelelement).attr('s-cmd'));
+            console.log('[simplisity_panelAjaxFunction()] s-cmd: ', $(panelelement).attr('s-cmd'));
         }
     }
 }
@@ -143,7 +145,7 @@ function simplisity_nbxgetCompleted(e) {
         console.log('-------END AJAX CALL------- ');
     }
 
-    panelAjaxFunction(ajaxPostCmd[ajaxPostCmd.length - 1]);
+    simplisity_panelAjaxFunction(ajaxPostCmd[ajaxPostCmd.length - 1]);
 
     $('.simplisity_fadeout').fadeOut(2000);
 
@@ -181,8 +183,8 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             cmdupdate = scmdurl + '?cmd=' + scmd + '&systemkey=' + simplisity_encode(systemkey);
         }
 
-        var jsonData = ConvertFormToJSON(spost, slist, sfields);
-        var jsonParam = ConvertParamToJSON(sfields);
+        var jsonData = simplisity_ConvertFormToJSON(spost, slist, sfields);
+        var jsonParam = simplisity_ConvertParamToJSON(sfields);
 
         if ((typeof sdropdownlist !== 'undefined') && sdropdownlist !== '') {
 
@@ -278,7 +280,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
     }
 }
 
-async function callBeforeFunction(element) {
+async function simplisity_callBeforeFunction(element) {
     if ((typeof $(element).attr('s-before') !== 'undefined') && $(element).attr('s-before') !== '') {
         var funclist = $(element).attr('s-before').split(',');
         for (var i = 0; i < funclist.length; i++) {
@@ -288,7 +290,7 @@ async function callBeforeFunction(element) {
     return;
 }
 
-function callSessionFields(element) {
+function simplisity_callSessionFields(element) {
     if ((typeof $(element).attr('s-sessionfield') !== 'undefined') && $(element).attr('s-sessionfield') !== '') {
         var funclist = $(element).attr('s-sessionfield').split(',');
         for (var i = 0; i < funclist.length; i++) {
@@ -302,9 +304,9 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
 
     $('#simplisity_loader').show();
 
-    await callBeforeFunction(element);
+    await simplisity_callBeforeFunction(element);
 
-    await callSessionFields(element);
+    await simplisity_callSessionFields(element);
 
     if ($(element).attr("s-stop") !== 'stop') {
 
@@ -370,7 +372,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
     return;
 }
 
-function ConvertParamToJSON(sfields) {
+function simplisity_ConvertParamToJSON(sfields) {
 
     var viewData = {
         sfield: [],
@@ -381,14 +383,14 @@ function ConvertParamToJSON(sfields) {
     var jsonDataF = {};
     if (typeof sfields !== 'undefined' && sfields !== '') {
         var obj = JSON.parse(sfields);
-        jsonDataF = mergeJson({}, jsonDataF, obj);
+        jsonDataF = simplisity_mergeJson({}, jsonDataF, obj);
     }
 
     // add param fields
     var paramfields = $('#simplisity_params').val();
     if (typeof paramfields !== 'undefined' && paramfields !== '') {
         var obj2 = JSON.parse(paramfields);
-        jsonDataF = mergeJson({}, jsonDataF, obj2);
+        jsonDataF = simplisity_mergeJson({}, jsonDataF, obj2);
     }
 
     viewData.sfield.push(jsonDataF);
@@ -399,14 +401,14 @@ function ConvertParamToJSON(sfields) {
 
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
-        console.log('[ConvertParamToJSON(sfields)] stringify json: ' + JSON.stringify(viewData));
+        console.log('[simplisity_ConvertParamToJSON(sfields)] stringify json: ' + JSON.stringify(viewData));
     }
 
     return JSON.stringify(viewData);
 }
 
 
-function ConvertFormToJSON(spost, slist, sfields) {
+function simplisity_ConvertFormToJSON(spost, slist, sfields) {
     var viewData = {
         sfield: [],
         system: [],
@@ -496,14 +498,14 @@ function ConvertFormToJSON(spost, slist, sfields) {
     var jsonDataF = {};
     if (typeof sfields !== 'undefined' && sfields !== '') {
         var obj = JSON.parse(sfields);
-        jsonDataF = mergeJson({}, jsonDataF, obj);
+        jsonDataF = simplisity_mergeJson({}, jsonDataF, obj);
     }
 
     // add param fields
     var paramfields = $('#simplisity_params').val();
     if (typeof paramfields !== 'undefined' && paramfields !== '') {
         var obj2 = JSON.parse(paramfields);
-        jsonDataF = mergeJson({}, jsonDataF, obj2);
+        jsonDataF = simplisity_mergeJson({}, jsonDataF, obj2);
     }
 
     viewData.sfield.push(jsonDataF);
@@ -623,7 +625,7 @@ function simplisity_getlistjson(slist) {
 
 
 
-function mergeJson(target) {
+function simplisity_mergeJson(target) {
     for (var argi = 1; argi < arguments.length; argi++) {
         var source = arguments[argi];
         for (var key in source) {
@@ -689,6 +691,7 @@ function simplisity_replaceAll(target, search, replacement) {
 
 function simplisity_setParamField(fieldkey, fieldvalue) {
     if (typeof fieldvalue !== 'undefined' && typeof fieldkey !== 'undefined' && fieldkey !== null && fieldkey !== 'null') {
+        simplisity_createTempPageFields();
         var jsonParams = $('#simplisity_params').val();
         var obj = {};
         if (typeof jsonParams !== 'undefined' && jsonParams !== '') {
@@ -824,7 +827,7 @@ function simplisity_parsejson(json) {
     return retval;
 }
 
-async function initFileUpload(fileuploadselector) {
+async function simplisity_initFileUpload(fileuploadselector) {
 
     var filecount = 0;
     var filesdone = 0;
@@ -873,7 +876,7 @@ async function initFileUpload(fileuploadselector) {
             $('.simplisity-file-progress-bar').text(progress + '%');
         })
         .bind('fileuploadsubmit', function (e, data) {
-            var identifier = generateFileUniqueIdentifier(data);
+            var identifier = simplisity_generateFileUniqueIdentifier(data);
             data.headers = $.extend(data.headers, { "X-File-Identifier": identifier });
         })
         .bind('fileuploadadd', function (e, data) {
@@ -910,7 +913,7 @@ async function initFileUpload(fileuploadselector) {
 
 }
 
-function generateFileUniqueIdentifier(data) {
+function simplisity_generateFileUniqueIdentifier(data) {
     var file = data.files[0];
     result = file.relativePath || file.webkitRelativePath || file.fileName || file.name;
     return result;
@@ -986,7 +989,7 @@ function simplisity_assignevents(cmdurl) {
     });
 
     $('.simplisity_fileupload').each(function (index) {
-        initFileUpload('#' + $(this).attr('id'));
+        simplisity_initFileUpload('#' + $(this).attr('id'));
     });
 
     $('.simplisity_filedownload').each(function (index) {
