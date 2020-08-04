@@ -655,11 +655,13 @@ namespace Simplisity
                 if (String.IsNullOrEmpty(dataXml)) return null;
                 if (String.IsNullOrEmpty(xPath)) return null;
 
-                xPath = GetShortId(xPath);
+                var xPathShort = GetShortId(xPath);
 
                 var xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(dataXml);
-                var xmlNod = xmlDoc.SelectSingleNode(xPath);
+
+                var xmlNod = xmlDoc.SelectSingleNode(xPathShort);                
+                if (xmlNod == null) xmlNod = xmlDoc.SelectSingleNode(xPath); // might not be a short id.
                 return xmlNod;
             }
             catch (Exception)

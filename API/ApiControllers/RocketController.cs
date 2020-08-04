@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;  
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Xml;
@@ -30,7 +31,6 @@ namespace DNNrocketAPI.ApiControllers
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, "Test API2");
         }
-
         [AllowAnonymous]
         [HttpGet]
         [HttpPost]
@@ -44,52 +44,39 @@ namespace DNNrocketAPI.ApiControllers
             }
 
             var paramCmd = context.Request.QueryString["cmd"];
+
             var systemkey = "";
             if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
             systemkey = GeneralUtils.DeCode(systemkey);
 
-            var paramJson = "";
-            var paramInfo = new SimplisityInfo(_editlang);
-            if (DNNrocketUtils.RequestParam(context, "paramjson") != "")
+            var postInfo = BuildPostInfo();
+            var paramInfo = BuildParamInfo();
+
+            var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, systemkey);
+            if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
+            rtn.Headers.Add("Access-Control-Allow-Origin", "*");
+            return rtn;
+        }
+        [AllowAnonymous]
+        [HttpGet]
+        [HttpPost]
+        public HttpResponseMessage ActionContent()
+        {
+            var context = HttpContext.Current;
+
+            if (!context.Request.QueryString.AllKeys.Contains("cmd"))
             {
-                paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
-                paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, _editlang);
-                paramInfo.PortalId = PortalUtils.GetPortalId();
+                return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' parameter in url.  Unable to process action.");
             }
 
-            var requestJson = "";
-            var postInfo = new SimplisityInfo(_editlang);
-            if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
-            {
-                requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
-                postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
-                postInfo.PortalId = PortalUtils.GetPortalId();
+            var paramCmd = context.Request.QueryString["cmd"];
 
-            }
+            var systemkey = "";
+            if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
+            systemkey = GeneralUtils.DeCode(systemkey);
 
-            // get all query string params
-            foreach (string key in context.Request.QueryString.AllKeys)
-            {
-                var keyValue = context.Request.QueryString[key];
-                try
-                {
-                    keyValue = GeneralUtils.DeCode(keyValue);
-                }
-                catch (Exception ex)
-                {
-                    // ignore, if not in an encoded format it will give an error, so use the base value.
-                }
-                paramInfo.SetXmlProperty("genxml/urlparams/" + key.ToLower(), keyValue);
-            }
-            // get all form data (drop the ones we already processed) 
-            foreach (string key in context.Request.Form.AllKeys)
-            {
-                var keyValue = context.Request.QueryString[key];
-                if (key.ToLower() != "paramjson" && key.ToLower() != "inputjson")
-                {
-                    paramInfo.SetXmlProperty("genxml/form/" + key.ToLower(), keyValue);
-                }
-            }
+            var postInfo = BuildPostInfo();
+            var paramInfo = BuildParamInfo(true);
 
             var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, systemkey);
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
@@ -154,6 +141,70 @@ namespace DNNrocketAPI.ApiControllers
             rtn.Headers.Add("Access-Control-Allow-Origin", "*");
             return rtn;
         }
+
+        private SimplisityInfo BuildPostInfo()
+        {
+            var context = HttpContext.Current;
+            var requestJson = "";
+            var postInfo = new SimplisityInfo(_editlang);
+            if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
+            {
+                requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
+                postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
+                postInfo.PortalId = PortalUtils.GetPortalId();
+            }
+            return postInfo;
+        }
+
+        private SimplisityInfo BuildParamInfo(bool requestContent = false)
+        {
+            var context = HttpContext.Current;
+
+            var paramJson = "";
+            var paramInfo = new SimplisityInfo(_editlang);
+            if (DNNrocketUtils.RequestParam(context, "paramjson") != "")
+            {
+                paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
+                paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, _editlang);
+                paramInfo.PortalId = PortalUtils.GetPortalId();
+            }
+
+            // get all query string params
+            foreach (string key in context.Request.QueryString.AllKeys)
+            {
+                var keyValue = context.Request.QueryString[key];
+                try
+                {
+                    keyValue = GeneralUtils.DeCode(keyValue);
+                }
+                catch (Exception ex)
+                {
+                    // ignore, if not in an encoded format it will give an error, so use the base value.
+                }
+                paramInfo.SetXmlProperty("genxml/urlparams/" + key.ToLower(), keyValue);
+            }
+            // get all form data (drop the ones we already processed) 
+            foreach (string key in context.Request.Form.AllKeys)
+            {
+                if (key.ToLower() != "paramjson" && key.ToLower() != "inputjson")
+                {
+                    var keyValue = DNNrocketUtils.RequestParam(context, key);
+                    paramInfo.SetXmlProperty("genxml/form/" + key.ToLower(), keyValue);
+                }
+            }
+
+            if (requestContent)
+            {
+                // put the content into a field. Usually used for validation of the request.
+                // (WE CANNOT PASS CONTEXT TO .NET STANDARD)
+                var requestBinaryContent = context.Request.BinaryRead(HttpContext.Current.Request.ContentLength);
+                var requestStringContent = Encoding.ASCII.GetString(requestBinaryContent);
+                paramInfo.SetXmlProperty("genxml/requestcontent", requestStringContent);
+            }
+
+            return paramInfo;
+        }
+
         private HttpResponseMessage ActionSimplisityInfo(SimplisityInfo postInfo, SimplisityInfo paramInfo, string paramCmd, string systemkey)
         {
             var strOut = "ERROR: Invalid.";
