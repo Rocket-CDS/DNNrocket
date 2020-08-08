@@ -164,7 +164,7 @@ namespace DNNrocketAPI.Componants
             if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\default")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\default");
             foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\default", "*.cshtml", SearchOption.TopDirectoryOnly))
             {
-                var fname = Path.GetFileName(newPath);
+                var fname = Path.GetFileName(newPath).ToLower();
                 if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
                 FileNameList.Add(fname, newPath);
             }
@@ -172,7 +172,7 @@ namespace DNNrocketAPI.Componants
             if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\css")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\css");
             foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\css", "*.css", SearchOption.TopDirectoryOnly))
             {
-                var fname = Path.GetFileName(newPath);
+                var fname = Path.GetFileName(newPath).ToLower();
                 if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
                 FileNameList.Add(fname, newPath);
             }
@@ -180,7 +180,7 @@ namespace DNNrocketAPI.Componants
             if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\js")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\js");
             foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\js", "*.js", SearchOption.TopDirectoryOnly))
             {
-                var fname = Path.GetFileName(newPath);
+                var fname = Path.GetFileName(newPath).ToLower();
                 if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
                 FileNameList.Add(fname, newPath);
             }
@@ -188,7 +188,7 @@ namespace DNNrocketAPI.Componants
             if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\resx")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\resx");
             foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\resx", "*.resx", SearchOption.TopDirectoryOnly))
             {
-                var fname = Path.GetFileName(newPath);
+                var fname = Path.GetFileName(newPath).ToLower();
                 if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
                 FileNameList.Add(fname, newPath);
             }
@@ -213,18 +213,18 @@ namespace DNNrocketAPI.Componants
 
         public string GetFileMapPath(string fileName)
         {
-            if (FileNameList.ContainsKey(fileName))
+            if (FileNameList.ContainsKey(fileName.ToLower()))
             {
-                return FileNameList[fileName];
+                return FileNameList[fileName.ToLower()];
             }
             return "";
         }
 
         public string GetTemplate(string templateFileName)
         {
-            if (FileNameList.ContainsKey(templateFileName))
+            if (FileNameList.ContainsKey(templateFileName.ToLower()))
             {
-                return FileUtils.ReadFile(FileNameList[templateFileName]);
+                return FileUtils.ReadFile(FileNameList[templateFileName.ToLower()]);
             }
             return "";
         }
