@@ -784,19 +784,39 @@ function simplisity_sessionpost() {
     // This will post ALL data fields in the sessionParams back to the server in the param fields.
     var p = JSON.parse(simplisity_sessionjson());
     for (var key of Object.keys(p)) {
-        simplisity_setParamField(key, p[key]);
+         simplisity_setParamField(key, p[key]);
     }
 
     // set a browser sessionid, to use serverside to identify the browser session
     var browser_sessionid = window.sessionStorage.getItem('browsersessionid');
-    if (typeof browser_sessionid === 'undefined' || browser_sessionid === '' || browser_sessionid === null) {
-        browser_sessionid = Math.random();
+    if (!browser_sessionid) {
+        browser_sessionid = CreateUUID();
         window.sessionStorage.setItem('browsersessionid', browser_sessionid);
     }
     simplisity_setParamField('browsersessionid', browser_sessionid); // return browser_sessionid
+
+    // set a browserid, to use serverside to identify the browser
+    var browser_id = window.localStorage.getItem('browserid');
+    if (!browser_id) {
+        browser_id = CreateUUID();
+        window.localStorage.setItem('browserid', browser_id);
+    }
+    simplisity_setParamField('browserid', browser_id); // return browser_sessionid
+
 }
+
+function CreateUUID() {
+    rtn = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    )
+    // add time to try and get unique
+    var d = new Date();
+    rtn = rtn +"-" + d.getTime();
+    return rtn;
+}
+
 function simplisity_setSessionField(fieldkey, fieldvalue) {
-    if (typeof fieldvalue !== 'undefined' && typeof fieldkey !== 'undefined') {
+    if (typeof fieldvalue !== 'undefined' && fieldkey) {
         var jsonParams = simplisity_sessionjson();
         var obj = {};
         if (typeof jsonParams !== 'undefined' && jsonParams !== '') {

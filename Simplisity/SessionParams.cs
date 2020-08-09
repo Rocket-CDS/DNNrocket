@@ -25,6 +25,7 @@ namespace Simplisity
             }
 
             BrowserSessionId = Get("browsersessionid");
+            BrowserId = Get("browserid");
 
         }
         public string GetCommand()
@@ -65,6 +66,7 @@ namespace Simplisity
         //Filter SQL
         public int FilterIndex { get { return Info.GetXmlPropertyInt("r/filterindex"); } set { Info.SetXmlProperty("r/filterindex", value.ToString()); } }
         public string BrowserSessionId { get; set; }
+        public string BrowserId { get; set; }
 
         #endregion
 
