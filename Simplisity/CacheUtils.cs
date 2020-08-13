@@ -14,6 +14,8 @@ namespace Simplisity
 
         public static object GetCache(string cacheKey, string groupid = "")
         {
+            if (String.IsNullOrEmpty(cacheKey)) return null; // no cache if no cacheKey
+
             cacheKey = GetMd5Hash(cacheKey) + "_groupid:" + groupid;
 
             ObjectCache cache = MemoryCache.Default;
@@ -49,7 +51,7 @@ namespace Simplisity
 
         public static void SetCache(string cacheKey, object objObject, string groupid = "")
         {
-            if (objObject != null)
+            if (objObject != null && !String.IsNullOrEmpty(cacheKey))
             {
                 RemoveCache(cacheKey, groupid);
 
