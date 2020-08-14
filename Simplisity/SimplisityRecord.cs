@@ -92,6 +92,12 @@ namespace Simplisity
             if (XMLDoc == null) XMLDoc = new XmlDocument();
             _rootNodeName = "";
         }
+        public SimplisityRecord(string lang)
+        {
+            this.Lang = lang; // we need a langauge for formating data, default to en-US, but the language should be passed when we need formatted date.
+            if (XMLDoc == null) XMLDoc = new XmlDocument();
+            _rootNodeName = "";
+        }
 
         public string XMLData
         {
@@ -264,7 +270,7 @@ namespace Simplisity
                     if (GeneralUtils.IsNumeric(x))
                     {
                         return Convert.ToDecimal(x, CultureInfo.GetCultureInfo("en-US"));
-                        // double should always be saved as en-US                        
+                        // decimal should always be saved as en-US                        
                     }
                 }
                 catch (Exception ex)
@@ -447,6 +453,7 @@ namespace Simplisity
                     // do the datatype after the node is created
                     if (DataTyp == System.TypeCode.DateTime) SetGenXmlValue(xpath + "/@datatype", "date", cdata);
                     if (DataTyp == System.TypeCode.Double) SetGenXmlValue(xpath + "/@datatype", "double", cdata);
+                    if (DataTyp == System.TypeCode.Decimal) SetGenXmlValue(xpath + "/@datatype", "decimal", cdata);
                 }
                 catch
                 {
