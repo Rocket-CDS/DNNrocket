@@ -65,6 +65,10 @@ namespace Simplisity
         public int RowCount { get { return Info.GetXmlPropertyInt("r/rowcount"); } set { Info.SetXmlProperty("r/rowcount", value.ToString()); } }
         //Filter SQL
         public int FilterIndex { get { return Info.GetXmlPropertyInt("r/filterindex"); } set { Info.SetXmlProperty("r/filterindex", value.ToString()); } }
+        /// <summary>
+        /// Return a session data value, with an element "id" of "searchtext"
+        /// </summary>
+        public string SearchText { get { return Info.GetXmlProperty("r/searchtext"); } set { Info.SetXmlProperty("r/searchtext", value.ToString()); } }
         public string BrowserSessionId { get; set; }
         public string BrowserId { get; set; }
 
