@@ -75,6 +75,15 @@ namespace DNNrocketAPI
             _rocketInterface = new RocketInterface(_systemInfo, _interfacekey);
             var systemData = new SystemLimpet(_systemInfo);
 
+            // add parameters remoteParams  (do here, so it appears in header call)
+            foreach (String key in Request.QueryString.AllKeys)
+            {
+                if (key != null) // test for null, but should not happen.   
+                {
+                    _remoteParams.AddUrlParam(key, Request.QueryString[key]);
+                }
+            }
+
             if (!this.Page.Items.Contains("dnnrocket_remotepageheader")) // flag to insure we only inject once for page load.
             {
                 Page.Items.Add("dnnrocket_remotepageheader", true);

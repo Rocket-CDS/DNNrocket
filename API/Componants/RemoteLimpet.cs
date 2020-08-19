@@ -71,6 +71,22 @@ namespace DNNrocketAPI.Componants
             CacheUtilsDNN.RemoveCache(_cacheKey);
         }
 
+        public void AddUrlParam(string key, string value)
+        {
+            if (Record != null)
+            {
+                Record.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), value);
+            }
+        }
+        public string GetUrlParam(string key)
+        {
+            if (Record != null)
+            {
+                return Record.GetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"));
+            }
+            return "";
+        }
+
         #region "API call"
 
         public string headerAPI(string httpMethod = "POST")
