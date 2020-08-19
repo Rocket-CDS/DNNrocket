@@ -559,6 +559,10 @@ namespace Simplisity
         /// <returns></returns>
         public Dictionary<string, string> ToDictionary()
         {
+            return ToDictionary("");
+        }
+        public Dictionary<string, string> ToDictionary(string nodegroup)
+        {
             var rtnDictionary = new Dictionary<string, string>();
             if (XMLDoc != null)
             {
@@ -567,7 +571,7 @@ namespace Simplisity
                 {
                     foreach (XmlNode nod in nods)
                     {
-                        if (nod.Attributes["list"] == null)
+                        if (nod.Attributes["list"] == null && (nod.Name == nodegroup || nodegroup == ""))
                         {
                             rtnDictionary = AddToDictionary(rtnDictionary, RootNodeName + "/" + nod.Name + "/*");
                         }

@@ -11,22 +11,19 @@ namespace RocketRemoteMod
     {
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
-        private CommandSecurity _commandSecurity;
         private RocketInterface _rocketInterface;
         private SystemLimpet _systemData;
         private Dictionary<string, string> _passSettings;
-        private ModuleParams _moduleParams;
-        private string _editLang;
+        private RemoteLimpet _remoteParams;
         private int _moduleid;
         private int _tabid;
-        private AppThemeDataList _appThemeDataList;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
-            var strOut = ""; // return nothing if not matching commands.
 
             paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
 
+            var strOut = "";
             var rtnDic = new Dictionary<string, object>();
 
             if (UserUtils.IsInRole("Administrator"))
@@ -39,13 +36,21 @@ namespace RocketRemoteMod
                     case "rocketremotemod_getdashboard":
                         strOut = GetDashBoard();
                         break;
+                    case "rocketremotemod_adminsettings":
+                        strOut = AdminSettings();
+                        break;
                     case "rocketremotemod_saveconfig":
                         SaveConfig();
-                        strOut = GetDashBoard();
+                        strOut = AdminSettings();
                         break;                        
 
                 }
             }
+            else
+            {
+                strOut = UserUtils.LoginForm(new SimplisityInfo(), new SimplisityInfo(), "login", UserUtils.GetCurrentUserId());
+            }
+
             rtnDic.Add("outputhtml", strOut);
             return rtnDic;
 
@@ -58,13 +63,7 @@ namespace RocketRemoteMod
             _rocketInterface = new RocketInterface(interfaceInfo);
 
             _postInfo = postInfo;
-            // set editlang from url param or cache
-            _editLang = DNNrocketUtils.GetEditCulture();
-
             _paramInfo = paramInfo;
-
-            _editLang = DNNrocketUtils.GetEditCulture();
-
 
             _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
@@ -73,41 +72,40 @@ namespace RocketRemoteMod
 
             _passSettings = new Dictionary<string, string>();
 
-            _moduleParams = new ModuleParams(_moduleid, _systemData.SystemKey);
+            _remoteParams = new RemoteLimpet(_moduleid, _systemData.SystemKey);
 
             return paramCmd;
         }
         private void SaveConfig()
         {
-            _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
-            _moduleParams.RemotePortalKey = _postInfo.GetXmlProperty("genxml/hidden/remoteportalkey");
-            _moduleParams.RemoteSystemKey = _postInfo.GetXmlProperty("genxml/hidden/remotesystemkey");            
-            _moduleParams.RemoteCmd = _postInfo.GetXmlProperty("genxml/hidden/remotecmd");
-            _moduleParams.RemoteTemplate = _postInfo.GetXmlProperty("genxml/hidden/remotetemplate");
-            _moduleParams.RemoteHeaderCmd = _postInfo.GetXmlProperty("genxml/hidden/remoteheadercmd");
-            _moduleParams.RemoteHeaderTemplate = _postInfo.GetXmlProperty("genxml/hidden/remoteheadertemplate");
-            _moduleParams.ModuleType = "RocketRemoteMod";
-            _moduleParams.APIurl = _postInfo.GetXmlProperty("genxml/hidden/apiurl");
-            _moduleParams.CacheDisbaled = _postInfo.GetXmlPropertyBool("genxml/hidden/disablecache");
-
-            _moduleParams.AppThemeFolder = _postInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            _moduleParams.AppThemeVersion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
-
-            if (_systemData.DebugMode) _moduleParams.CacheDisbaled = true;
-            _moduleParams.TabId = _tabid;
-            _moduleParams.SystemKey = _systemData.SystemKey;
-
-            _moduleParams.Save();
-
+            if (_systemData.DebugMode) _remoteParams.CacheDisbaled = true;
+            _remoteParams.TabId = _tabid;
+            _remoteParams.SystemKey = _systemData.SystemKey;
+            _remoteParams.Save(_postInfo);
             _passSettings.Remove("saved");
             _passSettings.Add("saved", "true");
 
             // update module with a better name
-            DNNrocketUtils.UpdateModuleTitle(_tabid, _moduleid, _moduleParams.Name + ":" + _moduleid);
+            DNNrocketUtils.UpdateModuleTitle(_tabid, _moduleid, _remoteParams.Name + ":" + _moduleid);
 
             CacheFileUtils.ClearAllCache();
         }
-        public String GetDashBoard()
+        public string AdminSettings()
+        {
+            try
+            {
+                var controlRelPath = _rocketInterface.TemplateRelPath;
+                var themeFolder = _rocketInterface.DefaultTheme;
+                var razortemplate = "adminsettings.cshtml";
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                return RenderRazorUtils.RazorDetail(razorTempl, _remoteParams, _passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        public string GetDashBoard()
         {
             try
             {
@@ -115,7 +113,7 @@ namespace RocketRemoteMod
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = "dashboard.cshtml";
                 var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return RenderRazorUtils.RazorDetail(razorTempl, _moduleParams, _passSettings, null, true);
+                return RenderRazorUtils.RazorDetail(razorTempl, _remoteParams, _passSettings, null, true);
             }
             catch (Exception ex)
             {

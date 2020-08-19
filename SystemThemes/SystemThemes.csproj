@@ -22,6 +22,9 @@
     <Reference Include="RocketEcommerce">
       <HintPath>..\..\..\bin\RocketEcommerce.dll</HintPath>
     </Reference>
+    <Reference Include="RocketForms">
+      <HintPath>..\..\..\bin\RocketForms.dll</HintPath>
+    </Reference>
     <Reference Include="RocketMod">
       <HintPath>..\..\..\bin\RocketMod.dll</HintPath>
     </Reference>

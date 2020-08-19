@@ -1040,48 +1040,6 @@ namespace DNNrocketAPI.Componants
             return systemInfo;
         }
 
-        public static void IncludeRemotePageHeaders(Page page, int tabId, bool debugMode = false)
-        {
-            page.Items.Add("dnnrocket_remotepageheader", true);
-            var cachekey = tabId + ".remotepageheader.cshtml";
-            string cacheHead = null;
-            cacheHead = (string)CacheFileUtils.GetCache(cachekey, "remotepageheader");
-            if (String.IsNullOrEmpty(cacheHead))
-            {
-                var modulesOnPage = GetAllModulesOnPage(tabId);
-                foreach (var modId in modulesOnPage)
-                {
-                    var moduleParams = new ModuleParams(modId);
-                    if (moduleParams.RemoteHeaderCmd != "")
-                    {
-                        var postInfo = new SimplisityInfo();
-                        var paramInfo = new SimplisityInfo();
-                        postInfo.TypeCode = "postInfo";
-                        paramInfo.TypeCode = "paramInfo";
-                        paramInfo.SetXmlProperty("genxml/hidden/remoteportalkey", moduleParams.RemotePortalKey);
-                        paramInfo.SetXmlProperty("genxml/hidden/remotesystemkey", moduleParams.RemoteSystemKey);
-                        paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
-                        paramInfo.SetXmlProperty("genxml/hidden/disablecache", moduleParams.CacheDisbaled.ToString());
-                        paramInfo.SetXmlProperty("genxml/hidden/moduleparams", GeneralUtils.EnCode(moduleParams.Record.ToXmlItem()));
-                        var strOut = DNNrocketUtils.htmlAPI(moduleParams.APIurl, moduleParams.RemoteHeaderCmd, GeneralUtils.EnCode(moduleParams.RemoteSystemKey), postInfo, paramInfo, "POST");
-                        if (strOut != "")
-                        {
-                            cacheHead += strOut;
-                        }
-                    }
-                }
-
-                CacheFileUtils.SetCache(cachekey, cacheHead);
-                PageIncludes.IncludeTextInHeader(page, cacheHead);
-            }
-            else
-            {
-                PageIncludes.IncludeTextInHeader(page, cacheHead);
-            }
-
-        }
-
-
         public static void IncludePageHeaders(string systemKey, Page page, int tabId, bool debugMode = false)
         {
             page.Items.Add("dnnrocket_pageheader", true);
@@ -1612,60 +1570,6 @@ namespace DNNrocketAPI.Componants
             return PortalUtils.GetPortalAlias(lang, portalid);
         }
 
-
-        #endregion
-
-        #region "web request"
-
-        public static string htmlAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string httpMethod = "POST")
-        {
-            var body = "<items>" + paramInfo.ToXmlItem() + postInfo.ToXmlItem() +  "</items>";
-            return CallAPI(apiurl, cmd, systemkey, body, httpMethod, "text/html");
-        }
-        public static string jsonAPI(string apiurl, string cmd, string systemkey, SimplisityInfo postInfo, SimplisityInfo paramInfo, string httpMethod = "POST")
-        {
-            var body = "<items>" + paramInfo.ToXmlItem() + postInfo.ToXmlItem() + "</items>";
-            return CallAPI(apiurl, cmd, systemkey, body, httpMethod, "application/json");
-        }
-        private static string CallAPI(string apiurl, string cmd, string systemkey, string body = "", string httpMethod = "POST", string contentType = "text/html")
-        {
-            try
-            {
-                var weburl = $"{apiurl}?cmd={cmd}&systemkey={systemkey}";
-                var webReq = WebRequest.Create(weburl);
-                webReq.Method = httpMethod;
-                webReq.ContentType = contentType;
-
-
-                if (String.IsNullOrEmpty(body)) body = PortalUtils.SiteGuid().ToString();
-
-                ASCIIEncoding encoding = new ASCIIEncoding();
-                byte[] byte1 = encoding.GetBytes(body);
-                // Set the content length of the string being posted.
-                webReq.ContentLength = byte1.Length;
-                // get the request stream
-                Stream newStream = webReq.GetRequestStream();
-                // write the content to the stream
-                newStream.Write(byte1, 0, byte1.Length);
-
-                var webResp = (HttpWebResponse)webReq.GetResponse();
-
-                if (webResp.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    LogUtils.LogDebug("CallAPI() Login expired. Please start over.");
-                    return "";
-                }
-
-                var readStream = new StreamReader(webResp.GetResponseStream(), System.Text.Encoding.UTF8);
-                var rtnStr = readStream.ReadToEnd();
-
-                return rtnStr;
-            }
-            catch (Exception e)
-            {
-                return e.ToString();
-            }
-        }
 
         #endregion
 

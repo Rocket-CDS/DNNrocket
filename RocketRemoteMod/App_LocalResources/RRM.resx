@@ -117,11 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="apiurl.Help" xml:space="preserve">
-    <value>The full API URL.  This should include the protocol, domain and request path.  Do NOT include the parameters.</value>
-  </data>
-  <data name="apiurl.Text" xml:space="preserve">
-    <value>API URL</value>
+  <data name="adminsettings.Text" xml:space="preserve">
+    <value>Admin Settings</value>
   </data>
   <data name="appthemefolder.Help" xml:space="preserve">
     <value>The name of the AppTheme folder on the remote server.  This will be used for the template display and offer different functionality based on the selection.</value>
@@ -137,6 +134,12 @@
   </data>
   <data name="dashboard.Text" xml:space="preserve">
     <value>Dashboard</value>
+  </data>
+  <data name="engineurl.Help" xml:space="preserve">
+    <value>This should include the protocol, domain.  Do NOT include the parameters or path.</value>
+  </data>
+  <data name="engineurl.Text" xml:space="preserve">
+    <value>Engine Domain URL</value>
   </data>
   <data name="remotecmd.Help" xml:space="preserve">
     <value>Remote Command is the command that will be run on first load.</value>
@@ -156,11 +159,8 @@
   <data name="remoteheadertemplate.Text" xml:space="preserve">
     <value>Remote Header Template</value>
   </data>
-  <data name="remoteportalkey.Help" xml:space="preserve">
-    <value>The remote portal will have a list of portal keys, this portal key MUST be in the list on the remote server.  Otherwise the call will be rejected by the remote server.</value>
-  </data>
-  <data name="remoteportalkey.Text" xml:space="preserve">
-    <value>Remote Portal Key</value>
+  <data name="remotekey.Text" xml:space="preserve">
+    <value>Remote Key</value>
   </data>
   <data name="remotesystemkey.Help" xml:space="preserve">
     <value>The remote system key of the system which the remote connection should use.</value>
@@ -173,5 +173,11 @@
   </data>
   <data name="remotetemplate.Text" xml:space="preserve">
     <value>Remote Template</value>
+  </data>
+  <data name="securitykey.Help" xml:space="preserve">
+    <value>The remote portal will have a list of security keys, this security key MUST be in the list on the remote server.  Otherwise the call will be rejected by the remote server.</value>
+  </data>
+  <data name="securitykey.Text" xml:space="preserve">
+    <value>Remote Security Key</value>
   </data>
 </root>

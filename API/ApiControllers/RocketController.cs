@@ -120,13 +120,13 @@ namespace DNNrocketAPI.ApiControllers
             var remoteSystemKey = paramInfo.GetXmlProperty("genxml/hidden/remotesystemkey");
             if (remoteSystemKey == "")
             {
-                var moduleParamXml = paramInfo.GetXmlProperty("genxml/hidden/moduleparams");
-                if (moduleParamXml != "")
+                var remoteParamXml = paramInfo.GetXmlProperty("genxml/hidden/remoteparams");
+                if (remoteParamXml != "")
                 {
-                    moduleParamXml = GeneralUtils.DeCode(moduleParamXml);
-                    var moduleParam = new ModuleParams(-1);
-                    moduleParam.Record.FromXmlItem(moduleParamXml);
-                    if (moduleParam.RemoteSystemKey != "") remoteSystemKey = moduleParam.RemoteSystemKey;
+                    remoteParamXml = GeneralUtils.DeCode(remoteParamXml);
+                    var remoteParam = new RemoteLimpet(-1);
+                    remoteParam.Record.FromXmlItem(remoteParamXml);
+                    remoteSystemKey = remoteParam.RemoteSystemKey;
                 }
             }
             if (remoteSystemKey == "") return this.Request.CreateResponse(HttpStatusCode.OK, "RemoteSystemKey not found");
