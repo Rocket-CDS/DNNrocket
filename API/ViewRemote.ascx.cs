@@ -76,6 +76,7 @@ namespace DNNrocketAPI
             var systemData = new SystemLimpet(_systemInfo);
 
             // add parameters remoteParams  (do here, so it appears in header call)
+            _remoteParams.RemoveAllUrlParam(); // remove any existing url params.
             foreach (String key in Request.QueryString.AllKeys)
             {
                 if (key != null) // test for null, but should not happen.   
@@ -83,6 +84,16 @@ namespace DNNrocketAPI
                     _remoteParams.AddUrlParam(key, Request.QueryString[key]);
                 }
             }
+            // get all form data (drop the ones we already processed) 
+            _remoteParams.RemoveAllFormParam(); // remove any existing form params.
+            foreach (string key in Request.Form.AllKeys)
+            {
+                if (key.ToLower() != "paramjson" && key.ToLower() != "inputjson")
+                {
+                    _remoteParams.AddFormParam(key, Convert.ToString(Request.Form[key]));
+                }
+            }
+
 
             if (!this.Page.Items.Contains("dnnrocket_remotepageheader")) // flag to insure we only inject once for page load.
             {

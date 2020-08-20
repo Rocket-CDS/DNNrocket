@@ -20,6 +20,26 @@ namespace DNNrocketAPI.Componants
         private string _cacheKey;
         private const string _tableName = "DNNrocket";
 
+        /// <summary>
+        /// Convert input SimplsityInfo to a remoteLimpet.  (No Cache)
+        /// </summary>
+        /// <param name="paramInfo"></param>
+        /// <param name="systemKey"></param>
+        public RemoteLimpet(SimplisityInfo paramInfo, string systemKey)
+        {
+            Record = new SimplisityRecord();
+            ModuleId = -1;
+            paramInfo.RemoveLangRecord();
+            Record.XMLData = paramInfo.XMLData;
+            if (systemKey != "") SystemKey = systemKey;
+            if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueString(3);
+        }
+        /// <summary>
+        /// Link remoteData to as module, this can be saved in the DB and cached.
+        /// </summary>
+        /// <param name="moduleId"></param>
+        /// <param name="systemKey"></param>
+        /// <param name="useCache"></param>
         public RemoteLimpet(int moduleId, string systemKey = "", bool useCache = true)
         {
             Record = new SimplisityRecord();
@@ -70,19 +90,48 @@ namespace DNNrocketAPI.Componants
             Record = new SimplisityRecord();
             CacheUtilsDNN.RemoveCache(_cacheKey);
         }
-
+        public void RemoveAllUrlParam()
+        {
+            if (Record != null)
+            {
+                Record.RemoveXmlNode("genxml/urlparams");
+            }
+        }
         public void AddUrlParam(string key, string value)
         {
             if (Record != null)
             {
-                Record.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), value);
+                Record.SetXmlProperty("genxml/urlparams/" + key, value);
             }
         }
         public string GetUrlParam(string key)
         {
             if (Record != null)
             {
-                return Record.GetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"));
+                return Record.GetXmlProperty("genxml/urlparams/" + key);
+            }
+            return "";
+        }
+
+        public void RemoveAllFormParam()
+        {
+            if (Record != null)
+            {
+                Record.RemoveXmlNode("genxml/form");
+            }
+        }
+        public void AddFormParam(string key, string value)
+        {
+            if (Record != null)
+            {
+                Record.SetXmlProperty("genxml/form/" + key, value);
+            }
+        }
+        public string GetFormParam(string key)
+        {
+            if (Record != null)
+            {
+                return Record.GetXmlProperty("genxml/form/" + key);
             }
             return "";
         }

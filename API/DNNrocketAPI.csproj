@@ -259,8 +259,8 @@
     <None Include="Themes\config-w3\1.0\default\SideMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App_LocalResources\DNNrocket.ascx.resx" />
-    <EmbeddedResource Include="App_LocalResources\login.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\DNNrocket.resx" />
+    <EmbeddedResource Include="App_LocalResources\login.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\dnnrocket.jpg" />
