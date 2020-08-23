@@ -65,7 +65,14 @@
                                     @TextBox(new SimplisityInfo(), "genxml/key", " class='w3-input w3-border' autocomplete='off' ", r.Key, false, lp, listname)
                                 </div>
                                 <div class="w3-col m8 ">
-                                    @TextBox(new SimplisityInfo(), "genxml/value", " class='w3-input w3-border value_" + lp + " ' autocomplete='off ' ", r.Value, false, lp, listname)
+                                    @{
+                                        var innerboxcolor = "";
+                                        if (r.Value.EndsWith("**"))
+                                        {
+                                            innerboxcolor = " w3-yellow ";
+                                        }
+                                    }
+                                    @TextBox(new SimplisityInfo(), "genxml/value", " class='w3-input w3-border " + innerboxcolor + " value_" + lp + " ' autocomplete='off ' ", r.Value, false, lp, listname)
                                 </div>
                                 <div class="w3-col m1" style="width:64px">
                                     &nbsp;
@@ -82,6 +89,7 @@
         </div>
     </div>
 
+    <b>keys: @lp </b>
 
 </div>
 
@@ -102,7 +110,7 @@
         @foreach (var r in resxData.DataDictionary)
         {
             quickKey += r.Key + Environment.NewLine;
-            quickEdit += r.Value + Environment.NewLine;
+            quickEdit += r.Value.Replace(Environment.NewLine, " ") + Environment.NewLine;
         }
 
         <div id="resxstring" class="w3-row">
@@ -110,7 +118,7 @@
                 <textarea id="resxkeysstring" style="border: none;width: 100%;" class="w3-right-align" disabled>@quickKey</textarea>
             </div>
             <div class="w3-twothird">
-                <textarea id="resxvaluesstring" style="width: 100%;">@quickEdit</textarea>
+                <textarea id="resxvaluesstring" wrap="soft" style="width: 100%;white-space: nowrap;  overflow: auto;">@quickEdit</textarea>
             </div>
         </div>
 

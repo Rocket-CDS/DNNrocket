@@ -12,6 +12,7 @@ namespace DNNrocketAPI.Componants
 {
     public class ResxData
     {
+        private string _englishFileNamePath; 
         public ResxData(string resxFileMapPath)
         {
             Exists = false;
@@ -24,6 +25,8 @@ namespace DNNrocketAPI.Componants
             var t = templateNameWithoutExtension.Split('.');
             if (t.Length == 2) CultureCode = t[1];
 
+            _englishFileNamePath = Path.GetFullPath(resxFileMapPath).Replace(Path.GetFileName(FileMapPath), "") + t[0] + Path.GetExtension(FileMapPath);
+
             if (File.Exists(resxFileMapPath))
             {
                 ResxFileData = FileUtils.ReadFile(FileMapPath);
@@ -35,13 +38,42 @@ namespace DNNrocketAPI.Componants
 
         private void BuildDictionary()
         {
+            var DataDictionary1 = new Dictionary<string, string>();
+            // load english as default keys (add then to other languages if not in langauge file)
+            var englishKeys = new Dictionary<string, string>();
+            if (File.Exists(_englishFileNamePath))
+            {
+                var englishXmlData = new XmlDocument();
+                englishXmlData.Load(_englishFileNamePath);
+                var engNodList = englishXmlData.SelectNodes("root/data");
+                foreach (XmlNode n in engNodList)
+                {
+                    var key = n.SelectSingleNode("@name").InnerText;
+                    if (DataDictionary1.ContainsKey(key)) DataDictionary1.Remove(key);
+                    englishKeys.Add(key, n.SelectSingleNode("value").InnerText);
+                }                
+            }
+
             var nodList = ResxXmlData.SelectNodes("root/data");
             foreach (XmlNode n in nodList)
             {
                 var key = n.SelectSingleNode("@name").InnerText;
-                if (DataDictionary.ContainsKey(key)) DataDictionary.Remove(key);
-                DataDictionary.Add(key, n.SelectSingleNode("value").InnerText);
+                if (DataDictionary1.ContainsKey(key)) DataDictionary1.Remove(key);
+                DataDictionary1.Add(key, n.SelectSingleNode("value").InnerText);
             }
+
+            // add any missing English keys
+            foreach (var d in englishKeys)
+            {
+                if (!DataDictionary1.ContainsKey(d.Key))
+                {
+                    DataDictionary1.Add(d.Key,d.Value + " **");
+                }
+            }
+
+            var l = DataDictionary1.OrderBy(key => key.Key);
+            DataDictionary = l.ToDictionary((keyItem) => keyItem.Key, (valueItem) => valueItem.Value);
+
         }
 
         public void AddField(string key, string value)
