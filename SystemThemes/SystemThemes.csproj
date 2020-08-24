@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <Folder Include="rocketecommerce\test_copy3\1.0\js\" />
+    <Folder Include="rocketforms\ContactForm1\1.0\js\" />
   </ItemGroup>
 
 </Project>
