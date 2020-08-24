@@ -47,6 +47,7 @@ namespace DNNrocketAPI.ApiControllers
 
             var systemkey = "";
             if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
+            if (systemkey == "" && context.Request.QueryString.AllKeys.Contains("s")) systemkey = context.Request.QueryString["s"]; // reduce chars.
             systemkey = GeneralUtils.DeCode(systemkey);
 
             var postInfo = BuildPostInfo();
@@ -251,6 +252,8 @@ namespace DNNrocketAPI.ApiControllers
 
                 var interfacekey = paramInfo.GetXmlProperty("genxml/hidden/interfacekey");
                 if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
+                if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/hidden/i").Trim(' '); // reduce chars
+                if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/i").Trim(' ');
                 if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
                 if (interfacekey == "") interfacekey = systemData.DefaultInterface;
                 if (interfacekey == "") interfacekey = systemkey;

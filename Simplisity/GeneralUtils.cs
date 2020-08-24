@@ -73,13 +73,21 @@ namespace Simplisity
         public static string DeCode(string codedval)
         {
             var strOut = "";
-            var s = codedval.Split('.');
-            foreach (var c in s)
+            try
             {
-                if (c != "")
+                var s = codedval.Split('.');
+                foreach (var c in s)
                 {
-                    strOut += (char)Convert.ToInt32(c);
+                    if (c != "")
+                    {
+                        strOut += (char)Convert.ToInt32(c);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                // this may not be incoded, and that will throw and error.  So return the value
+                strOut = codedval;
             }
             return strOut;
         }
