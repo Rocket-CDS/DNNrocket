@@ -175,7 +175,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             cmdupdate = scmdurl;
         }
         else {
-            cmdupdate = scmdurl + '?cmd=' + scmd + '&systemkey=' + simplisity_encode(systemkey);
+            cmdupdate = scmdurl + '?cmd=' + scmd + '&systemkey=' + systemkey;
         }
 
         var jsonData = simplisity_ConvertFormToJSON(spost, slist, sfields);
@@ -1019,7 +1019,7 @@ function simplisity_assignevents(cmdurl) {
             }
 
             var systemkey = simplisity_getsystemkey(sfields);  // use systemkey so we can have multiple cookie for Different systems.
-            params = params + '&systemkey=' + simplisity_encode(systemkey);
+            params = params + '&systemkey=' + systemkey;
         }
         var cmdurl = $("#simplisity_cmdurl").val();
         $(this).attr({
