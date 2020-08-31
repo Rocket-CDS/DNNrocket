@@ -28,6 +28,7 @@ using DotNetNuke.Services.Mail;
 using DotNetNuke.Common;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.Security.Roles;
+using System.Collections;
 
 namespace DNNrocketAPI.Componants
 {
@@ -377,6 +378,25 @@ namespace DNNrocketAPI.Componants
             {
                 if (username == "") return -1;
                 var objUser = UserController.GetUserByName(portalId, username);
+                if (objUser != null) return objUser.UserID;
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                var ms = ex.ToString();
+                return 0; // use zero;
+            }
+        }
+        public static ArrayList GetUsers(int portalId)
+        {
+            return UserController.GetUsers(portalId);
+        }
+        public static int GetUserIdByEmail(int portalId, string email)
+        {
+            try
+            {
+                if (email == "") return -1;
+                var objUser = UserController.GetUserByEmail(portalId, email);
                 if (objUser != null) return objUser.UserID;
                 return -1;
             }
