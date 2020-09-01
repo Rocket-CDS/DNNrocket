@@ -35,7 +35,7 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m6">
             <label>@ResourceKey("RocketMod.name")</label>
-            @TextBox(info, "genxml/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+            @TextBox(info, "genxml/hidden/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
         </div>
         <div class="w3-col m6">
 
@@ -44,7 +44,7 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m12">
             <label>@ResourceKey("RRM.engineurl")</label>
-            @TextBox(info, "genxml/engineurl", "class='w3-input w3-border' maxlength='1024' autocomplete='off'", "https://<domain>", false)
+            @TextBox(info, "genxml/hidden/engineurl", "class='w3-input w3-border' maxlength='1024' autocomplete='off'", "https://<domain>", false)
         </div>
         <div class="w3-col m12 w3-padding">
             <i>
@@ -55,7 +55,7 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m6">
             <label>@ResourceKey("RRM.securitykey")</label>
-            @TextBox(info, "genxml/securitykey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+            @TextBox(info, "genxml/hidden/securitykey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
         </div>
         <div class="w3-col m6 w3-padding">
             <i>
@@ -66,7 +66,7 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m6">
             <label>@ResourceKey("RRM.remotekey")</label>
-            @TextBox(info, "genxml/remotekey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+            @TextBox(info, "genxml/hidden/remotekey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
         </div>
         <div class="w3-col m6 w3-padding">
             <i>
@@ -77,7 +77,7 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m6">
             <label>@ResourceKey("RRM.appthemefolder")</label>
-            @TextBox(info, "genxml/appthemefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+            @TextBox(info, "genxml/hidden/appthemefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
         </div>
         <div class="w3-col m6 w3-padding">
             <i>
@@ -88,7 +88,7 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m6">
             <label>@ResourceKey("RRM.appthemeversion")</label>
-            @TextBox(info, "genxml/appthemeversion", "class='w3-input w3-border' maxlength='5' autocomplete='off'", "", false)
+            @TextBox(info, "genxml/hidden/appthemeversion", "class='w3-input w3-border' maxlength='5' autocomplete='off'", "", false)
         </div>
         <div class="w3-col m6 w3-padding">
             <i>
@@ -99,7 +99,7 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m6">
             <label>@ResourceKey("RRM.remotesystemkey")</label>
-            @TextBox(info, "genxml/remotesystemkey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+            @TextBox(info, "genxml/hidden/remotesystemkey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
         </div>
         <div class="w3-col m6 w3-padding">
             <i>
@@ -110,7 +110,7 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m6">
             <label>@ResourceKey("RRM.remotecmd")</label>
-            @TextBox(info, "genxml/remotecmd", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+            @TextBox(info, "genxml/hidden/remotecmd", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
         </div>
         <div class="w3-col m6 w3-padding">
             <i>
@@ -121,7 +121,7 @@
     <div class="w3-row w3-padding">
         <div class="w3-col m6">
             <label>@ResourceKey("RRM.remotetemplate")</label>
-            @TextBox(info, "genxml/remotetemplate", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "view.cshtml", false)
+            @TextBox(info, "genxml/hidden/remotetemplate", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "view.cshtml", false)
         </div>
         <div class="w3-col m6 w3-padding">
             <i>
@@ -134,7 +134,7 @@
         <div class="w3-col m6  w3-padding w3-margin-top">
             <div class="w3-col m12 w3-padding">
                 <div>
-                    @CheckBox(info, "genxml/disablecache", "", "class='w3-check' ", false)
+                    @CheckBox(info, "genxml/hidden/disablecache", "", "class='w3-check' ", false)
                     <label>@ResourceKey("RocketMod.disablecache")</label>
                 </div>
             </div>

@@ -218,22 +218,39 @@ namespace DNNrocketAPI.Componants
                 return true;
             }
         }
-        public string Name { get { return Record.GetXmlProperty("genxml/name");  } set { Record.SetXmlProperty("genxml/name", value); } }
+        public string Name { get { return Record.GetXmlProperty("genxml/hidden/name");  } set { Record.SetXmlProperty("genxml/hidden/name", value); } }
         public int ModuleId { get; private set; }
-        public string SystemKey { get { return Record.GetXmlProperty("genxml/systemkey"); } set { Record.SetXmlProperty("genxml/systemkey", value); } }
-        public int TabId { get { return Record.GetXmlPropertyInt("genxml/tabid"); } set { Record.SetXmlProperty("genxml/tabid", value.ToString()); } }
-        public string ModuleRef { get { return Record.GetXmlProperty("genxml/moduleref"); } set { Record.SetXmlProperty("genxml/moduleref", value); } }
-        public bool CacheDisbaled { get { return Record.GetXmlPropertyBool("genxml/disablecache"); } set { Record.SetXmlProperty("genxml/cachedisbaled", value.ToString()); } }
-        public bool CacheEnabled { get { return !Record.GetXmlPropertyBool("genxml/disablecache"); } }
-        public string SecurityKey { get { return Record.GetXmlProperty("genxml/securitykey"); } set { Record.SetXmlProperty("genxml/securitykey", value); } }
-        public string RemoteSystemKey { get { return Record.GetXmlProperty("genxml/remotesystemkey"); } set { Record.SetXmlProperty("genxml/remotesystemkey", value); } }
+        public string SystemKey { get { return Record.GetXmlProperty("genxml/hidden/systemkey"); } set { Record.SetXmlProperty("genxml/hidden/systemkey", value); } }
+        public int TabId { get { return Record.GetXmlPropertyInt("genxml/hidden/tabid"); } set { Record.SetXmlProperty("genxml/hidden/tabid", value.ToString()); } }
+        public string ModuleRef { get { return Record.GetXmlProperty("genxml/hidden/moduleref"); } set { Record.SetXmlProperty("genxml/hidden/moduleref", value); } }
+        public bool CacheDisbaled { get { return Record.GetXmlPropertyBool("genxml/hidden/disablecache"); } set { Record.SetXmlProperty("genxml/hidden/cachedisbaled", value.ToString()); } }
+        public bool CacheEnabled { get { return !Record.GetXmlPropertyBool("genxml/hidden/disablecache"); } }
+        public string SecurityKey { get { return Record.GetXmlProperty("genxml/hidden/securitykey"); } set { Record.SetXmlProperty("genxml/hidden/securitykey", value); } }
+        public string RemoteSystemKey { get { return Record.GetXmlProperty("genxml/hidden/remotesystemkey"); } set { Record.SetXmlProperty("genxml/hidden/remotesystemkey", value); } }
         public string RemoteAPI { get { return EngineURL.TrimEnd('/') + "/Desktopmodules/dnnrocket/api/rocket/actionremote"; } }
-        public string EngineURL { get { return Record.GetXmlProperty("genxml/engineurl"); } set { Record.SetXmlProperty("genxml/engineurl", value); } }
-        public string RemoteCmd { get { return Record.GetXmlProperty("genxml/remotecmd"); } set { Record.SetXmlProperty("genxml/remotecmd", value); } }
-        public string RemoteTemplate { get { return Record.GetXmlProperty("genxml/remotetemplate"); } set { Record.SetXmlProperty("genxml/remotetemplate", value); } }
-        public string RemoteKey { get { return Record.GetXmlProperty("genxml/remotekey"); } set { Record.SetXmlProperty("genxml/remotekey", value); } }
-        public string AppThemeFolder { get { return Record.GetXmlProperty("genxml/appthemefolder"); } set { Record.SetXmlProperty("genxml/appthemefolder", value); } }
-        public string AppThemeVersion { get { return Record.GetXmlProperty("genxml/appthemeversion"); } set { Record.SetXmlProperty("genxml/appthemeversion", value); } }
+        public string EngineURL { get { return Record.GetXmlProperty("genxml/hidden/engineurl"); } set { Record.SetXmlProperty("genxml/hidden/engineurl", value); } }
+        public string RemoteCmd { get { return Record.GetXmlProperty("genxml/hidden/remotecmd"); } set { Record.SetXmlProperty("genxml/hidden/remotecmd", value); } }
+        public string Template { get { return Record.GetXmlProperty("genxml/hidden/template"); } set { Record.SetXmlProperty("genxml/hidden/template", value); } }
+        public string RemoteTemplate
+        {
+            get
+            {
+                if (Record.GetXmlProperty("genxml/hidden/remotetemplate") == "")
+                    return Template;
+                else
+                    return Record.GetXmlProperty("genxml/hidden/remotetemplate");
+            }
+            set { Record.SetXmlProperty("genxml/hidden/remotetemplate", value); }
+        }
+        public string RemoteKey { get
+            {
+                if (Record.GetXmlProperty("genxml/hidden/remotekey") == "")
+                    return SystemKey;
+                else
+                    return Record.GetXmlProperty("genxml/hidden/remotekey");
+            } set { Record.SetXmlProperty("genxml/hidden/remotekey", value); } }
+        public string AppThemeFolder { get { return Record.GetXmlProperty("genxml/hidden/appthemefolder"); } set { Record.SetXmlProperty("genxml/hidden/appthemefolder", value); } }
+        public string AppThemeVersion { get { return Record.GetXmlProperty("genxml/hidden/appthemeversion"); } set { Record.SetXmlProperty("genxml/hidden/appthemeversion", value); } }
 
         #endregion
     }

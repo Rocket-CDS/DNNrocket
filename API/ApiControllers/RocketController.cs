@@ -134,7 +134,7 @@ namespace DNNrocketAPI.ApiControllers
             var paramCmd = context.Request.QueryString["cmd"];
             var portalId = PortalUtils.GetPortalId();
             paramInfo.PortalId = portalId;
-            paramInfo.SetXmlProperty("genxml/remotecall","True");
+            paramInfo.SetXmlProperty("genxml/hidden/remotecall","True");
 
             var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, remoteSystemKey);
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
