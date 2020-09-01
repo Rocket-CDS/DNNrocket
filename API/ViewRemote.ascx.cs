@@ -88,7 +88,7 @@ namespace DNNrocketAPI
             _remoteParams.RemoveAllFormParam(); // remove any existing form params.
             foreach (string key in Request.Form.AllKeys)
             {
-                if (key.ToLower() != "paramjson" && key.ToLower() != "inputjson")
+                if (key != null && (key.ToLower() != "paramjson" && key.ToLower() != "inputjson"))
                 {
                     _remoteParams.AddFormParam(key, Convert.ToString(Request.Form[key]));
                 }
