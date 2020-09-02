@@ -290,9 +290,6 @@ namespace RocketMod
 
             _paramInfo = paramInfo;
 
-            var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
-            if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
-
             _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
             _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
@@ -555,14 +552,20 @@ namespace RocketMod
             if (doBackup) DoBackUp();
 
              _articleLimpet = new ArticleLimpet(_selectedItemId, _dataModuleParams.ModuleId, _editLang);
-            
+
             // do Save
             _passSettings.Add("saved", "true");
             _articleLimpet.DebugMode = _systemData.DebugMode;
             _articleLimpet.Save(_postInfo);
 
+            // We need to clear cache and sync before the langauge change.  Langauge is held in cache for the user.
             DNNrocketUtils.SynchronizeModule(_moduleid); // Modified Date
             CacheFileUtils.ClearAllCache();
+
+            // change language (if changed, reload done in GetArticle() method )
+            var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
+            if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
+
 
         }
 
