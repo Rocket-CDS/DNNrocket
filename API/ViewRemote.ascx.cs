@@ -75,6 +75,10 @@ namespace DNNrocketAPI
             _rocketInterface = new RocketInterface(_systemInfo, _interfacekey);
             var systemData = new SystemLimpet(_systemInfo);
 
+            _templateRelPath = _rocketInterface.TemplateRelPath;
+            if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we don't define template path in the interface assume it's the control path.
+
+
             // add parameters remoteParams  (do here, so it appears in header call)
             _remoteParams.RemoveAllUrlParam(); // remove any existing url params.
             foreach (String key in Request.QueryString.AllKeys)
@@ -198,8 +202,6 @@ namespace DNNrocketAPI
                 if (hasEditAccess)
                 {
                     strOut += "</div>";
-                    var razorTempl = RenderRazorUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
-                    strOut += RenderRazorUtils.RazorRender(model, razorTempl, systemData.DebugMode);
                 }
 
                 CacheFileUtils.SetCache(cacheKey, strOut);

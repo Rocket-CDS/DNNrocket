@@ -95,7 +95,7 @@ namespace DNNrocketAPI
                     if (_dataRecord != null)
                     {
                         var defaultPageName = _dnnTab.TabName;
-                        var portalalias = DNNrocketUtils.GetPortalAlias(l.Key);
+                        var portalalias = PortalUtils.GetPortalAlias(l.Key);
                         pagename = _dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/pagename");
                         if (pagename == "") pagename = defaultPageName;
                         urldata = "//" + portalalias + "/" + GeneralUtils.UrlFriendly(pagename);
@@ -134,7 +134,7 @@ namespace DNNrocketAPI
                         if (_dataRecord != null)
                         {
                             var defaultPageName = _dnnTab.TabName;
-                            var portalalias = DNNrocketUtils.GetPortalAlias(l.Key);
+                            var portalalias = PortalUtils.GetPortalAlias(l.Key);
                             pagename = _dataRecord.GetXmlProperty("genxml/lang/genxml/textbox/pagename");
                             if (pagename == "") pagename = defaultPageName;
                             urldata = "//" + portalalias + "/" + GeneralUtils.UrlFriendly(pagename);

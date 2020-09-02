@@ -281,7 +281,7 @@ namespace DNNrocket.System
                 var reqparm = new NameValueCollection();
                 reqparm.Add("sitekey", PortalUtils.SiteGuid());
                 reqparm.Add("systemkey", _systemData.SystemKey);
-                reqparm.Add("domainurl", DNNrocketUtils.GetDefaultWebsiteDomainUrl());
+                reqparm.Add("domainurl", PortalUtils.DefaultPortalAlias());
                 var rtnLicenseStatus = SimplisityUtils.PostData(systemGlobalData.LicenseUrl.TrimEnd('/') + "/Desktopmodules/dnnrocket/api/rocket/action", "rocketlicense", "clientlicense_getlicense", "", "", reqparm);
                 if (rtnLicenseStatus == "OK") return true;
                 return false;
@@ -377,7 +377,7 @@ namespace DNNrocket.System
             {
                 var licenseid = _paramInfo.GetXmlPropertyInt("genxml/hidden/licenseid");
                 var certificateKey = _postInfo.GetXmlProperty("genxml/hidden/certificatekey");
-                var domainurl = DNNrocketUtils.GetDefaultWebsiteDomainUrl(); ;
+                var domainurl = PortalUtils.DefaultPortalAlias();
                 var systemkey = _systemData.SystemKey;
                 var sitekey = PortalUtils.SiteGuid();
                 if (licenseid > 0)
@@ -555,7 +555,7 @@ namespace DNNrocket.System
                 info.Lang = DNNrocketUtils.GetCurrentCulture();
                 info.SetXmlProperty("genxml/hidden/index", "99");
                 info.TypeCode = "SYSTEM";
-                info.GUIDKey = GeneralUtils.GetUniqueKey();
+                info.GUIDKey = GeneralUtils.GetGuidKey();
                 var objCtrl = new DNNrocketController();
                 info.ItemID = objCtrl.SaveRecord(info).ItemID;
 

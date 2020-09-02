@@ -242,8 +242,6 @@ namespace DNNrocketAPI
                 if (hasEditAccess)
                 {
                     strOut += "</div>";
-                    var razorTempl = RenderRazorUtils.GetRazorTemplateData("viewinject.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
-                    strOut += RenderRazorUtils.RazorRender(model, razorTempl, systemData.DebugMode);
                 }
 
                 CacheFileUtils.SetCache(cacheKey, strOut);
