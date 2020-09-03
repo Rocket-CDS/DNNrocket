@@ -841,7 +841,10 @@ namespace DNNrocketAPI.Componants
             return rtnLang;
         }
 
-
+        public static void SetCurrentCulture(string cultureCode)
+        {
+            SetCookieValue("language", cultureCode);
+        }
         public static string GetCurrentCulture()
         {
             if (HttpContext.Current != null && HttpContext.Current.Request != null)
