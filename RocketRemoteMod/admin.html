@@ -94,6 +94,8 @@
             simplisity_setParamField("moduleid", urlParams.get('moduleid'))
             simplisity_setParamField("tabid", urlParams.get('tabid'))
             simplisity_setParamField("editmode", urlParams.get('editmode'))
+            simplisity_setParamField("remotetemplate", urlParams.get('adminsettings.cshtml'))
+            simplisity_setParamField("remoteconfigpath", '') // default to remotemod path
             if (urlParams.get('editmode') === '1') {
                 $('#base-panel').css('margin-left', '0px');
                 $('#mySidebar').css('width', '0px');

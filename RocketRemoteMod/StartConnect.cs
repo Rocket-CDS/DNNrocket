@@ -96,8 +96,11 @@ namespace RocketRemoteMod
             {
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
-                var razortemplate = "adminsettings.cshtml";
-                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, controlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var razortemplate = _paramInfo.GetXmlProperty("genxml/hidden/remotetemplate");
+                if (razortemplate == "") razortemplate = "adminsettings.cshtml";
+                var configpath = _paramInfo.GetXmlProperty("genxml/hidden/remoteconfigpath");
+                if (configpath == "") configpath = controlRelPath;
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, configpath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 return RenderRazorUtils.RazorDetail(razorTempl, _remoteParams, _passSettings, null, true);
             }
             catch (Exception ex)

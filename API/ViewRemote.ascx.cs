@@ -29,6 +29,7 @@ using DotNetNuke.Services.Localization;
 using Simplisity;
 using System.Collections.Specialized;
 using DNNrocketAPI.Componants;
+using System.IO;
 
 namespace DNNrocketAPI
 {
@@ -43,15 +44,14 @@ namespace DNNrocketAPI
         #region Event Handlers
 
         private string _systemkey;
-
         private string _interfacekey;
         private string _templateRelPath;
-
+        private SystemLimpet _systemData;
         private RocketInterface _rocketInterface;
-
         private RemoteLimpet _remoteParams;
         private SimplisityInfo _systemInfo;
         private DNNrocketController _objCtrl;
+        private bool _hasEditAccess;
 
         protected override void OnInit(EventArgs e)
         {
@@ -73,7 +73,7 @@ namespace DNNrocketAPI
 
             _remoteParams = new RemoteLimpet(ModuleId, _systemkey);
             _rocketInterface = new RocketInterface(_systemInfo, _interfacekey);
-            var systemData = new SystemLimpet(_systemInfo);
+            _systemData = new SystemLimpet(_systemInfo);
 
             _templateRelPath = _rocketInterface.TemplateRelPath;
             if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we don't define template path in the interface assume it's the control path.
@@ -147,15 +147,13 @@ namespace DNNrocketAPI
 
         private void PageLoad()
         {
-
+            _hasEditAccess = false;
+            if (UserId > 0) _hasEditAccess = DotNetNuke.Security.Permissions.ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration);
         }
 
 
         protected override void OnPreRender(EventArgs e)
         {
-            var hasEditAccess = false;
-            if (UserId > 0) hasEditAccess = DotNetNuke.Security.Permissions.ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration);
-
             var postInfo = new SimplisityInfo();
             var paramInfo = new SimplisityInfo();
             paramInfo.PortalId = PortalSettings.Current.PortalId;
@@ -180,7 +178,7 @@ namespace DNNrocketAPI
             var strOut = "";
             var systemData = new SystemLimpet(_systemInfo);
             var cacheOutPut = "";
-            var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
+            var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + _hasEditAccess;
             var model = new SimplisityRazor();
             model.ModuleId = ModuleId;
             model.TabId = TabId;
@@ -188,7 +186,7 @@ namespace DNNrocketAPI
             if (String.IsNullOrEmpty(cacheOutPut))
             {
 
-                if (hasEditAccess)
+                if (_hasEditAccess)
                 {
                     model.SetSetting("editiconcolor", systemData.GetSetting("editiconcolor"));
                     model.SetSetting("editicontextcolor", systemData.GetSetting("editicontextcolor"));
@@ -199,7 +197,7 @@ namespace DNNrocketAPI
 
                 strOut += _remoteParams.htmlAPI();
 
-                if (hasEditAccess)
+                if (_hasEditAccess)
                 {
                     strOut += "</div>";
                 }
@@ -218,7 +216,7 @@ namespace DNNrocketAPI
             lit.Text = strOut;
             phData.Controls.Add(lit);
 
-            if (hasEditAccess && (!Page.Items.Contains("dnnrocketview-addedheader") || !(bool)Page.Items["dnnrocketview-addedheader"]))
+            if (_hasEditAccess && (!Page.Items.Contains("dnnrocketview-addedheader") || !(bool)Page.Items["dnnrocketview-addedheader"]))
             {
                 if (!Page.Items.Contains("dnnrocketview-addedheader")) Page.Items.Add("dnnrocketview-addedheader", true);
 
@@ -240,24 +238,31 @@ namespace DNNrocketAPI
             get
             {
                 var actions = new ModuleActionCollection();
-
-                if (_systemInfo != null) // might be null of initialization
+                if (_systemData.Exists) // might be null of initialization
                 {
-                    var adminurl = _systemInfo.GetXmlProperty("genxml/textbox/adminurl");
-                    adminurl = adminurl.ToLower().Replace("[moduleid]", ModuleId.ToString());
-                    adminurl = adminurl.ToLower().Replace("[tabid]", TabId.ToString());
-                    if (adminurl != "")
+                    var adminFilePath = DNNrocketUtils.MapPath(_systemData.SystemRelPath.Trim('/')) + "\\admin.html";
+                    if (File.Exists(adminFilePath))
                     {
-                        actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmin"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
-                        if (adminurl.Contains("?"))
+                        var adminurl = _systemData.AdminUrl;
+                        adminurl = adminurl.ToLower().Replace("[moduleid]", ModuleId.ToString());
+                        adminurl = adminurl.ToLower().Replace("[tabid]", TabId.ToString());
+                        if (adminurl != "")
                         {
-                            adminurl += "&newpage=1";
+                            actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmin"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
+                            if (adminurl.Contains("?"))
+                                adminurl += "&newpage=1";
+                            else
+                                adminurl += "?newpage=1";
+                            actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmintab"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, true);
                         }
-                        else
-                        {
-                            adminurl += "?newpage=1";
-                        }
-                        actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmintab"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, true);
+                    }
+
+                    var module = ModuleController.Instance.GetModule(ModuleId,TabId,false);
+                    var adminsettingsFilePath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/config/") + "\\" + module.DesktopModule.FolderName + ".html";
+                    if (File.Exists(adminsettingsFilePath))
+                    {
+                        var adminsettingsurl = "/DesktopModules/DNNrocket/config/" + module.DesktopModule.FolderName + ".html?moduleid=" + ModuleId + "&tabid=" + TabId;
+                        actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.settings"), "", "", "icon_dashboard_16px.gif", adminsettingsurl, false, SecurityAccessLevel.Edit, true, true);
                     }
                 }
                 return actions;
