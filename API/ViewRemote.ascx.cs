@@ -99,12 +99,12 @@ namespace DNNrocketAPI
             }
 
 
-            if (!this.Page.Items.Contains("dnnrocket_remotepageheader")) // flag to insure we only inject once for page load.
+            if (!this.Page.Items.Contains("dnnrocket_remotepageheader") || _remoteParams.CacheDisbaled) // flag to insure we only inject once for page load.
             {
                 Page.Items.Add("dnnrocket_remotepageheader", true);
                 var cachekey = TabId + ".remotepageheader.cshtml";
                 string cacheHead = (string)CacheFileUtils.GetCache(cachekey, "remotepageheader");
-                if (String.IsNullOrEmpty(cacheHead))
+                if (String.IsNullOrEmpty(cacheHead) || _remoteParams.CacheDisbaled)
                 {
                     var modulesOnPage = DNNrocketUtils.GetAllModulesOnPage(TabId);
                     foreach (var modId in modulesOnPage)

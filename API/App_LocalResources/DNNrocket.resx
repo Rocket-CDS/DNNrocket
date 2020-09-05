@@ -121,19 +121,19 @@
     <value>Add</value>
   </data>
   <data name="add.Icon" xml:space="preserve">
-    <value>&lt;i title="Add" class="fas fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Add" class="fa fas fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cancel.Icon" xml:space="preserve">
-    <value>&lt;i title="Cancel" class="fas fa-undo-alt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Cancel" class="fa fas fa-undo-alt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="delete.confirm" xml:space="preserve">
     <value>Delete ?</value>
   </data>
   <data name="delete.Icon" xml:space="preserve">
-    <value>&lt;i title="Delete" class="fas fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Delete" class="fa fas fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="edit.Icon" xml:space="preserve">
-    <value>&lt;i title="Edit" class="fas fa-edit fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Edit" class="fa fas fa-edit fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="reset.Text" xml:space="preserve">
     <value>Reset</value>
@@ -142,7 +142,7 @@
     <value>Save</value>
   </data>
   <data name="search.Icon" xml:space="preserve">
-    <value>&lt;i title="Search" class="fas fa-search fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Search" class="fa fas fa-search fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="select.Text" xml:space="preserve">
     <value>Select</value>
@@ -151,31 +151,31 @@
     <value>Upload</value>
   </data>
   <data name="upload.Icon" xml:space="preserve">
-    <value>&lt;i  title="Upload" class="fas fa-upload fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Upload" class="fa fas fa-upload fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="return.Text" xml:space="preserve">
     <value>Return</value>
   </data>
   <data name="return.Icon" xml:space="preserve">
-    <value>&lt;i  title="Return" class="fas fa-reply fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Return" class="fa fas fa-reply fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="export.Text" xml:space="preserve">
     <value>Export</value>
   </data>
   <data name="download.Icon" xml:space="preserve">
-    <value>&lt;i title="Download" class="fas fa-download fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Download" class="fa fas fa-download fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="remove.Icon" xml:space="preserve">
-    <value>&lt;i title="Remove" class="fas fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Remove" class="fa fas fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="save.Icon" xml:space="preserve">
-    <value>&lt;i  title="Save" class="fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Save" class="fa fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ok.Text" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="reset.Icon" xml:space="preserve">
-    <value>&lt;i title="Reset" class="fas fa-sync-alt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Reset" class="fa fas fa-sync-alt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="active.Text" xml:space="preserve">
     <value>Active</value>
@@ -187,7 +187,7 @@
     <value>Undo</value>
   </data>
   <data name="undo.Icon" xml:space="preserve">
-    <value>&lt;i title="Undo" class="fas fa-undo fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Undo" class="fa fas fa-undo fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="apiurl.Text" xml:space="preserve">
     <value>API url</value>
@@ -202,7 +202,7 @@
     <value>Admin</value>
   </data>
   <data name="admin.Icon" xml:space="preserve">
-    <value>&lt;i title="Admin" class="fas fa-list fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Admin" class="fa fas fa-list fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="dropdocument.Text" xml:space="preserve">
     <value>Drop Document Here</value>
@@ -238,7 +238,7 @@
     <value>No Settings</value>
   </data>
   <data name="setup.Icon" xml:space="preserve">
-    <value>&lt;i  title="Setup" class="fas fa-plug fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Setup" class="fa fas fa-plug fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="config.Text" xml:space="preserve">
     <value>Configuration</value>
@@ -250,7 +250,7 @@
     <value>Use</value>
   </data>
   <data name="use.Icon" xml:space="preserve">
-    <value>&lt;i  title="Use" class="fas fa-check fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Use" class="fa fas fa-check fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="print.Text" xml:space="preserve">
     <value>Print</value>
@@ -322,13 +322,13 @@
     <value>Back</value>
   </data>
   <data name="back.Icon" xml:space="preserve">
-    <value>&lt;i  title="Back" class="fas  fa-caret-left fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Back" class="fa fas  fa-caret-left fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="next.Text" xml:space="preserve">
     <value>Next</value>
   </data>
   <data name="next.Icon" xml:space="preserve">
-    <value>&lt;i  title="Next" class="fas  fa-arrow-alt-circle-right fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Next" class="fa fas  fa-arrow-alt-circle-right fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="delete.Text" xml:space="preserve">
     <value>Delete</value>
@@ -337,7 +337,7 @@
     <value>Search</value>
   </data>
   <data name="print.Icon" xml:space="preserve">
-    <value>&lt;i  title="Print" class="fas fa-print fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Print" class="fa fas fa-print fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="image.Text" xml:space="preserve">
     <value>Image</value>
@@ -346,7 +346,7 @@
     <value>Links</value>
   </data>
   <data name="ok.Icon" xml:space="preserve">
-    <value>&lt;i  title="OK" class="fas fa-check-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="OK" class="fa fas fa-check-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="column.Text" xml:space="preserve">
     <value>Column</value>
@@ -400,7 +400,7 @@
     <value>Setup</value>
   </data>
   <data name="update.Icon" xml:space="preserve">
-    <value>&lt;i  title="Update" class="fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Update" class="fa fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="dnnrocketaccount.Help" xml:space="preserve">
     <value>An account at &lt;a href='https://www.dnnrocket.com' target='_blank'&gt;www.dnnrocket.com&lt;/a&gt; is free and allows you to track, maintain, transfer and validate licenses.  It also entiles you to have multi-license discount, promotions, direct email and ticket support, which is included with the professional licenses.  If you require a more dedicated support: subscription, consultation and development options are available.   </value>
@@ -442,13 +442,13 @@
     <value>On</value>
   </data>
   <data name="create.Icon" xml:space="preserve">
-    <value>&lt;i title="Create" class="fas fa-bolt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Create" class="fa fas fa-bolt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="create.Text" xml:space="preserve">
     <value>Create</value>
   </data>
   <data name="refresh.Icon" xml:space="preserve">
-    <value>&lt;i title="Refresh" class="fas fa-sync-alt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Refresh" class="fa fas fa-sync-alt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="prolicense.Text" xml:space="preserve">
     <value>Professional License</value>
@@ -505,7 +505,7 @@
     <value>Validate</value>
   </data>
   <data name="export.Icon" xml:space="preserve">
-    <value>&lt;i class="fas fa-file-export fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class="fa fas fa-file-export fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="sortorder.Text" xml:space="preserve">
     <value>Sort Order</value>
@@ -538,7 +538,7 @@
     <value>Template BackUp</value>
   </data>
   <data name="cancelsearch.Icon" xml:space="preserve">
-    <value>&lt;i  title="Cancel Search" class="fas fa-times fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Cancel Search" class="fa fas fa-times fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cancelsearch.Text" xml:space="preserve">
     <value>Cancel Search</value>
