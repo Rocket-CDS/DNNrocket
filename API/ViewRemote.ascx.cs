@@ -55,75 +55,82 @@ namespace DNNrocketAPI
 
         protected override void OnInit(EventArgs e)
         {
-
-            base.OnInit(e);
-
-            _objCtrl = new DNNrocketController();
-
-            var clearallcache = DNNrocketUtils.RequestParam(Context, "clearallcache");
-            if (clearallcache != "")
+            try
             {
-                DNNrocketUtils.ClearPortalCache(PortalId);
-                CacheFileUtils.ClearAllCache();
-            }
 
-            _systemkey = DNNrocketUtils.GetModuleSystemKey(ModuleId, TabId);
-            _interfacekey = DNNrocketUtils.GetModuleInterfaceKey(ModuleId, TabId);
-            _systemInfo = DNNrocketUtils.GetModuleSystemInfo(_systemkey, ModuleId);
+                base.OnInit(e);
 
-            _remoteParams = new RemoteLimpet(ModuleId, _systemkey);
-            _rocketInterface = new RocketInterface(_systemInfo, _interfacekey);
-            _systemData = new SystemLimpet(_systemInfo);
+                _objCtrl = new DNNrocketController();
 
-            _templateRelPath = _rocketInterface.TemplateRelPath;
-            if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we don't define template path in the interface assume it's the control path.
-
-
-            // add parameters remoteParams  (do here, so it appears in header call)
-            _remoteParams.RemoveAllUrlParam(); // remove any existing url params.
-            foreach (String key in Request.QueryString.AllKeys)
-            {
-                if (key != null) // test for null, but should not happen.   
+                var clearallcache = DNNrocketUtils.RequestParam(Context, "clearallcache");
+                if (clearallcache != "")
                 {
-                    _remoteParams.AddUrlParam(key, Request.QueryString[key]);
+                    DNNrocketUtils.ClearPortalCache(PortalId);
+                    CacheFileUtils.ClearAllCache();
                 }
-            }
-            // get all form data (drop the ones we already processed) 
-            _remoteParams.RemoveAllFormParam(); // remove any existing form params.
-            foreach (string key in Request.Form.AllKeys)
-            {
-                if (key != null && (key.ToLower() != "paramjson" && key.ToLower() != "inputjson"))
-                {
-                    _remoteParams.AddFormParam(key, Convert.ToString(Request.Form[key]));
-                }
-            }
+
+                _systemkey = DNNrocketUtils.GetModuleSystemKey(ModuleId, TabId);
+                _interfacekey = DNNrocketUtils.GetModuleInterfaceKey(ModuleId, TabId);
+                _systemInfo = DNNrocketUtils.GetModuleSystemInfo(_systemkey, ModuleId);
+
+                _remoteParams = new RemoteLimpet(ModuleId, _systemkey);
+                _rocketInterface = new RocketInterface(_systemInfo, _interfacekey);
+                _systemData = new SystemLimpet(_systemInfo);
+
+                _templateRelPath = _rocketInterface.TemplateRelPath;
+                if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we don't define template path in the interface assume it's the control path.
 
 
-            if (!this.Page.Items.Contains("dnnrocket_remotepageheader") || _remoteParams.CacheDisbaled) // flag to insure we only inject once for page load.
-            {
-                Page.Items.Add("dnnrocket_remotepageheader", true);
-                var cachekey = TabId + ".remotepageheader.cshtml";
-                string cacheHead = (string)CacheFileUtils.GetCache(cachekey, "remotepageheader");
-                if (String.IsNullOrEmpty(cacheHead) || _remoteParams.CacheDisbaled)
+                // add parameters remoteParams  (do here, so it appears in header call)
+                _remoteParams.RemoveAllUrlParam(); // remove any existing url params.
+                foreach (String key in Request.QueryString.AllKeys)
                 {
-                    var modulesOnPage = DNNrocketUtils.GetAllModulesOnPage(TabId);
-                    foreach (var modId in modulesOnPage)
+                    if (key != null) // test for null, but should not happen.   
                     {
-                        var remoteParamsMod = new RemoteLimpet(modId);
-                        var strOut = remoteParamsMod.headerAPI();
-                        if (strOut != "") cacheHead += " " + strOut;
+                        _remoteParams.AddUrlParam(key, Request.QueryString[key]);
+                    }
+                }
+                // get all form data (drop the ones we already processed) 
+                _remoteParams.RemoveAllFormParam(); // remove any existing form params.
+                foreach (string key in Request.Form.AllKeys)
+                {
+                    if (key != null && (key.ToLower() != "paramjson" && key.ToLower() != "inputjson"))
+                    {
+                        _remoteParams.AddFormParam(key, Convert.ToString(Request.Form[key]));
+                    }
+                }
+
+
+                if (!this.Page.Items.Contains("dnnrocket_remotepageheader") || _remoteParams.CacheDisbaled) // flag to insure we only inject once for page load.
+                {
+                    Page.Items.Add("dnnrocket_remotepageheader", true);
+                    var cachekey = TabId + ".remotepageheader.cshtml";
+                    string cacheHead = (string)CacheFileUtils.GetCache(cachekey, "remotepageheader");
+                    if (String.IsNullOrEmpty(cacheHead) || _remoteParams.CacheDisbaled)
+                    {
+                        var modulesOnPage = DNNrocketUtils.GetAllModulesOnPage(TabId);
+                        foreach (var modId in modulesOnPage)
+                        {
+                            var remoteParamsMod = new RemoteLimpet(modId);
+                            var strOut = remoteParamsMod.headerAPI();
+                            if (strOut != "") cacheHead += " " + strOut;
+                        }
+
+                        CacheFileUtils.SetCache(cachekey, cacheHead);
+                        PageIncludes.IncludeTextInHeader(Page, cacheHead);
+                    }
+                    else
+                    {
+                        PageIncludes.IncludeTextInHeader(Page, cacheHead);
                     }
 
-                    CacheFileUtils.SetCache(cachekey, cacheHead);
-                    PageIncludes.IncludeTextInHeader(Page, cacheHead);
+
+
                 }
-                else
-                {
-                    PageIncludes.IncludeTextInHeader(Page, cacheHead);
-                }
-
-
-
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
             }
         }
 
@@ -154,12 +161,11 @@ namespace DNNrocketAPI
 
         protected override void OnPreRender(EventArgs e)
         {
-            var postInfo = new SimplisityInfo();
             var paramInfo = new SimplisityInfo();
             paramInfo.PortalId = PortalSettings.Current.PortalId;
             paramInfo.ModuleId = ModuleId;
             paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
-            paramInfo.SetXmlProperty("genxml/hidden/tabid", _remoteParams.TabId.ToString());
+            paramInfo.SetXmlProperty("genxml/hidden/tabid", TabId.ToString());
             paramInfo.SetXmlProperty("genxml/hidden/systemkey", _systemkey);
 
 
@@ -178,7 +184,7 @@ namespace DNNrocketAPI
             var strOut = "";
             var systemData = new SystemLimpet(_systemInfo);
             var cacheOutPut = "";
-            var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + _hasEditAccess;
+            var cacheKey = _remoteParams.RemoteTemplate + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + _hasEditAccess;
             var model = new SimplisityRazor();
             model.ModuleId = ModuleId;
             model.TabId = TabId;
@@ -190,17 +196,12 @@ namespace DNNrocketAPI
                 {
                     model.SetSetting("editiconcolor", systemData.GetSetting("editiconcolor"));
                     model.SetSetting("editicontextcolor", systemData.GetSetting("editicontextcolor"));
-                    strOut = "<div id='rocketcontentwrapper" + ModuleId + "' class=' w3-display-container '>";
                     var razorTempl = RenderRazorUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                     strOut += RenderRazorUtils.RazorRender(model, razorTempl, true);
                 }
-
+                strOut += "<div id='rocketcontentwrapper" + ModuleId + "' class=' w3-display-container '>";
                 strOut += _remoteParams.htmlAPI();
-
-                if (_hasEditAccess)
-                {
-                    strOut += "</div>";
-                }
+                strOut += "</div>";
 
                 CacheFileUtils.SetCache(cacheKey, strOut);
 

@@ -28,9 +28,8 @@ namespace DNNrocketAPI.Componants
         public RemoteLimpet(SimplisityInfo paramInfo, string systemKey)
         {
             Record = new SimplisityRecord();
-            ModuleId = -1;
-            paramInfo.RemoveLangRecord();
-            Record.XMLData = paramInfo.XMLData;
+            var remoteParamItem = GeneralUtils.DeCode(paramInfo.GetXmlProperty("genxml/hidden/remoteparams"));
+            if (remoteParamItem != "") Record.FromXmlItem(remoteParamItem);
             if (systemKey != "") SystemKey = systemKey;
             if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueString(3);
         }
@@ -43,33 +42,29 @@ namespace DNNrocketAPI.Componants
         public RemoteLimpet(int moduleId, string systemKey = "", bool useCache = true)
         {
             Record = new SimplisityRecord();
-            ModuleId = moduleId;
-            _cacheKey = "remoteparams*" + ModuleId;
+            _cacheKey = "remoteparams*" + moduleId;
             Record = (SimplisityRecord)CacheUtilsDNN.GetCache(_cacheKey);
             var objCtrl = new DNNrocketController();
             if ((Record == null || !useCache))
             {
-                if (ModuleId <= 0)
+                Record = new SimplisityRecord();
+                if (moduleId > 0)
                 {
-                    Record = new SimplisityRecord();
-                }
-                else
-                {
-                    Record = objCtrl.GetRecordByGuidKey(-1, ModuleId, "REMOTEPARAMS", _cacheKey, "", _tableName);
+                    Record = objCtrl.GetRecordByGuidKey(-1, moduleId, "REMOTEPARAMS", _cacheKey, "", _tableName);
                     if (Record == null)
                     {
                         Record = new SimplisityRecord();
                         Record.PortalId = -1;
                         Record.TypeCode = "REMOTEPARAMS";
                         Record.GUIDKey = _cacheKey;
-                        Record.ModuleId = ModuleId;
+                        Record.ModuleId = moduleId;
                         Record = objCtrl.SaveRecord(Record);
                     }
                     CacheUtilsDNN.SetCache(_cacheKey, Record);
                 }
             }
             if (systemKey != "") SystemKey = systemKey;
-            if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueString(3);
+            if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueString();
 
         }
         public void Save(SimplisityInfo postInfo)
@@ -219,7 +214,7 @@ namespace DNNrocketAPI.Componants
             }
         }
         public string Name { get { return Record.GetXmlProperty("genxml/hidden/name");  } set { Record.SetXmlProperty("genxml/hidden/name", value); } }
-        public int ModuleId { get; private set; }
+        public int ModuleId { get { return Record.ModuleId; } private set { Record.ModuleId = value; } }
         public string SystemKey { get { return Record.GetXmlProperty("genxml/hidden/systemkey"); } set { Record.SetXmlProperty("genxml/hidden/systemkey", value); } }
         public int TabId { get { return Record.GetXmlPropertyInt("genxml/hidden/tabid"); } set { Record.SetXmlProperty("genxml/hidden/tabid", value.ToString()); } }
         public string ModuleRef { get { return Record.GetXmlProperty("genxml/hidden/moduleref"); } set { Record.SetXmlProperty("genxml/hidden/moduleref", value); } }

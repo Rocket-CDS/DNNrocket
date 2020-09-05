@@ -644,12 +644,13 @@ namespace Simplisity
         }
         /// <summary>
         /// Get unique string based on ticks and a random numer.  The random number is to try and stop clashes when processing on the same tick.
-        /// This method has a VERY HIGH chance of being unique, but if processing on the same tick a duplicate could be generate.
+        /// This method has a VERY HIGH chance of being unique.
         /// </summary>
-        /// <param name="randomsize">RandomKey size, the ramdon key is added to the tick string. 0= Guid (Unique across machines),#= size of random key</param>
+        /// <param name="randomsize">RandomKey size, the ramdon key is added to the tick string. #= size of random key</param>
         /// <returns></returns>
         public static string GetUniqueString(int randomsize = 8)
         {
+            if (randomsize <= 0) randomsize = 8;
             int timeStamp = (int)(DateTime.Now.Ticks >> 23); // retain bits 23 to 55
             var strticks = timeStamp.ToString() + GetRandomKey(randomsize, true);
             long ticks = Convert.ToInt64(Convert.ToDecimal(strticks));

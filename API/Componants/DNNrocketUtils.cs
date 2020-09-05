@@ -1018,7 +1018,7 @@ namespace DNNrocketAPI.Componants
             var l = ModuleController.Instance.GetTabModules(tabId);
             foreach (var m in l)
             {
-                 rtn.Add(m.Value.ModuleID);
+                if (!m.Value.IsDeleted) rtn.Add(m.Value.ModuleID);
             }
             return rtn;
         }
