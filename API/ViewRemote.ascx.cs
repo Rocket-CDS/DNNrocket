@@ -108,6 +108,7 @@ namespace DNNrocketAPI
                     string cacheHead = (string)CacheFileUtils.GetCache(cachekey, "remotepageheader");
                     if (String.IsNullOrEmpty(cacheHead) || _remoteParams.CacheDisbaled)
                     {
+                        cacheHead = ""; // clear so if we rebuild, we don;t use the cached data
                         var modulesOnPage = DNNrocketUtils.GetAllModulesOnPage(TabId);
                         foreach (var modId in modulesOnPage)
                         {
@@ -199,7 +200,7 @@ namespace DNNrocketAPI
                     var razorTempl = RenderRazorUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                     strOut += RenderRazorUtils.RazorRender(model, razorTempl, true);
                 }
-                strOut += "<div id='rocketcontentwrapper" + ModuleId + "' class=' w3-display-container '>";
+                strOut += "<div id='rocketcontentwrapper" + ModuleId + "' class=''>";
                 strOut += _remoteParams.htmlAPI();
                 strOut += "</div>";
 
@@ -212,8 +213,7 @@ namespace DNNrocketAPI
             }
 
             var lit = new Literal();
-            strOut = "<div id='simplisitymodulewrapper" + ModuleId + "' class=' simplisity_panel '>" + strOut;
-            strOut += "</div>";
+            strOut = "<div id='simplisitymodulewrapper" + ModuleId + "' class=' simplisity_panel '>" + strOut + "</div>";
             lit.Text = strOut;
             phData.Controls.Add(lit);
 

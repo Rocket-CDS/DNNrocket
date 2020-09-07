@@ -313,7 +313,7 @@
     <value>Close</value>
   </data>
   <data name="close.Icon" xml:space="preserve">
-    <value>&lt;i title="Close" class="far fa-window-close fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Close" class="fa far fa-window-close fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="invalid.Text" xml:space="preserve">
     <value>Invalid</value>

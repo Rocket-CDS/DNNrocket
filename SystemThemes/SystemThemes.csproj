@@ -30,6 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="rocketecommerce\Rocket_DemoList\1.0\NewFolder\" />
+    <Folder Include="rocketecommerce\Rocket_DemoList\1.0\resx\" />
     <Folder Include="rocketecommerce\test_copy3\1.0\js\" />
     <Folder Include="rocketforms\ContactForm1\1.0\js\" />
   </ItemGroup>
