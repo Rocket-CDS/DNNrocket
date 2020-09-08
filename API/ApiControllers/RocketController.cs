@@ -173,14 +173,6 @@ namespace DNNrocketAPI.ApiControllers
             foreach (string key in context.Request.QueryString.AllKeys)
             {
                 var keyValue = context.Request.QueryString[key];
-                try
-                {
-                    keyValue = GeneralUtils.DeCode(keyValue);
-                }
-                catch (Exception ex)
-                {
-                    // ignore, if not in an encoded format it will give an error, so use the base value.
-                }
                 paramInfo.SetXmlProperty("genxml/urlparams/" + key.ToLower(), keyValue);
             }
             // get all form data (drop the ones we already processed) 

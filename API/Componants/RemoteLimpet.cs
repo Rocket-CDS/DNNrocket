@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
+using System.Xml;
 
 namespace DNNrocketAPI.Componants
 {
@@ -32,6 +33,23 @@ namespace DNNrocketAPI.Componants
             if (remoteParamItem != "") Record.FromXmlItem(remoteParamItem);
             if (systemKey != "") SystemKey = systemKey;
             if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueString(3);
+            // add any params that have been past
+            var nodList = paramInfo.XMLDoc.SelectNodes("genxml/urlparams/*");
+            if (nodList != null)
+            {
+                foreach (XmlNode nod in nodList)
+                {
+                    AddUrlParam(nod.Name, nod.InnerText);
+                }
+            }
+            var nodList2 = paramInfo.XMLDoc.SelectNodes("genxml/form/*");
+            if (nodList2 != null)
+            {
+                foreach (XmlNode nod in nodList2)
+                {
+                    AddFormParam(nod.Name, nod.InnerText);
+                }
+            }
         }
         /// <summary>
         /// Link remoteData to as module, this can be saved in the DB and cached.

@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppThemes\AppThemes.csproj" />
-    <ProjectReference Include="..\RocketMod\RocketMod.csproj" />
   </ItemGroup>
 
   <ItemGroup>

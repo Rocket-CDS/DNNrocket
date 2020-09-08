@@ -197,15 +197,19 @@ namespace DNNrocketAPI
                 {
                     model.SetSetting("editiconcolor", systemData.GetSetting("editiconcolor"));
                     model.SetSetting("editicontextcolor", systemData.GetSetting("editicontextcolor"));
+                    strOut += "<div id='rocketcontentwrapper" + ModuleId + "' class=''>";
                     var razorTempl = RenderRazorUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                     strOut += RenderRazorUtils.RazorRender(model, razorTempl, true);
                 }
-                strOut += "<div id='rocketcontentwrapper" + ModuleId + "' class=''>";
+
                 strOut += _remoteParams.htmlAPI();
-                strOut += "</div>";
+
+                if (_hasEditAccess)
+                {
+                    strOut += "</div>";
+                }
 
                 CacheFileUtils.SetCache(cacheKey, strOut);
-
             }
             else
             {
