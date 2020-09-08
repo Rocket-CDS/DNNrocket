@@ -241,7 +241,7 @@ namespace DNNrocketAPI
                 var actions = new ModuleActionCollection();
                 if (_systemData.Exists) // might be null of initialization
                 {
-                    var adminFilePath = DNNrocketUtils.MapPath(_systemData.SystemRelPath.Trim('/')) + "\\admin.html";
+                    var adminFilePath = _systemData.SystemMapPath.TrimEnd('\\') + "\\admin.html";
                     if (File.Exists(adminFilePath))
                     {
                         var adminurl = _systemData.AdminUrl;
@@ -259,10 +259,10 @@ namespace DNNrocketAPI
                     }
 
                     var module = ModuleController.Instance.GetModule(ModuleId,TabId,false);
-                    var adminsettingsFilePath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/config/") + "\\" + module.DesktopModule.FolderName + ".html";
+                    var adminsettingsFilePath = _systemData.SystemMapPath.TrimEnd('\\')  + "\\" + _interfacekey + ".html";
                     if (File.Exists(adminsettingsFilePath))
                     {
-                        var adminsettingsurl = "/DesktopModules/DNNrocket/config/" + module.DesktopModule.FolderName + ".html?moduleid=" + ModuleId + "&tabid=" + TabId;
+                        var adminsettingsurl = _systemData.SystemRelPath.TrimEnd('\\') + "\\" + _interfacekey + ".html?moduleid=" + ModuleId + "&tabid=" + TabId;
                         actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.settings"), "", "", "icon_dashboard_16px.gif", adminsettingsurl, false, SecurityAccessLevel.Edit, true, true);
                     }
                 }

@@ -21,7 +21,6 @@
 
 <div class="w3-row w3-padding ">
     <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketremotemod_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","itemid":"@info.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.save)</div>
-    <div class="w3-col m2 rocket-buttonbar w3-button w3-red w3-padding-8 simplisity_confirmclick" s-after="reloadpage" s-confirm="@ResourceKey("RocketMod.resetmsg")" s-cmd="rocketremotemod_reset" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)"}'>@ResourceKey("RocketMod.resetconfig")</div>
     @if (Model.GetSettingBool("saved"))
     {
         <i class='fas fa-save simplisity_fadeout' style="font-size:24px"></i>

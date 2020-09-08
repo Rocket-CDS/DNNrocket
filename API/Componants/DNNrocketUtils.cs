@@ -998,11 +998,11 @@ namespace DNNrocketAPI.Componants
             var interfacekey = (string)CacheUtilsDNN.GetCache(cacheKey);
             if (interfacekey == null)
             {
-                interfacekey = "";
                 var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
                 var desktopModule = moduleInfo.DesktopModule;
                 var moduleName = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
                 var mlist = moduleName.Split('_');
+                interfacekey = moduleName;
                 if (mlist.Length == 2)
                 {
                     interfacekey = mlist[1];

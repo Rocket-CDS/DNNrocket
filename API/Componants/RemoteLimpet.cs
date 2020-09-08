@@ -164,32 +164,39 @@ namespace DNNrocketAPI.Componants
 
                     // build weburl
                     var weburl = $"{RemoteAPI}?cmd={cmd}&systemkey={RemoteSystemKey}";
-                    var webReq = WebRequest.Create(weburl);
-                    webReq.Method = httpMethod;
-                    webReq.ContentType = contentType;
 
-
-                    if (String.IsNullOrEmpty(body)) body = PortalUtils.SiteGuid().ToString();
-
-                    ASCIIEncoding encoding = new ASCIIEncoding();
-                    byte[] byte1 = encoding.GetBytes(body);
-                    // Set the content length of the string being posted.
-                    webReq.ContentLength = byte1.Length;
-                    // get the request stream
-                    Stream newStream = webReq.GetRequestStream();
-                    // write the content to the stream
-                    newStream.Write(byte1, 0, byte1.Length);
-
-                    var webResp = (HttpWebResponse)webReq.GetResponse();
-
-                    if (webResp.StatusCode == HttpStatusCode.Unauthorized)
+                    try
                     {
-                        LogUtils.LogDebug("CallAPI() Login expired. Please start over.");
-                        return "";
-                    }
+                        var webReq = WebRequest.Create(weburl);
+                        webReq.Method = httpMethod;
+                        webReq.ContentType = contentType;
 
-                    var readStream = new StreamReader(webResp.GetResponseStream(), System.Text.Encoding.UTF8);
-                    rtnStr = readStream.ReadToEnd();
+                        if (String.IsNullOrEmpty(body)) body = PortalUtils.SiteGuid().ToString();
+
+                        ASCIIEncoding encoding = new ASCIIEncoding();
+                        byte[] byte1 = encoding.GetBytes(body);
+                        // Set the content length of the string being posted.
+                        webReq.ContentLength = byte1.Length;
+                        // get the request stream
+                        Stream newStream = webReq.GetRequestStream();
+                        // write the content to the stream
+                        newStream.Write(byte1, 0, byte1.Length);
+
+                        var webResp = (HttpWebResponse)webReq.GetResponse();
+
+                        if (webResp.StatusCode == HttpStatusCode.Unauthorized)
+                        {
+                            LogUtils.LogDebug("CallAPI() Login expired. Please start over.");
+                            return "";
+                        }
+
+                        var readStream = new StreamReader(webResp.GetResponseStream(), System.Text.Encoding.UTF8);
+                        rtnStr = readStream.ReadToEnd();
+                    }
+                    catch (Exception)
+                    {
+                        rtnStr = "Config Error";
+                    }
                 }
                 return rtnStr;
             }
