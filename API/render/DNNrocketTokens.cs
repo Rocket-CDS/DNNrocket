@@ -180,7 +180,7 @@ namespace DNNrocketAPI.render
 
         public IEncodedString EditFlag(string classvalues = "")
         {
-            var cultureCode = DNNrocketUtils.GetEditCulture();
+            var cultureCode = DNNrocketUtils.GetNextCulture();
             var strOut = "<img class='" + classvalues + "' src='/DesktopModules/DNNrocket/API/images/flags/16/" + cultureCode + ".png' alt='" + cultureCode + "' />";
             return new RawString(strOut);
         }

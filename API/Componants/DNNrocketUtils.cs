@@ -815,32 +815,65 @@ namespace DNNrocketAPI.Componants
             return "";
         }
 
+        public static bool ValidCulture(string cultureCode)
+        {
+            var l = GetCultureCodeList();
+            return l.Contains(cultureCode);
+        }
+
+        public static string SetNextCulture(string nextlang)
+        {
+            if (!ValidCulture(nextlang)) nextlang = GetEditCulture();
+            var userid = UserUtils.GetCurrentUserId();
+            if (userid > 0)
+            {
+                if (String.IsNullOrEmpty(nextlang)) nextlang = GetEditCulture();
+                var cacheKey = PortalUtils.GetPortalId() + "*nextlang*" + userid;
+                CacheUtils.SetCache(cacheKey, nextlang);
+            }
+            return nextlang;
+        }
+
+        public static string GetNextCulture()
+        {
+            var rtnLang = "";
+            var userid = UserUtils.GetCurrentUserId();
+            if (userid > 0)
+            {
+                var cacheKey = PortalUtils.GetPortalId() + "*nextlang*" + userid;
+                rtnLang = (string)CacheUtils.GetCache(cacheKey);
+            }
+            if (String.IsNullOrEmpty(rtnLang)) rtnLang = GetEditCulture();
+            if (!ValidCulture(rtnLang)) rtnLang = GetCurrentCulture();
+            return rtnLang;
+        }
 
         public static string SetEditCulture(string editlang)
         {
-            var cachekey = "editlang*" + UserUtils.GetCurrentUserId();
-            if (String.IsNullOrEmpty(editlang)) editlang = GetCurrentCulture();
-            CacheUtilsDNN.SetCache(cachekey, editlang);
+            if (!ValidCulture(editlang)) editlang = GetCurrentCulture();
+            var userid = UserUtils.GetCurrentUserId();
+            if (userid > 0)
+            {
+                if (String.IsNullOrEmpty(editlang)) editlang = GetCurrentCulture();
+                var cacheKey = PortalUtils.GetPortalId() + "*editlang*" + userid;
+                CacheUtils.SetCache(cacheKey, editlang);
+            }
             return editlang;
         }
 
         public static string GetEditCulture()
         {
-            var cachekey = "editlang*" + UserUtils.GetCurrentUserId();
             var rtnLang = HttpContext.Current.Request.QueryString["editlang"];
-            if (String.IsNullOrEmpty(rtnLang))
+            if (!ValidCulture(rtnLang)) rtnLang = GetCurrentCulture();
+            var userid = UserUtils.GetCurrentUserId();
+            if (userid > 0)
             {
-                var obj = CacheUtilsDNN.GetCache(cachekey);
-                if (obj != null) rtnLang = obj.ToString();
-                if (String.IsNullOrEmpty(rtnLang)) rtnLang = GetCurrentCulture();
-            }
-            else
-            {
-                SetEditCulture(rtnLang);
+                var cacheKey = PortalUtils.GetPortalId() + "*editlang*" + userid;
+                rtnLang = (string)CacheUtils.GetCache(cacheKey);
+                if (!ValidCulture(rtnLang)) rtnLang = GetCurrentCulture();
             }
             return rtnLang;
         }
-
         public static void SetCurrentCulture(string cultureCode)
         {
             SetCookieValue("language", cultureCode);

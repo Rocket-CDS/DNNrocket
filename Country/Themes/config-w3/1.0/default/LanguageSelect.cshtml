@@ -50,13 +50,8 @@
             $('.languageFlagImg').attr('src', '/DesktopModules/DNNrocket/API/images/flags/16/' + $(this).attr('editlang') + '.png');
             $('.languageFlagText').text($(this).text());
             // We need to save and reload or just reload on the list page.  So call a function in each template
-            try {
-                $('.editlanguageflag').html("<img src='/DesktopModules/DNNrocket/API/images/flags/16/" + $(this).attr('editlang') + ".png' alt='" + $(this).attr('editlang') + "' />")
-                languageChange();
-            } catch (ConvError) {
-                // Ignore if no function on template.
-            }
-
+            $('.editlanguageflag').html("<img src='/DesktopModules/DNNrocket/API/images/flags/16/" + $(this).attr('editlang') + ".png' alt='" + $(this).attr('editlang') + "' />")
+            $('.langchangesave').trigger("click");
         });
 
     });
