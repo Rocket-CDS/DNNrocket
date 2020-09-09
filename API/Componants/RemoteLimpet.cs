@@ -175,13 +175,17 @@ namespace DNNrocketAPI.Componants
                     // Build data to be sent.
                     var paramInfo = new SimplisityInfo();
                     paramInfo.TypeCode = "paramInfo";
-                    paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());
+                    
+                    Language = DNNrocketUtils.GetCurrentCulture();
+                    paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());  // pass the current language to the remote server
+                    AddUrlParam("language", DNNrocketUtils.GetCurrentCulture());
+
                     paramInfo.SetXmlProperty("genxml/hidden/remoteparams", GeneralUtils.EnCode(Record.ToXmlItem()));
 
                     var body = "<items>" + paramInfo.ToXmlItem() + "</items>";
 
                     // build weburl
-                    var weburl = $"{RemoteAPI}?cmd={cmd}&systemkey={RemoteSystemKey}";
+                    var weburl = $"{RemoteAPI}?cmd={cmd}&systemkey={RemoteSystemKey}&language=" + DNNrocketUtils.GetCurrentCulture();
 
                     try
                     {
@@ -238,6 +242,11 @@ namespace DNNrocketAPI.Componants
                 return true;
             }
         }
+        public string Language { get {
+                var rtn = Record.GetXmlProperty("genxml/hidden/language");  // use language if passed form romote source.
+                if (rtn == "") rtn = DNNrocketUtils.GetCurrentCulture(); // no remote langauge, use local culture code
+                return rtn; 
+            } private set { Record.SetXmlProperty("genxml/hidden/language", value); } }
         public string Name { get { return Record.GetXmlProperty("genxml/hidden/name");  } set { Record.SetXmlProperty("genxml/hidden/name", value); } }
         public int ModuleId { get { return Record.ModuleId; } private set { Record.ModuleId = value; } }
         public string SystemKey { get { return Record.GetXmlProperty("genxml/hidden/systemkey"); } set { Record.SetXmlProperty("genxml/hidden/systemkey", value); } }

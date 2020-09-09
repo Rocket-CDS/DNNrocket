@@ -71,6 +71,7 @@ namespace Simplisity
         public string SearchText { get { return Info.GetXmlProperty("r/searchtext"); } set { Info.SetXmlProperty("r/searchtext", value.ToString()); } }
         public string BrowserSessionId { get; set; }
         public string BrowserId { get; set; }
+        public string Language { get { return Info.GetXmlProperty("r/language"); } set { Info.SetXmlProperty("r/language", value.ToString()); } }
 
         #endregion
 
