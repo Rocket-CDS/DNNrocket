@@ -159,6 +159,9 @@
   <data name="remoteheadertemplate.Text" xml:space="preserve">
     <value>Remote Header Template</value>
   </data>
+  <data name="remotekey.Help" xml:space="preserve">
+    <value>Remote Key is passed to the remote engine to access a particular set of data.</value>
+  </data>
   <data name="remotekey.Text" xml:space="preserve">
     <value>Remote Key</value>
   </data>
@@ -179,5 +182,14 @@
   </data>
   <data name="securitykey.Text" xml:space="preserve">
     <value>Remote Security Key</value>
+  </data>
+  <data name="urlkey.Help" xml:space="preserve">
+    <value>The URL Key is taken from the URL paramater matching this parameter key.  The value will be placed into the Remote Key.  This offers the ability to access data via a url parameter.</value>
+  </data>
+  <data name="urlkey.Text" xml:space="preserve">
+    <value>URL Key</value>
+  </data>
+  <data name="urlkeyactive.Text" xml:space="preserve">
+    <value>Activate URL Key</value>
   </data>
 </root>

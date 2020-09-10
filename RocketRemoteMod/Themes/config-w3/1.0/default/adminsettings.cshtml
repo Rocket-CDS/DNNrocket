@@ -75,6 +75,25 @@
     </div>
     <div class="w3-row w3-padding">
         <div class="w3-col m6">
+            <div class="w3-row">
+                <div class="w3-half w3-padding" style="">
+                    @CheckBox(info, "genxml/hidden/urlkeyactive", "", "class='w3-check' ", false)
+                    <label>@ResourceKey("RRM.urlkeyactive")</label>
+                </div>
+                <div class="w3-half">
+                    <label>@ResourceKey("RRM.urlkey")</label>
+                    @TextBox(info, "genxml/hidden/urlkey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "key", false)
+                </div>
+            </div>
+        </div>
+        <div class="w3-col m6 w3-padding">
+            <i>
+                @ResourceKey("RRM.urlkey", "", "Help")
+            </i>
+        </div>
+    </div>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m6">
             <label>@ResourceKey("RRM.appthemefolder")</label>
             @TextBox(info, "genxml/hidden/appthemefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
         </div>

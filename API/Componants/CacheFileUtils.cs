@@ -16,12 +16,12 @@ namespace DNNrocketAPI.Componants
 
         #region "cache"
 
-        public static string GetCache(string cacheKey, string groupid = "")
+        public static string GetCache(string cacheKey)
         {
             var cacheData = (string)CacheUtilsDNN.GetCache(cacheKey);
             if (cacheData == null)
             {
-                var cacheFile = GetMd5Hash(cacheKey + "_groupid:" + groupid);
+                var cacheFile = GetMd5Hash(cacheKey);
                 var cacheDataStr = FileUtils.ReadFile(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile);
                 if (String.IsNullOrEmpty(cacheDataStr)) return "";
                 return cacheDataStr;

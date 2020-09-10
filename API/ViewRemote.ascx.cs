@@ -52,7 +52,7 @@ namespace DNNrocketAPI
         private SimplisityInfo _systemInfo;
         private DNNrocketController _objCtrl;
         private bool _hasEditAccess;
-
+        private string _paramString;
         protected override void OnInit(EventArgs e)
         {
             try
@@ -82,12 +82,14 @@ namespace DNNrocketAPI
 
 
                 // add parameters remoteParams  (do here, so it appears in header call)
+                _paramString = "";
                 _remoteParams.RemoveAllUrlParam(); // remove any existing url params.
                 foreach (String key in Request.QueryString.AllKeys)
                 {
                     if (key != null) // test for null, but should not happen.   
                     {
                         _remoteParams.AddUrlParam(key, Request.QueryString[key]);
+                        _paramString += key + "=" + Request.QueryString[key]; // for cacheKey
                     }
                 }
                 // get all form data (drop the ones we already processed) 
@@ -101,22 +103,26 @@ namespace DNNrocketAPI
                 }
 
 
-                if (!this.Page.Items.Contains("dnnrocket_remotepageheader") || _remoteParams.CacheDisbaled) // flag to insure we only inject once for page load.
+                if (!this.Page.Items.Contains("dnnrocket_remotepageheader")) // flag to insure we only inject once for page load.
                 {
-                    Page.Items.Add("dnnrocket_remotepageheader", true);
                     var cachekey = TabId + ".remotepageheader.cshtml";
-                    string cacheHead = (string)CacheFileUtils.GetCache(cachekey, "remotepageheader");
+                    string cacheHead = (string)CacheFileUtils.GetCache(cachekey);
                     if (String.IsNullOrEmpty(cacheHead) || _remoteParams.CacheDisbaled)
                     {
+                        var appList = new List<string>();
                         cacheHead = ""; // clear so if we rebuild, we don;t use the cached data
                         var modulesOnPage = DNNrocketUtils.GetAllModulesOnPage(TabId);
                         foreach (var modId in modulesOnPage)
                         {
                             var remoteParamsMod = new RemoteLimpet(modId);
-                            var strOut = remoteParamsMod.headerAPI();
-                            if (strOut != "") cacheHead += " " + strOut;
+                            var appcheck = remoteParamsMod.AppThemeFolder + "*" + remoteParamsMod.AppThemeVersion + "*" + remoteParamsMod.EngineURL;
+                            if (!appList.Contains(appcheck))
+                            {
+                                var strOut = remoteParamsMod.headerAPI();
+                                if (strOut != "") cacheHead += " " + strOut;
+                                appList.Add(appcheck);
+                            }
                         }
-
                         CacheFileUtils.SetCache(cachekey, cacheHead);
                         PageIncludes.IncludeTextInHeader(Page, cacheHead);
                     }
@@ -124,9 +130,7 @@ namespace DNNrocketAPI
                     {
                         PageIncludes.IncludeTextInHeader(Page, cacheHead);
                     }
-
-
-
+                    Page.Items.Add("dnnrocket_remotepageheader", true);
                 }
             }
             catch (Exception ex)
@@ -162,53 +166,17 @@ namespace DNNrocketAPI
 
         protected override void OnPreRender(EventArgs e)
         {
-            var paramInfo = new SimplisityInfo();
-            paramInfo.PortalId = PortalSettings.Current.PortalId;
-            paramInfo.ModuleId = ModuleId;
-            paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
-            paramInfo.SetXmlProperty("genxml/hidden/tabid", TabId.ToString());
-            paramInfo.SetXmlProperty("genxml/hidden/systemkey", _systemkey);
-
-
-            // add parameters to postInfo and cachekey
-            var paramString = "";
-            foreach (String key in Request.QueryString.AllKeys)
-            {
-                if (key != null) // test for null, but should not happen.   
-                {
-                    paramString += key + "=" + Request.QueryString[key];
-                    // we need this if we need to process url parmas on the APInterface.  In the cshtml we can use (Model.GetUrlParam("????"))
-                    paramInfo.SetXmlProperty("genxml/urlparams/" + key.Replace("_", "-"), Request.QueryString[key]);
-                }
-            }
-
             var strOut = "";
             var systemData = new SystemLimpet(_systemInfo);
             var cacheOutPut = "";
-            var cacheKey = _remoteParams.RemoteTemplate + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + _hasEditAccess;
+            var cacheKey = _remoteParams.RemoteTemplate + ModuleId + DNNrocketUtils.GetCurrentCulture() + _paramString + DNNrocketUtils.GetCurrentCulture() + _hasEditAccess;
             var model = new SimplisityRazor();
             model.ModuleId = ModuleId;
             model.TabId = TabId;
             if (_remoteParams.CacheEnabled && systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey);
             if (String.IsNullOrEmpty(cacheOutPut))
             {
-
-                if (_hasEditAccess)
-                {
-                    model.SetSetting("editiconcolor", systemData.GetSetting("editiconcolor"));
-                    model.SetSetting("editicontextcolor", systemData.GetSetting("editicontextcolor"));
-                    strOut += "<div id='rocketcontentwrapper" + ModuleId + "' class=''>";
-                    var razorTempl = RenderRazorUtils.GetRazorTemplateData("viewinjecticons.cshtml", _templateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                    strOut += RenderRazorUtils.RazorRender(model, razorTempl, true);
-                }
-
                 strOut += _remoteParams.htmlAPI();
-
-                if (_hasEditAccess)
-                {
-                    strOut += "</div>";
-                }
-
                 CacheFileUtils.SetCache(cacheKey, strOut);
             }
             else
@@ -245,29 +213,12 @@ namespace DNNrocketAPI
                 var actions = new ModuleActionCollection();
                 if (_systemData.Exists) // might be null of initialization
                 {
-                    var adminFilePath = _systemData.SystemMapPath.TrimEnd('\\') + "\\admin.html";
-                    if (File.Exists(adminFilePath))
+                    var adminurl = "/DesktopModules/DNNrocket/RocketRemoteMod/admin.html?moduleid=[moduleid]&tabid=[tabid]";
+                    adminurl = adminurl.ToLower().Replace("[moduleid]", ModuleId.ToString());
+                    adminurl = adminurl.ToLower().Replace("[tabid]", TabId.ToString());
+                    if (adminurl != "")
                     {
-                        var adminurl = _systemData.AdminUrl;
-                        adminurl = adminurl.ToLower().Replace("[moduleid]", ModuleId.ToString());
-                        adminurl = adminurl.ToLower().Replace("[tabid]", TabId.ToString());
-                        if (adminurl != "")
-                        {
-                            actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmin"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
-                            if (adminurl.Contains("?"))
-                                adminurl += "&newpage=1";
-                            else
-                                adminurl += "?newpage=1";
-                            actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmintab"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, true);
-                        }
-                    }
-
-                    var module = ModuleController.Instance.GetModule(ModuleId,TabId,false);
-                    var adminsettingsFilePath = _systemData.SystemMapPath.TrimEnd('\\')  + "\\" + _interfacekey + ".html";
-                    if (File.Exists(adminsettingsFilePath))
-                    {
-                        var adminsettingsurl = _systemData.SystemRelPath.TrimEnd('\\') + "\\" + _interfacekey + ".html?moduleid=" + ModuleId + "&tabid=" + TabId;
-                        actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.settings"), "", "", "icon_dashboard_16px.gif", adminsettingsurl, false, SecurityAccessLevel.Edit, true, true);
+                        actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.settings"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
                     }
                 }
                 return actions;

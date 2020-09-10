@@ -196,7 +196,7 @@ namespace DNNrocketAPI
             var model = new SimplisityRazor();
             model.ModuleId = ModuleId;
             model.TabId = TabId;
-            if (_moduleParams.CacheEnabled && systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey, _moduleParams.CacheGroupId);
+            if (_moduleParams.CacheEnabled && systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey);
             if (String.IsNullOrEmpty(cacheOutPut))
             {
 
@@ -289,14 +289,6 @@ namespace DNNrocketAPI
                     if (adminurl != "")
                     {
                         actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmin"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
-                        if (adminurl.Contains("?"))
-                        {
-                            adminurl += "&newpage=1";
-                        }
-                        else
-                        {
-                            adminurl += "?newpage=1";
-                        }
                         actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.rocketadmintab"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, true);
                     }
                 }

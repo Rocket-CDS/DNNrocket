@@ -1081,7 +1081,7 @@ namespace DNNrocketAPI.Componants
             page.Items.Add("dnnrocket_pageheader", true);
             var cachekey = tabId + ".pageheader.cshtml";
             string cacheHead = null;
-            cacheHead = (string)CacheFileUtils.GetCache(cachekey, "pageheader");
+            cacheHead = (string)CacheFileUtils.GetCache(cachekey);
             if (String.IsNullOrEmpty(cacheHead))
             {
                 var fileList = new List<string>();
