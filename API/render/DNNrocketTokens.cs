@@ -33,8 +33,14 @@ namespace DNNrocketAPI.render
         }
         return DropDownList(info, xpath, dataLangKeys, attributes, defaultValue, localized, row, listname);
     }
+        public IEncodedString DropDownCurrencyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+        {
+            var dataLangKeys = new Dictionary<string, string>();
+            var enabledCurrency = DNNrocketUtils.GetCurrencyList();
+            return DropDownList(info, xpath, enabledCurrency, attributes, defaultValue, localized, row, listname);
+        }
 
-    public IEncodedString DropDownSystemKeyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+        public IEncodedString DropDownSystemKeyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             var dataSytemKeys = new Dictionary<string, string>();
 

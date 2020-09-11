@@ -262,6 +262,10 @@ namespace Simplisity
                         return num.ToString(CultureInfo.InvariantCulture);
                     }
                     return "0";
+                case TypeCode.Int32:
+                    inpData = Regex.Replace(inpData, @"[^\d]+", "");
+                    if (inpData.Length == 0) return "0";
+                    return inpData;
                 case TypeCode.DateTime:
                     if (IsDate(inpData, editlang))
                     {

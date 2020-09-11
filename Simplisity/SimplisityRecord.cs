@@ -402,7 +402,10 @@ namespace Simplisity
         {
             SetXmlProperty(xpath, value, System.TypeCode.Double, false);
         }
-
+        public void SetXmlPropertyInt(string xpath, string value)
+        {
+            SetXmlProperty(xpath, value, System.TypeCode.Int32, false);
+        }
         public void SetXmlProperty(string xpath, string value, System.TypeCode DataTyp)
         {
             SetXmlProperty(xpath, value, DataTyp, true, false, false);
@@ -446,6 +449,11 @@ namespace Simplisity
                         Value = "";
                     }
                 }
+                if (DataTyp == System.TypeCode.Int32)
+                {
+                     Value = GeneralUtils.FormatToSave(Value, System.TypeCode.Int32);
+                }
+
                 try
                 {
                     SetGenXmlValue(xpath, Value, cdata, ignoresecurityfilter, filterlinks);
@@ -454,6 +462,7 @@ namespace Simplisity
                     if (DataTyp == System.TypeCode.DateTime) SetGenXmlValue(xpath + "/@datatype", "date", cdata);
                     if (DataTyp == System.TypeCode.Double) SetGenXmlValue(xpath + "/@datatype", "double", cdata);
                     if (DataTyp == System.TypeCode.Decimal) SetGenXmlValue(xpath + "/@datatype", "decimal", cdata);
+                    if (DataTyp == System.TypeCode.Int32) SetGenXmlValue(xpath + "/@datatype", "int", cdata);
                 }
                 catch
                 {

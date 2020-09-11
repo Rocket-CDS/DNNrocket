@@ -257,6 +257,21 @@ namespace DNNrocketAPI.Componants
             }
             return rtnList;
         }
+        public static Dictionary<string, string> GetCurrencyList(int portalId = -1)
+        {
+            var rtnList = new Dictionary<string, string>();
+            if (portalId == -1 && PortalSettings.Current != null) portalId = PortalSettings.Current.PortalId;
+            if (portalId != -1)
+            {
+                var lc = new ListController();
+                var lCurrency = lc.GetListEntryInfoItems("Currency");
+                foreach (ListEntryInfo lei in lCurrency)
+                {
+                    if (!rtnList.ContainsKey(lei.Value)) rtnList.Add(lei.Value, lei.Text);
+                }
+            }
+            return rtnList;
+        }
 
         public static List<SimplisityInfo> GetAllCultureCodeList()
         {
