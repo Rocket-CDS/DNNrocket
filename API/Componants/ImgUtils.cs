@@ -425,103 +425,121 @@ namespace DNNrocketAPI.Componants
         {
             Bitmap newImage = null;
 
-            if (System.IO.File.Exists(strFilepath))
+            try
             {
-                try
+                Bitmap sourceImage = null;
+                if (GeneralUtils.IsAbsoluteUrl(strFilepath))
                 {
-                    using (var sourceImage = new Bitmap(strFilepath))
-                    {
-
-                        var intSourceWidth = sourceImage.Width;
-                        var intSourceHeight = sourceImage.Height;
-
-                        //check if we dynamically choose Height or Width
-                        if (intMaxHeight == -1)
-                        {
-                            intMaxHeight = 0;
-                            if (intSourceWidth < intSourceHeight)
-                            {
-                                intMaxHeight = intMaxWidth;
-                                intMaxWidth = 0;
-                            }
-                        }
-
-                        if ((intMaxWidth > 0 & intMaxWidth < intSourceWidth) | (intMaxHeight > 0 & intMaxHeight < intSourceHeight))
-                        {
-
-                            // Resize image:
-                            double aspect = sourceImage.PhysicalDimension.Width / sourceImage.PhysicalDimension.Height;
-
-                            Bitmap cropImage;
-
-                            int newWidth;
-                            int newHeight;
-
-                            if (intMaxWidth == 0)
-                            {
-                                intMaxWidth = Convert.ToInt32(intMaxHeight * aspect);
-                            }
-                            if (intMaxHeight == 0)
-                            {
-                                intMaxHeight = Convert.ToInt32(intMaxWidth / aspect);
-                            }
-
-                            if (sourceImage.PhysicalDimension.Height < sourceImage.PhysicalDimension.Width)
-                            {
-                                newWidth = Convert.ToInt32(intMaxHeight * aspect);
-                                newHeight = intMaxHeight;
-                            }
-                            else
-                            {
-                                newWidth = intMaxWidth;
-                                newHeight = Convert.ToInt32(intMaxWidth / aspect);
-                            }
-
-                            if (newWidth < intMaxWidth)
-                            {
-                                newWidth = intMaxWidth;
-                                newHeight = Convert.ToInt32(intMaxWidth / aspect);
-                            }
-                            if (newHeight < intMaxHeight)
-                            {
-                                newHeight = intMaxHeight;
-                                newWidth = Convert.ToInt32(intMaxHeight * aspect);
-                            }
-
-                            cropImage = new Bitmap(newWidth, newHeight);
-                            var gc = Graphics.FromImage(cropImage);
-                            gc.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                            gc.DrawImage(sourceImage, 0, 0, newWidth, newHeight);
-
-                            var destinationRec = new Rectangle(0, 0, intMaxWidth, intMaxHeight);
-                            newImage = new Bitmap(intMaxWidth, intMaxHeight);
-                            var g = Graphics.FromImage(newImage);
-                            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                            g.DrawImage(cropImage, destinationRec, Convert.ToInt32((cropImage.Width - intMaxWidth) / 2), Convert.ToInt32((cropImage.Height - intMaxHeight) / 2), intMaxWidth, intMaxHeight, GraphicsUnit.Pixel);
-                        }
-                        else
-                        {
-                            var cloneRect = new Rectangle(0, 0, sourceImage.Width, sourceImage.Height);
-                            var format = sourceImage.PixelFormat;
-                            newImage = sourceImage.Clone(cloneRect, format);
-                            newImage.SetResolution(72, 72);
-                        }
-
-                        sourceImage.Dispose();
-                    }
+                    System.Net.WebRequest request = System.Net.WebRequest.Create(strFilepath);
+                    System.Net.WebResponse response = request.GetResponse();
+                    System.IO.Stream responseStream = response.GetResponseStream();
+                    sourceImage = new Bitmap(responseStream);
                 }
-                catch (Exception ex)
+                else
                 {
-                    // invalid bitmap file
-                    LogUtils.LogDebug("Invalid BitMap File: " + strFilepath + "  : " + ex.ToString());
-                    LogUtils.LogException(ex);
+                    sourceImage = new Bitmap(strFilepath);
                 }
+                using (sourceImage)
+                {
+                    newImage = ProcessBitMap(sourceImage, intMaxWidth, intMaxHeight);
+                    sourceImage.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                // invalid bitmap file
+                LogUtils.LogDebug("Invalid BitMap File: " + strFilepath + "  : " + ex.ToString());
+                LogUtils.LogException(ex);
             }
             return newImage;
 
         }
+   
+        public static Bitmap ProcessBitMap(Bitmap sourceImage, int intMaxWidth, int intMaxHeight)
+        {
+
+            Bitmap newImage = null;
+            var intSourceWidth = sourceImage.Width;
+                var intSourceHeight = sourceImage.Height;
+
+                //check if we dynamically choose Height or Width
+                if (intMaxHeight == -1)
+                {
+                    intMaxHeight = 0;
+                    if (intSourceWidth < intSourceHeight)
+                    {
+                        intMaxHeight = intMaxWidth;
+                        intMaxWidth = 0;
+                    }
+                }
+
+                if ((intMaxWidth > 0 & intMaxWidth < intSourceWidth) | (intMaxHeight > 0 & intMaxHeight < intSourceHeight))
+                {
+
+                    // Resize image:
+                    double aspect = sourceImage.PhysicalDimension.Width / sourceImage.PhysicalDimension.Height;
+
+                    Bitmap cropImage;
+
+                    int newWidth;
+                    int newHeight;
+
+                    if (intMaxWidth == 0)
+                    {
+                        intMaxWidth = Convert.ToInt32(intMaxHeight * aspect);
+                    }
+                    if (intMaxHeight == 0)
+                    {
+                        intMaxHeight = Convert.ToInt32(intMaxWidth / aspect);
+                    }
+
+                    if (sourceImage.PhysicalDimension.Height < sourceImage.PhysicalDimension.Width)
+                    {
+                        newWidth = Convert.ToInt32(intMaxHeight * aspect);
+                        newHeight = intMaxHeight;
+                    }
+                    else
+                    {
+                        newWidth = intMaxWidth;
+                        newHeight = Convert.ToInt32(intMaxWidth / aspect);
+                    }
+
+                    if (newWidth < intMaxWidth)
+                    {
+                        newWidth = intMaxWidth;
+                        newHeight = Convert.ToInt32(intMaxWidth / aspect);
+                    }
+                    if (newHeight < intMaxHeight)
+                    {
+                        newHeight = intMaxHeight;
+                        newWidth = Convert.ToInt32(intMaxHeight * aspect);
+                    }
+
+                    cropImage = new Bitmap(newWidth, newHeight);
+                    var gc = Graphics.FromImage(cropImage);
+                    gc.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    gc.DrawImage(sourceImage, 0, 0, newWidth, newHeight);
+
+                    var destinationRec = new Rectangle(0, 0, intMaxWidth, intMaxHeight);
+                    newImage = new Bitmap(intMaxWidth, intMaxHeight);
+                    var g = Graphics.FromImage(newImage);
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    g.DrawImage(cropImage, destinationRec, Convert.ToInt32((cropImage.Width - intMaxWidth) / 2), Convert.ToInt32((cropImage.Height - intMaxHeight) / 2), intMaxWidth, intMaxHeight, GraphicsUnit.Pixel);
+                }
+                else
+                {
+                    var cloneRect = new Rectangle(0, 0, sourceImage.Width, sourceImage.Height);
+                    var format = sourceImage.PixelFormat;
+                    newImage = sourceImage.Clone(cloneRect, format);
+                    newImage.SetResolution(72, 72);
+                }
+
+            return newImage;
+        }
+
     }
 
+   
 
     public class ImgWaterMark : IDisposable
     {

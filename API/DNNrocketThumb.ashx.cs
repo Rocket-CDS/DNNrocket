@@ -24,7 +24,7 @@ namespace DNNrocketAPI.Componants
 
             if (GeneralUtils.IsNumeric(w) && GeneralUtils.IsNumeric(h))
             {
-                src = HttpContext.Current.Server.MapPath(src);
+                if (!GeneralUtils.IsAbsoluteUrl(src)) src = HttpContext.Current.Server.MapPath(src);
 
                 var strCacheKey = context.Request.Url.Host.ToLower() + "*" + src + "*" + DNNrocketUtils.GetCurrentCulture() + "*img:" + w + "*" + h + "*";
                 var newImage = (Bitmap) CacheUtils.GetCache(strCacheKey, "DNNrocketThumb");

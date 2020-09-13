@@ -54,6 +54,11 @@ namespace Simplisity
 
     public class GeneralUtils
     {
+        public static bool IsAbsoluteUrl(string url)
+        {
+            Uri result;
+            return Uri.TryCreate(url, UriKind.Absolute, out result);
+        }
         public static string RemoveDiacritics(string text)
         {
             var normalizedString = text.Normalize(NormalizationForm.FormD);

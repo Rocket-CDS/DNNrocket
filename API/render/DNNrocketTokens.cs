@@ -109,7 +109,15 @@ namespace DNNrocketAPI.render
         }
         public IEncodedString ButtonText(ButtonTypes buttontype, String lang = "")
         {
-            return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang, "Icon") + "&nbsp;" + ResourceKeyString("DNNrocket." + buttontype, lang));
+            if (buttontype == ButtonTypes.next)
+            {
+                return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang) + "&nbsp;" + ResourceKeyString("DNNrocket." + buttontype, lang, "Icon"));
+            }
+            else
+            {
+                return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang, "Icon") + "&nbsp;" + ResourceKeyString("DNNrocket." + buttontype, lang));
+
+            }
         }
         public IEncodedString ButtonIcon(ButtonTypes buttontype, String lang = "")
         {
@@ -220,7 +228,7 @@ namespace DNNrocketAPI.render
         }
         public IEncodedString ThumbnailImageWebsiteDomainUrl(string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
         {
-            return ThumbnailImageWebsiteDomainUrl(DNNrocketUtils.GetDefaultWebsiteDomainUrl(), url, width, height, extraurlparams, pngImage);
+            return ThumbnailImageWebsiteDomainUrl(PortalUtils.DefaultPortalAlias(), url, width, height, extraurlparams, pngImage);
         }
 
         public IEncodedString ThumbnailImageWebsiteDomainUrl(string websiteDomainUrl, string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
@@ -228,13 +236,14 @@ namespace DNNrocketAPI.render
             var pngType = "";
             if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
             if (pngImage && url.ToLower().EndsWith(".png")) pngType = "&imgtype=png";
+            if (!websiteDomainUrl.StartsWith("http")) websiteDomainUrl = "//" + websiteDomainUrl;
             if (width > 0 || height > 0)
             {
-                url = "//" + websiteDomainUrl + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
+                url = websiteDomainUrl + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
             }
             else
             {
-                url = "//" + websiteDomainUrl + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
+                url = websiteDomainUrl + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
             }
             return new RawString(url);
         }

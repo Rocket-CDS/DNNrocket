@@ -16,7 +16,7 @@ namespace DNNrocketAPI.Componants
         public const string Premium = "Premium";
     }
 
-    public enum ButtonTypes { add, admin, back, cancel, close, create, delete, download, edit, export, next, ok, print, refresh, remove, reset, save, search, cancelsearch, setup, send, undo, upload, use };
+    public enum ButtonTypes { add, admin, back, cancel, close, create, delete, download, edit, export, next, ok, print, refresh, remove, reset, save, search, cancelsearch, setup, send, undo, upload, use, previous };
 
 
     public class ValuePair

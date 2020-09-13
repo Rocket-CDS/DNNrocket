@@ -328,7 +328,7 @@
     <value>Next</value>
   </data>
   <data name="next.Icon" xml:space="preserve">
-    <value>&lt;i  title="Next" class="fa fas  fa-arrow-alt-circle-right fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i  title="Next" class="fa fas  fa-caret-right fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="delete.Text" xml:space="preserve">
     <value>Delete</value>
@@ -560,5 +560,11 @@
   </data>
   <data name="disactive.Text" xml:space="preserve">
     <value>Disactive</value>
+  </data>
+  <data name="previous.Icon" xml:space="preserve">
+    <value>&lt;i  title="Previous" class="fa fas  fa-caret-left fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="previous.Text" xml:space="preserve">
+    <value>Previous</value>
   </data>
 </root>
