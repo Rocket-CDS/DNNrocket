@@ -12,6 +12,9 @@
     <Reference Include="DNNrocketAPI">
       <HintPath>..\..\..\bin\DNNrocketAPI.dll</HintPath>
     </Reference>
+    <Reference Include="DNNrocketCountry">
+      <HintPath>..\..\..\bin\DNNrocketCountry.dll</HintPath>
+    </Reference>
     <Reference Include="RazorEngine">
       <HintPath>..\..\..\bin\RazorEngine.dll</HintPath>
     </Reference>
