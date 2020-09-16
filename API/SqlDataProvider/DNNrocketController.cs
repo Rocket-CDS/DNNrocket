@@ -686,6 +686,7 @@ namespace DNNrocketAPI
                 info.PortalId = PortalSettings.Current.PortalId;
                 info.ItemID = Update(info, tableName);
             }
+            if (info == null) return null;
             return GetRecord(info.ItemID, tableName);
         }
 
