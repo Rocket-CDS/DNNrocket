@@ -130,7 +130,7 @@
     <value>Delete ?</value>
   </data>
   <data name="delete.Icon" xml:space="preserve">
-    <value>&lt;i title="Delete" class="fa fas fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+    <value>&lt;i title="Delete" class="fa far fa-trash-alt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="edit.Icon" xml:space="preserve">
     <value>&lt;i title="Edit" class="fa fas fa-edit fa-fw fa-lg"&gt;&lt;/i&gt;</value>

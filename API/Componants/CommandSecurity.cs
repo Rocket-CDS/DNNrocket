@@ -103,6 +103,7 @@ namespace DNNrocketAPI.Componants
             {
                 _commandSecurity.AddOrUpdate(commandKey, requiresSecurity, (key, existingVal) => {return existingVal;});
             }
+            CommandCount = _commandSecurity.Count;
         }
 
         public void RemoveCommand(string commandKey)
@@ -157,7 +158,7 @@ namespace DNNrocketAPI.Componants
         {
            try
             {
-                if (_tabid == -1 && _moduleid == -1) return true;
+                if (_tabid <= 0 && _moduleid <= 0) return true;
                 if (_tabid == 0) return false;
                 if (_moduleid == 0) return false;
                 var moduleInfo = ModuleController.Instance.GetModule(_moduleid, _tabid, false);
@@ -175,6 +176,6 @@ namespace DNNrocketAPI.Componants
             return false;
         }
 
-
+        public int CommandCount { set; get; }
     }
 }
