@@ -436,6 +436,11 @@ namespace DNNrocketAPI.Componants
             }
             return false;
         }
+        public static Boolean IsAdministrator()
+        {
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators)) return true;
+            return false;
+        }
 
         public static UserInfo GetValidUser(int PortalId, string username, string password)
         {

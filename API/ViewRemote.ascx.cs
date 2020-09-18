@@ -125,6 +125,7 @@ namespace DNNrocketAPI
                         }
                         CacheFileUtils.SetCache(cachekey, cacheHead);
                         PageIncludes.IncludeTextInHeader(Page, cacheHead);
+
                     }
                     else
                     {

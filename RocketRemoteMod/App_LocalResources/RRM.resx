@@ -141,6 +141,12 @@
   <data name="engineurl.Text" xml:space="preserve">
     <value>Engine Domain URL</value>
   </data>
+  <data name="remoteadminrelpath.Help" xml:space="preserve">
+    <value>If entered an icon will appear on the module for users in the "RemoteAdmin" role,  this icon will allow the user to be redirected to the admin website.  Users redirected will need to login to the admin system.</value>
+  </data>
+  <data name="remoteadminrelpath.Text" xml:space="preserve">
+    <value>Remote Admin Rel Path</value>
+  </data>
   <data name="remotecmd.Help" xml:space="preserve">
     <value>Remote Command is the command that will be run on first load.</value>
   </data>

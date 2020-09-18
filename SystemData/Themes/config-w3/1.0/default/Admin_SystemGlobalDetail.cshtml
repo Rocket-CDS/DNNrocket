@@ -11,9 +11,9 @@
     var info = systemGlobalData.Info;
 }
 
-<div class="w3-row w3-padding">
-    <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_globalsave" s-post="#globalsettings">@ButtonText(ButtonTypes.save)</div>    
-</div>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_globalsave" s-post="#globalsettings">@ButtonText(ButtonTypes.save)</div>
+    </div>
 
 <div id="globalsettings" class="">
 
@@ -71,6 +71,24 @@
                     }
                     <label class="">@ResourceKey("DNNrocket.enabled"):</label>
                     @if (systemGlobalData.SchedulerIsEnabled)
+                    {
+                        <i class="w3-text-green fas fa-check-circle fa-2x"></i>
+                    }
+                    else
+                    {
+                        <i class="w3-text-red fas fa-times-circle fa-2x"></i>
+                    }
+                </div>
+            </div>
+
+            <div class="w3-row-padding w3-margin-bottom">
+                <div class="w3-half">
+                    <label class=""><b>@ResourceKey("system.imagetype")</b></label>
+                    <div class="w3-col m4 w3-right w3-button w3-blue w3-padding-8 simplisity_confirmclick" s-confirm="Install Default Roles?" s-cmd="systemapi_defaultroles" s-post="#globalsettings">Create Default Roles</div>
+                </div>
+                <div class="w3-half">
+                    <label class="">@ResourceKey("DNNrocket.installed"):</label>
+                    @if (DNNrocketUtils.DefaultRoleExist(PortalUtils.GetCurrentPortalId()))
                     {
                         <i class="w3-text-green fas fa-check-circle fa-2x"></i>
                     }

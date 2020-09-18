@@ -149,6 +149,12 @@ namespace DNNrocket.System
                         SystemGlobalSave();
                         strOut = SystemGlobalDetail();
                         break;
+                    case "systemapi_defaultroles":
+                        DNNrocketUtils.CreateDefaultRocketRoles(PortalUtils.GetCurrentPortalId());
+                        strOut = SystemGlobalDetail();
+                        break;
+
+
 
                     case "systemapi_licenselist":
                         strOut = GetLicenseList();

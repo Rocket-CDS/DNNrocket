@@ -14,6 +14,7 @@ namespace DNNrocketAPI.Componants
         public const string Editor = "Editor";
         public const string ClientEditor = "ClientEditor";
         public const string Premium = "Premium";
+        public const string RemoteAdmin = "RemoteAdmin";
     }
 
     public enum ButtonTypes { add, admin, back, cancel, close, create, delete, download, edit, export, next, ok, print, refresh, remove, reset, save, search, cancelsearch, setup, send, undo, upload, use, previous };

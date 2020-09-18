@@ -41,13 +41,24 @@
         </div>
     </div>
     <div class="w3-row w3-padding">
-        <div class="w3-col m12">
+        <div class="w3-col m6">
             <label>@ResourceKey("RRM.engineurl")</label>
             @TextBox(info, "genxml/hidden/engineurl", "class='w3-input w3-border' maxlength='1024' autocomplete='off'", "https://<domain>", false)
         </div>
-        <div class="w3-col m12 w3-padding">
+        <div class="w3-col m6 w3-padding">
             <i>
                 @ResourceKey("RRM.engineurl", "", "Help")
+            </i>
+        </div>
+    </div>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m6">
+            <label>@ResourceKey("RRM.remoteadminrelpath")</label>
+            @TextBox(info, "genxml/hidden/remoteadminrelpath", "class='w3-input w3-border' maxlength='1024' autocomplete='off'", "", false)
+        </div>
+        <div class="w3-col m6 w3-padding">
+            <i>
+                @ResourceKey("RRM.remoteadminrelpath", "", "Help")
             </i>
         </div>
     </div>

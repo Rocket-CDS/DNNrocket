@@ -430,6 +430,13 @@ namespace DNNrocketAPI.Componants
             CreateRole(portalId, DNNrocketRoles.Manager);
             CreateRole(portalId, DNNrocketRoles.Premium);
             CreateRole(portalId, DNNrocketRoles.Administrators);
+            CreateRole(portalId, DNNrocketRoles.RemoteAdmin);
+        }
+        public static bool DefaultRoleExist(int portalId)
+        {
+            var role = RoleController.Instance.GetRoleByName(portalId, DNNrocketRoles.RemoteAdmin); // use RemoteAdmin, less likely to be created by another module.
+            if (role == null) return false;
+            return true;
         }
         public static void CreateRole(int portalId, string roleName, string description = "", float serviceFee = 0, int billingPeriod = 0, string billingFrequency = "M", float trialFee = 0, int trialPeriod = 0, string trialFrequency = "N", bool isPublic = false, bool isAuto = false)
         {
