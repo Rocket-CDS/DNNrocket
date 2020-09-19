@@ -134,6 +134,16 @@ namespace DNNrocketAPI.Componants
             }
             set {Info.SetXmlProperty("genxml/textbox/databasetable", value.ToString());}
         }
+        public string Name
+        {
+            get{ return Info.GetXmlProperty("genxml/textbox/interfacename");}
+        }
+        public string Help
+        {
+            get { return Info.GetXmlProperty("genxml/textbox/help"); }
+        }
+
+
         public bool SecurityCheckUser(int portalId, int userid)
         {
             var userInfo = UserController.Instance.GetUserById(portalId, userid);

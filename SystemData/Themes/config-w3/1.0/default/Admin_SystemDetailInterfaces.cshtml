@@ -12,148 +12,174 @@
 
 
 
-<div class="w3-container">
-    <div class="w3-margin">
-        <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addinterface" s-fields='{"selecteditemid":"@sInfo.ItemID","theme":"config-w3","template":"Admin_SystemDetailInterfaces.cshtml"}' s-return="#Interface">@ButtonText(ButtonTypes.add)</a>
-        <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-removelist=".interfacedata" s-recylebin="interfacesbin" s-return="#plugininterfaces" style="display: none;">@ButtonText(ButtonTypes.undo)</a>
-    </div>
+    <div class="w3-container">
+        <div class="w3-margin">
+            <a class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="systemapi_addinterface" s-fields='{"selecteditemid":"@sInfo.ItemID","theme":"config-w3","template":"Admin_SystemDetailInterfaces.cshtml"}' s-return="#Interface">@ButtonText(ButtonTypes.add)</a>
+            <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-removelist=".interfacedata" s-recylebin="interfacesbin" s-return="#plugininterfaces" style="display: none;">@ButtonText(ButtonTypes.undo)</a>
+        </div>
 
-    <ul id="plugininterfaces" class="w3-ul w3-border">
 
-        @{
-            var lp1 = 0;
-        }
-        @foreach (var i in sInfo.GetList("interfacedata"))
-        {
-            lp1 += 1;
-            <li class="interfacedata w3-display-container">
-                <a href="javascript:void(0)" class="w3-display-topright"><i title="Remove" class="fas fa-arrows "></i></a>
+        <div class="w3-row">
+            <div class=" w3-col m1">
+                &nbsp;
+            </div>
+            <div class=" w3-col m3 w3-padding">
+                <label>Key</label>
+            </div>
+            <div class=" w3-col m3 w3-padding">
+                <label>Name</label>
+            </div>
+            <div class=" w3-col m1 w3-right-align">
+                <label class="">@ResourceKey("system.onmenu")</label>
+            </div>
+            <div class=" w3-col m1 w3-right-align">
+                <label class="">@ResourceKey("DNNrocket.active")</label>
+            </div>
+        </div>
 
-                <div class="w3-row">
+        <ul id="plugininterfaces" class="w3-ul w3-border">
+
+            @{
+                var lp1 = 0;
+            }
+            @foreach (var i in sInfo.GetList("interfacedata"))
+            {
+                lp1 += 1;
+                <li class="interfacedata w3-display-container">
+                    <a href="javascript:void(0)" class="w3-display-topright"><i title="Remove" class="fas fa-arrows "></i></a>
 
                     <div class="w3-row">
-                        <div class=" w3-col m1">
-                            <div class="w3-button showdetail@(lp1)"><i title="Show Detail" class="far fa-window-maximize fa-fw fa-lg"></i></div>
-                            <div class="w3-button  hidedetail@(lp1)" style="display:none;"><i title="Less Detail" class="fas fa-window-maximize fa-fw fa-lg"></i></div>
-                        </div>
-                        <div class=" w3-col m6">
-                            @TextBox(i, "genxml/textbox/interfacekey", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
-                        </div>
-                        <div class=" w3-col m2 w3-right-align">
-                            <label class="">@ResourceKey("system.onmenu")</label>
-                            @CheckBox(i, "genxml/checkbox/onmenu", "", "class='w3-input w3-border'", true, false, lp1)
-                            <label class="">@ResourceKey("DNNrocket.active")</label>
-                            @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border'", true, false, lp1)
-                        </div>
-                        <div class="w3-button w3-right simplisity_removelistitem" s-removelist=".interfacedata" s-recylebin="interfacesbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></div>
-                        <div class="w3-button w3-right getsystemlist" selectedinterfacekey="@i.GetXmlProperty("genxml/textbox/interfacekey")" systemid="@sInfo.ItemID"><i title="Copy" class="far fa-copy fa-fw fa-lg"></i></div>
-                    </div>
 
-                    <div class="w3-row detailrows@(lp1)" style="display:none;">
-                        <div class="w3-col m6">
-
-                            <div class="w3-padding w3-border">
-                                <label class=""><b>@ResourceKey("system.securityaccess")</b></label>
-                                @{
-                                    var rolelist = ResourceKey("system.roles").ToString().Split(',');
-                                    foreach (var r in rolelist)
-                                    {
-                                        <div class="w3-row ">
-                                            <div class="w3-quarter">
-                                                @r
-                                            </div>
-                                            <div class="w3-rest">
-                                                @RadioButtonList(i, "genxml/radio/securityroles" + r.Replace(" ", "").ToLower(), "0,1,2", "None, Allow, Block", "", "0", "", false, lp1)
-                                            </div>
-                                        </div>
-                                    }
-                                }
+                        <div class="w3-row ">
+                            <div class=" w3-col m1">
+                                <div class="w3-button showdetail@(lp1)"><i title="Show Detail" class="far fa-window-maximize fa-fw fa-lg"></i></div>
+                                <div class="w3-button  hidedetail@(lp1)" style="display:none;"><i title="Less Detail" class="fas fa-window-maximize fa-fw fa-lg"></i></div>
                             </div>
+                            <div class=" w3-col m3 w3-padding">
+                                @TextBox(i, "genxml/textbox/interfacekey", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                            </div>
+                            <div class=" w3-col m3 w3-padding">
+                                @TextBox(i, "genxml/textbox/interfacename", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                            </div>
+                            <div class=" w3-col m1 w3-right-align">
+                                @CheckBox(i, "genxml/checkbox/onmenu", "", "class='w3-input w3-border' title='" + ResourceKey("system.onmenu") + "'", true, false, lp1)
+                            </div>
+                            <div class=" w3-col m1 w3-right-align">
+                                @CheckBox(i, "genxml/checkbox/active", "", "class='w3-input w3-border' title='" + ResourceKey("DNNrocket.active") + "'", true, false, lp1)
+                            </div>
+                            <div class="w3-button w3-right simplisity_removelistitem" s-removelist=".interfacedata" s-recylebin="interfacesbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></div>
+                            <div class="w3-button w3-right getsystemlist" selectedinterfacekey="@i.GetXmlProperty("genxml/textbox/interfacekey")" systemid="@sInfo.ItemID"><i title="Copy" class="far fa-copy fa-fw fa-lg"></i></div>
+                        </div>
 
-                            @{
-                                var providertyperef = "";
-                                var providertypelist = "";
-                                var l2 = sInfo.GetList("provtypesdata");
-                                foreach (var g in l2)
-                                {
-                                    providertyperef += g.GetXmlProperty("genxml/textbox/provtypes") + ",";
-                                    providertypelist += g.GetXmlProperty("genxml/textbox/provname") + ",";
-                                }
-                            }
+                        <div class="w3-row detailrows@(lp1)" style="display:none;">
+                            <div class="w3-col m6">
 
-                            @if (providertyperef != "")
-                            {
-                                <div class="w3-padding w3-border w3-margin-top">
-                                    <label class=""><b>@ResourceKey("system.providertype")</b></label>
-                                    @DropDownList(i, "genxml/providertype", "," + providertyperef.TrimEnd(','), "," + providertypelist.TrimEnd(','), "class='w3-input w3-border '", "", false, lp1)
+                                <div class="w3-padding w3-border">
+                                    <label class=""><b>@ResourceKey("system.securityaccess")</b></label>
+                                    @{
+                                        var rolelist = ResourceKey("system.roles").ToString().Split(',');
+                                        foreach (var r in rolelist)
+                                        {
+                                            <div class="w3-row ">
+                                                <div class="w3-quarter">
+                                                    @r
+                                                </div>
+                                                <div class="w3-rest">
+                                                    @RadioButtonList(i, "genxml/radio/securityroles" + r.Replace(" ", "").ToLower(), "0,1,2", "None, Allow, Block", "", "0", "", false, lp1)
+                                                </div>
+                                            </div>
+                                        }
+                                    }
                                 </div>
-                            }
 
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.namespaceclass")</label>
-                                @TextBox(i, "genxml/textbox/namespaceclass", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
-                            </div>
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.providernamespaceclass")</label>
-                                @TextBox(i, "genxml/textbox/providernamespaceclass", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
-                            </div>
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.assembly")</label>
-                                @TextBox(i, "genxml/textbox/assembly", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
-                            </div>
-                        </div>
-                        <div class="w3-col m6">
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.entitytypecode")</label>
-                                @TextBox(i, "genxml/textbox/entitytypecode", "class='w3-input w3-border ' maxlength='250' ", "", false, lp1)
-                            </div>
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.interfaceicon")</label>
-                                @TextBox(i, "genxml/textbox/interfaceicon", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
-                            </div>
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.defaulttheme")</label>
-                                @TextBox(i, "genxml/textbox/defaulttheme", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
-                            </div>
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.themeversion")</label>
-                                @TextBox(i, "genxml/textbox/themeversion", "class='w3-input w3-border' maxlength='250' ", "1.0", false, lp1)
-                            </div>
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.defaulttemplate")</label>
-                                @TextBox(i, "genxml/textbox/defaulttemplate", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
-                            </div>
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.defaultcommand")</label>
-                                @TextBox(i, "genxml/textbox/defaultcommand", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
-                            </div>
-
-                            <div class="w3-padding  w3-col m12">
-                                <label class="">@ResourceKey("system.databasetable")</label>
-                                @TextBox(i, "genxml/textbox/databasetable", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
-                            </div>
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.group")</label>
                                 @{
-                                    var grouplist = "";
-                                    var l = sInfo.GetList("groupsdata");
-                                    foreach (var g in l)
+                                    var providertyperef = "";
+                                    var providertypelist = "";
+                                    var l2 = sInfo.GetList("provtypesdata");
+                                    foreach (var g in l2)
                                     {
-                                        grouplist += "," + g.GetXmlProperty("genxml/textbox/groupref");
+                                        providertyperef += g.GetXmlProperty("genxml/textbox/provtypes") + ",";
+                                        providertypelist += g.GetXmlProperty("genxml/textbox/provname") + ",";
                                     }
                                 }
-                                @DropDownList(i, "genxml/dropdownlist/group", grouplist, grouplist, "class='w3-input w3-border'", "", false, lp1)
-                            </div>
-                            <div class="w3-padding w3-col m12">
-                                <label class="">@ResourceKey("system.controlrelpath")</label>
-                                @TextBox(i, "genxml/textbox/relpath", "class='w3-input w3-border' maxlength='350'")
-                            </div>
 
+                                @if (providertyperef != "")
+                                {
+                                    <div class="w3-padding w3-border w3-margin-top">
+                                        <label class=""><b>@ResourceKey("system.providertype")</b></label>
+                                        @DropDownList(i, "genxml/providertype", "," + providertyperef.TrimEnd(','), "," + providertypelist.TrimEnd(','), "class='w3-input w3-border '", "", false, lp1)
+                                    </div>
+                                }
+
+                                <div class="w3-padding w3-col m12">
+                                    <label class="">@ResourceKey("system.namespaceclass")</label>
+                                    @TextBox(i, "genxml/textbox/namespaceclass", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                                </div>
+                                <div class="w3-padding w3-col m12">
+                                    <label class="">@ResourceKey("system.providernamespaceclass")</label>
+                                    @TextBox(i, "genxml/textbox/providernamespaceclass", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                                </div>
+                                <div class="w3-padding w3-col m12">
+                                    <label class="">@ResourceKey("system.assembly")</label>
+                                    @TextBox(i, "genxml/textbox/assembly", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                                </div>
+                                <div class="w3-padding w3-col m12">
+                                    <label class="">Help</label>
+                                    @TextArea(i, "genxml/textbox/help", "class='w3-input w3-border' rows='4' ", "", false, lp1)
+                                </div>
+                            </div>
+                            <div class="w3-col m6">
+                                <div class="w3-padding w3-col m12">
+                                    <label class="">@ResourceKey("system.entitytypecode")</label>
+                                    @TextBox(i, "genxml/textbox/entitytypecode", "class='w3-input w3-border ' maxlength='250' ", "", false, lp1)
+                                </div>
+                                <div class="w3-padding w3-col m12">
+                                    <label class="">@ResourceKey("system.interfaceicon")</label>
+                                    @TextBox(i, "genxml/textbox/interfaceicon", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                                </div>
+                                <div class="w3-padding w3-col m12">
+                                    <label class="">@ResourceKey("system.defaulttheme")</label>
+                                    @TextBox(i, "genxml/textbox/defaulttheme", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                                </div>
+                                <div class="w3-padding w3-col m12">
+                                    <label class="">@ResourceKey("system.themeversion")</label>
+                                    @TextBox(i, "genxml/textbox/themeversion", "class='w3-input w3-border' maxlength='250' ", "1.0", false, lp1)
+                                </div>
+                                <div class="w3-padding w3-col m12">
+                                    <label class="">@ResourceKey("system.defaulttemplate")</label>
+                                    @TextBox(i, "genxml/textbox/defaulttemplate", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                                </div>
+                                <div class="w3-padding w3-col m12">
+                                    <label class="">@ResourceKey("system.defaultcommand")</label>
+                                    @TextBox(i, "genxml/textbox/defaultcommand", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                                </div>
+
+                                <div class="w3-padding  w3-col m12">
+                                    <label class="">@ResourceKey("system.databasetable")</label>
+                                    @TextBox(i, "genxml/textbox/databasetable", "class='w3-input w3-border' maxlength='250' ", "", false, lp1)
+                                </div>
+                                <div class="w3-padding w3-col m12">
+                                    <label class="">@ResourceKey("system.group")</label>
+                                    @{
+                                        var grouplist = "";
+                                        var l = sInfo.GetList("groupsdata");
+                                        foreach (var g in l)
+                                        {
+                                            grouplist += "," + g.GetXmlProperty("genxml/textbox/groupref");
+                                        }
+                                    }
+                                    @DropDownList(i, "genxml/dropdownlist/group", grouplist, grouplist, "class='w3-input w3-border'", "", false, lp1)
+                                </div>
+                                <div class="w3-padding w3-col m12">
+                                    <label class="">@ResourceKey("system.controlrelpath")</label>
+                                    @TextBox(i, "genxml/textbox/relpath", "class='w3-input w3-border' maxlength='350'")
+                                </div>
+
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <script>
+                    <script>
                 $('.showdetail@(lp1)').unbind('click');
                 $(".showdetail@(lp1)").click(function () {
                     $('.detailrows@(lp1)').show();
@@ -167,15 +193,15 @@
                     $('.showdetail@(lp1)').show();
                 });
 
-                </script>
+                    </script>
 
-            </li>
+                </li>
 
 
-        }
-    </ul>
+            }
+        </ul>
 
-</div>
+    </div>
 
 <!-- The Modal -->
 <div id="systemselect" class="w3-modal">
