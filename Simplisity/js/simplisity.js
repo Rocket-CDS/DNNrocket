@@ -953,6 +953,9 @@ function simplisity_assignevents(cmdurl) {
         $(this).unbind("click");
         $(this).click(function () {
             simplisity_callserver(this, cmdurl);
+            // add to browser bar and history
+            var stateObj = $(this).attr("s-fields");
+            history.pushState(stateObj, "Title", $(this).attr("href"));
             return false;
         });
     });
