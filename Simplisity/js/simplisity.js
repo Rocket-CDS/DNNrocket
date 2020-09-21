@@ -943,6 +943,7 @@ function simplisity_assignevents(cmdurl) {
         $(this).unbind("change");
         $(this).change(function () {
             simplisity_callserver(this, cmdurl);
+            return false;
         });
     });
 
@@ -952,6 +953,7 @@ function simplisity_assignevents(cmdurl) {
         $(this).unbind("click");
         $(this).click(function () {
             simplisity_callserver(this, cmdurl);
+            return false;
         });
     });
 
@@ -963,6 +965,7 @@ function simplisity_assignevents(cmdurl) {
         $(this).click(function () {
             if (confirm($(this).attr("s-confirm"))) {
                 simplisity_callserver(this, cmdurl);
+                return false;
             }
         });
 

@@ -10,6 +10,7 @@
 
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketRemoteMod/App_LocalResources/")
 
@@ -20,7 +21,11 @@
 
 
 <div class="w3-row w3-padding ">
-    <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketremotemod_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","itemid":"@info.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.save)</div>
+    <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketremotemod_saveconfig" s-list=".settingsdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","itemid":"@info.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.save)</div>
+    <div class="w3-col m9 w3-padding">
+        <div class="w3-border w3-padding  w3-light-grey">@ResourceKey("DNNrocket.sitekey") : @PortalUtils.SiteGuid()</div>
+    </div>
+
     @if (Model.GetSettingBool("saved"))
     {
         <i class='fas fa-save simplisity_fadeout' style="font-size:24px"></i>
@@ -167,14 +172,52 @@
                     <label>@ResourceKey("RocketMod.disablecache")</label>
                 </div>
             </div>
-            <div class="w3-col m12 w3-padding">
-                <label>@ResourceKey("DNNrocket.sitekey")</label>
-                <div class="w3-border w3-padding  w3-light-grey">@PortalUtils.SiteGuid()</div>
-            </div>
         </div>
         <div class="w3-col m6 w3-padding">
         </div>
     </div>
+
+    <div class="w3-container">
+        <div class="w3-margin">
+            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketremotemod_addsetting" s-list=".settingsdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","itemid":"@info.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.add)</div>
+            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#settingsdatalist" s-removelist=".settingsdata" style="display: none;">@ButtonText(ButtonTypes.undo)</div>
+        </div>
+
+        <div class="w3-row w3-margin">
+
+            <table id="settingsdatalist" class="w3-table-all">
+
+                <tr>
+                    <th class="w3-half">@ResourceKey("system.name")</th>
+                    <th class="w3-quarter">@ResourceKey("system.value")</th>
+                    <th style="width:20px;"></th>
+                </tr>
+
+                @{
+                    var lp3 = 0;
+                }
+                @foreach (var i in info.GetList("settingsdata"))
+                {
+                    lp3 += 1;
+
+                    <tr class="settingsdata">
+                        <td class="w3-quarter">
+                            @TextBox(i, "genxml/textbox/key", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
+                        </td>
+                        <td class="w3-threequarter">
+                            @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' ", "", false, lp3)
+                        </td>
+                        <td style="width:20px;">
+                            <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".settingsdata" s-recylebin="settingsbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
+                        </td>
+                    </tr>
+
+                }
+            </table>
+
+        </div>
+    </div>
+
 
     <div class="w3-container w3-border w3-margin-top">
         <div class="w3-col m3 w3-padding">

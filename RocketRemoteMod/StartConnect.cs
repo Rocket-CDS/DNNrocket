@@ -42,6 +42,11 @@ namespace RocketRemoteMod
                     case "rocketremotemod_saveconfig":
                         SaveConfig();
                         strOut = AdminSettings();
+                        break;
+                    case "rocketremotemod_addsetting":
+                        SaveConfig();
+                        AddSetting();
+                        strOut = AdminSettings();
                         break;                        
 
                 }
@@ -88,6 +93,14 @@ namespace RocketRemoteMod
             // update module with a better name
             DNNrocketUtils.UpdateModuleTitle(_tabid, _moduleid, _remoteParams.Name + ":" + _moduleid);
 
+            CacheFileUtils.ClearAllCache();
+        }
+        private void AddSetting()
+        {
+            _remoteParams.TabId = _tabid;
+            _remoteParams.SystemKey = _systemData.SystemKey;
+            _remoteParams.AddSetting();
+            _remoteParams.Update();
             CacheFileUtils.ClearAllCache();
         }
         public string AdminSettings()

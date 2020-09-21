@@ -13,6 +13,7 @@ namespace Simplisity
     {
         /// <summary>
         /// Contruct the SessionParams to control things like, page, pagesize, sort order, etc.
+        /// NOTE: this is not good for SEO, use url params for friendly SEO
         /// </summary>
         public SessionParams(SimplisityInfo paramInfo)
         {

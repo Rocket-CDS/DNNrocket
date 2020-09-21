@@ -149,6 +149,45 @@ namespace DNNrocketAPI.Componants
             }
             return "";
         }
+        public void RemoveAllSettings()
+        {
+            if (Record != null)
+            {
+                Record.RemoveXmlNode("genxml/settingsdata");
+            }
+        }
+        public void AddSetting()
+        {
+            if (Record != null)
+            {
+                Record.AddListItem("settingsdata");
+                Update();
+            }
+        }
+        public string GetSetting(string keyvalue)
+        {
+            if (Record != null)
+            {
+                var rec = Record.GetRecordListItem("settingsdata", "genxml/textbox/key", keyvalue);
+                if (rec == null) return "";
+                return rec.GetXmlProperty("genxml/textbox/value");
+            }
+            return "";
+        }
+        public void RemoveSetting(int idx)
+        {
+            if (Record != null)
+            {
+                Record.RemoveRecordListItem("settingsdata", idx);
+            }
+        }
+        public void RemoveSetting(string keyvalue)
+        {
+            if (Record != null)
+            {
+                Record.RemoveRecordListItem("settingsdata", "genxml/textbox/key", keyvalue);
+            }
+        }
 
         #region "API call"
 
@@ -182,6 +221,10 @@ namespace DNNrocketAPI.Componants
                     AddUrlParam("language", DNNrocketUtils.GetCurrentCulture());
 
                     paramInfo.SetXmlProperty("genxml/hidden/remoteparams", GeneralUtils.EnCode(Record.ToXmlItem()));
+                    var urlNode = Record.XMLDoc.SelectSingleNode("genxml/urlparams");
+                    if (urlNode != null) paramInfo.AddXmlNode(urlNode.OuterXml, "urlparams", "genxml");
+                    var formNode = Record.XMLDoc.SelectSingleNode("genxml/form");
+                    if (formNode != null) paramInfo.AddXmlNode(formNode.OuterXml, "form", "genxml");
 
                     var body = "<items>" + paramInfo.ToXmlItem() + "</items>";
 
