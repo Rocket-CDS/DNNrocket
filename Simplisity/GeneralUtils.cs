@@ -314,7 +314,10 @@ namespace Simplisity
                     return inpData;
             }
         }
-
+        public static string FormatDateToString(DateTime dateTime, string cultureCode)
+        {
+            return dateTime.ToString(new CultureInfo(cultureCode));
+        }
 
         /// <summary>
         ///  IsEmail function checks for a valid email format         

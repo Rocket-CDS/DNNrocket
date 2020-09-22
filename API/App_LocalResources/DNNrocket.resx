@@ -567,4 +567,7 @@
   <data name="previous.Text" xml:space="preserve">
     <value>Previous</value>
   </data>
+  <data name="lastupdated.Text" xml:space="preserve">
+    <value>Last Updated</value>
+  </data>
 </root>
