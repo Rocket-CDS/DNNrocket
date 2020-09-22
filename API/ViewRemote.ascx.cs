@@ -177,9 +177,6 @@ namespace DNNrocketAPI
             if (_remoteParams.CacheEnabled && systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey);
             if (String.IsNullOrEmpty(cacheOutPut))
             {
-                // use urlparam for cmd if in url
-                if (_remoteParams.GetUrlParam("cmd") != "") _remoteParams.RemoteCmd  = _remoteParams.GetUrlParam("cmd");
-
                 strOut += _remoteParams.htmlAPI();
                 CacheFileUtils.SetCache(cacheKey, strOut);
             }

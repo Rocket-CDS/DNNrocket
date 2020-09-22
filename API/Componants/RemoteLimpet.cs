@@ -228,6 +228,8 @@ namespace DNNrocketAPI.Componants
 
                     var body = "<items>" + paramInfo.ToXmlItem() + "</items>";
 
+                    if (GetUrlParam("cmd") != "") cmd = GetUrlParam("cmd"); // URL param overwrites database setting.
+
                     // build weburl
                     var weburl = $"{RemoteAPI}?cmd={cmd}&systemkey={RemoteSystemKey}&language=" + DNNrocketUtils.GetCurrentCulture();
 
