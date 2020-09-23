@@ -173,11 +173,7 @@ namespace Simplisity
         }
         public static void Log(string logMessage, TextWriter w)
         {
-            w.Write("\r\nLog Entry : ");
-            w.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-            w.WriteLine("  :");
-            w.WriteLine($"  :{logMessage}");
-            w.WriteLine("-------------------------------");
+            w.WriteLine($"{logMessage}");
         }
 
         public static bool CompareAreSame(string fileMapPath1, string fileMapPath2)

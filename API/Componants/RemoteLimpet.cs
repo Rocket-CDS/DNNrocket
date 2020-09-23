@@ -193,16 +193,25 @@ namespace DNNrocketAPI.Componants
 
         public string headerAPI(string httpMethod = "POST")
         {
-            var remoteHeaderCmd = RemoteCmd + "header";
+            if (RemoteCmd == "") return "";
+            var cmd = RemoteCmd;
+            if (GetUrlParam("cmd") != "") cmd = GetUrlParam("cmd"); // URL param overwrites database setting.
+            var remoteHeaderCmd = cmd + "header";
             return CallAPI(remoteHeaderCmd,httpMethod, "text/html");
         }
         public string htmlAPI(string httpMethod = "POST")
         {
-            return CallAPI(RemoteCmd, httpMethod, "text/html");
+            if (RemoteCmd == "") return "";
+            var cmd = RemoteCmd;
+            if (GetUrlParam("cmd") != "") cmd = GetUrlParam("cmd"); // URL param overwrites database setting.
+            return CallAPI(cmd, httpMethod, "text/html");
         }
         public string jsonAPI(string httpMethod = "POST")
         {
-            return CallAPI(RemoteCmd, httpMethod, "application/json");
+            if (RemoteCmd == "") return "{\"cmd\":\"\",}";
+            var cmd = RemoteCmd;
+            if (GetUrlParam("cmd") != "") cmd = GetUrlParam("cmd"); // URL param overwrites database setting.
+            return CallAPI(cmd, httpMethod, "application/json");
         }
         private string CallAPI(string cmd, string httpMethod = "POST", string contentType = "text/html")
         {
@@ -228,8 +237,6 @@ namespace DNNrocketAPI.Componants
 
                     var body = "<items>" + paramInfo.ToXmlItem() + "</items>";
 
-                    if (GetUrlParam("cmd") != "") cmd = GetUrlParam("cmd"); // URL param overwrites database setting.
-
                     // build weburl
                     var weburl = $"{RemoteAPI}?cmd={cmd}&systemkey={RemoteSystemKey}&language=" + DNNrocketUtils.GetCurrentCulture();
 
@@ -252,11 +259,7 @@ namespace DNNrocketAPI.Componants
 
                         var webResp = (HttpWebResponse)webReq.GetResponse();
 
-                        if (webResp.StatusCode == HttpStatusCode.Unauthorized)
-                        {
-                            LogUtils.LogDebug("CallAPI() Login expired. Please start over.");
-                            return "";
-                        }
+                        if (webResp.StatusCode == HttpStatusCode.Unauthorized) return "";
 
                         var readStream = new StreamReader(webResp.GetResponseStream(), System.Text.Encoding.UTF8);
                         rtnStr = readStream.ReadToEnd();

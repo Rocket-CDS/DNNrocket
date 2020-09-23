@@ -333,6 +333,10 @@ namespace DNNrocketAPI.Componants
         {
             get { return !Info.GetXmlPropertyBool("genxml/checkbox/cacheoff"); }
         }
+        public bool LogOn
+        {
+            get { return Info.GetXmlPropertyBool("genxml/checkbox/logon"); }
+        }
         public bool DebugMode
         {
             get { return Info.GetXmlPropertyBool("genxml/checkbox/debugmode"); }

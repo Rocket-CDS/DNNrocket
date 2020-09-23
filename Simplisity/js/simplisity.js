@@ -125,10 +125,22 @@ function simplisity_nbxgetCompleted(e) {
         }
     }
 
-    $('.simplisity_sessionfield').each(function () {
+    $('input.simplisity_sessionfield').each(function () {
         var v = simplisity_getSessionField($(this).attr('id'));
         if (typeof v !== 'undefined' && v !== '') {
             $(this).val(v);
+        }
+    });
+
+    $('select.simplisity_sessionfield').each(function () {
+        var v = simplisity_getSessionField($(this).attr('id'));
+        if (typeof v !== 'undefined' && v !== '') {
+            var selectctrl = $(this);
+            $('#' + $(this).attr('id') + ' > option').each(function () {
+                if (this.value == v) {
+                    $(selectctrl).val(v);
+                }
+            });
         }
     });
 

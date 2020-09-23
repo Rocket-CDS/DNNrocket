@@ -55,24 +55,34 @@ namespace DNNrocketAPI.Componants
 
 
         //  --------------------- Debug Log files ------------------------------
+
+        [Obsolete("LogDebug(string message) is deprecated, please use LogDebug(string message, string systemkey) instead.")]
         public static void LogDebug(string message)
         {
             Log(message, "debug");
         }
+        /// <summary>
+        /// Use only for DEBUG. This will only be saved inthe Temporary portal folder.  Use LogTracking for normal user action logs
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="systemkey"></param>
+        public static void LogDebug(string message, string systemkey)
+        {
+            var dolog = false;
+            var systemData = new SystemLimpet(systemkey);
+            if (systemData.Exists && systemData.DebugMode) dolog = true;
+            if (dolog) Log(message, "debug");
+        }
+
+        /// <summary>
+        /// Use only for DEBUG.  Use LogTracking for normal user action logs
+        /// </summary>
         public static void LogDebugClear()
         {
             LogClear("debug");
         }
-        public static void LogMessage(string message)
-        {
-            Log(message, "message");
-        }
-        public static void LogMessageClear()
-        {
-            LogClear("message");
-        }
         /// <summary>
-        /// Output a data file, if the given name to the Portal \DNNrocketTemp\debug folder.
+        /// Write a data file, to the Portal \DNNrocketTemp\debug folder.
         /// </summary>
         /// <param name="outFileName">Name of file</param>
         /// <param name="content">content of file</param>
@@ -82,13 +92,29 @@ namespace DNNrocketAPI.Componants
             if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
             FileUtils.SaveFile(mappath + "\\" + outFileName, content);
         }
-
-        public static void LogTracking(string message, string logName = "Log")
+        /// <summary>
+        /// Used to log any actions that we may need to refer to later.  To prove what has happen.
+        /// </summary>
+        /// <param name="message"></param>
+        public static void LogTracking(string message, string systemkey)
         {
-            var mappath = PortalUtils.HomeDNNrocketDirectoryMapPath().TrimEnd('\\') + "\\logs";
-            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-            FileUtils.AppendToLog(mappath, logName, message);
+            if (systemkey == "") systemkey = "systemapi";
+            var dolog = false;
+            var systemData = new SystemLimpet(systemkey);
+            if (systemData.Exists && systemData.LogOn) dolog = true;
+            if (dolog)
+            {
+                var mappath = PortalUtils.HomeDNNrocketDirectoryMapPath().TrimEnd('\\') + "\\logs";
+                if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
+                FileUtils.AppendToLog(mappath, systemkey, message);
+            }
+
         }
+        /// <summary>
+        /// Places an exception onto the DNN audit log.
+        /// </summary>
+        /// <param name="exc"></param>
+        /// <returns></returns>
         public static string LogException(Exception exc)
         {
             Exceptions.LogException(exc);

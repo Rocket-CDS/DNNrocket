@@ -448,7 +448,6 @@ namespace DNNrocketAPI.Componants
             catch (Exception ex)
             {
                 // invalid bitmap file
-                LogUtils.LogDebug("Invalid BitMap File: " + strFilepath + "  : " + ex.ToString());
                 LogUtils.LogException(ex);
             }
             return newImage;

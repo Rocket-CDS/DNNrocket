@@ -66,14 +66,17 @@
         <div class="w3-row-padding">
             <div class="w3-half">
                 <br />
-                @CheckBox(sInfo, "genxml/checkbox/debugmode", "&nbsp;" + ResourceKey("system.debugmode"))
+                @CheckBox(sInfo, "genxml/checkbox/debugmode", "&nbsp;" + ResourceKey("system.debugmode"), "w3-check")
             </div>
             <div class="w3-half">
                 <br />
-                @CheckBox(sInfo, "genxml/checkbox/proavailable", "&nbsp;" + ResourceKey("system.proavailable"))
+                @CheckBox(sInfo, "genxml/checkbox/proavailable", "&nbsp;" + ResourceKey("system.proavailable"), "w3-check")
             </div>
             <div class="w3-half">
-                @CheckBox(sInfo, "genxml/checkbox/cacheoff", "&nbsp;" + ResourceKey("system.tuencacheoff"))
+                @CheckBox(sInfo, "genxml/checkbox/cacheoff", "&nbsp;" + ResourceKey("system.tuencacheoff"), "w3-check")
+            </div>
+            <div class="w3-half">
+                @CheckBox(sInfo, "genxml/checkbox/logon", "&nbsp;Log Activity","w3-check",true)
             </div>
             <div class="w3-half">
             </div>

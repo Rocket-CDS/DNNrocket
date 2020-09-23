@@ -46,10 +46,6 @@ namespace DNNrocketAPI.Componants
                         {
                             DotNetNuke.Services.Mail.Mail.SendMail(EmailData.FromEmail, email.Trim(), "", EmailData.EmailSubject, EmailData.EmailBody, EmailData.Attchments, "HTML", "", "", "", "");
                         }
-                        else
-                        {
-                            LogUtils.LogDebug("Invalid Email: " + email + "   FromEmail: " + EmailData.FromEmail);
-                        }
                     }
                 }
                 catch (Exception ex)
