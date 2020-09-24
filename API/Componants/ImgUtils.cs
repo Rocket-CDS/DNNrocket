@@ -273,7 +273,6 @@ namespace DNNrocketAPI.Componants
                             }
                         }
                     }
-
                     // Clean up
                     sourceImage.Dispose();
                 }
@@ -427,20 +426,20 @@ namespace DNNrocketAPI.Componants
 
             try
             {
-                Bitmap sourceImage = null;
                 if (GeneralUtils.IsAbsoluteUrl(strFilepath))
                 {
                     System.Net.WebRequest request = System.Net.WebRequest.Create(strFilepath);
                     System.Net.WebResponse response = request.GetResponse();
-                    System.IO.Stream responseStream = response.GetResponseStream();
-                    sourceImage = new Bitmap(responseStream);
+                    using (Stream responseStream = response.GetResponseStream())
+                    {                                               
+                        var sourceImage = LoadBitmapUnlocked(responseStream);
+                        newImage = ProcessBitMap(sourceImage, intMaxWidth, intMaxHeight);
+                        sourceImage.Dispose();
+                    }
                 }
                 else
                 {
-                    sourceImage = new Bitmap(strFilepath);
-                }
-                using (sourceImage)
-                {
+                    var sourceImage = LoadBitmapUnlocked(strFilepath);
                     newImage = ProcessBitMap(sourceImage, intMaxWidth, intMaxHeight);
                     sourceImage.Dispose();
                 }
@@ -453,7 +452,23 @@ namespace DNNrocketAPI.Componants
             return newImage;
 
         }
-   
+
+        // Load a bitmap without locking it.
+        private static Bitmap LoadBitmapUnlocked(string file_name)
+        {
+            using (Bitmap bm = new Bitmap(file_name))
+            {
+                return new Bitmap(bm);
+            }
+        }
+        private static Bitmap LoadBitmapUnlocked(Stream responseStream)
+        {
+            using (Bitmap bm = new Bitmap(responseStream))
+            {
+                return new Bitmap(bm);
+            }
+        }
+
         public static Bitmap ProcessBitMap(Bitmap sourceImage, int intMaxWidth, int intMaxHeight)
         {
 
