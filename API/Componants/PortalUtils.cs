@@ -44,10 +44,6 @@ namespace DNNrocketAPI.Componants
         }
         public static int CreatePortal(string portalName, string strPortalAlias)
         {
-            // ************THIS DOES NOT WORK************
-            // we seem to be missing some data format.
-
-            var portalSettings = DNNrocketUtils.GetCurrentPortalSettings();
             var serverPath = "";
             var childPath = "";
             var description = "RocketECommerce";

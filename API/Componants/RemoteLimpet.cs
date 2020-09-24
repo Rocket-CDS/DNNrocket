@@ -264,9 +264,10 @@ namespace DNNrocketAPI.Componants
                         var readStream = new StreamReader(webResp.GetResponseStream(), System.Text.Encoding.UTF8);
                         rtnStr = readStream.ReadToEnd();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        rtnStr = "Config Error";
+                        rtnStr = "Config Error     --->     ";
+                        LogUtils.LogException(ex);
                     }
                 }
                 return rtnStr;
