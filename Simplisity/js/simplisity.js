@@ -137,7 +137,7 @@ function simplisity_nbxgetCompleted(e) {
         if (typeof v !== 'undefined' && v !== '') {
             var selectctrl = $(this);
             $('#' + $(this).attr('id') + ' > option').each(function () {
-                if (this.value == v) {
+                if (this.value === v) {
                     $(selectctrl).val(v);
                 }
             });
@@ -854,10 +854,9 @@ function simplisity_parsejson(json) {
     return retval;
 }
 
+
 async function simplisity_initFileUpload(fileuploadselector) {
 
-    var filecount = 0;
-    var filesdone = 0;
     var systemkey = simplisity_getsystemkey($(fileuploadselector).attr('s-fields'));  // use systemkey so we can have multiple cookie for Different systems.
     if (systemkey === '' || typeof systemkey === 'undefined') {
         systemkey = $('#simplisity_systemkey').val();
@@ -907,33 +906,34 @@ async function simplisity_initFileUpload(fileuploadselector) {
             data.headers = $.extend(data.headers, { "X-File-Identifier": identifier });
         })
         .bind('fileuploadadd', function (e, data) {
-            $('input[id*="simplisity_fileuploadlist"]').val('');
+            $('#simplisity-file-progress-bar').show();
             $.each(data.files, function (index, file) {
                 $('input[id*="simplisity_fileuploadlist"]').val($('input[id*="simplisity_fileuploadlist"]').val() + simplisity_encode(file.name) + ';');
-                filesdone = filesdone + 1;
             });
         })
         .bind('fileuploaddrop', function (e, data) {
             $('#simplisity-file-progress-bar').show();
-            filecount = data.files.length;
+            $.each(data.files, function (index, file) {
+                $('input[id*="simplisity_fileuploadlist"]').val($('input[id*="simplisity_fileuploadlist"]').val() + simplisity_encode(file.name) + ';');
+            });
             $('.processing').show();
         })
         .bind('fileuploadstop', function (e) {
-            if (filesdone === filecount) {
-                if ($('input[id*="simplisity_fileuploadlist"]').val() !== '') {
 
-                    var reload = $(fileuploadselector).attr('s-reload');
-                    if (typeof reload === 'undefined' || reload === '') {
-                        reload = 'true';
-                    }
-                    simplisity_callserver($(fileuploadselector), '', '', reload);
+            if ($('input[id*="simplisity_fileuploadlist"]').val() !== '') {
 
-                    filesdone = 0;
-                    $('.processing').hide();
-                    $('#progress .progress-bar').css('width', '0');
-
+                var reload = $(fileuploadselector).attr('s-reload');
+                if (typeof reload === 'undefined' || reload === '') {
+                    reload = 'true';
                 }
+                simplisity_callserver($(fileuploadselector), '', '', reload);
+
+                filesdone = 0;
+                $('.processing').hide();
+                $('#progress .progress-bar').css('width', '0');
+
             }
+
         });
 
 

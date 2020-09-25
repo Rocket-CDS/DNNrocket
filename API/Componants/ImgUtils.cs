@@ -13,6 +13,43 @@ namespace DNNrocketAPI.Componants
     public class ImgUtils
     {
 
+        public static List<string> MoveImageToFolder(SimplisityInfo postInfo, string destinationFolder)
+        {
+            destinationFolder = destinationFolder.TrimEnd('\\');
+            var rtn = new List<string>();
+            var userid = UserUtils.GetCurrentUserId(); // prefix to filename on upload.
+            if (!Directory.Exists(destinationFolder)) Directory.CreateDirectory(destinationFolder);
+            var createseo = postInfo.GetXmlPropertyBool("genxml/hidden/createseo");
+            var resize = postInfo.GetXmlPropertyInt("genxml/hidden/imageresize");
+            if (resize == 0) resize = 640;
+            var fileuploadlist = postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+            if (fileuploadlist != "")
+            {
+                foreach (var f in fileuploadlist.Split(';'))
+                {
+                    if (f != "")
+                    {
+                        var friendlyname = GeneralUtils.DeCode(f);
+                        var userfilename = userid + "_" + friendlyname;
+                        var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname.Replace(" ", "_"), destinationFolder);
+                        var fname = ImgUtils.ResizeImage(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, destinationFolder + "\\" + unqName, resize);
+                        if (File.Exists(fname))
+                        {
+                            if (createseo)
+                            {
+                                var imageDirectorySEO = destinationFolder + "\\seo";
+                                if (!Directory.Exists(imageDirectorySEO)) Directory.CreateDirectory(imageDirectorySEO);
+                                ImgUtils.CopyImageForSEO(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectorySEO, unqName);
+                            }
+                            rtn.Add(unqName);
+                        }
+                        File.Delete(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename);
+                    }
+                }
+            }
+            return rtn;
+        }
+
         public static void CopyImageForSEO(string sourceFilePath, string destinationfolder, string fileName = "")
         {
             var imageDirectorySEO = destinationfolder;
