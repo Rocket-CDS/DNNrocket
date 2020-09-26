@@ -185,8 +185,16 @@ namespace DNNrocketAPI
                 strOut = cacheOutPut;
             }
 
+            var adminButton = "";
+            if (UserUtils.IsInRole("RemoteAdmin") && _remoteParams.RemoteAdminRelPath != "")
+            {
+                adminButton += "<div class='w3-display-topleft w3-margin'>";
+                adminButton += "<a href='" + _remoteParams.RemoteAdminUrl + "' target='_blank' title='" + DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.admin") + "' class='w3-button w3-white w3-border w3-border-blue w3-round-large  w3-tiny'><i class='fa fas fa-store-alt'></i></a>";
+                adminButton += "</div>";
+            }
+
             var lit = new Literal();
-            strOut = "<div id='simplisitymodulewrapper" + ModuleId + "' class=' simplisity_panel '>" + strOut + "</div>";
+            strOut = adminButton + "<div id='simplisitymodulewrapper" + ModuleId + "' class=' simplisity_panel '>" + strOut + "</div>";
             lit.Text = strOut;
             phData.Controls.Add(lit);
 

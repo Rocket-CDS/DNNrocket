@@ -332,6 +332,8 @@ namespace DNNrocketAPI.Componants
         public string AppThemeVersion { get { return Record.GetXmlProperty("genxml/hidden/appthemeversion"); } set { Record.SetXmlProperty("genxml/hidden/appthemeversion", value); } }
         public bool UrlKeyActive { get { return Record.GetXmlPropertyBool("genxml/hidden/urlkeyactive"); } set { Record.SetXmlProperty("genxml/hidden/urlkeyactive", value.ToString()); } }
         public string UrlKey { get { return Record.GetXmlProperty("genxml/hidden/urlkey"); } set { Record.SetXmlProperty("genxml/hidden/urlkey", value); } }
+        public string RemoteAdminRelPath { get { return Record.GetXmlProperty("genxml/hidden/remoteadminrelpath"); } set { Record.SetXmlProperty("genxml/hidden/remoteadminrelpath", value); } }
+        public string RemoteAdminUrl { get { return EngineURL.TrimEnd('/') + "/" + RemoteAdminRelPath; } }
 
         #endregion
     }
