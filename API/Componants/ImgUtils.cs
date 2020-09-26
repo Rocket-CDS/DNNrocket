@@ -13,7 +13,7 @@ namespace DNNrocketAPI.Componants
     public class ImgUtils
     {
 
-        public static List<string> MoveImageToFolder(SimplisityInfo postInfo, string destinationFolder)
+        public static List<string> MoveImageToFolder(SimplisityInfo postInfo, string destinationFolder, int maxImages = 50)
         {
             destinationFolder = destinationFolder.TrimEnd('\\');
             var rtn = new List<string>();
@@ -25,23 +25,28 @@ namespace DNNrocketAPI.Componants
             var fileuploadlist = postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
             if (fileuploadlist != "")
             {
+                var imageCount = 1;
                 foreach (var f in fileuploadlist.Split(';'))
                 {
                     if (f != "")
                     {
                         var friendlyname = GeneralUtils.DeCode(f);
                         var userfilename = userid + "_" + friendlyname;
-                        var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname.Replace(" ", "_"), destinationFolder);
-                        var fname = ImgUtils.ResizeImage(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, destinationFolder + "\\" + unqName, resize);
-                        if (File.Exists(fname))
+                        if (imageCount <= maxImages)
                         {
-                            if (createseo)
+                            var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname.Replace(" ", "_"), destinationFolder);
+                            var fname = ImgUtils.ResizeImage(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, destinationFolder + "\\" + unqName, resize);
+                            if (File.Exists(fname))
                             {
-                                var imageDirectorySEO = destinationFolder + "\\seo";
-                                if (!Directory.Exists(imageDirectorySEO)) Directory.CreateDirectory(imageDirectorySEO);
-                                ImgUtils.CopyImageForSEO(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectorySEO, unqName);
+                                if (createseo)
+                                {
+                                    var imageDirectorySEO = destinationFolder + "\\seo";
+                                    if (!Directory.Exists(imageDirectorySEO)) Directory.CreateDirectory(imageDirectorySEO);
+                                    ImgUtils.CopyImageForSEO(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, imageDirectorySEO, unqName);
+                                }
+                                rtn.Add(unqName);
+                                imageCount += 1;
                             }
-                            rtn.Add(unqName);
                         }
                         File.Delete(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename);
                     }
