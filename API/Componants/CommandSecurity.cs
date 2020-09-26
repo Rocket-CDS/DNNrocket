@@ -20,9 +20,11 @@ namespace DNNrocketAPI.Componants
         private RocketInterface _interfaceInfo;
         private int _tabid;
         private int _moduleid;
+        private string _systemKey;
 
         public CommandSecurity(RocketInterface interfaceInfo)
         {
+            _systemKey = interfaceInfo.SystemKey;
             _commandSecurity = new ConcurrentDictionary<string, bool>();
             _tabid = -1;
             _moduleid = -1;
@@ -34,6 +36,7 @@ namespace DNNrocketAPI.Componants
 
         public CommandSecurity(int tabId, int moduleId, RocketInterface interfaceInfo)
         {
+            _systemKey = interfaceInfo.SystemKey;
             _commandSecurity = new ConcurrentDictionary<string, bool>();
             _tabid = tabId;
             _moduleid = moduleId;
@@ -44,6 +47,7 @@ namespace DNNrocketAPI.Componants
 
         public CommandSecurity(int portalid, int userid, int tabId, int moduleId, RocketInterface interfaceInfo)
         {
+            _systemKey = interfaceInfo.SystemKey;
             _commandSecurity = new ConcurrentDictionary<string, bool>();
             _tabid = tabId;
             _moduleid = moduleId;
@@ -133,17 +137,19 @@ namespace DNNrocketAPI.Componants
         public bool HasSecurityAccess(string commandKey)
         {
             if (SecurityCheckIsSuperUser()) return true;
-            if (!_commandSecurity.ContainsKey(commandKey) || !_commandSecurity[commandKey])
+            // if the command is NOT defined, the do not give access.  Commands MUST be defined.
+            if (!_commandSecurity.ContainsKey(commandKey))
             {
-                return true;
+                LogUtils.LogDebug("ERROR - Command NOT defined: " + commandKey, _systemKey);
+                return false;
             }
-            if (_userInfo == null) return false;
-            if (HasModuleEditRights() && _interfaceInfo.SecurityCheckUser(_userInfo.PortalID, _userId))
+            if (_userInfo != null && HasModuleEditRights() && _interfaceInfo.SecurityCheckUser(_userInfo.PortalID, _userId))
             {
                 return true;
             }
             else
             {
+                if (!_commandSecurity[commandKey]) return true;  //Command defined to have no security 
                 return false;
             }
         }
