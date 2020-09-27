@@ -22,7 +22,6 @@ namespace RocketMod
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
         private RocketInterface _rocketInterface;
-        private SimplisityInfo _systemInfo;
         private ModuleParams _moduleParams;
         private ModuleParams _dataModuleParams;
         private int _tabid;
@@ -31,7 +30,6 @@ namespace RocketMod
         private string _systemKey;
         private Dictionary<string, string> _passSettings;
         private SettingsData _settingsData;
-        private string _editLang;
         private int _selectedItemId;
         private AppThemeModule _appThemeMod;
         private AppThemeModule _dataAppThemeMod;
@@ -40,6 +38,9 @@ namespace RocketMod
         private UserParams _userParams;
         private string _tableName;
         private ArticleLimpetList _articleLimpetList;
+        private string _nextLang;
+        private string _editLang;
+        private string _currentLang;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -270,6 +271,21 @@ namespace RocketMod
 
         public string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
+            _postInfo = postInfo;
+            _paramInfo = paramInfo;
+
+            _currentLang = DNNrocketUtils.GetCurrentCulture();
+            // -----------------------------------------------------------------------
+            // Change of language. 
+            // _nextlang is used for returning data. 
+            // _editlang is used to save the data and reset to _nextLang at end of processing in "ProcessCommand" method.
+            _editLang = DNNrocketUtils.GetEditCulture(); // set editlang from url param or cookie
+            _nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
+            if (_nextLang == "") _nextLang = _editLang; // default to editLang
+            DNNrocketUtils.SetNextCulture(_nextLang); // set the next langauge to a cookie, so the "EditFlag" razor token works.
+            // -----------------------------------------------------------------------
+
+
             _systemData = new SystemLimpet(systemInfo);
             _rocketInterface = new RocketInterface(interfaceInfo);
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
@@ -278,16 +294,8 @@ namespace RocketMod
             _appthemeSystemMapPath = DNNrocketUtils.MapPath(_appthemeSystemRelPath);
             _rocketModRelPath = "/DesktopModules/DNNrocket/RocketMod";
             _rocketModMapPath = DNNrocketUtils.MapPath(_rocketModRelPath);
-
-            _postInfo = postInfo;
-            _systemInfo = systemInfo;
             _systemKey = _systemData.SystemKey;
             _tableName = _rocketInterface.DatabaseTable;
-
-            // set editlang from url param or cache
-            _editLang = DNNrocketUtils.GetEditCulture();
-
-            _paramInfo = paramInfo;
 
             _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
@@ -298,31 +306,21 @@ namespace RocketMod
             _userParams.ModuleId = _moduleid; // use moduleid for tracking commands. 
 
             //[TODO : Update security.  create a limpet]
-            if (true)
+            if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
             {
-                if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
+                if (paramInfo.GetXmlProperty("genxml/hidden/editmode") == "1")
                 {
-                    if (paramInfo.GetXmlProperty("genxml/hidden/editmode") == "1")
-                    {
-                        paramCmd = "rocketmodedit_editarticlelist";
-                    }
-                    else
-                    {
-                        var menucmd = _userParams.GetCommand(_systemKey);
-                        if (menucmd != "")
-                        {
-                            paramCmd = menucmd;
-                            _paramInfo = _userParams.GetParamInfo(_systemKey);
-                            var interfacekey = _userParams.GetInterfaceKey(_systemKey);
-                            _rocketInterface = new RocketInterface(systemInfo, interfacekey);
-                        }
-                    }
+                    paramCmd = "rocketmodedit_editarticlelist";
                 }
                 else
                 {
-                    if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track"))
+                    var menucmd = _userParams.GetCommand(_systemData.SystemKey);
+                    if (menucmd != "")
                     {
-                        _userParams.Track(_systemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
+                        paramCmd = menucmd;
+                        _paramInfo = _userParams.GetParamInfo(_systemData.SystemKey);
+                        var interfacekey = _userParams.GetInterfaceKey(_systemData.SystemKey);
+                        _rocketInterface = new RocketInterface(systemInfo, interfacekey);
                     }
                 }
             }
@@ -342,45 +340,34 @@ namespace RocketMod
             _moduleParams = new ModuleParams(_moduleid, _systemKey);
             _dataModuleParams = new ModuleParams(_moduleParams.ModuleIdDataSource, _systemKey);
 
-            //[TODO : Update security.  create a limpet]
-            if (false)
+            if (!_moduleParams.Exists)
             {
-                return "rocketmod_login";
+                paramCmd = "rocketmodedit_selectapptheme";
             }
             else
             {
-                if (!_moduleParams.Exists &&
-                    paramCmd != "module_validate" &&
-                    paramCmd != "module_copylanguage" &&
-                    paramCmd != "module_import" &&
-                    paramCmd != "rocketmod_getdata" &&
-                    paramCmd != "rocketmodedit_saveapptheme" &&
-                    paramCmd != "rocketmodedit_saveconfig" &&
-                    paramCmd != "backup_downloadbackup" &&
-                    paramCmd != "rocketmodedit_saveappthemeconfig")
+                _appThemeMod = new AppThemeModule(_moduleid, _systemData.SystemKey);
+                if (_moduleParams.ModuleIdDataSource == _moduleid)
                 {
-                    return "rocketmodedit_selectapptheme";
+                    _dataAppThemeMod = _appThemeMod;
                 }
                 else
                 {
-                    _appThemeMod = new AppThemeModule(_moduleid, _systemData.SystemKey);
-                    if (_moduleParams.ModuleIdDataSource == _moduleid)
-                    {
-                        _dataAppThemeMod = _appThemeMod;
-                    }
-                    else
-                    {
-                        _dataAppThemeMod = new AppThemeModule(_moduleParams.ModuleIdDataSource, _systemData.SystemKey);
-                    }
-
-                    if (!_passSettings.ContainsKey("AppTheme")) _passSettings.Add("AppTheme", _moduleParams.AppThemeFolder);
-                    if (!_passSettings.ContainsKey("AppThemeVersion")) _passSettings.Add("AppThemeVersion", _moduleParams.AppThemeVersion);
-                    if (!_passSettings.ContainsKey("AppThemeRelPath")) _passSettings.Add("AppThemeRelPath", _moduleParams.AppThemeFolderRel);
+                    _dataAppThemeMod = new AppThemeModule(_moduleParams.ModuleIdDataSource, _systemData.SystemKey);
                 }
+
+                if (!_passSettings.ContainsKey("AppTheme")) _passSettings.Add("AppTheme", _moduleParams.AppThemeFolder);
+                if (!_passSettings.ContainsKey("AppThemeVersion")) _passSettings.Add("AppThemeVersion", _moduleParams.AppThemeVersion);
+                if (!_passSettings.ContainsKey("AppThemeRelPath")) _passSettings.Add("AppThemeRelPath", _moduleParams.AppThemeFolderRel);
             }
 
             _articleLimpetList = new ArticleLimpetList(_paramInfo, _editLang, false);
 
+            var securityData = new SecurityLimet(PortalUtils.GetCurrentPortalId(), _systemData.SystemKey, _rocketInterface, -1, -1);
+            paramCmd = securityData.HasSecurityAccess(paramCmd, "rocketmod_login");
+
+            // set tracking after the security check.
+            if (_paramInfo.GetXmlPropertyBool("genxml/hidden/track")) _userParams.Track(_systemData.SystemKey, paramCmd, _paramInfo, _rocketInterface.InterfaceKey);
 
             return paramCmd;
         }

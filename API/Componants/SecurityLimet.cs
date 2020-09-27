@@ -70,13 +70,8 @@ namespace DNNrocketAPI.Componants
         /// </summary>
         /// <param name="paramCmd">command to be checked</param>
         /// <returns>valid command, login cmd or invalid cmd.</returns>
-        public string HasSecurityAccess(string paramCmd)
+        public string HasSecurityAccess(string paramCmd, string loginCommand)
         {
-            if (paramCmd.StartsWith("portalshops_"))
-            {
-                if (!UserUtils.IsSuperUser()) return "rocketecommerce_login"; // only superuser allowed to access portalshop commands.
-            }
-
             if (HasCommandSecurityAccess(paramCmd))
             {
                 return paramCmd;
@@ -84,11 +79,11 @@ namespace DNNrocketAPI.Componants
             else
             {
                 if (ValidCommand(paramCmd))
-                    return "rocketecommerce_login";
+                    return loginCommand;
                 else
                 {
                     LogUtils.LogDebug("INVALID CMD: " + paramCmd, SystemData.SystemKey);
-                    return "rocketecommerce_invalidcommand";
+                    return "invalidcommand";
                 }
             }
         }
