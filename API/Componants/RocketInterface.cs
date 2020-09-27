@@ -19,7 +19,6 @@ namespace DNNrocketAPI.Componants
             Info = new SimplisityInfo();
             if (systemInfo != null)
             {
-                SystemKey = systemInfo.GetXmlProperty("genxml/textbox/ctrlkey");
                 var interfaceInfo = systemInfo.GetListItem("interfacedata", "genxml/textbox/interfacekey", interfaceKey);
                 if (interfaceInfo != null)
                 {
@@ -41,7 +40,6 @@ namespace DNNrocketAPI.Componants
                 Info = interfaceInfo;
             }
         }
-        public string SystemKey { get; set; }
         public bool IsProvider(string providerType)
         {
             return (Info.GetXmlProperty("genxml/providertype") == providerType) ;

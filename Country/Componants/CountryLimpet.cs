@@ -14,7 +14,6 @@ namespace DNNrocket.Country.Componants
         public CountryLimpet(int portalId, RocketInterface rocketInterface, string cultureCode = "")
         {
             RocketInterface = rocketInterface;
-            SystemKey = RocketInterface.SystemKey;
             if (cultureCode == "") cultureCode = DNNrocketUtils.GetEditCulture();
             CultureCode = cultureCode;
             _objCtrl = new DNNrocketController();
@@ -87,7 +86,6 @@ namespace DNNrocket.Country.Componants
         public RocketInterface RocketInterface { get; set; }
         public int PortalId { get { return Info.PortalId; } }
         public string CultureCode { get; set; }
-        public string SystemKey { get; set; }
 
     }
 }
