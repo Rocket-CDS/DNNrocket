@@ -21,7 +21,6 @@ namespace RocketMod
         private string _rocketModMapPath;
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
-        private CommandSecurity _commandSecurity;
         private RocketInterface _rocketInterface;
         private SimplisityInfo _systemInfo;
         private ModuleParams _moduleParams;
@@ -298,7 +297,8 @@ namespace RocketMod
             _userParams = new UserParams(new SessionParams(_paramInfo).BrowserSessionId);
             _userParams.ModuleId = _moduleid; // use moduleid for tracking commands. 
 
-            if (CheckSecurity(paramCmd))
+            //[TODO : Update security.  create a limpet]
+            if (true)
             {
                 if (_paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
                 {
@@ -342,7 +342,8 @@ namespace RocketMod
             _moduleParams = new ModuleParams(_moduleid, _systemKey);
             _dataModuleParams = new ModuleParams(_moduleParams.ModuleIdDataSource, _systemKey);
 
-            if (!CheckSecurity(paramCmd))
+            //[TODO : Update security.  create a limpet]
+            if (false)
             {
                 return "rocketmod_login";
             }
@@ -383,74 +384,6 @@ namespace RocketMod
 
             return paramCmd;
         }
-        public bool CheckSecurity(string paramCmd)
-        {
-            _commandSecurity = new CommandSecurity(_tabid, _moduleid, _rocketInterface);
-
-            _commandSecurity.AddCommand("dashboard_get", true);
-
-            _commandSecurity.AddCommand("rocketmodedit_saveconfig", true);
-            _commandSecurity.AddCommand("rocketmod_saveheader", true);
-            _commandSecurity.AddCommand("rocketmod_getsetupmenu", true);
-            _commandSecurity.AddCommand("rocketmodedit_reset", true);
-            _commandSecurity.AddCommand("rocketmodedit_resetdata", true);
-            _commandSecurity.AddCommand("rocketmodedit_selectapptheme", true);
-            _commandSecurity.AddCommand("rocketmodedit_saveapptheme", true);
-            _commandSecurity.AddCommand("rocketmod_getsidemenu", true);
-
-            _commandSecurity.AddCommand("rocketmodedit_editarticlelist", true);
-            _commandSecurity.AddCommand("rocketmodedit_articlesearch", true);
-            _commandSecurity.AddCommand("rocketmodedit_editarticle", true);
-            _commandSecurity.AddCommand("rocketmodedit_addarticle", true);
-            _commandSecurity.AddCommand("rocketmodedit_savearticle", true);
-            _commandSecurity.AddCommand("rocketmodedit_deletearticle", true);
-            _commandSecurity.AddCommand("rocketmodedit_addimage", true);
-
-            _commandSecurity.AddCommand("rocketmod_getdata", false);
-            _commandSecurity.AddCommand("rocketmod_login", false);
-
-            _commandSecurity.AddCommand("rocketmodsettings_edit", true);
-            _commandSecurity.AddCommand("rocketmodsettings_add", true);
-            _commandSecurity.AddCommand("rocketmodsettings_save", true);
-            _commandSecurity.AddCommand("rocketmodsettings_delete", true);
-
-            _commandSecurity.AddCommand("rocketmodfields_edit", true);
-            _commandSecurity.AddCommand("rocketmodfields_add", true);
-            _commandSecurity.AddCommand("rocketmodfields_save", true);
-            _commandSecurity.AddCommand("rocketmodfields_delete", true);
-
-            _commandSecurity.AddCommand("rocketmodview_download", false);
-
-            _commandSecurity.AddCommand("rocketmodapptheme_apptheme", true);
-            _commandSecurity.AddCommand("rocketmodapptheme_saveeditor", true);
-
-            _commandSecurity.AddCommand("rocketmodapptheme_geteditor", true);
-            _commandSecurity.AddCommand("rocketmodapptheme_apptheme", true);
-            _commandSecurity.AddCommand("rocketmodapptheme_getdetail", true);
-            _commandSecurity.AddCommand("rocketmodapptheme_saveeditor", true);
-            _commandSecurity.AddCommand("rocketmodapptheme_removemodtemplate", true);
-            _commandSecurity.AddCommand("module_export", true);
-            _commandSecurity.AddCommand("module_import", true);
-            _commandSecurity.AddCommand("module_copylanguage", true);
-            _commandSecurity.AddCommand("module_validate", true);
-
-            _commandSecurity.AddCommand("backup_get", true);
-            _commandSecurity.AddCommand("backup_dobackup", true);
-            _commandSecurity.AddCommand("backup_deletebackup", true);
-            _commandSecurity.AddCommand("backup_restorebackup", true);
-            _commandSecurity.AddCommand("backup_deletebackupall", true);
-            _commandSecurity.AddCommand("backup_save", true);
-            _commandSecurity.AddCommand("backup_downloadbackup", true);
-
-            _commandSecurity.AddCommand("templatebackup_dobackup", true);
-            _commandSecurity.AddCommand("templatebackup_deletebackup", true);
-            _commandSecurity.AddCommand("templatebackup_restorebackup", true);
-            _commandSecurity.AddCommand("templatebackup_deletebackupall", true);
-
-
-            return _commandSecurity.HasSecurityAccess(paramCmd);
-        }
-
         public void RocketModAddListItem(string listname)
         {
             try

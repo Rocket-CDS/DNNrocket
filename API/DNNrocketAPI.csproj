@@ -171,7 +171,6 @@
     <Compile Include="downloadfile.ashx.cs">
       <DependentUpon>downloadfile.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Componants\CommandSecurity.cs" />
     <Compile Include="Componants\DDRMenuInterface.cs" />
     <Compile Include="Componants\DNNrocketClassesConst.cs" />
     <Compile Include="Componants\PagesUtils.cs" />

@@ -8,6 +8,7 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Security.Permissions;
 
 namespace DNNrocketAPI.Componants
 {
@@ -156,6 +157,25 @@ namespace DNNrocketAPI.Componants
             catch (Exception exc)
             {
                 LogUtils.LogException(exc);
+            }
+            return false;
+        }
+        public static bool HasModuleEditRights(int tabId, int moduleId)
+        {
+            try
+            {
+                if (tabId <= 0 && moduleId <= 0) return true;
+                if (tabId == 0) return false;
+                if (moduleId == 0) return false;
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
+                if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", moduleInfo))
+                {
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
             return false;
         }

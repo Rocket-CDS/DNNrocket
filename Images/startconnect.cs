@@ -13,7 +13,6 @@ namespace DNNrocket.Images
         private string _appthemeMapPath;
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
-        private CommandSecurity _commandSecurity;
         private RocketInterface _rocketInterface;
         private SystemLimpet _systemData;
 
@@ -33,12 +32,9 @@ namespace DNNrocket.Images
             _postInfo = postInfo;
             _paramInfo = paramInfo;
 
-            _commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
-            _commandSecurity.AddCommand("rocketimages_upload", true);
-            _commandSecurity.AddCommand("rocketimages_delete", true);
-            _commandSecurity.AddCommand("rocketimages_list", false);
 
-            if (!_commandSecurity.HasSecurityAccess(paramCmd))
+            //[TODO : Update security.  create a limpet]
+            if (false) // security check 
             {
                 strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                 return DNNrocketUtils.ReturnString(strOut);

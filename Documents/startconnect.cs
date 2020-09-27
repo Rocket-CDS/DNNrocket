@@ -13,7 +13,6 @@ namespace DNNrocket.Documents
         private string _appthemeMapPath;
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
-        private CommandSecurity _commandSecurity;
         private RocketInterface _rocketInterface;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
@@ -30,12 +29,9 @@ namespace DNNrocket.Documents
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _postInfo = postInfo;
             _paramInfo = paramInfo;
-            _commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
-            _commandSecurity.AddCommand("rocketdocs_upload", true);
-            _commandSecurity.AddCommand("rocketdocs_delete", true);
-            _commandSecurity.AddCommand("rocketdocs_list", false);
 
-            if (!_commandSecurity.HasSecurityAccess(paramCmd))
+            //[TODO : Security]
+            if (false)
             {
                 strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                 return DNNrocketUtils.ReturnString(strOut);

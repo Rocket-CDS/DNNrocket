@@ -24,18 +24,6 @@ namespace DNNrocket.Category
         {
             _systemData = new SystemData(systemInfo);
             var rocketInterface = new DNNrocketInterface(interfaceInfo);
-            var commandSecurity = new CommandSecurity(-1,-1,rocketInterface);
-            commandSecurity.AddCommand("category_add", true);
-            commandSecurity.AddCommand("category_save", true);
-            commandSecurity.AddCommand("category_savelist", true);
-            commandSecurity.AddCommand("category_delete", true);
-            commandSecurity.AddCommand("category_sort", true);
-            commandSecurity.AddCommand("category_addimage", true);
-            commandSecurity.AddCommand("category_visible", true);
-            commandSecurity.AddCommand("category_disable", true);
-            commandSecurity.AddCommand("category_getlist", false);
-            commandSecurity.AddCommand("category_getdetail", false);
-            commandSecurity.AddCommand("category_search", false);
 
             _systemInfo = systemInfo;
             _systemkey = systemInfo.GUIDKey;

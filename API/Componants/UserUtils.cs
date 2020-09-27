@@ -505,6 +505,11 @@ namespace DNNrocketAPI.Componants
                 RoleController.Instance.AddUserRole(portalId, userId, roleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
             }
         }
+        public static void SignOut()
+        {
+            var ps = new PortalSecurity();
+            ps.SignOut();
+        }
 
     }
 }

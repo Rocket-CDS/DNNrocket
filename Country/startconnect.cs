@@ -16,17 +16,13 @@ namespace DNNrocket.Country
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             _rocketInterface = new RocketInterface(interfaceInfo);
-            var commandSecurity = new CommandSecurity(-1,-1, _rocketInterface);
-            commandSecurity.AddCommand("settingcountry_save", true);
-            commandSecurity.AddCommand("settingcountry_get", true);
-            commandSecurity.AddCommand("settingcountry_getregion", false);
-
             //CacheUtilsDNN.ClearAllCache();
             _systemInfo = systemInfo;
 
             var rtnDic = new Dictionary<string, object>();
 
-            if (commandSecurity.HasSecurityAccess(paramCmd))
+            //[TODO : Security ]
+            if (true)
             {
                 _passSettings = paramInfo.ToDictionary();
                 switch (paramCmd)

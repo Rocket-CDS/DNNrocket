@@ -28,9 +28,7 @@ namespace DNNrocket.System
             _systemData = new SystemLimpet(systemInfo);
             _rocketInterface = new RocketInterface(interfaceInfo);
             _passSettings = _paramInfo.ToDictionary();
-
-            var commandSecurity = new CommandSecurity(-1, -1, _rocketInterface);
-            
+          
             PortalUtils.CreateRocketDirectories();
 
             _UserParams = new UserParams(new SessionParams(_paramInfo).BrowserSessionId);
@@ -57,7 +55,7 @@ namespace DNNrocket.System
 
             var rtnInfo = new SimplisityInfo();
             // Security Check MUST be in the extension.
-            if (commandSecurity.SecurityCheckIsSuperUser())
+            if (UserUtils.IsSuperUser())
             {
                 switch (paramCmd)
                 {
@@ -219,10 +217,10 @@ namespace DNNrocket.System
                     break;
                 case "rocketadmin_adminpanel":
                     strOut = "";
-                    if (commandSecurity.SecurityCheckIsSuperUser()) strOut = AdminPanel();
+                    if (UserUtils.IsSuperUser()) strOut = AdminPanel();
                     break;
                 default:
-                    if (!commandSecurity.SecurityCheckIsSuperUser())
+                    if (!UserUtils.IsSuperUser())
                     {
                         strOut = UserUtils.LoginForm(systemInfo, rtnInfo, "systemapi", UserUtils.GetCurrentUserId());
                     }
