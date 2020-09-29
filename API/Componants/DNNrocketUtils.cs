@@ -885,7 +885,11 @@ namespace DNNrocketAPI.Componants
 
         public static string GetEditCulture()
         {
-            var rtnLang = HttpContext.Current.Request.QueryString["editlang"];
+            var rtnLang = "en-US"; //default, we must have a value.
+            if (HttpContext.Current != null && HttpContext.Current.Request != null)
+            {
+                rtnLang = HttpContext.Current.Request.QueryString["editlang"];
+            }
             if (!ValidCulture(rtnLang)) rtnLang = GetCurrentCulture();
             var userid = UserUtils.GetCurrentUserId();
             if (userid > 0)
@@ -899,6 +903,7 @@ namespace DNNrocketAPI.Componants
         public static void SetCurrentCulture(string cultureCode)
         {
             SetCookieValue("language", cultureCode);
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureCode);
         }
         public static string GetCurrentCulture()
         {
@@ -968,7 +973,7 @@ namespace DNNrocketAPI.Componants
         public static string Email(int portalId = -1)
         {
             if (portalId >= 0)
-                return GetPortalSettings(portalId).Email;
+                return PortalUtils.GetPortalSettings(portalId).Email;
             else
                 return PortalSettings.Current.Email;
         }

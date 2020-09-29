@@ -17,21 +17,26 @@ namespace DNNrocketAPI.Componants
         {
             try
             {
-                var systemDataList = new SystemLimpetList();
-                foreach (var sInfo in systemDataList.GetSystemList())
+                var portalList = PortalUtils.GetPortals();
+                foreach (var portalId in portalList)
                 {
-                    var systemData = new SystemLimpet(sInfo.ItemID);
-                    foreach (var rocketInterface in systemData.SchedulerList)
+                    var systemDataList = new SystemLimpetList();
+                    foreach (var sInfo in systemDataList.GetSystemList())
                     {
-                        var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
-                        var ajaxprov = (SchedulerInterface)CacheUtilsDNN.GetCache(cacheKey);
-                        if (ajaxprov == null)
+                        var systemData = new SystemLimpet(sInfo.ItemID);
+                        systemData.PortalId = portalId;
+                        foreach (var rocketInterface in systemData.SchedulerList)
                         {
-                            ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                            CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
+                            var cacheKey = rocketInterface.Assembly + "," + rocketInterface.ProviderNameSpaceClass;
+                            var ajaxprov = (SchedulerInterface)CacheUtilsDNN.GetCache(cacheKey);
+                            if (ajaxprov == null)
+                            {
+                                ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.ProviderNameSpaceClass);
+                                CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
+                            }
+                            ajaxprov.DoWork(systemData, rocketInterface);
+
                         }
-                        ajaxprov.DoWork(systemData, rocketInterface);
-                    
                     }
                 }
 

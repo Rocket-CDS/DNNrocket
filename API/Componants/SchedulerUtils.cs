@@ -29,7 +29,7 @@ namespace DNNrocketAPI.Componants
 
                 SchedulingProvider scheduler = SchedulingProvider.Instance();
 
-                var typeFullName = "DNNrocketAPI.RocketScheduler,DNNrocketAPI";
+                var typeFullName = "DNNrocketAPI.Componants.RocketScheduler,DNNrocketAPI";
                 var s = scheduler.GetSchedule(typeFullName, "");
                 if (s == null)
                 {
@@ -64,7 +64,7 @@ namespace DNNrocketAPI.Componants
         {
             SchedulingProvider scheduler = SchedulingProvider.Instance();
 
-            var typeFullName = "DNNrocketAPI.RocketScheduler,DNNrocketAPI";
+            var typeFullName = "DNNrocketAPI.Componants.RocketScheduler,DNNrocketAPI";
             var s = scheduler.GetSchedule(typeFullName, "");
             if (s != null)
             {
@@ -83,7 +83,7 @@ namespace DNNrocketAPI.Componants
         {
             SchedulingProvider scheduler = SchedulingProvider.Instance();
 
-            var typeFullName = "DNNrocketAPI.RocketScheduler,DNNrocketAPI";
+            var typeFullName = "DNNrocketAPI.Componants.RocketScheduler,DNNrocketAPI";
             var s = scheduler.GetSchedule(typeFullName, "");
             if (s != null)
             {
@@ -101,7 +101,7 @@ namespace DNNrocketAPI.Componants
         public static bool SchedulerIsEnabled()
         {
             SchedulingProvider scheduler = SchedulingProvider.Instance();
-            var typeFullName = "DNNrocketAPI.RocketScheduler,DNNrocketAPI";
+            var typeFullName = "DNNrocketAPI.Componants.RocketScheduler,DNNrocketAPI";
             var globalData = new SystemGlobalData();
             var s = scheduler.GetSchedule(typeFullName, "");
             if (s != null)
@@ -123,7 +123,7 @@ namespace DNNrocketAPI.Componants
         public static bool SchedulerIsInstalled()
         {
             SchedulingProvider scheduler = SchedulingProvider.Instance();
-            var typeFullName = "DNNrocketAPI.RocketScheduler,DNNrocketAPI";
+            var typeFullName = "DNNrocketAPI.Componants.RocketScheduler,DNNrocketAPI";
             var globalData = new SystemGlobalData();
             var s = scheduler.GetSchedule(typeFullName, "");
             if (s != null)

@@ -967,7 +967,9 @@ function simplisity_assignevents(cmdurl) {
             simplisity_callserver(this, cmdurl);
             // add to browser bar and history
             var stateObj = $(this).attr("s-fields");
-            history.pushState(stateObj, "Title", $(this).attr("href"));
+            if ($(this).attr("href") !== 'javascript:void(0)') {
+                history.pushState(stateObj, "Title", $(this).attr("href"));
+            }
             return false;
         });
     });

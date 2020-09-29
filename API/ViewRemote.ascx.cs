@@ -102,7 +102,6 @@ namespace DNNrocketAPI
                     }
                 }
 
-
                 if (!this.Page.Items.Contains("dnnrocket_remotepageheader")) // flag to insure we only inject once for page load.
                 {
                     var cachekey = TabId + ".remotepageheader.cshtml";

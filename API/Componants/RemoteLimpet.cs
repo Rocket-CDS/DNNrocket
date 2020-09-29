@@ -293,7 +293,8 @@ namespace DNNrocketAPI.Componants
             }
         }
         public string Language { get {
-                var rtn = Record.GetXmlProperty("genxml/hidden/language");  // use language if passed form romote source.
+                var rtn = Record.GetXmlProperty("genxml/urlparam/language");  // use language if passed form romote source.
+                if (rtn == "") rtn = Record.GetXmlProperty("genxml/hidden/language");  // use language if passed form romote source.
                 if (rtn == "") rtn = DNNrocketUtils.GetCurrentCulture(); // no remote langauge, use local culture code
                 return rtn; 
             } private set { Record.SetXmlProperty("genxml/hidden/language", value); } }

@@ -11,6 +11,15 @@ namespace DNNrocketAPI.Componants
 {
     public class LogUtils
     {
+
+        //  --------------------- System Log for sceduler or non-portal specific log ------------------------------
+        public static void LogSystem(string message)
+        {
+            var mappath = DNNrocketUtils.MapPath("Portals/_default/RocketLogs");
+            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
+            FileUtils.AppendToLog(mappath, "system", message);
+        }
+
         //  --------------------- Debug Log files ------------------------------
         public static void LogTest(string filename, string datatext)
         {
@@ -107,6 +116,7 @@ namespace DNNrocketAPI.Componants
                 var mappath = PortalUtils.HomeDNNrocketDirectoryMapPath().TrimEnd('\\') + "\\logs";
                 if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
                 FileUtils.AppendToLog(mappath, systemkey, message);
+                LogSystem(systemkey + " - portalid:" + PortalUtils.GetCurrentPortalId() + "_" + message);
             }
 
         }

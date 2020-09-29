@@ -53,11 +53,11 @@ namespace DNNrocketAPI.Componants
             foreach (var r in l)
             {
                 var rocketInterface = new RocketInterface(r);
-                if (rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                if (rocketInterface.IsActive && rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.ProviderNameSpaceClass != "")
                 {
                     EventList.Add(rocketInterface);
                 }
-                if (rocketInterface.IsProvider("scheduler") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                if (rocketInterface.IsActive && rocketInterface.IsProvider("scheduler") && rocketInterface.Assembly != "" && rocketInterface.ProviderNameSpaceClass != "")
                 {
                     SchedulerList.Add(rocketInterface);
                 }
@@ -262,6 +262,8 @@ namespace DNNrocketAPI.Componants
         public List<RocketInterface> EventList { get; set;}
         public List<RocketInterface> SchedulerList { get; set; }
         public bool Exists { get; set; }
+        // Used for sceduler and looping through portals.
+        public int PortalId { get; set; }
         public Dictionary<string, RocketInterface> InterfaceList { get; set; }
         public Dictionary<string, string> Settings { get; set; }
         public string GetSetting(string key)
