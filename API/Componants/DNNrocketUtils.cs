@@ -1198,16 +1198,8 @@ namespace DNNrocketAPI.Componants
                             }
                             else
                             {
-                                try
-                                {
-                                    var ajaxprov = APInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                                    rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, paramInfo, editlang);
-                                }
-                                catch (Exception ex)
-                                {
-                                    rtnDic.Remove("outputhtml");
-                                    rtnDic.Add("outputhtml", "ERROR: " + systemkey + " : " + rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass + " cmd:" + paramCmd + "<br/>" + ex.ToString());
-                                }
+                                var ajaxprov = APInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                                rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, paramInfo, editlang);
                             }
                         }
                         else

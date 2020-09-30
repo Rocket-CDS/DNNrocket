@@ -342,7 +342,7 @@ namespace DNNrocketAPI.ApiControllers
             }
             catch (Exception ex)
             {
-                strOut = ex.ToString();
+                strOut = LogUtils.LogException(ex);
             }
 
 

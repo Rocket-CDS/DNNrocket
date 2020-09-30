@@ -127,6 +127,7 @@ namespace DNNrocketAPI.Componants
         /// <returns></returns>
         public static string LogException(Exception exc)
         {
+            CacheUtils.ClearAllCache(); // do  not want to repeat the error;
             Exceptions.LogException(exc);
             return exc.ToString();
         }
