@@ -104,12 +104,30 @@ namespace DNNrocketAPI
 
                 if (!this.Page.Items.Contains("dnnrocket_remotepageheader")) // flag to insure we only inject once for page load.
                 {
+                    // do global header cache
+                    var cachekeyGlobal = TabId + ".cachekeyGlobalremotepageheader.cshtml";
+                    string cacheGlobalHeader = (string)CacheUtils.GetCache(cachekeyGlobal);
+                    if (String.IsNullOrEmpty(cacheGlobalHeader) || _remoteParams.CacheDisbaled)
+                    {
+                        cacheGlobalHeader = ""; // clear so if we rebuild, we don;t use the cached data
+                        var systemGlobalData = new SystemGlobalData();
+                        cacheGlobalHeader += systemGlobalData.GlobalPageHeading;
+                        CacheUtils.SetCache(cachekeyGlobal, cacheGlobalHeader);
+                        PageIncludes.IncludeTextInHeaderAt(Page, cacheGlobalHeader, 1);
+                    }
+                    else
+                    {
+                        PageIncludes.IncludeTextInHeaderAt(Page, cacheGlobalHeader, 1);
+                    }
+
+                    // do module cache
                     var cachekey = TabId + ".remotepageheader.cshtml";
                     string cacheHead = (string)CacheFileUtils.GetCache(cachekey);
                     if (String.IsNullOrEmpty(cacheHead) || _remoteParams.CacheDisbaled)
                     {
                         var appList = new List<string>();
                         cacheHead = ""; // clear so if we rebuild, we don;t use the cached data
+
                         var modulesOnPage = DNNrocketUtils.GetAllModulesOnPage(TabId);
                         foreach (var modId in modulesOnPage)
                         {
@@ -123,12 +141,11 @@ namespace DNNrocketAPI
                             }
                         }
                         CacheFileUtils.SetCache(cachekey, cacheHead);
-                        PageIncludes.IncludeTextInHeader(Page, cacheHead);
-
+                        PageIncludes.IncludeTextInHeaderAt(Page, cacheHead);
                     }
                     else
                     {
-                        PageIncludes.IncludeTextInHeader(Page, cacheHead);
+                        PageIncludes.IncludeTextInHeaderAt(Page, cacheHead);
                     }
                     Page.Items.Add("dnnrocket_remotepageheader", true);
                 }

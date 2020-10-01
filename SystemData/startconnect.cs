@@ -116,7 +116,7 @@ namespace DNNrocket.System
                         strOut = CopyInterface(paramInfo, _controlRelPath);
                         break;
                     case "systemapi_clearallcache":
-                        CacheFileUtils.ClearAllCache();
+                        CacheFileUtils.ClearFileCacheAllPortals();
                         CacheUtils.ClearAllCache();
                         CacheUtilsDNN.ClearAllCache();
                         DNNrocketUtils.ClearAllCache();

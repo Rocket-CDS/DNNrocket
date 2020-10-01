@@ -61,7 +61,7 @@ namespace DNNrocketAPI
         {
 
             base.OnInit(e);
-
+            
             _objCtrl = new DNNrocketController();
 
             var clearallcache = DNNrocketUtils.RequestParam(Context, "clearallcache");

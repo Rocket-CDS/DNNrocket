@@ -49,7 +49,7 @@ namespace DNNrocketAPI.Componants
             var description = "RocketECommerce";
             var keyWords = "";
             var homeDirectory = "";
-            var template = new PortalController.PortalTemplateInfo(DNNrocketUtils.MapPath("/Portals/_default/Blank Website.template"), DNNrocketUtils.GetCurrentCulture());
+            var template = new PortalController.PortalTemplateInfo(DNNrocketUtils.MapPath("/Portals/_default/Blank Website.template"), "en-US");
             var isChild = false;
 
             //Create Portal
