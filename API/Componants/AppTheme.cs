@@ -42,7 +42,7 @@ namespace DNNrocketAPI.Componants
             AppSummary = "";
             AppThemeFolder = appThemeFolder;
 
-            var systemThemesDirRel = "/DesktopModules/DNNrocket/SystemThemes";
+            var systemThemesDirRel = "/DesktopModules/RocketThemes";
 
             AppSystemThemeFolderRel = systemThemesDirRel + "/" + SystemKey;
             AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
@@ -686,7 +686,7 @@ namespace DNNrocketAPI.Componants
 
                 if (systemKey != "")
                 {
-                    var appSystemThemeFolderRel = "/DesktopModules/DNNrocket/SystemThemes/" + systemKey;
+                    var appSystemThemeFolderRel = "/DesktopModules/RocketThemes/" + systemKey;
                     var appSystemThemeFolderMapPath = DNNrocketUtils.MapPath(appSystemThemeFolderRel);
 
                     var destinationFolder = appSystemThemeFolderMapPath + "\\" + appThemeFolder;

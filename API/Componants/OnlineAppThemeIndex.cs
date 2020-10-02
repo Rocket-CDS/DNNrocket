@@ -10,7 +10,7 @@ namespace DNNrocketAPI.Componants
 {
     public class OnlineAppThemeIndex
     {
-        private const string AppSystemFolderRel = "/DesktopModules/DNNrocket/SystemThemes";
+        private const string AppSystemFolderRel = "/DesktopModules/RocketThemes";
         private FtpConnect _ftpConnect;
         private HttpConnect _httpConnect;
         /// <summary>

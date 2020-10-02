@@ -953,7 +953,7 @@ namespace DNNrocketAPI.Componants
         }
         public static string SystemThemeImgDirectoryRel()
         {
-            return "/DesktopModules/DNNrocket/SystemThemes/idximg";
+            return "/DesktopModules/RocketThemes/idximg";
         }
         public static string SystemThemeImgDirectoryMapPath()
         {
