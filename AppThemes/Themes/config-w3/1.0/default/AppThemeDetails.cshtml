@@ -230,10 +230,7 @@
                     </div>
 
                     <div class="w3-row w3-padding w3-border-bottom">
-                        <div class="w3-col m2 w3-padding w3-hide-small " style="width:144px;height:124px;">
-                            <img src="@ThumbnailImageUrl(appTheme.Logo,120,120)" class="w3-circle" />
-                        </div>
-                        <div class="w3-col m6 w3-padding">
+                        <div class="w3-col m8 w3-padding">
                             <label>@ResourceKey("AppThemes.summary")</label>
                             @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border' rows='4'", "", false)
                         </div>
@@ -243,9 +240,6 @@
                                 @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border changeversionclass simplisity_change' s-before='changeversionaction' s-cmd='rocketapptheme_changeversion' s-post='#appthemedetails'  s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
                             </div>
                             <div class="w3-padding">
-                                <span>
-                                    rev&nbsp;@(appTheme.LatestRev)
-                                </span><br />
                                 @CheckBox(info, "genxml/checkbox/enablesettings", "&nbsp;" + ResourceKey("AppThemes.enablesettings").ToString(), "", true)
                             </div>
                         </div>

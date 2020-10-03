@@ -145,7 +145,6 @@ namespace DNNrocketAPI.Componants
         public string AppSystemThemeFolderRel { get { return GetValue("AppSystemThemeFolderRel"); } set { SetValue("AppSystemThemeFolderRel", value); } }
         public string AppSystemThemeFolderMapPath { get { return DNNrocketUtils.MapPath(AppSystemThemeFolderRel); } }
         public string AppThemeVersion { get { return GetValue("AppThemeVersion"); } set { SetValue("AppThemeVersion", value); } }
-        public int LatestRev { get { return GetValueInt("LatestRev"); } set { SetValue("LatestRev", value.ToString()); } }
         public string ImageFolderRel
         {
             get

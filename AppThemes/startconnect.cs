@@ -691,11 +691,7 @@ namespace DNNrocket.AppThemes
                 {
                     return UploadAppTheme();
                 }
-                if (appTheme.LatestVersion == version && appTheme.LatestRev > rev)
-                {
-                    return UploadAppTheme();
-                }
-                if (appTheme.LatestVersion == version && appTheme.LatestRev == rev)
+                if (appTheme.LatestVersion == version)
                 {
                     var razorTempl2 = RenderRazorUtils.GetRazorTemplateData("versioncheckequal.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
                     return RenderRazorUtils.RazorDetail(razorTempl2, new SimplisityInfo(sRec), _passSettings, null, true);

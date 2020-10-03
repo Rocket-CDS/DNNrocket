@@ -70,7 +70,6 @@ namespace DNNrocketAPI.Componants
                     sInfo.SetXmlProperty("genxml/hidden/appthemeprefix", appTheme.AppThemePrefix);
                     sInfo.SetXmlProperty("genxml/hidden/summary", appTheme.AppSummary);
                     sInfo.SetXmlProperty("genxml/hidden/latestversion", appTheme.LatestVersionFolder);
-                    sInfo.SetXmlProperty("genxml/hidden/latestrev", appTheme.LatestRev.ToString());
                     var logoMapPath = DNNrocketUtils.MapPath(appTheme.Logo);
                     sInfo.SetXmlProperty("genxml/hidden/logo", Path.GetFileName(logoMapPath));
                     //var outMapPath = "";

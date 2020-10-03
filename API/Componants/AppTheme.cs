@@ -14,20 +14,15 @@ namespace DNNrocketAPI.Componants
 
     public class AppTheme
     {
-        private string _guidKey;
-        private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "APPTHEME";
-        private readonly DNNrocketController _objCtrl;
  
         public AppTheme(string systemKey, string zipMapPath, bool isImport)
         {
             SystemKey = systemKey;
-            _objCtrl = new DNNrocketController();
             ImportXmlFile(zipMapPath);
         }
         public AppTheme(string systemKey, string appThemeFolder, string versionFolder = "")
         {
-            _objCtrl = new DNNrocketController();
             InitAppTheme(systemKey, appThemeFolder, versionFolder);
         }
 
@@ -68,9 +63,6 @@ namespace DNNrocketAPI.Componants
                 AppVersion = Convert.ToDouble(AppVersionFolder, CultureInfo.GetCultureInfo("en-US"));
                 LatestVersion = Convert.ToDouble(LatestVersionFolder, CultureInfo.GetCultureInfo("en-US"));
 
-
-                _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
-
                 AssignVersionFolders();
 
                 if (AppThemeFolder != "" && SystemKey != "") Populate();
@@ -106,7 +98,9 @@ namespace DNNrocketAPI.Componants
 
         public void Populate()
         {
-            Record = _objCtrl.GetRecord(_guidKey, _entityTypeCode, -1, false, _tableName);
+            Record = new SimplisityInfo();
+            Record = ReadAppTheme();
+
             Record.SetXmlProperty("genxml/hidden/appthemefolder", AppThemeFolder);
             AppSummary = Record.GetXmlProperty("genxml/textbox/summary");
 
@@ -251,10 +245,6 @@ namespace DNNrocketAPI.Componants
                         publiconlineIndex.DeleteIndex(AppThemeFolder);
 
                     }
-
-                    _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + v;
-                    var versionRecord = _objCtrl.GetRecordByGuidKey(Record.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
-                    _objCtrl.Delete(versionRecord.ItemID, _tableName); // cascade delete
                 }
                 if (Directory.Exists(AppThemeFolderMapPath)) Directory.Delete(AppThemeFolderMapPath, true);
             }
@@ -273,14 +263,8 @@ namespace DNNrocketAPI.Componants
                     Directory.Delete(AppThemeVersionFolderMapPath, true);
                 }
 
-                _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + versionFolder;
-
-                var versionRecord = _objCtrl.GetRecordByGuidKey(Record.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
-                _objCtrl.Delete(versionRecord.ItemID, _tableName); // cascade delete
-
                 PopulateVersionList();
                 AppVersionFolder = LatestVersionFolder;
-                _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + AppVersionFolder;
                 AssignVersionFolders();
                 Populate();
             }
@@ -317,22 +301,10 @@ namespace DNNrocketAPI.Componants
                 lp += 1;
             }
 
-            var dbInfo = _objCtrl.GetRecord(_entityTypeCode, Record.ItemID, -1, true, _tableName);
-            if (dbInfo != null)
-            {
 
-                dbInfo.XMLData = postInfo.XMLData;
-                dbInfo.SetXmlProperty("genxml/hidden/latestrev", (LatestRev + 1).ToString());
-                dbInfo.RemoveXmlNode("genxml/lang");
-                _objCtrl.SaveRecord(dbInfo, _tableName);
+            Record = DNNrocketUtils.UpdateFieldXpath(postInfo, Record, "fielddata");
+            Record = DNNrocketUtils.UpdateFieldXpath(postInfo, Record, "settingfielddata");
 
-                Populate();
-
-                Record = DNNrocketUtils.UpdateFieldXpath(Record, "fielddata");
-                Record = DNNrocketUtils.UpdateFieldXpath(Record, "settingfielddata");
-                _objCtrl.Update(Record, _tableName);
-
-            }
 
             var appthemeprefix = "";
             var newAppThemeName = AppThemeFolder;
@@ -344,9 +316,13 @@ namespace DNNrocketAPI.Componants
             }
             AppThemePrefix = appthemeprefix;
             AppThemeName = newAppThemeName;
+
+            Record.SetXmlProperty("genxml/select/versionfolder", postInfo.GetXmlProperty("genxml/select/versionfolder"));
+            Record.SetXmlProperty("genxml/textbox/summary", postInfo.GetXmlProperty("genxml/textbox/summary"));
+            Record.SetXmlProperty("genxml/checkbox/enablesettings", postInfo.GetXmlProperty("genxml/checkbox/enablesettings"));
+            Record.SetXmlProperty("genxml/radio/themetype", postInfo.GetXmlProperty("genxml/radio/themetype"));
+
             Update();
-
-
         }
 
         public void SaveEditor(string filename, string editorcode)
@@ -461,7 +437,7 @@ namespace DNNrocketAPI.Componants
 
         public void Update()
         {
-            if (Record != null) _objCtrl.SaveRecord(Record, _tableName);
+            if (Record != null) UpdateAppTheme();
         }
         public void AddListImage()
         {
@@ -553,21 +529,7 @@ namespace DNNrocketAPI.Componants
                     File.Copy(newPath, newPath.Replace(sourceVersionFolderMapPath, destVersionFolderMapPath), true);
 
                 // copy DB record
-                var versionCopyRecord = _objCtrl.GetRecordByGuidKey(Record.PortalId, -1, _entityTypeCode, _guidKey, "", _tableName);
-                _guidKey = "appTheme*" + SystemKey + "*" + AppThemeFolder + "*" + strdestVersionFolder;
-                versionCopyRecord.GUIDKey = _guidKey;
-                versionCopyRecord.ItemID = -1;
-                versionCopyRecord.SetXmlProperty("genxml/select/versionfolder", strdestVersionFolder);
-
-                versionCopyRecord = _objCtrl.SaveRecord(versionCopyRecord, _tableName);
-
-                var l = _objCtrl.GetList(Record.PortalId, -1, _entityTypeCode + "LANG", " and R1.ParentItemId = " + Record.ItemID + " ", "", "", 0, 0, 0, 0, _tableName);
-                foreach (var i in l)
-                {
-                    i.ParentItemId = versionCopyRecord.ItemID;
-                    i.ItemID = -1;
-                    _objCtrl.Update(i, _tableName);
-                }
+                Record.SetXmlProperty("genxml/select/versionfolder", strdestVersionFolder);
 
                 // repopulate
                 AssignVersionFolders();
@@ -611,32 +573,9 @@ namespace DNNrocketAPI.Componants
             if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
         }
 
-        public string ExportXML()
-        {
-            // Export DB
-            var exportData = "<root>";
-            var l = _objCtrl.GetList(-1, -1, "APPTHEME", "and guidkey like 'appTheme*" + SystemKey + "*" + AppThemeFolder + "*%' ");
-            foreach (SimplisityInfo i in l)
-            {
-                var r = new SimplisityRecord(i);
-                var appVersionFolder = r.GetXmlProperty("genxml/select/versionfolder");
-                r.ItemID = -1;
-                r.SetXmlProperty("genxml/hidden/appthemefolder", AppThemeFolder);
-                exportData += r.ToXmlItem();
-            }
-            exportData += "</root>";
-
-            return exportData;
-        }
-
         public string ExportZipFile()
         {
-            // Export DB
-            var exportData = ExportXML();
-
-            var exportMapPath = AppThemeFolderMapPath + "\\export.xml";
-            if (File.Exists(exportMapPath)) File.Delete(exportMapPath);
-            FileUtils.SaveFile(exportMapPath, exportData);
+            Update();
 
             // Create zip
             var exportZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + AppThemeFolder + ".zip";
@@ -660,52 +599,34 @@ namespace DNNrocketAPI.Componants
 
             var xmlImport = FileUtils.ReadFile(tempZipFolder + "\\export.xml");
 
-            var iRec = new SimplisityRecord();
-            iRec.XMLData = xmlImport;
+            Record.FromXmlItem(xmlImport);
 
-            var appThemeFolder = iRec.GetXmlProperty("root/item[1]/genxml/hidden/appthemefolder");
-
-            if (appThemeFolder != "")
+            if (AppThemeFolder != "")
             {
 
                 // import DB records.
                 var systemKey = SystemKey;
                 var lastversion = 1.0;
-                var nodList = iRec.XMLDoc.SelectNodes("root/item");
-                foreach (XmlNode nod in nodList)
+
+                var appSystemThemeFolderRel = "/DesktopModules/RocketThemes/" + systemKey;
+                var appSystemThemeFolderMapPath = DNNrocketUtils.MapPath(appSystemThemeFolderRel);
+
+                var destinationFolder = appSystemThemeFolderMapPath + "\\" + AppThemeFolder;
+                if (Directory.Exists(destinationFolder))
                 {
-                    var s = new SimplisityInfo();
-                    if (nod != null) s.FromXmlItem(nod.OuterXml);
-                    if (s.GetXmlProperty("genxml/hidden/selectedsystemkey") != "") systemKey = s.GetXmlProperty("genxml/hidden/selectedsystemkey");
-                    if (s.GetXmlPropertyDouble("genxml/select/versionfolder") > lastversion) lastversion = s.GetXmlPropertyDouble("genxml/select/versionfolder");
-                    s.ItemID = -1;
-                    var dbRec = _objCtrl.GetRecordByGuidKey(-1, -1, "APPTHEME", s.GUIDKey, "", _tableName);
-                    if (dbRec != null) s.ItemID = dbRec.ItemID;
-                    if (systemKey != "")  _objCtrl.Update(s, _tableName);
+                    Directory.Delete(destinationFolder, true);
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                }
+                DirectoryCopy(tempZipFolder, destinationFolder);
+                if (Directory.Exists(tempZipFolder))
+                {
+                    Directory.Delete(tempZipFolder, true);
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
                 }
 
-                if (systemKey != "")
-                {
-                    var appSystemThemeFolderRel = "/DesktopModules/RocketThemes/" + systemKey;
-                    var appSystemThemeFolderMapPath = DNNrocketUtils.MapPath(appSystemThemeFolderRel);
-
-                    var destinationFolder = appSystemThemeFolderMapPath + "\\" + appThemeFolder;
-                    if (Directory.Exists(destinationFolder))
-                    {
-                        Directory.Delete(destinationFolder, true);
-                        GC.Collect();
-                        GC.WaitForPendingFinalizers();
-                    }
-                    DirectoryCopy(tempZipFolder, destinationFolder);
-                    if (Directory.Exists(tempZipFolder))
-                    {
-                        Directory.Delete(tempZipFolder, true);
-                        GC.Collect();
-                        GC.WaitForPendingFinalizers();
-                    }
-
-                    InitAppTheme(systemKey, appThemeFolder, lastversion.ToString("F1", CultureInfo.InvariantCulture));
-                }
+                InitAppTheme(systemKey, AppThemeFolder, lastversion.ToString("F1", CultureInfo.InvariantCulture));
             }
         }
 
@@ -714,30 +635,25 @@ namespace DNNrocketAPI.Componants
             // copy folder
             var newAppThemeFolder = AppSystemThemeFolderMapPath + "\\" + appThemeName;
             DirectoryCopy(AppThemeFolderMapPath, newAppThemeFolder);
+
+            Record = ReadAppTheme();
+
             // rename
-            var l = _objCtrl.GetList(-1, -1, "APPTHEME", "and guidkey like 'appTheme*" + SystemKey + "*" + AppThemeFolder + "*%' ");
-            foreach (SimplisityInfo i in l)
+            var s = appThemeName.Split('_');
+            if (s.Length > 1)
             {
-                var iclone = (SimplisityInfo)i.Clone();
-                var r = new SimplisityRecord(iclone);
-                r.ItemID = -1; // create new record
-                var appVersionFolder = r.GetXmlProperty("genxml/select/versionfolder");
-                var newguidkey = "appTheme*" + SystemKey + "*" + appThemeName + "*" + appVersionFolder;
-                r.GUIDKey = newguidkey;
+                Record.SetXmlProperty("genxml/hidden/appthemeprefix", s[0]);
+                Record.SetXmlProperty("genxml/hidden/appthemename", s[1]);
+            }
 
-                var s = appThemeName.Split('_');
-                if (s.Length > 1)
-                {
-                    r.SetXmlProperty("genxml/hidden/appthemeprefix", s[0]);
-                    r.SetXmlProperty("genxml/hidden/appthemename", s[1]);
-                }
-
+            foreach (var appVersionFolder in VersionList)
+            {
                 var newAppThemeVersionFolderRel = AppSystemThemeFolderRel + "/" + appThemeName + "/" + appVersionFolder;
                 var newAppThemeVersionFolderMapPath = AppSystemThemeFolderMapPath + "\\" + appThemeName + "\\" + appVersionFolder;
                 var oldAppThemeVersionFolderMapPath = AppSystemThemeFolderMapPath + "\\" + AppThemeFolder + "\\" + appVersionFolder;
 
                 // rename rex files
-                var rlist = r.GetRecordList("resxlist");
+                var rlist = Record.GetRecordList("resxlist");
                 var lp = 1;
                 foreach (var ri1 in rlist)
                 {
@@ -745,7 +661,7 @@ namespace DNNrocketAPI.Componants
                     var culturecode = ri1.GetXmlProperty("genxml/hidden/culturecode");
                     var newName = appThemeName + "." + culturecode + ".resx";
                     if (culturecode == "") newName = appThemeName + ".resx";
-                    r.SetXmlProperty("genxml/resxlist/genxml[" + lp + "]/hidden/fullfilename", newName);
+                    Record.SetXmlProperty("genxml/resxlist/genxml[" + lp + "]/hidden/fullfilename", newName);
                     if (!File.Exists(newAppThemeVersionFolderMapPath + "\\resx\\" + newName))
                     {
                         if (File.Exists(oldAppThemeVersionFolderMapPath + "\\resx\\" + oldname))
@@ -756,31 +672,31 @@ namespace DNNrocketAPI.Componants
                     lp += 1;
                 }
                 // convert resx in templates to new filename
-                rlist = r.GetRecordList("templatelist");
+                rlist = Record.GetRecordList("templatelist");
                 lp = 1;
                 foreach (var ri2 in rlist)
                 {
                     var editorcode = ri2.GetXmlProperty("genxml/hidden/editorcodehtmlmixed");
                     var editorText = GeneralUtils.DeCode(editorcode);
                     editorText.Replace("(\"" + AppThemeFolder + ".", "(\"" + appThemeName + ".");
-                    r.SetXmlProperty("genxml/templatelist/genxml[" + lp + "]/hidden/editorcodehtmlmixed", GeneralUtils.EnCode(editorText));
+                    Record.SetXmlProperty("genxml/templatelist/genxml[" + lp + "]/hidden/editorcodehtmlmixed", GeneralUtils.EnCode(editorText));
                     lp += 1;
                 }
 
                 // convert image paths
-                rlist = r.GetRecordList("imagelist");
+                rlist = Record.GetRecordList("imagelist");
                 lp = 1;
                 foreach (var ri3 in rlist)
                 {
                     var imagepath = ri3.GetXmlProperty("genxml/hidden/imagepathimg");
                     var fname = Path.GetFileName(imagepath);
                     imagepath = newAppThemeVersionFolderRel + "/img/" + fname;
-                    r.SetXmlProperty("genxml/imagelist/genxml[" + lp + "]/hidden/imagepathimg", imagepath);
+                    Record.SetXmlProperty("genxml/imagelist/genxml[" + lp + "]/hidden/imagepathimg", imagepath);
                     lp += 1;
                 }
-
-                _objCtrl.Update(r);
             }
+            Update();
+            Populate();
         }
 
         private static void DirectoryCopy(string sourceDirName, string destDirName)
@@ -853,6 +769,36 @@ namespace DNNrocketAPI.Componants
             return rtnDict;
         }
 
+        private SimplisityRecord ReadAppTheme()
+        {
+            var appThemeFile = AppThemeFolderMapPath + "\\export.xml";
+            var rtnRec = new SimplisityRecord();
+            var appThemeXmlFile = rtnRec.ToXmlItem();
+            if (File.Exists(appThemeFile))
+            {
+                appThemeXmlFile = FileUtils.ReadFile(appThemeFile);
+                if (appThemeXmlFile.ToLower().StartsWith("<root>"))  // reformat for legacy code
+                {
+                    var sRec = new SimplisityRecord();
+                    sRec.XMLData = appThemeXmlFile;
+                    appThemeXmlFile = new SimplisityRecord().ToString();
+                    var nod = sRec.XMLDoc.SelectSingleNode("root/item[1]");
+                    if (nod != null)
+                    {
+                        appThemeXmlFile = nod.OuterXml;
+                    }
+                }
+            }
+            rtnRec.FromXmlItem(appThemeXmlFile);
+            return rtnRec;
+        }
+        private void UpdateAppTheme()
+        {
+            var exportMapPath = AppThemeFolderMapPath + "\\export.xml";
+            if (File.Exists(exportMapPath)) File.Delete(exportMapPath);
+            FileUtils.SaveFile(exportMapPath, Record.ToXmlItem());
+        }
+
 
         #region "properties"
 
@@ -872,7 +818,6 @@ namespace DNNrocketAPI.Componants
         public List<string> VersionList { get; set; }
         public double LatestVersion { get; set; }
         public string LatestVersionFolder { get; set; }
-        public int LatestRev { get { return Record.GetXmlPropertyInt("genxml/hidden/latestrev"); } }
         public string ImageFolderMapPath { get; set; }
         public string DocumentFolderMapPath { get; set; }
         public string CssFolderMapPath { get; set; }
@@ -895,7 +840,6 @@ namespace DNNrocketAPI.Componants
         public string SystemKey { get; set; }
         public Dictionary<string, SimplisityRecord> SnippetText { get; set; }
         public Dictionary<string, SimplisityRecord> RazorTokenText { get; set; }
-        public DNNrocketController RocketController { get { return _objCtrl; } }
 
         public string AppThemeName { get { return Record.GetXmlProperty("genxml/hidden/appthemename"); } set { Record.SetXmlProperty("genxml/hidden/appthemename",value); } }
         public string AppThemePrefix { get { return Record.GetXmlProperty("genxml/hidden/appthemeprefix"); } set { Record.SetXmlProperty("genxml/hidden/appthemeprefix", value); } }

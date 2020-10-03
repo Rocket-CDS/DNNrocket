@@ -1384,9 +1384,10 @@ namespace DNNrocketAPI.Componants
             response.End();
         }
 
-        public static SimplisityRecord UpdateFieldXpath(SimplisityRecord record, string listname)
+        public static SimplisityRecord UpdateFieldXpath(SimplisityInfo postInfo, SimplisityRecord record, string listname)
         {
-            List<SimplisityRecord> fieldList = record.GetRecordList(listname);
+            record.RemoveRecordList(listname);
+            List<SimplisityRecord> fieldList = postInfo.GetRecordList(listname);
             var lp = 1;
             foreach (var f in fieldList)
             {
@@ -1428,7 +1429,7 @@ namespace DNNrocketAPI.Componants
                 {
                     xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                 }
-                if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext")
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext" || f.GetXmlProperty("genxml/select/type") == "")
                 {
                     xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                 }
@@ -1437,7 +1438,8 @@ namespace DNNrocketAPI.Componants
 
                 if (xpath != "")
                 {
-                    record.SetXmlProperty("genxml/" + listname + "/genxml[" + lp + "]/hidden/xpath", xpath);
+                    f.SetXmlProperty("genxml/" + listname + "/genxml[" + lp + "]/hidden/xpath", xpath);
+                    record.AddRecordListItem(listname, f);
                 }
                 lp += 1;
             }

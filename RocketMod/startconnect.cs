@@ -434,7 +434,6 @@ namespace RocketMod
             _moduleParams.AppThemeLogo = appTheme.Logo;
             _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
             _moduleParams.AppThemeVersion = appTheme.LatestVersionFolder;
-            _moduleParams.LatestRev = appTheme.LatestRev;
             _moduleParams.ModuleType = "RocketMod";
             _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
             _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
@@ -694,7 +693,7 @@ namespace RocketMod
             var dbInfo = objCtrl.GetRecord("ROCKETMODFIELDS", fieldsData.Info.ItemID, -1, true, _rocketInterface.DatabaseTable);
             if (dbInfo != null)
             {
-                dbInfo = DNNrocketUtils.UpdateFieldXpath(dbInfo, "fielddata");
+                dbInfo = DNNrocketUtils.UpdateFieldXpath(_postInfo, dbInfo, "fielddata");
                 objCtrl.Update(dbInfo, _rocketInterface.DatabaseTable);
             }
 
