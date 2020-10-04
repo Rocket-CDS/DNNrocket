@@ -10,54 +10,35 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 @{
-    var i = new SimplisityInfo();
-    var articleLimpet = (ArticleLimpet)Model.List.First();
-    if (articleLimpet.Info != null)
-    {
-        i = articleLimpet.Info;
-    }
+    //NOTE: This template is designed to have 1 imagelist on the template.
+    // If more than 1 image list is required, a new template is required.
+    var articleData = (ArticleLimpet)Model.List.First();
     var docLP = 1;
-
-    var docfieldname = Model.GetSetting("docfieldname");
-    var datalist = i.GetList("documentlist" + docfieldname);
-
+    var datalist = articleData.GetDocuments();
+    var info = articleData.Info;
 }
 
-@if (!Model.GetSettingBool("hideheading"))
-{
-    <div class="w3-container w3-theme w3-padding">
-        <label>@ResourceKey("DNNrocket.documents")</label>
-    </div>
-}
-
+@DocumentUploadButton(Model)
 
 <div class="w3-row documentlistdatasection">
 
-    <div class="w3-container">
-        <div class="w3-col w3-padding" style="width:160px;">
-            <div class="w3-button rocket-buttonbar w3-teal w3-padding-8 simplisity_click" s-post="#datasection" s-list="@Model.GetSetting("s-list-csv")" s-cmd="rocketmodedit_adddocument" s-fields='{"articleid":"@i.ItemID","docfieldname":"@(docfieldname)"}'><i class='fas fa-plus-circle'></i></div>
-            <div class="w3-button rocket-buttonbar w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="documentlist@(docfieldname)bin" s-return="#documentlistdata@(docfieldname)" s-removelist=".documentlist@(docfieldname)" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
-        </div>
-    </div>
+    <ul id="documentlistdata" class="w3-ul">
 
-    <ul id="documentlistdata@(docfieldname)" class="w3-ul">
-
-        @foreach (var docInfo in datalist)
+        @foreach (var articleDoc in datalist)
         {
-            <li class="documentlist@(docfieldname) w3-half w3-display-container w3-padding w3-border-0">
-                @SortableListIndex(docInfo, docLP)
+            <li class="documentlist w3-half w3-display-container w3-padding w3-border-0">
+                @SortableListIndex(articleDoc.Info, docLP)
 
                 <div class="w3-display-container w3-padding w3-card">
                     <div class="w3-row">
                         <div class="w3-col m8">
                             <label class="">@ResourceKey("HtmlContent.document")</label>&nbsp;@EditFlag()
-                            @DocumentEdit(docInfo, docfieldname, " class='w3-input w3-border' ", true, docLP)
                         </div>
                         <div class="w3-col w3-padding" style="width:160px">
                             <label class="">@ResourceKey("HtmlContent.justify")</label>
-                            @RadioButtonList(docInfo, "genxml/hidden/layout" + docfieldname, "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, docLP)
+                            @RadioButtonList(articleDoc.Info, "genxml/hidden/layout", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, docLP)
                         </div>
-                        <div class="simplisity_removelistitem w3-right" s-removelist=".documentlist@(docfieldname)" s-recylebin="documentlist@(docfieldname)bin" style="cursor: pointer;">
+                        <div class="simplisity_removelistitem w3-right" s-removelist=".documentlist" s-recylebin="documentlistbin" style="cursor: pointer;">
                             <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
                         </div>
                     </div>
@@ -71,7 +52,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#documentlistdata@(docfieldname)").sortable();
-        $("#documentlistdata@(docfieldname)").disableSelection();
+        $("#documentlistdata").sortable();
+        $("#documentlistdata").disableSelection();
     });
 </script>

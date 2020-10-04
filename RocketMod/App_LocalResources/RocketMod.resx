@@ -288,4 +288,13 @@
   <data name="imageupload.Text" xml:space="preserve">
     <value>Image Upload</value>
   </data>
+  <data name="documentupload.Msg" xml:space="preserve">
+    <value>Upload your documents here, by dragging and dropping on the area below.  Or by using the upload button to select images from your file system.  Some file types are restricted for security reasons.</value>
+  </data>
+  <data name="documentupload.Text" xml:space="preserve">
+    <value>Document Upload</value>
+  </data>
+  <data name="dropdocument.Text" xml:space="preserve">
+    <value>Drop Document Here</value>
+  </data>
 </root>

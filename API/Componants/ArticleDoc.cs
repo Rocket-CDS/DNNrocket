@@ -32,6 +32,10 @@ namespace DNNrocketAPI.Componants
                 if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/hidden/docpath" + FieldId);
                 return rtn;
             }
+            set
+            {
+                Info.SetXmlProperty("genxml/hidden/imagepath" + FieldId, value);
+            }
         }
         public string Name
         {

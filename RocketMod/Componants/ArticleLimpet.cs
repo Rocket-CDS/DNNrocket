@@ -89,6 +89,31 @@ namespace RocketMod
 
         #endregion
 
+        #region "documents"
+        public List<SimplisityInfo> GetDocumentList()
+        {
+            return Info.GetList("documentlist");
+        }
+        public List<ArticleDoc> GetDocuments()
+        {
+            var rtn = new List<ArticleDoc>();
+            foreach (var i in GetDocumentList())
+            {
+                rtn.Add(new ArticleDoc(i, ""));
+            }
+            return rtn;
+        }
+        public void AddDocument(string uniqueName, string destinationRelPath)
+        {
+            if (Info.ItemID < 0) Update(); // blank record, not on DB.  Create now.
+            var articleDoc = new ArticleDoc(new SimplisityInfo(), "");
+            articleDoc.RelPath = destinationRelPath.TrimEnd('/') + "/" + uniqueName;
+            Info.AddListItem("documentlist", articleDoc.Info);
+            Update();
+        }
+
+        #endregion
+
         #region "links"
         public List<SimplisityInfo> GetLinkList()
         {

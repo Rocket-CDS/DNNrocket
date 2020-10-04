@@ -20,13 +20,6 @@
     var info = articleData.Info;
 }
 
-@if (!Model.GetSettingBool("hideheading"))
-{
-    <div class="w3-container w3-theme w3-padding">
-        <label>@ResourceKey("DNNrocket.images")</label>
-    </div>
-}
-
 @ImageUploadButton(Model)
 
 <div class="w3-row imagelistdatasection">

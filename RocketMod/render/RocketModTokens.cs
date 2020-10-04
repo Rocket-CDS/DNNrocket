@@ -193,6 +193,10 @@ namespace RocketMod
         {
             return RenderTemplate("ImageUpload.cshtml", "/DesktopModules/DNNrocket/RocketMod/", themeFolder, model, verison, true);
         }
+        public IEncodedString DocumentUploadButton(SimplisityRazor model, string verison = "1.0", string themeFolder = "config-w3")
+        {
+            return RenderTemplate("DocumentUpload.cshtml", "/DesktopModules/DNNrocket/RocketMod/", themeFolder, model, verison, true);
+        }
 
     }
 }

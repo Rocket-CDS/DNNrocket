@@ -99,9 +99,7 @@ namespace RocketMod
                     strOut = AddArticleImage();
                     break;
                 case "rocketmodedit_adddocument":
-                    SaveArticle(false);
-                    RocketModAddListItem("documentlist" + _paramInfo.GetXmlProperty("genxml/hidden/docfieldname"));
-                    strOut = GetArticleSingle();
+                    strOut = AddArticleDocument();
                     break;
                 case "rocketmodedit_addlink":
                     strOut = AddArticleLink();

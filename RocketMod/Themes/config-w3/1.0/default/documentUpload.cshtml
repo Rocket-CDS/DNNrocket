@@ -1,0 +1,70 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using DNNrocketAPI.Componants;
+@using Simplisity;
+@using RocketMod;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+
+@{
+    var info = new SimplisityInfo();
+
+    var articleData = (ArticleLimpet)Model.List.First();
+    if (articleData.Info != null)
+    {
+        info = articleData.Info;
+    }
+
+//NOTE: This tmeplate is deigned to only have 1 image list on the page.
+}
+
+    <div class="w3-container">
+        <div class="w3-button rocket-buttonbar w3-teal w3-padding-8" onclick="$('#articledocumentselect').show();"><i class='fas fa-plus-circle'></i></div>
+        <div class="w3-button rocket-buttonbar w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="documentlistbin" s-return="#documentlistdata" s-removelist=".documentlist" style="display: none;"><i class="fas fa-undo fa-fw fa-lg"></i></div>
+    </div>
+
+<div id="articledocumentselect" class="w3-modal">
+    <div class="w3-modal-content" style="width:40%;">
+
+        <header class="w3-theme-d5 w3-center" style="height: 38.5px;">
+            <span onclick="$('#articledocumentselect').hide();" class="w3-button w3-display-topright">&times;</span>
+            <h4></h4>
+        </header>
+        <div class="w3-margin-top" style="">
+            <div class="w3-container">
+
+                <img src="/DesktopModules/DNNrocket/api/images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+                <h2>@ResourceKey("RocketMod.documentupload")</h2>
+                <p>@ResourceKey("RocketMod.documentupload", "", "Msg")</p>
+
+                <div class="w3-col m12 w3-white w3-margin-bottom" style="border-style:dotted;height:200px;">
+                    <input id="documentfileupload" class="simplisity_fileupload" s-maxchunksize="10000000" s-cmd="rocketmodedit_adddocument" s-post="#datasection" s-list="@(articleData.ListSelectorcCVS)" s-uploadcmdurl="/Desktopmodules/dnnrocket/api/fileupload/upload" s-fields='{"articleid":"@articleData.ArticleId"}' type="file" name="files[]" multiple style="display:none;">
+                    <p><i>&nbsp;@ResourceKey("RocketMod.dropdocument")...</i></p>
+                </div>
+
+                <div class="w3-row w3-margin-bottom">
+                    <span class="w3-col m12 w3-button w3-teal fileuploadaction" onclick="$('#documentfileupload').trigger('click');">@ButtonText(ButtonTypes.upload)</span>
+                </div>
+
+                <div id="simplisity-file-progress-bar" class="w3-modal w3-padding" style="z-index:9999;background-color:grey">
+                    <div class="w3-modal-content w3-card-4  w3-display-middle w3-padding" style="width: 60%;">
+                        <div id="progessaction">@ResourceKey("RocketMod.documentupload")</div>
+                        <div class=" w3-row w3-light-grey">
+                            <div class="w3-blue simplisity-file-progress-bar" style="width:0%;height:24px;">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+    });
+
+</script>

@@ -4,6 +4,7 @@ using Rocket.AppThemes.Componants;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace RocketMod
@@ -167,6 +168,54 @@ namespace RocketMod
             return GetArticleSingle();
         }
 
+
+        #endregion
+
+        #region "Documents"
+
+        public string AddArticleDocument()
+        {
+            SaveArticle(false);
+            var docList = MoveDocumentToFolder(_postInfo, _dataModuleParams.DocumentFolderMapPath);
+            foreach (var nam in docList)
+            {
+                _articleLimpet.AddDocument(nam, _dataModuleParams.DocumentFolderRel);
+            }
+            return GetArticleSingle();
+        }
+        private List<string> MoveDocumentToFolder(SimplisityInfo postInfo, string destinationFolder, int maxDocs = 10)
+        {
+            destinationFolder = destinationFolder.TrimEnd('\\');
+            var rtn = new List<string>();
+            var userid = UserUtils.GetCurrentUserId(); // prefix to filename on upload.
+            if (!Directory.Exists(destinationFolder)) Directory.CreateDirectory(destinationFolder);
+            var fileuploadlist = postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+            if (fileuploadlist != "")
+            {
+                var docCount = 1;
+                foreach (var f in fileuploadlist.Split(';'))
+                {
+                    if (f != "")
+                    {
+                        var friendlyname = GeneralUtils.DeCode(f);
+                        var userfilename = userid + "_" + friendlyname;
+                        if (docCount <= maxDocs)
+                        {
+                            var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname.Replace(" ", "_"), destinationFolder);
+                            var fname = destinationFolder + "\\" + unqName;
+                            File.Move(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, fname);
+                            if (File.Exists(fname))
+                            {
+                                rtn.Add(unqName);
+                                docCount += 1;
+                            }
+                        }
+                        File.Delete(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename);
+                    }
+                }
+            }
+            return rtn;
+        }
 
         #endregion
 
