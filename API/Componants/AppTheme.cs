@@ -834,6 +834,8 @@ namespace DNNrocketAPI.Componants
         public Dictionary<string, string> FileNameList { get; set; }
         public Dictionary<string, string> GetTemplatesMapPath { get { return FileNameList; } }
 
+        public bool IsSinglePage { get { if (DataType == 1) return true; else return false;  } }
+        public bool IsListDetail { get { if (DataType == 2) return true; else return false; } }
         public int DataType { get { return Record.GetXmlPropertyInt("genxml/radio/themetype"); } }
         public bool EnableSettings { get { return Record.GetXmlPropertyBool("genxml/checkbox/enablesettings"); } }
         public int SystemId { get; set; }

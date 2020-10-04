@@ -59,7 +59,7 @@ namespace DNNrocketAPI.Componants
             DataSourceExternal = false;
             if (systemKey != "") SystemKey = systemKey;
             if (ModuleIdDataSource != _moduleid) DataSourceExternal = true;
-            if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueString(3);
+            if (ModuleRef == "") ModuleRef = GeneralUtils.GetGuidKey();
             if (ModuleIdDataSource <= 0) ModuleIdDataSource = _moduleid;
             if (ModuleRefDataSource == "") ModuleRefDataSource = ModuleRef;
 

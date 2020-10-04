@@ -10,19 +10,14 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 @{
-    var i = new SimplisityInfo();
-    var articleLimpet = (ArticleLimpet)Model.List.First();
-    if (articleLimpet.Info != null)
-    {
-        i = articleLimpet.Info;
-    }
+
+    //NOTE: This template is designed to have 1 imagelist on the template.
+    // If more than 1 image list is required, a new template is required.
+
+    var articleData = (ArticleLimpet)Model.List.First();
     var imgLP = 0;
-
-    var imgfieldname = Model.GetSetting("imgfieldname");
-
-    var datalist = i.GetList("imagelist" + imgfieldname);
-    var globalSettings = new SystemGlobalData();
-
+    var datalist = articleData.GetImages();
+    var info = articleData.Info;
 }
 
 @if (!Model.GetSettingBool("hideheading"))
@@ -32,49 +27,60 @@
     </div>
 }
 
+@ImageUploadButton(Model)
 
 <div class="w3-row imagelistdatasection">
 
-    <div class="w3-container">
-        <div class="w3-col w3-padding" style="width:160px;">
-            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-post="#datasection" s-list="@Model.GetSetting("s-list-csv")" s-cmd="rocketmodedit_addimage" s-fields='{"selecteditemid":"@i.ItemID","imgfieldname":"@(imgfieldname)"}'><i class='fas fa-plus-circle'></i></div>
-            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="imagelist@(imgfieldname)bin" s-return="#imagelistdata@(imgfieldname)" s-removelist=".imagelist@(imgfieldname)" style="display: none;"><i title="" class="fas fa-undo fa-fw fa-lg"></i></div>
-        </div>
-    </div>
+    <ul id="imagelistdata" class="w3-ul">
 
-    <ul id="imagelistdata@(imgfieldname)" class="w3-ul">
-
-        @foreach (var imgInfo in datalist)
+        @foreach (var articleImage in datalist)
         {
             imgLP += 1;
 
-            var settingsdataclassselect = "dictionarydata" + imgLP;
-            var imagesizeclass = "imagesize" + imgLP;
+            <li class="imagelist w3-display-container w3-padding w3-border-0">
 
-            <li class="imagelist@(imgfieldname) w3-half w3-display-container w3-padding w3-border-0">
-
-                @SortableListIndex(imgInfo, imgLP)
+                @SortableListIndex(articleImage.Info, imgLP)
 
                 <div class="w3-display-container w3-padding w3-card">
                     <div class="w3-row">
-                        <span id="deletebutton@(imgLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".imagelist@(imgfieldname)" s-recylebin="imagelist@(imgfieldname)bin">
+                        <span id="deletebutton@(imgLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin">
                             <i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i>
                         </span>
-                        <div class="w3-col w3-padding">
-                            @ImageEditFull(imgInfo, imgfieldname, 100, 100, "", false, imgLP, "", globalSettings.PngImage)
+                        <div class="w3-col m2 w3-padding-small" style="width:100px;">
+                            @HiddenField(articleImage.Info, "genxml/hidden/imagepath", "", "", false, imgLP)
+                            @if (articleImage.RelPath != "")
+                            {
+                                <img src="@ThumbnailImageUrl(articleImage.RelPath, 80, 80)" style="height:80px;width:80px;" class="w3-circle" />
+                            }
+                            else
+                            {
+                                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 80, 80)" style="height:80px;width:80px;" class="w3-circle" />
+                            }
+                        </div>
+                        <div class="w3-col m4 w3-padding-small">
+                            <label>@EditFlag()&nbsp;@ResourceKey("Rocket_Slider.name")</label>
+                            @TextBox(articleImage.Info, "genxml/lang/genxml/textbox/name", "class='w3-input w3-border' MaxLength='200'", "", true, imgLP)
+                        </div>
+                        <div class="w3-col m4 w3-padding-small">
+                            <label>@EditFlag()&nbsp;@ResourceKey("Rocket_Slider.imagealt")</label>
+                            @TextBox(articleImage.Info, "genxml/lang/genxml/textbox/imagealt", "class='w3-input w3-border' MaxLength='200'", "", true, imgLP)
+                        </div>
+                        <div class='w3-col m2 w3-padding-small'>
                         </div>
                     </div>
+
                 </div>
             </li>
 
         }
     </ul>
 
+
 </div>
 
 <script>
         $(document).ready(function () {
-            $("#imagelistdata@(imgfieldname)").sortable();
-            $("#imagelistdata@(imgfieldname)").disableSelection();
+            $("#imagelistdata").sortable();
+            $("#imagelistdata").disableSelection();
         });
 </script>

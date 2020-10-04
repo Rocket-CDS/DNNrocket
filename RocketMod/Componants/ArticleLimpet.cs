@@ -21,10 +21,31 @@ namespace RocketMod
 
         public ArticleLimpet(string xmlExportItem)
         {
+            _objCtrl = new DNNrocketController();
             Info = new SimplisityInfo();
             Info.FromXmlItem(xmlExportItem);
         }
+        /// <summary>
+        /// Constructor for single page modules, use the moduleref as the guidkey. 
+        /// </summary>
+        /// <param name="moduleRef"></param>
+        /// <param name="moduleid"></param>
+        /// <param name="langRequired"></param>
+        public ArticleLimpet(string moduleRef, int moduleid, string langRequired)
+        {
+            _objCtrl = new DNNrocketController();
+            var articleInfo = _objCtrl.GetByGuidKey(PortalUtils.GetCurrentPortalId(), moduleid, _entityTypeCode, moduleRef, "", _tableName);
+            if (articleInfo == null)
+                Populate(-1, moduleid, langRequired, moduleRef);
+            else
+                Populate(articleInfo.ItemID, moduleid, langRequired, moduleRef);
+        }
         public ArticleLimpet(int articleId, int moduleid, string langRequired)
+        {
+            _objCtrl = new DNNrocketController();
+            Populate(articleId, moduleid, langRequired, "");
+        }
+        private void Populate(int articleId, int moduleid, string langRequired, string guidKey)
         {
             if (articleId <= 0) articleId = -1;  // create new record.
             _articleId = articleId;
@@ -34,15 +55,8 @@ namespace RocketMod
             Info.ModuleId = moduleid;
             Info.UserId = -1;
             Info.PortalId = PortalUtils.GetPortalId();
+            Info.GUIDKey = guidKey;
 
-            _objCtrl = new DNNrocketController();
-            _langRequired = langRequired;
-            if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
-            Populate(_langRequired);
-        }
-        private void Populate(string langRequired)
-        {
-            _objCtrl = new DNNrocketController();
             _langRequired = langRequired;
             if (_langRequired == "") _langRequired = DNNrocketUtils.GetEditCulture();
 
@@ -50,6 +64,54 @@ namespace RocketMod
             if (info != null && info.ItemID > 0) Info = info; // check if we have a real record, or a dummy being created and not saved yet.
         }
 
+        #region "images"
+        public List<SimplisityInfo> GetImageList()
+        {
+            return Info.GetList("imagelist");
+        }
+        public List<ArticleImage> GetImages()
+        {
+            var rtn = new List<ArticleImage>();
+            foreach (var i in GetImageList())
+            {
+                rtn.Add(new ArticleImage(i, ""));
+            }
+            return rtn;
+        }
+        public void AddImage(string uniqueName, string destinationRelPath)
+        {
+            if (Info.ItemID < 0) Update(); // blank record, not on DB.  Create now.
+            var articleImage = new ArticleImage(new SimplisityInfo(), "");
+            articleImage.RelPath = destinationRelPath.TrimEnd('/') + "/" + uniqueName;
+            Info.AddListItem("imagelist", articleImage.Info);
+            Update();
+        }
+
+        #endregion
+
+        #region "links"
+        public List<SimplisityInfo> GetLinkList()
+        {
+            return Info.GetList("linklist");
+        }
+        public List<ArticleLink> GetLinks()
+        {
+            var rtn = new List<ArticleLink>();
+            foreach (var i in GetLinkList())
+            {
+                rtn.Add(new ArticleLink(i, ""));
+            }
+            return rtn;
+        }
+        public void AddLink()
+        {
+            if (Info.ItemID < 0) Update(); // blank record, not on DB.  Create now.
+            var articleLink = new ArticleLink(new SimplisityInfo(), "");
+            Info.AddListItem("linklist", articleLink.Info);
+            Update();
+        }
+
+        #endregion
 
         public void Delete()
         {
@@ -70,6 +132,7 @@ namespace RocketMod
             Info.AddListItem(listname);
             Update();
         }
+        public string ListSelectorcCVS { get { return ".linklist,.imagelist,.documentlist"; } }
         public string EntityTypeCode { get { return _entityTypeCode; } }
         public SimplisityInfo Info { get; private set; }
         public int ModuleId { get { return Info.ModuleId; } set { Info.ModuleId = value; } }

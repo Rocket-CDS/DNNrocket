@@ -25,7 +25,7 @@
 
 
 <div class="w3-row w3-padding ">
-    <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketmodedit_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","selecteditemid":"@configinfo.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.save)</div>
+    <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 langchangesave simplisity_click rocketmodsavebutton" s-cmd="rocketmodedit_saveconfig" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","articleid":"@configinfo.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.save)</div>
 
     <div class="w3-col m6 w3-dropdown-hover">
         <div class="w3-button " style="border-top: 6px solid #fff !important;">@ResourceKey("DNNrocket.more")...</div>
@@ -60,9 +60,6 @@
 <div id="configdata" class="w3-container simplisity_panel">
 
     <div class="w3-row">
-        <div class="w3-col m2 w3-margin-top " style="width:120px;height:120px;">
-            <img src="@ThumbnailImageUrl(moduleParams.AppThemeLogo,120,120,"", systemGlobalData.PngImage)" class="w3-circle" />
-        </div>
         <div class="w3-col m5">
             <div class="w3-row">
                 <div class="w3-col m9 w3-padding">
@@ -190,20 +187,23 @@
     }
 
 
-    <div class="w3-container w3-border w3-margin-top">
-        <div class="w3-col m3 w3-padding">
-            ItemId:&nbsp;<b>@configinfo.ItemID</b>
-        </div>
-        <div class="w3-col m3 w3-padding">
-            @ResourceKey("RocketMod.apptheme"):&nbsp;<b>@moduleParams.AppThemeFolder</b>
-        </div>
-        <div class="w3-col m2 w3-padding">
-            ModuleId:&nbsp;<b>@configinfo.ModuleId</b>
-        </div>
-        <div class="w3-col m3 w3-padding">
-            @ResourceKey("RocketMod.ref"):&nbsp;<b>@moduleParams.ModuleRef</b>
-        </div>
+<div class="w3-container w3-border w3-margin-top">
+    <div class="w3-col m2 w3-padding">
+        ItemId:&nbsp;<b>@configinfo.ItemID</b>
     </div>
+    <div class="w3-col m3 w3-padding">
+        @ResourceKey("RocketMod.apptheme"):&nbsp;<b>@moduleParams.AppThemeFolder</b>
+    </div>
+    <div class="w3-col m2 w3-padding">
+        ModuleId:&nbsp;<b>@configinfo.ModuleId</b>
+    </div>
+    <div class="w3-col m2 w3-padding">
+        @ResourceKey("RocketMod.ref"):&nbsp;<b>@moduleParams.ModuleRef</b>
+    </div>
+    <div class="w3-col m2 w3-padding">
+        PortalId:&nbsp;<b>@PortalUtils.GetPortalId()</b>
+    </div>
+</div>
 
 
 </div>

@@ -91,9 +91,10 @@
             $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'dnnrocketmodule', debug: false });
             var urlParams = new URLSearchParams(window.location.search);
             simplisity_setParamField("reload", true)
-            simplisity_setParamField("moduleid", urlParams.get('moduleid'))
-            simplisity_setParamField("tabid", urlParams.get('tabid'))
-            simplisity_setParamField("editmode", urlParams.get('editmode'))
+            simplisity_setParamField("moduleid", urlParams.get('moduleid'));
+            simplisity_setParamField("tabid", urlParams.get('tabid'));
+            simplisity_setParamField("editmode", urlParams.get('editmode'));
+            simplisity_setParamField("adminpanel", "true"); // ensure we know it is in the admin panel, so we can action the app select if needed.
             if (urlParams.get('editmode') === '1') {
                 $('#base-panel').css('margin-left', '0px');
                 $('#mySidebar').css('width', '0px');

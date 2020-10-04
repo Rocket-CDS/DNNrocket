@@ -106,7 +106,7 @@ namespace DNNrocketAPI
 
                 if (!this.Page.Items.Contains("dnnrocket_pageheader")) // flag to insure we only inject once for page load.
                 {
-                    DNNrocketUtils.IncludePageHeaders(_systemkey, this.Page, TabId, systemData.DebugMode);
+                    DNNrocketUtils.IncludePageHeaders(_systemkey, this.Page, TabId, _moduleParams.CacheEnabled);
                 }
             }
         }
@@ -192,7 +192,7 @@ namespace DNNrocketAPI
             var strOut = "";
             var systemData = new SystemLimpet(_systemInfo);
             var cacheOutPut = "";
-            var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + DNNrocketUtils.GetCurrentCulture() + hasEditAccess;
+            var cacheKey = "view.ascx" + ModuleId + DNNrocketUtils.GetCurrentCulture() + paramString + hasEditAccess;
             var model = new SimplisityRazor();
             model.ModuleId = ModuleId;
             model.TabId = TabId;

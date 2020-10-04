@@ -1438,7 +1438,7 @@ namespace DNNrocketAPI.Componants
 
                 if (xpath != "")
                 {
-                    f.SetXmlProperty("genxml/" + listname + "/genxml[" + lp + "]/hidden/xpath", xpath);
+                    f.SetXmlProperty("genxml/hidden/xpath", xpath);
                     record.AddRecordListItem(listname, f);
                 }
                 lp += 1;

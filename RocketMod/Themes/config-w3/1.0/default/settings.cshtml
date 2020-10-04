@@ -15,7 +15,7 @@
 }
 
 <div class="w3-row w3-padding">
-    <span class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click langchangesave" s-cmd="rocketmodsettings_save" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}' s-post="#settingsdata" s-list=".rocketmodsettings">@ButtonText(ButtonTypes.save)</span>
+    <span class="w3-col m2 w3-button w3-green w3-padding-8 simplisity_click langchangesave" s-cmd="rocketmodsettings_save" s-fields='{"articleid":"@settingsData.Info.ItemID"}' s-post="#settingsdata" s-list=".rocketmodsettings">@ButtonText(ButtonTypes.save)</span>
 </div>
 
 <div id="settingsdata">
@@ -36,7 +36,7 @@
     </div>
 
     <div class="w3-row w3-padding">
-        <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodsettings_add" s-fields='{"selecteditemid":"@settingsData.Info.ItemID"}'><i class='fas fa-plus-circle'></i></div>
+        <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketmodsettings_add" s-fields='{"articleid":"@settingsData.Info.ItemID"}'><i class='fas fa-plus-circle'></i></div>
         <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="rocketmodsettingsbin" s-return="#rocketmodsettingsdata" s-removelist=".rocketmodsettings" style="display: none;"><i title="" class="fas fa-undo fa-fw fa-lg"></i></div>
     </div>
 

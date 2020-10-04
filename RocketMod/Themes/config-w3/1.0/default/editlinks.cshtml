@@ -9,15 +9,12 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
 @{
-    var i = new SimplisityInfo();
-    var articleLimpet = (ArticleLimpet)Model.List.First();
-    if (articleLimpet.Info != null)
-    {
-        i = articleLimpet.Info;
-    }
-    var linkLP = 1;
-
-    var linkfieldname = Model.GetSetting("linkfieldname");
+    //NOTE: This template is designed to have 1 imagelist on the template.
+    // If more than 1 image list is required, a new template is required.
+    var articleData = (ArticleLimpet)Model.List.First();
+    var linkLP = 0;
+    var datalist = articleData.GetLinks();
+    var info = articleData.Info;
 
 }
 
@@ -33,33 +30,33 @@
 
     <div class="w3-container">
         <div class="w3-col w3-padding" style="width:160px;">
-            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-post="#datasection" s-list="@Model.GetSetting("s-list-csv")" s-cmd="rocketmodedit_addlink" s-fields='{"selecteditemid":"@i.ItemID","linkfieldname":"@(linkfieldname)"}'><i class='fas fa-plus-circle'></i></div>
-            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="linklist@(linkfieldname)bin" s-return="#linklistdata@(linkfieldname)" s-removelist=".linklist@(linkfieldname)" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
+            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-post="#datasection" s-list="@(articleData.ListSelectorcCVS)" s-cmd="rocketmodedit_addlink" s-fields='{"articleid":"@(articleData.ArticleId)"}'><i class='fas fa-plus-circle'></i></div>
+            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="linklistbin" s-return="#linklistdata" s-removelist=".linklist" style="display: none;"><i title="Add New" class="fas fa-undo fa-fw fa-lg"></i></div>
         </div>
     </div>
 
-    <ul id="linklistdata@(linkfieldname)" class="w3-ul">
+    <ul id="linklistdata" class="w3-ul">
 
-        @foreach (var linkInfo in i.GetList("linklist" + linkfieldname))
+        @foreach (var linkData in datalist)
         {
-            <li class="linklist@(linkfieldname) w3-half w3-display-container w3-padding w3-border-0">
-                @SortableListIndex(linkInfo, linkLP)
+            <li class="linklist w3-half w3-display-container w3-padding w3-border-0">
+                @SortableListIndex(linkData.Info, linkLP)
 
                 <div class="w3-display-container w3-padding w3-card">
                     <div class="w3-row">
 
                         <div class="w3-col m6">
-                            @RadioButtonList(linkInfo, "genxml/radio/linktype" + linkfieldname, "1,2", ResourceKey("RocketMod.internallink") + "," + ResourceKey("RocketMod.externallink"), " class='linktypeclick" + linkfieldname + "' linkrow='" + linkLP + "' ", "1", "", false, linkLP)
+                            @RadioButtonList(linkData.Info, "genxml/radio/linktype", "1,2", ResourceKey("RocketMod.internallink") + "," + ResourceKey("RocketMod.externallink"), " class='linktypeclick' linkrow='" + linkLP + "' ", "1", "", false, linkLP)
                         </div>
                         <div class="w3-col m3">
-                            @CheckBox(linkInfo, "genxml/checkbox/blank" + linkfieldname, "&nbsp;" + ResourceKey("RocketMod.blank").ToString(), " class='w3-check' ", false, false, linkLP)
+                            @CheckBox(linkData.Info, "genxml/checkbox/blank", "&nbsp;" + ResourceKey("RocketMod.blank").ToString(), " class='w3-check' ", false, false, linkLP)
                         </div>
                         <div class="w3-col m3">
-                            @CheckBox(linkInfo, "genxml/checkbox/hide" + linkfieldname, "&nbsp;" + ResourceKey("RocketMod.hidelink").ToString(), " class='w3-check' ", false, false, linkLP)
+                            @CheckBox(linkData.Info, "genxml/checkbox/hide", "&nbsp;" + ResourceKey("RocketMod.hidelink").ToString(), " class='w3-check' ", false, false, linkLP)
                         </div>
 
                         @{
-                            var linktype = linkInfo.GetXmlPropertyInt("genxml/radio/linktype" + linkfieldname);
+                            var linktype = linkData.Info.GetXmlPropertyInt("genxml/radio/linktype");
                             var internaldisplay = "";
                             var externaldisplay = "display:none;";
                             if (linktype == 2)
@@ -71,26 +68,26 @@
 
                         <div class="w3-col m12">
                             <label>@ResourceKey("RocketMod.text")</label>&nbsp;@EditFlag()
-                            @TextBox(linkInfo, "genxml/lang/genxml/textbox/name" + linkfieldname, " class='w3-input w3-border' autocomplete='off'", "", true, linkLP)
+                            @TextBox(linkData.Info, "genxml/lang/genxml/textbox/name", " class='w3-input w3-border' autocomplete='off'", "", true, linkLP)
                         </div>
-                        <div class="w3-col m12 internallink@(linkfieldname)@(linkLP)" style="@(internaldisplay);height:64px;">
+                        <div class="w3-col m12 internallink@(linkLP)" style="@(internaldisplay);height:64px;">
                             <label>@ResourceKey("RocketMod.page")</label>
-                            @TabSelectList(linkInfo, "genxml/select/internallink" + linkfieldname, " class='w3-input w3-border' ", true, false, linkLP)
+                            @TabSelectList(linkData.Info, "genxml/select/internallink", " class='w3-input w3-border' ", true, false, linkLP)
                         </div>
-                        <div class="w3-col m12 externallink@(linkfieldname)@(linkLP)" style="@(externaldisplay);height:64px;">
+                        <div class="w3-col m12 externallink@(linkLP)" style="@(externaldisplay);height:64px;">
                             <label>@ResourceKey("RocketMod.url")</label>&nbsp;@EditFlag()
-                            @TextBox(linkInfo, "genxml/lang/genxml/textbox/externallink" + linkfieldname, " class='w3-input w3-border' autocomplete='off'", "https://", true, linkLP)
+                            @TextBox(linkData.Info, "genxml/lang/genxml/textbox/externallink", " class='w3-input w3-border' autocomplete='off'", "https://", true, linkLP)
                         </div>
 
                         <div class="w3-col m6">
                             <label class="">@ResourceKey("RocketMod.anchor")</label>
-                            @TextBox(linkInfo, "genxml/textbox/anchor" + linkfieldname, " class='w3-input w3-border' autocomplete='off'", "", false, linkLP)
+                            @TextBox(linkData.Info, "genxml/textbox/anchor", " class='w3-input w3-border' autocomplete='off'", "", false, linkLP)
                         </div>
                         <div class="w3-col m6">
                         </div>
 
                     </div>
-                    <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist@(linkfieldname)" s-recylebin="linklist@(linkfieldname)bin" style="cursor: pointer;">
+                    <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
                         <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
                     </div>
                 </div>
@@ -103,20 +100,20 @@
 
 <script>
     $(document).ready(function () {
-        $("#linklistdata@(linkfieldname)").sortable();
-        $("#linklistdata@(linkfieldname)").disableSelection();
+        $("#linklistdata").sortable();
+        $("#linklistdata").disableSelection();
 
-        $('.linktypeclick@(linkfieldname)').unbind('click');
-        $('.linktypeclick@(linkfieldname)').click(function () {
+        $('.linktypeclick').unbind('click');
+        $('.linktypeclick').click(function () {
             var linkrow = $(this).attr("linkrow");
             var selectedval = $(this).find(":checked").val();
             if (selectedval === '1') {
-                $('.internallink@(linkfieldname)' + linkrow).show();
-                $('.externallink@(linkfieldname)' + linkrow).hide();
+                $('.internallink' + linkrow).show();
+                $('.externallink' + linkrow).hide();
             }
             if (selectedval === '2') {
-                $('.internallink@(linkfieldname)' + linkrow).hide();
-                $('.externallink@(linkfieldname)' + linkrow).show();
+                $('.internallink' + linkrow).hide();
+                $('.externallink' + linkrow).show();
             }
         });
 

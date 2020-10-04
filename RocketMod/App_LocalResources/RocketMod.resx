@@ -282,4 +282,10 @@
   <data name="lastbackupidentical.Text" xml:space="preserve">
     <value>The last attempted Backup was identical to the previous backup.</value>
   </data>
+  <data name="imageupload.Msg" xml:space="preserve">
+    <value>Upload your images here, by dragging and dropping on the area below.  Or by using the upload button to select images from your file system.</value>
+  </data>
+  <data name="imageupload.Text" xml:space="preserve">
+    <value>Image Upload</value>
+  </data>
 </root>

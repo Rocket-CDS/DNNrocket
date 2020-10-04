@@ -47,18 +47,47 @@ namespace DNNrocketAPI.Componants
             }
             set
             {
-                Info.SetXmlProperty("genxml/hidden/name" + FieldId, value);
+                Info.SetXmlProperty("genxml/textbox/name" + FieldId, value);
             }
         }
-        public string Alt { get { 
-                
-                var rtn = Info.GetXmlProperty("genxml/textbox/altproductimage" + FieldId);
-                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/altproductimage" + FieldId);
+        public string Alt 
+        { 
+            get 
+            { 
+                var rtn = Info.GetXmlProperty("genxml/textbox/imagealt" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/imagealt" + FieldId);
+                if (rtn == "") rtn = Name;
                 return rtn;
             }
             set
             {
-                Info.SetXmlProperty("genxml/hidden/altproductimage" + FieldId, value);
+                Info.SetXmlProperty("genxml/textbox/imagealt" + FieldId, value);
+            }
+        }
+        public string Summary
+        {
+            get
+            {
+                var rtn = Info.GetXmlProperty("genxml/textbox/summary" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/summary" + FieldId);
+                return rtn;
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/textbox/summary" + FieldId, value);
+            }
+        }
+        public string Html
+        {
+            get
+            {
+                var rtn = Info.GetXmlProperty("genxml/textbox/html" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/html" + FieldId);
+                return rtn;
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/textbox/summary" + FieldId, value);
             }
         }
         public int Width
@@ -71,7 +100,7 @@ namespace DNNrocketAPI.Componants
             }
             set
             {
-                Info.SetXmlProperty("genxml/hidden/width" + FieldId, value.ToString());
+                Info.SetXmlProperty("genxml/textbox/width" + FieldId, value.ToString());
             }
         }
         public int Height
@@ -84,7 +113,20 @@ namespace DNNrocketAPI.Componants
             }
             set
             {
-                Info.SetXmlProperty("genxml/hidden/height" + FieldId, value.ToString());
+                Info.SetXmlProperty("genxml/textbox/height" + FieldId, value.ToString());
+            }
+        }
+        public bool Hidden
+        {
+            get
+            {
+                var rtn = Info.GetXmlPropertyBool("genxml/checkbox/hidden" + FieldId);
+                if (Info.GetXmlProperty("genxml/checkbox/hidden" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/hidden" + FieldId);
+                return rtn;
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/checkbox/hidden" + FieldId, value.ToString());
             }
         }
 

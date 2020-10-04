@@ -87,17 +87,14 @@
                             <div class="w3-col l3 m4 w3-padding searchdiv datalistitem " style="">
                                 <div title="@appTheme.AppThemeName" class="w3-row w3-border "  onclick="showdetail('@(appTheme.AppThemeFolder)');" appthemefolder="@appTheme.AppThemeFolder" style="cursor:pointer;">
 
-                                    <div class="w3-col m8 w3-padding ">
+                                    <div class="w3-col m10 w3-padding ">
                                         <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
                                             <b class="w3-left w3-text-blue ">@appTheme.AppThemePrefix</b>
-                                            <b class="w3-right">@appTheme.LatestVersionFolder.@appTheme.LatestRev </b>
+                                            <b class="w3-right">@appTheme.LatestVersionFolder</b>
                                         </div>
                                         <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
                                             <b>@appTheme.AppThemeName</b>
                                         </div>
-                                    </div>
-                                    <div class="w3-col m2 w3-padding w3-hide-small " style="min-width:76px;height:76px;">
-                                        <img src="@ThumbnailImageUrl(appTheme.Logo,60,60)" class="w3-circle" />
                                     </div>
                                 </div>
                             </div>
