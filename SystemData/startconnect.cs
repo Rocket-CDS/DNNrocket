@@ -182,7 +182,6 @@ namespace DNNrocket.System
 
 
 
-
                     case "systemapi_plugins":
                         strOut = GetPluginList();
                         break;
@@ -457,52 +456,30 @@ namespace DNNrocket.System
 
         public String SystemAdminDetail(string templateControlRelPath)
         {
-            try
+            var strOut = "Invalid ItemId";
+            var selecteditemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            var themeFolder = _paramInfo.GetXmlProperty("genxml/hidden/theme");
+            var razortemplate = _paramInfo.GetXmlProperty("genxml/hidden/template");
+            if (selecteditemid > 0)
             {
-                var strOut = "Invalid ItemId";
-                var selecteditemid = _paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
-                var themeFolder = _paramInfo.GetXmlProperty("genxml/hidden/theme");
-                var razortemplate = _paramInfo.GetXmlProperty("genxml/hidden/template");
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
 
-                if (selecteditemid > 0)
-                {
-                    var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var objCtrl = new DNNrocketController();
+                var info = objCtrl.GetInfo(selecteditemid);
 
-                    var objCtrl = new DNNrocketController();
-                    var info = objCtrl.GetInfo(selecteditemid);
-
-                    strOut = RenderRazorUtils.RazorDetail(razorTempl, info, _passSettings);
-                }
-
-
-                return strOut;
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, info, _passSettings);
             }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            return strOut;
         }
 
         public String SystemGlobalDetail()
         {
-            try
-            {
-                var passSettings = _paramInfo.ToDictionary();
-
-                var razorTempl = RenderRazorUtils.GetRazorTemplateData("Admin_SystemGlobalDetail.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-
-                SchedulerUtils.SchedulerIsInstalled();
-
-                var globalData = new SystemGlobalData();
-
-                var strOut = RenderRazorUtils.RazorDetail(razorTempl, globalData, passSettings);
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-                return ex.ToString();
-            }
+            var passSettings = _paramInfo.ToDictionary();
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData("Admin_SystemGlobalDetail.cshtml", _controlRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+            SchedulerUtils.SchedulerIsInstalled();
+            var globalData = new SystemGlobalData();
+            var strOut = RenderRazorUtils.RazorDetail(razorTempl, globalData, passSettings);
+            return strOut;
         }
 
         public void SystemGlobalSave()

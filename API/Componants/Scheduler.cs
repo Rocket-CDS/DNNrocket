@@ -49,6 +49,8 @@ namespace DNNrocketAPI.Componants
                 this.ScheduleHistoryItem.Succeeded = false;
                 this.ScheduleHistoryItem.AddLogNote(" Service Failed. Error:" + Ex.ToString());
                 this.Errored(ref Ex);
+
+                LogUtils.LogSystem(" Scheduler Failed. Error:" + Ex.ToString());
             }
         }
 

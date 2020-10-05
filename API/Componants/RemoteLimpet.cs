@@ -50,6 +50,9 @@ namespace DNNrocketAPI.Componants
                     AddFormParam(nod.Name, nod.InnerText);
                 }
             }
+
+            Record.SetXmlProperty("genxml/requestcontent", paramInfo.GetXmlPropertyRaw("genxml/requestcontent"));
+
         }
         /// <summary>
         /// Link remoteData to as module, this can be saved in the DB and cached.

@@ -82,6 +82,17 @@ namespace DNNrocketAPI.Componants
             get { return Info.GetXmlProperty("genxml/textbox/globalheading"); }
             set { Info.SetXmlProperty("genxml/textbox/globalheading", value); }
         }
+        public DateTime LastForcedSchedulerTime
+        {
+            get
+            {
+                if (GeneralUtils.IsDateInvariantCulture(Info.GetXmlPropertyDate("genxml/hidden/lastschedulertime")))
+                    return Info.GetXmlPropertyDate("genxml/hidden/lastschedulertime");
+                else
+                    return DateTime.Now.AddDays(-10);
+            }
+            set { Info.SetXmlProperty("genxml/hidden/lastschedulertime", value.ToString(), TypeCode.DateTime); }
+        }
 
 
     }
