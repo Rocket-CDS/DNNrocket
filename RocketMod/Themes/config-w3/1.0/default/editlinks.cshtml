@@ -32,7 +32,7 @@
 
         @foreach (var linkData in datalist)
         {
-            <li class="linklist w3-half w3-display-container w3-padding w3-border-0">
+            <li class="linklist w3-display-container w3-padding w3-border-0 w3-col m12 l6">
                 @SortableListIndex(linkData.Info, linkLP)
 
                 <div class="w3-display-container w3-padding w3-card">
@@ -45,7 +45,7 @@
                             @CheckBox(linkData.Info, "genxml/checkbox/blank", "&nbsp;" + ResourceKey("RocketMod.blank").ToString(), " class='w3-check' ", false, false, linkLP)
                         </div>
                         <div class="w3-col m3">
-                            @CheckBox(linkData.Info, "genxml/checkbox/hide", "&nbsp;" + ResourceKey("RocketMod.hidelink").ToString(), " class='w3-check' ", false, false, linkLP)
+                            @CheckBox(linkData.Info, "genxml/checkbox/hidden", "&nbsp;" + ResourceKey("RocketMod.hidelink").ToString(), " class='w3-check' ", false, false, linkLP)
                         </div>
 
                         @{
@@ -81,7 +81,7 @@
 
                     </div>
                     <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
-                        <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
+                        <i title="@ResourceKey("DNNrocket.remove")" class=" fas fa-minus-square fa-fw fa-lg"></i>
                     </div>
                 </div>
             </li>

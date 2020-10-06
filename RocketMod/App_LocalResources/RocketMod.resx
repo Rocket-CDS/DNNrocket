@@ -300,4 +300,19 @@
   <data name="alt.Text" xml:space="preserve">
     <value>Alt</value>
   </data>
+  <data name="hidden.Text" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="height.Text" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="showsummary.Text" xml:space="preserve">
+    <value>Show Extra</value>
+  </data>
+  <data name="summary.Text" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="width.Text" xml:space="preserve">
+    <value>Width</value>
+  </data>
 </root>

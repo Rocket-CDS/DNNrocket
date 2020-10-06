@@ -29,22 +29,22 @@
 
         @foreach (var articleDoc in datalist)
         {
-        <li class="documentlist w3-half w3-display-container w3-padding w3-border-0">
+        <li class="documentlist w3-display-container w3-padding w3-border-0 w3-col m12 l6">
             @SortableListIndex(articleDoc.Info, docLP)
             @HiddenField(articleDoc.Info, "genxml/hidden/documentpath", "", "", false, docLP)
 
             <div class="w3-display-container w3-padding w3-card">
-                <div class="w3-row">
+                <div class="simplisity_removelistitem w3-button w3-display-topright" s-removelist=".documentlist" s-recylebin="documentlistbin" style="cursor: pointer;">
+                    <i title="@ResourceKey("DNNrocket.remove")" class=" fas fa-minus-square fa-fw fa-lg"></i>
+                </div>
+
+                <div class="w3-row w3-display-container">
                     <div class="w3-col m8">
                         <label>@EditFlag()&nbsp;@ResourceKey("RocketMod.name")</label>
                         @TextBox(articleDoc.Info, "genxml/lang/genxml/textbox/name", "class='w3-input w3-border' MaxLength='200'", "", true, docLP)
                     </div>
-                    <div class="w3-col w3-padding" style="width:160px">
-                        <label class="">@ResourceKey("RocketMod.justify")</label>
-                        @RadioButtonList(articleDoc.Info, "genxml/hidden/layout", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, docLP)
-                    </div>
-                    <div class="simplisity_removelistitem w3-right" s-removelist=".documentlist" s-recylebin="documentlistbin" style="cursor: pointer;">
-                        <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
+                    <div class="w3-col m3 w3-display-right">
+                        @CheckBox(articleDoc.Info, "genxml/checkbox/hidden", "&nbsp;" + ResourceKey("RocketMod.hidelink").ToString(), " class='w3-check' ", false, false, docLP)
                     </div>
                 </div>
             </div>

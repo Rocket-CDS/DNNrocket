@@ -28,13 +28,13 @@ namespace DNNrocketAPI.Componants
         {
             get
             {
-                var rtn = Info.GetXmlProperty("genxml/hidden/docpath" + FieldId);
-                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/hidden/docpath" + FieldId);
+                var rtn = Info.GetXmlProperty("genxml/hidden/documentpath" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/hidden/documentpath" + FieldId);
                 return rtn;
             }
             set
             {
-                Info.SetXmlProperty("genxml/hidden/docpath" + FieldId, value);
+                Info.SetXmlProperty("genxml/hidden/documentpath" + FieldId, value);
             }
         }
         public string Name
@@ -46,5 +46,19 @@ namespace DNNrocketAPI.Componants
                 return rtn;
             }
         }
+        public bool Hidden
+        {
+            get
+            {
+                var rtn = Info.GetXmlPropertyBool("genxml/checkbox/hidden" + FieldId);
+                if (Info.GetXmlProperty("genxml/checkbox/hidden" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/hidden" + FieldId);
+                return rtn;
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/checkbox/hidden" + FieldId, value.ToString());
+            }
+        }
+
     }
 }
