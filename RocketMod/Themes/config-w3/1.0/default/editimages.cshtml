@@ -18,7 +18,11 @@
     var imgLP = 0;
     var datalist = articleData.GetImages();
     var info = articleData.Info;
+    var resxpath = articleData.AppThemeRelPath + "/" + articleData.AppThemeVersion + "/resx/";
 }
+
+@AddProcessData("resourcepath", resxpath)
+
 
 @ImageUploadButton(Model)
 
@@ -51,11 +55,11 @@
                             }
                         </div>
                         <div class="w3-col m4 w3-padding-small">
-                            <label>@EditFlag()&nbsp;@ResourceKey("Rocket_Slider.name")</label>
+                            <label>@EditFlag()&nbsp;@ResourceKey("RocketMod.name")</label>
                             @TextBox(articleImage.Info, "genxml/lang/genxml/textbox/name", "class='w3-input w3-border' MaxLength='200'", "", true, imgLP)
                         </div>
                         <div class="w3-col m4 w3-padding-small">
-                            <label>@EditFlag()&nbsp;@ResourceKey("Rocket_Slider.imagealt")</label>
+                            <label>@EditFlag()&nbsp;@ResourceKey("RocketMod.alt")</label>
                             @TextBox(articleImage.Info, "genxml/lang/genxml/textbox/imagealt", "class='w3-input w3-border' MaxLength='200'", "", true, imgLP)
                         </div>
                         <div class='w3-col m2 w3-padding-small'>
@@ -72,8 +76,8 @@
 </div>
 
 <script>
-        $(document).ready(function () {
-            $("#imagelistdata").sortable();
-            $("#imagelistdata").disableSelection();
-        });
+    $(document).ready(function () {
+        $("#imagelistdata").sortable();
+        $("#imagelistdata").disableSelection();
+    });
 </script>

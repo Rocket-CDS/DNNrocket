@@ -75,12 +75,6 @@
       </action>
     </command>
     <command>
-      <cmd>rocketmodedit_editarticlelist</cmd>
-      <action>
-        true
-      </action>
-    </command>
-    <command>
       <cmd>rocketmodedit_articlesearch</cmd>
       <action>
         true
@@ -160,12 +154,6 @@
     </command>
     <command>
       <cmd>rocketmodedit_datasourceselect</cmd>
-      <action>
-        true
-      </action>
-    </command>
-    <command>
-      <cmd>rocketmodedit_reindexsortorder</cmd>
       <action>
         true
       </action>

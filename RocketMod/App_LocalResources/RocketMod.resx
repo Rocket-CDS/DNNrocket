@@ -297,4 +297,7 @@
   <data name="dropdocument.Text" xml:space="preserve">
     <value>Drop Document Here</value>
   </data>
+  <data name="alt.Text" xml:space="preserve">
+    <value>Alt</value>
+  </data>
 </root>

@@ -67,23 +67,13 @@ namespace RocketMod
                 return ex.ToString();
             }
         }
-        public String ReIndexSortOrder()
-        {
-            try
-            {
-                _articleLimpetList.SortOrderReIndex();
-                return GetDashBoard();
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
         public String ResetDataRocketMod(int moduleid)
         {
             try
             {
-                _articleLimpetList.DeleteAll();
+                var mParams = new ModuleParams(moduleid);
+                var articleData = new ArticleLimpet(mParams.ModuleRef, mParams.ModuleId, _nextLang);
+                articleData.Delete();
                 return GetDashBoard();
             }
             catch (Exception ex)

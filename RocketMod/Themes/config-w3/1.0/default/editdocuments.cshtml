@@ -9,6 +9,9 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Documents/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
 
+@AddProcessData("resourcepath", "/DesktopModules/RocketThemes/" + Model.SystemKey + "/" + Model.ThemeFolder + "/1.0/resx/")
+
+
 @{
     //NOTE: This template is designed to have 1 imagelist on the template.
     // If more than 1 image list is required, a new template is required.
@@ -26,24 +29,26 @@
 
         @foreach (var articleDoc in datalist)
         {
-            <li class="documentlist w3-half w3-display-container w3-padding w3-border-0">
-                @SortableListIndex(articleDoc.Info, docLP)
+        <li class="documentlist w3-half w3-display-container w3-padding w3-border-0">
+            @SortableListIndex(articleDoc.Info, docLP)
+            @HiddenField(articleDoc.Info, "genxml/hidden/documentpath", "", "", false, docLP)
 
-                <div class="w3-display-container w3-padding w3-card">
-                    <div class="w3-row">
-                        <div class="w3-col m8">
-                            <label class="">@ResourceKey("HtmlContent.document")</label>&nbsp;@EditFlag()
-                        </div>
-                        <div class="w3-col w3-padding" style="width:160px">
-                            <label class="">@ResourceKey("HtmlContent.justify")</label>
-                            @RadioButtonList(articleDoc.Info, "genxml/hidden/layout", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, docLP)
-                        </div>
-                        <div class="simplisity_removelistitem w3-right" s-removelist=".documentlist" s-recylebin="documentlistbin" style="cursor: pointer;">
-                            <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
-                        </div>
+            <div class="w3-display-container w3-padding w3-card">
+                <div class="w3-row">
+                    <div class="w3-col m8">
+                        <label>@EditFlag()&nbsp;@ResourceKey("RocketMod.name")</label>
+                        @TextBox(articleDoc.Info, "genxml/lang/genxml/textbox/name", "class='w3-input w3-border' MaxLength='200'", "", true, docLP)
+                    </div>
+                    <div class="w3-col w3-padding" style="width:160px">
+                        <label class="">@ResourceKey("RocketMod.justify")</label>
+                        @RadioButtonList(articleDoc.Info, "genxml/hidden/layout", "0,1,2", "<i class='fas fa-align-left'></i>,<i class='fas fa-align-center'></i>,<i class='fas fa-align-right'></i>", "class=''", "0", "", false, docLP)
+                    </div>
+                    <div class="simplisity_removelistitem w3-right" s-removelist=".documentlist" s-recylebin="documentlistbin" style="cursor: pointer;">
+                        <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
                     </div>
                 </div>
-            </li>
+            </div>
+        </li>
             docLP += 1;
         }
     </ul>

@@ -14,10 +14,11 @@ namespace RocketMod
 
         public Dictionary<string, object> DownloadDocument()
         {
+            var articleData = new ArticleLimpet(_dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _currentLang);
+
             var documentref = _paramInfo.GetXmlProperty("genxml/hidden/document");
             var documentlistname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
-            _articleLimpet = new ArticleLimpet(_articleid, _dataModuleParams.ModuleId, _editLang);
-            var docInfo = _articleLimpet.Info.GetListItem(documentlistname, "genxml/lang/genxml/hidden/document", documentref);
+            var docInfo = articleData.Info.GetListItem(documentlistname, "genxml/lang/genxml/hidden/document", documentref);
             var filepath = docInfo.GetXmlProperty("genxml/lang/genxml/hidden/reldocument");
             var namedocument = docInfo.GetXmlProperty("genxml/lang/genxml/hidden/namedocument");
             var rtnDic = new Dictionary<string, object>();
@@ -26,48 +27,36 @@ namespace RocketMod
             rtnDic.Add("fileext", "");
             return rtnDic;
         }
-        public void SaveArticle(bool doBackup)
+        public ArticleLimpet SaveArticle(bool doBackup)
         {
+            var articleData = new ArticleLimpet(_dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _editLang);
+
             // do Backup
             if (doBackup) DoBackUp();
 
-            _articleLimpet = new ArticleLimpet(_articleid, _dataModuleParams.ModuleId, _editLang);
-
             // do Save
             _passSettings.Add("saved", "true");
-            _articleLimpet.DebugMode = _systemData.DebugMode;
-            _articleLimpet.Save(_postInfo);
+            articleData.DebugMode = _systemData.DebugMode;
+            articleData.Save(_postInfo);
 
-            // We need to clear cache and sync before the langauge change.  Langauge is held in cache for the user.
-            DNNrocketUtils.SynchronizeModule(_moduleid); // Modified Date
-            CacheFileUtils.ClearAllCache();
-
-            // change language (if changed, reload done in GetArticle() method )
-            var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
-            if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
-
-
+            return articleData;
         }
 
         public String GetArticleSingle()
         {
             try
             {
+                var articleData = new ArticleLimpet(_dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _nextLang);
+                if (articleData.ArticleId <= 0) articleData.Update(); // create a record for this module.
 
                 var strOut = "";
 
-                // The data record cannot be accessed by _articleId, so use moduleid on guidkey
-
-                if (_articleLimpet == null) _articleLimpet = new ArticleLimpet(_dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _editLang);
-                if (_articleLimpet.ArticleId <= 0) _articleLimpet.Update(); // create a record for this module.
-
-                _articleLimpet.ImageFolder = _dataModuleParams.ImageFolder;
-                _articleLimpet.DocumentFolder = _dataModuleParams.DocumentFolder;
-                _articleLimpet.AppTheme = _dataModuleParams.AppThemeFolder;
-                _articleLimpet.AppThemeVersion = _dataModuleParams.AppThemeVersion;
-                _articleLimpet.AppThemeRelPath = _dataModuleParams.AppThemeFolderRel;
-                _articleLimpet.AppThemeDataType = _dataAppThemeMod.AppTheme.DataType;
-
+                articleData.ImageFolder = _dataModuleParams.ImageFolder;
+                articleData.DocumentFolder = _dataModuleParams.DocumentFolder;
+                articleData.AppThemeFolder = _dataModuleParams.AppThemeFolder;
+                articleData.AppThemeVersion = _dataModuleParams.AppThemeVersion;
+                articleData.AppThemeRelPath = _dataModuleParams.AppThemeFolderRel;
+                articleData.AppThemeDataType = _dataAppThemeMod.AppTheme.DataType;
 
                 foreach (var s in _moduleParams.ModuleSettings)
                 {
@@ -78,7 +67,7 @@ namespace RocketMod
 
                 var razorTempl = _dataAppThemeMod.AppTheme.GetTemplate(templateName);
                 if (razorTempl == "") return "No '" + templateName + "' template found in " + _dataModuleParams.AppThemeFolder + " v" + _dataModuleParams.AppThemeVersion;
-                strOut = RenderRazorUtils.RazorDetail(razorTempl, _articleLimpet, _passSettings, new SessionParams(_paramInfo), true);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, articleData, _passSettings, new SessionParams(_paramInfo), true);
 
                 return strOut;
             }
@@ -89,25 +78,6 @@ namespace RocketMod
 
         }
 
-        public void RocketModAddListItem(string listname)
-        {
-            try
-            {
-                var articleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/articleid");
-                if (articleid > 0)
-                {
-                    var objCtrl = new DNNrocketController();
-                    var info = objCtrl.GetData(_rocketInterface.EntityTypeCode, articleid, _editLang);
-                    info.AddListItem(listname);
-                    objCtrl.SaveData(info);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogUtils.LogException(ex);
-            }
-        }
-
         public String GetDisplay()
         {
             try
@@ -115,15 +85,14 @@ namespace RocketMod
                 var strOut = "";
                 if (_moduleParams.Exists)
                 {
-                    if (_articleLimpet == null) _articleLimpet = new ArticleLimpet(_dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _editLang);
-                    if (_articleLimpet.ArticleId <= 0) _articleLimpet.Update(); // create a record for this module.
+                    var articleData = new ArticleLimpet(_dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _currentLang);
 
-                    _articleLimpet.ImageFolder = _dataModuleParams.ImageFolder;
-                    _articleLimpet.DocumentFolder = _dataModuleParams.DocumentFolder;
-                    _articleLimpet.AppTheme = _dataModuleParams.AppThemeFolder;
-                    _articleLimpet.AppThemeVersion = _dataModuleParams.AppThemeVersion;
-                    _articleLimpet.AppThemeRelPath = _dataModuleParams.AppThemeFolderRel;
-                    _articleLimpet.AppThemeDataType = _dataAppThemeMod.AppTheme.DataType;
+                    articleData.ImageFolder = _dataModuleParams.ImageFolder;
+                    articleData.DocumentFolder = _dataModuleParams.DocumentFolder;
+                    articleData.AppThemeFolder = _dataModuleParams.AppThemeFolder;
+                    articleData.AppThemeVersion = _dataModuleParams.AppThemeVersion;
+                    articleData.AppThemeRelPath = _dataModuleParams.AppThemeFolderRel;
+                    articleData.AppThemeDataType = _dataAppThemeMod.AppTheme.DataType;
 
                     _passSettings.Add("datatype", _dataAppThemeMod.AppTheme.DataType.ToString());
 
@@ -136,7 +105,7 @@ namespace RocketMod
 
                     var razorTempl = _dataAppThemeMod.AppTheme.GetTemplate(templateName);
                     if (razorTempl == "") return "No '" + templateName + "' template found in " + _dataModuleParams.AppThemeFolder + " v" + _dataModuleParams.AppThemeVersion;
-                    strOut = RenderRazorUtils.RazorDetail(razorTempl, _articleLimpet, _passSettings, new SessionParams(_paramInfo), true);
+                    strOut = RenderRazorUtils.RazorDetail(razorTempl, articleData, _passSettings, new SessionParams(_paramInfo), true);
 
                     return strOut;
 
@@ -159,12 +128,13 @@ namespace RocketMod
 
         public string AddArticleImage()
         {
-            SaveArticle(false);
+            var articleData = SaveArticle(false);
             var imgList = ImgUtils.MoveImageToFolder(_postInfo, _dataModuleParams.ImageFolderMapPath);
             foreach (var nam in imgList)
             {
-                _articleLimpet.AddImage(nam, _dataModuleParams.ImageFolderRel);
+                articleData.AddImage(nam, _dataModuleParams.ImageFolderRel);
             }
+            articleData.Update();
             return GetArticleSingle();
         }
 
@@ -175,12 +145,13 @@ namespace RocketMod
 
         public string AddArticleDocument()
         {
-            SaveArticle(false);
+            var articleData = SaveArticle(false);
             var docList = MoveDocumentToFolder(_postInfo, _dataModuleParams.DocumentFolderMapPath);
             foreach (var nam in docList)
             {
-                _articleLimpet.AddDocument(nam, _dataModuleParams.DocumentFolderRel);
+                articleData.AddDocument(nam, _dataModuleParams.DocumentFolderRel);
             }
+            articleData.Update();
             return GetArticleSingle();
         }
         private List<string> MoveDocumentToFolder(SimplisityInfo postInfo, string destinationFolder, int maxDocs = 10)
@@ -223,9 +194,10 @@ namespace RocketMod
 
         public string AddArticleLink()
         {
-                SaveArticle(false);
-                _articleLimpet.AddLink();
-                return GetArticleSingle();
+            var articleData = SaveArticle(false);
+            articleData.AddLink();
+            articleData.Update();
+            return GetArticleSingle();
         }
 
 

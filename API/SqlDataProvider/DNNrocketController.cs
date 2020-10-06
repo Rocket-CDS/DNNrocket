@@ -122,10 +122,25 @@ namespace DNNrocketAPI
             {
                 foreach (var l in DNNrocketUtils.GetCultureCodeList(portalId))
                 {
+                    // when things go wrong, we get nested XML which brakes the SQL update.  (Only seen in development situations)
+                    // To stop this we fix the record on each update, by removing any "fake" IDX records.
+                    var idxCount = GetListCount(portalId, -1, objRec.TypeCode + "LANGIDX");
+                    if (idxCount > 1) // Should only ever be 1 IDX record.
+                    {
+                        // remove any invalid records.
+                        var idxList = GetList(portalId, -1, objRec.TypeCode + "LANGIDX");
+                        foreach (var idxInfo in idxList)
+                        {
+                            Delete(idxInfo.ItemID, tableName);   
+                        }
+                    }
+
                     var objRecLang = GetRecordLang(itemId, l, tableName);
                     if (objRecLang == null) objRecLang = new SimplisityInfo();
+
                     var info = new SimplisityInfo(objRec);
                     info.SetLangRecord(objRecLang);
+
                     var objIdx = GetRecordByGuidKey(-1, -1, info.TypeCode + "LANGIDX", itemId + "_" + l, "", tableName);
                     if (objIdx == null)
                     {

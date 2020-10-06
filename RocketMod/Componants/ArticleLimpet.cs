@@ -78,6 +78,16 @@ namespace RocketMod
             }
             return rtn;
         }
+        public ArticleImage GetImage(int idx)
+        {
+            var l = GetImageList();
+            if (l.Count >= idx)
+            {
+                var rtnInfo = l[idx];
+                if (rtnInfo != null) return new ArticleImage(rtnInfo, "");
+            }
+            return new ArticleImage(new SimplisityInfo(),"");
+        }
         public void AddImage(string uniqueName, string destinationRelPath)
         {
             if (Info.ItemID < 0) Update(); // blank record, not on DB.  Create now.
@@ -168,7 +178,7 @@ namespace RocketMod
         public int SortOrder { get { return Info.SortOrder; } set { Info.SortOrder = value; } }
         public string ImageFolder { get; set; }
         public string DocumentFolder { get; set; }
-        public string AppTheme { get; set; }
+        public string AppThemeFolder { get; set; }
         public string AppThemeVersion { get; set; }
         public string AppThemeRelPath { get; set; }
         /// <summary>

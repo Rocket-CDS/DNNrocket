@@ -30,14 +30,11 @@ namespace RocketMod
         private string _systemKey;
         private Dictionary<string, string> _passSettings;
         private SettingsData _settingsData;
-        private int _articleid;
         private AppThemeModule _appThemeMod;
         private AppThemeModule _dataAppThemeMod;
-        private ArticleLimpet _articleLimpet;
         private AppThemeDataList _appThemeDataList;
         private UserParams _userParams;
         private string _tableName;
-        private ArticleLimpetList _articleLimpetList;
         private string _nextLang;
         private string _editLang;
         private string _currentLang;
@@ -82,9 +79,6 @@ namespace RocketMod
                     SettingsSave();
                     strOut = GetDashBoard();
                     break;
-                case "rocketmodedit_editarticlelist":
-                    strOut = GetArticleSingle();
-                    break;
                 case "rocketmodedit_articlesearch":
                     strOut = GetArticleSingle();
                     break;
@@ -112,16 +106,13 @@ namespace RocketMod
                     strOut = ResetRocketMod(_moduleid);
                     break;
                 case "rocketmodedit_resetdata":
-                    strOut = ResetDataRocketMod(_moduleid);
+                    strOut = ResetDataRocketMod(_dataModuleParams.ModuleId);
                     break;
                 case "rocketmodedit_datasourcelist":
                     strOut = GetDataSourceList();
                     break;
                 case "rocketmodedit_datasourceselect":
                     strOut = GetDataSourceSelect();
-                    break;
-                case "rocketmodedit_reindexsortorder":
-                    strOut = ReIndexSortOrder();
                     break;
 
 
@@ -226,6 +217,11 @@ namespace RocketMod
 
             }
 
+            // -----------------------------------------------------------------------
+            // if we have changed language, reset the editlang.  The _nextLang is defined on the "InitCmd" function.
+            if (_nextLang != _editLang) DNNrocketUtils.SetEditCulture(_nextLang);
+            // -----------------------------------------------------------------------
+
             if (downloadDict.Count > 0)
             {
                 return downloadDict;
@@ -259,7 +255,7 @@ namespace RocketMod
             DNNrocketUtils.SetNextCulture(_nextLang); // set the next langauge to a cookie, so the "EditFlag" razor token works.
             // -----------------------------------------------------------------------
 
-
+            
             _systemData = new SystemLimpet(systemInfo);
             _rocketInterface = new RocketInterface(interfaceInfo);
             _appthemeRelPath = "/DesktopModules/DNNrocket/AppThemes";
@@ -284,7 +280,7 @@ namespace RocketMod
             {
                 if (paramInfo.GetXmlProperty("genxml/hidden/editmode") == "1")
                 {
-                    paramCmd = "rocketmodedit_editarticlelist";
+                    paramCmd = "rocketmodedit_editarticle";
                 }
                 else
                 {
@@ -298,8 +294,6 @@ namespace RocketMod
                     }
                 }
             }
-
-            _articleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/articleid");
 
             _editLang = DNNrocketUtils.GetEditCulture();
 
@@ -340,8 +334,6 @@ namespace RocketMod
                 if (!_passSettings.ContainsKey("AppThemeVersion")) _passSettings.Add("AppThemeVersion", _moduleParams.AppThemeVersion);
                 if (!_passSettings.ContainsKey("AppThemeRelPath")) _passSettings.Add("AppThemeRelPath", _moduleParams.AppThemeFolderRel);
             }
-
-            _articleLimpetList = new ArticleLimpetList(_paramInfo, _editLang, false);
 
             var securityData = new SecurityLimet(PortalUtils.GetCurrentPortalId(), _systemData.SystemKey, _rocketInterface, -1, -1);
             paramCmd = securityData.HasSecurityAccess(paramCmd, "rocketmod_login");
