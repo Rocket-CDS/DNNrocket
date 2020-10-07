@@ -67,6 +67,7 @@ namespace RocketMod
                         if (localized) xpath = "genxml/lang/" + xpath;
                         var size = f.GetXmlProperty("genxml/select/size");
                         var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
+                        if (label == "") label = f.GetXmlProperty("genxml/textbox/label");
                         var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
                         var defaultBool = f.GetXmlPropertyBool("genxml/textbox/defaultvalue");
                         var attributes = f.GetXmlProperty("genxml/textbox/attributes");
