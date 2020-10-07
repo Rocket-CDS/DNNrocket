@@ -873,32 +873,37 @@ namespace DNNrocketAPI.Componants
         public static string SetEditCulture(string editlang)
         {
             if (!ValidCulture(editlang)) editlang = GetCurrentCulture();
-            var userid = UserUtils.GetCurrentUserId();
-            if (userid > 0)
-            {
-                if (String.IsNullOrEmpty(editlang)) editlang = GetCurrentCulture();
-                var cacheKey = PortalUtils.GetPortalId() + "*editlang*" + userid;
-                CacheUtils.SetCache(cacheKey, editlang);
-            }
+            SetCookieValue("editlang", editlang);
             return editlang;
         }
 
         public static string GetEditCulture()
         {
-            var rtnLang = "en-US"; //default, we must have a value.
             if (HttpContext.Current != null && HttpContext.Current.Request != null)
             {
-                rtnLang = HttpContext.Current.Request.QueryString["editlang"];
+                // use url param first.  This is important on changing languages through DNN.
+                if (HttpContext.Current.Request.QueryString["editlang"] != null)
+                {
+                    return HttpContext.Current.Request.QueryString["editlang"];
+                }
+                // no url language, look in the cookies.
+                if (HttpContext.Current.Request.Cookies["editlang"] != null)
+                {
+                    var l = GetCultureCodeList();
+                    var rtnlang = HttpContext.Current.Request.Cookies["editlang"].Value;
+                    if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
+                    {
+                        if (l.Count >= 1)
+                        {
+                            rtnlang = l.First();
+                        }
+                    }
+                    return rtnlang;
+                }
             }
-            if (!ValidCulture(rtnLang)) rtnLang = GetCurrentCulture();
-            var userid = UserUtils.GetCurrentUserId();
-            if (userid > 0)
-            {
-                var cacheKey = PortalUtils.GetPortalId() + "*editlang*" + userid;
-                rtnLang = (string)CacheUtils.GetCache(cacheKey);
-                if (!ValidCulture(rtnLang)) rtnLang = GetCurrentCulture();
-            }
-            return rtnLang;
+            // default to system thread, but in API this may be wrong.
+            CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
+            return currentCulture.Name;
         }
         public static void SetCurrentCulture(string cultureCode)
         {
