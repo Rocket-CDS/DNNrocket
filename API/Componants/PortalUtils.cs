@@ -318,7 +318,10 @@ namespace DNNrocketAPI.Componants
             var da = DefaultPortalAlias(portalId);
             var daarray = da.Split('.');
             if (daarray.Length <= 2) return da;
-            return daarray[daarray.Length - 2] + "." + daarray[daarray.Length - 1];
+            var rtn1 = daarray[daarray.Length - 2] + "." + daarray[daarray.Length - 1];
+            var rtnSplit = rtn1.Split('/');
+            var rtn = rtnSplit[0];
+            return rtn;
         }
         public static string SiteGuid(int portalId = -1)
         {
