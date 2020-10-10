@@ -133,8 +133,6 @@
     <Compile Include="Componants\ArticleImage.cs" />
     <Compile Include="Componants\BackUpModuleTemplates.cs" />
     <Compile Include="Componants\CacheUtilsDNN.cs" />
-    <Compile Include="Componants\CategoryLimpet.cs" />
-    <Compile Include="Componants\CategoryLimpetList.cs" />
     <Compile Include="Componants\FastReplacer.cs" />
     <Compile Include="Componants\FastReplacerSnippet.cs" />
     <Compile Include="Componants\LogUtils.cs" />
