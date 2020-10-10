@@ -124,13 +124,12 @@ namespace DNNrocketAPI.Componants
         }
         private bool HasCommandSecurityAccess(string commandKey)
         {
-            if (UserUtils.IsSuperUser()) return true;
             // if the command is NOT defined, the do not give access.  Commands MUST be defined.
             if (!_commandSecurity.ContainsKey(commandKey))
             {
-                LogUtils.LogDebug("ERROR - Command NOT defined: " + commandKey, _systemKey);
                 return false;
             }
+            if (UserUtils.IsSuperUser()) return true;
             if (ModuleUtils.HasModuleEditRights(_tabid, _moduleid) && _rocketInterface.SecurityCheckUser(PortalId, _userId))
             {
                 return true;
