@@ -5,9 +5,9 @@
 
 CKEDITOR.editorConfig = function( config ) {
 
-config.toolbar = 'NBrightMod';
+config.toolbar = 'RocketMod';
  
-config.toolbar_NBrightMod =
+config.toolbar_RocketMod =
 [
 	{ name: 'document', items: ['Source'] },
 	{ name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
@@ -24,6 +24,7 @@ config.toolbar_NBrightMod =
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 
 	config.allowedContent = true;
-
+	
+	config.extraPlugins = 'autogrow';
 };
 
