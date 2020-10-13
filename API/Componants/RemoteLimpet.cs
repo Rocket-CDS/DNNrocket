@@ -118,7 +118,7 @@ namespace DNNrocketAPI.Componants
             if (Record != null)
             {
                 Record.SetXmlProperty("genxml/urlparams/" + key, value);
-                if (key.ToLower() == UrlKey && UrlKeyActive) RemoteKey = value;
+                if (key.ToLower() == UrlKey.ToLower() && UrlKeyActive) RemoteKey = value;
             }
         }
         public string GetUrlParam(string key)
@@ -325,13 +325,7 @@ namespace DNNrocketAPI.Componants
             }
             set { Record.SetXmlProperty("genxml/hidden/remotetemplate", value); }
         }
-        public string RemoteKey { get
-            {
-                if (Record.GetXmlProperty("genxml/hidden/remotekey") == "")
-                    return SystemKey;
-                else
-                    return Record.GetXmlProperty("genxml/hidden/remotekey");
-            } set { Record.SetXmlProperty("genxml/hidden/remotekey", value); } }
+        public string RemoteKey { get { return Record.GetXmlProperty("genxml/hidden/remotekey"); } set { Record.SetXmlProperty("genxml/hidden/remotekey", value); } }
         public string AppThemeFolder { get { return Record.GetXmlProperty("genxml/hidden/appthemefolder"); } set { Record.SetXmlProperty("genxml/hidden/appthemefolder", value); } }
         public string AppThemeVersion { get { return Record.GetXmlProperty("genxml/hidden/appthemeversion"); } set { Record.SetXmlProperty("genxml/hidden/appthemeversion", value); } }
         public bool UrlKeyActive { get { return Record.GetXmlPropertyBool("genxml/hidden/urlkeyactive"); } set { Record.SetXmlProperty("genxml/hidden/urlkeyactive", value.ToString()); } }

@@ -8,7 +8,12 @@ namespace DNNrocketAPI.Componants
 {
     public class ArticleImage
     {
-        public ArticleImage(SimplisityInfo info, string fieldId)
+        /// <summary>
+        /// Create an Article Image Data class
+        /// </summary>
+        /// <param name="info">The SimplisityInfo class that contains the image data  </param>
+        /// <param name="fieldId">The field name.  This can be empty, if only 1 image field exists on the page.</param>
+        public ArticleImage(SimplisityInfo info, string fieldId = "")
         {
             Info = info;
             FieldId = fieldId;

@@ -83,6 +83,7 @@ namespace DNNrocketAPI
 
                 // add parameters remoteParams  (do here, so it appears in header call)
                 _paramString = "";
+                _remoteParams.RemoteKey = "";  // refresh the key on each load. (Re-populated by the urlparam loop.)
                 _remoteParams.RemoveAllUrlParam(); // remove any existing url params.
                 foreach (String key in Request.QueryString.AllKeys)
                 {
@@ -92,6 +93,8 @@ namespace DNNrocketAPI
                         _paramString += key + "=" + Request.QueryString[key]; // for cacheKey
                     }
                 }
+
+
                 // get all form data (drop the ones we already processed) 
                 _remoteParams.RemoveAllFormParam(); // remove any existing form params.
                 foreach (string key in Request.Form.AllKeys)
