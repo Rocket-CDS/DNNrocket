@@ -692,9 +692,7 @@
     <None Include="Themes\config-w3\1.0\css\grey.css" />
     <Content Include="Themes\config-w3\1.0\css\dnnrocket.css" />
     <None Include="Themes\config-w3\1.0\css\blue-grey.css" />
-    <Content Include="ViewRemote.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="ViewRemote.ascx" />
     <Content Include="View.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
