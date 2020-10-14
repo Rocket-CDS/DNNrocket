@@ -1571,6 +1571,11 @@ namespace DNNrocketAPI.Componants
         #endregion
 
 
+        public static string NavigateURL(int tabId, string[] param)
+        {
+            return Globals.NavigateURL(tabId, "", param).ToString();
+        }
+
         #region "Portal - obsolete"
 
         [Obsolete("Use PortalUtils instead")]

@@ -119,6 +119,8 @@ namespace DNNrocketAPI.Componants
             {
                 Record.SetXmlProperty("genxml/urlparams/" + key, value);
                 if (key.ToLower() == UrlKey.ToLower() && UrlKeyActive) RemoteKey = value;
+                // get current url for remoteParam
+                if (key.ToLower() == "tabid") ClientUrl = DNNrocketUtils.NavigateURL(Convert.ToInt32(value), new string[0]);
             }
         }
         public string GetUrlParam(string key)
@@ -194,6 +196,21 @@ namespace DNNrocketAPI.Componants
 
         #region "API call"
 
+        public MetaSEO seoAPI(string httpMethod = "POST")
+        {
+            var metaSEO = new MetaSEO();
+            if (RemoteCmd == "") return metaSEO;
+            var cmd = RemoteCmd;
+            if (GetUrlParam("cmd") != "") cmd = GetUrlParam("cmd"); // URL param overwrites database setting.
+            var remoteHeaderCmd = cmd + "seo";
+            var rtnXml =  CallAPI(remoteHeaderCmd, httpMethod, "text/html");
+            var sRec = new SimplisityRecord();
+            sRec.FromXmlItem(rtnXml);
+            metaSEO.Title = GeneralUtils.CleanInput(sRec.GetXmlProperty("genxml/title"));
+            metaSEO.Description = GeneralUtils.CleanInput(sRec.GetXmlProperty("genxml/description"));
+            metaSEO.KeyWords = GeneralUtils.CleanInput(sRec.GetXmlProperty("genxml/keywords"));
+            return metaSEO;
+        }
         public string headerAPI(string httpMethod = "POST")
         {
             if (RemoteCmd == "") return "";
@@ -214,7 +231,8 @@ namespace DNNrocketAPI.Componants
             if (RemoteCmd == "") return "{\"cmd\":\"\",}";
             var cmd = RemoteCmd;
             if (GetUrlParam("cmd") != "") cmd = GetUrlParam("cmd"); // URL param overwrites database setting.
-            return CallAPI(cmd, httpMethod, "application/json");
+            var remoteJsonCmd = cmd + "json";
+            return CallAPI(remoteJsonCmd, httpMethod, "application/json");
         }
         private string CallAPI(string cmd, string httpMethod = "POST", string contentType = "text/html")
         {
@@ -330,6 +348,7 @@ namespace DNNrocketAPI.Componants
         public string AppThemeVersion { get { return Record.GetXmlProperty("genxml/hidden/appthemeversion"); } set { Record.SetXmlProperty("genxml/hidden/appthemeversion", value); } }
         public bool UrlKeyActive { get { return Record.GetXmlPropertyBool("genxml/hidden/urlkeyactive"); } set { Record.SetXmlProperty("genxml/hidden/urlkeyactive", value.ToString()); } }
         public string UrlKey { get { return Record.GetXmlProperty("genxml/hidden/urlkey"); } set { Record.SetXmlProperty("genxml/hidden/urlkey", value); } }
+        public string ClientUrl { get { return Record.GetXmlProperty("genxml/hidden/url"); } set { Record.SetXmlProperty("genxml/hidden/url", value); } }
         public string RemoteAdminRelPath { get { return Record.GetXmlProperty("genxml/hidden/remoteadminrelpath"); } set { Record.SetXmlProperty("genxml/hidden/remoteadminrelpath", value); } }
         public string RemoteAdminUrl { get { return EngineURL.TrimEnd('/') + "/" + RemoteAdminRelPath; } }
 

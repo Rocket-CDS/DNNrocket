@@ -80,7 +80,6 @@ namespace DNNrocketAPI
                 _templateRelPath = _rocketInterface.TemplateRelPath;
                 if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we don't define template path in the interface assume it's the control path.
 
-
                 // add parameters remoteParams  (do here, so it appears in header call)
                 _paramString = "";
                 _remoteParams.RemoteKey = "";  // refresh the key on each load. (Re-populated by the urlparam loop.)
@@ -93,7 +92,6 @@ namespace DNNrocketAPI
                         _paramString += key + "=" + Request.QueryString[key]; // for cacheKey
                     }
                 }
-
 
                 // get all form data (drop the ones we already processed) 
                 _remoteParams.RemoveAllFormParam(); // remove any existing form params.
@@ -179,6 +177,16 @@ namespace DNNrocketAPI
 
         private void PageLoad()
         {
+            //if we have a remotekey, let's assume that we need to call the remote engine for the page SEO stuff.
+            if (_remoteParams.RemoteKey != "")
+            {
+                var basePage = (DotNetNuke.Framework.CDefault)this.Page;
+                var metaSEO = _remoteParams.seoAPI();
+                if (metaSEO.Title != "") basePage.Title = metaSEO.Title;
+                if (metaSEO.Description != "") basePage.Description = metaSEO.Description;
+                if (metaSEO.KeyWords != "") basePage.KeyWords = metaSEO.KeyWords;
+            }
+
             _hasEditAccess = false;
             if (UserId > 0) _hasEditAccess = DotNetNuke.Security.Permissions.ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration);
         }

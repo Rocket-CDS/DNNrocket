@@ -136,6 +136,7 @@
     <Compile Include="Componants\FastReplacer.cs" />
     <Compile Include="Componants\FastReplacerSnippet.cs" />
     <Compile Include="Componants\LogUtils.cs" />
+    <Compile Include="Componants\MetaSEO.cs" />
     <Compile Include="Componants\RemoteLimpet.cs" />
     <Compile Include="Componants\SchedulerUtils.cs" />
     <Compile Include="Componants\PluginDataList.cs" />
@@ -685,9 +686,7 @@
     <Content Include="images\noimage.png" />
     <Content Include="images\noimage2.png" />
     <Content Include="Installation\SQL_SPROC_TableParam.txt" />
-    <Content Include="Meta.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="Meta.ascx" />
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
     <None Include="Themes\config-w3\1.0\css\green-theme.css" />
     <None Include="Themes\config-w3\1.0\css\grey.css" />
