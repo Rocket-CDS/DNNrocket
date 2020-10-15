@@ -30,6 +30,8 @@ using Simplisity;
 using System.Collections.Specialized;
 using DNNrocketAPI.Componants;
 using System.IO;
+using System.Xml;
+using Newtonsoft.Json;
 
 namespace DNNrocketAPI
 {
@@ -194,10 +196,24 @@ namespace DNNrocketAPI
 
         protected override void OnPreRender(EventArgs e)
         {
+            // simplisity puts any session fields in a cookie string as json
+            // We need to pass these values to the toaster engine.
+            var sessionJson = DNNrocketUtils.GetCookieValue("simplisity_sessionparams");  // get session params from cookie, is it exists.
+            XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode("{root:" + sessionJson + "}"); // add root so we can transform into xml
+            var nodList = doc.SelectNodes("root/*");  // loop on values (this could be json, but I find XML easier)
+            foreach (XmlNode nod in nodList)
+            {
+                if (nod.Name != "null") // don't use null.  
+                {
+                    _remoteParams.AddUrlParam(nod.Name, nod.InnerText); // Add value to the remoteParams,tobe passed to the toaster engine.
+                }
+            }
+
+
             var strOut = "";
             var systemData = new SystemLimpet(_systemInfo);
             var cacheOutPut = "";
-            var cacheKey = _remoteParams.RemoteTemplate + ModuleId + DNNrocketUtils.GetCurrentCulture() + _paramString + DNNrocketUtils.GetCurrentCulture() + _hasEditAccess;
+            var cacheKey = _remoteParams.RemoteTemplate + ModuleId + DNNrocketUtils.GetCurrentCulture() + _paramString + DNNrocketUtils.GetCurrentCulture() + _hasEditAccess + sessionJson;
             var model = new SimplisityRazor();
             model.ModuleId = ModuleId;
             model.TabId = TabId;

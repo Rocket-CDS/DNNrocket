@@ -19,6 +19,8 @@ var debugmode = false;
 
     $.fn.activateSimplisityPanel = function (cmdurl) {
 
+        simplisity_sessionfieldaction(); // set sessionfields to saved value.
+
         simplisity_assignevents(cmdurl);
 
         $(this).unbind("change");
@@ -125,24 +127,8 @@ function simplisity_nbxgetCompleted(e) {
         }
     }
 
-    $('input.simplisity_sessionfield').each(function () {
-        var v = simplisity_getSessionField($(this).attr('id'));
-        if (typeof v !== 'undefined' && v !== '') {
-            $(this).val(v);
-        }
-    });
-
-    $('select.simplisity_sessionfield').each(function () {
-        var v = simplisity_getSessionField($(this).attr('id'));
-        if (typeof v !== 'undefined' && v !== '') {
-            var selectctrl = $(this);
-            $('#' + $(this).attr('id') + ' > option').each(function () {
-                if (this.value === v) {
-                    $(selectctrl).val(v);
-                }
-            });
-        }
-    });
+    // Action the session fields to populate the session fields.
+    simplisity_sessionfieldaction();
 
     // clear any uploaded files after completed call
     $('input[id*="simplisity_fileuploadlist"]').val('');
@@ -309,71 +295,74 @@ function simplisity_callSessionFields(element) {
 
 async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
 
-    $('#simplisity_loader').show();
+    var scmd = $(element).attr("s-cmd");
+    if (typeof scmd !== 'undefined' && scmd !== '' && scmd !== null) {
 
-    await simplisity_callBeforeFunction(element);
+        $('#simplisity_loader').show();
 
-    await simplisity_callSessionFields(element);
+        await simplisity_callBeforeFunction(element);
 
-    if ($(element).attr("s-stop") !== 'stop') {
+        await simplisity_callSessionFields(element);
 
-        var scmdurl = $(element).attr("s-cmdurl");
-        if (typeof scmdurl === 'undefined' || scmdurl === '') {
-            scmdurl = cmdurl;
-        }
-        if (typeof scmdurl === 'undefined' || scmdurl === '') {
-            scmdurl = $('#simplisity_cmdurl').val();
-        }
+        if ($(element).attr("s-stop") !== 'stop') {
 
-        var sreturn = $(element).attr("s-return");
-        if (typeof sreturn === 'undefined') {
-            sreturn = returncontainer;
-            if (typeof sreturn === 'undefined' || sreturn === '') {
-                sreturn = '#simplisity_startpanel';
+            var scmdurl = $(element).attr("s-cmdurl");
+            if (typeof scmdurl === 'undefined' || scmdurl === '') {
+                scmdurl = cmdurl;
             }
-        }
-
-        if (typeof $(element).attr("s-reload") !== 'undefined' && $(element).attr("s-reload") !== '') {
-            reload = $(element).attr("s-reload");
-        }
-
-        var scmd = $(element).attr("s-cmd");
-        var spost = $(element).attr("s-post");
-        var slist = $(element).attr("s-list");
-        var sappend = $(element).attr("s-append");
-        var sindex = $(element).attr("s-index");
-        var sfields = $(element).attr("s-fields");
-        var safter = $(element).attr("s-after");
-        var shideloader = $(element).attr("s-hideloader");
-        var sdropdownlist = $(element).attr("s-dropdownlist");
-        var sreturntype = $(element).attr("s-returntype");
-        
-        if (typeof scmd === 'undefined') {
-            scmd = '';
-        }
-
-        if (typeof sfields === 'undefined') {
-            sfields = '';
-        }
-
-        simplisity_setParamField('activevalue', $(element).val());
-
-        if (typeof shideloader === 'undefined') {
-            shideloader = true;
-        }
-        if ($('input[id*="simplisity_fileuploadlist"]').val() !== '') {
-            if (typeof sfields === 'undefined' || sfields === '') {
-                sfields = '{"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
-            } else {
-                sfields = sfields.substring(0, sfields.length - 1) + ',"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
+            if (typeof scmdurl === 'undefined' || scmdurl === '') {
+                scmdurl = $('#simplisity_cmdurl').val();
             }
-        }
 
-        simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype);
-    }
-    else {
-        $(element).attr('s-stop', '');
-        $('#simplisity_loader').hide();
+            var sreturn = $(element).attr("s-return");
+            if (typeof sreturn === 'undefined') {
+                sreturn = returncontainer;
+                if (typeof sreturn === 'undefined' || sreturn === '') {
+                    sreturn = '#simplisity_startpanel';
+                }
+            }
+
+            if (typeof $(element).attr("s-reload") !== 'undefined' && $(element).attr("s-reload") !== '') {
+                reload = $(element).attr("s-reload");
+            }
+
+            var spost = $(element).attr("s-post");
+            var slist = $(element).attr("s-list");
+            var sappend = $(element).attr("s-append");
+            var sindex = $(element).attr("s-index");
+            var sfields = $(element).attr("s-fields");
+            var safter = $(element).attr("s-after");
+            var shideloader = $(element).attr("s-hideloader");
+            var sdropdownlist = $(element).attr("s-dropdownlist");
+            var sreturntype = $(element).attr("s-returntype");
+
+            if (typeof scmd === 'undefined') {
+                scmd = '';
+            }
+
+            if (typeof sfields === 'undefined') {
+                sfields = '';
+            }
+
+            simplisity_setParamField('activevalue', $(element).val());
+
+            if (typeof shideloader === 'undefined') {
+                shideloader = true;
+            }
+            if ($('input[id*="simplisity_fileuploadlist"]').val() !== '') {
+                if (typeof sfields === 'undefined' || sfields === '') {
+                    sfields = '{"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
+                } else {
+                    sfields = sfields.substring(0, sfields.length - 1) + ',"fileuploadlist":"' + $('input[id*="simplisity_fileuploadlist"]').val() + '"}';
+                }
+            }
+
+            simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype);
+        }
+        else {
+            $(element).attr('s-stop', '');
+            $('#simplisity_loader').hide();
+        }
     }
 
     return;
@@ -836,6 +825,9 @@ function simplisity_setSessionField(fieldkey, fieldvalue) {
         }
         obj[fieldkey] = fieldvalue;
         window.sessionStorage.setItem('simplisity_sessionparams', JSON.stringify(obj));
+
+        // also create cookie for toated version, where the module calls the toast server and we assign in the module before client based API call.
+        simplisity_setCookieValue('simplisity_sessionparams', window.sessionStorage.getItem('simplisity_sessionparams'));
     }
 }
 function simplisity_getSessionField(fieldkey) {
@@ -1046,5 +1038,30 @@ function simplisity_assignevents(cmdurl) {
             href: cmdurl + '?' + params
         });
     });
+
+}
+
+// Actions the session fields to populate them.
+function simplisity_sessionfieldaction() {
+
+    $('input.simplisity_sessionfield').each(function () {
+        var v = simplisity_getSessionField($(this).attr('id'));
+        if (typeof v !== 'undefined' && v !== '') {
+            $(this).val(v);
+        }
+    });
+
+    $('select.simplisity_sessionfield').each(function () {
+        var v = simplisity_getSessionField($(this).attr('id'));
+        if (typeof v !== 'undefined' && v !== '') {
+            var selectctrl = $(this);
+            $('#' + $(this).attr('id') + ' > option').each(function () {
+                if (this.value === v) {
+                    $(selectctrl).val(v);
+                }
+            });
+        }
+    });
+
 
 }
