@@ -199,13 +199,16 @@ namespace DNNrocketAPI
             // simplisity puts any session fields in a cookie string as json
             // We need to pass these values to the toaster engine.
             var sessionJson = DNNrocketUtils.GetCookieValue("simplisity_sessionparams");  // get session params from cookie, is it exists.
-            XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode("{root:" + sessionJson + "}"); // add root so we can transform into xml
-            var nodList = doc.SelectNodes("root/*");  // loop on values (this could be json, but I find XML easier)
-            foreach (XmlNode nod in nodList)
+            if (!String.IsNullOrEmpty(sessionJson))
             {
-                if (nod.Name != "null") // don't use null.  
+                XmlDocument doc = (XmlDocument)JsonConvert.DeserializeXmlNode("{root:" + sessionJson + "}"); // add root so we can transform into xml
+                var nodList = doc.SelectNodes("root/*");  // loop on values (this could be json, but I find XML easier)
+                foreach (XmlNode nod in nodList)
                 {
-                    _remoteParams.AddUrlParam(nod.Name, nod.InnerText); // Add value to the remoteParams,tobe passed to the toaster engine.
+                    if (nod.Name != "null") // don't use null.  
+                    {
+                        _remoteParams.AddUrlParam(nod.Name, nod.InnerText); // Add value to the remoteParams,tobe passed to the toaster engine.
+                    }
                 }
             }
 
@@ -231,8 +234,9 @@ namespace DNNrocketAPI
             var adminButton = "";
             if (UserUtils.IsInRole("RemoteAdmin") && _remoteParams.RemoteAdminRelPath != "")
             {
-                adminButton += "<div class='w3-display-topleft w3-margin'>";
+                adminButton += "<div id='rocketcontentediticons" + ModuleId + "' class='w3-display-topleft w3-margin'>";
                 adminButton += "<a href='" + _remoteParams.RemoteAdminUrl + "' target='_blank' title='" + DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.admin") + "' class='w3-button w3-white w3-border w3-border-blue w3-round-large  w3-tiny'><i class='fa fas fa-store-alt'></i></a>";
+                adminButton += "<span onclick=\"$('#rocketcontentediticons" + ModuleId + "').hide();\" class='w3-button w3-white w3-border w3-border-blue w3-round-large  w3-tiny'><i class='fa fas fa-times'></i></span>";
                 adminButton += "</div>";
             }
 
