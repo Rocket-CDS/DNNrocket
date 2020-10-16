@@ -41,22 +41,26 @@ namespace DNNrocketAPI.Componants
         {
             get
             {
-                var rtn = Info.GetXmlProperty("genxml/textbox/name" + FieldId);
-                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/name" + FieldId);
+                var rtn = Info.GetXmlProperty("genxml/textbox/documentname" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/documentname" + FieldId);
                 return rtn;
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/lang/genxml/textbox/documentname" + FieldId, value);
             }
         }
         public bool Hidden
         {
             get
             {
-                var rtn = Info.GetXmlPropertyBool("genxml/checkbox/hidden" + FieldId);
-                if (Info.GetXmlProperty("genxml/checkbox/hidden" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/hidden" + FieldId);
+                var rtn = Info.GetXmlPropertyBool("genxml/checkbox/documenthidden" + FieldId);
+                if (Info.GetXmlProperty("genxml/checkbox/documenthidden" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/documenthidden" + FieldId);
                 return rtn;
             }
             set
             {
-                Info.SetXmlProperty("genxml/checkbox/hidden" + FieldId, value.ToString());
+                Info.SetXmlProperty("genxml/checkbox/documenthidden" + FieldId, value.ToString());
             }
         }
 

@@ -46,13 +46,13 @@ namespace DNNrocketAPI.Componants
         {
             get
             {
-                var rtn = Info.GetXmlProperty("genxml/textbox/name" + FieldId);
-                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/name" + FieldId);
+                var rtn = Info.GetXmlProperty("genxml/textbox/imagename" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/imagename" + FieldId);
                 return rtn;
             }
             set
             {
-                Info.SetXmlProperty("genxml/textbox/name" + FieldId, value);
+                Info.SetXmlProperty("genxml/textbox/imagename" + FieldId, value);
             }
         }
         public string Alt 
@@ -73,65 +73,65 @@ namespace DNNrocketAPI.Componants
         {
             get
             {
-                var rtn = Info.GetXmlProperty("genxml/textbox/summary" + FieldId);
-                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/summary" + FieldId);
+                var rtn = Info.GetXmlProperty("genxml/textbox/imagesummary" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/imagesummary" + FieldId);
                 return rtn;
             }
             set
             {
-                Info.SetXmlProperty("genxml/textbox/summary" + FieldId, value);
+                Info.SetXmlProperty("genxml/textbox/imagesummary" + FieldId, value);
             }
         }
         public string Html
         {
             get
             {
-                var rtn = Info.GetXmlProperty("genxml/textbox/html" + FieldId);
-                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/html" + FieldId);
+                var rtn = Info.GetXmlProperty("genxml/textbox/imagehtml" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/imagehtml" + FieldId);
                 return rtn;
             }
             set
             {
-                Info.SetXmlProperty("genxml/textbox/summary" + FieldId, value);
+                Info.SetXmlProperty("genxml/textbox/imagesummary" + FieldId, value);
             }
         }
         public int Width
         {
             get
             {
-                var rtn = Info.GetXmlPropertyInt("genxml/textbox/width" + FieldId);
-                if (rtn == 0) rtn = Info.GetXmlPropertyInt("genxml/lang/genxml/textbox/width" + FieldId);
+                var rtn = Info.GetXmlPropertyInt("genxml/textbox/imagewidth" + FieldId);
+                if (rtn == 0) rtn = Info.GetXmlPropertyInt("genxml/lang/genxml/textbox/imagewidth" + FieldId);
                 return rtn;
             }
             set
             {
-                Info.SetXmlProperty("genxml/textbox/width" + FieldId, value.ToString());
+                Info.SetXmlProperty("genxml/textbox/imagewidth" + FieldId, value.ToString());
             }
         }
         public int Height
         {
             get
             {
-                var rtn = Info.GetXmlPropertyInt("genxml/textbox/height" + FieldId);
-                if (rtn == 0) rtn = Info.GetXmlPropertyInt("genxml/lang/genxml/textbox/height" + FieldId);
+                var rtn = Info.GetXmlPropertyInt("genxml/textbox/imageheight" + FieldId);
+                if (rtn == 0) rtn = Info.GetXmlPropertyInt("genxml/lang/genxml/textbox/imageheight" + FieldId);
                 return rtn;
             }
             set
             {
-                Info.SetXmlProperty("genxml/textbox/height" + FieldId, value.ToString());
+                Info.SetXmlProperty("genxml/textbox/imageheight" + FieldId, value.ToString());
             }
         }
         public bool Hidden
         {
             get
             {
-                var rtn = Info.GetXmlPropertyBool("genxml/checkbox/hidden" + FieldId);
-                if (Info.GetXmlProperty("genxml/checkbox/hidden" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/hidden" + FieldId);
+                var rtn = Info.GetXmlPropertyBool("genxml/checkbox/imagehidden" + FieldId);
+                if (Info.GetXmlProperty("genxml/checkbox/imagehidden" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/imagehidden" + FieldId);
                 return rtn;
             }
             set
             {
-                Info.SetXmlProperty("genxml/checkbox/hidden" + FieldId, value.ToString());
+                Info.SetXmlProperty("genxml/checkbox/imagehidden" + FieldId, value.ToString());
             }
         }
 
