@@ -17,53 +17,44 @@ namespace RocketMod
         private const string _tableName = "DNNRocket";
         private const string _entityTypeCode = "ROCKETMOD";
         private DNNrocketController _objCtrl;
-        private int _articleId;
         private const string _articleRowxPath = "genxml/hidden/articlerowref";
 
         public ArticleLimpet()
         {
+            _objCtrl = new DNNrocketController();
             Info = new SimplisityInfo();
+        }
+        public ArticleLimpet(int portalId, string moduleRef, int moduleid, string cultureCode)
+        {
+            _objCtrl = new DNNrocketController();
+            CultureCode = cultureCode;
+            if (CultureCode == "") CultureCode = DNNrocketUtils.GetEditCulture();
+            var articleInfo = _objCtrl.GetByGuidKey(portalId, moduleid, _entityTypeCode, moduleRef, "", _tableName, CultureCode);
+            PortalId = portalId;
+            if (articleInfo == null)
+            {
+                PortalId = portalId;
+                Info = new SimplisityInfo();
+                Info.ItemID = -1;
+                Info.ModuleId = moduleid;
+                Info.TypeCode = _entityTypeCode;
+                Info.ModuleId = -1;
+                Info.UserId = -1;
+                Info.GUIDKey = moduleRef;
+                Info.PortalId = PortalId;
+            }
+            else
+                Info = articleInfo;
         }
         public ArticleLimpet(string xmlExportItem, string langRequired = "")
         {
+            _objCtrl = new DNNrocketController();
             Info = new SimplisityInfo();
             Info.FromXmlItem(xmlExportItem);
             CultureCode = langRequired;
             if (CultureCode == "") CultureCode = Info.Lang;
             PortalId = Info.PortalId;
         }
-        public ArticleLimpet(int articleId, string langRequired = "")
-        {
-            Info = new SimplisityInfo();
-            _articleId = articleId;
-            Populate(langRequired);
-        }
-        public ArticleLimpet(int portalId, int articleId, string langRequired = "")
-        {
-            if (articleId <= 0) articleId = -1;  // create new record.
-            _articleId = articleId;
-            PortalId = portalId;
-            Info = new SimplisityInfo();
-            Info.ItemID = articleId;
-            Info.TypeCode = _entityTypeCode;
-            Info.ModuleId = -1;
-            Info.UserId = -1;
-            Info.PortalId = PortalId;
-
-            Populate(langRequired);
-        }
-
-        private void Populate(string cultureCode)
-        {
-            _objCtrl = new DNNrocketController();
-            CultureCode = cultureCode;
-            if (CultureCode == "") CultureCode = DNNrocketUtils.GetEditCulture();
-
-            var info = _objCtrl.GetData(_entityTypeCode, _articleId, CultureCode, ModuleId, _tableName); // get existing record.
-            if (info != null && info.ItemID > 0) Info = info; // check if we have a real record, or a dummy being created and not saved yet.
-            PortalId = Info.PortalId;
-        }
-
         public void Delete()
         {
             _objCtrl.Delete(Info.ItemID, _tableName);
@@ -205,21 +196,6 @@ namespace RocketMod
 
         #endregion
 
-        public void Delete()
-        {
-            _objCtrl.Delete(Info.ItemID, _tableName);
-        }
-
-        public void Save(SimplisityInfo postInfo)
-        {
-            Info.XMLData = postInfo.XMLData;
-            Update();
-        }
-        public void AddListItem(string listname)
-        {
-            Info.AddListItem(listname);
-            Update();
-        }
         public string ListSelectorcCVS { get { return ".linklist,.imagelist,.documentlist"; } }
         public string CultureCode { get; private set; }
         public string EntityTypeCode { get { return _entityTypeCode; } }

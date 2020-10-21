@@ -1130,7 +1130,7 @@ namespace DNNrocketAPI.Componants
                             cacheHead += systemGlobalData.GlobalPageHeading;
                         }
                         var appThemeMod = new AppThemeModule(modId, systemKey);
-                        var fileMapPath = appThemeMod.AppTheme.GetFileMapPath("pageheader.cshtml");
+                        var fileMapPath = appThemeMod.ModuleParams.AppTheme.GetFileMapPath("pageheader.cshtml");
                         if (!fileList.Contains(fileMapPath))
                         {
                             fileList.Add(fileMapPath);

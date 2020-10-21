@@ -54,7 +54,7 @@ namespace RocketMod
                     strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                     break;
                 case "rocketmod_getdata":
-                    strOut = GetDisplay();
+                    strOut = GetPublicArticle();
                     break;
                 case "rocketmod_getsetupmenu":
                     strOut = GetSetup();
@@ -79,21 +79,18 @@ namespace RocketMod
                     SettingsSave();
                     strOut = GetDashBoard();
                     break;
-                case "rocketmodedit_articlesearch":
-                    strOut = GetArticleSingle();
-                    break;
                 case "rocketmodedit_editarticle":
-                    strOut = GetArticleSingle();
+                    strOut = GetArticle();
                     break;
                 case "rocketmodedit_savearticle":
                     SaveArticle(true);
-                    strOut = GetArticleSingle();
+                    strOut = GetArticle();
                     break;
                 case "rocketmodedit_addimage":
                     strOut = AddArticleImage();
                     break;
                 case "rocketmodedit_adddocument":
-                    strOut = AddArticleDocument();
+                    strOut = AddArticleDoc();
                     break;
                 case "rocketmodedit_addlink":
                     strOut = AddArticleLink();
@@ -316,10 +313,6 @@ namespace RocketMod
             }
             else
             {
-                if (appthemefolder != "")
-                {
-                    _moduleParams.AppThemeFolder = appthemefolder;
-                }
                 _appThemeMod = new AppThemeModule(_moduleid, _systemData.SystemKey);
                 if (_moduleParams.ModuleIdDataSource == _moduleid)
                 {
@@ -330,9 +323,9 @@ namespace RocketMod
                     _dataAppThemeMod = new AppThemeModule(_moduleParams.ModuleIdDataSource, _systemData.SystemKey);
                 }
 
-                if (!_passSettings.ContainsKey("AppTheme")) _passSettings.Add("AppTheme", _moduleParams.AppThemeFolder);
-                if (!_passSettings.ContainsKey("AppThemeVersion")) _passSettings.Add("AppThemeVersion", _moduleParams.AppThemeVersion);
-                if (!_passSettings.ContainsKey("AppThemeRelPath")) _passSettings.Add("AppThemeRelPath", _moduleParams.AppThemeFolderRel);
+                if (!_passSettings.ContainsKey("AppTheme")) _passSettings.Add("AppTheme", _moduleParams.AppTheme.AppThemeFolder);
+                if (!_passSettings.ContainsKey("AppThemeVersion")) _passSettings.Add("AppThemeVersion", _moduleParams.AppTheme.AppVersionFolder);
+                if (!_passSettings.ContainsKey("AppThemeRelPath")) _passSettings.Add("AppThemeRelPath", _moduleParams.AppTheme.AppThemeFolderRel);
             }
 
             var securityData = new SecurityLimet(PortalUtils.GetCurrentPortalId(), _systemData.SystemKey, _rocketInterface, -1, -1);

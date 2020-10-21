@@ -311,7 +311,7 @@ namespace DNNrocketAPI
         /// <param name="guidKey"></param>
         /// <param name="selUserId"></param>
         /// <returns></returns>
-        public SimplisityInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "", string tableName = "DNNrocket")
+        public SimplisityInfo GetByGuidKey(int portalId, int moduleId, string entityTypeCode, string guidKey, string selUserId = "", string tableName = "DNNrocket", string requiredLanguage = "")
         {
             var strFilter = " and R1.GUIDKey = '" + guidKey + "' ";
             if (selUserId != "")
@@ -319,7 +319,7 @@ namespace DNNrocketAPI
                 strFilter += " and R1.UserId = " + selUserId + " ";
             }
 
-            var l = GetList(portalId, moduleId, entityTypeCode, strFilter,"", "", 1,0,0,0, tableName);
+            var l = GetList(portalId, moduleId, entityTypeCode, strFilter, requiredLanguage, "", 1,0,0,0, tableName);
             if (l.Count == 0) return null;
             if (l.Count > 1)
             {

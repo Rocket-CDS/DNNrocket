@@ -22,15 +22,14 @@ namespace DNNrocketAPI.Componants
 
             ModuleParams = new ModuleParams(ModuleId, _systemKey);
             systemData = new SystemLimpet(_systemKey);
-            AppTheme = new AppTheme(systemData.SystemKey, ModuleParams.AppThemeFolder, ModuleParams.AppThemeVersion);
 
             ModuleTemplateFolderMapPath = PortalUtils.HomeDirectoryMapPath().Trim('\\') + "\\DNNrocketThemes";
             if (!Directory.Exists(ModuleTemplateFolderMapPath)) Directory.CreateDirectory(ModuleTemplateFolderMapPath);
-            ModuleTemplateFolderMapPath += "\\" + AppTheme.SystemKey;
+            ModuleTemplateFolderMapPath += "\\" + ModuleParams.AppTheme.SystemKey;
             if (!Directory.Exists(ModuleTemplateFolderMapPath)) Directory.CreateDirectory(ModuleTemplateFolderMapPath);
-            ModuleTemplateFolderMapPath += "\\" + AppTheme.AppThemeFolder;
+            ModuleTemplateFolderMapPath += "\\" + ModuleParams.AppTheme.AppThemeFolder;
             if (!Directory.Exists(ModuleTemplateFolderMapPath)) Directory.CreateDirectory(ModuleTemplateFolderMapPath);
-            ModuleTemplateFolderMapPath += "\\" + AppTheme.AppVersionFolder;
+            ModuleTemplateFolderMapPath += "\\" + ModuleParams.AppTheme.AppVersionFolder;
             if (!Directory.Exists(ModuleTemplateFolderMapPath)) Directory.CreateDirectory(ModuleTemplateFolderMapPath);
             if (!Directory.Exists(ModuleTemplateFolderRazorMapPath)) Directory.CreateDirectory(ModuleTemplateFolderRazorMapPath);
             if (!Directory.Exists(ModuleTemplateFolderCSSMapPath)) Directory.CreateDirectory(ModuleTemplateFolderCSSMapPath);
@@ -50,7 +49,7 @@ namespace DNNrocketAPI.Componants
                 foreach (var f in flist)
                 {
                     var fname = Path.GetFileName(f).Replace(ModuleParams.ModuleRef + "_", "");
-                    AppTheme.UpdateListFileName(fname, f);
+                    ModuleParams.AppTheme.UpdateListFileName(fname, f);
                     _modellevelTemplates.Remove(fname);
                     _modellevelTemplates.Add(fname, true);
                 }
@@ -59,7 +58,7 @@ namespace DNNrocketAPI.Componants
                 foreach (var f in flist)
                 {
                     var fname = Path.GetFileName(f).Replace(ModuleParams.ModuleRef + "_", "");
-                    AppTheme.UpdateListFileName(fname, f);
+                    ModuleParams.AppTheme.UpdateListFileName(fname, f);
                     _modellevelTemplates.Remove(fname);
                     _modellevelTemplates.Add(fname, true);
                 }
@@ -68,7 +67,7 @@ namespace DNNrocketAPI.Componants
                 foreach (var f in flist)
                 {
                     var fname = Path.GetFileName(f).Replace(ModuleParams.ModuleRef + "_", "");
-                    AppTheme.UpdateListFileName(fname, f);
+                    ModuleParams.AppTheme.UpdateListFileName(fname, f);
                     _modellevelTemplates.Remove(fname);
                     _modellevelTemplates.Add(fname, true);
                 }
@@ -81,7 +80,7 @@ namespace DNNrocketAPI.Componants
             if (_modellevelTemplates.Count > 0)
             {
                 exportXml += "<templates moduleid='" + ModuleId + "'>";
-                foreach (var templateDict in AppTheme.GetTemplatesMapPath)
+                foreach (var templateDict in ModuleParams.AppTheme.GetTemplatesMapPath)
                 {
                     if (IsModuleLevelTemplate(templateDict.Key))
                     {
@@ -135,7 +134,7 @@ namespace DNNrocketAPI.Componants
         }
         public string GetTemplateRazor(string templatename)
         {
-            return AppTheme.GetTemplate(templatename);
+            return ModuleParams.AppTheme.GetTemplate(templatename);
         }
         public void RemoveModuleTemplate(string filename)
         {
@@ -149,7 +148,6 @@ namespace DNNrocketAPI.Componants
         }
 
         public ModuleParams ModuleParams { get; private set; }
-        public AppTheme AppTheme { get; private set; }
         public SystemLimpet systemData { get; private set; }
         public int ModuleId { get; private set; }
         public int SystemId { get; private set; }

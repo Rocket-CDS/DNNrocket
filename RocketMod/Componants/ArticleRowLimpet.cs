@@ -25,14 +25,11 @@ namespace RocketMod
         {
             return Info.GetList(ImageListName);
         }
-        public void AddImage(PortalCatalogLimpet portalCatalog, string uniqueName)
+        public void AddImage(ModuleParams moduleParams, string uniqueName)
         {
-            if (GetImageList().Count < portalCatalog.ArticleImageLimit)
-            {
-                var articleImage = new ArticleImage(new SimplisityInfo(), "");
-                articleImage.RelPath = portalCatalog.ImageFolderRel.TrimEnd('/') + "/" + uniqueName;
-                Info.AddListItem(ImageListName, articleImage.Info);
-            }
+            var articleImage = new ArticleImage(new SimplisityInfo(), "");
+            articleImage.RelPath = moduleParams.ImageFolderRel.TrimEnd('/') + "/" + uniqueName;
+            Info.AddListItem(ImageListName, articleImage.Info);
         }
         public ArticleImage GetImage(int idx)
         {
@@ -54,10 +51,10 @@ namespace RocketMod
         {
             return Info.GetList(DocumentListName);
         }
-        public void AddDoc(string uniqueName)
+        public void AddDoc(ModuleParams moduleParams, string uniqueName)
         {
             var articleDoc = new ArticleDoc(new SimplisityInfo(), "");
-            articleDoc.RelPath = portalCatalog.DocFolderRel.TrimEnd('/') + "/" + uniqueName;
+            articleDoc.RelPath = moduleParams.DocumentFolderRel.TrimEnd('/') + "/" + uniqueName;
             articleDoc.Name = uniqueName;
             Info.AddListItem(DocumentListName, articleDoc.Info);
         }

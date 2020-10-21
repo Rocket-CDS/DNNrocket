@@ -49,22 +49,12 @@ namespace RocketMod
 
         private void SaveAppTheme()
         {
-            _moduleParams.AppThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-            var appTheme = new AppTheme(_systemData.SystemKey, _moduleParams.AppThemeFolder);
-            _moduleParams.AppThemeLogo = appTheme.Logo;
             _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
-            _moduleParams.AppThemeVersion = appTheme.LatestVersionFolder;
             _moduleParams.ModuleType = "RocketMod";
             _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
             _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
-            _moduleParams.AppThemeFolderRel = appTheme.AppThemeFolderRel;
-            _moduleParams.AppThemeVersionFolderRel = appTheme.AppThemeVersionFolderRel;
-            _moduleParams.AppProjectFolderRel = appTheme.AppProjectFolderRel;
-            _moduleParams.AppSystemThemeFolderRel = appTheme.AppSystemThemeFolderRel;
-            _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
             _moduleParams.ShareData = "1";
             _moduleParams.TabId = _tabid;
-            _moduleParams.SystemKey = appTheme.SystemKey;
             _moduleParams.Save();
             CacheFileUtils.ClearAllCache();
         }
@@ -110,7 +100,7 @@ namespace RocketMod
             try
             {
                 var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
-                var jsonString = GeneralUtils.EnCode(_appThemeMod.AppTheme.GetTemplate(fname));
+                var jsonString = GeneralUtils.EnCode(_appThemeMod.ModuleParams.AppTheme.GetTemplate(fname));
                 _passSettings.Add("filename", fname);
                 _passSettings.Add("jsonFileData", jsonString);
 
@@ -125,7 +115,7 @@ namespace RocketMod
                 if (_appThemeMod.IsModuleLevelTemplate(fname)) _passSettings.Add("moduletemplatebutton", "True");
 
                 var razorTempl = RenderRazorUtils.GetRazorTemplateData("EditorPopUp.cshtml", "/DesktopModules/DNNrocket/AppThemes", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-                return RenderRazorUtils.RazorObjectRender(razorTempl, _appThemeMod.AppTheme, null, _passSettings, null, true);
+                return RenderRazorUtils.RazorObjectRender(razorTempl, _appThemeMod.ModuleParams.AppTheme, null, _passSettings, null, true);
             }
             catch (Exception ex)
             {

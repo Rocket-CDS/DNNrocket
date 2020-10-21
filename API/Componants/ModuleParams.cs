@@ -86,6 +86,14 @@ namespace DNNrocketAPI.Componants
                 }
             }
 
+            var appThemeCacheKey = "apptheme*moduleparams*" + moduleId;
+            AppTheme = (AppTheme)CacheUtils.GetCache(appThemeCacheKey);
+            if (AppTheme == null || AppTheme.AppThemeFolder != _moduleParamsRec.GetXmlProperty("genxml/apptheme") || AppTheme.AppVersionFolder != _moduleParamsRec.GetXmlProperty("genxml/appthemeversion"))
+            {
+                AppTheme = new AppTheme("dnnrocketmodule", _moduleParamsRec.GetXmlProperty("genxml/apptheme"), _moduleParamsRec.GetXmlProperty("genxml/appthemeversion"));
+                CacheUtils.SetCache(appThemeCacheKey, AppTheme);
+            }
+
         }
         public void Save()
         {
@@ -134,17 +142,8 @@ namespace DNNrocketAPI.Componants
         public string ProviderClass { get { return _moduleParamsRec.GetXmlProperty("genxml/textbox/namespaceclass"); } }
         public string DetailUrlParam { get { return GetValue("DetailUrlParam"); } set { SetValue("DetailUrlParam", value); } }
         public bool DetailView { get { return GetValueBool("detailview"); } set { SetValue("detailview", value.ToString()); } }
-        public string AppThemeNotes { get { return GetValue("AppThemeNotes"); } set { SetValue("AppThemeNotes", value); } }
-        public string AppThemeLogo { get { return GetValue("AppThemeLogo"); } set { SetValue("AppThemeLogo", value); } }
-        public string AppThemeFolder { get { return GetValue("AppThemeFolder"); } set { SetValue("AppThemeFolder", value); } } 
-        public string AppThemeFolderRel { get { return GetValue("AppThemeFolderRel"); } set { SetValue("AppThemeFolderRel", value); } }
-        public string AppThemeFolderMapPath { get { return DNNrocketUtils.MapPath(AppThemeFolderRel); } } 
-        public string AppThemeVersionFolderRel { get { return GetValue("AppThemeVersionFolderRel"); } set { SetValue("AppThemeVersionFolderRel", value); } } 
-        public string AppThemeVersionFolderMapPath { get { return DNNrocketUtils.MapPath(AppThemeVersionFolderRel); } }
-        public string AppProjectFolderRel { get { return GetValue("AppProjectFolderRel"); } set { SetValue("AppProjectFolderRel", value); } }
-        public string AppSystemThemeFolderRel { get { return GetValue("AppSystemThemeFolderRel"); } set { SetValue("AppSystemThemeFolderRel", value); } }
-        public string AppSystemThemeFolderMapPath { get { return DNNrocketUtils.MapPath(AppSystemThemeFolderRel); } }
-        public string AppThemeVersion { get { return GetValue("AppThemeVersion"); } set { SetValue("AppThemeVersion", value); } }
+        public AppTheme AppTheme { get; private set; }
+
         public string ImageFolderRel
         {
             get
@@ -171,7 +170,7 @@ namespace DNNrocketAPI.Componants
         {
             get
             {
-                if (Record.ItemID <= 0 || AppThemeFolder == "")
+                if (Record.ItemID <= 0 || AppTheme.AppThemeFolder == "")
                 {
                     return false;
                 }

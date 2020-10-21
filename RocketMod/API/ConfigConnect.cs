@@ -16,13 +16,9 @@ namespace RocketMod
             // do Backup
             DoBackUp();
 
-            var appTheme = new AppTheme(_systemData.SystemKey, _moduleParams.AppThemeFolder);
-            _moduleParams.AppThemeLogo = appTheme.Logo;
             _moduleParams.Name = _postInfo.GetXmlProperty("genxml/hidden/name");
             _moduleParams.ImageFolder = _postInfo.GetXmlProperty("genxml/hidden/imagefolder");
             _moduleParams.DocumentFolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
-            _moduleParams.AppThemeVersion = _postInfo.GetXmlProperty("genxml/hidden/appthemeversion");
-            _moduleParams.AppThemeNotes = _postInfo.GetXmlProperty("genxml/hidden/appthemenotes");
             _moduleParams.DetailUrlParam = GeneralUtils.UrlFriendly(_postInfo.GetXmlProperty("genxml/hidden/detailurlparam"));
             _moduleParams.DetailView = _postInfo.GetXmlPropertyBool("genxml/hidden/detailview");
             _moduleParams.ModuleType = "RocketMod";
@@ -72,7 +68,7 @@ namespace RocketMod
             try
             {
                 var mParams = new ModuleParams(moduleid);
-                var articleData = new ArticleLimpet(mParams.ModuleRef, mParams.ModuleId, _nextLang);
+                var articleData = new ArticleLimpet(PortalUtils.GetCurrentPortalId(), mParams.ModuleRef, mParams.ModuleId, _nextLang);
                 articleData.Delete();
                 return GetDashBoard();
             }

@@ -12,154 +12,89 @@ namespace RocketMod
     public partial class StartConnect
     {
 
-        public Dictionary<string, object> DownloadDocument()
-        {
-            var articleData = new ArticleLimpet(_dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _currentLang);
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-            var documentref = _paramInfo.GetXmlProperty("genxml/hidden/document");
-            var documentlistname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
-            var docInfo = articleData.Info.GetListItem(documentlistname, "genxml/lang/genxml/hidden/document", documentref);
-            var filepath = docInfo.GetXmlProperty("genxml/lang/genxml/hidden/reldocument");
-            var namedocument = docInfo.GetXmlProperty("genxml/lang/genxml/hidden/namedocument");
-            var rtnDic = new Dictionary<string, object>();
-            rtnDic.Add("filenamepath", filepath);
-            rtnDic.Add("downloadname", namedocument);
-            rtnDic.Add("fileext", "");
-            return rtnDic;
+        private ArticleLimpet GetActiveArticle()
+        {
+            return  new ArticleLimpet(PortalUtils.GetCurrentPortalId(), _dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _currentLang);
         }
+        private ArticleRowLimpet GetActiveArtilceRow(ArticleLimpet articleData)
+        {
+            var articleRowData = new ArticleRowLimpet();
+            var articleRowRef = _paramInfo.GetXmlProperty("genxml/hidden/articlerowref");
+            if (articleRowRef == "") articleRowRef = _postInfo.GetXmlProperty("genxml/hidden/articlerowref"); // it may be a new record, the ref is populated by the template default
+            if (articleRowRef != "")
+                articleRowData = articleData.GetArticleRow(articleRowRef);
+            else
+            {
+                articleRowData.ArticleRowRef = GeneralUtils.GetGuidKey();
+                articleRowData.ArticleId = articleData.ArticleId;
+                articleRowData.PortalId = articleData.PortalId;
+            }
+
+            return articleRowData;
+        }
+
         public ArticleLimpet SaveArticle(bool doBackup)
         {
-            var articleData = new ArticleLimpet(_dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _editLang);
+            var articleData = GetActiveArticle();
 
             // do Backup
             if (doBackup) DoBackUp();
 
             // do Save
             _passSettings.Add("saved", "true");
-            articleData.DebugMode = _systemData.DebugMode;
             articleData.Save(_postInfo);
 
             return articleData;
         }
-
-        public String GetArticleSingle()
+        public void DeleteArticle()
         {
-            try
-            {
-                var articleData = new ArticleLimpet(_dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _nextLang);
-                if (articleData.ArticleId <= 0) articleData.Update(); // create a record for this module.
-
-                var strOut = "";
-
-                articleData.ImageFolder = _dataModuleParams.ImageFolder;
-                articleData.DocumentFolder = _dataModuleParams.DocumentFolder;
-                articleData.AppThemeFolder = _dataModuleParams.AppThemeFolder;
-                articleData.AppThemeVersion = _dataModuleParams.AppThemeVersion;
-                articleData.AppThemeRelPath = _dataModuleParams.AppThemeFolderRel;
-                articleData.AppThemeDataType = _dataAppThemeMod.AppTheme.DataType;
-
-                foreach (var s in _moduleParams.ModuleSettings)
-                {
-                    if (!_passSettings.ContainsKey(s.Key)) _passSettings.Add(s.Key, s.Value);
-                }
-
-                var templateName = "editsingle.cshtml";
-
-                var razorTempl = _dataAppThemeMod.AppTheme.GetTemplate(templateName);
-                if (razorTempl == "") return "No '" + templateName + "' template found in " + _dataModuleParams.AppThemeFolder + " v" + _dataModuleParams.AppThemeVersion;
-                strOut = RenderRazorUtils.RazorDetail(razorTempl, articleData, _passSettings, new SessionParams(_paramInfo), true);
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
+            GetActiveArticle().Delete();
         }
-
-        public String GetDisplay()
-        {
-            try
-            {
-                var strOut = "";
-                if (_moduleParams.Exists)
-                {
-                    var articleData = new ArticleLimpet(_dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _currentLang);
-
-                    articleData.ImageFolder = _dataModuleParams.ImageFolder;
-                    articleData.DocumentFolder = _dataModuleParams.DocumentFolder;
-                    articleData.AppThemeFolder = _dataModuleParams.AppThemeFolder;
-                    articleData.AppThemeVersion = _dataModuleParams.AppThemeVersion;
-                    articleData.AppThemeRelPath = _dataModuleParams.AppThemeFolderRel;
-                    articleData.AppThemeDataType = _dataAppThemeMod.AppTheme.DataType;
-
-                    _passSettings.Add("datatype", _dataAppThemeMod.AppTheme.DataType.ToString());
-
-                    foreach (var s in _moduleParams.ModuleSettings)
-                    {
-                        if (!_passSettings.ContainsKey(s.Key)) _passSettings.Add(s.Key, s.Value);
-                    }
-
-                    var templateName = "view.cshtml";
-
-                    var razorTempl = _dataAppThemeMod.AppTheme.GetTemplate(templateName);
-                    if (razorTempl == "") return "No '" + templateName + "' template found in " + _dataModuleParams.AppThemeFolder + " v" + _dataModuleParams.AppThemeVersion;
-                    strOut = RenderRazorUtils.RazorDetail(razorTempl, articleData, _passSettings, new SessionParams(_paramInfo), true);
-
-                    return strOut;
-
-                }
-                else
-                {
-                    strOut = GetSetup();
-                }
-
-                return strOut;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-
-        }
-
-        #region "Images"
-
         public string AddArticleImage()
         {
-            var articleData = SaveArticle(false);
-            var imgList = ImgUtils.MoveImageToFolder(_postInfo, _dataModuleParams.ImageFolderMapPath);
+            var articleData = GetActiveArticle();
+            articleData.UpdateArticleRow(_postInfo); // Save all fields
+
+            var articleRowData = GetActiveArtilceRow(articleData);
+
+            var imgList = ImgUtils.MoveImageToFolder(_postInfo, _moduleParams.ImageFolderMapPath);
             foreach (var nam in imgList)
             {
-                articleData.AddImage(nam, _dataModuleParams.ImageFolderRel);
+                articleRowData.AddImage(_moduleParams, nam); // add image
             }
-            articleData.Update();
-            return GetArticleSingle();
+
+            articleData.UpdateArticleRow(articleRowData.Info.XMLData); // update with image
+            articleData.Update(); // save to DB
+
+            return GetArticleRow(articleRowData);
         }
-
-
-        #endregion
-
-        #region "Documents"
-
-        public string AddArticleDocument()
+        public string AddArticleDoc()
         {
-            var articleData = SaveArticle(false);
-            var docList = MoveDocumentToFolder(_postInfo, _dataModuleParams.DocumentFolderMapPath);
+            var articleData = GetActiveArticle();
+            articleData.UpdateArticleRow(_postInfo); // Save all fields
+
+            var articleRowData = GetActiveArtilceRow(articleData);
+
+            var docList = MoveDocumentToFolder(_postInfo, _moduleParams.DocumentFolderMapPath);
             foreach (var nam in docList)
             {
-                articleData.AddDocument(nam, _dataModuleParams.DocumentFolderRel);
+                articleRowData.AddDoc(_moduleParams, nam);
             }
-            articleData.Update();
-            return GetArticleSingle();
+
+            articleData.UpdateArticleRow(articleRowData.Info.XMLData); // update with image
+            articleData.Update(); // save to DB
+
+            return GetArticleRow(articleRowData);
         }
-        private List<string> MoveDocumentToFolder(SimplisityInfo postInfo, string destinationFolder, int maxDocs = 10)
+        private List<string> MoveDocumentToFolder(SimplisityInfo postInfo, string destinationFolderMapPath, int maxDocuments = 50)
         {
-            destinationFolder = destinationFolder.TrimEnd('\\');
+            destinationFolderMapPath = destinationFolderMapPath.TrimEnd('\\');
             var rtn = new List<string>();
             var userid = UserUtils.GetCurrentUserId(); // prefix to filename on upload.
-            if (!Directory.Exists(destinationFolder)) Directory.CreateDirectory(destinationFolder);
+            if (!Directory.Exists(destinationFolderMapPath)) Directory.CreateDirectory(destinationFolderMapPath);
             var fileuploadlist = postInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
             if (fileuploadlist != "")
             {
@@ -170,10 +105,10 @@ namespace RocketMod
                     {
                         var friendlyname = GeneralUtils.DeCode(f);
                         var userfilename = userid + "_" + friendlyname;
-                        if (docCount <= maxDocs)
+                        if (docCount <= maxDocuments)
                         {
-                            var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname.Replace(" ", "_"), destinationFolder);
-                            var fname = destinationFolder + "\\" + unqName;
+                            var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname.Replace(" ", "_"), destinationFolderMapPath);
+                            var fname = destinationFolderMapPath + "\\" + unqName;
                             File.Move(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, fname);
                             if (File.Exists(fname))
                             {
@@ -187,21 +122,195 @@ namespace RocketMod
             }
             return rtn;
         }
-
-        #endregion
-
-        #region "Links"
-
         public string AddArticleLink()
         {
-            var articleData = SaveArticle(false);
-            articleData.AddLink();
+            var articleData = GetActiveArticle();
+            articleData.UpdateArticleRow(_postInfo); // Save all fields
+
+            var articleRowData = GetActiveArtilceRow(articleData);
+            articleRowData.AddLink();
+            articleData.Update(); // save to DB
+
+            return GetArticleRow(articleRowData);
+        }
+        public String AddArticle()
+        {
+            return GetArticle();
+        }
+        public String GetArticle()
+        {
+            var articleData = GetActiveArticle();
+            return GetArticle(articleData);
+        }
+        public String GetArticle(ArticleLimpet articleData)
+        {
+            var razorTempl = _moduleParams.AppTheme.GetTemplate("articledetail.cshtml");
+            if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData("articledetail.cshtml", _systemData.SystemRelPath, "config-w3", _nextLang, _rocketInterface.ThemeVersion, true);
+            return RenderRazorUtils.RazorDetail(razorTempl, articleData, _passSettings, new SessionParams(_paramInfo), true);
+        }
+        public String GetArticleRow(ArticleRowLimpet articleRowData)
+        {
+            var razorTempl = _moduleParams.AppTheme.GetTemplate("articlerowdetail.cshtml");
+            if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData("articlerowdetail.cshtml", _systemData.SystemRelPath, "config-w3", _nextLang, _rocketInterface.ThemeVersion, true);
+            return RenderRazorUtils.RazorDetail(razorTempl, articleRowData, _passSettings, new SessionParams(_paramInfo), true);
+        }
+        public string ArticleDocumentList()
+        {
+            var articleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/articleid");
+            var docList = new List<object>();
+            foreach (var i in DNNrocketUtils.GetFiles(_moduleParams.DocumentFolderMapPath))
+            {
+                var sInfo = new SimplisityInfo();
+                sInfo.SetXmlProperty("genxml/name", i.Name);
+                sInfo.SetXmlProperty("genxml/relname", _moduleParams.DocumentFolderRel + "/" + i.Name);
+                sInfo.SetXmlProperty("genxml/fullname", i.FullName);
+                sInfo.SetXmlProperty("genxml/extension", i.Extension);
+                sInfo.SetXmlProperty("genxml/directoryname", i.DirectoryName);
+                sInfo.SetXmlProperty("genxml/lastwritetime", i.LastWriteTime.ToShortDateString());
+                docList.Add(sInfo);
+            }
+
+            _passSettings.Add("uploadcmd", "articleadmin_docupload");
+            _passSettings.Add("deletecmd", "articleadmin_docdelete");
+            _passSettings.Add("articleid", articleid.ToString());
+
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData("DocumentSelect.cshtml", _systemData.SystemRelPath, _rocketInterface.DefaultTheme, _nextLang, _rocketInterface.ThemeVersion, true);
+            return RenderRazorUtils.RazorList(razorTempl, docList, _passSettings,  new SessionParams(_paramInfo), true);
+        }
+        public void ArticleDocumentUploadToFolder()
+        {
+            var userid = UserUtils.GetCurrentUserId(); // prefix to filename on upload.
+            if (!Directory.Exists(_moduleParams.DocumentFolderMapPath)) Directory.CreateDirectory(_moduleParams.DocumentFolderMapPath);
+            var fileuploadlist = _paramInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
+            if (fileuploadlist != "")
+            {
+                foreach (var f in fileuploadlist.Split(';'))
+                {
+                    if (f != "")
+                    {
+                        var friendlyname = GeneralUtils.DeCode(f);
+                        var userfilename = userid + "_" + friendlyname;
+                        File.Copy(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, _moduleParams.DocumentFolderMapPath + "\\" + friendlyname, true);
+                        File.Delete(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename);
+                    }
+                }
+
+            }
+        }
+        public void ArticleDeleteDocument()
+        {
+            var docfolder = _postInfo.GetXmlProperty("genxml/hidden/documentfolder");
+            if (docfolder == "") docfolder = "docs";
+            var docDirectory = PortalUtils.HomeDNNrocketDirectoryMapPath() + "\\" + docfolder;
+            var docList = _postInfo.GetXmlProperty("genxml/hidden/dnnrocket-documentlist").Split(';');
+            foreach (var i in docList)
+            {
+                if (i != "")
+                {
+                    var documentname = GeneralUtils.DeCode(i);
+                    var docFile = docDirectory + "\\" + documentname;
+                    if (File.Exists(docFile))
+                    {
+                        File.Delete(docFile);
+                    }
+                }
+            }
+
+        }
+        public string UpdateArticleRow()
+        {
+            var articleData = GetActiveArticle();
+            articleData.UpdateArticleRow(_postInfo);
             articleData.Update();
-            return GetArticleSingle();
+            var articleRowData = GetActiveArtilceRow(articleData);
+            return GetArticleRow(articleRowData);
+        }
+        public string EditArticleRow()
+        {
+            var articleData = GetActiveArticle();
+            var articleRowData = GetActiveArtilceRow(articleData);
+            return GetArticleRow(articleRowData);
+        }
+        public string DeleteArticleRow()
+        {
+            var articleData = GetActiveArticle();
+            var articleRowData = GetActiveArtilceRow(articleData);
+            articleData.RemoveArticleRow(articleRowData);
+            articleData.Update();
+            return GetArticle();
+        }
+        public string MoveArticleRow()
+        {
+            var sourcerowref = _paramInfo.GetXmlProperty("genxml/hidden/sourcerowref");
+            var destrowref = _paramInfo.GetXmlProperty("genxml/hidden/destrowref");
+
+            var articleData = GetActiveArticle();
+
+            var storeList = articleData.GetArticleRows();
+            var sourceRow = articleData.GetArticleRow(sourcerowref);
+            articleData.RemoveArticleRows();
+            if (destrowref == "") articleData.UpdateArticleRow(sourceRow.Info.XMLData);
+            foreach (var r in storeList)
+            {
+                if (r.ArticleRowRef != sourcerowref)
+                {
+                    articleData.UpdateArticleRow(r.Info.XMLData);
+                    if (r.ArticleRowRef == destrowref)
+                    {
+                        articleData.UpdateArticleRow(sourceRow.Info.XMLData);
+                    }
+                }
+            }
+
+            articleData.Update();
+            return GetArticle();
+        }
+        public String GetPublicArticle()
+        {
+            var dataObjects = new Dictionary<string, object>();
+
+            // check if we are looking for a detail page.  ("key" used as param in url)
+            var articleData = GetActiveArticle();
+            var key = _paramInfo.GetXmlProperty("genxml/urlparam/" + _moduleParams.DetailUrlParam);
+            if (key != "")
+            {
+                // do detail
+                var razorTempl = _moduleParams.AppTheme.GetTemplate("Detail.cshtml");
+                if (razorTempl == "") return "No Razor Detail.cshtml Template.  ";
+                _passSettings.Add("articlerowkey",key);
+                return RenderRazorUtils.RazorObjectRender(razorTempl, articleData, dataObjects, _passSettings,  new SessionParams(_paramInfo), _moduleParams.CacheEnabled);
+            }
+            else
+            {
+                // do list
+                var razorTempl = _moduleParams.AppTheme.GetTemplate("View.cshtml");
+                if (razorTempl == "") return "No Razor View.cshtml Template.";
+                return RenderRazorUtils.RazorObjectRender(razorTempl, articleData, dataObjects, _passSettings,  new SessionParams(_paramInfo), _moduleParams.CacheEnabled);
+            }
         }
 
 
-        #endregion
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        public Dictionary<string, object> DownloadDocument()
+        {
+            var articleData = new ArticleLimpet(PortalUtils.GetCurrentPortalId(), _dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _currentLang);
+
+            var documentref = _paramInfo.GetXmlProperty("genxml/hidden/document");
+            var documentlistname = _paramInfo.GetXmlProperty("genxml/hidden/listname");
+            var docInfo = articleData.Info.GetListItem(documentlistname, "genxml/lang/genxml/hidden/document", documentref);
+            var filepath = docInfo.GetXmlProperty("genxml/lang/genxml/hidden/reldocument");
+            var namedocument = docInfo.GetXmlProperty("genxml/lang/genxml/hidden/namedocument");
+            var rtnDic = new Dictionary<string, object>();
+            rtnDic.Add("filenamepath", filepath);
+            rtnDic.Add("downloadname", namedocument);
+            rtnDic.Add("fileext", "");
+            return rtnDic;
+        }
+
 
     }
 }
