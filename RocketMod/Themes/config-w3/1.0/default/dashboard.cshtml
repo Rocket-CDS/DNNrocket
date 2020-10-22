@@ -67,7 +67,7 @@
                 </div>
                 <div class="w3-col m3 w3-padding">
                     <label>@ResourceKey("RocketMod.version")</label>
-                    @FolderSelectList(configinfo, "genxml/hidden/appthemeversion", moduleParams.AppThemeFolderMapPath, "class='w3-input w3-border'", false, false)
+                    @FolderSelectList(configinfo, "genxml/hidden/appthemeversion", moduleParams.AppTheme.AppThemeFolderMapPath, "class='w3-input w3-border'", false, false)
                 </div>
             </div>
             <div class="w3-row">
@@ -103,7 +103,7 @@
                     {
                         <div class="w3-col m3 w3-padding w3-margin" style="width:80px;height:80px;">
                             <br />
-                            <img src="@ThumbnailImageUrl(dataModuleParams.AppThemeLogo,80,80)" class="w3-circle" />
+                            <img src="@ThumbnailImageUrl(dataModuleParams.AppTheme.Logo,80,80)" class="w3-circle" />
                         </div>
                         <div class="w3-col m8 w3-margin w3-padding">
                             <table class="">
@@ -121,7 +121,7 @@
                                 </tr>
                                 <tr>
                                     <td>AppTheme:</td>
-                                    <td><b>@dataModuleParams.AppThemeFolder</b></td>
+                                    <td><b>@dataModuleParams.AppTheme.AppThemeFolder</b></td>
                                 </tr>
                             </table>
                         </div>
@@ -191,7 +191,7 @@
         ItemId:&nbsp;<b>@configinfo.ItemID</b>
     </div>
     <div class="w3-col m3 w3-padding">
-        @ResourceKey("RocketMod.apptheme"):&nbsp;<b>@moduleParams.AppThemeFolder</b>
+        @ResourceKey("RocketMod.apptheme"):&nbsp;<b>@moduleParams.AppTheme.AppThemeFolder</b>
     </div>
     <div class="w3-col m2 w3-padding">
         ModuleId:&nbsp;<b>@configinfo.ModuleId</b>

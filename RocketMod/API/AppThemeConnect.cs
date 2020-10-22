@@ -56,6 +56,7 @@ namespace RocketMod
             _moduleParams.ShareData = "1";
             _moduleParams.TabId = _tabid;
             _moduleParams.Save();
+            _moduleParams.LoadAppTheme(_paramInfo.GetXmlProperty("genxml/hidden/appthemefolder"));
             CacheFileUtils.ClearAllCache();
         }
 

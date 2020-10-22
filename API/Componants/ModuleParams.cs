@@ -86,14 +86,18 @@ namespace DNNrocketAPI.Componants
                 }
             }
 
-            var appThemeCacheKey = "apptheme*moduleparams*" + moduleId;
+            LoadAppTheme(_moduleParamsRec.GetXmlProperty("genxml/hidden/appthemefolder"));
+
+        }
+        public void LoadAppTheme(string appthemefolder)
+        {
+            var appThemeCacheKey = "apptheme*moduleparams*" + _moduleid;
             AppTheme = (AppTheme)CacheUtils.GetCache(appThemeCacheKey);
-            if (AppTheme == null || AppTheme.AppThemeFolder != _moduleParamsRec.GetXmlProperty("genxml/apptheme") || AppTheme.AppVersionFolder != _moduleParamsRec.GetXmlProperty("genxml/appthemeversion"))
+            if (AppTheme == null || AppTheme.AppThemeFolder != appthemefolder)
             {
-                AppTheme = new AppTheme("dnnrocketmodule", _moduleParamsRec.GetXmlProperty("genxml/apptheme"), _moduleParamsRec.GetXmlProperty("genxml/appthemeversion"));
+                AppTheme = new AppTheme("dnnrocketmodule", appthemefolder, "");
                 CacheUtils.SetCache(appThemeCacheKey, AppTheme);
             }
-
         }
         public void Save()
         {
