@@ -59,7 +59,7 @@
 <div id="configdata" class="w3-container simplisity_panel">
 
     <div class="w3-row">
-        <div class="w3-col m5">
+        <div class="w3-col m6">
             <div class="w3-row">
                 <div class="w3-col m9 w3-padding">
                     <label>@ResourceKey("RocketMod.name")</label>
@@ -86,12 +86,13 @@
                 </div>
                 <div class="w3-col m6 w3-padding detailurlparam" style="display:none;">
                     <label class="w3-tooltip">@ResourceKey("RocketMod.detailurlparam")</label>
-                    @TextBox(configinfo, "genxml/hidden/detailurlparam", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "refid", false)
+                    @TextBox(configinfo, "genxml/hidden/detailurlparam", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "key", false)
                 </div>
             </div>
 
+
         </div>
-        <div class="w3-col m4">
+        <div class="w3-col m6">
             <div class="w3-row">
                 <div class="w3-col m12 w3-padding">
                     @if (!moduleParams.DataSourceExternal)
@@ -101,27 +102,27 @@
                     }
                     else
                     {
-                        <div class="w3-col m3 w3-padding w3-margin" style="width:80px;height:80px;">
-                            <br />
-                            <img src="@ThumbnailImageUrl(dataModuleParams.AppTheme.Logo,80,80)" class="w3-circle" />
-                        </div>
                         <div class="w3-col m8 w3-margin w3-padding">
-                            <table class="">
+                            <table class="">                                
                                 <tr>
-                                    <td>@ResourceKey("RocketMod.datasource"):</td>
-                                    <td><b>@HtmlOf(dataModuleParams.Name)</b></td>
+                                    <td class="w3-right-align">@ResourceKey("RocketMod.page"):</td>
+                                    <td>&nbsp;<b>@HtmlOf(moduleParams.GetValue("tabname"))</b></td>
                                 </tr>
                                 <tr>
-                                    <td>@ResourceKey("RocketMod.ref"):</td>
-                                    <td><b>@moduleParams.ModuleRefDataSource</b></td>
+                                    <td class="w3-right-align">@ResourceKey("RocketMod.datasource"):</td>
+                                    <td>&nbsp;<b>@HtmlOf(dataModuleParams.Name)</b></td>
                                 </tr>
                                 <tr>
-                                    <td>ModuleId:</td>
-                                    <td><b>@(moduleParams.ModuleIdDataSource)</b></td>
+                                    <td class="w3-right-align">@ResourceKey("RocketMod.ref"):</td>
+                                    <td>&nbsp;<b>@moduleParams.ModuleRefDataSource</b></td>
                                 </tr>
                                 <tr>
-                                    <td>AppTheme:</td>
-                                    <td><b>@dataModuleParams.AppTheme.AppThemeFolder</b></td>
+                                    <td class="w3-right-align">ModuleId:</td>
+                                    <td>&nbsp;<b>@(moduleParams.ModuleIdDataSource)</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="w3-right-align">AppTheme:</td>
+                                    <td>&nbsp;<b>@dataModuleParams.AppTheme.AppThemeFolder</b></td>
                                 </tr>
                             </table>
                         </div>

@@ -51,21 +51,21 @@
                                 currentmodule = "w3-theme-l3";
                             }
                             lp1 += 1;
+                            if (moduleParams.GetValue("tabname") != "" && moduleParams.AppTheme.AppThemeFolder != "")
+                            {
                                 <li class="datasourcelistitem w3-display-container @(currentmodule) simplisity_click" s-cmd="rocketmodedit_datasourceselect" s-fields='{"moduleid":"@(Model.GetSetting("moduleid"))","selectedmoduleid":"@(moduleParams.ModuleId)","selectedmoduleref":"@(moduleParams.ModuleRef)"}'>
 
                                     <div class="listrow w3-padding w3-row w3-hover-theme">
-                                        <div class=" w3-col w3-hide-small " style="width: 100px;">
-                                            <img src="@ThumbnailImageUrl(moduleParams.AppThemeLogo,60,60)" class="w3-circle" />
-                                        </div>
                                         <div class=" w3-col m10">
                                             <div><b>@HtmlOf(moduleParams.GetValue("tabname")) &nbsp; @HtmlOf(moduleParams.Name)</b></div>
                                             <div class="w3-hide-small ">
-                                                <b>AppTheme:</b> @HtmlOf(moduleParams.AppThemeFolder) &nbsp; @HtmlOf(moduleParams.AppThemeVersion) &nbsp; <b>ModuleId:</b> @(moduleParams.ModuleId) &nbsp; <b>ModuleRef:</b> @moduleParams.ModuleRef
+                                                <b>AppTheme:</b> @HtmlOf(moduleParams.AppTheme.AppThemeFolder) &nbsp; @HtmlOf(moduleParams.AppTheme.AppVersionFolder) &nbsp; <b>ModuleId:</b> @(moduleParams.ModuleId) &nbsp; <b>ModuleRef:</b> @moduleParams.ModuleRef
                                             </div>
                                         </div>
                                     </div>
 
                                 </li>
+                            }
                         }
                     </ul>
 

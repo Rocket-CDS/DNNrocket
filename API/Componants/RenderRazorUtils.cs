@@ -70,6 +70,10 @@ namespace DNNrocketAPI.Componants
 
             return result;
         }
+        public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, object> dataObjects, SessionParams sessionParams = null, Dictionary<string, string> settings = null, bool cacheOff = false)
+        {
+            return RazorObjectRender(razorTemplate, obj, dataObjects, settings, sessionParams, cacheOff);
+        }
         public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
         {
             return RazorObjectRender(razorTemplate, obj, null, settings, sessionParams, debugmode);

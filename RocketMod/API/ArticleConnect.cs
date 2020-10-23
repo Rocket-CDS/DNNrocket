@@ -144,15 +144,19 @@ namespace RocketMod
         }
         public String EditArticle(ArticleLimpet articleData)
         {
-            var razorTempl = _moduleParams.AppTheme.GetTemplate("edit.cshtml");
-            if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData("edit.cshtml", _systemData.SystemRelPath, "config-w3", _nextLang, _rocketInterface.ThemeVersion, true);
-            return RenderRazorUtils.RazorDetail(razorTempl, articleData, _passSettings, new SessionParams(_paramInfo), true);
+            var razorTempl = _moduleParams.AppTheme.GetTemplate("ArticleEdit.cshtml");
+            if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData("ArticleEdit.cshtml", _systemData.SystemRelPath, "config-w3", _nextLang, _rocketInterface.ThemeVersion, true);
+            var dataObjects = new Dictionary<string, object>();
+            dataObjects.Add("moduleparams", _moduleParams);
+            return RenderRazorUtils.RazorDetail(razorTempl, articleData, dataObjects, new SessionParams(_paramInfo), _passSettings, true);
         }
         public String GetEditArticleRow(ArticleRowLimpet articleRowData)
         {
-            var razorTempl = _moduleParams.AppTheme.GetTemplate("editrow.cshtml");
-            if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData("editrow.cshtml", _systemData.SystemRelPath, "config-w3", _nextLang, _rocketInterface.ThemeVersion, true);
-            return RenderRazorUtils.RazorDetail(razorTempl, articleRowData, _passSettings, new SessionParams(_paramInfo), true);
+            var razorTempl = _moduleParams.AppTheme.GetTemplate("ArticleEditRow.cshtml");
+            if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData("ArticleEditRow.cshtml", _systemData.SystemRelPath, "config-w3", _nextLang, _rocketInterface.ThemeVersion, true);
+            var dataObjects = new Dictionary<string, object>();
+            dataObjects.Add("moduleparams", _moduleParams);
+            return RenderRazorUtils.RazorDetail(razorTempl, articleRowData, dataObjects, new SessionParams(_paramInfo), _passSettings, true);
         }
         public string ArticleDocumentList()
         {

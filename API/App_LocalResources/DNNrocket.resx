@@ -570,4 +570,13 @@
   <data name="lastupdated.Text" xml:space="preserve">
     <value>Last Updated</value>
   </data>
+  <data name="html.Text" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="text.Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="content.Text" xml:space="preserve">
+    <value>Content</value>
+  </data>
 </root>

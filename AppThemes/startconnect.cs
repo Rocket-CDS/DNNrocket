@@ -324,6 +324,7 @@ namespace DNNrocket.AppThemes
             CacheUtilsDNN.ClearAllCache();
             CacheFileUtils.ClearAllCache();
             DNNrocketUtils.ClearPortalCache();
+            CacheUtils.ClearAllCache();
         }
 
         public string CreateNewAppTheme()
