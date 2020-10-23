@@ -261,6 +261,8 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                             safter: safter
                         });
                     }
+
+                    $('#simplisity_params').val(''); // clear param fields, so each call is fresh.
                 }
             });
 

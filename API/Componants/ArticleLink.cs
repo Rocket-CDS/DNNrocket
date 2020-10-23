@@ -78,13 +78,13 @@ namespace DNNrocketAPI.Componants
         {
             get
             {
-                var rtn = Info.GetXmlPropertyBool("genxml/checkbox/hidden" + FieldId);
-                if (Info.GetXmlProperty("genxml/checkbox/hidden" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/hidden" + FieldId);
+                var rtn = Info.GetXmlPropertyBool("genxml/checkbox/hide" + FieldId);
+                if (Info.GetXmlProperty("genxml/checkbox/hide" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/hide" + FieldId);
                 return rtn;
             }
             set
             {
-                Info.SetXmlProperty("genxml/checkbox/hidden" + FieldId, value.ToString());
+                Info.SetXmlProperty("genxml/checkbox/hide" + FieldId, value.ToString());
             }
         }
     }
