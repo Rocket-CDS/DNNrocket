@@ -34,6 +34,22 @@
       <cmd>rocketmodedit_selectapptheme</cmd>
       <action>true</action>
     </command>
+    <command>
+      <cmd>rocketmodedit_updaterow</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>rocketmodedit_editrow</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>rocketmodedit_deleterow</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>rocketmodedit_moverow</cmd>
+      <action>true</action>
+    </command>
 
 
     <command>

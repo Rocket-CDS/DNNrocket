@@ -1,11 +1,11 @@
-﻿using DNNrocketAPI;
-using DNNrocketAPI.Componants;
+﻿using DNNrocketAPI.Componants;
 using Rocket.AppThemes.Componants;
 using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using RocketMod.Componants;
 
 namespace RocketMod
 {
@@ -69,7 +69,7 @@ namespace RocketMod
             articleData.UpdateArticleRow(articleRowData.Info.XMLData); // update with image
             articleData.Update(); // save to DB
 
-            return GetArticleRow(articleRowData);
+            return GetEditArticleRow(articleRowData);
         }
         public string AddArticleDoc()
         {
@@ -87,7 +87,7 @@ namespace RocketMod
             articleData.UpdateArticleRow(articleRowData.Info.XMLData); // update with image
             articleData.Update(); // save to DB
 
-            return GetArticleRow(articleRowData);
+            return GetEditArticleRow(articleRowData);
         }
         private List<string> MoveDocumentToFolder(SimplisityInfo postInfo, string destinationFolderMapPath, int maxDocuments = 50)
         {
@@ -131,27 +131,27 @@ namespace RocketMod
             articleRowData.AddLink();
             articleData.Update(); // save to DB
 
-            return GetArticleRow(articleRowData);
+            return GetEditArticleRow(articleRowData);
         }
         public String AddArticle()
         {
-            return GetArticle();
+            return EditArticle();
         }
-        public String GetArticle()
+        public String EditArticle()
         {
             var articleData = GetActiveArticle();
-            return GetArticle(articleData);
+            return EditArticle(articleData);
         }
-        public String GetArticle(ArticleLimpet articleData)
+        public String EditArticle(ArticleLimpet articleData)
         {
-            var razorTempl = _moduleParams.AppTheme.GetTemplate("articledetail.cshtml");
-            if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData("articledetail.cshtml", _systemData.SystemRelPath, "config-w3", _nextLang, _rocketInterface.ThemeVersion, true);
+            var razorTempl = _moduleParams.AppTheme.GetTemplate("edit.cshtml");
+            if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData("edit.cshtml", _systemData.SystemRelPath, "config-w3", _nextLang, _rocketInterface.ThemeVersion, true);
             return RenderRazorUtils.RazorDetail(razorTempl, articleData, _passSettings, new SessionParams(_paramInfo), true);
         }
-        public String GetArticleRow(ArticleRowLimpet articleRowData)
+        public String GetEditArticleRow(ArticleRowLimpet articleRowData)
         {
-            var razorTempl = _moduleParams.AppTheme.GetTemplate("articlerowdetail.cshtml");
-            if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData("articlerowdetail.cshtml", _systemData.SystemRelPath, "config-w3", _nextLang, _rocketInterface.ThemeVersion, true);
+            var razorTempl = _moduleParams.AppTheme.GetTemplate("editrow.cshtml");
+            if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData("editrow.cshtml", _systemData.SystemRelPath, "config-w3", _nextLang, _rocketInterface.ThemeVersion, true);
             return RenderRazorUtils.RazorDetail(razorTempl, articleRowData, _passSettings, new SessionParams(_paramInfo), true);
         }
         public string ArticleDocumentList()
@@ -223,13 +223,13 @@ namespace RocketMod
             articleData.UpdateArticleRow(_postInfo);
             articleData.Update();
             var articleRowData = GetActiveArtilceRow(articleData);
-            return GetArticleRow(articleRowData);
+            return GetEditArticleRow(articleRowData);
         }
         public string EditArticleRow()
         {
             var articleData = GetActiveArticle();
             var articleRowData = GetActiveArtilceRow(articleData);
-            return GetArticleRow(articleRowData);
+            return GetEditArticleRow(articleRowData);
         }
         public string DeleteArticleRow()
         {
@@ -237,7 +237,7 @@ namespace RocketMod
             var articleRowData = GetActiveArtilceRow(articleData);
             articleData.RemoveArticleRow(articleRowData);
             articleData.Update();
-            return GetArticle();
+            return EditArticle();
         }
         public string MoveArticleRow()
         {
@@ -263,7 +263,7 @@ namespace RocketMod
             }
 
             articleData.Update();
-            return GetArticle();
+            return EditArticle();
         }
         public String GetPublicArticle()
         {

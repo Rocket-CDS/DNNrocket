@@ -80,11 +80,11 @@ namespace RocketMod
                     strOut = GetDashBoard();
                     break;
                 case "rocketmodedit_editarticle":
-                    strOut = GetArticle();
+                    strOut = EditArticle();
                     break;
                 case "rocketmodedit_savearticle":
                     SaveArticle(true);
-                    strOut = GetArticle();
+                    strOut = EditArticle();
                     break;
                 case "rocketmodedit_addimage":
                     strOut = AddArticleImage();
@@ -111,6 +111,20 @@ namespace RocketMod
                 case "rocketmodedit_datasourceselect":
                     strOut = GetDataSourceSelect();
                     break;
+                case "rocketmodedit_updaterow":
+                    strOut = UpdateArticleRow();
+                    break;
+                case "rocketmodedit_editrow":
+                    strOut = EditArticleRow();
+                    break;
+                case "rocketmodedit_deleterow":
+                    strOut = DeleteArticleRow();
+                    break;
+                case "rocketmodedit_moverow":
+                    strOut = MoveArticleRow();
+                    break;
+
+
 
 
                 case "rocketmodsettings_edit":

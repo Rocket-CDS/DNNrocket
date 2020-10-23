@@ -8,7 +8,7 @@ using System.Text;
 using System.Xml;
 using DNNrocketAPI.Componants;
 
-namespace RocketMod
+namespace RocketMod.Componants
 {
 
     public class ArticleLimpet
@@ -81,8 +81,17 @@ namespace RocketMod
         }
         public int Save(SimplisityInfo postInfo)
         {
-            ReplaceInfoFields(postInfo, "genxml/textbox/*");
-            ReplaceInfoFields(postInfo, "genxml/lang/genxml/textbox/*");
+            var fieldGroups = new List<string>();
+            fieldGroups.Add("genxml/data/*");
+            fieldGroups.Add("genxml/textbox/*");
+            fieldGroups.Add("genxml/checkbox/*");
+            fieldGroups.Add("genxml/select/*");
+
+            foreach (var fieldxPath in fieldGroups)
+            {
+                ReplaceInfoFields(postInfo, fieldxPath);
+                ReplaceInfoFields(postInfo, "genxml/lang/" + fieldxPath);
+            }
 
             return Update();
         }

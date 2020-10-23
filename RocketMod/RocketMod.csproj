@@ -20,11 +20,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
-    <ProjectReference Include="..\AppThemes\AppThemes.csproj" />
-    <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="RazorEngine">
+      <HintPath>..\..\..\bin\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="RocketAppThemes">
+      <HintPath>..\..\..\bin\RocketAppThemes.dll</HintPath>
+    </Reference>
     <Reference Include="Simplisity">
       <HintPath>..\..\..\bin\Simplisity.dll</HintPath>
     </Reference>

@@ -10,7 +10,7 @@ using DNNrocketAPI.Componants;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace RocketMod
+namespace RocketMod.Componants
 {
     public class ArticleRowLimpet
     {
