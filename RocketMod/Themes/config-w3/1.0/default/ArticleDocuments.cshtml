@@ -8,9 +8,9 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketCatalog/App_LocalResources/")
 
 @{
-    var articleRowData = (ArticleRowLimpet)Model.List.First();
     var docLP = 1;
-
+    var moduleParams = (ModuleParams)Model.List.First();
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow"); ;
     var datalist = articleRowData.GetDocuments();
     var globalSettings = new SystemGlobalData();
 }

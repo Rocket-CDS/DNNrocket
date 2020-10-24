@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketMod", "RocketMod\Rock
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketThemes", "..\RocketThemes\RocketThemes.csproj", "{42EA3AE8-9416-4CF5-AEAB-04148C9CFD17}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppThemes", "AppThemes\AppThemes.csproj", "{F64AD67C-2B60-4850-BBA2-6C40D07D49D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{42EA3AE8-9416-4CF5-AEAB-04148C9CFD17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42EA3AE8-9416-4CF5-AEAB-04148C9CFD17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42EA3AE8-9416-4CF5-AEAB-04148C9CFD17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F64AD67C-2B60-4850-BBA2-6C40D07D49D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F64AD67C-2B60-4850-BBA2-6C40D07D49D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F64AD67C-2B60-4850-BBA2-6C40D07D49D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F64AD67C-2B60-4850-BBA2-6C40D07D49D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

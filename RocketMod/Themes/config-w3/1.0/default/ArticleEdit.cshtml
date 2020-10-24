@@ -9,12 +9,15 @@
 
 @{
     var info = new SimplisityInfo();
-    var articleData = (ArticleLimpet)Model.List.First();
+
+    var moduleParams = (ModuleParams)Model.List.First();
+
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata"); ;
     if (articleData.Info != null)
     {
         info = articleData.Info;
     }
-    var moduleParams = (ModuleParams)Model.GetDataObject("moduleparams");
+
 }
 
 <div id="articleedit" class="w3-display-container">
@@ -108,7 +111,7 @@
                 simplisity_setParamField("destrowref", ui.item.prev().attr('rowref'));
             }
                 simplisity_setParamField("articleid",'@(articleData.ArticleId)');
-            $('.articleroweditarea').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'articleadmin_moverow', '', '');
+            $('#simplisity_startpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'rocketmodedit_moverow', '', '');
         };
 
 

@@ -9,13 +9,17 @@
 
 @{
     var info = new SimplisityInfo();
-    var articleRowData = (ArticleRowLimpet)Model.List.First();
+
+    var moduleParams = (ModuleParams)Model.List.First();
+
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow"); ;
     if (articleRowData.Info != null)
     {
         info = articleRowData.Info;
     }
-    var moduleParams = (ModuleParams)Model.GetDataObject("moduleparams");
+
 }
+
 
 <div id="articleeditrow" class='w3-display-container w3-animate-opacity simplisity_panel'>
 
@@ -44,7 +48,7 @@
             <!-- The Detail-->
             <div id="detailDisplay" class="w3-container">
 
-                @HtmlOf(RenderRazorUtils.RazorRender(Model, moduleParams.AppTheme.GetTemplate("EditRow.cshtml"), true));
+                @HtmlOf(RenderRazorUtils.RazorRender(Model, moduleParams.AppTheme.GetTemplate("EditRow.cshtml"), true))
 
             </div>
 

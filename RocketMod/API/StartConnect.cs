@@ -115,7 +115,7 @@ namespace RocketMod
                     strOut = UpdateArticleRow();
                     break;
                 case "rocketmodedit_editrow":
-                    strOut = EditArticleRow();
+                    strOut = GetEditArticleRow();
                     break;
                 case "rocketmodedit_deleterow":
                     strOut = DeleteArticleRow();

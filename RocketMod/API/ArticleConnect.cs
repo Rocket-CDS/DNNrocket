@@ -15,12 +15,14 @@ namespace RocketMod
         // ------------------------------------------------------------------------------------------------------------------------------------------------------------
         // ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        private ArticleLimpet GetActiveArticle()
+        private ArticleLimpet GetActiveArticle(string cultureCode = "")
         {
-            return  new ArticleLimpet(PortalUtils.GetCurrentPortalId(), _dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, _currentLang);
+            if (cultureCode == "") cultureCode = _currentLang;
+            return  new ArticleLimpet(PortalUtils.GetCurrentPortalId(), _dataModuleParams.ModuleRef, _dataModuleParams.ModuleId, cultureCode);
         }
-        private ArticleRowLimpet GetActiveArtilceRow(ArticleLimpet articleData)
+        private ArticleRowLimpet GetActiveArtilceRow(string cultureCode = "")
         {
+            var articleData = GetActiveArticle(cultureCode);
             var articleRowData = new ArticleRowLimpet();
             var articleRowRef = _paramInfo.GetXmlProperty("genxml/hidden/articlerowref");
             if (articleRowRef == "") articleRowRef = _postInfo.GetXmlProperty("genxml/hidden/articlerowref"); // it may be a new record, the ref is populated by the template default
@@ -36,9 +38,9 @@ namespace RocketMod
             return articleRowData;
         }
 
-        public ArticleLimpet SaveArticle(bool doBackup)
+        public void SaveArticle(bool doBackup)
         {
-            var articleData = GetActiveArticle();
+            var articleData = GetActiveArticle(_editLang);
 
             // do Backup
             if (doBackup) DoBackUp();
@@ -46,8 +48,6 @@ namespace RocketMod
             // do Save
             _passSettings.Add("saved", "true");
             articleData.Save(_postInfo);
-
-            return articleData;
         }
         public void DeleteArticle()
         {
@@ -55,10 +55,10 @@ namespace RocketMod
         }
         public string AddArticleImage()
         {
-            var articleData = GetActiveArticle();
+            var articleData = GetActiveArticle(_editLang);
             articleData.UpdateArticleRow(_postInfo); // Save all fields
 
-            var articleRowData = GetActiveArtilceRow(articleData);
+            var articleRowData = GetActiveArtilceRow(_editLang);
 
             var imgList = ImgUtils.MoveImageToFolder(_postInfo, _moduleParams.ImageFolderMapPath);
             foreach (var nam in imgList)
@@ -69,14 +69,14 @@ namespace RocketMod
             articleData.UpdateArticleRow(articleRowData.Info.XMLData); // update with image
             articleData.Update(); // save to DB
 
-            return GetEditArticleRow(articleRowData);
+            return GetEditArticleRow();
         }
         public string AddArticleDoc()
         {
-            var articleData = GetActiveArticle();
+            var articleData = GetActiveArticle(_editLang);
             articleData.UpdateArticleRow(_postInfo); // Save all fields
 
-            var articleRowData = GetActiveArtilceRow(articleData);
+            var articleRowData = GetActiveArtilceRow(_editLang);
 
             var docList = MoveDocumentToFolder(_postInfo, _moduleParams.DocumentFolderMapPath);
             foreach (var nam in docList)
@@ -87,7 +87,7 @@ namespace RocketMod
             articleData.UpdateArticleRow(articleRowData.Info.XMLData); // update with image
             articleData.Update(); // save to DB
 
-            return GetEditArticleRow(articleRowData);
+            return GetEditArticleRow();
         }
         private List<string> MoveDocumentToFolder(SimplisityInfo postInfo, string destinationFolderMapPath, int maxDocuments = 50)
         {
@@ -124,14 +124,14 @@ namespace RocketMod
         }
         public string AddArticleLink()
         {
-            var articleData = GetActiveArticle();
+            var articleData = GetActiveArticle(_editLang);
             articleData.UpdateArticleRow(_postInfo); // Save all fields
 
-            var articleRowData = GetActiveArtilceRow(articleData);
+            var articleRowData = GetActiveArtilceRow(_editLang);
             articleRowData.AddLink();
             articleData.Update(); // save to DB
 
-            return GetEditArticleRow(articleRowData);
+            return GetEditArticleRow();
         }
         public String AddArticle()
         {
@@ -139,7 +139,7 @@ namespace RocketMod
         }
         public String EditArticle()
         {
-            var articleData = GetActiveArticle();
+            var articleData = GetActiveArticle(_nextLang);
             return EditArticle(articleData);
         }
         public String EditArticle(ArticleLimpet articleData)
@@ -147,16 +147,19 @@ namespace RocketMod
             var razorTempl = _moduleParams.AppTheme.GetTemplate("ArticleEdit.cshtml");
             if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData("ArticleEdit.cshtml", _systemData.SystemRelPath, "config-w3", _nextLang, _rocketInterface.ThemeVersion, true);
             var dataObjects = new Dictionary<string, object>();
-            dataObjects.Add("moduleparams", _moduleParams);
-            return RenderRazorUtils.RazorDetail(razorTempl, articleData, dataObjects, new SessionParams(_paramInfo), _passSettings, true);
+
+            dataObjects.Add("articledata", articleData);
+            return RenderRazorUtils.RazorDetail(razorTempl, _moduleParams, dataObjects, new SessionParams(_paramInfo), _passSettings, true);
         }
-        public String GetEditArticleRow(ArticleRowLimpet articleRowData)
+        public String GetEditArticleRow()
         {
+            var articleRowData = GetActiveArtilceRow(_nextLang);
             var razorTempl = _moduleParams.AppTheme.GetTemplate("ArticleEditRow.cshtml");
             if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData("ArticleEditRow.cshtml", _systemData.SystemRelPath, "config-w3", _nextLang, _rocketInterface.ThemeVersion, true);
             var dataObjects = new Dictionary<string, object>();
-            dataObjects.Add("moduleparams", _moduleParams);
-            return RenderRazorUtils.RazorDetail(razorTempl, articleRowData, dataObjects, new SessionParams(_paramInfo), _passSettings, true);
+
+            dataObjects.Add("articlerow", articleRowData);
+            return RenderRazorUtils.RazorDetail(razorTempl, _moduleParams, dataObjects, new SessionParams(_paramInfo), _passSettings, true);
         }
         public string ArticleDocumentList()
         {
@@ -223,22 +226,16 @@ namespace RocketMod
         }
         public string UpdateArticleRow()
         {
-            var articleData = GetActiveArticle();
+            var articleData = GetActiveArticle(_editLang);
             articleData.UpdateArticleRow(_postInfo);
             articleData.Update();
-            var articleRowData = GetActiveArtilceRow(articleData);
-            return GetEditArticleRow(articleRowData);
-        }
-        public string EditArticleRow()
-        {
-            var articleData = GetActiveArticle();
-            var articleRowData = GetActiveArtilceRow(articleData);
-            return GetEditArticleRow(articleRowData);
+            _passSettings.Add("saved", "true");
+            return GetEditArticleRow();
         }
         public string DeleteArticleRow()
         {
             var articleData = GetActiveArticle();
-            var articleRowData = GetActiveArtilceRow(articleData);
+            var articleRowData = GetActiveArtilceRow();
             articleData.RemoveArticleRow(articleRowData);
             articleData.Update();
             return EditArticle();
@@ -267,6 +264,7 @@ namespace RocketMod
             }
 
             articleData.Update();
+            _passSettings.Add("saved", "true");
             return EditArticle();
         }
         public String GetPublicArticle()
@@ -274,23 +272,26 @@ namespace RocketMod
             var dataObjects = new Dictionary<string, object>();
 
             // check if we are looking for a detail page.  ("key" used as param in url)
+            var razorTempl = "";
             var articleData = GetActiveArticle();
             var key = _paramInfo.GetXmlProperty("genxml/urlparam/" + _moduleParams.DetailUrlParam);
             if (key != "")
             {
                 // do detail
-                var razorTempl = _moduleParams.AppTheme.GetTemplate("Detail.cshtml");
+                razorTempl = _moduleParams.AppTheme.GetTemplate("Detail.cshtml");
                 if (razorTempl == "") return "No Razor Detail.cshtml Template.  ";
-                _passSettings.Add("articlerowkey",key);
-                return RenderRazorUtils.RazorObjectRender(razorTempl, articleData, dataObjects, _passSettings,  new SessionParams(_paramInfo), _moduleParams.CacheEnabled);
+                dataObjects.Add("articlerow", articleData.GetArticleRow(key));
             }
             else
             {
                 // do list
-                var razorTempl = _moduleParams.AppTheme.GetTemplate("View.cshtml");
+                razorTempl = _moduleParams.AppTheme.GetTemplate("View.cshtml");
                 if (razorTempl == "") return "No Razor View.cshtml Template.";
-                return RenderRazorUtils.RazorObjectRender(razorTempl, articleData, dataObjects, _passSettings,  new SessionParams(_paramInfo), _moduleParams.CacheEnabled);
             }
+
+            dataObjects.Add("articledata", articleData);
+            return RenderRazorUtils.RazorDetail(razorTempl, _moduleParams, dataObjects, new SessionParams(_paramInfo), _passSettings, true);
+
         }
 
 
