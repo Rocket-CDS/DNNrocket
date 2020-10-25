@@ -74,6 +74,9 @@ namespace Simplisity
         public string BrowserId { get; set; }
         public string Language { get { return Info.GetXmlProperty("r/language"); } set { Info.SetXmlProperty("r/language", value.ToString()); } }
 
+        public int ModuleId { get { return Info.GetXmlPropertyInt("r/moduleid"); } set { Info.SetXmlProperty("r/moduleid", value.ToString()); } }
+        public int TabId { get { return Info.GetXmlPropertyInt("r/tabid"); } set { Info.SetXmlProperty("r/tabid", value.ToString()); } }
+
         #endregion
 
     }

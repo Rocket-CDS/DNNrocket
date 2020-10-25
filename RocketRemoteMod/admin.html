@@ -91,8 +91,10 @@
             $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketremotemod', debug: false });
             var urlParams = new URLSearchParams(window.location.search);
             simplisity_setParamField("reload", true)
-            simplisity_setParamField("moduleid", urlParams.get('moduleid'))
-            simplisity_setParamField("tabid", urlParams.get('tabid'))
+
+            simplisity_setSessionField("moduleid", urlParams.get('moduleid'))
+            simplisity_setSessionField("tabid", urlParams.get('tabid'))
+
             simplisity_setParamField("editmode", urlParams.get('editmode'))
             simplisity_setParamField("remotetemplate", urlParams.get('adminsettings.cshtml'))
             simplisity_setParamField("remoteconfigpath", '') // default to remotemod path

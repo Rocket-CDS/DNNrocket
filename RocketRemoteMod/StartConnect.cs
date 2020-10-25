@@ -70,10 +70,9 @@ namespace RocketRemoteMod
             _postInfo = postInfo;
             _paramInfo = paramInfo;
 
-            _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-            if (_moduleid == 0) _moduleid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
-            _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid"); // needed for security.
-            if (_tabid == 0) _tabid = _paramInfo.GetXmlPropertyInt("genxml/urlparams/tabid");
+            var sessionParams = new SessionParams(_paramInfo);
+            _moduleid = sessionParams.ModuleId;
+            _tabid = sessionParams.TabId;
 
             _passSettings = new Dictionary<string, string>();
 
