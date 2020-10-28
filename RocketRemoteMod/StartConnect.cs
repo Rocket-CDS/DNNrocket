@@ -109,6 +109,7 @@ namespace RocketRemoteMod
                 var controlRelPath = _rocketInterface.TemplateRelPath;
                 var themeFolder = _rocketInterface.DefaultTheme;
                 var razortemplate = _paramInfo.GetXmlProperty("genxml/hidden/remotetemplate");
+                if (razortemplate == "") razortemplate = _rocketInterface.DefaultTemplate;
                 if (razortemplate == "") razortemplate = "adminsettings.cshtml";
                 var configpath = _paramInfo.GetXmlProperty("genxml/hidden/remoteconfigpath");
                 if (configpath == "") configpath = controlRelPath;

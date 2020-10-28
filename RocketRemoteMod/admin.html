@@ -10,13 +10,6 @@
     <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/grey.css">
     <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/dnnrocket.css">
 
-    <!-- CDN -->
-    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-    -->
     <!-- LOCAL -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
@@ -24,24 +17,8 @@
     <script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
     <script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/codemirror.js"></script>
-    <link rel="stylesheet" href="/DesktopModules/DNNrocket/AppThemes/CodeMirror/night.css" />
-    <link rel="stylesheet" href="/DesktopModules/DNNrocket/AppThemes/CodeMirror/codemirror.css" />
-    <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/mode/javascript/javascript.js"></script>
-    <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/mode/xml/xml.js"></script>
-    <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/mode/htmlmixed/htmlmixed.js"></script>
-    <script src="/DesktopModules/DNNrocket/AppThemes/CodeMirror/mode/css/css.js"></script>
-    <!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
-
 
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
-    <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/jquery.fileupload.js"></script>
-
-    <script src="https://cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css?family=Sarabun:200,400,400i,700&display=swap');
@@ -74,7 +51,7 @@
 
         <form id="rocketmod_form">
 
-            <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="rocketremotemod_adminsettings" s-fields=''>
+            <div id="simplisity_startpanel" class="simplisity_panel" s-fields='' s-cmd="rocketremotemod_adminsettings">
                 <div class="">
                     <i class='fa fa-spinner fa-spin w3-display-middle' style='font-size:48px'></i>
                 </div>
@@ -88,21 +65,18 @@
 
     <script>
         $(document).ready(function () {
-            $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketremotemod', debug: false });
+
             var urlParams = new URLSearchParams(window.location.search);
+            var systemKey = urlParams.get('systemkey');
+
+            $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: systemKey, debug: false });
+
             simplisity_setParamField("reload", true)
 
             simplisity_setSessionField("moduleid", urlParams.get('moduleid'))
             simplisity_setSessionField("tabid", urlParams.get('tabid'))
-
-            simplisity_setParamField("editmode", urlParams.get('editmode'))
-            simplisity_setParamField("remotetemplate", urlParams.get('adminsettings.cshtml'))
+            simplisity_setParamField("remotetemplate", urlParams.get(''))
             simplisity_setParamField("remoteconfigpath", '') // default to remotemod path
-            if (urlParams.get('editmode') === '1') {
-                $('#base-panel').css('margin-left', '0px');
-                $('#mySidebar').css('width', '0px');
-                $('#menulanguageselectdiv').attr('editmode', '1');
-            }
         });
     </script>
 
