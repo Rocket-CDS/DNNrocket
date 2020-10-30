@@ -12,16 +12,16 @@ using System.Xml;
 namespace DNNrocketAPI.Componants
 {
 
-    public class AppTheme
+    public class AppThemeLimpet
     {
         private const string _entityTypeCode = "APPTHEME";
  
-        public AppTheme(string systemKey, string zipMapPath, bool isImport)
+        public AppThemeLimpet(string systemKey, string zipMapPath, bool isImport)
         {
             SystemKey = systemKey;
             ImportXmlFile(zipMapPath);
         }
-        public AppTheme(string systemKey, string appThemeFolder, string versionFolder = "")
+        public AppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder = "")
         {
             InitAppTheme(systemKey, appThemeFolder, versionFolder);
         }
@@ -50,7 +50,7 @@ namespace DNNrocketAPI.Componants
                 var sourceDirectory = systemData.SystemMapPath.TrimEnd('\\') + "\\AppThemeBase";
                 if (Directory.Exists(sourceDirectory) && !Directory.Exists(AppThemeFolderMapPath))
                 {
-                    // copy the base AppTheme for this system.
+                    // copy the base AppThemeLimpet for this system.
                     GeneralUtils.CopyAll(sourceDirectory, AppThemeFolderMapPath);
                 }
 

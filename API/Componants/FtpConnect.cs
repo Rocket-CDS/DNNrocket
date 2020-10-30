@@ -31,7 +31,7 @@ namespace DNNrocketAPI.Componants
 
         public bool IsValid { get; private set; }
 
-        public string UploadAppTheme(AppTheme appTheme)
+        public string UploadAppTheme(AppThemeLimpet appTheme)
         {
             if (!IsValid) return "Invalid FTP Credentials";
 

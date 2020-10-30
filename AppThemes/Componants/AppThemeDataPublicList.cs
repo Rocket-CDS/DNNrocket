@@ -63,7 +63,7 @@ namespace Rocket.AppThemes.Componants
                     var localdirMapPath = DNNrocketUtils.MapPath(localdir);
                     if (Directory.Exists(localdirMapPath))
                     {
-                        var appTheme = new AppTheme(SelectedSystemKey, a.GetXmlProperty("genxml/hidden/appthemefolder"));
+                        var appTheme = new AppThemeLimpet(SelectedSystemKey, a.GetXmlProperty("genxml/hidden/appthemefolder"));
 
                         // update list data
                         a.SetXmlProperty("genxml/hidden/localversion", appTheme.LatestVersionFolder);

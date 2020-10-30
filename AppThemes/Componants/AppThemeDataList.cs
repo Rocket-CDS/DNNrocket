@@ -43,7 +43,7 @@ namespace Rocket.AppThemes.Componants
         }
         public void PopulateAppThemeList()
         {
-            List = new List<AppTheme>();
+            List = new List<AppThemeLimpet>();
             if (SelectedSystemKey != "")
             {
                 var themePath = AppSystemThemeFolderRootMapPath + "\\" + SelectedSystemKey;
@@ -53,7 +53,7 @@ namespace Rocket.AppThemes.Componants
                     foreach (var d in dirlist)
                     {
                         var dr = new System.IO.DirectoryInfo(d);
-                        var appTheme = new AppTheme(SelectedSystemKey, dr.Name, "");
+                        var appTheme = new AppThemeLimpet(SelectedSystemKey, dr.Name, "");
                         List.Add(appTheme);
                     }
                 }
@@ -116,12 +116,12 @@ namespace Rocket.AppThemes.Componants
                 return rtn;
             }
         }
-        public List<AppTheme> List {
+        public List<AppThemeLimpet> List {
             get
             {
                 var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath;
-                if (CacheUtilsDNN.GetCache(cachekey) == null) return new List<AppTheme>();
-                return (List<AppTheme>)CacheUtilsDNN.GetCache(cachekey);
+                if (CacheUtilsDNN.GetCache(cachekey) == null) return new List<AppThemeLimpet>();
+                return (List<AppThemeLimpet>)CacheUtilsDNN.GetCache(cachekey);
             }
             set
             {

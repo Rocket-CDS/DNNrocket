@@ -58,7 +58,7 @@ namespace RocketMod
         {
             try
             {
-                var appTheme = new AppTheme(_systemData.SystemKey, _moduleParams.AppTheme.AppThemeFolder, _moduleParams.AppTheme.AppVersionFolder);
+                var appTheme = new AppThemeLimpet(_systemData.SystemKey, _moduleParams.AppTheme.AppThemeFolder, _moduleParams.AppTheme.AppVersionFolder);
                 if (!appTheme.EnableSettings) return "";
                 var razorTempl = appTheme.GetTemplate("settings.cshtml"); // new module, so settings theme will be systemtheme.
                 _settingsData = GetSettingsData();

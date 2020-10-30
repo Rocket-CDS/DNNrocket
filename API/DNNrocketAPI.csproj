@@ -127,7 +127,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Componants\AppTheme.cs" />
+    <Compile Include="Componants\AppThemeLimpet.cs" />
     <Compile Include="Componants\ArticleLink.cs" />
     <Compile Include="Componants\ArticleDoc.cs" />
     <Compile Include="Componants\ArticleImage.cs" />

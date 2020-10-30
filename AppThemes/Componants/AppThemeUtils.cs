@@ -13,16 +13,16 @@ namespace Rocket.AppThemes.Componants
     {
         public static string GenerateEditForm(string selectedSystemKey, string appThemeFolder, string appVersionFolder)
         {
-            var appTheme = new AppTheme(selectedSystemKey, appThemeFolder, appVersionFolder);
+            var appTheme = new AppThemeLimpet(selectedSystemKey, appThemeFolder, appVersionFolder);
             return GenerateFields(appTheme, "fielddata");
         }
         public static string GenerateSettingForm(string selectedSystemKey, string appThemeFolder, string appVersionFolder)
         {
-            var appTheme = new AppTheme(selectedSystemKey, appThemeFolder, appVersionFolder);
+            var appTheme = new AppThemeLimpet(selectedSystemKey, appThemeFolder, appVersionFolder);
             return GenerateFields(appTheme, "settingfielddata");
         }
 
-        public static string GenerateFields(AppTheme appTheme, string listname)
+        public static string GenerateFields(AppThemeLimpet appTheme, string listname)
         {
             var row = 0;
 
@@ -236,7 +236,7 @@ namespace Rocket.AppThemes.Componants
         public static string GenerateView(string selectedSystemKey, string appThemeFolder, string appVersionFolder)
         {
             var row = 0;
-            var appTheme = new AppTheme(selectedSystemKey, appThemeFolder, appVersionFolder);
+            var appTheme = new AppThemeLimpet(selectedSystemKey, appThemeFolder, appVersionFolder);
 
             List<SimplisityRecord> fieldList = appTheme.Record.GetRecordList("fielddata");
 

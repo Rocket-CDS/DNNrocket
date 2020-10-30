@@ -489,7 +489,7 @@ namespace DNNrocketAPI.Componants
             catch (Exception ex)
             {
                 // invalid bitmap file
-                LogUtils.LogException(ex);
+                //LogUtils.LogException(ex);
             }
             return newImage;
 

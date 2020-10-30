@@ -43,7 +43,7 @@ namespace DNNrocketAPI.Componants
         {
 
             // get razor
-            if (Directory.Exists(ModuleTemplateFolderRazorMapPath)) // does not exist on selection of Module AppTheme.
+            if (Directory.Exists(ModuleTemplateFolderRazorMapPath)) // does not exist on selection of Module AppThemeLimpet.
             {
                 var flist = Directory.GetFiles(ModuleTemplateFolderRazorMapPath, ModuleParams.ModuleRef + "_*.cshtml");
                 foreach (var f in flist)

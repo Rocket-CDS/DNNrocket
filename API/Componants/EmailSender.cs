@@ -18,7 +18,10 @@ namespace DNNrocketAPI.Componants
         {
             if (EmailData.RazorTemplateName != "")
             {
-                var razorTempl = RenderRazorUtils.GetRazorTemplateData(EmailData.RazorTemplateName, EmailData.TemplateControlRelPath, EmailData.ThemeFolder, EmailData.CultureCode, EmailData.VersionFolder, debugmode);
+                var systemData = new SystemLimpet(EmailData.AppTheme.SystemKey);
+                var razorTempl = EmailData.AppTheme.GetTemplate(EmailData.RazorTemplateName);
+
+                if (razorTempl == "") razorTempl = RenderRazorUtils.GetRazorTemplateData(EmailData.RazorTemplateName,  systemData.SystemRelPath, "config-w3", EmailData.CultureCode, "1.0", true);
                 EmailData.EmailBody = RenderRazorUtils.RazorRender(EmailData.Model, razorTempl, true);
                 return EmailData.EmailBody;
             }
@@ -30,6 +33,7 @@ namespace DNNrocketAPI.Componants
             Error = "";
             EmailData.ToEmail = EmailData.ToEmail.Trim();
             EmailData.FromEmail = EmailData.FromEmail.Trim();
+            if (EmailData.ReplyToEmail == "") EmailData.ReplyToEmail = EmailData.FromEmail;
             if (EmailData.EmailBody == "") Error = "Missing EmailBody";
             if (EmailData.ToEmail == "") Error = "Missing ToEmail";
             if (EmailData.FromEmail == "") Error = "Missing FromEmail";
@@ -44,7 +48,8 @@ namespace DNNrocketAPI.Componants
                     {
                         if (!string.IsNullOrEmpty(email.Trim()) && GeneralUtils.IsEmail(EmailData.FromEmail) && GeneralUtils.IsEmail(email.Trim()))
                         {
-                            DotNetNuke.Services.Mail.Mail.SendMail(EmailData.FromEmail, email.Trim(), "", EmailData.EmailSubject, EmailData.EmailBody, EmailData.Attchments, "HTML", "", "", "", "");
+                            string[] stringarray = new string[0];
+                            DotNetNuke.Services.Mail.Mail.SendMail(EmailData.FromEmail.Trim(), email.Trim(), "", "", EmailData.ReplyToEmail, DotNetNuke.Services.Mail.MailPriority.Normal, EmailData.EmailSubject, DotNetNuke.Services.Mail.MailFormat.Html, Encoding.UTF8, EmailData.EmailBody,  stringarray, "", "", "", "", false);
                         }
                     }
                 }
@@ -69,11 +74,8 @@ namespace DNNrocketAPI.Componants
 
     public class EmailSenderData
     {
-        private AppTheme _appTheme;
         public EmailSenderData(string cultureCode = "")
         {
-            ThemeFolder = "config-w3";
-            VersionFolder = "1.0";
             DebugMode = false;
             CultureCode = cultureCode;
         }
@@ -81,29 +83,21 @@ namespace DNNrocketAPI.Componants
         public SimplisityRazor Model { get; set; }
         public string EmailBody { get; set; }
         public string RazorTemplateName { get; set; }
-        public string TemplateControlRelPath { get; set; }
         /// <summary>
         /// Semi-colon list of email addresses.
         /// </summary>
         public string ToEmail { get; set; }
         public string EmailSubject { get; set; }
         public string FromEmail { get; set; }
+        public string ReplyToEmail { get; set; }
         public string CultureCode { get; set; }
         /// <summary>
         /// Multiple attachments as csv with "|" seperator
         /// </summary>
         public string Attchments { get; set; }
-        public string ThemeFolder { get; set; }
-        public string VersionFolder { get; set; }
         public bool DebugMode { get; set; }
 
-        public AppTheme AppTheme { get { return _appTheme; } set {
-
-                ThemeFolder = value.AppThemeFolder;
-                TemplateControlRelPath = value.AppSystemThemeFolderRel;
-                VersionFolder = value.AppVersionFolder;
-            }
-        }
+        public AppThemeLimpet AppTheme { get; set; }
 
     }
 

@@ -92,10 +92,10 @@ namespace DNNrocketAPI.Componants
         public void LoadAppTheme(string appthemefolder)
         {
             var appThemeCacheKey = "apptheme*moduleparams*" + _moduleid;
-            AppTheme = (AppTheme)CacheUtils.GetCache(appThemeCacheKey);
+            AppTheme = (AppThemeLimpet)CacheUtils.GetCache(appThemeCacheKey);
             if (AppTheme == null || AppTheme.AppThemeFolder != appthemefolder)
             {
-                AppTheme = new AppTheme("dnnrocketmodule", appthemefolder, "");
+                AppTheme = new AppThemeLimpet("dnnrocketmodule", appthemefolder, "");
                 CacheUtils.SetCache(appThemeCacheKey, AppTheme);
             }
         }
@@ -146,7 +146,7 @@ namespace DNNrocketAPI.Componants
         public string ProviderClass { get { return _moduleParamsRec.GetXmlProperty("genxml/textbox/namespaceclass"); } }
         public string DetailUrlParam { get { return GetValue("DetailUrlParam"); } set { SetValue("DetailUrlParam", value); } }
         public bool DetailView { get { return GetValueBool("detailview"); } set { SetValue("detailview", value.ToString()); } }
-        public AppTheme AppTheme { get; private set; }
+        public AppThemeLimpet AppTheme { get; private set; }
 
         public string ImageFolderRel
         {

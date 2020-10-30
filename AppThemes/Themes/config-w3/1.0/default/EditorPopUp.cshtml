@@ -50,7 +50,7 @@
         {
             // get the field from the data source AppTheme
             var dataModuleParams = new ModuleParams(moduleParams.ModuleIdDataSource);
-            var dataAppTheme = new AppTheme(appTheme.SystemKey, dataModuleParams.AppThemeFolder, dataModuleParams.AppThemeVersion);
+            var dataAppTheme = new AppThemeLimpet(appTheme.SystemKey, dataModuleParams.AppThemeFolder, dataModuleParams.AppThemeVersion);
             fieldList = dataAppTheme.Record.GetRecordList("fielddata");
         }
         else

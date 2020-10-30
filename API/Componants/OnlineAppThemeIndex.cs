@@ -14,8 +14,8 @@ namespace DNNrocketAPI.Componants
         private FtpConnect _ftpConnect;
         private HttpConnect _httpConnect;
         /// <summary>
-        /// The Index is a list of XML file, which contain the dat from AppTheme.
-        /// This is normally used to ensure we have an image on the fileystsem to display the appThemes from the Online AppTheme server.
+        /// The Index is a list of XML file, which contain the dat from AppThemeLimpet.
+        /// This is normally used to ensure we have an image on the fileystsem to display the appThemes from the Online AppThemeLimpet server.
         /// It is updated when the Online AppThemes are looked at, if no xml file exists for hte apptheme, it will be downlaoded from the online server.
         /// </summary>
         /// <param name="systemKey"></param>

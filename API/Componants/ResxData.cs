@@ -123,7 +123,7 @@ namespace DNNrocketAPI.Componants
             ResxXmlData.Load(FileMapPath);
             BuildDictionary();
         }
-        public void Rebuild(AppTheme appTheme)
+        public void Rebuild(AppThemeLimpet appTheme)
         {
             var fieldData = appTheme.GetFieldDictionaryFields();
             foreach (var r in fieldData)
