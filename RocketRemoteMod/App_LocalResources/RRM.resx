@@ -120,6 +120,9 @@
   <data name="adminsettings.Text" xml:space="preserve">
     <value>Admin Settings</value>
   </data>
+  <data name="advanced.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
   <data name="appthemefolder.Help" xml:space="preserve">
     <value>The name of the AppTheme folder on the remote server.  This will be used for the template display and offer different functionality based on the selection.</value>
   </data>
@@ -131,6 +134,13 @@
   </data>
   <data name="appthemeversion.Text" xml:space="preserve">
     <value>AppTheme version</value>
+  </data>
+  <data name="cachetime.Help" xml:space="preserve">
+    <value>Cache Timeout refers to the amount of time this module will keep cache.  This module will cache the display for speed, disabling this feature may result in a slow user experience or denial of service for exceeding the API limit.&lt;br/&gt;
+&lt;b&gt;DO NOT CHANGE UNLESS YOU HAVE A GOOD REASON&lt;/b&gt;</value>
+  </data>
+  <data name="cachetime.Text" xml:space="preserve">
+    <value>Cache Timeout (In Minutes)</value>
   </data>
   <data name="dashboard.Text" xml:space="preserve">
     <value>Dashboard</value>

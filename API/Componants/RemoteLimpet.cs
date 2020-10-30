@@ -29,7 +29,7 @@ namespace DNNrocketAPI.Componants
         public RemoteLimpet(SimplisityInfo paramInfo, string systemKey)
         {
             Record = new SimplisityRecord();
-            var remoteParamItem = GeneralUtils.DeCode(paramInfo.GetXmlProperty("genxml/hidden/remoteparams"));
+            var remoteParamItem = StringCompress.DecompressString(paramInfo.GetXmlProperty("genxml/hidden/remoteparams"));
             if (remoteParamItem != "") Record.FromXmlItem(remoteParamItem);
             if (systemKey != "") SystemKey = systemKey;
             if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueString(3);
@@ -250,7 +250,7 @@ namespace DNNrocketAPI.Componants
                     paramInfo.SetXmlProperty("genxml/hidden/language", DNNrocketUtils.GetCurrentCulture());  // pass the current language to the remote server
                     AddUrlParam("language", DNNrocketUtils.GetCurrentCulture());
 
-                    paramInfo.SetXmlProperty("genxml/hidden/remoteparams", GeneralUtils.EnCode(Record.ToXmlItem()));
+                    paramInfo.SetXmlProperty("genxml/hidden/remoteparams", CompressedRemoteParam);
                     var urlNode = Record.XMLDoc.SelectSingleNode("genxml/urlparams");
                     if (urlNode != null) paramInfo.AddXmlNode(urlNode.OuterXml, "urlparams", "genxml");
                     var formNode = Record.XMLDoc.SelectSingleNode("genxml/form");
@@ -324,8 +324,9 @@ namespace DNNrocketAPI.Componants
         public string SystemKey { get { return Record.GetXmlProperty("genxml/hidden/systemkey"); } set { Record.SetXmlProperty("genxml/hidden/systemkey", value); } }
         public int TabId { get { return Record.GetXmlPropertyInt("genxml/hidden/tabid"); } set { Record.SetXmlProperty("genxml/hidden/tabid", value.ToString()); } }
         public string ModuleRef { get { return Record.GetXmlProperty("genxml/hidden/moduleref"); } set { Record.SetXmlProperty("genxml/hidden/moduleref", value); } }
-        public bool CacheDisbaled { get { return Record.GetXmlPropertyBool("genxml/hidden/disablecache"); } set { Record.SetXmlProperty("genxml/hidden/cachedisbaled", value.ToString()); } }
+        public bool CacheDisabled { get { return Record.GetXmlPropertyBool("genxml/hidden/disablecache"); } set { Record.SetXmlProperty("genxml/hidden/disablecache", value.ToString()); } }
         public bool CacheEnabled { get { return !Record.GetXmlPropertyBool("genxml/hidden/disablecache"); } }
+        public int CacheTimeout { get { return Record.GetXmlPropertyInt("genxml/hidden/cachetime"); } set { Record.SetXmlProperty("genxml/hidden/cachetime", value.ToString()); } }
         public string SecurityKey { get { return Record.GetXmlProperty("genxml/hidden/securitykey"); } set { Record.SetXmlProperty("genxml/hidden/securitykey", value); } }
         public string RemoteSystemKey { get { return Record.GetXmlProperty("genxml/hidden/remotesystemkey"); } set { Record.SetXmlProperty("genxml/hidden/remotesystemkey", value); } }
         public string RemoteAPI { get { return EngineURL.TrimEnd('/') + "/Desktopmodules/dnnrocket/api/rocket/actionremote"; } }
@@ -351,6 +352,8 @@ namespace DNNrocketAPI.Componants
         public string ClientUrl { get { return Record.GetXmlProperty("genxml/hidden/url"); } set { Record.SetXmlProperty("genxml/hidden/url", value); } }
         public string RemoteAdminRelPath { get { return Record.GetXmlProperty("genxml/hidden/remoteadminrelpath"); } set { Record.SetXmlProperty("genxml/hidden/remoteadminrelpath", value); } }
         public string RemoteAdminUrl { get { return EngineURL.TrimEnd('/') + "/" + RemoteAdminRelPath; } }
+        public string CompressedRemoteParam { get { return StringCompress.CompressString(Record.ToXmlItem()); } }
+
 
         #endregion
     }

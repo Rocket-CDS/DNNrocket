@@ -31,6 +31,11 @@ namespace DNNrocketAPI.ApiControllers
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, "Test API2");
         }
+
+        /// <summary>
+        /// Normal Endpoint for Simplisity
+        /// </summary>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
         [HttpPost]
@@ -57,6 +62,12 @@ namespace DNNrocketAPI.ApiControllers
             rtn.Headers.Add("Access-Control-Allow-Origin", "*");
             return rtn;
         }
+        /// <summary>
+        /// Endpoint for Simplisity when we only want to deal with the Request Content
+        /// Puts the content into a field "genxml/requestcontent".
+        /// This is because we cannot pass the context to .Net Standard modules
+        /// </summary>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
         [HttpPost]
@@ -83,6 +94,11 @@ namespace DNNrocketAPI.ApiControllers
             rtn.Headers.Add("Access-Control-Allow-Origin", "*");
             return rtn;
         }
+        /// <summary>
+        /// When a remote module or html passes a compress remoteParam setting string.
+        /// Usually from a RemoteLimpet object 
+        /// </summary>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
         [HttpPost]
@@ -123,7 +139,7 @@ namespace DNNrocketAPI.ApiControllers
                 var remoteParamXml = paramInfo.GetXmlProperty("genxml/hidden/remoteparams");
                 if (remoteParamXml != "")
                 {
-                    remoteParamXml = GeneralUtils.DeCode(remoteParamXml);
+                    remoteParamXml = StringCompress.DecompressString(remoteParamXml);
                     var remoteParam = new RemoteLimpet(-1);
                     remoteParam.Record.FromXmlItem(remoteParamXml);
                     remoteSystemKey = remoteParam.RemoteSystemKey;

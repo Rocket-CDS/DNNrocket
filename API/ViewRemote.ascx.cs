@@ -55,12 +55,37 @@ namespace DNNrocketAPI
         private DNNrocketController _objCtrl;
         private bool _hasEditAccess;
         private string _paramString;
+
         protected override void OnInit(EventArgs e)
         {
             try
             {
 
                 base.OnInit(e);
+
+                _remoteParams = new RemoteLimpet(ModuleId, _systemkey);
+                if (_remoteParams.CacheEnabled)
+                {
+                    // deal with cache timeout, so we refresh content after a certain time.
+                    var cacheKeyTimeout = "_cacheTimeout" + ModuleId;
+                    var strlastCacheDate = CacheUtils.GetCache(cacheKeyTimeout); // use memory
+                    if (strlastCacheDate != null)
+                    {
+                        try
+                        {
+                            var lastCacheDate = Convert.ToDateTime(strlastCacheDate);
+                            if (lastCacheDate.AddMinutes(_remoteParams.CacheTimeout) < DateTime.Now) _remoteParams.CacheDisabled = true;
+                        }
+                        catch (Exception)
+                        {
+                            CacheUtils.RemoveCache(cacheKeyTimeout); 
+                        }
+                    }
+                    else
+                    {
+                        CacheUtils.SetCache(cacheKeyTimeout, DateTime.Now.ToString("O"));
+                    }
+                }
 
                 _objCtrl = new DNNrocketController();
 
@@ -75,7 +100,6 @@ namespace DNNrocketAPI
                 _interfacekey = DNNrocketUtils.GetModuleInterfaceKey(ModuleId, TabId);
                 _systemInfo = DNNrocketUtils.GetModuleSystemInfo(_systemkey, ModuleId);
 
-                _remoteParams = new RemoteLimpet(ModuleId, _systemkey);
                 _rocketInterface = new RocketInterface(_systemInfo, _interfacekey);
                 _systemData = new SystemLimpet(_systemInfo);
 
@@ -110,7 +134,7 @@ namespace DNNrocketAPI
                     // do global header cache
                     var cachekeyGlobal = TabId + ".cachekeyGlobalremotepageheader.cshtml";
                     string cacheGlobalHeader = (string)CacheUtils.GetCache(cachekeyGlobal);
-                    if (String.IsNullOrEmpty(cacheGlobalHeader) || _remoteParams.CacheDisbaled)
+                    if (String.IsNullOrEmpty(cacheGlobalHeader) || _remoteParams.CacheDisabled)
                     {
                         cacheGlobalHeader = ""; // clear so if we rebuild, we don;t use the cached data
                         var systemGlobalData = new SystemGlobalData();
@@ -126,7 +150,7 @@ namespace DNNrocketAPI
                     // do module cache
                     var cachekey = TabId + ".remotepageheader.cshtml";
                     string cacheHead = (string)CacheFileUtils.GetCache(cachekey);
-                    if (String.IsNullOrEmpty(cacheHead) || _remoteParams.CacheDisbaled)
+                    if (String.IsNullOrEmpty(cacheHead) || _remoteParams.CacheDisabled)
                     {
                         var appList = new List<string>();
                         cacheHead = ""; // clear so if we rebuild, we don;t use the cached data
@@ -232,12 +256,14 @@ namespace DNNrocketAPI
             }
 
             var adminButton = "";
-            if (UserUtils.IsInRole("RemoteAdmin") && _remoteParams.RemoteAdminRelPath != "")
+            if (_hasEditAccess && _remoteParams.RemoteAdminRelPath != "")
             {
                 adminButton += "<div id='rocketcontentediticons" + ModuleId + "' class='w3-display-topleft w3-margin'>";
                 adminButton += "<a href='" + _remoteParams.RemoteAdminUrl + "' target='_blank' title='" + DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.admin") + "' class='w3-button w3-white w3-border w3-border-blue w3-round-large  w3-tiny'><i class='fa fas fa-store-alt'></i></a>";
+                adminButton += "<a href='?clearallcache=" + ModuleId + "&tabid=" + TabId + "' title='" + DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearallcache") + "' class='w3-button w3-white w3-border w3-border-blue w3-round-large  w3-tiny'><i class='fa fas fa-sync'></i></a>";
                 adminButton += "<span onclick=\"$('#rocketcontentediticons" + ModuleId + "').hide();\" class='w3-button w3-white w3-border w3-border-blue w3-round-large  w3-tiny'><i class='fa fas fa-times'></i></span>";
                 adminButton += "</div>";
+
             }
 
             var lit = new Literal();

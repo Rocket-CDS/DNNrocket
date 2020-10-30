@@ -82,7 +82,7 @@ namespace RocketRemoteMod
         }
         private void SaveConfig()
         {
-            if (_systemData.DebugMode) _remoteParams.CacheDisbaled = true;
+            if (_systemData.DebugMode) _remoteParams.CacheDisabled = true;
             _remoteParams.TabId = _tabid;
             _remoteParams.SystemKey = _systemData.SystemKey;
             _remoteParams.Save(_postInfo);

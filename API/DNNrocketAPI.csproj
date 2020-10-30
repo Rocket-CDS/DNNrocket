@@ -164,6 +164,7 @@
     <Compile Include="Componants\PortalUtils.cs" />
     <Compile Include="Componants\ModuleUtils.cs" />
     <Compile Include="Componants\RenderRazorUtils.cs" />
+    <Compile Include="Componants\StringCompress.cs" />
     <Compile Include="Componants\UserLimpet.cs" />
     <Compile Include="Componants\UserLimpetList.cs" />
     <Compile Include="Componants\WebSiteData.cs" />
