@@ -17,7 +17,6 @@ we thereforw need a function to populate this "remoteparams" field.
         // NOTE: This is not used on many templates that assume only 1 RemoteModule is added to the page.
         simplisity_setParamField('remotecall', 'true');
         simplisity_setParamField('remoteparams', '@(remoteParam.CompressedRemoteParam)');
-        validatePayment();
     }
 `
 

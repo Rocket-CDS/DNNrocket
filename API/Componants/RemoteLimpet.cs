@@ -21,6 +21,11 @@ namespace DNNrocketAPI.Componants
         private string _cacheKey;
         private const string _tableName = "DNNrocket";
 
+        public RemoteLimpet(string systemKey)
+        {
+            Record = new SimplisityRecord();
+            SystemKey = systemKey;
+        }
         /// <summary>
         /// Convert input SimplsityInfo to a remoteLimpet.  (No Cache)
         /// </summary>
