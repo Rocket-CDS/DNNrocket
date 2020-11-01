@@ -34,7 +34,9 @@ namespace DNNrocketAPI.Componants
         public RemoteLimpet(SimplisityInfo paramInfo, string systemKey)
         {
             Record = new SimplisityRecord();
-            var remoteParamItem = StringCompress.DecompressString(paramInfo.GetXmlProperty("genxml/settings/remoteparams"));
+            var remoteparams = paramInfo.GetXmlProperty("genxml/settings/remoteparams");
+            if (remoteparams == "") remoteparams = paramInfo.GetXmlProperty("genxml/hidden/remoteparams");
+            var remoteParamItem = StringCompress.DecompressString(remoteparams);
             if (remoteParamItem != "") Record.FromXmlItem(remoteParamItem);
             if (systemKey != "") SystemKey = systemKey;
             if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueString(3);
