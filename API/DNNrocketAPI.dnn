@@ -306,9 +306,9 @@ It also contains the popular RocketMod modules, which is a dynamic content build
     </package>
 
 
-    <package name="RocketShop" type="Module" version="1.0.0">
-      <friendlyName>Rocket Shop</friendlyName>
-      <description>Rocket Remote Module for E-commerce </description>
+    <package name="RocketRemote" type="Module" version="1.0.0">
+      <friendlyName>Rocket Remote Connector</friendlyName>
+      <description>Rocket Remote Connector module for connecting to rocket systems with Security Code and Security Key.</description>
       <iconFile />
       <owner>
         <name>Charles France</name>
@@ -325,7 +325,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
       <components>
         <component type="Module">
           <desktopModule>
-            <moduleName>rocketshop_rocketshop</moduleName>
+            <moduleName>rocketremote_rocketremote</moduleName>
             <foldername>RocketRemote</foldername>
             <businessControllerClass>DNNrocketAPI.Componants.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
             <supportedFeatures>
@@ -334,7 +334,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>Rocket Remote Shop</friendlyName>
+                <friendlyName>Rocket Remote Connector</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>

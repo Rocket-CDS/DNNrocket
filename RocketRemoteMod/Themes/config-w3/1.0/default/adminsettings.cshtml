@@ -37,187 +37,202 @@
 <div id="configdata" class="w3-container simplisity_panel">
 
     <div class="w3-row w3-padding">
-        <div class="w3-col m6">
+        <div class="w3-col m6 w3-padding">
             <label>@ResourceKey("RocketMod.name")</label>
-            @TextBox(info, "genxml/hidden/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
-        </div>
-        <div class="w3-col m6">
-
-        </div>
-    </div>
-    <div class="w3-row w3-padding">
-        <div class="w3-col m6">
-            <label>@ResourceKey("RRM.engineurl")</label>
-            @TextBox(info, "genxml/hidden/engineurl", "class='w3-input w3-border' maxlength='1024' autocomplete='off'", "https://<domain>", false)
+            @TextBox(info, "genxml/settings/name", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
         </div>
         <div class="w3-col m6 w3-padding">
-            <i>
-                @ResourceKey("RRM.engineurl", "", "Help")
-            </i>
-        </div>
-    </div>
-    <div class="w3-row w3-padding">
-        <div class="w3-col m6">
-            <label>@ResourceKey("RRM.remoteadminrelpath")</label>
-            @TextBox(info, "genxml/hidden/remoteadminrelpath", "class='w3-input w3-border' maxlength='1024' autocomplete='off'", "", false)
-        </div>
-        <div class="w3-col m6 w3-padding">
-            <i>
-                @ResourceKey("RRM.remoteadminrelpath", "", "Help")
-            </i>
-        </div>
-    </div>
-    <div class="w3-row w3-padding">
-        <div class="w3-col m6">
             <label>@ResourceKey("RRM.securitykey")</label>
-            @TextBox(info, "genxml/hidden/securitykey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
-        </div>
-        <div class="w3-col m6 w3-padding">
-            <i>
-                @ResourceKey("RRM.securitykey", "", "Help")
-            </i>
-        </div>
-    </div>
-    <div class="w3-row w3-padding">
-        <div class="w3-col m6">
-            <label>@ResourceKey("RRM.remotekey")</label>
-            @TextBox(info, "genxml/hidden/remotekey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
-        </div>
-        <div class="w3-col m6 w3-padding">
-            <i>
-                @ResourceKey("RRM.remotekey", "", "Help")
-            </i>
-        </div>
-    </div>
-    <div class="w3-row w3-padding">
-        <div class="w3-col m6">
-            <div class="w3-row">
-                <div class="w3-half w3-padding" style="">
-                    @CheckBox(info, "genxml/hidden/urlkeyactive", "", "class='w3-check' ", false)
-                    <label>@ResourceKey("RRM.urlkeyactive")</label>
-                </div>
-                <div class="w3-half">
-                    <label>@ResourceKey("RRM.urlkey")</label>
-                    @TextBox(info, "genxml/hidden/urlkey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "key", false)
-                </div>
-            </div>
-        </div>
-        <div class="w3-col m6 w3-padding">
-            <i>
-                @ResourceKey("RRM.urlkey", "", "Help")
-            </i>
-        </div>
-    </div>
-    <div class="w3-row w3-padding">
-        <div class="w3-col m6">
-            <label>@ResourceKey("RRM.appthemefolder")</label>
-            @TextBox(info, "genxml/hidden/appthemefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
-        </div>
-        <div class="w3-col m6 w3-padding">
-            <i>
-                @ResourceKey("RRM.appthemefolder", "", "Help")
-            </i>
-        </div>
-    </div>
-    <div class="w3-row w3-padding">
-        <div class="w3-col m6">
-            <label>@ResourceKey("RRM.appthemeversion")</label>
-            @TextBox(info, "genxml/hidden/appthemeversion", "class='w3-input w3-border' maxlength='5' autocomplete='off'", "", false)
-        </div>
-        <div class="w3-col m6 w3-padding">
-            <i>
-                @ResourceKey("RRM.appthemeversion", "", "Help")
-            </i>
-        </div>
-    </div>
-    <div class="w3-row w3-padding">
-        <div class="w3-col m6">
-            <label>@ResourceKey("RRM.remotesystemkey")</label>
-            @TextBox(info, "genxml/hidden/remotesystemkey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
-        </div>
-        <div class="w3-col m6 w3-padding">
-            <i>
-                @ResourceKey("RRM.remotesystemkey", "", "Help")
-            </i>
-        </div>
-    </div>
-    <div class="w3-row w3-padding">
-        <div class="w3-col m6">
-            <label>@ResourceKey("RRM.remotecmd")</label>
-            @TextBox(info, "genxml/hidden/remotecmd", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
-        </div>
-        <div class="w3-col m6 w3-padding">
-            <i>
-                @ResourceKey("RRM.remotecmd", "", "Help")
-            </i>
-        </div>
-    </div>
-    <div class="w3-row w3-padding">
-        <div class="w3-col m6">
-            <label>@ResourceKey("RRM.remotetemplate")</label>
-            @TextBox(info, "genxml/hidden/remotetemplate", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "view.cshtml", false)
-        </div>
-        <div class="w3-col m6 w3-padding">
-            <i>
-                @ResourceKey("RRM.remotetemplate", "", "Help")
-            </i>
+            @TextBox(info, "genxml/settings/securitykey", "class='w3-input w3-border' maxlength='1024' autocomplete='off'", "", false)
         </div>
     </div>
 
-    <div class="w3-row">
-        <div class="w3-col m6  w3-padding w3-margin-top">
-            <div class="w3-col m12 w3-padding">
-                <div>
-                    @CheckBox(info, "genxml/hidden/disablecache", "", "class='w3-check' ", false)
-                    <label>@ResourceKey("RocketMod.disablecache")</label>
+    <div class="w3-row w3-padding">
+        <div class="w3-col m12 w3-padding">
+            <label>@ResourceKey("RRM.securitycode")</label>
+            @TextArea(info, "genxml/settings/securitycode", "class='w3-input w3-border' rows='4' autocomplete='off'", "", false)
+        </div>
+    </div>
+
+    <div onclick="accordianFunction('Advanced1')" class="w3-button w3-black">
+        @ResourceKey("RRM.advanced")&nbsp;<i class="fa fa-caret-down"></i>
+    </div>
+    <div id="Advanced1" class="w3-hide">
+
+
+        <div class="w3-row">
+            <div class="w3-col m6  w3-padding w3-margin-top">
+                <div class="w3-col m4 w3-padding">
+                    <div>
+                        @CheckBox(info, "genxml/settings/disablecache", "", "class='w3-check' ", false)
+                        <label>@ResourceKey("RocketMod.disablecache")</label>
+                    </div>
+                </div>
+                <div class="w3-col m8 w3-padding">
+                    <div>
+                        <label>@ResourceKey("RRM.cachetime")</label>
+                        @TextBox(info, "genxml/settings/cachetime", "class='w3-input w3-border' maxlength='4' autocomplete='off' ", "60", false)
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="w3-col m6 w3-padding">
-        </div>
-    </div>
-
-    <div class="w3-container">
-        <div class="w3-margin">
-            <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketremotemod_addsetting" s-list=".settingsdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","itemid":"@info.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.add)</div>
-            <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#settingsdatalist" s-removelist=".settingsdata" style="display: none;">@ButtonText(ButtonTypes.undo)</div>
+            <div class="w3-col m6 w3-padding">
+                <i>
+                    @ResourceKey("RRM.cachetime", "", "Help")
+                </i>
+            </div>
         </div>
 
-        <div class="w3-row w3-margin">
+        <div class="w3-row w3-padding">
+            <div class="w3-col m6">
+                <label>@ResourceKey("RRM.engineurl")</label>
+                @TextBox(info, "genxml/settings/engineurl", "class='w3-input w3-border' maxlength='1024' autocomplete='off'", "https://<domain>", false)
+            </div>
+            <div class="w3-col m6 w3-padding">
+                <i>
+                    @ResourceKey("RRM.engineurl", "", "Help")
+                </i>
+            </div>
+        </div>
+        <div class="w3-row w3-padding">
+            <div class="w3-col m6">
+                <label>@ResourceKey("RRM.remoteadminrelpath")</label>
+                @TextBox(info, "genxml/settings/remoteadminrelpath", "class='w3-input w3-border' maxlength='1024' autocomplete='off'", "", false)
+            </div>
+            <div class="w3-col m6 w3-padding">
+                <i>
+                    @ResourceKey("RRM.remoteadminrelpath", "", "Help")
+                </i>
+            </div>
+        </div>
+        <div class="w3-row w3-padding">
+            <div class="w3-col m6">
+                <label>@ResourceKey("RRM.remotekey")</label>
+                @TextBox(info, "genxml/settings/remotekey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+            </div>
+            <div class="w3-col m6 w3-padding">
+                <i>
+                    @ResourceKey("RRM.remotekey", "", "Help")
+                </i>
+            </div>
+        </div>
+        <div class="w3-row w3-padding">
+            <div class="w3-col m6">
+                <div class="w3-row">
+                    <div class="w3-half w3-padding" style="">
+                        @CheckBox(info, "genxml/settings/urlkeyactive", "", "class='w3-check' ", false)
+                        <label>@ResourceKey("RRM.urlkeyactive")</label>
+                    </div>
+                    <div class="w3-half">
+                        <label>@ResourceKey("RRM.urlkey")</label>
+                        @TextBox(info, "genxml/settings/urlkey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "key", false)
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col m6 w3-padding">
+                <i>
+                    @ResourceKey("RRM.urlkey", "", "Help")
+                </i>
+            </div>
+        </div>
+        <div class="w3-row w3-padding">
+            <div class="w3-col m6">
+                <label>@ResourceKey("RRM.appthemefolder")</label>
+                @TextBox(info, "genxml/settings/appthemefolder", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+            </div>
+            <div class="w3-col m6 w3-padding">
+                <i>
+                    @ResourceKey("RRM.appthemefolder", "", "Help")
+                </i>
+            </div>
+        </div>
+        <div class="w3-row w3-padding">
+            <div class="w3-col m6">
+                <label>@ResourceKey("RRM.appthemeversion")</label>
+                @TextBox(info, "genxml/settings/appthemeversion", "class='w3-input w3-border' maxlength='5' autocomplete='off'", "", false)
+            </div>
+            <div class="w3-col m6 w3-padding">
+                <i>
+                    @ResourceKey("RRM.appthemeversion", "", "Help")
+                </i>
+            </div>
+        </div>
+        <div class="w3-row w3-padding">
+            <div class="w3-col m6">
+                <label>@ResourceKey("RRM.remotesystemkey")</label>
+                @TextBox(info, "genxml/settings/remotesystemkey", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+            </div>
+            <div class="w3-col m6 w3-padding">
+                <i>
+                    @ResourceKey("RRM.remotesystemkey", "", "Help")
+                </i>
+            </div>
+        </div>
+        <div class="w3-row w3-padding">
+            <div class="w3-col m6">
+                <label>@ResourceKey("RRM.remotecmd")</label>
+                @TextBox(info, "genxml/settings/remotecmd", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "", false)
+            </div>
+            <div class="w3-col m6 w3-padding">
+                <i>
+                    @ResourceKey("RRM.remotecmd", "", "Help")
+                </i>
+            </div>
+        </div>
+        <div class="w3-row w3-padding">
+            <div class="w3-col m6">
+                <label>@ResourceKey("RRM.remotetemplate")</label>
+                @TextBox(info, "genxml/settings/remotetemplate", "class='w3-input w3-border' maxlength='350' autocomplete='off'", "view.cshtml", false)
+            </div>
+            <div class="w3-col m6 w3-padding">
+                <i>
+                    @ResourceKey("RRM.remotetemplate", "", "Help")
+                </i>
+            </div>
+        </div>
 
-            <table id="settingsdatalist" class="w3-table-all">
 
-                <tr>
-                    <th class="w3-half">@ResourceKey("system.name")</th>
-                    <th class="w3-quarter">@ResourceKey("system.value")</th>
-                    <th style="width:20px;"></th>
-                </tr>
+        <div class="w3-container">
+            <div class="w3-margin">
+                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketremotemod_addsetting" s-list=".settingsdata" s-fields='{"tabid":"@(Model.GetSetting("tabid"))","moduleid":"@(Model.ModuleId)","itemid":"@info.ItemID","interfacekey":"dashboard"}' s-post="#configdata">@ButtonText(ButtonTypes.add)</div>
+                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="settingsbin" s-return="#settingsdatalist" s-removelist=".settingsdata" style="display: none;">@ButtonText(ButtonTypes.undo)</div>
+            </div>
 
-                @{
-                    var lp3 = 0;
-                }
-                @foreach (var i in info.GetList("settingsdata"))
-                {
-                    lp3 += 1;
+            <div class="w3-row w3-margin">
 
-                    <tr class="settingsdata">
-                        <td class="w3-quarter">
-                            @TextBox(i, "genxml/textbox/key", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
-                        </td>
-                        <td class="w3-threequarter">
-                            @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' ", "", false, lp3)
-                        </td>
-                        <td style="width:20px;">
-                            <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".settingsdata" s-recylebin="settingsbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
-                        </td>
+                <table id="settingsdatalist" class="w3-table-all">
+
+                    <tr>
+                        <th class="w3-half">@ResourceKey("system.name")</th>
+                        <th class="w3-quarter">@ResourceKey("system.value")</th>
+                        <th style="width:20px;"></th>
                     </tr>
 
-                }
-            </table>
+                    @{
+                        var lp3 = 0;
+                    }
+                    @foreach (var i in info.GetList("settingsdata"))
+                    {
+                        lp3 += 1;
 
+                        <tr class="settingsdata">
+                            <td class="w3-quarter">
+                                @TextBox(i, "genxml/textbox/key", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
+                            </td>
+                            <td class="w3-threequarter">
+                                @TextBox(i, "genxml/textbox/value", "class='w3-input w3-border' maxlength='500' ", "", false, lp3)
+                            </td>
+                            <td style="width:20px;">
+                                <a href="javascript:void(0)" class="simplisity_removetablerow" s-removelist=".settingsdata" s-recylebin="settingsbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
+                            </td>
+                        </tr>
+
+                    }
+                </table>
+
+            </div>
         </div>
-    </div>
 
+    </div>
 
     <div class="w3-container w3-border w3-margin-top">
         <div class="w3-col m3 w3-padding">
@@ -237,46 +252,27 @@
 
 </div>
 
-<div id="datasourcelist">
-</div>
+    <div id="datasourcelist">
+    </div>
 
-<script>
+    <script>
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        $('.sharedataaction').unbind('change');
-        $('.sharedataaction').change(function () {
-            if ($('input[name=sharedataradio]:checked').val() === '0') {
-                $('.sharedataicon').hide();
-            }
-            if ($('input[name=sharedataradio]:checked').val() === '1') {
-                $('.sharedataicon').show();
-                $('.sharedataicon').css('color', 'teal')
-            }
-            if ($('input[name=sharedataradio]:checked').val() === '2') {
-                $('.sharedataicon').show();
-                $('.sharedataicon').css('color', 'red')
-            }
+
         });
 
-        $('.detailviewcheckbox').unbind('click');
-        $('.detailviewcheckbox').click(function () {
-            if ($(this).prop('checked')) {
-                $('.detailurlparam').show();
-            }
-            else {
-                $('.detailurlparam').hide();
-            }
-        });
-
-        if ($('.detailviewcheckbox').prop('checked')) {
-            $('.detailurlparam').show();
+        function reloadpage() {
+            location.reload();
         }
 
-    });
+        function accordianFunction(id) {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
 
-    function reloadpage() {
-        location.reload();
-    }
-
-</script>
+    </script>

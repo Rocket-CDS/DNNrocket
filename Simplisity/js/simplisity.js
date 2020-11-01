@@ -393,7 +393,7 @@ function simplisity_ConvertParamToJSON(sfields) {
 
     viewData.sfield.push(jsonDataF);
 
-    var system = '{"systemkey":"' + simplisity_getsystemkey(sfields) + '"}';
+    var system = '{"systemkey":"' + simplisity_getsystemkey(sfields) + '","requesturl":"' + window.location.href + '"}';
     var systemobj = JSON.parse(system);
     viewData.system.push(systemobj);
 

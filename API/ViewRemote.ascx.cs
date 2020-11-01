@@ -293,17 +293,11 @@ namespace DNNrocketAPI
             get
             {
                 var actions = new ModuleActionCollection();
-                if (_systemData.Exists) // might be null of initialization
-                {
                     var adminurl = "/DesktopModules/DNNrocket/RocketRemoteMod/admin.html?moduleid=[moduleid]&tabid=[tabid]&systemkey=[systemkey]";
                     adminurl = adminurl.ToLower().Replace("[moduleid]", ModuleId.ToString());
                     adminurl = adminurl.ToLower().Replace("[tabid]", TabId.ToString());
                     adminurl = adminurl.ToLower().Replace("[systemkey]",  _systemkey);
-                    if (adminurl != "")
-                    {
-                        actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.settings"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
-                    }
-                }
+                    actions.Add(GetNextActionID(), DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.settings"), "", "", "icon_dashboard_16px.gif", adminurl, false, SecurityAccessLevel.Edit, true, false);
                 return actions;
             }
         }
