@@ -168,6 +168,12 @@
   <data name="default.Text" xml:space="preserve">
     <value>Default</value>
   </data>
+  <data name="defaultcmd.Text" xml:space="preserve">
+    <value>Default Command</value>
+  </data>
+  <data name="defaulttemplate.Text" xml:space="preserve">
+    <value>Default Template</value>
+  </data>
   <data name="defaultvalues.Text" xml:space="preserve">
     <value>Default Values</value>
   </data>

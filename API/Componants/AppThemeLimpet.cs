@@ -99,7 +99,7 @@ namespace DNNrocketAPI.Componants
         public void Populate()
         {
             Record = new SimplisityInfo();
-            Record = ReadAppTheme();
+            Record = ReadAppTheme(AppThemeFolderMapPath);
 
             Record.SetXmlProperty("genxml/hidden/appthemefolder", AppThemeFolder);
             AppSummary = Record.GetXmlProperty("genxml/textbox/summary");
@@ -317,13 +317,33 @@ namespace DNNrocketAPI.Componants
             AppThemePrefix = appthemeprefix;
             AppThemeName = newAppThemeName;
 
-            Record.SetXmlProperty("genxml/select/versionfolder", postInfo.GetXmlProperty("genxml/select/versionfolder"));
-            Record.SetXmlProperty("genxml/textbox/summary", postInfo.GetXmlProperty("genxml/textbox/summary"));
-            Record.SetXmlProperty("genxml/checkbox/enablesettings", postInfo.GetXmlProperty("genxml/checkbox/enablesettings"));
-            Record.SetXmlProperty("genxml/radio/themetype", postInfo.GetXmlProperty("genxml/radio/themetype"));
+            ReplaceInfoFields(postInfo, "genxml/textbox/*");
+            ReplaceInfoFields(postInfo, "genxml/select/*");
+            ReplaceInfoFields(postInfo, "genxml/radio/*");
+            ReplaceInfoFields(postInfo, "genxml/checkbox/*");
 
             Update();
         }
+        private void ReplaceInfoFields(SimplisityInfo postInfo, string xpathListSelect)
+        {
+            var textList = Record.XMLDoc.SelectNodes(xpathListSelect);
+            if (textList != null)
+            {
+                foreach (XmlNode nod in textList)
+                {
+                    Record.RemoveXmlNode(xpathListSelect.Replace("*", "") + nod.Name);
+                }
+            }
+            textList = postInfo.XMLDoc.SelectNodes(xpathListSelect);
+            if (textList != null)
+            {
+                foreach (XmlNode nod in textList)
+                {
+                    Record.SetXmlProperty(xpathListSelect.Replace("*", "") + nod.Name, nod.InnerText);
+                }
+            }
+        }
+
 
         public void SaveEditor(string filename, string editorcode)
         {
@@ -636,7 +656,14 @@ namespace DNNrocketAPI.Componants
             var newAppThemeFolder = AppSystemThemeFolderMapPath + "\\" + appThemeName;
             DirectoryCopy(AppThemeFolderMapPath, newAppThemeFolder);
 
-            Record = ReadAppTheme();
+            Record = ReadAppTheme(newAppThemeFolder);
+
+            // change any AppTheme name in the Record.
+            var oldAppThemeName = AppThemeFolder;
+            var xmlItem = Record.ToXmlItem();
+            xmlItem = xmlItem.Replace(oldAppThemeName, appThemeName);
+            Record.FromXmlItem(xmlItem);
+            AppThemeName = appThemeName;
 
             // rename
             var s = appThemeName.Split('_');
@@ -769,9 +796,9 @@ namespace DNNrocketAPI.Componants
             return rtnDict;
         }
 
-        private SimplisityRecord ReadAppTheme()
+        private SimplisityRecord ReadAppTheme(string appThemeFolder)
         {
-            var appThemeFile = AppThemeFolderMapPath + "\\export.xml";
+            var appThemeFile = appThemeFolder + "\\export.xml";
             var rtnRec = new SimplisityRecord();
             var appThemeXmlFile = rtnRec.ToXmlItem();
             if (File.Exists(appThemeFile))

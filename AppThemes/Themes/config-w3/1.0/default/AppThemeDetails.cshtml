@@ -11,7 +11,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 @{
-    var appTheme = (AppTheme)Model.List.First();
+    var appTheme = (AppThemeLimpet)Model.List.First();
     var info = new SimplisityInfo(appTheme.Record);
     var record = appTheme.Record;
 }
@@ -226,7 +226,17 @@
 
                 <div class="w3-container ">
                     <div class="w3-row w3-padding">
-                        @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
+                        <div class="w3-third w3-padding">
+                            @RadioButtonList(info, "genxml/radio/themetype", "1,2", ResourceKey("AppThemes.themetype").ToString(), "", "1")
+                        </div>
+                        <div class="w3-third w3-padding">
+                            <label>@ResourceKey("AppThemes.defaulttemplate")</label>
+                            @TextBox(info, "genxml/textbox/defaulttemplate", " class='w3-input w3-border' ", "view.cshtml", false)
+                        </div>
+                        <div class="w3-third w3-padding">
+                            <label>@ResourceKey("AppThemes.defaultcmd")</label>
+                            @TextBox(info, "genxml/textbox/defaultcmd", " class='w3-input w3-border' ", "", false)
+                        </div>
                     </div>
 
                     <div class="w3-row w3-padding w3-border-bottom">
@@ -252,16 +262,15 @@
             <div class="w3-container w3-margin-top">
 
                 <div class="rocket-buttonbar w3-theme">
-                    <div class="w3-bar-item w3-button tablink w3-theme-d5 tabFields" onclick="openDataTab('tabFields','Fields')">@ResourceKey("AppThemes.datafields")</div>
-                    <div class="w3-bar-item w3-button tablink tabSettingFields" onclick="openDataTab('tabSettingFields','SettingFields')">@ResourceKey("AppThemes.settingfields")</div>
                     <div class="w3-bar-item w3-button tablink tabTemplates" onclick="openDataTab('tabTemplates','Templates')">@ResourceKey("AppThemes.templates")</div>
                     <div class="w3-bar-item w3-button tablink tabResources" onclick="openDataTab('tabResources','Resources')">@ResourceKey("AppThemes.resources")</div>
                     <div class="w3-bar-item w3-button tablink tabCSS" onclick="openDataTab('tabCSS','CSS')">@ResourceKey("AppThemes.css")</div>
                     <div class="w3-bar-item w3-button tablink tabJavascript" onclick="openDataTab('tabJavascript','Javascript')">@ResourceKey("AppThemes.javascript")</div>
                     <div class="w3-bar-item w3-button tablink tabImages" onclick="openDataTab('tabImages','Images')">@ResourceKey("DNNrocket.images")</div>
+                    <div class="w3-bar-item w3-button tablink tabSettingFields" onclick="openDataTab('tabSettingFields','SettingFields')">@ResourceKey("AppThemes.settingfields")</div>
                 </div>
 
-                <div id="Fields" class="w3-container w3-border city">
+                <div id="" class="w3-container w3-border w3-hide city">
 
                     <div id="fieldsdatasectiontab" class="w3-row fieldslistdatasection">
 
@@ -520,7 +529,7 @@
         </div>
     </div>
     <div class="w3-right">
-        <i>ID: </i> @info.ItemID
+        <i>ID: </i> @info.ItemID &nbsp; @appTheme.AppThemeFolderRel
     </div>
 
     <!-- The Modal -->
@@ -634,7 +643,7 @@
 
     function searchFunction() {
         var filter = $('#searchtext').val().toUpperCase();
-        $('.searchlanguagebutton ').each(function (i, obj) {
+        $('.searchlanguagebutton').each(function (i, obj) {
             txtValue = $(this).attr('alt');
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
                 $(this).parent().show();
@@ -654,22 +663,25 @@
         var i, x, tablinks;
         x = document.getElementsByClassName("city");
         for (i = 0; i < x.length; i++) {
-        x[i].style.display = "none";
+            x[i].style.display = "none";
         }
-        tablinks = document.getElementsByClassName("tablink");
-        for (i = 0; i < x.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" w3-theme-d5", "");
-        }
+
+        $('.tablink').each(function () {
+            $(this).removeClass('w3-theme-d5');
+        });
+
         document.getElementById(tabName).style.display = "block";
         $('.' + target).addClass('w3-theme-d5');
-        simplisity_setCookieValue('tabName', tabName);
         simplisity_setCookieValue('tabName', tabName);
     }
 
     function showDataTab() {
         var tabName = simplisity_getCookieValue('tabName');
         if (typeof tabName === 'undefined' || tabName === '') {
-            tabName = "Fields";
+            tabName = "Templates";
+        }
+        if ($('#' + tabName).length == 0) {
+            tabName = "Templates";
         }
         openDataTab('tab' + tabName, tabName);
     }
