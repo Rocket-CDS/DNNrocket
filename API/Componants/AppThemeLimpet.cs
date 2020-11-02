@@ -873,6 +873,17 @@ namespace DNNrocketAPI.Componants
         public string AppThemeName { get { return Record.GetXmlProperty("genxml/hidden/appthemename"); } set { Record.SetXmlProperty("genxml/hidden/appthemename",value); } }
         public string AppThemePrefix { get { return Record.GetXmlProperty("genxml/hidden/appthemeprefix"); } set { Record.SetXmlProperty("genxml/hidden/appthemeprefix", value); } }
 
+        public string DefaultTemplate
+        {
+            get
+            {
+                var template = Record.GetXmlProperty("genxml/textbox/defaulttemplate");
+                if (template == "") template = "view.cshtml";
+                return template;
+            }
+        }
+        public string DefaultCommand { get { return Record.GetXmlProperty("genxml/textbox/defaultcmd"); } }
+
         #endregion
 
     }
