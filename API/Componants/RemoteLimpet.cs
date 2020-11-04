@@ -35,12 +35,10 @@ namespace DNNrocketAPI.Componants
         public RemoteLimpet(SimplisityInfo paramInfo, string systemKey)
         {
             Record = new SimplisityRecord();
-            var remoteparams = paramInfo.GetXmlProperty("genxml/settings/remoteparams");
-            if (remoteparams == "") remoteparams = paramInfo.GetXmlProperty("genxml/hidden/remoteparams");
-            var remoteParamItem = StringCompress.DecompressString(remoteparams);
-            if (remoteParamItem != "") Record.FromXmlItem(remoteParamItem);
+            IsRemoteCall = paramInfo.GetXmlPropertyBool("genxml/hidden/remotecall");
+            CultureCode = paramInfo.GetXmlProperty("genxml/hidden/remotelanguage"); // must be assigned AFTER record
             if (systemKey != "") SystemKey = systemKey;
-            if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueString(3);
+            if (ModuleRef == "") ModuleRef = GeneralUtils.GetGuidKey();
             // add any params that have been past
             var nodList = paramInfo.XMLDoc.SelectNodes("genxml/urlparams/*");
             if (nodList != null)
@@ -94,13 +92,20 @@ namespace DNNrocketAPI.Componants
             }
 
             // if we have a Security Code, use that for the params passed
+            LoadSecurityCode(Record.GetXmlProperty("genxml/settings/securitycode"));
+
+            if (systemKey != "") SystemKey = systemKey;
+            if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueString();
+        }
+        public void LoadSecurityCode(string securityCode)
+        {
+            // if we have a Security Code, use that for the params passed
             try
             {
-                var sc2 = Record.GetXmlProperty("genxml/settings/securitycode");
-                if (sc2 != "")
+                if (securityCode != "")
                 {
                     var sRemote = new SimplisityInfo();
-                    sRemote.FromXmlItem(StringCompress.DecompressString(sc2));
+                    sRemote.FromXmlItem(StringCompress.DecompressString(securityCode));
                     var l = sRemote.ToDictionary();
                     foreach (var d in l)
                     {
@@ -112,9 +117,6 @@ namespace DNNrocketAPI.Componants
             {
                 // Ignore
             }
-
-            if (systemKey != "") SystemKey = systemKey;
-            if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueString();
         }
         public void Save(SimplisityInfo postInfo)
         {
@@ -350,9 +352,9 @@ namespace DNNrocketAPI.Componants
         {
             get
             {
-                var rtn = Record.GetXmlProperty("genxml/urlparam/language");  // use language if passed form romote source.
-                if (rtn == "") rtn = Record.GetXmlProperty("genxml/settings/language");  // use language if passed form romote source.
-                if (rtn == "") rtn = Record.GetXmlProperty("genxml/hidden/language");  // use language if passed form romote source.
+                var rtn = Record.GetXmlProperty("genxml/settings/language");  // use language if passed form romote source.
+                if (rtn == "") rtn = Record.GetXmlProperty("genxml/hidden/language");  
+                if (rtn == "") rtn = Record.GetXmlProperty("genxml/urlparam/language");  
                 if (rtn == "") rtn = DNNrocketUtils.GetCurrentCulture(); // no remote langauge, use local culture code
                 return rtn;
             }
@@ -392,6 +394,7 @@ namespace DNNrocketAPI.Componants
         public string RemoteAdminRelPath { get { return Record.GetXmlProperty("genxml/settings/remoteadminrelpath"); } set { Record.SetXmlProperty("genxml/settings/remoteadminrelpath", value); } }
         public string RemoteAdminUrl { get { return EngineURL.TrimEnd('/') + "/" + RemoteAdminRelPath; } }
         public string CompressedRemoteParam { get { return StringCompress.CompressString(Record.ToXmlItem()); } }
+        public bool IsRemoteCall { get; set; }
 
         #endregion
     }
