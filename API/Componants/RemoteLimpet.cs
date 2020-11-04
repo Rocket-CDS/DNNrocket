@@ -1,5 +1,6 @@
 ﻿using DNNrocketAPI;
 using DotNetNuke.Entities.Modules;
+using RazorEngine;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -230,7 +231,7 @@ namespace DNNrocketAPI.Componants
             var cmd = RemoteCmd;
             if (GetUrlParam("cmd") != "") cmd = GetUrlParam("cmd"); // URL param overwrites database setting.
             var remoteHeaderCmd = cmd + "seo";
-            var rtnXml =  CallAPI(remoteHeaderCmd, httpMethod, "text/html");
+            var rtnXml = CallAPI(remoteHeaderCmd, httpMethod, "text/html");
             if (rtnXml != "")
             {
                 var sRec = new SimplisityRecord();
@@ -247,7 +248,7 @@ namespace DNNrocketAPI.Componants
             var cmd = RemoteCmd;
             if (GetUrlParam("cmd") != "") cmd = GetUrlParam("cmd"); // URL param overwrites database setting.
             var remoteHeaderCmd = cmd + "header";
-            return CallAPI(remoteHeaderCmd,httpMethod, "text/html");
+            return CallAPI(remoteHeaderCmd, httpMethod, "text/html");
         }
         public string htmlAPI(string httpMethod = "POST")
         {
@@ -275,8 +276,8 @@ namespace DNNrocketAPI.Componants
                     // Build data to be sent.
                     var paramInfo = new SimplisityInfo();
                     paramInfo.TypeCode = "paramInfo";
-                    
-                    Language = DNNrocketUtils.GetCurrentCulture();
+
+                    CultureCode = DNNrocketUtils.GetCurrentCulture();
                     paramInfo.SetXmlProperty("genxml/settings/language", DNNrocketUtils.GetCurrentCulture());  // pass the current language to the remote server
                     AddUrlParam("language", DNNrocketUtils.GetCurrentCulture());
 
@@ -343,13 +344,20 @@ namespace DNNrocketAPI.Componants
                 return true;
             }
         }
-        public string Language { get {
+        [Obsolete("Use CultureCode instead")]
+        public string Language { get { return CultureCode;} }
+        public string CultureCode
+        {
+            get
+            {
                 var rtn = Record.GetXmlProperty("genxml/urlparam/language");  // use language if passed form romote source.
                 if (rtn == "") rtn = Record.GetXmlProperty("genxml/settings/language");  // use language if passed form romote source.
                 if (rtn == "") rtn = Record.GetXmlProperty("genxml/hidden/language");  // use language if passed form romote source.
                 if (rtn == "") rtn = DNNrocketUtils.GetCurrentCulture(); // no remote langauge, use local culture code
-                return rtn; 
-            } private set { Record.SetXmlProperty("genxml/settings/language", value); } }
+                return rtn;
+            }
+            private set { Record.SetXmlProperty("genxml/settings/language", value); }
+        }
         public string Name { get { return Record.GetXmlProperty("genxml/settings/name");  } set { Record.SetXmlProperty("genxml/settings/name", value); } }
         public int ModuleId { get { return Record.ModuleId; } private set { Record.ModuleId = value; } }
         public string SystemKey { get { return Record.GetXmlProperty("genxml/settings/systemkey"); } set { Record.SetXmlProperty("genxml/settings/systemkey", value); } }
