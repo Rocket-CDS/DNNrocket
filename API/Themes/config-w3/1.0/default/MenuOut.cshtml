@@ -57,7 +57,7 @@
         if (interfacelist.Count > 0)
         {
             menuOut += "<div class='w3-bar-item w3-button w3-padding menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey(Model.GetSetting("resxfile") + "." + groupref) + "&nbsp;<i class='fas fa-caret-down'></i></div>";
-            menuOut += "<div id='" +  groupref + "' class='w3-hide'>";
+            menuOut += "<div id='" + groupref + "' class='w3-hide'>";
             foreach (var i in interfacelist)
             {
                 if (i.GetXmlPropertyBool("genxml/checkbox/onmenu"))
@@ -90,46 +90,9 @@
     menuOut += "<div class='w3-border-bottom w3-bar-item'>&nbsp;</div>";
 }
 
-@if (UserUtils.IsSuperUser())
-{
-    menuOut += "<a class='w3-bar-item w3-button w3-padding w3-theme ' href='/desktopmodules/dnnrocket/adminsystem.html' target='_blank'><i title='System' class='fa fas fa-rocket' style='width:20px;'></i>&nbsp;System</a>";
-}
-@if (Model.GetSettingBool("menu-appthemes"))
-{
-    menuOut += "<a class='w3-bar-item w3-button w3-padding w3-theme ' href='/Desktopmodules/dnnrocket/AppThemes/admin.html' target='_blank'><i title='System' class='fa fas fa-file-code' style='width:20px;'></i>&nbsp;AppThemes</a>";
-}
-@if (Model.GetSettingBool("menu-signoutbutton"))
-{
-    menuOut += "<div class='w3-bar-item w3-button w3-theme w3-hover-theme  simplisity_click' s-cmd='login_signout'><i class='fa fas fa-sign-out-alt'></i>&nbsp;" + ResourceKey("DNNrocket.signout") + "</div>";
-}
-@{
-    menuOut += "<div class='w3-border-top w3-bar-item'>&nbsp;</div>";
-}
-
-@if (Model.GetSettingBool("menu-backbutton"))
-{
-    menuOut += "<div s-after='returnclick' s-cmd='admin_return' s-return='.menureturn' class=' w3-bar-item w3-button w3-theme w3-hover-theme simplisity_click'>" + ButtonText(ButtonTypes.back) + "</div>";
-}
-else
-{
-    menuOut += "<div class='w3-bar-item w3-button w3-padding w3-theme-d3 returnbutton' style='display:none;' onclick='returnclick();'>" + ButtonText(ButtonTypes.back) + "</div>";
-
-}
-
-
 <div class="menureturn" style="display:none;"></div>
 
-<div class="w3-bar-block w3-theme">
-
-    @RenderTemplate("LanguageSelect.cshtml", "\\DesktopModules\\DNNrocket\\Country", "config-w3", Model, "1.0", true)
-
-    <div class="w3-overlay w3-white " style="display:none;" id="sidebar_loader"><i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i></div>
-
-    <div class="w3-margin-top w3-margin-bottom">
-        @HtmlOf(menuOut)
-    </div>
-</div>
-
+@HtmlOf(menuOut)
 
 
 <script type="text/javascript">
@@ -213,7 +176,7 @@ else
         $('#simplisity_loader').show();
         $('.simplisity_panel').hide();
         $('#mySidebar').removeClass('w3-theme');
-        $('#mySidebar').removeClass('w3-border-right');        
+        $('#mySidebar').removeClass('w3-border-right');
         $('#mySidebar').add('w3-white');
         var returnurl = sessionStorage.RocketModReturn;
         if (typeof returnurl === 'undefined' || returnurl === '') {

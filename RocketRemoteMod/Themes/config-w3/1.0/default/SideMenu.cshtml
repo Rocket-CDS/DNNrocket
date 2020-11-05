@@ -12,9 +12,32 @@
 
 
 <div class="w3-row w3-padding-small w3-theme-d5 w3-border-bottom w3-padding">
-    <div class="w3-col w3-large"><i class='fa fas fa-rocket' style='font-size:36px'></i>&nbsp;Rocket Remote</div>
+    <div class="w3-col w3-large"><i class='fa fas fa-wifi' style='font-size:36px'></i>&nbsp;@ResourceKey("DNNrocket.remote")</div>
     <div class="w3-col w3-hide-large w3-button w3-display-topright" onclick="w3_close()" style="cursor:pointer;width:40px;" title=""><i class='fas fa-caret-left' style='font-size:36px'></i></div>
 </div>
 
-@RenderSideMenu(Model, "DNNrocket/RocketRemoteMod", "RRM", true, false, true)
+
+<div class="w3-bar-block w3-theme">
+
+    <div class="w3-overlay w3-white " style="display:none;" id="sidebar_loader"><i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i></div>
+
+    <div class="w3-margin-top w3-margin-bottom">
+        @RenderSideMenu(Model, "DNNrocket/RocketRemoteMod", "RRM", false, false, false)
+    </div>
+
+    <a class='w3-bar-item w3-button w3-padding w3-theme ' href='/desktopmodules/dnnrocket/adminsystem.html' target='_blank'><i title='System' class='fa fas fa-rocket' style='width:20px;'></i>&nbsp;System</a>
+    <a class='w3-bar-item w3-button w3-padding w3-theme ' href='/Desktopmodules/dnnrocket/AppThemes/admin.html' target='_blank'><i title='System' class='fa fas fa-file-code' style='width:20px;'></i>&nbsp;AppThemes</a>
+
+    @if (Model.GetSettingBool("menu-signoutbutton"))
+    {
+        <div class='w3-bar-item w3-button w3-theme w3-hover-theme  simplisity_click' s-cmd='login_signout'><i class='fa fas fa-sign-out-alt'></i>&nbsp;@ResourceKey("DNNrocket.signout")</div>
+    }
+    @{
+        <div class='w3-border-top w3-bar-item'>&nbsp;</div>
+    }
+
+    <div class='w3-bar-item w3-button w3-padding w3-theme-d3 returnbutton' style='display:none;' onclick='returnclick();'>@ButtonText(ButtonTypes.back)</div>
+
+</div>
+
 

@@ -579,4 +579,7 @@
   <data name="content.Text" xml:space="preserve">
     <value>Content</value>
   </data>
+  <data name="remote.Text" xml:space="preserve">
+    <value>Remote</value>
+  </data>
 </root>
