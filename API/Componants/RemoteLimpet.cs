@@ -254,9 +254,9 @@ namespace DNNrocketAPI.Componants
         }
         public string htmlAPI(string httpMethod = "POST")
         {
-            if (RemoteCmd == "") return "";
             var cmd = RemoteCmd;
             if (GetUrlParam("cmd") != "") cmd = GetUrlParam("cmd"); // URL param overwrites database setting.
+            if (cmd == "") return "No Remote Command set in AppTheme or passed by URL.";
             return CallAPI(cmd, httpMethod, "text/html");
         }
         public string jsonAPI(string httpMethod = "POST")
