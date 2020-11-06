@@ -7,12 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
-    <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
+    <Compile Remove="Themes\config-w3\1.0\img\**" />
+    <EmbeddedResource Remove="Themes\config-w3\1.0\img\**" />
+    <None Remove="Themes\config-w3\1.0\img\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Themes\config-w3\1.0\img\" />
+    <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
+    <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
   </ItemGroup>
 
   <ItemGroup>

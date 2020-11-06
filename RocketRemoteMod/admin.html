@@ -7,7 +7,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/grey.css">
     <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/dnnrocket.css">
 
     <!-- LOCAL -->
@@ -19,6 +18,8 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+    <script type="text/javascript" src="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/js/SideMenu.js"></script>
+
 
     <style>
         @import url('https://fonts.googleapis.com/css?family=Sarabun:200,400,400i,700&display=swap');
@@ -35,7 +36,7 @@
 
     <!-- Side Navigation (use mask div if in iframe editmode)-->
     <nav class="w3-sidebar w3-collapse w3-theme w3-animate-left w3-border-right" style="z-index:3;width:270px;top:0px;" id="mySidebar">
-        <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="getsidemenu" s-fields='{"theme":"config-w3","template":"SideMenu.cshtml","relpath":"/DesktopModules/DNNrocket/RocketRemoteMod/"}'></div>
+        <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="getsidemenu" s-after="sidemenuaction" s-fields='{"theme":"config-w3","template":"SideMenu.cshtml","relpath":"/DesktopModules/DNNrocket/RocketRemoteMod/"}'></div>
     </nav>
     <div class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-grey" onclick="w3_open();"><i class="fas fa-bars"></i></div>
 

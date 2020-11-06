@@ -72,7 +72,8 @@ namespace DNNrocketAPI.Componants
         public string CKEditorCssList { get { return Info.GetXmlProperty("genxml/textbox/ckeditorcsslist"); } set { Info.SetXmlProperty("genxml/textbox/ckeditorcsslist", value); } }
         public bool SchedulerIsInstalled { get { return Info.GetXmlPropertyBool("genxml/checkbox/schedulerinstalled"); } set { Info.SetXmlProperty("genxml/checkbox/schedulerinstalled", value.ToString()); } }
         public bool SchedulerIsEnabled { get { return Info.GetXmlPropertyBool("genxml/checkbox/schedulerenabled"); } set { Info.SetXmlProperty("genxml/checkbox/schedulerenabled", value.ToString()); } }
-
+        public string ColorTheme{ get { var rtn = Info.GetXmlProperty("genxml/select/colortheme"); if (rtn == "") rtn = "dnnrocket-theme.css"; return rtn; } set { Info.SetXmlProperty("genxml/select/colortheme", value); } }
+        
         // globalconfig.xml - Config XML file data
         public string LicenseUrl { get { return ConfigInfo.GetXmlProperty("genxml/hidden/licenseurl"); } }
         public string PublicAppThemeURI { get { return ConfigInfo.GetXmlProperty("genxml/hidden/publicappthemeuri"); } }

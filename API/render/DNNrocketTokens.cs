@@ -704,14 +704,96 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
+        [Obsolete("Use RenderSideMenu(SimplisityRazor model, string resxFolder) instead")]
         public IEncodedString RenderSideMenu(SimplisityRazor model, string projectfolder, string resxFileWithoutExt, bool backbutton = false, bool signoutbutton = true, bool appthemes = false)
         {
             model.SetSetting("projectfolder", projectfolder);
             model.SetSetting("resxfile", resxFileWithoutExt);
-            model.SetSetting("menu-backbutton", backbutton.ToString());
-            model.SetSetting("menu-signoutbutton", signoutbutton.ToString());
-            model.SetSetting("menu-appthemes", appthemes.ToString());
             return RenderTemplate("MenuOut.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model, "1.0", true);
+        }
+
+        public IEncodedString RenderSideMenu(SimplisityRazor model, string resxFolder = "App_LocalResources")
+        {
+            var sidemenu = (SideMenu)model.List.First();
+            var systemData = new SystemLimpet(sidemenu.SystemKey);
+
+
+            var menuOut = "";
+            // get action interfaces. (no group)
+            var lp = 1;
+            var interfacelist = sidemenu.GetInterfaces("");
+            if (interfacelist.Count > 0)
+            {
+                foreach (var i in interfacelist)
+                {
+                    if (i.GetXmlPropertyBool("genxml/checkbox/onmenu"))
+                    {
+                        var defaulttheme = i.GetXmlProperty("genxml/textbox/defaulttheme");
+                        var defaulttemplate = i.GetXmlProperty("genxml/textbox/defaulttemplate");
+                        var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
+                        var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
+                        var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
+                        var interfaceName = DNNrocketUtils.GetResourceString(systemData.SystemRelPath + "/" + resxFolder, "SideMenu." + interfacekey, "Text", DNNrocketUtils.GetCurrentCulture());
+                        if (interfaceName == "")
+                        {
+                            interfaceName = systemData.GetSetting(interfacekey + "MenuName");
+                            if (interfaceName == "")
+                            {
+                                interfaceName = interfacekey;
+                            }
+                        }
+                        menuOut += "<div class='w3-bar-item w3-button w3-padding menubaritem menubaritem" + lp + "  simplisity_click' s-before='sidebarloader" + lp + "' s-after='sidemenuchange' s-cmd='" + defaultcommand + "' s-fields='{\"menuindex\":\"" + lp + "\",\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='" + interfaceicon + "' style='width:20px;'></i>&nbsp;" + interfaceName + "</div>";
+                        menuOut += "<script type='text/javascript'>function sidebarloader" + lp + "() {simplisity_setCookieValue('" + @sidemenu.SystemKey + "-menuindex','" + lp + "');$('#sidebar_loader').show();}</script>";
+                    }
+                    lp += 1;
+                }
+            }
+
+
+            // get sub group interfaces
+            foreach (SimplisityRecord g in sidemenu.GetGroups())
+            {
+                var groupref = g.GetXmlProperty("genxml/textbox/groupref");
+                var groupicon = g.GetXmlProperty("genxml/textbox/groupicon");
+                interfacelist = sidemenu.GetInterfaces(groupref);
+                if (interfacelist.Count > 0)
+                {
+                    var groupName = DNNrocketUtils.GetResourceString(systemData.SystemRelPath + "/" + resxFolder, "SideMenu." + groupref, "Text", DNNrocketUtils.GetCurrentCulture());
+                    if (groupName == "") groupName = groupref;
+                    menuOut += "<div class='w3-bar-item w3-button w3-padding menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + groupName + "&nbsp;<i class='fas fa-caret-down'></i></div>";
+                    menuOut += "<div id='" + groupref + "' class='w3-hide'>";
+                    foreach (var i in interfacelist)
+                    {
+                        if (i.GetXmlPropertyBool("genxml/checkbox/onmenu"))
+                        {
+                            var defaulttheme = i.GetXmlProperty("genxml/textbox/defaulttheme");
+                            var defaulttemplate = i.GetXmlProperty("genxml/textbox/defaulttemplate");
+                            var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
+                            var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
+                            var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
+
+                            var interfaceName = DNNrocketUtils.GetResourceString(systemData.SystemRelPath + "/" + resxFolder, "SideMenu." + interfacekey, "Text", DNNrocketUtils.GetCurrentCulture());
+                            if (interfaceName == "")
+                            {
+                                interfaceName = systemData.GetSetting(interfacekey + "MenuName");
+                                if (interfaceName == "")
+                                {
+                                    interfaceName = interfacekey;
+                                }
+                            }
+                            menuOut += "<div class='w3-bar-item w3-button w3-padding menubaritem menubaritem" + lp + " simplisity_click ' s-before='sidebarloader" + lp + "' s-after='sidemenuchange'  s-cmd='" + defaultcommand + "' s-fields='{\"menuindex\":\"" + lp + "\",\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfaceName + "</div>";
+                            menuOut += "<script type='text/javascript'>function sidebarloader" + lp + "() {simplisity_setCookieValue('" + @sidemenu.SystemKey + "-menuindex','" + lp + "');$('#sidebar_loader').show();}</script>";
+                            lp += 1;
+                        }
+                    }
+                    menuOut += "</div>";
+                }
+            }
+
+            menuOut += "<div class='w3-border-bottom w3-bar-item'>&nbsp;</div>";
+            menuOut += "<div class='menureturn' style='display:none;'></div>";
+
+            return new RawString(menuOut);
         }
 
         public IEncodedString GetTreeTabList(int portalId, List<int> selectedTabIdList, string treeviewId, string lang = "", string attributes = "", bool showAllTabs = false)

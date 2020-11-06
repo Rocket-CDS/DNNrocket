@@ -695,6 +695,8 @@
     <None Include="Themes\config-w3\1.0\css\grey.css" />
     <Content Include="Themes\config-w3\1.0\css\dnnrocket.css" />
     <None Include="Themes\config-w3\1.0\css\blue-grey.css" />
+    <None Include="Themes\config-w3\1.0\css\toasted-theme.css" />
+    <Content Include="Themes\config-w3\1.0\js\SideMenu.js" />
     <Content Include="ViewRemote.ascx" />
     <Content Include="View.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -710,7 +712,6 @@
   <ItemGroup>
     <Folder Include="Systems\" />
     <Folder Include="Themes\config-w3\1.0\img\" />
-    <Folder Include="Themes\config-w3\1.0\js\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
