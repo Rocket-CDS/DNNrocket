@@ -1,5 +1,6 @@
 ﻿
 
+// Call function from s-after on sidemenu API call
 function sidemenuaction() {
 
     // turn off the reload flag
