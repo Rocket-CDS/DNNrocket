@@ -692,7 +692,7 @@
     <Content Include="Meta.ascx" />
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
     <None Include="Themes\config-w3\1.0\css\green-theme.css" />
-    <None Include="Themes\config-w3\1.0\css\grey.css" />
+    <None Include="Themes\config-w3\1.0\css\grey-theme.css" />
     <Content Include="Themes\config-w3\1.0\css\dnnrocket.css" />
     <None Include="Themes\config-w3\1.0\css\blue-grey.css" />
     <None Include="Themes\config-w3\1.0\css\toasted-theme.css" />

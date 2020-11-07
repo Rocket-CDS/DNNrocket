@@ -256,8 +256,9 @@ namespace DNNrocketAPI
             }
 
             var adminButton = "";
-            if (_hasEditAccess && _remoteParams.RemoteAdminRelPath != "")
+            if (_hasEditAccess)
             {
+                if (_remoteParams.RemoteAdminRelPath == "") _remoteParams.RemoteAdminRelPath = "/DesktopModules/DNNrocketModules/RocketEcommerce/admin.html";
                 adminButton += "<div id='rocketcontentediticons" + ModuleId + "' class='w3-display-topleft w3-margin'>";
                 adminButton += "<a href='" + _remoteParams.RemoteAdminUrl + "' target='_blank' title='" + DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.admin") + "' class='w3-button w3-white w3-border w3-border-blue w3-round-large  w3-tiny'><i class='fa fas fa-store-alt'></i></a>";
                 adminButton += "<a href='?clearallcache=" + ModuleId + "&tabid=" + TabId + "' title='" + DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearallcache") + "' class='w3-button w3-white w3-border w3-border-blue w3-round-large  w3-tiny'><i class='fa fas fa-sync'></i></a>";
