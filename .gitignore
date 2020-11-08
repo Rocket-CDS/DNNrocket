@@ -329,7 +329,3 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 TestForm/images/
-API/Installation/DNNrocketAPI_1.0.0_Install.zip
-SystemData/images
-Resource.zip.manifest
-Uninstall.SqlDataProvider
