@@ -1,0 +1,110 @@
+﻿@inherits Rocket.Tools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using RazorEngine.Text;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+
+    <div class="w3-row">
+        <div class="w3-col m6 w3-xxlarge">
+            Module Roles
+        </div>
+        <div class="w3-col m6">
+            <div class="w3-button w3-blue w3-right  simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.adddefaultroles","","Confirm")" s-cmd="rocketroles_createdefaultroles"  >@ResourceKey("RocketTools.adddefaultroles")</div>
+        </div>
+    </div>
+
+<p>@ResourceKey("RocketTools.moduleroles", "", "Help")</p>
+
+
+<div class="w3-row">
+
+
+    <div class="w3-third w3-padding tabselect">
+        <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
+            <b class="w3-large">@ResourceKey("DNNrocket.pages")</b>
+            <div class="w3-button w3-green w3-right nextbuttonpage simplisity_click" style="display:none;" s-cmd="rocketroles_getmodules" s-return=".moduledatasection" s-fields='' s-post="#treeview2_container">@ResourceKey("DNNrocket.next")&nbsp;<i class="fas fa-caret-right"></i></div>
+        </div>
+        <div class="w3-row ">
+            <div class="w3-button w3-col m5 w3-blue w3-margin-right" id="checkAll">@ResourceKey("DNNrocket.checkall")</div>
+            <div class="w3-button w3-col m5 w3-blue" id="uncheckAll">@ResourceKey("DNNrocket.uncheckall")</div>
+        </div>
+        <div id="treeview2_container" class="hummingbird-treeview well h-scroll-large">
+            @GetTreeTabList(Model.GetSettingInt("portalid"), new List<int>(), "treeview2", "", "class='hummingbird-base'")
+        </div>
+
+    </div>
+    <div class="w3-twothird" id="updatesection">
+        <div class="w3-half w3-padding">
+            <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
+                <b class="w3-large">@ResourceKey("DNNrocket.modules")</b>
+                <div class="w3-button w3-green w3-right nextbuttonmodule simplisity_click" style="display:none;" s-cmd="rocketroles_getroles" s-return=".rolesdatasection" s-fields='' s-post="#modulelistdata">@ResourceKey("DNNrocket.next")&nbsp;<i class="fas fa-caret-right"></i></div>
+            </div>
+            <div class="w3-row moduledatasection">
+
+            </div>
+        </div>
+        <div class="w3-half w3-padding">
+            <div class="w3-large w3-panel w3-theme-d2 w3-padding" style="height:52px;">
+                <b>@ResourceKey("DNNrocket.roles")</b>
+            </div>
+            <div class="w3-row rolesdatasection">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        simplisity_setParamField('pageref', CreateGuid());
+
+        $.fn.hummingbird.defaults.SymbolPrefix = "fas";
+        $.fn.hummingbird.defaults.collapsedSymbol = "fa-caret-down";
+        $.fn.hummingbird.defaults.expandedSymbol = "fa-caret-up";
+
+        $("#treeview2").hummingbird();
+
+
+        $("#checkAll").click(function () {
+            $("#treeview2").hummingbird("checkAll");
+        });
+        $("#uncheckAll").click(function () {
+            $("#treeview2").hummingbird("uncheckAll");
+        });
+        $("#collapseAll").click(function () {
+            $("#treeview2").hummingbird("collapseAll");
+        });
+
+        $("#treeview2").on("nodeChecked", function () {
+            $('.nextbuttonpage').show();
+            $('.moduledatasection').text('');
+            $('.rolesdatasection').text('');
+        });
+        $("#treeview2").on("nodeUnchecked", function () {
+            $('.nextbuttonpage').show();
+            $('.moduledatasection').text('');
+            $('.rolesdatasection').text('');
+        });
+    });
+
+    function CreateGuid() {
+        function _p8(s) {
+            var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+            return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+        }
+        return _p8() + _p8(true) + _p8(true) + _p8();
+    }
+
+
+</script>
+

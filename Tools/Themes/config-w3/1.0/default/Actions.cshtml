@@ -1,0 +1,77 @@
+﻿@inherits Rocket.Tools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using RazorEngine.Text;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+
+
+<h1>@ResourceKey("RocketTools.actions")</h1>
+<p>@ResourceKey("RocketTools.actions", "", "Help")</p>
+
+<div class="w3-row w3-margin-bottom validationaction">
+
+
+    <div class="w3-panel w3-theme-d2 w3-padding" style="height:52px;">
+        <b class="w3-large">@ResourceKey("DNNrocket.system")</b>
+    </div>
+
+    <div class="w3-third w3-padding">
+        <div class="hummingbird-treeview well h-scroll-large">
+            <ul id="validatelistdata" class="hummingbird-base">
+
+                @{
+                    var systemDataList = new SystemLimpetList();
+                    var list = systemDataList.GetSystemList();
+                    foreach (var sk in list)
+                    {
+                        var systemData = new SystemLimpet(sk.ItemID);
+                        if (systemData.GetInterface("validatedata") != null)
+                        {
+                            <li>
+                                <label>
+                                    <input id='sk.GUIDKey' class="systemcheckbox" systemid='@sk.ItemID' s-xpath="genxml/checkbox/systemid@(sk.ItemID)" s-update="save" type="checkbox" checked="true">
+                                    @sk.GetXmlProperty("genxml/textbox/systemname")
+                                </label>
+                            </li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="w3-third w3-padding">
+          <div class="w3-button w3-margin-top w3-green w3-padding simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.validate") ?" s-cmd="rocketactions_validate" s-fields='' s-post=".validationaction" style="width:100%;"><i class="fas fa-save"></i>&nbsp;@ResourceKey("DNNrocket.validate")</div>
+    </div>
+
+
+
+</div>
+
+<hr/>
+
+<script>
+
+    $(document).ready(function () {
+
+        simplisity_setParamField('pageref', CreateGuid());
+
+    });
+
+    function CreateGuid() {
+        function _p8(s) {
+            var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+            return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+        }
+        return _p8() + _p8(true) + _p8(true) + _p8();
+    }
+
+
+</script>
+

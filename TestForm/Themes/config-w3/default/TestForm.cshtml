@@ -2,8 +2,8 @@
 @using DNNrocketAPI;
 @using Simplisity;
 
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/TestForm/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/TestForm/App_LocalResources/")
 
 @{
     var info = (SimplisityInfo)Model.List.First();
@@ -11,8 +11,8 @@
 
 
 <span class="w3-section simplisity_buttons">
-    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="testform_save" s-post="#testform" s-list=".testlist,.testlist2,.testtabledata" s-fields="theme:config-w3,template:TestForm.cshtml,interfacekey:testform">@ResourceKey("DNNrocket.cmdSaveButton")</button>
-    <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="testform_delete" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestList.cshtml,interfacekey:testform">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
+    <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="testform_save" s-post="#testform" s-list=".testlist,.testlist2,.testtabledata,.testlistdoc" s-fields="theme:config-w3,template:TestForm.cshtml,interfacekey:testform">@ButtonText(ButtonTypes.save)</span>
+    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="testform_delete" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestList.cshtml,interfacekey:testform">@ButtonText(ButtonTypes.delete)</span>
 </span>
 
 
@@ -22,19 +22,19 @@
     <div class="w3-container">
         <div class="w3-row">
             <a href="javascript:void(0)" class="sectiontab" sectionname="testform">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding w3-border-black w3-theme " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testform")</div>
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding w3-border-black w3-theme " style="width:20%"><i class="fas fa-home"></i>&nbsp;@ResourceKey("testform.testform")</div>
             </a>
             <a href="javascript:void(0)" class="sectiontab" sectionname="testformlist">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testformlist")</div>
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fas fa-home"></i>&nbsp;@ResourceKey("testform.testformlist")</div>
             </a>
             <a href="javascript:void(0)" class="sectiontab" sectionname="TestFormImages">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testformlist") Images</div>
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fas fa-home"></i>&nbsp;@ResourceKey("testform.testformlist") Images</div>
             </a>
             <a href="javascript:void(0)" class="sectiontab" sectionname="TestFormDocs">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testformlist") Docs</div>
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fas fa-home"></i>&nbsp;@ResourceKey("testform.testformlist") Docs</div>
             </a>
             <a href="javascript:void(0)" class="sectiontab" sectionname="testtable">
-                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fa fa-home"></i>&nbsp;Test Table</div>
+                <div class="w3-col tablink w3-bottombar w3-hover-light-blue w3-padding " style="width:20%"><i class="fas fa-home"></i>&nbsp;Test Table</div>
             </a>
         </div>
 

@@ -1,0 +1,65 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using DNNrocketAPI;
+@using DNNrocketAPI.Componants;
+@using System.Linq
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
+
+
+@{
+    var systemGlobalData = new SystemGlobalData();
+    var moduleParams = (ModuleParams)Model.List.First();
+}
+
+<div id="createnewlicense" class="w3-modal">
+    <div class="w3-modal-content w3-card w3-animate-zoom">
+
+        <header class="w3-container  w3-theme">
+            <span onclick="document.getElementById('createnewlicense').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <h2>@ResourceKey("DNNrocket.license")</h2>
+        </header>
+
+        <div class="w3-row w3-padding">
+            <h2>
+                @DNNrocketUtils.GetDefaultWebsiteDomainUrl()
+            </h2>
+        </div>
+
+        <div class="w3-row">
+            <div class="w3-padding">
+                <label><b>@ResourceKey("DNNrocket.sitekey")</b></label>
+                @TextBox(new SimplisityInfo(), "genxml/hidden/sitekey", "class='w3-input w3-border' disabled", PortalUtils.SiteGuid())
+            </div>
+        </div>
+
+        <div class="w3-padding">
+            <i><b>@ResourceKey("DNNrocket.licenseredirect", "", "Help")</b></i>
+        </div>
+        <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+            <div class="">
+                <span class="w3-button w3-red " onclick="document.getElementById('createnewlicense').style.display='none'">@ResourceKey("DNNrocket.cancel")</span>
+                <div onclick="doRedirection();" class="w3-right w3-button w3-green redirectbutton">@ResourceKey("DNNrocket.getlicense")</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+    });
+
+    function doRedirection() {
+        var currentURL = window.location.href;
+        var url = "@(systemGlobalData.LicenseUrl.TrimEnd('/'))/DesktopModules/DNNrocketModules/RocketLicense/newlicense.html";
+        url += "?sitekey=@(PortalUtils.SiteGuid())";
+        url += "&licensetype=@(Model.GetSetting("licensetype"))";
+        url += "&domainurl=@GeneralUtils.EnCode(DNNrocketUtils.GetDefaultWebsiteDomainUrl())";
+        url += "&returnurl=" + simplisity_encode(currentURL);
+        url += "&systemkey=" + simplisity_encode('@(moduleParams.SystemKey)');
+        window.location.replace(url);
+    }
+</script>

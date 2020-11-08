@@ -1,0 +1,128 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
+@{
+    var sInfo = (SimplisityInfo)Model.List.First();
+}
+
+<div class="w3-container">
+
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 w3-button rocket-buttonbar w3-khaki simplisity_click" s-cmd="systemapi_admin_getsystemlist" s-fields='{"track":"true","theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel">@ButtonText(ButtonTypes.back)</div>
+        <div class="w3-col m2 w3-button rocket-buttonbar w3-green simplisity_click" s-cmd="systemapi_admin_save" s-fields='{"selecteditemid":"@(sInfo.ItemID)","theme":"config-w3","template":"Admin_SystemDetail.cshtml"}' s-post="#pluginsdatasection" s-list=".interfacedata,.idxfielddata,.settingsdata,.groupsdata,.provtypesdata,.dnninstall">@ButtonText(ButtonTypes.save)</div>
+        <div class="w3-col m2 w3-button rocket-buttonbar w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="systemapi_admin_delete" s-fields='{"selecteditemid":"@(sInfo.ItemID)"}' s-post="#pluginsdatasection" s-return="#simplisity_startpanel" s-after="reloadpluginlist">@ButtonText(ButtonTypes.delete)</div>
+        @if (Model.GetSettingBool("saved"))
+        {
+
+            <i class='fas fa-save simplisity_fadeout' style="font-size:24px"></i>
+        }
+    </div>
+
+    <div class="w3-container w3-margin-top">
+        <h2>@sInfo.GetXmlProperty("genxml/textbox/systemname")</h2>
+
+        <div class="w3-row">
+            <a href="javascript:void(0)" onclick="openSection(event, 'pluginsdatasection');">
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding w3-border-blue w3-light-blue " style="height:80px;width:14%"><i class="fas fa-home"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.systemdata")</span></div>
+            </a>
+            <a href="javascript:void(0)" onclick="openSection(event, 'dnninstallsection');">
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding" style="height:80px;width:14%"><i class="fas fa-cubes"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.dnnmodules")</span></div>
+            </a>
+            <a href="javascript:void(0)" onclick="openSection(event, 'Groups');">
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding" style="height:80px;width:14%"><i class="fas fa-layer-group"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.menugroups")</span></div>
+            </a>
+            <a href="javascript:void(0)" onclick="openSection(event, 'provtypes');">
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding" style="height:80px;width:14%"><i class="fas fa-handshake"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.provtypes")</span></div>
+            </a>
+            <a href="javascript:void(0)" onclick="openSection(event, 'Interface');">
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding" style="height:80px;width:14%"><i class="fas fa-link"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.interfaces")</span></div>
+            </a>
+            <a href="javascript:void(0)" onclick="openSection(event, 'parameters');">
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding" style="height:80px;width:14%"><i class="fas fa-indent"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.idxfield")</span></div>
+            </a>
+            <a href="javascript:void(0)" onclick="openSection(event, 'settings');">
+                <div class="w3-col tablink w3-border w3-bottombar w3-hover-light-blue w3-padding" style="height:80px;width:14%"><i class="fas fa-cog"></i>&nbsp;<span class="w3-hide-small w3-hide-medium">@ResourceKey("system.settings")</span></div>
+            </a>
+        </div>
+
+        <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+        <div id="pluginsdatasection" class="w3-container w3-margin tabsection" style="display:block;">
+            @RenderTemplate("Admin_SystemDetailData.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model, "1.0", true)
+        </div>
+
+        <div id="dnninstallsection" class="w3-container tabsection" style="display:none">
+            @RenderTemplate("Admin_SystemDetailDNNmodules.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model, "1.0", true)
+        </div>
+
+        <div id="Groups" class="w3-container tabsection" style="display:none">
+            @RenderTemplate("Admin_SystemDetailGroups.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model, "1.0", true)
+        </div>
+
+        <div id="provtypes" class="w3-container tabsection" style="display:none">
+            @RenderTemplate("Admin_SystemDetailProvType.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model, "1.0", true)
+        </div>
+
+        <div id="Interface" class="w3-container tabsection" style="display:none">
+            @RenderTemplate("Admin_SystemDetailInterfaces.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model, "1.0", true)
+        </div>
+
+        <div id="parameters" class="w3-container tabsection" style="display:none">
+            @RenderTemplate("Admin_SystemDetailIdxFields.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model, "1.0", true)
+        </div>
+
+        <div id="settings" class="w3-container tabsection" style="display:none">
+            @RenderTemplate("Admin_SystemDetailSettings.cshtml", "\\DesktopModules\\DNNrocket\\SystemData", "config-w3", Model, "1.0", true)
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        // turn off the reload flag
+        simplisity_setParamField("reload", false)
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    function AccordianFunction(id) {
+        var x = document.getElementById(id);
+        if (x.className.indexOf("w3-show") === -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+
+    function reloadpluginlist() {
+        $('#simplisity_startpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'systemapi_admin_getsystemlist', '{"theme":"config-w3","template":"Admin_Systems.cshtml"}');
+    };
+
+    function openSection(evt, sectionName) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("tabsection");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-border-blue", "");
+            tablinks[i].className = tablinks[i].className.replace(" w3-light-blue", "");
+        }
+        document.getElementById(sectionName).style.display = "block";
+        evt.currentTarget.firstElementChild.className += " w3-border-blue";
+        evt.currentTarget.firstElementChild.className += " w3-light-blue";
+    }
+
+</script>

@@ -1,0 +1,66 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Componants;
+@using Simplisity;
+@using RocketMod.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Docs/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketCatalog/App_LocalResources/")
+
+@{
+    var docLP = 1;
+    var moduleParams = (ModuleParams)Model.List.First();
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow"); ;
+    var datalist = articleRowData.GetDocuments();
+    var globalSettings = new SystemGlobalData();
+}
+
+<div class="w3-row documentlistdatasection">
+
+    <div class="w3-container">
+        <div class="w3-button rocket-buttonbar w3-teal w3-padding-8" onclick="$('#articledocumentselect').show();"><i class='fas fa-plus-circle'></i></div>
+        <div class="w3-button rocket-buttonbar w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="documentlistbin" s-return="#documentlistdata" s-removelist=".documentlist" style="display: none;"><i class="fas fa-undo fa-fw fa-lg"></i></div>
+    </div>
+
+    <ul id="documentlistdata" class="w3-ul">
+
+        @foreach (var articleDocData in datalist)
+        {
+            <li class="documentlist w3-display-container w3-padding w3-border-0">
+                @SortableListIndex(articleDocData.Info, docLP)
+
+                <div class="w3-display-container w3-padding w3-card">
+                    <div class="w3-row">
+                        <div class="w3-col m11">
+                            <label class="">@ResourceKey("RC.name")</label>&nbsp;@EditFlag()
+
+                            <div class="w3-display-container">
+                                @HiddenField(articleDocData.Info, "genxml/hidden/documentpath", "", "", false, docLP, "")
+                                @TextBox(articleDocData.Info, "genxml/lang/genxml/textbox/documentname", " class='w3-input w3-border' ", "", true, docLP)
+                            </div>
+
+                        </div>
+                        <div class="simplisity_removelistitem w3-right" s-removelist=".documentlist" s-recylebin="documentlistbin" style="cursor: pointer;">
+                            <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            docLP += 1;
+        }
+    </ul>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#documentlistdata").sortable();
+        $("#documentlistdata").disableSelection();
+    });
+
+    function savedocumentlp(lp) {
+        simplisity_setParamField('docselectbuttonlp', lp)
+        simplisity_callserver($('.docselectbutton' + lp))
+    }
+
+</script>

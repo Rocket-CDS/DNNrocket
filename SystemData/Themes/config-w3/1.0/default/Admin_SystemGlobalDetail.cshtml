@@ -1,0 +1,166 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using System.Globalization;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
+@{
+    var systemGlobalData = (SystemGlobalData)Model.List.First();
+    var info = systemGlobalData.Info;
+}
+
+<div class="w3-row w3-padding">
+    <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 simplisity_click" s-cmd="systemapi_globalsave" s-post="#globalsettings">@ButtonText(ButtonTypes.save)</div>
+</div>
+
+<div id="globalsettings" class="">
+
+    <div class="w3-padding-large">
+        <h1>@ResourceKey("system.privateftp")</h1>
+        <p>
+            <i>@ResourceKey("system.privateftp", "", "Help")</i>
+        </p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.ftpserver")</label>
+                @TextBox(info, "genxml/textbox/ftpserver", "class='w3-input w3-border' maxlength='250' ", "")
+            </div>
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.ftpuser")</label>
+                @TextBox(info, "genxml/textbox/ftpuser", "class='w3-input w3-border' maxlength='250' ", "")
+                <label class="">@ResourceKey("system.ftppassword")</label>
+                @TextBox(info, "genxml/textbox/ftppassword", "class='w3-input w3-border' type='password'  maxlength='50' ", "")
+            </div>
+        </div>
+        <h1>@ResourceKey("system.globalheading")</h1>
+        <div class="w3-row-padding">
+            <label class="">@ResourceKey("system.globalheading", "", "Help")</label>
+            @TextArea(info, "genxml/textbox/globalheading", "class='w3-input w3-border' maxlength='250' rows='5' ", "")
+        </div>
+    </div>
+
+
+
+
+    <h1>@ResourceKey("system.settings")</h1>
+    <div class="w3-row-padding">
+
+        <div class="w3-row-padding w3-margin-bottom">
+            <div class="w3-half">
+                <label class="w3-col m7 "><b>Scheduler</b></label>
+                @if (systemGlobalData.SchedulerIsInstalled)
+                {
+                    <div class="w3-col m4 w3-right w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.uninstall")?" s-cmd="systemapi_uninstallscheduler"><i class="fas fa-times-circle"></i>&nbsp;@ResourceKey("DNNrocket.uninstall")</div>
+                }
+                else
+                {
+                    <div class="w3-col m4 w3-right w3-button w3-green w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.install")?" s-cmd="systemapi_installscheduler"><i class="fas fa-check-circle"></i>&nbsp;@ResourceKey("DNNrocket.install")</div>
+                }
+            </div>
+            <div class="w3-half">
+                <label class="">@ResourceKey("DNNrocket.installed"):</label>
+                @if (systemGlobalData.SchedulerIsInstalled)
+                {
+                    <i class="w3-text-green fas fa-check-circle fa-2x"></i>
+                }
+                else
+                {
+                    <i class="w3-text-red fas fa-times-circle fa-2x"></i>
+                }
+                <label class="">@ResourceKey("DNNrocket.enabled"):</label>
+                @if (systemGlobalData.SchedulerIsEnabled)
+                {
+                    <i class="w3-text-green fas fa-check-circle fa-2x"></i>
+                }
+                else
+                {
+                    <i class="w3-text-red fas fa-times-circle fa-2x"></i>
+                }
+            </div>
+        </div>
+
+        <div class="w3-row-padding w3-margin-bottom">
+            <div class="w3-half">
+                <label class=""><b>@ResourceKey("system.colortheme")</b></label>
+                @FileSelectList(info, "genxml/select/colortheme", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css"), "class='w3-input w3-border'")
+            </div>
+            <div class="w3-half">
+            </div>
+        </div>
+
+
+        <div class="w3-row-padding w3-margin-bottom">
+            <div class="w3-half">
+                <label class=""><b>@ResourceKey("system.imagetype")</b></label>
+                <div class="w3-col m4 w3-right w3-button w3-blue w3-padding-8 simplisity_confirmclick" s-confirm="Install Default Roles?" s-cmd="systemapi_defaultroles" s-post="#globalsettings">Create Default Roles</div>
+            </div>
+            <div class="w3-half">
+                <label class="">@ResourceKey("DNNrocket.installed"):</label>
+                @if (DNNrocketUtils.DefaultRoleExist(PortalUtils.GetCurrentPortalId()))
+                {
+                    <i class="w3-text-green fas fa-check-circle fa-2x"></i>
+                }
+                else
+                {
+                    <i class="w3-text-red fas fa-times-circle fa-2x"></i>
+                }
+            </div>
+        </div>
+
+        <div class="w3-row-padding w3-margin-bottom">
+            <div class="w3-half">
+                <label class=""><b>@ResourceKey("system.imagetype")</b></label>
+                <p class="w3-small">
+                    @ResourceKey("system.imagetype", "", "Help")
+                </p>
+            </div>
+            <div class="w3-half">
+                <br />
+                @DropDownList(info, "genxml/select/imagetype", "png,jpg", "png,jpg", "class='w3-input w3-border' style='width:96px'", "png")
+            </div>
+        </div>
+        <div class="w3-row-padding w3-margin-bottom">
+            <div class="w3-half">
+                <label class=""><b>@ResourceKey("system.ckeditorcsslist")</b></label>
+                <p class="w3-small">
+                    @ResourceKey("system.ckeditorcsslist", "", "Help")
+                </p>
+            </div>
+            <div class="w3-half">
+                <br />
+                @TextArea(info, "genxml/textbox/ckeditorcsslist", "class='w3-input w3-border' rows='3' ", "")
+            </div>
+        </div>
+        <div class="w3-row-padding w3-margin-bottom">
+            <div class="w3-half">
+                <label class=""><b>@ResourceKey("system.backuplimit")</b></label>
+                <p class="w3-small">
+                    @ResourceKey("system.backuplimit", "", "Help")
+                </p>
+            </div>
+            <div class="w3-half ">
+                <br />
+                @TextBox(info, "genxml/textbox/backuplimit", "class='w3-input w3-border ' style='width:96px' ", "20")
+            </div>
+        </div>
+
+    </div>
+
+    <div class="w3-row-padding w3-right-align w3-margin-top">
+        @info.ItemID
+    </div>
+
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        // turn off the reload flag
+        simplisity_setParamField("reload", false)
+    });
+
+</script>

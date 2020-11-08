@@ -1,0 +1,46 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using RocketLicense.Componants;
+@using DNNrocket.System;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
+
+@{
+    var systemDataList = new SystemLimpetList();
+    var list = systemDataList.GetSystemList();
+}
+
+
+    <div id="datalist2" class="w3-container ">
+
+        @foreach (SimplisityInfo nbi in list)
+        {
+            var adminurl = nbi.GetXmlProperty("genxml/textbox/adminurl");
+            if (adminurl != "" && !adminurl.Contains("[")) // check for admin link without parameters (for modules)
+            {
+                var systemData = new SystemLimpet(nbi.GetXmlProperty("genxml/textbox/ctrlkey"));
+
+                <a href="@systemData.AdminUrl" class="" style="text-decoration:none">
+                    <div class="w3-col m2 w3-hover-opacity w3-padding" style="width:140px;">
+                        <div class="w3-padding w3-center w3-border " style="cursor:pointer;background-color:@(systemData.Info.GetXmlProperty("genxml/textbox/colorhex"));">
+                            <img src="@ThumbnailImageUrl(systemData.Logo,80,80)" class="w3-circle w3-hover-opacity" />
+                        </div>
+                        <b class=" w3-white w3-text-black w3-tiny " title="@systemData.SystemName" style="width:140px;">@systemData.SystemName</b>
+                    </div>
+                </a>
+
+            }
+        }
+    </div>
+
+
+<script>
+    $(document).ready(function () {
+        sessionStorage.RocketModReturn = window.location.href; // allow return to this page
+    });
+</script>

@@ -1,0 +1,362 @@
+﻿<dotnetnuke type="Package" version="5.0">
+	<packages>
+		<package name="RocketSystem" type="Module" version="1.0.0">
+			<friendlyName>RocketSystem</friendlyName>
+			<description>Rocket System</description>
+      <iconFile>DesktopModules/DNNrocket/api/images/dnnrocketadminlogo.jpg</iconFile>
+      <owner>
+				<name>Charles France</name>
+				<organization>DNN Rocket</organization>
+				<url>www.dnnrocket.com</url>
+				<email>support@dnnrocket.com</email>
+			</owner>
+			<license>
+        Copyright (c) 2019, www.dnnrocket.com
+        All rights reserved.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      </license>
+			<releaseNotes>
+DNNrocket is a FREE module framework that works both clietn side and server side.
+It also contains the popular RocketMod modules, which is a dynamic content builder.
+      </releaseNotes>
+      <dependencies>
+      </dependencies>
+      <components>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\DNNrocket</basePath>
+            <script type="Install">
+              <name>01.00.00.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+            <script type="UnInstall">
+              <name>Uninstall.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+          </scripts>
+        </component>
+        <component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\DNNrocket</basePath>
+						<resourceFile>
+							<name>Resource.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>DNNrocketAPI.dll</name>
+							<sourceFileName>DNNrocketAPI.dll</sourceFileName>
+						</assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DNNrocketCategory.dll</name>
+              <sourceFileName>DNNrocketCategory.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DNNrocketCountry.dll</name>
+              <sourceFileName>DNNrocketCountry.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DNNrocketSystemData.dll</name>
+              <sourceFileName>DNNrocketSystemData.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Simplisity.dll</name>
+              <sourceFileName>Simplisity.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Drawing.Common.dll</name>
+              <sourceFileName>System.Drawing.Common.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>netstandard.dll</name>
+              <sourceFileName>netstandard.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>RazorEngine.dll</name>
+              <sourceFileName>RazorEngine.dll</sourceFileName>
+              <version>3.10.0</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DNNrocketImages.dll</name>
+              <sourceFileName>DNNrocketImages.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DNNrocketDocuments.dll</name>
+              <sourceFileName>DNNrocketDocuments.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>RocketAppThemes.dll</name>
+              <sourceFileName>RocketAppThemes.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>RocketTools.dll</name>
+              <sourceFileName>RocketTools.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Newtonsoft.Json.dll</name>
+              <sourceFileName>Newtonsoft.Json.dll</sourceFileName>
+              <version>10.0.3</version>
+            </assembly>            
+
+          </assemblies>
+				</component>
+				<component type="Module">
+          <desktopModule>
+            <moduleName>systemapi_rocketadmin</moduleName>
+            <foldername>api</foldername>
+            <businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Portable" />
+              <supportedFeature type="Searchable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>System Admin</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/DNNrocket/API/View.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+				</component>
+
+        <component type="File">
+          <files>
+            <basePath>DesktopModules\DNNrocket\API\Systems\</basePath>
+            <file>
+              <name>dnnrocketapptheme_system.xml</name>
+            </file>
+            <file>
+              <name>rockettools_system.xml</name>
+            </file>
+            <file>
+              <name>systemapi_system.xml</name>
+            </file>
+          </files>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>DesktopModules\DNNrocket\</basePath>
+            <file>
+              <name>globalconfig.xml</name>
+            </file>
+          </files>
+        </component>
+
+
+      </components>
+		</package>
+
+    <package name="RocketMod" type="Module" version="1.0.0">
+      <friendlyName>RocketMod</friendlyName>
+      <description>DNNrocket Module </description>
+      <iconFile />
+      <owner>
+        <name>Charles France</name>
+        <organization>DNN Rocket</organization>
+        <url>www.dnnrocket.com</url>
+        <email></email>
+      </owner>
+      <license>
+        Copyright (c) 2015, www.dnnrocket.com
+        All rights reserved.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      </license>
+      <releaseNotes>
+
+        Assemblies:
+
+        DNNrocketAPI
+
+      </releaseNotes>
+      <dependencies>
+      </dependencies>
+      <components>
+        <component type="Script">
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules\DNNrocket</basePath>
+            <resourceFile>
+              <name>Resource.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>RocketMod.dll</name>
+              <sourceFileName>RocketMod.dll</sourceFileName>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>dnnrocketmodule_rocketmod</moduleName>
+            <foldername>RocketMod</foldername>
+            <businessControllerClass>DNNrocketAPI.Componants.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Portable" />
+              <supportedFeature type="Searchable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Rocket Mod</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/DNNrocket/API/View.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+
+      </components>
+    </package>
+
+
+    <package name="RocketRemoteMod" type="Module" version="1.0.0">
+      <friendlyName>RocketRemoteMod</friendlyName>
+      <description>Rocket Remote Module </description>
+      <iconFile />
+      <owner>
+        <name>Charles France</name>
+        <organization>DNN Rocket</organization>
+        <url>www.dnnrocket.com</url>
+        <email></email>
+      </owner>
+      <license>
+        Copyright (c) 2015, www.dnnrocket.com
+        All rights reserved.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      </license>
+      <components>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>rocketremotemod_rocketremotemod</moduleName>
+            <foldername>RocketRemote</foldername>
+            <businessControllerClass>DNNrocketAPI.Componants.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Portable" />
+              <supportedFeature type="Searchable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Rocket Remote</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/DNNrocket/API/ViewRemote.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+
+      </components>
+    </package>
+
+
+    <package name="RocketRemote" type="Module" version="1.0.0">
+      <friendlyName>Rocket Remote Connector</friendlyName>
+      <description>Rocket Remote Connector module for connecting to rocket systems with Security Code and Security Key.</description>
+      <iconFile />
+      <owner>
+        <name>Charles France</name>
+        <organization>DNN Rocket</organization>
+        <url>www.dnnrocket.com</url>
+        <email></email>
+      </owner>
+      <license>
+        Copyright (c) 2015, www.dnnrocket.com
+        All rights reserved.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      </license>
+      <components>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>rocketremote_rocketremote</moduleName>
+            <foldername>RocketRemote</foldername>
+            <businessControllerClass>DNNrocketAPI.Componants.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Portable" />
+              <supportedFeature type="Searchable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Rocket Remote Connector</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/DNNrocket/API/ViewRemote.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+
+      </components>
+    </package>
+
+
+  </packages>
+</dotnetnuke>

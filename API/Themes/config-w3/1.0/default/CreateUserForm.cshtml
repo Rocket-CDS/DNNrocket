@@ -1,0 +1,142 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/API/App_LocalResources/")
+@AddProcessData("resourcepath", "/App_GlobalResources")
+
+<!-- Login form -->
+<div id="registerform" class="w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width:40%;">
+
+        <div class="w3-center">
+            <span onclick="hidelogin()" class="w3-button w3-xlarge w3-transparent w3-display-topright" title="@ResourceKey("login.CloseModal")">X</span>
+        </div>
+        <div class="w3-section w3-padding registerdata simplisity_panel">
+            <div class="registerinput">
+
+                <div class="w3-row">
+                    <div class="w3-half w3-padding w3-margin-top">
+                        <label><b>@ResourceKey("login.displayname")</b></label>
+                        <input class="w3-input w3-border" type="text" autocomplete="off" placeholder="@ResourceKey("login.enterdisplayname")..." name="displayname" id="displayname" required>
+                    </div>
+                    <div class="w3-half w3-padding w3-center ">
+                        <img src="/DesktopModules/DNNrocket/api/images/avatar4.png" alt="Avatar" style="width:60px" class="w3-circle w3-margin-top">
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-half w3-padding ">
+                        <label><b>@ResourceKey("login.Username")</b></label>
+                        <input class="w3-input w3-border" type="text" autocomplete="off" placeholder="@ResourceKey("login.EnterUsername")..." name="usrname" id="username" required>
+                    </div>
+                    <div class="w3-half w3-padding ">
+                        <label><b>@ResourceKey("login.email")</b></label>
+                        <input class="w3-input w3-border" type="text" autocomplete="off" placeholder="@ResourceKey("login.enteremail")..." name="email" id="email" required>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-padding ">
+                        <input class="w3-check " id="randompassword" s-xpath="genxml/checkbox/randompassword" type="checkbox" s-update="save"><span>&nbsp;@ResourceKey("login.randompassword")</span>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-half w3-padding ">
+                        <label><b>@ResourceKey("login.Password")</b></label>
+                        <input class="w3-input w3-border" type="password" autocomplete="off" placeholder="@ResourceKey("login.enterpassword")..." name="psw" id="password" required>
+                    </div>
+                    <div class="w3-half w3-padding ">
+                        <label><b>@ResourceKey("login.confirmpassword")</b></label>
+                        <input class="w3-input w3-border" type="password" autocomplete="off" placeholder="@ResourceKey("login.enterconfirmpassword")..." name="confirmpassword" id="confirmpassword" required>
+                    </div>
+                </div>
+
+
+                <div class="w3-row">
+                    <div class="w3-twothird w3-padding">
+                        <div class="w3-row">
+                            <div class="w3-half w3-padding">
+                                <input class="w3-check " id="autorize" s-xpath="genxml/checkbox/autorize" type="checkbox" s-update="save" checked><span>&nbsp;@ResourceKey("login.autorize")</span>
+                            </div>
+                            <div class="w3-half w3-padding">
+                                <input class="w3-check " id="notification" s-xpath="genxml/checkbox/notification" type="checkbox" s-update="save" checked><span>&nbsp;@ResourceKey("login.notification")</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w3-third w3-padding ">
+                        <span class="w3-button w3-block w3-green w3-padding activatevalidation simplisity_click" s-fields="" s-before="validatecreateuserform"  s-post=".registerinput" s-return=".registerreturn" s-cmd="@(Model.GetSetting("registercommand"))" s-after="">@ResourceKey("login.createuser")</span>
+                    </div>
+                </div>
+
+
+
+                <div class="w3-panel w3-orange w3-padding-16 registerreturn" style="display:none;"></div>
+
+
+            </div>
+
+            </div>
+
+        <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+            <div class="logininput">
+                <span onclick="hidelogin()" type="button" class="w3-button w3-red">@ResourceKey("login.Cancel")</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('.registerreturn').unbind('change');
+        $('.registerreturn').change(function () {
+            if ($(this).text() == '') {
+                hidelogin();
+                location.reload();
+            } else {
+                $(this).show();
+            }
+        });
+
+        $('#randompassword').unbind('change');
+        $('#randompassword').change(function () {
+            if ($(this).is(":checked")) {
+                $('#password').val('**********');
+                $('#confirmpassword').val('**********');
+                $('#password').prop('disabled', true);
+                $('#confirmpassword').prop('disabled', true);
+            } else {
+                $('#password').val('');
+                $('#confirmpassword').val('');
+                $('#password').prop('disabled', false);
+                $('#confirmpassword').prop('disabled', false);
+            }
+        });        
+
+    });    
+
+    function hidelogin() {
+        $('#registerform').hide();
+    }
+
+    function validatecreateuserform() {
+
+        $('#registerform input[type=text]').each(function () {
+            if (!$(this).valid()) {
+                $(this).css({ 'background-color': '#ffe6e6' });
+                $('.activatevalidation').attr('s-stop', 'stop');
+            }
+        });
+        $('#registerform input[type=password]').each(function () {
+            if (!$(this).valid()) {
+                $(this).css({ 'background-color': '#ffe6e6' });
+                $('.activatevalidation').attr('s-stop', 'stop');
+            }
+        });
+    }
+
+
+</script>

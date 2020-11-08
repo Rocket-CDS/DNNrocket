@@ -1,0 +1,106 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
+@{
+    var licenseDataList = (LicenseListData)Model.List.First();
+}
+
+
+
+<div id="updatelicense"></div>
+
+<div class=''>
+
+    <div class="w3-row">
+        <div class="w3-half">
+            <h2>@ResourceKey("system.licenses")</h2>
+        </div>
+    </div>
+    <div class="w3-row w3-card searchdata w3-margin-top">
+
+        <div class="">
+            <div class="w3-row w3-padding">
+                <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("DNNrocket.search")..." id="searchtext" onkeyup="searchFunction()">
+            </div>
+        </div>
+
+    </div>
+
+
+    <div id="datasection" class="w3-row w3-margin-top">
+
+
+        <table id="datalist" class="w3-table w3-table-all">
+
+            <tr>
+                <th><span style="display:none;">tableheader</span></th>
+                <th>@ResourceKey("DNNrocket.systemkey")</th>
+                <th class="w3-hide-small">@ResourceKey("DNNrocket.domainurl")</th>
+                <th class="w3-hide-small">@ResourceKey("DNNrocket.sitekey")</th>
+                <th class="w3-hide-small">@ResourceKey("DNNrocket.expiredate")</th>
+                <th></th>
+            </tr>
+
+            @foreach (LicenseData license in licenseDataList.List)
+            {
+
+                <tr>
+                    <td style="width:32px;cursor:pointer;">
+                        <div class="simplisity_click" s-track="false" s-cmd="systemapi_licensepopup" s-fields='{"licenseid":"@(license.Record.ItemID)"}' s-return="#updatelicense">@ResourceKey("DNNrocket.edit", "", "Icon")</div>
+                    </td>
+                    <td>
+                        @license.SystemKey
+                    </td>
+                    <td class="w3-hide-small">
+                        @license.DomainUrl
+                    </td>
+                    <td class="w3-hide-small">
+                        @license.SiteKey
+                    </td>
+                    <td class="w3-hide-small">
+                        @license.ExpireDate.ToShortDateString()
+                    </td>
+                    <td></td>
+                </tr>
+
+            }
+
+        </table>
+
+        <hr />
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // turn off the reload flag
+            simplisity_setParamField("reload", false)
+        });
+
+        function searchFunction() {
+            var input, filter, ul, li, a, i;
+            input = document.getElementById("searchtext");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("datalist");
+            li = ul.getElementsByTagName("tr");
+            for (i = 0; i < li.length; i++) {
+                txtValue = li[i].textContent || li[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    if (txtValue.toUpperCase().indexOf("TABLEHEADER") <= -1) {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+
+    </script>
+
+</div>

@@ -1,0 +1,94 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{
+    var info = Model.SessionParamData;
+
+    var paging_return = info.GetXmlProperty("genxml/s-paging-return");
+    var paging_cmd = info.GetXmlProperty("genxml/s-paging-cmd");
+    var paging_post = info.GetXmlProperty("genxml/s-paging-post");
+    var returnclass = "";
+    if (paging_return != "")
+    {
+        returnclass = "s-return='" + paging_return + "'";
+    }
+
+    var rowcount = info.GetXmlPropertyInt("genxml/hidden/rowcount");
+    var page = info.GetXmlPropertyInt("genxml/hidden/page");
+    var pagesize = info.GetXmlPropertyInt("genxml/hidden/pagesize");
+    var pagechapter = 5;
+    var lastpage = 0;
+
+    var r = (page - 1) / pagechapter;
+    var BeginPage = 0;
+    var EndPage = 0;
+
+    if (pagesize > 0)
+    {
+        lastpage = System.Convert.ToInt32(rowcount / pagesize);
+        if (rowcount % pagesize > 0)
+        {
+            lastpage += 1;
+        }
+        BeginPage = (pagechapter * r) + 1;
+        EndPage = Math.Min(pagechapter * (r + 1), lastpage);
+    }
+
+}
+
+@if (pagesize > 0)
+{
+
+    <div class="w3-center w3-margin">
+        <div class="w3-bar">
+            @if (page != 1)
+            {
+                <a class="w3-button w3-hover-theme simplisity_click" s-cmd="@(paging_cmd)" @(returnclass) s-post="@(paging_post)" s-fields='{"page":"1"}' href="javascript:void(0);">|❮</a>
+                if (page >= 6)
+                {
+                    <a class="w3-button w3-hover-theme simplisity_click" s-cmd="@(paging_cmd)" @(returnclass) s-post="@(paging_post)" s-fields='{"page":"@(BeginPage - 1)"}' href="javascript:void(0);">..</a>
+                }
+            }
+
+            @for (int i = BeginPage; i < (EndPage + 1); i++)
+            {
+                var selected = "";
+                if (i == page)
+                {
+                    selected = "w3-theme";
+                }
+                if (i <= lastpage)
+                {
+                    <a href='javascript:void(0);' class='w3-button w3-hover-theme @selected simplisity_click' @(returnclass) s-cmd="@(paging_cmd)" s-post="@(paging_post)" s-fields='{"page":"@i"}'>@i</a>
+                }
+            }
+
+            @if (page < lastpage)
+            {
+                if (EndPage != lastpage)
+                {
+                    <a class="w3-button w3-hover-theme simplisity_click" s-cmd="@(paging_cmd)" @(returnclass) s-post="@(paging_post)" s-fields='{"page":"@(EndPage + 1)"}' href="javascript:void(0);">..</a>
+                }
+                <a class="w3-button w3-hover-theme simplisity_click" s-cmd="@(paging_cmd)" @(returnclass) s-post="@(paging_post)" s-fields='{"page":"@lastpage"}' href="javascript:void(0);">❯|</a>
+            }
+
+        </div>
+    </div>
+
+}
+
+<script>
+
+    $(document).ready(function () {
+
+
+    });
+
+</script>

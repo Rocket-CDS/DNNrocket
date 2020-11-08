@@ -1,92 +1,103 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DNNrocketAPI;
+using DNNrocketAPI.Componants;
 using Simplisity;
 
 namespace DNNrocket.TestList
 {
-    public class startconnect : DNNrocketAPI.APInterface
+    public class StartConnect : DNNrocketAPI.APInterface
     {
-        private static string _EntityTypeCode;
-        private static string _editlang;
+        private string _EntityTypeCode;
+        private string _editlang;
+        private SystemData _systemData;
 
-        public override string ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, string userHostAddress, string editlang = "")
+        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang = "")
         {
+            var rocketInterface = new DNNrocketInterface(interfaceInfo);
+            var commandSecurity = new CommandSecurity(-1,-1,rocketInterface);
+            commandSecurity.AddCommand("testlist_add", true);
+            commandSecurity.AddCommand("testlist_save", true);
+            commandSecurity.AddCommand("testlist_delete", true);
+            commandSecurity.AddCommand("testlist_createrows", true);
+            commandSecurity.AddCommand("testlist_deleterows", true);
+            commandSecurity.AddCommand("testlist_getlist", false);
+            commandSecurity.AddCommand("testlist_getdetail", false);
+            commandSecurity.AddCommand("testlist_sort", false);
+            commandSecurity.AddCommand("testlist_search", false);
+
+            _systemData = new SystemData(systemInfo);
             _EntityTypeCode = DNNrocketUtils.GetEntityTypeCode(interfaceInfo);
-            _editlang = DNNrocketUtils.GetEditCulture();
+            _editlang = editlang;
+            if (_editlang == "") _editlang = DNNrocketUtils.GetEditCulture();
 
-            var strOut = "ERROR!! - No Security rights or function command.  Ensure your systemprovider is defined. [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
-
-            switch (paramCmd)
+            var strOut = "";
+            if (commandSecurity.HasSecurityAccess(paramCmd))
             {
-                case "testlist_getlist":
-                    strOut = GetList(postInfo, ControlRelPath);
-                    break;
-                case "testlist_getdetail":
-                    strOut = GetDetail(postInfo, ControlRelPath);
-                    break;
-                case "testlist_add":
-                    var newInfo = AddNew();
-                    postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
-                    strOut = GetDetail(postInfo, ControlRelPath);
-                    break;
-                case "testlist_save":
-                    Save(postInfo);
-                    strOut = GetDetail(postInfo, ControlRelPath);
-                    break;
-                case "testlist_delete":
-                    Delete(postInfo);
-                    strOut = GetList(postInfo, ControlRelPath);
-                    break;
-                case "testlist_sort":
-                    strOut = GetList(postInfo, ControlRelPath);
-                    break;
-                case "testlist_createrows":
-                    CreateRows(postInfo);
-                    strOut = GetList(postInfo, ControlRelPath);
-                    break;
-                case "testlist_deleterows":
-                    DeleteRows();
-                    strOut = GetList(postInfo, ControlRelPath);
-                    break;
-                case "testlist_search":
-                    strOut = GetList(postInfo, ControlRelPath);
-                    break;
-                default:
-                    strOut = "COMMAND NOT FOUND!!! - [" + paramCmd + "] [" + interfaceInfo.GetXmlProperty("genxml/textbox/interfacekey") + "]";
-                    break;
+                switch (paramCmd)
+                {
+                    case "testlist_add":
+                        var newInfo = AddNew();
+                        postInfo.SetXmlProperty("genxml/hidden/selecteditemid", newInfo.ItemID.ToString());
+                        strOut = GetDetail(paramInfo, rocketInterface.TemplateRelPath);
+                        break;
+                    case "testlist_save":
+                        Save(postInfo, paramInfo);
+                        strOut = GetDetail(paramInfo, rocketInterface.TemplateRelPath);
+                        break;
+                    case "testlist_delete":
+                        Delete(paramInfo);
+                        strOut = GetList(postInfo, paramInfo, rocketInterface.TemplateRelPath);
+                        break;
+                    case "testlist_createrows":
+                        CreateRows(paramInfo);
+                        strOut = GetList(postInfo, paramInfo, rocketInterface.TemplateRelPath);
+                        break;
+                    case "testlist_deleterows":
+                        DeleteRows();
+                        strOut = GetList(postInfo, paramInfo, rocketInterface.TemplateRelPath);
+                        break;
+                    case "testlist_getlist":
+                        strOut = GetList(postInfo, paramInfo, rocketInterface.TemplateRelPath);
+                        break;
+                    case "testlist_getdetail":
+                        strOut = GetDetail(paramInfo, rocketInterface.TemplateRelPath);
+                        break;
+                    case "testlist_sort":
+                        strOut = GetList(postInfo, paramInfo, rocketInterface.TemplateRelPath);
+                        break;
+                    case "testlist_search":
+                        strOut = GetList(postInfo, paramInfo, rocketInterface.TemplateRelPath);
+                        break;
+                }
             }
-            return strOut;
+            else
+            {
+                if (commandSecurity.ValidCommand(paramCmd))
+                {
+                   // strOut = UserUtils.LoginForm(postInfo, rocketInterface.InterfaceKey);
+                }
+            }
+
+            var rtnDic = new Dictionary<string, object>();
+            rtnDic.Add("outputhtml", strOut);
+            return rtnDic;
         }
 
-        public static String GetList(SimplisityInfo postInfo, string templateControlRelPath)
+        public String GetList(SimplisityInfo postInfo, SimplisityInfo paramInfo, string template)
         {
             try
             {
-
-                var page = postInfo.GetXmlPropertyInt("genxml/hidden/page");
-                var pagesize = postInfo.GetXmlPropertyInt("genxml/hidden/pagesize");
-
-                var searchtext = postInfo.GetXmlProperty("genxml/textbox/searchtext");
-
+                var sessionParams = new SessionParams(paramInfo);
                 var filter = "";
-                if (searchtext != "")
-                {
-                    filter = " and inputlang1.GuidKey like '%" + searchtext + "%'";
-                }
-
 
                 var objCtrl = new DNNrocketController();
                 var listcount = objCtrl.GetListCount(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang);
-                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang, "",0, page, pagesize, listcount);
+                var list = objCtrl.GetList(postInfo.PortalId, postInfo.ModuleId, _EntityTypeCode, filter, _editlang, "",0, sessionParams.Page, sessionParams.PageSize, listcount);
+                sessionParams.RowCount = listcount;
 
-                var headerData = new SimplisityInfo();
-                headerData.SetXmlProperty("genxml/hidden/rowcount", listcount.ToString());
-                headerData.SetXmlProperty("genxml/hidden/page", page.ToString());
-                headerData.SetXmlProperty("genxml/hidden/pagesize", pagesize.ToString());
-                headerData.SetXmlProperty("genxml/textbox/searchtext", searchtext);
-
-                return RenderList(list, postInfo, 0, templateControlRelPath, headerData);
+                return RenderList(list, paramInfo, 0, template, sessionParams);
             }
             catch (Exception ex)
             {
@@ -94,7 +105,7 @@ namespace DNNrocket.TestList
             }
         }
 
-        public static String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string templateControlRelPath, SimplisityInfo headerData)
+        public String RenderList(List<SimplisityInfo> list, SimplisityInfo sInfo, int recordCount, string template, SessionParams SessionParams)
         {
             try
             {
@@ -108,9 +119,9 @@ namespace DNNrocket.TestList
 
                 var passSettings = sInfo.ToDictionary();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, template, themeFolder, DNNrocketUtils.GetCurrentCulture());
 
-                strOut = DNNrocketUtils.RazorList(razorTempl, list, passSettings,headerData);
+                strOut = DNNrocketUtils.RazorList(razorTempl, list.Cast<object>().ToList(), passSettings, SessionParams);
 
                 return strOut;
             }
@@ -121,7 +132,7 @@ namespace DNNrocket.TestList
 
         }
 
-        public static String GetDetail(SimplisityInfo postInfo, string templateControlRelPath)
+        public String GetDetail(SimplisityInfo postInfo, string template)
         {
             try
             {
@@ -132,7 +143,7 @@ namespace DNNrocket.TestList
 
                 var passSettings = postInfo.ToDictionary();
 
-                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+                var razorTempl = DNNrocketUtils.GetRazorTemplateData(razortemplate, template, themeFolder, DNNrocketUtils.GetCurrentCulture());
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
                 strOut = DNNrocketUtils.RazorDetail(razorTempl, info, passSettings);
@@ -146,33 +157,33 @@ namespace DNNrocket.TestList
         }
 
 
-        public static SimplisityInfo AddNew()
+        public SimplisityInfo AddNew()
         {
             var info = new SimplisityInfo();
             info.ItemID = -1;
             info.PortalId = DNNrocketUtils.GetPortalId();
             info.Lang = DNNrocketUtils.GetEditCulture();
             info.TypeCode = "TESTLIST";
-            info.GUIDKey = GeneralUtils.GetUniqueKey(12);
+            info.GUIDKey = GeneralUtils.GetUniqueKey();
             
             var objCtrl = new DNNrocketController();
             return objCtrl.SaveData(info);
         }
 
-        public static void Save(SimplisityInfo postInfo)
+        public void Save(SimplisityInfo postInfo, SimplisityInfo paramInfo)
         {
-            var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
+            var selecteditemid = paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (selecteditemid > 0)
             {
                 var objCtrl = new DNNrocketController();
                 var info = objCtrl.GetInfo(selecteditemid, DNNrocketUtils.GetEditCulture());
                 info.XMLData = postInfo.XMLData;
                 objCtrl.SaveData(info);
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
             }
         }
 
-        public static void DeleteRows()
+        public void DeleteRows()
         {
             var objCtrl = new DNNrocketController();
             var l = objCtrl.GetList(DNNrocketUtils.GetPortalId(), -1, _EntityTypeCode, "and R1.guidkey = 'testrecord'");
@@ -182,7 +193,7 @@ namespace DNNrocket.TestList
             }
         }
 
-        public static void CreateRows(SimplisityInfo postInfo)
+        public void CreateRows(SimplisityInfo postInfo)
         {
             var objCtrl = new DNNrocketController();
 
@@ -203,20 +214,20 @@ namespace DNNrocket.TestList
 
                 var rec = objCtrl.GetRecord(newInfo.ItemID);
                 rec.GUIDKey = "testrecord";
-                objCtrl.Update(rec);
+                objCtrl.SaveRecord(rec);
             }
-             CacheUtils.ClearAllCache();
+             CacheUtilsDNN.ClearAllCache();
         }
 
 
-        public static void Delete(SimplisityInfo postInfo)
+        public void Delete(SimplisityInfo postInfo)
         {
             var selecteditemid = postInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (selecteditemid > 0)
             {
                 var objCtrl = new DNNrocketController();
                 objCtrl.Delete(selecteditemid);
-                CacheUtils.ClearAllCache();
+                CacheUtilsDNN.ClearAllCache();
             }
         }
 

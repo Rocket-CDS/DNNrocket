@@ -1,0 +1,32 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+<div class="w3-container w3-margin-top">
+    <div class="w3-col m3 w3-padding">
+        <span title="@ResourceKey("DNNrocket.createaccount")" class="w3-button w3-block w3-green w3-section w3-padding simplisity_click" s-fields=""  s-post=".registerdata" s-return=".createaccountreturn" s-cmd="rocketlicense_createaccount" s-after="">@ResourceKey("DNNrocket.createaccount")</span>
+    </div>
+    <div class="w3-col m9 w3-padding">
+        <i>@ResourceKey("DNNrocket.createaccount", "", "Help")</i>
+    </div>
+</div>
+
+
+@RenderTemplate("CreateAccount.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+
+    });
+
+</script>

@@ -1,0 +1,58 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Category/App_LocalResources/")
+
+@{
+    var info = (SimplisityInfo)Model.List.First();
+}
+
+<h1>@ResourceKey("Category.images")</h1>
+
+<span class="w3-section">
+    <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')" >@ButtonText(ButtonTypes.upload)</span>
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="categoryimgbin" s-return="#sortlistimg" s-removelist=".categoryimg" style="display: none;">@ButtonText(ButtonTypes.undo)</a>
+</span>
+
+<div class="w3-panel w3-white w3-rest" style="border-style:dotted">
+    <input id="imagefileupload" class="simplisity_fileupload" s-cmd="category_addimage" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-return="#imagesection" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:CategoryImages.cshtml,interfacekey:category,listname:categoryimg" type="file" name="files[]" multiple style="display:none;">
+    <p><i>@ResourceKey("category.dropimage")</i></p>
+</div>
+
+
+<ul id="sortlistimg" class="w3-ul">
+    @{
+        var lp = 1;
+    }
+    @foreach (var i in info.GetList("categoryimg"))
+    {
+
+    <li class="categoryimg w3-card w3-margin w3-display-container">
+
+        <!-- The images fields on upload are populated, we need to inject them here so they get posted back on update and are not lost. -->
+        @InjectHiddenFieldData(i)
+
+        <div class="w3-row w3-margin">
+            <div class="w3-col" style="width: 70px;">
+                <img src="@ThumbnailImageUrl(i.GetXmlProperty("genxml/hidden/imagerelpath"),50)" class="w3-round" alt="">
+            </div>
+            <div class="w3-col m4 w3-padding">
+                    @EditFlag()&nbsp;<label>@ResourceKey("category.name")</label>
+                    @TextBox(i, "genxml/lang/genxml/textbox/filename", "class='w3-input w3-border' maxlength='50' type='text'", "", true, lp)
+            </div>
+            <div class="w3-col m4 w3-padding">
+                    @EditFlag()&nbsp;<label>@ResourceKey("category.alt")</label>
+                    @TextBox(i, "genxml/lang/genxml/textbox/alt", "class='w3-input w3-border' maxlength='50' type='text'", "", true, lp)
+            </div>
+            <div class="w3-col" style="100px">
+                <a href="javascript:void(0)" class="simplisity_removelistitem w3-display-right " s-removelist=".categoryimg" s-recylebin="categoryimgbin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
+            </div>
+        </div>
+    </li>
+
+        lp += 1;
+    }
+</ul>
+

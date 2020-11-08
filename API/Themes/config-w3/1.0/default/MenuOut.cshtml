@@ -1,0 +1,101 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/" + Model.GetSetting("projectfolder") + "/App_LocalResources/")
+
+
+@{
+    var sidemenu = (SideMenu)Model.List.First();
+    var systemData = new SystemLimpet(sidemenu.SystemKey);
+
+
+    var menuOut = "";
+    // get action interfaces. (no group)
+    var lp = 1;
+    var interfacelist = sidemenu.GetInterfaces("");
+    if (interfacelist.Count > 0)
+    {
+        foreach (var i in interfacelist)
+        {
+            if (i.GetXmlPropertyBool("genxml/checkbox/onmenu"))
+            {
+                var defaulttheme = i.GetXmlProperty("genxml/textbox/defaulttheme");
+                var defaulttemplate = i.GetXmlProperty("genxml/textbox/defaulttemplate");
+                var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
+                var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
+                var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
+                var interfaceName = ResourceKey(Model.GetSetting("resxfile") + "." + interfacekey).ToString();
+                if (interfaceName == "")
+                {
+                    interfaceName = systemData.GetSetting(interfacekey + "MenuName");
+                    if (interfaceName == "")
+                    {
+                        interfaceName = interfacekey;
+                    }
+                }
+                menuOut += "<div class='w3-bar-item w3-button w3-padding menubaritem menubaritem" + lp + "  simplisity_click' s-before='sidebarloader" + lp + "' s-after='sidemenuchange' s-cmd='" + defaultcommand + "' s-fields='{\"menuindex\":\"" + lp + "\",\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='" + interfaceicon + "' style='width:20px;'></i>&nbsp;" + interfaceName + "</div>";
+                menuOut += "<script type='text/javascript'>function sidebarloader" + lp + "() {simplisity_setCookieValue('" + @sidemenu.SystemKey + "-menuindex','" + lp + "');$('#sidebar_loader').show();}</script>";
+            }
+            lp += 1;
+        }
+    }
+
+
+    // get sub group interfaces
+    foreach (SimplisityRecord g in sidemenu.GetGroups())
+    {
+        var groupref = g.GetXmlProperty("genxml/textbox/groupref");
+        var groupicon = g.GetXmlProperty("genxml/textbox/groupicon");
+        interfacelist = sidemenu.GetInterfaces(groupref);
+        if (interfacelist.Count > 0)
+        {
+            menuOut += "<div class='w3-bar-item w3-button w3-padding menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + ResourceKey(Model.GetSetting("resxfile") + "." + groupref) + "&nbsp;<i class='fas fa-caret-down'></i></div>";
+            menuOut += "<div id='" + groupref + "' class='w3-hide'>";
+            foreach (var i in interfacelist)
+            {
+                if (i.GetXmlPropertyBool("genxml/checkbox/onmenu"))
+                {
+                    var defaulttheme = i.GetXmlProperty("genxml/textbox/defaulttheme");
+                    var defaulttemplate = i.GetXmlProperty("genxml/textbox/defaulttemplate");
+                    var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
+                    var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
+                    var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
+                    var interfaceName = ResourceKey(Model.GetSetting("resxfile") + "." + interfacekey).ToString();
+                    if (interfaceName == "")
+                    {
+                        interfaceName = systemData.GetSetting(interfacekey + "MenuName");
+                        if (interfaceName == "")
+                        {
+                            interfaceName = interfacekey;
+                        }
+                    }
+                    menuOut += "<div class='w3-bar-item w3-button w3-padding menubaritem menubaritem" + lp + " simplisity_click ' s-before='sidebarloader" + lp + "' s-after='sidemenuchange'  s-cmd='" + defaultcommand + "' s-fields='{\"menuindex\":\"" + lp + "\",\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfaceName + "</div>";
+                    menuOut += "<script type='text/javascript'>function sidebarloader" + lp + "() {simplisity_setCookieValue('" + @sidemenu.SystemKey + "-menuindex','" + lp + "');$('#sidebar_loader').show();}</script>";
+                    lp += 1;
+                }
+            }
+            menuOut += "</div>";
+        }
+    }
+}
+
+@{
+    menuOut += "<div class='w3-border-bottom w3-bar-item'>&nbsp;</div>";
+}
+
+<div class="menureturn" style="display:none;"></div>
+
+@HtmlOf(menuOut)
+
+
+
+
+
+

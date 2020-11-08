@@ -1,0 +1,107 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
+@{
+    var sInfo = (SimplisityInfo)Model.List.First();
+    var systemData = new SystemLimpet(sInfo);
+}
+
+<input id="index" type="hidden" value="@sInfo.GetXmlPropertyInt("genxml/hidden/index").ToString()" />
+
+<div id="plugins" class="">
+
+    <div class="w3-card w3-light-grey w3-padding-large">
+
+        <div class="w3-row-padding ">
+            <div class="w3-quarter">
+                @ImageEdit(sInfo, "logo", 112, 112, " class='w3-circle' ")
+            </div>
+            <div class="w3-quarter">
+                <label class="">@ResourceKey("system.ctrlkey")</label>
+                @TextBox(sInfo, "genxml/textbox/ctrlkey", "class='w3-input w3-border' maxlength='50'")
+                <label class="">@ResourceKey("system.systemname")</label>
+                @TextBox(sInfo, "genxml/textbox/systemname", "class='w3-input w3-border' maxlength='50'")
+            </div>
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.adminurl")</label>
+                @TextBox(sInfo, "genxml/textbox/adminurl", "class='w3-input w3-border' ", "")
+                <label class="">@ResourceKey("system.apiurl")</label>
+                @TextBox(sInfo, "genxml/textbox/apiurl", "class='w3-input w3-border'  ", "")
+            </div>
+        </div>
+
+        <div class="w3-row-padding">
+            <div class="w3-quarter">
+                <label class="">@ResourceKey("system.defaultinterface")</label>
+                @TextBox(sInfo, "genxml/textbox/defaultinterface", "class='w3-input w3-border' maxlength='350'")
+            </div>
+            <div class="w3-quarter">
+                <label class="">@ResourceKey("system.colorhex")</label>
+                @TextBox(sInfo, "genxml/textbox/colorhex", "class='w3-input w3-border' maxlength='350'", "w3-blue")
+            </div>
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.systemrelpath")</label>
+                @TextBox(sInfo, "genxml/textbox/systemrelpath", "class='w3-input w3-border' maxlength='350'")
+            </div>
+        </div>
+        <div class="w3-row-padding ">
+            <div class="w3-quarter">
+                <label class="">@ResourceKey("system.encryptkey")</label>
+                @TextBox(sInfo, "genxml/textbox/encryptkey", "class='w3-input w3-border required' maxlength='250' ", "")
+            </div>
+            <div class="w3-quarter">
+                <label class="">@ResourceKey("DNNrocket.sortorder")</label>
+                @TextBox(sInfo, "genxml/textbox/sortorder", "class='w3-input w3-border' maxlength='350'", "1")
+            </div>
+            <div class="w3-half">
+                <label class="">@ResourceKey("system.ftproot")</label>
+                @TextBox(sInfo, "genxml/textbox/ftproot", "class='w3-input w3-border' maxlength='350'", "appthemes")
+            </div>
+        </div>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <br />
+                @CheckBox(sInfo, "genxml/checkbox/debugmode", "&nbsp;" + ResourceKey("system.debugmode"), "w3-check")
+            </div>
+            <div class="w3-half">
+                <br />
+                @CheckBox(sInfo, "genxml/checkbox/proavailable", "&nbsp;" + ResourceKey("system.proavailable"), "w3-check")
+            </div>
+            <div class="w3-half">
+                @CheckBox(sInfo, "genxml/checkbox/cacheoff", "&nbsp;" + ResourceKey("system.tuencacheoff"), "w3-check")
+            </div>
+            <div class="w3-half">
+                @CheckBox(sInfo, "genxml/checkbox/logon", "&nbsp;Log Activity","w3-check",true)
+            </div>
+            <div class="w3-half">
+            </div>
+        </div>
+
+
+        <div class="w3-row w3-padding w3-margin-top">
+            @if (sInfo.GetXmlProperty("genxml/textbox/adminurl") != "")
+            {
+                <a class="w3-col m2 rocket-buttonbar w3-button w3-teal w3-padding-8 w3-right" href="@sInfo.GetXmlProperty("genxml/textbox/adminurl")" target="_blank">@ButtonText(ButtonTypes.admin)</a>
+            }
+            <div class="w3-col m2 rocket-buttonbar w3-button w3-blue w3-margin-right simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.export") ?" s-cmd="systemapi_export" s-fields='{"selecteditemid":"@(sInfo.ItemID)"}' s-post="" s-return="#exportreturn">@ButtonText(ButtonTypes.export)</div>
+
+            <div id="exportreturn"></div>
+        </div>
+
+
+        <div class="w3-row-padding w3-right-align">
+            @sInfo.GUIDKey / @sInfo.ItemID
+        </div>
+
+
+    </div>
+</div>
+
+<div>
+    @RenderImageSelect(systemData.SystemKey, systemData.ImageFolderRelPath)
+</div>

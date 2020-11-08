@@ -1,0 +1,122 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
+
+@{
+    var username = UserUtils.GetCurrentUserName();
+    var sidemenu = (SideMenu)Model.List.First();
+    var systemData = new SystemLimpet(sidemenu.SystemKey);
+}
+
+
+<div class="w3-row w3-padding-small w3-theme-d5 w3-border-bottom w3-padding">
+    <div class="w3-col w3-large"><i class='fas fa-rocket' style='font-size:36px'></i>&nbsp;Rocket System</div>
+    <div class="w3-col w3-hide-large w3-button w3-display-topright" onclick="w3_close()" style="cursor:pointer;width:40px;" title=""><i class='fas fa-caret-left' style='font-size:36px'></i></div>
+</div>
+
+<div class="w3-bar-block w3-theme-d3">
+
+    <div class="w3-overlay w3-white " style="display:none;" id="sidebar_loader"><i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i></div>
+
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-before="tuenoffreload" s-cmd="systemapi_admin_getsystemlist" s-fields='{"track":"true","theme":"config-w3","template":"Admin_Systems.cshtml"}'><i title="System" class='fas fa-rocket' style='width:20px;'></i>&nbsp;System</div>
+
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-before="tuenoffreload" s-cmd="systemapi_globaldetail" s-fields='{"track":"true"}'><i class="fas fa-globe"></i>&nbsp;@ResourceKey("system.globalsettings")</div>
+
+    <!--
+     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-before="tuenoffreload" s-cmd="systemapi_licenselist" s-fields='{"track":"true"}'><i class="fas fa-key"></i>&nbsp;@ResourceKey("system.licenses")</div>
+     <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-before="tuenoffreload" s-cmd="systemapi_plugins" s-fields='{"track":"true"}'><i class="fas fa-charging-station"></i>&nbsp;@ResourceKey("system.plugins")</div>
+    -->
+
+    <hr />
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_clearmemcache" s-reload="true" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("system.clearmemcache")</div>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_clearfilecache" s-reload="true" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("system.clearfilecache")</div>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="systemapi_clearallcache" s-reload="true" s-fields='{"theme":"config-w3","template":"Admin_Systems.cshtml"}' s-return="#simplisity_startpanel"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("DNNrocket.clearallcache")</div>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_confirmclick" s-confirm="@ResourceKey("system.cleartempdb","","Confirm")" s-cmd="systemapi_cleartempdb"><i class="fas fa-minus-square"></i>&nbsp;@ResourceKey("system.cleartempdb")</div>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-reload="true" s-cmd="systemapi_recycleapppool"><i class="fas fa-sync"></i>&nbsp;@ResourceKey("system.recycleapppool")</div>
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d3 simplisity_click" s-cmd="login_signout" s-return="#simplisity_startpanel"><i class="fas fa-sign-out-alt"></i>&nbsp;@ResourceKey("DNNrocket.signout")</div>
+    <hr />
+    <div class="w3-bar-item w3-button w3-padding w3-theme-d4 returnbutton" style="display:none;" onclick="returnclick();"><i class="fas fa-caret-left"></i>&nbsp;@ResourceKey("DNNrocket.back")</div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $(window).resize(function () {
+            if ($('#simplisity_fullloader').is(':visible')) {
+                $('#mySidebar').width($('#mySidebar').parent().width());
+            }
+        });
+
+        sidemenuchange();
+
+        var returnurl = sessionStorage.RocketModReturn;
+        if (typeof returnurl !== 'undefined' && returnurl !== '') {
+            $('.returnbutton').show();
+        }
+
+    });
+
+    function tuenoffreload() {
+        // turn off the reload flag, which is set on adminsystem.html.
+        // This flag tells the system to remember this command, if "track" param is true.
+        simplisity_setParamField("reload", false);
+    }
+
+    // Get the Sidebar
+    var mySidebar = document.getElementById("mySidebar");
+
+    // Toggle between showing and hiding the sidebar, and add overlay effect
+    function w3_open() {
+        if (mySidebar.style.display === 'block') {
+            mySidebar.style.display = 'none';
+        } else {
+            mySidebar.style.display = 'block';
+        }
+        $('#mySidebar').width($('#mySidebar').parent().width());
+        $('#simplisity_fullloader').show();
+    }
+
+    // Close the sidebar with the close button
+    function w3_close() {
+        if ($('#simplisity_fullloader').is(':visible')) {
+            mySidebar.style.display = 'none';
+            $('#mySidebar').width(270)
+            $('#simplisity_fullloader').hide();
+        }
+    }
+
+    function sidebarloader() {
+        $('#sidebar_loader').show();
+    }
+
+    function sidemenuchange() {
+        w3_close();
+        $('#sidebar_loader').hide();
+    }
+
+    function returnclick() {
+        $('#simplisity_loader').show();
+
+        var returnurl = sessionStorage.RocketModReturn;
+        if (typeof returnurl === 'undefined' || returnurl === '') {
+            window.history.back();
+        }
+        else {
+            window.location = returnurl;
+        }
+    }
+
+</script>

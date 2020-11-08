@@ -1,0 +1,332 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using Rocket.AppThemes.Componants;
+@using System.IO;
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+
+@{
+    var appTheme = (AppTheme)Model.List.First();
+    var info = new SimplisityInfo(appTheme.Record);
+}
+
+<input id="reloadaftersave" type="hidden" value="False" s-update='ignore' />
+
+<div id="editorpopup">
+    <div class="w3-row w3-padding">
+        <div class="w3-col m2 rocket-buttonbar w3-button w3-khaki simplisity_click " s-cmd="@(Model.GetSetting("interfacekey"))_getdetail" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonText(ButtonTypes.cancel)</div>
+        <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 simplisity_click" s-before="saveeditordata" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return="#editorsavereturn" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
+        <div class="w3-col m2 rocket-buttonbar w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="@(Model.GetSetting("interfacekey"))_deletefile" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.delete)</div>
+        @if (Model.GetSettingBool("moduletemplatebutton"))
+        {
+            <div class="w3-col m3 rocket-buttonbar w3-button w3-blue w3-padding-8 moduletemplatebutton simplisity_confirmclick" s-before="saveeditordata" s-confirm="@ResourceKey("DNNrocket.removemoduletemplate")" s-cmd="@(Model.GetSetting("interfacekey"))_removemodtemplate" s-post="#editorsave" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-minus-square fa-fw fa-lg"></i>@ResourceKey("DNNrocket.removemoduletemplate")</div>
+        }
+
+        <i id="saveicon" class='fas fa-save  rocket-buttonbar' style="display:none;font-size:24px"></i>
+        <div class="editorviewmenu w3-col m1 w3-xlarge w3-right">
+            <div class="w3-button w3-xlarge" id="openRightMenuButton" onclick="openRightMenu()">&#9776;</div>
+            <div class="w3-button w3-xlarge" id="closeRightMenuButton" onclick="closeRightMenu()" style="display:none;">&#9776;</div>
+        </div>
+
+    </div>
+    <div class="w3-row ">
+        <b id="editorfilename" class="" style="">@Model.GetSetting("filename")</b>
+    </div>
+    @{
+        var lp = 1;
+
+        var xpathhtml = "";
+        var fieldList = new List<SimplisityRecord>();
+
+        var moduleParams = new ModuleParams(Model.ModuleId);
+        var moduleSettings = moduleParams.ModuleSettings;
+
+        if (moduleParams.ModuleIdDataSource != Model.ModuleId)
+        {
+            // get the field from the data source AppTheme
+            var dataModuleParams = new ModuleParams(moduleParams.ModuleIdDataSource);
+            var dataAppTheme = new AppThemeLimpet(appTheme.SystemKey, dataModuleParams.AppThemeFolder, dataModuleParams.AppThemeVersion);
+            fieldList = dataAppTheme.Record.GetRecordList("fielddata");
+        }
+        else
+        {
+            fieldList = info.GetRecordList("fielddata");
+        }
+
+        if (Model.GetSetting("interfacekey") == "rocketmodapptheme" && Model.ModuleId > 0)
+        {
+            var modFields = (List<SimplisityRecord>)Model.GetDataObject("modulefieldlist");
+            if (modFields != null)
+            {
+                foreach (SimplisityRecord modfield in modFields)
+                {
+                    fieldList.Add(modfield);
+                }
+            }
+        }
+
+
+    }
+
+    @{
+        var settingshtml = "";
+        lp = 1;
+    }
+    @foreach (var s in moduleSettings)
+    {
+        settingshtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='settingssnippet" + lp + "'>" + s.Key + "</div>";
+        settingshtml += "<input id='settingssnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@Model.GetSetting(\"" + s.Key + "\")") + "' />";
+        lp += 1;
+    }
+
+
+    @foreach (SimplisityRecord i in fieldList)
+    {
+        var fieldtype = i.GetXmlProperty("genxml/select/type").ToLower();
+        var fieldname = i.GetXmlProperty("genxml/textbox/name");
+        xpathhtml += " <div class='w3-bar-item w3-button fieldsnippet ' snipname='fieldsnippetxpath" + lp + "'>&bull;&nbsp;&nbsp;" + fieldname + " [" + fieldtype + "]" + "</div>";
+
+
+        var replaceData = new Dictionary<string, string>();
+        replaceData.Add("[fieldname]", fieldname);
+
+        switch (fieldtype.ToLower())
+        {
+            case "imagegallery":
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("ImageGallery", replaceData)) + "' />";
+                break;
+            case "imagefull":
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("Image", replaceData)) + "' />";
+                break;
+            case "image":
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("Image", replaceData)) + "' />";
+                break;
+            case "linkgallery":
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("LinkGallery", replaceData)) + "' />";
+                break;
+            case "documentgallery":
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(appTheme.GetSnippetText("DocGallery", replaceData)) + "' />";
+                break;
+            case "richtext":
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@HtmlOf(info.Get(\"" + i.GetXmlProperty("genxml/textbox/name") + "\"))") + "' />";
+                break;
+            case "textarea":
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@BreakOf(info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\"))") + "' />";
+                break;
+            default:
+                xpathhtml += "<input id='fieldsnippetxpath" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode("@info.GetXmlProperty(\"" + i.GetXmlProperty("genxml/hidden/xpath") + "\")") + "' />";
+                break;
+        }
+        lp += 1;
+    }
+
+    @{
+        var razortokenhtml = "";
+        var datatokenhtml = "";
+        lp = 1;
+    }
+    @foreach (var r in appTheme.RazorTokenText)
+    {
+        var textValue = r.Value.GetXmlProperty("genxml/value");
+        var commentValue = r.Value.GetXmlProperty("genxml/comment");
+        if (commentValue != "")
+        {
+            commentValue = "&nbsp;&nbsp;{" + commentValue + "}";
+        }
+        if (r.Key.StartsWith("Data."))
+        {
+            datatokenhtml += " <div title='" + textValue + " " + commentValue + "' class='w3-bar-item w3-button fieldsnippet ' snipname='razortokensnippet" + lp + "'>&bull;&nbsp;&nbsp;" + r.Key.Replace("Data.", "") + "</div>";
+            datatokenhtml += "<input id='razortokensnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(textValue) + "' />";
+        }
+        if (r.Key.StartsWith("Razor."))
+        {
+            razortokenhtml += " <div title='" + textValue + " " + commentValue + "' class='w3-bar-item w3-button fieldsnippet ' snipname='razortokensnippet" + lp + "'>&bull;&nbsp;&nbsp;" + r.Key.Replace("Razor.", "") + "</div>";
+            razortokenhtml += "<input id='razortokensnippet" + lp + "' s-update='ignore' type='hidden' value='" + GeneralUtils.EnCode(textValue) + "' />";
+        }
+        lp += 1;
+    }
+
+
+<div class="w3-sidebar w3-bar-block w3-card w3-animate-right w3-light-grey " style="display:none;right:0;z-index:9999;width:300px" id="rightMenuTokens">
+    <div id="searchbar" class="w3-bar-item">
+        <input class="w3-col w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.search")..." id="rightmenusearchtext" onkeyup="rightmenusearchFunction()" style="width:200px;">
+
+        <div onclick="closeRightMenu()" class="w3-col w3-right-align w3-button w3-large" style="width:40px">&times;</div>
+    </div>
+
+    <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('fieldstokensection')">@ResourceKey("AppThemes.fields") <i class="fa fa-caret-down"></i></div>
+    <div id="fieldstokensection" class="w3-hide w3-white w3-white w3-card">
+        @HtmlOf(xpathhtml)
+    </div>
+    <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('razortokensection')">Razor Tokens <i class="fa fa-caret-down"></i></div>
+    <div id="razortokensection" class="w3-hide w3-white w3-white w3-card">
+        @HtmlOf(razortokenhtml)
+    </div>
+    <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('datatokensection')">Data Tokens <i class="fa fa-caret-down"></i></div>
+    <div id="datatokensection" class="w3-hide w3-white w3-white w3-card">
+        @HtmlOf(datatokenhtml)
+    </div>
+    <div class="w3-button w3-block w3-left-align" onclick="rightMenuAccFunc('settingstokensection')">Setting Tokens <i class="fa fa-caret-down"></i></div>
+    <div id="settingstokensection" class="w3-hide w3-white w3-white w3-card">
+        @HtmlOf(settingshtml)
+    </div>
+    <br/>
+    <div id="" class="w3-bar-item w3-border-top">
+        <div class="w3-button w3-blue w3-padding-8 simplisity_click" style="width:100%" s-cmd="@(Model.GetSetting("interfacekey"))_geneditform" s-return="#geneditformreturn" s-after="editorAddEditFields" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-newspaper fa-lg"></i>&nbsp;@ResourceKey("AppThemes.geneditform")</div>
+        <div id="geneditformreturn" style="display:none;"></div>
+    </div>
+    <div id="" class="w3-bar-item">
+        <div class="w3-button w3-blue w3-padding-8 simplisity_click" style="width:100%" s-cmd="@(Model.GetSetting("interfacekey"))_genviewform" s-return="#genviewformreturn" s-after="editorAddViewFields" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-list-alt fa-lg"></i>&nbsp;@ResourceKey("AppThemes.genviewform")</div>
+        <div id="genviewformreturn" style="display:none;"></div>
+    </div>
+    <div id="" class="w3-bar-item w3-border-bottom">
+        <div class="w3-button w3-blue w3-padding-8 simplisity_click" style="width:100%" s-cmd="@(Model.GetSetting("interfacekey"))_gensettingform" s-return="#gensettingformreturn" s-after="editorAddSettingFields" s-fields='{"filename":"@Model.GetSetting("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-list-alt fa-lg"></i>&nbsp;@ResourceKey("AppThemes.gensettingform")</div>
+        <div id="gensettingformreturn" style="display:none;"></div>
+    </div>
+
+</div>
+
+    <div id="editorsave" style="display:none;">
+        @HiddenField(info, "genxml/hidden/selectedsystemkey", "", appTheme.SystemKey)
+        <input id="editorcodesave" type="hidden" value="" />
+    </div>
+
+    <input id="editorsavereturn" type="hidden" value="" />
+    
+    <div id="editorwrapper" class="w3-row " style=""></div>
+
+</div>
+
+<script>
+
+    var myCodeMirror;
+
+    $(document).ready(function () {
+
+        editeditor('@Model.GetSetting("editormode")', '@Model.GetSetting("jsonFileData")');
+
+        if (typeof myCodeMirror !== 'undefined') {
+            window.onresize = function (event) {
+                myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
+            };
+        }
+
+        $('.fieldsnippet').unbind('click');
+        $('.fieldsnippet').click(function () {
+            if (typeof myCodeMirror !== 'undefined') {
+                var snip = simplisity_decode($('#' + $(this).attr('snipname')).val());
+                var position = myCodeMirror.getCursor();
+                myCodeMirror.replaceRange(snip, CodeMirror.Pos(position.line));
+            }
+        });
+
+        $('#editorsavereturn').unbind('change');
+        $('#editorsavereturn').change(function () {
+            $('#saveicon').show();
+            $('#saveicon').addClass('simplisity_fadeout');
+        });
+
+
+    });
+
+    function editorAddEditFields() {
+        var snip = $('#geneditformreturn').html();
+        var position = myCodeMirror.getCursor();
+        myCodeMirror.replaceRange(snip, CodeMirror.Pos(position.line));
+    }
+    function editorAddViewFields() {
+        var snip = $('#genviewformreturn').html();
+        var position = myCodeMirror.getCursor();
+        myCodeMirror.replaceRange(snip, CodeMirror.Pos(position.line));
+    }
+    function editorAddSettingFields() {
+        var snip = $('#gensettingformreturn').html();
+        var position = myCodeMirror.getCursor();
+        myCodeMirror.replaceRange(snip, CodeMirror.Pos(position.line));
+    }
+
+    function editeditor(modetype, editorcode) {
+
+        $('#detailsection').hide();
+        $('#editorpopup').show();
+
+        $("#razoreditor").remove();
+        $(".CodeMirror").remove();
+
+        var newHeight = $(window).height() - 100;
+        $('#editorwrapper').css("height", newHeight);;
+
+        var textArea = $('<textarea id="razoreditor" class="w3-input w3-border" modetype="' + modetype + '" spellcheck="false" />');
+        $('#editorwrapper').append(textArea);
+
+        myCodeMirror = CodeMirror.fromTextArea(document.getElementById("razoreditor"), {
+            lineNumbers: true,
+            mode: modetype,
+            theme: "night"
+        });
+        myCodeMirror.setValue(simplisity_decode(editorcode));
+
+        myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
+
+        if (modetype === 'htmlmixed') {
+            $('.editorviewmenu').show();
+        } else {
+            $('.editorviewmenu').hide();
+        }
+        $('#razoreditor').focus();
+    }
+
+    function saveeditordata() {
+        $('#editorcodesave').val(simplisity_encode(myCodeMirror.getValue()));
+    }
+
+    function rightMenuAccFunc(elementid) {
+        var x = document.getElementById(elementid);
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-grey";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+                x.previousElementSibling.className.replace(" w3-grey", "");
+        }
+    }
+
+    function openRightMenu() {
+        document.getElementById("rightMenuTokens").style.display = "block";
+        var newHeight = $(window).height() - 100;
+        $('#rightMenuTokens').css("height", newHeight);
+        $('#openRightMenuButton').hide();
+        $('#closeRightMenuButton').show();
+    }
+
+    function closeRightMenu() {
+        document.getElementById("rightMenuTokens").style.display = "none";
+        $('#openRightMenuButton').show();
+        $('#closeRightMenuButton').hide();
+    }
+
+    function rightmenusearchFunction() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("rightmenusearchtext");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("rightMenuTokens");
+        li = ul.getElementsByTagName("div");
+        for (i = 0; i < li.length; i++) {
+            if (li[i].id !== 'searchbar') {
+                txtValue = li[i].textContent || li[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+</script>

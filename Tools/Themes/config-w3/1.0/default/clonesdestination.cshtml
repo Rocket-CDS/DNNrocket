@@ -1,0 +1,43 @@
+﻿@inherits Rocket.Tools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using RazorEngine.Text;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+
+<div id="treeview3_container" class="hummingbird-treeview well h-scroll-large">
+    @GetTreeTabList(Model.GetSettingInt("portalid"), new List<int>(), "treeview3", "", "class='hummingbird-base'", true)
+</div>
+<div class="w3-row ">
+    <div class="w3-button w3-col m5 w3-blue w3-margin-right" id="checkAll">@ResourceKey("DNNrocket.checkall")</div>
+    <div class="w3-button w3-col m5 w3-blue" id="uncheckAll">@ResourceKey("DNNrocket.uncheckall")</div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('.rocketclonesbutton').show();
+
+        $.fn.hummingbird.defaults.SymbolPrefix = "fas";
+        $.fn.hummingbird.defaults.collapsedSymbol = "fa-caret-down";
+        $.fn.hummingbird.defaults.expandedSymbol = "fa-caret-up";
+
+        $("#treeview3").hummingbird();
+
+        $("#checkAll").click(function () {
+            $("#treeview3").hummingbird("checkAll");
+        });
+        $("#uncheckAll").click(function () {
+            $("#treeview3").hummingbird("uncheckAll");
+        });
+
+    });
+
+</script>
+

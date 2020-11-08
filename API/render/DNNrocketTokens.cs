@@ -1,4 +1,8 @@
-﻿using NBrightDNN.render;
+﻿using DNNrocketAPI.Componants;
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using RazorEngine.Text;
 using Simplisity;
 using System;
@@ -15,6 +19,111 @@ namespace DNNrocketAPI.render
     public class DNNrocketTokens<T> : Simplisity.RazorEngineTokens<T>
     {
 
+    public IEncodedString DropDownLanguageList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+    {
+        var dataLangKeys = new Dictionary<string, string>();
+        var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+        foreach (var l in enabledlanguages)
+        {
+            if (!dataLangKeys.ContainsKey(l))
+            {
+                dataLangKeys.Add(l, "<img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/" + l + ".png' alt='" + l + "' /><span class='w3-small'>&nbsp;" + DNNrocketUtils.GetCultureCodeName(l) + "</span>");
+            }
+
+        }
+        return DropDownList(info, xpath, dataLangKeys, attributes, defaultValue, localized, row, listname);
+    }
+        public IEncodedString DropDownCurrencyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+        {
+            var dataLangKeys = new Dictionary<string, string>();
+            var enabledCurrency = DNNrocketUtils.GetCurrencyList();
+            return DropDownList(info, xpath, enabledCurrency, attributes, defaultValue, localized, row, listname);
+        }
+        public IEncodedString DropDownCultureCodeList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+        {
+            var cultureCodes = new Dictionary<string, string>();
+            var cultureList = DNNrocketUtils.GetCultureCodeList();
+            foreach (var cc in cultureList)
+            {
+                cultureCodes.Add(cc, cc);
+            }
+            return DropDownList(info, xpath, cultureCodes, attributes, defaultValue, localized, row, listname);
+        }
+
+
+
+    public IEncodedString DropDownSystemKeyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+        {
+            var dataSytemKeys = new Dictionary<string, string>();
+
+            var systemDataList = new SystemLimpetList();
+            var list = systemDataList.GetSystemList();
+            foreach (var sk in list)
+            {
+                if (!dataSytemKeys.ContainsKey(sk.GUIDKey) && sk.GetXmlPropertyBool("genxml/checkbox/proavailable"))
+                {
+                    dataSytemKeys.Add(sk.GUIDKey, sk.GUIDKey);
+                }
+            }
+            return DropDownList(info, xpath, dataSytemKeys, attributes, defaultValue, localized, row, listname);
+        }
+
+        public IEncodedString DetailUrl(SimplisityRazor model, int itemid, string title)
+        {
+            var rtn = "";
+            var pageData = new PageRecordData(PortalUtils.GetPortalId(), model.TabId);
+            var moduleParams = new ModuleParams(model.ModuleId, model.SystemKey);
+
+            if (model.SystemKey == "") return new RawString("ERROR: no SystemKey");
+            if (model.TabId <= 0) return new RawString("ERROR: no TabId");
+
+            string[] paramData = new string[1];
+            paramData[0] = moduleParams.DetailUrlParam + "=" + itemid;
+
+            rtn = PagesUtils.NavigateURL(model.TabId, "", paramData) + "/" + GeneralUtils.UrlFriendly(title);
+
+            return new RawString(rtn);
+        }
+        public IEncodedString ListUrl(SimplisityRazor model)
+        {
+            var rtn = "";
+            var pageData = new PageRecordData(PortalUtils.GetPortalId(), model.TabId);
+
+            if (model.TabId <= 0) rtn += "ERROR: no TabId";
+
+            rtn += pageData.FullUrl;
+
+            return new RawString(rtn);
+        }
+
+        public IEncodedString ResourceCSV(String resourceFileKey, string keyListCSV, string lang = "", string resourceExtension = "Text")
+        {
+            var csvList = keyListCSV.Split(',');
+            var strOut = "";
+            foreach (var csv in csvList)
+            {
+                var resourceFileKeyCsv = resourceFileKey + "-" + csv;
+                strOut += ResourceKeyString(resourceFileKeyCsv, lang, resourceExtension).Replace(",",".") + ",";
+            }
+            return new RawString(strOut.TrimEnd(','));
+        }
+        public IEncodedString ButtonText(ButtonTypes buttontype, String lang = "")
+        {
+            if (buttontype == ButtonTypes.next)
+            {
+                return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang) + "&nbsp;" + ResourceKeyString("DNNrocket." + buttontype, lang, "Icon"));
+            }
+            else
+            {
+                return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang, "Icon") + "&nbsp;" + ResourceKeyString("DNNrocket." + buttontype, lang));
+
+            }
+        }
+        public IEncodedString ButtonIcon(ButtonTypes buttontype, String lang = "")
+        {
+            return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang, "Icon"));
+        }
+
         public IEncodedString ResourceKey(String resourceFileKey, String lang = "", String resourceExtension = "Text")
         {
             return new RawString(ResourceKeyString(resourceFileKey, lang, resourceExtension));
@@ -30,9 +139,9 @@ namespace DNNrocketAPI.render
         private string ResourceKeyString(String resourceFileKey, String lang = "", String resourceExtension = "Text")
         {
             var strOut = "";
-            if (Metadata.ContainsKey("resourcepath"))
+            if (Processdata.ContainsKey("resourcepath"))
             {
-                var l = Metadata["resourcepath"];
+                var l = Processdata["resourcepath"];
                 foreach (var r in l)
                 {
                     strOut = DNNrocketUtils.GetResourceString(r, resourceFileKey, resourceExtension, lang);
@@ -42,27 +151,320 @@ namespace DNNrocketAPI.render
             return strOut;
         }
 
-        public IEncodedString RenderTemplate(string razorTemplateName, string templateControlRelPath, string themeFolder, SimplisityRazor model)
+        public IEncodedString RenderPagingTemplate(string scmd, string spost, SimplisityRazor model, string sreturn = "", string versionFolder = "1.0")
         {
-            var strOut = "";
-            var razorTempl = DNNrocketUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut = DNNrocketUtils.RazorRender(model, razorTempl, false);
+            model.SessionParamsData.Set("s-paging-return", sreturn);
+            model.SessionParamsData.Set("s-paging-cmd", scmd);
+            model.SessionParamsData.Set("s-paging-post", spost);
+            return RenderTemplate("Paging.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model, versionFolder);
+        }
+
+        public IEncodedString RenderTemplate(string razorTemplate, SimplisityRazor model, bool debugMode = false)
+        {
+            var strOut = RenderRazorUtils.RazorRender(model, razorTemplate, debugMode);
             return new RawString(strOut);
         }
+        public IEncodedString RenderTemplate(string razorTemplateName, string templateControlRelPath, string themeFolder, SimplisityRazor model, string versionFolder = "1.0", bool debugMode = false)
+        {
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), versionFolder, debugMode);
+            var strOut = RenderRazorUtils.RazorRender(model, razorTempl, debugMode);
+            return new RawString(strOut);
+        }
+        public IEncodedString RenderTemplateInfo(string razorTemplateName, SimplisityInfo info, Dictionary<string, object> dataObjects = null, string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string lang = "", string versionFolder = "1.0", Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugMode = false)
+        {
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), versionFolder, debugMode);
+            return new RawString(RenderRazorUtils.RazorObjectRender(razorTempl, info, dataObjects, settings, sessionParams, debugMode));
+        }        
+        public IEncodedString RenderImageSelect(string systemKey, string imageFolderRel, bool singleselect = true, bool autoreturn = false)
+        {
+            return new RawString(DNNrocketUtils.RenderImageSelect(systemKey, imageFolderRel, singleselect, autoreturn));
+        }
+        public IEncodedString RenderImageSelect(int moduleid, bool singleselect = true, bool autoreturn = false)
+        {
+            var moduleParams = new ModuleParams(moduleid);
+            return RenderImageSelect(moduleParams, singleselect, autoreturn);
+        }
+        public IEncodedString RenderImageSelect(ModuleParams moduleParams, bool singleselect = true, bool autoreturn = false)
+        {
+            return RenderImageSelect(moduleParams.SystemKey, moduleParams.ImageFolderRel, singleselect, autoreturn);
+        }
+
+        public IEncodedString RenderDocumentSelect(string systemKey, string docFolderRel, bool singleselect = true, bool autoreturn = false)
+        {
+            return new RawString(DNNrocketUtils.RenderDocumentSelect(systemKey, docFolderRel, singleselect, autoreturn));
+        }
+        public IEncodedString RenderDocumentSelect(int moduleid, bool singleselect = true, bool autoreturn = false)
+        {
+            var moduleParams = new ModuleParams(moduleid);
+            return RenderDocumentSelect(moduleParams, singleselect, autoreturn);
+        }
+        public IEncodedString RenderDocumentSelect(ModuleParams moduleParams, bool singleselect = true, bool autoreturn = false)
+        {
+            return RenderImageSelect(moduleParams.SystemKey, moduleParams.DocumentFolderRel, singleselect, autoreturn);
+        }
+
 
         public IEncodedString EditFlag(string classvalues = "")
         {
-            var cultureCode = DNNrocketUtils.GetEditCulture();
+            var cultureCode = DNNrocketUtils.GetNextCulture();
             var strOut = "<img class='" + classvalues + "' src='/DesktopModules/DNNrocket/API/images/flags/16/" + cultureCode + ".png' alt='" + cultureCode + "' />";
             return new RawString(strOut);
         }
 
-        public IEncodedString ThumbnailImageUrl(string url, int width = 0, int height = 0, string extraurlparams = "")
+        public IEncodedString ThumbnailImageUrl(string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
         {
-            url = "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams;
+            var pngType = "";
+            if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
+            if (pngImage && url.ToLower().EndsWith(".png")) pngType = "&imgtype=png";
+            if (width > 0 || height > 0)
+            {
+                url = "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
+            }
+            else
+            {
+                url = "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
+            }
+            return new RawString(url);
+        }
+        public IEncodedString ThumbnailImageWebsiteDomainUrl(string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
+        {
+            return ThumbnailImageWebsiteDomainUrl(PortalUtils.DefaultPortalAlias(), url, width, height, extraurlparams, pngImage);
+        }
+
+        public IEncodedString ThumbnailImageWebsiteDomainUrl(string websiteDomainUrl, string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
+        {
+            var pngType = "";
+            if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
+            if (pngImage && url.ToLower().EndsWith(".png")) pngType = "&imgtype=png";
+            if (!websiteDomainUrl.StartsWith("http")) websiteDomainUrl = "//" + websiteDomainUrl;
+            if (width > 0 || height > 0)
+            {
+                url = websiteDomainUrl + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
+            }
+            else
+            {
+                url = websiteDomainUrl + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
+            }
             return new RawString(url);
         }
 
+        public IEncodedString DownloadDocument(int ItemId, int row, string fieldId, string text = "", string attributes = "")
+        {
+            if (text == "")
+            {
+                text = ResourceKey("DNNrocket.download").ToString();
+            }
+            var strOut = "<a " + attributes + " href='/DesktopModules/DNNrocket/api/downloadfile.ashx?fileindex=" + row + "&itemid=" + ItemId + "&fieldid=" + fieldId + "'>" + text + "</a>";
+            return new RawString(strOut);
+        }
+
+
+        public IEncodedString ImageEdit(SimplisityInfo info, string fieldId, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0, string listname = "", bool pngImage = true)
+        {
+            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "", listname, pngImage);
+        }
+        public IEncodedString ImageEditFull(SimplisityInfo info, string fieldId, int width = 140, int height = 140, string attributes = "", bool localized = false, int row = 0, string listname = "", bool pngImage = true)
+        {
+            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "full", listname, pngImage);
+        }
+        public IEncodedString ImageEditFullName(SimplisityInfo info, string fieldId, int width = 150, int height = 150, string attributes = "", bool localized = false, int row = 0, string listname = "", bool pngImage = true)
+        {
+            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "name", listname, pngImage);
+        }
+        public IEncodedString ImageEditFullAlt(SimplisityInfo info, string fieldId, int width = 150, int height = 150, string attributes = "", bool localized = false, int row = 0, string listname = "", bool pngImage = true)
+        {
+            return ImageEditToken(info, fieldId, width, height, attributes, localized, row, "alt", listname, pngImage);
+        }
+
+        private IEncodedString ImageEditToken(SimplisityInfo info, string fieldId, int width, int height, string attributes, bool localized, int row, string uiType, string listname, bool pngImage)
+        {
+            var xpath = "genxml/hidden/imagepath" + fieldId;
+            var xpathwidth = "genxml/textbox/width" + fieldId;
+            var xpathheight = "genxml/textbox/height" + fieldId;
+            if (localized && !xpath.StartsWith("genxml/lang/"))
+            {
+                xpath = "genxml/lang/" + xpath;
+                xpathwidth = "genxml/lang/" + xpathwidth;
+                xpathheight = "genxml/lang/" + xpathheight;
+            }
+            if (width == 0) width = 200;
+            var xpathalt = "genxml/lang/genxml/textbox/alt" + fieldId;
+            var xpathname = "genxml/textbox/name" + fieldId;
+
+            var strOut = "<div class='w3-row'>";
+
+            strOut += "<div class='w3-col w3-padding' style='width:" + (width + 20) + "px;'>";
+
+            // Image section
+            strOut += "<div class='w3-display-container' style='width: " + width + "px'>";
+
+            if (info == null) info = new SimplisityInfo();
+            var value = info.GetXmlProperty(xpath);
+            var imgurl = info.GetXmlProperty(xpath);
+            var valuewidth = info.GetXmlPropertyInt(xpathwidth);
+            var valueheight = info.GetXmlPropertyInt(xpathheight);
+
+            var upd = getUpdateAttr(xpath, "", localized);
+            var id = getIdFromXpath(xpath, row, listname);
+            strOut += "<input value='" + value + "' id='" + id + "' s-xpath='" + xpath + "' " + upd + " type='hidden' />";
+
+            if (imgurl == "")
+            {
+                strOut += "<img src='" + ThumbnailImageUrl(imgurl,width, height, "", pngImage) + "' imageheight='" + height + "' imagewidth='" + width + "'  " + attributes + ">";
+                strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-imagechange' title=''><i class='fas fa-edit'></i></span>";
+            }
+            else
+            {
+                strOut += "<img src='" + ThumbnailImageUrl(imgurl, width, height, "", pngImage) + "' imageheight='" + height + "' imagewidth='" + width + "' " + attributes + ">";
+                strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-imageremove ' title=''>&times;</span>";
+            }
+
+            strOut += "</div>";
+
+            strOut += "</div>";
+
+            //Text seciton
+            if (uiType == "alt")
+            {
+                strOut += "<div class='w3-rest'>";
+                strOut += "<div class='w3-row'>";
+
+                strOut += "<div class='w3-rest w3-padding' style='min-width:100px;'>";
+                strOut += "<label class=''>" + ResourceKey("DNNrocketImages.alt") + "</label>&nbsp;" + EditFlag();
+                strOut += TextBox(info, xpathalt, " class='w3-input w3-border' autocomplete='off'", "", true, row);
+                strOut += "</div>";
+
+                strOut += "</div>";
+                strOut += "</div>";
+            }
+
+            if (uiType == "full")
+            {
+                strOut += "<div class='w3-rest'>";
+                strOut += "<div class='w3-row'>";
+
+                strOut += "<div class='w3-col w3-padding' style='width:100px;'>";
+                strOut += "<label class=''>" + ResourceKey("DNNrocketImages.width") + "</label>";
+                strOut += TextBox(info, xpathwidth, " class='w3-input w3-border' autocomplete='off'", "200", false, row);
+                strOut += "</div>";
+
+                strOut += "<div class='w3-col w3-padding' style='width:100px;'>";
+                strOut += "<label class=''>" + ResourceKey("DNNrocketImages.height") + "</label>";
+                strOut += TextBox(info, xpathheight, " class='w3-input w3-border' autocomplete='off' datatype='int'", "0", false, row);
+                strOut += "</div>";
+
+                strOut += "<div class='w3-rest w3-padding' style='min-width:100px;'>";
+                strOut += "<label class=''>" + ResourceKey("DNNrocketImages.alt") + "</label>&nbsp;" + EditFlag();
+                strOut += TextBox(info, xpathalt, " class='w3-input w3-border' autocomplete='off'", "", true, row);
+                strOut += "</div>";
+
+                strOut += "</div>";
+                strOut += "</div>";
+            }
+
+            if (uiType == "name")
+            {
+                strOut += "<div class='w3-rest'>";
+
+                strOut += "<div class='w3-row'>";
+
+                strOut += "<div class='w3-rest w3-padding' style='min-width:100px;'>";
+                strOut += "<label class=''>" + ResourceKey("DNNrocketImages.alt") + "</label>&nbsp;" + EditFlag();
+                strOut += TextBox(info, xpathalt, " class='w3-input w3-border' autocomplete='off'", "", true, row);
+                strOut += "</div>";
+
+                strOut += "</div>";
+
+                strOut += "<div class='w3-row'>";
+
+                strOut += "<div class='w3-col w3-padding' style='width:100px;'>";
+                strOut += "<label class=''>" + ResourceKey("DNNrocketImages.width") + "</label>";
+                strOut += TextBox(info, xpathwidth, " class='w3-input w3-border' autocomplete='off'", "200", false, row);
+                strOut += "</div>";
+
+                strOut += "<div class='w3-col w3-padding' style='width:100px;'>";
+                strOut += "<label class=''>" + ResourceKey("DNNrocketImages.height") + "</label>";
+                strOut += TextBox(info, xpathheight, " class='w3-input w3-border' autocomplete='off' datatype='int'", "0", false, row);
+                strOut += "</div>";
+
+                strOut += "<div class='w3-rest w3-padding' style='min-width:100px;'>";
+                strOut += "<label class=''>" + ResourceKey("DNNrocketImages.name") + "</label>";
+                strOut += TextBox(info, xpathname, " class='w3-input w3-border' autocomplete='off'", "", false, row);
+                strOut += "</div>";
+
+                strOut += "</div>";
+
+                strOut += "</div>";
+            }
+
+            strOut += "</div>";
+
+
+            return new RawString(strOut);
+        }
+
+
+        public IEncodedString DocumentEdit(SimplisityInfo info, string fieldId, string attributes = "", bool localized = true, int row = 0, string listname = "")
+        {
+            var xpath = "genxml/hidden/" + fieldId;
+            var xpathname = "genxml/textbox/name" + fieldId;
+            var xpathrel = "genxml/hidden/rel" + fieldId;
+            var value = info.GetXmlProperty(xpath);
+            var valuename = info.GetXmlProperty(xpathname);
+            var valuerel = info.GetXmlProperty(xpathrel);
+
+            var strOut = "<div class='w3-display-container' >";
+
+            if (info == null) info = new SimplisityInfo();
+
+            value = info.GetXmlProperty(xpath);
+            if (localized && !xpath.StartsWith("genxml/lang/"))
+            {
+                value = info.GetXmlProperty("genxml/lang/" + xpath);
+            }
+
+            valuename = info.GetXmlProperty(xpathname);
+            if (localized && !xpathname.StartsWith("genxml/lang/"))
+            {
+                valuename = info.GetXmlProperty("genxml/lang/" + xpathname);
+            }
+
+            valuerel = info.GetXmlProperty(xpathrel);
+            if (localized && !xpathname.StartsWith("genxml/lang/"))
+            {
+                valuerel = info.GetXmlProperty("genxml/lang/" + xpathrel);
+            }
+
+            var disabled = "";
+            if (value == "") disabled = "disabled";
+            var upd = getUpdateAttr(xpath, "", localized);
+            var updname = getUpdateAttr(xpathname, "", localized);
+            var id = getIdFromXpath(xpath, row, listname);
+            var idname = getIdFromXpath(xpathname, row, listname);
+            var idrel =  getIdFromXpath(xpathrel, row, listname);
+            strOut += "<input value='" + value + "' id='" + id + "' s-xpath='" + xpath + "' " + upd + " type='hidden' />";
+            strOut += "<input value='" + valuerel + "' id='" + idrel + "' s-xpath='" + xpathrel + "' " + upd + " type='hidden' />";
+            strOut += "<input value='" + valuename + "' id='" + idname + "' s-xpath='" + xpathname + "' " + updname + " " + disabled + " " + attributes + " type='text' />";
+
+            if (value == "")
+            {
+                strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-documentchange' title=''><i class='fas fa-file-upload'></i></span>";
+            }
+            else
+            {
+                strOut += "<span class='w3-button w3-transparent w3-display-topright dnnrocket-documentremove' title=''>&times;</span>";
+            }
+
+            strOut += "</div>";
+            return new RawString(strOut);
+        }
+
+
+        /// <summary>
+        /// Add all genxml/hidden/* fields to the template.
+        /// </summary>
+        /// <param name="sInfo"></param>
+        /// <returns></returns>
         public IEncodedString InjectHiddenFieldData(SimplisityInfo sInfo)
         {
             var strOut = "";
@@ -75,5 +477,389 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
+        #region "CKeditor"
+
+        /// <summary>
+        /// Display richText CKEditor for eding
+        /// NOTE: Data is sent back tothe server via a temp field.  This is populated by change event on the CKEDITOR.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="xpath"></param>
+        /// <param name="attributes"></param>
+        /// <returns></returns>
+        public IEncodedString CKEditor(SimplisityInfo info, string xpath, string attributes, string startupfile, bool localized = false, int row = 0, string listname = "")
+        {
+            if (startupfile == "") startupfile = "startup.js";
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            var upd = getUpdateAttr(xpath, attributes, localized);
+            var id = getIdFromXpath(xpath, row, listname);
+
+            var value = info.GetXmlProperty(xpath);
+            if (localized && !xpath.StartsWith("genxml/lang/"))
+            {
+                value = info.GetXmlProperty("genxml/lang/" + xpath);
+            }
+
+            var strOut = " <textarea id='" + id + "' s-datatype='coded' s-xpath='" + xpath + "' type='text'  name='editor" + id + "' " + attributes + " " + upd + " >" + value + "</textarea>";
+            strOut += GetCKEditorStartup(id, startupfile);
+            return new RawString(strOut);
+        }
+        public IEncodedString CKEditor(SimplisityInfo info, String xpath, String attributes = "")
+        {
+            return CKEditor(info, xpath, attributes, "startup.js");
+        }
+
+        public IEncodedString CKEditorFull(SimplisityInfo info, String xpath, String attributes, string startupfile = "startupfull.js", bool localized = false, int row = 0, string listname = "")
+        {
+            return CKEditor(info, xpath, attributes, startupfile, localized, row);
+        }
+        public IEncodedString CKEditorFull(SimplisityInfo info, String xpath, String attributes = "", bool localized = false, int row = 0, string listname = "")
+        {
+            return CKEditor(info, xpath, attributes, "startupfull.js", localized, row);
+        }
+
+        private string GetCKEditorStartup(string id, string filename)
+        {
+            var strOut = "<script>";
+            var filepath = HttpContext.Current.Server.MapPath("/DesktopModules/DNNrocket/CKEditor/" + filename);
+            strOut += FileUtils.ReadFile(filepath);
+            strOut = strOut.Replace("{id}", id);
+            var systemGlobalData = new SystemGlobalData();;            
+            strOut = strOut.Replace("{cssfilelist}", systemGlobalData.CKEditorCssList);            
+            strOut += "</script>";
+            return strOut;
+        }
+
+
+        #endregion
+
+        public IEncodedString LinkInternalUrl(int portalid, int tabid, string cultureCode, PortalSettings portalSettings = null, string[] extraparams = null)
+        {
+            if (portalSettings == null)
+            {
+                portalSettings = PortalSettings.Current;
+            }
+            if (extraparams == null)
+            {
+                extraparams = new string[] { };
+            }
+            var strOut = DotNetNuke.Common.Globals.NavigateURL(tabid, false, portalSettings,"",cultureCode, extraparams);
+            return new RawString(strOut);
+        }
+
+        public IEncodedString TabSelectList(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "", bool showAllTabs = false)
+        {
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            var tList = DNNrocketUtils.GetTreeTabList(showAllTabs);
+            var strOut = "";
+
+            var upd = getUpdateAttr(xpath, "", localized);
+            var id = getIdFromXpath(xpath, row, listname);
+
+            strOut = "<select id='" + id + "' s-xpath='" + xpath + "' " + upd + " " + attributes + ">";
+            var s = "";
+            if (allowEmpty) strOut += "    <option value=''></option>";
+            foreach (var tItem in tList)
+            {
+                if (info.GetXmlProperty(xpath) == tItem.Key.ToString())
+                    s = "selected";
+                else
+                    s = "";
+                strOut += "    <option value='" + tItem.Key.ToString() + "' " + s + ">" + tItem.Value + "</option>";
+            }
+            strOut += "</select>";
+
+            return new RawString(strOut);
+        }
+
+        public IEncodedString TabSelectListOnTabId(SimplisityInfo info, String xpath, String attributes = "", Boolean allowEmpty = true, bool localized = false, int row = 0, string listname = "", bool showAllTabs = false)
+        {
+            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+
+            var tList = DNNrocketUtils.GetTreeTabListOnTabId(showAllTabs);
+            var strOut = "";
+
+            var upd = getUpdateAttr(xpath, "", localized);
+            var id = getIdFromXpath(xpath, row, listname);
+
+            strOut = "<select id='" + id + "' s-xpath='" + xpath + "' " + upd + " " + attributes + ">";
+            var s = "";
+            if (allowEmpty) strOut += "    <option value=''></option>";
+            foreach (var tItem in tList)
+            {
+                if (info.GetXmlProperty(xpath) == tItem.Key.ToString())
+                    s = "selected";
+                else
+                    s = "";
+                strOut += "    <option value='" + tItem.Key.ToString() + "' " + s + ">" + tItem.Value + "</option>";
+            }
+            strOut += "</select>";
+
+            return new RawString(strOut);
+        }
+
+        public IEncodedString GetTabUrlByGuid(String tabguid)
+        {
+            var strOut = "";
+
+            var t = (from kvp in TabController.GetTabsBySortOrder(PortalSettings.Current.PortalId) where kvp.UniqueId.ToString() == tabguid select kvp.TabID);
+            if (t.Any())
+            {
+                var tabid = t.First();
+                strOut = Globals.NavigateURL(tabid);
+            }
+
+            return new RawString(strOut);
+        }
+
+        public IEncodedString GetTabUrlByGuid(SimplisityInfo info, String xpath)
+        {
+            var strOut = "";
+            var t = (from kvp in TabController.GetTabsBySortOrder(PortalSettings.Current.PortalId) where kvp.UniqueId.ToString() == info.GetXmlProperty(xpath) select kvp.TabID);
+            if (t.Any())
+            {
+                var tabid = t.First();
+                strOut = Globals.NavigateURL(tabid);
+            }
+            return new RawString(strOut);
+        }
+
+        public IEncodedString LinkPageURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = "", string attributes = "")
+        {
+            string[] paramData = new string[0];
+
+            var tabid = info.GetXmlPropertyInt(xpath);
+            if (tabid == 0) return new RawString("");
+            var url = PagesUtils.NavigateURL(tabid, "", paramData);
+
+            return GetLinkURL(url, openInNewWindow, text, attributes);
+        }
+
+        public IEncodedString LinkURL(SimplisityInfo info, string xpath, bool openInNewWindow = true, string text = "", string attributes = "")
+        {
+            var url = info.GetXmlProperty(xpath);
+            return GetLinkURL(url, openInNewWindow, text, attributes);
+        }
+
+        private IEncodedString GetLinkURL(string url, bool openInNewWindow = true, string text = "", string attributes = "")
+        {
+            var strOut = "";
+            if (url != "")
+            {
+                if (!url.ToLower().StartsWith("http"))
+                {
+                    url = url.Replace("//", "");
+                    url = "http://" + url;
+                }
+                Uri uriResult;
+                bool result = Uri.TryCreate(url, UriKind.Absolute, out uriResult);
+                if (result)
+                {
+                    System.Uri uri = new Uri(url);
+                    string uriWithoutScheme = uri.Host + uri.PathAndQuery + uri.Fragment;
+                    if (openInNewWindow) attributes = attributes + " target='_blank'";
+                    if (text == "") text = uriWithoutScheme;
+                    strOut = "<a " + attributes + " href='//" + uriWithoutScheme + "'>" + text.TrimEnd('/') + "</a>";
+                }
+            }
+            return new RawString(strOut);
+        }
+
+        public IEncodedString DataSourceList(SimplisityInfo info, int systemkey, string xpath, string attributes = "", bool allowEmpty = true, bool localized = false)
+        {
+            var strOut = "";
+            if (info != null)
+            {
+                var objCtrl = new DNNrocketController();
+                var filter = "and r1.XMlData.value('(genxml/hidden/systemkey)[1]','nvarchar(max)') = '" + systemkey + "' ";
+                var dirlist = objCtrl.GetList(info.PortalId,-1, "MODULEPARAMS", filter);
+                var tList = new Dictionary<int,string>();
+                foreach (var sInfo in dirlist)
+                {
+                    var displayname = sInfo.GetXmlProperty("genxml/textbox/name") + ": ";
+                    displayname += sInfo.GetXmlProperty("genxml/hidden/apptheme");
+                    displayname += " [" + sInfo.GetXmlProperty("genxml/hidden/apptheme") + "]";
+                    if (!tList.ContainsKey(sInfo.ModuleId)) tList.Add(sInfo.ModuleId, displayname);
+                }
+
+
+                var upd = getUpdateAttr(xpath, attributes, localized);
+                var id = getIdFromXpath(xpath, 0, "");
+                strOut = "<select id='" + id + "' " + upd + " " + attributes + "  s-xpath='" + xpath + "' >";
+                var s = "";
+                if (allowEmpty) strOut += "    <option value=''></option>";
+                foreach (var tItem in tList)
+                {
+                    if (info.GetXmlPropertyInt(xpath) == tItem.Key)
+                        s = "selected";
+                    else
+                        s = "";
+                    strOut += "    <option value='" + tItem.Key + "' " + s + ">" + tItem.Value + "</option>";
+                }
+                strOut += "</select>";
+            }
+
+            return new RawString(strOut);
+        }
+
+        [Obsolete("Use RenderSideMenu(SimplisityRazor model, string resxFolder) instead")]
+        public IEncodedString RenderSideMenu(SimplisityRazor model, string projectfolder, string resxFileWithoutExt, bool backbutton = false, bool signoutbutton = true, bool appthemes = false)
+        {
+            model.SetSetting("projectfolder", projectfolder);
+            model.SetSetting("resxfile", resxFileWithoutExt);
+            return RenderTemplate("MenuOut.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model, "1.0", true);
+        }
+
+        public IEncodedString RenderSideMenu(SimplisityRazor model, string resxFolder = "App_LocalResources")
+        {
+            var sidemenu = (SideMenu)model.List.First();
+            var systemData = new SystemLimpet(sidemenu.SystemKey);
+
+
+            var menuOut = "";
+            // get action interfaces. (no group)
+            var lp = 1;
+            var interfacelist = sidemenu.GetInterfaces("");
+            if (interfacelist.Count > 0)
+            {
+                foreach (var i in interfacelist)
+                {
+                    if (i.GetXmlPropertyBool("genxml/checkbox/onmenu"))
+                    {
+                        var defaulttheme = i.GetXmlProperty("genxml/textbox/defaulttheme");
+                        var defaulttemplate = i.GetXmlProperty("genxml/textbox/defaulttemplate");
+                        var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
+                        var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
+                        var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
+                        var interfaceName = DNNrocketUtils.GetResourceString(systemData.SystemRelPath + "/" + resxFolder, "SideMenu." + interfacekey, "Text", DNNrocketUtils.GetCurrentCulture());
+                        if (interfaceName == "")
+                        {
+                            interfaceName = systemData.GetSetting(interfacekey + "MenuName");
+                            if (interfaceName == "")
+                            {
+                                interfaceName = interfacekey;
+                            }
+                        }
+                        menuOut += "<div class='w3-bar-item w3-button w3-padding menubaritem menubaritem" + lp + "  simplisity_click' s-before='sidebarloader" + lp + "' s-after='sidemenuchange' s-cmd='" + defaultcommand + "' s-fields='{\"menuindex\":\"" + lp + "\",\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='" + interfaceicon + "' style='width:20px;'></i>&nbsp;" + interfaceName + "</div>";
+                        menuOut += "<script type='text/javascript'>function sidebarloader" + lp + "() {simplisity_setCookieValue('" + @sidemenu.SystemKey + "-menuindex','" + lp + "');$('#sidebar_loader').show();}</script>";
+                    }
+                    lp += 1;
+                }
+            }
+
+
+            // get sub group interfaces
+            foreach (SimplisityRecord g in sidemenu.GetGroups())
+            {
+                var groupref = g.GetXmlProperty("genxml/textbox/groupref");
+                var groupicon = g.GetXmlProperty("genxml/textbox/groupicon");
+                interfacelist = sidemenu.GetInterfaces(groupref);
+                if (interfacelist.Count > 0)
+                {
+                    var groupName = DNNrocketUtils.GetResourceString(systemData.SystemRelPath + "/" + resxFolder, "SideMenu." + groupref, "Text", DNNrocketUtils.GetCurrentCulture());
+                    if (groupName == "") groupName = groupref;
+                    menuOut += "<div class='w3-bar-item w3-button w3-padding menuaccordian' actionid='" + groupref + "'><i class='w3-left " + groupicon + "' style='width:30px;'></i>" + groupName + "&nbsp;<i class='fas fa-caret-down'></i></div>";
+                    menuOut += "<div id='" + groupref + "' class='w3-hide'>";
+                    foreach (var i in interfacelist)
+                    {
+                        if (i.GetXmlPropertyBool("genxml/checkbox/onmenu"))
+                        {
+                            var defaulttheme = i.GetXmlProperty("genxml/textbox/defaulttheme");
+                            var defaulttemplate = i.GetXmlProperty("genxml/textbox/defaulttemplate");
+                            var defaultcommand = i.GetXmlProperty("genxml/textbox/defaultcommand");
+                            var interfacekey = i.GetXmlProperty("genxml/textbox/interfacekey");
+                            var interfaceicon = i.GetXmlProperty("genxml/textbox/interfaceicon");
+
+                            var interfaceName = DNNrocketUtils.GetResourceString(systemData.SystemRelPath + "/" + resxFolder, "SideMenu." + interfacekey, "Text", DNNrocketUtils.GetCurrentCulture());
+                            if (interfaceName == "")
+                            {
+                                interfaceName = systemData.GetSetting(interfacekey + "MenuName");
+                                if (interfaceName == "")
+                                {
+                                    interfaceName = interfacekey;
+                                }
+                            }
+                            menuOut += "<div class='w3-bar-item w3-button w3-padding menubaritem menubaritem" + lp + " simplisity_click ' s-before='sidebarloader" + lp + "' s-after='sidemenuchange'  s-cmd='" + defaultcommand + "' s-fields='{\"menuindex\":\"" + lp + "\",\"theme\":\"" + defaulttheme + "\",\"template\":\"" + defaulttemplate + "\",\"systemkey\":\"" + sidemenu.SystemKey + "\",\"interfacekey\":\"" + interfacekey + "\",\"track\":\"true\"}' ><i class='w3-center " + interfaceicon + "' style='width:40px;'></i>" + interfaceName + "</div>";
+                            menuOut += "<script type='text/javascript'>function sidebarloader" + lp + "() {simplisity_setCookieValue('" + @sidemenu.SystemKey + "-menuindex','" + lp + "');$('#sidebar_loader').show();}</script>";
+                            lp += 1;
+                        }
+                    }
+                    menuOut += "</div>";
+                }
+            }
+
+            menuOut += "<div class='w3-border-bottom w3-bar-item'>&nbsp;</div>";
+            menuOut += "<div class='menureturn' style='display:none;'></div>";
+
+            return new RawString(menuOut);
+        }
+
+        public IEncodedString GetTreeTabList(int portalId, List<int> selectedTabIdList, string treeviewId, string lang = "", string attributes = "", bool showAllTabs = false)
+        {
+            if (lang == "") lang = DNNrocketUtils.GetCurrentCulture();
+            var tabList = TabController.GetTabsBySortOrder(portalId, lang, true);
+            var rtnString = "";
+            var strOut = GetTreeTabList(rtnString, tabList, 0, 0, treeviewId, attributes, selectedTabIdList, showAllTabs);
+
+            // add JS to action hummingbirdtree
+            strOut += "";
+
+            return new RawString(strOut);
+        }
+
+        private static string GetTreeTabList(string rtnString, List<TabInfo> tabList, int level, int parentid, string id, string attributes, List<int> selectedTabIdList, bool showAllTabs)
+        {
+
+            if (level > 50) // stop infinate loop
+            {
+                return rtnString;
+            }
+
+            if (level == 0)
+                rtnString += "<ul id=" + id + " " + attributes + " >";
+            else
+                rtnString += "<ul>";
+
+            foreach (TabInfo tInfo in tabList)
+            {
+                var parenttestid = tInfo.ParentId;
+                if (parenttestid < 0) parenttestid = 0;
+                if (parentid == parenttestid)
+                {
+                    if (!tInfo.IsDeleted && (tInfo.TabPermissions.Count > 2 || showAllTabs))
+                    {
+                        var checkedvalue = "";
+                        if (selectedTabIdList.Contains(tInfo.TabID)) checkedvalue = "checked";
+
+                        rtnString += "<li>";
+                        if (tInfo.HasChildren)
+                        {
+                            rtnString += "<i class='fa fa-plus' style='width:30px;'></i>";
+                        }
+                        else
+                        {
+                            rtnString += "<i class='far fa-circle w3-text-white ' style='width:30px;'></i>";
+                        }
+                        rtnString += "&nbsp;<label>";
+                        rtnString += "<input id='tabid-" + id + "-" + tInfo.TabID + "' data-id='" + tInfo.TabID + "' s-xpath='genxml/treeview/" + id + "/tabid" + tInfo.TabID + "' s-update='save' " + checkedvalue + " type='checkbox'>";
+                        rtnString += tInfo.TabName;
+                        rtnString += "</label>";
+                        if (tInfo.HasChildren)
+                        {
+                            rtnString = GetTreeTabList(rtnString, tabList, level + 1, tInfo.TabID, id, attributes, selectedTabIdList, showAllTabs);
+                        }
+                        rtnString += "</li>";
+                    }
+                }
+            }
+            rtnString += "</ul>";
+            return rtnString;
+        }
+
+
     }
+
+
 }

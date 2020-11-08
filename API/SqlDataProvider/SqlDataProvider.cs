@@ -117,45 +117,57 @@ namespace DNNrocketAPI
 
         #region Public Methods
 
-        public override int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "")
+        public override int GetListCount(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string tableName = "DNNrocket")
         {
             var rtncount = 0;
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetListCount", portalId, moduleId, typeCode, sqlSearchFilter, lang, rtncount));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetListCount", portalId, moduleId, typeCode, sqlSearchFilter, lang, rtncount, tableName));
         }
 
-        public override IDataReader GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
+        public override IDataReader GetList(int portalId, int moduleId, string typeCode, string sqlSearchFilter = "", string lang = "", string sqlOrderBy = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0, string tableName = "DNNrocket")
         {
-            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetList", portalId, moduleId, typeCode, sqlSearchFilter, sqlOrderBy, returnLimit, pageNumber, pageSize, recordCount, lang);
+            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetList", portalId, moduleId, typeCode, sqlSearchFilter, sqlOrderBy, returnLimit, pageNumber, pageSize, recordCount, lang, tableName);
         }
 
-        public override IDataReader GetInfo(int itemId, string lang = "")
+        public override IDataReader GetInfo(int itemId, string lang = "", string tableName = "DNNrocket")
         {
-            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "Get", itemId, lang);
+            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "Get", itemId, lang, tableName);
         }
 
-        public override int Update(int ItemId, int PortalId, int ModuleId, String TypeCode, String XMLData, String GUIDKey, DateTime ModifiedDate, String TextData, int XrefItemId, int ParentItemId, int UserId, string Lang)
+        public override int Update(int ItemId, int PortalId, int ModuleId, string TypeCode, string XMLData, string GUIDKey, DateTime ModifiedDate, string TextData, int XrefItemId, int ParentItemId, int UserId, string Lang, int sortOrder, string tableName = "DNNrocket")
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "Update", ItemId, PortalId, ModuleId, TypeCode, XMLData, GUIDKey, ModifiedDate, TextData, XrefItemId, ParentItemId, UserId, Lang));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "Update", ItemId, PortalId, ModuleId, TypeCode, XMLData, GUIDKey, ModifiedDate, TextData, XrefItemId, ParentItemId, UserId, Lang, sortOrder, tableName));
         }
 
-        public override void Delete(int ItemID)
+        public override void Delete(int ItemID, string tableName = "DNNrocket")
         {
-            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "Delete", ItemID);
+            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "Delete", ItemID, tableName);
         }
 
-        public override void CleanData()
+        public override void CleanData(string tableName = "DNNrocket")
         {
-            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "CleanData");
+            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "CleanData", tableName);
+        }
+        public override void DeleteAllData(string tableName)
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "DeleteAllData", tableName);
         }
 
-        public override IDataReader GetRecord(int itemId)
+        public override IDataReader GetRecord(int itemId, string tableName = "DNNrocket")
         {
-            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetRecord", itemId);
+            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetRecord", itemId, tableName);
         }
 
-        public override IDataReader GetRecordLang(int parentitemId, String lang)
+        public override IDataReader GetRecordLang(int parentitemId, string lang, string tableName = "DNNrocket")
         {
-            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetRecordLang", parentitemId, lang);
+            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetRecordLang", parentitemId, lang, tableName);
+        }
+        public override IDataReader GetUsersCMS(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0)
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetDNNUsers", portalId, sqlSearchFilter, returnLimit, pageNumber, pageSize, recordCount);
+        }
+        public override int GetUsersCountCMS(int portalId, string sqlSearchFilter = "")
+        {
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetDNNUsersCount", portalId, sqlSearchFilter));
         }
 
         #endregion
@@ -163,6 +175,6 @@ namespace DNNrocketAPI
 
 
 
-	}
+    }
 
 }

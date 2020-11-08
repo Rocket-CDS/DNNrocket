@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath></OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Themes\config-w3\1.0\img\**" />
+    <EmbeddedResource Remove="Themes\config-w3\1.0\img\**" />
+    <None Remove="Themes\config-w3\1.0\img\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RazorEngine">
+      <HintPath>..\..\..\bin\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="RocketAppThemes">
+      <HintPath>..\..\..\bin\RocketAppThemes.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplisity">
+      <HintPath>..\..\..\bin\Simplisity.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Installation\" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(ProjectDir)..\..\..\bin\$(TargetFileName)&quot;&#xD;&#xA;&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(AssemblyName).pdb&quot; &quot;$(ProjectDir)..\..\..\bin\$(AssemblyName).pdb&quot;&#xD;&#xA;&#xD;&#xA;" />
+  </Target>
+
+</Project>

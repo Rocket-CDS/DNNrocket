@@ -1,0 +1,63 @@
+﻿@inherits Rocket.Tools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using RazorEngine.Text;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+
+@{
+    var info = (SimplisityInfo)Model.List.First();
+}
+
+    <div class="w3-row">
+
+        <div class="w3-row w3-center w3-padding">
+            <div class="w3-button w3-col m12 w3-green w3-small applyeditbutton simplisity_confirmclick" s-confirm="@ResourceKey("RocketTools.applyroles","","Confirm")" s-cmd="rocketroles_applyroles" s-fields='' s-post="#updatesection"><i class="fas fa-save"></i>&nbsp;@ResourceKey("RocketTools.applyroles")</div>
+        </div>
+
+        <div id="rolelistdata" class="hummingbird-treeview well h-scroll-large">
+
+            <ul class="hummingbird-base">
+
+                @{
+                    foreach (var m in info.GetRecordList("rolelist"))
+                    {
+                        if (m.GetXmlProperty("genxml/rolename") != "Administrators")
+                        {
+                            var checkedvalue = "";
+                            if (m.GetXmlProperty("genxml/rolename") == "Administrators" || m.GetXmlProperty("genxml/rolename") == "Manager")
+                            {
+                                checkedvalue = "checked";
+                            }
+
+                        <li>
+                            <label>
+                                <input id='moduleid@(m.GetXmlProperty("genxml/roleid"))' @checkedvalue class="rolecheckbox" moduleid='@m.GetXmlProperty("genxml/roleid")' s-xpath="genxml/rolecheckbox/roleid@(m.GetXmlProperty("genxml/roleid"))" s-update="save" type="checkbox">
+                                @m.GetXmlProperty("genxml/rolename")
+                            </label>
+                        </li>
+                            }
+                        }
+                    }
+            </ul>
+        </div>
+
+    </div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('.nextbuttonmodule').hide();
+
+    });
+
+
+
+</script>
+

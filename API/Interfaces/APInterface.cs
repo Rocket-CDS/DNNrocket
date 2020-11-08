@@ -8,9 +8,6 @@ namespace DNNrocketAPI
 
     public abstract class APInterface
 	{
-
-        public static string ControlRelPath;
-
         #region "Shared/Static Methods"
 
         // constructor
@@ -19,16 +16,15 @@ namespace DNNrocketAPI
 		}
 
 		// return the provider
-        public static APInterface Instance(string assembly, string namespaceclass, string controlRelPath = "")
+        public static APInterface Instance(string assembly, string namespaceclass)
 		{
-            ControlRelPath = controlRelPath;
             var handle = Activator.CreateInstance(assembly, namespaceclass);
             return (APInterface)handle.Unwrap();
 		}
 
         #endregion
 
-        public abstract string ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo,string userHostAddress, string editlang = "");
+        public abstract Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "");
 
     }
 

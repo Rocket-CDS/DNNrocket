@@ -2,8 +2,8 @@
 @using DNNrocketAPI;
 @using Simplisity;
 
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/TestForm/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/TestForm/App_LocalResources/")
 
 @{
     var info = (SimplisityInfo)Model.List.First();
@@ -12,12 +12,12 @@
 <h1>@ResourceKey("testform.testformlist") Images</h1>
 
 <span class="w3-section">
-    <button class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')" >@ResourceKey("DNNrocket.cmdUploadButton")</button>
-    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="testlist2bin" s-return="#sortlist2" s-removelist=".testlist2" style="display: none;">@ResourceKey("DNNrocket.cmdUndoButton")</a>
+    <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#imagefileupload').trigger('click')" >@ButtonText(ButtonTypes.upload)</span>
+    <a class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="testlist2bin" s-return="#sortlist2" s-removelist=".testlist2" style="display: none;">@ButtonText(ButtonTypes.undo)</a>
 </span>
 
 <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
-    <input id="imagefileupload" class="simplisity_fileupload" s-cmd="testform_addimage" s-cmdurl="/desktopmodules/dnnrocket/api/api.ashx" s-return="#TestFormImages" s-fields="theme:config-w3,template:TestFormImages.cshtml,interfacekey:testform,listname:testlist2" type="file" name="files[]" multiple style="display:none;">
+    <input id="imagefileupload" class="simplisity_fileupload" s-cmd="testform_addimage" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-return="#TestFormImages" s-fields="theme:config-w3,template:TestFormImages.cshtml,interfacekey:testform,listname:testlist2" type="file" name="files[]" multiple style="display:none;">
     <p><i>@ResourceKey("DNNrocket.dropimage")...</i></p>
 </div>
 
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                     <div class="w3-col" style="100px">
-                        <a href="javascript:void(0)" class="simplisity_removelistitem w3-display-right " s-removelist=".testlist2" s-recylebin="testlist2bin"><i title="Remove" class="fa fa-minus-square fa-fw fa-lg"></i></a>
+                        <a href="javascript:void(0)" class="simplisity_removelistitem w3-display-right " s-removelist=".testlist2" s-recylebin="testlist2bin"><i title="Remove" class="fas fa-minus-square fa-fw fa-lg"></i></a>
                     </div>
                 </div>
 </li>

@@ -1,15 +1,16 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
 @using Simplisity;
 
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/testlist/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/testlist/App_LocalResources/")
 
 @{
-    var headerData = Model.HeaderData;
-    var rowcount = headerData.GetXmlPropertyInt("genxml/hidden/rowcount");
-    var page = headerData.GetXmlPropertyInt("genxml/hidden/page");
-    var pagesize = headerData.GetXmlPropertyInt("genxml/hidden/pagesize");
+    var SessionParams = Model.SessionParamData;
+    var rowcount = SessionParams.GetXmlPropertyInt("genxml/hidden/rowcount");
+    var page = SessionParams.GetXmlPropertyInt("genxml/hidden/page");
+    var pagesize = SessionParams.GetXmlPropertyInt("genxml/hidden/pagesize");
     var lastpage = System.Convert.ToInt32(rowcount / pagesize);
 }
 
@@ -18,11 +19,11 @@
 <div class="w3-container">
 
     <span class="w3-section simplisity_buttons" id="buttonsrequired" style="display:none;">
-        <i style="display:none;" class="fa fa-refresh simplisity_langchange simplisity_click" s-cmd="testlist_getlist" s-fields="theme:config-w3,template:TestList.cshtml,interfacekey:testlist"></i>
-        <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_add" s-fields="theme:config-w3,template:TestListForm.cshtml,interfacekey:testlist">@ResourceKey("DNNrocket.cmdAddButton")</button>
+        <i style="display:none;" class="fas fa-refresh simplisity_langchange simplisity_click" s-cmd="testlist_getlist" s-fields="theme:config-w3,template:TestList.cshtml,interfacekey:testlist"></i>
+        <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_add" s-fields="theme:config-w3,template:TestListForm.cshtml,interfacekey:testlist">@ButtonText(ButtonTypes.add)</span>
         @if (Model.List.Count() > 10)
         {
-            <button class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="Delete test rows?" s-cmd="testlist_deleterows" s-fields="selecteditemid:,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">Delete Test Rows</button>
+            <span class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="Delete test rows?" s-cmd="testlist_deleterows" s-fields="selecteditemid:,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">Delete Test Rows</span>
         }
     </span>
 
@@ -36,13 +37,13 @@
 
             <div class="w3-row w3-padding">
                 <div class="w3-col m2 w3-padding">
-                    @TextBox(headerData, "genxml/textbox/searchtext", "class='w3-input w3-border simplisity_searchfield'")
+                    @TextBox(SessionParams, "genxml/textbox/searchtext", "class='w3-input w3-border simplisity_searchfield'")
                 </div>
                 <div class="w3-col m8 w3-padding">
-                    <button class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_search" s-post=".searchdata" s-fields="theme:config-w3,template:TestList.cshtml,interfacekey:testlist">@ResourceKey("DNNrocket.cmdSearchButton")</button>
+                    <span class="w3-button w3-green w3-padding-8 simplisity_click" s-cmd="testlist_search" s-post=".searchdata" s-fields="theme:config-w3,template:TestList.cshtml,interfacekey:testlist">@ButtonText(ButtonTypes.search)</span>
                 </div>
                 <div class="w3-col m2 w3-padding w3-right-align" style="width: 100px">
-                    @DropDownList(headerData, "genxml/hidden/pagesize", "5,10,20,50,100", "5,10,20,50,100", "class='w3-input w3-border simplisity_pagesize ' title='Page Size'", "20")
+                    @DropDownList(SessionParams, "genxml/hidden/pagesize", "5,10,20,50,100", "5,10,20,50,100", "class='w3-input w3-border simplisity_pagesize ' title='Page Size'", "20")
                 </div>
             </div>
 
@@ -74,7 +75,7 @@
                             <td class="text-nowrap">@nbi.GetXmlProperty("genxml/textbox/txtinput")</td>
                             <td class="text-nowrap">@nbi.GetXmlProperty("genxml/lang/genxml/textbox/txtinputl")</td>
                             <td>
-                                <a class="simplisity_click" s-track="true" s-cmd="testlist_getdetail" s-fields="selecteditemid:@nbi.ItemID,theme:config-w3,template:TestListForm.cshtml,interfacekey:testlist" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.cmdEditIcon")</a>
+                                <a class="simplisity_click"  s-cmd="testlist_getdetail" s-fields="selecteditemid:@nbi.ItemID,theme:config-w3,template:TestListForm.cshtml,interfacekey:testlist" s-return="#simplisity_startpanel" href="javascript:void(0)">@ResourceKey("DNNrocket.edit", "", "Icon")</a>
                             </td><!-- editlink class added to show processing -->
                         </tr>
                     }

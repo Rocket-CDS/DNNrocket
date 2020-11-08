@@ -126,6 +126,9 @@
   <data name="selectcountry.Text" xml:space="preserve">
     <value>Select Valid Countries</value>
   </data>
+  <data name="selectculturecode.Text" xml:space="preserve">
+    <value>Select Culture Code</value>
+  </data>
   <data name="selectedcountries.Text" xml:space="preserve">
     <value>Selected Countries (Drag to sort)</value>
   </data>

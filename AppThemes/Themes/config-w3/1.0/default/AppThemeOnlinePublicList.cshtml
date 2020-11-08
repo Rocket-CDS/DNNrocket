@@ -1,0 +1,133 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using Rocket.AppThemes.Componants;
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+
+@{
+    var appThemeDataList = (AppThemeDataPublicList)Model.List.First();
+    var systemGlobalData = new SystemGlobalData();
+}
+
+
+<div class=''>
+
+
+    @if (appThemeDataList.SelectedSystemKey == "")
+    {
+
+        <div class="w3-modal-content w3-border w3-card">
+
+            <header class="w3-container w3-theme">
+                <h2>@ResourceKey("Appthemes.selectsystem")</h2>
+            </header>
+
+            <div class="w3-row-padding w3-margin">
+                <ul class="w3-ul w3-border w3-hoverable w-margin">
+
+                    @foreach (SystemLimpet systemData in appThemeDataList.SystemFolderList)
+                    {
+                        <li class="simplisity_click" s-cmd="rocketapptheme_getpubliclist" s-fields='{"changesystemkey":"true","selectedsystemkey":"@systemData.SystemKey"}' onclick="document.getElementById('systemselect').style.display='none'">
+                            <b>@systemData.SystemName</b>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+
+            <footer class="w3-container w3-theme"></footer>
+
+        </div>
+
+    }
+    else
+    {
+        var systemData2 = new SystemLimpet(appThemeDataList.SelectedSystemKey);
+
+
+<div class="w3-row w3-padding">
+    <div class="w3-col m3 rocket-buttonbar w3-button w3-khaki simplisity_click"  s-cmd="rocketapptheme_getprivatelist" s-fields='{"clearselectedsystemkey":"true"}'  >@ButtonText(ButtonTypes.back)</div>    
+    <div class="w3-col m3 rocket-buttonbar w3-button w3-blue simplisity_click" s-cmd="rocketapptheme_refreshpubliclist" s-field='{"systemkey":"dnnrocketapptheme"}' ><i class="fas fa-sync fa-lg "></i>&nbsp;@ResourceKey("DNNrocket.refresh")</div>    
+    <div class="w3-col m3 rocket-buttonbar w3-button w3-green simplisity_click"  s-cmd="rocketapptheme_downloadallpublic" s-field='{"systemkey":"dnnrocketapptheme"}' ><i class="fas fa-download fa-lg "></i>&nbsp;@ResourceKey("Appthemes.downloadall")</div>
+</div>
+
+
+        <div class="w3-row">
+            <div class="w3-half">
+                <h2>@ResourceKey("AppThemes.onlinepubliclist") - @appThemeDataList.SelectedSystemKey</h2>
+            </div>
+        </div>
+        <div class="w3-row w3-card searchdata w3-margin-top">
+
+            <div class="">
+                <div class="w3-row w3-padding">
+                    <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
+                </div>
+            </div>
+
+        </div>
+
+        Model.SetDataObject("appThemeDataList.List", appThemeDataList.List);
+        Model.SetSetting("listerror", appThemeDataList.Error.ToString());
+        Model.SetSetting("listerrormsg", appThemeDataList.ErrorMsg);
+        Model.SetSetting("s-cmd-download", "rocketapptheme_downloadpublic");
+        Model.SetSetting("logorelfolder", "/DesktopModules/RocketThemes/" + appThemeDataList.SelectedSystemKey + "_publicindex/img");
+
+        @RenderTemplate("AppThemeOnlineListBody.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", Model, "1.0", true)
+
+
+        <script>
+            $(document).ready(function () {
+                $("#datalist").disableSelection();
+
+                $('.ftpdetailsreturn').unbind('change');
+                $('.ftpdetailsreturn').change(function () {
+                    location.reload();
+                });
+
+            });
+
+            function closeimportmodal() {
+                $('#importapptheme').hide();
+            }
+
+            function searchFunction() {
+                var input, filter, ul, li, a, i;
+                input = document.getElementById("searchtext");
+                filter = input.value.toUpperCase();
+                ul = document.getElementById("datalist2");
+                li = $('.searchdiv');
+                for (i = 0; i < li.length; i++) {
+                    txtValue = li[i].textContent || li[i].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+
+            function redisplaylist() {
+                if ($('.createnewappthemereturn').text() == '') {
+                    simplisity_callserver($('.refreshlist'));
+                }
+                else {
+                    $('.createnewappthemereturn').show();
+                }
+            }
+
+            function ftpdetail() {
+                $('#ftpdetails').show();
+            }
+
+        </script>
+
+    }
+
+</div>
+

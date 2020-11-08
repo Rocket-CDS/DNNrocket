@@ -1,0 +1,576 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="accountemail.Text" xml:space="preserve">
+    <value>Compte Email</value>
+  </data>
+  <data name="accountkey.Text" xml:space="preserve">
+    <value>Cl&#233; du Compte</value>
+  </data>
+  <data name="accountpassword.Text" xml:space="preserve">
+    <value>Compte Mot de Passe</value>
+  </data>
+  <data name="active.Text" xml:space="preserve">
+    <value>Actif</value>
+  </data>
+  <data name="Active.Text" xml:space="preserve">
+    <value>Actif</value>
+  </data>
+  <data name="add.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;Ajouter&quot; class=&quot;fa fas fa-plus-circle fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="add.Text" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="admin.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;Admin&quot; class=&quot;fa fas fa-list fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="admin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="adminurl.Text" xml:space="preserve">
+    <value>Admin URL</value>
+  </data>
+  <data name="allowempty.Text" xml:space="preserve">
+    <value>Autoriser vide</value>
+  </data>
+  <data name="apiurl.Text" xml:space="preserve">
+    <value>API url</value>
+  </data>
+  <data name="appthemeadmin.Text" xml:space="preserve">
+    <value>AppTheme Administration</value>
+  </data>
+  <data name="attributes.Text" xml:space="preserve">
+    <value>Attributs</value>
+  </data>
+  <data name="back.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;Retour&quot; class=&quot;fa fas  fa-caret-left fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="back.Text" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="backup.Text" xml:space="preserve">
+    <value>BackUp</value>
+  </data>
+  <data name="backupdata.Text" xml:space="preserve">
+    <value>Donn&#233;e BackUp</value>
+  </data>
+  <data name="backuptemplates.Help" xml:space="preserve">
+    <value>Un backup du module est g&#233;n&#233;r&#233; &#224; chaque sauvegarde. Vous pouvez supprim&#233; et restaur&#233; des backups existant.</value>
+  </data>
+  <data name="backuptemplates.Text" xml:space="preserve">
+    <value>Template BackUp</value>
+  </data>
+  <data name="cancel.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;Annuler&quot; class=&quot;fa fas fa-undo-alt fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cancel.Text" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="cancelsearch.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;Recherche annul&#233;e&quot; class=&quot;fa fas fa-times fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="cancelsearch.Text" xml:space="preserve">
+    <value>Annuler la recherche</value>
+  </data>
+  <data name="certificate.Text" xml:space="preserve">
+    <value>Certificat</value>
+  </data>
+  <data name="certificatekey.Text" xml:space="preserve">
+    <value>Cl&#233; Certificat</value>
+  </data>
+  <data name="checkall.Text" xml:space="preserve">
+    <value>V&#233;rifier tout</value>
+  </data>
+  <data name="checkkey.Text" xml:space="preserve">
+    <value>Verification de la Cl&#233;</value>
+  </data>
+  <data name="clearallcache.Text" xml:space="preserve">
+    <value>Effacer tout le cache</value>
+  </data>
+  <data name="clearmodcache.Text" xml:space="preserve">
+    <value>Effacer le cache du Module</value>
+  </data>
+  <data name="clone.Text" xml:space="preserve">
+    <value>Cloner</value>
+  </data>
+  <data name="close.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;Fermer&quot; class=&quot;far fa-window-close fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="close.Text" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="column.Text" xml:space="preserve">
+    <value>Colonne</value>
+  </data>
+  <data name="config.Text" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="create.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;Cr&#233;er&quot; class=&quot;fa fas fa-bolt fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="create.Text" xml:space="preserve">
+    <value>Cr&#233;er</value>
+  </data>
+  <data name="date.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="debugmode.Text" xml:space="preserve">
+    <value>Debug Mode</value>
+  </data>
+  <data name="default.Text" xml:space="preserve">
+    <value>D&#233;faut</value>
+  </data>
+  <data name="defaultvalue.Text" xml:space="preserve">
+    <value>Valeur par D&#233;faut</value>
+  </data>
+  <data name="delete.confirm" xml:space="preserve">
+    <value>Supprimer ?</value>
+  </data>
+  <data name="delete.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;Supprimer&quot; class=&quot;fa fas fa-minus-square fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="delete.Text" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="deletethemeerror.Text" xml:space="preserve">
+    <value>Une erreur s&#39;est produite avec le syst&#232;me fichier. Ceci peut &#234;tre caus&#233; par des fichiers verouill&#233;s. Red&#233;marrer AppPool and Essayer &#224; nouveau.</value>
+  </data>
+  <data name="disactive.Text" xml:space="preserve">
+    <value>D&#233;sactiv&#233;</value>
+  </data>
+  <data name="dnnrocketaccount.Help" xml:space="preserve">
+    <value>Un compte at &lt;a href=&#39;https://www.dnnrocket.com&#39; target=&#39;_blank&#39;&gt;www.dnnrocket.com&lt;/a&gt; est gratuit et permet de suivre, maintenir, transf&#233;rer et valider les licences. It also entiles you to have multi-license discount, promotions, direct email and ticket support, which is included with the professional licenses.  If you require a more dedicated support: subscription, consultation and development options are available.   </value>
+  </data>
+  <data name="dnnrocketaccount.Text" xml:space="preserve">
+    <value>Compte DNNrocket</value>
+  </data>
+  <data name="docs.Text" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="documents.Text" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="documentsfolder.Text" xml:space="preserve">
+    <value>Documents Dossier</value>
+  </data>
+  <data name="domainurl.Text" xml:space="preserve">
+    <value>URL domaine</value>
+  </data>
+  <data name="download.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;T&#233;l&#233;charger&quot; class=&quot;fa fas fa-download fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="download.Text" xml:space="preserve">
+    <value>T&#233;l&#233;charger</value>
+  </data>
+  <data name="downloadallappthemes.Text" xml:space="preserve">
+    <value>T&#233;l&#233;charger tous Public AppThemes</value>
+  </data>
+  <data name="dropdocument.Text" xml:space="preserve">
+    <value>D&#233;posez vos documents ici</value>
+  </data>
+  <data name="dropfile.Text" xml:space="preserve">
+    <value>D&#233;posez vos fichiers ici</value>
+  </data>
+  <data name="drophere.Text" xml:space="preserve">
+    <value>D&#233;posez ici</value>
+  </data>
+  <data name="dropimage.Text" xml:space="preserve">
+    <value>D&#233;posez ici</value>
+  </data>
+  <data name="edit.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;Editer&quot; class=&quot;fa fas fa-edit fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="edit.Text" xml:space="preserve">
+    <value>Editer</value>
+  </data>
+  <data name="email.Text" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="enabled.Text" xml:space="preserve">
+    <value>Activ&#233;</value>
+  </data>
+  <data name="entercertificatekey.Text" xml:space="preserve">
+    <value>Entrer Certificat Cl&#233; Licence</value>
+  </data>
+  <data name="expiredate.Text" xml:space="preserve">
+    <value>Date d&#39;expiration</value>
+  </data>
+  <data name="export.Icon" xml:space="preserve">
+    <value>&lt;i class=&quot;fa fas fa-file-export fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="export.Text" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="getlicense.Help" xml:space="preserve">
+    <value>You are currently running a FREE trial or community version of this product.  Purchasing a professional license entitles you to direct email and ticket support.  It will also unlock professional features.  If you require a more dedicated support: subscription, consultation and development options are available.</value>
+  </data>
+  <data name="getlicense.Text" xml:space="preserve">
+    <value>Obtenir une Licence Professionelle</value>
+  </data>
+  <data name="height.Text" xml:space="preserve">
+    <value>Hauteur</value>
+  </data>
+  <data name="hide.Text" xml:space="preserve">
+    <value>Cacher</value>
+  </data>
+  <data name="history.Text" xml:space="preserve">
+    <value>Historique</value>
+  </data>
+  <data name="image.Text" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="images.Text" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="imagesfolder.Text" xml:space="preserve">
+    <value>Images Dossier</value>
+  </data>
+  <data name="import.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="install.Text" xml:space="preserve">
+    <value>Installer</value>
+  </data>
+  <data name="installed.Text" xml:space="preserve">
+    <value>Install&#233;</value>
+  </data>
+  <data name="invalid.Text" xml:space="preserve">
+    <value>Invalide</value>
+  </data>
+  <data name="key.Text" xml:space="preserve">
+    <value>Cl&#233;</value>
+  </data>
+  <data name="label.Text" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="lastupdated.Text" xml:space="preserve">
+    <value>Derni&#232;re modification</value>
+  </data>
+  <data name="license.Text" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="licenseredirect.Help" xml:space="preserve">
+    <value> Vous serez rediriger vers DNNrocket license website, o&#249; vous pourrez choisir votre mode de paiement pour la licence de ce site. </value>
+  </data>
+  <data name="links.Text" xml:space="preserve">
+    <value>Liensns</value>
+  </data>
+  <data name="localized.Text" xml:space="preserve">
+    <value>Localis&#233;</value>
+  </data>
+  <data name="modules.Text" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="more.Text" xml:space="preserve">
+    <value>Plus</value>
+  </data>
+  <data name="next.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;Suivant&quot; class=&quot;fa fas  fa-arrow-alt-circle-right fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="next.Text" xml:space="preserve">
+    <value>Suivant</value>
+  </data>
+  <data name="nolocalappthemes.Text" xml:space="preserve">
+    <value>Vous n&#39;avez pas assez de local AppThemes install&#233;. Vous pouvez installer et cr&#233;er AppThemes depuis l&#39;Appthemes administration ou t&#233;l&#233;charger directement AppThemes public et gratuit. </value>
+  </data>
+  <data name="nosettings.Text" xml:space="preserve">
+    <value>Pas de param&#232;tres</value>
+  </data>
+  <data name="off.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="ok.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;OK&quot; class=&quot;fa fas fa-check-circle fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ok.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="on.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="page.Text" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="pages.Text" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="pagesize.Text" xml:space="preserve">
+    <value>Taille Page</value>
+  </data>
+  <data name="pagingtext.Text" xml:space="preserve">
+    <value>5,10,20,50,100,Tout</value>
+  </data>
+  <data name="pagingvalues.Text" xml:space="preserve">
+    <value>5,10,20,50,100,0</value>
+  </data>
+  <data name="previous.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;Pr&#233;c&#233;dent&quot; class=&quot;fa fas  fa-caret-left fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="previous.Text" xml:space="preserve">
+    <value>Pr&#233;c&#233;dent</value>
+  </data>
+  <data name="print.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;Imprimer&quot; class=&quot;fa fas fa-print fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="print.Text" xml:space="preserve">
+    <value>Imprimer</value>
+  </data>
+  <data name="prolicense.Text" xml:space="preserve">
+    <value>License Professionelle</value>
+  </data>
+  <data name="refresh.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;Actualiser&quot; class=&quot;fa fas fa-sync-alt fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="refresh.Text" xml:space="preserve">
+    <value>Rafraichir</value>
+  </data>
+  <data name="register.Text" xml:space="preserve">
+    <value>S&#39;enregistrer</value>
+  </data>
+  <data name="remove.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;Retirer&quot; class=&quot;fa fas fa-minus-square fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="remove.Text" xml:space="preserve">
+    <value>Retirer</value>
+  </data>
+  <data name="removemoduletemplate.Text" xml:space="preserve">
+    <value>Remove Module Level Template</value>
+  </data>
+  <data name="reset.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;R&#233;initialiser&quot; class=&quot;fa fas fa-sync-alt fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="reset.Text" xml:space="preserve">
+    <value>R&#233;initialiser</value>
+  </data>
+  <data name="resizeonupload.Text" xml:space="preserve">
+    <value>Redimensionner au chargement</value>
+  </data>
+  <data name="restore.Text" xml:space="preserve">
+    <value>Restaurer</value>
+  </data>
+  <data name="return.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;Retour&quot; class=&quot;fa fas fa-reply fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="return.Text" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="rocketadmin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="rocketadmintab.Text" xml:space="preserve">
+    <value>Admin Fen&#234;tre</value>
+  </data>
+  <data name="roles.Text" xml:space="preserve">
+    <value>R&#244;les</value>
+  </data>
+  <data name="save.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;Sauvegarder&quot; class=&quot;fa fas fa-save fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="save.Text" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="search.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;Rechercher&quot; class=&quot;fa fas fa-search fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="search.Text" xml:space="preserve">
+    <value>Rechercher</value>
+  </data>
+  <data name="select.Text" xml:space="preserve">
+    <value>S&#233;lectionner</value>
+  </data>
+  <data name="send.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;Envoyer&quot; class=&quot;far  fa-paper-plane fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="send.Text" xml:space="preserve">
+    <value>Envoyer</value>
+  </data>
+  <data name="serverdetails.Text" xml:space="preserve">
+    <value>Serveur Details</value>
+  </data>
+  <data name="settings.Text" xml:space="preserve">
+    <value>Param&#232;tres</value>
+  </data>
+  <data name="setup.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;Configuration&quot; class=&quot;fa fas fa-plug fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="setup.Text" xml:space="preserve">
+    <value>Param&#232;trage</value>
+  </data>
+  <data name="signout.Text" xml:space="preserve">
+    <value>Se d&#233;connecter</value>
+  </data>
+  <data name="sitekey.Text" xml:space="preserve">
+    <value>SiteKey</value>
+  </data>
+  <data name="size.Text" xml:space="preserve">
+    <value>Taille</value>
+  </data>
+  <data name="sortorder.Text" xml:space="preserve">
+    <value>Ordre de Tri</value>
+  </data>
+  <data name="system.Text" xml:space="preserve">
+    <value>Syst&#232;me</value>
+  </data>
+  <data name="systemkey.Text" xml:space="preserve">
+    <value>System Key</value>
+  </data>
+  <data name="type.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="uncheckall.Text" xml:space="preserve">
+    <value>D&#233;sactiver Tout</value>
+  </data>
+  <data name="undo.Icon" xml:space="preserve">
+    <value>&lt;i title=&quot;Annuler&quot; class=&quot;fa fas fa-undo fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="undo.Text" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="uninstall.Text" xml:space="preserve">
+    <value>D&#233;sinstaller</value>
+  </data>
+  <data name="update.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;Mise &#224; jour&quot; class=&quot;fa fas fa-save fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="update.Text" xml:space="preserve">
+    <value>Mise &#224; jour</value>
+  </data>
+  <data name="upload.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;Charger&quot; class=&quot;fa fas fa-upload fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="upload.Text" xml:space="preserve">
+    <value>Charger</value>
+  </data>
+  <data name="use.Icon" xml:space="preserve">
+    <value>&lt;i  title=&quot;Utiliser&quot; class=&quot;fa fas fa-check fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="use.Text" xml:space="preserve">
+    <value>Utiliser</value>
+  </data>
+  <data name="validate.Text" xml:space="preserve">
+    <value>Valider</value>
+  </data>
+  <data name="value.Text" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="width.Text" xml:space="preserve">
+    <value>Largeur</value>
+  </data>
+</root>

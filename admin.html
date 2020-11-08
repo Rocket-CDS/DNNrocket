@@ -1,14 +1,15 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>OpenStore Admin Panel</title>
+    <title>Admin Panel</title>
 
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <link rel="stylesheet" href="/DesktopModules/DNNrocket/api/Themes/config-w3/css/littleboyblue-theme.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/api/Themes/config-w3/1.0/css/littleboyblue-theme.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/dnnrocket.css">
 
     <!-- CDN -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -17,29 +18,28 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     -->
-
     <!-- LOCAL -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
-    <link rel="stylesheet" href="/DesktopModules/DNNrocket/fa/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/fa/css/all.min.css">
     <script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
     <script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
 
-    <script type="text/javascript" src="/DesktopModules/Simplisity/Simplisity/js/simplisity.js"></script>
-    <script type="text/javascript" src="/DesktopModules/Simplisity/Simplisity/js/jquery.fileupload.js"></script>
+    <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+    <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/jquery.fileupload.js"></script>
 
 </head>
 <body class="w3-light-grey">
 
 
     <!-- Top container -->
-    <div class="w3-bar w3-top w3-theme-d3 w3-large w3-padding-small " id="menubar" style="z-index:2;height:55px">
+    <div class="rocket-buttonbar w3-top w3-theme-d3 w3-large w3-padding-small " id="menubar" style="z-index:2;height:55px">
         <div class="w3-container">
             <div class="w3-threequarter">
-                <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i></button>
+                <span class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fas fa-bars"></i></span>
                 <span id="menubuttons" class="w3-margin-left simplisity_buttonpanel"></span>
             </div>
             <div class="w3-quarter w3-right-align">
@@ -51,7 +51,7 @@
 
     <!-- Side Navigation -->
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-theme-d5 w3-animate-left w3-card" style="z-index:3;width:260px;top: 55px" id="mySidebar">
-        <img src="/DesktopModules/DNNrocket/img_avatar4.png" alt="Avatar" style="width:20%" class="w3-circle w3-margin">
+        <img src="/DesktopModules/DNNrocket/api/images/dnnrocket.jpg" alt="Avatar" style="width:20%" class="w3-circle w3-margin">
         <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="getsidemenu" s-fields="theme:config-w3,template:SideMenu.cshtml"></div>
     </nav>
 
@@ -59,7 +59,7 @@
         <!-- !PAGE CONTENT! -->
     <div class="w3-main" style="margin-left:300px;margin-top:60px; " id="base-panel">
 
-        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="testform_get" s-track="true" s-fields="theme:config-w3,template:TestForm.cshtml,interfacekey:testform"></div>
+        <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="testform_get"  s-fields="theme:config-w3,template:TestForm.cshtml,interfacekey:testform"></div>
 
         <!-- End page content -->
     </div>
@@ -67,7 +67,7 @@
         <script>
             $(document).ready(function () {
 
-                $(document).simplisityStartUp('/DesktopModules/DNNrocket/api/api.ashx', { systemprovider: 'dnnrocket'});
+                $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'dnnrocket'});
 
             });
 

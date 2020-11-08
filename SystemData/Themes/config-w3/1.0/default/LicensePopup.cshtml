@@ -1,0 +1,72 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using RocketLicense.Componants;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketLicense/App_LocalResources/")
+
+@{
+    var clientLicense = (LicenseData)Model.List.First();
+    var info = new SimplisityInfo(clientLicense.Record);
+    var systemData = new SystemLimpet("rocketlicense");
+}
+
+<div id="updatelicensemodel" class="w3-modal">
+    <div class="w3-modal-content w3-card w3-animate-zoom" style="width:80%;">
+
+
+        <header class="w3-container  w3-theme">
+            <span onclick="document.getElementById('updatelicensemodel').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <h2>@ResourceKey("DNNrocket.license")</h2>
+        </header>
+
+        <div class="w3-padding">
+            <div class="w3-row">
+                <div class="w3-half w3-padding">
+                    <label><b>@ResourceKey("DNNrocket.systemkey")</b></label>
+                    <div class="w3-padding w3-border w3-light-grey w3-margin-bottom">@info.GetXmlProperty("genxml/select/systemkey")</div>
+                </div>
+                <div class="w3-half w3-padding">
+                    <label><b>@ResourceKey("DNNrocket.domainurl")</b></label>
+                    <div class="w3-padding w3-border w3-light-grey w3-margin-bottom">@info.GetXmlProperty("genxml/textbox/domainurl")</div>
+                </div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-col m6 w3-padding">
+                    <label><b>@ResourceKey("DNNrocket.sitekey")</b></label>
+                    <div class="w3-padding w3-border w3-light-grey w3-margin-bottom">@info.GetXmlProperty("genxml/textbox/sitekey")</div>
+                </div>
+                <div class="w3-col m6 w3-padding">
+                    <label><b>@ResourceKey("DNNrocket.expiredate")</b></label>
+                    <div class="w3-padding w3-border w3-light-grey w3-margin-bottom">@info.GetXmlProperty("genxml/textbox/expiredate")</div>
+                </div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-padding">
+                    <label><b>@ResourceKey("DNNrocket.certificatekey")</b></label>
+                    @TextBox(info, "genxml/hidden/certificatekey", " class='w3-input w3-border w3-margin-bottom' autocomplete='off' ")
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+            <div class="logininput">
+                <div onclick="document.getElementById('updatelicensemodel').style.display='none'" type="button" class="w3-button w3-red">@ButtonText(ButtonTypes.cancel)</div>
+                <div class="w3-right w3-button w3-margin-left w3-green simplisity_click" s-post="#updatelicensemodel" s-cmd="systemapi_updatecertificatekey" s-fields='{"licenseid":"@(clientLicense.LicenseId)"}' s-track="false">@ButtonText(ButtonTypes.save)</div>
+                <div class="w3-right w3-button w3-margin-left w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;?" s-post="" s-cmd="systemapi_deletelicense" s-fields='{"licenseid":"@(clientLicense.LicenseId)"}' s-track="false">@ButtonText(ButtonTypes.delete)</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('#updatelicensemodel').show();
+
+    });
+</script>

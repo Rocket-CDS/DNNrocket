@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="roles.Text" xml:space="preserve">
-    <value>Administrators,Manager,Editor,ClientEditor</value>
+    <value>Administrators,Manager,Editor,ClientEditor,Registered Users,Subscribers,All</value>
   </data>
   <data name="licensekey.Text" xml:space="preserve">
     <value>License Key</value>
@@ -160,7 +160,7 @@
     <value>Interfaces</value>
   </data>
   <data name="namespaceclass.Text" xml:space="preserve">
-    <value>Namespace and Class</value>
+    <value>Admin Namespace class API (StartConnect)</value>
   </data>
   <data name="parameters.Text" xml:space="preserve">
     <value>Parameters</value>
@@ -191,12 +191,6 @@
   </data>
   <data name="fieldxpath.Text" xml:space="preserve">
     <value>xPath</value>
-  </data>
-  <data name="idxcols.data" xml:space="preserve">
-    <value>[idxField1] [nvarchar],[idxField2] [nvarchar],[idxField3] [nvarchar],[idxField4] [nvarchar],[idxField5] [nvarchar],[idxField6] [nvarchar],[idxField7] [nvarchar],[idxField8] [nvarchar],[idxField9] [nvarchar],[idxField0] [nvarchar],[idxInt1] [int,[idxInt2] [int,[idxInt3] [int,[idxDecimal1] [decimal],[idxDecimal2] [decimal],[idxDecimal3] [decimal],[Visible] [bit],[Disabled] [bit]</value>
-  </data>
-  <data name="idxcols.datavalue" xml:space="preserve">
-    <value>[idxField1],[idxField2],[idxField3],[idxField4],[idxField5],[idxField6],[idxField7],[idxField8],[idxField9],[idxField0],[idxInt1],[idxInt2],[idxInt3],[idxDecimal1],[idxDecimal2],[idxDecimal3],[Visible],[Disabled]</value>
   </data>
   <data name="idxfield.Text" xml:space="preserve">
     <value>Index Fields</value>
@@ -241,12 +235,153 @@
     <value>Entity Type Code</value>
   </data>
   <data name="indexref.Text" xml:space="preserve">
-    <value>Index Ref</value>
+    <value>Index Ref (Join Table)</value>
   </data>
   <data name="controlrelpath.Text" xml:space="preserve">
     <value>Control Relative Path</value>
   </data>
   <data name="encryptkey.Text" xml:space="preserve">
     <value>Encryption Key</value>
+  </data>
+  <data name="interfacecopy.Text" xml:space="preserve">
+    <value>Copy interface to another system</value>
+  </data>
+  <data name="xreftypecode.Text" xml:space="preserve">
+    <value>Database Xref TypeCode</value>
+  </data>
+  <data name="dbtypecode.Text" xml:space="preserve">
+    <value>Database TypeCode</value>
+  </data>
+  <data name="onmenu.Text" xml:space="preserve">
+    <value>On Menu</value>
+  </data>
+  <data name="debugmode.Text" xml:space="preserve">
+    <value>Debug Mode (TURN OFF for production)</value>
+  </data>
+  <data name="cache.Text" xml:space="preserve">
+    <value>Cached</value>
+  </data>
+  <data name="themeversion.Text" xml:space="preserve">
+    <value>Theme Version</value>
+  </data>
+  <data name="defaultvalue.Text" xml:space="preserve">
+    <value>Default Value</value>
+  </data>
+  <data name="databasetable.Text" xml:space="preserve">
+    <value>Database Table</value>
+  </data>
+  <data name="defaultinterface.Text" xml:space="preserve">
+    <value>Default Interface</value>
+  </data>
+  <data name="ref.Text" xml:space="preserve">
+    <value>Ref</value>
+  </data>
+  <data name="ftproot.Text" xml:space="preserve">
+    <value>FTP Root Directory (not including the default directory)</value>
+  </data>
+  <data name="ftppassword.Text" xml:space="preserve">
+    <value>FTP Password</value>
+  </data>
+  <data name="ftpserver.Text" xml:space="preserve">
+    <value>FTP Server</value>
+  </data>
+  <data name="ftpuser.Text" xml:space="preserve">
+    <value>FTP User</value>
+  </data>
+  <data name="globalsettings.Text" xml:space="preserve">
+    <value>Global Settings</value>
+  </data>
+  <data name="privateftp.Text" xml:space="preserve">
+    <value>Private FTP Settings</value>
+  </data>
+  <data name="imagetype.Help" xml:space="preserve">
+    <value>Defines the image type that will be used by the image thumbnailer.  Usually this will be the image extension type  "png" or "jpg".  However, the hosting server needs "png" drivers.  If not available the image type will need to be set to "jpg".</value>
+  </data>
+  <data name="imagetype.Text" xml:space="preserve">
+    <value>Image Type</value>
+  </data>
+  <data name="licenses.Text" xml:space="preserve">
+    <value>Licenses</value>
+  </data>
+  <data name="search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="proavailable.Text" xml:space="preserve">
+    <value>Pro Version Available</value>
+  </data>
+  <data name="privateftp.Help" xml:space="preserve">
+    <value>A private ftp service can be turned on.  Private templates can be shared between portals and installations across servers.  Using a standard FTP service.  This feature is only available in professional version.</value>
+  </data>
+  <data name="securityaccess.Text" xml:space="preserve">
+    <value>Security Access</value>
+  </data>
+  <data name="ckeditorcsslist.Help" xml:space="preserve">
+    <value>This is a csv list of css files to be used for inline content in the CKEditor.  This is very often the skin.css or/and portal.css.  The format is: '/myfolder/myfile1.css','/myfolder/myfile2.css'.  The w3-css is already included by default.</value>
+  </data>
+  <data name="ckeditorcsslist.Text" xml:space="preserve">
+    <value>CKEditor CSS List</value>
+  </data>
+  <data name="cleartempdb.Text" xml:space="preserve">
+    <value>Clear Temp DB</value>
+  </data>
+  <data name="cleartempdb.Confirm" xml:space="preserve">
+    <value>Delete ALL record in DNNrocketTemp table ?</value>
+  </data>
+  <data name="recycleapppool.Text" xml:space="preserve">
+    <value>Recycle AppPool</value>
+  </data>
+  <data name="clearfilecache.Text" xml:space="preserve">
+    <value>Clear File Cache</value>
+  </data>
+  <data name="clearmemcache.Text" xml:space="preserve">
+    <value>Clear Memory Cache</value>
+  </data>
+  <data name="tuencacheoff.Text" xml:space="preserve">
+    <value>Turn Cache Off</value>
+  </data>
+  <data name="colorhex.Text" xml:space="preserve">
+    <value>Color Hex Code</value>
+  </data>
+  <data name="globalheading.Help" xml:space="preserve">
+    <value>The Global HTML page header will be injected into ALL pages where a DNNrocket module exists and across ALL websites in the DNN installation.  The idea of this setting is to help inject the required css without changing the skin.  </value>
+  </data>
+  <data name="globalheading.Text" xml:space="preserve">
+    <value>Global HTML page header</value>
+  </data>
+  <data name="backuplimit.Text" xml:space="preserve">
+    <value>Backup Limit</value>
+  </data>
+  <data name="backuplimit.Help" xml:space="preserve">
+    <value>If any module has an auto backup facility, this is the amount of backup files that will be kept.  If a module creates more than this the oldest backups will be removed from the file system.  </value>
+  </data>
+  <data name="plugins.Text" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="dnnmodules.Text" xml:space="preserve">
+    <value>DNN Modules</value>
+  </data>
+  <data name="moduledescription.Text" xml:space="preserve">
+    <value>Module Description</value>
+  </data>
+  <data name="modulefolder.Text" xml:space="preserve">
+    <value>Module Folder</value>
+  </data>
+  <data name="modulefriendlyname.Text" xml:space="preserve">
+    <value>Module Friendly Name</value>
+  </data>
+  <data name="modulename.Text" xml:space="preserve">
+    <value>Module Name</value>
+  </data>
+  <data name="moduleowner.Text" xml:space="preserve">
+    <value>Module Owner</value>
+  </data>
+  <data name="moduletitle.Text" xml:space="preserve">
+    <value>Module Title</value>
+  </data>
+  <data name="providernamespaceclass.Text" xml:space="preserve">
+    <value>Provider namespace class API</value>
+  </data>
+  <data name="colortheme.Text" xml:space="preserve">
+    <value>Color Theme</value>
   </data>
 </root>

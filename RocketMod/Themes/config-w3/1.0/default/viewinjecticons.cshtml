@@ -1,0 +1,87 @@
+@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+
+@{
+
+    var editicontextcolor = Model.GetSetting("editicontextcolor");
+    var editiconcolor = Model.GetSetting("editiconcolor");
+    if (editiconcolor == "")
+    {
+        editiconcolor = "blue";
+    }
+
+}
+
+<div id="rocketmodmodel_@(Model.ModuleId)" class="w3-modal" style="z-index:9999;background-color:grey">
+    <div class="w3-modal-content w3-card-4 " style="width: 95%;height: 90%;">
+
+        <header class="w3-row w3-blue-grey ">
+            <span onclick="rocketmodeditiframeclose_@(Model.ModuleId)();" style="cursor:pointer;" class="w3-button w3-right closeiframe">@ButtonText(ButtonTypes.close)</span>
+        </header>
+        <div class="w3-row" style="height: 100%">
+            <iframe id="rocketmodIframe_@(Model.ModuleId)" style="width: 100%; height: 100%;">@ResourceKey("RocketMod.iframesupport")</iframe>
+        </div>
+    </div>
+</div>
+
+<div id="rocketcontentediticons@(Model.ModuleId)" class='w3-display-topleft w3-margin' style='display:none;z-index:99;'>
+
+    <a href='javascript:rocketmodeditiframe_@(Model.ModuleId)()' title="@DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.edit")" class='w3-button w3-white w3-border w3-border-@(editiconcolor) w3-round-large  w3-tiny'><i class='fa fas fa-edit'></i></a>
+    <a href='javascript:SetReturnUrl@(Model.ModuleId)()' title="@DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.admin")" class="w3-button w3-white w3-border w3-border-@(editiconcolor) w3-round-large  w3-tiny"><i class="fa fas fa-layer-group"></i></a>
+    <a href='?clearallcache=@(Model.ModuleId)&amp;tabid=@(Model.TabId)' title="@DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.clearallcache")" class="w3-button w3-white w3-border w3-border-@(editiconcolor) w3-round-large  w3-tiny"><i class="fa fas fa-slash"></i></a>
+    <span onclick="$('#rocketcontentediticons@(Model.ModuleId)').hide();" title="@DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/API/App_LocalResources/", "DNNrocket.hide")" class="w3-button w3-white w3-border w3-border-@(editiconcolor) w3-round-large w3-tiny"><i class='fa fas fa-times'></i></span>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        sessionStorage.RocketModReturn = window.location.href;
+        var scrollpos = sessionStorage.RocketModScrollPos;
+        if (typeof (scrollpos) !== 'undefined' && scrollpos > 0) {
+            $('html').scrollTop(scrollpos);
+            sessionStorage.RocketModScrollPos = 0;
+        }
+
+            $('#rocketcontentwrapper@(Model.ModuleId)').hover(
+                function () {
+                    $('#rocketcontentediticons@(Model.ModuleId)').show();
+                },
+                function () {
+                    $('#rocketcontentediticons@(Model.ModuleId)').hide();
+                }
+            );
+
+    });
+
+    function SetReturnUrl@(Model.ModuleId)() {
+        sessionStorage.RocketModReturn = window.location.href;
+        sessionStorage.RocketModScrollPos = $(window).scrollTop();
+        window.location.href = "/desktopmodules/dnnrocket/rocketmod/admin.html?moduleid=@(Model.ModuleId)&amp;tabid=@(Model.TabId)";
+    }
+
+    function rocketmodeditiframeclose_@(Model.ModuleId)() {
+        $('#rocketmodmodel_@(Model.ModuleId)').hide();
+        $('body').hide();
+        location.reload();
+    }
+
+    function rocketmodeditiframe_@(Model.ModuleId)() {
+        sessionStorage.RocketModScrollPos = $(window).scrollTop();
+        $('#rocketmodmodel_@(Model.ModuleId)').show();
+        $('.actionMenu').hide();
+        $('body').css('overflow', 'hidden');
+        $('.personalBarContainer').hide();
+        $('.editBarFrameContainer').hide();
+        document.getElementById('rocketmodIframe_@(Model.ModuleId)').src = "/desktopmodules/dnnrocket/RocketMod/admin.html?tabid=@(Model.GetSetting("tabid"))&moduleid=@(Model.ModuleId)&editmode=1&ticks=" + @DateTime.Now.Ticks;
+    }
+
+</script>

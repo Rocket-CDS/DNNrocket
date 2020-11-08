@@ -1,0 +1,78 @@
+﻿@inherits RocketMod.RocketModTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Componants;
+@using Simplisity;
+@using RocketMod.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketMod/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketECommerce/App_LocalResources/")
+
+@{
+    var linkLP = 0;
+    var moduleParams = (ModuleParams)Model.List.First();
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow"); ;
+    var datalist = articleRowData.GetLinkList();
+    var globalSettings = new SystemGlobalData();
+}
+
+
+<div class="w3-row linklistdatasection">
+
+    <div class="w3-container">
+        <div class="w3-button rocket-buttonbar w3-teal w3-padding-8 simplisity_click" s-post="#articlerowdatasection" s-return=".articlepopup" s-list=".@articleRowData.ImageListName,.@articleRowData.DocumentListName,.@articleRowData.LinkListName" s-cmd="rocketmodedit_addlink" s-fields='{"articleid":"@articleRowData.ArticleId","articlerowref":"@articleRowData.ArticleRowRef"}'><i class='fas fa-plus-circle'></i></div>
+        <div class="w3-button rocket-buttonbar w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="linklistbin" s-return="#linklistdata" s-removelist=".linklist" style="display: none;"><i class="fas fa-undo fa-fw fa-lg"></i></div>
+    </div>
+
+    <ul id="linklistdata" class="w3-ul">
+
+        @foreach (var linkInfo in datalist)
+        {
+            <li class="linklist w3-display-container w3-padding w3-border-0">
+                @SortableListIndex(linkInfo, linkLP)
+
+                <div class="w3-display-container w3-padding w3-card">
+                    <div class="w3-row">
+
+                        <div class="w3-col m3">
+                            @CheckBox(linkInfo, "genxml/checkbox/blank", "&nbsp;" + ResourceKey("RocketMod.blank").ToString(), " class='w3-check' ", false, false, linkLP)
+                        </div>
+                        <div class="w3-col m3">
+                            @CheckBox(linkInfo, "genxml/checkbox/hide", "&nbsp;" + ResourceKey("RocketMod.hidelink").ToString(), " class='w3-check' ", false, false, linkLP)
+                        </div>
+                        <div class="w3-col m6">
+                        </div>
+
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-col m3 w3-padding">
+                            <label>@ResourceKey("RocketMod.text")</label>&nbsp;@EditFlag()
+                            @TextBox(linkInfo, "genxml/lang/genxml/textbox/name", " class='w3-input w3-border' autocomplete='off'", "", true, linkLP)
+                        </div>
+                        <div class="w3-col m7 w3-padding" style="height:64px;">
+                            <label>@ResourceKey("RocketMod.url")</label>&nbsp;@EditFlag()
+                            @TextBox(linkInfo, "genxml/lang/genxml/textbox/externallink", " class='w3-input w3-border' autocomplete='off'", "https://", true, linkLP)
+                        </div>
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("RocketMod.anchor")</label>
+                            @TextBox(linkInfo, "genxml/textbox/anchor", " class='w3-input w3-border' autocomplete='off'", "", false, linkLP)
+                        </div>
+                    </div>
+
+                    <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
+                        <i title="@ResourceKey("DNNrocket.delete")" class=" fas fa-minus-square fa-fw fa-lg"></i>
+                    </div>
+                </div>
+            </li>
+            linkLP += 1;
+        }
+    </ul>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#linklistdata").sortable();
+        $("#linklistdata").disableSelection();
+    });
+
+</script>

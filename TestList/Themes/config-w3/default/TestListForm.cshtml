@@ -2,8 +2,8 @@
 @using DNNrocketAPI;
 @using Simplisity;
 
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddMetaData("resourcepath", "/DesktopModules/DNNrocket/TestForm/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/TestForm/App_LocalResources/")
 
 @{
     var info = (SimplisityInfo)Model.List.First();
@@ -11,10 +11,10 @@
 
 
 <span class="w3-section simplisity_buttons">
-    <button class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="testlist_save" s-post="#testform" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestListForm.cshtml,interfacekey:testlist">@ResourceKey("DNNrocket.cmdSaveButton")</button>
-    <button class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.cmdDelete","","confirm")" s-cmd="testlist_delete" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">@ResourceKey("DNNrocket.cmdDeleteButton")</button>
-    <button class="w3-button w3-sand w3-padding-8 simplisity_click" s-track="true" s-cmd="testlist_getlist" s-fields="selecteditemid:,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">@ResourceKey("DNNrocket.cmdReturnButton")</button>
-    <button class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="create test rows?" s-cmd="testlist_createrows" s-post="#testform" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">Create Test Rows</button>
+    <span class="w3-button w3-green w3-padding-8 simplisity_langchange simplisity_click" s-cmd="testlist_save" s-post="#testform" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestListForm.cshtml,interfacekey:testlist">@ButtonText(ButtonTypes.save)</span>
+    <span class="w3-button w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete","","confirm")" s-cmd="testlist_delete" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">@ButtonText(ButtonTypes.delete)</span>
+    <span class="w3-button w3-sand w3-padding-8 simplisity_click"  s-cmd="testlist_getlist" s-fields="selecteditemid:,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">@ButtonText(ButtonTypes.back)</span>
+    <span class="w3-button w3-orange w3-padding-8 simplisity_confirmclick" s-confirm="create test rows?" s-cmd="testlist_createrows" s-post="#testform" s-fields="selecteditemid:@info.ItemID,theme:config-w3,template:TestList.cshtml,interfacekey:testlist">Create Test Rows</span>
 </span>
 
 
@@ -24,7 +24,7 @@
     <div class="w3-container">
         <div class="w3-row">
             <a href="javascript:void(0)" class="sectiontab" sectionname="testform" >
-                <div class="w3-col tablink w3-bottombar w3-hover-theme w3-padding w3-border-black w3-theme " style="width:20%"><i class="fa fa-home"></i>&nbsp;@ResourceKey("testform.testform")</div>
+                <div class="w3-col tablink w3-bottombar w3-hover-theme w3-padding w3-border-black w3-theme " style="width:20%"><i class="fas fa-home"></i>&nbsp;@ResourceKey("testform.testform")</div>
             </a>
         </div>
 

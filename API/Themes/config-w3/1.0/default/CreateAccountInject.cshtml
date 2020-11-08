@@ -1,0 +1,20 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Componants;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{
+    var systemGlobalData = new SystemGlobalData();
+}
+
+    <h2>@ResourceKey("DNNrocket.dnnrocketaccount")</h2>
+    <div class="w3-container">
+        <div class="w3-row">
+            <div class="w3-col m3 w3-padding">
+                <a href="https://www.dnnrocket.com" title="@ResourceKey("DNNrocket.dnnrocketaccount")" target="_blank" class="w3-button w3-block w3-green w3-section w3-padding">@ResourceKey("DNNrocket.dnnrocketaccount")</a>
+            </div>
+            <div class="w3-col m9 w3-padding">
+                <i>@ResourceKey("DNNrocket.dnnrocketaccount", "", "Help")</i>
+            </div>
+        </div>
+    </div>

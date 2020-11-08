@@ -1,0 +1,71 @@
+﻿@inherits Rocket.Tools.RocketToolsTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using System
+@using System.Linq
+@using System.Xml
+@using Simplisity;
+@using DNNrocketAPI.Componants;
+@using RazorEngine.Text;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Tools/App_LocalResources/")
+
+@{
+    var info = (SimplisityInfo)Model.List.First();
+}
+
+    <div class="w3-display-container">
+
+        <div class="hummingbird-treeview well h-scroll-large">
+            <ul id="modulelistdata" class="hummingbird-base">
+
+                @{
+                    foreach (var m in info.GetRecordList("clonemodulelist"))
+                    {
+                        <li>
+                            <label>
+                                <input id='moduleid@(m.GetXmlProperty("genxml/moduleid"))' class="modulecheckbox" moduleid='@m.GetXmlProperty("genxml/moduleid")' s-xpath="genxml/checkbox/moduleid@(m.GetXmlProperty("genxml/moduleid"))" s-update="save" type="checkbox">
+                                @m.GetXmlProperty("genxml/moduletitle")
+                            </label>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+
+    </div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('.nextbuttonpage').hide();
+
+        $("#modulecheckAll").unbind("click");
+        $("#modulecheckAll").click(function () {
+            $('.modulecheckbox').prop('checked', true);
+            if ($('.rolesdatasection').text() === '') {
+                $('.nextbuttonmodule').show();
+            }
+        });
+        $("#moduleuncheckAll").unbind("click");
+        $("#moduleuncheckAll").click(function () {
+            $('.modulecheckbox').prop('checked', false);
+            if ($('.rolesdatasection').text() === '') {
+                $('.nextbuttonmodule').show();
+            }
+        });
+
+        $(".modulecheckbox").unbind("click");
+        $(".modulecheckbox").click(function () {
+            if ($('.rolesdatasection').text() === '') {
+                $('.nextbuttonmodule').show();
+            }
+        });
+
+    });
+
+
+
+</script>
+

@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Admin Rocket Mod</title>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/dnnrocket.css">
+
+    <!-- LOCAL -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
+    <link rel="stylesheet" href="/DesktopModules/DNNrocket/fa/css/all.min.css">
+    <script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
+    <script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+    <script type="text/javascript" src="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/js/SideMenu.js"></script>
+
+
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Sarabun:200,400,400i,700&display=swap');
+
+        html, body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Sarabun", cursive, sans-serif;
+        }
+    </style>
+
+
+</head>
+<body class="w3-white">
+
+
+    <!-- Side Navigation (use mask div if in iframe editmode)-->
+    <nav class="w3-sidebar w3-collapse w3-theme w3-animate-left w3-border-right" style="z-index:3;width:270px;top:0px;" id="mySidebar">
+        <div id="sidebarplaceholder" class="simplisity_panel" s-cmd="getsidemenu" s-after="sidemenuaction" s-fields='{"theme":"config-w3","template":"SideMenu.cshtml","relpath":"/DesktopModules/DNNrocket/RocketRemoteMod/"}'></div>
+    </nav>
+    <div class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-grey" onclick="w3_open();"><i class="fas fa-bars"></i></div>
+
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-row"  style="height:20px">
+        <div class="w3-col m1">
+            <div class="editlanguageflag w3-margin-left "></div>
+        </div>
+        <div id="menulanguageselectdiv" class="w3-col m10"></div>
+    </div>
+
+    <div class="w3-main w3-container" style="margin-left:270px;top:0px " id="base-panel">
+
+        <form id="rocketmod_form">
+
+            <div id="simplisity_startpanel" class="simplisity_panel" s-fields='{"remotetemplate":"adminsettings.cshtml"}' s-cmd="rocketremotemod_adminsettings">
+                <div class="">
+                    <i class='fa fa-spinner fa-spin w3-display-middle' style='font-size:48px'></i>
+                </div>
+            </div>
+
+        </form>
+
+        <!-- End page content -->
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+
+            var urlParams = new URLSearchParams(window.location.search);
+            var systemKey = urlParams.get('systemkey');
+
+            $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: systemKey, debug: false });
+
+            simplisity_setParamField("reload", true)
+
+            simplisity_setSessionField("moduleid", urlParams.get('moduleid'))
+            simplisity_setSessionField("tabid", urlParams.get('tabid'))
+            simplisity_setParamField("remoteconfigpath", '') // default to remotemod path
+        });
+    </script>
+
+
+</body>
+</html>

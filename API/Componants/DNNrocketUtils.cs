@@ -20,13 +20,41 @@ using DotNetNuke.Entities.Modules;
 using System.Net;
 using System.IO;
 using DotNetNuke.Common.Lists;
-using ICSharpCode.SharpZipLib.Zip;
 using System.Text.RegularExpressions;
+using System.Web.UI;
+using System.Threading;
+using System.Globalization;
+using DNNrocketAPI.Componants;
+using DotNetNuke.Common;
+using System.IO.Compression;
+using Simplisity.TemplateEngine;
+using DotNetNuke.Services.Exceptions;
+using System.Collections;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Modules.Definitions;
+using System.Drawing;
+using DotNetNuke.Services.Scheduling;
+using System.Xml.Serialization;
+using System.Collections.Specialized;
 
-namespace DNNrocketAPI
+namespace DNNrocketAPI.Componants
 {
     public static class DNNrocketUtils
     {
+        public static Dictionary<string, object> ReturnString(string strOut, string jsonOut = null)
+        {
+            var rtnDic = new Dictionary<string, object>();
+            rtnDic.Add("outputhtml", strOut);
+            rtnDic.Add("outputjson", jsonOut);
+            return rtnDic;
+        }
+        public static string HtmlOf(String htmlString)
+        {
+            return System.Web.HttpUtility.HtmlDecode(htmlString);
+        }
 
         public static string RequestParam(HttpContext context, string paramName)
         {
@@ -60,195 +88,17 @@ namespace DNNrocketAPI
         public static string RequestQueryStringParam(HttpContext context, string paramName)
         {
             return RequestQueryStringParam(context.Request, paramName);
-        }       
-
-
-        public static string RazorRender(Object info, string razorTempl, Boolean debugMode = false)
-        {
-            var result = "";
-            try
-            {
-                var service = (IRazorEngineService)HttpContext.Current.Application.Get("DNNrocketIRazorEngineService");
-                if (service == null)
-                {
-                    // do razor test
-                    var config = new TemplateServiceConfiguration();
-                    config.Debug = debugMode;
-                    config.BaseTemplateType = typeof(RazorEngineTokens<>);
-                    service = RazorEngineService.Create(config);
-                    HttpContext.Current.Application.Set("DNNrocketIRazorEngineService", service);
-                }
-                Engine.Razor = service;
-                var hashCacheKey = GetMd5Hash(razorTempl);
-                var israzorCached = CacheUtils.GetCache("dnnrocketrzcache_" + hashCacheKey); // get a cache flag for razor compile.
-                if (israzorCached == null || (string)israzorCached != razorTempl || debugMode)
-                {
-                    result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, info);
-                    CacheUtils.SetCache("dnnrocketrzcache_" + hashCacheKey, razorTempl);
-                }
-                else
-                {
-                    result = Engine.Razor.Run(hashCacheKey, null, info);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                result = ex.ToString();
-            }
-
-            return result;
         }
 
 
-        public static string GetMd5Hash(string input)
+        public static void ZipFolder(string folderMapPath, string zipFileMapPath)
         {
-            var md5 = MD5.Create();
-            var inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-            var hash = md5.ComputeHash(inputBytes);
-            var sb = new StringBuilder();
-            foreach (byte t in hash)
-            {
-                sb.Append(t.ToString("X2"));
-            }
-            return sb.ToString();
+            ZipFile.CreateFromDirectory(folderMapPath, zipFileMapPath);
         }
 
-        public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
+        public static void ExtractZipFolder(string zipFileMapPath, string outFolderMapPath)
         {
-            var rtnStr = "";
-            if (razorTemplate != "")
-            {
-                if (settings == null) settings = new Dictionary<string, string>();
-                if (headerData == null) headerData = new SimplisityInfo();
-
-                if (obj == null) obj = new SimplisityInfo();
-                var l = new List<object>();
-                l.Add(obj);
-
-                var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
-                nbRazor.HeaderData = headerData;
-                rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
-
-            }
-
-            return rtnStr;
-        }
-
-
-        public static string RazorList(string razorTemplate, List<SimplisityInfo> objList, Dictionary<string, string> settings = null, SimplisityInfo headerData = null, bool debugmode = false)
-        {
-            var rtnStr = "";
-            if (razorTemplate != "")
-            {
-                if (settings == null) settings = new Dictionary<string, string>(); 
-                if (headerData == null) headerData = new SimplisityInfo();
-                var nbRazor = new SimplisityRazor(objList.Cast<object>().ToList(), settings, HttpContext.Current.Request.QueryString);
-                nbRazor.HeaderData = headerData;
-                rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
-            }
-            return rtnStr;
-        }
-
-
-        public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder, string lang)
-        {
-            var controlMapPath = HttpContext.Current.Server.MapPath(templateControlPath);
-            var templCtrl = new Simplisity.TemplateEngine.TemplateGetter(PortalSettings.Current.HomeDirectoryMapPath, "Themes\\" + themeFolder, controlMapPath);
-            var templ = templCtrl.GetTemplateData(templatename, lang);
-            return templ;
-        }
-
-
-
-        public static void Zip(string zipFileMapPath, List<String> fileMapPathList)
-        {
-            // Zip up the files - From SharpZipLib Demo Code
-            using (var s = new ZipOutputStream(File.Create(zipFileMapPath)))
-            {
-                s.SetLevel(9); // 0-9, 9 being the highest compression
-
-                byte[] buffer = new byte[4096];
-
-                foreach (string file in fileMapPathList)
-                {
-
-                    ZipEntry entry = new
-                    ZipEntry(Path.GetFileName(file));
-
-                    entry.DateTime = DateTime.Now;
-                    s.PutNextEntry(entry);
-
-                    using (FileStream fs = File.OpenRead(file))
-                    {
-                        int sourceBytes;
-                        do
-                        {
-                            sourceBytes = fs.Read(buffer, 0,
-                            buffer.Length);
-
-                            s.Write(buffer, 0, sourceBytes);
-
-                        } while (sourceBytes > 0);
-                    }
-                }
-                s.Finish();
-                s.Close();
-            }
-
-
-        }
-
-        public static void ZipFolder(string folderName, String zipFileMapPath)
-        {
-            var zipStream = new ZipOutputStream(File.Create(zipFileMapPath));
-            try
-            {
-                int folderOffset = folderName.Length + (folderName.EndsWith("\\") ? 0 : 1);
-                zipStream.SetLevel(3); //0-9, 9 being the highest level of compression
-                CompressFolder(folderName, zipStream, folderOffset);
-                zipStream.Close();
-            }
-            catch (Exception ex)
-            {
-                zipStream.Close();
-                throw ex;
-            }
-        }
-
-        private static void CompressFolder(string path, ZipOutputStream zipStream, int folderOffset)
-        {
-
-            string[] files = Directory.GetFiles(path);
-
-            foreach (string filename in files)
-            {
-
-                System.IO.FileInfo fi = new System.IO.FileInfo(filename);
-
-                string entryName = filename.Substring(folderOffset); // Makes the name in zip based on the folder
-                entryName = ZipEntry.CleanName(entryName); // Removes drive from name and fixes slash direction
-                ZipEntry newEntry = new ZipEntry(entryName);
-                newEntry.DateTime = fi.LastWriteTime; // Note the zip format stores 2 second granularity
-
-                newEntry.Size = fi.Length;
-
-                zipStream.PutNextEntry(newEntry);
-
-                // Zip the file in buffered chunks
-                // the "using" will close the stream even if an exception occurs
-                byte[] buffer = new byte[4096];
-                using (FileStream streamReader = File.OpenRead(filename))
-                {
-                    ZipUtilCopy(streamReader, zipStream, buffer);
-                }
-                zipStream.CloseEntry();
-            }
-            string[] folders = Directory.GetDirectories(path);
-            foreach (string folder in folders)
-            {
-                CompressFolder(folder, zipStream, folderOffset);
-            }
+            ZipFile.ExtractToDirectory(zipFileMapPath, outFolderMapPath);
         }
 
         /// <summary>
@@ -284,84 +134,6 @@ namespace DNNrocketAPI
         }
 
 
-        public static void UnZip(string zipFileMapPath, string outputFolder)
-        {
-            var zipStream = new FileStream(zipFileMapPath, FileMode.Open, FileAccess.Read);
-            var zStream = new ZipInputStream(zipStream);
-            UnzipResources(zStream, outputFolder);
-            zipStream.Close();
-            zStream.Close();
-        }
-
-        public static void UnzipResources(ZipInputStream zipStream, string destPath)
-        {
-            try
-            {
-                ZipEntry objZipEntry;
-                string LocalFileName;
-                string RelativeDir;
-                string FileNamePath;
-                objZipEntry = zipStream.GetNextEntry();
-                while (objZipEntry != null)
-                {
-                    LocalFileName = objZipEntry.Name;
-                    RelativeDir = Path.GetDirectoryName(objZipEntry.Name);
-                    if ((RelativeDir != string.Empty) && (!Directory.Exists(Path.Combine(destPath, RelativeDir))))
-                    {
-                        Directory.CreateDirectory(Path.Combine(destPath, RelativeDir));
-                    }
-                    if ((!objZipEntry.IsDirectory) && (!String.IsNullOrEmpty(LocalFileName)))
-                    {
-                        FileNamePath = Path.Combine(destPath, LocalFileName).Replace("/", "\\");
-                        try
-                        {
-                            if (File.Exists(FileNamePath))
-                            {
-                                File.SetAttributes(FileNamePath, FileAttributes.Normal);
-                                File.Delete(FileNamePath);
-                            }
-                            FileStream objFileStream = null;
-                            try
-                            {
-                                objFileStream = File.Create(FileNamePath);
-                                int intSize = 2048;
-                                var arrData = new byte[2048];
-                                intSize = zipStream.Read(arrData, 0, arrData.Length);
-                                while (intSize > 0)
-                                {
-                                    objFileStream.Write(arrData, 0, intSize);
-                                    intSize = zipStream.Read(arrData, 0, arrData.Length);
-                                }
-                            }
-                            finally
-                            {
-                                if (objFileStream != null)
-                                {
-                                    objFileStream.Close();
-                                    objFileStream.Dispose();
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            //   DnnLog.Error(ex);
-                        }
-                    }
-                    objZipEntry = zipStream.GetNextEntry();
-                }
-            }
-            finally
-            {
-                if (zipStream != null)
-                {
-                    zipStream.Close();
-                    zipStream.Dispose();
-                }
-            }
-        }
-
-
-
         public static List<System.IO.FileInfo> GetFiles(string FolderMapPath)
         {
             DirectoryInfo di = new DirectoryInfo(FolderMapPath);
@@ -375,6 +147,24 @@ namespace DNNrocketAPI
             }
             return files;
         }
+
+        public static Dictionary<string, string> GetRegionList(string countrycode, string dnnlistname = "Region")
+        {
+            var parentkey = "Country." + countrycode;
+            var objCtrl = new DotNetNuke.Common.Lists.ListController();
+            var tList = objCtrl.GetListEntryInfoDictionary(dnnlistname, parentkey);
+            var rtnDic = new Dictionary<string, string>();
+
+            foreach (var r in tList)
+            {
+                var datavalue = r.Value;
+                var regionname = datavalue.Text;
+                rtnDic.Add(datavalue.Key, regionname);
+            }
+
+            return rtnDic;
+        }
+
 
         public static Dictionary<String, String> GetCountryCodeList(int portalId = -1)
         {
@@ -391,10 +181,66 @@ namespace DNNrocketAPI
             }
             return rtnDic;
         }
-        public static string GetCountryName(string CountryCode, int portalId = -1)
+        public static string GetCountryName(string countryCode, int portalId = -1)
         {
             var l = GetCountryCodeList(portalId);
-            return l[CountryCode]; ;
+            if (l.ContainsKey(countryCode)) return l[countryCode];
+            return "";
+        }
+
+
+        public static string GetRegionName(string countryRegionCodeKey, string dnnlistname = "Region")
+        {
+            var codes = countryRegionCodeKey.Split(':');
+            if (codes.Length == 2)
+            {
+                var countrycodesplit = codes[0].Split('.');
+                if (countrycodesplit.Length == 3)
+                {
+                    var l = GetRegionList(countrycodesplit[1], dnnlistname);
+                    if (l.ContainsKey(countryRegionCodeKey))
+                    {
+                        return l[countryRegionCodeKey];
+                    }
+                    return "";
+                }
+            }
+            return "";
+        }
+
+
+        public static Dictionary<string, string> GetCultureCodeNameList(int portalId = -1)
+        {
+            var rtnList = new Dictionary<string, string>();
+            if (portalId == -1 && PortalSettings.Current != null) portalId = PortalSettings.Current.PortalId;
+            if (portalId != -1)
+            {
+                var enabledLanguages = LocaleController.Instance.GetLocales(portalId);
+                foreach (KeyValuePair<string, Locale> kvp in enabledLanguages)
+                {
+                    rtnList.Add(kvp.Value.Code, kvp.Value.NativeName);
+                }
+            }
+            return rtnList;
+        }
+
+        public static Dictionary<string, string> GetAllCultureCodeNameList()
+        {
+            var rtnList = new Dictionary<string, string>();
+
+            CultureInfo[] cinfo = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.SpecificCultures);
+            foreach (CultureInfo cul in cinfo)
+            {
+                rtnList.Add(cul.Name, cul.DisplayName);
+            }
+            return rtnList;
+        }
+
+        public static string GetCultureCodeName(string cultureCode)
+        {
+            var d = GetAllCultureCodeNameList();
+            if (!d.ContainsKey(cultureCode)) return "";
+            return d[cultureCode];
         }
 
         public static List<string> GetCultureCodeList(int portalId = -1)
@@ -408,6 +254,42 @@ namespace DNNrocketAPI
                 {
                     rtnList.Add(kvp.Value.Code);
                 }
+            }
+            return rtnList;
+        }
+        public static Dictionary<string, string> GetCurrencyList(int portalId = -1)
+        {
+            var rtnList = new Dictionary<string, string>();
+            if (portalId == -1 && PortalSettings.Current != null) portalId = PortalSettings.Current.PortalId;
+            if (portalId != -1)
+            {
+                var lc = new ListController();
+                var lCurrency = lc.GetListEntryInfoItems("Currency");
+                foreach (ListEntryInfo lei in lCurrency)
+                {
+                    if (!rtnList.ContainsKey(lei.Value)) rtnList.Add(lei.Value, lei.Text);
+                }
+            }
+            return rtnList;
+        }
+
+        public static List<SimplisityInfo> GetAllCultureCodeList()
+        {
+            var rtnList = new List<SimplisityInfo>();
+
+            CultureInfo[] cinfo = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.SpecificCultures);
+            foreach (CultureInfo cul in cinfo)
+            {
+                var flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/" + cul.Name + ".png";
+                if (!File.Exists(MapPath(flagurl)))
+                {
+                    flagurl = "/DesktopModules/DNNrocket/API/images/flags/16/none.png";
+                }
+                var sni = new SimplisityInfo();
+                sni.SetXmlProperty("genxml/displayname", cul.DisplayName);
+                sni.SetXmlProperty("genxml/code", cul.Name);
+                sni.SetXmlProperty("genxml/flagurl", flagurl);
+                rtnList.Add(sni);
             }
             return rtnList;
         }
@@ -453,92 +335,50 @@ namespace DNNrocketAPI
         }
 
 
-        public static TabCollection GetPortalTabs(int portalId)
-        {
-            var portalTabs = (TabCollection)CacheUtils.GetCache("DNNrocket_portalTabs" + portalId.ToString(""));
-            if (portalTabs == null)
-            {
-                var objTabCtrl = new DotNetNuke.Entities.Tabs.TabController();
-                portalTabs = objTabCtrl.GetTabsByPortal(portalId);
-                CacheUtils.SetCache("DNNrocket_portalTabs" + portalId.ToString(""), portalTabs);
-            }
-            return portalTabs;
-        }
-
-        public static DotNetNuke.Entities.Users.UserInfo GetValidUser(int PortalId, string username, string password)
-        {
-            var userLoginStatus = new DotNetNuke.Security.Membership.UserLoginStatus();
-            return DotNetNuke.Entities.Users.UserController.ValidateUser(PortalId, username, password, "", "", "", ref userLoginStatus);
-        }
-
-        public static bool IsValidUser(int PortalId, string username, string password)
-        {
-            var u = GetValidUser(PortalId, username, password);
-            if (u != null)
-            {
-                return true;
-            }
-            return false;
-        }
-
         public static string GetLocalizedString(string Key, string resourceFileRoot, string lang)
         {
             return Localization.GetString(Key, resourceFileRoot, lang);
         }
 
-        public static int GetPortalByModuleID(int moduleId)
-        {
-            var objMCtrl = new DotNetNuke.Entities.Modules.ModuleController();
-            var objMInfo = objMCtrl.GetModule(moduleId);
-            if (objMInfo == null) return -1;
-            return objMInfo.PortalID;
-        }
-
         /// <summary>
-        /// GET Portals 
+        /// Convert Object to XML.
+        /// Exmaple:
+        ///     var xmlString = ConvertObjectToXMLString(p);
+        ///     XElement xElement = XElement.Parse(xmlString);
         /// </summary>
+        /// <param name="classObject"></param>
         /// <returns></returns>
-        public static List<PortalInfo> GetAllPortals()
+        public static string ConvertObjectToXMLString(object classObject)
         {
-            var pList = new List<PortalInfo>();
-            var objPC = new DotNetNuke.Entities.Portals.PortalController();
-
-            var list = objPC.GetPortals();
-
-            if (list == null || list.Count == 0)
+            string xmlString = null;
+            XmlSerializer xmlSerializer = new XmlSerializer(classObject.GetType());
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                //Problem with DNN6 GetPortals when ran from scheduler.
-                PortalInfo objPInfo;
-                var flagdeleted = 0;
-
-                for (var lp = 0; lp <= 500; lp++)
-                {
-                    objPInfo = objPC.GetPortal(lp);
-                    if ((objPInfo != null))
-                    {
-                        pList.Add(objPInfo);
-                    }
-                    else
-                    {
-                        // some portals may be deleted, skip 3 to see if we've got to the end of the list.
-                        // VERY weak!!! shame!! but issue with a DNN6 version only.
-                        if (flagdeleted == 3) break;
-                        flagdeleted += 1;
-                    }
-                }
+                xmlSerializer.Serialize(memoryStream, classObject);
+                memoryStream.Position = 0;
+                xmlString = new StreamReader(memoryStream).ReadToEnd();
             }
-            else
-            {
-                foreach (PortalInfo p in list)
-                {
-                    pList.Add(p);
-                }
-            }
-
-
-            return pList;
+            return xmlString;
         }
+        /// <summary>
+        /// Convert XML to Object.
+        /// Exmaple:
+        ///     UserDetail userDetail = (UserDetail)ConvertXmlStringtoObject<UserDetail>(xmlString);
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="xmlString"></param>
+        /// <returns></returns>
+        public static T ConvertXmlStringtoObject<T>(string xmlString)
+        {
+            T classObject;
 
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+            using (StringReader stringReader = new StringReader(xmlString))
+            {
+                classObject = (T)xmlSerializer.Deserialize(stringReader);
+            }
+            return classObject;
+        }
         public static string GetModuleVersion(int moduleId)
         {
             var strVersion = "";
@@ -549,13 +389,6 @@ namespace DNNrocketAPI
                 strVersion = objMInfo.DesktopModule.Version;
             }
             return strVersion;
-        }
-
-        public static ModuleInfo GetModuleinfo(int moduleId)
-        {
-            var objMCtrl = new DotNetNuke.Entities.Modules.ModuleController();
-            var objMInfo = objMCtrl.GetModule(moduleId);
-            return objMInfo;
         }
 
         public static void CreateFolder(string fullfolderPath)
@@ -573,6 +406,7 @@ namespace DNNrocketAPI
             }
             catch (Exception ex)
             {
+                var errmsg = ex.ToString();
                 blnCreated = false;
             }
 
@@ -584,71 +418,243 @@ namespace DNNrocketAPI
                 }
                 catch (Exception ex)
                 {
+                    var errmsg = ex.ToString();
                     // Suppress error, becuase the folder may already exist!..NASTY!!..try and find a better way to deal with folders out of portal range!!
                 }
             }
         }
-
-        public static void CreatePortalFolder(DotNetNuke.Entities.Portals.PortalSettings PortalSettings, string FolderName)
+        public static void CreateDefaultRocketRoles(int portalId)
         {
-            bool blnCreated = false;
-
-            //try normal test (doesn;t work on medium trust, but avoids waiting for GetFolder.)
-            try
+            CreateRole(portalId, DNNrocketRoles.ClientEditor);
+            CreateRole(portalId, DNNrocketRoles.Editor);
+            CreateRole(portalId, DNNrocketRoles.Manager);
+            CreateRole(portalId, DNNrocketRoles.Premium);
+            CreateRole(portalId, DNNrocketRoles.Administrators);
+            CreateRole(portalId, DNNrocketRoles.RemoteAdmin);
+        }
+        public static bool DefaultRoleExist(int portalId)
+        {
+            var role = RoleController.Instance.GetRoleByName(portalId, DNNrocketRoles.RemoteAdmin); // use RemoteAdmin, less likely to be created by another module.
+            if (role == null) return false;
+            return true;
+        }
+        public static void CreateRole(int portalId, string roleName, string description = "", float serviceFee = 0, int billingPeriod = 0, string billingFrequency = "M", float trialFee = 0, int trialPeriod = 0, string trialFrequency = "N", bool isPublic = false, bool isAuto = false)
+        {
+            var role = RoleController.Instance.GetRoleByName(portalId, roleName);
+            if (role == null)
             {
-                blnCreated = System.IO.Directory.Exists(PortalSettings.HomeDirectoryMapPath + FolderName);
+                RoleInfo objRoleInfo = new RoleInfo();
+                objRoleInfo.PortalID = portalId;
+                objRoleInfo.RoleName = roleName;
+                objRoleInfo.RoleGroupID = Null.NullInteger;
+                objRoleInfo.Description = description;
+                objRoleInfo.ServiceFee = Convert.ToSingle(serviceFee < 0 ? 0 : serviceFee);
+                objRoleInfo.BillingPeriod = billingPeriod;
+                objRoleInfo.BillingFrequency = billingFrequency;
+                objRoleInfo.TrialFee = Convert.ToSingle(trialFee < 0 ? 0 : trialFee);
+                objRoleInfo.TrialPeriod = trialPeriod;
+                objRoleInfo.TrialFrequency = trialFrequency;
+                objRoleInfo.IsPublic = isPublic;
+                objRoleInfo.AutoAssignment = isAuto;
+                objRoleInfo.Status = RoleStatus.Approved;
+                RoleController.Instance.AddRole(objRoleInfo);
             }
-            catch (Exception ex)
+        }
+        public static void AddRoleToModule(int portalId, int moduleid, int roleid)
+        {
+            var moduleInfo = GetModuleInfo(moduleid);
+            var roleexist = false;
+            var permissionID = -1;
+            var PermissionsList2 = moduleInfo.ModulePermissions.ToList();
+            var role = RoleController.Instance.GetRoleById(portalId, roleid);
+            if (role != null)
             {
-                blnCreated = false;
-            }
+                var permissionController = new PermissionController();
 
-            if (!blnCreated)
-            {
-                FolderManager.Instance.Synchronize(PortalSettings.PortalId, PortalSettings.HomeDirectory, true, true);
-                var folderInfo = FolderManager.Instance.GetFolder(PortalSettings.PortalId, FolderName);
-                if (folderInfo == null & !string.IsNullOrEmpty(FolderName))
+                var editPermissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
+                PermissionInfo editPermisison = null;
+                //Edit
+                if (editPermissionsList != null && editPermissionsList.Count > 0)
                 {
-                    //add folder and permissions
-                    try
+                    editPermisison = (PermissionInfo)editPermissionsList[0];
+                }
+
+
+                foreach (var p in PermissionsList2)
+                {
+                    if (p.RoleName == role.RoleName)
                     {
-                        FolderManager.Instance.AddFolder(PortalSettings.PortalId, FolderName);
+                        permissionID = p.PermissionID;
+                        p.AllowAccess = true;
+                        roleexist = true;
+
+                        var modulePermission = new ModulePermissionInfo(editPermisison);
+                        modulePermission.RoleID = role.RoleID;
+                        modulePermission.AllowAccess = true;
+                        moduleInfo.ModulePermissions.Add(modulePermission);
                     }
-                    catch (Exception ex)
+                }
+
+                // ADD Role
+                if (!roleexist)
+                {
+                    ArrayList systemModuleEditPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
+                    foreach (PermissionInfo permission in systemModuleEditPermissions)
                     {
-                    }
-                    folderInfo = FolderManager.Instance.GetFolder(PortalSettings.PortalId, FolderName);
-                    if ((folderInfo != null))
-                    {
-                        int folderid = folderInfo.FolderID;
-                        DotNetNuke.Security.Permissions.PermissionController objPermissionController = new DotNetNuke.Security.Permissions.PermissionController();
-                        var arr = objPermissionController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "");
-                        foreach (DotNetNuke.Security.Permissions.PermissionInfo objpermission in arr)
+                        if (permission.PermissionKey == "EDIT")
                         {
-                            if (objpermission.PermissionKey == "WRITE")
+                            var objPermission = new ModulePermissionInfo(permission)
                             {
-                                // add READ permissions to the All Users Role
-                                FolderManager.Instance.SetFolderPermission(folderInfo, objpermission.PermissionID, int.Parse(DotNetNuke.Common.Globals.glbRoleAllUsers));
-                            }
+                                ModuleID = moduleInfo.DesktopModuleID,
+                                RoleID = role.RoleID,
+                                RoleName = role.RoleName,
+                                AllowAccess = true,
+                                UserID = Null.NullInteger,
+                                DisplayName = Null.NullString
+                            };
+                            var permId = moduleInfo.ModulePermissions.Add(objPermission, true);
+                            ModuleController.Instance.UpdateModule(moduleInfo);
                         }
                     }
                 }
+
+
+                // Check for DEPLOY 
+                // This was added for upgrade on module.  I'm unsure if it's still required.
+                if (!roleexist)
+                {
+                    ArrayList permissions = PermissionController.GetPermissionsByPortalDesktopModule();
+                    foreach (PermissionInfo permission in permissions)
+                    {
+                        if (permission.PermissionKey == "DEPLOY")
+                        {
+                            var objPermission = new ModulePermissionInfo(permission)
+                            {
+
+                                ModuleID = moduleInfo.DesktopModuleID,
+                                RoleID = role.RoleID,
+                                RoleName = role.RoleName,
+                                AllowAccess = true,
+                                UserID = Null.NullInteger,
+                                DisplayName = Null.NullString
+                            };
+                            var permId = moduleInfo.ModulePermissions.Add(objPermission, true);
+                            ModuleController.Instance.UpdateModule(moduleInfo);
+                        }
+                    }
+                }
+
+
             }
         }
-
-        public static DotNetNuke.Entities.Portals.PortalSettings GetCurrentPortalSettings()
+        public static void RemoveRoleToModule(int portalId, int moduleid, int roleid)
         {
-            return (DotNetNuke.Entities.Portals.PortalSettings)System.Web.HttpContext.Current.Items["PortalSettings"];
+            var moduleInfo = GetModuleInfo(moduleid);
+            var roleexist = false;
+            var permissionID = -1;
+            var PermissionsList2 = moduleInfo.ModulePermissions.ToList();
+            var role = RoleController.Instance.GetRoleById(portalId, roleid);
+            if (role != null)
+            {
+                foreach (var p in PermissionsList2)
+                {
+                    if (p.RoleName == role.RoleName)
+                    {
+                        permissionID = p.PermissionID;
+                        roleexist = true;
+                    }
+                }
+
+                if (roleexist && permissionID > -1)
+                {
+                    moduleInfo.ModulePermissions.Remove(permissionID, role.RoleID, Null.NullInteger);
+                    ModuleController.Instance.UpdateModule(moduleInfo);
+                }
+            }
+
+
         }
 
-        public static Dictionary<int, string> GetTreeTabList()
+        public static Dictionary<int,string> GetTabModuleTitles(int tabid, bool getDeleted = false)
+        {
+            var rtnDic = new Dictionary<int, string>();
+            var l = ModuleController.Instance.GetTabModules(tabid);
+            foreach (var m in l)
+            {
+                if (getDeleted)
+                {
+                    rtnDic.Add(m.Value.ModuleID, m.Value.ModuleTitle);
+                }
+                else
+                {
+                    if (!m.Value.IsDeleted) rtnDic.Add(m.Value.ModuleID, m.Value.ModuleTitle);
+                }
+            }
+            return rtnDic;
+        }
+        private static Dictionary<int, ModuleInfo> GetTabModules(int tabid)
+        {
+            return ModuleController.Instance.GetTabModules(tabid);
+        }
+        private static ModuleInfo GetModuleInfo(int tabid, int moduleid)
+        {
+            return ModuleController.Instance.GetModule(moduleid, tabid, false);
+        }
+        public static void UpdateModuleTitle(int tabid, int moduleid, string title)
+        {
+            var modInfo = GetModuleInfo(tabid, moduleid);
+            if (modInfo != null)
+            {
+                modInfo.ModuleTitle = title;
+                ModuleController.Instance.UpdateModule(modInfo);
+            }
+        }
+        private static ModuleInfo GetModuleInfo(int moduleId)
+        {
+            var objMCtrl = new DotNetNuke.Entities.Modules.ModuleController();
+            var objMInfo = objMCtrl.GetModule(moduleId);
+            return objMInfo;
+        }
+        public static bool ModuleIsDeleted(int tabid, int moduleid)
+        {
+            var modInfo = GetModuleInfo(tabid, moduleid);
+            if (modInfo  != null)
+            {
+                return modInfo.IsDeleted;
+            }
+            return true;
+        }
+        public static bool ModuleExists(int tabid, int moduleid)
+        {
+            var modInfo = GetModuleInfo(tabid, moduleid);
+            if (modInfo == null) return false;
+            return true;
+        }
+
+
+        public static int GetModuleTabId(Guid uniqueId)
+        {
+            var mod = ModuleController.Instance.GetModuleByUniqueID(uniqueId);
+            if (mod != null) return mod.TabID;
+            return -1;
+        }
+        public static TabInfo GetTabInfo(int portalid, int tabid, bool ignoreCache = false)
+        {
+            return TabController.Instance.GetTab(tabid, portalid, ignoreCache);
+        }
+        public static TabInfo GetTabInfo(int tabid, bool ignoreCache = false)
+        {
+            return TabController.Instance.GetTab(tabid, PortalSettings.Current.PortalId, ignoreCache);
+        }
+
+        public static Dictionary<int, string> GetTreeTabList(bool showAllTabs = false)
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
             var rtnList = new Dictionary<int, string>();
-            return GetTreeTabList(rtnList, tabList, 0, 0);
+            return GetTreeTabList(rtnList, tabList, 0, 0,"", showAllTabs);
         }
 
-        private static Dictionary<int, string> GetTreeTabList(Dictionary<int, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "")
+        private static Dictionary<int, string> GetTreeTabList(Dictionary<int, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "", bool showAllTabs = false)
         {
 
             if (level > 20) // stop infinate loop
@@ -662,7 +668,7 @@ namespace DNNrocketAPI
                 if (parenttestid < 0) parenttestid = 0;
                 if (parentid == parenttestid)
                 {
-                    if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
+                    if (!tInfo.IsDeleted && (tInfo.TabPermissions.Count > 2 || showAllTabs))
                     {
                         rtnList.Add(tInfo.TabID, prefix + "" + tInfo.TabName);
                         GetTreeTabList(rtnList, tabList, level + 1, tInfo.TabID, prefix);
@@ -673,47 +679,14 @@ namespace DNNrocketAPI
             return rtnList;
         }
 
-
-        public static Dictionary<Guid, string> GetTreeTabListOnUniqueId()
-        {
-            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
-            var rtnList = new Dictionary<Guid, string>();
-            return GetTreeTabListOnUniqueId(rtnList, tabList, 0, 0);
-        }
-
-        private static Dictionary<Guid, string> GetTreeTabListOnUniqueId(Dictionary<Guid, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "")
-        {
-
-            if (level > 20) // stop infinate loop
-            {
-                return rtnList;
-            }
-            if (parentid > 0) prefix += "..";
-            foreach (TabInfo tInfo in tabList)
-            {
-                var parenttestid = tInfo.ParentId;
-                if (parenttestid < 0) parenttestid = 0;
-                if (parentid == parenttestid)
-                {
-                    if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
-                    {
-                        rtnList.Add(tInfo.UniqueId, prefix + "" + tInfo.TabName);
-                        GetTreeTabListOnUniqueId(rtnList, tabList, level + 1, tInfo.TabID, prefix);
-                    }
-                }
-            }
-
-            return rtnList;
-        }
-
-        public static Dictionary<int, string> GetTreeTabListOnTabId()
+        public static Dictionary<int, string> GetTreeTabListOnTabId(bool showAllTabs = false)
         {
             var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
             var rtnList = new Dictionary<int, string>();
-            return GetTreeTabListOnTabId(rtnList, tabList, 0, 0);
+            return GetTreeTabListOnTabId(rtnList, tabList, 0, 0, "", showAllTabs);
         }
 
-        private static Dictionary<int, string> GetTreeTabListOnTabId(Dictionary<int, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "")
+        private static Dictionary<int, string> GetTreeTabListOnTabId(Dictionary<int, string> rtnList, List<TabInfo> tabList, int level, int parentid, string prefix = "", bool showAllTabs = false)
         {
 
             if (level > 20) // stop infinate loop
@@ -727,7 +700,7 @@ namespace DNNrocketAPI
                 if (parenttestid < 0) parenttestid = 0;
                 if (parentid == parenttestid)
                 {
-                    if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
+                    if (!tInfo.IsDeleted && (tInfo.TabPermissions.Count > 2 || showAllTabs))
                     {
                         rtnList.Add(tInfo.TabID, prefix + "" + tInfo.TabName);
                         GetTreeTabListOnTabId(rtnList, tabList, level + 1, tInfo.TabID, prefix);
@@ -739,108 +712,20 @@ namespace DNNrocketAPI
         }
 
 
-        public static String GetTreeViewTabJSData(String selectTabIdCVS = "")
-        {
-            var tabList = DotNetNuke.Entities.Tabs.TabController.GetTabsBySortOrder(DotNetNuke.Entities.Portals.PortalSettings.Current.PortalId, GetCurrentCulture(), true);
-            var rtnDataString = "";
-            var selecttabidlist = selectTabIdCVS.Split(',');
-            rtnDataString = GetTreeViewTabJSData(rtnDataString, tabList, 0, 0, selecttabidlist);
-            rtnDataString = rtnDataString.Replace(", children: []", "");
-            rtnDataString = "var treeData = [" + rtnDataString + "];";
-            return rtnDataString;
-        }
-
-        private static String GetTreeViewTabJSData(String rtnDataString, List<TabInfo> tabList, int level, int parentid, String[] selecttabidlist)
-        {
-
-            if (level > 20) // stop infinate loop
-            {
-                return rtnDataString;
-            }
-            foreach (TabInfo tInfo in tabList)
-            {
-                var parenttestid = tInfo.ParentId;
-                if (parenttestid < 0) parenttestid = 0;
-                if (parentid == parenttestid)
-                {
-                    if (!tInfo.IsDeleted && tInfo.TabPermissions.Count > 2)
-                    {
-                        var selectedvalue = "false";
-                        if (selecttabidlist.Contains(tInfo.TabID.ToString(""))) selectedvalue = "true";
-                        rtnDataString += "{title: '" + tInfo.TabName.Replace("'", "&apos;") + "', key:'" + tInfo.TabID + "', selected: " + selectedvalue + ", children: [";
-                        rtnDataString = GetTreeViewTabJSData(rtnDataString, tabList, level + 1, tInfo.TabID, selecttabidlist);
-                        rtnDataString += "]},";
-                    }
-                }
-            }
-            rtnDataString = rtnDataString.TrimEnd(',');
-            return rtnDataString;
-        }
-
-
-        public static Dictionary<string, string> GetUserProfileProperties(UserInfo userInfo)
-        {
-            var prop = new Dictionary<string, string>();
-            foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition p in userInfo.Profile.ProfileProperties)
-            {
-                prop.Add(p.PropertyName, p.PropertyValue);
-            }
-            return prop;
-        }
-
-        public static Dictionary<string, string> GetUserProfileProperties(String userId)
-        {
-            if (!GeneralUtils.IsNumeric(userId)) return null;
-            var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
-            return GetUserProfileProperties(userInfo);
-        }
-
-        public static void SetUserProfileProperties(UserInfo userInfo, Dictionary<string, string> properties)
-        {
-            foreach (var p in properties)
-            {
-                userInfo.Profile.SetProfileProperty(p.Key, p.Value);
-                UserController.UpdateUser(PortalSettings.Current.PortalId, userInfo);
-            }
-        }
-        public static void SetUserProfileProperties(String userId, Dictionary<string, string> properties)
-        {
-            if (GeneralUtils.IsNumeric(userId))
-            {
-                var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
-                SetUserProfileProperties(userInfo, properties);
-            }
-        }
-
-        public static List<int> GetPortals()
-        {
-            var rtnList = new List<int>();
-            var controller = new PortalController();
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
-            {
-                rtnList.Add(portal.PortalID);
-            }
-            return rtnList;
-        }
-
-        public static int GetPortalId()
-        {
-            return PortalSettings.Current.PortalId;
-        }
-
-        public static PortalSettings GetPortalSettings(int portalId)
-        {
-            var controller = new PortalController();
-            var portal = controller.GetPortal(portalId);
-            return new PortalSettings(portal);
-        }
 
         public static String GetResourceString(String resourcePath, String resourceKey, String resourceExt = "Text", String lang = "")
         {
             var resDic = GetResourceData(resourcePath, resourceKey, lang);
             if (resDic != null && resDic.ContainsKey(resourceExt))
             {
-                return resDic[resourceExt];
+                try
+                {
+                    return resDic[resourceExt].TrimEnd(' ');
+                }
+                catch (Exception)
+                {
+                    // This action throws an error when added to the resx while it's cached by DNN.
+                }
             }
             return "";
         }
@@ -849,7 +734,7 @@ namespace DNNrocketAPI
         {
             if (lang == "") lang = GetCurrentCulture();
             var ckey = resourcePath + resourceKey + lang;
-            var obj = CacheUtils.GetCache(ckey);
+            var obj = CacheUtilsDNN.GetCache(ckey);
             if (obj != null) return (Dictionary<String, String>)obj;
 
             var rtnList = new Dictionary<String, String>();
@@ -888,29 +773,11 @@ namespace DNNrocketAPI
                     }
                 }
 
-                CacheUtils.SetCache(ckey, rtnList);
+                CacheUtilsDNN.SetCache(ckey, rtnList);
             }
             return rtnList;
         }
 
-        public static void ClearPortalCache(int portalId)
-        {
-            DataCache.ClearPortalCache(portalId, true);
-        }
-
-        public static bool IsInRole(string role)
-        {
-            return UserController.Instance.GetCurrentUserInfo().IsInRole(role);
-        }
-
-        public static Boolean IsClientOnly()
-        {
-            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ClientEditor) && (!UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Editor) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) && !UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators)))
-            {
-                return true;
-            }
-            return false;
-        }
 
         #region "encryption"
 
@@ -941,57 +808,135 @@ namespace DNNrocketAPI
         #endregion
 
 
-        public static void SetEditCulture(string editlang)
+        public static void DeleteCookieValue(string name)
         {
-            if (editlang != null)
+            HttpCookie MyCookie = new HttpCookie(name);
+            MyCookie.Expires = DateTime.Now.AddDays(-10);
+            MyCookie.Value = null;
+            MyCookie.Path = "/";
+            HttpContext.Current.Response.Cookies.Set(MyCookie);
+        }
+
+        public static void SetCookieValue(string name, string value)
+        {
+            if (value != null)
             {
-                HttpCookie MyCookie = new HttpCookie("editlang");
-                MyCookie.Value = editlang;
+                HttpCookie MyCookie = new HttpCookie(name);
+                MyCookie.Value = value;
+                MyCookie.Path = "/";
                 HttpContext.Current.Response.Cookies.Add(MyCookie);
             }
         }
 
-        public static string GetEditCulture()
+        public static string GetCookieValue(string name)
         {
-            if (HttpContext.Current.Request.Cookies["editlang"] != null)
+            if (HttpContext.Current.Request.Cookies[name] != null)
             {
-                var l = GetCultureCodeList();
-                var rtnlang = HttpContext.Current.Request.Cookies["editlang"].Value;
-                if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
-                {
-                    if (l.Count >= 1)
-                    {
-                        rtnlang = l.First();
-                    }
-                }
-                return rtnlang;
-
+                return HttpContext.Current.Request.Cookies[name].Value;
             }
-            return GetCurrentCulture();
+            return "";
         }
 
+        public static bool ValidCulture(string cultureCode)
+        {
+            var l = GetCultureCodeList();
+            return l.Contains(cultureCode);
+        }
 
+        public static string SetNextCulture(string nextlang)
+        {
+            if (!ValidCulture(nextlang)) nextlang = GetEditCulture();
+            var userid = UserUtils.GetCurrentUserId();
+            if (userid > 0)
+            {
+                if (String.IsNullOrEmpty(nextlang)) nextlang = GetEditCulture();
+                var cacheKey = PortalUtils.GetPortalId() + "*nextlang*" + userid;
+                CacheUtils.SetCache(cacheKey, nextlang);
+            }
+            return nextlang;
+        }
+
+        public static string GetNextCulture()
+        {
+            var rtnLang = "";
+            var userid = UserUtils.GetCurrentUserId();
+            if (userid > 0)
+            {
+                var cacheKey = PortalUtils.GetPortalId() + "*nextlang*" + userid;
+                rtnLang = (string)CacheUtils.GetCache(cacheKey);
+            }
+            if (String.IsNullOrEmpty(rtnLang)) rtnLang = GetEditCulture();
+            if (!ValidCulture(rtnLang)) rtnLang = GetCurrentCulture();
+            return rtnLang;
+        }
+
+        public static string SetEditCulture(string editlang)
+        {
+            if (!ValidCulture(editlang)) editlang = GetCurrentCulture();
+            SetCookieValue("editlang", editlang);
+            return editlang;
+        }
+
+        public static string GetEditCulture()
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Request != null)
+            {
+                // use url param first.  This is important on changing languages through DNN.
+                if (HttpContext.Current.Request.QueryString["editlang"] != null)
+                {
+                    return HttpContext.Current.Request.QueryString["editlang"];
+                }
+                // no url language, look in the cookies.
+                if (HttpContext.Current.Request.Cookies["editlang"] != null)
+                {
+                    var l = GetCultureCodeList();
+                    var rtnlang = HttpContext.Current.Request.Cookies["editlang"].Value;
+                    if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
+                    {
+                        if (l.Count >= 1)
+                        {
+                            rtnlang = l.First();
+                        }
+                    }
+                    return rtnlang;
+                }
+            }
+            // default to system thread, but in API this may be wrong.
+            CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
+            return currentCulture.Name;
+        }
+        public static void SetCurrentCulture(string cultureCode)
+        {
+            SetCookieValue("language", cultureCode);
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureCode);
+        }
         public static string GetCurrentCulture()
         {
-            if (HttpContext.Current.Request.Cookies["language"] != null)
+            if (HttpContext.Current != null && HttpContext.Current.Request != null)
             {
-                var l = GetCultureCodeList();
-                var rtnlang = HttpContext.Current.Request.Cookies["language"].Value;
-                if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
+                // use url param first.  This is important on changing languages through DNN.
+                if (HttpContext.Current.Request.QueryString["language"] != null)
                 {
-                    if (l.Count >= 1)
-                    {
-                        rtnlang = l.First();
-                    }
+                    return HttpContext.Current.Request.QueryString["language"];
                 }
-                return rtnlang;
+                // no url language, look in the cookies.
+                if (HttpContext.Current.Request.Cookies["language"] != null)
+                {
+                    var l = GetCultureCodeList();
+                    var rtnlang = HttpContext.Current.Request.Cookies["language"].Value;
+                    if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
+                    {
+                        if (l.Count >= 1)
+                        {
+                            rtnlang = l.First();
+                        }
+                    }
+                    return rtnlang;
+                }
             }
-            var l2 = GetCultureCodeList();
-            if (l2.Count >= 1)
-            {
-                return l2.First();
-            }
-            return "en-US";  // should not happen.
+            // default to system thread, but in API this may be wrong.
+            CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
+            return currentCulture.Name;
         }
 
         public static string GetCurrentCountryCode()
@@ -1003,14 +948,39 @@ namespace DNNrocketAPI
             return rtn;
         }
 
-        public static string TempDirectory()
+        public static string GetCurrentLanguageCode()
         {
-            return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketTemp";
-        }        
-
+            var cc = GetCurrentCulture();
+            var c = cc.Split('-');
+            var rtn = "";
+            if (c.Length > 0) rtn = c[0];
+            return rtn;
+        }
+        public static string SystemThemeImgDirectoryRel()
+        {
+            return "/DesktopModules/RocketThemes/idximg";
+        }
+        public static string SystemThemeImgDirectoryMapPath()
+        {
+            return DNNrocketUtils.MapPath(SystemThemeImgDirectoryRel());
+        }
         public static string MapPath(string relpath)
         {
+            if (String.IsNullOrWhiteSpace(relpath)) return "";
+            relpath = "/" + relpath.TrimStart('/');
             return System.Web.Hosting.HostingEnvironment.MapPath(relpath);
+        }
+        public static string MapPathReverse(string fullMapPath)
+        {
+            if (String.IsNullOrWhiteSpace(fullMapPath)) return "";
+            return @"\" + fullMapPath.Replace(HttpContext.Current.Request.PhysicalApplicationPath, String.Empty).Replace("\\", "/");
+        }
+        public static string Email(int portalId = -1)
+        {
+            if (portalId >= 0)
+                return PortalUtils.GetPortalSettings(portalId).Email;
+            else
+                return PortalSettings.Current.Email;
         }
 
         public static string GetEntityTypeCode(SimplisityInfo interfaceInfo)
@@ -1027,118 +997,19 @@ namespace DNNrocketAPI
             return rtn;
         }
 
-        public static string FileUpload(HttpContext context)
+        public static string GetUniqueFileName(string fileName, string folderMapPath, int idx = 1)
         {
-            try
+            foreach (char c in System.IO.Path.GetInvalidFileNameChars())
             {
-
-                var strOut = "";
-                switch (context.Request.HttpMethod)
-                {
-                    case "HEAD":
-                    case "GET":
-                        break;
-                    case "POST":
-                    case "PUT":
-                        strOut = UploadFile(context);
-                        break;
-                    case "DELETE":
-                        break;
-                    case "OPTIONS":
-                        break;
-
-                    default:
-                        context.Response.ClearHeaders();
-                        context.Response.StatusCode = 405;
-                        break;
-                }
-
-                return strOut;
+                fileName = fileName.Replace(c, '_');
             }
-            catch (Exception ex)
+            if (File.Exists(folderMapPath + "\\" + fileName))
             {
-                return ex.ToString();
+                fileName = GetUniqueFileName(Path.GetFileNameWithoutExtension(fileName) + idx + Path.GetExtension(fileName), folderMapPath, idx + 1);
             }
-
+            return fileName;
         }
 
-        // Upload file to the server
-        public static string UploadFile(HttpContext context)
-        {
-            if (!Directory.Exists(TempDirectory())) {
-                Directory.CreateDirectory(TempDirectory());
-            }
-
-            var statuses = new List<FilesStatus>();
-            var headers = context.Request.Headers;
-
-            if (string.IsNullOrEmpty(headers["X-File-Name"]))
-            {
-                return UploadWholeFile(context, statuses, "");
-            }
-            else
-            {
-                return UploadPartialFile(headers["X-File-Name"], context, statuses, "");
-            }
-        }
-
-        // Upload partial file
-        public static string UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses, string fileregexpr)
-        {
-            Regex fexpr = new Regex(fileregexpr);
-            if (fexpr.Match(fileName.ToLower()).Success)
-            {
-                if (context.Request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
-                var inputStream = context.Request.Files[0].InputStream;
-
-                var systemData = new SystemData();
-                var systemprovider = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "systemprovider"));
-                var sInfoSystem = systemData.GetSystemByKey(systemprovider);
-                var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
-
-                var fn = DNNrocketUtils.EncryptFileName(encryptkey, fileName);
-
-                var fullName = TempDirectory() + "\\" + fn;
-
-                using (var fs = new FileStream(fullName, FileMode.Append, FileAccess.Write))
-                {
-                    var buffer = new byte[1024];
-
-                    var l = inputStream.Read(buffer, 0, 1024);
-                    while (l > 0)
-                    {
-                        fs.Write(buffer, 0, l);
-                        l = inputStream.Read(buffer, 0, 1024);
-                    }
-                    fs.Flush();
-                    fs.Close();
-                }
-                statuses.Add(new FilesStatus(new System.IO.FileInfo(fullName)));
-            }
-            return "";
-        }
-
-        // Upload entire file
-        public static string UploadWholeFile(HttpContext context, List<FilesStatus> statuses, string fileregexpr)
-        {
-            var systemData = new SystemData();
-            var systemprovider = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "systemprovider"));
-            var sInfoSystem = systemData.GetSystemByKey(systemprovider);
-            var encryptkey = sInfoSystem.GetXmlProperty("genxml/textbox/encryptkey");
-
-            for (int i = 0; i < context.Request.Files.Count; i++)
-            {
-                var file = context.Request.Files[i];
-                Regex fexpr = new Regex(fileregexpr);
-                if (fexpr.Match(file.FileName.ToLower()).Success)
-                {
-                    var fn = EncryptFileName(encryptkey, file.FileName);
-                    file.SaveAs(TempDirectory() + "\\" + fn);
-                    statuses.Add(new FilesStatus(Path.GetFileName(fn), file.ContentLength));
-                }
-            }
-            return "";
-        }
 
         public static string EncryptFileName(string encryptkey, string fileName)
         {
@@ -1150,26 +1021,341 @@ namespace DNNrocketAPI
             return fn;
         }
 
-        public static string DownloadSystemFile(string paramCmd, HttpContext context)
+        public static SimplisityInfo GetSystemByName(string systemkey)
         {
-            var strOut = "";
-            var fname = DNNrocketUtils.RequestQueryStringParam(context, "filename");
-            var filekey = DNNrocketUtils.RequestQueryStringParam(context, "key");
-            if (fname != "")
+            var objCtrl = new DNNrocketController();
+            return objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
+        }
+        /// <summary>
+        /// Use the First DNN Module definition as the DNNrocket systemkey
+        /// </summary>
+        /// <param name="moduleId"></param>
+        /// <param name="tabId"></param>
+        /// <returns></returns>
+        public static string GetModuleSystemKey(int moduleId, int tabId)
+        {
+            var cacheKey = "systemkey.moduleid" + moduleId + ".tabid" + tabId;
+            var systemKey = (string)CacheUtilsDNN.GetCache(cacheKey);
+            if (systemKey == null)
             {
-                strOut = fname; // return this is error.
-                var downloadname = DNNrocketUtils.RequestQueryStringParam(context, "downloadname");
-                var fpath = HttpContext.Current.Server.MapPath(fname);
-                if (downloadname == "") downloadname = Path.GetFileName(fname);
-                try
+                systemKey = "";
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
+                var desktopModule = moduleInfo.DesktopModule;
+                var moduleName = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
+                var mlist = moduleName.Split('_');
+                if (mlist.Length == 2)
                 {
-                    DNNrocketUtils.ForceDocDownload(fpath, downloadname, context.Response);
-                }
-                catch (Exception ex)
-                {
-                    // ignore, robots can cause error on thread abort.
+                    systemKey = mlist[0];
+                    CacheUtilsDNN.SetCache(cacheKey, systemKey);
                 }
             }
+            return  systemKey;
+        }
+        /// <summary>
+        /// Use the module name as DNNrocket interface key.
+        /// </summary>
+        /// <param name="moduleId"></param>
+        /// <param name="tabId"></param>
+        /// <returns></returns>
+        public static string GetModuleInterfaceKey(int moduleId, int tabId)
+        {
+            var cacheKey = "interfacekey.moduleid" + moduleId + ".tabid" + tabId;
+            var interfacekey = (string)CacheUtilsDNN.GetCache(cacheKey);
+            if (interfacekey == null)
+            {
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
+                var desktopModule = moduleInfo.DesktopModule;
+                var moduleName = desktopModule.ModuleName.ToLower();  // Use the module name as DNNrocket interface key.
+                var mlist = moduleName.Split('_');
+                interfacekey = moduleName;
+                if (mlist.Length == 2)
+                {
+                    interfacekey = mlist[1];
+                    CacheUtilsDNN.SetCache(cacheKey, interfacekey);
+                }
+            }
+            return interfacekey;
+        }
+
+        public static List<int> GetAllModulesOnPage(int tabId)
+        {
+            var rtn = new List<int>();
+            var l = ModuleController.Instance.GetTabModules(tabId);
+            foreach (var m in l)
+            {
+                if (!m.Value.IsDeleted) rtn.Add(m.Value.ModuleID);
+            }
+            return rtn;
+        }
+
+        public static SimplisityInfo GetModuleSystemInfo(string systemkey, int moduleId, bool loadSystemXml = true)
+        {
+            var objCtrl = new DNNrocketController();
+
+            var systemInfo = (SimplisityInfo)CacheUtilsDNN.GetCache(systemkey + "modid" + moduleId);
+            if (systemInfo == null)
+            {
+                systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
+                if (systemInfo != null) CacheUtilsDNN.SetCache(systemkey + "modid" + moduleId, systemInfo);
+            }
+            if (systemInfo == null && loadSystemXml)
+            {
+                // no system data, so must be new install.
+                var sData = new SystemLimpetList(); // load XML files.
+                systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
+                if (systemInfo != null) CacheUtilsDNN.SetCache(systemkey + "modid" + moduleId, systemInfo);
+            }
+            return systemInfo;
+        }
+
+        public static void IncludePageHeaders(string systemKey, Page page, int tabId, bool debugMode = false)
+        {
+            page.Items.Add("dnnrocket_pageheader", true);
+            var cachekey = tabId + ".pageheader.cshtml";
+            string cacheHead = null;
+            cacheHead = (string)CacheFileUtils.GetCache(cachekey);
+            if (String.IsNullOrEmpty(cacheHead))
+            {
+                var fileList = new List<string>();
+                var modulesOnPage = GetAllModulesOnPage(tabId);
+                foreach (var modId in modulesOnPage)
+                {
+                    var systemInfo = GetModuleSystemInfo(systemKey, modId, false);
+                    if (systemInfo != null)
+                    {
+                        if (!fileList.Contains("GlobalPageHeading"))
+                        {
+                            fileList.Add("GlobalPageHeading");
+                            var systemGlobalData = new SystemGlobalData();
+                            cacheHead += systemGlobalData.GlobalPageHeading;
+                        }
+                        var appThemeMod = new AppThemeModule(modId, systemKey);
+                        var fileMapPath = appThemeMod.ModuleParams.AppTheme.GetFileMapPath("pageheader.cshtml");
+                        if (!fileList.Contains(fileMapPath))
+                        {
+                            fileList.Add(fileMapPath);
+                            var activePageHeaderTemplate = appThemeMod.GetTemplateRazor("pageheader.cshtml");
+                            if (activePageHeaderTemplate != "")
+                            {
+                                var settings = new Dictionary<string, string>();
+                                var l = new List<object>();
+                                l.Add(appThemeMod);
+                                var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
+                                nbRazor.TabId = tabId;
+                                nbRazor.ModuleRef = appThemeMod.ModuleParams.ModuleRef;
+                                nbRazor.ModuleId = appThemeMod.ModuleParams.ModuleId;
+                                nbRazor.ModuleRefDataSource = appThemeMod.ModuleParams.ModuleRefDataSource;
+                                nbRazor.ModuleIdDataSource = appThemeMod.ModuleParams.ModuleIdDataSource;
+                                cacheHead += RenderRazorUtils.RazorRender(nbRazor, activePageHeaderTemplate, false);
+                            }
+                        }
+                    }
+                }
+
+                CacheFileUtils.SetCache(cachekey, cacheHead);
+                PageIncludes.IncludeTextInHeaderAt(page, cacheHead, 1);
+            }
+            else
+            {
+                PageIncludes.IncludeTextInHeaderAt(page, cacheHead, 1);
+            }
+
+        }
+
+        public static Dictionary<string, object> GetProviderReturn(string paramCmd, SimplisityInfo systemInfo, RocketInterface rocketInterface, SimplisityInfo postInfo, SimplisityInfo paramInfo, string templateRelPath, string editlang)
+        {
+            var rtnDic = new Dictionary<string, object>();
+            var systemkey = "";
+            if (systemInfo != null)
+            {
+                systemkey = systemInfo.GUIDKey;
+            }
+            if (systemkey == "" || systemkey == "systemapi" || systemkey == "login")
+            {
+                if (rocketInterface.Exists && (rocketInterface.Assembly == "" || rocketInterface.NameSpaceClass == ""))
+                {
+                    var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.System.StartConnect");
+                    rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, editlang);
+                }
+                else
+                {
+                    var ajaxprov = APInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                    rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, paramInfo, editlang);
+                }
+
+            }
+            else
+            {
+                if (systemkey != "")
+                {
+                    // Run API Provider.
+                    rtnDic.Add("outputhtml", "API not found: " + systemkey);
+                    if (systemInfo != null)
+                    {
+                        if (rocketInterface.Exists)
+                        {
+                            var controlRelPath = rocketInterface.TemplateRelPath;
+                            if (controlRelPath == "") controlRelPath = templateRelPath;
+                            if (rocketInterface.Assembly == "" || rocketInterface.NameSpaceClass == "")
+                            {
+                                rtnDic.Remove("outputhtml");
+                                rtnDic.Add("outputhtml", "No assembly or namespaceclass defined: " + systemkey + " : " + rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass);
+                            }
+                            else
+                            {
+                                var ajaxprov = APInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                                rtnDic = ajaxprov.ProcessCommand(paramCmd, systemInfo, rocketInterface.Info, postInfo, paramInfo, editlang);
+                            }
+                        }
+                        else
+                        {
+                            rtnDic.Remove("outputhtml");
+                            rtnDic.Add("outputhtml", "interfacekey not found: ");
+                        }
+                    }
+                    else
+                    {
+                        rtnDic.Remove("outputhtml");
+                        rtnDic.Add("outputhtml", "No valid system found: " + systemkey);
+                    }
+                }
+            }
+            return rtnDic;
+        }
+
+        public static Dictionary<string, object> EventProviderBefore(string paramCmd, SystemLimpet systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
+        {
+            var rtnDic = new Dictionary<string, object>();
+            if (!systemData.Exists) return rtnDic;  // for systemadmin this may be null
+            foreach (var rocketInterface in systemData.EventList)
+            {
+                if (rocketInterface.IsActive && rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                {
+                    try
+                    {
+                        var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
+                        var ajaxprov = (EventInterface)CacheUtilsDNN.GetCache(cacheKey);
+                        if (ajaxprov == null)
+                        {
+                            ajaxprov = EventInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                            CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
+                        }
+                        rtnDic = ajaxprov.BeforeEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
+                    }
+                    catch (Exception ex)
+                    {
+                        var err = ex.ToString();  // ignore event provider errors.  The error trap should be in the provider.
+                    }
+                }
+            }
+            return rtnDic;
+        }
+
+        public static Dictionary<string, object> EventProviderAfter(string paramCmd, SystemLimpet systemData, SimplisityInfo postInfo, SimplisityInfo paramInfo, string editlang)
+        {
+            var rtnDic = new Dictionary<string, object>();
+            if (!systemData.Exists) return rtnDic;  // for systemadmin this may be null
+            foreach (var rocketInterface in systemData.EventList)
+            {
+                if (rocketInterface.IsActive && rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                {
+                    try
+                    {
+                        var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
+                        var ajaxprov = (EventInterface)CacheUtilsDNN.GetCache(cacheKey);
+                        if (ajaxprov == null)
+                        {
+                            ajaxprov = EventInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                            CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
+                        }
+                        rtnDic = ajaxprov.AfterEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
+                    }
+                    catch (Exception ex)
+                    {
+                        var err = ex.ToString();  // ignore event provider errors.  The error trap should be in the provider.
+                    }
+                }
+            }
+            return rtnDic;
+        }
+
+        /// <summary>
+        /// Render the image select template
+        /// </summary>
+        /// <param name="imagesize"></param>
+        /// <param name="selectsingle"></param>
+        /// <param name="autoreturn"></param>
+        /// <param name="uploadFolder">this can be a full relative path or a single folder name at portal level in DNNrocket folder "/Portals/<portal>/DNNrocket/<uploadFolder>"</param>
+        /// <param name="razorTemplateName"></param>
+        /// <param name="templateControlRelPath"></param>
+        /// <param name="themeFolder"></param>
+        /// <returns></returns>
+        public static string RenderImageSelect(string systemkey, string imageFolderRel, bool selectsingle = true, bool autoreturn = false)
+        {
+
+            string razorTemplateName = "ImageSelect.cshtml";
+            string templateControlRelPath = "/DesktopModules/DNNrocket/images/";
+            string themeFolder = "config-w3";
+            var imageFolderMapPath = DNNrocketUtils.MapPath(imageFolderRel);
+
+            var imageModel = new SimplisityRazor();
+
+            imageModel.SetSetting("selectsingle", selectsingle.ToString());
+            imageModel.SetSetting("autoreturn", autoreturn.ToString());
+            imageModel.SetSetting("imagesize", "120");
+            imageModel.SetSetting("imagefolderrel", imageFolderRel);
+            imageModel.SetSetting("systemkey", systemkey);            
+
+            var imgList = new List<object>();
+            foreach (var i in DNNrocketUtils.GetFiles(imageFolderMapPath))
+            {
+                imgList.Add(i.Name);
+            }
+            imageModel.List = imgList;
+
+            var strOut = "<div id='dnnrocket_imageselectwrapper'>";
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+            strOut += RenderRazorUtils.RazorRender(imageModel, razorTempl, true);
+            strOut += "</div>";
+            return strOut;
+        }
+
+
+        public static string RenderDocumentSelect(ModuleParams moduleParams, bool selectsingle = true, bool autoreturn = false)
+        {
+            return RenderDocumentSelect(moduleParams.SystemKey, moduleParams.DocumentFolderRel, selectsingle, autoreturn);
+        }
+        public static string RenderDocumentSelect(string systemkey, string documentFolderRel, bool selectsingle = true, bool autoreturn = false)
+        {
+            string razorTemplateName = "DocSelect.cshtml";
+            string templateControlRelPath = "/DesktopModules/DNNrocket/documents/";
+            string themeFolder = "config-w3";
+
+            var docModel = new SimplisityRazor();
+
+            docModel.GetSettingBool("selectsingle", selectsingle);
+            docModel.GetSettingBool("autoreturn", autoreturn);
+            docModel.SetSetting("documentfolderrel", documentFolderRel);
+            docModel.SetSetting("systemkey", systemkey);
+
+            var docList = new List<object>();
+            foreach (var i in DNNrocketUtils.GetFiles(DNNrocketUtils.MapPath(documentFolderRel)))
+            {
+                var sInfo = new SimplisityInfo();
+                sInfo.SetXmlProperty("genxml/name", i.Name);
+                sInfo.SetXmlProperty("genxml/relname", documentFolderRel + "/" + i.Name);
+                sInfo.SetXmlProperty("genxml/fullname", i.FullName);
+                sInfo.SetXmlProperty("genxml/extension", i.Extension);
+                sInfo.SetXmlProperty("genxml/directoryname", i.DirectoryName);
+                sInfo.SetXmlProperty("genxml/lastwritetime", i.LastWriteTime.ToShortDateString());
+                docList.Add(sInfo);
+            }
+            docModel.List = docList;
+
+            var strOut = "<div id='dnnrocket_documentselectwrapper'>";
+            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            strOut += RenderRazorUtils.RazorRender(docModel, razorTempl, false);
+            strOut += "</div>";
             return strOut;
         }
 
@@ -1177,11 +1363,21 @@ namespace DNNrocketAPI
         {
             if (File.Exists(docFilePath) & !String.IsNullOrEmpty(fileName))
             {
-                response.AppendHeader("content-disposition", "attachment; filename=" + fileName);
-                response.ContentType = "application/octet-stream";
-                response.WriteFile(docFilePath);
-                response.End();
+                try
+                {
+
+                    response.AppendHeader("content-disposition", "attachment; filename=" + fileName);
+                    response.ContentType = "application/octet-stream";
+                    response.WriteFile(docFilePath);
+                    response.End();
+                }
+                catch (Exception ex)
+                {
+                    // will cause a exception on the respone.End.  Just ignore.
+                    var msg = ex.ToString();
+                }
             }
+
 
         }
 
@@ -1192,6 +1388,257 @@ namespace DNNrocketAPI
             response.Write(fileData);
             response.End();
         }
+
+        public static SimplisityRecord UpdateFieldXpath(SimplisityInfo postInfo, SimplisityRecord record, string listname)
+        {
+            record.RemoveRecordList(listname);
+            List<SimplisityRecord> fieldList = postInfo.GetRecordList(listname);
+            var lp = 1;
+            foreach (var f in fieldList)
+            {
+                var localized = f.GetXmlPropertyBool("genxml/checkbox/localized");
+                var xpath = f.GetXmlProperty("genxml/hidden/xpath");
+                var size = f.GetXmlProperty("genxml/select/size");
+                var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
+                var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
+                var defaultBool = f.GetXmlPropertyBool("genxml/textbox/defaultvalue");
+                var attributes = f.GetXmlProperty("genxml/textbox/attributes");
+                var isonlist = f.GetXmlPropertyBool("genxml/checkbox/isonlist");
+                var fieldname = f.GetXmlProperty("genxml/textbox/name");
+
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
+                {
+                    xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "textboxdate")
+                {
+                    xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "textarea")
+                {
+                    xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
+                {
+                    xpath = "genxml/checkbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
+                {
+                    xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
+                {
+                    xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
+                {
+                    xpath = "genxml/select/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
+                if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext" || f.GetXmlProperty("genxml/select/type") == "")
+                {
+                    xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
+                }
+
+                if (localized) xpath = "genxml/lang/" + xpath;
+
+                if (xpath != "")
+                {
+                    f.SetXmlProperty("genxml/hidden/xpath", xpath);
+                    record.AddRecordListItem(listname, f);
+                }
+                lp += 1;
+            }
+            return record;
+        }
+
+
+        /// <summary>
+        /// Generates a new backup file name, based on the date and time.  (May not be unique)
+        /// </summary>
+        /// <returns></returns>
+        public static string BackUpNewFileName(string backupRootFolder, string moduleName, string fileAppendix = "BackUp.xml")
+        {
+            if (!Directory.Exists(PortalUtils.BackUpDirectoryMapPath() + "\\" +  backupRootFolder))
+            {
+                Directory.CreateDirectory(PortalUtils.BackUpDirectoryMapPath() + "\\" + backupRootFolder);
+            }            
+            if (!Directory.Exists(PortalUtils.BackUpDirectoryMapPath() + "\\" + backupRootFolder + "\\" + moduleName))
+            {
+                Directory.CreateDirectory(PortalUtils.BackUpDirectoryMapPath() + "\\" + backupRootFolder + "\\" + moduleName);
+            }
+            return PortalUtils.BackUpDirectoryMapPath() + "\\" + backupRootFolder + "\\" + moduleName + "\\" + DateTime.Now.ToFileTime() + "_" + fileAppendix;
+        }
+
+
+        /// <summary>
+        /// Recycles a web site Application Pool (including the current web site).
+        /// Requires to reference Microsoft.Web.Administration and System.Web.Hosting.
+        /// IMPORTANT: The IIS user requires extended permissions to recycle application pool(s).
+        /// </summary>
+        /// <param name="siteName">The site name: leave it NULL to recycle the current site's App Pool.</param>
+        /// <returns>TRUE if the site's App Pool has been recycled; FALSE if no site has been found with the given name.</returns>
+        public static bool RecycleApplicationPool(string siteName = null)
+        {
+            try
+            {
+                RetryableAction.Retry5TimesWith2SecondsDelay(() => File.SetLastWriteTime(Globals.ApplicationMapPath + "\\web.config", DateTime.Now), "Touching config file");
+                return true;
+            }
+            catch (Exception exc)
+            {
+                return false;
+            }
+
+        }
+
+        public static void CloneModule(int moduleid, int fromTabId, int toTabId)
+        {
+            if ((toTabId > 0) && (fromTabId > 0) && (fromTabId != toTabId))
+            {
+                var existingmodule = ModuleController.Instance.GetModule(moduleid, toTabId, true);
+                if (existingmodule != null)
+                {
+                    if (existingmodule.IsDeleted)
+                    {
+                        ModuleController.Instance.DeleteTabModule(toTabId, moduleid, false) ;
+                    }
+                    existingmodule = ModuleController.Instance.GetModule(moduleid, toTabId, true);
+                }
+                if (existingmodule == null)
+                {
+                    ModuleInfo fmi = ModuleController.Instance.GetModule(moduleid, fromTabId, true);
+                    ModuleInfo newModule = fmi.Clone();
+
+                    newModule.UniqueId = Guid.NewGuid(); // Cloned Module requires a different uniqueID 
+                    newModule.TabID = toTabId;
+                    ModuleController.Instance.AddModule(newModule);
+                }
+
+            }
+
+        }
+
+
+        public static void ClearThumbnailLock()
+        {
+            //Images in Cache still retain the file lock, we must dispose of then out of cache.
+            var l = CacheUtils.GetGroupCache("DNNrocketThumb");
+            foreach (Bitmap i in l)
+            {
+                i.Dispose();
+            }
+            CacheUtils.ClearAllCache("DNNrocketThumb");
+        }
+
+        #region "DNN cache"
+
+        public static void SetCache(string cacheKey, object objObject)
+        {
+            DataCache.SetCache(cacheKey, objObject, DateTime.Now + new TimeSpan(2, 0, 0, 0));
+        }
+        public static object GetCache(string cacheKey)
+        {
+            return DataCache.GetCache(cacheKey);
+        }
+        public static void RemoveCache(string cacheKey)
+        {
+            DataCache.RemoveCache(cacheKey);
+        }
+        public static void ClearAllCache()
+        {
+            DataCache.ClearCache();
+        }
+        public static void ClearPortalCache()
+        {
+            DataCache.ClearPortalCache(PortalSettings.Current.PortalId, true);
+        }
+
+        public static void ClearPortalCache(int portalId)
+        {
+            DataCache.ClearPortalCache(portalId, true);
+        }
+
+        /// <summary>
+        /// Synchronizes the module content between cache and database. + Update ModifiedContentDate
+        /// </summary>
+        /// <param name="moduleID">The module ID.</param>
+        public static void SynchronizeModule(int moduleId)
+        {
+            ModuleController.SynchronizeModule(moduleId);
+        }
+
+
+        #endregion
+
+
+        public static string NavigateURL(int tabId, string[] param)
+        {
+            return Globals.NavigateURL(tabId, "", param).ToString();
+        }
+
+        #region "Portal - obsolete"
+
+        [Obsolete("Use PortalUtils instead")]
+        public static List<int> GetPortals() { return PortalUtils.GetPortals(); }
+        [Obsolete("Use PortalUtils instead")]
+        public static int GetPortalId(){return PortalUtils.GetPortalId();}
+        [Obsolete("Use PortalUtils instead")]
+        public static PortalSettings GetPortalSettings(){return PortalUtils.GetPortalSettings();}
+        [Obsolete("Use PortalUtils instead")]
+        public static PortalSettings GetPortalSettings(int portalId){return PortalUtils.GetPortalSettings(portalId);}
+        [Obsolete("Use PortalUtils instead")]
+        public static int GetPortalByModuleID(int moduleId)
+        {
+             return PortalUtils.GetPortalByModuleID(moduleId);
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static List<int> GetAllPortalIds()
+        {
+            return PortalUtils.GetAllPortalIds();
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static List<SimplisityRecord> GetAllPortalRecords()
+        {
+            return PortalUtils.GetAllPortalRecords();
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static void CreatePortalFolder(PortalSettings PortalSettings, string FolderName)
+        {
+            PortalUtils.CreatePortalFolder(PortalSettings, FolderName);
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static PortalSettings GetCurrentPortalSettings()
+        {
+            return PortalUtils.GetCurrentPortalSettings();
+        }
+        [Obsolete("Method1 is deprecated, please use PortalUtils.DefaultPortalAlias(portalId) instead.")]
+        public static string GetDefaultWebsiteDomainUrl(int portalId = -1)
+        {
+            return PortalUtils.DefaultPortalAlias(portalId);
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static List<string> GetPortalAliases(int portalId)
+        {
+            return PortalUtils.GetPortalAliases(portalId);
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static string DefaultPortalAlias(int portalId = -1)
+        {
+            return PortalUtils.DefaultPortalAlias(portalId);
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static string SiteGuid()
+        {
+            return PortalUtils.SiteGuid();
+        }
+        [Obsolete("Use PortalUtils instead")]
+        public static string GetPortalAlias(string lang, int portalid = -1)
+        {
+            return PortalUtils.GetPortalAlias(lang, portalid);
+        }
+
+
+        #endregion
 
 
     }

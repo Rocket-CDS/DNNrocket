@@ -11,24 +11,29 @@ namespace DNNrocketAPI.Componants
     {
         private SimplisityInfo _sysInfo;
 
-        private string systemkey;
-
-        public string SystemKey { get => systemkey; set => systemkey = value; }
+        public string SystemKey { get; set; }
+        public int SystemId { get; set; }
+        public int ModuleId { get; set; }
 
         public SideMenu(SimplisityInfo sysInfo)
         {
             _sysInfo = sysInfo;
-            systemkey = sysInfo.GetXmlProperty("genxml/textbox/ctrlkey");
+            if (sysInfo != null)
+            {
+                SystemKey = sysInfo.GetXmlProperty("genxml/textbox/ctrlkey");
+            }
         }
 
         public List<SimplisityRecord> GetGroups()
         {
             var rtnList = new List<SimplisityRecord>();
-
-            foreach (var i in _sysInfo.GetList("groupsdata"))
+            if (_sysInfo != null)
             {
-                // [TODO: add security]
-                rtnList.Add(i);
+                foreach (var i in _sysInfo.GetList("groupsdata"))
+                {
+                    // [TODO: add security]
+                    rtnList.Add(i);
+                }
             }
 
             return rtnList;
@@ -37,31 +42,24 @@ namespace DNNrocketAPI.Componants
         {
             var rtnList = new List<SimplisityRecord>();
 
-            foreach (var i in _sysInfo.GetList("interfacedata"))
+            if (_sysInfo != null)
             {
-                // [TODO: add security]
-                if (groupref == i.GetXmlProperty("genxml/dropdownlist/group"))
+                foreach (var i in _sysInfo.GetList("interfacedata"))
                 {
-                    rtnList.Add(i);
+                    if (groupref == i.GetXmlProperty("genxml/dropdownlist/group"))
+                    {
+                        var userid = UserUtils.GetCurrentUserId();
+                        var rocketinterface = new RocketInterface(i);
+                        if (rocketinterface.SecurityCheckUser(PortalUtils.GetPortalId(), userid))
+                        {
+                            rtnList.Add(i);
+                        }
+                    }
                 }
             }
 
             return rtnList;
         }
-
-        public List<SimplisityRecord> GetMenuOnUserSecurity()
-        {
-            var roles = UserUtils.GetCurrentUserRoles();
-            var rtnList = new List<SimplisityRecord>();
-            foreach (var i in _sysInfo.GetList("interfacedata"))
-            {
-
-
-            }
-
-            return rtnList;
-        }
-
 
     }
 }
