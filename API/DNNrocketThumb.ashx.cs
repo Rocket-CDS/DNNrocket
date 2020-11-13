@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -63,13 +64,10 @@ namespace DNNrocketAPI.Componants
 
                     try
                     {
+                        context.Response.AddFileDependency(src);
+                        context.Response.Cache.SetETagFromFileDependencies();
+                        context.Response.Cache.SetLastModifiedFromFileDependencies();
                         context.Response.Cache.SetCacheability(HttpCacheability.Public);
-                        DateTime dt = DateTime.Now.AddMinutes(30);
-                        context.Response.Cache.SetMaxAge(new TimeSpan(dt.Ticks - DateTime.Now.Ticks));
-                        context.Response.Cache.SetETag(GeneralUtils.GetGuidKey());
-                        context.Response.Headers.Remove("Set-Cookie");
-                        context.Response.Headers.Add("Accept-Ranges", "bytes");
-                        context.Response.Headers.Add("Last-Modified", "Wed, 28 Oct 2020 15:38:18 GMT");
                         newImage.Save(context.Response.OutputStream, useEncoder, encoderParameters);
                     }
                     catch (Exception exc)
