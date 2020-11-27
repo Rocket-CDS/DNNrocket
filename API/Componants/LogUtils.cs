@@ -19,77 +19,18 @@ namespace DNNrocketAPI.Componants
             if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
             FileUtils.AppendToLog(mappath, "system", message);
         }
-
-        //  --------------------- Debug Log files ------------------------------
-        public static void LogTest(string filename, string datatext)
+        public static void LogSystemClear(int daysToKeep)
         {
-            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\test";
+            var mappath = DNNrocketUtils.MapPath("Portals/_default/RocketLogs");
             if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-
-            using (StreamWriter w = File.AppendText(mappath.TrimEnd('\\') + "\\" + Path.GetFileNameWithoutExtension(filename) + ".txt")) 
+            DirectoryInfo di = new DirectoryInfo(mappath);
+            foreach (FileInfo file in di.GetFiles())
             {
-                w.WriteLine(datatext);
-                w.WriteLine("-------------------------------");
-            }
-        }
-        public static void LogTestClear()
-        {
-            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\test";
-            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-            System.IO.DirectoryInfo di = new DirectoryInfo(mappath);
-            foreach (System.IO.FileInfo file in di.GetFiles())
-            {
-
-                file.Delete();
+                if (file.CreationTime < DateTime.Now.AddDays(daysToKeep)) file.Delete();
             }
         }
 
         //  --------------------- Debug Log files ------------------------------
-        private static void Log(string message, string folderName)
-        {
-            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\" + folderName;
-            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-            FileUtils.AppendToLog(mappath, "debug", message);
-        }
-        private static void LogClear(string folderName)
-        {
-            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\" + folderName;
-            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
-            System.IO.DirectoryInfo di = new DirectoryInfo(mappath);
-            foreach (System.IO.FileInfo file in di.GetFiles())
-            {
-                file.Delete();
-            }
-        }
-
-
-        //  --------------------- Debug Log files ------------------------------
-
-        [Obsolete("LogDebug(string message) is deprecated, please use LogDebug(string message, string systemkey) instead.")]
-        public static void LogDebug(string message)
-        {
-            Log(message, "debug");
-        }
-        /// <summary>
-        /// Use only for DEBUG. This will only be saved inthe Temporary portal folder.  Use LogTracking for normal user action logs
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="systemkey"></param>
-        public static void LogDebug(string message, string systemkey)
-        {
-            var dolog = false;
-            var systemData = new SystemLimpet(systemkey);
-            if (systemData.Exists && systemData.DebugMode) dolog = true;
-            if (dolog) Log(message, "debug");
-        }
-
-        /// <summary>
-        /// Use only for DEBUG.  Use LogTracking for normal user action logs
-        /// </summary>
-        public static void LogDebugClear()
-        {
-            LogClear("debug");
-        }
         /// <summary>
         /// Write a data file, to the Portal \DNNrocketTemp\debug folder.
         /// </summary>
@@ -120,6 +61,16 @@ namespace DNNrocketAPI.Componants
             }
 
         }
+        public static void LogTrackingClear(int portalid, int daysToKeep)
+        {
+            var mappath = PortalUtils.HomeDNNrocketDirectoryMapPath(portalid).TrimEnd('\\') + "\\logs";
+            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
+            DirectoryInfo di = new DirectoryInfo(mappath);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                if (file.CreationTime < DateTime.Now.AddDays(daysToKeep)) file.Delete();
+            }
+        }
         /// <summary>
         /// Places an exception onto the DNN audit log.
         /// </summary>
@@ -130,6 +81,28 @@ namespace DNNrocketAPI.Componants
             CacheUtils.ClearAllCache(); // do  not want to repeat the error;
             Exceptions.LogException(exc);
             return exc.ToString();
+        }
+
+        //  --------------------- Private utils ------------------------------
+        private static void Log(string message, string folderName)
+        {
+            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\" + folderName;
+            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
+            FileUtils.AppendToLog(mappath, "debug", message);
+        }
+        private static void LogClear(string folderName, int daysToKeep)
+        {
+            LogClear(PortalUtils.GetCurrentPortalId(), folderName, daysToKeep);
+        }
+        private static void LogClear(int portalId, string folderName, int daysToKeep)
+        {
+            var mappath = PortalUtils.TempDirectoryMapPath(portalId).TrimEnd('\\') + "\\" + folderName;
+            if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
+            DirectoryInfo di = new DirectoryInfo(mappath);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                if (file.CreationTime < DateTime.Now.AddDays(daysToKeep)) file.Delete();
+            }
         }
 
     }

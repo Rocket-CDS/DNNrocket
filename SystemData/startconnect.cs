@@ -576,8 +576,8 @@ namespace DNNrocket.System
             var selecteditemid = paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (selecteditemid > 0)
             {
-                LogUtils.LogDebug("Export System:" + selecteditemid);
                 var systemData = new SystemLimpet(selecteditemid);
+                LogUtils.LogTracking("Export System:" + selecteditemid, systemData.SystemKey);
                 var exportFileMapPath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/SystemData/Systems").TrimEnd('\\') + "\\" + systemData.SystemKey + "_system.xml";
                 FileUtils.SaveFile(exportFileMapPath, systemData.Export());
             }
@@ -585,9 +585,6 @@ namespace DNNrocket.System
 
         public void SystemSave(SimplisityInfo postInfo, SimplisityInfo paramInfo)
         {
-            // remove any debug logs created in debug mode.
-            LogUtils.LogDebugClear();
-
             var selecteditemid = paramInfo.GetXmlPropertyInt("genxml/hidden/selecteditemid");
             if (selecteditemid > 0)
             {

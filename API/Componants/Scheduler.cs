@@ -38,6 +38,10 @@ namespace DNNrocketAPI.Componants
 
                         }
                     }
+
+                    LogUtils.LogTrackingClear(portalId, 7);
+                    LogUtils.LogSystemClear(7);
+
                 }
 
                 this.ScheduleHistoryItem.Succeeded = true;
