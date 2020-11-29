@@ -61,7 +61,7 @@ namespace DNNrocketAPI.Componants
                 {
                     SchedulerList.Add(rocketInterface);
                 }
-                InterfaceList.Add(rocketInterface.InterfaceKey, rocketInterface);
+                if (!InterfaceList.ContainsKey(rocketInterface.InterfaceKey)) InterfaceList.Add(rocketInterface.InterfaceKey, rocketInterface);
             }
             var l2 = Info.GetList("settingsdata");
             foreach (var s in l2)
