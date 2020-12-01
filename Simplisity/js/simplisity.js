@@ -317,7 +317,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
             }
 
             var sreturn = $(element).attr("s-return");
-            if (typeof sreturn === 'undefined') {
+            if (typeof sreturn === 'undefined' || sreturn === '') {
                 sreturn = returncontainer;
                 if (typeof sreturn === 'undefined' || sreturn === '') {
                     sreturn = '#simplisity_startpanel';

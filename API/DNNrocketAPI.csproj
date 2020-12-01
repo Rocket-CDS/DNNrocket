@@ -159,7 +159,7 @@
     <Compile Include="Componants\RetryableAction.cs" />
     <Compile Include="Componants\EmailSender.cs" />
     <Compile Include="Componants\Scheduler.cs" />
-    <Compile Include="Componants\SecurityLimet.cs" />
+    <Compile Include="Componants\SecurityLimpet.cs" />
     <Compile Include="Componants\SettingsData.cs" />
     <Compile Include="Componants\PortalUtils.cs" />
     <Compile Include="Componants\ModuleUtils.cs" />

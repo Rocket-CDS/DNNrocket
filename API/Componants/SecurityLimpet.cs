@@ -12,7 +12,7 @@ namespace DNNrocketAPI.Componants
     /// The SecurityLimet deal with the security in the RocketEcommerce system.
     /// It takes information from the system data and the system defaults and decides if the user has security and display access
     /// </summary>
-    public class SecurityLimet
+    public class SecurityLimpet
     {
         private int _userId;
         private int _tabid;
@@ -21,7 +21,7 @@ namespace DNNrocketAPI.Componants
         private RocketInterface _rocketInterface;
         static ConcurrentDictionary<string, bool> _commandSecurity;  // thread safe dictionary.
         private string _defaultFileMapPath;
-        public SecurityLimet(int portalId, string systemKey, RocketInterface rocketInterface, int tabid, int moduleid)
+        public SecurityLimpet(int portalId, string systemKey, RocketInterface rocketInterface, int tabid, int moduleid)
         {
             try
             {
