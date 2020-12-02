@@ -129,9 +129,6 @@
   <data name="active.Text" xml:space="preserve">
     <value>Actif</value>
   </data>
-  <data name="Active.Text" xml:space="preserve">
-    <value>Actif</value>
-  </data>
   <data name="add.Icon" xml:space="preserve">
     <value>&lt;i title=&quot;Ajouter&quot; class=&quot;fa fas fa-plus-circle fa-fw fa-lg&quot;&gt;&lt;/i&gt;</value>
   </data>
