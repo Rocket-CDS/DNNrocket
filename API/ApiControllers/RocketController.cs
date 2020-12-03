@@ -109,7 +109,6 @@ namespace DNNrocketAPI.ApiControllers
             if (!context.Request.QueryString.AllKeys.Contains("cmd"))
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' parameter in url.  Unable to process action.");
-
             }
 
             string rawData = Request.Content.ReadAsStringAsync().Result;
@@ -151,6 +150,13 @@ namespace DNNrocketAPI.ApiControllers
             var portalId = PortalUtils.GetPortalId();
             paramInfo.PortalId = portalId;
             paramInfo.SetXmlProperty("genxml/hidden/remotecall", "True");
+
+            // We often want the remote moduleid, so we can use it in the razor to identify the module
+            if (context.Request.QueryString.AllKeys.Contains("moduleid"))
+            {
+                if (GeneralUtils.IsNumeric(context.Request.QueryString["moduleid"])) paramInfo.SetXmlProperty("genxml/hidden/moduleid", context.Request.QueryString["moduleid"]);
+            }
+
 
             var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, remoteSystemKey);
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");

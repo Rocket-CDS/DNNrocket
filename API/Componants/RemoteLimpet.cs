@@ -292,7 +292,7 @@ namespace DNNrocketAPI.Componants
                     var body = "<items>" + paramInfo.ToXmlItem() + "</items>";
 
                     // build weburl
-                    var weburl = $"{RemoteAPI}?cmd={cmd}&systemkey={RemoteSystemKey}&language=" + DNNrocketUtils.GetCurrentCulture();
+                    var weburl = $"{RemoteAPI}?cmd={cmd}&systemkey={RemoteSystemKey}&language=" + DNNrocketUtils.GetCurrentCulture() + "&moduleid=" + Record.ModuleId.ToString();
 
                     try
                     {
