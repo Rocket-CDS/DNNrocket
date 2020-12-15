@@ -13,11 +13,23 @@ namespace DNNrocketAPI.Componants
             Info = info;
             if (Info == null) Info = new SimplisityInfo();
             FieldId = fieldId;
+            if (Info.GetXmlProperty("genxml/hidden/linkkey") == "")
+            {
+                var linkkey = GeneralUtils.GetUniqueString();
+                Info.SetXmlProperty("genxml/hidden/linkkey", linkkey);
+            }
         }
 
         public SimplisityInfo Info { get; private set; }
         public string FieldId { get; private set; }
-
+        public string LinkKey
+        {
+            get
+            {
+                var rtn = Info.GetXmlProperty("genxml/hidden/linkkey");
+                return rtn;
+            }
+        }
         public string Url
         {
             get

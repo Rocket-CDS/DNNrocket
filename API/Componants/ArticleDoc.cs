@@ -12,11 +12,23 @@ namespace DNNrocketAPI.Componants
         {
             Info = info;
             FieldId = fieldId;
+            if (Info.GetXmlProperty("genxml/hidden/dockey") == "")
+            {
+                var dockey = GeneralUtils.GetUniqueString();
+                Info.SetXmlProperty("genxml/hidden/dockey", dockey);
+            }
         }
 
         public SimplisityInfo Info { get; private set; }
         public string FieldId { get; private set; }
-
+        public string DocKey
+        {
+            get
+            {
+                var rtn = Info.GetXmlProperty("genxml/hidden/dockey");
+                return rtn;
+            }
+        }
         public string MapPath
         {
             get
