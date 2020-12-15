@@ -594,4 +594,7 @@
   <data name="yes.Icon" xml:space="preserve">
     <value>&lt;i  title="Yes" class="fa fas  fa-check fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
+  <data name="import.Icon" xml:space="preserve">
+    <value>&lt;i class="fa fas fa-file-import fa-fw fa-lg"&gt;&lt;/i&gt;</value>
+  </data>
 </root>
