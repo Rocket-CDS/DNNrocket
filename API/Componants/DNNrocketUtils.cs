@@ -787,7 +787,7 @@ namespace DNNrocketAPI.Componants
             if (value == null) return "";
             if (passkey == "")
             {
-                var ps = GetCurrentPortalSettings();
+                var ps = PortalUtils.GetCurrentPortalSettings();
                 passkey = ps.GUID.ToString();
             }
             return objSec.Encrypt(passkey, value);
@@ -799,7 +799,7 @@ namespace DNNrocketAPI.Componants
             if (value == null) return "";
             if (passkey == "")
             {
-                var ps = GetCurrentPortalSettings();
+                var ps = PortalUtils.GetCurrentPortalSettings();
                 passkey = ps.GUID.ToString();
             }
             return objSec.Decrypt(passkey, value);

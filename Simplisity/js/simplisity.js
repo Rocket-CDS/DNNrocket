@@ -317,7 +317,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
             }
 
             var sreturn = $(element).attr("s-return");
-            if (typeof sreturn === 'undefined') {
+            if (typeof sreturn === 'undefined' || sreturn === '') {
                 sreturn = returncontainer;
                 if (typeof sreturn === 'undefined' || sreturn === '') {
                     sreturn = '#simplisity_startpanel';
@@ -766,7 +766,7 @@ function simplisity_systemkey() {
     return $('#simplisity_systemkey').val();
 }
 function simplisity_sessionjson() {
-    var rtn = window.sessionStorage.getItem('simplisity_sessionparams');
+    var rtn = simplisity_getCookieValue('simplisity_sessionparams');
     var out = '{"null":"null"}';
     if (rtn && typeof rtn !== 'undefined' && rtn !== '') {
         out = rtn;
@@ -781,7 +781,7 @@ function simplisity_sessionjson() {
     }
 }
 function simplisity_sessionremove() {
-    window.sessionStorage.removeItem('simplisity_sessionparams');
+    simplisity_setCookieValue('simplisity_sessionparams','');
 }
 function simplisity_sessionpost() {
     // This will post ALL data fields in the sessionParams back to the server in the param fields.
@@ -826,10 +826,10 @@ function simplisity_setSessionField(fieldkey, fieldvalue) {
             obj = JSON.parse(jsonParams);
         }
         obj[fieldkey] = fieldvalue;
-        window.sessionStorage.setItem('simplisity_sessionparams', JSON.stringify(obj));
 
-        // also create cookie for toated version, where the module calls the toast server and we assign in the module before client based API call.
-        simplisity_setCookieValue('simplisity_sessionparams', window.sessionStorage.getItem('simplisity_sessionparams'));
+        // cookie needed as cookie for toated version, where the module calls the toast server and we assign in the module before client based API call.
+        simplisity_setCookieValue('simplisity_sessionparams', JSON.stringify(obj));
+
     }
 }
 function simplisity_getSessionField(fieldkey) {

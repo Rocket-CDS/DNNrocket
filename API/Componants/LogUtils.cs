@@ -26,7 +26,7 @@ namespace DNNrocketAPI.Componants
             DirectoryInfo di = new DirectoryInfo(mappath);
             foreach (FileInfo file in di.GetFiles())
             {
-                if (file.CreationTime < DateTime.Now.AddDays(daysToKeep)) file.Delete();
+                if (file.CreationTime < DateTime.Now.AddDays(daysToKeep * -1)) file.Delete();
             }
         }
 
