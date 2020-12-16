@@ -1,4 +1,4 @@
-﻿using DNNrocketAPI.Componants;
+﻿using DNNrocketAPI.Components;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;

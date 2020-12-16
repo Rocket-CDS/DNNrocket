@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 
 namespace RocketMod.Componants
 {

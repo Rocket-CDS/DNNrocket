@@ -1,5 +1,5 @@
 ﻿using DNNrocketAPI;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 using RazorEngine.Text;
 using Simplisity;
 using System;

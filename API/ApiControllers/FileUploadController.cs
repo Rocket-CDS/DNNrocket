@@ -1,4 +1,4 @@
-﻿using DNNrocketAPI.Componants;
+﻿using DNNrocketAPI.Components;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 using Newtonsoft.Json;

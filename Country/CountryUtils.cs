@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 using Simplisity;
 using DNNrocket.Country.Componants;
 using Newtonsoft.Json;

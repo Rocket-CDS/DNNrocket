@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
-namespace DNNrocketAPI.Componants
+namespace DNNrocketAPI.Components
 {
     public class DNNrocketThumb : IHttpHandler
     {

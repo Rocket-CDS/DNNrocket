@@ -11,11 +11,11 @@ using DotNetNuke.Entities.Users.Membership;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 using System.Collections.Specialized;
 using System.Text;
 
-namespace DNNrocketAPI.Componants
+namespace DNNrocketAPI.Components
 {
     public class ProcessDownloadFile : IHttpHandler
     {
