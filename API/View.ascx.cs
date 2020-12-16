@@ -28,7 +28,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
 using Simplisity;
 using System.Collections.Specialized;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 
 namespace DNNrocketAPI
 {

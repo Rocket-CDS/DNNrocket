@@ -127,64 +127,64 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Componants\AppThemeLimpet.cs" />
-    <Compile Include="Componants\ArticleLink.cs" />
-    <Compile Include="Componants\ArticleDoc.cs" />
-    <Compile Include="Componants\ArticleImage.cs" />
-    <Compile Include="Componants\BackUpModuleTemplates.cs" />
-    <Compile Include="Componants\CacheUtilsDNN.cs" />
-    <Compile Include="Componants\FastReplacer.cs" />
-    <Compile Include="Componants\FastReplacerSnippet.cs" />
-    <Compile Include="Componants\LogUtils.cs" />
-    <Compile Include="Componants\MetaSEO.cs" />
-    <Compile Include="Componants\RemoteLimpet.cs" />
-    <Compile Include="Componants\SchedulerUtils.cs" />
-    <Compile Include="Componants\PluginDataList.cs" />
-    <Compile Include="Componants\AppThemeModule.cs" />
-    <Compile Include="Componants\BackUpData.cs" />
-    <Compile Include="Componants\BackUpDataList.cs" />
-    <Compile Include="Componants\CacheFileUtils.cs" />
-    <Compile Include="Componants\ClientLocalLicense.cs" />
-    <Compile Include="Componants\DNNrocketModuleController.cs" />
-    <Compile Include="Componants\FtpConnect.cs" />
-    <Compile Include="Componants\HttpConnect.cs" />
-    <Compile Include="Componants\HttpContentExtensions.cs" />
-    <Compile Include="Componants\LicenseData.cs" />
-    <Compile Include="Componants\ModuleParamList.cs" />
-    <Compile Include="Componants\ModuleParams.cs" />
-    <Compile Include="Componants\LicenseListData.cs" />
-    <Compile Include="Componants\OnlineAppThemeIndex.cs" />
-    <Compile Include="Componants\PassSettings.cs" />
-    <Compile Include="Componants\ResxData.cs" />
-    <Compile Include="Componants\RetryableAction.cs" />
-    <Compile Include="Componants\EmailSender.cs" />
-    <Compile Include="Componants\Scheduler.cs" />
-    <Compile Include="Componants\SecurityLimpet.cs" />
-    <Compile Include="Componants\SettingsData.cs" />
-    <Compile Include="Componants\PortalUtils.cs" />
-    <Compile Include="Componants\ModuleUtils.cs" />
-    <Compile Include="Componants\RenderRazorUtils.cs" />
-    <Compile Include="Componants\StringCompress.cs" />
-    <Compile Include="Componants\UserLimpet.cs" />
-    <Compile Include="Componants\UserLimpetList.cs" />
-    <Compile Include="Componants\WebSiteData.cs" />
-    <Compile Include="Componants\SystemGlobalData.cs" />
-    <Compile Include="Componants\PageRecordData.cs" />
-    <Compile Include="Componants\UserParams.cs" />
+    <Compile Include="Components\AppThemeLimpet.cs" />
+    <Compile Include="Components\ArticleLink.cs" />
+    <Compile Include="Components\ArticleDoc.cs" />
+    <Compile Include="Components\ArticleImage.cs" />
+    <Compile Include="Components\BackUpModuleTemplates.cs" />
+    <Compile Include="Components\CacheUtilsDNN.cs" />
+    <Compile Include="Components\FastReplacer.cs" />
+    <Compile Include="Components\FastReplacerSnippet.cs" />
+    <Compile Include="Components\LogUtils.cs" />
+    <Compile Include="Components\MetaSEO.cs" />
+    <Compile Include="Components\RemoteLimpet.cs" />
+    <Compile Include="Components\SchedulerUtils.cs" />
+    <Compile Include="Components\PluginDataList.cs" />
+    <Compile Include="Components\AppThemeModule.cs" />
+    <Compile Include="Components\BackUpData.cs" />
+    <Compile Include="Components\BackUpDataList.cs" />
+    <Compile Include="Components\CacheFileUtils.cs" />
+    <Compile Include="Components\ClientLocalLicense.cs" />
+    <Compile Include="Components\DNNrocketModuleController.cs" />
+    <Compile Include="Components\FtpConnect.cs" />
+    <Compile Include="Components\HttpConnect.cs" />
+    <Compile Include="Components\HttpContentExtensions.cs" />
+    <Compile Include="Components\LicenseData.cs" />
+    <Compile Include="Components\ModuleParamList.cs" />
+    <Compile Include="Components\ModuleParams.cs" />
+    <Compile Include="Components\LicenseListData.cs" />
+    <Compile Include="Components\OnlineAppThemeIndex.cs" />
+    <Compile Include="Components\PassSettings.cs" />
+    <Compile Include="Components\ResxData.cs" />
+    <Compile Include="Components\RetryableAction.cs" />
+    <Compile Include="Components\EmailSender.cs" />
+    <Compile Include="Components\Scheduler.cs" />
+    <Compile Include="Components\SecurityLimpet.cs" />
+    <Compile Include="Components\SettingsData.cs" />
+    <Compile Include="Components\PortalUtils.cs" />
+    <Compile Include="Components\ModuleUtils.cs" />
+    <Compile Include="Components\RenderRazorUtils.cs" />
+    <Compile Include="Components\StringCompress.cs" />
+    <Compile Include="Components\UserLimpet.cs" />
+    <Compile Include="Components\UserLimpetList.cs" />
+    <Compile Include="Components\WebSiteData.cs" />
+    <Compile Include="Components\SystemGlobalData.cs" />
+    <Compile Include="Components\PageRecordData.cs" />
+    <Compile Include="Components\UserParams.cs" />
     <Compile Include="downloadfile.ashx.cs">
       <DependentUpon>downloadfile.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Componants\DDRMenuInterface.cs" />
-    <Compile Include="Componants\DNNrocketClassesConst.cs" />
-    <Compile Include="Componants\PagesUtils.cs" />
-    <Compile Include="Componants\FileStatus.cs" />
-    <Compile Include="Componants\ImgUtils.cs" />
-    <Compile Include="Componants\SystemLimpetList.cs" />
-    <Compile Include="Componants\PageIncludes.cs" />
-    <Compile Include="Componants\SystemLimpet.cs" />
-    <Compile Include="Componants\UserUtils.cs" />
-    <Compile Include="Componants\SideMenu.cs" />
-    <Compile Include="Componants\RocketInterface.cs" />
+    <Compile Include="Components\DDRMenuInterface.cs" />
+    <Compile Include="Components\DNNrocketClassesConst.cs" />
+    <Compile Include="Components\PagesUtils.cs" />
+    <Compile Include="Components\FileStatus.cs" />
+    <Compile Include="Components\ImgUtils.cs" />
+    <Compile Include="Components\SystemLimpetList.cs" />
+    <Compile Include="Components\PageIncludes.cs" />
+    <Compile Include="Components\SystemLimpet.cs" />
+    <Compile Include="Components\UserUtils.cs" />
+    <Compile Include="Components\SideMenu.cs" />
+    <Compile Include="Components\RocketInterface.cs" />
     <Compile Include="DNNrocketThumb.ashx.cs">
       <DependentUpon>DNNrocketThumb.ashx</DependentUpon>
     </Compile>
@@ -193,7 +193,7 @@
     <Compile Include="Interfaces\EventInterface.cs" />
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\DataInterface.cs" />
-    <Compile Include="Componants\DNNrocketUtils.cs" />
+    <Compile Include="Components\DNNrocketUtils.cs" />
     <Compile Include="Meta.ascx.cs">
       <DependentUpon>Meta.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -224,6 +224,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="BuildScripts\build.bat" />
+    <None Include="BuildScripts\ModulePackage.targets" />
+    <None Include="BuildScripts\MSBuild.Community.Tasks.Targets" />
     <None Include="Documents\AjaxDropDownCode.docx" />
     <None Include="Documents\Build-DNNrocket-EventPlugin.docx" />
     <None Include="Documents\Command Tracking.docx" />
@@ -234,13 +237,6 @@
     <None Include="Documents\ManualSortList.docx" />
     <None Include="Documents\RocketScheduler.docx" />
     <None Include="downloadfile.ashx" />
-    <None Include="BuildScripts\build.bat" />
-    <None Include="BuildScripts\ModulePackage.targets">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="DNNrocketAPI.dnn" />
     <None Include="DNNrocketThumb.ashx" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />

@@ -1,4 +1,4 @@
-﻿using DNNrocketAPI.Componants;
+﻿using DNNrocketAPI.Components;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 using Newtonsoft.Json;
@@ -400,7 +400,7 @@ namespace DNNrocketAPI.ApiControllers
                 var systemDataList = new SystemLimpetList();
                 var sInfoSystem = systemDataList.GetSystemByKey(systemkey);
                 var systemData = new SystemLimpet(sInfoSystem);
-                var sidemenu = new Componants.SideMenu(sInfoSystem);
+                var sidemenu = new SideMenu(sInfoSystem);
                 var templateControlRelPath = sInfo.GetXmlProperty("genxml/hidden/relpath");
                 sidemenu.ModuleId = moduleid;
 

@@ -1,4 +1,4 @@
-﻿using DNNrocketAPI.Componants;
+﻿using DNNrocketAPI.Components;
 using Rocket.AppThemes.Componants;
 using Simplisity;
 using System;

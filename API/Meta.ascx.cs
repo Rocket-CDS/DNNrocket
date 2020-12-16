@@ -23,7 +23,7 @@ using DNNrocketAPI;
 using DataProvider = DotNetNuke.Data.DataProvider;
 using DotNetNuke.Framework;
 using System.Linq;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 
 namespace DNNrocketAPI
 {

@@ -1,5 +1,5 @@
 ﻿using DNNrocketAPI;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 using Rocket.AppThemes.Componants;
 using System;
 using System.Collections.Generic;
