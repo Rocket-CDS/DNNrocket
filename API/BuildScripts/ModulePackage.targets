@@ -55,7 +55,6 @@
     <Copy SourceFiles="$(MSBuildDnnBinPath)\$(AssemblyName).dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
 
     <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketCountry.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
-    <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketCategory.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\DNNrocketSystemData.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Simplisity.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
     <Copy SourceFiles="$(OutputPath)\System.Drawing.Common.dll;" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
