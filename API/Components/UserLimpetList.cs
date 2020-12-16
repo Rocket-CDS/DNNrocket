@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RocketEcommerce.Componants
+namespace RocketEcommerce.Components
 {
     public class UserLimpetList
     {
