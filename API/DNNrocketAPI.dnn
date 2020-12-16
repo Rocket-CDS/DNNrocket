@@ -138,7 +138,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
           <desktopModule>
             <moduleName>systemapi_rocketadmin</moduleName>
             <foldername>api</foldername>
-            <businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
+            <businessControllerClass>DNNrocketAPI.Components.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Portable" />
               <supportedFeature type="Searchable" />
@@ -256,7 +256,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
           <desktopModule>
             <moduleName>dnnrocketmodule_rocketmod</moduleName>
             <foldername>RocketMod</foldername>
-            <businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
+            <businessControllerClass>DNNrocketAPI.Components.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Portable" />
               <supportedFeature type="Searchable" />
@@ -308,7 +308,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
           <desktopModule>
             <moduleName>rocketremotemod_rocketremotemod</moduleName>
             <foldername>RocketRemote</foldername>
-            <businessControllerClass>DNNrocketAPI.DNNrocketController,DNNrocketAPI</businessControllerClass>
+            <businessControllerClass>DNNrocketAPI.Components.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Portable" />
               <supportedFeature type="Searchable" />
