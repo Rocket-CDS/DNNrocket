@@ -18,11 +18,13 @@ namespace DNNrocketAPI.Components
  
         public AppThemeLimpet(string systemKey, string zipMapPath, bool isImport)
         {
+            Record = new SimplisityInfo();
             SystemKey = systemKey;
             ImportXmlFile(zipMapPath);
         }
         public AppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder = "")
         {
+            Record = new SimplisityInfo();
             InitAppTheme(systemKey, appThemeFolder, versionFolder);
         }
 
