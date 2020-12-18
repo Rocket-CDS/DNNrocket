@@ -402,6 +402,10 @@ namespace Simplisity
         {
             SetXmlProperty(xpath, value, System.TypeCode.Double, false);
         }
+        public void SetXmlPropertyInt(string xpath, int value)
+        {
+            SetXmlProperty(xpath, value.ToString(), System.TypeCode.Int32, false);
+        }
         public void SetXmlPropertyInt(string xpath, string value)
         {
             SetXmlProperty(xpath, value, System.TypeCode.Int32, false);
