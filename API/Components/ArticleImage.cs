@@ -64,7 +64,7 @@ namespace DNNrocketAPI.Components
             }
             set
             {
-                Info.SetXmlProperty("genxml/textbox/imagename" + FieldId, value);
+                Info.SetXmlProperty("genxml/lang/genxml/textbox/imagename" + FieldId, value);
             }
         }
         public string Alt 
@@ -78,7 +78,7 @@ namespace DNNrocketAPI.Components
             }
             set
             {
-                Info.SetXmlProperty("genxml/textbox/imagealt" + FieldId, value);
+                Info.SetXmlProperty("genxml/lang/genxml/textbox/imagealt" + FieldId, value);
             }
         }
         public string Summary
@@ -91,7 +91,7 @@ namespace DNNrocketAPI.Components
             }
             set
             {
-                Info.SetXmlProperty("genxml/textbox/imagesummary" + FieldId, value);
+                Info.SetXmlProperty("genxml/lang/genxml/textbox/imagesummary" + FieldId, value);
             }
         }
         public string Html
@@ -104,7 +104,7 @@ namespace DNNrocketAPI.Components
             }
             set
             {
-                Info.SetXmlProperty("genxml/textbox/imagesummary" + FieldId, value);
+                Info.SetXmlProperty("genxml/lang/genxml/textbox/imagehtml" + FieldId, value);
             }
         }
         public int Width
