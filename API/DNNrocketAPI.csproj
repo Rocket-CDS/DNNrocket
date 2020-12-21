@@ -224,9 +224,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BuildScripts\build.bat" />
-    <None Include="BuildScripts\ModulePackage.targets" />
-    <None Include="BuildScripts\MSBuild.Community.Tasks.Targets" />
     <None Include="Documents\AjaxDropDownCode.docx" />
     <None Include="Documents\Build-DNNrocket-EventPlugin.docx" />
     <None Include="Documents\Command Tracking.docx" />
