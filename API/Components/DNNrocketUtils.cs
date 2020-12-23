@@ -44,6 +44,27 @@ namespace DNNrocketAPI.Components
 {
     public static class DNNrocketUtils
     {
+        public static string AppendFileModifiedDate(string relPath, string paramname = "v", bool useCache = true)
+        {
+            var c = (string)CacheUtils.GetCache(relPath);
+            if (c == null || !useCache)
+            {
+                var fMapPath = MapPath(relPath);
+                if (File.Exists(fMapPath))
+                {
+                    DateTime modification = File.GetLastWriteTime(fMapPath);
+                    var appendchar = "?";
+                    if (relPath.Contains("?")) appendchar = "&";
+                    c = relPath + appendchar + paramname + "=" + modification.Ticks.ToString();
+                    CacheUtils.SetCache(relPath, c);
+                }
+                else
+                {
+                    return relPath;
+                }
+            }
+            return c;
+        }
         public static Dictionary<string, object> ReturnString(string strOut, string jsonOut = null)
         {
             var rtnDic = new Dictionary<string, object>();
