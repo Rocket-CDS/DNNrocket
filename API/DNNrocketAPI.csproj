@@ -714,8 +714,6 @@
     <DNNFileName>DNNrocketAPI</DNNFileName>
     <PackageName>DNNrocketAPI</PackageName>
   </PropertyGroup>
-  <Target Name="AfterBuild" DependsOnTargets="PackageAndDeploy">
-  </Target>
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
