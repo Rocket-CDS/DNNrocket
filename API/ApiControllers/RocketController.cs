@@ -222,8 +222,8 @@ namespace DNNrocketAPI.ApiControllers
         private HttpResponseMessage ActionSimplisityInfo(SimplisityInfo postInfo, SimplisityInfo paramInfo, string paramCmd, string systemkey)
         {
             var strOut = "ERROR: Invalid.";
-            var jsonReturn = "";
-            var xmlReturn = "";
+            object jsonReturn = null;
+            object xmlReturn = null;
             var context = HttpContext.Current;
 
             try
@@ -333,11 +333,11 @@ namespace DNNrocketAPI.ApiControllers
                                 }
                                 if (returnDictionary.ContainsKey("outputjson"))
                                 {
-                                    jsonReturn = (string)returnDictionary["outputjson"];
+                                    jsonReturn = returnDictionary["outputjson"];
                                 }
                                 if (returnDictionary.ContainsKey("outputxml"))
                                 {
-                                    jsonReturn = (string)returnDictionary["outputxml"];
+                                    xmlReturn = returnDictionary["outputxml"];
                                 }
 
                             }
@@ -361,8 +361,8 @@ namespace DNNrocketAPI.ApiControllers
                             // after Event
                             returnDictionary = DNNrocketUtils.EventProviderAfter(paramCmd, systemData, postInfo, paramInfo, _editlang);
                             if (returnDictionary.ContainsKey("outputhtml")) strOut = (string)returnDictionary["outputhtml"];
-                            if (returnDictionary.ContainsKey("outputjson")) jsonReturn = (string)returnDictionary["outputjson"];
-                            if (returnDictionary.ContainsKey("outputxml")) xmlReturn = (string)returnDictionary["outputxml"];
+                            if (returnDictionary.ContainsKey("outputjson")) jsonReturn = returnDictionary["outputjson"];
+                            if (returnDictionary.ContainsKey("outputxml")) xmlReturn = returnDictionary["outputxml"];
                             
                             break;
                     }
@@ -376,15 +376,15 @@ namespace DNNrocketAPI.ApiControllers
 
             #region "return results"
 
-            if (jsonReturn != null && jsonReturn != "")
+            if (jsonReturn != null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, jsonReturn, System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
             }
-            if (xmlReturn != null && xmlReturn != "")
+            if (xmlReturn != null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, xmlReturn, System.Net.Http.Formatting.XmlMediaTypeFormatter.DefaultMediaType);
             }
-            return this.Request.CreateResponse(HttpStatusCode.OK, strOut);
+            return this.Request.CreateResponse(HttpStatusCode.OK, strOut, "text/plain");
 
             #endregion
 

@@ -790,7 +790,7 @@ namespace DNNrocketAPI.render
                 }
             }
 
-            menuOut += "<div class='w3-border-bottom w3-bar-item'>&nbsp;</div>";
+            menuOut += "<div class=' w3-bar-item'>&nbsp;</div>";
             menuOut += "<div class='menureturn' style='display:none;'></div>";
 
             return new RawString(menuOut);

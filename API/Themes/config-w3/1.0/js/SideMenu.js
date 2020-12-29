@@ -17,12 +17,12 @@ function sidemenuaction() {
         if ($('#' + actionid).hasClass('w3-show')) {
             $('#' + actionid).addClass('w3-hide');
             $('#' + actionid).removeClass('w3-show');
-            $(this).removeClass('w3-theme-d1');
+            $(this).removeClass('w3-theme-l5');
         }
         else {
             $('#' + actionid).addClass('w3-show');
             $('#' + actionid).removeClass('w3-hide');
-            $(this).addClass('w3-theme-d1');
+            $(this).addClass('w3-theme-l5');
         }
     });
 
