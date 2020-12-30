@@ -78,33 +78,33 @@ namespace DNNrocketAPI.Components
             var infoFromXml = new SimplisityInfo();
             infoFromXml.FromXmlItem(importXml);
 
+            // find if existing, so we can overwriteor add interface
             var systemKey = infoFromXml.GUIDKey;
-
-            // find if existing, so we can overwrite
             var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemKey);
             if (systemInfo != null) Info = systemInfo; // use existing
 
-            Info.XMLData = infoFromXml.XMLData;
-            Info.GUIDKey = systemKey;
-            Info.PortalId = 99999;
-            Info.TypeCode = "SYSTEM";
-            Info.SortOrder = infoFromXml.SortOrder;
-            Info.ParentItemId = infoFromXml.ParentItemId;
-            Info.XrefItemId = infoFromXml.XrefItemId;
-
-            var fileMapPath = DNNrocketUtils.MapPath(Info.GetXmlProperty("genxml/hidden/imagepathlogo"));
-            //var base64 = Info.GetXmlProperty("genxml/hidden/logobase64");
-            //try
-            //{
-            //    FileUtils.SaveBase64ToFile(fileMapPath, base64);
-            //}
-            //catch (Exception ex)
-            //{
-            //    LogUtils.LogException(ex);
-            //}
-
-            Info.SetXmlProperty("genxml/hidden/logobase64", "");
-
+            if (infoFromXml.TypeCode == "INTERFACE" && systemInfo != null)
+            {
+                // Import plugin additional interface
+                var l = infoFromXml.GetList("interfacedata");
+                foreach (var i in l)
+                {
+                    Info.RemoveListItem("interfacedata", "genxml/textbox/interfacekey", i.GetXmlProperty("genxml/textbox/interfacekey"));
+                    Info.AddListItem("interfacedata", i.XMLData);
+                }
+            }
+            else
+            {
+                // Import full system record
+                Info.XMLData = infoFromXml.XMLData;
+                Info.GUIDKey = systemKey;
+                Info.PortalId = 99999;
+                Info.TypeCode = "SYSTEM";
+                Info.SortOrder = infoFromXml.SortOrder;
+                Info.ParentItemId = infoFromXml.ParentItemId;
+                Info.XrefItemId = infoFromXml.XrefItemId;
+                Info.SetXmlProperty("genxml/hidden/logobase64", "");
+            }
             Update();
 
             // reload
