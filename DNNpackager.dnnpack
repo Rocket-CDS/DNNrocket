@@ -14,7 +14,7 @@
     <!-- All paths should be from the source root (project root) -->
     <value>\API</value>
     <value>\API\App_LocalResources</value>
-    <value>\API\images</value>
+    <value>\API\images\*</value>
     <value>\API\Systems</value>
     <value>\API\Themes\*</value>
 
