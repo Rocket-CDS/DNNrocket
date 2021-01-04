@@ -26,21 +26,15 @@ Simplisity is designed to take data from the html page, pass it to a server side
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="RazorEngine" Version="3.10.0" />
     <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\bin\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="RazorEngine">
       <HintPath>..\..\..\Websites\OpenStore\dev.ea.com\Install\bin\RazorEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(ProjectDir)..\..\..\bin\$(TargetFileName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(AssemblyName).pdb&quot; &quot;$(ProjectDir)..\..\..\bin\$(AssemblyName).pdb&quot;&#xD;&#xA;" />
-  </Target>
 
 </Project>
