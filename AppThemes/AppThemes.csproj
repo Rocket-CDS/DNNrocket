@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Installation\**" />
     <Compile Remove="SystemThemes\**" />
     <Compile Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\css\**" />
     <Compile Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\doc\**" />
@@ -33,6 +34,7 @@
     <Compile Remove="Themes\SystemThemes\dnnrocketmodule\test_new3\1.0\temp\**" />
     <Compile Remove="Themes\SystemThemes\TemplateEdit\bin\**" />
     <Compile Remove="Themes\SystemThemes\TemplateEdit\obj\Debug\TempPE\**" />
+    <EmbeddedResource Remove="Installation\**" />
     <EmbeddedResource Remove="SystemThemes\**" />
     <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\css\**" />
     <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\doc\**" />
@@ -59,6 +61,7 @@
     <EmbeddedResource Remove="Themes\SystemThemes\dnnrocketmodule\test_new3\1.0\temp\**" />
     <EmbeddedResource Remove="Themes\SystemThemes\TemplateEdit\bin\**" />
     <EmbeddedResource Remove="Themes\SystemThemes\TemplateEdit\obj\Debug\TempPE\**" />
+    <None Remove="Installation\**" />
     <None Remove="SystemThemes\**" />
     <None Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\css\**" />
     <None Remove="Themes\SystemThemes\dnnrocketmodule\c40\1.0\doc\**" />
@@ -112,5 +115,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&#xD;&#xA;C:\Nevoweb\Projects\Utils\DNNpackager\bin\netcoreapp3.1\DNNpackager.exe  $(ProjectDir) C:\Nevoweb\Websites\www.dnnrocket.com\Install\DesktopModules\DNNrocket\AppThemes $(ProjectDir)$(OutDir) C:\Nevoweb\Websites\www.dnnrocket.com\Install\bin $(ConfigurationName)&#xD;&#xA;" />
+  </Target>
 
 </Project>

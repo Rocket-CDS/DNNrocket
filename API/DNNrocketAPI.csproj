@@ -302,7 +302,6 @@
     <None Include="Documents\ManualSortList.docx" />
     <None Include="Documents\RocketScheduler.docx" />
     <None Include="downloadfile.ashx" />
-    <None Include="DNNrocketAPI.dnn" />
     <None Include="DNNrocketThumb.ashx" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />
     <None Include="Documents\DNNrocket-Paging.docx" />
