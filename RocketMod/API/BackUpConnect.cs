@@ -1,6 +1,6 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
-using Rocket.AppThemes.Componants;
+using Rocket.AppThemes.Components;
 using RocketMod.Componants;
 using Simplisity;
 using System;

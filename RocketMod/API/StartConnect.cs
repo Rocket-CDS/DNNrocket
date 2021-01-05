@@ -4,7 +4,7 @@ using System.Linq;
 using DNNrocketAPI;
 using DNNrocketAPI.Components;
 using Simplisity;
-using Rocket.AppThemes.Componants;
+using Rocket.AppThemes.Components;
 using RocketMod.Componants;
 using System.IO;
 
