@@ -1,13 +1,13 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
-using Rocket.AppThemes.Componants;
+using Rocket.AppThemes.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Rocket.AppThemes.Componants
+namespace Rocket.AppThemes.Components
 {
     public static class AppThemeUtils
     {

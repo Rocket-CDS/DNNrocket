@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace Rocket.AppThemes.Componants
+namespace Rocket.AppThemes.Components
 {
 
     public class PluginDataList

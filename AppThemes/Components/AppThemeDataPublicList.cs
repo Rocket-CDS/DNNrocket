@@ -10,7 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-namespace Rocket.AppThemes.Componants
+namespace Rocket.AppThemes.Components
 {
 
     public class AppThemeDataPublicList
