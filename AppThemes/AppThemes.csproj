@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>RocketAppThemes</AssemblyName>
     <RootNamespace>Rocket.AppThemes</RootNamespace>
+    <Configurations>Debug;Release;Razor</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

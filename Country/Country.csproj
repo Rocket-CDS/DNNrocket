@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>DNNrocketCountry</AssemblyName>
     <RootNamespace>DNNrocket.Country</RootNamespace>
+    <Configurations>Debug;Release;Razor</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
