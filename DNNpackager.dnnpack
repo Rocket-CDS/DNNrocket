@@ -75,7 +75,7 @@
     <!-- These files will be NOT in the Resource.zip, they will be on the root of the install zip -->
     <value>\API\Installation\01.00.00.SqlDataProvider</value>
     <value>\API\Installation\Uninstall.SqlDataProvider</value>
-    <value>\API\DNNrocketAPI.dnn</value>
+    <value>DNNrocketAPI.dnn</value>
 
     <!-- Put these at the root, so we can move them on install -->
     <value>SystemData\Systems\rocketremotemod_system.xml</value>

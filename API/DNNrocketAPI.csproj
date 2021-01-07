@@ -273,6 +273,7 @@
     <Compile Include="render\DNNrocketTokens.cs" />
     <Compile Include="ApiControllers\RocketController.cs" />
     <Compile Include="ApiControllers\RouteMapper.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SqlDataProvider\DataProvider.cs" />
     <Compile Include="SqlDataProvider\DNNrocketController.cs" />
     <Compile Include="SqlDataProvider\SqlDataProvider.cs" />
@@ -312,6 +313,7 @@
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="packages.config" />
+    <None Include="README.md" />
     <None Include="Themes\config-w3\1.0\default\LicenseKeyForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\LicenseForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\LicenseInject.cshtml" />
@@ -778,7 +780,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
-    </PostBuildEvent>
+C:\Nevoweb\Projects\PostBuildCmd\DNNrocket\API\www.dnnrocket.com.bat  $(ProjectDir) $(ProjectDir)$(OutDir) $(ConfigurationName)
+</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <Extension>zip</Extension>
