@@ -117,8 +117,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&#xD;&#xA;C:\Nevoweb\Projects\Utils\DNNpackager\bin\netcoreapp3.1\DNNpackager.exe  $(ProjectDir) C:\Nevoweb\Websites\www.dnnrocket.com\Install\DesktopModules\DNNrocket\AppThemes $(ProjectDir)$(OutDir) C:\Nevoweb\Websites\www.dnnrocket.com\Install\bin $(ConfigurationName)&#xD;&#xA;" />
-  </Target>
-
 </Project>
