@@ -90,24 +90,22 @@
     <value>readme.md</value>
 
   </file>
-  <!-- The bin path gives the backward folder levels to the DNN bin folder, so assemblies can be taken. -->
-	<!-- In some cases, if the project folder is not under a company level, this will need to be change. -->
-	<binfolder>\\..\\..\\bin</binfolder>
 	<assembly>
-		<!-- Assembllies will be taken from the DNN bin folder, and placed on root. -->
-    <value>System.Drawing.Common.dll</value>
-    <value>Simplisity.dll</value>
-    <value>RocketTools.dll</value>
-    <value>RocketMod.dll</value>
-    <value>RocketRemoteMod.dll</value>
-    <value>RocketAppThemes.dll</value>
-    <value>RazorEngine.dll</value>
-    <value>netstandard.dll</value>
-    <value>DNNrocketSystemData.dll</value>
-    <value>DNNrocketImages.dll</value>
-    <value>DNNrocketDocuments.dll</value>
-    <value>DNNrocketCountry.dll</value>
-    <value>DNNrocketAPI.dll</value>
-    <value>Newtonsoft.Json.dll</value>
+    <value>\bin\System.Drawing.Common.dll</value>
+    <value>\bin\Simplisity.dll</value>
+    <value>\bin\RocketTools.dll</value>
+    <value>\bin\RocketMod.dll</value>
+    <value>\bin\RocketRemoteMod.dll</value>
+    <value>\bin\RocketAppThemes.dll</value>
+    <value>\bin\RazorEngine.dll</value>
+    <value>\bin\netstandard.dll</value>
+    <value>\bin\DNNrocketSystemData.dll</value>
+    <value>\bin\DNNrocketImages.dll</value>
+    <value>\bin\DNNrocketDocuments.dll</value>
+    <value>\bin\DNNrocketCountry.dll</value>
+    <value>\bin\DNNrocketAPI.dll</value>
+    <value>\API\_external\Newtonsoft.Json.dll</value>
+    <value>\API\_external\netstandard.dll</value>
+    <value>\API\_external\System.Web.Http.dll</value>
   </assembly>
 </root>

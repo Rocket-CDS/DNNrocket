@@ -17,4 +17,8 @@
     </Reference>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(ProjectDir)..\bin\$(TargetFileName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(AssemblyName).pdb&quot; &quot;$(ProjectDir)..\bin\$(AssemblyName).pdb&quot;&#xD;&#xA;&#xD;&#xA;C:\Nevoweb\Projects\PostBuildCmd\DNNrocket\API\www.dnnrocket.com.bat  $(ProjectDir) $(ProjectDir)$(OutDir) $(ConfigurationName)&#xD;&#xA;" />
+  </Target>
+
 </Project>
