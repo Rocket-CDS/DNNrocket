@@ -782,8 +782,6 @@
     <PostBuildEvent>
 copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(ProjectDir)..\bin\$(TargetFileName)"
 copy "$(ProjectDir)$(OutDir)$(AssemblyName).pdb" "$(ProjectDir)..\bin\$(AssemblyName).pdb"
-
-C:\Nevoweb\Projects\PostBuildCmd\DNNrocket\API\www.dnnrocket.com.bat  $(ProjectDir) $(ProjectDir)$(OutDir) $(ConfigurationName)
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
