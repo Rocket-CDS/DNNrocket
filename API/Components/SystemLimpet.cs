@@ -95,15 +95,29 @@ namespace DNNrocketAPI.Components
             }
             else
             {
-                // Import full system record
-                Info.XMLData = infoFromXml.XMLData;
-                Info.GUIDKey = systemKey;
-                Info.PortalId = 99999;
-                Info.TypeCode = "SYSTEM";
-                Info.SortOrder = infoFromXml.SortOrder;
-                Info.ParentItemId = infoFromXml.ParentItemId;
-                Info.XrefItemId = infoFromXml.XrefItemId;
-                Info.SetXmlProperty("genxml/hidden/logobase64", "");
+                // Import full system record (ONLY if it doesn't alreay exist)
+                systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", Info.GUIDKey);
+                if (systemInfo == null)
+                {
+                    Info.XMLData = infoFromXml.XMLData;
+                    Info.GUIDKey = systemKey;
+                    Info.PortalId = 99999;
+                    Info.TypeCode = "SYSTEM";
+                    Info.SortOrder = infoFromXml.SortOrder;
+                    Info.ParentItemId = infoFromXml.ParentItemId;
+                    Info.XrefItemId = infoFromXml.XrefItemId;
+                    Info.SetXmlProperty("genxml/hidden/logobase64", "");
+                }
+                else
+                {
+                    // Not new, so only update the interfaces. Do NOT delete any.
+                    var l = infoFromXml.GetList("interfacedata");
+                    foreach (var i in l)
+                    {
+                        Info.RemoveListItem("interfacedata", "genxml/textbox/interfacekey", i.GetXmlProperty("genxml/textbox/interfacekey"));
+                        Info.AddListItem("interfacedata", i.XMLData);
+                    }
+                }
             }
             Update();
 
