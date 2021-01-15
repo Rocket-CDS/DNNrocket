@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>DNNrocketImages</AssemblyName>
     <RootNamespace>DNNrocket.Images</RootNamespace>
+    <Configurations>Debug;Release;razor</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

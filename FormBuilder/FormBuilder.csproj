@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>DNNrocketFormBuilder</AssemblyName>
     <RootNamespace>DNNrocket.FormBuilder</RootNamespace>
+    <Configurations>Debug;Release;razor</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
