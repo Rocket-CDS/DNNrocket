@@ -781,7 +781,8 @@ function simplisity_sessionjson() {
     }
 }
 function simplisity_sessionremove() {
-    window.sessionStorage.setItem('simplisity_sessionparams',''); // use session storage, idependant of browser.
+    window.sessionStorage.setItem('simplisity_sessionparams', ''); // use session storage, idependant of browser.
+    simplisity_setCookieValue('simplisity_sessionparams', ''); // Cookies are created for toasted modules.
 }
 function simplisity_sessionpost() {
     // This will post ALL data fields in the sessionParams back to the server in the param fields.
