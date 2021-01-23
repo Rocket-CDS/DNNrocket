@@ -83,7 +83,7 @@ namespace DNNrocketAPI.Components
                 else
                 {
                     LogUtils.LogTracking("INVALID CMD: " + paramCmd, SystemData.SystemKey);
-                    return "invalidcommand";
+                    return "";
                 }
             }
         }
