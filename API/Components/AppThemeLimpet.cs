@@ -22,34 +22,55 @@ namespace DNNrocketAPI.Components
             SystemKey = systemKey;
             ImportXmlFile(zipMapPath);
         }
+        /// <summary>
+        /// Take the AppTheme templates form the "/DesktopModules/RocketThemes/" folder
+        /// </summary>
+        /// <param name="systemKey"></param>
+        /// <param name="appThemeFolder"></param>
+        /// <param name="versionFolder"></param>
         public AppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder = "")
         {
             Record = new SimplisityInfo();
-            InitAppTheme(systemKey, appThemeFolder, versionFolder);
+            SystemData = new SystemLimpet(systemKey);
+
+            AppThemeFolder = appThemeFolder;
+            AppSystemThemeFolderRel = "/DesktopModules/RocketThemes/" + SystemKey;
+            AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
+
+            InitAppTheme(versionFolder);
+        }
+        /// <summary>
+        /// Use the "config-w3" folder of the system.
+        /// </summary>
+        /// <param name="systemKey"></param>
+        /// <param name="versionFolder"></param>
+        public AppThemeLimpet(string systemKey, string versionFolder = "")
+        {
+            Record = new SimplisityInfo();
+            SystemData = new SystemLimpet(systemKey);
+
+            AppThemeFolder = "config-w3";
+            AppSystemThemeFolderRel = SystemData.SystemRelPath.TrimEnd('/') + "/Themes/";
+            AppThemeFolderRel = AppSystemThemeFolderRel.TrimEnd('/') + "/" + AppThemeFolder;
+
+            InitAppTheme(versionFolder);
         }
 
-        private void InitAppTheme(string systemKey, string appThemeFolder, string versionFolder = "")
+        private void InitAppTheme(string versionFolder = "")
         {
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
-            SystemKey = systemKey;
-            var systemData = new SystemLimpet(systemKey);
-            SystemId = systemData.SystemId;
+            SystemKey = SystemData.SystemKey;
+            SystemId = SystemData.SystemId;
             FileNameList = new Dictionary<string, string>();
 
             AppSummary = "";
-            AppThemeFolder = appThemeFolder;
-
-            var systemThemesDirRel = "/DesktopModules/RocketThemes";
-
-            AppSystemThemeFolderRel = systemThemesDirRel + "/" + SystemKey;
-            AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
             AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolderRel);
             AppSystemThemeFolderMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRel);
             if (!Directory.Exists(AppSystemThemeFolderMapPath)) Directory.CreateDirectory(AppSystemThemeFolderMapPath);
 
             if (AppThemeFolder != "") // don't create anything if we dont; have a apptheme (first entry)
             {
-                var sourceDirectory = systemData.SystemMapPath.TrimEnd('\\') + "\\AppThemeBase";
+                var sourceDirectory = SystemData.SystemMapPath.TrimEnd('\\') + "\\AppThemeBase";
                 if (Directory.Exists(sourceDirectory) && !Directory.Exists(AppThemeFolderMapPath))
                 {
                     // copy the base AppThemeLimpet for this system.
@@ -215,7 +236,6 @@ namespace DNNrocketAPI.Components
             }
             return "";
         }
-
         public string GetTemplate(string templateFileName)
         {
             if (FileNameList.ContainsKey(templateFileName.ToLower()))
@@ -223,6 +243,11 @@ namespace DNNrocketAPI.Components
                 return FileUtils.ReadFile(FileNameList[templateFileName.ToLower()]);
             }
             return "";
+        }
+        public string GetDisplayTemplate(string templateFileName, string cultureCode = "")
+        {
+            if (cultureCode == "") cultureCode = DNNrocketUtils.GetCurrentCulture();
+            return RenderRazorUtils.GetRazorTemplateData(templateFileName, AppSystemThemeFolderRel, AppThemeFolder, cultureCode, AppVersionFolder, true);
         }
 
         public void DeleteTheme()
@@ -627,10 +652,9 @@ namespace DNNrocketAPI.Components
             {
 
                 // import DB records.
-                var systemKey = SystemKey;
                 var lastversion = 1.0;
 
-                var appSystemThemeFolderRel = "/DesktopModules/RocketThemes/" + systemKey;
+                var appSystemThemeFolderRel = "/DesktopModules/RocketThemes/" + SystemKey;
                 var appSystemThemeFolderMapPath = DNNrocketUtils.MapPath(appSystemThemeFolderRel);
 
                 var destinationFolder = appSystemThemeFolderMapPath + "\\" + AppThemeFolder;
@@ -648,7 +672,7 @@ namespace DNNrocketAPI.Components
                     GC.WaitForPendingFinalizers();
                 }
 
-                InitAppTheme(systemKey, AppThemeFolder, lastversion.ToString("F1", CultureInfo.InvariantCulture));
+                InitAppTheme(lastversion.ToString("F1", CultureInfo.InvariantCulture));
             }
         }
 
@@ -885,6 +909,7 @@ namespace DNNrocketAPI.Components
             }
         }
         public string DefaultCommand { get { return Record.GetXmlProperty("genxml/textbox/defaultcmd"); } }
+        public SystemLimpet SystemData { get; set; }
 
         #endregion
 

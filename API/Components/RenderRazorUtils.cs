@@ -25,6 +25,10 @@ namespace DNNrocketAPI.Components
             try
             {
                 if (razorTempl == null || razorTempl == "") return "";
+                if (HttpContext.Current == null) // can be null if ran from scheduler.
+                {
+                    return RazorRunCompile(model, razorTempl);
+                }
                 var service = (IRazorEngineService)HttpContext.Current.Application.Get("DNNrocketIRazorEngineService");
                 if (service == null)
                 {
@@ -69,6 +73,25 @@ namespace DNNrocketAPI.Components
             }
 
             return result;
+        }
+        /// <summary>
+        /// No Cache, use when HttpContext.Current.Application is null
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="razorTempl"></param>
+        /// <returns></returns>
+        private static string RazorRunCompile(SimplisityRazor model, string razorTempl)
+        {
+            try
+            {
+                if (razorTempl == null || razorTempl == "") return "";
+                var hashCacheKey = GeneralUtils.GetMd5Hash(razorTempl);
+                return Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
+            }
+            catch (Exception ex)
+            {
+                return "ERROR in RazorRunCompile : " + ex.ToString();
+            }
         }
         public static string RazorDetail(string razorTemplate, object obj, Dictionary<string, object> dataObjects, SessionParams sessionParams = null, Dictionary<string, string> settings = null, bool cacheOff = false)
         {

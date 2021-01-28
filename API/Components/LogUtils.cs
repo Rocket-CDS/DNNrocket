@@ -36,9 +36,9 @@ namespace DNNrocketAPI.Components
         /// </summary>
         /// <param name="outFileName">Name of file</param>
         /// <param name="content">content of file</param>
-        public static void OutputDebugFile(string outFileName, string content)
+        public static void OutputDebugFile(string outFileName, string content, int portalid = -1)
         {
-            var mappath = PortalUtils.TempDirectoryMapPath().TrimEnd('\\') + "\\debug";
+            var mappath = PortalUtils.TempDirectoryMapPath(portalid).TrimEnd('\\') + "\\debug";
             if (!Directory.Exists(mappath)) Directory.CreateDirectory(mappath);
             FileUtils.SaveFile(mappath + "\\" + outFileName, content);
         }
