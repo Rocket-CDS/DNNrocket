@@ -18,6 +18,7 @@ namespace DNNrocketAPI.Components
         {
             if (EmailData.RazorTemplateName != "")
             {
+                if (EmailData.AppTheme == null) return "AppTheme not defined";
                 var systemData = new SystemLimpet(EmailData.AppTheme.SystemKey);
                 var razorTempl = EmailData.AppTheme.GetTemplate(EmailData.RazorTemplateName);
 
