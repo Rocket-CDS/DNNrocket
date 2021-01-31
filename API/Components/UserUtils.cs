@@ -76,6 +76,14 @@ namespace DNNrocketAPI.Components
             }
             return "";
         }
+        public static string GetCurrentUserEmail()
+        {
+            if (UserController.Instance.GetCurrentUserInfo() != null)
+            {
+                return UserController.Instance.GetCurrentUserInfo().Email;
+            }
+            return "";
+        }
         public static List<string> GetUserRoles(int portalid = -1, int userId = -1)
         {
             var rtnList = new List<string>();
