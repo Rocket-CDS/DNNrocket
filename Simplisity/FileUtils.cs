@@ -165,7 +165,9 @@ namespace Simplisity
         public static void AppendToLog(string logMapPathFolder, string logName, string logMessage)
         {
             var dstring = DateTime.Now.ToString("yyyy-MM-dd");
-            using (StreamWriter w = File.AppendText(logMapPathFolder.TrimEnd('\\') + "\\" + dstring + "_" + Path.GetFileNameWithoutExtension(logName) + ".txt"))
+            var logfilename = logMapPathFolder.TrimEnd('\\') + "\\" + dstring + "_" + Path.GetFileNameWithoutExtension(logName) + ".txt";
+            if (!File.Exists(logfilename)) SaveFile(logfilename, "START" + Environment.NewLine);
+            using (StreamWriter w = File.AppendText(logfilename))
             {
                 Log(DateTime.Now.ToString("d/MM/yyyy HH:mm:ss") + " :  " + logMessage, w);
             }
