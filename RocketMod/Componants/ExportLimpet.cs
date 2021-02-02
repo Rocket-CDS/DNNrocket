@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RocketMod.Componants
+namespace RocketMod.Components
 {
     public class ExportLimpet
     {

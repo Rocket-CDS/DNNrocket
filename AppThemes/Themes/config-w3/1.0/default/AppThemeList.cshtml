@@ -12,202 +12,202 @@
     var appThemeDataList = (AppThemeDataList)Model.List.First();
 }
 
-    <div class=''>
+<div class=''>
 
-        @if (appThemeDataList.SelectedSystemKey == "")
-        {
+    @if (appThemeDataList.SelectedSystemKey == "")
+    {
 
-            <div class="w3-modal-content w3-border w3-card">
+        <div class="w3-modal-content w3-border w3-card">
 
-                <header class="w3-container w3-theme">
-                    <h2>@ResourceKey("Appthemes.selectsystem")</h2>
-                </header>
+            <header class="w3-container w3-theme">
+                <h2>@ResourceKey("Appthemes.selectsystem")</h2>
+            </header>
 
-                <div class="w3-row-padding w3-margin">
-                    <ul class="w3-ul w3-border w3-hoverable w-margin">
+            <div class="w3-row-padding w3-margin">
+                <ul class="w3-ul w3-border w3-hoverable w-margin">
 
-                        @foreach (SystemLimpet systemData in appThemeDataList.SystemFolderList)
-                        {
-                            <li class="simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"selectedsystemkey":"@systemData.SystemKey"}' onclick="document.getElementById('systemselect').style.display='none'">
-                                <b>@systemData.SystemName</b>
-                            </li>
-                        }
+                    @foreach (SystemLimpet systemData in appThemeDataList.SystemFolderList)
+                    {
+                        <li class="simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"selectedsystemkey":"@systemData.SystemKey"}' onclick="document.getElementById('systemselect').style.display='none'">
+                            <b>@systemData.SystemName</b>
+                        </li>
+                    }
 
-                    </ul>
-                </div>
-
-                <footer class="w3-container w3-theme"></footer>
-
+                </ul>
             </div>
 
+            <footer class="w3-container w3-theme"></footer>
+
+        </div>
+
+    }
+    else
+    {
+        var systemData2 = new SystemLimpet(appThemeDataList.SelectedSystemKey);
+
+        <div id="createnewapptheme" class="w3-modal">
+            <div class="w3-modal-content w3-card w3-animate-zoom">
+
+                <header class="w3-container  w3-theme">
+                    <span onclick="document.getElementById('createnewapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                    <h2>@ResourceKey("Appthemes.createnewapptheme")</h2>
+                </header>
+
+                <div class="w3-row-padding">
+                    <div class="w3-col m4 w3-padding">
+                        <input value="" id="appthemeprefix" s-xpath="genxml/textbox/appthemeprefix" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.prefix")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                    </div>
+                    <div class="w3-col m5 w3-padding">
+                        <input value="" id="appthemename" s-xpath="genxml/textbox/appthemename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.appthemename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                    </div>
+                    <div class="w3-col m3 w3-padding">
+                        <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addapptheme" s-post="#createnewapptheme" s-return=".createnewappthemereturn" s-after="redisplaylist" s-fields=''>@ButtonText(ButtonTypes.create)</div>
+                    </div>
+                </div>
+                <div class="w3-row w3-panel w3-red createnewappthemereturn" style="display:none;">
+                </div>
+            </div>
+        </div>
+
+        <div id="importapptheme" class="w3-modal">
+            <div class="w3-modal-content w3-card w3-animate-zoom">
+
+                <header class="w3-theme-d5 w3-center" style="height: 39px;">
+                    <span onclick="document.getElementById('importapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                    <h4>@ResourceKey("DNNrocket.import")</h4>
+                </header>
+
+                <div class="w3-container">
+                    <br />
+                    <span class="w3-section">
+                        <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#importfileupload').trigger('click')">@ButtonText(ButtonTypes.upload)</span>
+                    </span>
+
+                    <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
+                        <input id="importfileupload" class="simplisity_fileupload" s-cmd="rocketapptheme_import" s-reload="false" s-after="closeimportmodal" s-return="" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-fields='{"theme":"config-w3","interfacekey":"rocketapptheme"}' type="file" name="files[]" multiple style="display:none;">
+                        <p><i>@ResourceKey("DNNrocket.drophere")...</i></p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div id="exportdownloadedurl" class="w3-hide"></div>
+
+        <div class="w3-row w3-padding">
+            <div class="w3-col m3 rocket-buttonbar w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearselectedsystemkey":"true"}'>@ButtonText(ButtonTypes.back)</div>
+            <div class="w3-col m3 rocket-buttonbar w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'">@ButtonText(ButtonTypes.create)</div>
+
+            <div class="w3-col m6 w3-dropdown-hover">
+                <button class="w3-button" style="border-top: 6px solid #fff !important;">More...</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card">
+                    <div class="w3-bar-item w3-button w3-padding-8 " onclick="document.getElementById('importapptheme').style.display='block'"><i class="w3-text-teal fas fa-file-import fa-fw fa-lg"></i>@ResourceKey("DNNrocket.import")</div>
+                    <div class="w3-bar-item w3-button w3-padding-8 refreshlist simplisity_click" s-track="clear" s-cmd="rocketapptheme_getlist" s-fields='' style="display:none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-row">
+            <div class="w3-half">
+                <h2>@systemData2.SystemName</h2>
+            </div>
+        </div>
+
+        if (appThemeDataList.List.Count == 0)
+        {
+            <div class="w3-row">
+                <div class="w3-center w3-margin-top">
+                    <div class="w3-text-red w3-padding w3-margin">
+                        @ResourceKey("AppThemes.nolocal")
+                    </div>
+                    <div class="w3-button w3-padding w3-green simplisity_click" s-cmd="rocketapptheme_downloadallpublic" s-fields='{"systemkey":"dnnrocketapptheme"}'><i class="fas fa-download fa-lg "></i>&nbsp;@ResourceKey("Appthemes.downloadall")</div>
+                </div>
+            </div>
         }
         else
         {
-            var systemData2 = new SystemLimpet(appThemeDataList.SelectedSystemKey);
 
-            <div id="createnewapptheme" class="w3-modal">
-                <div class="w3-modal-content w3-card w3-animate-zoom">
+            <div class="w3-row w3-card searchdata w3-margin-top">
 
-                    <header class="w3-container  w3-theme">
-                        <span onclick="document.getElementById('createnewapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                        <h2>@ResourceKey("Appthemes.createnewapptheme")</h2>
-                    </header>
-
-                    <div class="w3-row-padding">
-                        <div class="w3-col m4 w3-padding">
-                            <input value="" id="appthemeprefix" s-xpath="genxml/textbox/appthemeprefix" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.prefix")..." maxlength="350" autocomplete="off" s-update="save" type="text">
-                        </div>
-                        <div class="w3-col m5 w3-padding">
-                            <input value="" id="appthemename" s-xpath="genxml/textbox/appthemename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.appthemename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
-                        </div>
-                        <div class="w3-col m3 w3-padding">
-                            <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addapptheme" s-post="#createnewapptheme" s-return=".createnewappthemereturn" s-after="redisplaylist" s-fields=''>@ButtonText(ButtonTypes.create)</div>
-                        </div>
-                    </div>
-                    <div class="w3-row w3-panel w3-red createnewappthemereturn" style="display:none;">
+                <div class="">
+                    <div class="w3-row w3-padding">
+                        <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
                     </div>
                 </div>
+
             </div>
 
-            <div id="importapptheme" class="w3-modal">
-                <div class="w3-modal-content w3-card w3-animate-zoom">
 
-                    <header class="w3-theme-d5 w3-center" style="height: 39px;">
-                        <span onclick="document.getElementById('importapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                        <h4>@ResourceKey("DNNrocket.import")</h4>
-                    </header>
+            <div id="datasection" class="w3-row w3-margin-top">
 
-                    <div class="w3-container">
-                        <br />
-                        <span class="w3-section">
-                            <span class="w3-button w3-teal w3-padding-8 fileuploadaction" onclick="$('#importfileupload').trigger('click')">@ButtonText(ButtonTypes.upload)</span>
-                        </span>
+                <div id="datalist2" class="w3-container">
+                    @{
+                        var lp1 = 0;
+                    }
+                    @foreach (AppThemeLimpet appTheme in appThemeDataList.List)
+                    {
+                        lp1 += 1;
 
-                        <div class="w3-panel w3-white w3-rest" style="border-style:dotted">
-                            <input id="importfileupload" class="simplisity_fileupload" s-cmd="rocketapptheme_import" s-reload="false" s-after="closeimportmodal" s-return="" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-fields='{"theme":"config-w3","interfacekey":"rocketapptheme"}' type="file" name="files[]" multiple style="display:none;">
-                            <p><i>@ResourceKey("DNNrocket.drophere")...</i></p>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
-            <div id="exportdownloadedurl" class="w3-hide"></div>
-
-            <div class="w3-row w3-padding">
-                <div class="w3-col m3 rocket-buttonbar w3-button w3-khaki simplisity_click" s-cmd="rocketapptheme_getlist" s-fields='{"clearselectedsystemkey":"true"}'>@ButtonText(ButtonTypes.back)</div>
-                <div class="w3-col m3 rocket-buttonbar w3-button w3-teal w3-padding-8 " onclick="document.getElementById('createnewapptheme').style.display='block'">@ButtonText(ButtonTypes.create)</div>
-
-                <div class="w3-col m6 w3-dropdown-hover">
-                    <button class="w3-button" style="border-top: 6px solid #fff !important;">More...</button>
-                    <div class="w3-dropdown-content w3-bar-block w3-card">
-                        <div class="w3-bar-item w3-button w3-padding-8 " onclick="document.getElementById('importapptheme').style.display='block'"><i class="w3-text-teal fas fa-file-import fa-fw fa-lg"></i>@ResourceKey("DNNrocket.import")</div>
-                        <div class="w3-bar-item w3-button w3-padding-8 refreshlist simplisity_click" s-track="clear" s-cmd="rocketapptheme_getlist" s-fields='' style="display:none;"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="w3-row">
-                <div class="w3-half">
-                    <h2>@systemData2.SystemName</h2>
-                </div>
-            </div>
-
-            if (appThemeDataList.List.Count == 0)
-            {
-                <div class="w3-row">
-                    <div class="w3-center w3-margin-top">
-                        <div class="w3-text-red w3-padding w3-margin">
-                            @ResourceKey("AppThemes.nolocal")
-                        </div>
-                        <div class="w3-button w3-padding w3-green simplisity_click" s-cmd="rocketapptheme_downloadallpublic" s-fields='{"systemkey":"dnnrocketapptheme"}'><i class="fas fa-download fa-lg "></i>&nbsp;@ResourceKey("Appthemes.downloadall")</div>
-                    </div>
-                </div>
-            }
-            else
-            {
-
-                <div class="w3-row w3-card searchdata w3-margin-top">
-
-                    <div class="">
-                        <div class="w3-row w3-padding">
-                            <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div id="datasection" class="w3-row w3-margin-top">
-
-                    <div id="datalist2" class="w3-container">
-                        @{
-                            var lp1 = 0;
-                        }
-                        @foreach (AppThemeLimpet appTheme in appThemeDataList.List)
-                        {
-                            lp1 += 1;
-
-                            <div class="w3-col l3 m4 w3-padding searchdiv" style="">
-                                <div title="@appTheme.AppThemeName" class="w3-row w3-border simplisity_click " s-cmd="rocketapptheme_getdetail" s-fields='{"track":"true","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="cursor:pointer;">
-                                    <div class="w3-col m10 w3-padding ">
-                                        <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
-                                            <b class="w3-left w3-text-blue ">@appTheme.AppThemePrefix</b>
-                                            <b class="w3-right">@appTheme.LatestVersionFolder</b>
-                                        </div>
-                                        <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
-                                            <b>@appTheme.AppThemeFolder</b>
-                                        </div>
+                        <div class="w3-col l3 m4 w3-padding searchdiv" style="">
+                            <div title="@appTheme.AppThemeName" class="w3-row w3-border simplisity_click " s-cmd="rocketapptheme_getdetail" s-fields='{"track":"true","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.LatestVersionFolder"}' style="cursor:pointer;">
+                                <div class="w3-col m10 w3-padding ">
+                                    <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
+                                        <b class="w3-left w3-text-blue ">@appTheme.AppThemePrefix</b>
+                                        <b class="w3-right">@appTheme.LatestVersionFolder</b>
+                                    </div>
+                                    <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;height:24px;">
+                                        <b>@appTheme.AppThemeFolder</b>
                                     </div>
                                 </div>
                             </div>
-                        }
-                    </div>
-
-                    <hr />
-
+                        </div>
+                    }
                 </div>
 
-            }
+                <hr />
 
-            <script>
-                $(document).ready(function () {
-                    $("#datalist").disableSelection();
-                });
-
-                function closeimportmodal() {
-                    $('#importapptheme').hide();
-                }
-
-                function searchFunction() {
-                    var input, filter, ul, li, a, i;
-                    input = document.getElementById("searchtext");
-                    filter = input.value.toUpperCase();
-                    ul = document.getElementById("datalist2");
-                    li = $('.searchdiv');
-                    for (i = 0; i < li.length; i++) {
-                        txtValue = li[i].textContent || li[i].innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            li[i].style.display = "";
-                        } else {
-                            li[i].style.display = "none";
-                        }
-                    }
-                }
-
-                function redisplaylist() {
-                    if ($('.createnewappthemereturn').text() == '') {
-                        simplisity_callserver($('.refreshlist'));
-                    }
-                    else {
-                        $('.createnewappthemereturn').show();
-                    }
-                }
-
-            </script>
+            </div>
 
         }
 
-    </div>
+        <script>
+            $(document).ready(function () {
+                $("#datalist").disableSelection();
+            });
+
+            function closeimportmodal() {
+                $('#importapptheme').hide();
+            }
+
+            function searchFunction() {
+                var input, filter, ul, li, a, i;
+                input = document.getElementById("searchtext");
+                filter = input.value.toUpperCase();
+                ul = document.getElementById("datalist2");
+                li = $('.searchdiv');
+                for (i = 0; i < li.length; i++) {
+                    txtValue = li[i].textContent || li[i].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+
+            function redisplaylist() {
+                if ($('.createnewappthemereturn').text() == '') {
+                    simplisity_callserver($('.refreshlist'));
+                }
+                else {
+                    $('.createnewappthemereturn').show();
+                }
+            }
+
+        </script>
+
+    }
+
+</div>
 

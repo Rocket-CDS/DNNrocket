@@ -5,7 +5,7 @@ using DNNrocketAPI;
 using DNNrocketAPI.Components;
 using Simplisity;
 using Rocket.AppThemes.Components;
-using RocketMod.Componants;
+using RocketMod.Components;
 using System.IO;
 
 namespace RocketMod

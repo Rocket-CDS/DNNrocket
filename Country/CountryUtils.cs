@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using DNNrocketAPI.Components;
 using Simplisity;
-using DNNrocket.Country.Componants;
+using DNNrocket.Country.Components;
 using Newtonsoft.Json;
 
 namespace DNNrocket.Country

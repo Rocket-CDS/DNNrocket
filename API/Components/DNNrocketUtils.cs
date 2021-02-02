@@ -44,6 +44,23 @@ namespace DNNrocketAPI.Components
 {
     public static class DNNrocketUtils
     {
+        public static void Handle404Exception(HttpResponse response, PortalSettings portalSetting)
+        {
+            if (portalSetting?.ErrorPage404 > Null.NullInteger)
+            {
+                response.Redirect(Globals.NavigateURL(portalSetting.ErrorPage404, string.Empty, "status=404"));
+            }
+            else
+            {
+                response.ClearContent();
+                response.TrySkipIisCustomErrors = true;
+                response.StatusCode = 404;
+                response.Status = "404 Not Found";
+                response.Write("404 Not Found");
+                response.End();
+            }
+        }
+
         public static string AppendFileModifiedDate(string relPath, string paramname = "v", bool useCache = true)
         {
             var c = (string)CacheUtils.GetCache(relPath);

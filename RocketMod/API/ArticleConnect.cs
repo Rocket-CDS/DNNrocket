@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using RocketMod.Componants;
+using RocketMod.Components;
 
 namespace RocketMod
 {

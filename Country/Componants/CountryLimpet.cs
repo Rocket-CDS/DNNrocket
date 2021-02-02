@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DNNrocket.Country.Componants
+namespace DNNrocket.Country.Components
 {
     public class CountryLimpet
     {

@@ -32,6 +32,7 @@ using DNNrocketAPI.Components;
 using System.IO;
 using System.Xml;
 using Newtonsoft.Json;
+using DotNetNuke.Common;
 
 namespace DNNrocketAPI
 {
@@ -217,7 +218,6 @@ namespace DNNrocketAPI
             if (UserId > 0) _hasEditAccess = DotNetNuke.Security.Permissions.ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration);
         }
 
-
         protected override void OnPreRender(EventArgs e)
         {
             // simplisity puts any session fields in a cookie string as json
@@ -248,6 +248,11 @@ namespace DNNrocketAPI
             if (String.IsNullOrEmpty(cacheOutPut))
             {
                 strOut += _remoteParams.htmlAPI();
+                if (strOut == "404")
+                {
+                    CacheFileUtils.RemoveCache(cacheKey);
+                    DNNrocketUtils.Handle404Exception(Response, PortalUtils.GetPortalSettings());
+                }
                 CacheFileUtils.SetCache(cacheKey, strOut);
             }
             else

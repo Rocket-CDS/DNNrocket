@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RocketLicense.Componants
+namespace RocketLicense.Components
 {
     public class ClientLocalLicense
     {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace RocketMod.Componants
+namespace RocketMod.Components
 {
     public class ImportLimpet
     {

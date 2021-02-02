@@ -8,7 +8,7 @@ using System.Text;
 using System.Xml;
 using DNNrocketAPI.Components;
 
-namespace RocketMod.Componants
+namespace RocketMod.Components
 {
 
     public class ArticleLimpet
