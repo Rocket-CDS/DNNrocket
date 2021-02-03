@@ -30,6 +30,7 @@ namespace DNNrocketAPI.Components
         /// <param name="versionFolder"></param>
         public AppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder = "")
         {
+            SystemKey = systemKey;
             Record = new SimplisityInfo();
             SystemData = new SystemLimpet(systemKey);
 
@@ -46,12 +47,13 @@ namespace DNNrocketAPI.Components
         /// <param name="versionFolder"></param>
         public AppThemeLimpet(string systemKey, string versionFolder = "")
         {
+            SystemKey = systemKey;
             Record = new SimplisityInfo();
             SystemData = new SystemLimpet(systemKey);
 
             AppThemeFolder = "config-w3";
-            AppSystemThemeFolderRel = SystemData.SystemRelPath.TrimEnd('/') + "/Themes/";
-            AppThemeFolderRel = AppSystemThemeFolderRel.TrimEnd('/') + "/" + AppThemeFolder;
+            AppSystemThemeFolderRel = "/DesktopModules/RocketThemes/" + SystemKey;
+            AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
 
             InitAppTheme(versionFolder);
         }

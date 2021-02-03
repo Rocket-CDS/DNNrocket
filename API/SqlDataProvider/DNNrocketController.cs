@@ -606,6 +606,7 @@ namespace DNNrocketAPI
         public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int moduleId = -1, string tableName = "DNNrocket")
         {
             var info = GetInfo(ItemId, lang, tableName);
+            if (info != null && info.TypeCode != typeCode) info = null;
             if (info == null)
             {
                 // create record if not in DB
