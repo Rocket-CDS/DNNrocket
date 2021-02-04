@@ -23,7 +23,7 @@ namespace DNNrocketAPI.Components
             ImportXmlFile(zipMapPath);
         }
         /// <summary>
-        /// Take the AppTheme templates form the "/DesktopModules/RocketThemes/" folder
+        /// Take the AppTheme templates from the "/DesktopModules/RocketThemes/" folder
         /// </summary>
         /// <param name="systemKey"></param>
         /// <param name="appThemeFolder"></param>
@@ -41,7 +41,7 @@ namespace DNNrocketAPI.Components
             InitAppTheme(versionFolder);
         }
         /// <summary>
-        /// Use the "config-w3" folder of the system.
+        /// Use the "config-w3" folder of the system under "/DesktopModules/DNNrocketModules/".
         /// </summary>
         /// <param name="systemKey"></param>
         /// <param name="versionFolder"></param>
@@ -52,7 +52,7 @@ namespace DNNrocketAPI.Components
             SystemData = new SystemLimpet(systemKey);
 
             AppThemeFolder = "config-w3";
-            AppSystemThemeFolderRel = "/DesktopModules/RocketThemes/" + SystemKey;
+            AppSystemThemeFolderRel = "/DesktopModules/DNNrocketModules/" + SystemKey;
             AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
 
             InitAppTheme(versionFolder);
