@@ -367,19 +367,19 @@ namespace DNNrocketAPI.Components
             else
                 return PortalSettings.Current.HomeDirectory + "DNNrocket";
         }
-        public static string DNNrocketThemesDirectoryMapPath(int portalId = -1)
+        public static string DNNrocketThemesDirectoryMapPath(int portalId = -1, string systemKey = "")
         {
             if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectoryMapPath + "DNNrocketThemes";
+                return GetPortalSettings(portalId).HomeDirectoryMapPath.TrimEnd('\\') + "\\RocketThemes\\" + systemKey;
             else
-                return PortalSettings.Current.HomeDirectoryMapPath + "DNNrocketThemes";
+                return PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\RocketThemes\\" + systemKey;
         }
-        public static string DNNrocketThemesDirectoryRel(int portalId = -1)
+        public static string DNNrocketThemesDirectoryRel(int portalId = -1, string systemKey = "")
         {
             if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectory + "DNNrocketThemes";
+                return GetPortalSettings(portalId).HomeDirectory + "RocketThemes/" + systemKey;
             else
-                return PortalSettings.Current.HomeDirectory + "DNNrocketThemes";
+                return PortalSettings.Current.HomeDirectory + "RocketThemes/" + systemKey;
         }
         public static string TempDirectoryMapPath(int portalId = -1)
         {

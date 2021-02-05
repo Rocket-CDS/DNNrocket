@@ -1352,7 +1352,7 @@ namespace DNNrocketAPI.Components
             imageModel.List = imgList;
 
             var strOut = "<div id='dnnrocket_imageselectwrapper'>";
-            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+            var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(systemkey, razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
             strOut += RenderRazorUtils.RazorRender(imageModel, razorTempl, true);
             strOut += "</div>";
             return strOut;
@@ -1391,7 +1391,7 @@ namespace DNNrocketAPI.Components
             docModel.List = docList;
 
             var strOut = "<div id='dnnrocket_documentselectwrapper'>";
-            var razorTempl = RenderRazorUtils.GetRazorTemplateData(razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
+            var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(systemkey, razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
             strOut += RenderRazorUtils.RazorRender(docModel, razorTempl, false);
             strOut += "</div>";
             return strOut;

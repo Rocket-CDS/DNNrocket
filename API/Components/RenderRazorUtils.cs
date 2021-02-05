@@ -138,9 +138,16 @@ namespace DNNrocketAPI.Components
 
         #region "templates"
 
+        [Obsolete("GetRazorTemplateData() is deprecated, please use GetSystemRazorTemplate() instead.")]
         public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
         {
-            var templCtrl = GetTemplateEngine(templateControlPath, themeFolder, lang, versionFolder, debugMode);
+            var templCtrl = GetTemplateEngine("", templateControlPath, themeFolder, lang, versionFolder, debugMode);
+            var templ = templCtrl.GetTemplateData(templatename, lang);
+            return templ;
+        }
+        public static string GetSystemRazorTemplate(string systemKey, string templatename, string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
+        {
+            var templCtrl = GetTemplateEngine(systemKey, templateControlPath, themeFolder, lang, versionFolder, debugMode);
             var templ = templCtrl.GetTemplateData(templatename, lang);
             return templ;
         }
@@ -149,7 +156,7 @@ namespace DNNrocketAPI.Components
 
         #region "private methods"
 
-        private static TemplateGetter GetTemplateEngine(string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
+        private static TemplateGetter GetTemplateEngine(string systemKey, string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
         {
             var cacheKey = templateControlPath + "*" + themeFolder + "*" + lang + "*" + versionFolder + "*" + debugMode;
             var templCtrl = CacheUtilsDNN.GetCache(cacheKey);
@@ -159,7 +166,7 @@ namespace DNNrocketAPI.Components
                 var themeFolderPath = themeFolder + "\\" + versionFolder;
                 if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder + "\\" + versionFolder;
                 if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder;
-                var RocketThemes = PortalUtils.DNNrocketThemesDirectoryMapPath();
+                var RocketThemes = PortalUtils.DNNrocketThemesDirectoryMapPath(-1, systemKey);
                 templCtrl = new TemplateGetter(RocketThemes, themeFolderPath, controlMapPath, debugMode);
                 CacheUtilsDNN.SetCache(cacheKey, templCtrl);
             }

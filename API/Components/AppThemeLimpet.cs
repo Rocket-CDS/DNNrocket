@@ -52,7 +52,7 @@ namespace DNNrocketAPI.Components
             SystemData = new SystemLimpet(systemKey);
 
             AppThemeFolder = "config-w3";
-            AppSystemThemeFolderRel = "/DesktopModules/DNNrocketModules/" + SystemKey;
+            AppSystemThemeFolderRel = "/DesktopModules/DNNrocketModules/" + SystemKey + "/Themes";
             AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
 
             InitAppTheme(versionFolder);
@@ -249,7 +249,7 @@ namespace DNNrocketAPI.Components
         public string GetDisplayTemplate(string templateFileName, string cultureCode = "")
         {
             if (cultureCode == "") cultureCode = DNNrocketUtils.GetCurrentCulture();
-            return RenderRazorUtils.GetRazorTemplateData(templateFileName, AppSystemThemeFolderRel, AppThemeFolder, cultureCode, AppVersionFolder, true);
+            return RenderRazorUtils.GetSystemRazorTemplate(SystemKey, templateFileName, AppSystemThemeFolderRel, AppThemeFolder, cultureCode, AppVersionFolder, true);
         }
 
         public void DeleteTheme()
