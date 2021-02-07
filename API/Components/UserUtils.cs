@@ -395,9 +395,29 @@ namespace DNNrocketAPI.Components
                 return 0; // use zero;
             }
         }
-        public static ArrayList GetUsers(int portalId)
+        /// <summary>
+        /// Return list of users in XML SimplisityRecord.  XML Format "user/email user/username user/userid user/displayname"
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="inRole"></param>
+        /// <returns></returns>
+        public static List<SimplisityRecord> GetUsers(int portalId, string inRole = "")
         {
-            return UserController.GetUsers(portalId);
+            var rtnList = new List<SimplisityRecord>();
+            var l = UserController.GetUsers(portalId);
+            foreach (UserInfo u in l)
+            {
+                if (inRole == "" || u.IsInRole(inRole))
+                {
+                    var sRec = new SimplisityRecord();
+                    sRec.SetXmlProperty("user/username", u.Username);
+                    sRec.SetXmlProperty("user/email", u.Email);
+                    sRec.SetXmlPropertyInt("user/userid", u.UserID.ToString());
+                    sRec.SetXmlProperty("user/displayname", u.DisplayName);
+                    rtnList.Add(sRec);
+                }
+            }
+            return rtnList;
         }
         public static int GetUserIdByEmail(int portalId, string email)
         {
