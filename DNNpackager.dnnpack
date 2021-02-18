@@ -1,6 +1,6 @@
 <root>
   <!-- To build install file use "Solution Directory" -->
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<!-- Include only files that match the regular expression -->
 	<regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.css|\.js|\.xml|\.txt|\.md|\.ascx|\.ashx|\.aspx|\.woff|\.woff2|\.ttf)$</regexpr>
 	<directory include='false'>
