@@ -346,14 +346,13 @@ namespace DNNrocketAPI.Components
         }
 
 
-        public static Dictionary<string, string> GetUserProfileProperties(String userId)
+        public static Dictionary<string, string> GetUserProfileProperties(string userId)
         {
             if (!GeneralUtils.IsNumeric(userId)) return null;
             var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
             return GetUserProfileProperties(userInfo);
         }
-
-        public static Dictionary<string, string> GetUserProfileProperties(UserInfo userInfo)
+        private static Dictionary<string, string> GetUserProfileProperties(UserInfo userInfo)
         {
             var prop = new Dictionary<string, string>();
             foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition p in userInfo.Profile.ProfileProperties)
@@ -362,8 +361,7 @@ namespace DNNrocketAPI.Components
             }
             return prop;
         }
-
-        public static void SetUserProfileProperties(UserInfo userInfo, Dictionary<string, string> properties)
+        private static void SetUserProfileProperties(UserInfo userInfo, Dictionary<string, string> properties)
         {
             foreach (var p in properties)
             {
