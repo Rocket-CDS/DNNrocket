@@ -346,6 +346,18 @@ namespace DNNrocketAPI.Components
         }
 
 
+        public static string GetUserEmail(int userId)
+        {
+            if (userId <= 0) return "";
+            var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, userId);
+            return userInfo.Email;
+        }
+        public static string GetUsername(int userId)
+        {
+            if (userId <= 0) return "";
+            var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, userId);
+            return userInfo.Username;
+        }
         public static Dictionary<string, string> GetUserProfileProperties(string userId)
         {
             if (!GeneralUtils.IsNumeric(userId)) return null;
@@ -359,6 +371,10 @@ namespace DNNrocketAPI.Components
             {
                 prop.Add(p.PropertyName, p.PropertyValue);
             }
+            if (!prop.ContainsKey("Email")) prop.Add("Email", userInfo.Email);
+            if (!prop.ContainsKey("Username")) prop.Add("Username", userInfo.Username);
+            if (!prop.ContainsKey("DisplayName")) prop.Add("DisplayName", userInfo.DisplayName);
+
             return prop;
         }
         private static void SetUserProfileProperties(UserInfo userInfo, Dictionary<string, string> properties)
