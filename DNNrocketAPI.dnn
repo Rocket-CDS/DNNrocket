@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="RocketSystem" type="Module" version="1.0.1">
+		<package name="RocketSystem" type="Module" version="1.0.2">
 			<friendlyName>RocketSystem</friendlyName>
 			<description>Rocket System</description>
       <iconFile></iconFile>
@@ -207,7 +207,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
       </components>
 		</package>
 
-    <package name="RocketMod" type="Module" version="1.0.1">
+    <package name="RocketMod" type="Module" version="1.0.2">
       <friendlyName>RocketMod</friendlyName>
       <description>DNNrocket Module </description>
       <iconFile />
@@ -287,7 +287,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
     </package>
 
 
-    <package name="RocketRemoteMod" type="Module" version="1.0.1">
+    <package name="RocketRemoteMod" type="Module" version="1.0.2">
       <friendlyName>RocketRemoteMod</friendlyName>
       <description>Rocket Remote Module </description>
       <iconFile />
