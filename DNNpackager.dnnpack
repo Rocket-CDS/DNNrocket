@@ -1,0 +1,113 @@
+<root>
+  <!-- To build install file use "Solution Directory" -->
+	<version>1.0.2</version>
+	<!-- Include only files that match the regular expression -->
+	<regexpr>(\.cshtml|\.html|\.resx|\.dnn|\.png|\.css|\.js|\.xml|\.txt|\.md|\.ascx|\.ashx|\.aspx|\.woff|\.woff2|\.ttf)$</regexpr>
+	<directory include='false'>
+		<!-- All paths should be from the source root (project root) -->
+		<value>\.git</value>
+		<value>\.vs</value>
+		<value>\bin</value>
+
+  </directory>
+  <directory include='true'>
+    <!-- All paths should be from the source root (project root) -->
+    <value>\API</value>
+    <value>\API\App_LocalResources</value>
+    <value>\API\images\*</value>
+    <value>\API\Systems</value>
+    <value>\API\Themes\*</value>
+
+    <value>\AppThemes</value>
+    <value>\AppThemes\App_LocalResources</value>
+    <value>\AppThemes\AppThemeBase\*</value>
+    <value>\AppThemes\CodeMirror\*</value>
+    <value>\AppThemes\images</value>
+    <value>\AppThemes\Shared</value>
+    <value>\AppThemes\Themes\*</value>
+
+    <value>\CKEditor</value>
+
+    <value>\Country</value>
+    <value>\Country\App_LocalResources</value>
+    <value>\Country\Themes\*</value>
+
+    <value>\Documents</value>
+    <value>\Documents\Themes\*</value>
+
+    <value>\Images</value>
+    <value>\Images\App_LocalResources</value>
+    <value>\Images\Themes\*</value>
+
+    <value>\RocketMod</value>
+    <value>\RocketMod\App_LocalResources</value>
+    <value>\RocketMod\AppThemeBase\*</value>
+    <value>\RocketMod\images</value>
+    <value>\RocketMod\Themes\*</value>
+
+    <value>\RocketRemoteMod</value>
+    <value>\RocketRemoteMod\App_LocalResources</value>
+    <value>\RocketRemoteMod\Themes\*</value>
+
+    <value>\Simplisity</value>
+    <value>\Simplisity\js</value>
+
+    <value>\SystemData</value>
+    <value>\SystemData\App_LocalResources</value>
+    <value>\SystemData\Systems</value>
+    <value>\SystemData\Themes\*</value>
+
+    <value>\Tools</value>
+    <value>\Tools\App_LocalResources</value>
+    <value>\Tools\Themes\*</value>
+
+
+    <value>\css\*</value>
+    <value>\fa\*</value>
+    <value>\js\*</value>
+
+
+  </directory>
+  <file include='false'>
+  </file>
+  <file include='true'>
+    <!-- All paths should be from the source root (project root) -->
+    <!-- These files will be NOT in the Resource.zip, they will be on the root of the install zip -->
+    <value>\API\Installation\01.00.00.SqlDataProvider</value>
+    <value>\API\Installation\Uninstall.SqlDataProvider</value>
+    <value>DNNrocketAPI.dnn</value>
+
+    <!-- Put these at the root, so we can move them on install -->
+    <value>SystemData\Systems\rocketremotemod_system.xml</value>
+    <value>SystemData\Systems\dnnrocketmodule_system.xml</value>
+    <value>SystemData\Systems\dnnrocketapptheme_system.xml</value>
+    <value>SystemData\Systems\rockettools_system.xml</value>
+    <value>SystemData\Systems\systemapi_system.xml</value>
+
+    <value>globalconfig.xml</value>
+    <value>admin.html</value>
+    <value>adminsystem.html</value>
+    <value>readme.md</value>
+
+  </file>
+	<assembly>
+    <value>\bin\System.Drawing.Common.dll</value>
+    <value>\bin\Simplisity.dll</value>
+    <value>\bin\RocketTools.dll</value>
+    <value>\bin\RocketMod.dll</value>
+    <value>\bin\RocketRemoteMod.dll</value>
+    <value>\bin\RocketAppThemes.dll</value>
+    <value>\bin\RazorEngine.dll</value>
+    <value>\bin\netstandard.dll</value>
+    <value>\bin\DNNrocketSystemData.dll</value>
+    <value>\bin\DNNrocketImages.dll</value>
+    <value>\bin\DNNrocketDocuments.dll</value>
+    <value>\bin\DNNrocketCountry.dll</value>
+    <value>\bin\DNNrocketAPI.dll</value>
+    <value>\API\_external\Newtonsoft.Json.dll</value>
+    <value>\API\_external\netstandard.dll</value>
+    <value>\API\_external\System.Web.Http.dll</value>
+    <value>\API\_external\System.Drawing.Common.dll</value>
+    <value>\API\_external\RazorEngine.dll</value>
+  </assembly>
+</root>

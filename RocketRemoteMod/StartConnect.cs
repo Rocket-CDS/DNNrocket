@@ -1,9 +1,9 @@
 ﻿using DNNrocketAPI;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
-using Rocket.AppThemes.Componants;
+using Rocket.AppThemes.Components;
 
 namespace RocketRemoteMod
 {

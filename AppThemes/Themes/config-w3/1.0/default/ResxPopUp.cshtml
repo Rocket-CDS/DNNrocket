@@ -2,7 +2,7 @@
 @using DNNrocketAPI;
 @using Simplisity;
 @using System.IO;
-@using DNNrocketAPI.Componants;
+@using DNNrocketAPI.Components;
 
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
@@ -11,7 +11,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 @{
-    var appTheme = (AppTheme)Model.List.First();
+    var appTheme = (AppThemeLimpet)Model.List.First();
     var resxData = (ResxData)Model.DataObjects["resxData"];
 
     var flagurl = "";

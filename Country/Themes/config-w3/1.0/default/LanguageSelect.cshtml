@@ -1,27 +1,30 @@
 @inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
 @using Simplisity;
-@using DNNrocketAPI.Componants;
+@using DNNrocketAPI.Components;
 
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@{
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+}
 
-<div class="w3-dropdown-click">
-    <button onclick="LanguageClickSelect()" style="width:270px;" class="w3-button w3-theme-l4 languageFlag"><img class='languageFlagImg' src='/DesktopModules/DNNrocket/API/images/flags/16/@(DNNrocketUtils.GetEditCulture()).png' alt='@(DNNrocketUtils.GetEditCulture())' /><span class="w3-small languageFlagText">&nbsp;@DNNrocketUtils.GetCultureCodeName(DNNrocketUtils.GetEditCulture())</span></button>
-    <div class="LanguageClickShow w3-dropdown-content w3-bar-block w3-border w3-theme-l5">
-        @{
-            var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
-            foreach (var l in enabledlanguages)
-            {
-                <div class="w3-bar-item w3-button selectlang w3-border-bottom " editlang='@l' style="width:100%;"><img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/@(l).png' alt='@(l)' /><span class="w3-small">&nbsp;@DNNrocketUtils.GetCultureCodeName(l)</span></div>
-            }
-        }
-    </div>
-</div>
 
-<!-- single flag, if required, like iframe edit -->
 @if (enabledlanguages.Count > 1)
 {
+
+    <div class="w3-dropdown-click w3-border-bottom" style="width:100%;">
+        <button onclick="LanguageClickSelect()" style="width:100%;" class=" w3-button w3-theme-l4 languageFlag"><img class='languageFlagImg' src='/DesktopModules/DNNrocket/API/images/flags/16/@(DNNrocketUtils.GetEditCulture()).png' alt='@(DNNrocketUtils.GetEditCulture())' /><span class="w3-small languageFlagText">&nbsp;@DNNrocketUtils.GetCultureCodeName(DNNrocketUtils.GetEditCulture())</span></button>
+        <div class="LanguageClickShow w3-dropdown-content w3-bar-block w3-border w3-theme-l5" style="width:100%;">
+            @{
+                foreach (var l in enabledlanguages)
+                {
+                    <div class="w3-bar-item w3-button selectlang w3-border-bottom " editlang='@l' style="width:100%;"><img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/@(l).png' alt='@(l)' /><span class="w3-small">&nbsp;@DNNrocketUtils.GetCultureCodeName(l)</span></div>
+                }
+            }
+        </div>
+    </div>
+
     <div class="w3-row langaugeselectsingleflag" style="display:none;">
         @foreach (var l in enabledlanguages)
         {
@@ -30,10 +33,8 @@
             </div>
         }
     </div>
-}
 
-
-<script>
+    <script>
     $(document).ready(function () {
 
         simplisity_setParamField('nextlang', "");
@@ -63,4 +64,6 @@
             $(".LanguageClickShow").removeClass("w3-show");
         }
     }
-</script>
+    </script>
+
+}

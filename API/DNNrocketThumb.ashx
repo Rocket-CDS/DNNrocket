@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="DNNrocketThumb.ashx.cs" Class="DNNrocketAPI.Componants.DNNrocketThumb" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="DNNrocketThumb.ashx.cs" Class="DNNrocketAPI.Components.DNNrocketThumb" %>

@@ -1,9 +1,9 @@
 ﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
 @using Simplisity;
-@using Rocket.AppThemes.Componants;
+@using Rocket.AppThemes.Components;
 @using System.IO;
-@using DNNrocketAPI.Componants;
+@using DNNrocketAPI.Components;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/images/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
@@ -11,7 +11,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 
 @{
-    var appTheme = (AppTheme)Model.List.First();
+    var appTheme = (AppThemeLimpet)Model.List.First();
     var info = new SimplisityInfo(appTheme.Record);
 }
 

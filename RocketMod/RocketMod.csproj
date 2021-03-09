@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;razor</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -20,18 +21,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\API\DNNrocketAPI.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="RazorEngine">
-      <HintPath>..\..\..\bin\RazorEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="RocketAppThemes">
-      <HintPath>..\..\..\bin\RocketAppThemes.dll</HintPath>
-    </Reference>
-    <Reference Include="Simplisity">
-      <HintPath>..\..\..\bin\Simplisity.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\AppThemes\AppThemes.csproj" />
+    <ProjectReference Include="..\Simplisity\Simplisity.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,7 +30,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(ProjectDir)..\..\..\bin\$(TargetFileName)&quot;&#xD;&#xA;&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(AssemblyName).pdb&quot; &quot;$(ProjectDir)..\..\..\bin\$(AssemblyName).pdb&quot;&#xD;&#xA;&#xD;&#xA;" />
+    <Exec Command="REM ** Copy to sub-bin folder, so install package can be built from them **&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(ProjectDir)..\bin\$(TargetFileName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(AssemblyName).pdb&quot; &quot;$(ProjectDir)..\bin\$(AssemblyName).pdb&quot;&#xD;&#xA;&#xD;&#xA;DNNpackager.exe $(ProjectDir) $(TargetDir) $(ConfigurationName)" />
   </Target>
 
 </Project>

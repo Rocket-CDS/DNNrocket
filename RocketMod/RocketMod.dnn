@@ -49,7 +49,7 @@ DNNrocketAPI
 					<desktopModule>
 						<moduleName>dnnrocketmodule_rocketmod</moduleName>
 						<foldername>RocketMod</foldername>
-						<businessControllerClass>DNNrocketAPI.Componants.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
+						<businessControllerClass>DNNrocketAPI.Components.DNNrocketModuleController,DNNrocketAPI</businessControllerClass>
 						<supportedFeatures>
 							<supportedFeature type="Portable" />
 							<supportedFeature type="Searchable" />

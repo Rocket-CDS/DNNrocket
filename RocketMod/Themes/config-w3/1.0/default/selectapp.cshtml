@@ -1,9 +1,9 @@
 ﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI;
 @using Simplisity;
-@using Rocket.AppThemes.Componants;
-@using DNNrocketAPI.Componants;
-@using RocketMod.Componants;
+@using Rocket.AppThemes.Components;
+@using DNNrocketAPI.Components;
+@using RocketMod.Components;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
@@ -80,7 +80,7 @@
                         @{
                             var lp1 = 0;
                         }
-                        @foreach (AppTheme appTheme in appThemeDataList.List)
+                        @foreach (AppThemeLimpet appTheme in appThemeDataList.List)
                         {
                             lp1 += 1;
 

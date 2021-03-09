@@ -1,4 +1,4 @@
-﻿using DNNrocketAPI.Componants;
+﻿using DNNrocketAPI.Components;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 using Newtonsoft.Json;
@@ -109,7 +109,6 @@ namespace DNNrocketAPI.ApiControllers
             if (!context.Request.QueryString.AllKeys.Contains("cmd"))
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' parameter in url.  Unable to process action.");
-
             }
 
             string rawData = Request.Content.ReadAsStringAsync().Result;
@@ -151,6 +150,13 @@ namespace DNNrocketAPI.ApiControllers
             var portalId = PortalUtils.GetPortalId();
             paramInfo.PortalId = portalId;
             paramInfo.SetXmlProperty("genxml/hidden/remotecall", "True");
+
+            // We often want the remote moduleid, so we can use it in the razor to identify the module
+            if (context.Request.QueryString.AllKeys.Contains("moduleid"))
+            {
+                if (GeneralUtils.IsNumeric(context.Request.QueryString["moduleid"])) paramInfo.SetXmlProperty("genxml/hidden/moduleid", context.Request.QueryString["moduleid"]);
+            }
+
 
             var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, remoteSystemKey);
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
@@ -216,7 +222,8 @@ namespace DNNrocketAPI.ApiControllers
         private HttpResponseMessage ActionSimplisityInfo(SimplisityInfo postInfo, SimplisityInfo paramInfo, string paramCmd, string systemkey)
         {
             var strOut = "ERROR: Invalid.";
-            object json = null;
+            object jsonReturn = null;
+            object xmlReturn = null;
             var context = HttpContext.Current;
 
             try
@@ -326,7 +333,11 @@ namespace DNNrocketAPI.ApiControllers
                                 }
                                 if (returnDictionary.ContainsKey("outputjson"))
                                 {
-                                    json = returnDictionary["outputjson"];
+                                    jsonReturn = returnDictionary["outputjson"];
+                                }
+                                if (returnDictionary.ContainsKey("outputxml"))
+                                {
+                                    xmlReturn = returnDictionary["outputxml"];
                                 }
 
                             }
@@ -350,8 +361,9 @@ namespace DNNrocketAPI.ApiControllers
                             // after Event
                             returnDictionary = DNNrocketUtils.EventProviderAfter(paramCmd, systemData, postInfo, paramInfo, _editlang);
                             if (returnDictionary.ContainsKey("outputhtml")) strOut = (string)returnDictionary["outputhtml"];
-                            if (returnDictionary.ContainsKey("outputjson")) json = returnDictionary["outputjson"];
-
+                            if (returnDictionary.ContainsKey("outputjson")) jsonReturn = returnDictionary["outputjson"];
+                            if (returnDictionary.ContainsKey("outputxml")) xmlReturn = returnDictionary["outputxml"];
+                            
                             break;
                     }
                 }
@@ -364,16 +376,15 @@ namespace DNNrocketAPI.ApiControllers
 
             #region "return results"
 
-            if (json != null)
+            if (jsonReturn != null)
             {
-                //strOut = JsonConvert.SerializeObject(json);
-                //return this.Request.CreateResponse(HttpStatusCode.OK, strOut, System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
-                return this.Request.CreateResponse(HttpStatusCode.OK, json);
+                return this.Request.CreateResponse(HttpStatusCode.OK, jsonReturn, System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
             }
-            else
+            if (xmlReturn != null)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, strOut);
+                return this.Request.CreateResponse(HttpStatusCode.OK, xmlReturn, System.Net.Http.Formatting.XmlMediaTypeFormatter.DefaultMediaType);
             }
+            return this.Request.CreateResponse(HttpStatusCode.OK, strOut, "text/plain");
 
             #endregion
 
@@ -394,7 +405,7 @@ namespace DNNrocketAPI.ApiControllers
                 var systemDataList = new SystemLimpetList();
                 var sInfoSystem = systemDataList.GetSystemByKey(systemkey);
                 var systemData = new SystemLimpet(sInfoSystem);
-                var sidemenu = new Componants.SideMenu(sInfoSystem);
+                var sidemenu = new SideMenu(sInfoSystem);
                 var templateControlRelPath = sInfo.GetXmlProperty("genxml/hidden/relpath");
                 sidemenu.ModuleId = moduleid;
 

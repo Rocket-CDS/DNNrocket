@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace RocketMod.Componants
+namespace RocketMod.Components
 {
     public class ArticleRowLimpet
     {

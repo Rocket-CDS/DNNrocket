@@ -1,6 +1,6 @@
-﻿using DNNrocket.Country.Componants;
+﻿using DNNrocket.Country.Components;
 using DNNrocketAPI;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 using Newtonsoft.Json;
 using Simplisity;
 using System;

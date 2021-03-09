@@ -348,3 +348,6 @@ SystemThemes/rocketecommerce/Test_TestTheme/export.xml
 SystemThemes/rocketecommerce/
 SystemThemes/rocketforms
 API/Installation/Resource.zip
+Installation/DNNrocket_1.0.0_Install.zip
+*.zip
+dnnpack.config

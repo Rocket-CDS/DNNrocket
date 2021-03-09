@@ -2,11 +2,12 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
 
-namespace DNNrocketAPI.Componants
+namespace DNNrocketAPI.Components
 {
     public class DNNrocketThumb : IHttpHandler
     {
@@ -41,6 +42,7 @@ namespace DNNrocketAPI.Componants
                 if ((newImage != null))
                 {
                     context.Response.Clear();
+                    context.Response.ClearHeaders();
 
                     ImageCodecInfo useEncoder;
 
@@ -62,6 +64,10 @@ namespace DNNrocketAPI.Componants
 
                     try
                     {
+                        context.Response.AddFileDependency(src);
+                        context.Response.Cache.SetETagFromFileDependencies();
+                        context.Response.Cache.SetLastModifiedFromFileDependencies();
+                        context.Response.Cache.SetCacheability(HttpCacheability.Public);
                         newImage.Save(context.Response.OutputStream, useEncoder, encoderParameters);
                     }
                     catch (Exception exc)

@@ -1,11 +1,11 @@
-﻿using DNNrocketAPI.Componants;
-using Rocket.AppThemes.Componants;
+﻿using DNNrocketAPI.Components;
+using Rocket.AppThemes.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using RocketMod.Componants;
+using RocketMod.Components;
 
 namespace RocketMod
 {

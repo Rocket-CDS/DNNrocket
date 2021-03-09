@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Simplisity is a client side jQuery based framework and a set of Server side utilities. 
+
+Simplisity is designed to take data from the html page, pass it to a server side API for processing, which then can return data or html to be added to the html page. Simplisity currently uses JQuery to ensure "simplicity".
+</Description>
+    <Configurations>Debug;Release;Razor</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -21,21 +27,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="RazorEngine" Version="3.10.0" />
     <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\bin\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="RazorEngine">
       <HintPath>..\..\..\Websites\OpenStore\dev.ea.com\Install\bin\RazorEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(ProjectDir)..\..\..\bin\$(TargetFileName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(AssemblyName).pdb&quot; &quot;$(ProjectDir)..\..\..\bin\$(AssemblyName).pdb&quot;&#xD;&#xA;" />
+    <Exec Command="REM ** Copy to sub-bin folder, so install package can be built from them **&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(ProjectDir)..\bin\$(TargetFileName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(AssemblyName).pdb&quot; &quot;$(ProjectDir)..\bin\$(AssemblyName).pdb&quot;&#xD;&#xA;&#xD;&#xA;DNNpackager.exe $(ProjectDir) $(TargetDir) $(ConfigurationName)" />
   </Target>
 
 </Project>

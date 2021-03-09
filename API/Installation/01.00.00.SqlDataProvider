@@ -396,19 +396,19 @@ END
 
 if (CHARINDEX('CATXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as CATXREF on CATXREF.ParentItemId = R1.ItemId and CATXREF.TypeCode =  ''CATXREF'' '
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [CATXREF] on [CATXREF].ParentItemId = R1.ItemId and [CATXREF].TypeCode =  ''CATXREF'' '
 end
 if (CHARINDEX('CASCADE', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as CASCADE on CASCADE.ParentItemId = R1.ItemId and CASCADE.TypeCode =  ''CASCADE'' '
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [CASCADE] on [CASCADE].ParentItemId = R1.ItemId and [CASCADE].TypeCode =  ''CASCADE'' '
 end
 if (CHARINDEX('PROPXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as PROPXREF on PROPXREF.ParentItemId = R1.ItemId and PROPXREF.TypeCode =  ''PROPXREF'' '
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [PROPXREF] on [PROPXREF].ParentItemId = R1.ItemId and [PROPXREF].TypeCode =  ''PROPXREF'' '
 end
 if (CHARINDEX('ATTRXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as ATTRXREF on ATTRXREF.ParentItemId = R1.ItemId and ATTRXREF.TypeCode =  ''ATTRXREF'' '
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [ATTRXREF] on [ATTRXREF].ParentItemId = R1.ItemId and [ATTRXREF].TypeCode =  ''ATTRXREF'' '
 end
 
 
@@ -663,19 +663,19 @@ END
 
 if (CHARINDEX('CATXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as CATXREF on CATXREF.ParentItemId = R1.ItemId and CATXREF.TypeCode =  ''CATXREF'' '
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [CATXREF] on [CATXREF].ParentItemId = R1.ItemId and [CATXREF].TypeCode =  ''CATXREF'' '
 end
 if (CHARINDEX('CASCADE', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as CASCADE on CASCADE.ParentItemId = R1.ItemId and CASCADE.TypeCode =  ''CASCADE'' '
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [CASCADE] on [CASCADE].ParentItemId = R1.ItemId and [CASCADE].TypeCode =  ''CASCADE'' '
 end
 if (CHARINDEX('PROPXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as PROPXREF on PROPXREF.ParentItemId = R1.ItemId and PROPXREF.TypeCode =  ''PROPXREF'' '
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [PROPXREF] on [PROPXREF].ParentItemId = R1.ItemId and [PROPXREF].TypeCode =  ''PROPXREF'' '
 end
 if (CHARINDEX('ATTRXREF', @Filter) > 0)
 begin
-	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as ATTRXREF on ATTRXREF.ParentItemId = R1.ItemId and ATTRXREF.TypeCode =  ''ATTRXREF'' '
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [ATTRXREF] on [ATTRXREF].ParentItemId = R1.ItemId and [ATTRXREF].TypeCode =  ''ATTRXREF'' '
 end
 
 

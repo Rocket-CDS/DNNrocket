@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using DNNrocketAPI;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 using Simplisity;
-using Rocket.AppThemes.Componants;
-using RocketMod.Componants;
+using Rocket.AppThemes.Components;
+using RocketMod.Components;
 using System.IO;
 
 namespace RocketMod
@@ -342,7 +342,7 @@ namespace RocketMod
                 if (!_passSettings.ContainsKey("AppThemeRelPath")) _passSettings.Add("AppThemeRelPath", _moduleParams.AppTheme.AppThemeFolderRel);
             }
 
-            var securityData = new SecurityLimet(PortalUtils.GetCurrentPortalId(), _systemData.SystemKey, _rocketInterface, -1, -1);
+            var securityData = new SecurityLimpet(PortalUtils.GetCurrentPortalId(), _systemData.SystemKey, _rocketInterface, -1, -1);
             paramCmd = securityData.HasSecurityAccess(paramCmd, "rocketmod_login");
 
             // set tracking after the security check.

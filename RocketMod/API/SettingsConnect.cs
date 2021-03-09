@@ -1,6 +1,6 @@
 ﻿using DNNrocketAPI;
-using DNNrocketAPI.Componants;
-using Rocket.AppThemes.Componants;
+using DNNrocketAPI.Components;
+using Rocket.AppThemes.Components;
 using System;
 using System.Collections.Generic;
 using System.Text;

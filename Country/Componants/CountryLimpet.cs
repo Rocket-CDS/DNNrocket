@@ -1,11 +1,11 @@
 ﻿using DNNrocketAPI;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DNNrocket.Country.Componants
+namespace DNNrocket.Country.Components
 {
     public class CountryLimpet
     {

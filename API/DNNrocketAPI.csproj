@@ -33,42 +33,66 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Razor|AnyCPU'">
+    <OutputPath>bin\Razor\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke">
-      <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
+    <Reference Include="DotNetNuke, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dnn.Platform.9.4.0\lib\net40\DotNetNuke.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Web">
-      <HintPath>..\..\..\bin\DotNetNuke.Web.dll</HintPath>
+    <Reference Include="DotNetNuke.Web, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dnn.Platform.9.4.0\lib\net40\DotNetNuke.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dnn.Platform.9.4.0\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Web.DDRMenu">
-      <HintPath>..\..\..\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
+      <HintPath>_external\DotNetNuke.Web.DDRMenu.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ApplicationBlocks.Data">
-      <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    <Reference Include="DotNetNuke.Web.Razor, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dnn.Platform.9.4.0\lib\net40\DotNetNuke.Web.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Win32.Registry, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Win32.Registry.4.7.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dnn.Platform.9.4.0\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dnn.Platform.9.4.0\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RazorEngine, Version=3.10.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>..\packages\RazorEngine.3.10.0\lib\net45\RazorEngine.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Simplisity">
-      <HintPath>..\..\..\bin\Simplisity.dll</HintPath>
+    <Reference Include="Simplisity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplisity.1.0.0\lib\netstandard2.0\Simplisity.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Configuration.ConfigurationManager, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Configuration.ConfigurationManager.4.7.0\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+    <Reference Include="System.Configuration.ConfigurationManager, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Configuration.ConfigurationManager.5.0.0\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Data.OracleClient" />
-    <Reference Include="System.Diagnostics.EventLog, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.EventLog.4.7.0\lib\net461\System.Diagnostics.EventLog.dll</HintPath>
+    <Reference Include="System.Diagnostics.EventLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.EventLog.5.0.0\lib\net461\System.Diagnostics.EventLog.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Diagnostics.TraceSource, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.TraceSource.4.3.0\lib\net46\System.Diagnostics.TraceSource.dll</HintPath>
@@ -79,41 +103,88 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Drawing.Common.4.7.0\lib\net461\System.Drawing.Common.dll</HintPath>
+      <HintPath>..\packages\System.Drawing.Common.5.0.0\lib\net461\System.Drawing.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.IO.Compression, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.TypeExtensions, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reflection.TypeExtensions.4.7.0\lib\net461\System.Reflection.TypeExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
     <Reference Include="System.Security" />
-    <Reference Include="System.Security.AccessControl, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.AccessControl.4.7.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    <Reference Include="System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.AccessControl.5.0.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Security.Permissions, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Permissions.4.7.0\lib\net461\System.Security.Permissions.dll</HintPath>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Security.Principal.Windows, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Principal.Windows.4.7.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Permissions.5.0.0\lib\net461\System.Security.Permissions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.ServiceProcess" />
-    <Reference Include="System.ServiceProcess.ServiceController, Version=4.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ServiceProcess.ServiceController.4.7.0\lib\net461\System.ServiceProcess.ServiceController.dll</HintPath>
+    <Reference Include="System.ServiceProcess.ServiceController, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ServiceProcess.ServiceController.5.0.0\lib\net461\System.ServiceProcess.ServiceController.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\System.Web.Http.dll</HintPath>
+    <Reference Include="System.Web.Http">
+      <HintPath>_external\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
@@ -122,69 +193,68 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Componants\AppThemeLimpet.cs" />
-    <Compile Include="Componants\ArticleLink.cs" />
-    <Compile Include="Componants\ArticleDoc.cs" />
-    <Compile Include="Componants\ArticleImage.cs" />
-    <Compile Include="Componants\BackUpModuleTemplates.cs" />
-    <Compile Include="Componants\CacheUtilsDNN.cs" />
-    <Compile Include="Componants\FastReplacer.cs" />
-    <Compile Include="Componants\FastReplacerSnippet.cs" />
-    <Compile Include="Componants\LogUtils.cs" />
-    <Compile Include="Componants\MetaSEO.cs" />
-    <Compile Include="Componants\RemoteLimpet.cs" />
-    <Compile Include="Componants\SchedulerUtils.cs" />
-    <Compile Include="Componants\PluginDataList.cs" />
-    <Compile Include="Componants\AppThemeModule.cs" />
-    <Compile Include="Componants\BackUpData.cs" />
-    <Compile Include="Componants\BackUpDataList.cs" />
-    <Compile Include="Componants\CacheFileUtils.cs" />
-    <Compile Include="Componants\ClientLocalLicense.cs" />
-    <Compile Include="Componants\DNNrocketModuleController.cs" />
-    <Compile Include="Componants\FtpConnect.cs" />
-    <Compile Include="Componants\HttpConnect.cs" />
-    <Compile Include="Componants\HttpContentExtensions.cs" />
-    <Compile Include="Componants\LicenseData.cs" />
-    <Compile Include="Componants\ModuleParamList.cs" />
-    <Compile Include="Componants\ModuleParams.cs" />
-    <Compile Include="Componants\LicenseListData.cs" />
-    <Compile Include="Componants\OnlineAppThemeIndex.cs" />
-    <Compile Include="Componants\PassSettings.cs" />
-    <Compile Include="Componants\ResxData.cs" />
-    <Compile Include="Componants\RetryableAction.cs" />
-    <Compile Include="Componants\EmailSender.cs" />
-    <Compile Include="Componants\Scheduler.cs" />
-    <Compile Include="Componants\SecurityLimet.cs" />
-    <Compile Include="Componants\SettingsData.cs" />
-    <Compile Include="Componants\PortalUtils.cs" />
-    <Compile Include="Componants\ModuleUtils.cs" />
-    <Compile Include="Componants\RenderRazorUtils.cs" />
-    <Compile Include="Componants\StringCompress.cs" />
-    <Compile Include="Componants\UserLimpet.cs" />
-    <Compile Include="Componants\UserLimpetList.cs" />
-    <Compile Include="Componants\WebSiteData.cs" />
-    <Compile Include="Componants\SystemGlobalData.cs" />
-    <Compile Include="Componants\PageRecordData.cs" />
-    <Compile Include="Componants\UserParams.cs" />
+    <Compile Include="Components\AppThemeLimpet.cs" />
+    <Compile Include="Components\ArticleLink.cs" />
+    <Compile Include="Components\ArticleDoc.cs" />
+    <Compile Include="Components\ArticleImage.cs" />
+    <Compile Include="Components\BackUpModuleTemplates.cs" />
+    <Compile Include="Components\CacheUtilsDNN.cs" />
+    <Compile Include="Components\FastReplacer.cs" />
+    <Compile Include="Components\FastReplacerSnippet.cs" />
+    <Compile Include="Components\LogUtils.cs" />
+    <Compile Include="Components\MetaSEO.cs" />
+    <Compile Include="Components\RemoteLimpet.cs" />
+    <Compile Include="Components\SchedulerUtils.cs" />
+    <Compile Include="Components\PluginDataList.cs" />
+    <Compile Include="Components\AppThemeModule.cs" />
+    <Compile Include="Components\BackUpData.cs" />
+    <Compile Include="Components\BackUpDataList.cs" />
+    <Compile Include="Components\CacheFileUtils.cs" />
+    <Compile Include="Components\ClientLocalLicense.cs" />
+    <Compile Include="Components\DNNrocketModuleController.cs" />
+    <Compile Include="Components\FtpConnect.cs" />
+    <Compile Include="Components\HttpConnect.cs" />
+    <Compile Include="Components\HttpContentExtensions.cs" />
+    <Compile Include="Components\LicenseData.cs" />
+    <Compile Include="Components\ModuleParamList.cs" />
+    <Compile Include="Components\ModuleParams.cs" />
+    <Compile Include="Components\LicenseListData.cs" />
+    <Compile Include="Components\OnlineAppThemeIndex.cs" />
+    <Compile Include="Components\PassSettings.cs" />
+    <Compile Include="Components\ResxData.cs" />
+    <Compile Include="Components\RetryableAction.cs" />
+    <Compile Include="Components\EmailSender.cs" />
+    <Compile Include="Components\Scheduler.cs" />
+    <Compile Include="Components\SecurityLimpet.cs" />
+    <Compile Include="Components\SettingsData.cs" />
+    <Compile Include="Components\PortalUtils.cs" />
+    <Compile Include="Components\ModuleUtils.cs" />
+    <Compile Include="Components\RenderRazorUtils.cs" />
+    <Compile Include="Components\StringCompress.cs" />
+    <Compile Include="Components\UserLimpet.cs" />
+    <Compile Include="Components\UserLimpetList.cs" />
+    <Compile Include="Components\WebSiteData.cs" />
+    <Compile Include="Components\SystemGlobalData.cs" />
+    <Compile Include="Components\PageRecordData.cs" />
+    <Compile Include="Components\UserParams.cs" />
     <Compile Include="downloadfile.ashx.cs">
       <DependentUpon>downloadfile.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Componants\DDRMenuInterface.cs" />
-    <Compile Include="Componants\DNNrocketClassesConst.cs" />
-    <Compile Include="Componants\PagesUtils.cs" />
-    <Compile Include="Componants\FileStatus.cs" />
-    <Compile Include="Componants\ImgUtils.cs" />
-    <Compile Include="Componants\SystemLimpetList.cs" />
-    <Compile Include="Componants\PageIncludes.cs" />
-    <Compile Include="Componants\SystemLimpet.cs" />
-    <Compile Include="Componants\UserUtils.cs" />
-    <Compile Include="Componants\SideMenu.cs" />
-    <Compile Include="Componants\RocketInterface.cs" />
+    <Compile Include="Components\DDRMenuInterface.cs" />
+    <Compile Include="Components\DNNrocketClassesConst.cs" />
+    <Compile Include="Components\PagesUtils.cs" />
+    <Compile Include="Components\FileStatus.cs" />
+    <Compile Include="Components\ImgUtils.cs" />
+    <Compile Include="Components\SystemLimpetList.cs" />
+    <Compile Include="Components\PageIncludes.cs" />
+    <Compile Include="Components\SystemLimpet.cs" />
+    <Compile Include="Components\UserUtils.cs" />
+    <Compile Include="Components\SideMenu.cs" />
+    <Compile Include="Components\RocketInterface.cs" />
     <Compile Include="DNNrocketThumb.ashx.cs">
       <DependentUpon>DNNrocketThumb.ashx</DependentUpon>
     </Compile>
@@ -193,7 +263,7 @@
     <Compile Include="Interfaces\EventInterface.cs" />
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\DataInterface.cs" />
-    <Compile Include="Componants\DNNrocketUtils.cs" />
+    <Compile Include="Components\DNNrocketUtils.cs" />
     <Compile Include="Meta.ascx.cs">
       <DependentUpon>Meta.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -204,6 +274,7 @@
     <Compile Include="render\DNNrocketTokens.cs" />
     <Compile Include="ApiControllers\RocketController.cs" />
     <Compile Include="ApiControllers\RouteMapper.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SqlDataProvider\DataProvider.cs" />
     <Compile Include="SqlDataProvider\DNNrocketController.cs" />
     <Compile Include="SqlDataProvider\SqlDataProvider.cs" />
@@ -224,6 +295,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DNNpackager.dnnpack" />
     <None Include="Documents\AjaxDropDownCode.docx" />
     <None Include="Documents\Build-DNNrocket-EventPlugin.docx" />
     <None Include="Documents\Command Tracking.docx" />
@@ -234,14 +307,6 @@
     <None Include="Documents\ManualSortList.docx" />
     <None Include="Documents\RocketScheduler.docx" />
     <None Include="downloadfile.ashx" />
-    <None Include="BuildScripts\build.bat" />
-    <None Include="BuildScripts\ModulePackage.targets">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DNNrocketAPI.dnn" />
     <None Include="DNNrocketThumb.ashx" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />
     <None Include="Documents\DNNrocket-Paging.docx" />
@@ -249,6 +314,7 @@
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="packages.config" />
+    <None Include="README.md" />
     <None Include="Themes\config-w3\1.0\default\LicenseKeyForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\LicenseForm.cshtml" />
     <None Include="Themes\config-w3\1.0\default\LicenseInject.cshtml" />
@@ -689,6 +755,7 @@
     <Content Include="images\noimage.png" />
     <Content Include="images\noimage2.png" />
     <Content Include="Installation\SQL_SPROC_TableParam.txt" />
+    <Content Include="js\simplisity.js" />
     <Content Include="Meta.ascx" />
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
     <None Include="Themes\config-w3\1.0\css\green-theme.css" />
@@ -698,9 +765,7 @@
     <None Include="Themes\config-w3\1.0\css\toasted-theme.css" />
     <Content Include="Themes\config-w3\1.0\js\SideMenu.js" />
     <Content Include="ViewRemote.ascx" />
-    <Content Include="View.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="View.ascx" />
     <None Include="Themes\config-w3\1.0\css\dnnrocket-theme.css" />
     <Content Include="Themes\config-w3\1.0\css\sailorblue-theme.css" />
     <Content Include="Themes\config-w3\1.0\css\ultravoilet-theme.css" />
@@ -715,25 +780,23 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>REM ** Copy to sub-bin folder, so install package can be built from them **
+copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(ProjectDir)..\bin\$(TargetFileName)"
+copy "$(ProjectDir)$(OutDir)$(AssemblyName).pdb" "$(ProjectDir)..\bin\$(AssemblyName).pdb"
+
+DNNpackager.exe $(ProjectDir) $(TargetDir) $(ConfigurationName)</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <Extension>zip</Extension>
     <DNNFileName>DNNrocketAPI</DNNFileName>
     <PackageName>DNNrocketAPI</PackageName>
   </PropertyGroup>
-  <Import Project="BuildScripts\ModulePackage.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="PackageAndDeploy">
-  </Target>
-  <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
-  <Import Project="..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
+  <Import Project=".\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('.\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
-    <Error Condition="!Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

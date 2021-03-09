@@ -1,12 +1,12 @@
 ﻿using DNNrocketAPI;
-using DNNrocketAPI.Componants;
+using DNNrocketAPI.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace RocketMod.Componants
+namespace RocketMod.Components
 {
     public class ImportLimpet
     {
