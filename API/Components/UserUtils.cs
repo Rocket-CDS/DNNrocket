@@ -348,14 +348,22 @@ namespace DNNrocketAPI.Components
 
         public static string GetUserEmail(int userId)
         {
+            return GetUserEmail(PortalSettings.Current.PortalId, userId);
+        }
+        public static string GetUserEmail(int portalId, int userId)
+        {
             if (userId <= 0) return "";
-            var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, userId);
+            var userInfo = UserController.GetUserById(portalId, userId);
             return userInfo.Email;
         }
         public static string GetUsername(int userId)
         {
+            return GetUsername(PortalSettings.Current.PortalId, userId);
+        }
+        public static string GetUsername(int portalId, int userId)
+        {
             if (userId <= 0) return "";
-            var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, userId);
+            var userInfo = UserController.GetUserById(portalId, userId);
             return userInfo.Username;
         }
         public static Dictionary<string, string> GetUserProfileProperties(string userId)
