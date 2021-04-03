@@ -78,7 +78,7 @@ namespace DNNrocketAPI.Components
             }
             else
             {
-                if (ValidCommand(paramCmd))
+                if (ValidCommand(paramCmd) && !HasCommandSecurityAccess(paramCmd))
                     return loginCommand;
                 else
                 {

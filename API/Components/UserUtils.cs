@@ -40,7 +40,10 @@ namespace DNNrocketAPI.Components
             {
                 if (UserController.Instance.GetCurrentUserInfo() != null)
                 {
-                    return UserController.Instance.GetCurrentUserInfo().UserID;
+                    if (HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        return UserController.Instance.GetCurrentUserInfo().UserID;
+                    }
                 }
                 return -1;
             }
@@ -142,7 +145,7 @@ namespace DNNrocketAPI.Components
         {
             var strOut = "";
             var username = sInfo.GetXmlProperty("genxml/text/username");
-            var password = sInfo.GetXmlProperty("genxml/text/password");
+            var password = sInfo.GetXmlProperty("genxml/hidden/password");
             var rememberme = sInfo.GetXmlPropertyBool("genxml/checkbox/rememberme");
 
             var rtnInfo = new SimplisityInfo();
@@ -166,8 +169,8 @@ namespace DNNrocketAPI.Components
                 var userValid = UserController.ValidateUser(objUser, PortalSettings.Current.PortalId, false);
                 if (userValid == UserValidStatus.VALID)
                 {
-                    UserController.UserLogin(PortalSettings.Current.PortalId, objUser, PortalSettings.Current.PortalName, userHostAddress, rememberme);
-                    if (loginStatus != UserLoginStatus.LOGIN_SUCCESS || loginStatus != UserLoginStatus.LOGIN_SUPERUSER)
+                    UserController.UserLogin(PortalSettings.Current.PortalId, objUser.Username, password, "", PortalSettings.Current.PortalName, userHostAddress, ref loginStatus, rememberme);
+                    if (loginStatus == UserLoginStatus.LOGIN_SUCCESS || loginStatus == UserLoginStatus.LOGIN_SUPERUSER)
                     {
                         rtnInfo.SetXmlProperty("genxml/loginstatus", "ok");
                     }
@@ -177,7 +180,6 @@ namespace DNNrocketAPI.Components
 
             return strOut;
         }
-
         public static string LoginForm(SimplisityInfo systemInfo, SimplisityInfo sInfo, string interfacekey, int userid)
         {
             if (userid > 0)
