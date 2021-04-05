@@ -22,7 +22,7 @@
 
         <div class="w3-center w3-padding">
             <br>
-            <span onclick="reloadpage()" class="w3-button w3-xlarge w3-transparent w3-display-topright" title="@ResourceKey("login.CloseModal")">X</span>
+            <span onclick="reloadpage()" class="w3-button w3-xlarge w3-transparent w3-display-topright" title="@ResourceKey("login.closemodal")">X</span>
             <img src="/DesktopModules/DNNrocket/api/images/avatar4.png" alt="Avatar" style="width:20%" class="w3-circle w3-margin-top">
         </div>
 
@@ -31,12 +31,12 @@
                 <label><b>@ResourceKey("login.usernameemail")</b></label>
                 <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="@ResourceKey("login.enterusernameemail")" name="usrname" id="username" required>
 
-                <label><b>@ResourceKey("login.Password")</b></label>
+                <label><b>@ResourceKey("login.password")</b></label>
                 <input class="w3-input w3-border " type="password" placeholder="@ResourceKey("login.enterpassword")" name="psw" id="password" required>
                 <br />
 
-                <span id="loginbutton" class="w3-button w3-block w3-green w3-section w3-padding simplisity_click" s-fields="" s-post=".logindata" s-cmd="login_login" s-before="hidelogin" s-after="reloadpage">@ResourceKey("login.Login")</span>
-
+                <span id="loginbutton" class="w3-button w3-block w3-green w3-section w3-padding simplisity_click" s-fields="" s-post=".logindata" s-cmd="login_login" s-before="hidelogin" s-after="reloadpage">@ResourceKey("login.login")</span>
+                @CheckBox(info, "genxml/checkbox/rememberme", "&nbsp;" + ResourceKey("login.rememberme").ToString()," class='w3=check' ")
                 @if (info.GetXmlProperty("genxml/loginstatus") == "fail")
                 {
                     <div class="w3-panel w3-pale-red w3-padding-16">@ResourceKey("login.incorrectpass")</div>
@@ -69,12 +69,12 @@
 
         <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
             <div class="logininput">
-                <div onclick="reloadpage()" type="button" class="w3-button w3-red">@ResourceKey("login.Cancel")</div>
+                <div onclick="reloadpage()" type="button" class="w3-button w3-red">@ResourceKey("login.cancel")</div>
                 <a class="w3-button w3-teal w3-right registerlink" href="/Register"  style="display:none;">@ResourceKey("login.register")</a>
             </div>
 
             <div class="resetpassinput" style="display:none;">
-                <span type="button" class="w3-button w3-red cancelresetpassword">@ResourceKey("login.Cancel")</span>
+                <span type="button" class="w3-button w3-red cancelresetpassword">@ResourceKey("login.cancel")</span>
             </div>
 
         </div>

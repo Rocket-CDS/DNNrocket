@@ -117,34 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cancel.Text" xml:space="preserve">
+  <data name="cancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="CloseModal.Text" xml:space="preserve">
+  <data name="closemodal.Text" xml:space="preserve">
     <value>Close Modal</value>
   </data>
   <data name="enterpassword.Text" xml:space="preserve">
     <value>Enter Password</value>
   </data>
-  <data name="EnterUsername.Text" xml:space="preserve">
+  <data name="enterusername.Text" xml:space="preserve">
     <value>Enter Username</value>
   </data>
-  <data name="Forgotpassword.Text" xml:space="preserve">
+  <data name="forgotpassword.Text" xml:space="preserve">
     <value>Forgot password?</value>
   </data>
   <data name="incorrectpass.Text" xml:space="preserve">
     <value>Incorrect UserName or Password!</value>
   </data>
-  <data name="Login.Text" xml:space="preserve">
+  <data name="login.Text" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="Password.Text" xml:space="preserve">
+  <data name="password.Text" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="Rememberme.Text" xml:space="preserve">
+  <data name="rememberme.Text" xml:space="preserve">
     <value>Remember me</value>
   </data>
-  <data name="Username.Text" xml:space="preserve">
+  <data name="username.Text" xml:space="preserve">
     <value>Username</value>
   </data>
   <data name="emailaddress.Text" xml:space="preserve">
