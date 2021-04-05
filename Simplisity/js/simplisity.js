@@ -306,7 +306,10 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
         var scmd = jQuery(element).attr("s-cmd");
         if (typeof scmd !== 'undefined' && scmd !== '' && scmd !== null) {
 
-            jQuery('#simplisity_loader').show();
+            var sshowloader = jQuery(element).attr("s-showloader");
+            if (sshowloader !== 'false') {
+                jQuery('#simplisity_loader').show();
+            }
 
             await simplisity_callBeforeFunction(element);
 
