@@ -103,3 +103,14 @@ Load System Data
 ----------------
 
 The system data can be loaded by adding an XML file into the "~/desktopmodules/dnnrocket/API/systems" folder.  The XML can be taken from the "System Data" tab,  copy and paste the system XML data into a file and save.  By convension the file name should be in this format {*******_system.xml}.  This file will be loaded when the System Admin UI is view. 
+
+
+Build Installation Package
+--------------------------
+
+Install and use DNNpackager https://github.com/leedavi/DNNpackager
+
+1. Compile all projects in the DNNrocket project. https://github.com/SesameRocket/DNNrocket
+2. Run .\DNNpackager.dnnpack file with DNNpackager.exe.
+
+This will build an install package in the .\Installation folder of the DNNrocket project.
