@@ -323,6 +323,13 @@ namespace DNNrocketAPI.Components
             var rtn = rtnSplit[0];
             return rtn;
         }
+        public static string DomainSubUrl(int portalId = -1)
+        {
+            var da = DefaultPortalAlias(portalId);
+            var rtnSplit = da.Split('/');
+            var rtn = rtnSplit[0];
+            return rtn;
+        }
         public static string SiteGuid(int portalId = -1)
         {
             if (portalId < 0)
