@@ -396,7 +396,7 @@ namespace Simplisity
         }
         public void SetXmlPropertyDouble(string xpath, double value)
         {
-            SetXmlProperty(xpath, value.ToString(), System.TypeCode.Double, false);
+            SetXmlProperty(xpath, value.ToString(CultureInfo.GetCultureInfo("en-US")), System.TypeCode.Double, false);
         }
         public void SetXmlPropertyDouble(string xpath, string value)
         {
