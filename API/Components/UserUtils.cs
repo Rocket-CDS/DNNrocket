@@ -131,9 +131,9 @@ namespace DNNrocketAPI.Components
             return "";
 
         }
-        public static bool ResetAndChangePassword(int userId, string newPassword)
+        public static bool ResetAndChangePassword(int portalId, int userId, string newPassword)
         {
-            var objUser = UserController.GetUserById(PortalSettings.Current.PortalId, userId);
+            var objUser = UserController.GetUserById(portalId, userId);
             if (objUser != null)
             {
                 return UserController.ResetAndChangePassword(objUser, newPassword);
