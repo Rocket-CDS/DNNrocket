@@ -1,0 +1,65 @@
+
+<script>
+	ClassicEditor
+		.create(document.querySelector('#{textareaid}'), {
+			toolbar: [ 'heading', '|', 'bold', 'italic', 'link','undo','redo' ],
+			language: '{language}',
+			table: {
+				contentToolbar: [
+					'tableColumn',
+					'tableRow',
+					'mergeTableCells'
+				]
+			},
+			language: '{language}',
+			licenseKey: '',
+		})
+		.then(editor{textareaid} => {
+			window.editor{textareaid} = editor{textareaid};
+
+		})
+		.catch(error => {
+			console.error('Oops, something went wrong!');
+			console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+			console.warn('Build id: vwi2ciweh9em-142866l7j12v');
+			console.error(error);
+		});
+	
+		// This function needs to be called on the s-before cmd class, so the data is saved on the API post.
+		function {textareaid}Save() {
+			editor{textareaid}.updateSourceElement();
+		}
+		
+		function {textareaid}sourceDialog() {
+			$('#{textareaid}').toggle();
+		    if ($('#{textareaid}').is(":visible")){
+			
+				  options = {
+				  "indent":"auto",
+				  "indent-spaces":2,
+				  "wrap":80,
+				  "markup":true,
+				  "output-xml":false,
+				  "numeric-entities":true,
+				  "quote-marks":true,
+				  "quote-nbsp":false,
+				  "show-body-only":true,
+				  "quote-ampersand":false,
+				  "break-before-br":true,
+				  "uppercase-tags":false,
+				  "uppercase-attributes":false,
+				  "drop-font-tags":true,
+				  "tidy-mark":false
+				}
+
+				var html = $('#{textareaid}').val();
+				var result = tidy_html5(html, options);				
+				$('#{textareaid}').val(result);
+				$('.ck-editor').hide();
+            } else{
+				editor{textareaid}.setData( $('#{textareaid}').val() );		
+				$('.ck-editor').show();
+            }
+		}
+				
+</script>

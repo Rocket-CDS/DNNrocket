@@ -487,50 +487,26 @@ namespace DNNrocketAPI.render
         /// <param name="xpath"></param>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        public IEncodedString CKEditor(SimplisityInfo info, string xpath, string attributes, string startupfile, bool localized = false, int row = 0, string listname = "")
+        public IEncodedString CKEditor(SimplisityInfo info, string xpath, string scriptFileName = "scriptClassic.html",  bool localized = false, int row = 0, string listname = "", string langauge = "")
         {
-            if (startupfile == "") startupfile = "startup.js";
-            if (attributes.StartsWith("ResourceKey:")) attributes = ResourceKey(attributes.Replace("ResourceKey:", "")).ToString();
+            if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
 
-            var upd = getUpdateAttr(xpath, attributes, localized);
+            var filePath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/CKEditor/" + scriptFileName);
+            var strOut = FileUtils.ReadFile(filePath);
+
             var id = getIdFromXpath(xpath, row, listname);
+
+            strOut = strOut.Replace("{textareaid}", id);
+            strOut = strOut.Replace("{language}", langauge);   
 
             var value = info.GetXmlProperty(xpath);
             if (localized && !xpath.StartsWith("genxml/lang/"))
             {
                 value = info.GetXmlProperty("genxml/lang/" + xpath);
             }
-
-            var strOut = " <textarea id='" + id + "' s-datatype='coded' s-xpath='" + xpath + "' type='text'  name='editor" + id + "' " + attributes + " " + upd + " >" + value + "</textarea>";
-            strOut += GetCKEditorStartup(id, startupfile);
+            strOut += " <textarea id='" + id + "' s-datatype='coded' s-xpath='" + xpath + "' type='text' style='width:100%' rows='10'>" + value + "</textarea>";
             return new RawString(strOut);
         }
-        public IEncodedString CKEditor(SimplisityInfo info, String xpath, String attributes = "")
-        {
-            return CKEditor(info, xpath, attributes, "startup.js");
-        }
-
-        public IEncodedString CKEditorFull(SimplisityInfo info, String xpath, String attributes, string startupfile = "startupfull.js", bool localized = false, int row = 0, string listname = "")
-        {
-            return CKEditor(info, xpath, attributes, startupfile, localized, row);
-        }
-        public IEncodedString CKEditorFull(SimplisityInfo info, String xpath, String attributes = "", bool localized = false, int row = 0, string listname = "")
-        {
-            return CKEditor(info, xpath, attributes, "startupfull.js", localized, row);
-        }
-
-        private string GetCKEditorStartup(string id, string filename)
-        {
-            var strOut = "<script>";
-            var filepath = HttpContext.Current.Server.MapPath("/DesktopModules/DNNrocket/CKEditor/" + filename);
-            strOut += FileUtils.ReadFile(filepath);
-            strOut = strOut.Replace("{id}", id);
-            var systemGlobalData = new SystemGlobalData();;            
-            strOut = strOut.Replace("{cssfilelist}", systemGlobalData.CKEditorCssList);            
-            strOut += "</script>";
-            return strOut;
-        }
-
 
         #endregion
 
