@@ -152,7 +152,7 @@ namespace RocketMod
                         {
                             xpath = "genxml/textbox/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
                             strOut += "<div class='w3-col m12'>";
-                            strOut += CKEditor(info,xpath,"","",localized,row).ToString();
+                           // strOut += CKEditor(info,xpath,"","",localized,row).ToString();
                             strOut += "</div>";
                             strOut += "<div class='w3-col' style='width:0px;height:300px;'></div>";
                         }
