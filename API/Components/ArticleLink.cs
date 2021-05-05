@@ -42,7 +42,7 @@ namespace DNNrocketAPI.Components
                 }
                 else
                 {
-                    rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/externallink" + FieldId);
+                    rtn = Info.GetXmlProperty("genxml/textbox/externallink" + FieldId);
                 }
                 if (Anchor != "") rtn += "#" + Anchor;
                 return rtn;

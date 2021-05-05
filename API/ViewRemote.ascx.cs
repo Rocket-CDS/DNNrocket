@@ -237,6 +237,12 @@ namespace DNNrocketAPI
             }
 
 
+            // We need the page url for server side rendering.
+            var tabData = TabController.Instance.GetTab(TabId, PortalId, false);
+            var pageurl = tabData.FullUrl.TrimEnd('/') + "/" + tabData.TabPath.TrimStart('/');
+            _remoteParams.PageUrl = pageurl;
+
+
             var strOut = "";
             var systemData = new SystemLimpet(_systemInfo);
             var cacheOutPut = "";
