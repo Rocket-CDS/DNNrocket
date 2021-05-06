@@ -72,11 +72,9 @@ namespace Simplisity
         public string SearchText { get { return Info.GetXmlProperty("r/searchtext"); } set { Info.SetXmlProperty("r/searchtext", value.ToString()); } }
         public string BrowserSessionId { get; set; }
         public string BrowserId { get; set; }
-        public string Language { get { return Info.GetXmlProperty("r/language"); } set { Info.SetXmlProperty("r/language", value.ToString()); } }
-
-        public int ModuleId { get { return Info.GetXmlPropertyInt("r/moduleid"); } set { Info.SetXmlProperty("r/moduleid", value.ToString()); } }
-        public int TabId { get { return Info.GetXmlPropertyInt("r/tabid"); } set { Info.SetXmlProperty("r/tabid", value.ToString()); } }
-
+        public string CultureCode { get { return Info.GetXmlProperty("r/culturecode"); } set { Info.SetXmlProperty("r/culturecode", value.ToString()); } }
+        public string SiteKey { get { return Info.GetXmlProperty("r/sitekey"); } set { Info.SetXmlProperty("r/sitekey", value.ToString()); } }
+        public string PageUrl { get { return Info.GetXmlProperty("r/pageurl"); } set { Info.SetXmlProperty("r/pageurl", value.ToString()); } }
         #endregion
 
     }

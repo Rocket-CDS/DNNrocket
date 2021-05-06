@@ -161,6 +161,38 @@ namespace DNNrocketAPI.Components
             }
             return "";
         }
+        public Dictionary<string, string> GetUrlParams()
+        {
+            var rtn = new Dictionary<string, string>();
+            if (Record != null)
+            {
+                var l = Record.XMLDoc.SelectNodes("genxml/urlparams/*");
+                if (l != null)
+                {
+                    foreach (XmlNode n in l)
+                    {
+                        rtn.Add(n.Name, n.InnerText);
+                    }
+                }
+            }
+            return rtn;
+        }
+        public Dictionary<string, string> GetFormParams()
+        {
+            var rtn = new Dictionary<string, string>();
+            if (Record != null)
+            {
+                var l = Record.XMLDoc.SelectNodes("genxml/form/*");
+                if (l != null)
+                {
+                    foreach (XmlNode n in l)
+                    {
+                        rtn.Add(n.Name, n.InnerText);
+                    }
+                }
+            }
+            return rtn;
+        }
 
         public void RemoveAllFormParam()
         {
@@ -395,6 +427,9 @@ namespace DNNrocketAPI.Components
         public string RemoteAdminUrl { get { return EngineURL.TrimEnd('/') + "/" + RemoteAdminRelPath; } }
         public string CompressedRemoteParam { get { return StringCompress.CompressString(Record.ToXmlItem()); } }
         public bool IsRemoteCall { get; set; }
+        public string RemoteSiteKey { get { return Record.GetXmlProperty("genxml/form/sitekey"); } set { Record.SetXmlProperty("genxml/form/sitekey", value.ToString()); } }
+        public string RemotePageUrl { get { return Record.GetXmlProperty("genxml/form/pageurl"); } set { Record.SetXmlProperty("genxml/form/pageurl", value.ToString()); } }
+
 
         #endregion
     }

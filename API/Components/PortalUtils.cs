@@ -42,11 +42,10 @@ namespace DNNrocketAPI.Components
             var portal = GetPortal(portalId);
             PortalController.DeletePortal(portal, "");
         }
-        public static int CreatePortal(string portalName, string strPortalAlias)
+        public static int CreatePortal(string portalName, string strPortalAlias, string description = "NewPortal")
         {
             var serverPath = "";
             var childPath = "";
-            var description = "RocketECommerce";
             var keyWords = "";
             var homeDirectory = "";
             var template = new PortalController.PortalTemplateInfo(DNNrocketUtils.MapPath("/Portals/_default/Blank Website.template"), "en-US");
