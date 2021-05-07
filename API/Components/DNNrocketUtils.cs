@@ -994,6 +994,14 @@ namespace DNNrocketAPI.Components
             if (c.Length > 0) rtn = c[0];
             return rtn;
         }
+        public static string GetLanguageCode(string cultureCode)
+        {
+            var cc = cultureCode;
+            var c = cc.Split('-');
+            var rtn = "";
+            if (c.Length > 0) rtn = c[0];
+            return rtn;
+        }
         public static string SystemThemeImgDirectoryRel()
         {
             return "/DesktopModules/RocketThemes/idximg";
