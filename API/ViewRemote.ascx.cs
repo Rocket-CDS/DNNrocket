@@ -65,28 +65,28 @@ namespace DNNrocketAPI
                 base.OnInit(e);
 
                 _remoteParams = new RemoteLimpet(ModuleId, _systemkey);
-                if (_remoteParams.CacheEnabled)
-                {
-                    // deal with cache timeout, so we refresh content after a certain time.
-                    var cacheKeyTimeout = "_cacheTimeout" + ModuleId;
-                    var strlastCacheDate = CacheUtils.GetCache(cacheKeyTimeout); // use memory
-                    if (strlastCacheDate != null)
-                    {
-                        try
-                        {
-                            var lastCacheDate = Convert.ToDateTime(strlastCacheDate);
-                            if (lastCacheDate.AddMinutes(_remoteParams.CacheTimeout) < DateTime.Now) _remoteParams.CacheDisabled = true;
-                        }
-                        catch (Exception)
-                        {
-                            CacheUtils.RemoveCache(cacheKeyTimeout); 
-                        }
-                    }
-                    else
-                    {
-                        CacheUtils.SetCache(cacheKeyTimeout, DateTime.Now.ToString("O"));
-                    }
-                }
+                //if (_remoteParams.CacheEnabled)
+                //{
+                //    // deal with cache timeout, so we refresh content after a certain time.
+                //    var cacheKeyTimeout = "_cacheTimeout" + ModuleId;
+                //    var strlastCacheDate = CacheUtils.GetCache(cacheKeyTimeout); // use memory
+                //    if (strlastCacheDate != null)
+                //    {
+                //        try
+                //        {
+                //            var lastCacheDate = Convert.ToDateTime(strlastCacheDate);
+                //            if (lastCacheDate.AddMinutes(_remoteParams.CacheTimeout) < DateTime.Now) _remoteParams.CacheDisabled = true;
+                //        }
+                //        catch (Exception)
+                //        {
+                //            CacheUtils.RemoveCache(cacheKeyTimeout); 
+                //        }
+                //    }
+                //    else
+                //    {
+                //        CacheUtils.SetCache(cacheKeyTimeout, DateTime.Now.ToString("O"));
+                //    }
+                //}
 
                 _objCtrl = new DNNrocketController();
 
@@ -108,7 +108,6 @@ namespace DNNrocketAPI
                 if (String.IsNullOrEmpty(_templateRelPath)) _templateRelPath = base.ControlPath; // if we don't define template path in the interface assume it's the control path.
 
                 // add parameters remoteParams  (do here, so it appears in header call)
-                _paramString = "";
                 _remoteParams.RemoteKey = "";  // refresh the key on each load. (Re-populated by the urlparam loop.)
                 _remoteParams.RemoveAllUrlParam(); // remove any existing url params.
                 foreach (String key in Request.QueryString.AllKeys)
@@ -116,7 +115,6 @@ namespace DNNrocketAPI
                     if (key != null) // test for null, but should not happen.   
                     {
                         _remoteParams.AddUrlParam(key, Request.QueryString[key]);
-                        _paramString += key + "=" + Request.QueryString[key]; // for cacheKey
                     }
                 }
 
@@ -132,6 +130,10 @@ namespace DNNrocketAPI
 
                 //------------------------------------------------------------------------------
                 // ANY VALUES NEEDED ON THE SERVERSIDE FOR RENDERING/ACTION, ADD HERE.
+                // Anything to be passed to the remote server needs to be added to the header template as a session var. (ViewHeader.cshtml)
+                //
+                // e.g.  :  simplisity_setSessionField("pageurl", '@remoteParam.RemotePageUrl');
+                //
                 var tabData = TabController.Instance.GetTab(TabId, PortalId, false);
                 var pageurl = tabData.FullUrl.TrimEnd('/') + "/" + tabData.TabPath.TrimStart('/');
                 _remoteParams.AddFormParam("pageurl", pageurl); // We need the remote pageurl for SEO
@@ -242,7 +244,7 @@ namespace DNNrocketAPI
                 {
                     if (nod.Name != "null") // don't use null.  
                     {
-                        _remoteParams.AddUrlParam(nod.Name, nod.InnerText); // Add value to the remoteParams,to be passed to the toaster engine.
+                        _remoteParams.AddFormParam(nod.Name, nod.InnerText); // Add value to the remoteParams,to be passed to the toaster engine. (genxml/form/*)
                     }
                 }
             }
