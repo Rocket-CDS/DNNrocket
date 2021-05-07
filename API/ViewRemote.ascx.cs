@@ -248,27 +248,28 @@ namespace DNNrocketAPI
             }
 
             var strOut = "";
-            var systemData = new SystemLimpet(_systemInfo);
-            var cacheOutPut = "";
-            var cacheKey = _remoteParams.RemoteTemplate + ModuleId + DNNrocketUtils.GetCurrentCulture() + _paramString + DNNrocketUtils.GetCurrentCulture() + _hasEditAccess + sessionJson;
-            var model = new SimplisityRazor();
-            model.ModuleId = ModuleId;
-            model.TabId = TabId;
-            if (_remoteParams.CacheEnabled && systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey);
-            if (String.IsNullOrEmpty(cacheOutPut))
-            {
-                strOut += _remoteParams.htmlAPI();
-                if (strOut == "404")
-                {
-                    CacheFileUtils.RemoveCache(cacheKey);
-                    DNNrocketUtils.Handle404Exception(Response, PortalUtils.GetPortalSettings());
-                }
-                CacheFileUtils.SetCache(cacheKey, strOut);
-            }
-            else
-            {
-                strOut = cacheOutPut;
-            }
+            strOut += _remoteParams.htmlAPI();
+            if (strOut == "404") DNNrocketUtils.Handle404Exception(Response, PortalUtils.GetPortalSettings());
+
+            //[TODO: Work out a good way to do cache, allowing for text search sessionJson in Templates]
+            //var systemData = new SystemLimpet(_systemInfo);
+            //var cacheOutPut = "";
+            //var cacheKey = _remoteParams.RemoteTemplate + ModuleId + DNNrocketUtils.GetCurrentCulture() + _paramString + DNNrocketUtils.GetCurrentCulture() + _hasEditAccess + sessionJson;
+            //if (_remoteParams.CacheEnabled && systemData.CacheOn) cacheOutPut = (string)CacheFileUtils.GetCache(cacheKey);
+            //if (String.IsNullOrEmpty(cacheOutPut))
+            //{
+            //strOut += _remoteParams.htmlAPI();
+            //    if (strOut == "404")
+            //    {
+            //   CacheFileUtils.RemoveCache(cacheKey);
+            //    DNNrocketUtils.Handle404Exception(Response, PortalUtils.GetPortalSettings());
+            //}
+            //CacheFileUtils.SetCache(cacheKey, strOut);
+            //}
+            //else
+            //{
+            //    strOut = cacheOutPut;
+            //}
 
             var adminButton = "";
             if (_hasEditAccess)

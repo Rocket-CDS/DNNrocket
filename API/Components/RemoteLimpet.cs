@@ -424,7 +424,7 @@ namespace DNNrocketAPI.Components
         public string UrlKey { get { return Record.GetXmlProperty("genxml/settings/urlkey"); } set { Record.SetXmlProperty("genxml/settings/urlkey", value); } }
         public string ClientUrl { get { return Record.GetXmlProperty("genxml/settings/url"); } set { Record.SetXmlProperty("genxml/settings/url", value); } }
         public string RemoteAdminRelPath { get { return Record.GetXmlProperty("genxml/settings/remoteadminrelpath"); } set { Record.SetXmlProperty("genxml/settings/remoteadminrelpath", value); } }
-        public string RemoteAdminUrl { get { return EngineURL.TrimEnd('/') + "/" + RemoteAdminRelPath; } }
+        public string RemoteAdminUrl { get { return EngineURL.TrimEnd('/') + "/" + RemoteAdminRelPath.TrimStart('/'); } }
         public string CompressedRemoteParam { get { return StringCompress.CompressString(Record.ToXmlItem()); } }
         public bool IsRemoteCall { get; set; }
         public string RemoteSiteKey { get { return Record.GetXmlProperty("genxml/form/sitekey"); } set { Record.SetXmlProperty("genxml/form/sitekey", value.ToString()); } }
