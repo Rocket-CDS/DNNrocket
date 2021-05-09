@@ -313,6 +313,27 @@ namespace DNNrocketAPI.ApiControllers
                             // command action
                             if (rocketInterface.Exists)
                             {
+                                // -----------------------------------------------------------------------------------------------
+                                // Track cmd 
+                                var sessionParams = new SessionParams(paramInfo);
+                                var userParams = new UserParams(sessionParams.BrowserSessionId);
+                                if (paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
+                                {
+                                    var menucmd = userParams.GetCommand(systemkey);
+                                    if (menucmd != "")
+                                    {
+                                        paramCmd = menucmd;
+                                        paramInfo = userParams.GetParamInfo(systemkey);
+                                        interfacekey = userParams.GetInterfaceKey(systemData.SystemKey);
+                                        rocketInterface = new RocketInterface(systemInfo, interfacekey);
+                                    }
+                                }
+                                else
+                                {
+                                    if (paramInfo.GetXmlPropertyBool("genxml/hidden/track")) userParams.Track(systemkey, paramCmd, paramInfo, rocketInterface.InterfaceKey);
+                                }
+                                // -----------------------------------------------------------------------------------------------
+
                                 returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, paramInfo, TemplateRelPath, _editlang);
 
                                 if (returnDictionary.ContainsKey("outputhtml"))

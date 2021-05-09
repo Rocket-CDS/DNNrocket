@@ -237,6 +237,12 @@
   <data name="images.Text" xml:space="preserve">
     <value>Images</value>
   </data>
+  <data name="imageupload.Msg" xml:space="preserve">
+    <value>Upload your images here, by dragging and dropping or paste from the clipboard on the area below.  Or by using the upload button to select images from your file system.</value>
+  </data>
+  <data name="imageupload.Text" xml:space="preserve">
+    <value>Image Upload</value>
+  </data>
   <data name="isonlist.Text" xml:space="preserve">
     <value>On List</value>
   </data>

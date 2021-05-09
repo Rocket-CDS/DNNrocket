@@ -16,43 +16,23 @@ namespace DNNrocketAPI.Components
     {
         private const string _entityTypeCode = "APPTHEME";
  
-        public AppThemeLimpet(string systemKey, string zipMapPath, bool isImport)
-        {
-            Record = new SimplisityInfo();
-            SystemKey = systemKey;
-            ImportXmlFile(zipMapPath);
-        }
         /// <summary>
         /// Take the AppTheme templates from the "/DesktopModules/RocketThemes/" folder
         /// </summary>
         /// <param name="systemKey"></param>
         /// <param name="appThemeFolder"></param>
         /// <param name="versionFolder"></param>
-        public AppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder = "")
+        public AppThemeLimpet(string systemKey, string appThemeFolder = "config-w3", string versionFolder = "")
         {
             SystemKey = systemKey;
             Record = new SimplisityInfo();
             SystemData = new SystemLimpet(systemKey);
 
             AppThemeFolder = appThemeFolder;
-            AppSystemThemeFolderRel = "/DesktopModules/RocketThemes/" + SystemKey;
-            AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
-
-            InitAppTheme(versionFolder);
-        }
-        /// <summary>
-        /// Use the "config-w3" folder of the system under "/DesktopModules/DNNrocketModules/".
-        /// </summary>
-        /// <param name="systemKey"></param>
-        /// <param name="versionFolder"></param>
-        public AppThemeLimpet(string systemKey, string versionFolder = "")
-        {
-            SystemKey = systemKey;
-            Record = new SimplisityInfo();
-            SystemData = new SystemLimpet(systemKey);
-
-            AppThemeFolder = "config-w3";
-            AppSystemThemeFolderRel = "/DesktopModules/DNNrocketModules/" + SystemKey + "/Themes";
+            if (AppThemeFolder == "config-w3")
+                AppSystemThemeFolderRel = "/DesktopModules/DNNrocketModules/" + SystemKey + "/Themes";
+            else
+                AppSystemThemeFolderRel = "/DesktopModules/RocketThemes/" + SystemKey;
             AppThemeFolderRel = AppSystemThemeFolderRel + "/" + AppThemeFolder;
 
             InitAppTheme(versionFolder);
@@ -64,6 +44,7 @@ namespace DNNrocketAPI.Components
             SystemKey = SystemData.SystemKey;
             SystemId = SystemData.SystemId;
             FileNameList = new Dictionary<string, string>();
+            ImageFileNameList = new Dictionary<string, string>();            
 
             AppSummary = "";
             AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolderRel);
@@ -212,6 +193,14 @@ namespace DNNrocketAPI.Components
                 FileNameList.Add(fname, newPath);
             }
 
+            if (!Directory.Exists(ImageFolderMapPath)) Directory.CreateDirectory(ImageFolderMapPath);
+            foreach (string newPath in Directory.GetFiles(ImageFolderMapPath, "*.*", SearchOption.TopDirectoryOnly))
+            {
+                var fname = Path.GetFileName(newPath).ToLower();
+                if (ImageFileNameList.ContainsKey(fname)) ImageFileNameList.Remove(fname);
+                ImageFileNameList.Add(fname, newPath);
+            }
+            
         }
         private void CreateVersionFolders(double dblVersionFolder)
         {
@@ -305,35 +294,6 @@ namespace DNNrocketAPI.Components
         }
         public void Save(SimplisityInfo postInfo)
         {
-
-            // ensure we have validate field names.
-            var lp = 1;
-            foreach (var f in postInfo.GetList("fielddata"))
-            {
-                var newfieldname = f.GetXmlProperty("genxml/textbox/name");
-                if (GeneralUtils.IsNumeric(newfieldname) || newfieldname == "")
-                {
-                    newfieldname = "field" + newfieldname + lp;
-                    postInfo.SetXmlProperty("genxml/fielddata/genxml[" + lp + "]/textbox/name", newfieldname);
-                }
-                lp += 1;
-            }
-            lp = 1;
-            foreach (var f in postInfo.GetList("settingfielddata"))
-            {
-                var newfieldname = f.GetXmlProperty("genxml/textbox/name");
-                if (GeneralUtils.IsNumeric(newfieldname) || newfieldname == "")
-                {
-                    newfieldname = "field" + newfieldname + lp;
-                    postInfo.SetXmlProperty("genxml/settingfielddata/genxml[" + lp + "]/textbox/name", newfieldname);
-                }
-                lp += 1;
-            }
-
-
-            Record = DNNrocketUtils.UpdateFieldXpath(postInfo, Record, "fielddata");
-            Record = DNNrocketUtils.UpdateFieldXpath(postInfo, Record, "settingfielddata");
-
 
             var appthemeprefix = "";
             var newAppThemeName = AppThemeFolder;
@@ -487,11 +447,6 @@ namespace DNNrocketAPI.Components
         public void Update()
         {
             if (Record != null) UpdateAppTheme();
-        }
-        public void AddListImage()
-        {
-            if (Record != null) Record.AddListItem("imagelist");
-            Update();
         }
         public void UpdateListFileName(string filename, string mapPath)
         {
@@ -886,6 +841,7 @@ namespace DNNrocketAPI.Components
         public string JsFolderRel { get; set; }
         public string ResxFolderRel { get; set; }
         public SimplisityRecord Record { get; set; }
+        public Dictionary<string, string> ImageFileNameList { get; set; }
         public Dictionary<string, string> FileNameList { get; set; }
         public Dictionary<string, string> GetTemplatesMapPath { get { return FileNameList; } }
 

@@ -13,6 +13,17 @@ namespace Rocket.AppThemes.Components
 
     public class AppThemeDataList
     {
+        public AppThemeDataList()
+        {
+            AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
+            AssignFolders();
+
+            PopulateSystemFolderList();
+
+            SelectedSystemKey = "";
+
+            PopulateAppThemeList();
+        }
         public AppThemeDataList(string selectedsystemkey)
         {
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
@@ -54,7 +65,21 @@ namespace Rocket.AppThemes.Components
                     {
                         var dr = new System.IO.DirectoryInfo(d);
                         var appTheme = new AppThemeLimpet(SelectedSystemKey, dr.Name, "");
-                        List.Add(appTheme);
+                        if (appTheme.FileNameList.Count > 0) List.Add(appTheme);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var systemData in SystemFolderList)
+                {
+                    var themePath = AppSystemThemeFolderRootMapPath + "\\" + systemData.SystemKey;
+                    var dirlist = System.IO.Directory.GetDirectories(themePath);
+                    foreach (var d in dirlist)
+                    {
+                        var dr = new System.IO.DirectoryInfo(d);
+                        var appTheme = new AppThemeLimpet(systemData.SystemKey, dr.Name, "");
+                        if (appTheme.FileNameList.Count > 0) List.Add(appTheme);
                     }
                 }
             }
