@@ -491,8 +491,13 @@ namespace DNNrocketAPI.render
         {
             if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
 
-            var filePath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/CKEditor/" + scriptFileName);
+            var filePath = DNNrocketUtils.MapPath("/CKEditor/" + scriptFileName);
             var strOut = FileUtils.ReadFile(filePath);
+            if (strOut == "") // revert to default path if no script.
+            {
+                filePath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/CKEditor/" + scriptFileName);
+                strOut = FileUtils.ReadFile(filePath);
+            }
 
             var id = getIdFromXpath(xpath, row, listname);
 
