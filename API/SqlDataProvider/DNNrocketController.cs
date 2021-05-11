@@ -724,6 +724,7 @@ namespace DNNrocketAPI
                 info.TextData = sRecord.TextData;
                 info.ParentItemId = sRecord.ParentItemId;
                 info.XrefItemId = sRecord.XrefItemId;
+                info.SortOrder = sRecord.SortOrder;
                 info.Lang = "";
                 info.UserId = sRecord.UserId;
                 Update(info, tableName);

@@ -485,19 +485,20 @@ namespace DNNrocketAPI.render
         /// </summary>
         /// <param name="info"></param>
         /// <param name="xpath"></param>
-        /// <param name="attributes"></param>
+        /// <param name="scriptFileName">CKEditor script name or rel path + script name</param>
+        /// <param name="localized"></param>
+        /// <param name="row"></param>
+        /// <param name="listname"></param>
+        /// <param name="langauge"></param>
         /// <returns></returns>
         public IEncodedString CKEditor(SimplisityInfo info, string xpath, string scriptFileName = "scriptClassic.html",  bool localized = false, int row = 0, string listname = "", string langauge = "")
         {
             if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
 
-            var filePath = DNNrocketUtils.MapPath("/CKEditor/" + scriptFileName);
+            var filePath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/CKEditor/" + scriptFileName);
+            if (scriptFileName.StartsWith("/")) filePath = DNNrocketUtils.MapPath(scriptFileName);
+                
             var strOut = FileUtils.ReadFile(filePath);
-            if (strOut == "") // revert to default path if no script.
-            {
-                filePath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/CKEditor/" + scriptFileName);
-                strOut = FileUtils.ReadFile(filePath);
-            }
 
             var id = getIdFromXpath(xpath, row, listname);
 
