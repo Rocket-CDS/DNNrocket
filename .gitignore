@@ -351,3 +351,4 @@ API/Installation/Resource.zip
 Installation/DNNrocket_1.0.0_Install.zip
 *.zip
 dnnpack.config
+CreateInstallZip.bat
