@@ -510,7 +510,7 @@ namespace DNNrocketAPI.render
             {
                 value = info.GetXmlProperty("genxml/lang/" + xpath);
             }
-            strOut += " <textarea id='" + id + "' s-datatype='coded' s-xpath='" + xpath + "' type='text' style='width:100%' rows='10'>" + value + "</textarea>";
+            strOut += " <textarea id='" + id + "' s-xpath='" + xpath + "' type='text' style='width:100%' rows='10'>" + value + "</textarea>";
             return new RawString(strOut);
         }
 
