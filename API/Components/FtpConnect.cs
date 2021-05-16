@@ -65,14 +65,14 @@ namespace DNNrocketAPI.Components
                     client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
                     var xmlMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + appTheme.AppThemeFolder + ".xml";
                     var sInfo = new SimplisityRecord();
-                    sInfo.SetXmlProperty("genxml/hidden/appthemefolder", appTheme.AppThemeFolder);
-                    sInfo.SetXmlProperty("genxml/hidden/appthemename", appTheme.AppThemeName);
-                    sInfo.SetXmlProperty("genxml/hidden/appthemeprefix", appTheme.AppThemePrefix);
-                    sInfo.SetXmlProperty("genxml/hidden/summary", appTheme.AppSummary);
-                    sInfo.SetXmlProperty("genxml/hidden/latestversion", appTheme.LatestVersionFolder);
-                    var logoMapPath = DNNrocketUtils.MapPath(appTheme.Logo);
-                    sInfo.SetXmlProperty("genxml/hidden/logo", Path.GetFileName(logoMapPath));
-                    //var outMapPath = "";
+                    //sInfo.SetXmlProperty("genxml/hidden/appthemefolder", appTheme.AppThemeFolder);
+                    //sInfo.SetXmlProperty("genxml/hidden/appthemename", appTheme.AppThemeName);
+                    //sInfo.SetXmlProperty("genxml/hidden/appthemeprefix", appTheme.AppThemePrefix);
+                    //sInfo.SetXmlProperty("genxml/hidden/summary", appTheme.AppSummary);
+                    //sInfo.SetXmlProperty("genxml/hidden/latestversion", appTheme.LatestVersionFolder);
+                    //var logoMapPath = DNNrocketUtils.MapPath(appTheme.Logo);
+                    //sInfo.SetXmlProperty("genxml/hidden/logo", Path.GetFileName(logoMapPath));
+                    ////var outMapPath = "";
                     //if (File.Exists(logoMapPath))
                     //{
                     //    //var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));

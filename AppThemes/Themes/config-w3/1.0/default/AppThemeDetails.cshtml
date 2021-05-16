@@ -10,8 +10,6 @@
 
 @{
     var appTheme = (AppThemeLimpet)Model.List.First();
-    var info = new SimplisityInfo(appTheme.Record);
-    var record = appTheme.Record;
 }
 @{
     var dataDic = new Dictionary<string, string>();
@@ -23,199 +21,43 @@
     var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist,.fielddata,.settingfielddata";
 }
 
-@HiddenField(info, "genxml/hidden/fieldlocalizedlist", " s-update='ignore' ")
-
-@{
-    // activate auto versioning
-    var FieldEditorMapPath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/AppThemes/Themes/config-w3/1.0/js/FieldEditor.js");
-    var FieldEditorAutoVersion = File.GetLastWriteTime(FieldEditorMapPath).Ticks;
-}
-<script src="/DesktopModules/DNNrocket/AppThemes/Themes/config-w3/1.0/js/FieldEditor.js?v=@(FieldEditorAutoVersion)"></script>
+@HiddenField(new SimplisityInfo(), "genxml/hidden/fieldlocalizedlist", " s-update='ignore' ")
 
 <div class=''>
-
-    <div id="cssfilename" class="w3-modal">
-        <div class="w3-modal-content w3-card w3-animate-zoom">
-
-            <header class="w3-container  w3-theme" style="height:38px;">
-                <span onclick="document.getElementById('cssfilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            </header>
-
-            <div class="w3-row w3-padding">
-                <div class="w3-col m8 w3-padding">
-                    <input value="" id="cssfilename" s-xpath="genxml/textbox/cssfilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
-                </div>
-                <div class="w3-col m3 w3-padding">
-
-                    <div id="cssaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addcss"  s-return=".articlepopup" s-post="#cssfilename" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.add)</div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="jsfilename" class="w3-modal">
-        <div class="w3-modal-content w3-card w3-animate-zoom">
-
-            <header class="w3-container  w3-theme" style="height:38px;">
-                <span onclick="document.getElementById('jsfilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            </header>
-
-            <div class="w3-row w3-padding">
-                <div class="w3-col m8 w3-padding">
-                    <input value="" id="jsfilename" s-xpath="genxml/textbox/jsfilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
-                </div>
-                <div class="w3-col m3 w3-padding">
-
-                    <div id="jsaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click"  s-return=".articlepopup" s-cmd="rocketapptheme_addjs" s-post="#jsfilename" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.add)</div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="resxfilename" class="w3-modal">
-        <div class="w3-modal-content w3-card w3-animate-zoom">
-
-            <header class="w3-container  w3-theme" style="height:38px;">
-                <span onclick="document.getElementById('resxfilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            </header>
-
-            <div class="w3-row w3-padding">
-                <div class="w3-col m8 w3-padding">
-                    <input value="" id="resxfilename" s-xpath="genxml/textbox/resxfilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
-                </div>
-                <div class="w3-col m3 w3-padding">
-
-                    <!-- Hide and call from the language select -->
-                    <div id="resxaddbutton" class="w3-button w3-hide w3-teal w3-padding-8 simplisity_click"  s-return=".articlepopup" s-cmd="rocketapptheme_addresx" s-post="#resxfilename" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'></div>
-
-                    <div class="w3-button w3-teal w3-padding-8 " onclick="selectlanguage()">@ButtonText(ButtonTypes.add)</div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="templatefilename" class="w3-modal">
-        <div class="w3-modal-content w3-card w3-animate-zoom">
-
-            <header class="w3-container  w3-theme" style="height:38px;">
-                <span onclick="document.getElementById('templatefilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            </header>
-
-            <div class="w3-row w3-padding">
-                <div class="w3-col m8 w3-padding">
-                    <input value="" id="templatefilename" s-xpath="genxml/textbox/templatefilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
-                </div>
-                <div class="w3-col m3 w3-padding">
-
-                    <div id="templateaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click"  s-return=".articlepopup" s-cmd="rocketapptheme_addtemplate" s-post="#templatefilename" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.add)</div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div id="copyapptheme" class="w3-modal">
-        <div class="w3-modal-content w3-card w3-animate-zoom">
-
-            <header class="w3-container  w3-theme" style="height:38px;">
-                <span onclick="document.getElementById('copyapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            </header>
-
-            <div class="w3-row w3-padding">
-                <div class="w3-col m4 w3-padding">
-                    <input value="" id="appthemeprefix" s-xpath="genxml/textbox/appthemeprefix" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.prefix")..." maxlength="350" autocomplete="off" s-update="save" type="text">
-                </div>
-                <div class="w3-col m5 w3-padding">
-                    <input value="" id="appthemename" s-xpath="genxml/textbox/appthemename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.appthemename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
-                </div>
-                <div class="w3-col m3 w3-padding">
-                    <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_docopy" s-post="#copyapptheme" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copy")</div>
-                </div>
-            </div>
-            <div class="w3-row w3-panel w3-red w3-padding copyappthemereturn" style="display:none;">
-            </div>
-        </div>
-    </div>
-
-    <div id="uploadapptheme" class="w3-modal">
-        <div class="w3-modal-content w3-card w3-animate-zoom">
-
-            <header class="w3-container  w3-theme" style="height:38px;">
-                <span onclick="document.getElementById('uploadapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            </header>
-
-
-            <div class="w3-light-grey w3-margin">
-                <div id="progressBarUpload" class="w3-container w3-green" style="height:24px;width:1%"></div>
-            </div>
-
-
-            <div class="w3-row-padding uploadbutton1">
-                <div class="w3-col m3 w3-padding">
-                    <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-before="moveprogressbarupload" s-cmd="rocketapptheme_uploadversioncheck" s-post="#uploadapptheme" s-return=".uploadappthemereturn" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-upload fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.upload")</div>
-                </div>
-            </div>
-            <div class="w3-row w3-padding">
-                <div class="w3-row w3-panel w3-padding uploadappthemereturn" style="display:none;">
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-
 
     <div id="detailsection">
 
         <div class="w3-row w3-padding">
-            <div class="w3-col m2 rocket-buttonbar w3-button w3-green w3-padding-8 langchangesave simplisity_click activatevalidation " s-before="validateform"  s-return=".articlepopup" s-cmd="rocketapptheme_save" s-post="#appthemedetails" s-list="@(savelists)" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
-
-            <div class="w3-col m2 w3-dropdown-hover">
-                <div class="w3-button" style="border-top: 6px solid #fff !important;">@ResourceKey("DNNrocket.more")...</div>
+            <div class="w3-dropdown-hover">
+                <div class="w3-button" style="border-top: 6px solid #fff !important;"><i class="fas fa-bars"></i></div>
                 <div class="w3-dropdown-content w3-bar-block w3-card" style="width:340px;">
-                    <div class="w3-bar-item w3-button simplisity_confirmclick" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-blue fas fa-newspaper fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
+                    <div class="w3-bar-item w3-button simplisity_confirmclick" s-return=".articlepopup" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-blue fas fa-newspaper fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.createversion")</div>
                     <div class="w3-bar-item w3-button" onclick="document.getElementById('copyapptheme').style.display = 'block';"><i class="w3-text-blue fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copyapptheme")</div>
-                    <div class="w3-bar-item w3-button" onclick="document.getElementById('uploadapptheme').style.display = 'block';"><i class="w3-text-blue fas fa-upload fa-fw fa-lg"></i>&nbsp;@ResourceKey("AppThemes.uploadapptheme")</div>
                     <a class="w3-bar-item w3-button w3-padding-8 simplisity_filedownload" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-teal fas fa-file-export fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNRocket.export")</a>
                     <div class="w3-bar-item" style="height:30px;"><hr /></div>
                     <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete") AppTheme</div>
-                    <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")</div>
+                    <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-return=".articlepopup" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="w3-text-red fas fa-minus-square fa-fw fa-lg"></i> &nbsp;@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")</div>
 
                     <div class="w3-bar-item w3-button w3-padding-8 refreshdisplay simplisity_click" s-track="clear" s-cmd="rocketapptheme_getlist" s-fields='' style="display:none;"></div>
 
                 </div>
             </div>
-            <div class="w3-col m5 w3-right">
-                <h2>@(appTheme.SystemKey)&nbsp;@(appTheme.AppThemeFolder)&nbsp;v@(appTheme.AppVersionFolder)&nbsp;<span class="validationfail w3-margin-left " style="display:none;"><i class='fas fa-exclamation-triangle' style='font-size:24px;color:red;'></i></span></h2>
-            </div>
 
         </div>
         <div class="w3-container">
 
-            <div class="w3-display-container">
-            </div>
-
             <div id="appthemedetails">
-
-
                 <div class="w3-container ">
                     <div class="w3-row">
                         <div class="w3-third w3-padding">
                             <label>@ResourceKey("AppThemes.name")</label>
-                            @TextBox(info, "genxml/textbox/appthemename", " class='w3-input w3-border' ", appTheme.AppThemeName, false)
+                            <input value="@appTheme.AppThemeFolder" s-update="ignore" class="w3-input w3-border" disabled />
                         </div>
                         <div class="w3-third w3-padding" style="width:132px;">
                             <label>@ResourceKey("AppThemes.version")</label>
-                            @DropDownList(info, "genxml/select/versionfolder", dataDic, " class='w3-input w3-border changeversionclass simplisity_change' s-before='changeversionaction' s-cmd='rocketapptheme_changeversion' s-post='#appthemedetails'  s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
+                            @DropDownList(new SimplisityInfo(), "genxml/select/versionfolder", dataDic, " class='w3-input w3-border changeversionclass simplisity_change' s-before='changeversionaction' s-cmd='rocketapptheme_getdetail' s-return='.articlepopup' s-post='#appthemedetails'  s-fields='{\"appthemefolder\":\"" + appTheme.AppThemeFolder + "\"}' ", appTheme.AppVersionFolder)
                         </div>
                     </div>
-
-                    <div class="w3-row w3-padding w3-border-bottom">
-                            <label>@ResourceKey("AppThemes.summary")</label>
-                            @TextArea(info, "genxml/textbox/summary", "class='w3-input w3-border' rows='4'", "", false)
-                    </div>
-
                 </div>
             </div>
 
@@ -263,13 +105,13 @@
 
                         <div class="w3-container">
                             <div class="w3-col w3-padding" style="width:160px;">
-                                <div class="w3-button w3-teal w3-padding-8" onclick="$('#appthemeimageselect').show();" ><i class='fas fa-plus-circle'></i></div>
+                                <div class="w3-button w3-teal w3-padding-8" onclick="$('#appthemeimageselect').show();"><i class='fas fa-plus-circle'></i></div>
                             </div>
                         </div>
 
                         <ul id="imagelistdata" class="w3-ul">
 
-                            @{ 
+                            @{
                                 var imgLP = 1;
                                 var imgdatalist = appTheme.ImageFileNameList;
                             }
@@ -282,7 +124,7 @@
                                             <div class="w3-display-middle ">
                                                 <img src="/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=@(appTheme.ImageFolderRel.TrimEnd('/') + "/" + imgDict.Key)&amp;w=80&amp;h=80" class="w3-round w3-hover-opacity">
                                             </div>
-                                            <div class="w3-display-topright simplisity_click" s-before="hideAppTheme" s-cmd="rocketapptheme_deleteimagefile" s-return=".articlepopup" s-fields='{"filename":"@imgDict.Key","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'  style="cursor: pointer;">
+                                            <div class="w3-display-topright simplisity_click" s-before="hideAppTheme" s-cmd="rocketapptheme_deleteimagefile" s-return=".articlepopup" s-fields='{"filename":"@imgDict.Key","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor: pointer;">
                                                 <i title="@ResourceKey("DNNrocket.delete")" class="fas fa-minus-square fa-fw fa-lg"></i>
                                             </div>
                                         </div>
@@ -393,72 +235,186 @@
     </div>
 
 
-    <div id="dnnrocket_resxeditwrapper" style="display:none;">
-        <div class="w3-row w3-padding">
-            <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="saveresx()">@ButtonText(ButtonTypes.ok)</div>
-
-            <div class="w3-col m2 w3-button w3-khaki " onclick="cancelresx();">@ButtonText(ButtonTypes.cancel)</div>
-
-            <div class="w3-col m3 w3-center">
-                <image id="resxflag" src="/DesktopModules/DNNrocket/API/images/flags/32/none.png"></image>
-                <span id="culturecoderesx"></span>
-            </div>
-
-            <div class="w3-col m4 w3-center">
-                <h5 id="resxfilename" class="" style=""></h5>
-            </div>
-        </div>
-        <div id="dnnrocket_resxvaluelist">
-
-            <div class="w3-margin">
-                <div class="w3-button w3-teal w3-padding-8" onclick="addresxvalue('','')">@ButtonText(ButtonTypes.add)</div>
-                <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_rebuildresx" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-wrench  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.rebuild")</div>
-                <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistvaluesbin" s-return="#resxvalues" s-removelist=".resxlistvalues" style="display: none;">@ButtonText(ButtonTypes.undo)</div>
-            </div>
-
-            <div class="w3-row w3-margin">
-
-                <table id="resxvalues" class="w3-table-all">
-
-                    <tr class="w3-theme">
-                        <th class="w3-third"></th>
-                        <th class="w3-half"></th>
-                        <th style="width:20px;"></th>
-                    </tr>
-
-                </table>
-
-            </div>
-
-
-        </div>
-    </div>
     <div class="w3-right">
-        <i>ID: </i> @info.ItemID &nbsp; @appTheme.AppThemeFolderRel
+        @appTheme.AppThemeFolderRel
     </div>
 
-    <!-- The Modal -->
-    <div id="languageselector" class="w3-modal">
-        <div class="w3-modal-content">
-            <header class="w3-container w3-theme-d3">
-                <span onclick="document.getElementById('languageselector').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <div class="w3-col m4 ">
-                    <input class="w3-margin w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchlanguage")..." id="searchtext" onkeyup="searchFunction()">
-                </div>
-            </header>
-            <div class="w3-container">
-                @{
-                    var enabledlanguages = DNNrocketUtils.GetAllCultureCodeList();
-                    foreach (var l in enabledlanguages)
-                    {
-                        <div class="w3-col m4 w3-padding" style="cursor: pointer;" editlang='@(l.GetXmlProperty("genxml/code"))' onclick="actionlanguageselect('@(l.GetXmlProperty("genxml/code"))')"><img class='searchlanguagebutton ' src='@(l.GetXmlProperty("genxml/flagurl"))' alt='@(l.GetXmlProperty("genxml/displayname")  + " " + l.GetXmlProperty("genxml/code"))' /><span class="w3-small">&nbsp;@l.GetXmlProperty("genxml/displayname")</span></div>
+    <!-- The Modals -->
+    <div>
+
+        <div id="languageselector" class="w3-modal">
+            <div class="w3-modal-content">
+                <header class="w3-container w3-theme-d3">
+                    <span onclick="document.getElementById('languageselector').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                    <div class="w3-col m4 ">
+                        <input class="w3-margin w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchlanguage")..." id="searchtext" onkeyup="searchFunction()">
+                    </div>
+                </header>
+                <div class="w3-container">
+                    @{
+                        var enabledlanguages = DNNrocketUtils.GetAllCultureCodeList();
+                        foreach (var l in enabledlanguages)
+                        {
+                            <div class="w3-col m4 w3-padding" style="cursor: pointer;" editlang='@(l.GetXmlProperty("genxml/code"))' onclick="actionlanguageselect('@(l.GetXmlProperty("genxml/code"))')"><img class='searchlanguagebutton ' src='@(l.GetXmlProperty("genxml/flagurl"))' alt='@(l.GetXmlProperty("genxml/displayname")  + " " + l.GetXmlProperty("genxml/code"))' /><span class="w3-small">&nbsp;@l.GetXmlProperty("genxml/displayname")</span></div>
+                        }
                     }
-                }
+                </div>
+                <footer class="w3-container w3-theme-d3"></footer>
             </div>
-            <footer class="w3-container w3-theme-d3"></footer>
         </div>
-    </div>
 
+
+        <div id="cssfilename" class="w3-modal">
+            <div class="w3-modal-content w3-card w3-animate-zoom">
+
+                <header class="w3-container  w3-theme" style="height:38px;">
+                    <span onclick="document.getElementById('cssfilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                </header>
+
+                <div class="w3-row w3-padding">
+                    <div class="w3-col m8 w3-padding">
+                        <input value="" id="cssfilename" s-xpath="genxml/textbox/cssfilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                    </div>
+                    <div class="w3-col m3 w3-padding">
+
+                        <div id="cssaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_addcss" s-return=".articlepopup" s-post="#cssfilename" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.add)</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="jsfilename" class="w3-modal">
+            <div class="w3-modal-content w3-card w3-animate-zoom">
+
+                <header class="w3-container  w3-theme" style="height:38px;">
+                    <span onclick="document.getElementById('jsfilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                </header>
+
+                <div class="w3-row w3-padding">
+                    <div class="w3-col m8 w3-padding">
+                        <input value="" id="jsfilename" s-xpath="genxml/textbox/jsfilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                    </div>
+                    <div class="w3-col m3 w3-padding">
+
+                        <div id="jsaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-return=".articlepopup" s-cmd="rocketapptheme_addjs" s-post="#jsfilename" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.add)</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="resxfilename" class="w3-modal">
+            <div class="w3-modal-content w3-card w3-animate-zoom">
+
+                <header class="w3-container  w3-theme" style="height:38px;">
+                    <span onclick="document.getElementById('resxfilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                </header>
+
+                <div class="w3-row w3-padding">
+                    <div class="w3-col m8 w3-padding">
+                        <input value="" id="resxfilename" s-xpath="genxml/textbox/resxfilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                    </div>
+                    <div class="w3-col m3 w3-padding">
+
+                        <!-- Hide and call from the language select -->
+                        <div id="resxaddbutton" class="w3-button w3-hide w3-teal w3-padding-8 simplisity_click" s-return=".articlepopup" s-cmd="rocketapptheme_addresx" s-post="#resxfilename" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'></div>
+
+                        <div class="w3-button w3-teal w3-padding-8 " onclick="selectlanguage()">@ButtonText(ButtonTypes.add)</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="templatefilename" class="w3-modal">
+            <div class="w3-modal-content w3-card w3-animate-zoom">
+
+                <header class="w3-container  w3-theme" style="height:38px;">
+                    <span onclick="document.getElementById('templatefilename').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                </header>
+
+                <div class="w3-row w3-padding">
+                    <div class="w3-col m8 w3-padding">
+                        <input value="" id="templatefilename" s-xpath="genxml/textbox/templatefilename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.filename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                    </div>
+                    <div class="w3-col m3 w3-padding">
+
+                        <div id="templateaddbutton" class="w3-button w3-teal w3-padding-8 simplisity_click" s-return=".articlepopup" s-cmd="rocketapptheme_addtemplate" s-post="#templatefilename" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.add)</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="copyapptheme" class="w3-modal">
+            <div class="w3-modal-content w3-card w3-animate-zoom" style="top: -30px; width: 60%;">
+
+                <header class="w3-container  w3-theme" style="height:38px;">
+                    <span onclick="document.getElementById('copyapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                </header>
+
+                <div class="w3-row w3-padding">
+                    <div class="w3-col m4 w3-padding">
+                        <input value="@appTheme.SystemKey" id="appthemeprefix" s-xpath="genxml/textbox/appthemeprefix" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.prefix")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                    </div>
+                    <div class="w3-col m5 w3-padding">
+                        @{ 
+                            var appthemename = appTheme.AppThemeFolder;
+                            var sl = appTheme.AppThemeFolder.Split('.');
+                            if (sl.Length >= 2)
+                            {
+                                appthemename = appTheme.AppThemeFolder.Split('.')[1];
+                            }
+                        }
+                        <input value="@(appthemename) - Copy" id="appthemename" s-xpath="genxml/textbox/appthemename" class="w3-input w3-border" placeholder="@ResourceKey("Appthemes.appthemename")..." maxlength="350" autocomplete="off" s-update="save" type="text">
+                    </div>
+                    <div class="w3-col m3 w3-padding">
+                        <div class="w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-return=".articlepopup" s-cmd="rocketapptheme_docopy" s-post="#copyapptheme" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'><i class="fas fa-copy fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.copy")</div>
+                    </div>
+                </div>
+                <div class="w3-row w3-panel w3-red w3-padding copyappthemereturn" style="display:none;">
+                </div>
+            </div>
+        </div>
+        <div id="dnnrocket_resxeditwrapper" style="display:none;">
+            <div class="w3-row w3-padding">
+                <div class="w3-col m2 w3-button w3-pale-green w3-padding-8" onclick="saveresx()">@ButtonText(ButtonTypes.ok)</div>
+
+                <div class="w3-col m2 w3-button w3-khaki " onclick="cancelresx();">@ButtonText(ButtonTypes.cancel)</div>
+
+                <div class="w3-col m3 w3-center">
+                    <image id="resxflag" src="/DesktopModules/DNNrocket/API/images/flags/32/none.png"></image>
+                    <span id="culturecoderesx"></span>
+                </div>
+
+                <div class="w3-col m4 w3-center">
+                    <h5 id="resxfilename" class="" style=""></h5>
+                </div>
+            </div>
+            <div id="dnnrocket_resxvaluelist">
+
+                <div class="w3-margin">
+                    <div class="w3-button w3-teal w3-padding-8" onclick="addresxvalue('','')">@ButtonText(ButtonTypes.add)</div>
+                    <div class="w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="rocketapptheme_rebuildresx" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder"}'><i class='fas fa-wrench  fa-fw fa-lg'></i>&nbsp;@ResourceKey("AppThemes.rebuild")</div>
+                    <div class="w3-button w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="resxlistvaluesbin" s-return="#resxvalues" s-removelist=".resxlistvalues" style="display: none;">@ButtonText(ButtonTypes.undo)</div>
+                </div>
+
+                <div class="w3-row w3-margin">
+
+                    <table id="resxvalues" class="w3-table-all">
+
+                        <tr class="w3-theme">
+                            <th class="w3-third"></th>
+                            <th class="w3-half"></th>
+                            <th style="width:20px;"></th>
+                        </tr>
+
+                    </table>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
 
 </div>
 
@@ -531,6 +487,8 @@
 
         });
 
+      
+
         showDataTab();
 
         rpadmin.moveToTop('#articlemodal');
@@ -591,22 +549,6 @@
             tabName = "Templates";
         }
         openDataTab('tab' + tabName, tabName);
-    }
-
-    function moveprogressbarupload() {
-        $('.uploadbutton1').hide();
-        $('.uploadbutton').hide();
-        var elem = document.getElementById("progressBarUpload");
-        var width = 1;
-        progressbarid = setInterval(frame, 50);
-        function frame() {
-            if (width >= 100) {
-                width = 1;
-            } else {
-                width++;
-                elem.style.width = width + '%';
-            }
-        }
     }
 
     function hideAppTheme() {

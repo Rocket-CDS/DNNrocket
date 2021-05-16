@@ -1582,7 +1582,11 @@ namespace DNNrocketAPI.Components
 
         public static void SetCache(string cacheKey, object objObject)
         {
-            DataCache.SetCache(cacheKey, objObject, DateTime.Now + new TimeSpan(2, 0, 0, 0));
+            SetCache(cacheKey, objObject, 2);
+        }
+        public static void SetCache(string cacheKey, object objObject, int keephours)
+        {
+            DataCache.SetCache(cacheKey, objObject, DateTime.Now + new TimeSpan(0, keephours, 0, 0));
         }
         public static object GetCache(string cacheKey)
         {

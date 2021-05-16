@@ -34,17 +34,17 @@ namespace DNNrocketAPI.Components
                 _tabid = tabid;
                 _rocketInterface = rocketInterface;
                 ValidateUser();
-                Info = (SimplisityInfo)CacheUtils.GetCache(_defaultFileMapPath);
+                Info = (SimplisityInfo)CacheUtilsDNN.GetCache(_defaultFileMapPath);
                 if (Info == null)
                 {
                     var filenamepath = DNNrocketUtils.MapPath(_defaultFileMapPath);
                     var xmlString = FileUtils.ReadFile(filenamepath);
                     Info = new SimplisityInfo();
                     Info.XMLData = xmlString;
-                    CacheUtils.SetCache(_defaultFileMapPath, Info);
+                    CacheUtilsDNN.SetCache(_defaultFileMapPath, Info);
 
                }
-                _commandSecurity = (ConcurrentDictionary<string, bool>)CacheUtils.GetCache(_systemKey + "Security" + _userId);
+                _commandSecurity = (ConcurrentDictionary<string, bool>)CacheUtilsDNN.GetCache(_systemKey + "Security" + _userId);
                 if (_commandSecurity == null)
                 {
                     _commandSecurity = new ConcurrentDictionary<string, bool>();
@@ -53,7 +53,7 @@ namespace DNNrocketAPI.Components
                     {
                         AddCommand(nod.SelectSingleNode("cmd").InnerText, Convert.ToBoolean(nod.SelectSingleNode("action").InnerText));
                     }
-                    CacheUtils.SetCache(_systemKey + "Security" + _userId, _commandSecurity);
+                    CacheUtilsDNN.SetCache(_systemKey + "Security" + _userId, _commandSecurity);
                 }
             }
             catch (Exception ex)

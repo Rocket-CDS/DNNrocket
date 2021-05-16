@@ -43,17 +43,23 @@ namespace DNNrocket.AppThemes
                     case "rocketapptheme_getlist":
                         strOut = GetList();
                         break;
+                    case "rocketapptheme_getappstore":
+                        strOut = GetAppStoreList();
+                        break;                        
                     case "rocketapptheme_clearcache":
                         ClearServerCacheLists();
                         strOut = GetList();
-                        break;                        
+                        break;
+                    case "rocketapptheme_downloadallgithub":
+                        AppThemeUtils.DownloadAllGitHubAppTheme("ToastedTemplates");
+                        strOut = GetList();
+                        break;
                     default:
 
                         // actions on selected AppTheme
                         _appThemeSystemKey = _paramInfo.GetXmlProperty("genxml/hidden/appthemesystemkey");
                         _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                         _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
-                        if (_appVersionFolder == "") _appVersionFolder = "1.0";
 
                         _appTheme = new AppThemeLimpet(_appThemeSystemKey, _appThemeFolder, _appVersionFolder);
 
@@ -61,9 +67,6 @@ namespace DNNrocket.AppThemes
                         {
                             case "rocketapptheme_getdetail":
                                 strOut = GetDetail();
-                                break;
-                            case "rocketapptheme_save":
-                                strOut = SaveData();                                
                                 break;
                             case "rocketapptheme_addimage":
                                 strOut = AddListImage();
@@ -84,28 +87,9 @@ namespace DNNrocket.AppThemes
                                 AddTemplateFile();
                                 strOut = GetDetail();
                                 break;
-                            case "rocketapptheme_rebuildresx":
-                                strOut = RebuildResx();
-                                break;
-                            case "rocketapptheme_addfield":
-                                SaveData();
-                                strOut = AddListField();
-                                break;
-                            case "rocketapptheme_addsettingfield":
-                                SaveData();
-                                strOut = AddSettingListField();
-                                break;
                             case "rocketapptheme_createversion":
                                 strOut = CreateNewVersion();
                                 break;
-
-                            //[TODO:  what is theis and why, do we need it??]
-                            case "rocketapptheme_changeversion":
-                                _appTheme.Record.SetXmlProperty("genxml/select/versionfolder", _appVersionFolder);
-                                _appTheme.Update();
-                                strOut = GetDetail();
-                                break;
-
                             case "rocketapptheme_deleteversion":
                                 strOut = DeleteVersion();
                                 break;
@@ -147,20 +131,16 @@ namespace DNNrocket.AppThemes
                                 strOut = SaveEditor();
                                 break;
 
-                            case "rocketapptheme_geneditform":
-                                strOut = AppThemeUtils.GenerateEditForm(_appThemeSystemKey, _appThemeFolder, _appVersionFolder);
-                                break;
-                            case "rocketapptheme_genviewform":
-                                strOut = AppThemeUtils.GenerateView(_appThemeSystemKey, _appThemeFolder, _appVersionFolder);
-                                break;
-                            case "rocketapptheme_gensettingform":
-                                strOut = AppThemeUtils.GenerateSettingForm(_appThemeSystemKey, _appThemeFolder, _appVersionFolder);
-                                break;
                             case "rocketapptheme_deletefile":
                                 strOut = DeleteFile();
                                 break;
                             case "rocketapptheme_deleteimagefile":
                                 strOut = DeleteImageFile();
+                                break;
+
+                            case "rocketapptheme_downloadgithub":
+                                AppThemeUtils.DownloadGitHubAppTheme(_paramInfo.GetXmlProperty("genxml/hidden/htmlurl"), _appTheme.AppThemeFolderMapPath);
+                                strOut = GetList();
                                 break;
 
                         }
@@ -321,9 +301,6 @@ namespace DNNrocket.AppThemes
 
                 // crearte new _appTheme.
                 var appTheme = new AppThemeLimpet(_appThemeSystemKey, newAppThemeName, "1.0");
-                _appTheme.AppThemePrefix = appthemeprefix;
-                _appTheme.AppThemeName = newAppThemeName;
-                _appTheme.Update();
 
                 ClearServerCacheLists();
 
@@ -442,6 +419,22 @@ namespace DNNrocket.AppThemes
 
             }
         }
+        public String GetAppStoreList()
+        {
+            try
+            {
+                var appThemeDataList = new AppThemeDataList();
+                var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(_systemData.SystemKey, "AppStoreList.cshtml", appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var passSettings = _postInfo.ToDictionary();
+
+                return RenderRazorUtils.RazorDetail(razorTempl, appThemeDataList, passSettings, null, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+
+            }
+        }
 
         private void DownloadPublicAppTheme(string appThemeFolder = "")
         {
@@ -459,16 +452,17 @@ namespace DNNrocket.AppThemes
 
         private Dictionary<string, object> ExportAppTheme()
         {
-            var appThemeFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appthemefolder");
+            var appThemeFolder = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/appthemefolder"));
             if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
-            var appVersionFolder = _paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder");
+            var appVersionFolder = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder"));
             if (appVersionFolder == "") appVersionFolder = _appVersionFolder;
+            var appTheme = new AppThemeLimpet("", appThemeFolder, appVersionFolder);
 
-            var exportZipMapPath = _appTheme.ExportZipFile();
+            var exportZipMapPath = appTheme.ExportZipFile();
 
             var rtnDic = new Dictionary<string, object>();
             rtnDic.Add("filenamepath", exportZipMapPath);
-            rtnDic.Add("downloadname", _appTheme.AppThemeFolder + ".zip");
+            rtnDic.Add("downloadname", appTheme.AppThemeFolder + ".zip");
 
             return rtnDic;
         }
@@ -534,13 +528,6 @@ namespace DNNrocket.AppThemes
             return GetList();
         }
 
-        public string SaveData()
-        {
-            _appTheme.Save(_postInfo);
-            ClearServerCacheLists();
-            _appTheme = new AppThemeLimpet(_appThemeSystemKey, _appThemeFolder, _appTheme.LatestVersionFolder);
-            return GetDetail();
-        }
         public string DoCopyAppTheme()
         {
             try
@@ -548,8 +535,11 @@ namespace DNNrocket.AppThemes
                 var appthemeprefix = FileUtils.RemoveInvalidFileChars(_postInfo.GetXmlProperty("genxml/textbox/appthemeprefix"));
                 var appthemename = FileUtils.RemoveInvalidFileChars(_postInfo.GetXmlProperty("genxml/textbox/appthemename"));
                 var newAppThemeName = appthemename;
-                if (appthemeprefix != "") newAppThemeName = appthemeprefix + "_" + newAppThemeName;
-                _appTheme.Copy(newAppThemeName);
+                if (appthemeprefix == "") appthemeprefix = _systemData.SystemKey;
+                newAppThemeName = appthemeprefix.Replace(".", "") + "." + newAppThemeName.Replace(".","");
+                var newAppThemeDirName = _appTheme.AppThemeFolderMapPath.TrimEnd('\\') + "\\..\\" + newAppThemeName;
+
+                _appTheme.Copy(newAppThemeDirName);
                 _appTheme = new AppThemeLimpet(_appThemeSystemKey, newAppThemeName, _appTheme.LatestVersionFolder);
                 ClearServerCacheLists();
                 return GetDetail();
@@ -589,8 +579,6 @@ namespace DNNrocket.AppThemes
         {
             var editorcode = _postInfo.GetXmlProperty("genxml/hidden/editorcodesave");
             var filename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
-
-            _appTheme.Update();
             _appTheme.SaveEditor(filename, editorcode);
             CacheFileUtils.ClearAllCache();
             return "OK";
@@ -598,21 +586,11 @@ namespace DNNrocket.AppThemes
 
         public string AddListImage()
         {
-            _appTheme.Save(_postInfo);
             ImgUtils.MoveImageToFolder(_postInfo, _appTheme.ImageFolderMapPath);
             _appTheme.Populate();
             return GetDetail();
         }
 
-        public string RebuildResx()
-        {
-            var culturecoderesx = _paramInfo.GetXmlProperty("genxml/hidden/culturecoderesx");
-            var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
-            var resxData = new ResxData(_appTheme.GetFileMapPath(fname));
-            resxData.Rebuild(_appTheme);
-            _appTheme = new AppThemeLimpet(_appThemeSystemKey, _appThemeFolder, _appTheme.AppVersionFolder);
-            return GetResxDetail();
-        }
         private void AddResxFile()
         {
             var resxfilename = _postInfo.GetXmlProperty("genxml/textbox/resxfilename");
@@ -628,15 +606,7 @@ namespace DNNrocket.AppThemes
                 var resxData = new ResxData(fileMapPath);
                 if (!resxData.Exists)
                 {
-                    if (File.Exists(fileMapPath))
-                    {
-                        resxFileData = FileUtils.ReadFile(fileMapPath);
-                    }
-                    else
-                    {
-                        var baserexFileMapPath = _appTheme.AppProjectFolderMapPath + "\\AppThemeBase\\resxtemplate.xml";
-                        resxFileData = FileUtils.ReadFile(baserexFileMapPath);
-                    }
+                    if (File.Exists(fileMapPath)) resxFileData = FileUtils.ReadFile(fileMapPath);
                     FileUtils.SaveFile(fileMapPath, resxFileData);
                     _appTheme = new AppThemeLimpet(_appThemeSystemKey, _appThemeFolder, _appTheme.AppVersionFolder);
                 }
@@ -680,16 +650,6 @@ namespace DNNrocket.AppThemes
                 FileUtils.SaveFile(fileMapPath, templateFileData);
                 _appTheme = new AppThemeLimpet(_appThemeSystemKey, _appThemeFolder, _appTheme.AppVersionFolder);
             }
-        }
-        private string AddListField()
-        {
-            _appTheme.AddListField();
-            return GetEditTemplate(_appTheme);
-        }
-        private string AddSettingListField()
-        {
-            _appTheme.AddSettingListField();
-            return GetEditTemplate(_appTheme);
         }
         private void AssignEditLang()
         {

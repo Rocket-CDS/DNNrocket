@@ -46,8 +46,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormBuilder", "FormBuilder\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tools", "Tools\Tools.csproj", "{6EF1C539-EFB2-45FD-B9E0-F47B3580A8E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketThemes", "..\RocketThemes\RocketThemes.csproj", "{ED7B426F-16FD-4202-B7FD-00ABEBCA8CDC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,9 +108,6 @@ Global
 		{6EF1C539-EFB2-45FD-B9E0-F47B3580A8E5}.Razor|Any CPU.ActiveCfg = razor|Any CPU
 		{6EF1C539-EFB2-45FD-B9E0-F47B3580A8E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EF1C539-EFB2-45FD-B9E0-F47B3580A8E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED7B426F-16FD-4202-B7FD-00ABEBCA8CDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED7B426F-16FD-4202-B7FD-00ABEBCA8CDC}.Razor|Any CPU.ActiveCfg = Razor|Any CPU
-		{ED7B426F-16FD-4202-B7FD-00ABEBCA8CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

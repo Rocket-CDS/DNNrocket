@@ -1,293 +1,156 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Rocket.AppThemes.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Xml;
 
 namespace Rocket.AppThemes.Components
 {
     public static class AppThemeUtils
     {
-        public static string GenerateEditForm(string selectedSystemKey, string appThemeFolder, string appVersionFolder)
+        private static readonly object _cacheLock1 = new object();
+        public static AppThemeLimpet GetAppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder)
         {
-            var appTheme = new AppThemeLimpet(selectedSystemKey, appThemeFolder, appVersionFolder);
-            return GenerateFields(appTheme, "fielddata");
-        }
-        public static string GenerateSettingForm(string selectedSystemKey, string appThemeFolder, string appVersionFolder)
-        {
-            var appTheme = new AppThemeLimpet(selectedSystemKey, appThemeFolder, appVersionFolder);
-            return GenerateFields(appTheme, "settingfielddata");
-        }
-
-        public static string GenerateFields(AppThemeLimpet appTheme, string listname)
-        {
-            var row = 0;
-
-            List<SimplisityRecord> fieldList = appTheme.Record.GetRecordList(listname);
-            var systemData = new SystemLimpet(appTheme.SystemKey);
-
-            var resxItem = appTheme.Record.GetRecordListItem("resxlist", "genxml/hidden/culturecode", "");
-            var jsondata = "";
-            if (resxItem != null)
+            var cKey = "AppThemeLimpet*" + systemKey + "*" + appThemeFolder + "*" + versionFolder;
+            var appTheme = (AppThemeLimpet)CacheUtilsDNN.GetCache(cKey);
+            lock (_cacheLock1)
             {
-                var jsonresx = resxItem.GetXmlProperty("genxml/hidden/jsonresx");
-                jsondata = GeneralUtils.DeCode(jsonresx);
-            }
-            var jasonInfo = new SimplisityInfo();
-            if (jsondata != "")
-            {
-                jasonInfo = SimplisityJson.GetSimplisityInfoFromJson(jsondata, DNNrocketUtils.GetEditCulture());
-            }
-
-            var strFieldList = "";
-            // calc rows
-            var frows = new List<List<SimplisityRecord>>();
-            var fline = new List<SimplisityRecord>();
-            var col = 0;
-            foreach (var f in fieldList)
-            {
-                var size = f.GetXmlPropertyInt("genxml/select/size");
-                if (size == 0 || size > 12) size = 12;
-                col += size;
-                if (col > 12)
+                if (appTheme == null)
                 {
-                    frows.Add(fline);
-                    fline = new List<SimplisityRecord>();
-                    fline.Add(f);
-                    col = size;
-                }
-                else
-                {
-                    fline.Add(f);
+                    appTheme = new AppThemeLimpet(systemKey, appThemeFolder, versionFolder);
+                    CacheUtilsDNN.SetCache(cKey, appTheme);
                 }
             }
-            frows.Add(fline);
-
-            foreach (var flines in frows)
-            {
-                strFieldList += "<div class='w3-row'>" + Environment.NewLine;
-                foreach (var f in flines)
-                {
-                    var localized = f.GetXmlProperty("genxml/checkbox/localized").ToLower();
-                    var localizedbool = f.GetXmlPropertyBool("genxml/checkbox/localized");
-                    var xpath = f.GetXmlProperty("genxml/hidden/xpath");
-                    var size = f.GetXmlProperty("genxml/select/size");
-                    var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
-                    var labelname = f.GetXmlProperty("genxml/textbox/name");
-                    var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
-                    var defaultBool = f.GetXmlProperty("genxml/textbox/defaultvalue").ToLower();
-                    if (defaultBool == "") defaultBool = "false";
-                    var attributes = f.GetXmlProperty("genxml/textbox/attributes");
-                    var fieldname = f.GetXmlProperty("genxml/textbox/name");
-                    var resxKeyName = appTheme.AppThemeFolder + "." + labelname.Replace(".Text", "");
-
-                    strFieldList += "\t<div class='w3-col m" + size + " w3-padding'>" + Environment.NewLine;
-
-                    if (labelname != "")
-                    {
-                        var resxLabelItem = jasonInfo.GetRecordListItem("resxlistvalues", "genxml/text/*[starts-with(name(), 'name')]", labelname + ".Text");
-                        if (resxLabelItem != null)
-                        {
-                            strFieldList += "\t\t<label>@ResourceKey(\"" + resxKeyName + "\")</label>";
-                        }
-                        else
-                        {
-                            strFieldList += "\t\t<label>" + label + "</label>";
-                        }
-                    }
-                    else
-                    {
-                        strFieldList += "\t\t<label>&nbsp;</label>";
-                    }
-                    if (!localizedbool)
-                    {
-                        strFieldList += Environment.NewLine;
-                    }
-                    else
-                    {
-                        strFieldList += "\t\t&nbsp;@EditFlag()" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "textbox")
-                    {
-                        strFieldList += "\t\t@TextBox(info,\"" + xpath + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "textboxdate")
-                    {
-                        strFieldList += "\t\t@TextBoxDate(info,\"" + xpath + "\",\"" + attributes + " s-datatype='date' \",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "textarea")
-                    {
-                        strFieldList += "\t\t@TextArea(info,\"" + xpath + "\",\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkbox")
-                    {
-                        strFieldList += "\t\t@CheckBox(info,\"" + xpath + "\", \"\", \"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "dropdown")
-                    {
-                        var datavalue = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        strFieldList += "@{ var datatext = ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString();}";
-                        strFieldList += "@if (datatext == \"\") ";
-                        strFieldList += "{ ";
-                        strFieldList += " datatext = \"" + datavalue + "\"; ";
-                        strFieldList += "} ";
-                        strFieldList += "\t\t@DropDownList(info, \"" + xpath + "\",\"" + datavalue + "\",datatext,\"" + attributes + "\",\"" + defaultValue + "\"," + localized + "," + row + ")" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "radiolist")
-                    {
-                        var datavalue = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        strFieldList += "@{ var datatext = ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString();}";
-                        strFieldList += "@if (datatext == \"\") ";
-                        strFieldList += "{ ";
-                        strFieldList += " datatext = \"" + datavalue + "\"; ";
-                        strFieldList += "} ";
-                        strFieldList += "\t\t@RadioButtonList(info,\"" + xpath + "\",\"" + datavalue.Replace("\"", "\\\"") + "\",datatext,\"" + attributes + "\",\"" + defaultValue + "\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "checkboxlist")
-                    {
-                        var datavalue = GeneralUtils.DecodeCSV(f.GetXmlProperty("genxml/hidden/dictionarykey"));
-                        strFieldList += "@{ var datatext = ResourceCSV(\"" + resxKeyName + "\",\"" + datavalue + "\").ToString();}";
-                        strFieldList += "@if (datatext == \"\") ";
-                        strFieldList += "{ ";
-                        strFieldList += " datatext = \"" + datavalue + "\"; ";
-                        strFieldList += "} ";
-                        strFieldList += "\t\t@CheckBoxList(info,\"" + xpath + "\",\"" + datavalue + "\",datatext,\"" + attributes + "\"," + defaultBool + "," + localized + "," + row + ")" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "image")
-                    {
-                        var width = f.GetXmlPropertyInt("genxml/textbox/width");
-                        var height = f.GetXmlPropertyInt("genxml/textbox/height");
-                        if (width == 0 && height == 0)
-                        {
-                            width = 140;
-                            height = 140;
-                        }
-                        strFieldList += "\t\t@ImageEdit(info,\"" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower() + "\"," + width + "," + height + ",\"" + attributes + "\"," + localized + "," + row + ")" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull")
-                    {
-                        var width = f.GetXmlPropertyInt("genxml/hidden/width");
-                        var height = f.GetXmlPropertyInt("genxml/hidden/height");
-                        if (width == 0 && height == 0)
-                        {
-                            width = 140;
-                            height = 140;
-                        }
-                        strFieldList += "\t\t@ImageEditFull(info,\"" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower() + "\"," + width + "," + height + ",\"" + attributes + "\"," + localized + "," + row + ")" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "internalpage")
-                    {
-                        var allowEmpty = f.GetXmlPropertyBool("genxml/checkbox/allowempty");
-                        strFieldList += "\t\t@TabSelectListOnTabId(info,\"" + xpath + "\",\"" + attributes + "\"," + allowEmpty + "," + localized + "," + row + ")" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "document")
-                    {
-                        var fieldid = f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strFieldList += "\t\t@DocumentEdit(info,\"" + fieldid + "\",\"" + attributes + "\"," + localized + "," + row + ")" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext")
-                    {
-                        strFieldList += "\t\t<div class='w3-col m12'>" + Environment.NewLine;
-                        strFieldList += "\t\t\t@CKEditor(info,\"" + xpath + "\",\"\", \"\"," + localized + "," + row + ")" + Environment.NewLine;
-                        strFieldList += "\t\t</div>" + Environment.NewLine;
-                        strFieldList += "\t\t<div class='w3-col' style='width:0px;height:300px;'></div>" + Environment.NewLine;
-                    }
-
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
-                    {
-                        strFieldList += "\t\t<div id='imagelistcontainer'>" + Environment.NewLine;
-                        strFieldList += "@{" + Environment.NewLine;
-                        strFieldList += " Model.SetSetting(\"imgfieldname\", \"" + fieldname + "\");" + Environment.NewLine;
-                        strFieldList += "}" + Environment.NewLine;
-                        strFieldList += "\t\t\t@RenderTemplate(\"editimages.cshtml\", \"" + systemData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
-                        strFieldList += "\t\t</div>" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "documentgallery")
-                    {
-                        strFieldList += "\t\t<div id='documentlistcontainer'>" + Environment.NewLine;
-                        strFieldList += "@{" + Environment.NewLine;
-                        strFieldList += " Model.SetSetting(\"docfieldname\", \"" + fieldname + "\");" + Environment.NewLine;
-                        strFieldList += "}" + Environment.NewLine;
-                        strFieldList += "\t\t\t@RenderTemplate(\"editdocuments.cshtml\", \"" + systemData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
-                        strFieldList += "\t\t</div>" + Environment.NewLine;
-                    }
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "linkgallery")
-                    {
-                        strFieldList += "\t\t<div id='linklistcontainer'>" + Environment.NewLine;
-                        strFieldList += "@{" + Environment.NewLine;
-                        strFieldList += " Model.SetSetting(\"linkfieldname\", \"" + fieldname + "\");" + Environment.NewLine;
-                        strFieldList += "}" + Environment.NewLine;
-                        strFieldList += "\t\t\t@RenderTemplate(\"editlinks.cshtml\", \"" + systemData.SystemRelPath + "\", \"config-w3\", Model, \"1.0\", true)" + Environment.NewLine;
-                        strFieldList += "\t\t</div>" + Environment.NewLine;
-                    }
-
-                    strFieldList += "\t</div>" + Environment.NewLine;
-                }
-                strFieldList += "</div>" + Environment.NewLine;
-            }
-
-
-            return strFieldList;
-
+            return appTheme;
         }
-        public static string GenerateView(string selectedSystemKey, string appThemeFolder, string appVersionFolder)
+
+        public static string HttpGet(string URI)
         {
-            var row = 0;
-            var appTheme = new AppThemeLimpet(selectedSystemKey, appThemeFolder, appVersionFolder);
-
-            List<SimplisityRecord> fieldList = appTheme.Record.GetRecordList("fielddata");
-
-            var strFieldList = "";
-            foreach (var f in fieldList)
+            using (WebClient client = new WebClient())
             {
-                var localized = f.GetXmlPropertyBool("genxml/checkbox/localized");
-                var xpath = f.GetXmlProperty("genxml/hidden/xpath");
-                var size = f.GetXmlProperty("genxml/select/size");
-                var label = f.GetXmlProperty("genxml/lang/genxml/textbox/label");
-                var defaultValue = f.GetXmlProperty("genxml/textbox/defaultvalue");
-                var defaultBool = f.GetXmlPropertyBool("genxml/textbox/defaultvalue");
-                var attributes = f.GetXmlProperty("genxml/textbox/attributes");
-                var isonlist = f.GetXmlPropertyBool("genxml/checkbox/isonlist");
-                var fieldname = f.GetXmlProperty("genxml/textbox/name");
+                // Add a user agent header in case the requested URI contains a query.
+                client.Headers.Add("user-agent", "Toasted-github");
+                Stream data = client.OpenRead(URI);
+                StreamReader reader = new StreamReader(data);
+                string s = reader.ReadToEnd();
+                data.Close();
+                reader.Close();
 
-                if (xpath != "")
+                return s;
+            }
+        }
+
+        #region "Bonoboo git.agence-sesame.fr  - NOT USED"
+        public static List<SimplisityRecord> GetBonobooAppThemes(string xmlfilename = "toastedrepos.xml")
+        {
+            var rtnList = new List<SimplisityRecord>();
+            var contentsXml = HttpGet($"http://git.agence-sesame.fr/" + xmlfilename);
+            var sRec = new SimplisityRecord();
+            sRec.XMLData = contentsXml;
+            var contents = sRec.XMLDoc.SelectNodes("root/*");
+            if (contents != null)
+            {
+                foreach (XmlNode nod in contents)
                 {
-                    strFieldList += "\t<div class='w3-col m2 w3-padding'>" + Environment.NewLine;
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "richtext")
-                    {
-                        strFieldList += "\t\t@HtmlOf(info.GetXmlProperty(\"" + xpath + "\"))" + Environment.NewLine;
-                    }
-                    else
-                    {
-                        strFieldList += "\t\t@info.GetXmlProperty(\"" + xpath + "\")" + Environment.NewLine;
-                    }
-                    strFieldList += "\t</div>" + Environment.NewLine;
+                    var sRec2 = new SimplisityRecord();
+                    sRec2.XMLData = nod.OuterXml;
+                    rtnList.Add(sRec2);
+                }
+            }
+            return rtnList;
+        }
 
 
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagefull" || f.GetXmlProperty("genxml/select/type").ToLower() == "image")
-                    {
-                        xpath = "genxml/hidden/" + f.GetXmlProperty("genxml/textbox/name").Trim(' ').ToLower();
-                        strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
-                        strFieldList += "<img src=\"@ThumbnailImageUrl(info.GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
-                        strFieldList += "\t</div>" + Environment.NewLine;
-                    }
+        #endregion
 
-                    if (f.GetXmlProperty("genxml/select/type").ToLower() == "imagegallery")
+
+        #region "GitHub"
+
+        private static readonly object _cacheLock2 = new object();
+        public static List<SimplisityRecord> GetGitHubAppThemes(string org)
+        {
+            var cKey = "GetGitHubAppThemes*" + org;
+            var rtnList = (List<SimplisityRecord>)CacheUtilsDNN.GetCache(cKey);
+            if (rtnList != null) return rtnList;
+            lock (_cacheLock2)
+            {
+                rtnList = new List<SimplisityRecord>();
+                var contentsJson = HttpGet($"https://api.github.com/orgs/{org}/repos");
+                var contents = (JArray)JsonConvert.DeserializeObject(contentsJson);
+                foreach (var file in contents)
+                {
+                    var themename = (string)file["name"];
+                    if (!String.IsNullOrEmpty(themename))
                     {
-                        xpath = "genxml/hidden/" + fieldname.Trim(' ').ToLower();
-                        strFieldList += "\t<div class='w3-col w3-padding' style='width:80px;'>" + Environment.NewLine;
-                        strFieldList += "<img src=\"@ThumbnailImageUrl(info.GetListItem(\"imagelist" + fieldname + "\", 0).GetXmlProperty(\"" + xpath + "\"), 60 , 60)\" />" + Environment.NewLine;
-                        strFieldList += "\t</div>" + Environment.NewLine;
+                        XmlDocument doc = JsonConvert.DeserializeXmlNode("{\"genxml\":" + file.ToString() + "}");
+                        var sRec = new SimplisityRecord();
+                        sRec.XMLData = doc.OuterXml;
+                        rtnList.Add(sRec);
                     }
                 }
-
+                CacheUtilsDNN.SetCache(cKey, rtnList);
+                return rtnList;
             }
-
-            return strFieldList;
-
         }
+        public static void DownloadAllGitHubAppTheme(string org)
+        {
+            var l = GetGitHubAppThemes(org);
+            foreach (var a in l)
+            {
+                if (a.GetXmlNode("genxml/name") != "")
+                {
+                    var appTheme = AppThemeUtils.GetAppThemeLimpet("", a.GetXmlNode("genxml/name"), "");
+                    DownloadRepoFromGitHub(a.GetXmlProperty("genxml/html_url") + "/archive/refs/heads/main.zip", appTheme.AppThemeFolderMapPath);
+                }
+            }
+            CacheUtilsDNN.ClearAllCache();
+        }
+        public static void DownloadGitHubAppTheme(string contentsUrl, string downloadFolderMapPath)
+        {
+            DownloadRepoFromGitHub(contentsUrl + "/archive/refs/heads/main.zip", downloadFolderMapPath);
+            CacheUtilsDNN.ClearAllCache();
+        }
+
+        private static void DownloadRepoFromGitHub(string contentsUrl, string downloadFolderMapPath)
+        {
+            var zFile = downloadFolderMapPath + "\\main.zip";
+            WebClient client = new WebClient();
+            client.DownloadFile(contentsUrl, zFile);
+            // unzip
+            var extractDir = downloadFolderMapPath.TrimEnd('\\') + "\\Temp";
+            if (Directory.Exists(extractDir)) Directory.Delete(extractDir, true);
+            Directory.CreateDirectory(extractDir);
+            DNNrocketUtils.ExtractZipFolder(downloadFolderMapPath + "\\main.zip", extractDir);
+            // check for correct folder and move to AppTheme. (3rd level)
+            foreach ( var d in Directory.GetDirectories(extractDir))
+            {
+                foreach (var d2 in Directory.GetDirectories(d))
+                {
+                    string dirName = new DirectoryInfo(d2).Name;
+                    if (dirName != "")
+                    {
+                        var rDir = downloadFolderMapPath.TrimEnd('\\') + "\\" + dirName;
+                        Directory.Delete(rDir, true);
+                        Directory.Move(d2, rDir);
+                    }
+                }
+            }
+            //delete temp files.
+            Directory.Delete(extractDir, true);
+            File.Delete(zFile);
+        }
+
+        #endregion
+
+
     }
 }

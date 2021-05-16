@@ -197,6 +197,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\AppThemeBase.cs" />
     <Compile Include="Components\AppThemeLimpet.cs" />
     <Compile Include="Components\ArticleLink.cs" />
     <Compile Include="Components\ArticleDoc.cs" />
@@ -780,6 +781,7 @@
     <Content Include="images\noimage2.png" />
     <Content Include="images\noimage2.svg" />
     <Content Include="Installation\SQL_SPROC_TableParam.txt" />
+    <Content Include="js\rocketadmin.js" />
     <Content Include="js\simplisity.js" />
     <Content Include="Meta.ascx" />
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />

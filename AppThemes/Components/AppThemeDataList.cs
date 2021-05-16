@@ -1,10 +1,15 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Xml;
 
@@ -18,8 +23,6 @@ namespace Rocket.AppThemes.Components
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
             AssignFolders();
 
-            PopulateSystemFolderList();
-
             SelectedSystemKey = "";
 
             PopulateAppThemeList();
@@ -28,8 +31,6 @@ namespace Rocket.AppThemes.Components
         {
             AppProjectFolderRel = "/DesktopModules/DNNrocket/AppThemes";
             AssignFolders();
-
-            PopulateSystemFolderList();
 
             SelectedSystemKey = selectedsystemkey;
 
@@ -45,73 +46,23 @@ namespace Rocket.AppThemes.Components
             AppSystemThemeFolderRootRel = "/DesktopModules/RocketThemes";
             AppSystemThemeFolderRootMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRootRel);
 
-            if (!Directory.Exists(AppSystemThemeFolderRootMapPath))
-            {
-                Directory.CreateDirectory(AppSystemThemeFolderRootMapPath);
-                Directory.CreateDirectory(AppSystemThemeFolderRootMapPath.TrimEnd('\\') + "\\dnnrocketmodule"); // included in default install
-            }
-
         }
+
         public void PopulateAppThemeList()
         {
             List = new List<AppThemeLimpet>();
-            if (SelectedSystemKey != "")
+            var dirlist = System.IO.Directory.GetDirectories(AppSystemThemeFolderRootMapPath);
+            foreach (var d in dirlist)
             {
-                var themePath = AppSystemThemeFolderRootMapPath + "\\" + SelectedSystemKey;
-                if (Directory.Exists(themePath))
-                {
-                    var dirlist = System.IO.Directory.GetDirectories(themePath);
-                    foreach (var d in dirlist)
-                    {
-                        var dr = new System.IO.DirectoryInfo(d);
-                        var appTheme = new AppThemeLimpet(SelectedSystemKey, dr.Name, "");
-                        if (appTheme.FileNameList.Count > 0) List.Add(appTheme);
-                    }
-                }
-            }
-            else
-            {
-                foreach (var systemData in SystemFolderList)
-                {
-                    var themePath = AppSystemThemeFolderRootMapPath + "\\" + systemData.SystemKey;
-                    var dirlist = System.IO.Directory.GetDirectories(themePath);
-                    foreach (var d in dirlist)
-                    {
-                        var dr = new System.IO.DirectoryInfo(d);
-                        var appTheme = new AppThemeLimpet(systemData.SystemKey, dr.Name, "");
-                        if (appTheme.FileNameList.Count > 0) List.Add(appTheme);
-                    }
-                }
+                var dr = new System.IO.DirectoryInfo(d);
+                var appTheme = new AppThemeLimpet("", dr.Name, "");
+                if (appTheme.FileNameList.Count > 0) List.Add(appTheme);
             }
         }
-        public void PopulateSystemFolderList()
-        {
-            SystemFolderList = new List<SystemLimpet>();
-
-            // Get the system data from the DB SYSTEM records
-            var systemDataList = new SystemLimpetList();
-            foreach (var d in systemDataList.GetSystemList())
-            {
-                var systemData = new SystemLimpet(d);
-                if (systemData.Exists)
-                {
-                    SystemFolderList.Add(systemData);
-                    if (!Directory.Exists(AppSystemThemeFolderRootMapPath.TrimEnd('\\') + "\\" + systemData.SystemKey))
-                    {
-                        Directory.CreateDirectory(AppSystemThemeFolderRootMapPath.TrimEnd('\\') + "\\" + systemData.SystemKey);
-                    }
-                }
-            }
-
-        }
-
         public void ClearCacheLists()
         {
             var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath;
             CacheUtilsDNN.RemoveCache(cachekey);
-            cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
-            CacheUtilsDNN.RemoveCache(cachekey);
-            PopulateSystemFolderList();
             PopulateAppThemeList();
         }
 
@@ -120,6 +71,7 @@ namespace Rocket.AppThemes.Components
             SelectedSystemKey = "";
             ClearCacheLists();
         }
+
         public string AppProjectFolderRel { get; set; }
         public string AppProjectFolderMapPath { get; set; }
         public string AppSystemThemeFolderRootRel { get; set; }
@@ -134,7 +86,7 @@ namespace Rocket.AppThemes.Components
                 var rtn = new Dictionary<string, string>();
                 foreach (var a in List)
                 {
-                    var n = a.AppThemeName;
+                    var n = a.AppThemeFolder;
                     if (n == "") n = a.AppThemeFolder;
                     rtn.Add(a.AppThemeFolder, n);
                 }
@@ -151,19 +103,6 @@ namespace Rocket.AppThemes.Components
             set
             {
                 var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath;
-                CacheUtilsDNN.SetCache(cachekey, value);
-            }
-        }
-        public List<SystemLimpet> SystemFolderList {
-            get
-            {
-                var cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
-                if (CacheUtilsDNN.GetCache(cachekey) == null) return new List<SystemLimpet>();
-                return (List<SystemLimpet>)CacheUtilsDNN.GetCache(cachekey);
-            }
-            set
-            {
-                var cachekey = "AppThemeDataList*" + AppSystemThemeFolderRootMapPath;
                 CacheUtilsDNN.SetCache(cachekey, value);
             }
         }

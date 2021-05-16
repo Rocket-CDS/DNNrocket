@@ -16,47 +16,41 @@
 @RenderTemplate("Popups.cshtml", "\\DesktopModules\\DNNrocket\\AppThemes", "config-w3", Model, "1.0", true)
 
 
-    <div class="w3-row w3-padding">
-        <div class="w3-col m2 w3-button rocket-buttonbar w3-teal" onclick="$('#portaldetail').show();">@ButtonText(ButtonTypes.add)</div>
-        <div class="w3-button w3-blue w3-padding-8 simplisity_click" title="Clear All Cache" s-cmd="rocketapptheme_clearcache" s-post="" s-reload="true"><i class="fas fa-sync"></i></div>
+<div class="w3-bar w3-card searchdata w3-padding w3-margin">
+    <div class="w3-bar-item w3-col m4 " style='width: 360px'>
+        <input class=" w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
     </div>
+    <div class="w3-bar-item w3-button w3-blue w3-padding-8 simplisity_click" title="Clear All Cache" s-cmd="rocketapptheme_clearcache" s-post="" s-reload="true"><i class="fas fa-sync"></i></div>
+</div>
 
-    <div class="w3-bar w3-card searchdata w3-padding">
-        <div class="w3-bar-item w3-col m4 " style='width: 360px'>
-            <input class="w3-input w3-border w3-light-grey w3-padding" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
-        </div>
-    </div>
+<div class="w3-bar w3-theme-d5">
+    <div class="w3-bar-item w3-button tabstuff w3-theme simplisity_click" s-cmd="rocketapptheme_getlist" s-fields=""><i class="fas fa-street-view w3-margin-right"></i>@ResourceKey("Appthemes.installed")</div>
+    <div class="w3-bar-item w3-button tabstuff tabappstore simplisity_click" s-cmd="rocketapptheme_getappstore" s-fields="" s-return="#datalist"><i class="fas fa-globe w3-margin-right"></i>@ResourceKey("Appthemes.appstore")</div>
+</div>
 
+<div id="datalist" class="w3-row w3-margin-top w3-card">
 
-    <div id="datalist" class="w3-row w3-margin-top">
+    <table class="w3-table w3-bordered">
+        <thead>
+            <tr class="w3-theme-l2">
+                <th style="width:64px;"></th>
+                <th>AppTheme</th>
+            </tr>
+        </thead>
+        @foreach (var appTheme in appThemeList.List)
+        {
+            <tr class="searchdiv">
+                <td>
+                    <div class=" w3-hover-text-theme w3-text-grey w3-center simplisity_click" s-cmd="rocketapptheme_getdetail" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))","appthemefolder":"@appTheme.AppThemeFolder"}' s-return=".articlepopup" style="cursor: pointer;width: 82px;">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                </td>
+                <td><b>@appTheme.AppThemeFolder</b></td>
+            </tr>
+        }
+    </table>
 
-        <table class="w3-table-all">
-            <thead>
-                <tr class="w3-theme-l2">
-                    <th style="width:64px;"></th>
-                    <th>SystemKey</th>
-                    <th>AppTheme</th>
-                    <th>Folder</th>
-                    <th style="width:120px;"></th>
-                </tr>
-            </thead>
-            @foreach (AppThemeLimpet appTheme in appThemeList.List)
-            {
-        <tr class="searchdiv">
-            <td>
-                <div class=" w3-hover-text-theme w3-text-grey w3-center simplisity_click" s-cmd="rocketapptheme_getdetail" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder"}' s-return=".articlepopup" style="cursor: pointer;width: 82px;">
-                    <i class="fas fa-edit"></i>
-                </div>
-            </td>
-            <td><b>@appTheme.SystemKey</b></td>
-            <td>@appTheme.AppThemeName</td>
-            <td>@appTheme.AppThemeFolder</td>
-            <td>@appTheme.AppVersionFolder</td>
-        </tr>
-            }
-        </table>
-
-    </div>
+</div>
 
 <script>
     $(document).ready(function () {
@@ -80,6 +74,23 @@
             }
         }
     }
+
+    function moveprogressbardownload() {
+        $('.downloadbutton').hide();
+        var elem = document.getElementById("progressBarDownload");
+        var width = 1;
+        progressbarid = setInterval(frame, 50);
+        function frame() {
+            if (width >= 100) {
+                width = 1;
+            } else {
+                width++;
+                elem.style.width = width + '%';
+            }
+        }
+    }
+
+
 
 </script>
 

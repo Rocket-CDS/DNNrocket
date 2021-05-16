@@ -59,6 +59,7 @@ namespace Simplisity
 
                 ObjectCache cache = MemoryCache.Default;
                 CacheItemPolicy policy = new CacheItemPolicy();
+                policy.SlidingExpiration = TimeSpan.FromHours(1);
                 var cacheData = new CacheItem(cacheKey, objObject);
                 cache.Set(cacheData, policy);
 

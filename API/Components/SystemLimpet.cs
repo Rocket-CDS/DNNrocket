@@ -13,7 +13,7 @@ namespace DNNrocketAPI.Components
         private DNNrocketController _objCtrl;
         public SystemLimpet(string systemKey)
         {
-            var systemInfo = (SimplisityInfo)CacheUtils.GetCache(systemKey); // use cache for SystemKey read.
+            var systemInfo = (SimplisityInfo)CacheUtilsDNN.GetCache(systemKey); // use cache for SystemKey read.
             if (systemInfo == null)
             {
                 _objCtrl = new DNNrocketController();
@@ -317,7 +317,7 @@ namespace DNNrocketAPI.Components
         {
             var objCtrl = new DNNrocketController();
             objCtrl.Update(Info);
-            if (SystemKey != "") CacheUtils.SetCache(SystemKey, Info);
+            if (SystemKey != "") CacheUtilsDNN.SetCache(SystemKey, Info);
         }
 
         public string SystemKey

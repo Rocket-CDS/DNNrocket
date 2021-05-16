@@ -71,8 +71,8 @@ namespace RocketRemoteMod
             _paramInfo = paramInfo;
 
             var sessionParams = new SessionParams(_paramInfo);
-            _moduleid = sessionParams.ModuleId;
-            _tabid = sessionParams.TabId;
+            //_moduleid = sessionParams.ModuleId;
+            //_tabid = sessionParams.TabId;
 
             _passSettings = new Dictionary<string, string>();
 

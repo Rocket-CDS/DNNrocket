@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="appstore.Text" xml:space="preserve">
+    <value>App Store</value>
+  </data>
+  <data name="appstoregroup.Text" xml:space="preserve">
+    <value>App Store Group</value>
+  </data>
   <data name="appthemeexists.Text" xml:space="preserve">
     <value>AppTheme already exists. Choose a different name or prefix.</value>
   </data>
@@ -243,6 +249,9 @@
   <data name="imageupload.Text" xml:space="preserve">
     <value>Image Upload</value>
   </data>
+  <data name="installed.Text" xml:space="preserve">
+    <value>Installed</value>
+  </data>
   <data name="isonlist.Text" xml:space="preserve">
     <value>On List</value>
   </data>
@@ -350,6 +359,9 @@
   </data>
   <data name="themetype.Text" xml:space="preserve">
     <value>Single Form,List and Detail</value>
+  </data>
+  <data name="uninstall.Text" xml:space="preserve">
+    <value>Uninstall</value>
   </data>
   <data name="upload.Text" xml:space="preserve">
     <value>Upload</value>

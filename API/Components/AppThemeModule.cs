@@ -49,7 +49,7 @@ namespace DNNrocketAPI.Components
                 foreach (var f in flist)
                 {
                     var fname = Path.GetFileName(f).Replace(ModuleParams.ModuleRef + "_", "");
-                    ModuleParams.AppTheme.UpdateListFileName(fname, f);
+                    //ModuleParams.AppTheme.UpdateListFileName(fname, f);
                     _modellevelTemplates.Remove(fname);
                     _modellevelTemplates.Add(fname, true);
                 }
@@ -58,7 +58,7 @@ namespace DNNrocketAPI.Components
                 foreach (var f in flist)
                 {
                     var fname = Path.GetFileName(f).Replace(ModuleParams.ModuleRef + "_", "");
-                    ModuleParams.AppTheme.UpdateListFileName(fname, f);
+                    //ModuleParams.AppTheme.UpdateListFileName(fname, f);
                     _modellevelTemplates.Remove(fname);
                     _modellevelTemplates.Add(fname, true);
                 }
@@ -67,7 +67,7 @@ namespace DNNrocketAPI.Components
                 foreach (var f in flist)
                 {
                     var fname = Path.GetFileName(f).Replace(ModuleParams.ModuleRef + "_", "");
-                    ModuleParams.AppTheme.UpdateListFileName(fname, f);
+                    //ModuleParams.AppTheme.UpdateListFileName(fname, f);
                     _modellevelTemplates.Remove(fname);
                     _modellevelTemplates.Add(fname, true);
                 }

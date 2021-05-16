@@ -105,6 +105,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Documentation\" />
     <Folder Include="Shared\" />
   </ItemGroup>
 
