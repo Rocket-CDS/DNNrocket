@@ -157,6 +157,16 @@ namespace DNNrocketAPI.Components
                 var fileMapPath = FileNameList[filename];
 
                 var formHtml = GeneralUtils.DeCode(editorcode);
+                if (PortalUtils.GetPortalId() != 0)
+                {
+                    var fn = Path.GetFileName(fileMapPath);
+                    var ext = Path.GetExtension(fileMapPath);
+                    var subfolder = "default";
+                    if (ext == ".css") subfolder = "css";
+                    if (ext == ".js") subfolder = "js";
+                    fileMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath().TrimEnd('\\') + "\\" + AppThemeFolder + "\\" + AppVersionFolder +  "\\" + subfolder + "\\" + fn;
+                }
+                new FileInfo(fileMapPath).Directory.Create();
                 FileUtils.SaveFile(fileMapPath, formHtml);
             }
 

@@ -186,7 +186,7 @@ namespace DNNrocketAPI.Components
             {
                 sInfo.SetXmlProperty("genxml/securityaccess", "You do not have security access");
             }
-            var razorTempl = RenderRazorUtils.GetRazorTemplateData("LoginForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+            var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(systemInfo.GUIDKey,"LoginForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
             sInfo.SetXmlProperty("genxml/interfacekey", interfacekey); // make sure the login form has the correct interface command.
             return RenderRazorUtils.RazorDetail(razorTempl, sInfo);
         }

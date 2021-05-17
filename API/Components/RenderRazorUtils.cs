@@ -158,7 +158,7 @@ namespace DNNrocketAPI.Components
 
         private static TemplateGetter GetTemplateEngine(string systemKey, string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
         {
-            var cacheKey = templateControlPath + "*" + themeFolder + "*" + lang + "*" + versionFolder + "*" + debugMode;
+            var cacheKey = templateControlPath + "*" + themeFolder + "*" + lang + "*" + versionFolder + "*" + debugMode + "*" + PortalUtils.GetPortalId();
             var templCtrl = CacheUtilsDNN.GetCache(cacheKey);
             if (templCtrl == null)
             {
@@ -166,7 +166,7 @@ namespace DNNrocketAPI.Components
                 var themeFolderPath = themeFolder + "\\" + versionFolder;
                 if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder + "\\" + versionFolder;
                 if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder;
-                var RocketThemes = PortalUtils.DNNrocketThemesDirectoryMapPath(-1, systemKey);
+                var RocketThemes = PortalUtils.DNNrocketThemesDirectoryMapPath(-1);
                 templCtrl = new TemplateGetter(RocketThemes, themeFolderPath, controlMapPath, debugMode);
                 CacheUtilsDNN.SetCache(cacheKey, templCtrl);
             }

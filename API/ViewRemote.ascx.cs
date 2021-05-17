@@ -64,7 +64,6 @@ namespace DNNrocketAPI
 
                 base.OnInit(e);
 
-                _remoteParams = new RemoteLimpet(ModuleId, _systemkey);
                 //if (_remoteParams.CacheEnabled)
                 //{
                 //    // deal with cache timeout, so we refresh content after a certain time.
@@ -98,6 +97,7 @@ namespace DNNrocketAPI
                 }
 
                 _systemkey = DNNrocketUtils.GetModuleSystemKey(ModuleId, TabId);
+                _remoteParams = new RemoteLimpet(ModuleId, _systemkey);
                 _interfacekey = DNNrocketUtils.GetModuleInterfaceKey(ModuleId, TabId);
                 _systemInfo = DNNrocketUtils.GetModuleSystemInfo(_systemkey, ModuleId);
 

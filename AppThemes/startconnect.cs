@@ -52,7 +52,7 @@ namespace DNNrocket.AppThemes
                         break;
                     case "rocketapptheme_downloadallgithub":
                         AppThemeUtils.DownloadAllGitHubAppTheme("ToastedTemplates");
-                        strOut = GetList();
+                        strOut = GetAppStoreList();
                         break;
                     default:
 
@@ -140,7 +140,7 @@ namespace DNNrocket.AppThemes
 
                             case "rocketapptheme_downloadgithub":
                                 AppThemeUtils.DownloadGitHubAppTheme(_paramInfo.GetXmlProperty("genxml/hidden/htmlurl"), _appTheme.AppThemeFolderMapPath);
-                                strOut = GetList();
+                                strOut = GetAppStoreList();
                                 break;
 
                         }
