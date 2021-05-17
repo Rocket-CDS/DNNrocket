@@ -183,6 +183,9 @@
   <data name="defaultvalues.Text" xml:space="preserve">
     <value>Default Values</value>
   </data>
+  <data name="deleteversion.Text" xml:space="preserve">
+    <value>Delete Version</value>
+  </data>
   <data name="details.Text" xml:space="preserve">
     <value>AppTheme Details</value>
   </data>
@@ -248,6 +251,12 @@
   </data>
   <data name="imageupload.Text" xml:space="preserve">
     <value>Image Upload</value>
+  </data>
+  <data name="install.Text" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="installall.Text" xml:space="preserve">
+    <value>Install All</value>
   </data>
   <data name="installed.Text" xml:space="preserve">
     <value>Installed</value>

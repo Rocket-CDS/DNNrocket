@@ -14,81 +14,95 @@
 }
 
 
-    <table class="w3-table w3-bordered">
-        <thead>
-            <tr class="w3-theme-l2">
-                <th style="width:64px;"></th>
-                <th>AppTheme</th>
-                <th>Last Updated</th>
-                <th style="width:80px;"></th>
-                <th onclick="document.getElementById('downloadapptheme').style.display = 'block';" class="" style="cursor:pointer;width:80px;"><i class="fas fa-download"></i></th>
-            </tr>
-        </thead>
-        @{
-            var l = AppThemeUtils.GetGitHubAppThemes("ToastedTemplates");
-            var githubList = new List<string>();
-        }
-        @foreach (var gitRepoRec in l)
-        {
-            var appTheme = AppThemeUtils.GetAppThemeLimpet("", gitRepoRec.GetXmlNode("genxml/name"), "");
-            githubList.Add(appTheme.AppThemeFolder);
-            
-            <tr class="searchdiv">
-                <td>
-                    @if (appTheme.Exists)
-                    {
-                        <div class=" w3-hover-text-theme w3-text-grey w3-center simplisity_click" s-cmd="rocketapptheme_getdetail" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))","appthemefolder":"@gitRepoRec.GetXmlProperty("genxml/name")"}' s-return=".articlepopup" style="cursor: pointer;width: 82px;">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                    }
-                </td>
-                <td><b>@gitRepoRec.GetXmlProperty("genxml/name")</b></td>
-                <td>@Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortDateString() @Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortTimeString()</td>
-                <td><a href="@gitRepoRec.GetXmlProperty("genxml/html_url")" target="_blank"><i class="fab fa-github"></i></a></td>
-                <td class="simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.download") ?" s-cmd="rocketapptheme_downloadgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))","htmlurl":"@(gitRepoRec.GetXmlProperty("genxml/html_url"))","appthemefolder":"@(appTheme.AppThemeFolder)"}' style="cursor:pointer;">
-                    @if (appTheme.Exists)
-                    {
-                        <i class="fas fa-download"></i>
-                    }
-                    else
-                    {
-                        <i class="fas fa-download w3-text-red"></i>
-                    }
-                </td>
+<table class="w3-table w3-bordered">
+    <thead>
+        <tr class="w3-theme-l2">
+            <th>AppTheme</th>
+            <th>Last Updated</th>
+            <th style="width:80px;"></th>
+            <th onclick="document.getElementById('a-downloadappthemeall').style.display = 'block';" class="" style="cursor:pointer;width:80px;"><i class="fas fa-download"></i></th>
+        </tr>
+    </thead>
+    @{
+        var l = AppThemeUtils.GetGitHubAppThemes("ToastedTemplates");
+        var githubList = new List<string>();
+    }
+    @foreach (var gitRepoRec in l)
+    {
+        var appTheme = AppThemeUtils.GetAppThemeLimpet("", gitRepoRec.GetXmlNode("genxml/name"), "");
+        githubList.Add(appTheme.AppThemeFolder);
 
-            </tr>
-        }
-    </table>
+        <tr class="searchdiv">
+            <td><b>@gitRepoRec.GetXmlProperty("genxml/name")</b></td>
+            <td>@Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortDateString() @Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortTimeString()</td>
+            <td><a href="@gitRepoRec.GetXmlProperty("genxml/html_url")" target="_blank"><i class="fab fa-github"></i></a></td>
+            <td htmlurl="@(gitRepoRec.GetXmlProperty("genxml/html_url"))" appthemefolder="@(appTheme.AppThemeFolder)" class="a-installappthemebutton" style="cursor:pointer;">
+                @if (appTheme.Exists)
+                {
+                    <i class="fas fa-download"></i>
+                }
+                else
+                {
+                    <i class="fas fa-download w3-text-red"></i>
+                }
+            </td>
 
-<div id="downloadapptheme" class="w3-modal">
+        </tr>
+    }
+</table>
+
+<div id="a-downloadapptheme" class="w3-modal">
     <div class="w3-modal-content w3-card w3-animate-zoom">
-
         <header class="w3-container  w3-theme" style="height:38px;">
-            <span onclick="document.getElementById('downloadapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <span onclick="document.getElementById('a-downloadapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
         </header>
-
-
-        <div class="w3-light-grey w3-margin">
-            <div id="progressBarDownload" class="w3-container w3-green" style="height:24px;width:1%"></div>
-        </div>
-
-
-        <div class="w3-row-padding w3-margin">
-            <div class="w3-col m3 w3-padding">
-
-                <div class="downloadbutton w3-col m12 w3-button w3-teal w3-padding-8 simplisity_click" s-before="moveprogressbardownload" s-cmd="rocketapptheme_downloadallgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'><i class="fas fa-upload fa-fw fa-lg"></i> &nbsp;@ResourceKey("AppThemes.download")</div>
-
+        <div class=" w3-padding">
+            <div class="w3-padding w3-large a-downloadappthemename"></div>
+            <div class="w3-light-grey w3-margin">
+                <div id="progressBarDownload" class="w3-container w3-green" style="height:24px;width:1%"></div>
+            </div>
+            <div class="w3-row w3-margin w3-center">
+                <div class="w3-third">&nbsp;</div>
+                <div class="w3-third w3-button w3-teal w3-padding-8 simplisity_click" s-before="moveprogressbardownload" s-cmd="rocketapptheme_downloadgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'><i class="fas fa-download"></i> &nbsp;@ResourceKey("AppThemes.install")</div>
+                <div class="w3-third">&nbsp;</div>
             </div>
         </div>
-
     </div>
 </div>
 
+<div id="a-downloadappthemeall" class="w3-modal">
+    <div class="w3-modal-content w3-card w3-animate-zoom">
+
+        <header class="w3-container  w3-theme" style="height:38px;">
+            <span onclick="document.getElementById('a-downloadappthemeall').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        </header>
+        <div class=" w3-padding">
+            <div class="w3-padding  w3-large">@ResourceKey("AppThemes.installall")</div>
+            <div class="w3-light-grey w3-margin">
+                <div id="progressBarDownload" class="w3-container w3-green" style="height:24px;width:1%"></div>
+            </div>
+            <div class="w3-row w3-margin w3-center">
+                <div class="w3-third">&nbsp;</div>
+                <div class="w3-third w3-button w3-teal w3-padding simplisity_click" s-before="moveprogressbardownload" s-cmd="rocketapptheme_downloadallgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'><i class="fas fa-download"></i> &nbsp;@ResourceKey("AppThemes.installall")</div>
+                <div class="w3-third">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     $(document).ready(function () {
         $('.tabstuff').removeClass('w3-theme');
         $('.tabappstore').addClass('w3-theme');
+
+        $('.a-installappthemebutton').off("click");
+        $('.a-installappthemebutton').click(function () {
+            document.getElementById('a-downloadapptheme').style.display = 'block';
+            simplisity_setParamField('htmlurl', $(this).attr('htmlurl'));
+            simplisity_setParamField('appthemefolder', $(this).attr('appthemefolder'));
+            $('.a-downloadappthemename').html($(this).attr('appthemefolder'));
+        });
+
     });
 
 </script>
