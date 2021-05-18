@@ -14,19 +14,19 @@ namespace DNNrocketAPI.Components
 
     public class AppThemeLimpet : AppThemeBase
     {
-        public AppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder = "") : base("/DesktopModules/RocketThemes/" + appThemeFolder, versionFolder)
+        public AppThemeLimpet(SystemLimpet systemData, string versionFolder = "") : base(systemData.SystemRelPath.TrimEnd('/') + "/Themes/config-w3", versionFolder)
         {
-            if (systemKey == "")
-            {
-                var s = appThemeFolder.Split('.');
-                if (s.Length == 2) systemKey = s[0];
-            }
-            SystemKey = systemKey;
+            SystemKey = systemData.SystemKey;
+        }
+        public AppThemeLimpet(string appThemeFolder, string versionFolder = "") : base("/DesktopModules/RocketThemes/" + appThemeFolder, versionFolder)
+        {
+            SystemKey = "";
+            var s = appThemeFolder.Split('.');
+            if (s.Length == 2) SystemKey = s[0];
         }
 
         public string SystemKey { get; set; }
 
 
     }
-
 }

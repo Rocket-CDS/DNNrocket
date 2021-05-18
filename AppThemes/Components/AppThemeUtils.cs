@@ -26,7 +26,7 @@ namespace Rocket.AppThemes.Components
             {
                 if (appTheme == null)
                 {
-                    appTheme = new AppThemeLimpet(systemKey, appThemeFolder, versionFolder);
+                    appTheme = new AppThemeLimpet(appThemeFolder, versionFolder);
                     CacheUtilsDNN.SetCache(cKey, appTheme);
                 }
             }

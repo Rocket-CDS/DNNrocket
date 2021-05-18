@@ -190,10 +190,12 @@ namespace DNNrocketAPI.Components
                 var fileMapPath = FileNameList[templateFileName.ToLower()];
                 if (PortalUtils.GetPortalId() != 0)
                 {
+                    var fileMP = "";
                     if (moduleref != "")
-                        fileMapPath = GetModuleFileMapPath(fileMapPath, moduleref);
+                        fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
                     else
-                        fileMapPath = GetPortalFileMapPath(fileMapPath);
+                        fileMP = GetPortalFileMapPath(fileMapPath);
+                    if (File.Exists(fileMP)) fileMapPath = fileMP;
                 }
                 return FileUtils.ReadFile(fileMapPath);
             }
@@ -207,17 +209,45 @@ namespace DNNrocketAPI.Components
                 var formHtml = GeneralUtils.DeCode(editorcode);
                 if (PortalUtils.GetPortalId() != 0)
                 {
-                    if (moduleref != "") 
-                        fileMapPath = GetModuleFileMapPath(fileMapPath, moduleref);
+                    var fileMP = "";
+                    if (moduleref != "")
+                        fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
                     else
-                        fileMapPath = GetPortalFileMapPath(fileMapPath);
+                        fileMP = GetPortalFileMapPath(fileMapPath);
+                    if (fileMP != "") fileMapPath = fileMP;
                 }
                 new FileInfo(fileMapPath).Directory.Create();
                 FileUtils.SaveFile(fileMapPath, formHtml);
             }
         }
+        public void DeleteFile(string filename, string moduleref)
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            var fileMapPath = FileNameList[filename];
+            if (PortalUtils.GetPortalId() != 0)
+            {
+                var fileMP = "";
+                if (moduleref != "")
+                    fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
+                else
+                    fileMP = GetPortalFileMapPath(fileMapPath);
+                if (File.Exists(fileMP)) File.Delete(fileMP);
+            }
+            else
+            {
+                File.Delete(fileMapPath);
+            }
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+        }
+
         public bool IsModuleLevel(string fileName, string moduleref)
         {
+            if (String.IsNullOrEmpty(moduleref)) return false;
             if (PortalFileNameList.ContainsKey(moduleref + "_" + fileName.ToLower())) return true;
             return false;
         }

@@ -101,6 +101,15 @@ namespace DNNrocketAPI.Components
         {
             return RazorObjectRender(razorTemplate, obj, null, settings, sessionParams, debugmode);
         }
+        public static string RazorDetail(string razorTemplateName, AppThemeLimpet appTheme, SimplisityRazor model, bool cacheOff = false)
+        {
+            return RazorDetail(appTheme.GetTemplate(razorTemplateName), model, cacheOff);
+        }
+        public static string RazorDetail(string razorTemplate, SimplisityRazor model, bool debugMode = false)
+        {
+            return RazorRender(model, razorTemplate, debugMode);
+        }
+
         public static string RazorObjectRender(string razorTemplate, object obj, Dictionary<string, object> dataObjects = null, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
         {
             var rtnStr = "";
@@ -115,7 +124,7 @@ namespace DNNrocketAPI.Components
                 var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
                 nbRazor.SessionParamsData = sessionParams;
                 nbRazor.DataObjects = dataObjects;
-                rtnStr = RenderRazorUtils.RazorRender(nbRazor, razorTemplate, debugmode);
+                rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
             }
 
             return rtnStr;
@@ -128,7 +137,7 @@ namespace DNNrocketAPI.Components
                 if (settings == null) settings = new Dictionary<string, string>();
                 var nbRazor = new SimplisityRazor(objList, settings, HttpContext.Current.Request.QueryString);
                 nbRazor.SessionParamsData = sessionParams;
-                rtnStr = RenderRazorUtils.RazorRender(nbRazor, razorTemplate, debugmode);
+                rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
             }
             return rtnStr;
         }
@@ -138,13 +147,14 @@ namespace DNNrocketAPI.Components
 
         #region "templates"
 
-        [Obsolete("GetRazorTemplateData() is deprecated, please use GetSystemRazorTemplate() instead.")]
+        [Obsolete("GetRazorTemplateData() is deprecated, please use AppThemeLimpet.GetTemplate() instead.")]
         public static string GetRazorTemplateData(string templatename, string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
         {
             var templCtrl = GetTemplateEngine("", templateControlPath, themeFolder, lang, versionFolder, debugMode);
             var templ = templCtrl.GetTemplateData(templatename, lang);
             return templ;
         }
+        [Obsolete("GetSystemRazorTemplate() is deprecated, please use AppThemeLimpet.GetTemplate() instead.")]
         public static string GetSystemRazorTemplate(string systemKey, string templatename, string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
         {
             var templCtrl = GetTemplateEngine(systemKey, templateControlPath, themeFolder, lang, versionFolder, debugMode);

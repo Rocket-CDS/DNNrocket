@@ -95,7 +95,7 @@ namespace DNNrocketAPI.Components
             AppTheme = (AppThemeLimpet)CacheUtils.GetCache(appThemeCacheKey);
             if (AppTheme == null || AppTheme.AppThemeFolder != appthemefolder)
             {
-                AppTheme = new AppThemeLimpet("dnnrocketmodule", appthemefolder, "");
+                AppTheme = new AppThemeLimpet(appthemefolder, "");
                 CacheUtils.SetCache(appThemeCacheKey, AppTheme);
             }
         }
