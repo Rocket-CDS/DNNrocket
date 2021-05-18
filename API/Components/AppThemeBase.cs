@@ -21,6 +21,7 @@ namespace DNNrocketAPI.Components
         {
             AppThemeFolderRel = appThemeFolderRel;
             FileNameList = new Dictionary<string, string>();
+            PortalFileNameList = new Dictionary<string, string>();
             ImageFileNameList = new Dictionary<string, string>();
             AppThemeFolderMapPath = DNNrocketUtils.MapPath(AppThemeFolderRel);
             AppThemeFolder = Path.GetFileName(AppThemeFolderMapPath); // the format of the directory <systemkey>.<AppThemName>, make the directory look like a file.
@@ -31,6 +32,8 @@ namespace DNNrocketAPI.Components
             if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
             AppVersion = Convert.ToDouble(AppVersionFolder, CultureInfo.GetCultureInfo("en-US"));
             LatestVersion = Convert.ToDouble(LatestVersionFolder, CultureInfo.GetCultureInfo("en-US"));
+            PortalId = PortalUtils.GetPortalId();
+            PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath().TrimEnd('\\') + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
             AssignVersionFolders();
 
             Exists = false;
@@ -116,6 +119,44 @@ namespace DNNrocketAPI.Components
                 ImageFileNameList.Add(fname, newPath);
             }
 
+            // portal level files.
+            if (Directory.Exists(PortalFileDirectoryMapPath + "\\default"))
+            {
+                foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\default", "*.cshtml", SearchOption.TopDirectoryOnly))
+                {
+                    var fname = Path.GetFileName(newPath).ToLower();
+                    if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);
+                    PortalFileNameList.Add(fname, newPath);
+                }
+            }
+            if (Directory.Exists(PortalFileDirectoryMapPath + "\\css"))
+            {
+                foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\css", "*.css", SearchOption.TopDirectoryOnly))
+                {
+                    var fname = Path.GetFileName(newPath).ToLower();
+                    if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);
+                    PortalFileNameList.Add(fname, newPath);
+                }
+            }
+            if (Directory.Exists(PortalFileDirectoryMapPath + "\\js"))
+            {
+                foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\js", "*.js", SearchOption.TopDirectoryOnly))
+                {
+                    var fname = Path.GetFileName(newPath).ToLower();
+                    if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);
+                    PortalFileNameList.Add(fname, newPath);
+                }
+            }
+            if (Directory.Exists(PortalFileDirectoryMapPath + "\\resx"))
+            {
+                foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\resx", "*.resx", SearchOption.TopDirectoryOnly))
+                {
+                    var fname = Path.GetFileName(newPath).ToLower();
+                    if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);
+                    PortalFileNameList.Add(fname, newPath);
+                }
+            }
+
         }
         private void CreateVersionFolders(double dblVersionFolder)
         {
@@ -142,34 +183,62 @@ namespace DNNrocketAPI.Components
             }
             return "";
         }
-        public string GetTemplate(string templateFileName)
+        public string GetTemplate(string templateFileName, string moduleref = "")
         {
             if (FileNameList.ContainsKey(templateFileName.ToLower()))
             {
-                return FileUtils.ReadFile(FileNameList[templateFileName.ToLower()]);
+                var fileMapPath = FileNameList[templateFileName.ToLower()];
+                if (PortalUtils.GetPortalId() != 0)
+                {
+                    if (moduleref != "")
+                        fileMapPath = GetModuleFileMapPath(fileMapPath, moduleref);
+                    else
+                        fileMapPath = GetPortalFileMapPath(fileMapPath);
+                }
+                return FileUtils.ReadFile(fileMapPath);
             }
             return "";
         }
-        public void SaveEditor(string filename, string editorcode)
+        public void SaveEditor(string filename, string editorcode, string moduleref = "")
         {
             if (FileNameList.ContainsKey(filename))
             {
                 var fileMapPath = FileNameList[filename];
-
                 var formHtml = GeneralUtils.DeCode(editorcode);
                 if (PortalUtils.GetPortalId() != 0)
                 {
-                    var fn = Path.GetFileName(fileMapPath);
-                    var ext = Path.GetExtension(fileMapPath);
-                    var subfolder = "default";
-                    if (ext == ".css") subfolder = "css";
-                    if (ext == ".js") subfolder = "js";
-                    fileMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath().TrimEnd('\\') + "\\" + AppThemeFolder + "\\" + AppVersionFolder +  "\\" + subfolder + "\\" + fn;
+                    if (moduleref != "") 
+                        fileMapPath = GetModuleFileMapPath(fileMapPath, moduleref);
+                    else
+                        fileMapPath = GetPortalFileMapPath(fileMapPath);
                 }
                 new FileInfo(fileMapPath).Directory.Create();
                 FileUtils.SaveFile(fileMapPath, formHtml);
             }
-
+        }
+        public bool IsModuleLevel(string fileName, string moduleref)
+        {
+            if (PortalFileNameList.ContainsKey(moduleref + "_" + fileName.ToLower())) return true;
+            return false;
+        }
+        public bool IsPortalLevel(string fileName)
+        {
+            if (PortalFileNameList.ContainsKey(fileName.ToLower())) return true;
+            return false;
+        }
+        private string GetModuleFileMapPath(string fileMapPath, string moduleref)
+        {
+            return Path.GetDirectoryName(fileMapPath).TrimEnd('\\') + "\\" + moduleref  + "_" + Path.GetFileName(fileMapPath);
+        }
+        private string GetPortalFileMapPath(string filename)
+        {
+            var fn = Path.GetFileName(filename);
+            var ext = Path.GetExtension(filename);
+            var subfolder = "default";
+            if (ext == ".css") subfolder = "css";
+            if (ext == ".js") subfolder = "js";
+            if (ext == ".resx") subfolder = "resx";
+            return PortalFileDirectoryMapPath + subfolder + "\\" + fn;
         }
 
         public void DeleteTheme()
@@ -393,11 +462,12 @@ namespace DNNrocketAPI.Components
         public string JsFolderRel { get; set; }
         public string ResxFolderRel { get; set; }
         public string RazorFolderRel { get; set; }
+        public string PortalFileDirectoryMapPath { get; set; }        
+        public int PortalId { get; set; }        
         public bool Exists { get; set; }        
         public Dictionary<string, string> ImageFileNameList { get; set; }
         public Dictionary<string, string> FileNameList { get; set; }
-        public Dictionary<string, string> GetTemplatesMapPath { get { return FileNameList; } }
-
+        public Dictionary<string, string> PortalFileNameList { get; set; }
         #endregion
 
 

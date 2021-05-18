@@ -80,7 +80,7 @@ namespace DNNrocketAPI.Components
             if (_modellevelTemplates.Count > 0)
             {
                 exportXml += "<templates moduleid='" + ModuleId + "'>";
-                foreach (var templateDict in ModuleParams.AppTheme.GetTemplatesMapPath)
+                foreach (var templateDict in ModuleParams.AppTheme.FileNameList)
                 {
                     if (IsModuleLevelTemplate(templateDict.Key))
                     {

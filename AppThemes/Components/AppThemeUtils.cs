@@ -20,7 +20,7 @@ namespace Rocket.AppThemes.Components
         private static readonly object _cacheLock1 = new object();
         public static AppThemeLimpet GetAppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder)
         {
-            var cKey = "AppThemeLimpet*" + systemKey + "*" + appThemeFolder + "*" + versionFolder;
+            var cKey = "AppThemeLimpet*" + systemKey + "*" + appThemeFolder + "*" + versionFolder + "*" + PortalUtils.GetPortalId();
             var appTheme = (AppThemeLimpet)CacheUtilsDNN.GetCache(cKey);
             lock (_cacheLock1)
             {
