@@ -175,6 +175,15 @@ namespace DNNrocketAPI.render
             var strOut = RenderRazorUtils.RazorRender(model, razorTempl, debugMode);
             return new RawString(strOut);
         }
+        public IEncodedString RenderXml(SimplisityInfo info)
+        {
+            var systemData = new SystemLimpet("systemapi");
+            var appTheme = new AppThemeLimpet(systemData);
+            var razorTempl = appTheme.GetTemplate("XmlModelDisplay.cshtml");
+            var nbRazor = new SimplisityRazor(info);
+            var strOut = RenderRazorUtils.RazorRender(nbRazor, razorTempl, true);
+            return new RawString(strOut);
+        }
         [Obsolete("Use RenderTemplate(string razorTemplateName, AppThemeLimpet appTheme, SimplisityRazor model, bool cacheOff = false) instead")]
         public IEncodedString RenderTemplateInfo(string razorTemplateName, SimplisityInfo info, Dictionary<string, object> dataObjects = null, string templateControlRelPath = "/DesktopModules/DNNrocket/api/", string themeFolder = "config-w3", string lang = "", string versionFolder = "1.0", Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugMode = false)
         {
