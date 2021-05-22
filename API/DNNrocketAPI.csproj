@@ -77,10 +77,6 @@
       <HintPath>..\packages\RazorEngine.3.10.0\lib\net45\RazorEngine.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Simplisity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplisity.1.0.0\lib\netstandard2.0\Simplisity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
@@ -803,6 +799,12 @@
   <ItemGroup>
     <Folder Include="Systems\" />
     <Folder Include="Themes\config-w3\1.0\img\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simplisity\Simplisity.csproj">
+      <Project>{5d2169ba-be10-4758-b104-ed297f74b92a}</Project>
+      <Name>Simplisity</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

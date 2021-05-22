@@ -810,6 +810,7 @@ function simplisity_sessionpost() {
         window.sessionStorage.setItem('browsersessionid', browser_sessionid);
     }
     simplisity_setParamField('browsersessionid', browser_sessionid); // return browser_sessionid
+    simplisity_setSessionField('browsersessionid', browser_sessionid) // add to session data so it is in the cookie
 
     // set a browserid, to use serverside to identify the browser
     var browser_id = window.localStorage.getItem('browserid');
@@ -818,6 +819,7 @@ function simplisity_sessionpost() {
         window.localStorage.setItem('browserid', browser_id);
     }
     simplisity_setParamField('browserid', browser_id); // return browser_sessionid
+    simplisity_setSessionField('browserid', browser_id) // add to session data so it is in the cookie
 
 }
 
