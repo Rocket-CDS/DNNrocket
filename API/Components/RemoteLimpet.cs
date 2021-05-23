@@ -92,12 +92,13 @@ namespace DNNrocketAPI.Components
             }
 
             // if we have a Security Code, use that for the params passed
-            LoadSecurityCode(Record.GetXmlProperty("genxml/settings/securitycode"));
+            LoadBase64RecordItem(Record.GetXmlProperty("genxml/settings/securitycode"));
 
             if (systemKey != "") SystemKey = systemKey;
             if (ModuleRef == "") ModuleRef = GeneralUtils.GetUniqueString();
         }
-        public void LoadSecurityCode(string securityCode)
+
+        public void LoadBase64RecordItem(string securityCode)
         {
             // if we have a Security Code, use that for the params passed
             try
@@ -105,7 +106,7 @@ namespace DNNrocketAPI.Components
                 if (securityCode != "")
                 {
                     var sRemote = new SimplisityInfo();
-                    sRemote.FromXmlItem(StringCompress.DecompressString(securityCode));
+                    sRemote.FromXmlItem(GeneralUtils.Base64Decode(securityCode));
                     var l = sRemote.ToDictionary();
                     foreach (var d in l)
                     {
@@ -315,7 +316,7 @@ namespace DNNrocketAPI.Components
                     paramInfo.SetXmlProperty("genxml/settings/language", DNNrocketUtils.GetCurrentCulture());  // pass the current language to the remote server
                     AddUrlParam("language", DNNrocketUtils.GetCurrentCulture());
 
-                    paramInfo.SetXmlProperty("genxml/settings/remoteparams", CompressedRemoteParam);
+                    paramInfo.SetXmlProperty("genxml/settings/remoteparams", RecordItemBase64);
                     var urlNode = Record.XMLDoc.SelectSingleNode("genxml/urlparams");
                     if (urlNode != null) paramInfo.AddXmlNode(urlNode.OuterXml, "urlparams", "genxml");
                     var formNode = Record.XMLDoc.SelectSingleNode("genxml/form");
@@ -425,11 +426,11 @@ namespace DNNrocketAPI.Components
         public string ClientUrl { get { return Record.GetXmlProperty("genxml/settings/url"); } set { Record.SetXmlProperty("genxml/settings/url", value); } }
         public string RemoteAdminRelPath { get { return Record.GetXmlProperty("genxml/settings/remoteadminrelpath"); } set { Record.SetXmlProperty("genxml/settings/remoteadminrelpath", value); } }
         public string RemoteAdminUrl { get { return EngineURL.TrimEnd('/') + "/" + RemoteAdminRelPath.TrimStart('/'); } }
-        public string CompressedRemoteParam { get { return StringCompress.CompressString(Record.ToXmlItem()); } }
+        public string RecordItemBase64 { get { return GeneralUtils.Base64Encode(Record.ToXmlItem()); } }
         public bool IsRemoteCall { get; set; }
         public string RemoteSiteKey { get { return Record.GetXmlProperty("genxml/form/sitekey"); } set { Record.SetXmlProperty("genxml/form/sitekey", value.ToString()); } }
         public string RemotePageUrl { get { return Record.GetXmlProperty("genxml/form/pageurl"); } set { Record.SetXmlProperty("genxml/form/pageurl", value.ToString()); } }
-
+        public string RemoteCultureCode { get { return Record.GetXmlProperty("genxml/form/remotelanguage"); } set { Record.SetXmlProperty("genxml/form/remotelanguage", value.ToString()); } }
 
         #endregion
     }

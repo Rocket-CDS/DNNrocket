@@ -57,7 +57,24 @@ namespace DNNrocketAPI.ApiControllers
             var postInfo = BuildPostInfo();
             var paramInfo = BuildParamInfo();
 
-            var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, systemkey);
+            var systemData = new SystemLimpet(systemkey);
+            var interfacekey = paramCmd.Split('_')[0];
+            var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+            TrackCmd(paramCmd, systemData, rocketInterface, paramInfo);
+
+            var rtn = new HttpResponseMessage();
+            var strOut = ProcessAction(postInfo, paramInfo, paramCmd, systemkey);
+            if (strOut == "")
+            {
+                // no admin actions processed, so do normal provider command.
+                rtn = ProcessProvider(paramCmd, new SimplisityInfo(), paramInfo, systemData, rocketInterface);
+            }
+            else
+            {
+                rtn = this.Request.CreateResponse(HttpStatusCode.OK, strOut, "text/plain");
+            }
+
+
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
             rtn.Headers.Add("Access-Control-Allow-Origin", "*");
             return rtn;
@@ -89,7 +106,11 @@ namespace DNNrocketAPI.ApiControllers
             var postInfo = BuildPostInfo();
             var paramInfo = BuildParamInfo(true);
 
-            var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, systemkey);
+            var systemData = new SystemLimpet(systemkey);
+            var interfacekey = paramCmd.Split('_')[0];
+            var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+            var rtn = ProcessProvider(paramCmd, new SimplisityInfo(), paramInfo, systemData, rocketInterface);
+
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
             rtn.Headers.Add("Access-Control-Allow-Origin", "*");
             return rtn;
@@ -112,53 +133,22 @@ namespace DNNrocketAPI.ApiControllers
             }
 
             string rawData = Request.Content.ReadAsStringAsync().Result;
+            if (rawData == "") return this.Request.CreateResponse(HttpStatusCode.OK, "No Data to process");
 
-            var postInfo = new SimplisityInfo();
             var paramInfo = new SimplisityInfo();
-            var rawInfo = new SimplisityRecord();
-            if (rawData != "")
-            {
-                rawInfo.XMLData = rawData;
-                var nodList = rawInfo.XMLDoc.SelectNodes("items/item");
-                if (nodList != null)
-                {
-                    foreach (XmlNode nod in nodList)
-                    {
-                        var inputInfo = new SimplisityInfo();
-                        inputInfo.FromXmlItem(nod.OuterXml);
-                        if (inputInfo.TypeCode == "postInfo") postInfo = inputInfo;
-                        if (inputInfo.TypeCode == "paramInfo") paramInfo = inputInfo;
-                    }
-                }
-            }
-
-            var remoteSystemKey = paramInfo.GetXmlProperty("genxml/hidden/remotesystemkey");
-            if (remoteSystemKey == "")
-            {
-                var remoteParamXml = paramInfo.GetXmlProperty("genxml/settings/remoteparams");
-                if (remoteParamXml != "")
-                {
-                    remoteParamXml = StringCompress.DecompressString(remoteParamXml);
-                    var remoteParam = new RemoteLimpet(-1);
-                    remoteParam.Record.FromXmlItem(remoteParamXml);
-                    remoteSystemKey = remoteParam.RemoteSystemKey;
-                }
-            }
-            if (remoteSystemKey == "") return this.Request.CreateResponse(HttpStatusCode.OK, "RemoteSystemKey not found");
+            paramInfo.FromXmlItem(GeneralUtils.Base64Decode(rawData));
+            var SystemKey = paramInfo.GetXmlProperty("genxml/settings/remotesystemkey");
+            if (SystemKey == "") return this.Request.CreateResponse(HttpStatusCode.OK, "RemoteSystemKey not found");
 
             var paramCmd = context.Request.QueryString["cmd"];
             var portalId = PortalUtils.GetPortalId();
             paramInfo.PortalId = portalId;
-            paramInfo.SetXmlProperty("genxml/hidden/remotecall", "True");
 
-            // We often want the remote moduleid, so we can use it in the razor to identify the module
-            if (context.Request.QueryString.AllKeys.Contains("moduleid"))
-            {
-                if (GeneralUtils.IsNumeric(context.Request.QueryString["moduleid"])) paramInfo.SetXmlProperty("genxml/hidden/moduleid", context.Request.QueryString["moduleid"]);
-            }
+            var systemData = new SystemLimpet(SystemKey);
+            var interfacekey = paramCmd.Split('_')[0];
+            var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+            var rtn = ProcessProvider(paramCmd, new SimplisityInfo(), paramInfo, systemData, rocketInterface);
 
-
-            var rtn = ActionSimplisityInfo(postInfo, paramInfo, paramCmd, remoteSystemKey);
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
             rtn.Headers.Add("Access-Control-Allow-Origin", "*");
             return rtn;
@@ -219,11 +209,38 @@ namespace DNNrocketAPI.ApiControllers
             return paramInfo;
         }
 
-        private HttpResponseMessage ActionSimplisityInfo(SimplisityInfo postInfo, SimplisityInfo paramInfo, string paramCmd, string systemkey)
+        private RocketInterface TrackCmd(string paramCmd, SystemLimpet systemData, RocketInterface rocketInterface, SimplisityInfo paramInfo)
+        {
+            var sessionParams = new SessionParams(paramInfo);
+            var userParams = new UserParams(sessionParams.BrowserSessionId);
+            if (paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
+            {
+                var menucmd = userParams.GetCommand(systemData.SystemKey);
+                if (menucmd != "")
+                {
+                    paramCmd = menucmd;
+                    paramInfo = userParams.GetParamInfo(systemData.SystemKey);
+                    var interfacekey = userParams.GetInterfaceKey(systemData.SystemKey);
+                    rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+                }
+            }
+            else
+            {
+                if (paramInfo.GetXmlPropertyBool("genxml/hidden/track")) userParams.Track(systemData.SystemKey, paramCmd, paramInfo, rocketInterface.InterfaceKey);
+            }
+            return rocketInterface;
+        }
+        /// <summary>
+        /// Admin Actions for Action Endpoint [TODO: rewrite to be cleaner]
+        /// </summary>
+        /// <param name="postInfo"></param>
+        /// <param name="paramInfo"></param>
+        /// <param name="paramCmd"></param>
+        /// <param name="systemkey"></param>
+        /// <returns></returns>
+        private string ProcessAction(SimplisityInfo postInfo, SimplisityInfo paramInfo, string paramCmd, string systemkey)
         {
             var strOut = "ERROR: Invalid.";
-            object jsonReturn = null;
-            object xmlReturn = null;
             var context = HttpContext.Current;
 
             try
@@ -302,89 +319,7 @@ namespace DNNrocketAPI.ApiControllers
                             strOut = GetSideMenu(paramInfo, systemkey);
                             break;
                         default:
-                            var rocketInterface = new RocketInterface(systemInfo, interfacekey);
-                            var returnDictionary = new Dictionary<string, object>();
-
-                            // before event
-                            var rtnDictInfo = DNNrocketUtils.EventProviderBefore(paramCmd, systemData, postInfo, paramInfo, _editlang);
-                            if (rtnDictInfo.ContainsKey("post")) postInfo = (SimplisityInfo)rtnDictInfo["post"];
-                            if (rtnDictInfo.ContainsKey("param")) paramInfo = (SimplisityInfo)rtnDictInfo["param"];
-
-                            // command action
-                            if (rocketInterface.Exists)
-                            {
-                                // -----------------------------------------------------------------------------------------------
-                                // Track cmd 
-                                var sessionParams = new SessionParams(paramInfo);
-                                var userParams = new UserParams(sessionParams.BrowserSessionId);
-                                if (paramInfo.GetXmlPropertyBool("genxml/hidden/reload"))
-                                {
-                                    var menucmd = userParams.GetCommand(systemkey);
-                                    if (menucmd != "")
-                                    {
-                                        paramCmd = menucmd;
-                                        paramInfo = userParams.GetParamInfo(systemkey);
-                                        interfacekey = userParams.GetInterfaceKey(systemData.SystemKey);
-                                        rocketInterface = new RocketInterface(systemInfo, interfacekey);
-                                    }
-                                }
-                                else
-                                {
-                                    if (paramInfo.GetXmlPropertyBool("genxml/hidden/track")) userParams.Track(systemkey, paramCmd, paramInfo, rocketInterface.InterfaceKey);
-                                }
-                                // -----------------------------------------------------------------------------------------------
-
-                                returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemInfo, rocketInterface, postInfo, paramInfo, TemplateRelPath, _editlang);
-
-                                if (returnDictionary.ContainsKey("outputhtml"))
-                                {
-                                    strOut = (string)returnDictionary["outputhtml"];
-                                }
-                                if (returnDictionary.ContainsKey("filenamepath"))
-                                {
-                                    var downloadname = "download.zip";
-                                    if (returnDictionary.ContainsKey("downloadname")) downloadname = (string)returnDictionary["downloadname"];
-                                    DownloadFile((string)returnDictionary["filenamepath"], downloadname);
-                                }
-                                if (returnDictionary.ContainsKey("downloadfiledata"))
-                                {
-                                    var downloadname = "download.zip";
-                                    if (returnDictionary.ContainsKey("downloadname")) downloadname = (string)returnDictionary["downloadname"];
-                                    DownloadStringAsFile((string)returnDictionary["downloadfiledata"], downloadname);
-                                }
-                                if (returnDictionary.ContainsKey("outputjson"))
-                                {
-                                    jsonReturn = returnDictionary["outputjson"];
-                                }
-                                if (returnDictionary.ContainsKey("outputxml"))
-                                {
-                                    xmlReturn = returnDictionary["outputxml"];
-                                }
-
-                            }
-                            else
-                            {
-                                // check for systemspi, does not exist.  It's used to create the systemprovders 
-                                if (systemkey == "" || systemkey == "systemapi" || systemkey == "login")
-                                {
-                                    var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.System.StartConnect");
-                                    returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemInfo, null, postInfo, paramInfo, _editlang);
-                                    strOut = (string)returnDictionary["outputhtml"];
-                                }
-                                else
-                                {
-                                    strOut = "ERROR: Invalid systemkey: " + systemkey + "  interfacekey: " + interfacekey + " cmd: " + paramCmd + " <br/> - Check Database for SYSTEM,'" + systemkey + "' (No spaces) - Check 'simplisity_startpanel' and 'simplisity_panel' for correct s-cmd.  ";
-                                    strOut += "<br/> - Ensure you do not have an infinate loop by activating a simplisity_panel within the returning template, on the document ready JS function.";
-                                    CacheUtils.ClearAllCache();
-                                }
-                            }
-
-                            // after Event
-                            returnDictionary = DNNrocketUtils.EventProviderAfter(paramCmd, systemData, postInfo, paramInfo, _editlang);
-                            if (returnDictionary.ContainsKey("outputhtml")) strOut = (string)returnDictionary["outputhtml"];
-                            if (returnDictionary.ContainsKey("outputjson")) jsonReturn = returnDictionary["outputjson"];
-                            if (returnDictionary.ContainsKey("outputxml")) xmlReturn = returnDictionary["outputxml"];
-                            
+                            strOut = ""; // process the provider                            
                             break;
                     }
                 }
@@ -393,6 +328,75 @@ namespace DNNrocketAPI.ApiControllers
             {
                 strOut = LogUtils.LogException(ex);
             }
+            return strOut;
+        }
+
+        private HttpResponseMessage ProcessProvider(string paramCmd, SimplisityInfo postInfo, SimplisityInfo paramInfo, SystemLimpet systemData, RocketInterface rocketInterface)
+        {
+            var strOut = "ERROR: Invalid.";
+            object jsonReturn = null;
+            object xmlReturn = null;
+            var returnDictionary = new Dictionary<string, object>();
+
+            // before event
+            var rtnDictInfo = DNNrocketUtils.EventProviderBefore(paramCmd, systemData, postInfo, paramInfo, _editlang);
+            if (rtnDictInfo.ContainsKey("post")) postInfo = (SimplisityInfo)rtnDictInfo["post"];
+            if (rtnDictInfo.ContainsKey("param")) paramInfo = (SimplisityInfo)rtnDictInfo["param"];
+
+            // command action
+            if (rocketInterface.Exists)
+            {
+
+                returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, TemplateRelPath, _editlang);
+
+                if (returnDictionary.ContainsKey("outputhtml"))
+                {
+                    strOut = (string)returnDictionary["outputhtml"];
+                }
+                if (returnDictionary.ContainsKey("filenamepath"))
+                {
+                    var downloadname = "download.zip";
+                    if (returnDictionary.ContainsKey("downloadname")) downloadname = (string)returnDictionary["downloadname"];
+                    DownloadFile((string)returnDictionary["filenamepath"], downloadname);
+                }
+                if (returnDictionary.ContainsKey("downloadfiledata"))
+                {
+                    var downloadname = "download.zip";
+                    if (returnDictionary.ContainsKey("downloadname")) downloadname = (string)returnDictionary["downloadname"];
+                    DownloadStringAsFile((string)returnDictionary["downloadfiledata"], downloadname);
+                }
+                if (returnDictionary.ContainsKey("outputjson"))
+                {
+                    jsonReturn = returnDictionary["outputjson"];
+                }
+                if (returnDictionary.ContainsKey("outputxml"))
+                {
+                    xmlReturn = returnDictionary["outputxml"];
+                }
+
+            }
+            else
+            {
+                // check for systemspi, does not exist.  It's used to create the systemprovders 
+                if (systemData.SystemKey == "" || systemData.SystemKey == "systemapi" || systemData.SystemKey == "login")
+                {
+                    var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.System.StartConnect");
+                    returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemData.SystemInfo, null, postInfo, paramInfo, _editlang);
+                    strOut = (string)returnDictionary["outputhtml"];
+                }
+                else
+                {
+                    strOut = "ERROR: Invalid systemkey: " + systemData.SystemKey + "  interfacekey: " + rocketInterface.InterfaceKey + " cmd: " + paramCmd + " <br/> - Check Database for SYSTEM,'" + systemData.SystemKey + "' (No spaces) - Check 'simplisity_startpanel' and 'simplisity_panel' for correct s-cmd.  ";
+                    strOut += "<br/> - Ensure you do not have an infinate loop by activating a simplisity_panel within the returning template, on the document ready JS function.";
+                    CacheUtils.ClearAllCache();
+                }
+            }
+
+            // after Event
+            returnDictionary = DNNrocketUtils.EventProviderAfter(paramCmd, systemData, postInfo, paramInfo, _editlang);
+            if (returnDictionary.ContainsKey("outputhtml")) strOut = (string)returnDictionary["outputhtml"];
+            if (returnDictionary.ContainsKey("outputjson")) jsonReturn = returnDictionary["outputjson"];
+            if (returnDictionary.ContainsKey("outputxml")) xmlReturn = returnDictionary["outputxml"];
 
 
             #region "return results"
@@ -410,6 +414,8 @@ namespace DNNrocketAPI.ApiControllers
             #endregion
 
         }
+
+
 
         private string GetSideMenu(SimplisityInfo sInfo, string systemkey)
         {
