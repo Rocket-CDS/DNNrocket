@@ -116,8 +116,8 @@ namespace DNNrocketAPI.ApiControllers
             return rtn;
         }
         /// <summary>
-        /// When a remote module or html passes a compress remoteParam setting string.
-        /// Usually from a RemoteLimpet object 
+        /// When a remote module or html passes base64 paramInfo.
+        /// Usually on a server to server call, on module first load.
         /// </summary>
         /// <returns></returns>
         [AllowAnonymous]
