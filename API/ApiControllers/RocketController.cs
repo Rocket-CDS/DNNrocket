@@ -67,7 +67,7 @@ namespace DNNrocketAPI.ApiControllers
             if (strOut == "")
             {
                 // no admin actions processed, so do normal provider command.
-                rtn = ProcessProvider(paramCmd, new SimplisityInfo(), paramInfo, systemData, rocketInterface);
+                rtn = ProcessProvider(paramCmd, postInfo, paramInfo, systemData, rocketInterface);
             }
             else
             {
@@ -109,7 +109,7 @@ namespace DNNrocketAPI.ApiControllers
             var systemData = new SystemLimpet(systemkey);
             var interfacekey = paramCmd.Split('_')[0];
             var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
-            var rtn = ProcessProvider(paramCmd, new SimplisityInfo(), paramInfo, systemData, rocketInterface);
+            var rtn = ProcessProvider(paramCmd, postInfo, paramInfo, systemData, rocketInterface);
 
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
             rtn.Headers.Add("Access-Control-Allow-Origin", "*");
@@ -118,6 +118,7 @@ namespace DNNrocketAPI.ApiControllers
         /// <summary>
         /// When a remote module or html passes base64 paramInfo.
         /// Usually on a server to server call, on module first load.
+        /// **NOTE: ActionRemote does NOT update data from the postInfo.
         /// </summary>
         /// <returns></returns>
         [AllowAnonymous]

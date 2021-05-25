@@ -204,7 +204,7 @@
     <Compile Include="Components\FastReplacerSnippet.cs" />
     <Compile Include="Components\LogUtils.cs" />
     <Compile Include="Components\MetaSEO.cs" />
-    <Compile Include="Components\RemoteLimpet.cs" />
+    <Compile Include="Components\RemoteParams.cs" />
     <Compile Include="Components\SchedulerUtils.cs" />
     <Compile Include="Components\PluginDataList.cs" />
     <Compile Include="Components\AppThemeModule.cs" />
@@ -261,35 +261,13 @@
     <Compile Include="Interfaces\APInterface.cs" />
     <Compile Include="Interfaces\DataInterface.cs" />
     <Compile Include="Components\DNNrocketUtils.cs" />
-    <Compile Include="Meta.ascx.cs">
-      <DependentUpon>Meta.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Meta.ascx.designer.cs">
-      <DependentUpon>Meta.ascx.cs</DependentUpon>
-    </Compile>
     <Compile Include="render\DNNrocketTokens.cs" />
     <Compile Include="ApiControllers\RocketController.cs" />
     <Compile Include="ApiControllers\RouteMapper.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="SqlDataProvider\DataProvider.cs" />
     <Compile Include="SqlDataProvider\DNNrocketController.cs" />
     <Compile Include="SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewRemote.ascx.cs">
-      <DependentUpon>ViewRemote.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ViewRemote.ascx.designer.cs">
-      <DependentUpon>ViewRemote.ascx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View.ascx.cs">
-      <DependentUpon>View.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="View.ascx.designer.cs">
-      <DependentUpon>View.ascx.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -779,7 +757,6 @@
     <Content Include="Installation\SQL_SPROC_TableParam.txt" />
     <Content Include="js\rocketadmin.js" />
     <Content Include="js\simplisity.js" />
-    <Content Include="Meta.ascx" />
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
     <None Include="Themes\config-w3\1.0\css\green-theme.css" />
     <None Include="Themes\config-w3\1.0\css\grey-theme.css" />
@@ -787,8 +764,6 @@
     <None Include="Themes\config-w3\1.0\css\blue-grey.css" />
     <None Include="Themes\config-w3\1.0\css\toasted-theme.css" />
     <Content Include="Themes\config-w3\1.0\js\SideMenu.js" />
-    <Content Include="ViewRemote.ascx" />
-    <Content Include="View.ascx" />
     <None Include="Themes\config-w3\1.0\css\dnnrocket-theme.css" />
     <Content Include="Themes\config-w3\1.0\css\sailorblue-theme.css" />
     <Content Include="Themes\config-w3\1.0\css\ultravoilet-theme.css" />
