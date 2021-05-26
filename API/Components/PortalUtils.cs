@@ -120,7 +120,6 @@ namespace DNNrocketAPI.Components
             var portal = controller.GetPortal(portalId);
             return new PortalSettings(portal);
         }
-
         public static int GetPortalByModuleID(int moduleId)
         {
             var objMCtrl = new DotNetNuke.Entities.Modules.ModuleController();
@@ -270,7 +269,13 @@ namespace DNNrocketAPI.Components
             else
             {
                 var ps = GetPortalSettings(portalId);
-                return ps.DefaultPortalAlias;
+                var dpa = ps.DefaultPortalAlias; // not always set, issue when primary not being set.
+                if (dpa == "")
+                {
+                    var l = PortalUtils.GetPortalAliases(portalId);
+                    if (l.Count > 0) dpa = l.First();
+                }
+                return dpa;
             }
         }
         public static void AddPortalAlias(int portalId, string portalAlias)
