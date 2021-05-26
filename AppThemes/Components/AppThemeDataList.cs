@@ -55,8 +55,11 @@ namespace Rocket.AppThemes.Components
             foreach (var d in dirlist)
             {
                 var dr = new System.IO.DirectoryInfo(d);
-                var appTheme = new AppThemeLimpet(dr.Name, "");
-                if (appTheme.FileNameList.Count > 0) List.Add(appTheme);
+                if (dr.Name.StartsWith(SelectedSystemKey) || SelectedSystemKey == "")
+                {
+                    var appTheme = new AppThemeLimpet(dr.Name, "");
+                    if (appTheme.FileNameList.Count > 0) List.Add(appTheme);
+                }
             }
         }
         public void ClearCacheLists()
