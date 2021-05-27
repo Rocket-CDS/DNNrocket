@@ -35,7 +35,7 @@ namespace DNNrocketAPI.Components
                     rtnList.Add(i);
                 }
             }
-
+            rtnList.Add(new SimplisityRecord());
             return rtnList;
         }
         public List<SimplisityRecord> GetInterfaces(string groupref)

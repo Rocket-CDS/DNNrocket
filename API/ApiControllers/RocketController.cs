@@ -319,6 +319,9 @@ namespace DNNrocketAPI.ApiControllers
                         case "getsidemenu":
                             strOut = GetSideMenu(paramInfo, systemkey);
                             break;
+                        case "gettopbar":
+                            strOut = GetTopBar(paramInfo, systemkey);
+                            break;
                         default:
                             strOut = ""; // process the provider                            
                             break;
@@ -448,6 +451,21 @@ namespace DNNrocketAPI.ApiControllers
                 strOut = RenderRazorUtils.RazorDetail(razorTempl, sidemenu, passSettings, null, systemData.DebugMode);
 
                 return strOut;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        private string GetTopBar(SimplisityInfo sInfo, string systemkey)
+        {
+            try
+            {
+                var passSettings = sInfo.ToDictionary();
+                var systemData = new SystemLimpet("rocketcatalog");
+                var systemAppTheme = new AppThemeLimpet(systemData);
+                var razorTempl = systemAppTheme.GetTemplate("TopBar.cshtml");
+                return RenderRazorUtils.RazorDetail(razorTempl, sInfo, passSettings, null, systemData.DebugMode);
             }
             catch (Exception ex)
             {

@@ -62,31 +62,31 @@
 
 .w3-theme-action {
     color: #fff !important;
-    background-color: #e9630c !important
+    background-color: #2196f3 !important
 }
 
 .w3-theme {
     color: #fff !important;
-    background-color: #e9630c !important
+    background-color: #2196f3 !important
 }
 
 .w3-text-theme {
-    color: #e9630c !important
+    color: #2196f3 !important
 }
 
 .w3-border-theme {
-    border-color: #e9630c !important
+    border-color: #2196f3 !important
 }
 
 .w3-hover-theme:hover {
     color: #fff !important;
-    background-color: #e9630c !important
+    background-color: #2196f3 !important
 }
 
 .w3-hover-text-theme:hover {
-    color: #e9630c !important
+    color: #2196f3 !important
 }
 
 .w3-hover-border-theme:hover {
-    border-color: #e9630c !important
+    border-color: #2196f3 !important
 }
