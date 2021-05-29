@@ -264,8 +264,7 @@ namespace DNNrocketAPI.ApiControllers
                 if (systemkey == "") paramInfo.GetXmlProperty("genxml/hidden/systemkey").Trim(' ');
                 if (systemkey == "" && paramCmd.Contains("_")) systemkey = paramCmd.Split('_')[0];
                 if (systemkey == "") systemkey = "dnnrocket";
-                var systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
-                var systemData = new SystemLimpet(systemInfo);
+                var systemData = new SystemLimpet(systemkey);
 
                 if (paramCmd == "admin_return")
                 {
@@ -287,7 +286,6 @@ namespace DNNrocketAPI.ApiControllers
                 if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/hidden/i").Trim(' '); // reduce chars
                 if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/i").Trim(' ');
                 if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
-                if (interfacekey == "") interfacekey = systemData.DefaultInterface;
                 if (interfacekey == "") interfacekey = systemkey;
 
                 paramInfo.SetXmlProperty("genxml/systemkey", systemkey);
@@ -295,15 +293,15 @@ namespace DNNrocketAPI.ApiControllers
                 if (paramCmd == "login_doregister")
                 {
                     strOut = UserUtils.RegisterUser(postInfo, DNNrocketUtils.GetCurrentCulture());
-                    if (strOut == "") UserUtils.DoLogin(systemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
+                    if (strOut == "") UserUtils.DoLogin(systemData.SystemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
                 }
                 else if (paramCmd == "login_register")
                 {
-                    strOut = UserUtils.RegisterForm(systemInfo, postInfo, interfacekey, UserUtils.GetCurrentUserId());
+                    strOut = UserUtils.RegisterForm(systemData.SystemInfo, postInfo, interfacekey, UserUtils.GetCurrentUserId());
                 }
                 else if (paramCmd == "login_login")
                 {
-                    UserUtils.DoLogin(systemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
+                    UserUtils.DoLogin(systemData.SystemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
                     strOut = ""; // the page will rteload after the call
                 }
                 else if (paramCmd == "changeculture")
@@ -384,9 +382,16 @@ namespace DNNrocketAPI.ApiControllers
                 // check for systemspi, does not exist.  It's used to create the systemprovders 
                 if (systemData.SystemKey == "" || systemData.SystemKey == "systemapi" || systemData.SystemKey == "login")
                 {
-                    var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.System.StartConnect");
-                    returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemData.SystemInfo, null, postInfo, paramInfo, _editlang);
-                    strOut = (string)returnDictionary["outputhtml"];
+                    try
+                    {
+                        var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.System.StartConnect");
+                        returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemData.SystemInfo, null, postInfo, paramInfo, _editlang);
+                        strOut = (string)returnDictionary["outputhtml"];
+                    }
+                    catch (Exception ex)
+                    {
+                        strOut = ex.ToString();
+                    }
                 }
                 else
                 {
@@ -426,29 +431,11 @@ namespace DNNrocketAPI.ApiControllers
             try
             {
                 var strOut = "";
-                var themeFolder = sInfo.GetXmlProperty("genxml/hidden/theme");
-                var razortemplate = sInfo.GetXmlProperty("genxml/hidden/template");
-                var moduleid = sInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-                if (moduleid == 0) moduleid = -1;
-
-                var passSettings = sInfo.ToDictionary();
-
-                var systemDataList = new SystemLimpetList();
-                var sInfoSystem = systemDataList.GetSystemByKey(systemkey);
-                var systemData = new SystemLimpet(sInfoSystem);
-                var sidemenu = new SideMenu(sInfoSystem);
-                var templateControlRelPath = sInfo.GetXmlProperty("genxml/hidden/relpath");
-                sidemenu.ModuleId = moduleid;
-
-                var razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
-
-                if (razorTempl == "")
-                {
-                    // no razor template for sidemenu, so use default.
-                    razorTempl = RenderRazorUtils.GetRazorTemplateData(razortemplate, TemplateRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", systemData.DebugMode);
-                }
-
-                strOut = RenderRazorUtils.RazorDetail(razorTempl, sidemenu, passSettings, null, systemData.DebugMode);
+                var systemData = new SystemLimpet(systemkey);
+                if (!systemData.Exists) return "ERROR: No SystemKey, Missing system.config";
+                var appThemeSystem = new AppThemeSystemLimpet(systemkey);
+                var razorTempl = appThemeSystem.GetTemplate("SideMenu.cshtml");
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, null, null, null, true);
 
                 return strOut;
             }
@@ -463,9 +450,9 @@ namespace DNNrocketAPI.ApiControllers
             {
                 var passSettings = sInfo.ToDictionary();
                 var systemData = new SystemLimpet("rocketcatalog");
-                var systemAppTheme = new AppThemeLimpet(systemData);
-                var razorTempl = systemAppTheme.GetTemplate("TopBar.cshtml");
-                return RenderRazorUtils.RazorDetail(razorTempl, sInfo, passSettings, null, systemData.DebugMode);
+                var appThemeSystem = new AppThemeSystemLimpet(systemkey);
+                var razorTempl = appThemeSystem.GetTemplate("TopBar.cshtml");
+                return RenderRazorUtils.RazorDetail(razorTempl, sInfo, passSettings, null, true);
             }
             catch (Exception ex)
             {

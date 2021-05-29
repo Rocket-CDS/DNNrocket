@@ -26,6 +26,7 @@ namespace DNNrocket.AppThemes
         private const string _tableName = "DNNRocket";
         private string _paramCmd;
         private string _nextLang;
+        private AppThemeSystemLimpet _appThemeSystem;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -160,7 +161,8 @@ namespace DNNrocket.AppThemes
         public string InitCmd(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             _passSettings = new Dictionary<string, string>();
-            _systemData = new SystemLimpet(systemInfo);
+            _systemData = new SystemLimpet(systemInfo.GetXmlProperty("genxml/systemkey"));
+            _appThemeSystem = new AppThemeSystemLimpet(_systemData.SystemKey);
             _rocketInterface = new RocketInterface(interfaceInfo);
             _postInfo = postInfo;
             _paramInfo = paramInfo;
@@ -316,7 +318,7 @@ namespace DNNrocket.AppThemes
                 var resxData = new ResxData(_appTheme.GetFileMapPath(fname));
                 var dataObjects = new Dictionary<string, object>();
                 dataObjects.Add("resxData", resxData);
-                var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(_systemData.SystemKey, "ResxPopUp.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+                var razorTempl = _appThemeSystem.GetTemplate("ResxPopUp.cshtml");
                 return RenderRazorUtils.RazorObjectRender(razorTempl, _appTheme, dataObjects, _passSettings, null, true);
             }
             catch (Exception ex)
@@ -404,7 +406,7 @@ namespace DNNrocket.AppThemes
                 var appThemeDataList = new AppThemeDataList();
                 var template = _rocketInterface.DefaultTemplate;
                 if (template == "") template = "appthemelist.cshtml";
-                var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(_systemData.SystemKey, template, appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(),"1.0",true);
+                var razorTempl = _appThemeSystem.GetTemplate(template);
                 var passSettings = _postInfo.ToDictionary();
 
                 return RenderRazorUtils.RazorDetail(razorTempl, appThemeDataList, passSettings,null,true);
@@ -420,7 +422,7 @@ namespace DNNrocket.AppThemes
             try
             {
                 var appThemeDataList = new AppThemeDataList();
-                var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(_systemData.SystemKey, "AppStoreList.cshtml", appThemeDataList.AppProjectFolderRel, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var razorTempl = _appThemeSystem.GetTemplate("AppStoreList.cshtml");
                 var passSettings = _postInfo.ToDictionary();
 
                 return RenderRazorUtils.RazorDetail(razorTempl, appThemeDataList, passSettings, null, true);
@@ -659,7 +661,7 @@ namespace DNNrocket.AppThemes
         }
         private string GetEditTemplate(AppThemeLimpet appTheme)
         {
-            var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(_systemData.SystemKey, "AppThemeDetails.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
+            var razorTempl = _appThemeSystem.GetTemplate("AppThemeDetails.cshtml");
             return RenderRazorUtils.RazorDetail(razorTempl, appTheme, _passSettings, new SessionParams(_paramInfo), true);
         }
 

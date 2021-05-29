@@ -23,20 +23,20 @@ namespace DNNrocketAPI.Components
                     var systemDataList = new SystemLimpetList();
                     foreach (var sInfo in systemDataList.GetSystemList())
                     {
-                        var systemData = new SystemLimpet(sInfo.ItemID);
-                        systemData.PortalId = portalId;
-                        foreach (var rocketInterface in systemData.SchedulerList)
-                        {
-                            var cacheKey = rocketInterface.Assembly + "," + rocketInterface.ProviderNameSpaceClass;
-                            var ajaxprov = (SchedulerInterface)CacheUtilsDNN.GetCache(cacheKey);
-                            if (ajaxprov == null)
-                            {
-                                ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.ProviderNameSpaceClass);
-                                CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
-                            }
-                            ajaxprov.DoWork(systemData, rocketInterface);
+                        //var systemData = new SystemLimpet();
+                        //systemData.PortalId = portalId;
+                        //foreach (var rocketInterface in systemData.SchedulerList)
+                        //{
+                        //    var cacheKey = rocketInterface.Assembly + "," + rocketInterface.ProviderNameSpaceClass;
+                        //    var ajaxprov = (SchedulerInterface)CacheUtilsDNN.GetCache(cacheKey);
+                        //    if (ajaxprov == null)
+                        //    {
+                        //        ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.ProviderNameSpaceClass);
+                        //        CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
+                        //    }
+                        //    ajaxprov.DoWork(systemData, rocketInterface);
 
-                        }
+                        //}
                     }
 
                     LogUtils.LogTrackingClear(portalId, 7);

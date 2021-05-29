@@ -155,11 +155,6 @@ namespace DNNrocketAPI.Components
                 if (!Exists)
                 {
                     // we do not have any module data, so assume this is a system upload.
-                    if (SystemKey != "")
-                    {
-                        var systemData = new SystemLimpet(SystemKey);
-                        if (systemData.Exists) return systemData.ImageFolderRelPath;
-                    }
                     return "/DesktopModules/DNNrocket/SystemData/images";
                 }
                 return PortalUtils.HomeDNNrocketDirectoryRel().TrimEnd('/') + "/" + ImageFolder;

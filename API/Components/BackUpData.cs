@@ -103,9 +103,7 @@ namespace DNNrocketAPI.Components
             {
                 var s = new SystemLimpet(SystemKey);
                 if (s == null || !s.Exists) return "";
-                var r = s.GetInterface(s.DefaultInterface);
-                if (r == null || !r.Exists) return "";
-                return r.DatabaseTable;
+                return s.DatabaseTable;
             }
         }
 

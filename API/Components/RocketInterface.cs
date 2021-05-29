@@ -65,18 +65,11 @@ namespace DNNrocketAPI.Components
             get { return Info.GetXmlProperty("genxml/textbox/interfacekey"); }
             set { Info.SetXmlProperty("genxml/textbox/interfacekey", value.ToString()); }
         }
-        public string EntityTypeCode
-        {
-            get { return Info.GetXmlProperty("genxml/textbox/entitytypecode"); }
-            set { Info.SetXmlProperty("genxml/textbox/entitytypecode", value.ToString()); }
-        }
-
         public string TemplateRelPath
         {
             get { return Info.GetXmlProperty("genxml/textbox/relpath"); }
             set { Info.SetXmlProperty("genxml/textbox/relpath", value.ToString()); }
         }
-
         public string NameSpaceClass
         {
             get { return Info.GetXmlProperty("genxml/textbox/namespaceclass"); }
@@ -92,26 +85,19 @@ namespace DNNrocketAPI.Components
             get { return Info.GetXmlProperty("genxml/textbox/assembly"); }
             set { Info.SetXmlProperty("genxml/textbox/assembly", value.ToString()); }
         }
-
-        public string DefaultTheme
-        {
-            get { return Info.GetXmlProperty("genxml/textbox/defaulttheme"); }
-            set { Info.SetXmlProperty("genxml/textbox/defaulttheme", value.ToString()); }
-        }
-        public string ThemeVersion
-        {
-            get { return Info.GetXmlProperty("genxml/textbox/themeversion"); }
-            set { Info.SetXmlProperty("genxml/textbox/themeversion", value.ToString()); }
-        }
         public string DefaultTemplate
         {
-            get { return Info.GetXmlProperty("genxml/textbox/defaulttemplate"); }
-            set { Info.SetXmlProperty("genxml/textbox/defaulttemplate", value.ToString()); }
+            get { return "view.cshtml"; }
         }
         public string DefaultCommand
         {
             get { return Info.GetXmlProperty("genxml/textbox/defaultcommand"); }
             set { Info.SetXmlProperty("genxml/textbox/defaultcommand", value.ToString()); }
+        }
+        public string GroupRef
+        {
+            get { return Info.GetXmlProperty("genxml/dropdownlist/group"); }
+            set { Info.SetXmlProperty("genxml/dropdownlist/group", value.ToString()); }
         }
         public bool IsActive
         {
@@ -123,24 +109,6 @@ namespace DNNrocketAPI.Components
             get { return Info.GetXmlPropertyBool("genxml/checkbox/onmenu"); }
             set { Info.SetXmlProperty("genxml/checkbox/onmenu", value.ToString()); }
         }
-        public string DatabaseTable
-        {
-            get {
-                var i = Info.GetXmlProperty("genxml/textbox/databasetable");
-                if (i == "") return "DNNrocket";
-                return i;
-            }
-            set {Info.SetXmlProperty("genxml/textbox/databasetable", value.ToString());}
-        }
-        public string Name
-        {
-            get{ return Info.GetXmlProperty("genxml/textbox/interfacename");}
-        }
-        public string Help
-        {
-            get { return Info.GetXmlProperty("genxml/textbox/help"); }
-        }
-
 
         public bool SecurityCheckUser(int portalId, int userid)
         {

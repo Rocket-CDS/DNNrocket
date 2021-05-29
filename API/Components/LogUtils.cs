@@ -51,7 +51,7 @@ namespace DNNrocketAPI.Components
             if (systemkey == "") systemkey = "systemapi";
             var dolog = false;
             var systemData = new SystemLimpet(systemkey);
-            if (systemData.Exists && systemData.LogOn) dolog = true;
+            if (systemData.Exists && systemData.LogTracking) dolog = true;
             if (dolog)
             {
                 var mappath = PortalUtils.HomeDNNrocketDirectoryMapPath().TrimEnd('\\') + "\\logs";

@@ -33,50 +33,8 @@ namespace DNNrocketAPI.Components
         /// -----------------------------------------------------------------------------
         public string ExportModule(int ModuleId)
         {
-            var objModCtrl = new ModuleController();
             var xmlOut = "<export>";
-
-            var objModInfo = objModCtrl.GetModule(ModuleId, Null.NullInteger, true);
-
-            if (objModInfo != null)
-            {
-                var portalId = objModInfo.PortalID;
-                var moduleParams = new ModuleParams(ModuleId);
-                var systemData = new SystemLimpet(moduleParams.SystemKey);
-                if (systemData.Exists)
-                {
-                    xmlOut += "<systemkey>" + moduleParams.SystemKey + "</systemkey>";
-                    foreach (var r in systemData.InterfaceList)
-                    {
-                        var rocketInterface = r.Value;
-                        if (rocketInterface.IsProvider("exportmodule"))
-                        {
-                            if (rocketInterface.Exists)
-                            {
-                                xmlOut += "<databasetable>" + rocketInterface.DatabaseTable + "</databasetable>";
-                                var paramInfo = new SimplisityInfo();
-                                paramInfo.SetXmlProperty("genxml/hidden/moduleid", ModuleId.ToString());
-                                paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
-                                var returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
-                                if (returnDictionary.ContainsKey("outputhtml"))
-                                {
-                                    xmlOut += returnDictionary["outputhtml"];
-                                }
-                            }
-                            else
-                            {
-                                xmlOut += "<error>No rocketInterface '" + rocketInterface.InterfaceKey + "'</error>";
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    xmlOut += "<error>No systemInfo record found for systemid: " + moduleParams.SystemKey + "</error>";
-                }
-            }
             xmlOut += "</export>";
-
             return xmlOut;
         }
 
@@ -163,7 +121,6 @@ namespace DNNrocketAPI.Components
                                         var paramInfo = new SimplisityInfo();
                                         paramInfo.SetXmlProperty("genxml/hidden/moduleid", moduleInfo.ModuleID.ToString());
                                         paramInfo.SetXmlProperty("genxml/hidden/portalid", portalId.ToString());
-                                        paramInfo.SetXmlProperty("genxml/hidden/databasetable", rocketInterface.DatabaseTable);
                                         // We should return ALL languages into the dictionary
                                         returnDictionary = DNNrocketUtils.GetProviderReturn(rocketInterface.DefaultCommand, systemData.SystemInfo, rocketInterface, new SimplisityInfo(), paramInfo, "", "");
                                         CacheUtils.SetCache("searchindex_module_" + moduleInfo.ModuleID.ToString(), returnDictionary);

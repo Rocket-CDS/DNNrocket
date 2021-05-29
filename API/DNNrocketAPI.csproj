@@ -194,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\AppThemeBase.cs" />
+    <Compile Include="Components\AppThemeSystemLimpet.cs" />
     <Compile Include="Components\AppThemeLimpet.cs" />
     <Compile Include="Components\ArticleLink.cs" />
     <Compile Include="Components\ArticleDoc.cs" />
@@ -250,7 +251,6 @@
     <Compile Include="Components\PageIncludes.cs" />
     <Compile Include="Components\SystemLimpet.cs" />
     <Compile Include="Components\UserUtils.cs" />
-    <Compile Include="Components\SideMenu.cs" />
     <Compile Include="Components\RocketInterface.cs" />
     <Compile Include="DNNrocketThumb.ashx.cs">
       <DependentUpon>DNNrocketThumb.ashx</DependentUpon>

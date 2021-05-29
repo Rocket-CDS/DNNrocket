@@ -18,14 +18,14 @@ namespace DNNrocketAPI.Components
         private string _baseuri;
         public FtpConnect(string selectedSystemKey)
         {
-            _systemData = new SystemLimpet(selectedSystemKey);
-            _systemGlobalData = new SystemGlobalData();
-            _baseuri = "ftp://" + _systemGlobalData.FtpServer + "/" + _systemData.FtpRoot.TrimStart('/').TrimEnd('/') + "/" + _systemData.SystemKey;
-            IsValid = true;
-            if (String.IsNullOrEmpty(_systemGlobalData.FtpServer) || String.IsNullOrEmpty(_systemGlobalData.FtpUserName) || String.IsNullOrEmpty(_systemGlobalData.FtpPassword)) IsValid = false;
+            //_systemData = new SystemLimpet(selectedSystemKey);
+            //_systemGlobalData = new SystemGlobalData();
+            //_baseuri = "ftp://" + _systemGlobalData.FtpServer + "/" + _systemData.FtpRoot.TrimStart('/').TrimEnd('/') + "/" + _systemData.SystemKey;
+            //IsValid = true;
+            //if (String.IsNullOrEmpty(_systemGlobalData.FtpServer) || String.IsNullOrEmpty(_systemGlobalData.FtpUserName) || String.IsNullOrEmpty(_systemGlobalData.FtpPassword)) IsValid = false;
 
-            var imgidxFolder = DNNrocketUtils.SystemThemeImgDirectoryMapPath();
-            if (!Directory.Exists(imgidxFolder)) Directory.CreateDirectory(imgidxFolder);
+            //var imgidxFolder = DNNrocketUtils.SystemThemeImgDirectoryMapPath();
+            //if (!Directory.Exists(imgidxFolder)) Directory.CreateDirectory(imgidxFolder);
 
         }
 
@@ -38,16 +38,16 @@ namespace DNNrocketAPI.Components
             var exportZipMapPath = appTheme.ExportZipFile();
             var filename = Path.GetFileName(exportZipMapPath);
 
-            var dirlist = (_systemData.FtpRoot + "/" + _systemData.SystemKey).Split('/');
+            //var dirlist = (_systemData.FtpRoot + "/" + _systemData.SystemKey).Split('/');
             var createftpdir = "";
-            foreach (var d in dirlist)
-            {
-                if (d != "")
-                {
-                    createftpdir += "/" + d;
-                    CreateFTPDirectory("ftp://" + _systemGlobalData.FtpServer + "/" + createftpdir);
-                }
-            }
+            //foreach (var d in dirlist)
+            //{
+            //    if (d != "")
+            //    {
+            //        createftpdir += "/" + d;
+            //        CreateFTPDirectory("ftp://" + _systemGlobalData.FtpServer + "/" + createftpdir);
+            //    }
+            //}
 
             var urixml = _baseuri + "/xml";
             CreateFTPDirectory(urixml);

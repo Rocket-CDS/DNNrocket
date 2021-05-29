@@ -129,14 +129,8 @@
   <data name="active.Text" xml:space="preserve">
     <value>Actif</value>
   </data>
-  <data name="add.Icon" xml:space="preserve">
-    <value>&lt;i title="Ajouter" class="fa fas fa-plus-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="add.Text" xml:space="preserve">
     <value>Ajouter</value>
-  </data>
-  <data name="admin.Icon" xml:space="preserve">
-    <value>&lt;i title="Admin" class="fa fas fa-list fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="admin.Text" xml:space="preserve">
     <value>Admin</value>
@@ -156,9 +150,6 @@
   <data name="attributes.Text" xml:space="preserve">
     <value>Attributs</value>
   </data>
-  <data name="back.Icon" xml:space="preserve">
-    <value>&lt;i  title="Retour" class="fa fas  fa-caret-left fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="back.Text" xml:space="preserve">
     <value>Retour</value>
   </data>
@@ -174,14 +165,8 @@
   <data name="backuptemplates.Text" xml:space="preserve">
     <value>Template BackUp</value>
   </data>
-  <data name="cancel.Icon" xml:space="preserve">
-    <value>&lt;i title="Annuler" class="fa fas fa-undo-alt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="cancel.Text" xml:space="preserve">
     <value>Annuler</value>
-  </data>
-  <data name="cancelsearch.Icon" xml:space="preserve">
-    <value>&lt;i  title="Recherche annulée" class="fa fas fa-times fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="cancelsearch.Text" xml:space="preserve">
     <value>Annuler la recherche</value>
@@ -207,9 +192,6 @@
   <data name="clone.Text" xml:space="preserve">
     <value>Cloner</value>
   </data>
-  <data name="close.Icon" xml:space="preserve">
-    <value>&lt;i title="Fermer" class="far fa-window-close fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="close.Text" xml:space="preserve">
     <value>Fermer</value>
   </data>
@@ -221,9 +203,6 @@
   </data>
   <data name="copy.Text" xml:space="preserve">
     <value>Copie</value>
-  </data>
-  <data name="create.Icon" xml:space="preserve">
-    <value>&lt;i title="Créer" class="fa fas fa-bolt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="create.Text" xml:space="preserve">
     <value>Créer</value>
@@ -242,9 +221,6 @@
   </data>
   <data name="delete.confirm" xml:space="preserve">
     <value>Supprimer ?</value>
-  </data>
-  <data name="delete.Icon" xml:space="preserve">
-    <value>&lt;i title="Supprimer" class="fa fas fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="delete.Text" xml:space="preserve">
     <value>Supprimer</value>
@@ -273,9 +249,6 @@
   <data name="domainurl.Text" xml:space="preserve">
     <value>URL domaine</value>
   </data>
-  <data name="download.Icon" xml:space="preserve">
-    <value>&lt;i title="Télécharger" class="fa fas fa-download fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="download.Text" xml:space="preserve">
     <value>Télécharger</value>
   </data>
@@ -294,9 +267,6 @@
   <data name="dropimage.Text" xml:space="preserve">
     <value>Déposez ici</value>
   </data>
-  <data name="edit.Icon" xml:space="preserve">
-    <value>&lt;i title="Editer" class="fa fas fa-edit fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="edit.Text" xml:space="preserve">
     <value>Editer</value>
   </data>
@@ -311,9 +281,6 @@
   </data>
   <data name="expiredate.Text" xml:space="preserve">
     <value>Date d'expiration</value>
-  </data>
-  <data name="export.Icon" xml:space="preserve">
-    <value>&lt;i class="fa fas fa-file-export fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="export.Text" xml:space="preserve">
     <value>Exporter</value>
@@ -381,9 +348,6 @@
   <data name="more.Text" xml:space="preserve">
     <value>Plus</value>
   </data>
-  <data name="next.Icon" xml:space="preserve">
-    <value>&lt;i  title="Suivant" class="fa fas  fa-arrow-alt-circle-right fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="next.Text" xml:space="preserve">
     <value>Suivant</value>
   </data>
@@ -395,9 +359,6 @@
   </data>
   <data name="off.Text" xml:space="preserve">
     <value>Off</value>
-  </data>
-  <data name="ok.Icon" xml:space="preserve">
-    <value>&lt;i  title="OK" class="fa fas fa-check-circle fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ok.Text" xml:space="preserve">
     <value>OK</value>
@@ -420,14 +381,8 @@
   <data name="pagingvalues.Text" xml:space="preserve">
     <value>5,10,20,50,100,0</value>
   </data>
-  <data name="previous.Icon" xml:space="preserve">
-    <value>&lt;i  title="Précédent" class="fa fas  fa-caret-left fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="previous.Text" xml:space="preserve">
     <value>Précédent</value>
-  </data>
-  <data name="print.Icon" xml:space="preserve">
-    <value>&lt;i  title="Imprimer" class="fa fas fa-print fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="print.Text" xml:space="preserve">
     <value>Imprimer</value>
@@ -435,26 +390,17 @@
   <data name="prolicense.Text" xml:space="preserve">
     <value>License Professionelle</value>
   </data>
-  <data name="refresh.Icon" xml:space="preserve">
-    <value>&lt;i title="Actualiser" class="fa fas fa-sync-alt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="refresh.Text" xml:space="preserve">
     <value>Rafraichir</value>
   </data>
   <data name="register.Text" xml:space="preserve">
     <value>S'enregistrer</value>
   </data>
-  <data name="remove.Icon" xml:space="preserve">
-    <value>&lt;i title="Retirer" class="fa fas fa-minus-square fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="remove.Text" xml:space="preserve">
     <value>Retirer</value>
   </data>
   <data name="removemoduletemplate.Text" xml:space="preserve">
     <value>Remove Module Level Template</value>
-  </data>
-  <data name="reset.Icon" xml:space="preserve">
-    <value>&lt;i title="Réinitialiser" class="fa fas fa-sync-alt fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="reset.Text" xml:space="preserve">
     <value>Réinitialiser</value>
@@ -464,9 +410,6 @@
   </data>
   <data name="restore.Text" xml:space="preserve">
     <value>Restaurer</value>
-  </data>
-  <data name="return.Icon" xml:space="preserve">
-    <value>&lt;i  title="Retour" class="fa fas fa-reply fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="return.Text" xml:space="preserve">
     <value>Retour</value>
@@ -480,23 +423,14 @@
   <data name="roles.Text" xml:space="preserve">
     <value>Rôles</value>
   </data>
-  <data name="save.Icon" xml:space="preserve">
-    <value>&lt;i  title="Sauvegarder" class="fa fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="save.Text" xml:space="preserve">
     <value>Enregistrer</value>
-  </data>
-  <data name="search.Icon" xml:space="preserve">
-    <value>&lt;i title="Rechercher" class="fa fas fa-search fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="search.Text" xml:space="preserve">
     <value>Rechercher</value>
   </data>
   <data name="select.Text" xml:space="preserve">
     <value>Sélectionner</value>
-  </data>
-  <data name="send.Icon" xml:space="preserve">
-    <value>&lt;i  title="Envoyer" class="far  fa-paper-plane fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="send.Text" xml:space="preserve">
     <value>Envoyer</value>
@@ -506,9 +440,6 @@
   </data>
   <data name="settings.Text" xml:space="preserve">
     <value>Paramètres</value>
-  </data>
-  <data name="setup.Icon" xml:space="preserve">
-    <value>&lt;i  title="Configuration" class="fa fas fa-plug fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="setup.Text" xml:space="preserve">
     <value>Paramètrage</value>
@@ -537,29 +468,17 @@
   <data name="uncheckall.Text" xml:space="preserve">
     <value>Désactiver Tout</value>
   </data>
-  <data name="undo.Icon" xml:space="preserve">
-    <value>&lt;i title="Annuler" class="fa fas fa-undo fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="undo.Text" xml:space="preserve">
     <value>Annuler</value>
   </data>
   <data name="uninstall.Text" xml:space="preserve">
     <value>Désinstaller</value>
   </data>
-  <data name="update.Icon" xml:space="preserve">
-    <value>&lt;i  title="Mise à jour" class="fa fas fa-save fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="update.Text" xml:space="preserve">
     <value>Mise à jour</value>
   </data>
-  <data name="upload.Icon" xml:space="preserve">
-    <value>&lt;i  title="Charger" class="fa fas fa-upload fa-fw fa-lg"&gt;&lt;/i&gt;</value>
-  </data>
   <data name="upload.Text" xml:space="preserve">
     <value>Charger</value>
-  </data>
-  <data name="use.Icon" xml:space="preserve">
-    <value>&lt;i  title="Utiliser" class="fa fas fa-check fa-fw fa-lg"&gt;&lt;/i&gt;</value>
   </data>
   <data name="use.Text" xml:space="preserve">
     <value>Utiliser</value>
