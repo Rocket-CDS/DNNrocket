@@ -17,7 +17,7 @@ namespace DNNrocketAPI.Components
         public const string RemoteAdmin = "RemoteAdmin";
     }
 
-    public enum ButtonTypes { add, admin, back, cancel, close, create, delete, download, edit, export, import, next, ok, print, refresh, remove, reset, save, search, cancelsearch, setup, send, undo, upload, use, previous, yes, no };
+    public enum ButtonTypes { add, admin, back, cancel, close, create, delete, download, edit, export, import, next, ok, print, refresh, remove, reset, save, search, cancelsearch, setup, send, undo, upload, use, previous, yes, no, fail, bars };
 
 
     public class ValuePair

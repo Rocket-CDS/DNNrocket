@@ -30,7 +30,17 @@ namespace DNNrocketAPI.Components
             if (File.Exists(resxFileMapPath))
             {
                 ResxFileData = FileUtils.ReadFile(FileMapPath);
-                ResxXmlData.Load(FileMapPath);
+                try
+                {
+                    ResxXmlData.Load(FileMapPath);
+                }
+                catch (Exception)
+                {
+                    // The file may be invalid, so reset.
+                    ResxFileData = "<root><data name=\"test.Text\" xml:space=\"preserve\"><value>Test</value></data></root>";
+                    FileUtils.SaveFile(FileMapPath, ResxFileData);
+                    ResxXmlData.Load(FileMapPath);
+                }
                 BuildDictionary();
                 Exists = true;
             }

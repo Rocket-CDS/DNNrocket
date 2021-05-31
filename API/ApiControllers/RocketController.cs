@@ -290,40 +290,67 @@ namespace DNNrocketAPI.ApiControllers
 
                 paramInfo.SetXmlProperty("genxml/systemkey", systemkey);
 
-                if (paramCmd == "login_doregister")
+                switch (paramCmd)
                 {
-                    strOut = UserUtils.RegisterUser(postInfo, DNNrocketUtils.GetCurrentCulture());
-                    if (strOut == "") UserUtils.DoLogin(systemData.SystemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
-                }
-                else if (paramCmd == "login_register")
-                {
-                    strOut = UserUtils.RegisterForm(systemData.SystemInfo, postInfo, interfacekey, UserUtils.GetCurrentUserId());
-                }
-                else if (paramCmd == "login_login")
-                {
-                    UserUtils.DoLogin(systemData.SystemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
-                    strOut = ""; // the page will rteload after the call
-                }
-                else if (paramCmd == "changeculture")
-                {
-                    var lang = paramInfo.GetXmlProperty("genxml/hidden/culturecode");
-                    DNNrocketUtils.SetCookieValue("language", lang);
-                    strOut = lang; // the page will reload after the call
-                }
-                else
-                {
-                    switch (paramCmd)
-                    {
-                        case "getsidemenu":
-                            strOut = GetSideMenu(paramInfo, systemkey);
-                            break;
-                        case "gettopbar":
-                            strOut = GetTopBar(paramInfo, systemkey);
-                            break;
-                        default:
-                            strOut = ""; // process the provider                            
-                            break;
-                    }
+                    case "changeculture":
+                        var lang = paramInfo.GetXmlProperty("genxml/hidden/culturecode");
+                        DNNrocketUtils.SetCookieValue("language", lang);
+                        strOut = lang; // the page will reload after the call
+                        break;
+                    case "login_login":
+                        UserUtils.DoLogin(systemData.SystemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
+                        strOut = ""; // the page will rteload after the call
+                        break;
+                    case "login_register":
+                        strOut = UserUtils.RegisterForm(systemData.SystemInfo, postInfo, interfacekey, UserUtils.GetCurrentUserId());
+                        break;
+                    case "login_doregister":
+                        strOut = UserUtils.RegisterUser(postInfo, DNNrocketUtils.GetCurrentCulture());
+                        if (strOut == "") UserUtils.DoLogin(systemData.SystemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
+                        break;
+                    case "getsidemenu":
+                        strOut = GetSideMenu(paramInfo, systemkey);
+                        break;
+                    case "gettopbar":
+                        strOut = GetTopBar(paramInfo, systemkey);
+                        break;
+                    case "rocketapi_clearallcache":
+                        if (UserUtils.IsAdministrator()) strOut = ClearCache();
+                        break;
+                    case "rocketapi_cleartempdb":
+                        if (UserUtils.IsSuperUser()) strOut = ClearTempDB();
+                        break;
+                    case "rocketapi_recycleapppool":
+                        if (UserUtils.IsSuperUser()) strOut = RecycleAppPool();
+                        break;
+                    case "global_globaldetail":
+                        if (UserUtils.IsSuperUser()) strOut = SystemGlobalDetail(paramInfo);
+                        break;
+                    case "global_globalsave":
+                        if (UserUtils.IsSuperUser())
+                        {
+                            SystemGlobalSave(postInfo);
+                            strOut = SystemGlobalDetail(paramInfo);
+                        }
+                        break;
+                    case "global_defaultroles":
+                        if (UserUtils.IsSuperUser())
+                        {
+                            DNNrocketUtils.CreateDefaultRocketRoles(PortalUtils.GetCurrentPortalId());
+                            strOut = SystemGlobalDetail(paramInfo);
+                        }
+                        break;
+                    case "global_installscheduler":
+                        SchedulerUtils.SchedulerInstall();
+                        strOut = SystemGlobalDetail(paramInfo);
+                        break;
+                    case "global_uninstallscheduler":
+                        SchedulerUtils.SchedulerUnInstall();
+                        strOut = SystemGlobalDetail(paramInfo);
+                        break;
+                    default:
+                        strOut = ""; // process the provider                            
+                        break;
                 }
             }
             catch (Exception ex)
@@ -513,7 +540,44 @@ namespace DNNrocketAPI.ApiControllers
             return strOut;
         }
 
+        private string ClearCache()
+        {
+            CacheFileUtils.ClearFileCacheAllPortals();
+            CacheUtils.ClearAllCache();
+            CacheUtilsDNN.ClearAllCache();
+            DNNrocketUtils.ClearAllCache();
+            return "OK";
+        }
+        private string ClearTempDB()
+        {
+            ClearCache();
+            DNNrocketUtils.ClearTempDB();
+            return "OK";
+        }
+        private string RecycleAppPool()
+        {
+            ClearCache();
+            DNNrocketUtils.RecycleApplicationPool();
+            return "OK";
+        }
+        private String SystemGlobalDetail(SimplisityInfo paramInfo)
+        {
+            var passSettings = paramInfo.ToDictionary();
+            var appThemeSystem = new AppThemeSystemLimpet("rocketportal");
+            var razorTempl = appThemeSystem.GetTemplate("GlobalDetail.cshtml");
 
+            SchedulerUtils.SchedulerIsInstalled();
+            var globalData = new SystemGlobalData();
+            var strOut = RenderRazorUtils.RazorDetail(razorTempl, globalData, passSettings);
+            return strOut;
+        }
+
+        private void SystemGlobalSave(SimplisityInfo postInfo)
+        {
+            var globalData = new SystemGlobalData();
+            globalData.Save(postInfo);
+            ClearCache();
+        }
 
 
 

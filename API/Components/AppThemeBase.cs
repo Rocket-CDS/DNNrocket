@@ -225,7 +225,7 @@ namespace DNNrocketAPI.Components
             GC.Collect();
             GC.WaitForPendingFinalizers();
 
-            var fileMapPath = FileNameList[filename];
+            var fileMapPath = FileNameList[filename.ToLower()];
             if (PortalUtils.GetPortalId() != 0)
             {
                 var fileMP = "";

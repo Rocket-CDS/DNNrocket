@@ -1578,6 +1578,12 @@ namespace DNNrocketAPI.Components
             CacheUtils.ClearAllCache("DNNrocketThumb");
         }
 
+        public static void ClearTempDB()
+        {
+            var objCtrl = new DNNrocketController();
+            objCtrl.DeleteAllData("DNNrocketTemp");
+        }
+
         #region "DNN cache"
 
         public static void SetCache(string cacheKey, object objObject)
@@ -1627,6 +1633,17 @@ namespace DNNrocketAPI.Components
         {
             return Globals.NavigateURL(tabId, "", param).ToString();
         }
+
+        public static double ConvertTimeToDouble(string timeString)
+        {
+            if (timeString == "") return -1;
+            string[] samplesplit = timeString.Split(':');
+            if (samplesplit.Length == 2) return double.Parse(samplesplit[0]) + double.Parse(samplesplit[1]) / 60;
+            if (samplesplit.Length == 3) return double.Parse(samplesplit[0]) + double.Parse(samplesplit[1]) / 60 + double.Parse(samplesplit[2]) / 6000;
+            return -1;
+        }
+
+
 
         #region "Portal - obsolete"
 
