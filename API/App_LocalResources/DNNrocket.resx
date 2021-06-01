@@ -589,7 +589,7 @@ search_off
 &lt;/span&gt;</value>
   </data>
   <data name="cancelsearch.Text" xml:space="preserve">
-    <value>Cancel Search</value>
+    <value>Search</value>
   </data>
   <data name="key.Text" xml:space="preserve">
     <value>Key</value>
