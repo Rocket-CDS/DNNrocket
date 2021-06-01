@@ -669,4 +669,17 @@ highlight_off
   <data name="bars.Icon" xml:space="preserve">
     <value>&lt;span class="material-icons"&gt;more_vert&lt;/span&gt;</value>
   </data>
+  <data name="copy.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+content_copy
+&lt;/span&gt;</value>
+  </data>
+  <data name="paste.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+content_paste
+&lt;/span&gt;</value>
+  </data>
+  <data name="paste.Text" xml:space="preserve">
+    <value>Paste</value>
+  </data>
 </root>

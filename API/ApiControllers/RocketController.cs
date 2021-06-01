@@ -60,7 +60,7 @@ namespace DNNrocketAPI.ApiControllers
             var systemData = new SystemLimpet(systemkey);
             var interfacekey = paramCmd.Split('_')[0];
             var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
-            TrackCmd(paramCmd, systemData, rocketInterface, paramInfo);
+            TrackCmd(ref paramCmd, systemData, ref rocketInterface, ref paramInfo);
 
             var rtn = new HttpResponseMessage();
             var strOut = ProcessAction(postInfo, paramInfo, paramCmd, systemkey);
@@ -210,7 +210,7 @@ namespace DNNrocketAPI.ApiControllers
             return paramInfo;
         }
 
-        private RocketInterface TrackCmd(string paramCmd, SystemLimpet systemData, RocketInterface rocketInterface, SimplisityInfo paramInfo)
+        private void TrackCmd(ref string paramCmd, SystemLimpet systemData, ref RocketInterface rocketInterface, ref SimplisityInfo paramInfo)
         {
             var sessionParams = new SessionParams(paramInfo);
             var userParams = new UserParams(sessionParams.BrowserSessionId);
@@ -229,7 +229,6 @@ namespace DNNrocketAPI.ApiControllers
             {
                 if (paramInfo.GetXmlPropertyBool("genxml/hidden/track")) userParams.Track(systemData.SystemKey, paramCmd, paramInfo, rocketInterface.InterfaceKey);
             }
-            return rocketInterface;
         }
         /// <summary>
         /// Admin Actions for Action Endpoint [TODO: rewrite to be cleaner]
