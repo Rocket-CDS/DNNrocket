@@ -706,4 +706,31 @@ content_paste
   <data name="justify.Text" xml:space="preserve">
     <value>Justify</value>
   </data>
+  <data name="imageupload.Msg" xml:space="preserve">
+    <value>Upload your images here, by dragging and dropping or paste from the clipboard on the area below.  Or by using the upload button to select images from your file system.</value>
+  </data>
+  <data name="imageupload.Text" xml:space="preserve">
+    <value>Image Upload</value>
+  </data>
+  <data name="articleimagelimit.Msg" xml:space="preserve">
+    <value>You image upload for this article has been reached.  You must upgrade if you want to add more images.</value>
+  </data>
+  <data name="articleimagelimit.Text" xml:space="preserve">
+    <value>Image Limit</value>
+  </data>
+  <data name="documentlimit.Msg" xml:space="preserve">
+    <value>You document upload for this article has been reached.  You must upgrade if you want to add more documents.</value>
+  </data>
+  <data name="documentlimit.Text" xml:space="preserve">
+    <value>Document Limit</value>
+  </data>
+  <data name="documentupload.Msg" xml:space="preserve">
+    <value>Upload your documents here, by dragging and dropping or paste from the clipboard on the area below.  Or by using the upload button to select documents from your file system.  (Some potentially dangerous files will not be allowed to be upload.(</value>
+  </data>
+  <data name="documentupload.Text" xml:space="preserve">
+    <value>Document Upload</value>
+  </data>
+  <data name="hidden.Text" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
 </root>

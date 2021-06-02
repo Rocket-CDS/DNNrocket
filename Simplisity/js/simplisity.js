@@ -68,7 +68,7 @@ function simplisity_createStaticPageFields(cmdurl, settings) {
 
     var elementstr = '<div class="' + settings.overlayclass + ' " style="z-index:999;" id="simplisity_loader">';
     elementstr += '<span class="w3-display-middle">';
-    elementstr += '<span class="material-icons w3-spin w3-jumbo">sync</span>';
+    elementstr += '<span class="material-icons w3-spin w3-jumbo">autorenew</span>';
     elementstr += '</span>';
     elementstr += '</div>';
     elementstr += '<div class="' + settings.overlayclass + '" style="" id="simplisity_fullloader"></div>';
