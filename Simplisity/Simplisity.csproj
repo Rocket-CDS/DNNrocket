@@ -7,10 +7,14 @@
 
 Simplisity is designed to take data from the html page, pass it to a server side API for processing, which then can return data or html to be added to the html page. Simplisity currently uses JQuery to ensure "simplicity".
 </Description>
-    <Configurations>Debug;Release;Razor</Configurations>
+    <Configurations>Debug;Release;Razor;Comp All;CompAll</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CompAll|AnyCPU'">
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
 
