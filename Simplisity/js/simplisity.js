@@ -67,7 +67,9 @@ function simplisity_createStaticPageFields(cmdurl, settings) {
     jQuery('#simplisity_fileuploadlist').remove();
 
     var elementstr = '<div class="' + settings.overlayclass + ' " style="z-index:999;" id="simplisity_loader">';
-    elementstr += '<i class="fa fa-spinner fa-spin w3-display-middle " style="font-size:48px"></i>';
+    elementstr += '<span class="w3-display-middle">';
+    elementstr += '<span class="material-icons w3-spin w3-jumbo">sync</span>';
+    elementstr += '</span>';
     elementstr += '</div>';
     elementstr += '<div class="' + settings.overlayclass + '" style="" id="simplisity_fullloader"></div>';
     elementstr += '<input id="simplisity_systemkey" type="hidden" value="' + settings.systemkey + '" />';

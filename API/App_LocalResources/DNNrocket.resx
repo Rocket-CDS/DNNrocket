@@ -682,4 +682,28 @@ content_paste
   <data name="paste.Text" xml:space="preserve">
     <value>Paste</value>
   </data>
+  <data name="anchor.Text" xml:space="preserve">
+    <value>Anchor</value>
+  </data>
+  <data name="url.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="blank.Text" xml:space="preserve">
+    <value>New Window</value>
+  </data>
+  <data name="externallink.Text" xml:space="preserve">
+    <value>External Link</value>
+  </data>
+  <data name="hidelink.Text" xml:space="preserve">
+    <value>Hide Link</value>
+  </data>
+  <data name="internallink.Text" xml:space="preserve">
+    <value>Internal Link</value>
+  </data>
+  <data name="document.Text" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="justify.Text" xml:space="preserve">
+    <value>Justify</value>
+  </data>
 </root>
