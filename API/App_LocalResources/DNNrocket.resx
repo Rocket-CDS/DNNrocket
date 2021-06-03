@@ -733,4 +733,41 @@ content_paste
   <data name="hidden.Text" xml:space="preserve">
     <value>Hidden</value>
   </data>
+  <data name="home.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+home
+&lt;/span&gt;</value>
+  </data>
+  <data name="photo.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+photo_camera
+&lt;/span&gt;</value>
+  </data>
+  <data name="folder.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+folder
+&lt;/span&gt;</value>
+  </data>
+  <data name="folderopen.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+folder_open
+&lt;/span&gt;</value>
+  </data>
+  <data name="tree.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+account_tree
+&lt;/span&gt;</value>
+  </data>
+  <data name="keywords.Text" xml:space="preserve">
+    <value>Keywords</value>
+  </data>
+  <data name="name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ref.Text" xml:space="preserve">
+    <value>Ref.</value>
+  </data>
+  <data name="summary.Text" xml:space="preserve">
+    <value>Summary</value>
+  </data>
 </root>
