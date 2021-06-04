@@ -533,6 +533,25 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
+        public IEncodedString EditorQuill(SimplisityInfo info, string xpath, string attributes, bool localized = false, int row = 0, string listname = "", string langauge = "")
+        {
+            if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
+
+            var id = getIdFromXpath(xpath, row, listname);
+            var scriptQuill = "<script> $(document).ready(function () { ";
+            scriptQuill += "var " + id + "quill = new Quill('#" + id + "quill', {modules: {toolbar:[[{header:[1,2,false]}],['bold','italic','underline'],['image','code-block']]},theme:'snow'}); ";
+            scriptQuill += "" + id + "quill.on('text-change', function(delta, source) { jQuery('#" + id + "').val(" + id + "quill.root.innerHTML); });";
+            scriptQuill += "}); </script>";
+
+            if (localized && !xpath.StartsWith("genxml/lang/")) xpath = info.GetXmlProperty("genxml/lang/" + xpath);
+            var value = info.GetXmlProperty(xpath);
+            var strOut = " <div id='" + id + "quill' " + attributes + " >" + value + "</div>";
+
+            var textarea = TextArea(info, xpath, "style='display:none;'", "",localized, row, listname);
+
+            return new RawString(strOut + " " + textarea + " " + scriptQuill);
+        }
+
         #endregion
 
         public IEncodedString LinkInternalUrl(int portalid, int tabid, string cultureCode, PortalSettings portalSettings = null, string[] extraparams = null)
