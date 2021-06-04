@@ -533,15 +533,24 @@ namespace DNNrocketAPI.render
             return new RawString(strOut);
         }
 
-        public IEncodedString EditorQuill(SimplisityInfo info, string xpath, string attributes, bool localized = false, int row = 0, string listname = "", string langauge = "")
+        public IEncodedString EditorQuill(SimplisityInfo info, string xpath, string attributes, string quillconfig = "", bool localized = false, int row = 0, string listname = "", string langauge = "")
         {
             if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
 
             var id = getIdFromXpath(xpath, row, listname);
-            var scriptQuill = "<script> $(document).ready(function () { ";
-            scriptQuill += "var " + id + "quill = new Quill('#" + id + "quill', {modules: {toolbar:[[{header:[1,2,false]}],['bold','italic','underline'],['image','code-block']]},theme:'snow'}); ";
-            scriptQuill += "" + id + "quill.on('text-change', function(delta, source) { jQuery('#" + id + "').val(" + id + "quill.root.innerHTML); });";
-            scriptQuill += "}); </script>";
+
+            var scriptQuill = "";
+            if (quillconfig == "")
+            {
+                var filePath = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/Quill/quillconfig.html");
+                scriptQuill = FileUtils.ReadFile(filePath);
+            }
+            else
+            {
+                scriptQuill = quillconfig;
+            }
+            scriptQuill = scriptQuill.Replace("{elementid}", id);
+            scriptQuill = scriptQuill.Replace("{language}", langauge);
 
             if (localized && !xpath.StartsWith("genxml/lang/")) xpath = info.GetXmlProperty("genxml/lang/" + xpath);
             var value = info.GetXmlProperty(xpath);

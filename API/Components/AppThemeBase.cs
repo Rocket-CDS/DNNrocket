@@ -80,7 +80,7 @@ namespace DNNrocketAPI.Components
         {
             // sync filesystem
             if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\default")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\default");
-            foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\default", "*.cshtml", SearchOption.TopDirectoryOnly))
+            foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\default", "*.*", SearchOption.TopDirectoryOnly))
             {
                 var fname = Path.GetFileName(newPath).ToLower();
                 if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
@@ -122,7 +122,7 @@ namespace DNNrocketAPI.Components
             // portal level files.
             if (Directory.Exists(PortalFileDirectoryMapPath + "\\default"))
             {
-                foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\default", "*.cshtml", SearchOption.TopDirectoryOnly))
+                foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\default", "*.*", SearchOption.TopDirectoryOnly))
                 {
                     var fname = Path.GetFileName(newPath).ToLower();
                     if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);

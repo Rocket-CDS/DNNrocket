@@ -1,0 +1,24 @@
+<script>
+	$(document).ready(function () {
+
+
+        var {elementid}quill = new Quill('#{elementid}quill', {
+            theme: 'snow',
+            modules: {
+				imageResize: {
+                    modules: ['Resize', 'DisplaySize']
+                }
+            }
+		});
+
+		
+		{elementid}quill.on('text-change', function(delta, source) { 
+			
+		jQuery('#{elementid}').val({elementid}quill.root.innerHTML); 
+		
+		});
+		
+	});  
+</script>
+
+
