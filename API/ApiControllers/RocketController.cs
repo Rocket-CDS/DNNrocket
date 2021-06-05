@@ -223,6 +223,11 @@ namespace DNNrocketAPI.ApiControllers
                     paramInfo = userParams.GetParamInfo(systemData.SystemKey);
                     var interfacekey = userParams.GetInterfaceKey(systemData.SystemKey);
                     rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+
+                    // it might be a change of langauge (reload)
+                    // Change the langauge to the session language.
+                    paramInfo.SetXmlProperty("genxml/hidden/culturecode", sessionParams.CultureCode);
+                    paramInfo.SetXmlProperty("genxml/hidden/culturecodeedit", sessionParams.CultureCodeEdit);
                 }
             }
             else
@@ -461,7 +466,7 @@ namespace DNNrocketAPI.ApiControllers
                 if (!systemData.Exists) return "ERROR: No SystemKey, Missing system.config";
                 var appThemeSystem = new AppThemeSystemLimpet(systemkey);
                 var razorTempl = appThemeSystem.GetTemplate("SideMenu.cshtml");
-                strOut = RenderRazorUtils.RazorDetail(razorTempl, null, null, null, true);
+                strOut = RenderRazorUtils.RazorDetail(razorTempl, null, null, new SessionParams(sInfo), true);
 
                 return strOut;
             }
@@ -478,7 +483,7 @@ namespace DNNrocketAPI.ApiControllers
                 var systemData = new SystemLimpet("rocketcatalog");
                 var appThemeSystem = new AppThemeSystemLimpet(systemkey);
                 var razorTempl = appThemeSystem.GetTemplate("TopBar.cshtml");
-                return RenderRazorUtils.RazorDetail(razorTempl, sInfo, passSettings, null, true);
+                return RenderRazorUtils.RazorDetail(razorTempl, sInfo, passSettings, new SessionParams(sInfo), true);
             }
             catch (Exception ex)
             {

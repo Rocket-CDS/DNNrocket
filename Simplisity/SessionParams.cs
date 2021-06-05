@@ -73,6 +73,7 @@ namespace Simplisity
         public string BrowserSessionId { get; set; }
         public string BrowserId { get; set; }
         public string CultureCode { get { return Info.GetXmlProperty("r/culturecode"); } set { Info.SetXmlProperty("r/culturecode", value.ToString()); } }
+        public string CultureCodeEdit { get { return Info.GetXmlProperty("r/culturecodeedit"); } set { Info.SetXmlProperty("r/culturecodeedit", value.ToString()); } }
         public string SiteKey { get { return Info.GetXmlProperty("r/sitekey"); } set { Info.SetXmlProperty("r/sitekey", value.ToString()); } }
         public string PageUrl { get { return Info.GetXmlProperty("r/pageurl"); } set { Info.SetXmlProperty("r/pageurl", value.ToString()); } }
         public string EngineURL { get { return Info.GetXmlProperty("r/engineurl"); } set { Info.SetXmlProperty("r/engineurl", value.ToString()); } }

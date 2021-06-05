@@ -222,7 +222,12 @@ namespace DNNrocketAPI.render
             return RenderImageSelect(moduleParams.SystemKey, moduleParams.DocumentFolderRel, singleselect, autoreturn);
         }
 
-
+        public IEncodedString EditFlag(SessionParams sessionParams, string classvalues = "")
+        {
+            var strOut = "<img class='" + classvalues + "' src='/DesktopModules/DNNrocket/API/images/flags/16/" + sessionParams.CultureCodeEdit + ".png' alt='" + sessionParams.CultureCodeEdit + "' />";
+            return new RawString(strOut);
+        }
+        [Obsolete("Use EditFlag(SessionParams sessionParams, string classvalues) instead")]
         public IEncodedString EditFlag(string classvalues = "")
         {
             var cultureCode = DNNrocketUtils.GetNextCulture();
