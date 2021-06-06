@@ -21,7 +21,7 @@ namespace DNNrocketAPI.ApiControllers
 
     public class RocketController : DnnApiController
     {
-        private String _editlang = "";
+        private SessionParams _sessionParams;
         public static string TemplateRelPath = "/DesktopModules/DNNrocket/api";
 
         [AllowAnonymous]
@@ -54,8 +54,8 @@ namespace DNNrocketAPI.ApiControllers
             if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
             if (systemkey == "" && context.Request.QueryString.AllKeys.Contains("s")) systemkey = context.Request.QueryString["s"]; // reduce chars.
 
-            var postInfo = BuildPostInfo();
             var paramInfo = BuildParamInfo();
+            var postInfo = BuildPostInfo();
 
             var systemData = new SystemLimpet(systemkey);
             var interfacekey = paramCmd.Split('_')[0];
@@ -103,8 +103,8 @@ namespace DNNrocketAPI.ApiControllers
             if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
             if (systemkey == "" && context.Request.QueryString.AllKeys.Contains("s")) systemkey = context.Request.QueryString["s"]; // reduce chars.
 
-            var postInfo = BuildPostInfo();
             var paramInfo = BuildParamInfo(true);
+            var postInfo = BuildPostInfo();
 
             var systemData = new SystemLimpet(systemkey);
             var interfacekey = paramCmd.Split('_')[0];
@@ -159,11 +159,11 @@ namespace DNNrocketAPI.ApiControllers
         {
             var context = HttpContext.Current;
             var requestJson = "";
-            var postInfo = new SimplisityInfo(_editlang);
+            var postInfo = new SimplisityInfo();
             if (DNNrocketUtils.RequestParam(context, "inputjson") != "")
             {
                 requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
-                postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, _editlang);
+                postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, "");
                 postInfo.PortalId = PortalUtils.GetPortalId();
             }
             return postInfo;
@@ -174,11 +174,11 @@ namespace DNNrocketAPI.ApiControllers
             var context = HttpContext.Current;
 
             var paramJson = "";
-            var paramInfo = new SimplisityInfo(_editlang);
+            var paramInfo = new SimplisityInfo();
             if (DNNrocketUtils.RequestParam(context, "paramjson") != "")
             {
                 paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
-                paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, _editlang);
+                paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, "");
                 paramInfo.PortalId = PortalUtils.GetPortalId();
             }
 
@@ -206,6 +206,10 @@ namespace DNNrocketAPI.ApiControllers
                 var requestStringContent = Encoding.ASCII.GetString(requestBinaryContent);
                 paramInfo.SetXmlProperty("genxml/requestcontent", requestStringContent);
             }
+
+            _sessionParams = new SessionParams(paramInfo);
+            if (_sessionParams.CultureCode == "") _sessionParams.CultureCode = DNNrocketUtils.GetCurrentCulture();
+            if (_sessionParams.CultureCodeEdit == "") _sessionParams.CultureCodeEdit = DNNrocketUtils.GetEditCulture();
 
             return paramInfo;
         }
@@ -252,8 +256,6 @@ namespace DNNrocketAPI.ApiControllers
             {
                 var objCtrl = new DNNrocketController();
 
-                _editlang = DNNrocketUtils.GetEditCulture();
-
                 if (paramCmd == "login_signout")
                 {
                     var ps = new PortalSecurity();
@@ -269,21 +271,6 @@ namespace DNNrocketAPI.ApiControllers
                 if (systemkey == "" && paramCmd.Contains("_")) systemkey = paramCmd.Split('_')[0];
                 if (systemkey == "") systemkey = "dnnrocket";
                 var systemData = new SystemLimpet(systemkey);
-
-                if (paramCmd == "admin_return")
-                {
-                    var sessionParams = new SessionParams(paramInfo);
-                    var moduleid = paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-                    if (moduleid == 0) moduleid = paramInfo.GetXmlPropertyInt("genxml/urlparams/moduleid");
-                    // we need to clear the tracking of commands on return to view.
-                    // This command is usually called from "MenuOut.cshtml" and triggers the "returnclick()" function.
-                    var UserParams = new UserParams(sessionParams.BrowserSessionId);
-                    UserParams.ModuleId = moduleid;  // use moduleid for tracking to stop mized content on modules.
-                    UserParams.TrackClear(systemkey);
-                    context.Response.ContentType = "text/plain";
-                    context.Response.Write("OK");
-                    context.Response.End();
-                }
 
                 var interfacekey = paramInfo.GetXmlProperty("genxml/hidden/interfacekey");
                 if (interfacekey == "") interfacekey = paramInfo.GetXmlProperty("genxml/urlparams/interfacekey").Trim(' ');
@@ -372,7 +359,7 @@ namespace DNNrocketAPI.ApiControllers
             var returnDictionary = new Dictionary<string, object>();
 
             // before event
-            var rtnDictInfo = DNNrocketUtils.EventProviderBefore(paramCmd, systemData, postInfo, paramInfo, _editlang);
+            var rtnDictInfo = DNNrocketUtils.EventProviderBefore(paramCmd, systemData, postInfo, paramInfo, "");
             if (rtnDictInfo.ContainsKey("post")) postInfo = (SimplisityInfo)rtnDictInfo["post"];
             if (rtnDictInfo.ContainsKey("param")) paramInfo = (SimplisityInfo)rtnDictInfo["param"];
 
@@ -380,7 +367,7 @@ namespace DNNrocketAPI.ApiControllers
             if (rocketInterface.Exists)
             {
 
-                returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, TemplateRelPath, _editlang);
+                returnDictionary = DNNrocketUtils.GetProviderReturn(paramCmd, systemData.SystemInfo, rocketInterface, postInfo, paramInfo, TemplateRelPath, "");
 
                 if (returnDictionary.ContainsKey("outputhtml"))
                 {
@@ -416,7 +403,7 @@ namespace DNNrocketAPI.ApiControllers
                     try
                     {
                         var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.System.StartConnect");
-                        returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemData.SystemInfo, null, postInfo, paramInfo, _editlang);
+                        returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemData.SystemInfo, null, postInfo, paramInfo, "");
                         strOut = (string)returnDictionary["outputhtml"];
                     }
                     catch (Exception ex)
@@ -433,7 +420,7 @@ namespace DNNrocketAPI.ApiControllers
             }
 
             // after Event
-            returnDictionary = DNNrocketUtils.EventProviderAfter(paramCmd, systemData, postInfo, paramInfo, _editlang);
+            returnDictionary = DNNrocketUtils.EventProviderAfter(paramCmd, systemData, postInfo, paramInfo, "");
             if (returnDictionary.ContainsKey("outputhtml")) strOut = (string)returnDictionary["outputhtml"];
             if (returnDictionary.ContainsKey("outputjson")) jsonReturn = returnDictionary["outputjson"];
             if (returnDictionary.ContainsKey("outputxml")) xmlReturn = returnDictionary["outputxml"];
@@ -461,14 +448,12 @@ namespace DNNrocketAPI.ApiControllers
         {
             try
             {
-                var strOut = "";
                 var systemData = new SystemLimpet(systemkey);
                 if (!systemData.Exists) return "ERROR: No SystemKey, Missing system.config";
                 var appThemeSystem = new AppThemeSystemLimpet(systemkey);
                 var razorTempl = appThemeSystem.GetTemplate("SideMenu.cshtml");
-                strOut = RenderRazorUtils.RazorDetail(razorTempl, null, null, new SessionParams(sInfo), true);
 
-                return strOut;
+                return RenderRazorUtils.RazorDetail(razorTempl, null, null, _sessionParams, true);
             }
             catch (Exception ex)
             {
@@ -483,7 +468,8 @@ namespace DNNrocketAPI.ApiControllers
                 var systemData = new SystemLimpet("rocketcatalog");
                 var appThemeSystem = new AppThemeSystemLimpet(systemkey);
                 var razorTempl = appThemeSystem.GetTemplate("TopBar.cshtml");
-                return RenderRazorUtils.RazorDetail(razorTempl, sInfo, passSettings, new SessionParams(sInfo), true);
+
+                return RenderRazorUtils.RazorDetail(razorTempl, sInfo, passSettings, _sessionParams, true);
             }
             catch (Exception ex)
             {

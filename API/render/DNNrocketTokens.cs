@@ -230,7 +230,7 @@ namespace DNNrocketAPI.render
         [Obsolete("Use EditFlag(SessionParams sessionParams, string classvalues) instead")]
         public IEncodedString EditFlag(string classvalues = "")
         {
-            var cultureCode = DNNrocketUtils.GetNextCulture();
+            var cultureCode = DNNrocketUtils.GetCurrentCulture();
             var strOut = "<img class='" + classvalues + "' src='/DesktopModules/DNNrocket/API/images/flags/16/" + cultureCode + ".png' alt='" + cultureCode + "' />";
             return new RawString(strOut);
         }

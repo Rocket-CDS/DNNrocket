@@ -881,33 +881,6 @@ namespace DNNrocketAPI.Components
             return l.Contains(cultureCode);
         }
 
-        public static string SetNextCulture(string nextlang)
-        {
-            if (!ValidCulture(nextlang)) nextlang = GetEditCulture();
-            var userid = UserUtils.GetCurrentUserId();
-            if (userid > 0)
-            {
-                if (String.IsNullOrEmpty(nextlang)) nextlang = GetEditCulture();
-                var cacheKey = PortalUtils.GetPortalId() + "*nextlang*" + userid;
-                CacheUtils.SetCache(cacheKey, nextlang);
-            }
-            return nextlang;
-        }
-
-        public static string GetNextCulture()
-        {
-            var rtnLang = "";
-            var userid = UserUtils.GetCurrentUserId();
-            if (userid > 0)
-            {
-                var cacheKey = PortalUtils.GetPortalId() + "*nextlang*" + userid;
-                rtnLang = (string)CacheUtils.GetCache(cacheKey);
-            }
-            if (String.IsNullOrEmpty(rtnLang)) rtnLang = GetEditCulture();
-            if (!ValidCulture(rtnLang)) rtnLang = GetCurrentCulture();
-            return rtnLang;
-        }
-
         public static string SetEditCulture(string editlang)
         {
             if (!ValidCulture(editlang)) editlang = GetCurrentCulture();
@@ -948,14 +921,14 @@ namespace DNNrocketAPI.Components
             SetCookieValue("language", cultureCode);
             Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureCode);
         }
-        public static string GetCurrentCulture()
+        public static void SetCurrentCulture()
         {
             if (HttpContext.Current != null && HttpContext.Current.Request != null)
             {
                 // use url param first.  This is important on changing languages through DNN.
                 if (HttpContext.Current.Request.QueryString["language"] != null)
                 {
-                    return HttpContext.Current.Request.QueryString["language"];
+                    SetCurrentCulture(HttpContext.Current.Request.QueryString["language"]);
                 }
                 // no url language, look in the cookies.
                 if (HttpContext.Current.Request.Cookies["language"] != null)
@@ -969,10 +942,18 @@ namespace DNNrocketAPI.Components
                             rtnlang = l.First();
                         }
                     }
-                    return rtnlang;
+                    SetCurrentCulture(rtnlang);
                 }
             }
             // default to system thread, but in API this may be wrong.
+            CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
+            SetCurrentCulture(currentCulture.Name);
+        }
+
+
+        public static string GetCurrentCulture()
+        {
+            // The API mayeb wring, so this should be set by code.
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             return currentCulture.Name;
         }
