@@ -132,6 +132,10 @@ namespace DNNrocketAPI.ApiControllers
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' parameter in url.  Unable to process action.");
             }
+            if (!context.Request.QueryString.AllKeys.Contains("culturecode"))
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, "No 'culturecode' parameter in url.  Unable to process action.");
+            }
 
             string rawData = Request.Content.ReadAsStringAsync().Result;
             if (rawData == "") return this.Request.CreateResponse(HttpStatusCode.OK, "No Data to process");
