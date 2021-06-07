@@ -64,9 +64,8 @@ namespace DNNrocketAPI.ApiControllers
 
             var rtn = new HttpResponseMessage();
             var strOut = ProcessAction(postInfo, paramInfo, paramCmd, systemkey);
-            if (strOut == "")
+            if (strOut == "process") // no admin actions processed, so do normal provider command.
             {
-                // no admin actions processed, so do normal provider command.
                 rtn = ProcessProvider(paramCmd, postInfo, paramInfo, systemData, rocketInterface);
             }
             else
@@ -344,7 +343,7 @@ namespace DNNrocketAPI.ApiControllers
                         strOut = SystemGlobalDetail(paramInfo);
                         break;
                     default:
-                        strOut = ""; // process the provider                            
+                        strOut = "process"; // process the provider              
                         break;
                 }
             }
