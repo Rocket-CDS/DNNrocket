@@ -548,6 +548,22 @@ namespace DNNrocketAPI.Components
             }
             return rtnDic;
         }
+        public static SimplisityRecord GetRoleByName(int portalId, string roleName)
+        {
+            var rtnRec = new SimplisityRecord();
+            var rtnDic = new Dictionary<int, string>();
+            var l = RoleController.Instance.GetRoles(portalId);
+            foreach (RoleInfo r in l)
+            {
+                if (r.RoleName == roleName)
+                {
+                    rtnRec.ItemID = r.RoleID;
+                    rtnRec.SetXmlProperty("genxml/rolename", r.RoleName);
+                    rtnRec.SetXmlProperty("genxml/roleid", r.RoleID.ToString());
+                }
+            }
+            return rtnRec;
+        }
 
         public static void AddUserRole(int portalId, int userId, int roleId)
         {
