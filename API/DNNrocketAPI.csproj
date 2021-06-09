@@ -206,6 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\AppThemeBase.cs" />
+    <Compile Include="Components\AppThemeRocketApiLimpet.cs" />
     <Compile Include="Components\AppThemeSystemLimpet.cs" />
     <Compile Include="Components\AppThemeLimpet.cs" />
     <Compile Include="Components\ArticleLink.cs" />

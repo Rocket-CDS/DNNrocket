@@ -157,8 +157,11 @@ namespace DNNrocketAPI.render
             model.SessionParamsData.Set("s-paging-cmd", scmd);
             model.SessionParamsData.Set("s-paging-post", spost);
             return RenderTemplate("Paging.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model, versionFolder);
+        }        
+        public IEncodedString RenderTemplate(string razorTemplateName, AppThemeRocketApiLimpet appThemeSystem, SimplisityRazor model, bool cacheOff = false)
+        {
+            return RenderTemplate(appThemeSystem.GetTemplate(razorTemplateName), model, cacheOff);
         }
-
         public IEncodedString RenderTemplate(string razorTemplateName, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model, bool cacheOff = false)
         {
             return RenderTemplate(appThemeSystem.GetTemplate(razorTemplateName), model, cacheOff);

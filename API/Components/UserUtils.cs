@@ -296,7 +296,7 @@ namespace DNNrocketAPI.Components
             }
         }
 
-        public static int CreateUser(int portalId, string username, string email)
+        public static int CreateUser(int portalId, string username, string email, string roleName = "")
         {
             if (portalId >= 0 && username != "" && email != "")
             {
@@ -336,7 +336,7 @@ namespace DNNrocketAPI.Components
                     var l = RoleController.Instance.GetRoles(portalId);
                     foreach (RoleInfo r in l)
                     {
-                        if (r.AutoAssignment || r.RoleName == DNNrocketRoles.Manager)
+                        if (r.AutoAssignment || r.RoleName == roleName)
                         {
                             UserUtils.AddUserRole(portalId, objUser.UserID, r.RoleID);
                         }
