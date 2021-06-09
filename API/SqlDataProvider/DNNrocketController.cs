@@ -530,6 +530,7 @@ namespace DNNrocketAPI
 
         /// <summary>
         /// Save SimplsityInfo class into base data and lang data.
+        /// **IF CACHED: CACHE THE RETURN SimplisityInfo, that is the copy of the DB.
         /// </summary>
         /// <param name="sInfo"></param>
         /// <param name="tableName"></param>
