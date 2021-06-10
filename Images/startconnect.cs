@@ -14,7 +14,6 @@ namespace DNNrocket.Images
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
         private RocketInterface _rocketInterface;
-        private SystemLimpet _systemData;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -22,7 +21,6 @@ namespace DNNrocket.Images
 
             paramCmd = paramCmd.ToLower();
 
-            _systemData = new SystemLimpet(systemInfo);
             _rocketInterface = new RocketInterface(interfaceInfo);
 
             var appPath = _rocketInterface.TemplateRelPath;

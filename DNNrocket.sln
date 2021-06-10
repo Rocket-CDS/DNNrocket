@@ -12,7 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		dnnpack.config = dnnpack.config
 		DNNpackager.dnnpack = DNNpackager.dnnpack
 		DNNrocketAPI.dnn = DNNrocketAPI.dnn
-		globalconfig.xml = globalconfig.xml
 		README.md = README.md
 		API\ViewRemote.ascx.cs = API\ViewRemote.ascx.cs
 		css\w3.css = css\w3.css
@@ -23,14 +22,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemData", "SystemData\SystemData.csproj", "{15E0D830-3A96-4FD9-B866-CADF83FDE70E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketMod", "RocketMod\RocketMod.csproj", "{1EF89082-4D6B-48FD-A2BB-7CDA6962F734}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CKEditor", "CKEditor", "{5AB59797-C962-466E-87D5-CE7EC9B72C38}"
-	ProjectSection(SolutionItems) = preProject
-		DNNpackager.config = DNNpackager.config
-		CKEditor\limitedconfig.js = CKEditor\limitedconfig.js
-		CKEditor\startup.js = CKEditor\startup.js
-		CKEditor\startupfull.js = CKEditor\startupfull.js
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketRemoteMod", "RocketRemoteMod\RocketRemoteMod.csproj", "{48AF9A32-54C0-45E9-A517-0BA04FCB08C3}"
 EndProject
@@ -111,9 +102,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{5AB59797-C962-466E-87D5-CE7EC9B72C38} = {14576A6A-F2E6-483D-8DF8-B7ECFFFC1ECE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5246FDCC-59B3-4727-A3B3-159E4DFBC825}

@@ -125,7 +125,7 @@ namespace Rocket.Tools
             _paramInfo = paramInfo;
             _pageref = _paramInfo.GetXmlProperty("genxml/hidden/pageref");
 
-            _systemData = new SystemLimpet(systemInfo);
+            _systemData = new SystemLimpet(systemInfo.GetXmlProperty("genxml/systemkey"));
             _rocketInterface = new RocketInterface(interfaceInfo);
             _passSettings = new Dictionary<string, string>();
 

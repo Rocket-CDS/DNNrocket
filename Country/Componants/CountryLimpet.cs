@@ -10,6 +10,8 @@ namespace DNNrocket.Country.Components
     public class CountryLimpet
     {
         private DNNrocketController _objCtrl;
+        public const string _tableName = "DNNrocket";
+        public const string _entityTypeCode = "COUNTRY";
 
         public CountryLimpet(int portalId, RocketInterface rocketInterface, string cultureCode = "")
         {
@@ -18,13 +20,13 @@ namespace DNNrocket.Country.Components
             CultureCode = cultureCode;
             _objCtrl = new DNNrocketController();
 
-            Info = _objCtrl.GetByGuidKey(portalId, -1, RocketInterface.EntityTypeCode, RocketInterface.InterfaceKey, "", RocketInterface.DatabaseTable);
+            Info = _objCtrl.GetByGuidKey(portalId, -1, _entityTypeCode, RocketInterface.InterfaceKey, "", _tableName);
             if (Info == null || Info.ItemID <= 0)
             {
                 Info = new SimplisityInfo();
                 Info.PortalId = portalId;
                 Info.ModuleId = -1;
-                Info.TypeCode = RocketInterface.EntityTypeCode;
+                Info.TypeCode = _entityTypeCode;
                 Info.GUIDKey = RocketInterface.InterfaceKey;
                 Info.Lang = CultureCode;
             }
@@ -38,11 +40,11 @@ namespace DNNrocket.Country.Components
         }
         public void Update()
         {
-            _objCtrl.SaveData(Info, RocketInterface.DatabaseTable);
+            _objCtrl.SaveData(Info, _tableName);
         }
         public void Delete()
         {
-            _objCtrl.Delete(Info.ItemID, RocketInterface.DatabaseTable);
+            _objCtrl.Delete(Info.ItemID, _tableName);
         }
 
         public List<SimplisityInfo> GetSelectedCountries()

@@ -44,7 +44,7 @@ namespace DNNrocket.Country
         {
             try
             {
-                var razorTempl = RenderRazorUtils.GetRazorTemplateData(rocketInterface.DefaultTemplate, rocketInterface.TemplateRelPath, rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+                var razorTempl = RenderRazorUtils.GetRazorTemplateData(rocketInterface.DefaultTemplate, rocketInterface.TemplateRelPath, "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
                 var countryData = new CountryLimpet(PortalUtils.GetPortalId(), rocketInterface);
 
                 var passSettings = new Dictionary<string, string>();

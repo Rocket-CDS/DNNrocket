@@ -10,21 +10,16 @@ namespace DNNrocket.Country
 {
     public class StartConnect : APInterface
     {
-        private SimplisityInfo _systemInfo;
         private RocketInterface _rocketInterface;
-        private Dictionary<string,string> _passSettings; 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             _rocketInterface = new RocketInterface(interfaceInfo);
-            //CacheUtilsDNN.ClearAllCache();
-            _systemInfo = systemInfo;
 
             var rtnDic = new Dictionary<string, object>();
 
             //[TODO : Security ]
             if (true)
             {
-                _passSettings = paramInfo.ToDictionary();
                 switch (paramCmd)
                 {
                     case "settingcountry_save":
