@@ -770,4 +770,10 @@ account_tree
   <data name="summary.Text" xml:space="preserve">
     <value>Summary</value>
   </data>
+  <data name="cleartempdb.Text" xml:space="preserve">
+    <value>Clear Temp DB</value>
+  </data>
+  <data name="recycleapppool.Text" xml:space="preserve">
+    <value>Recycle AppPool</value>
+  </data>
 </root>
