@@ -1,24 +1,39 @@
 <script>
-	$(document).ready(function () {
+    $(document).ready(function () {
+
+        var toolbarOptions = [
+            ['bold', 'italic'],        // toggled buttons
+            ['link', 'image', 'code-block'],
+
+            [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+
+            [{ 'align': [] }],
+
+            ['clean']                                         // remove formatting button
+        ];
 
 
-        var {elementid}quill = new Quill('#{elementid}quill', {
+        var { elementid }quill = new Quill('#{elementid}quill', {
             theme: 'snow',
             modules: {
-				imageResize: {
+                toolbar: toolbarOptions,
+                imageResize: {
                     modules: ['Resize', 'DisplaySize']
                 }
             }
-		});
+        });
 
-		
-		{elementid}quill.on('text-change', function(delta, source) { 
-			
-		jQuery('#{elementid}').val({elementid}quill.root.innerHTML); 
-		
-		});
-		
-	});  
+
+        { elementid } quill.on('text-change', function (delta, source) {
+
+            jQuery('#{elementid}').val({ elementid }quill.root.innerHTML);
+
+        });
+
+    });
 </script>
 
 

@@ -2,12 +2,18 @@
 
 CKEditor code is not included in DNNrocket.  You must use the CDN or include in your system.
 
-The current CDN  (it may need to be upgraded)
+There has been a special build made.
+
+The current CDN for default build (it may need to be upgraded)
 ```
-<script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/leedavi/CKEditorBuilds@1.0.0/ckeditorbase1.js"></script>
 ```
 
-Be care to use CKEditor5.
+The build is made by using the online builder (https://ckeditor.com/ckeditor-5/online-builder/) and hosted on GitHub.
+
+https://github.com/leedavi/CKEditorBuilds/tree/v1.0.0
+
+Only compatible with CKEditor5.
 
 Once the CKEditor CDN is inclulded you can use the razor token to activate the editor on a textarea.
 ```
@@ -18,13 +24,11 @@ The config html is saved in **/DesktopModule/DNNrocket/CKeditor**.  This is the 
 
 A full config html rel path can be passed to the razor token.
 
-If a custom build CKEditor is required the editor can be added to the system install and the required full html config path passed to the razor token.
-
-Becuase the CKEditor uses a element as a canvas, the sourcecode created by the editor needs to be moved into a input field before saving.  This can be done by using JS on the simplisityJS command "s-before" save button.
+Becuase the CKEditor uses a element as a canvas, the sourcecode created by the editor needs to be moved into a input field before saving.  This is be done by using JS on the simplisityJS command "s-before" save button.
 
 ```
 <div class="w3-col m2 w3-button simplisity_click"
-s-before="saveRichText"
+s-before="richtextidSave"
 s-return=".articlepopup"
 s-cmd="categoryadmin_save"
 s-post="#datacategorysection"
@@ -33,17 +37,20 @@ s-fields='{"categoryid":"@info.ItemID"}'>
 </div>
 ```
 
-The JS function:
-```
-    function saveRichText() {
-        $('#datacategorysection').append($('#richtext')); // we need to move the richtext to the save data area.
-        categoryrichtextSave(); // Copy editor data to the textarea (This function is defined by the config html and rendered by the razor token)
-    }
-```
+The JS function is found in the "scriptClassic.html" file.
+
+The JS function name is made from the textarea ID and the word "Save".  
+
+"{textareaid}Save"
+
+Thefore the s-before simplisity command attribute must match this.
+
+
+
 
 ---
 
-*NOTE: DNNrocket also supports Quill editor.  This is a fully opensource projet, easier to install, simplier and is the prefered editor.  But is not as complete as CKEditor5.*
+*NOTE: DNNrocket also supports Quill editor.  This is a fully opensource projet, easier to install and simplier.  But is not as complete as CKEditor5.*
 ```
 @EditorQuill(info, "genxml/lang/genxml/textbox/categoryrichtext", true)
 ```
