@@ -776,4 +776,7 @@ account_tree
   <data name="recycleapppool.Text" xml:space="preserve">
     <value>Recycle AppPool</value>
   </data>
+  <data name="contactus.Text" xml:space="preserve">
+    <value>Contact Us</value>
+  </data>
 </root>
