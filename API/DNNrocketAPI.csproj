@@ -293,7 +293,6 @@
     <None Include="Documents\File-Upload.docx" />
     <None Include="Documents\Filtering_Sorting_Data.docx" />
     <None Include="Documents\ManualSortList.docx" />
-    <None Include="Documents\RocketScheduler.docx" />
     <None Include="downloadfile.ashx" />
     <None Include="DNNrocketThumb.ashx" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />

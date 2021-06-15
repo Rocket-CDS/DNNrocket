@@ -132,17 +132,6 @@ namespace DNNrocketAPI.Components
             }
             return rtnList;
         }
-        public Dictionary<string, string> GetProviderTypes()
-        {
-            var rtnList = new Dictionary<string, string>();
-            var s = Record.GetRecordList("provtypesdata");
-            if (s == null) return null;
-            foreach (var i in s)
-            {
-                rtnList.Add(i.GetXmlProperty("genxml/textbox/provtypes"), i.GetXmlProperty("genxml/textbox/provname"));
-            }
-            return rtnList;
-        }
         public string SystemKey
         {
             get { return Record.GetXmlProperty("genxml/systemkey"); }
