@@ -41,18 +41,11 @@ namespace DNNrocketAPI.Components
             SchedulerList = new List<RocketInterface>();            
             InterfaceList = new Dictionary<string, RocketInterface>();
             Settings = new Dictionary<string, string>();
+           
             var l = Record.GetRecordList("interfacedata");
             foreach (var r in l)
             {
                 var rocketInterface = new RocketInterface(new SimplisityInfo(r));
-                if (rocketInterface.IsActive && rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.ProviderNameSpaceClass != "")
-                {
-                    EventList.Add(rocketInterface);
-                }
-                if (rocketInterface.IsActive && rocketInterface.IsProvider("scheduler") && rocketInterface.Assembly != "" && rocketInterface.ProviderNameSpaceClass != "")
-                {
-                    SchedulerList.Add(rocketInterface);
-                }
                 if (!InterfaceList.ContainsKey(rocketInterface.InterfaceKey)) InterfaceList.Add(rocketInterface.InterfaceKey, rocketInterface);
             }
             var l2 = Record.GetRecordList("settingsdata");
@@ -60,6 +53,19 @@ namespace DNNrocketAPI.Components
             {
                 var key = s.GetXmlProperty("genxml/textbox/name");
                 if (key != "" && !Settings.ContainsKey(key)) Settings.Add(key, s.GetXmlProperty("genxml/textbox/value"));
+            }
+            var l3 = Record.GetRecordList("providerdata");
+            foreach (var r in l3)
+            {
+                var rocketInterface = new RocketInterface(new SimplisityInfo(r));
+                if (rocketInterface.IsActive && rocketInterface.IsProvider("eventprovider") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                {
+                    EventList.Add(rocketInterface);
+                }
+                if (rocketInterface.IsActive && rocketInterface.IsProvider("scheduler") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                {
+                    SchedulerList.Add(rocketInterface);
+                }
             }
         }
 

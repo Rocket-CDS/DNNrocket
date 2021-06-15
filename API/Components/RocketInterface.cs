@@ -75,11 +75,6 @@ namespace DNNrocketAPI.Components
             get { return Info.GetXmlProperty("genxml/textbox/namespaceclass"); }
             set { Info.SetXmlProperty("genxml/textbox/namespaceclass", value.ToString()); }
         }
-        public string ProviderNameSpaceClass
-        {
-            get { return Info.GetXmlProperty("genxml/textbox/providernamespaceclass"); }
-            set { Info.SetXmlProperty("genxml/textbox/providernamespaceclass", value.ToString()); }
-        }
         public string Assembly
         {
             get { return Info.GetXmlProperty("genxml/textbox/assembly"); }

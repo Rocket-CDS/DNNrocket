@@ -24,11 +24,11 @@ namespace DNNrocketAPI.Components
                     {
                         if (rocketInterface.IsActive)
                         {
-                            var cacheKey = rocketInterface.Assembly + "," + rocketInterface.ProviderNameSpaceClass;
+                            var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
                             var ajaxprov = (SchedulerInterface)CacheUtilsDNN.GetCache(cacheKey);
                             if (ajaxprov == null)
                             {
-                                ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.ProviderNameSpaceClass);
+                                ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
                                 CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
                             }
                             ajaxprov.DoWork();
