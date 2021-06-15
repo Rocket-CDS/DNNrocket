@@ -302,6 +302,8 @@ namespace DNNrocketAPI.Components
             {
                 UserInfo objUser = null;
 
+                var ps = new PortalSettings(portalId);
+
                 var userInfo = new UserInfo();
                 userInfo.PortalID = portalId;
                 userInfo.Username = username;
@@ -313,7 +315,7 @@ namespace DNNrocketAPI.Components
                 userInfo.Email = email;
 
                 userInfo.Profile.PreferredLocale = DNNrocketUtils.GetCurrentCulture();
-                userInfo.Profile.PreferredTimeZone = PortalSettings.Current.TimeZone;
+                userInfo.Profile.PreferredTimeZone = ps.TimeZone;
                 userInfo.Profile.FirstName = userInfo.FirstName;
                 userInfo.Profile.LastName = userInfo.LastName;
 
