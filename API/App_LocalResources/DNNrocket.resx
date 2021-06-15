@@ -779,4 +779,7 @@ account_tree
   <data name="contactus.Text" xml:space="preserve">
     <value>Contact Us</value>
   </data>
+  <data name="emailon.Text" xml:space="preserve">
+    <value>Send Emails</value>
+  </data>
 </root>

@@ -17,31 +17,24 @@ namespace DNNrocketAPI.Components
         {
             try
             {
-                var portalList = PortalUtils.GetPortals();
-                foreach (var portalId in portalList)
+                var systemDataList = new SystemLimpetList();
+                foreach (var systemData in systemDataList.GetSystemList())
                 {
-                    var systemDataList = new SystemLimpetList();
-                    foreach (var systemData in systemDataList.GetSystemList())
+                    foreach (var rocketInterface in systemData.SchedulerList)
                     {
-                        systemData.PortalId = portalId;
-                        foreach (var rocketInterface in systemData.SchedulerList)
+                        var cacheKey = rocketInterface.Assembly + "," + rocketInterface.ProviderNameSpaceClass;
+                        var ajaxprov = (SchedulerInterface)CacheUtilsDNN.GetCache(cacheKey);
+                        if (ajaxprov == null)
                         {
-                            var cacheKey = rocketInterface.Assembly + "," + rocketInterface.ProviderNameSpaceClass;
-                            var ajaxprov = (SchedulerInterface)CacheUtilsDNN.GetCache(cacheKey);
-                            if (ajaxprov == null)
-                            {
-                                ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.ProviderNameSpaceClass);
-                                CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
-                            }
-                            ajaxprov.DoWork(systemData, rocketInterface);
-
+                            ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.ProviderNameSpaceClass);
+                            CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
                         }
+                        ajaxprov.DoWork();
+
                     }
-
-                    LogUtils.LogTrackingClear(portalId, 7);
-                    LogUtils.LogSystemClear(7);
-
                 }
+
+                LogUtils.LogSystemClear(7);
 
                 this.ScheduleHistoryItem.Succeeded = true;
 
