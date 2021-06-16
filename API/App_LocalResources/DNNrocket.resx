@@ -782,4 +782,10 @@ account_tree
   <data name="emailon.Text" xml:space="preserve">
     <value>Send Emails</value>
   </data>
+  <data name="apidomain.Text" xml:space="preserve">
+    <value>API Domain</value>
+  </data>
+  <data name="apiprotocol.Text" xml:space="preserve">
+    <value>Protocol</value>
+  </data>
 </root>
