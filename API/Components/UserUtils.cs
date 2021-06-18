@@ -479,6 +479,15 @@ namespace DNNrocketAPI.Components
             }
             return false;
         }
+        public static Boolean IsManager()
+        {
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Manager) ||
+                UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.Administrators))
+            {
+                return true;
+            }
+            return false;
+        }
         public static Boolean IsEditor()
         {
             if (UserController.Instance.GetCurrentUserInfo().IsInRole(DNNrocketRoles.ClientEditor) || 
