@@ -24,14 +24,24 @@ namespace DNNrocketAPI.Components
                     {
                         if (rocketInterface.IsActive)
                         {
-                            var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
-                            var ajaxprov = (SchedulerInterface)CacheUtilsDNN.GetCache(cacheKey);
-                            if (ajaxprov == null)
+                            try
                             {
-                                ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                                CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
+                                var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
+                                var ajaxprov = (SchedulerInterface)CacheUtilsDNN.GetCache(cacheKey);
+                                if (ajaxprov == null)
+                                {
+                                    ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
+                                    CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
+                                }
+                                ajaxprov.DoWork();
                             }
-                            ajaxprov.DoWork();
+                            catch (Exception Ex)
+                            {
+                                // report individual fail for scheduler, but continue other scheduler events
+                                this.ScheduleHistoryItem.AddLogNote(" Service Failed. Error:" + Ex.ToString());
+                                LogUtils.LogSystem(" Scheduler Failed. Error:" + Ex.ToString());
+                            }
+
                         }
                     }
                 }
