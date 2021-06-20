@@ -131,19 +131,22 @@ namespace DNNrocketAPI.ApiControllers
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' parameter in url.  Unable to process action.");
             }
-            if (!context.Request.QueryString.AllKeys.Contains("culturecode"))
+            if (!context.Request.QueryString.AllKeys.Contains("language"))
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, "No 'culturecode' parameter in url.  Unable to process action.");
+                return this.Request.CreateResponse(HttpStatusCode.OK, "No 'language' parameter in url.  Unable to process action.");
             }
+            if (!context.Request.QueryString.AllKeys.Contains("systemkey"))
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, "No 'systemkey' parameter in url.  Unable to process action.");
+            }
+            
 
             string rawData = Request.Content.ReadAsStringAsync().Result;
             if (rawData == "") return this.Request.CreateResponse(HttpStatusCode.OK, "No Data to process");
 
             var paramInfo = new SimplisityInfo();
             paramInfo.FromXmlItem(GeneralUtils.Base64Decode(rawData));
-            var SystemKey = paramInfo.GetXmlProperty("genxml/settings/remotesystemkey");
-            if (SystemKey == "") return this.Request.CreateResponse(HttpStatusCode.OK, "RemoteSystemKey not found");
-
+            var SystemKey = context.Request.QueryString["systemkey"];
             var paramCmd = context.Request.QueryString["cmd"];
             var portalId = PortalUtils.GetPortalId();
             paramInfo.PortalId = portalId;
@@ -397,29 +400,6 @@ namespace DNNrocketAPI.ApiControllers
                     xmlReturn = returnDictionary["outputxml"];
                 }
 
-            }
-            else
-            {
-                // check for systemspi, does not exist.  It's used to create the systemprovders 
-                if (systemData.SystemKey == "" || systemData.SystemKey == "systemapi" || systemData.SystemKey == "login")
-                {
-                    try
-                    {
-                        var ajaxprov = APInterface.Instance("DNNrocketSystemData", "DNNrocket.System.StartConnect");
-                        returnDictionary = ajaxprov.ProcessCommand(paramCmd, systemData.SystemInfo, null, postInfo, paramInfo, "");
-                        strOut = (string)returnDictionary["outputhtml"];
-                    }
-                    catch (Exception ex)
-                    {
-                        strOut = ex.ToString();
-                    }
-                }
-                else
-                {
-                    strOut = "ERROR: Invalid systemkey: " + systemData.SystemKey + "  interfacekey: " + rocketInterface.InterfaceKey + " cmd: " + paramCmd + " <br/> - Check Database for SYSTEM,'" + systemData.SystemKey + "' (No spaces) - Check 'simplisity_startpanel' and 'simplisity_panel' for correct s-cmd.  ";
-                    strOut += "<br/> - Ensure you do not have an infinate loop by activating a simplisity_panel within the returning template, on the document ready JS function.";
-                    CacheUtils.ClearAllCache();
-                }
             }
 
             // after Event
