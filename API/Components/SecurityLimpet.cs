@@ -28,7 +28,7 @@ namespace DNNrocketAPI.Components
                 PortalId = portalId;
                 _systemKey = systemKey;
                 SystemData = new SystemLimpet(_systemKey);
-                _defaultFileMapPath = SystemData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.xml";
+                _defaultFileMapPath = SystemData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.config";
                 _userId = UserUtils.GetCurrentUserId();
                 _moduleid = moduleid;
                 _tabid = tabid;

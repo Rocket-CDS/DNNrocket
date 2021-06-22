@@ -35,12 +35,31 @@ namespace DNNrocketAPI.Components
             PortalId = PortalUtils.GetPortalId();
             PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath().TrimEnd('\\') + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
             AssignVersionFolders();
+            ImportConfig();
 
             Exists = false;
             if (File.Exists(RazorFolderMapPath + "\\view.cshtml")) Exists = true;
 
             Populate();
 
+        }
+
+        private void ImportConfig()
+        {
+            ViewXml = new List<SimplisityRecord>();
+            VeiwCommands = new Dictionary<string, string>();
+            var themeConfigMapPath = RazorFolderMapPath + "\\theme.config";
+            if (File.Exists(themeConfigMapPath))
+            {
+                var configXml = FileUtils.ReadFile(themeConfigMapPath);
+                var sRec = new SimplisityRecord();
+                sRec.XMLData = configXml;
+                foreach (var v in sRec.GetRecordList("views"))
+                {
+                    VeiwCommands.Add(v.GetXmlProperty("genxml/name"), v.GetXmlProperty("genxml/cmd"));
+                    ViewXml.Add(v);
+                }
+            }
         }
 
         private void AssignVersionFolders()
@@ -468,6 +487,8 @@ namespace DNNrocketAPI.Components
 
         #region "properties"
 
+        public Dictionary<string,string> VeiwCommands { get; set; }
+        public List<SimplisityRecord> ViewXml { get; set; }
         public string AppThemeFolder { get; set; }
         public string AppThemeFolderRel { get; set; }
         public string AppThemeFolderMapPath { get; set; }
