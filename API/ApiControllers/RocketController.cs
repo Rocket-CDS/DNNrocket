@@ -75,7 +75,8 @@ namespace DNNrocketAPI.ApiControllers
 
 
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
-            rtn.Headers.Add("Access-Control-Allow-Origin", "*");
+            //rtn.Headers.Add("Access-Control-Allow-Origin", "*");
+            // Access-Control-Allow-Origin must be setup of IIS, to allow iframes.  The header cannot be added more than once.
             return rtn;
         }
         /// <summary>
@@ -111,7 +112,7 @@ namespace DNNrocketAPI.ApiControllers
             var rtn = ProcessProvider(paramCmd, postInfo, paramInfo, systemData, rocketInterface);
 
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
-            rtn.Headers.Add("Access-Control-Allow-Origin", "*");
+            //rtn.Headers.Add("Access-Control-Allow-Origin", "*");
             return rtn;
         }
         /// <summary>
@@ -157,7 +158,7 @@ namespace DNNrocketAPI.ApiControllers
             var rtn = ProcessProvider(paramCmd, new SimplisityInfo(), paramInfo, systemData, rocketInterface);
 
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
-            rtn.Headers.Add("Access-Control-Allow-Origin", "*");
+            //rtn.Headers.Add("Access-Control-Allow-Origin", "*");
             return rtn;
         }
 

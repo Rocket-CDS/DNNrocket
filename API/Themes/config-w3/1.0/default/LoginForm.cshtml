@@ -9,7 +9,6 @@
 
 <!-- Inject inline, so we always have css for login, even if header not injected -->
 <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/fa/css/all.min.css">
 
 <!-- If simplisity.js is not loaded by page, but login form is required. -->
 <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
@@ -36,7 +35,7 @@
                 <br />
 
                 <span id="loginbutton" class="w3-button w3-block w3-green w3-section w3-padding " onclick="simplisity_callserver(this);" s-cmdurl="/Desktopmodules/dnnrocket/api/rocket/action" s-fields="" s-post=".logindata" s-cmd="login_login" s-before="hidelogin" s-after="reloadpage">@ResourceKey("login.login")</span>
-                @CheckBox(info, "genxml/checkbox/rememberme", "&nbsp;" + ResourceKey("login.rememberme").ToString()," class='w3=check' ")
+                @CheckBox(info, "genxml/checkbox/rememberme", "&nbsp;" + ResourceKey("login.rememberme").ToString()," class='w3=check' ", true)
                 @if (info.GetXmlProperty("genxml/loginstatus") == "fail")
                 {
                     <div class="w3-panel w3-pale-red w3-padding-16">@ResourceKey("login.incorrectpass")</div>
