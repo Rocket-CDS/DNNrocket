@@ -1,4 +1,5 @@
-﻿using Simplisity;
+﻿using DotNetNuke.Entities.Users;
+using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,30 +8,10 @@ using System.Threading.Tasks;
 
 namespace DNNrocketAPI.Components
 {
-    public class UserLimpet
+    public class UserData
     {
-        public UserLimpet(int portalId, int userId)
+        public UserData()
         {
-            PortalId = portalId;
-            UserId = userId;
-            Populate();
-        }
-        public UserLimpet(int portalId, string username)
-        {
-            PortalId = portalId;
-            UserId = UserUtils.GetUserIdByUserName(portalId, username);
-            Populate();
-        }
-        public UserLimpet(string email, int portalId)
-        {
-            PortalId = portalId;
-            UserId = UserUtils.GetUserIdByEmail(portalId, email);
-            Populate();
-        }
-
-        private void Populate()
-        {
-
         }
 
         #region "properties"
@@ -39,6 +20,14 @@ namespace DNNrocketAPI.Components
         public int UserId { get; set; }
         public int PortalId { get; set; }
 
+        public string Email { get; set; }
+        public string Username { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        public DateTime CreatedOnDate { get; set; }
+        public DateTime LastLoginDate { get; set; }
+        public DateTime LastPasswordChangeDate { get; set; }
 
         #endregion
 

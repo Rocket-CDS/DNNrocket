@@ -12,7 +12,7 @@ namespace RocketEcommerce.Components
 {
     public class UserLimpetList
     {
-        private List<UserLimpet> _orderList;
+        private List<UserData> _userList;
         private DNNrocketController _objCtrl;
         private string _searchFilter;
         public UserLimpetList(int portalId, SimplisityInfo paramInfo, bool populate)
@@ -35,15 +35,15 @@ namespace RocketEcommerce.Components
         }
         public SessionParams SessionParamData { get; set; }
         public List<SimplisityInfo> UserList { get; set; }
-        public List<UserLimpet> GetUserList()
+        public List<UserData> GetUserList()
         {
-            _orderList = new List<UserLimpet>();
+            _userList = new List<UserData>();
             foreach (var o in UserList)
             {
-                var orderData = new UserLimpet(o.PortalId, o.UserId);
-                _orderList.Add(orderData);
+                var userData = UserUtils.GetUserData(o.PortalId, o.UserId);
+                _userList.Add(userData);
             }
-            return _orderList;
+            return _userList;
         }
         public string ClientImageFolderMapPath { get; set; }
         public string CultureCode { get; private set; }

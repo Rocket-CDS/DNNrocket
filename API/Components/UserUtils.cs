@@ -349,27 +349,64 @@ namespace DNNrocketAPI.Components
             return -1;
         }
 
+        public static UserData GetUserDataByUsername(int portalId, string username)
+        {
+            var userId = GetUserIdByUserName(portalId, username);
+            return GetUserData(portalId, userId);
+        }
+        public static UserData GetUserDataByEmail(int portalId, string email)
+        {
+            var userId = UserUtils.GetUserIdByEmail(portalId, email);
+            return GetUserData(portalId, userId);
+        }
+        public static UserData GetUserData(int portalId, int userId)
+        {
+            var userInfo = UserController.GetUserById(portalId, userId);
+            var userData = new UserData();
 
+            userData.PortalId = portalId;
+            userData.UserId = userId;
+
+            userData.Username = userInfo.Username;
+            userData.Email = userInfo.Email;
+            userData.FirstName = userInfo.FirstName;
+            userData.LastName = userInfo.LastName;
+
+            userData.CreatedOnDate = userInfo.CreatedOnDate;
+            userData.LastLoginDate = userInfo.Membership.LastLoginDate;
+            userData.LastPasswordChangeDate = userInfo.Membership.LastPasswordChangeDate;
+
+            return userData;
+        }
+
+        #region "Obsolete"
+
+        [Obsolete("Use UserUtils.GetUserData(portalId, userId) instead")]
         public static string GetUserEmail(int userId)
         {
             return GetUserEmail(PortalSettings.Current.PortalId, userId);
         }
+        [Obsolete("Use UserUtils.GetUserData(portalId, userId) instead")]
         public static string GetUserEmail(int portalId, int userId)
         {
             if (userId <= 0) return "";
             var userInfo = UserController.GetUserById(portalId, userId);
             return userInfo.Email;
         }
+        [Obsolete("Use UserUtils.GetUserData(portalId, userId) instead")]
         public static string GetUsername(int userId)
         {
             return GetUsername(PortalSettings.Current.PortalId, userId);
         }
+        [Obsolete("Use UserUtils.GetUserData(portalId, userId) instead")]
         public static string GetUsername(int portalId, int userId)
         {
             if (userId <= 0) return "";
             var userInfo = UserController.GetUserById(portalId, userId);
             return userInfo.Username;
         }
+        #endregion
+
         public static Dictionary<string, string> GetUserProfileProperties(string userId)
         {
             if (!GeneralUtils.IsNumeric(userId)) return null;
@@ -405,7 +442,6 @@ namespace DNNrocketAPI.Components
                 SetUserProfileProperties(userInfo, properties);
             }
         }
-
         public static int GetUserIdByUserName(int portalId, string username)
         {
             try
