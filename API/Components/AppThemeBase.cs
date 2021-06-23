@@ -47,7 +47,7 @@ namespace DNNrocketAPI.Components
         private void ImportConfig()
         {
             ViewXml = new List<SimplisityRecord>();
-            VeiwCommands = new Dictionary<string, string>();
+            SettingsXml = new List<SimplisityRecord>();
             var themeConfigMapPath = RazorFolderMapPath + "\\theme.rules";
             if (File.Exists(themeConfigMapPath))
             {
@@ -56,8 +56,11 @@ namespace DNNrocketAPI.Components
                 sRec.XMLData = configXml;
                 foreach (var v in sRec.GetRecordList("views"))
                 {
-                    VeiwCommands.Add(v.GetXmlProperty("genxml/name"), v.GetXmlProperty("genxml/cmd"));
                     ViewXml.Add(v);
+                }
+                foreach (var v in sRec.GetRecordList("settingsdata"))
+                {
+                    SettingsXml.Add(v);
                 }
             }
         }
@@ -487,7 +490,7 @@ namespace DNNrocketAPI.Components
 
         #region "properties"
 
-        public Dictionary<string,string> VeiwCommands { get; set; }
+        public List<SimplisityRecord> SettingsXml { get; set; }
         public List<SimplisityRecord> ViewXml { get; set; }
         public string AppThemeFolder { get; set; }
         public string AppThemeFolderRel { get; set; }
