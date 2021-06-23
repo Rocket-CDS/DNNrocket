@@ -433,7 +433,7 @@ namespace DNNrocketAPI.ApiControllers
             try
             {
                 var systemData = new SystemLimpet(systemkey);
-                if (!systemData.Exists) return "ERROR: No SystemKey, Missing system.config";
+                if (!systemData.Exists) return "ERROR: No SystemKey, Missing system.rules";
                 var appThemeSystem = new AppThemeSystemLimpet(systemkey);
                 var razorTempl = appThemeSystem.GetTemplate("SideMenu.cshtml");
 

@@ -48,7 +48,7 @@ namespace DNNrocketAPI.Components
         {
             ViewXml = new List<SimplisityRecord>();
             VeiwCommands = new Dictionary<string, string>();
-            var themeConfigMapPath = RazorFolderMapPath + "\\theme.config";
+            var themeConfigMapPath = RazorFolderMapPath + "\\theme.rules";
             if (File.Exists(themeConfigMapPath))
             {
                 var configXml = FileUtils.ReadFile(themeConfigMapPath);

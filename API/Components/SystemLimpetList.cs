@@ -19,7 +19,7 @@ namespace DNNrocketAPI.Components
             var dl = Directory.GetDirectories(DNNrocketUtils.MapPath("/DesktopModules/DNNrocketModules"));
             foreach (var d in dl)
             {
-                var systemFile = d + "\\system.config";
+                var systemFile = d + "\\system.rules";
                 if (File.Exists(systemFile))
                 {
                     string dirName = new DirectoryInfo(d).Name;

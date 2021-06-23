@@ -26,8 +26,8 @@ namespace DNNrocketAPI.Components
         private SimplisityRecord GetConfig(string systemKey)
         {
             Record = new SimplisityRecord();
-            var fileStr = FileUtils.ReadFile(SystemMapPath + "\\" + systemKey + "\\system.config"); 
-            if (fileStr == "") fileStr = FileUtils.ReadFile(PortalUtils.HomeDirectoryMapPath().TrimEnd('\\') + "\\system.config");
+            var fileStr = FileUtils.ReadFile(SystemMapPath + "\\" + systemKey + "\\system.rules"); 
+            if (fileStr == "") fileStr = FileUtils.ReadFile(PortalUtils.HomeDirectoryMapPath().TrimEnd('\\') + "\\system.rules");
             if (fileStr != "")
                 Record.XMLData = fileStr;
             else
