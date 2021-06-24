@@ -143,6 +143,7 @@ namespace Simplisity
                 }
                 return _rootNodeName;
             }
+            set { _rootNodeName = value; }
         }
 
         public string GetXmlNode(string xpath)
