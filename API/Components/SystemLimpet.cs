@@ -99,7 +99,7 @@ namespace DNNrocketAPI.Components
             }
             return rtnList;
         }
-        public List<RocketInterface> GetGroupInterfaceList(string groupref)
+        public List<RocketInterface> GetGroupInterfaceList(string groupref, bool checksecurity = false)
         {
             var rtnList = new List<RocketInterface>();
             var s = Record.GetRecordList("interfacedata");
@@ -109,7 +109,17 @@ namespace DNNrocketAPI.Components
                 if (i.GetXmlProperty("genxml/dropdownlist/group") == groupref)
                 {
                     var iface = new RocketInterface(new SimplisityInfo(i));
-                    rtnList.Add(iface);
+                    if (checksecurity)
+                    {
+                        if (iface.SecurityCheckUser(PortalUtils.GetCurrentPortalId(), UserUtils.GetCurrentUserId()))
+                        {
+                            rtnList.Add(iface);
+                        }
+                    }
+                    else
+                    {
+                        rtnList.Add(iface);
+                    }
                 }
             }
             return rtnList;
