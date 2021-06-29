@@ -187,6 +187,9 @@ namespace DNNrocketAPI.Components
         #region IUpgradeable Members
         public string UpgradeModule(string Version)
         {
+            var fname = PortalUtils.TempDirectoryMapPath() + "\\IUpgradeable.txt";
+            FileUtils.SaveFile(fname, "Action: " + DateTime.Now.ToString("O"));
+
             return string.Empty;
         }
         #endregion

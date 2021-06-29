@@ -281,6 +281,13 @@
     <Compile Include="SqlDataProvider\DNNrocketController.cs" />
     <Compile Include="SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemView.ascx.cs">
+      <DependentUpon>SystemView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SystemView.ascx.designer.cs">
+      <DependentUpon>SystemView.ascx.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -771,6 +778,9 @@
     <Content Include="Installation\SQL_SPROC_TableParam.txt" />
     <Content Include="js\rocketadmin.js" />
     <Content Include="js\simplisity.js" />
+    <Content Include="SystemView.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
     <None Include="Themes\config-w3\1.0\css\green-theme.css" />
     <None Include="Themes\config-w3\1.0\css\grey-theme.css" />
