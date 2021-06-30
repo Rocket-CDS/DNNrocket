@@ -53,6 +53,7 @@ namespace DNNrocketAPI.ApiControllers
             var systemkey = "";
             if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
             if (systemkey == "" && context.Request.QueryString.AllKeys.Contains("s")) systemkey = context.Request.QueryString["s"]; // reduce chars.
+            if (systemkey == "" || systemkey == "undefined") systemkey = paramCmd.Split('_')[0];
 
             var paramInfo = BuildParamInfo();
             var postInfo = BuildPostInfo();
@@ -267,7 +268,7 @@ namespace DNNrocketAPI.ApiControllers
                 {
                     var ps = new PortalSecurity();
                     ps.SignOut();
-                    strOut = UserUtils.LoginForm(new SimplisityInfo(), new SimplisityInfo(), "login", UserUtils.GetCurrentUserId());
+                    strOut = UserUtils.LoginForm("", new SimplisityInfo(), "login", UserUtils.GetCurrentUserId());
                     context.Response.ContentType = "text/plain";
                     context.Response.Write(strOut);
                     context.Response.End();
@@ -287,6 +288,7 @@ namespace DNNrocketAPI.ApiControllers
                 if (interfacekey == "") interfacekey = systemkey;
 
                 paramInfo.SetXmlProperty("genxml/systemkey", systemkey);
+                paramInfo.SetXmlProperty("genxml/userhostaddress", HttpContext.Current.Request.UserHostAddress);
 
                 switch (paramCmd)
                 {
@@ -296,7 +298,7 @@ namespace DNNrocketAPI.ApiControllers
                         strOut = lang; // the page will reload after the call
                         break;
                     case "login_login":
-                        UserUtils.DoLogin(systemData.SystemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
+                        UserUtils.DoLogin(systemData.SystemKey, postInfo, paramInfo);
                         strOut = ""; // the page will rteload after the call
                         break;
                     case "login_register":
@@ -304,7 +306,7 @@ namespace DNNrocketAPI.ApiControllers
                         break;
                     case "login_doregister":
                         strOut = UserUtils.RegisterUser(postInfo, DNNrocketUtils.GetCurrentCulture());
-                        if (strOut == "") UserUtils.DoLogin(systemData.SystemInfo, postInfo, HttpContext.Current.Request.UserHostAddress);
+                        if (strOut == "") UserUtils.DoLogin(systemData.SystemKey, postInfo, paramInfo);
                         break;
                     case "getsidemenu":
                         strOut = GetSideMenu(paramInfo, systemkey);

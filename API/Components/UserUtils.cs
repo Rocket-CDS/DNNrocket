@@ -140,20 +140,13 @@ namespace DNNrocketAPI.Components
             }
             return false;
         }
-
-        public static string DoLogin(SimplisityInfo systemInfo, SimplisityInfo sInfo, string userHostAddress)
+        public static bool DoLogin(string systemKey, SimplisityInfo postInfo, SimplisityInfo paramInfo)
         {
-            var strOut = "";
-            var username = sInfo.GetXmlProperty("genxml/text/username");
-            var password = sInfo.GetXmlProperty("genxml/hidden/password");
-            var rememberme = sInfo.GetXmlPropertyBool("genxml/checkbox/rememberme");
-
-            var rtnInfo = new SimplisityInfo();
-
+            var username = postInfo.GetXmlProperty("genxml/text/username");
+            var password = postInfo.GetXmlProperty("genxml/hidden/password");
+            var rememberme = postInfo.GetXmlPropertyBool("genxml/checkbox/rememberme");
 
             UserLoginStatus loginStatus = new UserLoginStatus();
-
-            rtnInfo.SetXmlProperty("genxml/loginstatus", "fail");
 
             UserInfo objUser;
             if (GeneralUtils.IsEmail(username))
@@ -169,24 +162,46 @@ namespace DNNrocketAPI.Components
                 var userValid = UserController.ValidateUser(objUser, PortalSettings.Current.PortalId, false);
                 if (userValid == UserValidStatus.VALID)
                 {
+                    var userHostAddress = paramInfo.GetXmlProperty("genxml/userhostaddress");
                     UserController.UserLogin(PortalSettings.Current.PortalId, objUser.Username, password, "", PortalSettings.Current.PortalName, userHostAddress, ref loginStatus, rememberme);
                     if (loginStatus == UserLoginStatus.LOGIN_SUCCESS || loginStatus == UserLoginStatus.LOGIN_SUPERUSER)
                     {
-                        rtnInfo.SetXmlProperty("genxml/loginstatus", "ok");
+                        return true;
                     }
                 }
             }
-            strOut = LoginForm(systemInfo, rtnInfo, "login", -1);
+            return false;
+        }
+        [Obsolete("Deprecated, please use 'bool DoLogin(string systemKey, SimplisityInfo postInfo, SimplisityInfo paramInfo)' instead.")]
+        public static string DoLogin(string systemKey, SimplisityInfo sInfo, string userHostAddress)
+        {
+            var paramInfo = new SimplisityInfo();
+            paramInfo.SetXmlProperty("genxml/userhostaddress", userHostAddress);
+
+            var rtnInfo = new SimplisityInfo();
+            if (DoLogin(systemKey, sInfo, paramInfo))
+                rtnInfo.SetXmlProperty("genxml/loginstatus", "ok");
+            else
+                rtnInfo.SetXmlProperty("genxml/loginstatus", "fail");
+
+            var strOut = LoginForm(systemKey, rtnInfo, "login", -1);
 
             return strOut;
         }
-        public static string LoginForm(SimplisityInfo systemInfo, SimplisityInfo sInfo, string interfacekey, int userid)
+        public static string LoginForm(string systemkey, SimplisityInfo sInfo, string interfacekey, int userid)
         {
             if (userid > 0)
             {
                 sInfo.SetXmlProperty("genxml/securityaccess", "You do not have security access");
             }
-            var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(systemInfo.GUIDKey,"LoginForm.cshtml", "/DesktopModules/DNNrocket/API", "config-w3", DNNrocketUtils.GetCurrentCulture(), "1.0", true);
+            var _appSystemTheme = new AppThemeSystemLimpet(systemkey);
+            var razorTempl = _appSystemTheme.GetTemplate("LoginForm.cshtml");
+            if (razorTempl == "")
+            {
+                // get default login form
+                var apiAppTheme = new AppThemeRocketApiLimpet();
+                razorTempl = apiAppTheme.GetTemplate("LoginForm.cshtml");                
+            }
             sInfo.SetXmlProperty("genxml/interfacekey", interfacekey); // make sure the login form has the correct interface command.
             return RenderRazorUtils.RazorDetail(razorTempl, sInfo);
         }
