@@ -382,14 +382,17 @@ namespace DNNrocketAPI.Components
             userData.PortalId = portalId;
             userData.UserId = userId;
 
-            userData.Username = userInfo.Username;
-            userData.Email = userInfo.Email;
-            userData.FirstName = userInfo.FirstName;
-            userData.LastName = userInfo.LastName;
+            if (userInfo != null)
+            {
+                userData.Username = userInfo.Username;
+                userData.Email = userInfo.Email;
+                userData.FirstName = userInfo.FirstName;
+                userData.LastName = userInfo.LastName;
 
-            userData.CreatedOnDate = userInfo.CreatedOnDate;
-            userData.LastLoginDate = userInfo.Membership.LastLoginDate;
-            userData.LastPasswordChangeDate = userInfo.Membership.LastPasswordChangeDate;
+                userData.CreatedOnDate = userInfo.CreatedOnDate;
+                userData.LastLoginDate = userInfo.Membership.LastLoginDate;
+                userData.LastPasswordChangeDate = userInfo.Membership.LastPasswordChangeDate;
+            }
 
             return userData;
         }
