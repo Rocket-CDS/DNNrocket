@@ -868,6 +868,10 @@ namespace Simplisity
 
         public static string GetMd5Hash(string input)
         {
+            return GetMd5Hash(input, true);
+        }
+        public static string GetMd5Hash(string input, bool uppercase)
+        {
             if (input != "")
             {
                 var md5 = MD5.Create();
@@ -876,7 +880,10 @@ namespace Simplisity
                 var sb = new StringBuilder();
                 foreach (byte t in hash)
                 {
-                    sb.Append(t.ToString("X2"));
+                    if (uppercase)
+                        sb.Append(t.ToString("X2"));
+                    else
+                        sb.Append(t.ToString("x2"));
                 }
                 return sb.ToString();
             }

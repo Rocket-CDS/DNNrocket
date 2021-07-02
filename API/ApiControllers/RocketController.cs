@@ -298,7 +298,7 @@ namespace DNNrocketAPI.ApiControllers
                         strOut = lang; // the page will reload after the call
                         break;
                     case "login_login":
-                        UserUtils.DoLogin(systemData.SystemKey, postInfo, paramInfo);
+                        UserUtils.DoLogin(postInfo, paramInfo);
                         strOut = ""; // the page will rteload after the call
                         break;
                     case "login_register":
@@ -306,7 +306,7 @@ namespace DNNrocketAPI.ApiControllers
                         break;
                     case "login_doregister":
                         strOut = UserUtils.RegisterUser(postInfo, DNNrocketUtils.GetCurrentCulture());
-                        if (strOut == "") UserUtils.DoLogin(systemData.SystemKey, postInfo, paramInfo);
+                        if (strOut == "") UserUtils.DoLogin(postInfo, paramInfo);
                         break;
                     case "getsidemenu":
                         strOut = GetSideMenu(paramInfo, systemkey);

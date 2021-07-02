@@ -29,6 +29,7 @@ using DotNetNuke.Common;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.Security.Roles;
 using System.Collections;
+using System.Web.Security;
 
 namespace DNNrocketAPI.Components
 {
@@ -131,6 +132,24 @@ namespace DNNrocketAPI.Components
             return "";
 
         }
+        public static bool ChangePassword(int portalId, int userId, string newPassword)
+        {
+            try
+            {
+                var objUser = UserController.GetUserById(portalId, userId);
+                if (objUser != null)
+                {
+                    MembershipUser user = Membership.GetUser(objUser.Username);
+                    user.ChangePassword(user.ResetPassword(), newPassword);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+            return false;
+        }
         public static bool ResetAndChangePassword(int portalId, int userId, string newPassword)
         {
             var objUser = UserController.GetUserById(portalId, userId);
@@ -140,12 +159,8 @@ namespace DNNrocketAPI.Components
             }
             return false;
         }
-        public static bool DoLogin(string systemKey, SimplisityInfo postInfo, SimplisityInfo paramInfo)
+        public static bool DoLogin(SessionParams sessionParams, string username, string password, bool rememberme)
         {
-            var username = postInfo.GetXmlProperty("genxml/text/username");
-            var password = postInfo.GetXmlProperty("genxml/hidden/password");
-            var rememberme = postInfo.GetXmlPropertyBool("genxml/checkbox/rememberme");
-
             UserLoginStatus loginStatus = new UserLoginStatus();
 
             UserInfo objUser;
@@ -162,8 +177,7 @@ namespace DNNrocketAPI.Components
                 var userValid = UserController.ValidateUser(objUser, PortalSettings.Current.PortalId, false);
                 if (userValid == UserValidStatus.VALID)
                 {
-                    var userHostAddress = paramInfo.GetXmlProperty("genxml/userhostaddress");
-                    UserController.UserLogin(PortalSettings.Current.PortalId, objUser.Username, password, "", PortalSettings.Current.PortalName, userHostAddress, ref loginStatus, rememberme);
+                    UserController.UserLogin(PortalSettings.Current.PortalId, objUser.Username, password, "", PortalSettings.Current.PortalName, sessionParams.UserHostAddress, ref loginStatus, rememberme);
                     if (loginStatus == UserLoginStatus.LOGIN_SUCCESS || loginStatus == UserLoginStatus.LOGIN_SUPERUSER)
                     {
                         return true;
@@ -172,14 +186,34 @@ namespace DNNrocketAPI.Components
             }
             return false;
         }
-        [Obsolete("Deprecated, please use 'bool DoLogin(string systemKey, SimplisityInfo postInfo, SimplisityInfo paramInfo)' instead.")]
+        /// <summary>
+        /// Do login using gereric login form data. xpath must use...
+        /// 
+        /// var username = postInfo.GetXmlProperty("genxml/text/username");
+        /// var password = postInfo.GetXmlProperty("genxml/hidden/password");
+        /// var rememberme = postInfo.GetXmlPropertyBool("genxml/checkbox/rememberme");
+        /// 
+        /// </summary>
+        /// <param name="postInfo"></param>
+        /// <param name="paramInfo"></param>
+        /// <returns></returns>
+        public static bool DoLogin(SimplisityInfo postInfo, SimplisityInfo paramInfo)
+        {
+            var username = postInfo.GetXmlProperty("genxml/text/username");
+            var password = postInfo.GetXmlProperty("genxml/hidden/password");
+            var rememberme = postInfo.GetXmlPropertyBool("genxml/checkbox/rememberme");
+            var sessionParams = new SessionParams(paramInfo);
+
+            return DoLogin(sessionParams, username, password, rememberme);
+        }
+        [Obsolete("Deprecated, please use 'bool DoLogin(SessionParams sessionParams, string username, string password, bool rememberme = false )' instead.")]
         public static string DoLogin(string systemKey, SimplisityInfo sInfo, string userHostAddress)
         {
             var paramInfo = new SimplisityInfo();
             paramInfo.SetXmlProperty("genxml/userhostaddress", userHostAddress);
 
             var rtnInfo = new SimplisityInfo();
-            if (DoLogin(systemKey, sInfo, paramInfo))
+            if (DoLogin(sInfo, paramInfo))
                 rtnInfo.SetXmlProperty("genxml/loginstatus", "ok");
             else
                 rtnInfo.SetXmlProperty("genxml/loginstatus", "fail");
