@@ -99,38 +99,43 @@ namespace DNNrocketAPI.Components
             }
             return rtnList;
         }
-        public static string ResetPass(SimplisityInfo sInfo)
+        public static bool ResetPass(string emailaddress, bool sendEmail)
         {
-
-            if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
+            try
             {
-                var emailaddress = sInfo.GetXmlProperty("genxml/text/emailaddress");
-                var objUser = UserController.GetUserByEmail(PortalSettings.Current.PortalId, emailaddress);
-                if (objUser != null)
+                if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
                 {
-
-                    var settings = new MembershipPasswordSettings(objUser.PortalID);
-                    var expiry = DateTime.Now.AddMinutes(settings.ResetLinkValidity);
-                    if (objUser.PasswordResetExpiration < DateTime.Now)
+                    var objUser = UserController.GetUserByEmail(PortalSettings.Current.PortalId, emailaddress);
+                    if (objUser != null)
                     {
-                        objUser.PasswordResetExpiration = expiry;
-                        objUser.PasswordResetToken = Guid.NewGuid();
-                        UserController.UpdateUser(objUser.PortalID, objUser);
-                    }
-                    else if (objUser.PasswordResetExpiration > expiry)
-                    {
-                        objUser.PasswordResetExpiration = expiry;
-                        UserController.UpdateUser(objUser.PortalID, objUser);
-                    }
 
-                    var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                    //  Mail.SendMail(objUser, MessageType.PasswordReminder, portalSettings);
+                        var settings = new MembershipPasswordSettings(objUser.PortalID);
+                        var expiry = DateTime.Now.AddMinutes(settings.ResetLinkValidity);
+                        if (objUser.PasswordResetExpiration < DateTime.Now)
+                        {
+                            objUser.PasswordResetExpiration = expiry;
+                            objUser.PasswordResetToken = Guid.NewGuid();
+                            UserController.UpdateUser(objUser.PortalID, objUser);
+                        }
+                        else if (objUser.PasswordResetExpiration > expiry)
+                        {
+                            objUser.PasswordResetExpiration = expiry;
+                            UserController.UpdateUser(objUser.PortalID, objUser);
+                        }
 
-                    // ************* Send email causes error in DNN ***************
+                        var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+
+                        if (sendEmail) Mail.SendMail(objUser, MessageType.PasswordReminder, portalSettings);
+
+                        return true;
+                    }
                 }
             }
-            return "";
-
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+            return false;
         }
         public static bool ChangePassword(int portalId, int userId, string newPassword)
         {
@@ -429,6 +434,13 @@ namespace DNNrocketAPI.Components
             }
 
             return userData;
+        }
+        public static UserData UpdateEmail(int portalId, int userId, string email)
+        {
+            var userInfo = UserController.GetUserById(portalId, userId);
+            userInfo.Email = email;
+            UserController.UpdateUser(portalId, userInfo);
+            return GetUserData(portalId, userId);
         }
 
         #region "Obsolete"
