@@ -17,6 +17,7 @@
     <value>\API\images\*</value>
     <value>\API\Systems</value>
     <value>\API\Themes\*</value>
+    <value>\API\Skins\*</value>
 
     <value>\Country</value>
     <value>\Country\App_LocalResources</value>

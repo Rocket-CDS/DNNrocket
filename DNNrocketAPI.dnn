@@ -117,6 +117,22 @@ It also contains the popular RocketMod modules, which is a dynamic content build
           </files>
         </component>
 
+        <component type="Skin">
+          <skinFiles>
+            <basePath>Portals\_default\Skins\cms</basePath>
+            <skinName>cms</skinName>
+            <skinFile>
+              <path></path>
+              <name>cms.ascx</name>
+            </skinFile>
+            <skinFile>
+              <path></path>
+              <name>cms.xml</name>
+            </skinFile>
+          </skinFiles>
+        </component>        
+
+
         <component type="Module">
           <desktopModule>
             <moduleName>RocketSystem</moduleName>
