@@ -52,6 +52,9 @@
     <value>admin.html</value>
     <value>readme.md</value>
 
+    <value>\API\Skins\cms\cms.ascx</value>
+    <value>\API\Skins\cms\cms.xml</value>
+
   </file>
 	<assembly>
     <value>\bin\System.Drawing.Common.dll</value>

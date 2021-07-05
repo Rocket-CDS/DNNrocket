@@ -779,10 +779,10 @@
     <Content Include="Installation\SQL_SPROC_TableParam.txt" />
     <Content Include="js\rocketadmin.js" />
     <Content Include="js\simplisity.js" />
-    <Content Include="Skins\cms.ascx">
+    <Content Include="Skins\cms\cms.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Skins\cms.xml" />
+    <Content Include="Skins\cms\cms.xml" />
     <Content Include="SystemView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
