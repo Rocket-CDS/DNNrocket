@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 
-<div id="ContentPane" runat="server" valign="top">CMS</div>
+<div id="Div1" runat="server" valign="top" class="w3-row w3-center">
+
+        <a class="w3-bar-item w3-button w3-green w3-margin w3-xlarge" href="/" >Admin</a>
+
+</div>
 
 
     <script>
