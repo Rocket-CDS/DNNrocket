@@ -29,6 +29,10 @@ namespace DNNrocketAPI.Components
         public DateTime LastLoginDate { get; set; }
         public DateTime LastPasswordChangeDate { get; set; }
 
+        public bool IsLockedOut { get; set; }
+        public bool Approved { get; set; }
+
+
         #endregion
 
 

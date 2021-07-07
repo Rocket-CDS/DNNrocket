@@ -431,6 +431,8 @@ namespace DNNrocketAPI.Components
                 userData.CreatedOnDate = userInfo.CreatedOnDate;
                 userData.LastLoginDate = userInfo.Membership.LastLoginDate;
                 userData.LastPasswordChangeDate = userInfo.Membership.LastPasswordChangeDate;
+                userData.IsLockedOut = userInfo.Membership.LockedOut;
+                userData.Approved = userInfo.Membership.Approved;
             }
 
             return userData;
