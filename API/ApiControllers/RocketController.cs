@@ -436,8 +436,12 @@ namespace DNNrocketAPI.ApiControllers
             {
                 var systemData = new SystemLimpet(systemkey);
                 if (!systemData.Exists) return "ERROR: No SystemKey, Missing system.rules";
+
+                var template = sInfo.GetXmlProperty("genxml/hidden/template");
+                if (template == "") template = "SideMenu.cshtml";
+
                 var appThemeSystem = new AppThemeSystemLimpet(systemkey);
-                var razorTempl = appThemeSystem.GetTemplate("SideMenu.cshtml");
+                var razorTempl = appThemeSystem.GetTemplate(template);
 
                 return RenderRazorUtils.RazorDetail(razorTempl, null, null, _sessionParams, true);
             }
@@ -450,10 +454,11 @@ namespace DNNrocketAPI.ApiControllers
         {
             try
             {
+                var template = sInfo.GetXmlProperty("genxml/hidden/template");
+                if (template == "") template = "TopBar.cshtml";
                 var passSettings = sInfo.ToDictionary();
-                var systemData = new SystemLimpet("rocketcatalog");
                 var appThemeSystem = new AppThemeSystemLimpet(systemkey);
-                var razorTempl = appThemeSystem.GetTemplate("TopBar.cshtml");
+                var razorTempl = appThemeSystem.GetTemplate(template);
 
                 return RenderRazorUtils.RazorDetail(razorTempl, sInfo, passSettings, _sessionParams, true);
             }
