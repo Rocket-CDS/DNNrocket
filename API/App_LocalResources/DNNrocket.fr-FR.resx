@@ -201,6 +201,9 @@
   <data name="config.Text" xml:space="preserve">
     <value>Configuration</value>
   </data>
+  <data name="contactus.Text" xml:space="preserve">
+    <value>Nous contacter</value>
+  </data>
   <data name="copy.Text" xml:space="preserve">
     <value>Copie</value>
   </data>

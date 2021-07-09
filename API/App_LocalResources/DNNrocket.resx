@@ -788,4 +788,7 @@ account_tree
   <data name="apiprotocol.Text" xml:space="preserve">
     <value>Protocol</value>
   </data>
+  <data name="home.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
 </root>
