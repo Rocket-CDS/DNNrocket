@@ -16,8 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		css\w3.css = css\w3.css
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Country", "Country\Country.csproj", "{6E1D0083-655A-4E7F-8408-84526EE67708}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simplisity", "Simplisity\Simplisity.csproj", "{8E8CF0B2-ED1C-4FD5-BB3A-F3DBB3B33FCB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Images", "Images\Images.csproj", "{943897E1-AAF1-40E1-89B9-674B3875E243}"
@@ -44,15 +42,6 @@ Global
 		{2200F6C3-7D4B-4CDF-908F-DCA37ADFB121}.Razor|Any CPU.ActiveCfg = Razor|Any CPU
 		{2200F6C3-7D4B-4CDF-908F-DCA37ADFB121}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2200F6C3-7D4B-4CDF-908F-DCA37ADFB121}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E1D0083-655A-4E7F-8408-84526EE67708}.Comp All|Any CPU.ActiveCfg = Release|Any CPU
-		{6E1D0083-655A-4E7F-8408-84526EE67708}.Comp All|Any CPU.Build.0 = Release|Any CPU
-		{6E1D0083-655A-4E7F-8408-84526EE67708}.CompAll|Any CPU.ActiveCfg = Release|Any CPU
-		{6E1D0083-655A-4E7F-8408-84526EE67708}.CompAll|Any CPU.Build.0 = Release|Any CPU
-		{6E1D0083-655A-4E7F-8408-84526EE67708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E1D0083-655A-4E7F-8408-84526EE67708}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E1D0083-655A-4E7F-8408-84526EE67708}.Razor|Any CPU.ActiveCfg = Razor|Any CPU
-		{6E1D0083-655A-4E7F-8408-84526EE67708}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E1D0083-655A-4E7F-8408-84526EE67708}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E8CF0B2-ED1C-4FD5-BB3A-F3DBB3B33FCB}.Comp All|Any CPU.ActiveCfg = Comp All|Any CPU
 		{8E8CF0B2-ED1C-4FD5-BB3A-F3DBB3B33FCB}.Comp All|Any CPU.Build.0 = Comp All|Any CPU
 		{8E8CF0B2-ED1C-4FD5-BB3A-F3DBB3B33FCB}.CompAll|Any CPU.ActiveCfg = CompAll|Any CPU

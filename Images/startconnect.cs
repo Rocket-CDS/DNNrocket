@@ -14,7 +14,7 @@ namespace DNNrocket.Images
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
         private RocketInterface _rocketInterface;
-
+        private string _systemkey;
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = "ERROR"; // return ERROR if not matching commands.
@@ -29,12 +29,12 @@ namespace DNNrocket.Images
             _appthemeMapPath = DNNrocketUtils.MapPath(_appthemeRelPath);
             _postInfo = postInfo;
             _paramInfo = paramInfo;
-
+            _systemkey = systemInfo.GUIDKey;
 
             //[TODO : Update security.  create a limpet]
             if (false) // security check 
             {
-                strOut = UserUtils.LoginForm(systemInfo, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                strOut = UserUtils.LoginForm(_systemkey, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                 return DNNrocketUtils.ReturnString(strOut);
             }
 

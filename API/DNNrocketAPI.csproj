@@ -206,10 +206,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\AppThemeBase.cs" />
-    <Compile Include="Components\AppThemeRocketApiLimpet.cs" />
-    <Compile Include="Components\AppThemeSystemLimpet.cs" />
-    <Compile Include="Components\AppThemeLimpet.cs" />
+    <Compile Include="Components\AppTheme\AppThemeBase.cs" />
+    <Compile Include="Components\AppTheme\AppThemeRocketApiLimpet.cs" />
+    <Compile Include="Components\AppTheme\AppThemeSystemLimpet.cs" />
+    <Compile Include="Components\AppTheme\AppThemeLimpet.cs" />
     <Compile Include="Components\ArticleLink.cs" />
     <Compile Include="Components\ArticleDoc.cs" />
     <Compile Include="Components\ArticleImage.cs" />
@@ -222,7 +222,7 @@
     <Compile Include="Components\RemoteParams.cs" />
     <Compile Include="Components\SchedulerUtils.cs" />
     <Compile Include="Components\PluginDataList.cs" />
-    <Compile Include="Components\AppThemeModule.cs" />
+    <Compile Include="Components\AppTheme\AppThemeModule.cs" />
     <Compile Include="Components\BackUpData.cs" />
     <Compile Include="Components\BackUpDataList.cs" />
     <Compile Include="Components\CacheFileUtils.cs" />
@@ -247,12 +247,12 @@
     <Compile Include="Components\ModuleUtils.cs" />
     <Compile Include="Components\RenderRazorUtils.cs" />
     <Compile Include="Components\StringCompress.cs" />
-    <Compile Include="Components\UserLimpet.cs" />
-    <Compile Include="Components\UserLimpetList.cs" />
+    <Compile Include="Components\User\UserLimpet.cs" />
+    <Compile Include="Components\User\UserLimpetList.cs" />
     <Compile Include="Components\WebSiteData.cs" />
     <Compile Include="Components\SystemGlobalData.cs" />
     <Compile Include="Components\PageRecordData.cs" />
-    <Compile Include="Components\UserParams.cs" />
+    <Compile Include="Components\User\UserParams.cs" />
     <Compile Include="downloadfile.ashx.cs">
       <DependentUpon>downloadfile.ashx</DependentUpon>
     </Compile>
@@ -264,7 +264,7 @@
     <Compile Include="Components\SystemLimpetList.cs" />
     <Compile Include="Components\PageIncludes.cs" />
     <Compile Include="Components\SystemLimpet.cs" />
-    <Compile Include="Components\UserUtils.cs" />
+    <Compile Include="Components\User\UserUtils.cs" />
     <Compile Include="Components\RocketInterface.cs" />
     <Compile Include="DNNrocketThumb.ashx.cs">
       <DependentUpon>DNNrocketThumb.ashx</DependentUpon>
