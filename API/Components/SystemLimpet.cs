@@ -102,7 +102,12 @@ namespace DNNrocketAPI.Components
 
             }
         }
-
+        public RocketInterface GetProvider(string interfaceKey)
+        {
+            var s = Record.GetRecordListItem("providerdata", "genxml/textbox/interfacekey", interfaceKey);
+            if (s == null) return null;
+            return new RocketInterface(new SimplisityInfo(s));
+        }
         public SimplisityInfo SystemInfo { get { return new SimplisityInfo(Record); } }
         public SimplisityRecord Record { get; set; }
         public List<RocketInterface> EventList { get; set;}
@@ -162,7 +167,7 @@ namespace DNNrocketAPI.Components
 
         public RocketInterface GetInterface(string interfaceKey)
         {
-            var s = Record.GetRecordListItem("interfacedata", "genxml/interfacekey", interfaceKey);
+            var s = Record.GetRecordListItem("interfacedata", "genxml/textbox/interfacekey", interfaceKey);
             if (s == null) return null;
             return new RocketInterface(new SimplisityInfo(s));
         }
