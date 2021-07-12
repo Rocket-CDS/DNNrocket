@@ -791,4 +791,23 @@ account_tree
   <data name="home.Text" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="cmsadmin.Text" xml:space="preserve">
+    <value>CMS Admin</value>
+  </data>
+  <data name="portaladmin.Text" xml:space="preserve">
+    <value>Portal Admin</value>
+  </data>
+  <data name="history.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+history
+&lt;/span&gt;</value>
+  </data>
+  <data name="notes.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+description
+&lt;/span&gt;</value>
+  </data>
+  <data name="notes.Text" xml:space="preserve">
+    <value>Notes</value>
+  </data>
 </root>
