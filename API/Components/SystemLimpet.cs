@@ -16,29 +16,58 @@ namespace DNNrocketAPI.Components
             Record = new SimplisityRecord();
             SystemKey = systemKey;
             Record = (SimplisityRecord)CacheUtilsDNN.GetCache(systemKey); // use cache for SystemKey read.
-            if (Record == null || SystemKey == "")
+            if (Record == null || Record.GetXmlProperty("genxml/systemkey") == "")
             {
-                Record = GetConfig(systemKey);
+                Record = GetConfig();
                 CacheUtilsDNN.SetCache(systemKey, Record);
             }
             InitSystem();
         }
-        private SimplisityRecord GetConfig(string systemKey)
+        private SimplisityRecord GetConfig()
         {
             Record = new SimplisityRecord();
-            var fileStr = FileUtils.ReadFile(SystemMapPath + "\\" + systemKey + "\\system.rules"); 
+            var fileStr = FileUtils.ReadFile(SystemMapPath + "\\system.rules"); 
             if (fileStr == "") fileStr = FileUtils.ReadFile(PortalUtils.HomeDirectoryMapPath().TrimEnd('\\') + "\\system.rules");
             if (fileStr != "")
                 Record.XMLData = fileStr;
             else
                 Exists = false;
 
+            if (Exists)
+            {
+                // Load Providers/Plugins
+                var dirPath = SystemMapPath + "\\Plugins";
+                if (Directory.Exists(dirPath))
+                {
+                    var files = Directory.GetFiles(dirPath, "*.rules");
+                    foreach (var f in files)
+                    {
+                        var fileStr2 = FileUtils.ReadFile(f);
+                        var sRec = new SimplisityRecord();
+                        sRec.XMLData = fileStr2;
+
+                        var pList = sRec.GetRecordList("providerdata");
+                        foreach (var p in pList)
+                        {
+                            Record.AddRecordListItem("providerdata", p);
+                        }
+
+                        var iList = sRec.GetRecordList("interfacedata");
+                        foreach (var i in iList)
+                        {
+                            Record.AddRecordListItem("interfacedata", i);
+                        }
+                    }
+                }
+            }
+
             return Record;
         }
         private void InitSystem()
         {
             EventList = new List<RocketInterface>();
-            SchedulerList = new List<RocketInterface>();            
+            SchedulerList = new List<RocketInterface>();
+            ProviderList = new List<RocketInterface>();
             InterfaceList = new Dictionary<string, RocketInterface>();
             Settings = new Dictionary<string, string>();
            
@@ -66,6 +95,11 @@ namespace DNNrocketAPI.Components
                 {
                     SchedulerList.Add(rocketInterface);
                 }
+                if (rocketInterface.IsActive && !rocketInterface.IsProvider("") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                {
+                    ProviderList.Add(rocketInterface);
+                }
+
             }
         }
 
@@ -73,6 +107,7 @@ namespace DNNrocketAPI.Components
         public SimplisityRecord Record { get; set; }
         public List<RocketInterface> EventList { get; set;}
         public List<RocketInterface> SchedulerList { get; set; }
+        public List<RocketInterface> ProviderList { get; set; }
         public bool Exists { get; set; }
         // Used for sceduler and looping through portals.
         public int PortalId { get; set; }
@@ -142,11 +177,7 @@ namespace DNNrocketAPI.Components
             }
             return rtnList;
         }
-        public string SystemKey
-        {
-            get { return Record.GetXmlProperty("genxml/systemkey"); }
-            set { Record.SetXmlProperty("genxml/systemkey", value); }
-        }
+        public string SystemKey { get; set; }
         public string SystemName
         {
             get { return Record.GetXmlProperty("genxml/systemname"); }
