@@ -22,8 +22,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Images", "Images\Images.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Documents", "Documents\Documents.csproj", "{765E1132-A338-4460-AB14-145052650857}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppThemes", "..\DNNrocketModules\RocketAppTheme\AppThemes.csproj", "{2841EF44-5408-47D3-AF1B-7010BF4E87A7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Comp All|Any CPU = Comp All|Any CPU
@@ -69,16 +67,6 @@ Global
 		{765E1132-A338-4460-AB14-145052650857}.Razor|Any CPU.ActiveCfg = razor|Any CPU
 		{765E1132-A338-4460-AB14-145052650857}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{765E1132-A338-4460-AB14-145052650857}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2841EF44-5408-47D3-AF1B-7010BF4E87A7}.Comp All|Any CPU.ActiveCfg = Comp All|Any CPU
-		{2841EF44-5408-47D3-AF1B-7010BF4E87A7}.Comp All|Any CPU.Build.0 = Comp All|Any CPU
-		{2841EF44-5408-47D3-AF1B-7010BF4E87A7}.CompAll|Any CPU.ActiveCfg = CompAll|Any CPU
-		{2841EF44-5408-47D3-AF1B-7010BF4E87A7}.CompAll|Any CPU.Build.0 = CompAll|Any CPU
-		{2841EF44-5408-47D3-AF1B-7010BF4E87A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2841EF44-5408-47D3-AF1B-7010BF4E87A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2841EF44-5408-47D3-AF1B-7010BF4E87A7}.Razor|Any CPU.ActiveCfg = Razor|Any CPU
-		{2841EF44-5408-47D3-AF1B-7010BF4E87A7}.Razor|Any CPU.Build.0 = Razor|Any CPU
-		{2841EF44-5408-47D3-AF1B-7010BF4E87A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2841EF44-5408-47D3-AF1B-7010BF4E87A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
