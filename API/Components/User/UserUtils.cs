@@ -59,10 +59,26 @@ namespace DNNrocketAPI.Components
         {
             try
             {
-                if (UserController.Instance.GetCurrentUserInfo() != null)
+                var userInfo = UserController.Instance.GetUserById(portalId, userId);
+                if (userInfo != null)
                 {
-                    var userInfo = UserController.Instance.GetUserById(portalId, userId);
                     UserController.DeleteUser(ref userInfo, notify, deleteAdmin);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+
+        }
+        public static void UnDeleteUser(int portalId, int userId)
+        {
+            try
+            {
+                var userInfo = UserController.Instance.GetUserById(portalId, userId);
+                if (userInfo != null)
+                {
+                    UserController.RestoreUser(ref userInfo);
                 }
             }
             catch (Exception ex)
@@ -433,6 +449,9 @@ namespace DNNrocketAPI.Components
                 userData.LastPasswordChangeDate = userInfo.Membership.LastPasswordChangeDate;
                 userData.IsLockedOut = userInfo.Membership.LockedOut;
                 userData.Approved = userInfo.Membership.Approved;
+                userData.IsDeleted = userInfo.IsDeleted;
+                userData.DisplayName = userInfo.DisplayName;
+
             }
 
             return userData;
@@ -440,8 +459,11 @@ namespace DNNrocketAPI.Components
         public static UserData UpdateEmail(int portalId, int userId, string email)
         {
             var userInfo = UserController.GetUserById(portalId, userId);
-            userInfo.Email = email;
-            UserController.UpdateUser(portalId, userInfo);
+            if (userInfo != null)
+            {
+                userInfo.Email = email;
+                UserController.UpdateUser(portalId, userInfo);
+            }
             return GetUserData(portalId, userId);
         }
 

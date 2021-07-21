@@ -24,6 +24,7 @@ namespace DNNrocketAPI.Components
         public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string DisplayName { get; set; }        
 
         public DateTime CreatedOnDate { get; set; }
         public DateTime LastLoginDate { get; set; }
@@ -31,6 +32,7 @@ namespace DNNrocketAPI.Components
 
         public bool IsLockedOut { get; set; }
         public bool Approved { get; set; }
+        public bool IsDeleted { get; set; }
 
 
         #endregion
