@@ -39,6 +39,7 @@ using System.Drawing;
 using DotNetNuke.Services.Scheduling;
 using System.Xml.Serialization;
 using System.Collections.Specialized;
+using DotNetNuke.UI.Skins;
 
 namespace DNNrocketAPI.Components
 {
@@ -498,29 +499,36 @@ namespace DNNrocketAPI.Components
             TabPermissionCollection newPermissions = newTab.TabPermissions;
 
             var roleid = -1;
-            var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
-            if (role != null)
+            if (roleName != "")
             {
-                //Add permission to the page so that all users can view it
-                foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
+                var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
+                if (role != null) roleid = role.RoleID;
+            }            
+            //Add permission to the page so that all users can view it
+            foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
+            {
+                if (p.PermissionKey == "VIEW")
                 {
-                    if (p.PermissionKey == "VIEW")
-                    {
-                        TabPermissionInfo tpi = new TabPermissionInfo();
-                        tpi.PermissionID = p.PermissionID;
-                        tpi.PermissionKey = p.PermissionKey;
-                        tpi.PermissionName = p.PermissionName;
-                        tpi.AllowAccess = true;
-                        tpi.RoleID = role.RoleID;
-                        tpi.RoleName = role.RoleName;
-                        newTab.TabPermissions.Add(tpi);
-                    }
+                    TabPermissionInfo tpi = new TabPermissionInfo();
+                    tpi.PermissionID = p.PermissionID;
+                    tpi.PermissionKey = p.PermissionKey;
+                    tpi.PermissionName = p.PermissionName;
+                    tpi.AllowAccess = true;
+                    tpi.RoleID = roleid;
+                    tpi.RoleName = p.PermissionName;
+                    if (newTab.TabPermissions.Contains(tpi)) newTab.TabPermissions.Remove(tpi);
+                    newTab.TabPermissions.Add(tpi);
                 }
             }
-
-            //PermissionProvider permissionProvider = new PermissionProvider();
-            //permissionProvider.SaveTabPermissions(newTab);
-
+            controller.ClearCache(portalId);
+        }
+        public static void AddPageSkin(int portalId, int pageId, string skinFolderName, string skinNameAscx)
+        {
+            var skinSrc = "[G]skins/" + skinFolderName + "/" + skinNameAscx;
+            var controller = new TabController();
+            var newTab = controller.GetTab(pageId, portalId);
+            newTab.SkinSrc = skinSrc;
+            controller.UpdateTab(newTab);
         }
         public static void CreateDefaultRocketRoles(int portalId)
         {
