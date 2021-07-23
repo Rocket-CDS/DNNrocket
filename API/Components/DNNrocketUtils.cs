@@ -468,7 +468,7 @@ namespace DNNrocketAPI.Components
             var tab = controller.GetTabByName(pageName, portalId);
             if (tab == null)
             {
-                var newTab = new TabInfo();
+                var newTab = new TabInfo { TabID = Null.NullInteger, ParentId = Null.NullInteger, TabName = pageName };
                 // set new page properties
                 newTab.PortalID = portalId; // the portal you want the page created on
                 newTab.TabName = pageName; // the new page name
@@ -481,7 +481,7 @@ namespace DNNrocketAPI.Components
                 newTab.DisableLink = false; // whether it has a menu link
                 newTab.IconFile = ""; // the image file used in the menu
                 newTab.Url = ""; // if the page is a redirection to a URL such as another page or an external site
-                newTab.ParentId = parentId;
+                //newTab.ParentId = parentId;
 
                 return controller.AddTab(newTab);
             }
