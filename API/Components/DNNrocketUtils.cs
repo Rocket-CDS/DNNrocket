@@ -516,8 +516,7 @@ namespace DNNrocketAPI.Components
                     tpi.AllowAccess = true;
                     tpi.RoleID = roleid;
                     tpi.RoleName = p.PermissionName;
-                    if (newTab.TabPermissions.Contains(tpi)) newTab.TabPermissions.Remove(tpi);
-                    newTab.TabPermissions.Add(tpi);
+                    if (!newTab.TabPermissions.Contains(tpi)) newTab.TabPermissions.Add(tpi);
                 }
             }
             controller.ClearCache(portalId);
@@ -527,8 +526,11 @@ namespace DNNrocketAPI.Components
             var skinSrc = "[G]skins/" + skinFolderName + "/" + skinNameAscx;
             var controller = new TabController();
             var newTab = controller.GetTab(pageId, portalId);
-            newTab.SkinSrc = skinSrc;
-            controller.UpdateTab(newTab);
+            if (newTab.SkinSrc != skinSrc)
+            {
+                newTab.SkinSrc = skinSrc;
+                controller.UpdateTab(newTab);
+            }
         }
         public static void CreateDefaultRocketRoles(int portalId)
         {
