@@ -87,8 +87,11 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
-
-
+        public bool HasSecurityAccess(string paramCmd)
+        {
+            if (HasCommandSecurityAccess(paramCmd)) return true;
+            return false;
+        }
         public void AddCommand(string commandKey, bool requiresSecurity)
         {
             if (_commandSecurity.ContainsKey(commandKey)) RemoveCommand(commandKey);
