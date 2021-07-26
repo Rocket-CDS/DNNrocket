@@ -23,7 +23,7 @@ namespace DNNrocketAPI.Components
 
             _systemData = new SystemLimpet(selectedSystemKey);
             _systemGlobalData = new SystemGlobalData();
-            _baseuri = _systemGlobalData.PublicAppThemeURI.TrimStart('/').TrimEnd('/') + "/" + _systemData.SystemKey;
+           // _baseuri = _systemGlobalData.PublicAppThemeURI.TrimStart('/').TrimEnd('/') + "/" + _systemData.SystemKey;
         }
         public string DownloadAppThemeToFile(string appThemeFolder, string destinationMapPath)
         {

@@ -31,11 +31,11 @@ namespace DNNrocketAPI.Components
             LoadLocalIndex();
             if (OnlineIndexType == "public")
             {
-                _httpConnect = new HttpConnect(systemKey);
+               // _httpConnect = new HttpConnect(systemKey);
             }
             else
             {
-                _ftpConnect = new FtpConnect(systemKey);
+               // _ftpConnect = new FtpConnect(systemKey);
             }
         }
         private void LoadLocalIndex()
@@ -112,7 +112,7 @@ namespace DNNrocketAPI.Components
             }
             else
             {
-                if (_ftpConnect.IsValid) _ftpConnect.DownloadAppThemeXmlToFile(appThemeFolder, fMapPath);
+                //if (_ftpConnect.IsValid) _ftpConnect.DownloadAppThemeXmlToFile(appThemeFolder, fMapPath);
             }
 
 

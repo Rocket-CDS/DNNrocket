@@ -38,23 +38,23 @@ namespace Rocket.AppThemes.Components
         }
         public void PopulateList()
         {
-            PluginList = new List<SimplisityRecord>();
-            var ftpConnect = new FtpConnect("plugins");
-            if (ftpConnect.IsValid)
-            {
-                var l = ftpConnect.DownloadAppThemeXmlIndexList();
-                List<SimplisityRecord> SortedList = l.OrderBy(o => o.GetXmlProperty("genxml/hidden/name")).ToList();
-                foreach (SimplisityRecord a in SortedList)
-                {
-                    PluginList.Add(a);
-                }
-            }
-            else
-            {
-                Error = true;
-                ErrorMsg = "";
-            }
-            CacheUtilsDNN.SetCache(_listCacheKey, PluginList);
+            //PluginList = new List<SimplisityRecord>();
+            //var ftpConnect = new FtpConnect("plugins");
+            //if (ftpConnect.IsValid)
+            //{
+            //    var l = ftpConnect.DownloadAppThemeXmlIndexList();
+            //    List<SimplisityRecord> SortedList = l.OrderBy(o => o.GetXmlProperty("genxml/hidden/name")).ToList();
+            //    foreach (SimplisityRecord a in SortedList)
+            //    {
+            //        PluginList.Add(a);
+            //    }
+            //}
+            //else
+            //{
+            //    Error = true;
+            //    ErrorMsg = "";
+            //}
+            //CacheUtilsDNN.SetCache(_listCacheKey, PluginList);
         }
         public void ClearCache()
         {
