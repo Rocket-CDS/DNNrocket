@@ -810,4 +810,7 @@ description
   <data name="notes.Text" xml:space="preserve">
     <value>Notes</value>
   </data>
+  <data name="services.Text" xml:space="preserve">
+    <value>Services</value>
+  </data>
 </root>
