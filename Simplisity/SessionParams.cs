@@ -66,6 +66,8 @@ namespace Simplisity
         public int RowCount { get { return Info.GetXmlPropertyInt("r/rowcount"); } set { Info.SetXmlProperty("r/rowcount", value.ToString()); } }
         //Filter SQL
         public int FilterIndex { get { return Info.GetXmlPropertyInt("r/filterindex"); } set { Info.SetXmlProperty("r/filterindex", value.ToString()); } }
+        public int ModuleId { get { return Info.GetXmlPropertyInt("r/moduleid"); } set { Info.SetXmlProperty("r/moduleid", value.ToString()); } }
+        public int TabId { get { return Info.GetXmlPropertyInt("r/tabid"); } set { Info.SetXmlProperty("r/tabid", value.ToString()); } }
         /// <summary>
         /// Return a session data value, with an element "id" of "searchtext"
         /// </summary>
@@ -78,6 +80,7 @@ namespace Simplisity
         public string PageUrl { get { return Info.GetXmlProperty("r/pageurl"); } set { Info.SetXmlProperty("r/pageurl", value.ToString()); } }
         public string EngineURL { get { return Info.GetXmlProperty("r/engineurl"); } set { Info.SetXmlProperty("r/engineurl", value.ToString()); } }
         public string UserHostAddress { get { return Info.GetXmlProperty("r/userhostaddress"); } set { Info.SetXmlProperty("r/userhostaddress", value.ToString()); } }
+        public string ApiUrl { get { return Info.GetXmlProperty("r/apiurl"); } set { Info.SetXmlProperty("r/apiurl", value.ToString()); } }
 
         #endregion
 

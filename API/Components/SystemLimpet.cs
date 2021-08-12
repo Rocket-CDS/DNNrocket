@@ -171,9 +171,11 @@ namespace DNNrocketAPI.Components
             if (s == null) return null;
             return new RocketInterface(new SimplisityInfo(s));
         }
-        public Dictionary<string,string> GetGroups()
+        public Dictionary<string,string> GetGroups(bool emptyEntry = false)
         {
             var rtnList = new Dictionary<string, string>();
+            if (emptyEntry) rtnList.Add("", ""); // add empty for root level.
+
             var s = Record.GetRecordList("groupsdata");
             if (s == null) return null;
             foreach (var i in s)
