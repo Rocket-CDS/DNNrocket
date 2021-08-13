@@ -181,7 +181,7 @@ file_download
   </data>
   <data name="remove.Icon" xml:space="preserve">
     <value>&lt;span class="material-icons"&gt;
-remove_circle
+delete
 &lt;/span&gt;</value>
   </data>
   <data name="save.Icon" xml:space="preserve">
