@@ -1,0 +1,94 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using Rocket.AppThemes.Components;
+@using System.IO;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+
+@{
+    var appTheme = (AppThemeLimpet)Model.List.First();
+    var sessionParams = Model.SessionParamsData;
+    var disableDelete = true;
+}
+
+<div id="editorpopup">
+    <div class="w3-row w3-padding">
+        <div class="w3-button w3-theme-action w3-padding-8 savebutton simplisity_click" s-after="hideEditorPopup" s-before="saveeditordata" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-return=".articlepopup" s-fields='{"filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
+        @if (sessionParams.Get("moduleref") != "")
+        {
+            disableDelete = false;
+            <span class="w3-mergin-left w3-text-pale-blue">[M]</span>
+        }
+        else
+        {
+            if (appTheme.IsPortalLevel(Model.GetSetting("filename")) &&  PortalUtils.GetPortalId() > 0)
+            {
+                disableDelete = false;
+                <span class="w3-mergin-left w3-text-indigo">[P]</span>
+            }
+        }
+        @if (!disableDelete || PortalUtils.GetPortalId() == 0)
+        {
+            <div class="w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-after="hideEditorPopup" s-cmd="@(Model.GetSetting("interfacekey"))_deletefile" s-return=".articlepopup" s-fields='{"filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","moduleref":"@sessionParams.Get("moduleref")"}'>@ButtonText(ButtonTypes.delete)</div>
+        }
+
+
+        <i id="saveicon" class='fas fa-save ' style="display:none;font-size:24px"></i>
+
+    </div>
+    <div class="w3-row ">
+        <b id="editorfilename" class="" style="">@Model.GetSetting("filename")</b>
+    </div>
+
+    <div id="editorsave" style="">
+        @HiddenField(new SimplisityInfo(), "genxml/hidden/selectedsystemkey", "", appTheme.SystemKey)
+        <input id="editorcodesave" type="hidden" value="" />
+    </div>
+
+    <input id="editorsavereturn" type="hidden" value="" />
+    
+    <div id="editorwrapper" class="w3-row " style="height:720px;">
+
+        <textarea id="razoreditor" >@appTheme.GetTemplate(Model.GetSetting("filename"))</textarea>
+
+    </div>    
+
+</div>
+
+<script>
+
+    var myCodeMirror;
+
+    $(document).ready(function () {
+
+        myCodeMirror = CodeMirror.fromTextArea(document.getElementById("razoreditor"), {
+            mode: '@Model.GetSetting("editormode")',
+            theme: "night"
+        });
+
+
+        rpadmin.moveToTop('#articleselectmodal');
+        $('#articleselectmodal').show();
+
+        myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
+        $('#razoreditor').focus();
+
+    });
+
+
+    function saveeditordata() {
+        $('#editorcodesave').val(simplisity_encode(myCodeMirror.getValue()));
+        $('#saveicon').show();
+        $("#saveicon").fadeOut();
+    }
+
+    function hideEditorPopup() {
+        $('#articleselectmodal').hide();
+    }
+
+</script>

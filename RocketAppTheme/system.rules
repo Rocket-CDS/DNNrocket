@@ -1,0 +1,47 @@
+  <genxml>
+    <systemkey>rocketapptheme</systemkey>
+    <systemname>Rocket AppThemes</systemname>
+    <databasetable></databasetable>
+    <logtracking>False</logtracking>
+    <active>False</active>
+
+    <groupsdata list="true">
+    </groupsdata>
+
+    <provtypesdata list="true">
+    </provtypesdata>
+
+    <interfacedata list="true">
+
+      <genxml>        
+        <textbox>
+          <interfacekey>rocketapptheme</interfacekey>
+          <namespaceclass>DNNrocket.AppThemes.StartConnect</namespaceclass>
+          <providernamespaceclass></providernamespaceclass>
+          <assembly>RocketPortal</assembly>
+          <interfaceicon></interfaceicon>
+          <defaultcommand>rocketapptheme_getlist</defaultcommand>
+          <relpath>/DesktopModules/DNNrocket/RocketAppTheme</relpath>
+        </textbox>
+        <providertype></providertype>
+        <dropdownlist>
+          <group></group>
+        </dropdownlist>
+        <checkbox>
+          <onmenu>false</onmenu>
+          <active>true</active>
+        </checkbox>
+        <radio>
+          <securityrolesadministrators>1</securityrolesadministrators>
+          <securityrolesmanager>0</securityrolesmanager>
+          <securityroleseditor>0</securityroleseditor>
+          <securityrolesclienteditor>0</securityrolesclienteditor>
+          <securityrolesregisteredusers>0</securityrolesregisteredusers>
+          <securityrolessubscribers>0</securityrolessubscribers>
+          <securityrolesall>0</securityrolesall>
+        </radio>
+      </genxml>
+      
+
+    </interfacedata>
+  </genxml>

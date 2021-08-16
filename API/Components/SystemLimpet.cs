@@ -15,6 +15,7 @@ namespace DNNrocketAPI.Components
             Exists = true;
             Record = new SimplisityRecord();
             SystemKey = systemKey;
+            GetSystemRelPath();
             Record = (SimplisityRecord)CacheUtilsDNN.GetCache(systemKey); // use cache for SystemKey read.
             if (Record == null || Record.GetXmlProperty("genxml/systemkey") == "")
             {
@@ -101,6 +102,17 @@ namespace DNNrocketAPI.Components
                 }
 
             }
+        }
+        /// <summary>
+        /// Each system should have a "system.rules", search for this in DNNrocketModules.  If not there assume DNNrocket folder.
+        /// </summary>
+        private void GetSystemRelPath()
+        {
+            var f = DNNrocketUtils.MapPath("/Desktopmodules/dnnrocketmodules/" + SystemKey + "/system.rules");
+            if (File.Exists(f))
+                SystemRelPath = "/Desktopmodules/dnnrocketmodules/" + SystemKey;
+            else
+                SystemRelPath = "/Desktopmodules/dnnrocket/" + SystemKey;
         }
         public RocketInterface GetProvider(string interfaceKey)
         {
@@ -217,10 +229,7 @@ namespace DNNrocketAPI.Components
         {
             get { return SystemRelPath + "/" + SystemKey + "/admin.html"; }
         }
-        public string SystemRelPath
-        {
-            get { return "/Desktopmodules/dnnrocketmodules/" + SystemKey; }
-        }
+        public string SystemRelPath { get; set; }
         public string SystemMapPath
         {
             get { return DNNrocketUtils.MapPath(SystemRelPath); }

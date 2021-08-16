@@ -1,0 +1,130 @@
+@inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using DNNrocketAPI.Components;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+@{
+
+    var portalList = (PortalLimpetList)Model.List.First();
+    var appThemeSystem = new AppThemeSystemLimpet("rocketportal");
+
+}
+
+@RenderTemplate("Popups.cshtml", appThemeSystem, Model)
+
+<div id="datalist" class="w3-container w3-margin-top">
+
+    <table class="w3-table w3-bordered w3-hoverable">
+        <thead>
+            <tr>
+                <th>@ResourceKey("RP.name")</th>
+                <th>@ResourceKey("RP.serviceurl")</th>
+            </tr>
+        </thead>
+        @foreach (PortalLimpet portalData in portalList.GetPortalList())
+        {
+            if (portalData.PortalId > 0)
+            {
+                <tr class="simplisity_click" s-cmd="portal_detail" s-fields='{"portalid":"@portalData.PortalId","track":"false"}' style="cursor:pointer;">
+                    <td><b>@portalData.Name</b></td>
+                    <td>
+                        @portalData.EngineUrl
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+</div>
+
+<!-- Popups -->
+<div id="portaldetail" class="w3-modal">
+    <div class="w3-modal-content w3-card w3-animate-zoom" style="width:25%;">
+
+        <header class="w3-container  w3-theme" style="height:38px;">
+            <span onclick="$('#portaldetail').hide();" class="w3-button w3-display-topright">&times;</span>
+        </header>
+        <div class="w3-row w3-padding">
+            @TextBox(new SimplisityInfo(), "genxml/name", "name='name' class='w3-input w3-border' autocomplete='off' required placeholder='" + ResourceKey("RP.name") + "...' maxlength='250' ", "")
+        </div>
+        <div class="w3-row w3-padding">
+            @TextBox(new SimplisityInfo(), "genxml/portalurl", "name='portalurl' class='w3-input w3-border' autocomplete='off' required placeholder='Portal root URL...' maxlength='250' ", "")
+        </div>
+        <div class="w3-row w3-padding">
+            @TextBox(new SimplisityInfo(), "genxml/manageremail", "name='manageremail' class='w3-input w3-border' autocomplete='off' required maxlength='250' placeholder='" + ResourceKey("RP.manageremail") + "...' ", "")
+        </div>
+        <div class="w3-row w3-padding">
+            <input class="w3-input w3-border" type="password" name='managerpassword' required s-xpath="genxml/managerpassword" autocomplete='off' placeholder="@ResourceKey("RP.managerpassword")..." id="managerpassword">
+        </div>
+
+        <div class="w3-row w3-padding">
+            <div class="w3-button w3-green w3-padding-8 w3-right simplisity_click portalcreatebutton " s-before="validatepopupdetail" s-cmd="portal_create" s-reload="false" s-post="#portaldetail">@ButtonText(ButtonTypes.create)</div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.displayportallist').show();
+
+        // turn off the reload flag
+        simplisity_setParamField("reload", false)
+
+        $('.clearsearch ').unbind("click");
+        $('.clearsearch ').click(function () {
+            $('#searchtext').val('');
+            $('.dosearch').trigger('click');
+            return false; // prevent the button click from happening
+        });
+
+        if ($('#searchtext').val() !== '') {
+            $('.dosearch').hide();
+            $('.clearsearch').show();
+        }
+
+        $('.actionentrykey').unbind('keypress');
+        $('.actionentrykey').on('keypress', function (e) {
+            if (e.keyCode == 13) {
+                $('.dosearch').trigger('click');
+                return false; // prevent the button click from happening
+            }
+        });
+
+        $('.actionentrykey').focus();
+
+        // move cursor to end of line
+        var tmpStr = $('.actionentrykey').val();
+        $('.actionentrykey').val('');
+        $('.actionentrykey').val(tmpStr);
+
+        //  change color of panel, s we show it has a selection
+        if (tmpStr != '') {
+            $('#searchtext').addClass('w3-border-red');
+        }
+
+    });
+
+    function validatepopupdetail() {
+        var form = $("#rocketecommerceadmin_form");
+        form.validate({
+            errorClass: "w3-text-red",
+            highlight: function (element, errorClass) {
+                $(element).removeClass(errorClass);
+            }
+        });
+        if (form.valid()) {
+            $('#portaldetail').hide();
+        }
+        else {
+            $('.portalcreatebutton').attr('s-stop', 'stop');
+        }
+    }
+
+</script>
+
+

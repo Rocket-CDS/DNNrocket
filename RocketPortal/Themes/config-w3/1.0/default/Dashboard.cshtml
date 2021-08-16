@@ -1,0 +1,62 @@
+@inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+@using RocketPortal.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+
+@{
+    var systemData = new SystemLimpet("rocketportal");
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+}
+
+<div class="w3-col m2 w3-tiny w3-right w3-right-align"></div>
+<div class="w3-bar w3-margin">
+    @foreach (var l in enabledlanguages)
+    {
+        var c = "";
+        if (@DNNrocketUtils.GetCurrentCulture() == l)
+        {
+            c = " w3-light-grey ";
+        }
+        <div class="w3-bar-item @c w3-padding uilanguage simplisity_click" s-cmd="changeculture" s-reload="true" s-return="#languagereturn" s-fields='{"culturecode":"@l"}' style="cursor:pointer;" uilang='@l'>
+            <img class='' src='/DesktopModules/DNNrocket/API/images/flags/32/@(l).png' style="" alt='@(l)' />
+        </div>
+    }
+</div>
+
+<div class="w3-row w3-padding">
+    <div id="portalpanel" class="w3-col m2 w3-padding" style="cursor:pointer;">
+        <div class="w3-container w3-blue w3-padding-16 w3-round">
+            <div class="w3-left"><i class="fas fa-broadcast-tower w3-xxxlarge"></i></div>
+            <div class="w3-clear"></div>
+            <h4>
+                @ResourceKey("RP.service")
+            </h4>
+        </div>
+    </div>
+    <div id="" class="w3-col m2 w3-padding simplisity_confirmclick"  s-confirm="@ResourceKey("RP.validate") ?" s-cmd="portal_validate" style="cursor:pointer;">
+        <div class="w3-container w3-khaki w3-padding-16 w3-round">
+            <div class="w3-left"><i class="fa fas fa-check-double w3-xxxlarge"></i></div>
+            <div class="w3-clear"></div>
+            <h4>
+                @ResourceKey("RP.validate")
+            </h4>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#portalpanel").unbind("click");
+        $("#portalpanel").click(function () {
+            $(".menubaritem[s-cmd='portal_list']").trigger("click");
+        });
+    });
+</script>
+
+

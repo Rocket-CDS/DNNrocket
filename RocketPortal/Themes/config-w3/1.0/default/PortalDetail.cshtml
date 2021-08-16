@@ -1,0 +1,94 @@
+@inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using RocketPortal.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+@{
+    var portalData = (PortalLimpet)Model.List.First();
+    var info = new SimplisityInfo(portalData.Record);
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+
+    var systemDataList = new SystemLimpetList();
+    var systemList = systemDataList.GetSystemList();
+    var appThemeSystem = new AppThemeSystemLimpet("rocketportal");
+}
+
+@RenderTemplate("Popups.cshtml", appThemeSystem, Model)
+
+<div class="w3-bar">
+    <button class="w3-button simplisity_click" s-cmd="dashboard_get">@ButtonIcon(ButtonTypes.back)</button>
+    <button class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</button>
+    @if (UserUtils.IsSuperUser())
+    {
+        <button class="w3-padding w3-button simplisity_click" s-cmd="portal_createcmspage" s-post="" s-fields='{"portalid":"@portalData.PortalId"}'>Create CMS Page</button>
+    }
+</div>
+
+<div class="w3-row w3-padding">
+    <div class="w3-col m10 w3-xxlarge">@(portalData.Name):&nbsp;@portalData.EngineUrl</div>
+    <div class="w3-col m2 w3-tiny w3-right w3-right-align w3-hide-small">Id:&nbsp;@info.ItemID &nbsp; PortalId:&nbsp;@portalData.PortalId</div>
+</div>
+
+<div class="w3-row w3-padding">
+    <div class="w3-twothird a-portaldata">
+
+        <div class="w3-row w3-padding">
+            <label><b>@ResourceKey("DNNrocket.name")</b></label>
+            @TextBox(info, "genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ")
+        </div>
+
+        <div class="w3-row">
+            <div class="w3-col m2 w3-padding" style="width:120px;">
+                <label class=""><b>@ResourceKey("RP.protocol")</b></label>
+                @DropDownList(info, "genxml/select/protocol", "https://,http://", "https://,http://", "class='w3-input w3-border'")
+            </div>
+            <div class="w3-rest w3-padding">
+                <label><b>@ResourceKey("RP.serviceurl")</b></label>
+                @TextBox(info, "genxml/textbox/engineurl", " class='w3-input w3-border' autocomplete='off' ")
+            </div>
+        </div>
+
+    </div>
+    <div class="w3-third">
+        <table class="w3-table w3-bordered w3-hoverable w3-padding">
+            <thead>
+                <tr>
+                    <th style="width:39px;"></th>
+                    <th>@ResourceKey("RP.system")</th>
+                </tr>
+            </thead>
+
+            @foreach (var systemData in portalData.SystemDataList.GetSystemActiveList())
+            {
+                <tr class=" simplisity_click" s-after="showsystempopup" s-cmd="rocketsystem_edit" s-return="#systemcontainer" s-fields='{"systemkey":"@systemData.SystemKey","systemsitekey":"@portalData.SiteKey"}' style="cursor:pointer;">
+                    <td style="width:39px;">
+                        <span class="material-icons">
+                            @systemData.Icon
+                        </span>
+                    </td>
+                    <td>
+                        <b>@systemData.SystemName</b>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+    });
+
+    function showsystempopup() {
+        rpadmin.moveToTop('#systemmodal');
+        $('#systemmodal').show();
+    }
+
+</script>

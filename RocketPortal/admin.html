@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Admin</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+
+</head>
+<body class="w3-light-grey">
+
+    <div id="adminpanel">
+
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#adminpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'dashboard_adminpanel', '{"systemkey":"rocketportal"}', '')
+
+        });
+
+    </script>
+
+</body>
+</html>

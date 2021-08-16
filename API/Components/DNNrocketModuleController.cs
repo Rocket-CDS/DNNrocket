@@ -187,10 +187,24 @@ namespace DNNrocketAPI.Components
         #region IUpgradeable Members
         public string UpgradeModule(string Version)
         {
-            var fname = PortalUtils.TempDirectoryMapPath() + "\\IUpgradeable.txt";
-            FileUtils.SaveFile(fname, "Action: " + DateTime.Now.ToString("O"));
+            LogUtils.LogSystem("UPGRADE START: " + Version);
 
-            return string.Empty;
+            PortalUtils.CreateRocketDirectories(0);
+            DNNrocketUtils.CreateDefaultRocketRoles(0);
+            var cmstabid = DNNrocketUtils.CreatePage(0, "cms");
+            DNNrocketUtils.AddPagePermissions(0, cmstabid, "");
+            DNNrocketUtils.AddPageSkin(0, cmstabid, "cms", "cms.ascx");
+
+            var homeTabId = PagesUtils.GetHomePage(0,DNNrocketUtils.GetCurrentCulture());
+            LogUtils.LogSystem("homeTabId = " + homeTabId);
+
+            if (homeTabId >= 0) DNNrocketUtils.AddPageSkin(0, homeTabId, "rocketportal", "rocketportal.ascx");
+
+            LogUtils.LogSystem("UPGRADE END: " + Version);
+
+            DNNrocketUtils.RecycleApplicationPool();
+
+            return "";
         }
         #endregion
 

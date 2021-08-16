@@ -16,7 +16,15 @@ namespace DNNrocketAPI.Components
         public SystemLimpetList()
         {
             _systemList = new List<SystemLimpet>();
-            var dl = Directory.GetDirectories(DNNrocketUtils.MapPath("/DesktopModules/DNNrocketModules"));
+            var searchFolder = DNNrocketUtils.MapPath("/DesktopModules/DNNrocketModules");
+            if (Directory.Exists(searchFolder)) scanFolderForRules(searchFolder);
+            searchFolder = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket");
+            if (Directory.Exists(searchFolder)) scanFolderForRules(searchFolder);
+        }
+
+        private void scanFolderForRules(string searchFolder)
+        {
+            var dl = Directory.GetDirectories(searchFolder);
             foreach (var d in dl)
             {
                 var systemFile = d + "\\system.rules";

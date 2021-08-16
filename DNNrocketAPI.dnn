@@ -105,18 +105,6 @@ It also contains the popular RocketMod modules, which is a dynamic content build
           </assemblies>
 				</component>
 
-        <component type="File">
-          <files>
-            <basePath>DesktopModules\DNNrocket\</basePath>
-            <file>
-              <name>admin.html</name>
-            </file>
-            <file>
-              <name>ReadMe.md</name>
-            </file>
-          </files>
-        </component>
-
         <component type="Skin">
           <skinFiles>
             <basePath>Portals\_default\Skins\cms</basePath>
@@ -132,6 +120,32 @@ It also contains the popular RocketMod modules, which is a dynamic content build
           </skinFiles>
         </component>        
 
+      </components>
+		</package>
+
+    <package name="RocketSystem" type="Module" version="1.0.0">
+      <friendlyName>RocketSystem (Update on Install)</friendlyName>
+      <description>RocketSystem</description>
+      <iconFile />
+      <owner>
+        <name>Charles France</name>
+        <organization>DNN Rocket</organization>
+        <url>www.toasted.site</url>
+        <email>support@toasted.site</email>
+      </owner>
+      <license>
+        Copyright (c) 2020, www.toasted.site
+        All rights reserved.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      </license>
+      <releaseNotes>
+        Assemblies: ToastedMod
+      </releaseNotes>
+      <dependencies>
+        <dependency type="CoreVersion">09.00.00</dependency>
+      </dependencies>
+      <components>
 
         <component type="Module">
           <desktopModule>
@@ -171,9 +185,106 @@ It also contains the popular RocketMod modules, which is a dynamic content build
           </eventMessage>
         </component>
 
+      </components>
+    </package>
+
+
+
+    <package name="RocketPortal" type="Library" version="1.0.0">
+      <friendlyName>RocketPortal</friendlyName>
+      <description>RocketPortal</description>
+      <iconFile></iconFile>
+      <owner>
+        <name>Charles France</name>
+        <organization>DNN Rocket</organization>
+        <url>www.dnnrocket.com</url>
+        <email>support@dnnrocket.com</email>
+      </owner>
+      <license>
+        Copyright (c) 2020, www.dnnrocket.com
+        All rights reserved.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      </license>
+      <releaseNotes>
+        RocketPortal uses the DNNRocket framework
+      </releaseNotes>
+
+      <dependencies>
+        <dependency type="CoreVersion">09.00.00</dependency>
+      </dependencies>
+
+      <components>
+
+        <component type="Skin">
+          <skinFiles>
+            <basePath>Portals\_default\Skins\rocketportal</basePath>
+            <skinName>rocketportal</skinName>
+            <skinFile>
+              <path></path>
+              <name>rocketportal.ascx</name>
+            </skinFile>
+            <skinFile>
+              <path></path>
+              <name>rocketportal.xml</name>
+            </skinFile>
+          </skinFiles>
+        </component>
+
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>RocketPortal.dll</name>
+              <sourceFileName>RocketPortal.dll</sourceFileName>
+            </assembly>
+
+          </assemblies>
+        </component>
 
       </components>
-		</package>
+    </package>
+
+    <package name="RocketAppTheme" type="Library" version="1.0.0">
+      <friendlyName>RocketAppTheme</friendlyName>
+      <description>RocketAppTheme</description>
+      <iconFile></iconFile>
+      <owner>
+        <name>Charles France</name>
+        <organization>DNN Rocket</organization>
+        <url>www.dnnrocket.com</url>
+        <email>support@dnnrocket.com</email>
+      </owner>
+      <license>
+        Copyright (c) 2020, www.dnnrocket.com
+        All rights reserved.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      </license>
+      <releaseNotes>
+        RocketAppTheme uses the DNNRocket framework
+      </releaseNotes>
+
+      <dependencies>
+        <dependency type="CoreVersion">09.00.00</dependency>
+      </dependencies>
+
+      <components>
+
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>RocketAppThemes.dll</name>
+              <sourceFileName>RocketAppThemes.dll</sourceFileName>
+            </assembly>
+          </assemblies>
+        </component>
+
+      </components>
+    </package>
+
+
 
   </packages>
 </dotnetnuke>

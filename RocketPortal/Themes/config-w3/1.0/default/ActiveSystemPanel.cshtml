@@ -1,0 +1,92 @@
+﻿@inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketPortal.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources")
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- Top Bar -->
+<div id="topbarplaceholder"></div>
+
+<div class="w3-main" style="padding-top:56px;">
+    <!-- Content -->
+    <div id="simplisity_startpanel" class="w3-panel simplisity_panel" s-cmd="dashboard_activesystems" s-fields=''>
+        <div class="w3-display-container">
+
+            <div class="w3-light-grey">
+                <div id="myBar" class="w3-container w3-green" style="height:24px;width:1%"></div>
+            </div>
+            <script>
+                $(document).ready(function () {
+                    move();
+                });
+
+                function move() {
+                    var elem = document.getElementById("myBar");
+                    var width = 1;
+                    var id = setInterval(frame, 20);
+                    function frame() {
+                        if (width >= 100) {
+                            clearInterval(id);
+                        } else {
+                            width++;
+                            elem.style.width = width + '%';
+                        }
+                    }
+                }
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('#topbarplaceholder').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'gettopbar', '{"systemkey":"rocketportal","template":"topbarsystem.cshtml"}', '')
+        $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketportal', debug: false });
+        simplisity_sessionremove(); // clear the sessions vars on load.  These needs to be reset for the admin panel to work and not use any front office selections.
+    });
+
+</script>
+
+<!-- Load CSS in body, not ideal but is easier to implement and reduces 1 API call. -->
+
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/RocketPortal/Themes/config-w3/1.0/css/theme.css">
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/jquery.tag-editor.css" charset="utf-8">
+<script src="/DesktopModules/DNNrocket/RocketPortal/Themes/config-w3/1.0/js/RP_Admin.js"></script>
+
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/jquery.tag-editor.css" charset="utf-8">
+<script src="/DesktopModules/DNNrocket/RocketPortal/Themes/config-w3/1.0/js/RP_Admin.js"></script>
+
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">
+<script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
+<script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
+
+<script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+<script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/jquery.fileupload.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/leedavi/CKEditorBuilds@1.0.0/ckeditorbase1.js"></script>
+
+<script src="/DesktopModules/DNNrocket/js/jquery.selectlistactions.js"></script>
+
+<script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.caret.min.js"></script>
+<script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.tag-editor.min.js"></script>
+
+<!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<script src="/DesktopModules/DNNrocket/RocketAppTheme/CodeMirror/codemirror.js"></script>
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/RocketAppTheme/CodeMirror/night.css" />
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/RocketAppTheme/CodeMirror/codemirror.css" />
+<script src="/DesktopModules/DNNrocket/RocketAppTheme/CodeMirror/mode/javascript/javascript.js"></script>
+<script src="/DesktopModules/DNNrocket/RocketAppTheme/CodeMirror/mode/xml/xml.js"></script>
+<script src="/DesktopModules/DNNrocket/RocketAppTheme/CodeMirror/mode/htmlmixed/htmlmixed.js"></script>
+<script src="/DesktopModules/DNNrocket/RocketAppTheme/CodeMirror/mode/css/css.js"></script>
+<!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+

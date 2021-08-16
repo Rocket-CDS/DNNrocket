@@ -67,8 +67,6 @@ namespace SystemView
 
         public string UpgradeModule(string Version)
         {
-            var fname = PortalUtils.TempDirectoryMapPath() + "\\IUpgradeable.txt";
-            FileUtils.SaveFile(fname, "Action: " + DateTime.Now.ToString("O"));
             return "";
         }
 

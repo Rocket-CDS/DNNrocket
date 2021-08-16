@@ -1,0 +1,113 @@
+@inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+@using RocketPortal.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+@{
+    var systemGlobalData = (SystemGlobalData)Model.List.First();
+    var info = systemGlobalData.Info;
+}
+
+
+<div id="globalsettings">
+
+    <div class="w3-bar">
+        <button class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="global_globalsave" s-post="#globalsettings">@ButtonText(ButtonTypes.save)</button>
+    </div>
+
+    <div class="w3-row">
+
+        <div class="w3-row w3-padding">
+            <label><b>@ResourceKey("DNNrocket.name")</b></label>
+            @TextBox(info, "genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ")
+        </div>
+
+        <div class="w3-row">
+            <div class="w3-third w3-padding">
+                <label class=""><b>@ResourceKey("RP.imagetype")</b></label>
+                @DropDownList(info, "genxml/select/imagetype", "png,jpg", "png,jpg", "class='w3-input w3-border' style='width:96px'", "png")
+            </div>
+            <div class="w3-third w3-padding">
+                <div class="w3-row w3-padding">
+                    <label><b>Scheduler</b></label><br />
+                    @if (systemGlobalData.SchedulerIsInstalled)
+                    {
+                        <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.uninstall")?" s-cmd="global_uninstallscheduler">@ResourceKey("DNNrocket.uninstall")</span>
+                    }
+                    else
+                    {
+                        <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.install")?" s-cmd="global_installscheduler">@ResourceKey("DNNrocket.install")</span>
+                    }
+
+                    <label class="">@ResourceKey("DNNrocket.installed"):</label>
+                    @if (systemGlobalData.SchedulerIsInstalled)
+                    {
+                        <span class="w3-text-green">
+                            @ButtonIcon(ButtonTypes.ok)
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="w3-text-red">
+                            @ButtonIcon(ButtonTypes.fail)
+                        </span>
+                    }
+                    <label>@ResourceKey("DNNrocket.enabled"):</label>
+                    @if (systemGlobalData.SchedulerIsEnabled)
+                    {
+                        <span class="w3-text-green">
+                            @ButtonIcon(ButtonTypes.ok)
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="w3-text-red">
+                            @ButtonIcon(ButtonTypes.fail)
+                        </span>
+                    }
+
+                </div>
+            </div>
+            <div class="w3-third w3-padding">
+                <div class="w3-row w3-padding">
+                    <label><b>Roles</b></label><br />
+                    <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="Install Default Roles?" s-cmd="global_defaultroles" s-post="#globalsettings">Create Default Roles</span>
+                    <label class="">@ResourceKey("DNNrocket.installed"):</label>
+                    @if (DNNrocketUtils.DefaultRoleExist(PortalUtils.GetCurrentPortalId()))
+                    {
+                        <span class="w3-text-green">
+                            @ButtonIcon(ButtonTypes.ok)
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="w3-text-red">
+                            @ButtonIcon(ButtonTypes.fail)
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-row w3-padding">
+            <button class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_assignhomeskin">Assign Home Skin</button>
+        </div>
+
+    </div>
+
+        <div class="w3-row w3-tiny w3-right">
+            ItemId: @info.ItemID
+        </div>
+
+
+    </div>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+        });
+
+    </script>

@@ -166,6 +166,10 @@ namespace DNNrocketAPI.render
         {
             return RenderTemplate(appThemeSystem.GetTemplate(razorTemplateName), model, cacheOff);
         }
+        public IEncodedString RenderTemplate(string razorTemplateName, AppThemeDNNrocketLimpet appThemeSystem, SimplisityRazor model, bool cacheOff = false)
+        {
+            return RenderTemplate(appThemeSystem.GetTemplate(razorTemplateName), model, cacheOff);
+        }
         public IEncodedString RenderTemplate(string razorTemplateName, AppThemeLimpet appTheme, SimplisityRazor model, bool cacheOff = false)
         {
             return RenderTemplate(appTheme.GetTemplate(razorTemplateName),model, cacheOff);

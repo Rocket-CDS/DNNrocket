@@ -1,0 +1,68 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using DNNrocketAPI.Components;
+@using Rocket.AppThemes.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketAppTheme/App_LocalResources/")
+
+@{
+    var appThemeList = (AppThemeDataList)Model.List.First();
+    var systemAppTheme = new AppThemeSystemLimpet("rocketapptheme");
+}
+
+<!-- Use RP_admin.js from RocketPortal project, so we can use templates in both systems -->
+<script src="/DesktopModules/DNNrocketModules/RocketPortal/Themes/config-w3/1.0/js/RP_Admin.js"></script>
+
+<div class="">
+
+    <div class="w3-bar searchdata">
+        <div class="w3-bar-item w3-right " style=''>
+            <div class="w3-bar">
+                <input class="w3-bar-item w3-input w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
+            </div>
+        </div>
+    </div>
+
+
+    <div id="datalist" class="w3-container w3-margin-top">
+
+        <table class="w3-table w3-bordered w3-hoverable">
+            @foreach (var appTheme in appThemeList.List)
+            {
+                <tr class="searchdiv simplisity_click" s-cmd="rocketapptheme_getdetail" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))","appthemefolder":"@appTheme.AppThemeFolder"}' style="cursor:pointer;">
+                    <td><b>@appTheme.AppThemeFolder</b></td>
+                </tr>
+            }
+        </table>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('.actionentrykey').focus();
+
+    });
+
+    function searchFunction() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("searchtext");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("datalist2");
+        li = $('.searchdiv');
+        for (i = 0; i < li.length; i++) {
+            txtValue = li[i].textContent || li[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
+
+</script>
+
+

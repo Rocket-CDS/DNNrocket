@@ -287,8 +287,8 @@ namespace DNNrocketAPI.ApiControllers
                 if (interfacekey == "") interfacekey = paramCmd.Split('_')[0];
                 if (interfacekey == "") interfacekey = systemkey;
 
-                paramInfo.SetXmlProperty("genxml/systemkey", systemkey);
-                paramInfo.SetXmlProperty("genxml/userhostaddress", HttpContext.Current.Request.UserHostAddress);
+                paramInfo.SetXmlProperty("genxml/hidden/systemkey", systemkey);
+                paramInfo.SetXmlProperty("genxml/hidden/userhostaddress", HttpContext.Current.Request.UserHostAddress);
 
                 switch (paramCmd)
                 {
@@ -442,6 +442,11 @@ namespace DNNrocketAPI.ApiControllers
 
                 var appThemeSystem = new AppThemeSystemLimpet(systemkey);
                 var razorTempl = appThemeSystem.GetTemplate(template);
+                if (razorTempl == "")
+                {
+                    var appThemeDNNrocket = new AppThemeDNNrocketLimpet(systemkey);
+                    razorTempl = appThemeDNNrocket.GetTemplate(template);
+                }
 
                 return RenderRazorUtils.RazorDetail(razorTempl, null, null, _sessionParams, true);
             }
@@ -459,7 +464,11 @@ namespace DNNrocketAPI.ApiControllers
                 var passSettings = sInfo.ToDictionary();
                 var appThemeSystem = new AppThemeSystemLimpet(systemkey);
                 var razorTempl = appThemeSystem.GetTemplate(template);
-
+                if (razorTempl == "")
+                {
+                    var appThemeDNNrocket = new AppThemeDNNrocketLimpet(systemkey);
+                    razorTempl = appThemeDNNrocket.GetTemplate(template);
+                }
                 return RenderRazorUtils.RazorDetail(razorTempl, sInfo, passSettings, _sessionParams, true);
             }
             catch (Exception ex)
@@ -544,7 +553,7 @@ namespace DNNrocketAPI.ApiControllers
         private String SystemGlobalDetail(SimplisityInfo paramInfo)
         {
             var passSettings = paramInfo.ToDictionary();
-            var appThemeSystem = new AppThemeSystemLimpet("rocketportal");
+            var appThemeSystem = new AppThemeDNNrocketLimpet("rocketportal");
             var razorTempl = appThemeSystem.GetTemplate("GlobalDetail.cshtml");
 
             SchedulerUtils.SchedulerIsInstalled();

@@ -245,6 +245,15 @@ namespace DNNrocketAPI.Components
             return targetUrl;
         }
 
+        public static int GetPageByTabPath(int portalId, string tabPath)
+        {
+            return TabController.GetTabByTabPath(portalId, tabPath, string.Empty);
+        }
+        public static int GetHomePage(int portalId, string cultureCode)
+        {
+            var l = TabController.GetTabPathDictionary(portalId, cultureCode);
+            return l.First().Value;
+        }
 
 
     }
