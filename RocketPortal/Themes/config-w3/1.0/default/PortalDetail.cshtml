@@ -16,7 +16,7 @@
 
     var systemDataList = new SystemLimpetList();
     var systemList = systemDataList.GetSystemList();
-    var appThemeSystem = new AppThemeSystemLimpet("rocketportal");
+    var appThemeSystem = new AppThemeDNNrocketLimpet("rocketportal");
 }
 
 @RenderTemplate("Popups.cshtml", appThemeSystem, Model)
@@ -24,6 +24,7 @@
 <div class="w3-bar">
     <button class="w3-button simplisity_click" s-cmd="dashboard_get">@ButtonIcon(ButtonTypes.back)</button>
     <button class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</button>
+    <a class="w3-padding w3-button" target="_blank" href="@portalData.Protocol@portalData.EngineUrl" style="color: inherit;text-decoration: inherit; ">Service Home</a>
     @if (UserUtils.IsSuperUser())
     {
         <button class="w3-padding w3-button simplisity_click" s-cmd="portal_createcmspage" s-post="" s-fields='{"portalid":"@portalData.PortalId"}'>Create CMS Page</button>

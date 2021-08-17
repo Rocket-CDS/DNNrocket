@@ -190,17 +190,26 @@ namespace DNNrocketAPI.Components
             LogUtils.LogSystem("UPGRADE START: " + Version);
 
             PortalUtils.CreateRocketDirectories(0);
+            
             DNNrocketUtils.CreateDefaultRocketRoles(0);
+                        
             var cmstabid = DNNrocketUtils.CreatePage(0, "cms");
             DNNrocketUtils.AddPagePermissions(0, cmstabid, "");
             DNNrocketUtils.AddPageSkin(0, cmstabid, "cms", "cms.ascx");
 
             var homeTabId = PagesUtils.GetHomePage(0,DNNrocketUtils.GetCurrentCulture());
-            LogUtils.LogSystem("homeTabId = " + homeTabId);
+            if (homeTabId >= 0)
+            {
+                DNNrocketUtils.AddPageSkin(0, homeTabId, "rocketportal", "rocketportal.ascx");
+                ModuleUtils.DeleteAllTabModules(homeTabId);
+            }
 
-            if (homeTabId >= 0) DNNrocketUtils.AddPageSkin(0, homeTabId, "rocketportal", "rocketportal.ascx");
+            var accesstabid = DNNrocketUtils.CreatePage(0, "access");
+            DNNrocketUtils.AddPagePermissions(0, accesstabid, "");
+
 
             LogUtils.LogSystem("UPGRADE END: " + Version);
+
 
             DNNrocketUtils.RecycleApplicationPool();
 

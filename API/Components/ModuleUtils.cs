@@ -9,6 +9,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Entities.Tabs;
 
 namespace DNNrocketAPI.Components
 {
@@ -178,6 +179,15 @@ namespace DNNrocketAPI.Components
                 return false;
             }
             return false;
+        }
+
+        public static void DeleteAllTabModules(int pageid)
+        {
+            var mList = ModuleController.Instance.GetTabModules(pageid);
+            foreach (var m in mList)
+            {
+                ModuleController.Instance.DeleteModule(m.Key);
+            }
         }
 
 

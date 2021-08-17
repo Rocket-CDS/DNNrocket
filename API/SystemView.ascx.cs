@@ -67,6 +67,8 @@ namespace SystemView
 
         public string UpgradeModule(string Version)
         {
+            // See: DNNrocketModuleController.
+            // We include here to action the upgrade in the module controller.
             return "";
         }
 
