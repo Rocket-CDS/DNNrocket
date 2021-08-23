@@ -188,8 +188,7 @@ namespace DNNrocketAPI.render
         }
         public IEncodedString RenderXml(SimplisityInfo info)
         {
-            var systemData = new SystemLimpet("systemapi");
-            var appTheme = new AppThemeLimpet(systemData);
+            var appTheme = new AppThemeDNNrocketLimpet("api");
             var razorTempl = appTheme.GetTemplate("XmlModelDisplay.cshtml");
             var nbRazor = new SimplisityRazor(info);
             var strOut = RenderRazorUtils.RazorRender(nbRazor, razorTempl, true);
