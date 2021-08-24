@@ -813,4 +813,20 @@ description
   <data name="services.Text" xml:space="preserve">
     <value>Services</value>
   </data>
+  <data name="locked.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+lock
+&lt;/span&gt;</value>
+  </data>
+  <data name="locked.Text" xml:space="preserve">
+    <value>Locked</value>
+  </data>
+  <data name="unlocked.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+lock_open
+&lt;/span&gt;</value>
+  </data>
+  <data name="unlocked.text" xml:space="preserve">
+    <value>Unlocked</value>
+  </data>
 </root>
