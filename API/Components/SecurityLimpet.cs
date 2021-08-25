@@ -176,6 +176,7 @@ namespace DNNrocketAPI.Components
         public bool ValidUser { get; private set; }
         public int UserId { get { return _userId; } }
         public int PortalId { get; private set; }
+        public string ReleaseNumber { get { return Info.GetXmlProperty("root/releasenumber"); } }
 
     }
 }
