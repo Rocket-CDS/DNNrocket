@@ -234,5 +234,7 @@ namespace DNNrocketAPI.Components
         {
             get { return DNNrocketUtils.MapPath(SystemRelPath); }
         }
+        public string ReleaseNumber { get { return Record.GetXmlProperty("genxml/releasenumber"); } }
+
     }
 }
