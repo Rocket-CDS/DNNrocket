@@ -1262,7 +1262,8 @@ namespace DNNrocketAPI.Components
             var systemkey = "";
             if (systemInfo != null)
             {
-                systemkey = systemInfo.GUIDKey;
+                systemkey = systemInfo.GetXmlProperty("genxml/systemkey");
+                if (systemkey == "") systemkey = systemInfo.GUIDKey; // legancy (may not be needed)
             }
             if (systemkey == "" || systemkey == "systemapi" || systemkey == "login")
             {
