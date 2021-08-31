@@ -58,7 +58,21 @@ namespace SystemView
 
         protected override void OnPreRender(EventArgs e)
         {
-            var strOut = "OnPreRender";
+
+            var strOut = "";
+
+            try
+            {
+                var appThemeSystem = new AppThemeSystemLimpet("rocketportal");
+                var razorTempl = appThemeSystem.GetTemplate("ActiveSystems.cshtml");
+                strOut =  RenderRazorUtils.RazorDetail(razorTempl, null, null, null, true);
+            }
+            catch (Exception ex)
+            {
+                strOut = ex.ToString();
+            }
+
+
             var lit = new Literal();
             lit.Text = strOut;
             phData.Controls.Add(lit);

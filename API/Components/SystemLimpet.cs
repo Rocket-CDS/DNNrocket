@@ -126,8 +126,6 @@ namespace DNNrocketAPI.Components
         public List<RocketInterface> SchedulerList { get; set; }
         public List<RocketInterface> ProviderList { get; set; }
         public bool Exists { get; set; }
-        // Used for sceduler and looping through portals.
-        public int PortalId { get; set; }
         public Dictionary<string, RocketInterface> InterfaceList { get; set; }
         public Dictionary<string, string> Settings { get; set; }
         public string GetSetting(string key)

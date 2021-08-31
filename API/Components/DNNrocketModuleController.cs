@@ -193,10 +193,6 @@ namespace DNNrocketAPI.Components
             
             DNNrocketUtils.CreateDefaultRocketRoles(0);
                         
-            var cmstabid = DNNrocketUtils.CreatePage(0, "cms");
-            DNNrocketUtils.AddPagePermissions(0, cmstabid, "");
-            DNNrocketUtils.AddPageSkin(0, cmstabid, "cms", "cms.ascx");
-
             var homeTabId = PagesUtils.GetHomePage(0,DNNrocketUtils.GetCurrentCulture());
             if (homeTabId >= 0)
             {
