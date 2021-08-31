@@ -21,7 +21,7 @@ namespace RocketPortal.API
         private int _tabid;
         private int _moduleid;
         private string _editLang;
-        private AppThemeDNNrocketLimpet _appThemeSystem;
+        private AppThemeSystemLimpet _appThemeSystem;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -49,6 +49,9 @@ namespace RocketPortal.API
                 case "dashboard_get":
                     strOut = MyServices();
                     break;
+                case "dashboard_activesystempanel":
+                    strOut = ActiveSystemPanel();
+                    break;
 
 
 
@@ -59,10 +62,8 @@ namespace RocketPortal.API
                     _userParams.TrackClear(_systemData.SystemKey);
                     strOut = UserUtils.LoginForm(_systemData.SystemKey, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
                     break;
-                case "rocketportal_activesystems":
-                    strOut = ActiveSystemPanel();
-                    break;
 
+                    
 
 
                 case "portal_actionprovider":
@@ -95,11 +96,6 @@ namespace RocketPortal.API
                     _portalData.Update();
                     strOut = GetPortalDetail();
                     break;
-                case "portal_assignhomeskin":
-                    strOut = AssignHomeSkin();
-                    break;
-
-
             }
 
 
@@ -122,7 +118,7 @@ namespace RocketPortal.API
             _paramInfo = paramInfo;
             _systemData = new SystemLimpet("rocketportal");
             _rocketInterface = new RocketInterface(interfaceInfo);
-            _appThemeSystem = new AppThemeDNNrocketLimpet(_systemData.SystemKey);
+            _appThemeSystem = new AppThemeSystemLimpet(_systemData.SystemKey);
             _sessionParams = new SessionParams(_paramInfo);
             _userParams = new UserParams(_sessionParams.BrowserSessionId);
             _rocketInterface = new RocketInterface(interfaceInfo);

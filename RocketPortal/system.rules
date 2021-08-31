@@ -21,7 +21,7 @@
           <assembly>RocketPortal</assembly>
           <interfaceicon></interfaceicon>
           <defaultcommand>portal_list</defaultcommand>
-          <relpath>/DesktopModules/DNNrocket/RocketPortal</relpath>
+          <relpath>/DesktopModules/DNNrocketModules/RocketPortal</relpath>
         </textbox>
         <providertype></providertype>
         <dropdownlist>
@@ -50,7 +50,7 @@
           <assembly>RocketPortal</assembly>
           <interfaceicon>dashboard</interfaceicon>
           <defaultcommand>dashboard_get</defaultcommand>
-          <relpath>/DesktopModules/DNNrocket/RocketPortal</relpath>
+          <relpath>/DesktopModules/DNNrocketModules/RocketPortal</relpath>
         </textbox>
         <providertype></providertype>
         <dropdownlist>
@@ -80,7 +80,7 @@
           <assembly>RocketPortal</assembly>
           <interfaceicon>desktop_windows</interfaceicon>
           <defaultcommand>portal_list</defaultcommand>
-          <relpath>/DesktopModules/DNNrocket/RocketPortal</relpath>
+          <relpath>/DesktopModules/DNNrocketModules/RocketPortal</relpath>
         </textbox>
         <providertype></providertype>
         <dropdownlist>
@@ -168,7 +168,7 @@
           <assembly>RocketPortal</assembly>
           <interfaceicon>settings_suggest</interfaceicon>
           <defaultcommand>global_globaldetail</defaultcommand>
-          <relpath>/DesktopModules/DNNrocket/RocketPortal</relpath>
+          <relpath>/DesktopModules/DNNrocketModules/RocketPortal</relpath>
         </textbox>
         <providertype></providertype>
         <dropdownlist>

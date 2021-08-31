@@ -26,6 +26,12 @@
       <action>true</action>
     </command>
     <command>
+      <cmd>dashboard_activesystempanel</cmd>
+      <action>true</action>
+    </command>
+
+    
+    <command>
       <cmd>rocketportal_get</cmd>
       <action>true</action>
     </command>
@@ -33,10 +39,8 @@
       <cmd>rocketportal_login</cmd>
       <action>true</action>
     </command>
-    <command>
-      <cmd>rocketportal_activesystems</cmd>
-      <action>true</action>
-    </command>
+    
+    
     <command>
       <cmd>portal_actionprovider</cmd>
       <action>true</action>
@@ -73,10 +77,6 @@
       <cmd>portal_addsetting</cmd>
       <action>true</action>
     </command>
-    <command>
-      <cmd>portal_assignhomeskin</cmd>
-      <action>true</action>
-    </command>    
 
 
     <!-- Security for commands in other systems, for the side Menu. -->    
@@ -86,6 +86,10 @@
     </command>
     <command>
       <cmd>rocketapptheme_getappstore</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>global_globaldetail</cmd>
       <action>true</action>
     </command>
 

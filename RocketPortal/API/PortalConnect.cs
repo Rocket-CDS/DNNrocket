@@ -34,21 +34,6 @@ namespace RocketPortal.API
                         }
                     }
                 }
-
-                var cmstabid = DNNrocketUtils.CreatePage(portalid, "cms");
-                DNNrocketUtils.AddPagePermissions(portalid, cmstabid, "");
-                DNNrocketUtils.AddPageSkin(portalid, cmstabid, "cms", "cms.ascx");
-
-                var homeTabId = PagesUtils.GetHomePage(portalid, DNNrocketUtils.GetCurrentCulture());
-                if (homeTabId >= 0)
-                {
-                    DNNrocketUtils.AddPageSkin(portalid, homeTabId, "rocketportal", "rockethome.ascx");
-                    ModuleUtils.DeleteAllTabModules(homeTabId);
-                }
-
-                var accesstabid = DNNrocketUtils.CreatePage(portalid, "access");
-                DNNrocketUtils.AddPagePermissions(portalid, accesstabid, "");
-
                 DNNrocketUtils.RecycleApplicationPool();
 
                 // add portal record
@@ -133,15 +118,6 @@ namespace RocketPortal.API
                 return ex.ToString();
             }
         }
-        private string AssignHomeSkin()
-        {
-            if (!UserUtils.IsSuperUser()) return "FAIL";
-            var homeTabId = PagesUtils.GetHomePage(0, DNNrocketUtils.GetCurrentCulture());
-            if (homeTabId >= 0) DNNrocketUtils.AddPageSkin(0, homeTabId, "rocketportal", "rocketportal.ascx");
-            return "OK";
-        }
-
-
     }
 
 }

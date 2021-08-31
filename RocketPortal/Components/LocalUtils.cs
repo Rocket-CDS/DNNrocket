@@ -9,8 +9,8 @@ namespace RocketPortal.Components
 {
     public static class LocalUtils
     {
-        public const string ControlPath = "/DesktopModules/DNNrocket/RocketPortal";
-        public const string ResourcePath = "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources";
+        public const string ControlPath = "/DesktopModules/DNNrocketModules/RocketPortal";
+        public const string ResourcePath = "/DesktopModules/DNNrocketModules/RocketPortal/App_LocalResources";
 
         /// <summary>
         /// Get a resouerce string from a resx file in "/DesktopModules/DNNrocketModules/RocketEcommerce/App_LocalResources" 
@@ -21,7 +21,7 @@ namespace RocketPortal.Components
         /// <returns></returns>
         public static string ResourceKey(string resourceKey, string resourceExt = "Text", string cultureCode = "")
         {
-            return DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/RocketPortal/App_LocalResources", resourceKey, resourceExt, cultureCode);
+            return DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocketModules/RocketPortal/App_LocalResources", resourceKey, resourceExt, cultureCode);
         }
         
         public static string RunActionProvider(PortalLimpet portalData, SimplisityInfo postInfo)

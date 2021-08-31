@@ -4,7 +4,7 @@
 @using DNNrocketAPI.Components;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketPortal/App_LocalResources/")
 
 @{
     var systemGlobalData = (SystemGlobalData)Model.List.First();
@@ -91,11 +91,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="w3-row w3-padding">
-            <button class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_assignhomeskin">Assign Home Skin</button>
-        </div>
-
     </div>
 
         <div class="w3-row w3-tiny w3-right">

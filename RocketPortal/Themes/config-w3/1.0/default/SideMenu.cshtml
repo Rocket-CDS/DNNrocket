@@ -5,7 +5,7 @@
 @using RazorEngine.Text;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketPortal/App_LocalResources")
 
 @{
     var systemGloablData = new SystemGlobalData();
@@ -22,7 +22,7 @@
         var rtn = "";
         if (rinterface.IsOnMenu)
         {
-            var securityData = new SecurityLimpet(systemData.PortalId,systemData.SystemKey,rinterface,-1,-1);
+            var securityData = new SecurityLimpet(PortalUtils.GetPortalId(), systemData.SystemKey,rinterface,-1,-1);
             if (securityData.HasSecurityAccess(rinterface.DefaultCommand))
             {
                 var interfaceName = DNNrocketUtils.GetResourceString(systemData.SystemRelPath + "/App_LocalResources", "SideMenu." + rinterface.InterfaceKey, "Text", DNNrocketUtils.GetCurrentCulture());

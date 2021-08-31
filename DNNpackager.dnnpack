@@ -82,9 +82,6 @@
     <value>\bin\RocketAppThemes.pdb</value>
     <value>\API\_external\Newtonsoft.Json.dll</value>
     <value>\API\_external\netstandard.dll</value>
-    <value>\API\_external\System.Web.Http.dll</value>
-    <value>\API\_external\System.Net.Http.Formatting.dll</value>
-    <value>\API\_external\System.Drawing.Common.dll</value>
     <value>\API\_external\RazorEngine.dll</value>
   </assembly>
 </root>
