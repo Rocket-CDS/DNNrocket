@@ -42,15 +42,8 @@ namespace RocketPortal.API
                 portalData.EngineUrl = engineurl;
                 portalData.Update();
 
-                CreateCmsPage(portalid);
             }
             return GetPortalList();
-        }
-        public void CreateCmsPage(int portalId)
-        {
-            var cmstabid = DNNrocketUtils.CreatePage(portalId, "cms");
-            DNNrocketUtils.AddPagePermissions(portalId, cmstabid, "");
-            DNNrocketUtils.AddPageSkin(portalId, cmstabid, "cms", "cms.ascx");
         }
         private string SavePortal()
         {

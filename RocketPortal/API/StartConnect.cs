@@ -21,7 +21,7 @@ namespace RocketPortal.API
         private int _tabid;
         private int _moduleid;
         private string _editLang;
-        private AppThemeSystemLimpet _appThemeSystem;
+        private AppThemeDNNrocketLimpet _appThemeSystem;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -81,10 +81,6 @@ namespace RocketPortal.API
                 case "portal_save":
                     strOut = SavePortal();
                     break;
-                case "portal_createcmspage":
-                    CreateCmsPage(_paramInfo.GetXmlPropertyInt("genxml/hidden/portalid"));
-                    strOut = GetPortalDetail();
-                    break;
                 case "portal_delete":
                     strOut = DeletePortal();
                     break;
@@ -118,7 +114,7 @@ namespace RocketPortal.API
             _paramInfo = paramInfo;
             _systemData = new SystemLimpet("rocketportal");
             _rocketInterface = new RocketInterface(interfaceInfo);
-            _appThemeSystem = new AppThemeSystemLimpet(_systemData.SystemKey);
+            _appThemeSystem = new AppThemeDNNrocketLimpet(_systemData.SystemKey);
             _sessionParams = new SessionParams(_paramInfo);
             _userParams = new UserParams(_sessionParams.BrowserSessionId);
             _rocketInterface = new RocketInterface(interfaceInfo);

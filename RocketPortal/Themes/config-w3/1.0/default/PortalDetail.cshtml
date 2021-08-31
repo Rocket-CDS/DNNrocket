@@ -7,7 +7,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketPortal/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
 
 @{
     var portalData = (PortalLimpet)Model.List.First();
@@ -16,7 +16,7 @@
 
     var systemDataList = new SystemLimpetList();
     var systemList = systemDataList.GetSystemList();
-    var appThemeSystem = new AppThemeSystemLimpet("rocketportal");
+    var appThemeSystem = new AppThemeDNNrocketLimpet("rocketportal");
 }
 
 @RenderTemplate("Popups.cshtml", appThemeSystem, Model)
@@ -24,10 +24,6 @@
 <div class="w3-bar">
     <button class="w3-button simplisity_click" s-cmd="dashboard_get">@ButtonIcon(ButtonTypes.back)</button>
     <button class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</button>
-    @if (UserUtils.IsSuperUser())
-    {
-        <button class="w3-padding w3-button simplisity_click" s-cmd="portal_createcmspage" s-post="" s-fields='{"portalid":"@portalData.PortalId"}'>Create CMS Page</button>
-    }
 </div>
 
 <div class="w3-row w3-padding">

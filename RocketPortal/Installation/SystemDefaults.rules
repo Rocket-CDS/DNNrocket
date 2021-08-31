@@ -62,10 +62,6 @@
       <action>true</action>
     </command>
     <command>
-      <cmd>portal_createcmspage</cmd>
-      <action>true</action>
-    </command>
-    <command>
       <cmd>portal_delete</cmd>
       <action>true</action>
     </command>

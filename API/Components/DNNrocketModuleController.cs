@@ -200,8 +200,9 @@ namespace DNNrocketAPI.Components
                 ModuleUtils.DeleteAllTabModules(homeTabId);
             }
 
-            var accesstabid = DNNrocketUtils.CreatePage(0, "access");
-            DNNrocketUtils.AddPagePermissions(0, accesstabid, "");
+            var cmstabid = DNNrocketUtils.CreatePage(0, "cms");
+            DNNrocketUtils.AddPagePermissions(0, cmstabid, "");
+            DNNrocketUtils.AddPageSkin(0, cmstabid, "cms", "cms.ascx");
 
 
             LogUtils.LogSystem("UPGRADE END: " + Version);
