@@ -63,7 +63,7 @@ namespace SystemView
 
             try
             {
-                var appThemeSystem = new AppThemeSystemLimpet("rocketportal");
+                var appThemeSystem = new AppThemeDNNrocketLimpet("rocketportal");
                 var razorTempl = appThemeSystem.GetTemplate("ActiveSystems.cshtml");
                 strOut =  RenderRazorUtils.RazorDetail(razorTempl, null, null, null, true);
             }

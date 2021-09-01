@@ -771,7 +771,9 @@
     <Content Include="Installation\SQL_SPROC_TableParam.txt" />
     <Content Include="js\rocketadmin.js" />
     <Content Include="js\simplisity.js" />
-    <Content Include="Skins\cms\cms.ascx" />
+    <Content Include="Skins\cms\cms.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Skins\cms\cms.xml" />
     <Content Include="SystemView.ascx" />
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
