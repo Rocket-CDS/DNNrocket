@@ -265,9 +265,9 @@ namespace DNNrocketAPI.Components
             }
         }
 
-        public static int GetDesktopModuleId(string definitionName)
+        public static int GetDesktopModuleId(int portalId, string definitionName)
         {
-            var m = DesktopModuleController.GetDesktopModuleByFriendlyName(definitionName);
+            var m = DesktopModuleController.GetDesktopModuleByModuleName(definitionName, portalId);
             if (m != null) return m.DesktopModuleID;
             return -1;
         }

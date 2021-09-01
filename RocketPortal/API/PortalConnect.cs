@@ -22,9 +22,9 @@ namespace RocketPortal.API
                 var homeTabId = PagesUtils.GetHomePage(portalid, DNNrocketUtils.GetCurrentCulture());
                 if (homeTabId >= 0)
                 {
-                    DNNrocketUtils.AddPageSkin(portalid, homeTabId, "rocketportal", "rockethome.ascx");
+                    PagesUtils.AddPageSkin(portalid, homeTabId, "rocketportal", "rockethome.ascx");
                     ModuleUtils.DeleteAllTabModules(homeTabId);
-                    var dtid = ModuleUtils.GetDesktopModuleId("RocketSystem");
+                    var dtid = ModuleUtils.GetDesktopModuleId(portalid, "RocketSystem");
                     if (dtid > -1) ModuleUtils.AddNewModuleToTab(portalid, homeTabId, "RocketSystem", dtid, "", 0, 0, "");
                 }
 

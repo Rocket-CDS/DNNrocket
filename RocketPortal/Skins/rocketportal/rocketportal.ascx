@@ -39,6 +39,15 @@
 
     </div>
 
+
+
+
+<%
+  var isLoggedIn = HttpContext.Current.User.Identity.IsAuthenticated;
+  if (isLoggedIn)
+  {
+%>
+
     <script>
 
         $(document).ready(function () {
@@ -49,4 +58,5 @@
     </script>
 
 
+<% } %>
 

@@ -196,13 +196,14 @@ namespace DNNrocketAPI.Components
             var homeTabId = PagesUtils.GetHomePage(0,DNNrocketUtils.GetCurrentCulture());
             if (homeTabId >= 0)
             {
-                DNNrocketUtils.AddPageSkin(0, homeTabId, "rocketportal", "rocketportal.ascx");
+                PagesUtils.AddPageSkin(0, homeTabId, "rocketportal", "rocketportal.ascx");
                 ModuleUtils.DeleteAllTabModules(homeTabId);
+                PagesUtils.RemovePagePermissions(0, homeTabId, "All Users");
             }
 
-            var cmstabid = DNNrocketUtils.CreatePage(0, "cms");
-            DNNrocketUtils.AddPagePermissions(0, cmstabid, "");
-            DNNrocketUtils.AddPageSkin(0, cmstabid, "cms", "cms.ascx");
+            var cmstabid = PagesUtils.CreatePage(0, "cms");
+            PagesUtils.AddPagePermissions(0, cmstabid, "");
+            PagesUtils.AddPageSkin(0, cmstabid, "cms", "cms.ascx");
 
 
             LogUtils.LogSystem("UPGRADE END: " + Version);
