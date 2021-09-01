@@ -10,6 +10,9 @@ using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Portals;
+using System.Collections;
 
 namespace DNNrocketAPI.Components
 {
@@ -190,6 +193,84 @@ namespace DNNrocketAPI.Components
             }
         }
 
+        public static void AddExistingModule(int portalId, int moduleId, int tabId, string paneName, int position, string align, bool cloneModule)
+        {
+            ModuleInfo moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
+
+            int userID = -1;
+                UserInfo user = UserController.Instance.GetCurrentUserInfo();
+                if (((user != null)))
+                {
+                    userID = user.UserID;
+                }
+
+            if ((moduleInfo != null))
+            {
+                // clone the module object ( to avoid creating an object reference to the data cache )
+                ModuleInfo newModule = moduleInfo.Clone();
+
+                newModule.UniqueId = Guid.NewGuid(); // Cloned Module requires a different uniqueID
+                newModule.TabModuleID = Null.NullInteger;
+                newModule.TabID = tabId;
+                newModule.ModuleOrder = position;
+                newModule.PaneName = paneName;
+                newModule.Alignment = align;
+
+                //copy tab module settings
+                newModule.TabModuleSettings.Clear();
+                foreach (var key in moduleInfo.TabModuleSettings.Keys)
+                {
+                    newModule.TabModuleSettings.Add(key, moduleInfo.TabModuleSettings[key]);
+                }
+
+                ModuleController.Instance.AddModule(newModule);
+            }
+        }
+
+        public static void AddNewModuleToTab(int portalId, int tabId, string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
+        {
+            try
+            {
+                DesktopModuleInfo desktopModule;
+                if (!DesktopModuleController.GetDesktopModules(portalId).TryGetValue(desktopModuleId, out desktopModule))
+                {
+                    throw new ArgumentException("desktopModuleId");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+
+            foreach (ModuleDefinitionInfo objModuleDefinition in
+                ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
+            {
+                var objModule = new ModuleInfo();
+                objModule.Initialize(portalId);
+
+                objModule.PortalID = portalId;
+                objModule.TabID = tabId;
+                objModule.ModuleOrder = position;
+                objModule.ModuleTitle = title;
+                objModule.PaneName = paneName;
+                objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
+
+                ModuleController.Instance.InitialModulePermission(objModule, objModule.TabID, permissionType);
+
+                objModule.CultureCode = Null.NullString;
+                objModule.AllTabs = false;
+                objModule.Alignment = align;
+
+                ModuleController.Instance.AddModule(objModule);
+            }
+        }
+
+        public static int GetDesktopModuleId(string definitionName)
+        {
+            var m = DesktopModuleController.GetDesktopModuleByFriendlyName(definitionName);
+            if (m != null) return m.DesktopModuleID;
+            return -1;
+        }
 
     }
 }

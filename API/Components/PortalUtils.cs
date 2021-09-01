@@ -62,6 +62,7 @@ namespace DNNrocketAPI.Components
                                                      serverPath,
                                                      "",
                                                      isChild);
+
             return portalId;
         }
 

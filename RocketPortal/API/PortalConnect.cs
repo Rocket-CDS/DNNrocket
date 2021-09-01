@@ -18,6 +18,16 @@ namespace RocketPortal.API
             var portalid = PortalUtils.CreatePortal(portalname, engineurl);
             if (portalid > 0)
             {
+                // Add HomePage Skin and Modules
+                var homeTabId = PagesUtils.GetHomePage(portalid, DNNrocketUtils.GetCurrentCulture());
+                if (homeTabId >= 0)
+                {
+                    DNNrocketUtils.AddPageSkin(portalid, homeTabId, "rocketportal", "rockethome.ascx");
+                    ModuleUtils.DeleteAllTabModules(homeTabId);
+                    var dtid = ModuleUtils.GetDesktopModuleId("RocketSystem");
+                    if (dtid > -1) ModuleUtils.AddNewModuleToTab(portalid, homeTabId, "RocketSystem", dtid, "", 0, 0, "");
+                }
+
                 DNNrocketUtils.CreateDefaultRocketRoles(portalid);
 
                 var userId = UserUtils.CreateUser(portalid, manageremail, manageremail);
