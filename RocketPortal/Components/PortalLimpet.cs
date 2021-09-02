@@ -114,6 +114,13 @@ namespace RocketPortal.Components
             return rtn;
         }
 
+        public bool IsActive(string systemKey)
+        {
+            var sRec = Record.GetRecordListItem("systemlist", "genxml/key", systemKey);
+            if (sRec != null) return sRec.GetXmlPropertyBool("genxml/active");
+            return false;
+        }
+
 
         #region "setting"
         public string GetPortalSetting(int idx)
@@ -142,6 +149,7 @@ namespace RocketPortal.Components
         public string Name { get { return Record.GetXmlProperty("genxml/textbox/name"); } }
         public string Protocol { get { var rtn = Record.GetXmlProperty("genxml/select/protocol"); if (rtn == "") rtn = "https://"; return rtn; } }
         public string EngineUrl { get { return Record.GetXmlProperty("genxml/textbox/engineurl"); } set { Record.SetXmlProperty("genxml/textbox/engineurl", value); } }
+        public string EngineUrlWithProtocol { get { return Protocol + EngineUrl; } }
         public bool Exists { get { if (Record.ItemID > 0) return true; else return false; } }
         public DateTime LastSchedulerTime
         {
