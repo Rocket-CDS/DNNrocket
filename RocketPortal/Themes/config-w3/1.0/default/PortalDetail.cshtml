@@ -23,7 +23,7 @@
 
 <div class="w3-bar">
     <button class="w3-button simplisity_click" s-cmd="dashboard_get">@ButtonIcon(ButtonTypes.back)</button>
-    <button class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</button>
+    <button class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-list=".systemlist" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</button>
 </div>
 
 <div class="w3-row w3-padding">
@@ -55,23 +55,26 @@
         <table class="w3-table w3-bordered w3-hoverable w3-padding">
             <thead>
                 <tr>
-                    <th style="width:39px;"></th>
+                    <th></th>
                     <th>@ResourceKey("RP.system")</th>
                 </tr>
             </thead>
-
-            @foreach (var systemData in portalData.SystemDataList.GetSystemActiveList())
+            @{ 
+                var lp = 1;
+            }
+            @foreach (var sInfo in portalData.GetPortalSystemList())
             {
-                <tr class=" simplisity_click" s-after="showsystempopup" s-cmd="rocketsystem_edit" s-return="#systemcontainer" s-fields='{"systemkey":"@systemData.SystemKey","systemsitekey":"@portalData.SiteKey"}' style="cursor:pointer;">
-                    <td style="width:39px;">
-                        <span class="material-icons">
-                            @systemData.Icon
-                        </span>
+                var systemData = new SystemLimpet(sInfo.GetXmlProperty("genxml/key"));
+                <tr class="systemlist">
+                    <td style="width:32px;">
+                        @HiddenField(sInfo, "genxml/key", "", systemData.SystemKey, false, lp)
+                        @CheckBox(sInfo, "genxml/active", "", " class='w3-check ' ", false, false, lp)
                     </td>
-                    <td>
+                    <td class="simplisity_click" s-after="showsystempopup" s-cmd="rocketsystem_edit" s-return="#systemcontainer" s-fields='{"systemkey":"@systemData.SystemKey","systemsitekey":"@portalData.SiteKey"}' style="cursor:pointer;">
                         <b>@systemData.SystemName</b>
                     </td>
                 </tr>
+                lp += 1;
             }
         </table>
     </div>

@@ -88,7 +88,31 @@ namespace RocketPortal.Components
                 Update();
             }
         }
-        public string EntityTypeCode { get { return _entityTypeCode; } }
+
+        public List<SimplisityInfo> GetPortalSystemList()
+        {
+            var rtn = new List<SimplisityInfo>();
+            foreach (var systemData in SystemDataList.GetSystemActiveList())
+            {
+                var sRec = Record.GetRecordListItem("systemlist", "genxml/key", systemData.SystemKey);
+                if (sRec == null)
+                {
+                    sRec = new SimplisityRecord();
+                    sRec.SetXmlProperty("genxml/key",systemData.SystemKey);
+                }
+                rtn.Add(new SimplisityInfo(sRec));
+            }
+            return rtn;
+        }
+        public List<SimplisityInfo> GetPortalSystemActiveList()
+        {
+            var rtn = new List<SimplisityInfo>();
+            foreach (var sInfo in GetPortalSystemList())
+            {
+                if (sInfo.GetXmlPropertyBool("genxml/active")) rtn.Add(sInfo);
+            }
+            return rtn;
+        }
 
 
         #region "setting"
@@ -108,10 +132,11 @@ namespace RocketPortal.Components
         {
             return Record.GetRecordList("settingsdata");
         }
-        
+
 
         #endregion
 
+        public string EntityTypeCode { get { return _entityTypeCode; } }
         public SimplisityRecord Record { get; set; }
         public int PortalId { get { return Record.PortalId; } }
         public string Name { get { return Record.GetXmlProperty("genxml/textbox/name"); } }
