@@ -289,61 +289,75 @@ namespace DNNrocketAPI.Components
         }
         public static void AddPagePermissions(int portalId, int pageId, string roleName)
         {
-            var controller = new TabController();
-            var newTab = controller.GetTab(pageId, portalId);
-            TabPermissionCollection newPermissions = newTab.TabPermissions;
+            TabInfo newTab = TabController.Instance.GetTab(pageId, portalId, false);
+            if (newTab != null)
+            {
+                TabPermissionCollection newPermissions = newTab.TabPermissions;
 
-            var roleid = -1;
-            if (roleName != "")
-            {
-                var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
-                if (role != null) roleid = role.RoleID;
-            }
-            //Add permission to the page so that all users can view it
-            foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
-            {
-                if (p.PermissionKey == "VIEW")
+                var roleid = -1;
+                if (roleName != "")
                 {
-                    TabPermissionInfo tpi = new TabPermissionInfo();
-                    tpi.PermissionID = p.PermissionID;
-                    tpi.PermissionKey = p.PermissionKey;
-                    tpi.PermissionName = p.PermissionName;
-                    tpi.AllowAccess = true;
-                    tpi.RoleID = roleid;
-                    tpi.RoleName = p.PermissionName;
-                    if (!newTab.TabPermissions.Contains(tpi)) newTab.TabPermissions.Add(tpi);
+                    var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
+                    if (role != null) roleid = role.RoleID;
                 }
+                //Add permission to the page so that all users can view it
+                foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
+                {
+                    if (p.PermissionKey == "VIEW")
+                    {
+                        var objPermission = new TabPermissionInfo(p);
+                        objPermission.TabID = pageId;
+                        objPermission.RoleID = roleid;
+                        objPermission.RoleName = roleName;
+                        objPermission.AllowAccess = true;
+                        //objPermission.UserID = ??;
+                        objPermission.DisplayName = roleName;
+
+                        bool canAdd = !newTab.TabPermissions.Cast<TabPermissionInfo>()
+                  .Any(tp => tp.TabID == objPermission.TabID
+                             && tp.PermissionID == objPermission.PermissionID
+                             && tp.RoleID == objPermission.RoleID
+                             && tp.UserID == objPermission.UserID);
+
+                        if (canAdd) newTab.TabPermissions.Add(objPermission);
+                    }
+                }
+
+                TabController.Instance.UpdateTab(newTab);
+                TabController.Instance.ClearCache(portalId);
             }
-            controller.ClearCache(portalId);
         }
         public static void RemovePagePermissions(int portalId, int pageId, string roleName)
         {
-            var controller = new TabController();
-            var newTab = controller.GetTab(pageId, portalId);
-            TabPermissionCollection newPermissions = newTab.TabPermissions;
+            TabInfo newTab = TabController.Instance.GetTab(pageId, portalId, false);
+            if (newTab != null)
+            {
+                TabPermissionCollection newPermissions = newTab.TabPermissions;
 
-            var roleid = -1;
-            if (roleName != "")
-            {
-                var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
-                if (role != null) roleid = role.RoleID;
-            }
-            //Add permission to the page so that all users can view it
-            foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
-            {
-                if (p.PermissionKey == "VIEW")
+                var roleid = -1;
+                if (roleName != "")
                 {
-                    TabPermissionInfo tpi = new TabPermissionInfo();
-                    tpi.PermissionID = p.PermissionID;
-                    tpi.PermissionKey = p.PermissionKey;
-                    tpi.PermissionName = p.PermissionName;
-                    tpi.AllowAccess = true;
-                    tpi.RoleID = roleid;
-                    tpi.RoleName = p.PermissionName;
-                    if (newTab.TabPermissions.Contains(tpi)) newTab.TabPermissions.Remove(tpi);
+                    var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
+                    if (role != null) roleid = role.RoleID;
                 }
+                //Add permission to the page so that all users can view it
+                foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
+                {
+                    if (p.PermissionKey == "VIEW")
+                    {
+                        var objPermission = new TabPermissionInfo(p);
+                        objPermission.TabID = pageId;
+                        objPermission.RoleID = roleid;
+                        objPermission.RoleName = roleName;
+                        objPermission.AllowAccess = true;
+                        //objPermission.UserID = ??;
+                        objPermission.DisplayName = roleName;
+                        newTab.TabPermissions.Remove(objPermission);
+                    }
+                }
+                TabController.Instance.UpdateTab(newTab);
+                TabController.Instance.ClearCache(portalId);
             }
-            controller.ClearCache(portalId);
         }
         public static void AddPageSkin(int portalId, int pageId, string skinFolderName, string skinNameAscx)
         {
