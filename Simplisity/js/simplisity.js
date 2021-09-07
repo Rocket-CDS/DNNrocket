@@ -981,8 +981,8 @@ function simplisity_assignevents(cmdurl) {
             simplisity_callserver(this, cmdurl);
             // add to browser bar and history
             var stateObj = jQuery(this).attr("s-fields");
-            if (typeof(jQuery(this).attr("href")) != 'undefined') {
-                if (jQuery(this).attr("href").match("^javascript:void(0)") === false) {
+            if (typeof (jQuery(this).attr("href")) !== 'undefined') {
+                if (jQuery(this).attr("href").includes(window.location.hostname)) {
                     history.pushState(stateObj, "Title", jQuery(this).attr("href"));
                 }
             }
