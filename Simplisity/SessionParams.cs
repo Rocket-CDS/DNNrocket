@@ -19,8 +19,15 @@ namespace Simplisity
         {
             Info = new SimplisityInfo();
             Page = 1;
-            //Populate any values and overwrites
-            foreach (var d in paramInfo.ToDictionary())
+            foreach (var d in paramInfo.ToDictionary("settings"))
+            {
+                Set(d.Key, d.Value);
+            }
+            foreach (var d in paramInfo.ToDictionary("form"))
+            {
+                Set(d.Key, d.Value);
+            }
+            foreach (var d in paramInfo.ToDictionary("urlparams"))
             {
                 Set(d.Key, d.Value);
             }
