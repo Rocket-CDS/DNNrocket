@@ -117,8 +117,8 @@
           <group></group>
         </dropdownlist>
         <checkbox>
-          <onmenu>true</onmenu>
-          <active>true</active>
+          <onmenu>false</onmenu>
+          <active>false</active>
         </checkbox>
         <radio>
           <securityrolesadministrators>1</securityrolesadministrators>
