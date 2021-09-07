@@ -19,6 +19,10 @@ namespace Simplisity
         {
             Info = new SimplisityInfo();
             Page = 1;
+            foreach (var d in paramInfo.ToDictionary("hidden"))
+            {
+                Set(d.Key, d.Value);
+            }
             foreach (var d in paramInfo.ToDictionary("settings"))
             {
                 Set(d.Key, d.Value);
