@@ -25,45 +25,37 @@
 
 }
 
-<div class="w3-row-padding w3-center w3-margin-top">
+<div id="displaylist" class="w3-row-padding w3-center w3-margin-top" style="display:none;">
 
-    @foreach (var sInfo in portalData.GetPortalSystemActiveList())
-    {
-        var systemData = new SystemLimpet(sInfo.GetXmlProperty("genxml/key"));
+    <table class="w3-table w3-bordered">
+        <tr>
+            <th></th>
+            <th>@ResourceKey("DNNrocket.system")</th>
+            <th></th>
+        </tr>
 
-        <div class="w3-third">
-            <div class="w3-card w3-container" style="min-height:420px">
-                <h3>@ResourceKey(systemData.SystemKey + "." + systemData.SystemKey)</h3>
-                <span class="material-icons w3-margin-bottom w3-text-theme " style="font-size:120px">
-                    @(systemData.Icon)
-                </span>
-                <p>@ResourceKey(systemData.SystemKey + ".text")&nbsp;</p>
+        @foreach (var sInfo in portalData.GetPortalSystemActiveList())
+        {
+            var systemData = new SystemLimpet(sInfo.GetXmlProperty("genxml/key"));
 
-                <div class="w3-row">
-
-                    <a href="\@(systemData.SystemKey)" class="w3-button w3-block w3-margin-bottom w3-border w3-text-black">
-                        <span class="material-icons w3-text-teal ">edit_note</span>
-                        Admin
-                    </a>
-                    <a href="\@(systemData.SystemKey)" class="w3-button w3-block w3-margin-bottom w3-border w3-text-black">
-                        <span class="material-icons w3-text-green ">auto_stories</span>
-                        Documentation
-                    </a>
-                    <a href="\@(systemData.SystemKey)" class="w3-button w3-block w3-margin-bottom w3-border w3-text-black">
-                        <span class="material-icons w3-text-green ">construction</span>
-                        Upgrade
-                    </a>
-
-                </div>
-
-
-            </div>
-        </div>
-    }
+    <tr>
+        <td style="width:62px;">
+            <a href="\@(systemData.SystemKey)" class="w3-button w3-border w3-text-black">
+                @ButtonText(ButtonTypes.admin)
+            </a>
+        </td>
+        <td>
+            <b>@ResourceKey(systemData.SystemKey + "." + systemData.SystemKey)</b>
+        </td>
+        <td>@ResourceKey(systemData.SystemKey + ".Text")</td>
+    </tr>
+        }
+    </table>
 
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $('#displaylist').show();
     });
 </script>
