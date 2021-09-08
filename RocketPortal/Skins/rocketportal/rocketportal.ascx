@@ -28,7 +28,12 @@
 
 </style>
 
-    <div id="ContentPane" class="col-md-12 contentPane" runat="server"></div>
+<%
+  var isLoggedIn = HttpContext.Current.User.Identity.IsAuthenticated;
+  if (isLoggedIn)
+  {
+%>
+
 
     <div id="adminpanel" style="display:none;">
         <div class="w3-container w3-center w3-padding-64">
@@ -36,17 +41,7 @@
                 motion_photos_on
             </span>
         </div>
-
     </div>
-
-
-
-
-<%
-  var isLoggedIn = HttpContext.Current.User.Identity.IsAuthenticated;
-  if (isLoggedIn)
-  {
-%>
 
     <script>
 
@@ -57,6 +52,32 @@
 
     </script>
 
+<%
+}
+else
+  {
+%>
+
+<div class="w3-row w3-orange w3-padding">
+&nbsp;
+</div>
+
+<div class="w3-container w3-center w3-padding-64">
+
+
+    <div class="w3-third">
+    &nbsp;
+    </div>
+    
+    <div id="ContentPane" class="w3-third w3-center contentPane" runat="server"></div>
+    
+    <div class="w3-third">
+    &nbsp;
+    </div>
+
+</div>
+
 
 <% } %>
+
 

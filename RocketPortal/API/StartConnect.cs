@@ -60,7 +60,8 @@ namespace RocketPortal.API
                     break;
                 case "rocketportal_login":
                     _userParams.TrackClear(_systemData.SystemKey);
-                    strOut = UserUtils.LoginForm(_systemData.SystemKey, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                    //strOut = UserUtils.LoginForm(_systemData.SystemKey, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
+                    strOut = "";
                     break;
 
                     

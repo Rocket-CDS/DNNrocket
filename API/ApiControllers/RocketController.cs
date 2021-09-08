@@ -268,7 +268,8 @@ namespace DNNrocketAPI.ApiControllers
                 {
                     var ps = new PortalSecurity();
                     ps.SignOut();
-                    strOut = UserUtils.LoginForm("", new SimplisityInfo(), "login", UserUtils.GetCurrentUserId());
+                    strOut = "";
+                    //strOut = UserUtils.LoginForm("", new SimplisityInfo(), "login", UserUtils.GetCurrentUserId());
                     context.Response.ContentType = "text/plain";
                     context.Response.Write(strOut);
                     context.Response.End();
