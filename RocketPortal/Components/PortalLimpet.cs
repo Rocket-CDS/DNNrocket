@@ -53,18 +53,19 @@ namespace RocketPortal.Components
             SystemDataList = new SystemLimpetList();
         }
 
-        public void Save(SimplisityInfo info)
+        public int Save(SimplisityInfo info)
         { 
             Record.XMLData = info.XMLData;
             if (EngineUrl != "") PortalUtils.AddPortalAlias(_portalId, EngineUrl);
-            Update();
+            return Update();
         }
-        public void Update()
+        public int Update()
         {
             Validate();
-            _objCtrl.SaveRecord(Record);
+            Record = _objCtrl.SaveRecord(Record);
             if (UserId <= 0) UserId = UserUtils.GetCurrentUserId();
             CacheUtils.SetCache(_cacheKey,Record);
+            return Record.ItemID;
         }
         public void Delete()
         {
@@ -85,42 +86,8 @@ namespace RocketPortal.Components
             if (dpa != EngineUrl && dpa != "")
             {
                 EngineUrl = dpa;
-                Update();
             }
         }
-
-        public List<SimplisityInfo> GetPortalSystemList()
-        {
-            var rtn = new List<SimplisityInfo>();
-            foreach (var systemData in SystemDataList.GetSystemActiveList())
-            {
-                var sRec = Record.GetRecordListItem("systemlist", "genxml/key", systemData.SystemKey);
-                if (sRec == null)
-                {
-                    sRec = new SimplisityRecord();
-                    sRec.SetXmlProperty("genxml/key",systemData.SystemKey);
-                }
-                rtn.Add(new SimplisityInfo(sRec));
-            }
-            return rtn;
-        }
-        public List<SimplisityInfo> GetPortalSystemActiveList()
-        {
-            var rtn = new List<SimplisityInfo>();
-            foreach (var sInfo in GetPortalSystemList())
-            {
-                if (sInfo.GetXmlPropertyBool("genxml/active")) rtn.Add(sInfo);
-            }
-            return rtn;
-        }
-
-        public bool IsActive(string systemKey)
-        {
-            var sRec = Record.GetRecordListItem("systemlist", "genxml/key", systemKey);
-            if (sRec != null) return sRec.GetXmlPropertyBool("genxml/active");
-            return false;
-        }
-
 
         #region "setting"
         public string GetPortalSetting(int idx)
@@ -178,6 +145,9 @@ namespace RocketPortal.Components
         public bool EmailActive { get { return Record.GetXmlPropertyBool("genxml/emailon"); } }
         public bool DebugMode { get { return Record.GetXmlPropertyBool("genxml/debugmode"); } }
         public int UserId { get { return Record.UserId; } private set { Record.UserId = value; } }
+        public string SystemKey { get { return Record.GetXmlProperty("genxml/radio/systemkey"); } }
+        public string ColorAdminTheme { get { var rtn = Record.GetXmlProperty("genxml/select/colortheme"); if (rtn == "") rtn = "grey-theme.css"; return rtn; } set { Record.SetXmlProperty("genxml/select/colortheme", value); } }
+        public string ColorFrontTheme { get { var rtn = Record.GetXmlProperty("genxml/select/colorthemefront"); if (rtn == "") rtn = "grey-theme.css"; return rtn; } set { Record.SetXmlProperty("genxml/select/colorthemefront", value); } }
 
     }
 }

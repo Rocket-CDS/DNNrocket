@@ -115,6 +115,24 @@ namespace RocketPortal.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Root Domain.
+        /// </summary>
+        internal static string rootdomain_Text {
+            get {
+                return ResourceManager.GetString("rootdomain.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of Service..
+        /// </summary>
+        internal static string selectsystem_Text {
+            get {
+                return ResourceManager.GetString("selectsystem.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Services.
         /// </summary>
         internal static string service_Text {

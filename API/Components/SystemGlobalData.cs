@@ -66,6 +66,7 @@ namespace DNNrocketAPI.Components
         public bool SchedulerIsInstalled { get { return Info.GetXmlPropertyBool("genxml/checkbox/schedulerinstalled"); } set { Info.SetXmlProperty("genxml/checkbox/schedulerinstalled", value.ToString()); } }
         public bool SchedulerIsEnabled { get { return Info.GetXmlPropertyBool("genxml/checkbox/schedulerenabled"); } set { Info.SetXmlProperty("genxml/checkbox/schedulerenabled", value.ToString()); } }        
         public string Name { get { return Info.GetXmlProperty("genxml/textbox/name"); } set { Info.SetXmlProperty("genxml/textbox/name", value); } }
+        public string RootDomain { get { return Info.GetXmlProperty("genxml/textbox/rootdomain"); } set { Info.SetXmlProperty("genxml/textbox/rootdomain", value); } }
 
     }
 }

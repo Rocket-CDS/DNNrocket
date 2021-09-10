@@ -46,6 +46,10 @@
     <script>
 
         $(document).ready(function () {
+
+            // clear sessionparam, incase they are invalid after an error.
+            simplisity_sessionremove();
+
             $('#adminpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'dashboard_adminpanel', '{"systemkey":"rocketportal"}', '')
             $('#adminpanel').show();
         });

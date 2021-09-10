@@ -61,7 +61,7 @@ namespace RocketPortal.API
                 case "rocketportal_login":
                     _userParams.TrackClear(_systemData.SystemKey);
                     //strOut = UserUtils.LoginForm(_systemData.SystemKey, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
-                    strOut = "";
+                    strOut = ReloadPage();
                     break;
 
                     
@@ -210,6 +210,18 @@ namespace RocketPortal.API
                 var portalList = new PortalLimpetList(_paramInfo);
                 var razorTempl = _appThemeSystem.GetTemplate("MyServices.cshtml");
                 return RenderRazorUtils.RazorDetail(razorTempl, portalList, _passSettings, _sessionParams, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        private string ReloadPage()
+        {
+            try
+            {
+                var razorTempl = _appThemeSystem.GetTemplate("Reload.cshtml");
+                return RenderRazorUtils.RazorDetail(razorTempl, _portalData, _passSettings, _sessionParams, true);
             }
             catch (Exception ex)
             {

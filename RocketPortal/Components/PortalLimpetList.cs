@@ -55,6 +55,7 @@ namespace RocketPortal.Components
             {
                 var pData = new PortalLimpet(p.PortalId);
                 pData.Validate();
+                pData.Update();
             }
             Populate();
         }

@@ -17,6 +17,10 @@
 		</div>
 	</div>
 
+	<div class="w3-row w3-center">
+		<div class='w3-jumbo'>Toasted</div>
+    </div>
+
 
 	<%
   var isLoggedIn = HttpContext.Current.User.Identity.IsAuthenticated;
@@ -30,19 +34,7 @@
 		</div>
     </div>
 
-
 <% } %>
-<% else %>
-<% { %>
-
-    <div class="w3-row w3-center">
-		<div class='w3-jumbo'>Toasted</div>
-    </div>
-
-<% } %>
-
-
-
     
 </div>
 

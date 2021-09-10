@@ -9,13 +9,13 @@ namespace RocketPortal.API
     {
         private string CreatePortal()
         {
-            var portalname = _postInfo.GetXmlProperty("genxml/name");
-            var manageremail = _postInfo.GetXmlProperty("genxml/manageremail");
-            var managerpassword = _postInfo.GetXmlProperty("genxml/managerpassword");
-            var portalurl = _postInfo.GetXmlProperty("genxml/portalurl");
+            var globalData = new SystemGlobalData();
+            if (globalData.RootDomain == "") return "Invalid Root Domain.  Update Global Settings.";
+
+            var portalurl = GeneralUtils.UrlFriendly(GeneralUtils.GetGuidKey()) + "." + globalData.RootDomain;
             var engineurl = portalurl;
 
-            var portalid = PortalUtils.CreatePortal(portalname, engineurl);
+            var portalid = PortalUtils.CreatePortal("", engineurl);
             if (portalid > 0)
             {
                 // Add HomePage Skin and Modules
@@ -30,30 +30,32 @@ namespace RocketPortal.API
 
                 DNNrocketUtils.CreateDefaultRocketRoles(portalid);
 
-                var userId = UserUtils.CreateUser(portalid, manageremail, manageremail);
-                if (userId >= 0)
-                {
-                    UserUtils.ResetAndChangePassword(portalid, userId, managerpassword);
+                //var userId = UserUtils.CreateUser(portalid, manageremail, manageremail);
+                //if (userId >= 0)
+                //{
+                //    UserUtils.ResetAndChangePassword(portalid, userId, managerpassword);
 
-                    var rolelist = UserUtils.GetRoles(portalid);
-                    foreach (var r in rolelist)
-                    {
-                        if (r.Value == DNNrocketRoles.Manager)
-                        {
-                            UserUtils.AddUserRole(portalid, userId, r.Key);
-                        }
-                    }
-                }
-                DNNrocketUtils.RecycleApplicationPool();
+                //    var rolelist = UserUtils.GetRoles(portalid);
+                //    foreach (var r in rolelist)
+                //    {
+                //        if (r.Value == DNNrocketRoles.Manager)
+                //        {
+                //            UserUtils.AddUserRole(portalid, userId, r.Key);
+                //        }
+                //    }
+                //}
+                //DNNrocketUtils.RecycleApplicationPool();
 
                 // add portal record
                 var portalData = new PortalLimpet(portalid);
-                portalData.Record.SetXmlProperty("genxml/textbox/name", portalname);
+                var systemkey = _postInfo.GetXmlProperty("genxml/radio/systemkey");
+                portalData.Record.SetXmlProperty("genxml/radio/systemkey", systemkey);
+                portalData.Record.SetXmlProperty("genxml/textbox/name", "");
                 portalData.EngineUrl = engineurl;
                 portalData.Update();
-
+                _portalData = new PortalLimpet(portalid); 
             }
-            return GetPortalList();
+            return GetPortalDetail();
         }
         private string SavePortal()
         {
@@ -63,20 +65,19 @@ namespace RocketPortal.API
                 var portalData = new PortalLimpet(portalId);
                 if (portalData.PortalId >= 0) portalData.Save(_postInfo);
                 _portalData = new PortalLimpet(portalId); // reload portal data after save (for langauge change)
-                CacheUtils.ClearAllCache();  
+                //CacheUtils.ClearAllCache();  
                 return GetPortalDetail();
             }
             return "Invalid PortalId";
         }
         private string DeletePortal()
         {
-            var sitekey = _paramInfo.GetXmlProperty("genxml/hidden/sitekey"); // we may have passed selection
-            var portalId = PortalUtils.GetPortalIdBySiteKey(sitekey);
+            var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
             if (portalId >= 0)
             {
                 var PortalShop = new PortalLimpet(portalId);
                 PortalUtils.DeletePortal(portalId); // Delete base portal will crash install.
-                DNNrocketUtils.RecycleApplicationPool();
+                //DNNrocketUtils.RecycleApplicationPool();
                 PortalShop.Delete();
                 _userParams.TrackClear(_systemData.SystemKey);
                 return GetPortalList();

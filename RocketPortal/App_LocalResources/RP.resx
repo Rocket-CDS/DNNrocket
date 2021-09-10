@@ -135,6 +135,12 @@
   <data name="protocol.Text" xml:space="preserve">
     <value>Protocol</value>
   </data>
+  <data name="rootdomain.Text" xml:space="preserve">
+    <value>Root Domain</value>
+  </data>
+  <data name="selectsystem.Text" xml:space="preserve">
+    <value>Select the type of Service.</value>
+  </data>
   <data name="service.Text" xml:space="preserve">
     <value>Services</value>
   </data>

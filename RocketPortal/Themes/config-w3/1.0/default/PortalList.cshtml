@@ -8,15 +8,17 @@
 
 @{
     var portalList = (PortalLimpetList)Model.List.First();
+    var systemDataList = new SystemLimpetList();
+    var systemList = systemDataList.GetSystemActiveList();
 }
 
-<div class="">
+<div id="portallist" class="">
 
     <div class="w3-bar searchdata">
 
         @HiddenField(new SimplisityInfo(), "genxml/hidden/page", " class='simplisity_sessionfield' s-update='ignore'", "1")
 
-        <button class="w3-button w3-theme-action" onclick="$('#portaldetail').show();">@ButtonText(ButtonTypes.add)</button>
+        <button type="button" class="w3-button w3-theme-action" onclick="$('#portallist').hide();$('#portaldetail').show();">@ButtonText(ButtonTypes.add)</button>
         <button class="w3-button simplisity_click" title="Clear All Cache" s-cmd="dashboard_clearallcache" s-post="" s-reload="true">@ButtonIcon(ButtonTypes.refresh)</button>
 
         <div class="w3-right w3-hide-small w3-margin-left" style="width: 100px">
@@ -39,18 +41,22 @@
                 <tr>
                     <th>@ResourceKey("RP.name")</th>
                     <th>@ResourceKey("RP.serviceurl")</th>
+                    <th>@ResourceKey("RP.system")</th>
                 </tr>
             </thead>
             @foreach (PortalLimpet portalData in portalList.GetPortalList())
             {
                 if (portalData.PortalId > 0)
                 {
-                    <tr class="simplisity_click" s-cmd="portal_detail" s-fields='{"portalid":"@portalData.PortalId","track":"false"}' style="cursor:pointer;">
-                        <td><b>@portalData.Name</b></td>
-                        <td>
-                            @portalData.EngineUrl
-                        </td>
-                    </tr>
+        <tr class="simplisity_click" s-cmd="portal_detail" s-fields='{"portalid":"@portalData.PortalId","track":"false"}' style="cursor:pointer;">
+            <td><b>@portalData.Name</b></td>
+            <td>
+                @portalData.EngineUrl
+            </td>
+            <td>
+                @portalData.SystemKey
+            </td>
+        </tr>
                 }
             }
         </table>
@@ -58,30 +64,26 @@
     </div>
 </div>
 
-<!-- Popups -->
-<div id="portaldetail" class="w3-modal">
-    <div class="w3-modal-content w3-card w3-animate-zoom" style="width:25%;">
-
-        <header class="w3-container  w3-theme" style="height:38px;">
-            <span onclick="$('#portaldetail').hide();" class="w3-button w3-display-topright">&times;</span>
-        </header>
-        <div class="w3-row w3-padding">
-            @TextBox(new SimplisityInfo(), "genxml/name", "name='name' class='w3-input w3-border' autocomplete='off' required placeholder='" + ResourceKey("RP.name") + "...' maxlength='250' ", "")
-        </div>
-        <div class="w3-row w3-padding">
-            @TextBox(new SimplisityInfo(), "genxml/portalurl", "name='portalurl' class='w3-input w3-border' autocomplete='off' required placeholder='Portal root URL...' maxlength='250' ", "")
-        </div>
-        <div class="w3-row w3-padding">
-            @TextBox(new SimplisityInfo(), "genxml/manageremail", "name='manageremail' class='w3-input w3-border' autocomplete='off' required maxlength='250' placeholder='" + ResourceKey("RP.manageremail") + "...' ", "")
-        </div>
-        <div class="w3-row w3-padding">
-            <input class="w3-input w3-border" type="password" name='managerpassword' required s-xpath="genxml/managerpassword" autocomplete='off' placeholder="@ResourceKey("RP.managerpassword")..." id="managerpassword">
-        </div>
-
-        <div class="w3-row w3-padding">
-            <div class="w3-button w3-green w3-padding-8 w3-right simplisity_click portalcreatebutton " s-before="validatepopupdetail" s-cmd="portal_create" s-reload="false" s-post="#portaldetail">@ButtonText(ButtonTypes.create)</div>
-        </div>
-
+<div id="portaldetail" class="" style="display:none;">
+    <div class="w3-row w3-padding">
+        <div class="w3-button" onclick="$('#portaldetail').hide();$('#portallist').show();">@ButtonIcon(ButtonTypes.back)</div>
+        <div id="createbutton" class="w3-button w3-theme-action simplisity_click" s-cmd="portal_create" s-reload="false" s-post="#portaldetail" style="display:none;">@ButtonText(ButtonTypes.create)</div>
+    </div>
+    <div class="w3-container w3-xlarge">
+        @ResourceKey("RP.selectsystem")
+    </div>
+    <div class="w3-container" style="">
+            @{
+                var lp = 0;
+            }
+            @foreach (var systemData in systemList)
+            {
+                <p>
+                    <input class="w3-radio" id="systemkey_@(lp)" s-xpath="genxml/radio/systemkey" s-update="save" name="systemkeyradio" type="radio" value="@systemData.SystemKey">
+                    <label class="w3-large">@systemData.SystemName</label>
+                </p>
+                lp += 1;
+            }
     </div>
 </div>
 
@@ -124,23 +126,12 @@
             $('#searchtext').addClass('w3-border-red');
         }
 
-    });
-
-    function validatepopupdetail() {
-        var form = $("#rocketecommerceadmin_form");
-        form.validate({
-            errorClass: "w3-text-red",
-            highlight: function (element, errorClass) {
-                $(element).removeClass(errorClass);
-            }
+        $('.w3-radio').unbind("click");
+        $('.w3-radio').click(function () {
+            $('#createbutton').show();
         });
-        if (form.valid()) {
-            $('#portaldetail').hide();
-        }
-        else {
-            $('.portalcreatebutton').attr('s-stop', 'stop');
-        }
-    }
+
+    });
 
 </script>
 

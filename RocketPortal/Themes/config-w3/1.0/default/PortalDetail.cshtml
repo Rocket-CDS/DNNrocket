@@ -15,7 +15,7 @@
     var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
 
     var systemDataList = new SystemLimpetList();
-    var systemList = systemDataList.GetSystemList();
+    var systemList = systemDataList.GetSystemActiveList();
     var appThemeSystem = new AppThemeDNNrocketLimpet("rocketportal");
 }
 
@@ -24,6 +24,11 @@
     <div class="w3-bar">
         <button class="w3-button simplisity_click" s-cmd="dashboard_get">@ButtonIcon(ButtonTypes.back)</button>
         <button class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-list=".systemlist" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</button>
+        @if (info.GetXmlProperty("genxml/radio/systemkey") != "")
+        {
+            <button class="w3-padding w3-button simplisity_click" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@info.GetXmlProperty("genxml/radio/systemkey")"}'>@ButtonText(ButtonTypes.setup)</button>
+        }
+        <button class="w3-padding w3-button w3-red w3-right simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="portal_delete" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.delete)</button>
     </div>
 
     <div class="w3-row w3-padding">
@@ -31,8 +36,8 @@
         <div class="w3-col m2 w3-tiny w3-right w3-right-align w3-hide-small">Id:&nbsp;@info.ItemID &nbsp; PortalId:&nbsp;@portalData.PortalId</div>
     </div>
 
-    <div class="w3-row w3-padding">
-        <div class="w3-twothird a-portaldata">
+    <div class="w3-row w3-padding a-portaldata">
+        <div class="w3-twothird">
 
             <div class="w3-row w3-padding">
                 <label><b>@ResourceKey("DNNrocket.name")</b></label>
@@ -46,49 +51,52 @@
                 </div>
                 <div class="w3-rest w3-padding">
                     <label><b>@ResourceKey("RP.serviceurl")</b></label>
-                    @TextBox(info, "genxml/textbox/engineurl", " class='w3-input w3-border' autocomplete='off' ")
+                    @TextBox(info, "genxml/textbox/engineurl", " class='w3-input w3-border' disabled autocomplete='off' ")
                 </div>
+            </div>
+
+            <div class="w3-row w3-padding">
+                <label class="">@ResourceKey("DNNrocket.colortheme") (Front)</label>
+                @FileSelectList(info, "genxml/select/colorthemefront", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css"), "class='w3-input w3-border'")
+            </div>
+            <div class="w3-row w3-padding">
+                <label class="">@ResourceKey("DNNrocket.colortheme") (Admin)</label>
+                @FileSelectList(info, "genxml/select/colortheme", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css"), "class='w3-input w3-border'")
             </div>
 
         </div>
         <div class="w3-third">
-            <table class="w3-table w3-bordered w3-hoverable w3-padding">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>@ResourceKey("RP.system")</th>
-                    </tr>
-                </thead>
-                @{
-                    var lp = 1;
-                }
-                @foreach (var sInfo in portalData.GetPortalSystemList())
+            <label><b>@ResourceKey("RP.system")</b></label>
+            @{
+                var lp = 0;
+                var disabledflag = "";
+                if (info.GetXmlProperty("genxml/radio/systemkey") != "")
                 {
-                    var systemData = new SystemLimpet(sInfo.GetXmlProperty("genxml/key"));
-                    <tr class="systemlist">
-                        <td style="width:32px;">
-                            @HiddenField(sInfo, "genxml/key", "", systemData.SystemKey, false, lp)
-                            @CheckBox(sInfo, "genxml/active", "", " class='w3-check ' ", false, false, lp)
-                        </td>
-                        <td class="simplisity_click" s-cmd="rocketsystem_edit" s-fields='{"systemkey":"@systemData.SystemKey","systemsitekey":"@portalData.SiteKey"}' style="cursor:pointer;">
-                            <b>@systemData.SystemName</b>
-                        </td>
-                    </tr>
-                    lp += 1;
+                    disabledflag = "disabled";                    
                 }
-            </table>
+            }
+            @foreach (var systemData in systemList)
+            {
+                var selectedvalue = "";
+                if (info.GetXmlProperty("genxml/radio/systemkey") == systemData.SystemKey)
+                {
+                    selectedvalue = "checked='checked'";
+                }
+                <p>
+                    <input class="w3-radio" id="systemkey_@(lp)" s-xpath="genxml/radio/systemkey" @(disabledflag) @(selectedvalue) s-update="save" name="systemkeyradio" type="radio" value="@systemData.SystemKey">
+                    <label class="">@systemData.SystemName</label>
+                </p>
+                lp += 1;
+            }
         </div>
     </div>
 </div>
 
+
 <script type="text/javascript">
 
     $(document).ready(function () {
-    });
 
-    function showsystempopup() {
-        rpadmin.moveToTop('#systemmodal');
-        $('#systemmodal').show();
-    }
+    });
 
 </script>

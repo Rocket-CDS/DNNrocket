@@ -9,53 +9,16 @@
 @{
     var portalId = (int)Model.List.First();
     var portalData = new PortalLimpet(portalId);
-
-    DNNrocketUtils.SetCurrentCulture(DNNrocketUtils.GetEditCulture());
-    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
-
-    var systemDataList = new SystemLimpetList();
-    var systemList = systemDataList.GetSystemList();
-
-
-    foreach (var systemData in systemDataList.GetSystemActiveList())
-    {
-        AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/" + systemData.SystemKey + "/App_LocalResources/");
-    }
-    var appThemeSystem = new AppThemeSystemLimpet("rocketportal");
-
 }
 
-<div id="displaylist" class="w3-row-padding w3-center w3-margin-top" style="display:none;">
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/@(portalData.ColorAdminTheme)">
 
-    <table class="w3-table w3-bordered">
-        <tr>
-            <th></th>
-            <th>@ResourceKey("DNNrocket.system")</th>
-            <th></th>
-        </tr>
-
-        @foreach (var sInfo in portalData.GetPortalSystemActiveList())
-        {
-            var systemData = new SystemLimpet(sInfo.GetXmlProperty("genxml/key"));
-
-    <tr>
-        <td style="width:62px;">
-            <a href="\@(systemData.SystemKey)" class="w3-button w3-border w3-text-black">
-                @ButtonText(ButtonTypes.admin)
-            </a>
-        </td>
-        <td>
-            <b>@ResourceKey(systemData.SystemKey + "." + systemData.SystemKey)</b>
-        </td>
-        <td>@ResourceKey(systemData.SystemKey + ".Text")</td>
-    </tr>
-        }
-    </table>
-
+<div class="w3-container w3-center w3-margin">
+    <a class="w3-button w3-theme-action" href="/@(portalData.SystemKey)">@ResourceKey("DNNrocket.admin")</a>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#displaylist').show();
+
     });
 </script>

@@ -32,11 +32,11 @@
                 }
                 if (submenu)
                 {
-                    rtn = "<button class='w3-bar-item w3-button w3-margin-left  simplisity_click' s-cmd='" + rinterface.DefaultCommand + "' s-fields='{\"track\":\"true\"}'><strong>" + interfaceName + "</strong></a>";
+                    rtn = "<div class='w3-bar-item w3-button w3-margin-left  simplisity_click' s-cmd='" + rinterface.DefaultCommand + "' s-fields='{\"track\":\"true\"}'><strong>" + interfaceName + "</strong></div>";
                 }
                 else
                 {
-                    rtn = "<button class='w3-bar-item w3-button w3-padding-16 simplisity_click' s-cmd='" + rinterface.DefaultCommand + "'  s-fields='{\"track\":\"true\"}'><strong><span class='material-icons'>" + rinterface.InterfaceIcon + "</span>&nbsp;" + interfaceName + "</strong></a>";
+                    rtn = "<div class='w3-bar-item w3-button w3-padding-16 simplisity_click' s-cmd='" + rinterface.DefaultCommand + "'  s-fields='{\"track\":\"true\"}'><strong><span class='material-icons'>" + rinterface.InterfaceIcon + "</span>&nbsp;" + interfaceName + "</strong></div>";
                 }
             }
         }
@@ -94,7 +94,7 @@
     <!-- Admin Menu -->
     <div class="w3-bottom w3-theme-l5" style="width:280px;">
         <div class="w3-bar-block ">
-            <button type="button" class="w3-bar-item w3-button w3-padding-16  w3-center" id="adminbtn"><span class="material-icons">more_horiz</span></button>
+            <div class="w3-bar-item w3-button w3-padding-16  w3-center" id="adminbtn"><span class="material-icons">more_horiz</span></div>
         </div>
         <div class="w3-bar-block w3-section" style="display:none;" id="adminmenu">
             <div class="w3-row w3-padding">
@@ -105,7 +105,7 @@
                     {
                         selectedcolor = "w3-theme-l3";
                     }
-                    <button type="button" href="javascript:void(0);" class="w3-button w3-round @(selectedcolor) " onclick="simplisity_setSessionField('culturecode', '@(l)'); location.reload();"><img src="/DesktopModules/DNNrocket/API/images/flags/16/@(l).png" class="w3-round" /></button>
+                    <div class="w3-button w3-round @(selectedcolor) " onclick="simplisity_setSessionField('culturecode', '@(l)'); location.reload();"><img src="/DesktopModules/DNNrocket/API/images/flags/16/@(l).png" class="w3-round" /></div>
                 }
             </div>
         </div>
