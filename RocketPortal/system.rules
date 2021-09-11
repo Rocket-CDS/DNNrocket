@@ -36,7 +36,7 @@
           <securityrolesmanager>1</securityrolesmanager>
           <securityroleseditor>1</securityroleseditor>
           <securityrolesclienteditor>0</securityrolesclienteditor>
-          <securityrolesregisteredusers>0</securityrolesregisteredusers>
+          <securityrolesregisteredusers>1</securityrolesregisteredusers>
           <securityrolessubscribers>0</securityrolessubscribers>
           <securityrolesall>0</securityrolesall>
         </radio>
@@ -65,7 +65,7 @@
           <securityrolesmanager>1</securityrolesmanager>
           <securityroleseditor>1</securityroleseditor>
           <securityrolesclienteditor>0</securityrolesclienteditor>
-          <securityrolesregisteredusers>0</securityrolesregisteredusers>
+          <securityrolesregisteredusers>1</securityrolesregisteredusers>
           <securityrolessubscribers>0</securityrolessubscribers>
           <securityrolesall>0</securityrolesall>
         </radio>
@@ -95,7 +95,7 @@
           <securityrolesmanager>0</securityrolesmanager>
           <securityroleseditor>0</securityroleseditor>
           <securityrolesclienteditor>0</securityrolesclienteditor>
-          <securityrolesregisteredusers>0</securityrolesregisteredusers>
+          <securityrolesregisteredusers>1</securityrolesregisteredusers>
           <securityrolessubscribers>0</securityrolessubscribers>
           <securityrolesall>0</securityrolesall>
         </radio>

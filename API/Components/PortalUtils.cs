@@ -42,8 +42,9 @@ namespace DNNrocketAPI.Components
             var portal = GetPortal(portalId);
             PortalController.DeletePortal(portal, "");
         }
-        public static int CreatePortal(string portalName, string strPortalAlias, string description = "NewPortal")
+        public static int CreatePortal(string portalName, string strPortalAlias, int userId = -1, string description = "NewPortal")
         {
+            if (userId <= 0) userId = UserUtils.GetCurrentUserId();
             var serverPath = "";
             var childPath = "";
             var keyWords = "";
@@ -53,7 +54,7 @@ namespace DNNrocketAPI.Components
 
             //Create Portal
             var portalId = PortalController.Instance.CreatePortal(portalName,
-                                                     UserUtils.GetCurrentUserId(),
+                                                     userId,
                                                      description,
                                                      keyWords,
                                                      template,

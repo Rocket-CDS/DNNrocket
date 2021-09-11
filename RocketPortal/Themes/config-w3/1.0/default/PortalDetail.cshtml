@@ -64,6 +64,8 @@
                 @FileSelectList(info, "genxml/select/colortheme", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css"), "class='w3-input w3-border'")
             </div>
 
+            @RenderTemplate("PortalUsers.cshtml", appThemeSystem,Model)
+
         </div>
         <div class="w3-third">
             <label><b>@ResourceKey("RP.system")</b></label>

@@ -61,6 +61,15 @@ namespace RocketPortal.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Manager.
+        /// </summary>
+        internal static string addmanager_Text {
+            get {
+                return ResourceManager.GetString("addmanager.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Image Type.
         /// </summary>
         internal static string imagetype_Text {

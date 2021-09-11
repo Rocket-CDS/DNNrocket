@@ -835,4 +835,16 @@ lock_open
   <data name="colortheme.Text" xml:space="preserve">
     <value>Color Theme</value>
   </data>
+  <data name="username.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="managers.Text" xml:space="preserve">
+    <value>Managers</value>
+  </data>
+  <data name="password.Text" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="passwordconfirm.Text" xml:space="preserve">
+    <value>Confirm Password </value>
+  </data>
 </root>

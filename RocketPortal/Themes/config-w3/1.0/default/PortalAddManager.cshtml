@@ -1,0 +1,53 @@
+@inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+@using RocketPortal.Components;
+@using DNNrocketAPI.Components;
+@using Simplisity;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+@{
+    var portalData = (PortalLimpet)Model.List.First();
+}
+
+<div class="w3-bar">
+    <button class="w3-button simplisity_click" s-cmd="portal_detail" s-fields='{"portalid":"@(portalData.PortalId)"}'>@ButtonIcon(ButtonTypes.back)</button>
+</div>
+
+<div class="w3-row">
+
+    <div class="w3-quarter">
+        &nbsp;
+    </div>
+    <div id="addusermodal" class="w3-half">
+
+        <div class="w3-row w3-center w3-xlarge">@ResourceKey("RP.addmanager")</div>
+
+        <div id="addusercontainer" class="w3-container">
+
+            <div class="w3-row w3-padding">
+                <label><b>@ResourceKey("DNNrocket.email")</b></label>
+                @TextBox(new SimplisityInfo(), "genxml/textbox/email", " class='w3-input w3-border' required autocomplete='off' ")
+            </div>
+            <div class="w3-row w3-padding">
+                <label><b>@ResourceKey("DNNrocket.password")</b></label>
+                @TextBox(new SimplisityInfo(), "genxml/textbox/password", " class='w3-input w3-border' required autocomplete='off' ","",false,0,"","password")
+            </div>
+        </div>
+        <div class="w3-row w3-center w3-padding">
+            <div class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_createmanager" s-post="#addusercontainer" s-fields='{"portalid":"@(portalData.PortalId)"}'>@ButtonText(ButtonTypes.add)</div>
+        </div>
+        @if (!Model.GetSettingBool("success"))
+        {
+            <div class="w3-container w3-margin">
+                <div class="w3-panel w3-red">
+                    <h3>Failed</h3>
+                    <p>The user information was incorrect.</p>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="w3-quarter">
+        &nbsp;
+    </div>
+</div>

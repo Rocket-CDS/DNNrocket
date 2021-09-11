@@ -1,0 +1,65 @@
+@inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+@using RocketPortal.Components;
+@using DNNrocketAPI.Components;
+@using Simplisity;
+ 
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+@{
+    var portalData = (PortalLimpet)Model.List.First();
+}
+
+<div class="w3-row w3-padding w3-margin-top">
+    <div class="w3-bar">
+        <div class="w3-bar-item w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_addmanager" s-fields='{"portalid":"@(portalData.PortalId)"}'>@ButtonText(ButtonTypes.add)</div>
+        <div class="w3-bar-item w3-xlarge">@ResourceKey("DNNrocket.managers")</div>
+    </div>
+
+    <table class="w3-table w3-bordered ">
+        <thead>
+            <tr>
+                <th style="width:32px;"></th>
+                <th>@ResourceKey("DNNrocket.username")</th>
+                <th>@ResourceKey("DNNrocket.email")</th>
+                <th style="width:32px;">@ResourceKey("DNNrocket.active")</th>
+                <th style="width:32px;"></th>
+            </tr>
+        </thead>
+        @foreach (var u in UserUtils.GetUsers(portalData.PortalId))
+        {
+            var userData = UserUtils.GetUserData(portalData.PortalId, u.GetXmlPropertyInt("user/userid"));
+            <tr>
+                <td style="vertical-align: middle;">
+                    @userData.UserId
+                </td>
+                <td style="vertical-align: middle;">
+                    @userData.Username
+                </td>
+                <td style="vertical-align: middle;">
+                    @userData.Email
+                </td>
+                <td>
+                    @if (userData.Approved)
+                    {
+                        <span class="material-icons w3-button w3-text-green simplisity_click" s-cmd="portal_unauthuser" s-fields='{"portalid":"@(portalData.PortalId)","userid":"@(userData.UserId)"}'>
+                            toggle_on
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="material-icons w3-button w3-text-red simplisity_click" s-cmd="portal_authuser" s-fields='{"portalid":"@(portalData.PortalId)","userid":"@(userData.UserId)"}'>
+                            toggle_off
+                        </span>
+                    }
+                </td>
+                <td>
+                    <span class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="portal_deleteuser" s-fields='{"portalid":"@(portalData.PortalId)","userid":"@(userData.UserId)"}'>
+                        @ButtonIcon(ButtonTypes.delete)
+                    </span>
+                </td>
+            </tr>
+        }
+    </table>
+
+</div>

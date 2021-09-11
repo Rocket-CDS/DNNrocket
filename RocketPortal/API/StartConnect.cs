@@ -47,7 +47,7 @@ namespace RocketPortal.API
                     strOut = AdminPanel();
                     break;
                 case "dashboard_get":
-                    strOut = MyServices();
+                    strOut = GetPortalList();
                     break;
                 case "dashboard_activesystempanel":
                     strOut = ActiveSystemPanel();
@@ -64,9 +64,23 @@ namespace RocketPortal.API
                     strOut = ReloadPage();
                     break;
 
-                    
 
 
+                case "portal_addmanager":
+                    strOut = AddManager();
+                    break;
+                case "portal_createmanager":
+                    strOut = CreateManager();
+                    break;
+                case "portal_unauthuser":
+                    strOut = UnAuthoriseUser();
+                    break;
+                case "portal_authuser":
+                    strOut = AuthoriseUser();
+                    break;
+                case "portal_deleteuser":
+                    strOut = DeleteUser();
+                    break;                    
                 case "portal_actionprovider":
                     strOut = LocalUtils.RunActionProvider(_portalData, _postInfo);
                     break;
@@ -136,14 +150,7 @@ namespace RocketPortal.API
             _passSettings = new Dictionary<string, string>();
 
             // SECURITY --------------------------------
-            if (paramCmd.StartsWith("dashboard_"))
-            {
-                if (!UserUtils.IsManager()) return "rocketportal_login";
-            }
-            else
-            {
-                if (!UserUtils.IsSuperUser()) return "rocketportal_login";
-            }
+            if (!UserUtils.IsInRole("Registered Users")) return "rocketportal_login";
             // SECURITY --------------------------------
 
 
@@ -201,25 +208,13 @@ namespace RocketPortal.API
                 return ex.ToString();
             }
         }
-        private String MyServices()
-        {
-            try
-            {
-                if (UserUtils.IsSuperUser()) return GetPortalList();
-
-                var portalList = new PortalLimpetList(_paramInfo);
-                var razorTempl = _appThemeSystem.GetTemplate("MyServices.cshtml");
-                return RenderRazorUtils.RazorDetail(razorTempl, portalList, _passSettings, _sessionParams, true);
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
         private string ReloadPage()
         {
             try
             {
+                // user does not have access, logoff
+                UserUtils.SignOut();
+
                 var razorTempl = _appThemeSystem.GetTemplate("Reload.cshtml");
                 return RenderRazorUtils.RazorDetail(razorTempl, _portalData, _passSettings, _sessionParams, true);
             }

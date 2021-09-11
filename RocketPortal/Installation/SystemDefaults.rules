@@ -39,8 +39,25 @@
       <cmd>rocketportal_login</cmd>
       <action>true</action>
     </command>
+
+
     
-    
+    <command>
+      <cmd>portal_addmanager</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>portal_createmanager</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>portal_unauthuser</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>portal_authuser</cmd>
+      <action>true</action>
+    </command>
     <command>
       <cmd>portal_actionprovider</cmd>
       <action>true</action>

@@ -15,7 +15,11 @@ namespace RocketPortal.API
             var portalurl = GeneralUtils.UrlFriendly(GeneralUtils.GetGuidKey()) + "." + globalData.RootDomain;
             var engineurl = portalurl;
 
-            var portalid = PortalUtils.CreatePortal("", engineurl);
+            int portalAdminUserId = -1;
+            var userList = UserUtils.GetSuperUsers();
+            if (userList.Count > 1) portalAdminUserId = userList[0].GetXmlPropertyInt("user/userid");
+
+            var portalid = PortalUtils.CreatePortal("", engineurl, portalAdminUserId);
             if (portalid > 0)
             {
                 // Add HomePage Skin and Modules
@@ -29,22 +33,6 @@ namespace RocketPortal.API
                 }
 
                 DNNrocketUtils.CreateDefaultRocketRoles(portalid);
-
-                //var userId = UserUtils.CreateUser(portalid, manageremail, manageremail);
-                //if (userId >= 0)
-                //{
-                //    UserUtils.ResetAndChangePassword(portalid, userId, managerpassword);
-
-                //    var rolelist = UserUtils.GetRoles(portalid);
-                //    foreach (var r in rolelist)
-                //    {
-                //        if (r.Value == DNNrocketRoles.Manager)
-                //        {
-                //            UserUtils.AddUserRole(portalid, userId, r.Key);
-                //        }
-                //    }
-                //}
-                //DNNrocketUtils.RecycleApplicationPool();
 
                 // add portal record
                 var portalData = new PortalLimpet(portalid);
@@ -122,6 +110,83 @@ namespace RocketPortal.API
                 return ex.ToString();
             }
         }
+        private string UnAuthoriseUser()
+        {
+            var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+            if (portalId >= 0)
+            {
+                var userid = _paramInfo.GetXmlPropertyInt("genxml/hidden/userid");
+                if (userid > 1) UserUtils.UnAuthoriseUser(portalId, userid);
+            }
+            return GetPortalDetail();
+        }
+        private string AuthoriseUser()
+        {
+            var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+            if (portalId >= 0)
+            {
+                var userid = _paramInfo.GetXmlPropertyInt("genxml/hidden/userid");
+                if (userid > 1) UserUtils.AuthoriseUser(portalId, userid);
+            }
+            return GetPortalDetail();
+        }
+        private string DeleteUser()
+        {
+            var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+            if (portalId >= 0)
+            {
+                var userid = _paramInfo.GetXmlPropertyInt("genxml/hidden/userid");
+                if (userid > 1) UserUtils.DeleteUser(portalId, userid);
+            }
+            return GetPortalDetail();
+        }
+        private string CreateManager()
+        {
+            var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+            if (portalid >= 0)
+            {
+                try
+                {
+                    var manageremail = _postInfo.GetXmlProperty("genxml/textbox/email");
+                    var managerpassword = _postInfo.GetXmlProperty("genxml/textbox/password1");
+                    var userId = UserUtils.CreateUser(portalid, manageremail, manageremail);
+                    if (userId >= 0 && managerpassword != "")
+                    {
+                        UserUtils.ResetAndChangePassword(portalid, userId, managerpassword);
+
+                        var rolelist = UserUtils.GetRoles(portalid);
+                        foreach (var r in rolelist)
+                        {
+                            if (r.Value == DNNrocketRoles.Manager)
+                            {
+                                UserUtils.AddUserRole(portalid, userId, r.Key);
+                            }
+                        }
+                        return GetPortalDetail();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return ex.ToString();
+                }
+            }
+            return AddManager(false);
+        }
+        private String AddManager(bool success = true)
+        {
+            try
+            {
+                _passSettings.Add("success", success.ToString());
+                var razorTempl = _appThemeSystem.GetTemplate("PortalAddManager.cshtml");
+                return RenderRazorUtils.RazorDetail(razorTempl, _portalData, _passSettings, _sessionParams, true);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+
     }
 
 }

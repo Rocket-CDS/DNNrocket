@@ -368,7 +368,7 @@ namespace DNNrocketAPI.Components
 
         public static int CreateUser(int portalId, string username, string email, string roleName = "")
         {
-            if (portalId >= 0 && username != "" && email != "")
+            if (portalId >= 0 && username != "" && GeneralUtils.IsEmail(email))
             {
                 UserInfo objUser = null;
 
@@ -456,6 +456,25 @@ namespace DNNrocketAPI.Components
 
             return userData;
         }
+        public static void UnAuthoriseUser(int portalId, int userId)
+        {
+            var userInfo = UserController.GetUserById(portalId, userId);
+            if (userInfo != null)
+            {
+                userInfo.Membership.Approved = false;
+                UserController.UpdateUser(portalId, userInfo);
+            }
+        }
+        public static void AuthoriseUser(int portalId, int userId)
+        {
+            var userInfo = UserController.GetUserById(portalId, userId);
+            if (userInfo != null)
+            {
+                userInfo.Membership.Approved = true;
+                UserController.UpdateUser(portalId, userInfo);
+            }
+        }
+
         public static UserData UpdateEmail(int portalId, int userId, string email)
         {
             var userInfo = UserController.GetUserById(portalId, userId);
@@ -559,16 +578,26 @@ namespace DNNrocketAPI.Components
             {
                 if (inRole == "" || u.IsInRole(inRole))
                 {
-                    var sRec = new SimplisityRecord();
-                    sRec.SetXmlProperty("user/username", u.Username);
-                    sRec.SetXmlProperty("user/email", u.Email);
-                    sRec.SetXmlPropertyInt("user/userid", u.UserID.ToString());
-                    sRec.SetXmlProperty("user/displayname", u.DisplayName);
-                    rtnList.Add(sRec);
+                    rtnList.Add(PopulateUserData(u));
                 }
             }
             return rtnList;
         }
+        public static List<SimplisityRecord> GetSuperUsers()
+        {
+            return GetUsers(-1, "SuperUser");
+        }
+
+        private static SimplisityRecord PopulateUserData(UserInfo u)
+        {
+            var sRec = new SimplisityRecord();
+            sRec.SetXmlProperty("user/username", u.Username);
+            sRec.SetXmlProperty("user/email", u.Email);
+            sRec.SetXmlPropertyInt("user/userid", u.UserID.ToString());
+            sRec.SetXmlProperty("user/displayname", u.DisplayName);
+            return sRec;
+        }
+
         public static int GetUserIdByEmail(int portalId, string email)
         {
             try
