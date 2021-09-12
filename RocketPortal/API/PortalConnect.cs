@@ -41,7 +41,15 @@ namespace RocketPortal.API
                 portalData.Record.SetXmlProperty("genxml/textbox/name", "");
                 portalData.EngineUrl = engineurl;
                 portalData.Update();
-                _portalData = new PortalLimpet(portalid); 
+                _portalData = new PortalLimpet(portalid);
+
+                // Create the system record in the DB.
+                var systemData = new SystemLimpet(_portalData.SystemKey);
+                var interfacekey = "rocketsystem";
+                var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+                _paramInfo.SetXmlProperty("genxml/hidden/newportalid", portalid.ToString());
+                var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketsystem_init", systemData.SystemInfo, rocketInterface, _postInfo, _paramInfo, "/DesktopModules/DNNrocket/api", "");               
+
             }
             return GetPortalDetail();
         }
@@ -63,6 +71,13 @@ namespace RocketPortal.API
             var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
             if (portalId >= 0)
             {
+                // delete system data
+                var systemData = new SystemLimpet(_portalData.SystemKey);
+                var interfacekey = "rocketsystem";
+                var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+                var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketsystem_delete", systemData.SystemInfo, rocketInterface, _postInfo, _paramInfo, "/DesktopModules/DNNrocket/api", "");
+
+
                 var PortalShop = new PortalLimpet(portalId);
                 PortalUtils.DeletePortal(portalId); // Delete base portal will crash install.
                 //DNNrocketUtils.RecycleApplicationPool();
@@ -148,21 +163,24 @@ namespace RocketPortal.API
                 try
                 {
                     var manageremail = _postInfo.GetXmlProperty("genxml/textbox/email");
-                    var managerpassword = _postInfo.GetXmlProperty("genxml/textbox/password1");
-                    var userId = UserUtils.CreateUser(portalid, manageremail, manageremail);
-                    if (userId >= 0 && managerpassword != "")
+                    var managerpassword = _postInfo.GetXmlProperty("genxml/textbox/password");
+                    if (managerpassword != "")
                     {
-                        UserUtils.ResetAndChangePassword(portalid, userId, managerpassword);
-
-                        var rolelist = UserUtils.GetRoles(portalid);
-                        foreach (var r in rolelist)
+                        var userId = UserUtils.CreateUser(portalid, manageremail, manageremail);
+                        if (userId >= 0 && managerpassword != "")
                         {
-                            if (r.Value == DNNrocketRoles.Manager)
+                            UserUtils.ResetAndChangePassword(portalid, userId, managerpassword);
+
+                            var rolelist = UserUtils.GetRoles(portalid);
+                            foreach (var r in rolelist)
                             {
-                                UserUtils.AddUserRole(portalid, userId, r.Key);
+                                if (r.Value == DNNrocketRoles.Manager)
+                                {
+                                    UserUtils.AddUserRole(portalid, userId, r.Key);
+                                }
                             }
+                            return GetPortalDetail();
                         }
-                        return GetPortalDetail();
                     }
                 }
                 catch (Exception ex)

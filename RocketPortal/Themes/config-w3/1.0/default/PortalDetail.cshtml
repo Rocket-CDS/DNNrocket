@@ -17,6 +17,11 @@
     var systemDataList = new SystemLimpetList();
     var systemList = systemDataList.GetSystemActiveList();
     var appThemeSystem = new AppThemeDNNrocketLimpet("rocketportal");
+    var edittextbox = "disabled";
+    if (UserUtils.IsSuperUser())
+    {
+        edittextbox = "";
+    }
 }
 
 <div class="">
@@ -30,6 +35,8 @@
         }
         <button class="w3-padding w3-button w3-red w3-right simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="portal_delete" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.delete)</button>
     </div>
+
+    @IsSystemValid(portalData.PortalId, info.GetXmlProperty("genxml/radio/systemkey"))
 
     <div class="w3-row w3-padding">
         <div class="w3-col m10 w3-xlarge">@(portalData.EngineUrl)</div>
@@ -51,7 +58,7 @@
                 </div>
                 <div class="w3-rest w3-padding">
                     <label><b>@ResourceKey("RP.serviceurl")</b></label>
-                    @TextBox(info, "genxml/textbox/engineurl", " class='w3-input w3-border' disabled autocomplete='off' ")
+                    @TextBox(info, "genxml/textbox/engineurl", " class='w3-input w3-border' " + edittextbox + " autocomplete='off' ")
                 </div>
             </div>
 
@@ -64,7 +71,7 @@
                 @FileSelectList(info, "genxml/select/colortheme", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css"), "class='w3-input w3-border'")
             </div>
 
-            @RenderTemplate("PortalUsers.cshtml", appThemeSystem,Model)
+            @RenderTemplate("PortalUsers.cshtml", appThemeSystem, Model)
 
         </div>
         <div class="w3-third">
@@ -74,7 +81,7 @@
                 var disabledflag = "";
                 if (info.GetXmlProperty("genxml/radio/systemkey") != "")
                 {
-                    disabledflag = "disabled";                    
+                    disabledflag = "disabled";
                 }
             }
             @foreach (var systemData in systemList)
@@ -93,12 +100,3 @@
         </div>
     </div>
 </div>
-
-
-<script type="text/javascript">
-
-    $(document).ready(function () {
-
-    });
-
-</script>
