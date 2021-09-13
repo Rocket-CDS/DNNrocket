@@ -31,7 +31,7 @@
             </div>
             <div class="w3-row w3-padding">
                 <label><b>@ResourceKey("DNNrocket.password")</b></label>
-                @TextBox(new SimplisityInfo(), "genxml/textbox/password", " class='w3-input w3-border' required autocomplete='off' ","",false,0,"","password")
+                @TextBox(new SimplisityInfo(), "genxml/textbox/password", " class='w3-input w3-border' required autocomplete='off' ", "", false, 0, "", "password")
             </div>
         </div>
         <div class="w3-row w3-center w3-padding">
@@ -39,11 +39,11 @@
         </div>
         @if (!Model.GetSettingBool("success"))
         {
-            <div class="w3-container w3-margin">
-                <div class="w3-panel w3-red">
-                    <h3>Failed</h3>
-                    <p>The user information was incorrect.</p>
-                </div>
+            <div class="w3-panel w3-pale-red w3-padding w3-border w3-border-red w3-margin">
+                <span class="material-icons w3-text-red" style="font-size:32px;">
+                    warning
+                </span>
+                <span class="">@Model.GetSetting("statusmsg")</span>
             </div>
         }
     </div>

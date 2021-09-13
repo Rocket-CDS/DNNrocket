@@ -847,4 +847,10 @@ lock_open
   <data name="passwordconfirm.Text" xml:space="preserve">
     <value>Confirm Password </value>
   </data>
+  <data name="danger.Text" xml:space="preserve">
+    <value>Danger</value>
+  </data>
+  <data name="warning.Text" xml:space="preserve">
+    <value>Warning</value>
+  </data>
 </root>

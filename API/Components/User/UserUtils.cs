@@ -30,6 +30,8 @@ using DotNetNuke.UI.UserControls;
 using DotNetNuke.Security.Roles;
 using System.Collections;
 using System.Web.Security;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Controllers;
 
 namespace DNNrocketAPI.Components
 {
@@ -161,8 +163,7 @@ namespace DNNrocketAPI.Components
                 if (objUser != null)
                 {
                     MembershipUser user = Membership.GetUser(objUser.Username);
-                    user.ChangePassword(user.ResetPassword(), newPassword);
-                    return true;
+                    return user.ChangePassword(user.ResetPassword(), newPassword);
                 }
             }
             catch (Exception ex)
@@ -297,7 +298,7 @@ namespace DNNrocketAPI.Components
             var randompassword = sInfo.GetXmlPropertyBool("genxml/checkbox/randompassword");
             if (randompassword)
             {
-                password = GeneralUtils.GetUniqueKey(8);
+                password = GeneralUtils.GetUniqueString(1);
                 confirmpassword = password;
             }
             var displayname = sInfo.GetXmlProperty("genxml/text/displayname");
@@ -366,7 +367,7 @@ namespace DNNrocketAPI.Components
             }
         }
 
-        public static int CreateUser(int portalId, string username, string email, string roleName = "")
+        public static string CreateUser(int portalId, string username, string email, string roleName = "")
         {
             if (portalId >= 0 && username != "" && GeneralUtils.IsEmail(email))
             {
@@ -397,11 +398,21 @@ namespace DNNrocketAPI.Components
                 {                    
                     objUser = UserController.GetUserByName(username);
                     UserController.AddUserPortal(portalId, objUser.UserID);
+                    status = UserCreateStatus.Success;
                 }
-                if (status == UserCreateStatus.DuplicateEmail)
+                else
                 {
-                    objUser = UserController.GetUserByEmail(portalId, email);
-                    UserController.AddUserPortal(portalId, objUser.UserID);
+                    if (status == UserCreateStatus.DuplicateEmail)
+                    {
+                        objUser = UserController.GetUserByEmail(portalId, email);
+                        UserController.AddUserPortal(portalId, objUser.UserID);
+                        status = UserCreateStatus.Success;
+                    }
+                }
+                if (status == UserCreateStatus.Success)
+                {
+                    if (objUser.IsDeleted) UserController.RestoreUser(ref objUser);
+                    if (objUser.Membership.LockedOut) UserController.UnLockUser(objUser);
                 }
                 if (objUser != null)
                 {
@@ -413,10 +424,11 @@ namespace DNNrocketAPI.Components
                             UserUtils.AddUserRole(portalId, objUser.UserID, r.RoleID);
                         }
                     }
-                    return objUser.UserID;
                 }
+                return GetUserCreateStatus(status); // return status: "" for success
             }
-            return -1;
+            return ""; // Invalid Data - return success flag.
+                       // We should read user after return, using the "portalid,email" to see if valid and get the userid. 
         }
 
         public static UserData GetUserDataByUsername(int portalId, string username)

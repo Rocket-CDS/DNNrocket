@@ -157,6 +157,7 @@ namespace RocketPortal.API
         }
         private string CreateManager()
         {
+            var statusString = "";
             var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
             if (portalid >= 0)
             {
@@ -166,17 +167,21 @@ namespace RocketPortal.API
                     var managerpassword = _postInfo.GetXmlProperty("genxml/textbox/password");
                     if (managerpassword != "")
                     {
-                        var userId = UserUtils.CreateUser(portalid, manageremail, manageremail);
-                        if (userId >= 0 && managerpassword != "")
+                        statusString = UserUtils.CreateUser(portalid, manageremail, manageremail);
+                        if (statusString == "" && managerpassword != "" && manageremail != "")
                         {
-                            UserUtils.ResetAndChangePassword(portalid, userId, managerpassword);
-
-                            var rolelist = UserUtils.GetRoles(portalid);
-                            foreach (var r in rolelist)
+                            var userInfo = UserUtils.GetUserDataByEmail(portalid, manageremail);
+                            if (userInfo != null)
                             {
-                                if (r.Value == DNNrocketRoles.Manager)
+                                UserUtils.ResetAndChangePassword(portalid, userInfo.UserId, managerpassword);
+
+                                var rolelist = UserUtils.GetRoles(portalid);
+                                foreach (var r in rolelist)
                                 {
-                                    UserUtils.AddUserRole(portalid, userId, r.Key);
+                                    if (r.Value == DNNrocketRoles.Manager)
+                                    {
+                                        UserUtils.AddUserRole(portalid, userInfo.UserId, r.Key);
+                                    }
                                 }
                             }
                             return GetPortalDetail();
@@ -188,13 +193,14 @@ namespace RocketPortal.API
                     return ex.ToString();
                 }
             }
-            return AddManager(false);
+            return AddManager(false, statusString);
         }
-        private String AddManager(bool success = true)
+        private String AddManager(bool success = true, string statusMsg = "")
         {
             try
             {
                 _passSettings.Add("success", success.ToString());
+                _passSettings.Add("statusmsg", statusMsg);                
                 var razorTempl = _appThemeSystem.GetTemplate("PortalAddManager.cshtml");
                 return RenderRazorUtils.RazorDetail(razorTempl, _portalData, _passSettings, _sessionParams, true);
             }

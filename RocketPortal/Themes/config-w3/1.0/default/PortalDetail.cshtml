@@ -24,16 +24,16 @@
     }
 }
 
-<div class="">
+<div  id="portaltab" class="">
 
     <div class="w3-bar">
-        <button class="w3-button simplisity_click" s-cmd="dashboard_get">@ButtonIcon(ButtonTypes.back)</button>
-        <button class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-list=".systemlist" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</button>
+        <span class="w3-button simplisity_click" s-cmd="dashboard_get">@ButtonIcon(ButtonTypes.back)</span>
+        <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-list=".systemlist" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</span>
         @if (info.GetXmlProperty("genxml/radio/systemkey") != "")
         {
-            <button class="w3-padding w3-button simplisity_click" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@info.GetXmlProperty("genxml/radio/systemkey")"}'>@ButtonText(ButtonTypes.setup)</button>
+            <span class="w3-padding w3-button simplisity_click" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@info.GetXmlProperty("genxml/radio/systemkey")"}'>@ButtonText(ButtonTypes.setup)</span>
         }
-        <button class="w3-padding w3-button w3-red w3-right simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="portal_delete" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.delete)</button>
+        <span class="w3-padding w3-button w3-red w3-right"  onclick="$('#portaltab').hide();$('#deleteportaltab').show();">@ButtonText(ButtonTypes.delete)</span>
     </div>
 
     @IsSystemValid(portalData.PortalId, info.GetXmlProperty("genxml/radio/systemkey"))
@@ -99,4 +99,57 @@
             }
         </div>
     </div>
+</div>
+
+<div id="deleteportaltab" class="" style="display:none;">
+    <div class="w3-bar">
+        <span class="w3-button" onclick="$('#deleteportaltab').hide();$('#portaltab').show();">@ButtonIcon(ButtonTypes.back)</span>
+    </div>
+
+    <div class="w3-row">
+
+        <div class="w3-quarter">
+            &nbsp;
+        </div>
+        <div class="w3-half">
+
+            <div class="w3-panel w3-red w3-margin">
+                <h2>@ResourceKey("DNNrocket.danger")</h2>
+                <p>@ResourceKey("RP.deleteportal", "", "Msg")</p>
+            </div>
+            <div class="w3-container w3-margin-top">                
+                <div class="w3-half w3-xlarge">
+                    <input value="@GeneralUtils.GetRandomKey(6)" id="confirmation1" class="w3-right w3-input w3-border w3-center" disabled autocomplete="off" s-update="ignore" type="text" style="width:200px;" />
+                </div>
+                <div class="w3-half w3-xlarge">
+                    <input value="" id="confirmation2" class="w3-input w3-border" autocomplete="off" s-update="ignore" type="text" maxlength="6" style="width:200px;" />
+                </div>
+            </div>
+
+            <div class="w3-row w3-center w3-padding">
+                <span id="deleteportalbutton" class="w3-padding w3-button w3-red simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="portal_delete" s-fields='{"portalid":"@portalData.PortalId"}' style="display:none;">@ButtonText(ButtonTypes.delete)</span>
+            </div>
+        </div>
+        <div class="w3-quarter">
+            &nbsp;
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#confirmation2').keyup(function (e) {
+                if ($('#confirmation1').val() == $('#confirmation2').val()) {
+                    $('#deleteportalbutton').show();
+                }
+            });
+            $('#confirmation2').on('keypress', function (e) {
+                if (e.keyCode == 13) {
+                    return false; // prevent the button click from happening
+                }
+            });
+
+        });
+    </script>
+
 </div>

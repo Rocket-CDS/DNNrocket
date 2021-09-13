@@ -120,6 +120,12 @@
   <data name="addmanager.Text" xml:space="preserve">
     <value>Add Manager</value>
   </data>
+  <data name="confirmationcode.Text" xml:space="preserve">
+    <value>Confirmation Code</value>
+  </data>
+  <data name="deleteportal.Msg" xml:space="preserve">
+    <value>Deletion of this service will result in the removal of ALL data linked to the service.  To continue enter the code below into the confirmation textbox.</value>
+  </data>
   <data name="imagetype.Text" xml:space="preserve">
     <value>Image Type</value>
   </data>

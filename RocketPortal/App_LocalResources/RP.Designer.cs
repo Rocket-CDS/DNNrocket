@@ -70,6 +70,24 @@ namespace RocketPortal.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirmation Code.
+        /// </summary>
+        internal static string confirmationcode_Text {
+            get {
+                return ResourceManager.GetString("confirmationcode.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deletion of this service will result in the removal of ALL data linked to the service.  To continue enter the code below into the confirmation textbox..
+        /// </summary>
+        internal static string deleteportal_Msg {
+            get {
+                return ResourceManager.GetString("deleteportal.Msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Image Type.
         /// </summary>
         internal static string imagetype_Text {
