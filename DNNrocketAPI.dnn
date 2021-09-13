@@ -236,6 +236,10 @@ It also contains the popular RocketMod modules, which is a dynamic content build
               <path></path>
               <name>rockethome.xml</name>
             </skinFile>
+            <skinFile>
+              <path></path>
+              <name>skin.css</name>
+            </skinFile>
           </skinFiles>
         </component>
 
