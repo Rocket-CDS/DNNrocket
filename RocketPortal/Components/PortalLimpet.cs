@@ -62,8 +62,8 @@ namespace RocketPortal.Components
         public int Update()
         {
             Validate();
-            Record = _objCtrl.SaveRecord(Record);
             if (UserId <= 0) UserId = UserUtils.GetCurrentUserId();
+            Record = _objCtrl.SaveRecord(Record);
             CacheUtils.SetCache(_cacheKey,Record);
             return Record.ItemID;
         }
