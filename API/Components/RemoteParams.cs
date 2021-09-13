@@ -37,6 +37,7 @@ namespace DNNrocketAPI.Components
                 return true;
             }
         }
+        public string SecurityKey { get { return Record.GetXmlProperty("genxml/settings/securitykey"); } set { Record.SetXmlProperty("genxml/settings/securitykey", value); } }
         public string SystemKey { get { return Record.GetXmlProperty("genxml/settings/systemkey"); } set { Record.SetXmlProperty("genxml/settings/systemkey", value); } }
         public string RemoteAPI { get { return EngineURL.TrimEnd('/') + "/Desktopmodules/DNNrocket/api/rocket/actionremote"; } }
         public string EngineURL { get { return Record.GetXmlProperty("genxml/settings/engineurl"); } set { Record.SetXmlProperty("genxml/settings/engineurl", value); } }
