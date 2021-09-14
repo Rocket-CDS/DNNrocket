@@ -172,15 +172,6 @@ namespace DNNrocketAPI.Components
             }
             return false;
         }
-        public static bool ResetAndChangePassword(int portalId, int userId, string newPassword)
-        {
-            var objUser = UserController.GetUserById(portalId, userId);
-            if (objUser != null)
-            {
-                return UserController.ResetAndChangePassword(objUser, newPassword);
-            }
-            return false;
-        }
         public static bool DoLogin(SessionParams sessionParams, string username, string password, bool rememberme)
         {
             UserLoginStatus loginStatus = new UserLoginStatus();

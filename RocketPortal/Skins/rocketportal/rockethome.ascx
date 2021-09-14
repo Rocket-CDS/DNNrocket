@@ -7,6 +7,11 @@
 <%@ Register TagPrefix="dnn" TagName="jQuery" src="~/Admin/Skins/jQuery.ascx" %>
 
 <div id="w3-container">
+
+<div class="w3-row w3-blue w3-padding">
+&nbsp;
+</div>
+
     <!-- UserControlPanel  -->
 	<div class="w3-row w3-padding">
 		<div class="w3-left w3-padding">
@@ -17,24 +22,22 @@
 		</div>
 	</div>
 
-	<div class="w3-row w3-center">
-		<div class='w3-jumbo'>Toasted</div>
+
+<div class="w3-container w3-center w3-padding-64">
+
+
+    <div class="w3-third">
+    &nbsp;
+    </div>
+    
+    <div id="ContentPane" class="w3-third w3-center contentPane" runat="server"></div>
+    
+    <div class="w3-third">
+    &nbsp;
     </div>
 
+</div>
 
-	<%
-  var isLoggedIn = HttpContext.Current.User.Identity.IsAuthenticated;
-  if (isLoggedIn)
-  {
-%>
-
-    <div class="w3-row w3-center">
-		<div class="w3-row ">
-			<div id="ContentPane" class="contentPane" runat="server"></div>
-		</div>
-    </div>
-
-<% } %>
     
 </div>
 

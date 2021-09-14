@@ -17,39 +17,46 @@ namespace RocketPortal.API
 
             int portalAdminUserId = -1;
             var userList = UserUtils.GetSuperUsers();
-            if (userList.Count > 1) portalAdminUserId = userList[0].GetXmlPropertyInt("user/userid");
-
-            var portalid = PortalUtils.CreatePortal("", engineurl, portalAdminUserId);
-            if (portalid > 0)
+            if (userList.Count >= 1) portalAdminUserId = userList[0].GetXmlPropertyInt("user/userid");
+            if (portalAdminUserId > 0)
             {
-                // Add HomePage Skin and Modules
-                var homeTabId = PagesUtils.GetHomePage(portalid, DNNrocketUtils.GetCurrentCulture());
-                if (homeTabId >= 0)
+                var portalid = PortalUtils.CreatePortal("", engineurl, portalAdminUserId);
+                if (portalid > 0)
                 {
-                    PagesUtils.AddPageSkin(portalid, homeTabId, "rocketportal", "rockethome.ascx");
-                    ModuleUtils.DeleteAllTabModules(homeTabId);
-                    var dtid = ModuleUtils.GetDesktopModuleId(portalid, "RocketSystem");
-                    if (dtid > -1) ModuleUtils.AddNewModuleToTab(portalid, homeTabId, "RocketSystem", dtid, "", 0, 0, "");
+                    // Add HomePage Skin and Modules
+                    var homeTabId = PagesUtils.GetHomePage(portalid, DNNrocketUtils.GetCurrentCulture());
+                    if (homeTabId >= 0)
+                    {
+                        PagesUtils.AddPageSkin(portalid, homeTabId, "rocketportal", "rockethome.ascx");
+                        ModuleUtils.DeleteAllTabModules(homeTabId);
+                        var dtid = ModuleUtils.GetDesktopModuleId(portalid, "RocketSystem");
+                        if (dtid > -1) ModuleUtils.AddNewModuleToTab(portalid, homeTabId, "RocketSystem", dtid, "", 0, 0, "");
+                    }
+
+                    DNNrocketUtils.CreateDefaultRocketRoles(portalid);
+
+                    // add portal record
+                    var portalData = new PortalLimpet(portalid);
+                    var systemkey = _postInfo.GetXmlProperty("genxml/radio/systemkey");
+                    portalData.Record.SetXmlProperty("genxml/radio/systemkey", systemkey);
+                    portalData.Record.SetXmlProperty("genxml/textbox/name", "");
+                    portalData.EngineUrl = engineurl;
+                    portalData.Update();
+                    _portalData = new PortalLimpet(portalid);
+
+                    // Create the system record in the DB.
+                    var systemData = new SystemLimpet(_portalData.SystemKey);
+                    var interfacekey = "rocketsystem";
+                    var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+                    _paramInfo.SetXmlProperty("genxml/hidden/newportalid", portalid.ToString());
+                    var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketsystem_init", systemData.SystemInfo, rocketInterface, _postInfo, _paramInfo, "/DesktopModules/DNNrocket/api", "");
+
+                    // Add current user as manager, if not superuser
+                    if (UserUtils.GetCurrentUserId() != portalAdminUserId)
+                    {
+                        UserUtils.CreateUser(portalid, UserUtils.GetCurrentUserName(), UserUtils.GetCurrentUserEmail(), DNNrocketRoles.Manager);
+                    }
                 }
-
-                DNNrocketUtils.CreateDefaultRocketRoles(portalid);
-
-                // add portal record
-                var portalData = new PortalLimpet(portalid);
-                var systemkey = _postInfo.GetXmlProperty("genxml/radio/systemkey");
-                portalData.Record.SetXmlProperty("genxml/radio/systemkey", systemkey);
-                portalData.Record.SetXmlProperty("genxml/textbox/name", "");
-                portalData.EngineUrl = engineurl;
-                portalData.Update();
-                _portalData = new PortalLimpet(portalid);
-
-                // Create the system record in the DB.
-                var systemData = new SystemLimpet(_portalData.SystemKey);
-                var interfacekey = "rocketsystem";
-                var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
-                _paramInfo.SetXmlProperty("genxml/hidden/newportalid", portalid.ToString());
-                var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketsystem_init", systemData.SystemInfo, rocketInterface, _postInfo, _paramInfo, "/DesktopModules/DNNrocket/api", "");               
-
             }
             return GetPortalDetail();
         }
@@ -173,7 +180,7 @@ namespace RocketPortal.API
                             var userInfo = UserUtils.GetUserDataByEmail(portalid, manageremail);
                             if (userInfo != null)
                             {
-                                UserUtils.ResetAndChangePassword(portalid, userInfo.UserId, managerpassword);
+                                UserUtils.ChangePassword(portalid, userInfo.UserId, managerpassword);
 
                                 var rolelist = UserUtils.GetRoles(portalid);
                                 foreach (var r in rolelist)
