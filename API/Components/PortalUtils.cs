@@ -28,6 +28,7 @@ using DotNetNuke.Services.Mail;
 using DotNetNuke.Common;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.Security.Roles;
+using static DotNetNuke.Common.Globals;
 
 namespace DNNrocketAPI.Components
 {
@@ -111,7 +112,20 @@ namespace DNNrocketAPI.Components
             var portal = controller.GetPortal(portalId);
             return portal;
         }
-
+        /// <summary>
+        /// Set portal Registration type.
+        /// </summary>
+        /// <param name="regType"> NoRegistration = 0, PrivateRegistration = 1, PublicRegistration = 2, VerifiedRegistration = 3</param>
+        public static void Registration(int portalId, int regType)
+        {
+            PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
+            objPortal.UserRegistration = regType;
+            PortalController.Instance.UpdatePortalInfo(objPortal);
+        }
+        public static void EnablePopups(int portalId, bool value)
+        {
+            PortalController.Instance.UpdatePortalSetting(portalId, "EnablePopUps", value.ToString(), true, DNNrocketUtils.GetCurrentCulture(), false);
+        }
         public static PortalSettings GetPortalSettings()
         {
             return GetPortalSettings(PortalSettings.Current.PortalId);
@@ -461,7 +475,16 @@ namespace DNNrocketAPI.Components
             if (p == null) return false;
             return true;
         }
-
+        public static void AddLanguage(int portalId, string cultureCode)
+        {
+            var local = LocaleController.Instance.GetLocale(cultureCode);
+            if (local != null) Localization.AddLanguageToPortal(portalId, local.LanguageId, false);
+        }
+        public static void RemoveLanguage(int portalId, string cultureCode)
+        {
+            var local = LocaleController.Instance.GetLocale(cultureCode);
+            if (local != null) Localization.RemoveLanguageFromPortal(portalId, local.LanguageId, false);
+        }
 
     }
 }

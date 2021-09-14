@@ -126,8 +126,14 @@
   <data name="deleteportal.Msg" xml:space="preserve">
     <value>Deletion of this service will result in the removal of ALL data linked to the service.  To continue enter the code below into the confirmation textbox.</value>
   </data>
+  <data name="general.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
   <data name="imagetype.Text" xml:space="preserve">
     <value>Image Type</value>
+  </data>
+  <data name="languages.Text" xml:space="preserve">
+    <value>Languages</value>
   </data>
   <data name="manageremail.Text" xml:space="preserve">
     <value>Manager Email</value>

@@ -24,7 +24,7 @@
     }
 }
 
-<div  id="portaltab" class="">
+<div id="portaltab" class=" a-portaldata">
 
     <div class="w3-bar">
         <span class="w3-button simplisity_click" s-cmd="dashboard_get">@ButtonIcon(ButtonTypes.back)</span>
@@ -33,7 +33,7 @@
         {
             <span class="w3-padding w3-button simplisity_click" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@info.GetXmlProperty("genxml/radio/systemkey")"}'>@ButtonText(ButtonTypes.setup)</span>
         }
-        <span class="w3-padding w3-button w3-red w3-right"  onclick="$('#portaltab').hide();$('#deleteportaltab').show();">@ButtonText(ButtonTypes.delete)</span>
+        <span class="w3-padding w3-button w3-red w3-right" onclick="$('#portaltab').hide();$('#deleteportaltab').show();">@ButtonText(ButtonTypes.delete)</span>
     </div>
 
     @IsSystemValid(portalData.PortalId, info.GetXmlProperty("genxml/radio/systemkey"))
@@ -43,11 +43,30 @@
         <div class="w3-col m2 w3-tiny w3-right w3-right-align w3-hide-small">Id:&nbsp;@info.ItemID &nbsp; PortalId:&nbsp;@portalData.PortalId</div>
     </div>
 
-    <div class="w3-row w3-padding a-portaldata">
+
+    <div class="w3-row">
+        <div onclick="selectmenu('generaldata');" class="w3-col m2 w3-hover-light-grey w3-center">
+            <div class="a-generaldata mitem w3-bottombar w3-border-black w3-large w3-padding">
+                @ResourceKey("RP.general")
+            </div>
+        </div>
+        <div onclick="selectmenu('languagesdata');" class="w3-col m2 w3-hover-light-grey w3-center">
+            <div class="a-setupdata mitem w3-bottombar w3-large w3-padding">
+                @ResourceKey("RP.languages")
+            </div>
+        </div>
+        <div onclick="selectmenu('managerdata');" class="w3-col m2 w3-hover-light-grey w3-center">
+            <div class="a-setupdata mitem w3-bottombar w3-large w3-padding">
+                @ResourceKey("DNNrocket.managers")
+            </div>
+        </div>
+    </div>
+
+    <div id="generaldata" class="w3-row w3-padding">
         <div class="w3-twothird">
 
             <div class="w3-row w3-padding">
-                <label><b>@ResourceKey("DNNrocket.name")</b></label>
+                <label><b>@ResourceKey("RP.name")</b></label>
                 @TextBox(info, "genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ")
             </div>
 
@@ -70,8 +89,6 @@
                 <label class=""><b>@ResourceKey("DNNrocket.colortheme") (Admin)</b></label>
                 @FileSelectList(info, "genxml/select/colortheme", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css"), "class='w3-input w3-border'")
             </div>
-
-            @RenderTemplate("PortalUsers.cshtml", appThemeSystem, Model)
 
         </div>
         <div class="w3-third">
@@ -99,6 +116,16 @@
             }
         </div>
     </div>
+
+
+    <div id="languagesdata" class="w3-row w3-padding" style="display:none;">
+        @RenderTemplate("PortalLanguages.cshtml", appThemeSystem, Model)
+    </div>
+
+    <div id="managerdata" class="w3-row w3-padding" style="display:none;">
+        @RenderTemplate("PortalUsers.cshtml", appThemeSystem, Model)
+    </div>
+
 </div>
 
 <div id="deleteportaltab" class="" style="display:none;">
@@ -153,3 +180,18 @@
     </script>
 
 </div>
+
+<script>
+
+    function selectmenu(selector) {
+        $('#generaldata').hide();
+        $('#managerdata').hide();
+        $('#languagesdata').hide();
+
+        $('.mitem').removeClass('w3-border-black');
+        $('.a-' + selector).addClass('w3-border-black');
+        $('#' + selector).show();
+
+    }
+
+</script>

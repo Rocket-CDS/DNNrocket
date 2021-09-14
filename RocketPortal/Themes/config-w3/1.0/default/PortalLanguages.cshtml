@@ -1,0 +1,24 @@
+@inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+@using RocketPortal.Components;
+@using DNNrocketAPI.Components;
+@using Simplisity;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+@{
+    var portalData = (PortalLimpet)Model.List.First();
+    var info = new SimplisityInfo(portalData.Record);
+}
+
+<div class="w3-row w3-padding">
+    @{
+        var cultureCodes = new Dictionary<string, string>();
+        var cultureList = DNNrocketUtils.GetCultureCodeList();
+        foreach (var cc in cultureList)
+        {
+            cultureCodes.Add(cc, DisplayFlag(cc) + " " + DNNrocketUtils.GetCultureCodeName(cc) + "");
+        }
+    }
+    @CheckBoxList(info, "genxml/radio/culturecodes", cultureCodes, " class='w3-row'")
+</div>

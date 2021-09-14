@@ -46,10 +46,11 @@
             </thead>
             @foreach (PortalLimpet portalData in portalList.GetPortalList())
             {
+                var portal = new PortalLimpet(portalData.PortalId);
                 if (portalData.PortalId > 0)
                 {
         <tr class="simplisity_click" s-cmd="portal_detail" s-fields='{"portalid":"@portalData.PortalId","track":"false"}' style="cursor:pointer;">
-            <td><b>@portalData.Name</b></td>
+            <td><b>@portal.Name</b></td>
             <td>
                 @portalData.EngineUrl
             </td>

@@ -42,6 +42,9 @@ namespace RocketPortal.Components
                     Record.ModuleId = -1;
                     Record.TypeCode = _entityTypeCode;
                     Record.GUIDKey = _guidKey;
+                    Record.SetXmlProperty("genxml/radio/culturecodes/chk", "");
+                    Record.SetXmlProperty("genxml/radio/culturecodes/chk/@value", "true");
+                    Record.SetXmlProperty("genxml/radio/culturecodes/chk/@data", DNNrocketUtils.GetCurrentCulture());
                 }
                 else
                 {
@@ -88,6 +91,14 @@ namespace RocketPortal.Components
                 EngineUrl = dpa;
             }
         }
+        public void AddLangauge(string cultureCode)
+        {
+            PortalUtils.AddLanguage(PortalId, cultureCode);
+        }
+        public void RemoveLangauge(string cultureCode)
+        {
+            PortalUtils.RemoveLanguage(PortalId, cultureCode);
+        }
 
         #region "setting"
         public string GetPortalSetting(int idx)
@@ -113,9 +124,9 @@ namespace RocketPortal.Components
         public string EntityTypeCode { get { return _entityTypeCode; } }
         public SimplisityRecord Record { get; set; }
         public int PortalId { get { return Record.PortalId; } }
-        public string Name { get { return Record.GetXmlProperty("genxml/textbox/name"); } }
         public string Protocol { get { var rtn = Record.GetXmlProperty("genxml/select/protocol"); if (rtn == "") rtn = "https://"; return rtn; } }
         public string EngineUrl { get { return Record.GetXmlProperty("genxml/textbox/engineurl"); } set { Record.SetXmlProperty("genxml/textbox/engineurl", value); } }
+        public string Name { get { return Record.GetXmlProperty("genxml/textbox/name"); } set { Record.SetXmlProperty("genxml/textbox/name", value); } }
         public string EngineUrlWithProtocol { get { return Protocol + EngineUrl; } }
         public bool Exists { get { if (Record.ItemID > 0) return true; else return false; } }
         public DateTime LastSchedulerTime

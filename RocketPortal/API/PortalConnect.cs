@@ -55,7 +55,13 @@ namespace RocketPortal.API
                     if (UserUtils.GetCurrentUserId() != portalAdminUserId)
                     {
                         UserUtils.CreateUser(portalid, UserUtils.GetCurrentUserName(), UserUtils.GetCurrentUserEmail(), DNNrocketRoles.Manager);
+                        var role = UserUtils.GetRoleByName(portalid, DNNrocketRoles.Premium);
+                        var roleid = role.GetXmlPropertyInt("genxml/roleid");
+                        if (roleid > 0) UserUtils.AddUserRole(portalid, UserUtils.GetCurrentUserId(), roleid);
                     }
+
+                    PortalUtils.Registration(portalid, 0);
+                    PortalUtils.EnablePopups(portalid, false);
                 }
             }
             return GetPortalDetail();

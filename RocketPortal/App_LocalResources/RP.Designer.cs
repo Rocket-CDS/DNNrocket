@@ -88,11 +88,29 @@ namespace RocketPortal.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        internal static string general_Text {
+            get {
+                return ResourceManager.GetString("general.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Image Type.
         /// </summary>
         internal static string imagetype_Text {
             get {
                 return ResourceManager.GetString("imagetype.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Languages.
+        /// </summary>
+        internal static string languages_Text {
+            get {
+                return ResourceManager.GetString("languages.Text", resourceCulture);
             }
         }
         
