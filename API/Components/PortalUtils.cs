@@ -477,16 +477,26 @@ namespace DNNrocketAPI.Components
         }
         public static void AddLanguage(int portalId, string cultureCode)
         {
-            var local = new Locale();
-            local.Code = cultureCode;
-            Localization.SaveLanguage(local);
+            var local = new Locale { Code = cultureCode, Fallback = Localization.SystemLocale, Text = CultureInfo.GetCultureInfo(cultureCode).NativeName };
+
+            var portalLocales = LocaleController.Instance.GetLocales(portalId);
+            var addLanguage = false;
+            if (!portalLocales.ContainsKey(cultureCode)) addLanguage = true;
+            if (addLanguage) Localization.SaveLanguage(local);
+
             var local2 = LocaleController.Instance.GetLocale(cultureCode);
             if (local2 != null) Localization.AddLanguageToPortal(portalId, local2.LanguageId, false);
         }
         public static void RemoveLanguage(int portalId, string cultureCode)
         {
-            var local = LocaleController.Instance.GetLocale(cultureCode);
-            if (local != null) Localization.RemoveLanguageFromPortal(portalId, local.LanguageId, false);
+            var portalLocales = LocaleController.Instance.GetLocales(portalId);
+            var removeLanguage = false;
+            if (portalLocales.ContainsKey(cultureCode) && portalLocales.Count > 1) removeLanguage = true;
+            if (removeLanguage)
+            {
+                var local = LocaleController.Instance.GetLocale(cultureCode);
+                if (local != null) Localization.RemoveLanguageFromPortal(portalId, local.LanguageId, false);
+            }
         }
 
     }
