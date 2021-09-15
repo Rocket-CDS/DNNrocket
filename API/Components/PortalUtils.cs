@@ -479,9 +479,9 @@ namespace DNNrocketAPI.Components
         {
             var local = new Locale { Code = cultureCode, Fallback = Localization.SystemLocale, Text = CultureInfo.GetCultureInfo(cultureCode).NativeName };
 
-            var portalLocales = LocaleController.Instance.GetLocales(portalId);
+            var globalLocales = LocaleController.Instance.GetLocales(-1);
             var addLanguage = false;
-            if (!portalLocales.ContainsKey(cultureCode)) addLanguage = true;
+            if (!globalLocales.ContainsKey(cultureCode)) addLanguage = true;
             if (addLanguage) Localization.SaveLanguage(local);
 
             var local2 = LocaleController.Instance.GetLocale(cultureCode);
