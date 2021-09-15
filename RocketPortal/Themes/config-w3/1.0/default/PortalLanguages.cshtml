@@ -14,11 +14,25 @@
 <div class="w3-row w3-padding">
     @{
         var cultureCodes = new Dictionary<string, string>();
-        var cultureList = DNNrocketUtils.GetCultureCodeList();
+        var cultureList = DNNrocketUtils.GetAllCultureCodeList();
+        var lp = 0;
         foreach (var cc in cultureList)
         {
-            cultureCodes.Add(cc, DisplayFlag(cc) + " " + DNNrocketUtils.GetCultureCodeName(cc) + "");
+            if (DisplayFlag(cc.GetXmlProperty("genxml/code")).ToString() != "")
+            {
+                var checkedflag = "";
+                if (info.GetXmlProperty("genxml/radio/culturecodes/chk[@data='" + cc.GetXmlProperty("genxml/code") + "']/@value").ToLower() == "true")
+                {
+                    checkedflag = " checked='True' ";
+                }
+
+                <div class="w3-quarter">
+                    <input id='culturecodes_@(lp)' s-xpath='genxml/radio/culturecodes' @(checkedflag) name='culturecodes$@(lp)' type='checkbox' value='@(cc.GetXmlProperty("genxml/code"))'>
+                    <label for='culturecodes_@(lp)'>&nbsp;@DisplayFlag(cc.GetXmlProperty("genxml/code"))&nbsp;@cc.GetXmlProperty("genxml/displayname")</label>
+                </div>
+
+                lp += 1;
+            }
         }
     }
-    @CheckBoxList(info, "genxml/radio/culturecodes", cultureCodes, " class='w3-row'")
 </div>

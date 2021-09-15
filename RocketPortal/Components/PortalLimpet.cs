@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace RocketPortal.Components
 {
@@ -59,6 +60,17 @@ namespace RocketPortal.Components
         public int Save(SimplisityInfo info)
         { 
             Record.XMLData = info.XMLData;
+
+            // check languages
+            var nodList = Record.XMLDoc.SelectNodes("genxml/radio/culturecodes/chk");
+            foreach (XmlNode nod in nodList)
+            {
+                if (nod.Attributes["value"].Value.ToLower() == "true")
+                    PortalUtils.AddLanguage(PortalId, nod.Attributes["data"].Value);
+                else
+                    PortalUtils.RemoveLanguage(PortalId, nod.Attributes["data"].Value);
+            }
+
             if (EngineUrl != "") PortalUtils.AddPortalAlias(_portalId, EngineUrl);
             return Update();
         }
