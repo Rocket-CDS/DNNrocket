@@ -151,6 +151,13 @@ namespace DNNrocketAPI.render
             return strOut;
         }
 
+        public IEncodedString RenderLanguageSelector(string scmd, string sfields, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)
+        {
+            model.SetSetting("scmd", scmd);
+            model.SetSetting("sfields", sfields);
+            return RenderTemplate("LanguageChange.cshtml", appThemeSystem, model, true);
+        }
+
         public IEncodedString RenderPagingTemplate(string scmd, string spost, SimplisityRazor model, string sreturn = "", string versionFolder = "1.0")
         {
             model.SessionParamsData.Set("s-paging-return", sreturn);
