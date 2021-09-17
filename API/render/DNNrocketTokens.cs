@@ -151,6 +151,12 @@ namespace DNNrocketAPI.render
             return strOut;
         }
 
+        public IEncodedString RenderLanguageSelector(string scmd, string sfields, string systemKey, SimplisityRazor model)
+        {
+            model.SetSetting("scmd", scmd);
+            model.SetSetting("sfields", sfields);
+            return RenderTemplate("LanguageChange.cshtml", new AppThemeSystemLimpet(systemKey), model, true);
+        }
         public IEncodedString RenderLanguageSelector(string scmd, string sfields, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)
         {
             model.SetSetting("scmd", scmd);
