@@ -79,6 +79,15 @@ namespace RocketPortal.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default Language.
+        /// </summary>
+        internal static string defaultlanguage_Text {
+            get {
+                return ResourceManager.GetString("defaultlanguage.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deletion of this service will result in the removal of ALL data linked to the service.  To continue enter the code below into the confirmation textbox..
         /// </summary>
         internal static string deleteportal_Msg {

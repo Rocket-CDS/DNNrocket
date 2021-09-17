@@ -299,14 +299,28 @@ namespace DNNrocketAPI.Components
         }
         public static void AddPortalAlias(int portalId, string portalAlias)
         {
-            portalAlias = portalAlias.ToLower().Replace("http://", "").Replace("https://", "");
-            PortalController.Instance.AddPortalAlias(portalId, portalAlias);
+            try
+            {
+                portalAlias = portalAlias.ToLower().Replace("http://", "").Replace("https://", "");
+                PortalController.Instance.AddPortalAlias(portalId, portalAlias);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
         }
         public static void DeletePortalAlias(int portalId, string portalAlias)
         {
-            portalAlias = portalAlias.ToLower().Replace("http://", "").Replace("https://", "");
-            var pa = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalId);
-            if (pa != null) PortalAliasController.Instance.DeletePortalAlias(pa);
+            try
+            {
+                portalAlias = portalAlias.ToLower().Replace("http://", "").Replace("https://", "");
+                var pa = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalId);
+                if (pa != null) PortalAliasController.Instance.DeletePortalAlias(pa);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
         }
         public static void SetPrimaryPortalAlias(int portalId, string portalAlias)
         {
@@ -336,6 +350,19 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
+        public static void SetDefaultLanguage(int portalId, string cultureCode)
+        {
+            try
+            {
+                PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
+                objPortal.DefaultLanguage = cultureCode;
+                PortalController.Instance.UpdatePortalInfo(objPortal);
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+        }
         public static string RootDomain(int portalId = -1)
         {
             var da = DefaultPortalAlias(portalId);
@@ -353,6 +380,7 @@ namespace DNNrocketAPI.Components
             var rtn = rtnSplit[0];
             return rtn;
         }
+        [Obsolete("This can cause a race condition in Razor. (avoid use) ")]
         public static string SiteGuid(int portalId = -1)
         {
             if (portalId < 0)
@@ -361,6 +389,7 @@ namespace DNNrocketAPI.Components
             }
             else
             {
+                /// I think this is slow and causes race condition.
                 var ps = GetPortalSettings(portalId);
                 return ps.GUID.ToString();
             }
@@ -495,7 +524,17 @@ namespace DNNrocketAPI.Components
             if (removeLanguage)
             {
                 var local = LocaleController.Instance.GetLocale(cultureCode);
-                if (local != null) Localization.RemoveLanguageFromPortal(portalId, local.LanguageId, false);
+                if (local != null)
+                {
+                    try
+                    {
+                        Localization.RemoveLanguageFromPortal(portalId, local.LanguageId, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogUtils.LogException(ex);
+                    }
+                }
             }
         }
 

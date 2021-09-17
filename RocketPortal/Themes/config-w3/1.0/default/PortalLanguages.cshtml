@@ -12,6 +12,13 @@
 }
 
 <div class="w3-row w3-padding">
+    <div class="w3-quarter">
+        <label class="">@ResourceKey("RP.defaultlanguage")</label>
+        @DropDownCultureCodeList(info, "genxml/select/defaultlanguage", "class='w3-input w3-border'", DNNrocketUtils.GetEditCulture())
+    </div>
+</div>
+
+<div class="w3-row w3-padding">
     @{
         var cultureCodes = new Dictionary<string, string>();
         var cultureList = DNNrocketUtils.GetAllCultureCodeList();

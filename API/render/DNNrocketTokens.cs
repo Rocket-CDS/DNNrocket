@@ -42,7 +42,7 @@ namespace DNNrocketAPI.render
         public IEncodedString DropDownCultureCodeList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             var cultureCodes = new Dictionary<string, string>();
-            var cultureList = DNNrocketUtils.GetCultureCodeList();
+            var cultureList = DNNrocketUtils.GetCultureCodeList(info.PortalId);
             foreach (var cc in cultureList)
             {
                 cultureCodes.Add(cc, cc);

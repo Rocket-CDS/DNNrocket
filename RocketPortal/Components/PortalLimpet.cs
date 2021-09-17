@@ -19,14 +19,12 @@ namespace RocketPortal.Components
         private const string _entityTypeCode = "PORTAL";
         private const string _systemkey = "rocketportal";
         private DNNrocketController _objCtrl;
-        private string _guidKey;
         private int _portalId;
         private string _cacheKey;
         public PortalLimpet(int portalId)
         {
             Record = new SimplisityRecord();
             _portalId = portalId;
-            _guidKey = PortalUtils.SiteGuid(portalId);
             _objCtrl = new DNNrocketController();
 
             _cacheKey = "Portal" + portalId;
@@ -34,7 +32,9 @@ namespace RocketPortal.Components
             Record = (SimplisityRecord)CacheUtils.GetCache(_cacheKey);
             if (Record == null)
             {
-                var uInfo = _objCtrl.GetByGuidKey(portalId, -1, _entityTypeCode, _guidKey, "");
+                //var uInfo = _objCtrl.GetByGuidKey(portalId, -1, _entityTypeCode, _guidKey, "");
+                var uInfo = _objCtrl.GetByType(portalId, -1, _entityTypeCode);
+
                 if (uInfo != null) Record = _objCtrl.GetRecord(uInfo.ItemID);
                 if (Record == null || Record.ItemID <= 0)
                 {
@@ -42,14 +42,9 @@ namespace RocketPortal.Components
                     Record.PortalId = _portalId;
                     Record.ModuleId = -1;
                     Record.TypeCode = _entityTypeCode;
-                    Record.GUIDKey = _guidKey;
                     Record.SetXmlProperty("genxml/radio/culturecodes/chk", "");
                     Record.SetXmlProperty("genxml/radio/culturecodes/chk/@value", "true");
                     Record.SetXmlProperty("genxml/radio/culturecodes/chk/@data", DNNrocketUtils.GetCurrentCulture());
-                }
-                else
-                {
-                    CacheUtils.SetCache(_cacheKey, Record);
                 }
             }
 
@@ -61,6 +56,8 @@ namespace RocketPortal.Components
         { 
             Record.XMLData = info.XMLData;
 
+            if (EngineUrl != "") PortalUtils.AddPortalAlias(_portalId, EngineUrl);
+
             // check languages
             var nodList = Record.XMLDoc.SelectNodes("genxml/radio/culturecodes/chk");
             foreach (XmlNode nod in nodList)
@@ -71,15 +68,34 @@ namespace RocketPortal.Components
                     PortalUtils.RemoveLanguage(PortalId, nod.Attributes["data"].Value);
             }
 
-            if (EngineUrl != "") PortalUtils.AddPortalAlias(_portalId, EngineUrl);
+            UpdateDefaultLanguage(Record.GetXmlProperty("genxml/select/defaultlanguage"));
+
             return Update();
+        }
+        private void UpdateDefaultLanguage(string cultureCode)
+        {
+            if (cultureCode != "")
+            {
+                var validlangauge = false;
+                var cultureList = DNNrocketUtils.GetCultureCodeList(PortalId);
+                foreach (var cc in cultureList)
+                {
+                    if (cultureCode == cc) validlangauge = true;
+                }
+                if (validlangauge) 
+                    PortalUtils.SetDefaultLanguage(PortalId, cultureCode);
+                else
+                {
+                    if (cultureList.Count > 0) PortalUtils.SetDefaultLanguage(PortalId, cultureList[0]);
+                }
+            }
         }
         public int Update()
         {
             Validate();
             if (UserId <= 0) UserId = UserUtils.GetCurrentUserId();
             Record = _objCtrl.SaveRecord(Record);
-            CacheUtils.SetCache(_cacheKey,Record);
+            CacheUtils.SetCache(_cacheKey, Record);
             return Record.ItemID;
         }
         public void Delete()
