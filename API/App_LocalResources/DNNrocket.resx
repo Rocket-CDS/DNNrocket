@@ -853,4 +853,7 @@ lock_open
   <data name="warning.Text" xml:space="preserve">
     <value>Warning</value>
   </data>
+  <data name="general.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
 </root>

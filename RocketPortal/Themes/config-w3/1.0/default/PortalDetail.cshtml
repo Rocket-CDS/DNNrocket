@@ -32,6 +32,10 @@
         @if (info.GetXmlProperty("genxml/radio/systemkey") != "")
         {
             <span class="w3-padding w3-button simplisity_click" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@info.GetXmlProperty("genxml/radio/systemkey")"}'>@ButtonText(ButtonTypes.setup)</span>
+            if (portalData.Protocol != "")
+            {
+                <a href="@(portalData.EngineUrlWithProtocol)/@(portalData.SystemKey)" target="_blank" class="w3-button" style="color: black; text-decoration: none; ">@ButtonText(ButtonTypes.admin)</a>
+            }
         }
         <span class="w3-padding w3-button w3-red w3-right" onclick="$('#portaltab').hide();$('#deleteportaltab').show();">@ButtonText(ButtonTypes.delete)</span>
     </div>
