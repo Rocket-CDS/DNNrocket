@@ -725,7 +725,7 @@ content_paste
     <value>Document Limit</value>
   </data>
   <data name="documentupload.Msg" xml:space="preserve">
-    <value>Upload your documents here, by dragging and dropping or paste from the clipboard on the area below.  Or by using the upload button to select documents from your file system.  (Some potentially dangerous files will not be allowed to be upload.(</value>
+    <value>Upload your documents here, by dragging and dropping or paste from the clipboard on the area below.  Or by using the upload button to select documents from your file system.  (Some potentially dangerous files will not be allowed to be upload.)</value>
   </data>
   <data name="documentupload.Text" xml:space="preserve">
     <value>Document Upload</value>

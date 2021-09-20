@@ -79,8 +79,7 @@
 				}
 
 				var html = $('#{textareaid}').val();
-				var result = tidy_html5(html, options);				
-				$('#{textareaid}').val(result);
+				$('#{textareaid}').val(html);
 				$('.ck-editor').hide();
             } else{
 				editor{textareaid}.setData( $('#{textareaid}').val() );		

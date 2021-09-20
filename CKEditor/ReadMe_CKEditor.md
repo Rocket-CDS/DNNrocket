@@ -24,7 +24,7 @@ The config html is saved in **/DesktopModule/DNNrocket/CKeditor**.  This is the 
 
 A full config html rel path can be passed to the razor token.
 
-Becuase the CKEditor uses a element as a canvas, the sourcecode created by the editor needs to be moved into a input field before saving.  This is be done by using JS on the simplisityJS command "s-before" save button.
+Becuase the CKEditor uses a element as a canvas, the sourcecode created by the editor needs to be moved into a input field before saving.  This is done by using JS on the simplisityJS command "s-before" save button.
 
 ```
 <div class="w3-col m2 w3-button simplisity_click"
@@ -46,7 +46,23 @@ The JS function name is made from the textarea ID and the word "Save".
 Thefore the s-before simplisity command attribute must match this.
 
 
+Source Editting
+---------------
 
+The CKEditor5 html source editing is still not in production.  
+A JS function has been created to edit html source, you can create a button to switch to source mode.  
+This will display a textarea with the html, you can edit the html and then click the source button again to make it update the editor.
+
+```
+	<div class="w3-row w3-padding">
+		@EditFlag(sessionParams)
+		<div class="w3-button " onclick="articlerichtextsourceDialog();">Source</div>
+		@CKEditor(info, articleData.RichTextXPath, "scriptClassic.html", true, 0)
+	</div>
+
+```
+
+NOTE:  CKEditor strips classes from tables and put the code in a wrapper, so it's very much uncontrolable.  In these cases using a standard textarea is probably better.
 
 ---
 
