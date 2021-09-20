@@ -38,11 +38,13 @@ namespace DNNrocketAPI.Components
                 if (LinkType == 1)
                 {
                     var internallink = Info.GetXmlPropertyInt("genxml/select/internallink" + FieldId);
+                    if (internallink == 0) internallink = Info.GetXmlPropertyInt("genxml/lang/genxml/select/internallink" + FieldId);
                     rtn = PagesUtils.GetPageURL(internallink);
                 }
                 else
                 {
                     rtn = Info.GetXmlProperty("genxml/textbox/externallink" + FieldId);
+                    if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/externallink" + FieldId);
                 }
                 if (Anchor != "") rtn += "#" + Anchor;
                 return rtn;
