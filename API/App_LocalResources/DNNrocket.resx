@@ -856,4 +856,23 @@ lock_open
   <data name="general.Text" xml:space="preserve">
     <value>General</value>
   </data>
+  <data name="accessdenied.Text" xml:space="preserve">
+    <value>Access Denied</value>
+  </data>
+  <data name="task.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+task
+&lt;/span&gt;</value>
+  </data>
+  <data name="savesend.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+send
+&lt;/span&gt;</value>
+  </data>
+  <data name="savesend.Text" xml:space="preserve">
+    <value>Save and Send</value>
+  </data>
+  <data name="task.Text" xml:space="preserve">
+    <value>Task</value>
+  </data>
 </root>
