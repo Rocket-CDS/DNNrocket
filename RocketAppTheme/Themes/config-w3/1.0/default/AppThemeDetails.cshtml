@@ -35,10 +35,9 @@
         }
         return typecolor;
     }
-
 }
 
-@RenderTemplate("Popups.cshtml", systemAppTheme, Model, true)
+@RenderLanguageSelector("rocketapptheme_getlist", "", systemAppTheme, Model)
 
 @HiddenField(new SimplisityInfo(), "genxml/hidden/fieldlocalizedlist", " s-update='ignore' ")
 
@@ -46,21 +45,23 @@
 
     <div id="detailsection">
 
-        <div class="w3-bar">
-            <button class="w3-button w3-bar-item  simplisity_click" s-cmd="rocketapptheme_getlist">@ButtonIcon(ButtonTypes.back)</button>
-            <div class="w3-dropdown-hover">
-                <div class="w3-button" style="">@ButtonIcon(ButtonTypes.bars)</div>
-                <div class="w3-dropdown-content w3-bar-block w3-card" style="width:340px;">
+        <div class="w3-container">
+            <div class="w3-bar">
+                <button class="w3-button w3-bar-item  simplisity_click" s-cmd="rocketapptheme_getlist">@ButtonIcon(ButtonTypes.back)</button>
+                <div class="w3-dropdown-hover">
+                    <div class="w3-button" style="">@ButtonIcon(ButtonTypes.bars)</div>
+                    <div class="w3-dropdown-content w3-bar-block w3-card" style="width:340px;">
 
-                    @if (PortalUtils.GetPortalId() == 0)
-                    {
-                        <div class="w3-bar-item w3-button simplisity_confirmclick" s-return=".articlepopup" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("AppThemes.createversion")</div>
-                        <div class="w3-bar-item w3-button" onclick="document.getElementById('copyapptheme').style.display = 'block';">@ResourceKey("AppThemes.copyapptheme")</div>
-                        <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.uninstall")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.uninstall")</div>
-                        <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-return=".articlepopup" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("AppThemes.deleteversion")</div>
-                    }
-                    <a class="w3-bar-item w3-button w3-padding-8 simplisity_filedownload" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNRocket.export")</a>
+                        @if (PortalUtils.GetPortalId() == 0)
+                        {
+                            <div class="w3-bar-item w3-button simplisity_confirmclick" s-return=".articlepopup" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("AppThemes.createversion")</div>
+                            <div class="w3-bar-item w3-button" onclick="document.getElementById('copyapptheme').style.display = 'block';">@ResourceKey("AppThemes.copyapptheme")</div>
+                            <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.uninstall")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.uninstall")</div>
+                            <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-return=".articlepopup" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("AppThemes.deleteversion")</div>
+                        }
+                        <a class="w3-bar-item w3-button w3-padding-8 simplisity_filedownload" s-cmd="rocketapptheme_export" s-fields='{"appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNRocket.export")</a>
 
+                    </div>
                 </div>
             </div>
         </div>
@@ -103,11 +104,14 @@
                 <div id="Templates" class="w3-container w3-border city" style="display:none">
                     <div id="templatedatasection" class="w3-row templatelistdatasection">
 
-                        <div class="w3-container">
-                            <div class="w3-col m3 w3-padding" style="width:160px;">
-                                <div class="w3-button w3-teal w3-padding-8 " onclick="$('#templatefilename').show();">@ButtonIcon(ButtonTypes.add)</div>
+                        @if (PortalUtils.GetPortalId() == 0)
+                        {
+                            <div class="w3-container">
+                                <div class="w3-col m3 w3-padding" style="width:160px;">
+                                    <div class="w3-button w3-teal w3-padding-8 " onclick="$('#templatefilename').show();">@ButtonIcon(ButtonTypes.add)</div>
+                                </div>
                             </div>
-                        </div>
+                        }
 
                         <ul id="templatelistdata" class="w3-ul">
 
@@ -116,7 +120,7 @@
                                 var levelColor = LevelColor(appTheme, templateDict.Key, sessionParam.Get("moduleref"));
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     <div class="w3-row w3-display-container w3-padding  w3-card @levelColor">
-                                        <span class="simplisity_click" s-return=".articleselectpopup" s-cmd="rocketapptheme_geteditor" s-fields='{"filename":"@templateDict.Key","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
+                                        <span class="simplisity_click" s-cmd="rocketapptheme_geteditor" s-fields='{"filename":"@templateDict.Key","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
                                         &nbsp;
                                         @templateDict.Key
                                         <span class="w3-right">
@@ -144,11 +148,14 @@
 
                         <div id="imagedatasection" class="w3-row imagelistdatasection">
 
-                            <div class="w3-container">
-                                <div class="w3-col w3-padding" style="width:160px;">
-                                    <div class="w3-button w3-teal w3-padding-8" onclick="$('#appthemeimageselect').show();"><span>@ButtonIcon(ButtonTypes.add)</span></div>
+                            @if (PortalUtils.GetPortalId() == 0)
+                            {
+                                <div class="w3-container">
+                                    <div class="w3-col w3-padding" style="width:160px;">
+                                        <div class="w3-button w3-teal w3-padding-8" onclick="$('#appthemeimageselect').show();"><span>@ButtonIcon(ButtonTypes.add)</span></div>
+                                    </div>
                                 </div>
-                            </div>
+                            }
 
                             <ul id="imagelistdata" class="w3-ul">
 
@@ -189,11 +196,14 @@
                             var cssList = appTheme.GetTemplatesCSS();
                         }
 
-                        <div class="w3-container">
-                            <div class="w3-col w3-padding" style="width:160px;">
-                                <div class="w3-button w3-teal w3-padding-8 " onclick="$('#cssfilename').show();"><span>@ButtonIcon(ButtonTypes.add)</span></div>
+                        @if (PortalUtils.GetPortalId() == 0)
+                        {
+                            <div class="w3-container">
+                                <div class="w3-col w3-padding" style="width:160px;">
+                                    <div class="w3-button w3-teal w3-padding-8 " onclick="$('#cssfilename').show();"><span>@ButtonIcon(ButtonTypes.add)</span></div>
+                                </div>
                             </div>
-                        </div>
+                        }
 
                         <ul id="csslistdata" class="w3-ul">
 
@@ -202,7 +212,7 @@
 
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     <div class="w3-row w3-display-container w3-padding  w3-card @LevelColor(appTheme, templateDict.Key, sessionParam.Get("moduleref"))">
-                                        <span class="simplisity_click" s-return=".articleselectpopup" s-cmd="rocketapptheme_geteditor" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
+                                        <span class="simplisity_click" s-cmd="rocketapptheme_geteditor" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
                                         &nbsp;
                                         @templateDict.Key
                                     </div>
@@ -222,11 +232,14 @@
                             var jsList = appTheme.GetTemplatesJS();
                         }
 
-                        <div class="w3-container">
-                            <div class="w3-col w3-padding" style="width:160px;">
-                                <div class="w3-button w3-teal w3-padding-8 " onclick="$('#jsfilename').show();"><span>@ButtonIcon(ButtonTypes.add)</span></div>
+                        @if (PortalUtils.GetPortalId() == 0)
+                        {
+                            <div class="w3-container">
+                                <div class="w3-col w3-padding" style="width:160px;">
+                                    <div class="w3-button w3-teal w3-padding-8 " onclick="$('#jsfilename').show();"><span>@ButtonIcon(ButtonTypes.add)</span></div>
+                                </div>
                             </div>
-                        </div>
+                        }
 
                         <ul id="jslistdata" class="w3-ul">
 
@@ -235,7 +248,7 @@
 
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     <div class="w3-row w3-display-container w3-padding  w3-card @LevelColor(appTheme, templateDict.Key, sessionParam.Get("moduleref"))">
-                                        <span class="simplisity_click" s-return=".articleselectpopup" s-cmd="rocketapptheme_geteditor" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
+                                        <span class="simplisity_click" s-cmd="rocketapptheme_geteditor" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
                                         &nbsp;
                                         @templateDict.Key
                                     </div>
@@ -253,18 +266,21 @@
 
                             <input id="defaultjsonresx" type="hidden" value="@Model.GetSetting("defaultjsonresx")" />
 
-                            <div class="w3-container">
-                                <div class="w3-col w3-padding" style="width:160px;">
-                                    <div class="w3-button w3-teal w3-padding-8 " onclick="$('#resxfilename').show();"><span>@ButtonIcon(ButtonTypes.add)</span></div>
+                            @if (PortalUtils.GetPortalId() == 0)
+                            {
+                                <div class="w3-container">
+                                    <div class="w3-col w3-padding" style="width:160px;">
+                                        <div class="w3-button w3-teal w3-padding-8 " onclick="$('#resxfilename').show();"><span>@ButtonIcon(ButtonTypes.add)</span></div>
+                                    </div>
                                 </div>
-                            </div>
+                            }
 
                             <ul id="resxlistdata" class="w3-ul">
                                 @foreach (var templateDict in appTheme.GetTemplatesResx())
                                 {
                                     <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                                         <div class="w3-row w3-display-container w3-padding  w3-card @LevelColor(appTheme, templateDict.Key, sessionParam.Get("moduleref"))">
-                                            <span class="simplisity_click" s-return=".articleselectpopup" s-cmd="rocketapptheme_getresxdata" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
+                                            <span class="simplisity_click" s-cmd="rocketapptheme_getresxdata" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
                                             &nbsp;
                                             @templateDict.Key
                                         </div>
@@ -279,7 +295,7 @@
     </div>
 
 
-    <div class="w3-right">
+    <div class="w3-right w3-padding w3-tiny">
         @appTheme.AppThemeFolderRel
     </div>
 

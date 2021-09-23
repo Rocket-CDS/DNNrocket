@@ -10,7 +10,10 @@
 @{
     var appThemeList = (AppThemeDataList)Model.List.First();
     var systemAppTheme = new AppThemeSystemLimpet("rocketapptheme");
+    var rocketAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
 }
+
+@RenderLanguageSelector("rocketapptheme_getlist", "", rocketAppTheme, Model)
 
 <!-- Use RP_admin.js from RocketPortal project, so we can use templates in both systems -->
 <script src="/DesktopModules/DNNrocket/RocketPortal/Themes/config-w3/1.0/js/RP_Admin.js"></script>

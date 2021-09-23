@@ -18,7 +18,7 @@
           <interfacekey>rocketapptheme</interfacekey>
           <namespaceclass>DNNrocket.AppThemes.StartConnect</namespaceclass>
           <providernamespaceclass></providernamespaceclass>
-          <assembly>RocketPortal</assembly>
+          <assembly>RocketAppThemes</assembly>
           <interfaceicon></interfaceicon>
           <defaultcommand>rocketapptheme_getlist</defaultcommand>
           <relpath>/DesktopModules/DNNrocket/RocketAppTheme</relpath>

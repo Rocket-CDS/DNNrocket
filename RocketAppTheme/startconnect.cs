@@ -401,7 +401,7 @@ namespace DNNrocket.AppThemes
                 var appThemeDataList = new AppThemeDataList();
                 var razorTempl = _appThemeSystem.GetTemplate("appthemelist.cshtml");
                 var passSettings = _postInfo.ToDictionary();
-                return RenderRazorUtils.RazorDetail(razorTempl, appThemeDataList, passSettings,null,true);
+                return RenderRazorUtils.RazorDetail(razorTempl, appThemeDataList, passSettings, _sessionParams, true);
             }
             catch (Exception ex)
             {
@@ -575,7 +575,7 @@ namespace DNNrocket.AppThemes
             _appTheme.SaveEditor(filename, editorcode);
             CacheFileUtils.ClearAllCache();
             _appTheme = new AppThemeLimpet(_appTheme.AppThemeFolder, _appTheme.AppVersionFolder);
-            return GetDetail();
+            return GetEditorDetail();
         }
 
         public string AddListImage()
