@@ -1089,3 +1089,17 @@ function simplisity_sessionfieldaction() {
 
 
 }
+
+// File input field to a base64 string and saved to a post field.
+function simplisity_base64upload(element, returnselector) {
+    var file = $(element)[0].files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+        var jsonStr = '{"' + file.name + '":"' + reader.result + '"}';
+        $(returnselector).val(jsonStr);
+    }
+    reader.onerror = function (error) {
+        console.log('Error: ', error);
+    }
+}
