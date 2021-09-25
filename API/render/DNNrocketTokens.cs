@@ -249,7 +249,7 @@ namespace DNNrocketAPI.render
 
         public IEncodedString EditFlag(SessionParams sessionParams, string classvalues = "")
         {
-            var strOut = "<img class='" + classvalues + "' src='/DesktopModules/DNNrocket/API/images/flags/16/" + sessionParams.CultureCodeEdit + ".png' alt='" + sessionParams.CultureCodeEdit + "' />";
+            var strOut = "<img class='" + classvalues + "' src='//" + PortalUtils.DefaultPortalAlias() + "/DesktopModules/DNNrocket/API/images/flags/16/" + sessionParams.CultureCodeEdit + ".png' alt='" + sessionParams.CultureCodeEdit + "' />";
             return new RawString(strOut);
         }
         [Obsolete("Use EditFlag(SessionParams sessionParams, string classvalues) instead")]
@@ -270,20 +270,24 @@ namespace DNNrocketAPI.render
             return new RawString("");
         }
 
-        public IEncodedString ThumbnailImageUrl(string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
+        public IEncodedString ThumbnailImageUrl(string engineUrl, string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
         {
             var pngType = "";
             if (url == "") url = "/DesktopModules/DNNrocket/api/images/noimage2.png";
             if (pngImage && url.ToLower().EndsWith(".png")) pngType = "&imgtype=png";
             if (width > 0 || height > 0)
             {
-                url = "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
+                url = engineUrl.TrimEnd('/') + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + "&w=" + width + "&h=" + height + extraurlparams + pngType;
             }
             else
             {
-                url = "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
+                url = engineUrl.TrimEnd('/') + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + url + extraurlparams + pngType;
             }
             return new RawString(url);
+        }
+        public IEncodedString ThumbnailImageUrl(string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
+        {
+            return ThumbnailImageUrl("", url, width, height, extraurlparams, pngImage);
         }
         public IEncodedString ThumbnailImageWebsiteDomainUrl(string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
         {
