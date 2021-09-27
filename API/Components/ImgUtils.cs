@@ -164,7 +164,7 @@ namespace DNNrocketAPI.Components
 
         public static bool IsImageFile(string strExtension)
         {
-            return strExtension.ToLower() == ".jpg" | strExtension.ToLower() == ".jpeg" | strExtension.ToLower() == ".gif" | strExtension.ToLower() == ".png" | strExtension.ToLower() == ".tiff" | strExtension.ToLower() == ".bmp";
+            return  strExtension.ToLower() == ".webp" | strExtension.ToLower() == ".jpg" | strExtension.ToLower() == ".jpeg" | strExtension.ToLower() == ".gif" | strExtension.ToLower() == ".png" | strExtension.ToLower() == ".tiff" | strExtension.ToLower() == ".bmp";
         }
 
         /// <summary>
@@ -593,6 +593,43 @@ namespace DNNrocketAPI.Components
             return newImage;
         }
 
+
+        public static List<string> UploadBase64Image(string[] filenameList, string[] filebase64List, string tempFileMapPath, string imageFolderMapPath, int size)
+        {
+            var rtn = new List<string>();
+            if (filebase64List.Length == filenameList.Length && filenameList.Length > 0)
+            {
+                var lp = 0;
+                foreach (var ncode in filenameList)
+                {
+                    var fname = GeneralUtils.DeCode(ncode);
+                    if (IsImageFile(Path.GetExtension(fname)))
+                    {
+                        var fbase64 = filebase64List[lp];
+                        fbase64 = fbase64.Split(',')[1];
+                        var bytes = Convert.FromBase64String(fbase64);
+                        using (var imageFile = new FileStream(tempFileMapPath, FileMode.Create))
+                        {
+                            imageFile.Write(bytes, 0, bytes.Length);
+                            imageFile.Flush();
+                        }
+                        var filename = ImgUtils.ResizeImage(tempFileMapPath, imageFolderMapPath + "\\" + FileUtils.RemoveInvalidFileChars(GeneralUtils.GetGuidKey() + Path.GetExtension(fname)), size);
+                        rtn.Add(filename);
+                        try
+                        {
+                            File.Delete(tempFileMapPath);
+                        }
+                        catch (Exception ex)
+                        {
+                            // ignore, could be locked.
+                            LogUtils.LogSystem(ex.ToString());
+                        }
+                        lp += 1;
+                    }
+            }
+            }
+            return rtn;
+        }
     }
 
    

@@ -30,11 +30,13 @@ namespace DNNrocket.AppThemes
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = "ERROR - Must be SuperUser"; // return ERROR if not matching commands.
-
-            paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
-
-            if (UserUtils.IsSuperUser()  || UserUtils.IsAdministrator()) // Admin should ONLY be allow to change the portal/module templates
+            // NOTE: ONLY SUPERUSER CAN CHANGE RAZOR TEMPLATES.
+            // Razor templates are executed on the host machine and can hack the database of the install, across ALL portals. 
+            if (UserUtils.IsSuperUser())
             {
+
+                paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
+
                 AssignEditLang();
 
                 switch (paramCmd)
@@ -146,10 +148,6 @@ namespace DNNrocket.AppThemes
 
                         break;
                 }
-            }
-            else
-            {
-                strOut = UserUtils.LoginForm(_systemKey, postInfo, _rocketInterface.InterfaceKey, UserUtils.GetCurrentUserId());
             }
 
             return DNNrocketUtils.ReturnString(strOut);

@@ -209,6 +209,7 @@
     <Compile Include="Components\CacheUtilsDNN.cs" />
     <Compile Include="Components\FastReplacer.cs" />
     <Compile Include="Components\FastReplacerSnippet.cs" />
+    <Compile Include="Components\DocUtils.cs" />
     <Compile Include="Components\LogUtils.cs" />
     <Compile Include="Components\MetaSEO.cs" />
     <Compile Include="Components\RemoteParams.cs" />

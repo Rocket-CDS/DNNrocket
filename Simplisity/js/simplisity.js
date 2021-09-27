@@ -1116,15 +1116,18 @@ async function simplisity_base64wait(element, cmdurl) {
     var filelist = $(element)[0].files;
     var flist = '';
     for (let i = 0; i < filelist.length; i++) {
-        flist += simplisity_encode(filelist[i].name + '*');
+        flist += simplisity_encode(filelist[i].name) + '*';
     }
     flist = flist.substring(0, flist.length - 1);
     $('#simplisity_fileuploadlist').val(flist);
 
     var result = await simplisity_fileListToBase64(filelist);
-    str = result.toString()
-    str = str.substring(0, str.length - 1);
-    $('#simplisity_fileuploadbase64').val(str);
+    var base64str = '';
+    for (let i2 = 0; i2 < result.length; i2++) {
+        base64str += result[i2];
+    }
+    base64str = base64str.substring(0, base64str.length - 1);
+    $('#simplisity_fileuploadbase64').val(base64str);
     simplisity_callserver(element, cmdurl);
 }
 
