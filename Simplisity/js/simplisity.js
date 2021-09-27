@@ -65,6 +65,7 @@ function simplisity_createStaticPageFields(cmdurl, settings) {
     jQuery('#simplisity_systemkey').remove();
     jQuery('#simplisity_cmdurl').remove();
     jQuery('#simplisity_fileuploadlist').remove();
+    jQuery('#simplisity_fileuploadbase64').remove();
 
     var elementstr = '<div class="' + settings.overlayclass + ' " style="z-index:999;" id="simplisity_loader">';
     elementstr += '<span class="w3-display-middle">';
@@ -75,6 +76,7 @@ function simplisity_createStaticPageFields(cmdurl, settings) {
     elementstr += '<input id="simplisity_systemkey" type="hidden" value="' + settings.systemkey + '" />';
     elementstr += '<input id="simplisity_cmdurl" type="hidden" value="' + cmdurl + '" />';
     elementstr += '<input id="simplisity_fileuploadlist" type="hidden" value="" />';
+    elementstr += '<input id="simplisity_fileuploadbase64" type="hidden" value="" />';
 
     var elem = document.createElement('span');
     elem.innerHTML = elementstr;
@@ -134,6 +136,7 @@ function simplisity_nbxgetCompleted(e) {
 
     // clear any uploaded files after completed call
     jQuery('input[id*="simplisity_fileuploadlist"]').val('');
+    jQuery('input[id*="simplisity_fileuploadbase64"]').val('');
 
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
@@ -367,6 +370,13 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
                         sfields = '{"fileuploadlist":"' + jQuery('input[id*="simplisity_fileuploadlist"]').val() + '"}';
                     } else {
                         sfields = sfields.substring(0, sfields.length - 1) + ',"fileuploadlist":"' + jQuery('input[id*="simplisity_fileuploadlist"]').val() + '"}';
+                    }
+                }
+                if (jQuery('input[id*="simplisity_fileuploadbase64"]').val() !== '') {
+                    if (typeof sfields === 'undefined' || sfields === '') {
+                        sfields = '{"fileuploadbase64":"' + jQuery('input[id*="simplisity_fileuploadbase64"]').val() + '"}';
+                    } else {
+                        sfields = sfields.substring(0, sfields.length - 1) + ',"fileuploadbase64":"' + jQuery('input[id*="simplisity_fileuploadbase64"]').val() + '"}';
                     }
                 }
 
@@ -1043,6 +1053,17 @@ function simplisity_assignevents(cmdurl) {
         simplisity_initFileUpload('#' + jQuery(this).attr('id'));
     });
 
+    jQuery('.simplisity_base64upload').each(function (index) {
+        jQuery(this).attr("s-index", index);
+
+        jQuery(this).unbind("change");
+        jQuery(this).change(function () {
+            simplisity_base64wait(this, cmdurl);
+            return false;
+        });
+    });
+
+
     jQuery('.simplisity_filedownload').each(function (index) {
         var params = "cmd=" + jQuery(this).attr('s-cmd');
         var sfields = jQuery(this).attr('s-fields');
@@ -1090,16 +1111,43 @@ function simplisity_sessionfieldaction() {
 
 }
 
-// File input field to a base64 string and saved to a post field.
-function simplisity_base64upload(element, returnselector) {
-    var file = $(element)[0].files[0];
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-        var jsonStr = '{"' + file.name + '":"' + reader.result + '"}';
-        $(returnselector).val(jsonStr);
+
+async function simplisity_base64wait(element, cmdurl) {
+    var filelist = $(element)[0].files;
+    var flist = '';
+    for (let i = 0; i < filelist.length; i++) {
+        flist += simplisity_encode(filelist[i].name + '*');
     }
-    reader.onerror = function (error) {
-        console.log('Error: ', error);
+    flist = flist.substring(0, flist.length - 1);
+    $('#simplisity_fileuploadlist').val(flist);
+
+    var result = await simplisity_fileListToBase64(filelist);
+    str = result.toString()
+    str = str.substring(0, str.length - 1);
+    $('#simplisity_fileuploadbase64').val(str);
+    simplisity_callserver(element, cmdurl);
+}
+
+async function simplisity_fileListToBase64(fileList) {
+    // create function which return resolved promise
+    // with data:base64 string
+    function getBase64(file) {
+        const reader = new FileReader()
+        return new Promise(resolve => {
+            reader.onload = ev => {
+                resolve(ev.target.result + '*')
+            }
+            reader.readAsDataURL(file)
+        })
     }
+    // here will be array of promisified functions
+    const promises = []
+
+    // loop through fileList with for loop
+    for (let i = 0; i < fileList.length; i++) {
+        promises.push(getBase64(fileList[i]))
+    }
+
+    // array with base64 strings
+    return await Promise.all(promises)
 }
