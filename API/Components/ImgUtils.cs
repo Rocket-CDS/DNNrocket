@@ -10,7 +10,7 @@ using Simplisity;
 
 namespace DNNrocketAPI.Components
 {
-    public class ImgUtils
+    public static class ImgUtils
     {
 
         public static List<string> MoveImageToFolder(SimplisityInfo postInfo, string destinationFolder, int maxImages = 50)
@@ -607,7 +607,7 @@ namespace DNNrocketAPI.Components
                     {
                         var fbase64 = filebase64List[lp];
                         fbase64 = fbase64.Split(',')[1];
-                        var bytes = Convert.FromBase64String(fbase64);
+                        var bytes = Convert.FromBase64String(fbase64.Replace(" ","+")); // string altered during call. Fix with replace.
                         using (var imageFile = new FileStream(tempFileMapPath, FileMode.Create))
                         {
                             imageFile.Write(bytes, 0, bytes.Length);
@@ -630,9 +630,10 @@ namespace DNNrocketAPI.Components
             }
             return rtn;
         }
+
     }
 
-   
+
 
     public class ImgWaterMark : IDisposable
     {
