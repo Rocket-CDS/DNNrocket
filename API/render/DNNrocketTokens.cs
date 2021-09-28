@@ -313,14 +313,17 @@ namespace DNNrocketAPI.render
 
         public IEncodedString DownloadDocument(int ItemId, int row, string fieldId, string text = "", string attributes = "")
         {
+            return DownloadDocument("", "", ItemId, row, fieldId, text, attributes);
+        }
+        public IEncodedString DownloadDocument(string tableName, string EngineUrlWithProtocol, int ItemId, int row, string fieldId, string text = "", string attributes = "", string listname = "")
+        {
             if (text == "")
             {
                 text = ResourceKey("DNNrocket.download").ToString();
             }
-            var strOut = "<a " + attributes + " href='/DesktopModules/DNNrocket/api/downloadfile.ashx?fileindex=" + row + "&itemid=" + ItemId + "&fieldid=" + fieldId + "'>" + text + "</a>";
+            var strOut = "<a " + attributes + " href='" + EngineUrlWithProtocol + "/DesktopModules/DNNrocket/api/downloadfile.ashx?fileindex=" + row + "&itemid=" + ItemId + "&fieldid=" + fieldId + "&tablename=" + tableName + "&listname=" + listname + "'>" + text + "</a>";
             return new RawString(strOut);
         }
-
 
         public IEncodedString ImageEdit(SimplisityInfo info, string fieldId, int width = 0, int height = 0,string attributes = "", bool localized = false, int row = 0, string listname = "", bool pngImage = true)
         {
@@ -554,7 +557,7 @@ namespace DNNrocketAPI.render
         /// <param name="listname"></param>
         /// <param name="langauge"></param>
         /// <returns></returns>
-        public IEncodedString CKEditor(SimplisityInfo info, string xpath, string scriptFileName = "scriptClassic.html",  bool localized = false, int row = 0, string listname = "", string langauge = "")
+        public IEncodedString CKEditor(SimplisityInfo info, string xpath, string scriptFileName = "scriptClassic.html",  bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false)
         {
             if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
 
@@ -573,7 +576,9 @@ namespace DNNrocketAPI.render
             {
                 value = info.GetXmlProperty("genxml/lang/" + xpath);
             }
-            strOut += " <textarea id='" + id + "' s-xpath='" + xpath + "' type='text' style='width:100%' rows='10'>" + value + "</textarea>";
+            var codedtext = "";
+            if (coded) codedtext = " s-datatype='coded' ";
+            strOut += " <textarea id='" + id + "' s-xpath='" + xpath + "' type='text' style='width:100%' " + codedtext + " rows='10'>" + value + "</textarea>";
             return new RawString(strOut);
         }
 

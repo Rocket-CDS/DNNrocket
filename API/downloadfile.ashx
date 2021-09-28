@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="downloadfile.ashx.cs" Class="DNNrocketAPI.ProcessDownloadFile" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="downloadfile.ashx.cs" Class="DNNrocketAPI.Components.ProcessDownloadFile" %>
