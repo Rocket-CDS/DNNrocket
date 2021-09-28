@@ -39,7 +39,7 @@ namespace DNNrocketAPI.Components
                         }
                         var fbase64 = filebase64List[lp];
                         fbase64 = fbase64.Split(',')[1];
-                        var bytes = Convert.FromBase64String(fbase64);
+                        var bytes = Convert.FromBase64String(fbase64.Replace(" ", "+")); // string altered during call. Fix with replace.
                         using (var fileData = new FileStream(docFileMapPath, FileMode.Create))
                         {
                             fileData.Write(bytes, 0, bytes.Length);
