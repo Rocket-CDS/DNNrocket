@@ -689,8 +689,16 @@ namespace DNNrocketAPI
             return info;
         }
 
-
-        public SimplisityRecord GetRecord(string typeCode, int ItemId, int moduleId = -1, bool readOnly = false, string tableName = "DNNrocket")
+        /// <summary>
+        /// Read a record for DB and creates a record if not in DB 
+        /// </summary>
+        /// <param name="typeCode"></param>
+        /// <param name="ItemId"></param>
+        /// <param name="moduleId"></param>
+        /// <param name="readOnly"></param>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        public SimplisityRecord GetRecord(string typeCode, int ItemId, int moduleId = -1, bool readOnly = true, string tableName = "DNNrocket")
         {
             var info = GetRecord(ItemId, tableName);
             if (info == null && !readOnly)
@@ -703,8 +711,14 @@ namespace DNNrocketAPI
                 info.PortalId = PortalSettings.Current.PortalId;
                 info.ItemID = Update(info, tableName);
             }
-            if (info == null) return null;
-            return GetRecord(info.ItemID, tableName);
+            if (info == null) 
+                return null;
+            else
+            {
+                if (info.TypeCode != typeCode) return null;
+                var rtnRec = GetRecord(info.ItemID, tableName);
+                return rtnRec;
+            }
         }
 
         public SimplisityRecord SaveRecord(SimplisityRecord sRecord, string tableName = "DNNrocket")
