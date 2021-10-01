@@ -64,6 +64,14 @@
                 @ResourceKey("DNNrocket.managers")
             </div>
         </div>
+        @if (UserUtils.IsSuperUser())
+        {
+            <div onclick="selectmenu('actionprovider');" class="w3-col m2 w3-hover-light-grey w3-center">
+                <div class="a-managerdata mitem w3-bottombar w3-large w3-padding">
+                    @ResourceKey("RP.actionprovider")
+                </div>
+            </div>
+        }
     </div>
 
     <div id="generaldata" class="w3-row w3-padding">
@@ -119,6 +127,7 @@
                 lp += 1;
             }
         </div>
+
     </div>
 
 
@@ -129,6 +138,44 @@
     <div id="managerdata" class="w3-row w3-padding" style="display:none;">
         @RenderTemplate("PortalUsers.cshtml", appThemeSystem, Model)
     </div>
+
+    @if (UserUtils.IsSuperUser())
+    {
+        <div id="actionprovider" class="w3-row w3-padding" style="display:none;">
+            <div class="w3-row">
+
+                <div class="w3-row">
+                    <div class="w3-large"><b>@ResourceKey("RP.actionprovider")</b></div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-row">
+                        @ResourceKey("RP.actionprovider", "", "Help")
+                    </div>
+                    <div id="actionproviderdata" class="w3-row">
+                        <div class="w3-third w3-padding">
+                            <label>@ResourceKey("RP.assembly")</label>
+                            @TextBox(info, "genxml/actionassembly", "class='w3-input w3-border' ", "")
+                        </div>
+                        <div class="w3-twothird w3-padding">
+                            <label>@ResourceKey("RP.namespaceclass")</label>
+                            @TextBox(info, "genxml/actionnamespaceclass", "class='w3-input w3-border'  ", "")
+                        </div>
+                        <div class="w3-row w3-padding">
+                            <label>Data Params</label>
+                            @TextBox(info, "genxml/actiondata", "class='w3-input w3-border'  ", "")
+                        </div>
+                    </div>
+                    <div class="w3-row w3-padding">
+                        <div class="w3-button w3-green simplisity_confirmclick" s-confirm="Execute ?" s-cmd="portal_actionprovider" s-post="#actionproviderdata" s-return="#completedmodelmsgreturn" s-fields='{"portalid":"@(info.PortalId)"}'>@ButtonText(ButtonTypes.ok)</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    }
+
 
 </div>
 

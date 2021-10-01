@@ -24,7 +24,7 @@ namespace RocketPortal.Components
             return DNNrocketUtils.GetResourceString("/DesktopModules/DNNrocket/RocketPortal/App_LocalResources", resourceKey, resourceExt, cultureCode);
         }
         
-        public static string RunActionProvider(PortalLimpet portalData, SimplisityInfo postInfo)
+        public static string RunActionProvider(SimplisityInfo postInfo)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace RocketPortal.Components
                 else
                 {
                     var prov = ActionProvider.Instance(assembly, namespaceclass);
-                    var rtn = prov.DoAction(portalData, actiondata);
+                    var rtn = prov.DoAction(actiondata);
                 }
                 return "OK";
             }

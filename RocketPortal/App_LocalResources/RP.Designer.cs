@@ -61,11 +61,40 @@ namespace RocketPortal.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Action providers can be executed from here.  An action provider is designed to do a single action on the store, usually to update records or fix problems.
+        ///&lt;br/&gt;
+        ///The assembly that will be executed should be installed into the bin folder and then the correct assembly, namespace, class and extra data can be added into the fields below. &lt;br/&gt;The action provider assembly should inherit the &quot;ActionProvider&quot; class..
+        /// </summary>
+        internal static string actionprovider_Help {
+            get {
+                return ResourceManager.GetString("actionprovider.Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action Provider.
+        /// </summary>
+        internal static string actionprovider_Text {
+            get {
+                return ResourceManager.GetString("actionprovider.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Manager.
         /// </summary>
         internal static string addmanager_Text {
             get {
                 return ResourceManager.GetString("addmanager.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assembly Name.
+        /// </summary>
+        internal static string assembly_Text {
+            get {
+                return ResourceManager.GetString("assembly.Text", resourceCulture);
             }
         }
         
@@ -147,6 +176,15 @@ namespace RocketPortal.App_LocalResources {
         internal static string name_Text {
             get {
                 return ResourceManager.GetString("name.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Namespace.Class.
+        /// </summary>
+        internal static string namespaceclass_Text {
+            get {
+                return ResourceManager.GetString("namespaceclass.Text", resourceCulture);
             }
         }
         

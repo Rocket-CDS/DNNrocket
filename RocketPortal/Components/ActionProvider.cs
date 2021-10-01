@@ -23,7 +23,7 @@ namespace RocketPortal.Components
         }
 
         #endregion
-        public abstract string DoAction(PortalLimpet portalShop, string actionData);
+        public abstract string DoAction(string actionData);
 
     }
 

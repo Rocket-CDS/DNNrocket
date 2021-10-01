@@ -82,7 +82,7 @@ namespace RocketPortal.API
                     strOut = DeleteUser();
                     break;                    
                 case "portal_actionprovider":
-                    strOut = LocalUtils.RunActionProvider(_portalData, _postInfo);
+                    strOut = LocalUtils.RunActionProvider(_postInfo);
                     break;
                 case "portal_list":
                     strOut = GetPortalList();
