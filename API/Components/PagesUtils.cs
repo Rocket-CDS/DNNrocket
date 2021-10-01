@@ -352,7 +352,7 @@ namespace DNNrocketAPI.Components
                         objPermission.AllowAccess = true;
                         //objPermission.UserID = ??;
                         objPermission.DisplayName = roleName;
-                        newTab.TabPermissions.Remove(objPermission);
+                        if (newTab.TabPermissions.Contains(objPermission)) newTab.TabPermissions.Remove(objPermission);
                     }
                 }
                 TabController.Instance.UpdateTab(newTab);
