@@ -30,12 +30,12 @@
             @if (UserUtils.IsAdministrator())
             {
                 <button type="button" class="w3-bar-item w3-button simplisity_click" s-cmd="rocketapi_clearallcache" s-reload="true" s-fields='' s-return="#simplisity_startpanel">@ResourceKey("DNNrocket.clearallcache")</button>
+                <a class="w3-bar-item w3-button" href="/cms" style="text-decoration: none;color: black;">@ResourceKey("DNNrocket.cmsadmin")</a>
             }
             @if (UserUtils.IsSuperUser())
             {
                 <button type="button" class="w3-bar-item w3-button simplisity_confirmclick" s-reload="true" s-confirm="@ResourceKey("DNNrocket.cleartempdb") &nbsp;?" s-cmd="rocketapi_cleartempdb">@ResourceKey("DNNrocket.cleartempdb")</button>
                 <button type="button" class="w3-bar-item w3-button simplisity_click" s-reload="true" s-cmd="rocketapi_recycleapppool">@ResourceKey("DNNrocket.recycleapppool")</button>
-                <a class="w3-bar-item w3-button" href="/cms" style="text-decoration: none;color: black;">@ResourceKey("DNNrocket.cmsadmin")</a>
             }
 
             <button type="button" class="w3-bar-item w3-button simplisity_click" s-cmd="login_signout" s-reload="true">@ResourceKey("DNNrocket.signout")</button>
