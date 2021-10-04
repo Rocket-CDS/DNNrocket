@@ -875,4 +875,7 @@ send
   <data name="task.Text" xml:space="preserve">
     <value>Task</value>
   </data>
+  <data name="manager.Text" xml:space="preserve">
+    <value>Manager</value>
+  </data>
 </root>

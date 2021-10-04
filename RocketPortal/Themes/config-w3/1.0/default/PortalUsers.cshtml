@@ -25,39 +25,39 @@
                 <th style="width:32px;"></th>
             </tr>
         </thead>
-        @foreach (var u in UserUtils.GetUsers(portalData.PortalId))
+        @foreach (var u in UserUtils.GetUsers(portalData.PortalId, DNNrocketRoles.Manager))
         {
             var userData = UserUtils.GetUserData(portalData.PortalId, u.GetXmlPropertyInt("user/userid"));
-            <tr>
-                <td style="vertical-align: middle;">
-                    @userData.UserId
-                </td>
-                <td style="vertical-align: middle;">
-                    @userData.Username
-                </td>
-                <td style="vertical-align: middle;">
-                    @userData.Email
-                </td>
-                <td>
-                    @if (userData.Approved)
-                    {
-                        <span class="material-icons w3-button w3-text-green simplisity_click" s-cmd="portal_unauthuser" s-fields='{"portalid":"@(portalData.PortalId)","userid":"@(userData.UserId)"}'>
-                            toggle_on
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="material-icons w3-button w3-text-red simplisity_click" s-cmd="portal_authuser" s-fields='{"portalid":"@(portalData.PortalId)","userid":"@(userData.UserId)"}'>
-                            toggle_off
-                        </span>
-                    }
-                </td>
-                <td>
-                    <span class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="portal_deleteuser" s-fields='{"portalid":"@(portalData.PortalId)","userid":"@(userData.UserId)"}'>
-                        @ButtonIcon(ButtonTypes.delete)
-                    </span>
-                </td>
-            </tr>
+    <tr>
+        <td style="vertical-align: middle;">
+            @userData.UserId
+        </td>
+        <td style="vertical-align: middle;">
+            @userData.Username
+        </td>
+        <td style="vertical-align: middle;">
+            @userData.Email
+        </td>
+        <td>
+            @if (userData.Approved)
+            {
+                <span class="material-icons w3-button w3-text-green simplisity_click" s-cmd="portal_unauthuser" s-fields='{"portalid":"@(portalData.PortalId)","userid":"@(userData.UserId)"}'>
+                    toggle_on
+                </span>
+            }
+            else
+            {
+                <span class="material-icons w3-button w3-text-red simplisity_click" s-cmd="portal_authuser" s-fields='{"portalid":"@(portalData.PortalId)","userid":"@(userData.UserId)"}'>
+                    toggle_off
+                </span>
+            }
+        </td>
+        <td>
+            <span class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="portal_deleteuser" s-fields='{"portalid":"@(portalData.PortalId)","userid":"@(userData.UserId)"}'>
+                @ButtonIcon(ButtonTypes.delete)
+            </span>
+        </td>
+    </tr>
         }
     </table>
 
