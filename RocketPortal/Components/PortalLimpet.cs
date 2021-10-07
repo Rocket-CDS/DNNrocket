@@ -56,7 +56,11 @@ namespace RocketPortal.Components
         { 
             Record.XMLData = info.XMLData;
 
-            if (EngineUrl != "") PortalUtils.AddPortalAlias(_portalId, EngineUrl);
+            if (EngineUrl != "")
+            {
+                PortalUtils.AddPortalAlias(_portalId, EngineUrl);
+                PortalUtils.SetPrimaryPortalAlias(_portalId, EngineUrl);
+            }
 
             // check languages
             var nodList = Record.XMLDoc.SelectNodes("genxml/radio/culturecodes/chk");
