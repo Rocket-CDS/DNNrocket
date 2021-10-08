@@ -493,6 +493,7 @@ namespace DNNrocketAPI.Components
         public List<SimplisityRecord> SettingsXml { get; set; }
         public List<SimplisityRecord> ViewXml { get; set; }
         public string AppThemeFolder { get; set; }
+        public string Name { get { var l = AppThemeFolder.Split('.'); if (l.Length >= 2) return l[1]; else return AppThemeFolder; } }
         public string AppThemeFolderRel { get; set; }
         public string AppThemeFolderMapPath { get; set; }
         public string AppVersionFolder { get; set; }
