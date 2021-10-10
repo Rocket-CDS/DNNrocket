@@ -581,6 +581,26 @@ namespace DNNrocketAPI.render
             strOut += " <textarea id='" + id + "' s-xpath='" + xpath + "' type='text' style='width:100%' " + codedtext + " rows='10'>" + value + "</textarea>";
             return new RawString(strOut);
         }
+        public IEncodedString CKEditor4(SimplisityInfo info, string xpath, bool localized = false, int row = 0, string listname = "", string langauge = "", bool coded = false)
+        {
+            if (langauge == "") langauge = DNNrocketUtils.GetCurrentLanguageCode();
+            var id = getIdFromXpath(xpath, row, listname);
+            var value = info.GetXmlProperty(xpath);
+            if (localized && !xpath.StartsWith("genxml/lang/")) value = info.GetXmlProperty("genxml/lang/" + xpath);
+            var codedtext = "";
+            if (coded) codedtext = " s-datatype='coded' ";
+            var strOut = " <textarea id='" + id + "' s-xpath='" + xpath + "' type='text' style='width:100%' " + codedtext + " rows='10'>" + value + "</textarea>";
+            strOut += "<script>";
+            strOut += "$(document).ready(function () {";
+            strOut += " CKEDITOR.replace('" + id + "');";
+            strOut += " CKEDITOR.instances." + id + ".on('change', function () {";
+            strOut += " $('#" + id + "').val(CKEDITOR.instances." + id + ".getData());";
+            strOut += "";
+            strOut += " });";
+            strOut += "});";
+            strOut += "</script>";
+            return new RawString(strOut);
+        }
 
         public IEncodedString EditorQuill(SimplisityInfo info, string xpath, string attributes, string quillconfig = "", bool localized = false, int row = 0, string listname = "", string langauge = "")
         {
