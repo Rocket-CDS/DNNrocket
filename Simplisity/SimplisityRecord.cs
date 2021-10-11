@@ -920,9 +920,9 @@ namespace Simplisity
         }
         public void RemoveRecordListItem(string listName, int index)
         {
-            if (XMLDoc != null && index > 0)
+            if (XMLDoc != null)
             {
-                RemoveXmlNode(RootNodeName + "/" + listName + "/*[" + index + "]");
+                RemoveXmlNode(RootNodeName + "/" + listName + "/*[" + (index + 1) + "]");
             }
         }
         public void RemoveRecordListItem(string listName, string itemkeyxpath, string itemkey)
