@@ -156,6 +156,8 @@ namespace DNNrocketAPI.ApiControllers
             var systemData = new SystemLimpet(SystemKey);
             var interfacekey = paramCmd.Split('_')[0];
             var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+            if (!rocketInterface.Exists) return this.Request.CreateResponse(HttpStatusCode.OK, "No RocketInterface.  Unable to process action.");
+
             var rtn = ProcessProvider(paramCmd, new SimplisityInfo(), paramInfo, systemData, rocketInterface);
 
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
