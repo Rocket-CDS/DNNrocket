@@ -12,21 +12,25 @@ namespace DNNrocketAPI.Components
     {
         private DNNrocketController _objCtrl;
         private const string _tableName = "DNNrocket";
-        RemoteModule(string moduleRef)
+        public RemoteModule(int portalId, string moduleRef)
         {
             _objCtrl = new DNNrocketController();
 
+            Record = _objCtrl.GetRecordByGuidKey(portalId, -1, EntityTypeCode, moduleRef, "", _tableName);
+            if (Record == null)
+            {
+                Record = new SimplisityRecord();
+                Record.PortalId = portalId;
+                Record.GUIDKey = moduleRef;
+                Record.TypeCode = EntityTypeCode;
+            }
 
         }
-        public int Save(SimplisityInfo postInfo)
+        public int Save(SimplisityInfo paramInfo)
         {
-            ReplaceInfoFields(postInfo, "genxml/textbox/*");
-            ReplaceInfoFields(postInfo, "genxml/lang/genxml/textbox/*");
-            ReplaceInfoFields(postInfo, "genxml/checkbox/*");
-            ReplaceInfoFields(postInfo, "genxml/select/*");
-            ReplaceInfoFields(postInfo, "genxml/radio/*");
+            Record.XMLData = paramInfo.XMLData;
 
-            return ValidateAndUpdate();
+            return Update();
         }
         public int Update()
         {
@@ -34,31 +38,9 @@ namespace DNNrocketAPI.Components
             return Record.ItemID;
         }
 
-        private void ReplaceInfoFields(SimplisityInfo postInfo, string xpathListSelect)
-        {
-            var textList = Record.XMLDoc.SelectNodes(xpathListSelect);
-            if (textList != null)
-            {
-                foreach (XmlNode nod in textList)
-                {
-                    Record.RemoveXmlNode(xpathListSelect.Replace("*", "") + nod.Name);
-                }
-            }
-            textList = postInfo.XMLDoc.SelectNodes(xpathListSelect);
-            if (textList != null)
-            {
-                foreach (XmlNode nod in textList)
-                {
-                    Record.SetXmlProperty(xpathListSelect.Replace("*", "") + nod.Name, nod.InnerText);
-                }
-            }
-        }
-
-
-
         #region "properties"
 
-        public string EntityTypeCode { get { return "RMOD"; } }
+        public string EntityTypeCode { get { return "RMODSETTINGS"; } }
         public SimplisityRecord Record { get; set; }
         public int ModuleId { get { return Record.ModuleId; } set { Record.ModuleId = value; } }
         public int XrefItemId { get { return Record.XrefItemId; } set { Record.XrefItemId = value; } }

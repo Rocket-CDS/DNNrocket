@@ -212,6 +212,7 @@
     <Compile Include="Components\DocUtils.cs" />
     <Compile Include="Components\LogUtils.cs" />
     <Compile Include="Components\MetaSEO.cs" />
+    <Compile Include="Components\RemoteModule.cs" />
     <Compile Include="Components\RemoteParams.cs" />
     <Compile Include="Components\SchedulerUtils.cs" />
     <Compile Include="Components\PluginDataList.cs" />
