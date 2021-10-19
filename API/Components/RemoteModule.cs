@@ -52,6 +52,11 @@ namespace DNNrocketAPI.Components
         public int PortalId { get { return Record.PortalId; } }
         public bool Exists { get { if (Record.ItemID <= 0) { return false; } else { return true; }; } }
 
+        public string AppThemeFolderView { get { if (Record.GetXmlProperty("genxml/select/appthemeview") == "") return AppThemeFolder; else return Record.GetXmlProperty("genxml/select/appthemefolderview"); } set { Record.SetXmlProperty("genxml/settings/appthemeview", value); } }
+        public string AppThemeVersionView { get { if (Record.GetXmlProperty("genxml/select/appthemeversionview") == "") return AppThemeVersion; else return Record.GetXmlProperty("genxml/select/appthemeversionview"); } set { Record.SetXmlProperty("genxml/settings/appthemeversionview", value); } }
+        public string AppThemeFolder { get { return Record.GetXmlProperty("genxml/select/apptheme"); } set { Record.SetXmlProperty("genxml/select/apptheme", value); } }
+        public string AppThemeVersion { get { return Record.GetXmlProperty("genxml/select/appthemeversion"); } set { Record.SetXmlProperty("genxml/select/appthemeversion", value); } }
+
         #endregion
 
     }
