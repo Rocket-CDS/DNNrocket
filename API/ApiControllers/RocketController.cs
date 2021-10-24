@@ -125,6 +125,7 @@ namespace DNNrocketAPI.ApiControllers
         [AllowAnonymous]
         [HttpGet]
         [HttpPost]
+        [Obsolete("Will be removed in future, use Action() or ActionContent")]
         public HttpResponseMessage ActionRemote()
         {
             var context = HttpContext.Current;
@@ -189,8 +190,8 @@ namespace DNNrocketAPI.ApiControllers
             {
                 paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
                 paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, "");
-                paramInfo.PortalId = PortalUtils.GetPortalId();
             }
+            paramInfo.PortalId = PortalUtils.GetPortalId();
 
             // get all query string params
             foreach (string key in context.Request.QueryString.AllKeys)
@@ -220,6 +221,20 @@ namespace DNNrocketAPI.ApiControllers
             _sessionParams = new SessionParams(paramInfo);
             if (_sessionParams.CultureCode == "") _sessionParams.CultureCode = DNNrocketUtils.GetCurrentCulture();
             if (_sessionParams.CultureCodeEdit == "") _sessionParams.CultureCodeEdit = DNNrocketUtils.GetEditCulture();
+
+
+            // add any remote data to paramsInfo
+            if (DNNrocketUtils.RequestParam(context, "remote") != "")
+            {
+                var remoteData = new SimplisityInfo();
+                var remote = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "remote"));
+                remote = GeneralUtils.Base64Decode(remote.Replace(" ", "+")); // string altered during call. Fix with replace.
+                remoteData.FromXmlItem(remote);
+                foreach (var r in remoteData.ToDictionary())
+                {
+                    paramInfo.SetXmlProperty("genxml/remote/" + r.Key, r.Value);
+                }
+            }
 
             return paramInfo;
         }
