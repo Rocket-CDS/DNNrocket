@@ -12,7 +12,7 @@ namespace Simplisity
         public NameValueCollection UrlParams { get; set; }
         public List<object> List { get; set; }
         public int ModuleId { get; set; }
-        public String ModuleRef { get; set; }
+        public String DataRef { get; set; }
         public int ModuleIdDataSource { get; set; }
         public String ModuleRefDataSource { get; set; }
 
@@ -94,12 +94,12 @@ namespace Simplisity
 
             DataObjects = new Dictionary<string, object>();
 
-            ModuleRef = "";
+            DataRef = "";
             ModuleId = 0;
             ModuleIdDataSource = 0;
 
-            if (Settings.ContainsKey("modref")) ModuleRef = Settings["modref"];
-            if (Settings.ContainsKey("moduleref")) ModuleRef = Settings["moduleref"];
+            if (Settings.ContainsKey("modref")) DataRef = Settings["modref"];
+            if (Settings.ContainsKey("moduleref")) DataRef = Settings["moduleref"];
             if (Settings.ContainsKey("moduleid") && GeneralUtils.IsNumeric(Settings["moduleid"]))
             {
                 ModuleId = Convert.ToInt32(Settings["moduleid"]);

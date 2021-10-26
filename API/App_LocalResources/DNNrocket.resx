@@ -878,4 +878,7 @@ send
   <data name="manager.Text" xml:space="preserve">
     <value>Manager</value>
   </data>
+  <data name="dataname.Text" xml:space="preserve">
+    <value>Data Name</value>
+  </data>
 </root>

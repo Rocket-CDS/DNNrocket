@@ -1166,7 +1166,7 @@ namespace DNNrocketAPI.Components
                                 l.Add(appThemeMod);
                                 var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
                                 nbRazor.TabId = tabId;
-                                nbRazor.ModuleRef = appThemeMod.ModuleParams.ModuleRef;
+                                nbRazor.DataRef = appThemeMod.ModuleParams.ModuleRef;
                                 nbRazor.ModuleId = appThemeMod.ModuleParams.ModuleId;
                                 nbRazor.ModuleRefDataSource = appThemeMod.ModuleParams.ModuleRefDataSource;
                                 nbRazor.ModuleIdDataSource = appThemeMod.ModuleParams.ModuleIdDataSource;
