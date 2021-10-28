@@ -12,16 +12,16 @@ namespace DNNrocketAPI.Components
     {
         private DNNrocketController _objCtrl;
         private const string _tableName = "DNNrocket";
-        public RemoteModule(int portalId, string moduleRef)
+        public RemoteModule(int portalId, string dataRef)
         {
             _objCtrl = new DNNrocketController();
 
-            Record = _objCtrl.GetRecordByGuidKey(portalId, -1, EntityTypeCode, moduleRef, "", _tableName);
+            Record = _objCtrl.GetRecordByGuidKey(portalId, -1, EntityTypeCode, dataRef, "", _tableName);
             if (Record == null)
             {
                 Record = new SimplisityRecord();
                 Record.PortalId = portalId;
-                Record.GUIDKey = moduleRef;
+                Record.GUIDKey = dataRef;
                 Record.TypeCode = EntityTypeCode;
             }
 
@@ -46,7 +46,7 @@ namespace DNNrocketAPI.Components
         public int XrefItemId { get { return Record.XrefItemId; } set { Record.XrefItemId = value; } }
         public int ParentItemId { get { return Record.ParentItemId; } set { Record.ParentItemId = value; } }
         public int ItemId { get { return Record.ItemID; } set { Record.ItemID = value; } }
-        public string ModuleRef { get { return Record.GUIDKey; } set { Record.GUIDKey = value; } }
+        public string DataRef { get { return Record.GUIDKey; } set { Record.GUIDKey = value; } }
         public string GUIDKey { get { return Record.GUIDKey; } set { Record.GUIDKey = value; } }
         public int SortOrder { get { return Record.SortOrder; } set { Record.SortOrder = value; } }
         public int PortalId { get { return Record.PortalId; } }
