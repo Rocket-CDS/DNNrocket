@@ -202,10 +202,23 @@ namespace DNNrocketAPI.ApiControllers
             // get all form data (drop the ones we already processed) 
             foreach (string key in context.Request.Form.AllKeys)
             {
-                if (key.ToLower() != "paramjson" && key.ToLower() != "inputjson")
+                if (key.ToLower() != "paramjson" && key.ToLower() != "inputjson" && key.ToLower() != "remote")
                 {
                     var keyValue = DNNrocketUtils.RequestParam(context, key);
                     paramInfo.SetXmlProperty("genxml/form/" + key.ToLower(), keyValue);
+                }
+                if (key.ToLower() == "remote")
+                {
+                    // add any remote data to paramsInfo
+                    var keyValue = DNNrocketUtils.RequestParam(context, key);
+                    var remoteData = new SimplisityInfo();
+                    var remote = HttpUtility.UrlDecode(keyValue);
+                    remote = GeneralUtils.Base64Decode(GeneralUtils.DeCode(remote)); // string uses decimal code, so it's not changed during post.
+                    remoteData.FromXmlItem(remote);
+                    foreach (var r in remoteData.ToDictionary())
+                    {
+                        paramInfo.SetXmlProperty("genxml/remote/" + r.Key, r.Value);
+                    }
                 }
             }
 
@@ -221,20 +234,6 @@ namespace DNNrocketAPI.ApiControllers
             _sessionParams = new SessionParams(paramInfo);
             if (_sessionParams.CultureCode == "") _sessionParams.CultureCode = DNNrocketUtils.GetCurrentCulture();
             if (_sessionParams.CultureCodeEdit == "") _sessionParams.CultureCodeEdit = DNNrocketUtils.GetEditCulture();
-
-
-            // add any remote data to paramsInfo
-            if (DNNrocketUtils.RequestParam(context, "remote") != "")
-            {
-                var remoteData = new SimplisityInfo();
-                var remote = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "remote"));
-                remote = GeneralUtils.Base64Decode(remote.Replace(" ", "+")); // string altered during call. Fix with replace.
-                remoteData.FromXmlItem(remote);
-                foreach (var r in remoteData.ToDictionary())
-                {
-                    paramInfo.SetXmlProperty("genxml/remote/" + r.Key, r.Value);
-                }
-            }
 
             return paramInfo;
         }

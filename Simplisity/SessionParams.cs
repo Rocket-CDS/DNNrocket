@@ -35,6 +35,10 @@ namespace Simplisity
             {
                 Set(d.Key, d.Value);
             }
+            foreach (var d in paramInfo.ToDictionary("remote"))
+            {
+                Set(d.Key, d.Value);
+            }
 
             BrowserSessionId = Get("browsersessionid");
             BrowserId = Get("browserid");
