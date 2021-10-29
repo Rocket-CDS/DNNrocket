@@ -4,12 +4,12 @@ var debugmode = false;
 
 (function ($) {
 
-    $.fn.getSimplisity = function (cmdurl, scmd, sfields, safter) {
+    $.fn.getSimplisity = function (cmdurl, scmd, sfields, safter, spost) {
         if (debugmode) {
             // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
-            console.log('[$.fn.getSimplisity] ', cmdurl, scmd, '#' + this.attr('id'), sfields);
+            console.log('[$.fn.getSimplisity] ', cmdurl, scmd, '#' + this.attr('id'), sfields, spost);
         }
-        simplisityPost(cmdurl, scmd, '', '#' + this.attr('id'), '', false, 0, sfields, true, safter);
+        simplisityPost(cmdurl, scmd, spost, '#' + this.attr('id'), '', false, 0, sfields, true, safter);
     };
 
 }(jQuery));
