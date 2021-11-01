@@ -14,6 +14,10 @@ namespace DNNrocketAPI.Components
 
     public class AppThemeLimpet : AppThemeBase
     {
+        public AppThemeLimpet(SystemLimpet systemData, string appThemeFolder, string versionFolder = "") : base(systemData.SystemRelPath.TrimEnd('/') + "/Themes/" + appThemeFolder, versionFolder)
+        {
+            SystemKey = systemData.SystemKey;
+        }
         public AppThemeLimpet(SystemLimpet systemData, string versionFolder = "") : base(systemData.SystemRelPath.TrimEnd('/') + "/Themes/config-w3", versionFolder)
         {
             SystemKey = systemData.SystemKey;
