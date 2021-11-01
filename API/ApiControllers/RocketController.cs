@@ -215,10 +215,7 @@ namespace DNNrocketAPI.ApiControllers
                     var remote = HttpUtility.UrlDecode(keyValue);
                     remote = GeneralUtils.Base64Decode(GeneralUtils.DeCode(remote)); // string uses decimal code, so it's not changed during post.
                     remoteData.FromXmlItem(remote);
-                    foreach (var r in remoteData.ToDictionary())
-                    {
-                        paramInfo.SetXmlProperty("genxml/remote/" + r.Key, r.Value);
-                    }
+                    paramInfo.AddXmlNode(remoteData.XMLData, "genxml/remote", "genxml");
                 }
             }
 

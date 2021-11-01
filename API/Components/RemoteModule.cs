@@ -51,11 +51,9 @@ namespace DNNrocketAPI.Components
         public int SortOrder { get { return Record.SortOrder; } set { Record.SortOrder = value; } }
         public int PortalId { get { return Record.PortalId; } }
         public bool Exists { get { if (Record.ItemID <= 0) { return false; } else { return true; }; } }
-
-        public string AppThemeFolderView { get { if (Record.GetXmlProperty("genxml/remote/appthemeview") == "") return AppThemeFolder; else return Record.GetXmlProperty("genxml/remote/appthemefolderview"); } set { Record.SetXmlProperty("genxml/remote/appthemeview", value); } }
-        public string AppThemeVersionView { get { if (Record.GetXmlProperty("genxml/remote/appthemeversionview") == "") return AppThemeVersion; else return Record.GetXmlProperty("genxml/remote/appthemeversionview"); } set { Record.SetXmlProperty("genxml/remote/appthemeversionview", value); } }
         public string AppThemeFolder { get { return Record.GetXmlProperty("genxml/remote/apptheme"); } set { Record.SetXmlProperty("genxml/select/apptheme", value); } }
         public string AppThemeVersion { get { return Record.GetXmlProperty("genxml/remote/appthemeversion"); } set { Record.SetXmlProperty("genxml/select/appthemeversion", value); } }
+        public string ModuleName { get { return Record.GetXmlProperty("genxml/remote/modulename"); } set { Record.SetXmlProperty("genxml/select/modulename", value); } }
 
         #endregion
 

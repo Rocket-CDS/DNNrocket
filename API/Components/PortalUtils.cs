@@ -381,18 +381,15 @@ namespace DNNrocketAPI.Components
             return rtn;
         }
         [Obsolete("This can cause a race condition in Razor. (avoid use) ")]
-        public static string SiteGuid(int portalId = -1)
+        public static string SiteGuid(int portalId)
         {
-            if (portalId < 0)
-            {
-                return PortalSettings.Current.GUID.ToString();
-            }
-            else
-            {
-                /// I think this is slow and causes race condition.
-                var ps = GetPortalSettings(portalId);
-                return ps.GUID.ToString();
-            }
+            /// I think this is slow and causes race condition.
+            var ps = GetPortalSettings(portalId);
+            return ps.GUID.ToString();
+        }
+        public static string SiteGuid()
+        {
+            return PortalSettings.Current.GUID.ToString();
         }
 
         public static string GetPortalAlias(string lang, int portalid = -1)
