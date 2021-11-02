@@ -19,6 +19,13 @@ namespace Simplisity
         {
             Info = new SimplisityInfo();
             Page = 1;
+
+            // Do remote node first, if present then we are dealing with a remote system. (values will not be overwritten by subsequence values)
+            foreach (var d in paramInfo.ToDictionary("remote"))
+            {
+                Set(d.Key, d.Value);
+            }
+
             foreach (var d in paramInfo.ToDictionary("hidden"))
             {
                 Set(d.Key, d.Value);
@@ -32,10 +39,6 @@ namespace Simplisity
                 Set(d.Key, d.Value);
             }
             foreach (var d in paramInfo.ToDictionary("urlparams"))
-            {
-                Set(d.Key, d.Value);
-            }
-            foreach (var d in paramInfo.ToDictionary("remote"))
             {
                 Set(d.Key, d.Value);
             }
