@@ -76,11 +76,14 @@ namespace Simplisity
 
         public void SetLangXml(string strXml)
         {
-            if (XMLDoc.SelectSingleNode(RootNodeName + "/lang") == null)
+            if (strXml != "")
             {
-                SetXmlProperty(RootNodeName + "/lang", "", System.TypeCode.String, false);
+                if (XMLDoc.SelectSingleNode(RootNodeName + "/lang") == null)
+                {
+                    SetXmlProperty(RootNodeName + "/lang", "", System.TypeCode.String, false);
+                }
+                AddXmlNode(strXml, "/*", RootNodeName + "/lang");
             }
-            AddXmlNode(strXml, "/*", RootNodeName + "/lang");
         }
 
         public void RemoveLangRecord()
