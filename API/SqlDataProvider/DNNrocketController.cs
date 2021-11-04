@@ -131,38 +131,38 @@ namespace DNNrocketAPI
                         var idxList = GetList(portalId, -1, objRec.TypeCode + "LANGIDX");
                         foreach (var idxInfo in idxList)
                         {
-                            Delete(idxInfo.ItemID, tableName);   
+                            Delete(idxInfo.ItemID, tableName);
                         }
                     }
 
                     var objRecLang = GetRecordLang(itemId, l, tableName);
-                    if (objRecLang == null) objRecLang = new SimplisityInfo();
-
-                    var info = new SimplisityInfo(objRec);
-                    info.SetLangRecord(objRecLang);
-
-                    var objIdx = GetRecordByGuidKey(-1, -1, info.TypeCode + "LANGIDX", itemId + "_" + l, "", tableName);
-                    if (objIdx == null)
+                    if (objRecLang != null) // only update if we have a record.
                     {
-                        objIdx = new SimplisityRecord();
-                        objIdx.ItemID = -1;
-                        objIdx.PortalId = portalId;
-                        objIdx.ModuleId = -1;
-                        objIdx.XMLData = info.XMLData;
-                        objIdx.TypeCode = info.TypeCode + "LANGIDX";
-                        objIdx.GUIDKey = itemId + "_" + l;
-                        objIdx.ParentItemId = itemId;
-                        objIdx.Lang = l;
+                        var info = new SimplisityInfo(objRec);
+                        info.SetLangRecord(objRecLang);
+
+                        var objIdx = GetRecordByGuidKey(-1, -1, info.TypeCode + "LANGIDX", itemId + "_" + l, "", tableName);
+                        if (objIdx == null)
+                        {
+                            objIdx = new SimplisityRecord();
+                            objIdx.ItemID = -1;
+                            objIdx.PortalId = portalId;
+                            objIdx.ModuleId = -1;
+                            objIdx.XMLData = info.XMLData;
+                            objIdx.TypeCode = info.TypeCode + "LANGIDX";
+                            objIdx.GUIDKey = itemId + "_" + l;
+                            objIdx.ParentItemId = itemId;
+                            objIdx.Lang = l;
+                        }
+                        else
+                        {
+                            objIdx.XMLData = info.XMLData;
+                        }
+                        Update(objIdx, tableName);
                     }
-                    else
-                    {
-                        objIdx.XMLData = info.XMLData;
-                    }
-                    Update(objIdx, tableName);
                 }
             }
         }
-
         /// <summary>
         /// Build Index Records
         /// </summary>
