@@ -121,7 +121,10 @@
     <value>App Store</value>
   </data>
   <data name="dashboard.Text" xml:space="preserve">
-    <value>Services</value>
+    <value>Data Services</value>
+  </data>
+  <data name="dataclients.Text" xml:space="preserve">
+    <value>Data Clients</value>
   </data>
   <data name="global.Text" xml:space="preserve">
     <value>Global Settings</value>

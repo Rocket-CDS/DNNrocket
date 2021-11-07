@@ -115,16 +115,10 @@ namespace RocketPortal.API
         }
         private String ValidatePortals()
         {
-            try
-            {
-                var portalList = new PortalLimpetList(_paramInfo);
-                portalList.Validate();
-                return GetDashboard();
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            if (!UserUtils.IsSuperUser()) return "";
+            var portalList = new PortalLimpetList(_paramInfo);
+            portalList.Validate();
+            return GetDashboard();
         }
         private String GetPortalDetail()
         {

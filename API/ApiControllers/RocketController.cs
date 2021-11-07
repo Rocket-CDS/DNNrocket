@@ -116,56 +116,6 @@ namespace DNNrocketAPI.ApiControllers
             //rtn.Headers.Add("Access-Control-Allow-Origin", "*");
             return rtn;
         }
-        /// <summary>
-        /// When a remote module or html passes base64 paramInfo.
-        /// Usually on a server to server call, on module first load.
-        /// **NOTE: ActionRemote does NOT update data from the postInfo.
-        /// </summary>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [HttpGet]
-        [HttpPost]
-        [Obsolete("Will be removed in future, use Action() or ActionContent")]
-        public HttpResponseMessage ActionRemote()
-        {
-            var context = HttpContext.Current;
-
-            if (!context.Request.QueryString.AllKeys.Contains("cmd"))
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' parameter in url.  Unable to process action.");
-            }
-            if (!context.Request.QueryString.AllKeys.Contains("language"))
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, "No 'language' parameter in url.  Unable to process action.");
-            }
-            if (!context.Request.QueryString.AllKeys.Contains("systemkey"))
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, "No 'systemkey' parameter in url.  Unable to process action.");
-            }
-            
-
-            string rawData = Request.Content.ReadAsStringAsync().Result;
-            if (rawData == "") return this.Request.CreateResponse(HttpStatusCode.OK, "No Data to process");
-
-            var paramInfo = new SimplisityInfo();
-            paramInfo.FromXmlItem(GeneralUtils.Base64Decode(rawData));
-            var SystemKey = context.Request.QueryString["systemkey"];
-            var paramCmd = context.Request.QueryString["cmd"];
-            var portalId = PortalUtils.GetPortalId();
-            paramInfo.PortalId = portalId;
-
-            var systemData = new SystemLimpet(SystemKey);
-            var interfacekey = paramCmd.Split('_')[0];
-            var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
-            if (!rocketInterface.Exists) return this.Request.CreateResponse(HttpStatusCode.OK, "No RocketInterface.  Unable to process action.");
-
-            var rtn = ProcessProvider(paramCmd, new SimplisityInfo(), paramInfo, systemData, rocketInterface);
-
-            if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
-            //rtn.Headers.Add("Access-Control-Allow-Origin", "*");
-            return rtn;
-        }
-
         private SimplisityInfo BuildPostInfo()
         {
             var context = HttpContext.Current;

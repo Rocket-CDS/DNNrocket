@@ -297,12 +297,18 @@ namespace DNNrocketAPI.Components
                 return dpa;
             }
         }
-        public static void AddPortalAlias(int portalId, string portalAlias)
+        public static void AddPortalAlias(int portalId, string portalAlias, string cultureCode = "")
         {
             try
             {
                 portalAlias = portalAlias.ToLower().Replace("http://", "").Replace("https://", "");
                 PortalController.Instance.AddPortalAlias(portalId, portalAlias);
+                if (cultureCode != "")
+                {
+                    var pa = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalId);
+                    pa.CultureCode = cultureCode;
+                    PortalAliasController.Instance.UpdatePortalAlias(pa);
+                }
             }
             catch (Exception ex)
             {

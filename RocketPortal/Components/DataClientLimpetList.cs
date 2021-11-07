@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace RocketPortal.Components
 {
-    public class PortalLimpetList
+    public class DataClientLimpetList
     {
-        private List<PortalLimpet> _portalList;
+        private List<DataClientLimpet> _dataClientList;
         private DNNrocketController _objCtrl;
         private string _searchFilter;
 
-        public PortalLimpetList(SimplisityInfo paramInfo)
+        public DataClientLimpetList(SimplisityInfo paramInfo)
         {
             _objCtrl = new DNNrocketController();
 
@@ -41,11 +41,11 @@ namespace RocketPortal.Components
             SessionParamData.RowCount = _objCtrl.GetListCount(-1, -1, EntityTypeCode, _searchFilter);
             if (UserUtils.IsSuperUser())
             {
-                PortalList = _objCtrl.GetList(-1, -1, EntityTypeCode, _searchFilter, "", " order by R1.PortalId", 0, SessionParamData.Page, SessionParamData.PageSize, SessionParamData.RowCount);
+                DataClientList = _objCtrl.GetList(-1, -1, EntityTypeCode, _searchFilter, "", " order by R1.PortalId", 0, SessionParamData.Page, SessionParamData.PageSize, SessionParamData.RowCount);
             }
             else
             {
-                PortalList = _objCtrl.GetList(-1, -1, EntityTypeCode, " and UserId = " + UserUtils.GetCurrentUserId() + " ", "", " order by R1.PortalId", 0, 0, 0, 0);
+                DataClientList = _objCtrl.GetList(-1, -1, EntityTypeCode, " and UserId = " + UserUtils.GetCurrentUserId() + " ", "", " order by R1.PortalId", 0, 0, 0, 0);
             }
         }
         public void Validate()
@@ -53,31 +53,28 @@ namespace RocketPortal.Components
             var pList = PortalUtils.GetAllPortalRecords();
             foreach (var p in pList)
             {
-                if (p.PortalId > 0)
-                {
-                    var pData = new PortalLimpet(p.PortalId);
-                    pData.Validate();
-                    pData.Update();
-                }
+                var pData = new PortalLimpet(p.PortalId);
+                pData.Validate();
+                pData.Update();
             }
             Populate();
         }
 
         public SessionParams SessionParamData { get; set; }
-        public List<SimplisityInfo> PortalList { get; set; }
-        public List<PortalLimpet> GetPortalList()
+        public List<SimplisityInfo> DataClientList { get; set; }
+        public List<DataClientLimpet> GetDataClientList()
         {
-            _portalList = new List<PortalLimpet>();
-            foreach (var o in PortalList)
+            _dataClientList = new List<DataClientLimpet>();
+            foreach (var o in DataClientList)
             {
-                var portalData = new PortalLimpet(o.PortalId);
-                _portalList.Add(portalData);
+                var dataClient = new DataClientLimpet(o.PortalId, o.GUIDKey);
+                _dataClientList.Add(dataClient);
             }
-            return _portalList;
+            return _dataClientList;
         }
         public string CultureCode { get; private set; }
         public string SystemKey { get { return "rocketportal"; } }
-        public string EntityTypeCode { get { return "PORTAL"; } }
+        public string EntityTypeCode { get { return "DATACLIENT"; } }
 
     }
 }

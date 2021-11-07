@@ -216,6 +216,24 @@ namespace RocketPortal.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Secuirty Code is used to register a Data Client.  This code is sent by the client system to get access to this Data Service.  &lt;b&gt;KEEP THIS CODE SECRET&lt;/b&gt;.
+        /// </summary>
+        internal static string securitycode_Help {
+            get {
+                return ResourceManager.GetString("securitycode.Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Security Code.
+        /// </summary>
+        internal static string securitycode_Text {
+            get {
+                return ResourceManager.GetString("securitycode.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the type of Service..
         /// </summary>
         internal static string selectsystem_Text {

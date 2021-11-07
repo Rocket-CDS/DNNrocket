@@ -55,6 +55,21 @@ namespace RocketPortal.API
 
 
 
+                case "dataclients_getlist":
+                    strOut = GetDataClientList();
+                    break;
+                case "dataclients_delete":
+                    strOut = DeleteDataClient();
+                    break;
+                case "dataclients_toggleactive":
+                    strOut = DataClientActive();
+                    break;
+                case "dataclients_register":
+                    strOut = GetDataClientRegister();
+                    break;
+
+
+
                 case "rocketportal_get":
                     strOut = GetDashboard();
                     break;
@@ -149,14 +164,21 @@ namespace RocketPortal.API
 
             _passSettings = new Dictionary<string, string>();
 
-            // SECURITY --------------------------------
-            if (!UserUtils.IsInRole("Registered Users")) return "rocketportal_login";
-            // SECURITY --------------------------------
-
-
             var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
             if (portalid == 0) portalid = PortalUtils.GetCurrentPortalId();
             _portalData = new PortalLimpet(portalid);
+
+            // SECURITY --------------------------------
+            if (paramCmd == "dataclients_register")
+            {
+                var sk = _paramInfo.GetXmlProperty("genxml/remote/securitykey");
+                if (_portalData.SecurityKey != sk) return "";
+            }
+            else
+            {
+                if (!UserUtils.IsInRole("Registered Users")) return "rocketportal_login";
+            }
+            // SECURITY --------------------------------
 
             return paramCmd;
         }

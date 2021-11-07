@@ -29,7 +29,7 @@ namespace RocketPortal.Components
 
             _cacheKey = "Portal" + portalId;
 
-            Record = (SimplisityRecord)CacheUtils.GetCache(_cacheKey);
+            Record = (SimplisityRecord)CacheUtils.GetCache(_cacheKey, portalId.ToString());
             if (Record == null)
             {
                 //var uInfo = _objCtrl.GetByGuidKey(portalId, -1, _entityTypeCode, _guidKey, "");
@@ -48,31 +48,51 @@ namespace RocketPortal.Components
                 }
             }
 
+            if (SecurityKey == "")
+            {
+                SecurityKey = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString(1);
+            }
+            if (SecurityKeyEdit == "")
+            {
+                SecurityKeyEdit = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString(1);
+            }
             // add systems
             SystemDataList = new SystemLimpetList();
         }
 
         public int Save(SimplisityInfo info)
-        { 
+        {
             Record.XMLData = info.XMLData;
 
             if (EngineUrl != "")
             {
+                var pAlias = PortalUtils.GetPortalAliases(_portalId);
+                foreach (var pa in pAlias)
+                {
+                    if (pa != EngineUrl) PortalUtils.DeletePortalAlias(_portalId, pa); // remove unrequired alias (langauge added back after)
+                }
                 PortalUtils.AddPortalAlias(_portalId, EngineUrl);
-                PortalUtils.SetPrimaryPortalAlias(_portalId, EngineUrl);
             }
 
             // check languages
             var nodList = Record.XMLDoc.SelectNodes("genxml/radio/culturecodes/chk");
             foreach (XmlNode nod in nodList)
             {
+                var cultureCode = nod.Attributes["data"].Value;
                 if (nod.Attributes["value"].Value.ToLower() == "true")
-                    PortalUtils.AddLanguage(PortalId, nod.Attributes["data"].Value);
+                {
+                    PortalUtils.AddLanguage(PortalId, cultureCode);
+                    PortalUtils.AddPortalAlias(_portalId, EngineUrl + "/" + cultureCode.ToLower(), cultureCode);
+                }
                 else
-                    PortalUtils.RemoveLanguage(PortalId, nod.Attributes["data"].Value);
+                {
+                    PortalUtils.RemoveLanguage(PortalId, cultureCode);
+                }
             }
 
             UpdateDefaultLanguage(Record.GetXmlProperty("genxml/select/defaultlanguage"));
+
+            PortalUtils.SetPrimaryPortalAlias(_portalId, EngineUrl);
 
             return Update();
         }
@@ -99,7 +119,7 @@ namespace RocketPortal.Components
             Validate();
             if (UserId <= 0) UserId = UserUtils.GetCurrentUserId();
             Record = _objCtrl.SaveRecord(Record);
-            CacheUtils.SetCache(_cacheKey, Record);
+            CacheUtils.SetCache(_cacheKey, Record, _portalId.ToString());
             return Record.ItemID;
         }
         public void Delete()
@@ -112,7 +132,7 @@ namespace RocketPortal.Components
             {
                 _objCtrl.Delete(r.ItemID);
             }
-            CacheUtils.RemoveCache(_cacheKey);
+            CacheUtils.RemoveCache(_cacheKey, _portalId.ToString());
         }
 
         public void Validate()
@@ -130,6 +150,29 @@ namespace RocketPortal.Components
         public void RemoveLangauge(string cultureCode)
         {
             PortalUtils.RemoveLanguage(PortalId, cultureCode);
+        }
+
+        /// <summary>
+        /// This is used to create a string which is passed to any remote module, to give minimum setting.
+        /// </summary>
+        /// <returns></returns>
+        public string RemoteBase64Params()
+        {
+            var remoteParams = new RemoteParams(SystemKey);
+            remoteParams.EngineURL = EngineUrlWithProtocol;
+            remoteParams.SecurityKey = SecurityKey;
+            remoteParams.SecurityKeyEdit = SecurityKeyEdit;
+            return remoteParams.RecordItemBase64;
+        }
+        public bool IsValidRemote(string securityKey)
+        {
+            if (SecurityKey == securityKey) return true;
+            return false;
+        }
+        public bool IsValidRemoteEdit(string securityKeyEdit)
+        {
+            if (SecurityKeyEdit == securityKeyEdit) return true;
+            return false;
         }
 
         #region "setting"
@@ -184,9 +227,10 @@ namespace RocketPortal.Components
         public string SiteKey { get { return Record.GUIDKey; } set { Record.GUIDKey = value; } }
         public Dictionary<string, string> Managers { get; private set; }
         public SystemLimpetList SystemDataList { get; private set; }
-        public string SecurityKey { get { return Record.GetXmlProperty("genxml/securitykey"); } }
-        public bool EmailActive { get { return Record.GetXmlPropertyBool("genxml/emailon"); } }
-        public bool DebugMode { get { return Record.GetXmlPropertyBool("genxml/debugmode"); } }
+        public string SecurityKey { get { return Record.GetXmlProperty("genxml/config/securitykey"); } set { Record.SetXmlProperty("genxml/config/securitykey", value); } }
+        public string SecurityKeyEdit { get { return Record.GetXmlProperty("genxml/config/securitykeyedit"); } set { Record.SetXmlProperty("genxml/config/securitykeyedit", value); } }
+        public bool EmailActive { get { return Record.GetXmlPropertyBool("genxml/config/emailon"); } }
+        public bool DebugMode { get { return Record.GetXmlPropertyBool("genxml/config/debugmode"); } }
         public int UserId { get { return Record.UserId; } private set { Record.UserId = value; } }
         public string SystemKey { get { return Record.GetXmlProperty("genxml/radio/systemkey"); } }
         public string ColorAdminTheme { get { var rtn = Record.GetXmlProperty("genxml/select/colortheme"); if (rtn == "") rtn = "grey-theme.css"; return rtn; } set { Record.SetXmlProperty("genxml/select/colortheme", value); } }

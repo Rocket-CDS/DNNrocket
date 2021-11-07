@@ -15,86 +15,73 @@
 <div id="globalsettings">
 
     <div class="w3-bar">
-        <button class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="global_globalsave" s-post="#globalsettings">@ButtonText(ButtonTypes.save)</button>
+        <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="global_globalsave" s-post="#globalsettings">@ButtonText(ButtonTypes.save)</span>
+
+        <span class="w3-padding w3-button w3-theme-light simplisity_confirmclick" s-confirm="@ResourceKey("RP.validate")?" s-cmd="portal_validate">
+            <span class="material-icons">
+                verified
+            </span>&nbsp;@ResourceKey("RP.validate")</span>
+
     </div>
 
     <div class="w3-row">
 
-        <div class="w3-row w3-padding">
-            <label><b>@ResourceKey("DNNrocket.name")</b></label>
-            @TextBox(info, "genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ")
-        </div>
-        <div class="w3-row w3-padding">
-            <label><b>@ResourceKey("RP.rootdomain")</b></label>
-            @TextBox(info, "genxml/textbox/rootdomain", " class='w3-input w3-border' autocomplete='off' placeholder='toasted.site' ")
-        </div>
 
         <div class="w3-row">
-            <div class="w3-third w3-padding">
+            <div class="w3-half w3-padding">
+                <label><b>@ResourceKey("DNNrocket.name")</b></label>
+                @TextBox(info, "genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ")
+            </div>
+            <div class="w3-half w3-padding">
+                <label><b>@ResourceKey("RP.rootdomain")</b></label>
+                @TextBox(info, "genxml/textbox/rootdomain", " class='w3-input w3-border' autocomplete='off' placeholder='toasted.site' ")
+            </div>
+        </div>
+        <div class="w3-row">
+            <div class="w3-half w3-padding">
                 <label class=""><b>@ResourceKey("RP.imagetype")</b></label>
                 @DropDownList(info, "genxml/select/imagetype", "png,jpg", "png,jpg", "class='w3-input w3-border' style='width:96px'", "png")
             </div>
-            <div class="w3-third w3-padding">
-                <div class="w3-row w3-padding">
-                    <label><b>Scheduler</b></label><br />
-                    @if (systemGlobalData.SchedulerIsInstalled)
-                    {
-                        <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.uninstall")?" s-cmd="global_uninstallscheduler">@ResourceKey("DNNrocket.uninstall")</span>
-                    }
-                    else
-                    {
-                        <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.install")?" s-cmd="global_installscheduler">@ResourceKey("DNNrocket.install")</span>
-                    }
+            <div class="w3-half w3-padding">
+                <label><b>Scheduler</b></label><br />
+                @if (systemGlobalData.SchedulerIsInstalled)
+                {
+                    <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.uninstall")?" s-cmd="global_uninstallscheduler">@ResourceKey("DNNrocket.uninstall")</span>
+                }
+                else
+                {
+                    <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.install")?" s-cmd="global_installscheduler">@ResourceKey("DNNrocket.install")</span>
+                }
 
-                    <label class="">@ResourceKey("DNNrocket.installed"):</label>
-                    @if (systemGlobalData.SchedulerIsInstalled)
-                    {
-                        <span class="w3-text-green">
-                            @ButtonIcon(ButtonTypes.ok)
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="w3-text-red">
-                            @ButtonIcon(ButtonTypes.fail)
-                        </span>
-                    }
-                    <label>@ResourceKey("DNNrocket.enabled"):</label>
-                    @if (systemGlobalData.SchedulerIsEnabled)
-                    {
-                        <span class="w3-text-green">
-                            @ButtonIcon(ButtonTypes.ok)
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="w3-text-red">
-                            @ButtonIcon(ButtonTypes.fail)
-                        </span>
-                    }
-
-                </div>
-            </div>
-            <div class="w3-third w3-padding">
-                <div class="w3-row w3-padding">
-                    <label><b>Roles</b></label><br />
-                    <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="Install Default Roles?" s-cmd="global_defaultroles" s-post="#globalsettings">Create Default Roles</span>
-                    <label class="">@ResourceKey("DNNrocket.installed"):</label>
-                    @if (DNNrocketUtils.DefaultRoleExist(PortalUtils.GetCurrentPortalId()))
-                    {
-                        <span class="w3-text-green">
-                            @ButtonIcon(ButtonTypes.ok)
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="w3-text-red">
-                            @ButtonIcon(ButtonTypes.fail)
-                        </span>
-                    }
-                </div>
+                <label class="">@ResourceKey("DNNrocket.installed"):</label>
+                @if (systemGlobalData.SchedulerIsInstalled)
+                {
+                    <span class="w3-text-green">
+                        @ButtonIcon(ButtonTypes.ok)
+                    </span>
+                }
+                else
+                {
+                    <span class="w3-text-red">
+                        @ButtonIcon(ButtonTypes.fail)
+                    </span>
+                }
+                <label>@ResourceKey("DNNrocket.enabled"):</label>
+                @if (systemGlobalData.SchedulerIsEnabled)
+                {
+                    <span class="w3-text-green">
+                        @ButtonIcon(ButtonTypes.ok)
+                    </span>
+                }
+                else
+                {
+                    <span class="w3-text-red">
+                        @ButtonIcon(ButtonTypes.fail)
+                    </span>
+                }
             </div>
         </div>
+
     </div>
 
         <div class="w3-row w3-tiny w3-right">

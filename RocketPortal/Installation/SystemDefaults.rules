@@ -41,7 +41,24 @@
     </command>
 
 
-    
+    <command>
+      <cmd>dataclients_register</cmd>
+      <action>true</action>
+    </command>    
+    <command>
+      <cmd>dataclients_getlist</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>dataclients_delete</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>dataclients_toggleactive</cmd>
+      <action>true</action>
+    </command>    
+
+
     <command>
       <cmd>portal_addmanager</cmd>
       <action>true</action>

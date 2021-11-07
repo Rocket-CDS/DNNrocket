@@ -47,6 +47,8 @@
         <div class="w3-col m2 w3-tiny w3-right w3-right-align w3-hide-small">Id:&nbsp;@info.ItemID &nbsp; PortalId:&nbsp;@portalData.PortalId</div>
     </div>
 
+    @HiddenField(info, "genxml/config/securitykey")
+    @HiddenField(info, "genxml/config/securitykeyedit")
 
     <div class="w3-row">
         <div onclick="selectmenu('generaldata');" class="w3-col m2 w3-hover-light-grey w3-center">
@@ -101,6 +103,34 @@
                 <label class=""><b>@ResourceKey("DNNrocket.colortheme") (Admin)</b></label>
                 @FileSelectList(info, "genxml/select/colortheme", DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css"), "class='w3-input w3-border'")
             </div>
+
+            <div class="w3-row w3-padding">
+                <i>@ResourceKey("RP.securitycode", "", "Help")</i>
+                <br />
+                <div class="w3-button" onclick="docopyclipboard($('#secretcode'))"><b>@ResourceKey("RP.securitycode")</b>&nbsp;<span id="iconsecretcode" class=" action-clipboardicon">@ButtonIcon(ButtonTypes.copy)</span></div>
+                <div id="secretcode" class="w3-padding w3-light-grey w3-border" style="width:100%;word-wrap:break-word;">@(portalData.RemoteBase64Params())</div>
+            </div>
+
+            @if (UserUtils.IsSuperUser())
+            {
+                <div class="w3-row w3-padding">
+                    <label><b>Roles</b></label><br />
+                    <span class="w3-button w3-theme-action simplisity_confirmclick" s-confirm="Install Default Roles?" s-cmd="global_defaultroles" s-post="#globalsettings">Create Default Roles</span>
+                    <label class="">@ResourceKey("DNNrocket.installed"):</label>
+                    @if (DNNrocketUtils.DefaultRoleExist(portalData.PortalId))
+                    {
+                        <span class="w3-text-green">
+                            @ButtonIcon(ButtonTypes.ok)
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="w3-text-red">
+                            @ButtonIcon(ButtonTypes.fail)
+                        </span>
+                    }
+                </div>
+            }
 
         </div>
         <div class="w3-third">
