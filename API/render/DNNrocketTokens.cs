@@ -599,7 +599,8 @@ namespace DNNrocketAPI.render
             strOut += "<script>";
             strOut += "$(document).ready(function () {";
             strOut += " CKEDITOR.replace('" + id + "');";
-            strOut += " CKEDITOR.instances." + id + ".on('change', function () {";
+            strOut += " CKEDITOR.config.allowedContent = true;";            
+            strOut += " CKEDITOR.instances." + id + ".on('key', function () {";
             strOut += " $('#" + id + "').val(CKEDITOR.instances." + id + ".getData());";
             strOut += "";
             strOut += " });";
