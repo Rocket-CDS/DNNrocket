@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
+using System.Xml;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
 using Microsoft.ApplicationBlocks.Data;
@@ -168,6 +170,42 @@ namespace DNNrocketAPI
         public override int GetUsersCountCMS(int portalId, string sqlSearchFilter = "")
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + ModuleQualifier + "GetDNNUsersCount", portalId, sqlSearchFilter));
+        }
+        public override String ExecSql(string commandText)
+        {
+            return Convert.ToString(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, commandText));
+        }
+
+        public override String GetSqlxml(string commandText)
+        {
+            // With the XML return we often want a large data return, so we need to increase the default command timout.
+            // becuase we're compiling against DNN6 we can't use PetaPocoHelper class.  So create a new connection and command with timeout.
+
+            //Create a new connection
+            var rtnData = "Error data reader fail";
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                //Create a new command (with no timeout)
+                var command = new SqlCommand(commandText, connection) { CommandTimeout = 200 };
+                try
+                {
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                    XmlReader dr = command.ExecuteXmlReader();
+                    while (dr.Read())
+                    {
+                        sb.AppendLine(dr.ReadOuterXml());
+                    }
+                    rtnData = sb.ToString();
+                }
+                finally
+                {
+                    // make sure we always close.
+                    connection.Close();
+                }
+            }
+
+            return rtnData;
         }
 
         #endregion

@@ -749,6 +749,14 @@ namespace DNNrocketAPI
             return info;
         }
 
+        public string GetSqlxml(string commandText)
+        {
+            return DataProvider.Instance().GetSqlxml(commandText);
+        }
+        public string ExecSql(string commandText)
+        {
+            return DataProvider.Instance().ExecSql(commandText);
+        }
 
         #endregion
 

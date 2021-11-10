@@ -52,10 +52,12 @@ namespace DNNrocketAPI
         public abstract IDataReader GetRecordLang(int parentitemId,String lang, string tableName = "DNNrocket");
         public abstract IDataReader GetUsersCMS(int portalId, string sqlSearchFilter = "", int returnLimit = 0, int pageNumber = 0, int pageSize = 0, int recordCount = 0);
         public abstract int GetUsersCountCMS(int portalId, string sqlSearchFilter = "");
+		public abstract string ExecSql(string commandText);
+		public abstract string GetSqlxml(string commandText);
 
-        #endregion
+		#endregion
 
 
-    }
+	}
 
 }
