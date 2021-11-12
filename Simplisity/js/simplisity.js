@@ -486,6 +486,12 @@ function simplisity_ConvertFormToJSON(spost, slist, sfields) {
             jQuery(list).each(function () {
                 jQuery(this).find('input, textarea, select').each(function () {
 
+                    // if html type is NOT one supported, then convert it to hidden.
+                    var htmlType = this.getAttribute("type");
+                    if (htmlType !== '' && htmlType !== 'checkbox' && htmlType !== 'text' && htmlType !== 'radio' && htmlType !== 'select' && htmlType !== 'hidden') {
+                        htmlType = 'hidden';
+                    }
+
                     if (this.getAttribute("s-update") !== 'ignore' && this.id !== '') {
 
                         if (this.getAttribute("s-datatype") === 'coded') {
@@ -504,10 +510,11 @@ function simplisity_ConvertFormToJSON(spost, slist, sfields) {
                         jsonDataL['s-update'] = this.getAttribute("s-update") || '';
                         jsonDataL['s-datatype'] = this.getAttribute("s-datatype") || '';
                         jsonDataL['s-xpath'] = this.getAttribute("s-xpath") || '';
-                        jsonDataL['type'] = this.getAttribute("type") || 'select';
+                        jsonDataL['type'] = htmlType || 'select';
                         jsonDataL['checked'] = jQuery(this).prop('checked') || '';
                         jsonDataL['name'] = this.getAttribute("name") || '';
                         viewData.listdata.push(jsonDataL);
+
                     }
                 });
                 lp2 += 1;
