@@ -25,9 +25,14 @@
   </file>
   <file include='true'>
     <value>\system.rules</value>
-    <value>\admin.html</value>
+    <value>\Skins\rocketportal\rocketadmin.ascx</value>
+    <value>\Skins\rocketportal\rocketadmin.xml</value>
+    <value>\Skins\rocketportal\rockethome.ascx</value>
+    <value>\Skins\rocketportal\rockethome.xml</value>
     <value>\Skins\rocketportal\rocketportal.ascx</value>
     <value>\Skins\rocketportal\rocketportal.xml</value>
+    <value>\Skins\rocketportal\rocketcms.ascx</value>
+    <value>\Skins\rocketportal\rocketcms.xml</value>
   </file>
   <assembly>
 		<value>RocketPortal.dll</value>

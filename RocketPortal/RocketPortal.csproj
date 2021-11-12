@@ -1,9 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Configurations>Debug;Release;Comp All;CompAll</Configurations>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Skins\rocketportal\rocketcms.ascx" />
+    <None Remove="Skins\rocketportal\rocketcms.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Skins\rocketportal\rocketcms.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Skins\rocketportal\rocketcms.xml" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\DNNrocket\API\DNNrocketAPI.csproj" />

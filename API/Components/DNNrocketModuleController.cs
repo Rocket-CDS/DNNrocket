@@ -204,7 +204,7 @@ namespace DNNrocketAPI.Components
             var cmstabid = PagesUtils.CreatePage(0, "cms");
             PagesUtils.AddPagePermissions(0, cmstabid, "");
             PagesUtils.RemoveAllUsersPagePermissions(0, cmstabid);
-            PagesUtils.AddPageSkin(0, cmstabid, "cms", "cms.ascx");
+            PagesUtils.AddPageSkin(0, cmstabid, "rocketportal", "rocketcms.ascx");
 
             PortalUtils.Registration(0, 0);
             PortalUtils.EnablePopups(0, false);

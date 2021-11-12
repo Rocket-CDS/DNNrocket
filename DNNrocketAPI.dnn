@@ -105,21 +105,6 @@ It also contains the popular RocketMod modules, which is a dynamic content build
           </assemblies>
 				</component>
 
-        <component type="Skin">
-          <skinFiles>
-            <basePath>Portals\_default\Skins\cms</basePath>
-            <skinName>cms</skinName>
-            <skinFile>
-              <path></path>
-              <name>cms.ascx</name>
-            </skinFile>
-            <skinFile>
-              <path></path>
-              <name>cms.xml</name>
-            </skinFile>
-          </skinFiles>
-        </component>        
-
       </components>
 		</package>
 
@@ -235,6 +220,22 @@ It also contains the popular RocketMod modules, which is a dynamic content build
             <skinFile>
               <path></path>
               <name>rockethome.xml</name>
+            </skinFile>
+            <skinFile>
+              <path></path>
+              <name>rocketadmin.ascx</name>
+            </skinFile>
+            <skinFile>
+              <path></path>
+              <name>rocketadmin.xml</name>
+            </skinFile>
+            <skinFile>
+              <path></path>
+              <name>rocketcms.ascx</name>
+            </skinFile>
+            <skinFile>
+              <path></path>
+              <name>rocketcms.xml</name>
             </skinFile>
             <skinFile>
               <path></path>

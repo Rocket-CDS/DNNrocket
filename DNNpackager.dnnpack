@@ -17,7 +17,6 @@
     <value>\API\images\*</value>
     <value>\API\Systems</value>
     <value>\API\Themes\*</value>
-    <value>\API\Skins\*</value>
 
     <value>\Country</value>
     <value>\Country\App_LocalResources</value>
@@ -64,10 +63,11 @@
     <value>\RocketPortal\Skins\rocketportal\rocketportal.xml</value>
     <value>\RocketPortal\Skins\rocketportal\rockethome.ascx</value>
     <value>\RocketPortal\Skins\rocketportal\rockethome.xml</value>
+    <value>\RocketPortal\Skins\rocketportal\rocketadmin.ascx</value>
+    <value>\RocketPortal\Skins\rocketportal\rocketadmin.xml</value>
+    <value>\RocketPortal\Skins\rocketportal\rocketcms.ascx</value>
+    <value>\RocketPortal\Skins\rocketportal\rocketcms.xml</value>
     <value>\RocketPortal\Skins\rocketportal\skin.css</value>
-
-    <value>\API\Skins\cms\cms.ascx</value>
-    <value>\API\Skins\cms\cms.xml</value>
 
   </file>
 	<assembly>

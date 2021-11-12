@@ -771,10 +771,6 @@
     <Content Include="images\noimage2.png" />
     <Content Include="images\noimage2.svg" />
     <Content Include="Installation\SQL_SPROC_TableParam.txt" />
-    <Content Include="Skins\cms\cms.ascx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="Skins\cms\cms.xml" />
     <Content Include="SystemView.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
