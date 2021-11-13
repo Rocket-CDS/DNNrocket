@@ -47,7 +47,12 @@
                 <tr class="searchdiv">
                     <td><b>@gitRepoRec.GetXmlProperty("genxml/name")</b></td>
                     <td>@Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortDateString() @Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortTimeString()</td>
-                    <td><a href="@gitRepoRec.GetXmlProperty("genxml/html_url")" target="_blank"><i class="fab fa-github"></i></a></td>
+                    <td><a href="@gitRepoRec.GetXmlProperty("genxml/html_url")" target="_blank">
+                            <span class="material-icons">
+                                developer_mode
+                            </span>
+                        </a>
+                    </td>
                     <td htmlurl="@(gitRepoRec.GetXmlProperty("genxml/html_url"))" appthemefolder="@(appTheme.AppThemeFolder)" class="a-installappthemebutton" style="cursor:pointer;">
                         @if (appTheme.Exists)
                         {
@@ -75,7 +80,7 @@
                     </div>
                     <div class="w3-row w3-margin w3-center">
                         <div class="w3-third">&nbsp;</div>
-                        <div class="w3-third a-downloadbutton w3-button w3-teal w3-padding-8 simplisity_click" s-before="moveprogressbardownload" s-after="stopprogressbardownload" s-cmd="rocketapptheme_downloadgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'><i class="fas fa-download"></i> &nbsp;@ResourceKey("AppThemes.install")</div>
+                        <div class="w3-third a-downloadbutton w3-button w3-teal w3-padding-8 simplisity_click" s-before="moveprogressbardownload" s-after="stopprogressbardownload" s-cmd="rocketapptheme_downloadgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'>@ButtonIcon(ButtonTypes.download)&nbsp;@ResourceKey("AppThemes.install")</div>
                         <div class="w3-third">&nbsp;</div>
                     </div>
                 </div>
@@ -95,7 +100,7 @@
                     </div>
                     <div class="w3-row w3-margin w3-center">
                         <div class="w3-third">&nbsp;</div>
-                        <div class="w3-third a-downloadbutton w3-button w3-teal w3-padding simplisity_click" s-before="moveprogressbardownload" s-after="stopprogressbardownload" s-cmd="rocketapptheme_downloadallgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'><i class="fas fa-download"></i> &nbsp;@ResourceKey("AppThemes.installall")</div>
+                        <div class="w3-third a-downloadbutton w3-button w3-teal w3-padding simplisity_click" s-before="moveprogressbardownload" s-after="stopprogressbardownload" s-cmd="rocketapptheme_downloadallgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'>@ButtonIcon(ButtonTypes.download)&nbsp;@ResourceKey("AppThemes.installall")</div>
                         <div class="w3-third">&nbsp;</div>
                     </div>
                 </div>

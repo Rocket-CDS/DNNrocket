@@ -139,7 +139,7 @@ namespace Rocket.AppThemes.Components
                     if (dirName != "")
                     {
                         var rDir = downloadFolderMapPath.TrimEnd('\\') + "\\" + dirName;
-                        Directory.Delete(rDir, true);
+                        if (Directory.Exists(rDir)) Directory.Delete(rDir, true);
                         Directory.Move(d2, rDir);
                     }
                 }
