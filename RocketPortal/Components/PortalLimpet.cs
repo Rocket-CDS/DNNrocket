@@ -63,37 +63,6 @@ namespace RocketPortal.Components
         public int Save(SimplisityInfo info)
         {
             Record.XMLData = info.XMLData;
-
-            if (EngineUrl != "")
-            {
-                var pAlias = PortalUtils.GetPortalAliases(_portalId);
-                foreach (var pa in pAlias)
-                {
-                    if (pa != EngineUrl) PortalUtils.DeletePortalAlias(_portalId, pa); // remove unrequired alias (langauge added back after)
-                }
-                PortalUtils.AddPortalAlias(_portalId, EngineUrl);
-            }
-
-            // check languages
-            var nodList = Record.XMLDoc.SelectNodes("genxml/radio/culturecodes/chk");
-            foreach (XmlNode nod in nodList)
-            {
-                var cultureCode = nod.Attributes["data"].Value;
-                if (nod.Attributes["value"].Value.ToLower() == "true")
-                {
-                    PortalUtils.AddLanguage(PortalId, cultureCode);
-                    PortalUtils.AddPortalAlias(_portalId, EngineUrl + "/" + cultureCode.ToLower(), cultureCode);
-                }
-                else
-                {
-                    PortalUtils.RemoveLanguage(PortalId, cultureCode);
-                }
-            }
-
-            UpdateDefaultLanguage(Record.GetXmlProperty("genxml/select/defaultlanguage"));
-
-            PortalUtils.SetPrimaryPortalAlias(_portalId, EngineUrl);
-
             return Update();
         }
         private void UpdateDefaultLanguage(string cultureCode)
@@ -104,6 +73,7 @@ namespace RocketPortal.Components
                 var cultureList = DNNrocketUtils.GetCultureCodeList(PortalId);
                 foreach (var cc in cultureList)
                 {
+                    if (cc == "") PortalUtils.RemoveLanguage(PortalId, ""); // invalid
                     if (cultureCode == cc) validlangauge = true;
                 }
                 if (validlangauge) 
@@ -137,11 +107,74 @@ namespace RocketPortal.Components
 
         public void Validate()
         {
-            var dpa  = PortalUtils.DefaultPortalAlias(PortalId);
-            if (dpa != EngineUrl && dpa != "")
+            if (EngineUrl == "")
             {
+                var dpa = PortalUtils.DefaultPortalAlias(PortalId);
                 EngineUrl = dpa;
             }
+
+            EngineUrl = EngineUrl.ToLower(); // only allow lowercase
+
+            if (EngineUrl != "")
+            {
+                // Portal Alias
+                var requiredPortalAlias = new Dictionary<string, string>();
+                requiredPortalAlias.Add(EngineUrl,"");
+
+                var defaultLanguage = Record.GetXmlProperty("genxml/select/defaultlanguage");
+                var defaultBackupLanguage = "";
+                var nodList = Record.XMLDoc.SelectNodes("genxml/radio/culturecodes/chk");
+                foreach (XmlNode nod in nodList)
+                {
+                    var cultureCode = nod.Attributes["data"].Value;
+                    if (nod.Attributes["value"].Value.ToLower() == "true")
+                    {
+                        requiredPortalAlias.Add(EngineUrl + "/" + cultureCode.ToLower(), cultureCode);
+                        defaultBackupLanguage = cultureCode;
+                    }
+                    else
+                    {
+                        PortalUtils.RemoveLanguage(_portalId, cultureCode);
+                    }
+                }
+
+                if (requiredPortalAlias.Count == 1)
+                {
+                    // no langauge selected, set default language
+                    XmlElement formData = (XmlElement)Record.XMLDoc.SelectSingleNode("genxml/radio/culturecodes/chk[@data='" + defaultLanguage + "']");
+                    if (formData != null) formData.SetAttribute("value", "true");
+                }
+
+                if (requiredPortalAlias.Count == 2)
+                {
+                    // we only have 1 language, only set 1 neutral portalalias
+                    requiredPortalAlias.Remove(requiredPortalAlias.Last().Key);
+                }
+
+                var pAlias = PortalUtils.GetPortalAliases(_portalId);
+                foreach (var pa in pAlias)
+                {
+                    if (!requiredPortalAlias.ContainsKey(pa)) PortalUtils.DeletePortalAlias(_portalId, pa);
+                }
+
+                pAlias = PortalUtils.GetPortalAliases(_portalId);
+                if (pAlias.Count == 0) PortalUtils.AddPortalAlias(_portalId, EngineUrl, ""); // incorrectly removed.
+
+                foreach (var pa in requiredPortalAlias)
+                {
+                    if (!pAlias.Contains(pa.Key))
+                    {
+                        if (pa.Value != "") PortalUtils.AddLanguage(_portalId, pa.Value);
+                        PortalUtils.AddPortalAlias(_portalId, pa.Key, pa.Value);
+                    }
+                    PortalUtils.SetPrimaryPortalAlias(_portalId, pa.Key);
+                }
+                if (requiredPortalAlias.ContainsValue(defaultLanguage)) 
+                    UpdateDefaultLanguage(defaultLanguage);
+                else
+                    UpdateDefaultLanguage(defaultBackupLanguage);
+            }
+
         }
         public void AddLangauge(string cultureCode)
         {

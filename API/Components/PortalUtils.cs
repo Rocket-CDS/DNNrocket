@@ -328,7 +328,7 @@ namespace DNNrocketAPI.Components
                 LogUtils.LogException(ex);
             }
         }
-        public static void SetPrimaryPortalAlias(int portalId, string portalAlias)
+        public static void SetPrimaryPortalAlias(int portalId, string portalAlias, bool isPrimary = true)
         {
             portalAlias = portalAlias.ToLower().Replace("http://", "").Replace("https://", "");
             PortalAliasInfo newPrimaryPortalAlias = null;
@@ -346,11 +346,7 @@ namespace DNNrocketAPI.Components
                 {
                     if (pa.PortalAliasID == newPrimaryPortalAlias.PortalAliasID)
                     {
-                        pa.IsPrimary = true;
-                    }
-                    else
-                    {
-                        pa.IsPrimary = false;
+                        pa.IsPrimary = isPrimary;
                     }
                     PortalAliasController.Instance.UpdatePortalAlias(pa);
                 }

@@ -60,7 +60,7 @@
     <script>
 
         $(document).ready(function () {
-            $('#adminpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', '<%= Server.HtmlEncode(PortalSettings.ActiveTab.TabName) %>_adminpanel', '{"systemkey":"<%= Server.HtmlEncode(PortalSettings.ActiveTab.TabName) %>"}', '')
+            $('#adminpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'rocketsystem_adminpanel', '{"systemkey":"<%= Server.HtmlEncode(PortalSettings.ActiveTab.TabName) %>"}', '')
             $('#adminpanel').show();
         });
 
