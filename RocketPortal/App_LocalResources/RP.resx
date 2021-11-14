@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="actionprovider.Help" xml:space="preserve">
-    <value>Action providers can be executed from here.  An action provider is designed to do a single action on the store, usually to update records or fix problems.
+    <value>Action providers can be executed from here.  An action provider is designed to do a single action on the system installation, usually to update records or fix problems.
 &lt;br/&gt;
 The assembly that will be executed should be installed into the bin folder and then the correct assembly, namespace, class and extra data can be added into the fields below. &lt;br/&gt;The action provider assembly should inherit the "ActionProvider" class.</value>
   </data>

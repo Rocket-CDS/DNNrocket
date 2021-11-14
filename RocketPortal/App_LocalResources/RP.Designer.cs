@@ -61,7 +61,7 @@ namespace RocketPortal.App_LocalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Action providers can be executed from here.  An action provider is designed to do a single action on the store, usually to update records or fix problems.
+        ///   Looks up a localized string similar to Action providers can be executed from here.  An action provider is designed to do a single action on the system installation, usually to update records or fix problems.
         ///&lt;br/&gt;
         ///The assembly that will be executed should be installed into the bin folder and then the correct assembly, namespace, class and extra data can be added into the fields below. &lt;br/&gt;The action provider assembly should inherit the &quot;ActionProvider&quot; class..
         /// </summary>
