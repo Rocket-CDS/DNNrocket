@@ -77,7 +77,7 @@
           <namespaceclass>RocketPortal.API.StartConnect</namespaceclass>
           <providernamespaceclass></providernamespaceclass>
           <assembly>RocketPortal</assembly>
-          <interfaceicon>sd_storage</interfaceicon>
+          <interfaceicon>cast</interfaceicon>
           <defaultcommand>dataclients_getlist</defaultcommand>
           <relpath>/DesktopModules/DNNrocket/RocketPortal</relpath>
         </textbox>

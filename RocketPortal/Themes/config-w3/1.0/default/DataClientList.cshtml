@@ -19,7 +19,6 @@
         @HiddenField(new SimplisityInfo(), "genxml/hidden/page", " class='simplisity_sessionfield' s-update='ignore'", "1")
 
         <button type="button" class="w3-button w3-theme-action" onclick="$('#portallist').hide();$('#portaldetail').show();">@ButtonText(ButtonTypes.add)</button>
-        <button class="w3-button simplisity_click" title="Clear All Cache" s-cmd="dashboard_clearallcache" s-post="" s-reload="true">@ButtonIcon(ButtonTypes.refresh)</button>
 
         <div class="w3-right w3-hide-small w3-margin-left" style="width: 100px">
             @DropDownList(new SimplisityInfo(), "genxml/hidden/pagesize", "8,16,32,64,128", "8,16,32,64,128", "class='w3-input w3-border w3-light-grey simplisity_sessionfield simplisity_change ' s-sessionfield='#searchtext,#pagesize,#orderbyref,#page' s-cmd='portal_list' s-post='.searchdata' s-fields='{\"track\":\"true\"}'  title='" + @ResourceKey("DNNrocket.pagesize") + "'", "32")
@@ -40,6 +39,7 @@
             <thead>
                 <tr>
                     <th></th>
+                    <th></th>
                     <th style="width:64px;"></th>
                     <th style="width:64px;"></th>
                     <th style="width:64px;"></th>
@@ -54,6 +54,17 @@
                 </b>
                 <div class="w3-tiny">
                     @dataClient.SiteKey
+                </div>
+            </td>
+            <td>
+                <span>@dataClient.ServiceData.Name</span>
+            </td>
+            <td>
+                <b>
+                    <span>@dataClient.ServiceData.EngineUrlWithProtocol</span>
+                </b>
+                <div class="w3-tiny">
+                    @dataClient.ServiceData.SystemKey
                 </div>
             </td>
             <td>
