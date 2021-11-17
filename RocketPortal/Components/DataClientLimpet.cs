@@ -45,6 +45,7 @@ namespace RocketPortal.Components
                     Record.GUIDKey = siteKey;
                     Record.ParentItemId = ServiceData.Record.ItemID;
                     Record.UserId = ServiceData.UserId;
+                    Active = true;
                 }
             }
         }
