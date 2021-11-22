@@ -84,6 +84,7 @@ namespace Simplisity
         public int RowCount { get { return Info.GetXmlPropertyInt("r/rowcount"); } set { Info.SetXmlProperty("r/rowcount", value.ToString()); } }
         //Filter SQL
         public int FilterIndex { get { return Info.GetXmlPropertyInt("r/filterindex"); } set { Info.SetXmlProperty("r/filterindex", value.ToString()); } }
+        public string ModuleRef { get { return Info.GetXmlProperty("r/moduleref"); } set { Info.SetXmlProperty("r/moduleref", value.ToString()); } }
         public int ModuleId { get { return Info.GetXmlPropertyInt("r/moduleid"); } set { Info.SetXmlProperty("r/moduleid", value.ToString()); } }
         public int TabId { get { return Info.GetXmlPropertyInt("r/tabid"); } set { Info.SetXmlProperty("r/tabid", value.ToString()); } }
         /// <summary>
