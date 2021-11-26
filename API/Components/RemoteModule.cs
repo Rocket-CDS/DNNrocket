@@ -51,11 +51,11 @@ namespace DNNrocketAPI.Components
         public int SortOrder { get { return Record.SortOrder; } set { Record.SortOrder = value; } }
         public int PortalId { get { return Record.PortalId; } }
         public bool Exists { get { if (Record.ItemID <= 0) { return false; } else { return true; }; } }
-        public string AppThemeFolder { get { return Record.GetXmlProperty("genxml/remote/apptheme"); } set { Record.SetXmlProperty("genxml/select/apptheme", value); } }
-        public string AppThemeVersion { get { return Record.GetXmlProperty("genxml/remote/appthemeversion"); } set { Record.SetXmlProperty("genxml/select/appthemeversion", value); } }
-        public string AppThemeViewFolder { get { return Record.GetXmlProperty("genxml/remote/appthemeview"); } set { Record.SetXmlProperty("genxml/select/appthemeview", value); } }
-        public string AppThemeViewVersion { get { return Record.GetXmlProperty("genxml/remote/appthemeviewversion"); } set { Record.SetXmlProperty("genxml/select/appthemeviewversion", value); } }
-        public string ModuleName { get { return Record.GetXmlProperty("genxml/remote/modulename"); } set { Record.SetXmlProperty("genxml/select/modulename", value); } }
+        public string AppThemeFolder { get { return Record.GetXmlProperty("genxml/remote/apptheme"); } set { Record.SetXmlProperty("genxml/remote/apptheme", value); } }
+        public string AppThemeVersion { get { return Record.GetXmlProperty("genxml/remote/appthemeversion"); } set { Record.SetXmlProperty("genxml/remote/appthemeversion", value); } }
+        public string AppThemeViewFolder { get { return Record.GetXmlProperty("genxml/remote/appthemeview"); } set { Record.SetXmlProperty("genxml/remote/appthemeview", value); } }
+        public string AppThemeViewVersion { get { return Record.GetXmlProperty("genxml/remote/appthemeviewversion"); } set { Record.SetXmlProperty("genxml/remote/appthemeviewversion", value); } }
+        public string ModuleName { get { return Record.GetXmlProperty("genxml/remote/modulename"); } set { Record.SetXmlProperty("genxml/remote/modulename", value); } }
         public string DataRef { get { if (Record.GetXmlProperty("genxml/remote/datasourceref") == "") return ModuleRef; else return Record.GetXmlProperty("genxml/remote/datasourceref"); } set { Record.SetXmlProperty("genxml/remote/datasourceref", value); } }
 
         #endregion
