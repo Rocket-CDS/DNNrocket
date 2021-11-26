@@ -881,4 +881,7 @@ send
   <data name="dataname.Text" xml:space="preserve">
     <value>Data Name</value>
   </data>
+  <data name="version.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
 </root>

@@ -121,7 +121,7 @@ namespace DNNrocketAPI.Components
                 var l = new List<object>();
                 l.Add(obj);
 
-                var nbRazor = new SimplisityRazor(l, settings, HttpContext.Current.Request.QueryString);
+                var nbRazor = new SimplisityRazor(l, settings);
                 nbRazor.SessionParamsData = sessionParams;
                 nbRazor.DataObjects = dataObjects;
                 rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
@@ -135,7 +135,7 @@ namespace DNNrocketAPI.Components
             if (razorTemplate != "")
             {
                 if (settings == null) settings = new Dictionary<string, string>();
-                var nbRazor = new SimplisityRazor(objList, settings, HttpContext.Current.Request.QueryString);
+                var nbRazor = new SimplisityRazor(objList, settings);
                 nbRazor.SessionParamsData = sessionParams;
                 rtnStr = RazorRender(nbRazor, razorTemplate, debugmode);
             }
