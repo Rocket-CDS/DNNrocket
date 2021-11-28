@@ -54,14 +54,14 @@ var debugmode = false;
 
         simplisity_panelAjaxFunction(ajaxPostCmd[ajaxPostCmd.length - 1]);
 
-        $('#simplisity_loader').hide();
+        $('.simplisity_loader').hide();
 
     };
 }(jQuery));
 
 function simplisity_createStaticPageFields(cmdurl, settings) {
     // inject static fields.
-    jQuery('#simplisity_loader').remove();
+    jQuery('.simplisity_loader').remove();
     jQuery('#simplisity_systemkey').remove();
     jQuery('#simplisity_cmdurl').remove();
     jQuery('#simplisity_fileuploadlist').remove();
@@ -148,7 +148,7 @@ function simplisity_nbxgetCompleted(e) {
     jQuery('.simplisity_fadeout').fadeOut(2000);
 
     if (e.sloader === true) {
-        jQuery('#simplisity_loader').hide();
+        jQuery('.simplisity_loader').hide();
     }
 
 }
@@ -206,7 +206,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                         var obj = jsonObj[i];
                         jQuery(sdropdownlist).append("<option value='" + obj.key + "'>" + obj.value + "</option>");
                     }
-                    jQuery('#simplisity_loader').hide();
+                    jQuery('.simplisity_loader').hide();
                 }
             });
         }
@@ -272,7 +272,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             });
 
             request.fail(function (jqXHR, textStatus) {
-                jQuery('#simplisity_loader').hide();
+                jQuery('.simplisity_loader').hide();
             });
 
         }
@@ -313,7 +313,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
 
             var sshowloader = jQuery(element).attr("s-showloader");
             if (sshowloader !== 'false') {
-                jQuery('#simplisity_loader').show();
+                jQuery('.simplisity_loader').show();
             }
 
             await simplisity_callBeforeFunction(element);
@@ -384,7 +384,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
             }
             else {
                 jQuery(element).attr('s-stop', '');
-                jQuery('#simplisity_loader').hide();
+                jQuery('.simplisity_loader').hide();
             }
         }
     }
