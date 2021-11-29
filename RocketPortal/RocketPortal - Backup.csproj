@@ -25,21 +25,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="App_LocalResources\SideMenu.Designer.cs">
+    <Compile Update="App_LocalResources\RP.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>SideMenu.resx</DependentUpon>
+      <DependentUpon>RP.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="App_LocalResources\SideMenu.resx">
-      <LastGenOutput>SideMenu.Designer.cs</LastGenOutput>
+      <LastGenOutput>RP.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="App_LocalResources\RP.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>SideMenu.Designer.cs</LastGenOutput>
+      <LastGenOutput>RP.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 
