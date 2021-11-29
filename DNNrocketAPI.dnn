@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="RocketSystem" type="Library" version="1.0.4">
+		<package name="RocketSystem" type="Library" version="1.0.5">
 			<friendlyName>RocketSystem</friendlyName>
 			<description>Rocket System</description>
       <iconFile></iconFile>
@@ -126,6 +126,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
       </license>
       <releaseNotes>
         Assemblies: ToastedMod
+        Installed as part of the RocketSystem Library
       </releaseNotes>
       <dependencies>
         <dependency type="CoreVersion">09.00.00</dependency>
@@ -173,8 +174,6 @@ It also contains the popular RocketMod modules, which is a dynamic content build
       </components>
     </package>
 
-
-
     <package name="RocketPortal" type="Library" version="1.0.0">
       <friendlyName>RocketPortal</friendlyName>
       <description>RocketPortal</description>
@@ -193,6 +192,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
       </license>
       <releaseNotes>
         RocketPortal uses the DNNRocket framework
+        Installed as part of the RocketSystem Library
       </releaseNotes>
 
       <dependencies>
@@ -277,6 +277,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
       </license>
       <releaseNotes>
         RocketAppTheme uses the DNNRocket framework
+        Installed as part of the RocketSystem Library
       </releaseNotes>
 
       <dependencies>
@@ -297,8 +298,6 @@ It also contains the popular RocketMod modules, which is a dynamic content build
 
       </components>
     </package>
-
-
 
   </packages>
 </dotnetnuke>
