@@ -396,12 +396,13 @@ namespace DNNrocketAPI.Components
 
         public static string GetPortalAlias(string lang, int portalid = -1)
         {
+            if (portalid == -1) portalid = PortalSettings.Current.PortalId;
             var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
 
             var portalalias = DefaultPortalAlias(portalid);
             foreach (var pa in padic)
             {
-                if (pa.Value.PortalID == PortalSettings.Current.PortalId)
+                if (pa.Value.PortalID == portalid)
                 {
                     if (lang == pa.Value.CultureCode)
                     {
