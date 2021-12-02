@@ -164,7 +164,7 @@ namespace DNNrocketAPI.Components
 
         public static bool IsImageFile(string strExtension)
         {
-            return  strExtension.ToLower() == ".webp" | strExtension.ToLower() == ".jpg" | strExtension.ToLower() == ".jpeg" | strExtension.ToLower() == ".gif" | strExtension.ToLower() == ".png" | strExtension.ToLower() == ".tiff" | strExtension.ToLower() == ".bmp";
+            return  strExtension.ToLower() == ".webp" | strExtension.ToLower() == ".jpg" | strExtension.ToLower() == ".jpeg" | strExtension.ToLower() == ".gif" | strExtension.ToLower() == ".png" | strExtension.ToLower() == ".tiff" | strExtension.ToLower() == ".bmp" | strExtension.ToLower() == ".jfif";
         }
 
         /// <summary>
