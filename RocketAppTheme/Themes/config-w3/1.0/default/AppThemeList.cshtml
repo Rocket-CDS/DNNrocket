@@ -13,12 +13,12 @@
     var rocketAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
 }
 
-@RenderLanguageSelector("rocketapptheme_getlist", "", rocketAppTheme, Model)
-
 <!-- Use RP_admin.js from RocketPortal project, so we can use templates in both systems -->
 <script src="/DesktopModules/DNNrocket/RocketPortal/Themes/config-w3/1.0/js/RP_Admin.js"></script>
 
-<div class="">
+@RenderLanguageSelector("rocketapptheme_getlist", "", rocketAppTheme, Model)
+
+<div id="appthemelist" class="w3-padding">
 
     <div class="w3-bar searchdata">
         <div class="w3-bar-item w3-right " style=''>

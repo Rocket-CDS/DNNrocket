@@ -86,7 +86,7 @@
 
             <div class="w3-container w3-margin-top">
 
-                <div class="w3-theme">
+                <div class=" w3-margin-bottom w3-border-bottom">
                     <div class="w3-bar-item w3-button tablink tabTemplates" onclick="openDataTab('tabTemplates','Templates')">@ResourceKey("AppThemes.templates")</div>
 
                     @if (PortalUtils.GetPortalId() == 0)
@@ -587,11 +587,11 @@
         }
 
         $('.tablink').each(function () {
-            $(this).removeClass('w3-theme-d5');
+            $(this).removeClass('w3-theme-action');
         });
 
         document.getElementById(tabName).style.display = "block";
-        $('.' + target).addClass('w3-theme-d5');
+        $('.' + target).addClass('w3-theme-action');
         simplisity_setCookieValue('tabName', tabName);
     }
 
