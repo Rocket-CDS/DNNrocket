@@ -490,6 +490,21 @@ namespace Simplisity
 
         #endregion
 
+        #region "security token"
+
+        /// <summary>
+        /// This token is used to place a siteKey onto the return template.
+        /// This key can then be checked by the client module to confirm a valid template has been returned.
+        /// </summary>
+        /// <param name="sessionParams"></param>
+        /// <returns></returns>
+        public IEncodedString SecuritySiteKey(SessionParams sessionParams)
+        {
+            var strOut = "<i style='display:none;'>" + sessionParams.SiteKey + "</i>";
+            return new RawString(strOut);
+        }
+
+        #endregion
 
         #region functions
 
