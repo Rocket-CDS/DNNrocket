@@ -139,8 +139,12 @@ namespace Rocket.AppThemes.Components
                     if (dirName != "")
                     {
                         var rDir = downloadFolderMapPath.TrimEnd('\\') + "\\" + dirName;
-                        if (Directory.Exists(rDir)) Directory.Delete(rDir, true);
-                        Directory.Move(d2, rDir);
+                        var gitFolder = rDir + "\\.git";
+                        if (!Directory.Exists(gitFolder)) // if we have a git repo, do not download. (Dev Site)
+                        {
+                            if (Directory.Exists(rDir)) Directory.Delete(rDir, true);
+                            Directory.Move(d2, rDir);
+                        }
                     }
                 }
             }
