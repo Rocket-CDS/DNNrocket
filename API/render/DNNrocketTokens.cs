@@ -172,14 +172,18 @@ namespace DNNrocketAPI.render
         }
         public IEncodedString RenderTemplate(string razorTemplate, SimplisityRazor model, bool debugMode = false)
         {
-            var strOut = RenderRazorUtils.RazorRender(model, razorTemplate, debugMode);
+            var strOut = "";
+            var pr = RenderRazorUtils.RazorProcess(model, razorTemplate, debugMode);
+            strOut = pr.RenderedText;
             return new RawString(strOut);
         }
         [Obsolete("Use RenderTemplate(string razorTemplateName, AppThemeLimpet appTheme, SimplisityRazor model, bool cacheOff = false) instead")]
         public IEncodedString RenderTemplate(string razorTemplateName, string templateControlRelPath, string themeFolder, SimplisityRazor model, string versionFolder = "1.0", bool debugMode = false)
         {
             var razorTempl = RenderRazorUtils.GetSystemRazorTemplate("",razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), versionFolder, debugMode);
-            var strOut = RenderRazorUtils.RazorRender(model, razorTempl, debugMode);
+            var strOut = "";
+            var pr = RenderRazorUtils.RazorProcess(model, razorTempl, debugMode);
+            strOut = pr.RenderedText;
             return new RawString(strOut);
         }
         public IEncodedString RenderXml(SimplisityInfo info)
@@ -187,7 +191,9 @@ namespace DNNrocketAPI.render
             var appTheme = new AppThemeDNNrocketLimpet("api");
             var razorTempl = appTheme.GetTemplate("XmlModelDisplay.cshtml");
             var nbRazor = new SimplisityRazor(info);
-            var strOut = RenderRazorUtils.RazorRender(nbRazor, razorTempl, true);
+            var strOut = "";
+            var pr = RenderRazorUtils.RazorProcess(nbRazor, razorTempl, true);
+            strOut = pr.RenderedText;
             return new RawString(strOut);
         }
         [Obsolete("Use RenderTemplate(string razorTemplateName, AppThemeLimpet appTheme, SimplisityRazor model, bool cacheOff = false) instead")]

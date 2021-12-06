@@ -29,8 +29,8 @@ namespace DNNrocket.Country
                 {
                     objl.Add(s);
                 }
-                strOut = RenderRazorUtils.RazorList(razorTempl, objl, passSettings);
-
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, objl, new Dictionary<string, object>(), passSettings);
+                strOut = pr.RenderedText;
                 return strOut;
             }
             catch (Exception ex)

@@ -1165,7 +1165,8 @@ namespace DNNrocketAPI.Components
                                 var l = new List<object>();
                                 l.Add(appThemeMod);
                                 var nbRazor = new SimplisityRazor(l, settings);
-                                cacheHead += RenderRazorUtils.RazorRender(nbRazor, activePageHeaderTemplate, false);
+                                var pr = RenderRazorUtils.RazorProcess(nbRazor, activePageHeaderTemplate, false);
+                                if (pr.IsValid) cacheHead += pr.RenderedText;
                             }
                         }
                     }
@@ -1335,7 +1336,9 @@ namespace DNNrocketAPI.Components
 
             var strOut = "<div id='dnnrocket_imageselectwrapper'>";
             var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(systemkey, razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture(), "1.0", true);
-            strOut += RenderRazorUtils.RazorRender(imageModel, razorTempl, true);
+            var pr = RenderRazorUtils.RazorProcess(imageModel, razorTempl, false);
+            if (pr.IsValid) strOut = pr.RenderedText;
+
             strOut += "</div>";
             return strOut;
         }
@@ -1374,7 +1377,8 @@ namespace DNNrocketAPI.Components
 
             var strOut = "<div id='dnnrocket_documentselectwrapper'>";
             var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(systemkey, razorTemplateName, templateControlRelPath, themeFolder, DNNrocketUtils.GetCurrentCulture());
-            strOut += RenderRazorUtils.RazorRender(docModel, razorTempl, false);
+            var pr = RenderRazorUtils.RazorProcess(docModel, razorTempl, false);
+            if (pr.IsValid) strOut += pr.RenderedText;
             strOut += "</div>";
             return strOut;
         }
@@ -1504,7 +1508,7 @@ namespace DNNrocketAPI.Components
                 RetryableAction.Retry5TimesWith2SecondsDelay(() => File.SetLastWriteTime(Globals.ApplicationMapPath + "\\web.config", DateTime.Now), "Touching config file");
                 return true;
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 return false;
             }

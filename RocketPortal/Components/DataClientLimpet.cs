@@ -72,6 +72,7 @@ namespace RocketPortal.Components
         public PortalLimpet ServiceData { set; get; }
         public string UrlWithProtocol { get { return Record.GetXmlProperty("genxml/textbox/url"); } set { Record.SetXmlProperty("genxml/textbox/url", value); } }
         public string UrlApi { get { return Record.GetXmlProperty("genxml/textbox/urlapi"); } set { Record.SetXmlProperty("genxml/textbox/urlapi", value); } }
+        public DateTime LastAccessDate { get { return Record.GetXmlPropertyDate("genxml/remote/lastaccessdate"); } set { Record.SetXmlProperty("genxml/remote/lastaccessdate", value.ToString("O"), TypeCode.DateTime); } }
 
     }
 }

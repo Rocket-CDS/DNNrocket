@@ -57,6 +57,7 @@ namespace DNNrocketAPI.Components
         public string AppThemeViewVersion { get { return Record.GetXmlProperty("genxml/remote/appthemeviewversion"); } set { Record.SetXmlProperty("genxml/remote/appthemeviewversion", value); } }
         public string ModuleName { get { return Record.GetXmlProperty("genxml/remote/modulename"); } set { Record.SetXmlProperty("genxml/remote/modulename", value); } }
         public string DataRef { get { if (Record.GetXmlProperty("genxml/remote/dataref") == "") return ModuleRef; else return Record.GetXmlProperty("genxml/remote/dataref"); } set { Record.SetXmlProperty("genxml/remote/dataref", value); } }
+        public string SiteKey { get { return Record.GetXmlProperty("genxml/remote/sitekey"); } set { Record.SetXmlProperty("genxml/remote/sitekey", value); } }
 
         #endregion
 

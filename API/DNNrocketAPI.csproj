@@ -272,6 +272,7 @@
     <Compile Include="render\DNNrocketTokens.cs" />
     <Compile Include="ApiControllers\RocketController.cs" />
     <Compile Include="ApiControllers\RouteMapper.cs" />
+    <Compile Include="Components\RazorProcessResult.cs" />
     <Compile Include="SqlDataProvider\DataProvider.cs" />
     <Compile Include="SqlDataProvider\DNNrocketController.cs" />
     <Compile Include="SqlDataProvider\SqlDataProvider.cs" />

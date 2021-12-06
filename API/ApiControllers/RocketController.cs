@@ -337,6 +337,9 @@ namespace DNNrocketAPI.ApiControllers
             if (rtnDictInfo.ContainsKey("param")) paramInfo = (SimplisityInfo)rtnDictInfo["param"];
 
             // command action
+            var remoteCache = "false";
+            var statusCode = "00";
+            var errorMsg = "";
             if (rocketInterface.Exists)
             {
 
@@ -367,6 +370,10 @@ namespace DNNrocketAPI.ApiControllers
                     xmlReturn = returnDictionary["outputxml"];
                 }
 
+                if (returnDictionary.ContainsKey("remote-cache")) remoteCache = returnDictionary["remote-cache"].ToString();
+                if (returnDictionary.ContainsKey("razor-statuscode")) statusCode = returnDictionary["razor-statuscode"].ToString();
+                if (returnDictionary.ContainsKey("razor-errormsg")) errorMsg = returnDictionary["razor-errormsg"].ToString();
+
             }
 
             // after Event
@@ -375,18 +382,27 @@ namespace DNNrocketAPI.ApiControllers
             if (returnDictionary.ContainsKey("outputjson")) jsonReturn = returnDictionary["outputjson"];
             if (returnDictionary.ContainsKey("outputxml")) xmlReturn = returnDictionary["outputxml"];
 
-
             #region "return results"
 
+            HttpResponseMessage resp = null;
             if (jsonReturn != null)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, jsonReturn, System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
+                resp = this.Request.CreateResponse(HttpStatusCode.OK, jsonReturn, System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
             }
             if (xmlReturn != null)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, xmlReturn, System.Net.Http.Formatting.XmlMediaTypeFormatter.DefaultMediaType);
+                resp = this.Request.CreateResponse(HttpStatusCode.OK, xmlReturn, System.Net.Http.Formatting.XmlMediaTypeFormatter.DefaultMediaType);
             }
-            return this.Request.CreateResponse(HttpStatusCode.OK, strOut, "text/plain");
+            if (resp == null)
+            {
+                resp = this.Request.CreateResponse(HttpStatusCode.OK, strOut, "text/plain");
+            }
+
+            resp.Headers.Add("remote-cache", remoteCache);
+            resp.Headers.Add("razor-statuscode", statusCode);
+            resp.Headers.Add("razor-errormsg", errorMsg);
+
+            return resp;
 
             #endregion
 
