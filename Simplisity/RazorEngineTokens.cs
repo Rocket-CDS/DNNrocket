@@ -112,7 +112,6 @@ namespace Simplisity
             var id = getIdFromXpath(xpath, row, listname);
 
             // [TODO: add encrypt option.]
-            //var value = encrypted ? NBrightCore.common.Security.Decrypt(PortalController.Instance.GetCurrentPortalSettings().GUID.ToString(), info.GetXmlProperty(xpath)) : info.GetXmlProperty(xpath);
             if (value == "") value = defaultValue;
 
             var typeattr = "type='" + type + "'";

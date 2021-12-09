@@ -17,7 +17,16 @@ namespace DNNrocketAPI.Components
         {
         }
 
+        [Obsolete("Use AppThemeBase(int portalid, string appThemeFolderRel, string versionFolder) instead")]
         public AppThemeBase(string appThemeFolderRel, string versionFolder = "")
+        {
+            Init(-1, appThemeFolderRel, versionFolder);
+        }
+        public AppThemeBase(int portalid, string appThemeFolderRel, string versionFolder = "")
+        {
+            Init(portalid, appThemeFolderRel, versionFolder);
+        }
+        private void Init(int portalid, string appThemeFolderRel, string versionFolder = "")
         {
             AppThemeFolderRel = appThemeFolderRel;
             FileNameList = new Dictionary<string, string>();

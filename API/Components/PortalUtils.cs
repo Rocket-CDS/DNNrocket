@@ -260,7 +260,8 @@ namespace DNNrocketAPI.Components
 
         public static PortalSettings GetCurrentPortalSettings()
         {
-            var rtn = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+            PortalSettings rtn = null;
+            if (HttpContext.Current != null) rtn = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
             if (rtn == null) rtn = PortalSettings.Current;
             if (rtn == null) rtn = GetPortalSettings(0);
             return rtn;

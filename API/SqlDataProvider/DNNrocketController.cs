@@ -594,7 +594,11 @@ namespace DNNrocketAPI
 
             return info;
         }
-
+        [Obsolete("Use GetData(int portalId, string typeCode, int ItemId, string lang, int moduleId, string tableName) instead")]
+        public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int moduleId = -1, string tableName = "DNNrocket")
+        {
+            return GetData(PortalSettings.Current.PortalId, typeCode, ItemId, lang, moduleId,  tableName);
+        }
         /// <summary>
         /// Get SimplisityInfo and return a memory class if not in DB.
         /// </summary>
@@ -604,7 +608,7 @@ namespace DNNrocketAPI
         /// <param name="moduleId"></param>
         /// <param name="tableName"></param>
         /// <returns></returns>
-        public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int moduleId = -1, string tableName = "DNNrocket")
+        public SimplisityInfo GetData(int portalId, string typeCode, int ItemId, string lang, int moduleId = -1, string tableName = "DNNrocket")
         {
             var info = GetInfo(ItemId, lang, tableName);
             if (info != null && info.TypeCode != typeCode) info = null;
@@ -615,7 +619,7 @@ namespace DNNrocketAPI
                 info.GUIDKey = "";
                 info.TypeCode = typeCode;
                 info.ModuleId = moduleId;
-                info.PortalId = PortalSettings.Current.PortalId;
+                info.PortalId = portalId;
                 info.SortOrder = info.ItemID * 100;
 
                 var nbilang = new SimplisityRecord();
@@ -623,7 +627,7 @@ namespace DNNrocketAPI
                 nbilang.TypeCode = typeCode + "LANG";
                 nbilang.Lang = lang;
                 info.ModuleId = moduleId;
-                nbilang.PortalId = PortalSettings.Current.PortalId;
+                nbilang.PortalId = portalId;
 
                 info.SetLangRecord(nbilang);
 
