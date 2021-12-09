@@ -776,6 +776,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <None Include="Themes\config-w3\1.0\css\cyan.css" />
+    <Content Include="Themes\config-w3\1.0\css\black-theme.css" />
     <Content Include="Themes\config-w3\1.0\css\coconutmilk-theme.css" />
     <None Include="Themes\config-w3\1.0\css\green-theme.css" />
     <None Include="Themes\config-w3\1.0\css\grey-theme.css" />
