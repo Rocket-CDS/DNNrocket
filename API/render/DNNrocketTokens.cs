@@ -3,6 +3,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using Newtonsoft.Json.Linq;
 using RazorEngine.Text;
 using Simplisity;
 using System;
@@ -850,6 +851,17 @@ namespace DNNrocketAPI.render
             }
             rtnString += "</ul>";
             return rtnString;
+        }
+
+        public IEncodedString RenderHandleBars(SimplisityInfo info, AppThemeLimpet appTheme, string templateName, string moduleref = "")
+        {
+            var strOut = "";
+            string jsonString = Newtonsoft.Json.JsonConvert.SerializeXmlNode(info.XMLDoc);
+            var template = appTheme.GetTemplate(templateName, moduleref);
+            JObject model = JObject.Parse(jsonString);
+            HandlebarsEngine hbEngine = new HandlebarsEngine();
+            strOut = hbEngine.Execute(template, model);
+            return new RawString(strOut);
         }
 
 

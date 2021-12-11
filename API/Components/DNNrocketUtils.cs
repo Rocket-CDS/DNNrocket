@@ -40,6 +40,8 @@ using DotNetNuke.Services.Scheduling;
 using System.Xml.Serialization;
 using System.Collections.Specialized;
 using DotNetNuke.UI.Skins;
+using Encoding = System.Text.Encoding;
+using System.Web.Hosting;
 
 namespace DNNrocketAPI.Components
 {
@@ -1619,6 +1621,59 @@ namespace DNNrocketAPI.Components
             return -1;
         }
 
+        public static string ProtectEmail(this string email, string subject = "", string visibleText = "")
+        {
+            if (string.IsNullOrEmpty(email)) return "";
+
+            var onload = "";
+
+            var dataAttribs = "data-contact='" + Convert.ToBase64String(Encoding.UTF8.GetBytes(email)) + "'";
+            if (string.IsNullOrEmpty(visibleText))
+            {
+                onload = $"<img src onerror='this.outerHTML = atob(\"{Convert.ToBase64String(Encoding.UTF8.GetBytes(email))}\")'>"; //nice hack to mimic an onload event
+            }
+            var onfocus = "this.href='mailto:'+atob(this.dataset.contact)";
+            if (!string.IsNullOrEmpty(subject))
+            {
+                dataAttribs = dataAttribs + " data-subj='" + Convert.ToBase64String(Encoding.UTF8.GetBytes(subject)) + "'";
+                onfocus = onfocus + "+'?subject=' + atob(this.dataset.subj || '')";
+            }
+            var result = $"<a href='#' {dataAttribs} onfocus=\"{onfocus}\">{visibleText}{onload}</a>";
+            return result;
+        }
+        public static string TruncateWords(this string text, int maxCharacters, string trailingText)
+        {
+            if (string.IsNullOrEmpty(text) || maxCharacters <= 0 || text.Length <= maxCharacters)
+                return text;
+
+            // trunctate the text, then remove the partial word at the end
+            return Regex.Replace(text.Truncate(maxCharacters), @"\s+[^\s]+$", string.Empty, RegexOptions.IgnoreCase | RegexOptions.Compiled) + trailingText;
+        }
+        /// <summary>
+        /// Truncates text to a number of characters
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="maxCharacters"></param>
+        /// <returns></returns>
+        public static string Truncate(this string text, int maxCharacters)
+        {
+            return text.Truncate(maxCharacters, null);
+        }
+
+        /// <summary>
+        /// Truncates text to a number of characters and adds trailing text, i.e. elipses, to the end
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="maxCharacters"></param>
+        /// <param name="trailingText"></param>
+        /// <returns></returns>
+        public static string Truncate(this string text, int maxCharacters, string trailingText)
+        {
+            if (string.IsNullOrEmpty(text) || maxCharacters <= 0 || text.Length <= maxCharacters)
+                return text;
+            else
+                return text.Substring(0, maxCharacters) + trailingText;
+        }
 
 
         #region "Portal - obsolete"

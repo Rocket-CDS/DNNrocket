@@ -72,6 +72,9 @@
       <HintPath>..\packages\Dnn.Platform.9.4.0\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Handlebars">
+      <HintPath>_external\Handlebars.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dnn.Platform.9.4.0\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
       <Private>True</Private>
@@ -207,9 +210,11 @@
     <Compile Include="Components\ArticleImage.cs" />
     <Compile Include="Components\BackUpModuleTemplates.cs" />
     <Compile Include="Components\CacheUtilsDNN.cs" />
+    <Compile Include="Components\DynamicUtils.cs" />
     <Compile Include="Components\FastReplacer.cs" />
     <Compile Include="Components\FastReplacerSnippet.cs" />
     <Compile Include="Components\DocUtils.cs" />
+    <Compile Include="Components\HandlebarsEngine.cs" />
     <Compile Include="Components\LogUtils.cs" />
     <Compile Include="Components\MetaSEO.cs" />
     <Compile Include="Components\RemoteModule.cs" />
