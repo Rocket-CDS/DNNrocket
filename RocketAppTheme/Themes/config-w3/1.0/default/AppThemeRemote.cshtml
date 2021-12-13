@@ -1,0 +1,15 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+
+@{
+    var systemAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
+    Model.SetSetting("remoteedit", "true");
+}
+
+
+
+
+@RenderLanguageSelector("rocketapptheme_getremote", "", systemAppTheme, Model)
+
+@RenderTemplate("AppThemeFields.cshtml", systemAppTheme, Model, true);
+

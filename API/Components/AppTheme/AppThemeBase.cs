@@ -236,19 +236,26 @@ namespace DNNrocketAPI.Components
         {
             if (FileNameList.ContainsKey(filename))
             {
-                var fileMapPath = FileNameList[filename];
-                var formHtml = GeneralUtils.DeCode(editorcode);
-                if (PortalUtils.GetPortalId() != 0)
+                // NOTE: ONLY SUPERUSER CAN CHANGE RAZOR TEMPLATES.
+                // Razor templates are executed on the host machine and can hack the database of the install, across ALL portals. 
+                var allowedit = true;
+                if (Path.GetExtension(filename).ToLower() == ".cshtml" && !UserUtils.IsSuperUser()) allowedit = false;
+                if (allowedit)
                 {
-                    var fileMP = "";
-                    if (moduleref != "")
-                        fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
-                    else
-                        fileMP = GetPortalFileMapPath(fileMapPath);
-                    if (fileMP != "") fileMapPath = fileMP;
+                    var fileMapPath = FileNameList[filename];
+                    var formHtml = GeneralUtils.DeCode(editorcode);
+                    if (PortalUtils.GetPortalId() != 0)
+                    {
+                        var fileMP = "";
+                        if (moduleref != "")
+                            fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
+                        else
+                            fileMP = GetPortalFileMapPath(fileMapPath);
+                        if (fileMP != "") fileMapPath = fileMP;
+                    }
+                    new FileInfo(fileMapPath).Directory.Create();
+                    FileUtils.SaveFile(fileMapPath, formHtml);
                 }
-                new FileInfo(fileMapPath).Directory.Create();
-                FileUtils.SaveFile(fileMapPath, formHtml);
             }
         }
         public void DeleteFile(string filename, string moduleref)
@@ -279,7 +286,7 @@ namespace DNNrocketAPI.Components
         public bool IsModuleLevel(string fileName, string moduleref)
         {
             if (String.IsNullOrEmpty(moduleref)) return false;
-            if (PortalFileNameList.ContainsKey(moduleref + "_" + fileName.ToLower())) return true;
+            if (PortalFileNameList.ContainsKey(moduleref.ToLower() + "_" + fileName.ToLower())) return true;
             return false;
         }
         public bool IsPortalLevel(string fileName)
@@ -287,9 +294,15 @@ namespace DNNrocketAPI.Components
             if (PortalFileNameList.ContainsKey(fileName.ToLower())) return true;
             return false;
         }
-        private string GetModuleFileMapPath(string fileMapPath, string moduleref)
+        private string GetModuleFileMapPath(string filename, string moduleref)
         {
-            return Path.GetDirectoryName(fileMapPath).TrimEnd('\\') + "\\" + moduleref  + "_" + Path.GetFileName(fileMapPath);
+            var fn = Path.GetFileName(filename);
+            var ext = Path.GetExtension(filename);
+            var subfolder = "default";
+            if (ext == ".css") subfolder = "css";
+            if (ext == ".js") subfolder = "js";
+            if (ext == ".resx") subfolder = "resx";
+            return PortalFileDirectoryMapPath + subfolder + "\\" + moduleref + "_" + fn;
         }
         private string GetPortalFileMapPath(string filename)
         {
@@ -463,7 +476,7 @@ namespace DNNrocketAPI.Components
             var rtnDict = new Dictionary<string, string>();
             foreach (var t in FileNameList)
             {
-                if (t.Key.ToLower().EndsWith(".cshtml")) rtnDict.Add(t.Key, t.Value);
+                if (t.Key.ToLower().EndsWith(".cshtml") || t.Key.ToLower().EndsWith(".hbs")) rtnDict.Add(t.Key, t.Value);
             }
             return rtnDict;
         }

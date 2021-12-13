@@ -1,6 +1,7 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
 using Rocket.AppThemes.Components;
+using RocketPortal.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -19,23 +20,25 @@ namespace DNNrocket.AppThemes
         private string _editLang;
         private SystemLimpet _systemData;
         private Dictionary<string, string> _passSettings;        
-        private string _appThemeSystemKey;
         private string _appThemeFolder;
         private string _appVersionFolder;
         private AppThemeLimpet _appTheme;
         private AppThemeDNNrocketLimpet _appThemeSystem;
         private const string _systemKey = "rocketapptheme";
         private SessionParams _sessionParams;
+        private PortalLimpet _portalData;
+        private string _moduleref;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = "ERROR - Must be SuperUser"; // return ERROR if not matching commands.
-            // NOTE: ONLY SUPERUSER CAN CHANGE RAZOR TEMPLATES.
-            // Razor templates are executed on the host machine and can hack the database of the install, across ALL portals. 
-            if (UserUtils.IsSuperUser())
+
+            paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
+
+            var sk = _paramInfo.GetXmlProperty("genxml/remote/securitykeyedit");
+            if (UserUtils.IsSuperUser() || _portalData.SecurityKeyEdit == sk)
             {
 
-                paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
 
                 AssignEditLang();
 
@@ -57,17 +60,13 @@ namespace DNNrocket.AppThemes
                         break;
                     default:
 
-                        // actions on selected AppTheme
-                        _appThemeSystemKey = _paramInfo.GetXmlProperty("genxml/hidden/appthemesystemkey");
-                        _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
-                        _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
-
-                        _appTheme = new AppThemeLimpet(_appThemeFolder, _appVersionFolder);
-
                         switch (paramCmd)
-                        {
+                        {                            
+                            case "rocketapptheme_getremote":
+                                strOut = GetDetail("AppThemeRemote.cshtml");
+                                break;
                             case "rocketapptheme_getdetail":
-                                strOut = GetDetail();
+                                strOut = GetDetail("AppThemeDetails.cshtml");
                                 break;
                             case "rocketapptheme_addimage":
                                 strOut = AddListImage();
@@ -163,6 +162,7 @@ namespace DNNrocket.AppThemes
             _appThemeSystem = new AppThemeDNNrocketLimpet(_systemData.SystemKey);
             _rocketInterface = new RocketInterface(interfaceInfo);
             _sessionParams = new SessionParams(_paramInfo);
+            _portalData = new PortalLimpet(PortalUtils.GetPortalId());
 
             // Assign Langauge
             DNNrocketUtils.SetCurrentCulture();
@@ -170,6 +170,30 @@ namespace DNNrocket.AppThemes
             if (_sessionParams.CultureCodeEdit == "") _sessionParams.CultureCodeEdit = DNNrocketUtils.GetEditCulture();
             DNNrocketUtils.SetCurrentCulture(_sessionParams.CultureCode);
             DNNrocketUtils.SetEditCulture(_sessionParams.CultureCodeEdit);
+
+
+            // actions on selected AppTheme
+            _moduleref = _paramInfo.GetXmlProperty("genxml/remote/moduleref");
+            if (_moduleref != "")
+            {
+                // remote apptheme edit
+                var remoteModule = new RemoteModule(PortalUtils.GetCurrentPortalId(), _moduleref);
+                _appThemeFolder = remoteModule.AppThemeViewFolder;
+                _appVersionFolder = remoteModule.AppThemeViewVersion;
+                if (_appThemeFolder == "")
+                {
+                    _appThemeFolder = remoteModule.AppThemeFolder;
+                    _appVersionFolder = remoteModule.AppThemeVersion;
+                }
+            }
+            else
+            {
+                _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
+                _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
+            }
+
+            _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder);
+
 
             return paramCmd;
         }
@@ -281,7 +305,7 @@ namespace DNNrocket.AppThemes
                 var newAppThemeName = appthemename;
                 if (appthemeprefix != "") newAppThemeName = appthemeprefix + "_" + newAppThemeName;
 
-                var appSystemThemeFolderRel = "/DesktopModules/RocketThemes/" + _appThemeSystemKey;
+                var appSystemThemeFolderRel = "/DesktopModules/RocketThemes/";
                 var appThemeFolderRel = appSystemThemeFolderRel + "/" + newAppThemeName;
                 var appThemeFolderMapPath = DNNrocketUtils.MapPath(appThemeFolderRel);
 
@@ -291,7 +315,7 @@ namespace DNNrocket.AppThemes
                 }
 
                 // crearte new _appTheme.
-                var appTheme = new AppThemeLimpet(newAppThemeName, "1.0");
+                var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), newAppThemeName, "1.0");
 
                 ClearServerCacheLists();
 
@@ -381,11 +405,11 @@ namespace DNNrocket.AppThemes
         }
 
 
-        public String GetDetail()
+        public String GetDetail(string templateName = "AppThemeDetails.cshtml")
         {
             try
             {
-                return GetEditTemplate(_appTheme);
+                return GetEditTemplate(_appTheme, templateName);
             }
             catch (Exception ex)
             {
@@ -545,6 +569,7 @@ namespace DNNrocket.AppThemes
             try
             {
                 var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+                if (_moduleref != "") fname = _moduleref + "_" + fname;
                 var jsonString = GeneralUtils.EnCode(_appTheme.GetTemplate(fname));
                 _passSettings.Add("filename", fname);
                 _passSettings.Add("jsonFileData", jsonString);
@@ -570,9 +595,10 @@ namespace DNNrocket.AppThemes
         {
             var editorcode = _postInfo.GetXmlProperty("genxml/hidden/editorcodesave");
             var filename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
-            _appTheme.SaveEditor(filename, editorcode);
+            var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
+            _appTheme.SaveEditor(filename, editorcode, moduleref);
             CacheFileUtils.ClearAllCache();
-            _appTheme = new AppThemeLimpet(_appTheme.AppThemeFolder, _appTheme.AppVersionFolder);
+            _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appTheme.AppThemeFolder, _appTheme.AppVersionFolder);
             return GetEditorDetail();
         }
 
@@ -640,7 +666,7 @@ namespace DNNrocket.AppThemes
                 var templateFileData = "";
                 if (File.Exists(fileMapPath)) templateFileData = FileUtils.ReadFile(fileMapPath);
                 FileUtils.SaveFile(fileMapPath, templateFileData);
-                _appTheme = new AppThemeLimpet(_appThemeFolder, _appTheme.AppVersionFolder);
+                _appTheme = new AppThemeLimpet(_portalData.PortalId, _appThemeFolder, _appTheme.AppVersionFolder);
             }
         }
         private void AssignEditLang()
@@ -648,10 +674,11 @@ namespace DNNrocket.AppThemes
             var nextLang = _paramInfo.GetXmlProperty("genxml/hidden/nextlang");
             if (nextLang != "") _editLang = DNNrocketUtils.SetEditCulture(nextLang);
         }
-        private string GetEditTemplate(AppThemeLimpet appTheme)
+        private string GetEditTemplate(AppThemeLimpet appTheme, string templateName)
         {
-            var razorTempl = _appThemeSystem.GetTemplate("AppThemeDetails.cshtml");
-            return RenderRazorUtils.RazorDetail(razorTempl, appTheme, _passSettings, new SessionParams(_paramInfo), true);
+            var razorTempl = _appThemeSystem.GetTemplate(templateName);
+            var rtn = RenderRazorUtils.RazorProcessData(razorTempl, appTheme, null, _passSettings, new SessionParams(_paramInfo), true);
+            return rtn.RenderedText;
         }
 
 

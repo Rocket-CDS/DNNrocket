@@ -4,6 +4,7 @@
 @using Rocket.AppThemes.Components;
 @using System.IO;
 @using DNNrocketAPI.Components;
+@using RocketPortal.Components;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/images/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
@@ -15,26 +16,33 @@
     var sessionParams = Model.SessionParamsData;
     var disableDelete = true;
     var appThemeSystem = new AppThemeDNNrocketLimpet("rocketapptheme");
+    var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
+
+    var backcmd = "rocketapptheme_getdetail";
+    if (sessionParams.Get("moduleref") != "")
+    {
+        backcmd = "rocketapptheme_getremote";
+    }
+
 }
 
-
 <!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-<script src="/DesktopModules/DNNrocket/CodeMirror/codemirror.js"></script>
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/CodeMirror/night.css" />
-<link rel="stylesheet" href="/DesktopModules/DNNrocket/CodeMirror/codemirror.css" />
-<script src="/DesktopModules/DNNrocket/CodeMirror/mode/javascript/javascript.js"></script>
-<script src="/DesktopModules/DNNrocket/CodeMirror/mode/xml/xml.js"></script>
-<script src="/DesktopModules/DNNrocket/CodeMirror/mode/htmlmixed/htmlmixed.js"></script>
-<script src="/DesktopModules/DNNrocket/CodeMirror/mode/css/css.js"></script>
+<script src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/codemirror.js"></script>
+<link rel="stylesheet" href="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/night.css" />
+<link rel="stylesheet" href="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/codemirror.css" />
+<script src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/mode/javascript/javascript.js"></script>
+<script src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/mode/xml/xml.js"></script>
+<script src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/mode/htmlmixed/htmlmixed.js"></script>
+<script src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/mode/css/css.js"></script>
 <!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 @RenderLanguageSelector("rocketapptheme_getlist", "", appThemeSystem, Model)
 
 <div class="w3-row w3-padding">
     <div class="w3-bar w3-margin-bottom">
-        <button class="w3-button w3-bar-item  simplisity_click" s-cmd="rocketapptheme_getdetail" s-fields='{"filename":"@sessionParams.Get("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' >@ButtonIcon(ButtonTypes.back)</button>
-        <div class="w3-button w3-bar-item w3-theme-action savebutton simplisity_click" s-before="saveeditordata" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-fields='{"filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
-        @if (sessionParams.Get("moduleref") != "")
+        <button class="w3-button w3-bar-item  simplisity_click" s-cmd="@(backcmd)" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonIcon(ButtonTypes.back)</button>
+        <div class="w3-button w3-bar-item w3-theme-action savebutton simplisity_click" s-before="saveeditordata" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
+        @if (sessionParams.ModuleRef != "")
         {
             disableDelete = false;
             <span class=" w3-bar-item w3-margin-left w3-text-pale-blue">[M]</span>
@@ -64,7 +72,7 @@
 
     <input id="editorsavereturn" type="hidden" value="" />
 
-    <div id="editorwrapper" class="w3-row " style="height:800px;">
+    <div id="editorwrapper" class="w3-row " style="height:800px;display:none;">
 
         <textarea id="razoreditor">@appTheme.GetTemplate(Model.GetSetting("filename"))</textarea>
 
@@ -78,13 +86,21 @@
 
     $(document).ready(function () {
 
-        myCodeMirror = CodeMirror.fromTextArea(document.getElementById("razoreditor"), {
-            mode: '@Model.GetSetting("editormode")',
-            theme: "night"
-        });
+        setTimeout(() => {
+            // pause to allow codemirror.js to load.
+            $('#editorwrapper').show();
 
-        myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
-        $('#razoreditor').focus();
+            myCodeMirror = CodeMirror.fromTextArea(document.getElementById("razoreditor"), {
+                mode: '@Model.GetSetting("editormode")',
+                theme: "night"
+            });
+
+            myCodeMirror.setSize($('#editorwrapper').width(), $('#editorwrapper').height());
+            $('#razoreditor').focus();
+
+
+        }, 500);
+
 
     });
 
