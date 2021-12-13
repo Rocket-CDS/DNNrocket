@@ -52,7 +52,8 @@ namespace DNNrocketAPI.Components
                     RegisterRawHelper(hbs);
                     RegisterContainsHelper(hbs);
                     RegisterUrlHelper(hbs);
-                    _template = hbs.Compile(source);
+                    RegisterDisplayHelper(hbs);
+                _template = hbs.Compile(source);
                 }
                 catch (Exception ex)
                 {
@@ -104,37 +105,38 @@ namespace DNNrocketAPI.Components
             return defaultValue;
             }
 
-            private static void RegisterHelpers(IHandlebars hbs)
-            {
-                RegisterDivideHelper(hbs);
-                RegisterMultiplyHelper(hbs);
-                RegisterAdditionHelper(hbs);
-                RegisterSubstractionHelper(hbs);
-                RegisterEqualHelper(hbs);
-                RegisterOddEvenHelper(hbs);
-                RegisterFormatNumberHelper(hbs);
-                RegisterFormatDateTimeHelper(hbs);
-                RegisterImageUrlHelper(hbs);
-                RegisterEmailHelper(hbs);
-                RegisterArrayIndexHelper(hbs);
-                RegisterArrayTranslateHelper(hbs);
-                RegisterArrayLookupHelper(hbs);
-                RegisterIfAndHelper(hbs);
-                RegisterIfOrHelper(hbs);
-                RegisterIfInHelper(hbs);
-                RegisterEachPublishedHelper(hbs);
-                RegisterConvertHtmlToTextHelper(hbs);
-                RegisterConvertToJsonHelper(hbs);
-                RegisterTruncateWordsHelper(hbs);
-                RegisterReplaceHelper(hbs);
-                RegisterReplaceNewlineHelper(hbs);
-                RegisterTemplateHelper(hbs);
-                RegisterRawHelper(hbs);
-                RegisterContainsHelper(hbs);
-                RegisterUrlHelper(hbs);
-            }
+        private static void RegisterHelpers(IHandlebars hbs)
+        {
+            RegisterDivideHelper(hbs);
+            RegisterMultiplyHelper(hbs);
+            RegisterAdditionHelper(hbs);
+            RegisterSubstractionHelper(hbs);
+            RegisterEqualHelper(hbs);
+            RegisterOddEvenHelper(hbs);
+            RegisterFormatNumberHelper(hbs);
+            RegisterFormatDateTimeHelper(hbs);
+            RegisterImageUrlHelper(hbs);
+            RegisterEmailHelper(hbs);
+            RegisterArrayIndexHelper(hbs);
+            RegisterArrayTranslateHelper(hbs);
+            RegisterArrayLookupHelper(hbs);
+            RegisterIfAndHelper(hbs);
+            RegisterIfOrHelper(hbs);
+            RegisterIfInHelper(hbs);
+            RegisterEachPublishedHelper(hbs);
+            RegisterConvertHtmlToTextHelper(hbs);
+            RegisterConvertToJsonHelper(hbs);
+            RegisterTruncateWordsHelper(hbs);
+            RegisterReplaceHelper(hbs);
+            RegisterReplaceNewlineHelper(hbs);
+            RegisterTemplateHelper(hbs);
+            RegisterRawHelper(hbs);
+            RegisterContainsHelper(hbs);
+            RegisterUrlHelper(hbs);
+            RegisterDisplayHelper(hbs);
+        }
 
-            private static void RegisterTruncateWordsHelper(HandlebarsDotNet.IHandlebars hbs)
+        private static void RegisterTruncateWordsHelper(HandlebarsDotNet.IHandlebars hbs)
             {
                 hbs.RegisterHelper("truncateWords", (writer, context, parameters) =>
                 {
@@ -506,8 +508,27 @@ namespace DNNrocketAPI.Components
                 });
 
             }
+        private static void RegisterDisplayHelper(HandlebarsDotNet.IHandlebars hbs)
+        {
+            hbs.RegisterHelper("displayData", (writer, context, parameters) =>
+            {
+                try
+                {
+                    string res = "";
+                    res = parameters[0].ToString();
+                    if (res.StartsWith("{")) res = parameters[1].ToString();
+                    writer.WriteSafeString(res);
+                }
+                catch (Exception)
+                {
+                    writer.WriteSafeString("");
+                }
+            });
 
-            private void RegisterRegisterScriptHelper(HandlebarsDotNet.IHandlebars hbs, Page page, string sourceFolder)
+        }
+
+
+        private void RegisterRegisterScriptHelper(HandlebarsDotNet.IHandlebars hbs, Page page, string sourceFolder)
             {
                 //hbs.RegisterHelper("registerscript", (writer, context, parameters) =>
                 //{

@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace DNNrocketAPI.render
 {
@@ -856,7 +857,14 @@ namespace DNNrocketAPI.render
         public IEncodedString RenderHandleBars(SimplisityInfo info, AppThemeLimpet appTheme, string templateName, string moduleref = "")
         {
             var strOut = "";
-            string jsonString = Newtonsoft.Json.JsonConvert.SerializeXmlNode(info.XMLDoc);
+            var doc = XElement.Parse(info.XMLData);
+            var cdata = doc.DescendantNodes().OfType<XCData>().ToList();
+            foreach (var cd in cdata)
+            {
+                cd.Parent.Add(cd.Value);
+                cd.Remove();
+            }
+            string jsonString = Newtonsoft.Json.JsonConvert.SerializeXNode(doc, Newtonsoft.Json.Formatting.Indented);
             var template = appTheme.GetTemplate(templateName, moduleref);
             JObject model = JObject.Parse(jsonString);
             HandlebarsEngine hbEngine = new HandlebarsEngine();
