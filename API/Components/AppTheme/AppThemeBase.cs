@@ -222,10 +222,8 @@ namespace DNNrocketAPI.Components
                 if (PortalUtils.GetPortalId() != 0)
                 {
                     var fileMP = "";
-                    if (moduleref != "")
-                        fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
-                    else
-                        fileMP = GetPortalFileMapPath(fileMapPath);
+                    if (moduleref != "") fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
+                    if (!File.Exists(fileMP)) fileMP = GetPortalFileMapPath(fileMapPath);
                     if (File.Exists(fileMP)) fileMapPath = fileMP;
                 }
                 return FileUtils.ReadFile(fileMapPath);
@@ -267,7 +265,7 @@ namespace DNNrocketAPI.Components
             if (PortalUtils.GetPortalId() != 0)
             {
                 var fileMP = "";
-                if (moduleref != "")
+                if (moduleref != "") 
                     fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
                 else
                     fileMP = GetPortalFileMapPath(fileMapPath);

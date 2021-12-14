@@ -1,15 +1,17 @@
 ﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI.Components;
+@using RocketPortal.Components;
 
 @{
-    var systemAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
+    var appThemeSystem = new AppThemeDNNrocketLimpet("rocketapptheme");
+    var sessionParams = Model.SessionParamsData;
     Model.SetSetting("remoteedit", "true");
+    var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
 }
 
+<link rel="stylesheet" href="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/@(portalData.ColorAdminTheme)">
 
+@RenderLanguageSelector("rocketapptheme_getremote", "{\"moduleref\":\"" + sessionParams.ModuleRef + "\"}", appThemeSystem, Model)
 
-
-@RenderLanguageSelector("rocketapptheme_getremote", "", systemAppTheme, Model)
-
-@RenderTemplate("AppThemeFields.cshtml", systemAppTheme, Model, true);
+@RenderTemplate("AppThemeFields.cshtml", appThemeSystem, Model, true)
 

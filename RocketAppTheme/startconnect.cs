@@ -205,7 +205,7 @@ namespace DNNrocket.AppThemes
             {
                 var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
                 _appTheme.DeleteFile(filename, moduleref);
-                _appTheme = new AppThemeLimpet(_appThemeFolder, _appVersionFolder);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder);
             }
             return GetDetail();
         }
@@ -224,7 +224,7 @@ namespace DNNrocket.AppThemes
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 
-                _appTheme = new AppThemeLimpet(_appThemeFolder, _appVersionFolder);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder);
             }
             return GetDetail();
         }
@@ -336,7 +336,8 @@ namespace DNNrocket.AppThemes
                 var dataObjects = new Dictionary<string, object>();
                 dataObjects.Add("resxData", resxData);
                 var razorTempl = _appThemeSystem.GetTemplate("ResxPopUp.cshtml");
-                return RenderRazorUtils.RazorObjectRender(razorTempl, _appTheme, dataObjects, _passSettings, null, true);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _appTheme, dataObjects, _passSettings, _sessionParams, true);
+                return pr.RenderedText;
             }
             catch (Exception ex)
             {
@@ -423,7 +424,8 @@ namespace DNNrocket.AppThemes
                 var appThemeDataList = new AppThemeDataList();
                 var razorTempl = _appThemeSystem.GetTemplate("appthemelist.cshtml");
                 var passSettings = _postInfo.ToDictionary();
-                return RenderRazorUtils.RazorDetail(razorTempl, appThemeDataList, passSettings, _sessionParams, true);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, appThemeDataList, null, passSettings, _sessionParams, true);
+                return pr.RenderedText;
             }
             catch (Exception ex)
             {
@@ -439,7 +441,8 @@ namespace DNNrocket.AppThemes
                 var razorTempl = _appThemeSystem.GetTemplate("AppStoreList.cshtml");
                 var passSettings = _postInfo.ToDictionary();
 
-                return RenderRazorUtils.RazorDetail(razorTempl, appThemeDataList, passSettings, null, true);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, appThemeDataList, null, _passSettings, _sessionParams, true);
+                return pr.RenderedText;
             }
             catch (Exception ex)
             {
@@ -468,7 +471,7 @@ namespace DNNrocket.AppThemes
             if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
             var appVersionFolder = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder"));
             if (appVersionFolder == "") appVersionFolder = _appVersionFolder;
-            var appTheme = new AppThemeLimpet(appThemeFolder, appVersionFolder);
+            var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), appThemeFolder, appVersionFolder);
 
             var exportZipMapPath = appTheme.ExportZipFile();
 
@@ -554,7 +557,7 @@ namespace DNNrocket.AppThemes
                 var newAppThemeDirName = _appTheme.AppThemeFolderMapPath.TrimEnd('\\') + "\\..\\" + newAppThemeName;
 
                 _appTheme.Copy(newAppThemeDirName);
-                _appTheme = new AppThemeLimpet(newAppThemeName, _appTheme.LatestVersionFolder);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), newAppThemeName, _appTheme.LatestVersionFolder);
                 ClearServerCacheLists();
                 return GetDetail();
             }
@@ -569,8 +572,7 @@ namespace DNNrocket.AppThemes
             try
             {
                 var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
-                if (_moduleref != "") fname = _moduleref + "_" + fname;
-                var jsonString = GeneralUtils.EnCode(_appTheme.GetTemplate(fname));
+                var jsonString = GeneralUtils.EnCode(_appTheme.GetTemplate(fname, _moduleref));
                 _passSettings.Add("filename", fname);
                 _passSettings.Add("jsonFileData", jsonString);
 
@@ -583,7 +585,8 @@ namespace DNNrocket.AppThemes
                 _passSettings.Add("interfacekey", _rocketInterface.InterfaceKey);
 
                 var razorTempl = _appThemeSystem.GetTemplate("EditorPopUp.cshtml");
-                return RenderRazorUtils.RazorObjectRender(razorTempl, _appTheme, null, _passSettings, new SessionParams(_paramInfo), true);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _appTheme, null, _passSettings, _sessionParams, true);
+                return pr.RenderedText;
             }
             catch (Exception ex)
             {
@@ -626,7 +629,7 @@ namespace DNNrocket.AppThemes
                 {
                     if (File.Exists(fileMapPath)) resxFileData = FileUtils.ReadFile(fileMapPath);
                     FileUtils.SaveFile(fileMapPath, resxFileData);
-                    _appTheme = new AppThemeLimpet(_appThemeFolder, _appTheme.AppVersionFolder);
+                    _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder);
                 }
             }
         }
@@ -640,7 +643,7 @@ namespace DNNrocket.AppThemes
                 var cssFileData = "";
                 if (File.Exists(fileMapPath)) cssFileData = FileUtils.ReadFile(fileMapPath);
                 FileUtils.SaveFile(fileMapPath, cssFileData);
-                _appTheme = new AppThemeLimpet(_appThemeFolder, _appTheme.AppVersionFolder);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder);
             }
         }
         private void AddJsFile()
@@ -653,7 +656,7 @@ namespace DNNrocket.AppThemes
                 var jsFileData = "";
                 if (File.Exists(fileMapPath)) jsFileData = FileUtils.ReadFile(fileMapPath);
                 FileUtils.SaveFile(fileMapPath, jsFileData);
-                _appTheme = new AppThemeLimpet(_appThemeFolder, _appTheme.AppVersionFolder);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder);
             }
         }
         private void AddTemplateFile()
