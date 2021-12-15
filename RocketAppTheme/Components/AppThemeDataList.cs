@@ -45,17 +45,23 @@ namespace Rocket.AppThemes.Components
 
         public void PopulateAppThemeList()
         {
-            List = new List<AppThemeLimpet>();
-            var dirlist = System.IO.Directory.GetDirectories(AppSystemThemeFolderRootMapPath);
-            foreach (var d in dirlist)
+            var list = new List<AppThemeLimpet>();
+            var dirlist1 = System.IO.Directory.GetDirectories(AppSystemThemeFolderRootMapPath);
+            foreach (var d1 in dirlist1)
             {
-                var dr = new System.IO.DirectoryInfo(d);
-                if (dr.Name.StartsWith(SelectedSystemKey) || SelectedSystemKey == "")
+                var dirlist = System.IO.Directory.GetDirectories(d1);
+                var org = new System.IO.DirectoryInfo(d1).Name;
+                foreach (var d in dirlist)
                 {
-                    var appTheme = new AppThemeLimpet(dr.Name, "");
-                    if (appTheme.FileNameList.Count > 0) List.Add(appTheme);
+                    var dr = new System.IO.DirectoryInfo(d);
+                    if (dr.Name.StartsWith(SelectedSystemKey) || SelectedSystemKey == "")
+                    {
+                        var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), dr.Name, "", org);
+                        if (appTheme.FileNameList.Count > 0) list.Add(appTheme);
+                    }
                 }
             }
+            List = list;
         }
         public void ClearCacheLists()
         {

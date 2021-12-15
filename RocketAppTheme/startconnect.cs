@@ -28,6 +28,7 @@ namespace DNNrocket.AppThemes
         private SessionParams _sessionParams;
         private PortalLimpet _portalData;
         private string _moduleref;
+        private string _org;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -191,8 +192,8 @@ namespace DNNrocket.AppThemes
                 _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
             }
-
-            _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder);
+            _org = _paramInfo.GetXmlProperty("genxml/hidden/org");
+            _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _org);
 
 
             return paramCmd;
@@ -421,7 +422,7 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                var appThemeDataList = new AppThemeDataList();
+                var appThemeDataList = new AppThemeDataList(_org);
                 var razorTempl = _appThemeSystem.GetTemplate("appthemelist.cshtml");
                 var passSettings = _postInfo.ToDictionary();
                 var pr = RenderRazorUtils.RazorProcessData(razorTempl, appThemeDataList, null, passSettings, _sessionParams, true);

@@ -35,7 +35,7 @@ namespace DNNrocketAPI.Components
             var s = appThemeFolder.Split('.');
             if (s.Length == 2) SystemKey = s[0];
         }
-        public AppThemeLimpet(int portalId, string appThemeFolder, string versionFolder = "") : base(portalId, "/DesktopModules/RocketThemes/" + appThemeFolder, versionFolder)
+        public AppThemeLimpet(int portalId, string appThemeFolder, string versionFolder = "", string org = "") : base(portalId, "/DesktopModules/RocketThemes/" + org  + "/" + appThemeFolder, versionFolder)
         {
             SystemKey = "";
             var s = appThemeFolder.Split('.');

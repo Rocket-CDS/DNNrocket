@@ -41,7 +41,7 @@
             }
             @foreach (var gitRepoRec in l)
             {
-                var appTheme = AppThemeUtils.GetAppThemeLimpet("", gitRepoRec.GetXmlNode("genxml/name"), "");
+                var appTheme = AppThemeUtils.GetAppThemeLimpet("", gitRepoRec.GetXmlNode("genxml/name"), "", "ToastedTemplates");
                 githubList.Add(appTheme.AppThemeFolder);
 
                 <tr class="searchdiv">
@@ -56,11 +56,11 @@
                     <td htmlurl="@(gitRepoRec.GetXmlProperty("genxml/html_url"))" appthemefolder="@(appTheme.AppThemeFolder)" class="a-installappthemebutton" style="cursor:pointer;">
                         @if (appTheme.Exists)
                         {
-                            <span>@ButtonIcon(ButtonTypes.download)</span>
+                            <span class="w3-text-green">@ButtonIcon(ButtonTypes.download)</span>
                         }
                         else
                         {
-                            <span class="w3-text-red">@ButtonIcon(ButtonTypes.download)</span>
+                            <span>@ButtonIcon(ButtonTypes.download)</span>
                         }
                     </td>
 
@@ -120,6 +120,7 @@
             document.getElementById('a-downloadapptheme').style.display = 'block';
             simplisity_setParamField('htmlurl', $(this).attr('htmlurl'));
             simplisity_setParamField('appthemefolder', $(this).attr('appthemefolder'));
+            simplisity_setParamField('org', 'ToastedTemplates');
             $('.a-downloadappthemename').html($(this).attr('appthemefolder'));
         });
 

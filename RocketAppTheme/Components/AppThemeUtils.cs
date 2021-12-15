@@ -18,15 +18,16 @@ namespace Rocket.AppThemes.Components
     public static class AppThemeUtils
     {
         private static readonly object _cacheLock1 = new object();
-        public static AppThemeLimpet GetAppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder)
+        public static AppThemeLimpet GetAppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder, string org)
         {
-            var cKey = "AppThemeLimpet*" + systemKey + "*" + appThemeFolder + "*" + versionFolder + "*" + PortalUtils.GetPortalId();
+            var cKey = "AppThemeLimpet*" + systemKey + "*" + appThemeFolder + "*" + versionFolder + "*" + PortalUtils.GetPortalId() + "-" + org;
+            var systemData = new SystemLimpet(systemKey);
             var appTheme = (AppThemeLimpet)CacheUtilsDNN.GetCache(cKey);
             lock (_cacheLock1)
             {
                 if (appTheme == null)
                 {
-                    appTheme = new AppThemeLimpet(appThemeFolder, versionFolder);
+                    appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), appThemeFolder, versionFolder, org);
                     CacheUtilsDNN.SetCache(cKey, appTheme);
                 }
             }
@@ -48,30 +49,6 @@ namespace Rocket.AppThemes.Components
                 return s;
             }
         }
-
-        #region "Bonoboo git.agence-sesame.fr  - NOT USED"
-        public static List<SimplisityRecord> GetBonobooAppThemes(string xmlfilename = "toastedrepos.xml")
-        {
-            var rtnList = new List<SimplisityRecord>();
-            var contentsXml = HttpGet($"http://git.agence-sesame.fr/" + xmlfilename);
-            var sRec = new SimplisityRecord();
-            sRec.XMLData = contentsXml;
-            var contents = sRec.XMLDoc.SelectNodes("root/*");
-            if (contents != null)
-            {
-                foreach (XmlNode nod in contents)
-                {
-                    var sRec2 = new SimplisityRecord();
-                    sRec2.XMLData = nod.OuterXml;
-                    rtnList.Add(sRec2);
-                }
-            }
-            return rtnList;
-        }
-
-
-        #endregion
-
 
         #region "GitHub"
 
@@ -108,7 +85,7 @@ namespace Rocket.AppThemes.Components
             {
                 if (a.GetXmlNode("genxml/name") != "")
                 {
-                    var appTheme = AppThemeUtils.GetAppThemeLimpet("", a.GetXmlNode("genxml/name"), "");
+                    var appTheme = AppThemeUtils.GetAppThemeLimpet("", a.GetXmlNode("genxml/name"), "", org);
                     DownloadRepoFromGitHub(a.GetXmlProperty("genxml/html_url") + "/archive/refs/heads/main.zip", appTheme.AppThemeFolderMapPath);
                 }
             }
