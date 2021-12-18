@@ -91,26 +91,48 @@ namespace DNNrocketAPI.ApiControllers
         [HttpPost]
         public HttpResponseMessage ActionContent()
         {
+            HttpResponseMessage rtn;
             var context = HttpContext.Current;
+            var key = "";
+            var paramCmd = "";
+            if (context.Request.QueryString.AllKeys.Contains("k")) key = context.Request.QueryString["k"];
+            if (context.Request.QueryString.AllKeys.Contains("cmd")) paramCmd = context.Request.QueryString["cmd"];
 
-            if (!context.Request.QueryString.AllKeys.Contains("cmd"))
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' parameter in url.  Unable to process action.");
-            }
-
-            var paramCmd = context.Request.QueryString["cmd"];
-
-            var systemkey = "";
-            if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
-            if (systemkey == "" && context.Request.QueryString.AllKeys.Contains("s")) systemkey = context.Request.QueryString["s"]; // reduce chars.
+            if (paramCmd == "" && key == "") return this.Request.CreateResponse(HttpStatusCode.OK, "No 'cmd' or 'key' parameter in url.  Unable to process action.");
 
             var paramInfo = BuildParamInfo(true);
             var postInfo = BuildPostInfo();
 
-            var systemData = new SystemLimpet(systemkey);
-            var interfacekey = paramCmd.Split('_')[0];
-            var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
-            var rtn = ProcessProvider(paramCmd, postInfo, paramInfo, systemData, rocketInterface);
+            if (paramCmd == "")
+            {
+                // if we do not have a "cmd" we may be passing a key to a data file.
+                // This data file needs to keep the data required to process and should be created by a call to an external system that returns a POST. (like a Bank) 
+                // This is to keep the URL smaller (for some payment providers) and also proves the call is initiated by this system. 
+                var sRec = DNNrocketUtils.GetTempStorage(key, true);
+                if (sRec == null)
+                    return this.Request.CreateResponse(HttpStatusCode.OK, "No ACTIONRETURN data: " + key);
+                else
+                {
+                    paramInfo.AddXmlNode(sRec.XMLData, sRec.RootNodeName, paramInfo.RootNodeName);
+                    paramCmd = sRec.GetXmlProperty("genxml/cmd");
+                    var systemkey = sRec.GetXmlProperty("genxml/systemkey");
+                    var interfacekey = sRec.GetXmlProperty("genxml/interfacekey");
+                    var systemData = new SystemLimpet(systemkey);
+                    var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+                    rtn = ProcessProvider(paramCmd, postInfo, paramInfo, systemData, rocketInterface);
+                }
+            }
+            else
+            {
+                var systemkey = "";
+                if (context.Request.QueryString.AllKeys.Contains("systemkey")) systemkey = context.Request.QueryString["systemkey"];
+                if (systemkey == "" && context.Request.QueryString.AllKeys.Contains("s")) systemkey = context.Request.QueryString["s"]; // reduce chars.
+
+                var systemData = new SystemLimpet(systemkey);
+                var interfacekey = paramCmd.Split('_')[0];
+                var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+                rtn = ProcessProvider(paramCmd, postInfo, paramInfo, systemData, rocketInterface);
+            }
 
             if (rtn.Headers.Contains("Access-Control-Allow-Origin")) rtn.Headers.Remove("Access-Control-Allow-Origin");
             //rtn.Headers.Add("Access-Control-Allow-Origin", "*");
