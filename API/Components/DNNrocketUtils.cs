@@ -1675,6 +1675,41 @@ namespace DNNrocketAPI.Components
                 return text.Substring(0, maxCharacters) + trailingText;
         }
 
+        #region "Temp Storage"
+
+        public static string SaveTempStorage(string XmlData, int keephours = 24)
+        {
+            if (keephours == 0) keephours = 1;
+            var key = GeneralUtils.GetGuidKey();
+            var objCtrl = new DNNrocketController();
+            var s = new SimplisityInfo();
+            s.XMLData = XmlData;
+            var sInfo = new SimplisityInfo();
+            sInfo.XMLData = XmlData;
+            sInfo.GUIDKey = key;
+            sInfo.TypeCode = "ACTIONRETURN";
+            sInfo.ItemID = -1;
+            var keepdatetime = DateTime.Now.AddHours(keephours);
+            sInfo.SetXmlProperty(sInfo.RootNodeName + "/keepdatetime", keepdatetime.ToString("O"), TypeCode.DateTime);
+            objCtrl.Update(sInfo, "DNNrocketTemp");
+            return key;
+        }
+        public static SimplisityInfo GetTempStorage(string key, bool deleteAfterRead = true)
+        {
+            var objCtrl = new DNNrocketController();            
+            var rtn = objCtrl.GetByGuidKey(-1, -1, "ACTIONRETURN", key, "", "DNNrocketTemp");
+            if (deleteAfterRead && rtn != null) objCtrl.Delete(rtn.ItemID, "DNNrocketTemp");
+            return rtn;
+        }
+        public static void ClearOldTempStorage()
+        {
+            var objCtrl = new DNNrocketController();
+            objCtrl.ExecSql("delete from [DNNrocketTemp] where TypeCode = 'ACTIONRETURN' and isnull(XMLData.value('(genxml/keepdatetime)[1]','datetime'),GETDATE()) <= GETDATE()");
+        }
+
+
+        #endregion
+
 
         #region "Portal - obsolete"
 

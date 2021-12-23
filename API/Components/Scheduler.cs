@@ -47,6 +47,7 @@ namespace DNNrocketAPI.Components
                 }
 
                 LogUtils.LogSystemClear(7);
+                DNNrocketUtils.ClearOldTempStorage();
 
                 this.ScheduleHistoryItem.Succeeded = true;
 
