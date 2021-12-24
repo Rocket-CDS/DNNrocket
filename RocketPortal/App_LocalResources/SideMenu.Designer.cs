@@ -97,6 +97,15 @@ namespace RocketPortal.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Organisations.
+        /// </summary>
+        internal static string organisations_Text {
+            get {
+                return ResourceManager.GetString("organisations.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Portals.
         /// </summary>
         internal static string portal_Text {

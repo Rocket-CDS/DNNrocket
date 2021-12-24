@@ -69,6 +69,14 @@ namespace RocketPortal.API
                     break;
 
 
+                case "organisations_list":
+                    //strOut = GetOrgList();
+                    break;
+                case "organisations_add":
+                    //strOut = GetOrgList();
+                    break;
+
+
 
                 case "rocketportal_get":
                     strOut = GetDashboard();

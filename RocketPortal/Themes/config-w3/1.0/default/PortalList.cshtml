@@ -27,8 +27,8 @@
 
         <div class="w3-right " style=''>
             <div class="w3-bar">
-                @TextBox(new SimplisityInfo(), "genxml/textbox/searchtext", "class='w3-bar-item w3-input w3-border w3-light-grey simplisity_sessionfield actionentrykey' autocomplete='off' ")
-                <span class="w3-bar-item w3-button w3-theme-d3 clearsearch " style="display:none;" s-fields=''>@ButtonText(ButtonTypes.cancelsearch)</span>
+                <span class="w3-bar-item w3-button clearsearch " style="display:none;" s-fields=''>@ButtonIcon(ButtonTypes.cancel)</span>
+                @TextBox(new SimplisityInfo(), "genxml/textbox/searchtext", " style='height:40px;' class='w3-bar-item w3-input w3-border w3-light-grey simplisity_sessionfield actionentrykey' autocomplete='off' ")
                 <span class="w3-bar-item w3-button w3-theme langchangesave simplisity_click dosearch" s-sessionfield='#searchtext,#pagesize,#orderbyref,#page' s-cmd="portal_list" s-post=".searchdata" s-fields='{"track":"true"}'>@ButtonText(ButtonTypes.search)</span>
             </div>
         </div>
@@ -97,12 +97,12 @@
         $('.clearsearch ').unbind("click");
         $('.clearsearch ').click(function () {
             $('#searchtext').val('');
+            $('.clearsearch').hide();
             $('.dosearch').trigger('click');
             return false; // prevent the button click from happening
         });
 
         if ($('#searchtext').val() !== '') {
-            $('.dosearch').hide();
             $('.clearsearch').show();
         }
 
@@ -120,11 +120,6 @@
         var tmpStr = $('.actionentrykey').val();
         $('.actionentrykey').val('');
         $('.actionentrykey').val(tmpStr);
-
-        //  change color of panel, s we show it has a selection
-        if (tmpStr != '') {
-            $('#searchtext').addClass('w3-border-red');
-        }
 
         $('.w3-radio').unbind("click");
         $('.w3-radio').click(function () {

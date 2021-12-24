@@ -29,9 +29,7 @@ namespace RocketPortal.Components
             if (SessionParamData.SearchText != "")
             {
                 _searchFilter = "  and    (";
-                _searchFilter += " R1.GuidKey like '%" + SessionParamData.SearchText + "%' ";
-                _searchFilter += " or [XMLData].value('(genxml/textbox/name)[1]', 'nvarchar(max)') like '%" + SessionParamData.SearchText + "%'";
-                _searchFilter += " or [XMLData].value('(genxml/textbox/engineurl)[1]', 'nvarchar(max)') like '%" + SessionParamData.SearchText + "%'";
+                _searchFilter += " [XMLData].value('(genxml/textbox/url)[1]', 'nvarchar(max)') like '%" + SessionParamData.SearchText + "%'";
                 _searchFilter += " )";
             }
             Populate();

@@ -22,7 +22,7 @@
         var rtn = "";
         if (rinterface.IsOnMenu)
         {
-            var securityData = new SecurityLimpet(PortalUtils.GetPortalId(), systemData.SystemKey,rinterface,-1,-1);
+            var securityData = new SecurityLimpet(PortalUtils.GetPortalId(), systemData.SystemKey, rinterface, -1, -1);
             if (securityData.HasSecurityAccess(rinterface.DefaultCommand))
             {
                 var interfaceName = DNNrocketUtils.GetResourceString(systemData.SystemRelPath + "/App_LocalResources", "SideMenu." + rinterface.InterfaceKey, "Text", DNNrocketUtils.GetCurrentCulture());

@@ -438,7 +438,7 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                var appThemeDataList = new AppThemeDataList();
+                var appThemeDataList = new AppThemeDataList(_org);
                 var razorTempl = _appThemeSystem.GetTemplate("AppStoreList.cshtml");
                 var passSettings = _postInfo.ToDictionary();
 

@@ -21,11 +21,11 @@
 <div id="appthemelist" class="w3-padding">
 
     <div class="w3-bar searchdata">
-        <div class="w3-bar-item w3-right " style=''>
-            <div class="w3-bar">
-                <input class="w3-bar-item w3-input w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
-            </div>
+        <div class="w3-bar-item">
+            @appThemeList.Organisation
+            @DropDownSystemKeyList(new SimplisityInfo(),"genxml/selectedsystemkey", " class='w3-input w3-border'")
         </div>
+        <input class="w3-bar-item w3-right w3-input w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
     </div>
 
 
