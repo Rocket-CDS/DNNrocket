@@ -20,20 +20,18 @@ namespace Rocket.AppThemes.Components
     {
         public AppThemeDataList(string org)
         {
-            AssignFolders();
-
-            Organisation = org;
+            Organisation = org; // assign first.
             SelectedSystemKey = "";
 
+            AssignFolders();
             PopulateAppThemeList();
         }
         public AppThemeDataList(string org, string selectedsystemkey)
         {
-            AssignFolders();
-
-            Organisation = org;
+            Organisation = org; // assign first.
             SelectedSystemKey = selectedsystemkey;
 
+            AssignFolders();
             PopulateAppThemeList();
         }
         private void AssignFolders()
@@ -56,15 +54,12 @@ namespace Rocket.AppThemes.Components
             foreach (var d1 in dirlist1)
             {
                 var dirlist = System.IO.Directory.GetDirectories(d1);
-                var org = new System.IO.DirectoryInfo(d1).Name;
-                foreach (var d in dirlist)
+                var org = new System.IO.DirectoryInfo(AppThemeOrganisationFolderRootMapPath).Name;
+                var dr = new System.IO.DirectoryInfo(d1);
+                if (dr.Name.StartsWith(SelectedSystemKey) || SelectedSystemKey == "")
                 {
-                    var dr = new System.IO.DirectoryInfo(d);
-                    if (dr.Name.StartsWith(SelectedSystemKey) || SelectedSystemKey == "")
-                    {
-                        var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), dr.Name, "", org);
-                        if (appTheme.FileNameList.Count > 0) list.Add(appTheme);
-                    }
+                    var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), dr.Name, "", org);
+                    if (appTheme.FileNameList.Count > 0) list.Add(appTheme);
                 }
             }
             List = list;

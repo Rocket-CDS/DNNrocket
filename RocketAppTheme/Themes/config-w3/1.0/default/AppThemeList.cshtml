@@ -8,6 +8,7 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketAppTheme/App_LocalResources/")
 
 @{
+    var sessionParams = Model.SessionParamsData;
     var appThemeList = (AppThemeDataList)Model.List.First();
     var systemAppTheme = new AppThemeSystemLimpet("rocketapptheme");
     var rocketAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
@@ -23,13 +24,21 @@
             }
         }
     }
+
+    var selectedOrg = sessionParams.Get("selectedorg");
+    if (selectedOrg == "" && orgDict.Count > 0)
+    {
+        selectedOrg = orgDict.First().Value;
+    }
+
     var systemDict = new Dictionary<string, string>();
     systemDict.Add("", "");
-    foreach (var appTheme in appThemeList.List)
+    var appThemes = new Dictionary<string, object>();
+    foreach (var at in appThemeList.List)
     {
-        if (!systemDict.ContainsKey(appTheme.SystemKey))
+        if (!systemDict.ContainsKey(at.SystemKey))
         {
-            systemDict.Add(appTheme.SystemKey, appTheme.SystemKey);
+            systemDict.Add(at.SystemKey, at.SystemKey);
         }
     }
 
@@ -45,8 +54,7 @@
 
         <div class="w3-bar searchdata">
             <div class="w3-bar-item">
-                @appThemeList.Organisation
-                @DropDownList(new SimplisityInfo(), "genxml/selectedorg", orgDict, " class='w3-input w3-border'")
+                @DropDownList(new SimplisityInfo(), "genxml/selectedorg", orgDict, " class='w3-input w3-border'", selectedOrg)
             </div>
             <div class="w3-bar-item">
                 @DropDownList(new SimplisityInfo(), "genxml/selectedsystem", systemDict, " class='w3-input w3-border' ")
@@ -60,7 +68,7 @@
             <table class="w3-table w3-bordered w3-hoverable">
                 @foreach (var appTheme in appThemeList.List)
                 {
-                    <tr class="searchdiv simplisity_click" s-cmd="rocketapptheme_getdetail" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))","appthemefolder":"@appTheme.AppThemeFolder"}' style="cursor:pointer;">
+                    <tr class="searchdiv simplisity_click" s-cmd="rocketapptheme_getdetail" s-fields='{"selectedorg":"@(selectedOrg)","systemkey":"@(Model.GetSetting("systemkey"))","appthemefolder":"@appTheme.AppThemeFolder"}' style="cursor:pointer;">
                         <td><b>@appTheme.AppThemeFolder</b></td>
                     </tr>
                 }
@@ -77,6 +85,14 @@
             $('#selectedsystem').off("change");
             $('#selectedsystem').change(function () {
                 hideFunction($(this).val());
+                return false;
+            });
+
+            $('#selectedorg').off("change");
+            $('#selectedorg').change(function () {
+                simplisity_setSessionField('selectedorg', $('#selectedorg').val());
+                $("#sidebarplaceholder [s-cmd='rocketapptheme_getlist']").trigger('click');
+                return false;
             });
 
         });

@@ -32,7 +32,7 @@ namespace RocketPortal.API
         }
         private String DeleteOrg()
         {
-            var idx = _paramInfo.GetXmlPropertyInt("genxml/hidden/idx");
+            var idx = _paramInfo.GetXmlPropertyInt("genxml/hidden/idx") -1;
             var orgData = new OrganisationLimpet();
             orgData.DeleteRow(idx);
             return GetOrgList();

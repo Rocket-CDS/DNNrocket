@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI;
+using DNNrocketAPI.Components;
 using Simplisity;
 using System;
 using System.Collections.Concurrent;
@@ -31,6 +32,20 @@ namespace Rocket.AppThemes.Components
                 Record.ModuleId = -1;
                 Record.PortalId = -1;
             }
+            if (List.Count == 0)
+            {
+                // setup defaults
+                var defaultFileMapPath = "/DesktopModules/DNNrocket/RocketPortal/Installation/SystemDefaults.rules";
+                var filenamepath = DNNrocketUtils.MapPath(defaultFileMapPath);
+                var xmlString = FileUtils.ReadFile(filenamepath);
+                var s = new SimplisityInfo();
+                s.XMLData = xmlString;
+                foreach (XmlNode orgNod in s.XMLDoc.SelectNodes("root/organisations/*"))
+                {
+                    Record.AddListItem(_listName, orgNod.OuterXml);
+                }
+                Update();
+            }
         }
         public void Delete()
         {
@@ -54,9 +69,10 @@ namespace Rocket.AppThemes.Components
         public void AddRow()
         {
             var s = new SimplisityRecord();
-            s.SetXmlProperty("genxml/textbox/url", "");
+            s.SetXmlProperty("genxml/textbox/org", "");
             s.SetXmlProperty("genxml/textbox/name", "");
             s.SetXmlProperty("genxml/checkbox/active", "");
+            s.SetXmlProperty("genxml/checkbox/default", "");
             Record.AddRecordListItem(_listName, s);
             Update();
         }
@@ -94,23 +110,19 @@ namespace Rocket.AppThemes.Components
                 Record.FromXmlItem(nod.OuterXml);
             }
         }
-        public Dictionary<string, string> ToDictionary()
+        public string DefaultOrg()
         {
-            var rtnDict = new Dictionary<string, string>();
-            foreach (var s in List)
+            var dl = Record.GetRecordList(_listName);
+            foreach (var d in dl)
             {
-                var a = s.GetXmlPropertyBool("genxml/checkbox/active");
-                if (a)
-                {
-                    var v = s.GetXmlProperty("genxml/textbox/name");
-                    var k = s.GetXmlProperty("genxml/textbox/url");
-                    if (!rtnDict.ContainsKey(k)) rtnDict.Add(k, v);
-                }
+                if (d.GetXmlPropertyBool("genxml/checkbox/default")) return d.GetXmlProperty("genxml/textbox/org");
             }
-            return rtnDict;
+            if (dl.Count == 0) return "";
+            return dl.First().GetXmlProperty("genxml/textbox/org");
         }
 
         public List<SimplisityRecord> List { get { return Record.GetRecordList(_listName); } }
+
 
     }
 

@@ -7,6 +7,19 @@
   <pageslinks>
   </pageslinks>
 
+  <organisations>
+    <genxml>
+      <checkbox>
+        <default>True</default>
+        <active>True</active>
+      </checkbox>
+      <textbox>
+        <name>RocketAppThemes-W3-CSS</name>
+        <org>RocketAppThemes-W3-CSS</org>
+      </textbox>
+    </genxml>
+  </organisations>
+  
   <commands>
 
     <command>

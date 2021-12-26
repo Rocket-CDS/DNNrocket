@@ -17,9 +17,9 @@
     {
         if (o.GetXmlPropertyBool("genxml/checkbox/active"))
         {
-            if (!orgDict.ContainsKey(o.GetXmlProperty("genxml/textbox/url")))
+            if (!orgDict.ContainsKey(o.GetXmlProperty("genxml/textbox/org")))
             {
-                orgDict.Add(o.GetXmlProperty("genxml/textbox/url"), o.GetXmlProperty("genxml/textbox/name"));
+                orgDict.Add(o.GetXmlProperty("genxml/textbox/org"), o.GetXmlProperty("genxml/textbox/name"));
             }
         }
     }
@@ -67,7 +67,7 @@
             <thead>
                 <tr>
                     <th>AppTheme</th>
-                    <th>Last Updated</th>
+                    <th>@ResourceKey("AppThemes.lastupdate")</th>
                     <th style="width:80px;"></th>
                     <th onclick="document.getElementById('a-downloadappthemeall').style.display = 'block';" class="" style="cursor:pointer;width:80px;">@ButtonIcon(ButtonTypes.download)</th>
                 </tr>
@@ -76,27 +76,30 @@
             {
                 var appTheme = (AppThemeLimpet)appThemes[gitRepoRec.GetXmlNode("genxml/name")];
 
-                <tr class="searchdiv">
-                    <td><b>@gitRepoRec.GetXmlProperty("genxml/name")</b></td>
-                    <td>@Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortDateString() @Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortTimeString()</td>
-                    <td><a href="@gitRepoRec.GetXmlProperty("genxml/html_url")" target="_blank" style="color:black;text-decoration: none;">
-                            <span class="material-icons">
-                                developer_mode
-                            </span>
-                        </a>
-                    </td>
-                    <td htmlurl="@(gitRepoRec.GetXmlProperty("genxml/html_url"))" appthemefolder="@(appTheme.AppThemeFolder)" class="a-installappthemebutton" style="cursor:pointer;">
-                        @if (appTheme.Exists)
-                        {
-                            <span class="w3-text-green">@ButtonIcon(ButtonTypes.download)</span>
-                        }
-                        else
-                        {
-                            <span>@ButtonIcon(ButtonTypes.download)</span>
-                        }
-                    </td>
+        <tr class="searchdiv">
+            <td><b>@gitRepoRec.GetXmlProperty("genxml/name").Replace(appTheme.SystemKey + ".","")</b>
+                <div class="w3-tiny">@gitRepoRec.GetXmlProperty("genxml/name")</div>
+            </td>
+            <td>@Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortDateString() @Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortTimeString()</td>
+            <td>
+                <a href="@gitRepoRec.GetXmlProperty("genxml/html_url")" target="_blank" style="color:black;text-decoration: none;">
+                    <span class="material-icons">
+                        developer_mode
+                    </span>
+                </a>
+            </td>
+            <td htmlurl="@(gitRepoRec.GetXmlProperty("genxml/html_url"))" appthemefolder="@(appTheme.AppThemeFolder)" class="a-installappthemebutton" style="cursor:pointer;">
+                @if (appTheme.Exists)
+                {
+                    <span class="w3-text-green">@ButtonIcon(ButtonTypes.download)</span>
+                }
+                else
+                {
+                    <span>@ButtonIcon(ButtonTypes.download)</span>
+                }
+            </td>
 
-                </tr>
+        </tr>
             }
         </table>
 
@@ -121,7 +124,7 @@
                     <div class="w3-padding  w3-large">@ResourceKey("AppThemes.installall")</div>
                     <div class="w3-row w3-margin w3-center">
                         <div class="w3-third">&nbsp;</div>
-                        <div class="w3-third a-downloadbutton w3-button w3-teal w3-padding simplisity_click" s-cmd="rocketapptheme_downloadallgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'>@ButtonIcon(ButtonTypes.download)&nbsp;@ResourceKey("AppThemes.installall")</div>
+                        <div class="w3-third a-downloadbutton w3-button w3-theme-action w3-padding simplisity_click" s-cmd="rocketapptheme_downloadallgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'>@ButtonIcon(ButtonTypes.download)&nbsp;@ResourceKey("AppThemes.installall")</div>
                         <div class="w3-third">&nbsp;</div>
                     </div>
                 </div>
@@ -154,11 +157,9 @@
         $('#selectedorg').off("change");
         $('#selectedorg').change(function () {
             simplisity_setSessionField('selectedorg', $('#selectedorg').val());
-            $("[s-cmd='rocketapptheme_getappstore']").trigger('click');
+            $("#sidebarplaceholder [s-cmd='rocketapptheme_getappstore']").trigger('click');
             return false;
         });
-
-
 
     });
 

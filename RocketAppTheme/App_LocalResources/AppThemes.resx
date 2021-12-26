@@ -270,6 +270,9 @@
   <data name="js.Text" xml:space="preserve">
     <value>JS</value>
   </data>
+  <data name="lastupdate.Text" xml:space="preserve">
+    <value>Last Updated</value>
+  </data>
   <data name="localversion.Text" xml:space="preserve">
     <value>Local Version</value>
   </data>

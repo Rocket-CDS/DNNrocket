@@ -8,7 +8,7 @@
 
 @{
     var organisationData = (OrganisationLimpet)Model.List.First();
-    var lp3 = 0;
+    var lp3 = 1;
 }
 
 <div>
@@ -26,40 +26,56 @@
                 <tr>
                     <th>@ResourceKey("DNNrocket.name")</th>
                     <th>@ResourceKey("RP.githuborg")</th>
+                    <th style="width:64px;">@ResourceKey("DNNrocket.default")</th>
                     <th style="width:64px;">@ResourceKey("DNNrocket.active")</th>
                     <th style="width:64px;"></th>
                 </tr>
             </thead>
             @foreach (SimplisityRecord r in organisationData.List)
             {
-                <tr class="organisations">
-                    <td>
-                        @TextBox(new SimplisityInfo(r), "genxml/textbox/name", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
-                    </td>
-                    <td>
-                        @TextBox(new SimplisityInfo(r), "genxml/textbox/url", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
-                    </td>
-                    <td>
-                        @HiddenField(new SimplisityInfo(r), "genxml/checkbox/active", "", "", false, lp3)
-                        @if (r.GetXmlPropertyBool("genxml/checkbox/active"))
-                        {
-                            <span class="material-icons w3-button w3-text-green a-toggle" idx="@(lp3)">
-                                toggle_on
-                            </span>
-                        }
-                        else
-                        {
-                            <span class="material-icons w3-button w3-text-red a-toggle" idx="@(lp3)">
-                                toggle_off
-                            </span>
-                        }
-                    </td>
-                    <td>
-                        <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="organisations_delete" s-fields='{"idx":"@(lp3)"}'>
-                            @ButtonIcon(ButtonTypes.delete)
-                        </div>
-                    </td>
-                </tr>
+        <tr class="organisations">
+            <td>
+                @TextBox(new SimplisityInfo(r), "genxml/textbox/name", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
+            </td>
+            <td>
+                @TextBox(new SimplisityInfo(r), "genxml/textbox/org", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
+            </td>
+            <td>
+                @HiddenField(new SimplisityInfo(r), "genxml/checkbox/default", " class='a-defaultvalue'", "", false, lp3)
+                @if (r.GetXmlPropertyBool("genxml/checkbox/default"))
+                {
+                    <span class="material-icons w3-button a-defaultbutton" idx="@(lp3)">
+                        radio_button_checked
+                    </span>
+                }
+                else
+                {
+                    <span class="material-icons w3-button a-defaultbutton" idx="@(lp3)">
+                        radio_button_unchecked
+                    </span>
+                }
+            </td>
+            <td>
+                @HiddenField(new SimplisityInfo(r), "genxml/checkbox/active", "", "", false, lp3)
+                @if (r.GetXmlPropertyBool("genxml/checkbox/active"))
+                {
+                    <span class="material-icons w3-button w3-text-green a-toggle" idx="@(lp3)">
+                        toggle_on
+                    </span>
+                }
+                else
+                {
+                    <span class="material-icons w3-button w3-text-red a-toggle" idx="@(lp3)">
+                        toggle_off
+                    </span>
+                }
+            </td>
+            <td>
+                <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="organisations_delete" s-fields='{"idx":"@(lp3)"}'>
+                    @ButtonIcon(ButtonTypes.delete)
+                </div>
+            </td>
+        </tr>
                 lp3 += 1;
             }
         </table>
@@ -85,6 +101,16 @@
                 $(this).text('toggle_on');
             }
         });
+
+        $(".a-defaultbutton").off("click")
+        $(".a-defaultbutton").click(function () {
+            var idx = $(this).attr('idx');
+            $(".a-defaultbutton").text('radio_button_unchecked');
+            $('.a-defaultvalue').val("False");
+            $(this).text('radio_button_checked');
+            $('#default_' + idx).val("True");
+        });
+        
 
     });
 

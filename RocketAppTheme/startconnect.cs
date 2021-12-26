@@ -29,6 +29,7 @@ namespace DNNrocket.AppThemes
         private PortalLimpet _portalData;
         private string _moduleref;
         private string _org;
+        private OrganisationLimpet _orgData;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -168,6 +169,7 @@ namespace DNNrocket.AppThemes
             _rocketInterface = new RocketInterface(interfaceInfo);
             _sessionParams = new SessionParams(_paramInfo);
             _portalData = new PortalLimpet(PortalUtils.GetPortalId());
+            _orgData = new OrganisationLimpet();
 
             // Assign Langauge
             DNNrocketUtils.SetCurrentCulture();
@@ -197,6 +199,8 @@ namespace DNNrocket.AppThemes
                 _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
             }
             _org = _paramInfo.GetXmlProperty("genxml/hidden/selectedorg");
+            if (_org == "") _org = _orgData.DefaultOrg();
+
             _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _org);
 
 
