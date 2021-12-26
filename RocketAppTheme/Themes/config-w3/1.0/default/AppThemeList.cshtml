@@ -18,9 +18,9 @@
     {
         if (o.GetXmlPropertyBool("genxml/checkbox/active"))
         {
-            if (!orgDict.ContainsKey(o.GetXmlProperty("genxml/textbox/url")))
+            if (!orgDict.ContainsKey(o.GetXmlProperty("genxml/textbox/org")))
             {
-                orgDict.Add(o.GetXmlProperty("genxml/textbox/url"), o.GetXmlProperty("genxml/textbox/name"));
+                orgDict.Add(o.GetXmlProperty("genxml/textbox/org"), o.GetXmlProperty("genxml/textbox/name"));
             }
         }
     }
@@ -69,7 +69,10 @@
                 @foreach (var appTheme in appThemeList.List)
                 {
                     <tr class="searchdiv simplisity_click" s-cmd="rocketapptheme_getdetail" s-fields='{"selectedorg":"@(selectedOrg)","systemkey":"@(Model.GetSetting("systemkey"))","appthemefolder":"@appTheme.AppThemeFolder"}' style="cursor:pointer;">
-                        <td><b>@appTheme.AppThemeFolder</b></td>
+                        <td>
+                            <b>@appTheme.AppThemeFolder.Replace(appTheme.SystemKey + ".", "")</b>
+                            <div class="w3-tiny">@appTheme.AppThemeFolder</div>
+                        </td>
                     </tr>
                 }
             </table>

@@ -77,7 +77,8 @@
                 var appTheme = (AppThemeLimpet)appThemes[gitRepoRec.GetXmlNode("genxml/name")];
 
         <tr class="searchdiv">
-            <td><b>@gitRepoRec.GetXmlProperty("genxml/name").Replace(appTheme.SystemKey + ".","")</b>
+            <td>
+                <b>@gitRepoRec.GetXmlProperty("genxml/name").Replace(appTheme.SystemKey + ".","")</b>
                 <div class="w3-tiny">@gitRepoRec.GetXmlProperty("genxml/name")</div>
             </td>
             <td>@Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortDateString() @Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortTimeString()</td>
