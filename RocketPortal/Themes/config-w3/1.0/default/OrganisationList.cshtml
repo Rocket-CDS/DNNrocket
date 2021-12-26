@@ -13,9 +13,10 @@
 
 <div>
 
-    <div class="w3-bar searchdata">
-            <div class="w3-bar-item w3-button w3-teal w3-padding-8 simplisity_click" s-cmd="portalshops_addsetting" s-return="#systemcontainer" s-fields='{"systemkey":"@portalShop.SystemKey","sitekey":"@portalShop.SiteKey"}'>@ButtonText(ButtonTypes.add)</div>
-            <input class="w3-bar-item  w3-right w3-input w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("DNNrocket.search")..." id="searchtext" onkeyup="searchFunction()">
+    <div class="w3-bar searchdata w3-padding-8">
+        <div class="w3-button w3-theme-action simplisity_click" s-cmd="organisations_add" s-fields=''>@ButtonText(ButtonTypes.add)</div>
+        <div class="w3-button  w3-theme-light simplisity_click" s-cmd="organisations_save" s-post="#datalist" s-list=".organisations" s-fields=''>@ButtonText(ButtonTypes.save)</div>
+        <input class="w3-bar-item  w3-right w3-input w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("DNNrocket.search")..." id="searchtext" onkeyup="searchFunction()">
     </div>
 
     <div id="datalist" class="w3-container w3-margin-top">
@@ -23,59 +24,43 @@
         <table class="w3-table w3-bordered">
             <thead>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th style="width:64px;"></th>
-                    <th style="width:64px;"></th>
+                    <th>@ResourceKey("DNNrocket.name")</th>
+                    <th>URL</th>
+                    <th style="width:64px;">@ResourceKey("DNNrocket.active")</th>
                     <th style="width:64px;"></th>
                 </tr>
             </thead>
             @foreach (SimplisityRecord r in organisationData.List)
             {
-                <tr class="">
+                <tr class="organisations">
                     <td>
-                        @TextBox(new SimplisityInfo(r), "genxml/textbox/key", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
+                        @TextBox(new SimplisityInfo(r), "genxml/textbox/name", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
                     </td>
                     <td>
-                        <span>@dataClient.ServiceData.Name</span>
+                        @TextBox(new SimplisityInfo(r), "genxml/textbox/url", "class='w3-input w3-border' maxlength='250' ", "", false, lp3)
                     </td>
                     <td>
-                        <b>
-                            <span>@dataClient.ServiceData.EngineUrlWithProtocol</span>
-                        </b>
-                        <div class="w3-tiny">
-                            @dataClient.ServiceData.SystemKey
-                        </div>
-                    </td>
-                    <td>
-                        <a href="@dataClient.UrlWithProtocol" target="_blank">
-                            <span class="material-icons w3-button">
-                                preview
-                            </span>
-                        </a>
-                    </td>
-                    <td>
-                        @if (dataClient.Active)
+                        @HiddenField(new SimplisityInfo(r), "genxml/checkbox/active", "", "", false, lp3)
+                        @if (r.GetXmlPropertyBool("genxml/checkbox/active"))
                         {
-                            <span class="material-icons w3-button w3-text-green simplisity_click" s-cmd="dataclients_toggleactive" s-fields='{"portalid":"@(dataClient.PortalId)","sitekey":"@(dataClient.SiteKey)"}'>
+                            <span class="material-icons w3-button w3-text-green a-toggle" idx="@(lp3)">
                                 toggle_on
                             </span>
                         }
                         else
                         {
-                            <span class="material-icons w3-button w3-text-red simplisity_click" s-cmd="dataclients_toggleactive" s-fields='{"portalid":"@(dataClient.PortalId)","sitekey":"@(dataClient.SiteKey)"}'>
+                            <span class="material-icons w3-button w3-text-red a-toggle" idx="@(lp3)">
                                 toggle_off
                             </span>
                         }
                     </td>
                     <td>
-                        <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="dataclients_delete" s-fields='{"portalid":"@(dataClient.PortalId)","sitekey":"@(dataClient.SiteKey)"}'>
+                        <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="organisations_delete" s-fields='{"idx":"@(lp3)"}'>
                             @ButtonIcon(ButtonTypes.delete)
                         </div>
                     </td>
                 </tr>
-
-                lp3 + = 1;
+                lp3 += 1;
             }
         </table>
 
@@ -85,6 +70,21 @@
 <script>
     $(document).ready(function () {
 
+        $(".a-toggle").off("click")
+        $(".a-toggle").click(function () {
+            var idx = $(this).attr('idx');
+            if ($('#active_' + idx).val() == 'True') {
+                $('#active_' + idx).val("False");
+                $(this).removeClass('w3-text-green');
+                $(this).addClass('w3-text-red');
+                $(this).text('toggle_off');
+            } else {
+                $('#active_' + idx).val("True");
+                $(this).addClass('w3-text-green');
+                $(this).removeClass('w3-text-red');
+                $(this).text('toggle_on');
+            }
+        });
 
     });
 
@@ -92,7 +92,7 @@
         var input, filter, ul, li, a, i;
         input = document.getElementById("searchtext");
         filter = input.value.toUpperCase();
-        ul = document.getElementById("datalist2");
+        ul = document.getElementById("datalist");
         li = $('.searchdiv');
         for (i = 0; i < li.length; i++) {
             txtValue = li[i].textContent || li[i].innerText;

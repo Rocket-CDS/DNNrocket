@@ -53,7 +53,25 @@ namespace Rocket.AppThemes.Components
         }
         public void AddRow()
         {
-            Record.AddRecordListItem(_listName, new SimplisityRecord());
+            var s = new SimplisityRecord();
+            s.SetXmlProperty("genxml/textbox/url", "");
+            s.SetXmlProperty("genxml/textbox/name", "");
+            s.SetXmlProperty("genxml/checkbox/active", "");
+            Record.AddRecordListItem(_listName, s);
+            Update();
+        }
+        public void DeleteRow(int idx)
+        {
+            Record.RemoveRecordListItem(_listName, idx);
+            Update();
+        }
+        public bool Active(int idx)
+        {
+            return Record.GetXmlPropertyBool("genxml/" + _listName + "/genxml[" + idx + 1 + "]/checkbox/active");
+        }
+        public void Active(int idx, bool value)
+        {
+            Record.SetXmlProperty("genxml/" + _listName + "/genxml[" + idx + 1 + "]/checkbox/active", value.ToString());
             Update();
         }
         public string ExportData(bool withTextData = false)
@@ -84,7 +102,7 @@ namespace Rocket.AppThemes.Components
                 var a = s.GetXmlPropertyBool("genxml/checkbox/active");
                 if (a)
                 {
-                    var v = s.GetXmlProperty("genxml/textbox/value");
+                    var v = s.GetXmlProperty("genxml/textbox/name");
                     var k = s.GetXmlProperty("genxml/textbox/url");
                     if (!rtnDict.ContainsKey(k)) rtnDict.Add(k, v);
                 }

@@ -97,7 +97,7 @@ namespace RocketPortal.App_LocalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Organisations.
+        ///   Looks up a localized string similar to Theme Sources.
         /// </summary>
         internal static string organisations_Text {
             get {

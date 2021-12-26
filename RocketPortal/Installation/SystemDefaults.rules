@@ -39,6 +39,14 @@
       <cmd>organisations_add</cmd>
       <action>true</action>
     </command>
+    <command>
+      <cmd>organisations_delete</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>organisations_save</cmd>
+      <action>true</action>
+    </command>
 
     <command>
       <cmd>rocketportal_get</cmd>

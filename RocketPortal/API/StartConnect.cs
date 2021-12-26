@@ -70,10 +70,16 @@ namespace RocketPortal.API
 
 
                 case "organisations_list":
-                    //strOut = GetOrgList();
+                    strOut = GetOrgList();
+                    break;
+                case "organisations_save":
+                    strOut = SaveOrg();
                     break;
                 case "organisations_add":
-                    //strOut = GetOrgList();
+                    strOut = AddOrg();
+                    break;
+                case "organisations_delete":
+                    strOut = DeleteOrg();
                     break;
 
 
