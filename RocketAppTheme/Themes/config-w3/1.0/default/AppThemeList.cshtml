@@ -11,61 +11,96 @@
     var appThemeList = (AppThemeDataList)Model.List.First();
     var systemAppTheme = new AppThemeSystemLimpet("rocketapptheme");
     var rocketAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
-}
-
-<!-- Use RP_admin.js from RocketPortal project, so we can use templates in both systems -->
-<script src="/DesktopModules/DNNrocket/RocketPortal/Themes/config-w3/1.0/js/RP_Admin.js"></script>
-
-@RenderLanguageSelector("rocketapptheme_getlist", "", rocketAppTheme, Model)
-
-<div id="appthemelist" class="w3-padding">
-
-    <div class="w3-bar searchdata">
-        <div class="w3-bar-item">
-            @appThemeList.Organisation
-            @DropDownSystemKeyList(new SimplisityInfo(),"genxml/selectedsystemkey", " class='w3-input w3-border'")
-        </div>
-        <input class="w3-bar-item w3-right w3-input w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
-    </div>
-
-
-    <div id="datalist" class="w3-container w3-margin-top">
-
-        <table class="w3-table w3-bordered w3-hoverable">
-            @foreach (var appTheme in appThemeList.List)
+    var orgData = new OrganisationLimpet();
+    var orgDict = new Dictionary<string, string>();
+    foreach (SimplisityRecord o in orgData.List)
+    {
+        if (o.GetXmlPropertyBool("genxml/checkbox/active"))
+        {
+            if (!orgDict.ContainsKey(o.GetXmlProperty("genxml/textbox/url")))
             {
-                <tr class="searchdiv simplisity_click" s-cmd="rocketapptheme_getdetail" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))","appthemefolder":"@appTheme.AppThemeFolder"}' style="cursor:pointer;">
-                    <td><b>@appTheme.AppThemeFolder</b></td>
-                </tr>
-            }
-        </table>
-
-    </div>
-</div>
-
-<script>
-    $(document).ready(function () {
-
-        $('.actionentrykey').focus();
-
-    });
-
-    function searchFunction() {
-        var input, filter, ul, li, a, i;
-        input = document.getElementById("searchtext");
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("datalist2");
-        li = $('.searchdiv');
-        for (i = 0; i < li.length; i++) {
-            txtValue = li[i].textContent || li[i].innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
+                orgDict.Add(o.GetXmlProperty("genxml/textbox/url"), o.GetXmlProperty("genxml/textbox/name"));
             }
         }
     }
+    var systemDict = new Dictionary<string, string>();
+    systemDict.Add("", "");
+    foreach (var appTheme in appThemeList.List)
+    {
+        if (!systemDict.ContainsKey(appTheme.SystemKey))
+        {
+            systemDict.Add(appTheme.SystemKey, appTheme.SystemKey);
+        }
+    }
 
-</script>
+
+}
+
+    <!-- Use RP_admin.js from RocketPortal project, so we can use templates in both systems -->
+    <script src="/DesktopModules/DNNrocket/RocketPortal/Themes/config-w3/1.0/js/RP_Admin.js"></script>
+
+    @RenderLanguageSelector("rocketapptheme_getlist", "", rocketAppTheme, Model)
+
+    <div id="appthemelist" class="w3-padding">
+
+        <div class="w3-bar searchdata">
+            <div class="w3-bar-item">
+                @appThemeList.Organisation
+                @DropDownList(new SimplisityInfo(), "genxml/selectedorg", orgDict, " class='w3-input w3-border'")
+            </div>
+            <div class="w3-bar-item">
+                @DropDownList(new SimplisityInfo(), "genxml/selectedsystem", systemDict, " class='w3-input w3-border' ")
+            </div>
+            <input class="w3-bar-item w3-right w3-input w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
+        </div>
+
+
+        <div id="datalist" class="w3-container w3-margin-top">
+
+            <table class="w3-table w3-bordered w3-hoverable">
+                @foreach (var appTheme in appThemeList.List)
+                {
+                    <tr class="searchdiv simplisity_click" s-cmd="rocketapptheme_getdetail" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))","appthemefolder":"@appTheme.AppThemeFolder"}' style="cursor:pointer;">
+                        <td><b>@appTheme.AppThemeFolder</b></td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            $('.actionentrykey').focus();
+
+            $('#selectedsystem').off("change");
+            $('#selectedsystem').change(function () {
+                hideFunction($(this).val());
+            });
+
+        });
+
+        function searchFunction() {
+            $('#selectedsystem').val('');
+            var input = document.getElementById("searchtext").value;
+            hideFunction(input);
+        }
+
+        function hideFunction(filter) {
+            var li, i;
+            filter = filter.toUpperCase();
+            li = $('.searchdiv');
+            for (i = 0; i < li.length; i++) {
+                txtValue = li[i].textContent || li[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+
+    </script>
 
 

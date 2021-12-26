@@ -143,6 +143,9 @@ The assembly that will be executed should be installed into the bin folder and t
   <data name="general.Text" xml:space="preserve">
     <value>General</value>
   </data>
+  <data name="githuborg.Text" xml:space="preserve">
+    <value>GitHub Organization Name</value>
+  </data>
   <data name="imagetype.Text" xml:space="preserve">
     <value>Image Type</value>
   </data>

@@ -109,85 +109,87 @@ namespace DNNrocketAPI.Components
 
         private void SyncFiles()
         {
-            // sync filesystem
-            if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\default")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\default");
-            foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\default", "*.*", SearchOption.TopDirectoryOnly))
+            if (AppThemeFolder != "")
             {
-                var fname = Path.GetFileName(newPath).ToLower();
-                if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
-                FileNameList.Add(fname, newPath);
-            }
-
-            if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\css")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\css");
-            foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\css", "*.css", SearchOption.TopDirectoryOnly))
-            {
-                var fname = Path.GetFileName(newPath).ToLower();
-                if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
-                FileNameList.Add(fname, newPath);
-            }
-
-            if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\js")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\js");
-            foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\js", "*.js", SearchOption.TopDirectoryOnly))
-            {
-                var fname = Path.GetFileName(newPath).ToLower();
-                if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
-                FileNameList.Add(fname, newPath);
-            }
-
-            if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\resx")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\resx");
-            foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\resx", "*.resx", SearchOption.TopDirectoryOnly))
-            {
-                var fname = Path.GetFileName(newPath).ToLower();
-                if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
-                FileNameList.Add(fname, newPath);
-            }
-
-            if (!Directory.Exists(ImageFolderMapPath)) Directory.CreateDirectory(ImageFolderMapPath);
-            foreach (string newPath in Directory.GetFiles(ImageFolderMapPath, "*.*", SearchOption.TopDirectoryOnly))
-            {
-                var fname = Path.GetFileName(newPath).ToLower();
-                if (ImageFileNameList.ContainsKey(fname)) ImageFileNameList.Remove(fname);
-                ImageFileNameList.Add(fname, newPath);
-            }
-
-            // portal level files.
-            if (Directory.Exists(PortalFileDirectoryMapPath + "\\default"))
-            {
-                foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\default", "*.*", SearchOption.TopDirectoryOnly))
+                // sync filesystem
+                if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\default")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\default");
+                foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\default", "*.*", SearchOption.TopDirectoryOnly))
                 {
                     var fname = Path.GetFileName(newPath).ToLower();
-                    if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);
-                    PortalFileNameList.Add(fname, newPath);
+                    if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
+                    FileNameList.Add(fname, newPath);
                 }
-            }
-            if (Directory.Exists(PortalFileDirectoryMapPath + "\\css"))
-            {
-                foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\css", "*.css", SearchOption.TopDirectoryOnly))
-                {
-                    var fname = Path.GetFileName(newPath).ToLower();
-                    if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);
-                    PortalFileNameList.Add(fname, newPath);
-                }
-            }
-            if (Directory.Exists(PortalFileDirectoryMapPath + "\\js"))
-            {
-                foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\js", "*.js", SearchOption.TopDirectoryOnly))
-                {
-                    var fname = Path.GetFileName(newPath).ToLower();
-                    if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);
-                    PortalFileNameList.Add(fname, newPath);
-                }
-            }
-            if (Directory.Exists(PortalFileDirectoryMapPath + "\\resx"))
-            {
-                foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\resx", "*.resx", SearchOption.TopDirectoryOnly))
-                {
-                    var fname = Path.GetFileName(newPath).ToLower();
-                    if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);
-                    PortalFileNameList.Add(fname, newPath);
-                }
-            }
 
+                if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\css")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\css");
+                foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\css", "*.css", SearchOption.TopDirectoryOnly))
+                {
+                    var fname = Path.GetFileName(newPath).ToLower();
+                    if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
+                    FileNameList.Add(fname, newPath);
+                }
+
+                if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\js")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\js");
+                foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\js", "*.js", SearchOption.TopDirectoryOnly))
+                {
+                    var fname = Path.GetFileName(newPath).ToLower();
+                    if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
+                    FileNameList.Add(fname, newPath);
+                }
+
+                if (!Directory.Exists(AppThemeVersionFolderMapPath + "\\resx")) Directory.CreateDirectory(AppThemeVersionFolderMapPath + "\\resx");
+                foreach (string newPath in Directory.GetFiles(AppThemeVersionFolderMapPath + "\\resx", "*.resx", SearchOption.TopDirectoryOnly))
+                {
+                    var fname = Path.GetFileName(newPath).ToLower();
+                    if (FileNameList.ContainsKey(fname)) FileNameList.Remove(fname);
+                    FileNameList.Add(fname, newPath);
+                }
+
+                if (!Directory.Exists(ImageFolderMapPath)) Directory.CreateDirectory(ImageFolderMapPath);
+                foreach (string newPath in Directory.GetFiles(ImageFolderMapPath, "*.*", SearchOption.TopDirectoryOnly))
+                {
+                    var fname = Path.GetFileName(newPath).ToLower();
+                    if (ImageFileNameList.ContainsKey(fname)) ImageFileNameList.Remove(fname);
+                    ImageFileNameList.Add(fname, newPath);
+                }
+
+                // portal level files.
+                if (Directory.Exists(PortalFileDirectoryMapPath + "\\default"))
+                {
+                    foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\default", "*.*", SearchOption.TopDirectoryOnly))
+                    {
+                        var fname = Path.GetFileName(newPath).ToLower();
+                        if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);
+                        PortalFileNameList.Add(fname, newPath);
+                    }
+                }
+                if (Directory.Exists(PortalFileDirectoryMapPath + "\\css"))
+                {
+                    foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\css", "*.css", SearchOption.TopDirectoryOnly))
+                    {
+                        var fname = Path.GetFileName(newPath).ToLower();
+                        if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);
+                        PortalFileNameList.Add(fname, newPath);
+                    }
+                }
+                if (Directory.Exists(PortalFileDirectoryMapPath + "\\js"))
+                {
+                    foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\js", "*.js", SearchOption.TopDirectoryOnly))
+                    {
+                        var fname = Path.GetFileName(newPath).ToLower();
+                        if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);
+                        PortalFileNameList.Add(fname, newPath);
+                    }
+                }
+                if (Directory.Exists(PortalFileDirectoryMapPath + "\\resx"))
+                {
+                    foreach (string newPath in Directory.GetFiles(PortalFileDirectoryMapPath + "\\resx", "*.resx", SearchOption.TopDirectoryOnly))
+                    {
+                        var fname = Path.GetFileName(newPath).ToLower();
+                        if (PortalFileNameList.ContainsKey(fname)) PortalFileNameList.Remove(fname);
+                        PortalFileNameList.Add(fname, newPath);
+                    }
+                }
+            }
         }
         private void CreateVersionFolders(double dblVersionFolder)
         {

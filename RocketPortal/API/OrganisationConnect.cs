@@ -25,7 +25,6 @@ namespace RocketPortal.API
         }
         private String SaveOrg()
         {
-            var idx = _paramInfo.GetXmlPropertyInt("genxml/hidden/idx");
             var orgData = new OrganisationLimpet();
             orgData.Record.XMLData = _postInfo.XMLData;
             orgData.Update();

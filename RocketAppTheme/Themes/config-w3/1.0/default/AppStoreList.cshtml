@@ -8,8 +8,43 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketAppTheme/App_LocalResources/")
 
 @{
+    var sessionParams = Model.SessionParamsData;
     var appThemeList = (AppThemeDataList)Model.List.First();
     var systemAppTheme = new AppThemeSystemLimpet("rocketapptheme");
+    var orgData = new OrganisationLimpet();
+    var orgDict = new Dictionary<string, string>();
+    foreach (SimplisityRecord o in orgData.List)
+    {
+        if (o.GetXmlPropertyBool("genxml/checkbox/active"))
+        {
+            if (!orgDict.ContainsKey(o.GetXmlProperty("genxml/textbox/url")))
+            {
+                orgDict.Add(o.GetXmlProperty("genxml/textbox/url"), o.GetXmlProperty("genxml/textbox/name"));
+            }
+        }
+    }
+
+    var selectedOrg = sessionParams.Get("selectedorg");
+    if (selectedOrg == "" && orgDict.Count > 0)
+    {
+        selectedOrg = orgDict.First().Value;
+    }
+
+    var gitHubList = AppThemeUtils.GetGitHubAppThemes(selectedOrg);
+
+    var systemDict = new Dictionary<string, string>();
+    systemDict.Add("", "");
+    var appThemes = new Dictionary<string, object>();
+    foreach (var gitRepoRec in gitHubList)
+    {
+        var at = AppThemeUtils.GetAppThemeLimpet("", gitRepoRec.GetXmlNode("genxml/name"), "", selectedOrg);
+        appThemes.Add(gitRepoRec.GetXmlNode("genxml/name"), at);
+        if (!systemDict.ContainsKey(at.SystemKey))
+        {
+            systemDict.Add(at.SystemKey, at.SystemKey);
+        }
+    }
+
 }
 
 @RenderTemplate("Popups.cshtml", systemAppTheme, Model, true)
@@ -17,11 +52,13 @@
 <div>
 
     <div class="w3-bar searchdata">
-        <div class="w3-bar-item w3-right " style=''>
-            <div class="w3-bar">
-                <input class="w3-bar-item w3-input w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
-            </div>
+        <div class="w3-bar-item">
+            @DropDownList(new SimplisityInfo(), "genxml/selectedorg", orgDict, " class='w3-input w3-border'", selectedOrg)
         </div>
+        <div class="w3-bar-item">
+            @DropDownList(new SimplisityInfo(), "genxml/selectedsystem", systemDict, " class='w3-input w3-border' ")
+        </div>
+        <input class="w3-bar-item w3-input w3-right w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("Appthemes.searchapptheme")..." id="searchtext" onkeyup="searchFunction()">
     </div>
 
     <div id="datalist" class="w3-container w3-margin-top">
@@ -35,19 +72,14 @@
                     <th onclick="document.getElementById('a-downloadappthemeall').style.display = 'block';" class="" style="cursor:pointer;width:80px;">@ButtonIcon(ButtonTypes.download)</th>
                 </tr>
             </thead>
-            @{
-                var l = AppThemeUtils.GetGitHubAppThemes("ToastedTemplates");
-                var githubList = new List<string>();
-            }
-            @foreach (var gitRepoRec in l)
+            @foreach (var gitRepoRec in gitHubList)
             {
-                var appTheme = AppThemeUtils.GetAppThemeLimpet("", gitRepoRec.GetXmlNode("genxml/name"), "", "ToastedTemplates");
-                githubList.Add(appTheme.AppThemeFolder);
+                var appTheme = (AppThemeLimpet)appThemes[gitRepoRec.GetXmlNode("genxml/name")];
 
                 <tr class="searchdiv">
                     <td><b>@gitRepoRec.GetXmlProperty("genxml/name")</b></td>
                     <td>@Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortDateString() @Convert.ToDateTime(gitRepoRec.GetXmlProperty("genxml/updated_at")).ToShortTimeString()</td>
-                    <td><a href="@gitRepoRec.GetXmlProperty("genxml/html_url")" target="_blank">
+                    <td><a href="@gitRepoRec.GetXmlProperty("genxml/html_url")" target="_blank" style="color:black;text-decoration: none;">
                             <span class="material-icons">
                                 developer_mode
                             </span>
@@ -70,17 +102,12 @@
 
         <div id="a-downloadapptheme" class="w3-modal">
             <div class="w3-modal-content w3-card w3-animate-zoom">
-                <header class="w3-container  w3-theme" style="height:38px;">
-                    <span onclick="document.getElementById('a-downloadapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                </header>
+                <span onclick="document.getElementById('a-downloadapptheme').style.display='none'" class="w3-button w3-display-topright">&times;</span>
                 <div class=" w3-padding">
                     <div class="w3-padding w3-large a-downloadappthemename"></div>
-                    <div class="w3-light-grey w3-margin">
-                        <div class=" progressBarDownload w3-container w3-green" style="height:32px;width:1%"></div>
-                    </div>
                     <div class="w3-row w3-margin w3-center">
                         <div class="w3-third">&nbsp;</div>
-                        <div class="w3-third a-downloadbutton w3-button w3-teal w3-padding-8 simplisity_click" s-before="moveprogressbardownload" s-after="stopprogressbardownload" s-cmd="rocketapptheme_downloadgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'>@ButtonIcon(ButtonTypes.download)&nbsp;@ResourceKey("AppThemes.install")</div>
+                        <div class="w3-third a-downloadbutton w3-button w3-theme-action w3-padding-8 simplisity_click" s-cmd="rocketapptheme_downloadgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'>@ButtonIcon(ButtonTypes.download)&nbsp;@ResourceKey("AppThemes.install")</div>
                         <div class="w3-third">&nbsp;</div>
                     </div>
                 </div>
@@ -89,18 +116,12 @@
 
         <div id="a-downloadappthemeall" class="w3-modal">
             <div class="w3-modal-content w3-card w3-animate-zoom">
-
-                <header class="w3-container  w3-theme" style="height:38px;">
-                    <span onclick="document.getElementById('a-downloadappthemeall').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                </header>
+                <span onclick="document.getElementById('a-downloadappthemeall').style.display='none'" class="w3-button w3-display-topright">&times;</span>
                 <div class=" w3-padding">
                     <div class="w3-padding  w3-large">@ResourceKey("AppThemes.installall")</div>
-                    <div class="w3-light-grey w3-margin">
-                        <div class="progressBarDownload w3-container w3-green" style="height:32px;width:1%"></div>
-                    </div>
                     <div class="w3-row w3-margin w3-center">
                         <div class="w3-third">&nbsp;</div>
-                        <div class="w3-third a-downloadbutton w3-button w3-teal w3-padding simplisity_click" s-before="moveprogressbardownload" s-after="stopprogressbardownload" s-cmd="rocketapptheme_downloadallgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'>@ButtonIcon(ButtonTypes.download)&nbsp;@ResourceKey("AppThemes.installall")</div>
+                        <div class="w3-third a-downloadbutton w3-button w3-teal w3-padding simplisity_click" s-cmd="rocketapptheme_downloadallgithub" s-fields='{"systemkey":"@(Model.GetSetting("systemkey"))"}'>@ButtonIcon(ButtonTypes.download)&nbsp;@ResourceKey("AppThemes.installall")</div>
                         <div class="w3-third">&nbsp;</div>
                     </div>
                 </div>
@@ -120,17 +141,36 @@
             document.getElementById('a-downloadapptheme').style.display = 'block';
             simplisity_setParamField('htmlurl', $(this).attr('htmlurl'));
             simplisity_setParamField('appthemefolder', $(this).attr('appthemefolder'));
-            simplisity_setParamField('org', 'ToastedTemplates');
+            simplisity_setParamField('org', $('#selectedorg').val());
             $('.a-downloadappthemename').html($(this).attr('appthemefolder'));
         });
+
+        $('#selectedsystem').off("change");
+        $('#selectedsystem').change(function () {
+            hideFunction($(this).val());
+            return false;
+        });
+
+        $('#selectedorg').off("change");
+        $('#selectedorg').change(function () {
+            simplisity_setSessionField('selectedorg', $('#selectedorg').val());
+            $("[s-cmd='rocketapptheme_getappstore']").trigger('click');
+            return false;
+        });
+
+
 
     });
 
     function searchFunction() {
-        var input, filter, ul, li, a, i;
-        input = document.getElementById("searchtext");
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("datalist2");
+        $('#selectedsystem').val('');
+        var input = document.getElementById("searchtext").value;
+        hideFunction(input);
+    }
+
+    function hideFunction(filter) {
+        var li, i;
+        filter = filter.toUpperCase();
         li = $('.searchdiv');
         for (i = 0; i < li.length; i++) {
             txtValue = li[i].textContent || li[i].innerText;
@@ -141,26 +181,6 @@
             }
         }
     }
-
-    function moveprogressbardownload() {
-        $('.a-downloadbutton').hide();
-        var width = 1;
-        progressbarid = setInterval(frame, 200);
-        function frame() {
-            if (width >= 100) {
-                width = 1;
-            } else {
-                width++;
-                $('.progressBarDownload').width(width + '%');
-            }
-        }
-    }
-
-    function stopprogressbardownload() {
-        clearInterval(progressbarid)
-    }
-
-
 
 </script>
 

@@ -61,20 +61,27 @@ namespace Rocket.AppThemes.Components
             lock (_cacheLock2)
             {
                 rtnList = new List<SimplisityRecord>();
-                var contentsJson = HttpGet($"https://api.github.com/orgs/{org}/repos");
-                var contents = (JArray)JsonConvert.DeserializeObject(contentsJson);
-                foreach (var file in contents)
+                try
                 {
-                    var themename = (string)file["name"];
-                    if (!String.IsNullOrEmpty(themename))
+                    var contentsJson = HttpGet($"https://api.github.com/orgs/{org}/repos");
+                    var contents = (JArray)JsonConvert.DeserializeObject(contentsJson);
+                    foreach (var file in contents)
                     {
-                        XmlDocument doc = JsonConvert.DeserializeXmlNode("{\"genxml\":" + file.ToString() + "}");
-                        var sRec = new SimplisityRecord();
-                        sRec.XMLData = doc.OuterXml;
-                        rtnList.Add(sRec);
+                        var themename = (string)file["name"];
+                        if (!String.IsNullOrEmpty(themename))
+                        {
+                            XmlDocument doc = JsonConvert.DeserializeXmlNode("{\"genxml\":" + file.ToString() + "}");
+                            var sRec = new SimplisityRecord();
+                            sRec.XMLData = doc.OuterXml;
+                            rtnList.Add(sRec);
+                        }
                     }
+                    CacheUtilsDNN.SetCache(cKey, rtnList);
                 }
-                CacheUtilsDNN.SetCache(cKey, rtnList);
+                catch (Exception)
+                {
+                    // Organisation does not exist, ignore and return empty list
+                }
                 return rtnList;
             }
         }

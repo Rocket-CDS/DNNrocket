@@ -56,7 +56,7 @@ namespace DNNrocket.AppThemes
                         strOut = GetList();
                         break;
                     case "rocketapptheme_downloadallgithub":
-                        AppThemeUtils.DownloadAllGitHubAppTheme("ToastedTemplates");
+                        AppThemeUtils.DownloadAllGitHubAppTheme(_org);
                         strOut = GetAppStoreList();
                         break;
                     default:
@@ -149,6 +149,10 @@ namespace DNNrocket.AppThemes
                         break;
                 }
             }
+            else
+            {
+                strOut = ReloadPage();
+            }
 
             return DNNrocketUtils.ReturnString(strOut);
         }
@@ -192,7 +196,7 @@ namespace DNNrocket.AppThemes
                 _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
             }
-            _org = _paramInfo.GetXmlProperty("genxml/hidden/org");
+            _org = _paramInfo.GetXmlProperty("genxml/hidden/selectedorg");
             _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _org);
 
 
@@ -684,7 +688,22 @@ namespace DNNrocket.AppThemes
             var rtn = RenderRazorUtils.RazorProcessData(razorTempl, appTheme, null, _passSettings, new SessionParams(_paramInfo), true);
             return rtn.RenderedText;
         }
+        private string ReloadPage()
+        {
+            try
+            {
+                // user does not have access, logoff
+                UserUtils.SignOut();
 
+                var razorTempl = _appThemeSystem.GetTemplate("Reload.cshtml");
+                var rtn = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, null, _passSettings, _sessionParams, true);
+                return rtn.RenderedText;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
 
     }
 }
