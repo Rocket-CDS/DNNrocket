@@ -17,16 +17,16 @@ namespace DNNrocketAPI.Components
         {
         }
 
-        [Obsolete("Use AppThemeBase(int portalid, string appThemeFolderRel, string versionFolder) instead")]
-        public AppThemeBase(string appThemeFolderRel, string versionFolder = "")
+        [Obsolete("Use AppThemeBase(int portalid, string appThemeFolderRel, string versionFolder, string org) instead")]
+        public AppThemeBase(string appThemeFolderRel, string versionFolder = "", string org = "")
         {
-            Init(-1, appThemeFolderRel, versionFolder);
+            Init(-1, appThemeFolderRel, versionFolder, org);
         }
-        public AppThemeBase(int portalid, string appThemeFolderRel, string versionFolder = "")
+        public AppThemeBase(int portalid, string appThemeFolderRel, string versionFolder = "", string org = "")
         {
-            Init(portalid, appThemeFolderRel, versionFolder);
+            Init(portalid, appThemeFolderRel, versionFolder, org);
         }
-        private void Init(int portalid, string appThemeFolderRel, string versionFolder = "")
+        private void Init(int portalid, string appThemeFolderRel, string versionFolder = "", string org = "")
         {
             AppThemeFolderRel = appThemeFolderRel;
             FileNameList = new Dictionary<string, string>();
@@ -42,7 +42,7 @@ namespace DNNrocketAPI.Components
             AppVersion = Convert.ToDouble(AppVersionFolder, CultureInfo.GetCultureInfo("en-US"));
             LatestVersion = Convert.ToDouble(LatestVersionFolder, CultureInfo.GetCultureInfo("en-US"));
             PortalId = PortalUtils.GetPortalId();
-            PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath().TrimEnd('\\') + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
+            PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath().TrimEnd('\\') + "\\" + org + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
             AssignVersionFolders();
             ImportConfig();
 
@@ -312,7 +312,7 @@ namespace DNNrocketAPI.Components
             if (ext == ".css") subfolder = "css";
             if (ext == ".js") subfolder = "js";
             if (ext == ".resx") subfolder = "resx";
-            return PortalFileDirectoryMapPath + subfolder + "\\" + fn;
+            return PortalFileDirectoryMapPath + "\\"  + subfolder + "\\" + fn;
         }
 
         public void DeleteTheme()

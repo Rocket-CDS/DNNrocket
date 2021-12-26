@@ -214,7 +214,7 @@ namespace DNNrocket.AppThemes
             {
                 var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
                 _appTheme.DeleteFile(filename, moduleref);
-                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _org);
             }
             return GetDetail();
         }
@@ -233,7 +233,7 @@ namespace DNNrocket.AppThemes
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 
-                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _org);
             }
             return GetDetail();
         }
@@ -566,7 +566,7 @@ namespace DNNrocket.AppThemes
                 var newAppThemeDirName = _appTheme.AppThemeFolderMapPath.TrimEnd('\\') + "\\..\\" + newAppThemeName;
 
                 _appTheme.Copy(newAppThemeDirName);
-                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), newAppThemeName, _appTheme.LatestVersionFolder);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), newAppThemeName, _appTheme.LatestVersionFolder, _org);
                 ClearServerCacheLists();
                 return GetDetail();
             }
@@ -610,7 +610,7 @@ namespace DNNrocket.AppThemes
             var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
             _appTheme.SaveEditor(filename, editorcode, moduleref);
             CacheFileUtils.ClearAllCache();
-            _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appTheme.AppThemeFolder, _appTheme.AppVersionFolder);
+            _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appTheme.AppThemeFolder, _appTheme.AppVersionFolder, _org);
             return GetEditorDetail();
         }
 
@@ -638,7 +638,7 @@ namespace DNNrocket.AppThemes
                 {
                     if (File.Exists(fileMapPath)) resxFileData = FileUtils.ReadFile(fileMapPath);
                     FileUtils.SaveFile(fileMapPath, resxFileData);
-                    _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder);
+                    _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder, _org);
                 }
             }
         }
@@ -652,7 +652,7 @@ namespace DNNrocket.AppThemes
                 var cssFileData = "";
                 if (File.Exists(fileMapPath)) cssFileData = FileUtils.ReadFile(fileMapPath);
                 FileUtils.SaveFile(fileMapPath, cssFileData);
-                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder, _org);
             }
         }
         private void AddJsFile()
@@ -665,7 +665,7 @@ namespace DNNrocket.AppThemes
                 var jsFileData = "";
                 if (File.Exists(fileMapPath)) jsFileData = FileUtils.ReadFile(fileMapPath);
                 FileUtils.SaveFile(fileMapPath, jsFileData);
-                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder, _org);
             }
         }
         private void AddTemplateFile()
@@ -678,7 +678,7 @@ namespace DNNrocket.AppThemes
                 var templateFileData = "";
                 if (File.Exists(fileMapPath)) templateFileData = FileUtils.ReadFile(fileMapPath);
                 FileUtils.SaveFile(fileMapPath, templateFileData);
-                _appTheme = new AppThemeLimpet(_portalData.PortalId, _appThemeFolder, _appTheme.AppVersionFolder);
+                _appTheme = new AppThemeLimpet(_portalData.PortalId, _appThemeFolder, _appTheme.AppVersionFolder, _org);
             }
         }
         private void AssignEditLang()
