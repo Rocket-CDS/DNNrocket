@@ -933,9 +933,9 @@ namespace DNNrocketAPI.Components
                 {
                     SetCurrentCulture(HttpContext.Current.Request.QueryString["language"]);
                 }
-                // no url language, look in the cookies.
-                if (HttpContext.Current.Request.Cookies["language"] != null)
+                else
                 {
+                    // no url language, look in the cookies.
                     var l = GetCultureCodeList();
                     var rtnlang = HttpContext.Current.Request.Cookies["language"].Value;
                     if (rtnlang == null || rtnlang == "" || !l.Contains(rtnlang))
