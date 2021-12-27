@@ -121,6 +121,22 @@ namespace Rocket.AppThemes.Components
             return dl.First().GetXmlProperty("genxml/textbox/org");
         }
 
+        public Dictionary<string, string> ActiveList()
+        {
+            var orgDict = new Dictionary<string, string>();
+            foreach (SimplisityRecord o in List)
+            {
+                if (o.GetXmlPropertyBool("genxml/checkbox/active"))
+                {
+                    if (!orgDict.ContainsKey(o.GetXmlProperty("genxml/textbox/org")))
+                    {
+                        orgDict.Add(o.GetXmlProperty("genxml/textbox/org"), o.GetXmlProperty("genxml/textbox/name"));
+                    }
+                }
+            }
+            return orgDict;
+        }
+
         public List<SimplisityRecord> List { get { return Record.GetRecordList(_listName); } }
 
 

@@ -13,22 +13,11 @@
     var systemAppTheme = new AppThemeSystemLimpet("rocketapptheme");
     var rocketAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
     var orgData = new OrganisationLimpet();
-    var orgDict = new Dictionary<string, string>();
-    foreach (SimplisityRecord o in orgData.List)
-    {
-        if (o.GetXmlPropertyBool("genxml/checkbox/active"))
-        {
-            if (!orgDict.ContainsKey(o.GetXmlProperty("genxml/textbox/org")))
-            {
-                orgDict.Add(o.GetXmlProperty("genxml/textbox/org"), o.GetXmlProperty("genxml/textbox/name"));
-            }
-        }
-    }
 
     var selectedOrg = sessionParams.Get("selectedorg");
-    if (selectedOrg == "" && orgDict.Count > 0)
+    if (selectedOrg == "" && orgData.ActiveList().Count > 0)
     {
-        selectedOrg = orgDict.First().Value;
+        selectedOrg = orgData.DefaultOrg();
     }
 
     var systemDict = new Dictionary<string, string>();
@@ -54,7 +43,7 @@
 
         <div class="w3-bar searchdata">
             <div class="w3-bar-item">
-                @DropDownList(new SimplisityInfo(), "genxml/selectedorg", orgDict, " class='w3-input w3-border'", selectedOrg)
+                @DropDownList(new SimplisityInfo(), "genxml/selectedorg", orgData.ActiveList(), " class='w3-input w3-border'", selectedOrg)
             </div>
             <div class="w3-bar-item">
                 @DropDownList(new SimplisityInfo(), "genxml/selectedsystem", systemDict, " class='w3-input w3-border' ")

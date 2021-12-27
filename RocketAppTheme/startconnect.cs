@@ -324,7 +324,7 @@ namespace DNNrocket.AppThemes
                 }
 
                 // crearte new _appTheme.
-                var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), newAppThemeName, "1.0");
+                var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), newAppThemeName, "1.0", _org);
 
                 ClearServerCacheLists();
 
@@ -480,7 +480,7 @@ namespace DNNrocket.AppThemes
             if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
             var appVersionFolder = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder"));
             if (appVersionFolder == "") appVersionFolder = _appVersionFolder;
-            var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), appThemeFolder, appVersionFolder);
+            var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), appThemeFolder, appVersionFolder, _org);
 
             var exportZipMapPath = appTheme.ExportZipFile();
 
