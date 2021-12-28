@@ -47,6 +47,8 @@ namespace DNNrocketAPI.Components
                         processResult.RenderedText = "";
                         processResult.StatusCode = "01";
                         processResult.ErrorMsg = ex.ToString();
+                        LogUtils.LogSystem(ex.ToString());
+                        LogUtils.LogException(ex);
                     }
                     return processResult;
                 }
@@ -76,6 +78,8 @@ namespace DNNrocketAPI.Components
                         processResult.RenderedText = "";
                         processResult.StatusCode = "02";
                         processResult.ErrorMsg = ex.ToString();
+                        LogUtils.LogSystem(ex.ToString());
+                        LogUtils.LogException(ex);
                     }
                 }
                 else
@@ -96,6 +100,8 @@ namespace DNNrocketAPI.Components
                         {
                             processResult.StatusCode = "03";
                             processResult.ErrorMsg = ex1.ToString();
+                            LogUtils.LogSystem(ex1.ToString());
+                            LogUtils.LogException(ex1);
                         }
                     }
                 }
@@ -107,6 +113,8 @@ namespace DNNrocketAPI.Components
                 processResult.RenderedText = "";
                 processResult.StatusCode = "03";
                 processResult.ErrorMsg = ex.ToString();
+                LogUtils.LogSystem(ex.ToString());
+                LogUtils.LogException(ex);
             }
 
             return processResult;
