@@ -198,7 +198,8 @@ namespace DNNrocket.AppThemes
                 _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
             }
-            _org = _paramInfo.GetXmlProperty("genxml/hidden/selectedorg");
+            _org = _paramInfo.GetXmlProperty("genxml/remote/selectedorg");
+            if (_org == "") _org = _paramInfo.GetXmlProperty("genxml/hidden/selectedorg");
             if (_org == "") _org = _orgData.DefaultOrg();
 
             _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _org);
