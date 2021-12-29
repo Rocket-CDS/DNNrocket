@@ -285,6 +285,22 @@ namespace DNNrocketAPI.Components
 
         #endregion
 
+        public static SimplisityInfo GetResxPaths(Dictionary<string, List<string>> processdata)
+        {
+            var s = new SimplisityInfo();
+            if (processdata.ContainsKey("resourcepath"))
+            {
+                var l = processdata["resourcepath"];
+                foreach (var r in l)
+                {
+                    var sr = new SimplisityRecord();
+                    sr.SetXmlProperty("genxml/path", r);
+                    s.AddRecordListItem("resxpath", sr);
+                }
+            }
+            return s;
+        }
+
 
         #endregion
 

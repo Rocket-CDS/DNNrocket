@@ -54,6 +54,7 @@ namespace DNNrocketAPI.Components
                     RegisterUrlHelper(hbs);
                     RegisterDisplayHelper(hbs);
                     RegisterThumbnailImageUrl(hbs);
+                    RegisterResourceKey(hbs);
                 _template = hbs.Compile(source);
                 }
                 catch (Exception ex)
@@ -136,6 +137,7 @@ namespace DNNrocketAPI.Components
             RegisterUrlHelper(hbs);
             RegisterDisplayHelper(hbs);
             RegisterThumbnailImageUrl(hbs);
+            RegisterResourceKey(hbs);
         }
 
         private static void RegisterTruncateWordsHelper(HandlebarsDotNet.IHandlebars hbs)
@@ -1212,6 +1214,47 @@ namespace DNNrocketAPI.Components
                 else
                 {
                     writer.WriteSafeString("INCORRECT ARGS: engineUrlWithProtocol (@root.genxml.sessionparams.r.engineurl), src, width (px), height (px)");
+                }
+            });
+        }
+
+        private static void RegisterResourceKey(IHandlebars hbs)
+        {
+            hbs.RegisterHelper("resourcekey", (writer, context, arguments) =>
+            {
+                if (arguments != null && arguments.Length >= 2)
+                {
+                    var o = JsonConvert.DeserializeObject<JObject>(arguments[0].ToString());
+                    var h = o.Value<JObject>("genxml")
+                        .Value<JObject>("resxlist")
+                        .Value<JObject>("genxml").Value<JObject>("resxpath").ToString();
+
+                    dynamic data = JObject.Parse(h);
+                    var resxPathList = new List<string>();
+                    foreach (var j in data["genxml"])
+                    {
+                        resxPathList.Add(j["path"].ToString().Trim('"'));
+                    }
+
+
+                    var lang = "";
+                    var resourceExtension = "Text";
+                    var key = arguments[1].ToString();
+
+                    if (arguments.Length >= 3) lang = arguments[2].ToString(); ;
+                    if (arguments.Length >= 4) resourceExtension = arguments[3].ToString(); ;
+
+                    var strOut = "";
+                    foreach (var r in resxPathList)
+                    {
+                        strOut = DNNrocketUtils.GetResourceString(r, arguments[1].ToString(), resourceExtension, lang);
+                        if (strOut != "") break;
+                    }
+                    writer.WriteSafeString(strOut);
+                }
+                else
+                {
+                    writer.WriteSafeString("INCORRECT ARGS: {{resourcekey this, file.key, language = '', extension = 'Text'}}");
                 }
             });
         }
