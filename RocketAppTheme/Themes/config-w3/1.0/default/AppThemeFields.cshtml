@@ -106,30 +106,37 @@
                             @foreach (var templateDict in appTheme.GetTemplatesRazor())
                             {
                                 var levelColor = LevelColor(appTheme, templateDict.Key, sessionParam.ModuleRef);
-                            <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
-                                <div class="w3-row w3-display-container w3-padding  w3-card @levelColor">
-                                    @if (editRazor)
-                                    {
-                                        <span class="simplisity_click" s-cmd="rocketapptheme_geteditor" s-fields='{"moduleref":"@sessionParam.ModuleRef","filename":"@templateDict.Key","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
-                                    }
-                                    &nbsp;
-                                    @templateDict.Key
-                                    <span class="w3-right">
-                                        @if (levelColor == "w3-pale-blue")
+                                <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
+                                    <div class="w3-row w3-display-container w3-padding  w3-card @levelColor">
+                                        @if (editRazor)
                                         {
-                                            <span>[M]</span>
+                                            <span class="simplisity_click" s-cmd="rocketapptheme_geteditor" s-fields='{"moduleref":"@sessionParam.ModuleRef","filename":"@templateDict.Key","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
                                         }
-                                        @if (levelColor == "w3-indigo")
-                                        {
-                                            <span>[P]</span>
+                                        &nbsp;
+                                        @templateDict.Key
+                                        <span class="w3-right">
+                                            @if (levelColor == "w3-pale-blue")
+                                            {
+                                                <span>[M]</span>
+                                            }
+                                            @if (levelColor == "w3-indigo")
+                                            {
+                                                <span>[P]</span>
 
-                                        }
-                                    </span>
-                                </div>
-                            </li>
+                                            }
+                                        </span>
+                                    </div>
+                                </li>
 
                             }
                         </ul>
+
+                        @if (!editRazor)
+                        {
+                            <div class=" w3-row w3-small w3-text-blue">
+                                @ResourceKey("AppThemes.razoreditsu")
+                            </div>
+                        }
                     </div>
                 </div>
 

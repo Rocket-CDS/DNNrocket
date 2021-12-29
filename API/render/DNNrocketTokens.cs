@@ -856,8 +856,21 @@ namespace DNNrocketAPI.render
 
         public IEncodedString RenderHandleBars(SimplisityInfo info, AppThemeLimpet appTheme, string templateName, string moduleref = "")
         {
-            var strOut = "";
-            var doc = XElement.Parse(info.XMLData);
+            var dataObjects = new Dictionary<string, SimplisityInfo>();
+            dataObjects.Add("data", info);
+            return RenderHandleBars(dataObjects, appTheme, templateName, moduleref);
+        }
+
+        public IEncodedString RenderHandleBars(Dictionary<string, SimplisityInfo> dataObjects, AppThemeLimpet appTheme, string templateName, string moduleref = "")
+        {
+            var dataInfo = new SimplisityInfo();
+            foreach (var o in dataObjects)
+            {
+                dataInfo.SetXmlProperty("genxml/" + o.Key, "");
+                var si = (SimplisityInfo)o.Value;
+                dataInfo.AddXmlNode(o.Value.XMLData, si.RootNodeName, "genxml/" + o.Key);
+            }
+            var doc = XElement.Parse(dataInfo.XMLData);
             var cdata = doc.DescendantNodes().OfType<XCData>().ToList();
             foreach (var cd in cdata)
             {
@@ -868,7 +881,7 @@ namespace DNNrocketAPI.render
             var template = appTheme.GetTemplate(templateName, moduleref);
             JObject model = JObject.Parse(jsonString);
             HandlebarsEngine hbEngine = new HandlebarsEngine();
-            strOut = hbEngine.Execute(template, model);
+            var strOut = hbEngine.Execute(template, model);
             return new RawString(strOut);
         }
 

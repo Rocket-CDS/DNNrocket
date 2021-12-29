@@ -53,6 +53,7 @@ namespace DNNrocketAPI.Components
                     RegisterContainsHelper(hbs);
                     RegisterUrlHelper(hbs);
                     RegisterDisplayHelper(hbs);
+                    RegisterThumbnailImageUrl(hbs);
                 _template = hbs.Compile(source);
                 }
                 catch (Exception ex)
@@ -134,6 +135,7 @@ namespace DNNrocketAPI.Components
             RegisterContainsHelper(hbs);
             RegisterUrlHelper(hbs);
             RegisterDisplayHelper(hbs);
+            RegisterThumbnailImageUrl(hbs);
         }
 
         private static void RegisterTruncateWordsHelper(HandlebarsDotNet.IHandlebars hbs)
@@ -514,9 +516,7 @@ namespace DNNrocketAPI.Components
             {
                 try
                 {
-                    string res = "";
-                    res = parameters[0].ToString();
-                    if (res.StartsWith("{")) res = parameters[1].ToString();
+                    string res = parameters[0].ToString();
                     writer.WriteSafeString(res);
                 }
                 catch (Exception)
@@ -1196,8 +1196,27 @@ namespace DNNrocketAPI.Components
                     }
                 });
             }
-
+        private static void RegisterThumbnailImageUrl(IHandlebars hbs)
+        {
+            hbs.RegisterHelper("thumbnailimageurl", (writer, context, arguments) =>
+            {
+                if (arguments != null && arguments.Length == 4)
+                {
+                    var engineurl = arguments[0].ToString();
+                    var src = arguments[1].ToString();
+                    var w = arguments[2].ToString();
+                    var h = arguments[3].ToString();
+                    var thumburl = engineurl.TrimEnd('/') + "/DesktopModules/DNNrocket/API/DNNrocketThumb.ashx?src=" + src + "&w=" + w +"&h=" + h; 
+                    writer.WriteSafeString(thumburl);
+                }
+                else
+                {
+                    writer.WriteSafeString("INCORRECT ARGS: engineUrlWithProtocol (@root.genxml.sessionparams.r.engineurl), src, width (px), height (px)");
+                }
+            });
         }
+
+    }
 
     public class TemplateException : Exception
     {

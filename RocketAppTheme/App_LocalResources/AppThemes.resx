@@ -306,6 +306,9 @@
   <data name="quickedit.Text" xml:space="preserve">
     <value>Quick Edit</value>
   </data>
+  <data name="razoreditsu.Text" xml:space="preserve">
+    <value>NOTE: For security only the SuperUser can edit razor (.cshtml) templates.</value>
+  </data>
   <data name="rebuild.Text" xml:space="preserve">
     <value>Rebuild</value>
   </data>
