@@ -108,7 +108,7 @@
                                 var levelColor = LevelColor(appTheme, templateDict.Key, sessionParam.ModuleRef);
                                 <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
                                     <div class="w3-row w3-display-container w3-padding  w3-card @levelColor">
-                                        @if (editRazor)
+                                        @if (editRazor || templateDict.Key.EndsWith(".hbs"))
                                         {
                                             <span class="simplisity_click" s-cmd="rocketapptheme_geteditor" s-fields='{"moduleref":"@sessionParam.ModuleRef","filename":"@templateDict.Key","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
                                         }
