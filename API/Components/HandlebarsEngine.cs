@@ -55,6 +55,7 @@ namespace DNNrocketAPI.Components
                     RegisterDisplayHelper(hbs);
                     RegisterThumbnailImageUrl(hbs);
                     RegisterResourceKey(hbs);
+                    RegisterWhen(hbs);
                 _template = hbs.Compile(source);
                 }
                 catch (Exception ex)
@@ -138,6 +139,7 @@ namespace DNNrocketAPI.Components
             RegisterDisplayHelper(hbs);
             RegisterThumbnailImageUrl(hbs);
             RegisterResourceKey(hbs);
+            RegisterWhen(hbs);
         }
 
         private static void RegisterTruncateWordsHelper(HandlebarsDotNet.IHandlebars hbs)
@@ -1258,6 +1260,67 @@ namespace DNNrocketAPI.Components
                 }
             });
         }
+        /// <summary>
+        /// Test 2 values with select operator.
+        /// eq:     ==
+        /// noteq:  !=
+        /// gt:     >
+        /// gteq:   >=
+        /// lt:     <
+        /// lteq:   <=
+        /// 
+        /// Usage:
+        /// 
+        ///     {{#when <operand1> 'eq' <operand2>}}
+        ///         do something here
+        ///     {{/when}}
+        ///     
+        /// </summary>
+        /// <param name="hbs"></param>
+        private static void RegisterWhen(HandlebarsDotNet.IHandlebars hbs)
+        {
+            hbs.RegisterHelper("when", (writer, options, context, parameters) =>
+            {
+                try
+                {
+                    if (parameters != null && parameters.Length == 3)
+                    {
+
+                        string o1 = parameters[0].ToString();
+                        string oper = parameters[1].ToString();
+                        string o2 = parameters[2].ToString();
+                        bool res = false;
+
+                        if (oper == "eq") if (o1 == o2) res = true;
+                        if (oper == "noteq") if (o1 != o2) res = true;
+
+                        if (oper != "eq" && oper != "noteq")
+                        {
+                            var onum1 = double.Parse(o1);
+                            var onum2 = double.Parse(o2);
+                            if (oper == "gt") if (onum1 > onum2) res = true;
+                            if (oper == "gteq") if (onum1 >= onum2) res = true;
+                            if (oper == "lt") if (onum1 < onum2) res = true;
+                            if (oper == "lteq") if (onum1 <= onum2) res = true;
+                        }
+
+                        if (res)
+                            options.Template(writer, (object)context);
+                        else
+                            options.Inverse(writer, (object)context);
+                    }
+                    else
+                    {
+                        writer.WriteSafeString("INCORRECT ARGS: {{#when operand_1, operator, operand_2 }}");
+                    }
+                }
+                catch (Exception)
+                {
+                    writer.WriteSafeString("0");
+                }
+            });
+        }
+
 
     }
 

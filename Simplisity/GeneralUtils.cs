@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Xml;
 
 namespace Simplisity
 {
@@ -900,6 +901,28 @@ namespace Simplisity
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
+        public static void AddJsonNetRootAttribute(ref SimplisityInfo sInfo)
+        {
+            XmlAttribute jsonNS = sInfo.XMLDoc.CreateAttribute("xmlns", "json", "http://www.w3.org/2000/xmlns/");
+            jsonNS.Value = "http://james.newtonking.com/projects/json";
+
+            sInfo.XMLDoc.DocumentElement.SetAttributeNode(jsonNS);
+        }
+        public static void AddJsonArrayAttributesForXPath(string xpath, ref SimplisityInfo sInfo)
+        {
+            var elements = sInfo.XMLDoc.SelectNodes(xpath);
+            foreach (var element in elements)
+            {
+                var el = element as XmlElement;
+                if (el != null)
+                {
+                    var jsonArray = sInfo.XMLDoc.CreateAttribute("json", "Array", "http://james.newtonking.com/projects/json");
+                    jsonArray.Value = "true";
+                    el.SetAttributeNode(jsonArray);
+                }
+            }
+        }
+
     }
 
 }
