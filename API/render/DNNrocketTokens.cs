@@ -863,6 +863,16 @@ namespace DNNrocketAPI.render
 
         public IEncodedString RenderHandleBars(Dictionary<string, SimplisityInfo> dataObjects, AppThemeLimpet appTheme, string templateName, string moduleref = "")
         {
+            string jsonString = ConvertToJson(dataObjects);
+            var template = appTheme.GetTemplate(templateName, moduleref);
+            JObject model = JObject.Parse(jsonString);
+            HandlebarsEngine hbEngine = new HandlebarsEngine();
+            var strOut = hbEngine.Execute(template, model);
+            return new RawString(strOut);
+        }
+
+        private string ConvertToJson(Dictionary<string, SimplisityInfo> dataObjects)
+        {
             var dataInfo = new SimplisityInfo();
             foreach (var o in dataObjects)
             {
@@ -877,12 +887,7 @@ namespace DNNrocketAPI.render
                 cd.Parent.Add(cd.Value);
                 cd.Remove();
             }
-            string jsonString = Newtonsoft.Json.JsonConvert.SerializeXNode(doc, Newtonsoft.Json.Formatting.Indented);
-            var template = appTheme.GetTemplate(templateName, moduleref);
-            JObject model = JObject.Parse(jsonString);
-            HandlebarsEngine hbEngine = new HandlebarsEngine();
-            var strOut = hbEngine.Execute(template, model);
-            return new RawString(strOut);
+            return Newtonsoft.Json.JsonConvert.SerializeXNode(doc, Newtonsoft.Json.Formatting.Indented);
         }
 
 

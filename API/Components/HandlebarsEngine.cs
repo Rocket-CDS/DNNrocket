@@ -56,6 +56,7 @@ namespace DNNrocketAPI.Components
                     RegisterThumbnailImageUrl(hbs);
                     RegisterResourceKey(hbs);
                     RegisterWhen(hbs);
+                    RegisterLookupLang(hbs);
                 _template = hbs.Compile(source);
                 }
                 catch (Exception ex)
@@ -140,6 +141,7 @@ namespace DNNrocketAPI.Components
             RegisterThumbnailImageUrl(hbs);
             RegisterResourceKey(hbs);
             RegisterWhen(hbs);
+            RegisterLookupLang(hbs);
         }
 
         private static void RegisterTruncateWordsHelper(HandlebarsDotNet.IHandlebars hbs)
@@ -1314,12 +1316,36 @@ namespace DNNrocketAPI.Components
                         writer.WriteSafeString("INCORRECT ARGS: {{#when operand_1, operator, operand_2 }}");
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    writer.WriteSafeString("0");
+                    writer.WriteSafeString(ex.ToString());
                 }
             });
         }
+
+        private static void RegisterLookupLang(IHandlebars hbs)
+        {
+            hbs.RegisterHelper("lookuplang", (writer, context, arguments) =>
+            {
+                if (arguments != null && arguments.Length == 4)
+                {
+                    var o = JsonConvert.DeserializeObject<JObject>(arguments[0].ToString());
+
+                    string listname = arguments[1].ToString();
+                    string jpath = arguments[2].ToString();
+                    string index = arguments[3].ToString();
+
+                    var dataValue = (string)o.SelectToken("genxml.data.genxml.lang.genxml." + listname + ".genxml[" + index + "]." + jpath);
+
+                    writer.WriteSafeString(dataValue);
+                }
+                else
+                {
+                    writer.WriteSafeString("INCORRECT ARGS: {{lookuplang @root \"linklist\" \"textbox.externallinkarticlelink\" @index}}");
+                }
+            });
+        }
+
 
 
     }
