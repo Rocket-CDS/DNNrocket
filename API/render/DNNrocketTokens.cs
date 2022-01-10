@@ -176,7 +176,11 @@ namespace DNNrocketAPI.render
         {
             var strOut = "";
             var pr = RenderRazorUtils.RazorProcess(model, razorTemplate, debugMode);
-            strOut = pr.RenderedText;
+            if (pr.StatusCode == "00")
+                strOut = pr.RenderedText;
+            else
+                if (debugMode) strOut = "ERROR: " + pr.StatusCode + " ---> " + pr.ErrorMsg;
+
             return new RawString(strOut);
         }
         [Obsolete("Use RenderTemplate(string razorTemplateName, AppThemeLimpet appTheme, SimplisityRazor model, bool cacheOff = false) instead")]
