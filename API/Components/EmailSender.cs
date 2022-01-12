@@ -23,10 +23,14 @@ namespace DNNrocketAPI.Components
                 var razorTempl = EmailData.AppTheme.GetTemplate(EmailData.RazorTemplateName);
                 
                 // if we have no theme template, look in the system folder.
-                if (razorTempl == "") razorTempl = RenderRazorUtils.GetSystemRazorTemplate(EmailData.SystemKey, EmailData.RazorTemplateName,  systemData.SystemRelPath, "config-w3", EmailData.CultureCode, "1.0", true);
+                if (razorTempl == "")
+                {
+                    var appthemeSystem = new AppThemeSystemLimpet(EmailData.SystemKey);
+                    razorTempl = appthemeSystem.GetTemplate(EmailData.RazorTemplateName);
+                }
 
                 var pr = RenderRazorUtils.RazorProcess(EmailData.Model, razorTempl, false);
-                if (pr.IsValid) EmailData.EmailBody += pr.RenderedText;
+                if (pr.IsValid) EmailData.EmailBody = pr.RenderedText;
 
                 return EmailData.EmailBody;
             }
