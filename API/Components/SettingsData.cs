@@ -71,7 +71,7 @@ namespace DNNrocketAPI.Components
 
         public void Save(SimplisityInfo postInfo)
         {
-            var dbInfo = _objCtrl.GetData(_entityTypeCode, Info.ItemID, _langRequired, _moduleid, _tableName);
+            var dbInfo = _objCtrl.GetData(PortalUtils.GetCurrentPortalId(), _entityTypeCode, Info.ItemID, _langRequired, _moduleid, _tableName);
             dbInfo.GUIDKey = "moduleid" + _moduleid;
             dbInfo.XMLData = postInfo.XMLData;
             Info = _objCtrl.SaveData(dbInfo, _tableName);

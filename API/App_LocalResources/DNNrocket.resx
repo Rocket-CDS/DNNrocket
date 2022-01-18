@@ -884,6 +884,14 @@ send
   <data name="version.Text" xml:space="preserve">
     <value>Version</value>
   </data>
+  <data name="execute.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+play_arrow
+&lt;/span&gt;</value>
+  </data>
+  <data name="execute.Text" xml:space="preserve">
+    <value>Execute</value>
+  </data>
   <data name="advanced.Text" xml:space="preserve">
     <value>Advanced</value>
   </data>
