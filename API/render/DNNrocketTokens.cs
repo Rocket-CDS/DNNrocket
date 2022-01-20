@@ -884,6 +884,21 @@ namespace DNNrocketAPI.render
                 var si = (SimplisityInfo)o.Value;
                 dataInfo.AddXmlNode(o.Value.XMLData, si.RootNodeName, "genxml/" + o.Key);
             }
+
+            dataInfo.XMLDoc.DocumentElement.SetAttribute("xmlns:json", "http://james.newtonking.com/projects/json");
+            var nodList = dataInfo.XMLDoc.SelectNodes("genxml/data/genxml/*[list='true']/genxml");
+
+            //Create a new attribute
+            XmlAttribute attr = dataInfo.XMLDoc.CreateAttribute("json:Array");
+            attr.Value = "true";
+            //Add the attribute to the node     
+            var n = dataInfo.XMLDoc.SelectSingleNode("genxml/data/genxml/imagelist/genxml");
+            if (n != null)
+            {
+                dataInfo.XMLDoc.SelectSingleNode("genxml/data/genxml/imagelist/genxml").Attributes.SetNamedItem(attr);
+            }
+
+            //dataInfo.XMLData = dataInfo.XMLData.Replace("list=\"true\"", "json:Array=\"true\"");
             var doc = XElement.Parse(dataInfo.XMLData);
             var cdata = doc.DescendantNodes().OfType<XCData>().ToList();
             foreach (var cd in cdata)
