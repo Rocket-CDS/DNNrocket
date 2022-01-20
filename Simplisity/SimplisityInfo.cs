@@ -238,6 +238,7 @@ namespace Simplisity
                 if (XMLDoc.SelectSingleNode(RootNodeName + "/" + listName) == null)
                 {
                     SetXmlProperty(RootNodeName + "/" + listName, "", System.TypeCode.String, false);
+                    SetXmlProperty(RootNodeName + "/" + listName + "/@list", "true");
                 }
 
                 AddXmlNode(xmldata, "/*", RootNodeName + "/" + listName);
@@ -252,6 +253,7 @@ namespace Simplisity
                 if (XMLDoc.SelectSingleNode(RootNodeName + "/lang/" + RootNodeName + "/" + listName) == null)
                 {
                     SetXmlProperty(RootNodeName + "/lang/" + RootNodeName + "/" + listName, "", System.TypeCode.String, false);
+                    SetXmlProperty(RootNodeName + "/lang/" + RootNodeName + "/" + listName + "/@list", "true");
                 }
 
                 AddXmlNode(xmllangdata, "/*", RootNodeName + "/lang/" + RootNodeName + "/" + listName);
