@@ -886,19 +886,18 @@ namespace DNNrocketAPI.render
             }
 
             dataInfo.XMLDoc.DocumentElement.SetAttribute("xmlns:json", "http://james.newtonking.com/projects/json");
-            var nodList = dataInfo.XMLDoc.SelectNodes("genxml/data/genxml/*[list='true']/genxml");
 
             //Create a new attribute
-            XmlAttribute attr = dataInfo.XMLDoc.CreateAttribute("json:Array");
+            XmlAttribute attr = dataInfo.XMLDoc.CreateAttribute("json","Array", "http://james.newtonking.com/projects/json");
             attr.Value = "true";
+
             //Add the attribute to the node     
-            var n = dataInfo.XMLDoc.SelectSingleNode("genxml/data/genxml/imagelist/genxml");
-            if (n != null)
+            var nodList = dataInfo.XMLDoc.SelectNodes("genxml/data/genxml/*[@list='true']/genxml");
+            foreach(XmlNode n in nodList)
             {
-                dataInfo.XMLDoc.SelectSingleNode("genxml/data/genxml/imagelist/genxml").Attributes.SetNamedItem(attr);
+                n.Attributes.SetNamedItem(attr);
             }
 
-            //dataInfo.XMLData = dataInfo.XMLData.Replace("list=\"true\"", "json:Array=\"true\"");
             var doc = XElement.Parse(dataInfo.XMLData);
             var cdata = doc.DescendantNodes().OfType<XCData>().ToList();
             foreach (var cd in cdata)
