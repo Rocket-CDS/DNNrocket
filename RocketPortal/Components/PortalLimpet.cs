@@ -263,7 +263,6 @@ namespace RocketPortal.Components
         public string SecurityKey { get { return Record.GetXmlProperty("genxml/config/securitykey"); } set { Record.SetXmlProperty("genxml/config/securitykey", value); } }
         public string SecurityKeyEdit { get { return Record.GetXmlProperty("genxml/config/securitykeyedit"); } set { Record.SetXmlProperty("genxml/config/securitykeyedit", value); } }
         public bool EmailActive { get { return Record.GetXmlPropertyBool("genxml/config/emailon"); } }
-        public bool DebugMode { get { return Record.GetXmlPropertyBool("genxml/config/debugmode"); } }
         public int UserId { get { return Record.UserId; } private set { Record.UserId = value; } }
         public string SystemKey { get { return Record.GetXmlProperty("genxml/radio/systemkey"); } }
         public string ColorAdminTheme { get { var rtn = Record.GetXmlProperty("genxml/select/colortheme"); if (rtn == "") rtn = "grey-theme.css"; return rtn; } set { Record.SetXmlProperty("genxml/select/colortheme", value); } }

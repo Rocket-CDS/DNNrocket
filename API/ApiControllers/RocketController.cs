@@ -392,17 +392,16 @@ namespace DNNrocketAPI.ApiControllers
                     xmlReturn = returnDictionary["outputxml"];
                 }
 
-                if (returnDictionary.ContainsKey("remote-cache")) remoteCache = returnDictionary["remote-cache"].ToString();
                 if (returnDictionary.ContainsKey("razor-statuscode")) statusCode = returnDictionary["razor-statuscode"].ToString();
                 if (returnDictionary.ContainsKey("razor-errormsg")) errorMsg = returnDictionary["razor-errormsg"].ToString();
 
             }
 
             // after Event
-            returnDictionary = DNNrocketUtils.EventProviderAfter(paramCmd, systemData, postInfo, paramInfo, "");
-            if (returnDictionary.ContainsKey("outputhtml")) strOut = (string)returnDictionary["outputhtml"];
-            if (returnDictionary.ContainsKey("outputjson")) jsonReturn = returnDictionary["outputjson"];
-            if (returnDictionary.ContainsKey("outputxml")) xmlReturn = returnDictionary["outputxml"];
+            var returnDictionaryAfterEvent = DNNrocketUtils.EventProviderAfter(paramCmd, systemData, postInfo, paramInfo, "");
+            if (returnDictionaryAfterEvent.ContainsKey("outputhtml")) strOut = (string)returnDictionaryAfterEvent["outputhtml"];
+            if (returnDictionaryAfterEvent.ContainsKey("outputjson")) jsonReturn = returnDictionaryAfterEvent["outputjson"];
+            if (returnDictionaryAfterEvent.ContainsKey("outputxml")) xmlReturn = returnDictionaryAfterEvent["outputxml"];
 
             #region "return results"
 
@@ -420,9 +419,15 @@ namespace DNNrocketAPI.ApiControllers
                 resp = this.Request.CreateResponse(HttpStatusCode.OK, strOut, "text/plain");
             }
 
-            resp.Headers.Add("remote-cache", remoteCache);
             resp.Headers.Add("razor-statuscode", statusCode);
-            resp.Headers.Add("razor-errormsg", errorMsg);
+            resp.Headers.Add("razor-errormsg", GeneralUtils.Base64Encode(errorMsg));
+
+            // add headers for SEO page
+            foreach (var h in returnDictionary)
+            {
+                if (h.Key.StartsWith("remote-")) resp.Headers.Add(h.Key, GeneralUtils.Base64Encode(h.Value.ToString()));
+            }
+
 
             return resp;
 
