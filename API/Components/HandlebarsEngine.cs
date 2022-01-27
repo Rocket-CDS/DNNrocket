@@ -23,49 +23,6 @@ namespace DNNrocketAPI.Components
             private Func<object, string> _template;
             private int _jsOrder = 100;
 
-            public void Compile(string source)
-            {
-                try
-                {
-                    //register server side helpers
-                    var hbs = HandlebarsDotNet.Handlebars.Create();
-                    RegisterDivideHelper(hbs);
-                    RegisterMultiplyHelper(hbs);
-                    RegisterAdditionHelper(hbs);
-                    RegisterSubstractionHelper(hbs);
-                    RegisterEqualHelper(hbs);
-                    RegisterOddEvenHelper(hbs);
-                    RegisterFormatNumberHelper(hbs);
-                    RegisterFormatDateTimeHelper(hbs);
-                    RegisterImageUrlHelper(hbs);
-                    RegisterEmailHelper(hbs);
-                    RegisterArrayIndexHelper(hbs);
-                    RegisterArrayTranslateHelper(hbs);
-                    RegisterIfAndHelper(hbs);
-                    RegisterIfOrHelper(hbs);
-                    RegisterConvertHtmlToTextHelper(hbs);
-                    RegisterConvertToJsonHelper(hbs);
-                    RegisterTruncateWordsHelper(hbs);
-                    RegisterReplaceHelper(hbs);
-                    RegisterReplaceNewlineHelper(hbs);
-                    RegisterTemplateHelper(hbs);
-                    RegisterRawHelper(hbs);
-                    RegisterContainsHelper(hbs);
-                    RegisterUrlHelper(hbs);
-                    RegisterDisplayHelper(hbs);
-                    RegisterThumbnailImageUrl(hbs);
-                    RegisterResourceKey(hbs);
-                    RegisterWhen(hbs);
-                    RegisterLookupLang(hbs);
-                _template = hbs.Compile(source);
-                }
-                catch (Exception ex)
-                {
-                    LogUtils.LogException(ex);
-                    throw new TemplateException("Failed to render Handlebar template " + ex.Message, ex, null, source);
-                }
-            }
-
             public string Execute(Dictionary<string, object> model)
             {
                 try
@@ -109,7 +66,7 @@ namespace DNNrocketAPI.Components
             return defaultValue;
             }
 
-        private static void RegisterHelpers(IHandlebars hbs)
+        public static void RegisterHelpers(IHandlebars hbs)
         {
             RegisterDivideHelper(hbs);
             RegisterMultiplyHelper(hbs);
@@ -201,61 +158,7 @@ namespace DNNrocketAPI.Components
                     }
                 });
             }
-            public string Execute(Page page, string tmeplateRelPath, object model)
-            {
-                try
-                {
-                    //string source = File.ReadAllText(sourceFileUri.PhysicalFilePath);
-                    string source = File.ReadAllText(DNNrocketUtils.MapPath(tmeplateRelPath));
-                    //string sourceFolder = sourceFileUri.UrlFolder; //.Replace("\\", "/") + "/";
-                    string sourceFolder = tmeplateRelPath;  
-                    var hbs = HandlebarsDotNet.Handlebars.Create();
-                    RegisterHelpers(hbs);
-                    RegisterScriptHelper(hbs);
-                    RegisterHandlebarsHelper(hbs);
-                    RegisterRegisterStylesheetHelper(hbs, page, sourceFolder);
-                    RegisterRegisterScriptHelper(hbs, page, sourceFolder);
-                    return CompileTemplate(hbs, source, model);
-                }
-                catch (Exception ex)
-                {
-                    LogUtils.LogException(ex);
-                    throw new TemplateException("Failed to render Handlebar template ", ex, model,"");
-                }
-            }
-            public string Execute(Page page, string tmeplateRelPath, string templateVirtualFolder, object model)
-            {
-                //var sourceFileUri = new FileUri(templateVirtualFolder + "/" + files.Template);
-                try
-                {
-                    //string source = File.ReadAllText(sourceFileUri.PhysicalFilePath);
-                    string source = File.ReadAllText(DNNrocketUtils.MapPath(tmeplateRelPath));
-                    //string sourceFolder = sourceFileUri.UrlFolder;
-                    string sourceFolder = tmeplateRelPath;
-                    var hbs = HandlebarsDotNet.Handlebars.Create();
-
-                    RegisterHelpers(hbs);
-                    RegisterScriptHelper(hbs);
-                    RegisterHandlebarsHelper(hbs);
-                    RegisterRegisterStylesheetHelper(hbs, page, sourceFolder);
-                    RegisterRegisterScriptHelper(hbs, page, sourceFolder);
-                    //if (files.PartialTemplates != null)
-                    //{
-                    //    foreach (var part in files.PartialTemplates.Where(t => t.Value.ClientSide == false))
-                    //    {
-                    //        RegisterTemplate(hbs, part.Key, templateVirtualFolder + "/" + part.Value.Template);
-                    //    }
-                    //}
-                    return CompileTemplate(hbs, source, model);
-                }
-                catch (Exception ex)
-                {
-                    LogUtils.LogException(ex);
-                    throw new TemplateException("Failed to render Handlebar template " + tmeplateRelPath, ex, model, tmeplateRelPath);
-                }
-            }
-
-            private static string CompileTemplate(IHandlebars hbs, string source, object model)
+            public static string CompileTemplate(IHandlebars hbs, string source, object model)
             {
                 var compiledTemplate = hbs.Compile(source);
                 return compiledTemplate(model);
@@ -1322,7 +1225,14 @@ namespace DNNrocketAPI.Components
                 }
             });
         }
-
+        /// <summary>
+        /// Get the reltive langauge data from a Simplsity List.
+        /// Used when looping on non-localized data to get the localized data.
+        /// 
+        /// {{lookuplang this <listname> <jpath> <index>}}
+        /// 
+        /// </summary>
+        /// <param name="hbs"></param>
         private static void RegisterLookupLang(IHandlebars hbs)
         {
             hbs.RegisterHelper("lookuplang", (writer, context, arguments) =>
