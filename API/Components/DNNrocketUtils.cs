@@ -1675,6 +1675,47 @@ namespace DNNrocketAPI.Components
                 return text.Substring(0, maxCharacters) + trailingText;
         }
 
+        public static Boolean CheckForSQLInjection(string userInput)
+        {
+            bool isSQLInjection = false;
+            string[] sqlCheckList = 
+                { 
+                "--",
+                ";--",
+                ";",
+                "/*",
+                "*/",
+                "@@",
+                "@",
+                "alter",
+                "begin",
+                "cast",
+                "create",
+                "cursor",
+                "declare",
+                "delete",
+                "drop",
+                "end",
+                "exec",
+                "execute",
+                "fetch",
+                "insert",
+                "kill",
+                "select",
+                "sys",
+                "sysobjects",
+                "syscolumns",
+                "table",
+                "update"
+            };
+            string CheckString = userInput.Replace("'", "''");
+            for (int i = 0; i <= sqlCheckList.Length - 1; i++)
+            {
+                if ((CheckString.IndexOf(sqlCheckList[i], StringComparison.OrdinalIgnoreCase) >= 0)) isSQLInjection = true;
+            }
+            return isSQLInjection;
+        }
+
         #region "Temp Storage"
 
         public static string SaveTempStorage(string XmlData, int keephours = 24)

@@ -895,4 +895,7 @@ play_arrow
   <data name="advanced.Text" xml:space="preserve">
     <value>Advanced</value>
   </data>
+  <data name="suonly.Text" xml:space="preserve">
+    <value>NOTE: For security only the SuperUser can update.</value>
+  </data>
 </root>
