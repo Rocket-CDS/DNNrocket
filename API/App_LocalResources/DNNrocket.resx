@@ -901,4 +901,10 @@ play_arrow
   <data name="map.Text" xml:space="preserve">
     <value>Map</value>
   </data>
+  <data name="securitycode.Text" xml:space="preserve">
+    <value>Security Code</value>
+  </data>
+  <data name="securitykey.Text" xml:space="preserve">
+    <value>Security Key</value>
+  </data>
 </root>
