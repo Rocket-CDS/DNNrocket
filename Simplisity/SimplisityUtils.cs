@@ -71,6 +71,11 @@ namespace Simplisity
             {
                 n.Attributes.SetNamedItem(attr);
             }
+            var nodList2 = dataInfo.XMLDoc.SelectNodes("genxml/data/genxml/lang/genxml/*[@list='true']/genxml");
+            foreach (XmlNode n in nodList2)
+            {
+                n.Attributes.SetNamedItem(attr);
+            }
 
             var doc = XElement.Parse(dataInfo.XMLData);
             var cdata = doc.DescendantNodes().OfType<XCData>().ToList();
