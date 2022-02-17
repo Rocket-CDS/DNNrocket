@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RocketComm
 {
+    /// <summary>
+    /// Data class to keep returned data from RocketCDS.
+    /// </summary>
     public class CommData
     {
         public CommData()

@@ -7,6 +7,9 @@ using System.Text;
 
 namespace RocketComm
 {
+    /// <summary>
+    /// Processing Limpet for POST and return of data from RocketCDS.
+    /// </summary>
     public class CommLimpet
     {
         public CommLimpet(SimplisityRecord  remoteParams)

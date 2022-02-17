@@ -1,5 +1,8 @@
 ﻿namespace RocketComm
 {
+    /// <summary>
+    /// Data class for MetaSEO data returned from RocketCDS
+    /// </summary>
     public class MetaSEO
     {
         public MetaSEO()
