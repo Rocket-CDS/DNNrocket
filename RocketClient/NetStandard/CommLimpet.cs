@@ -55,42 +55,17 @@ namespace RocketComm
 
                     if (webResp.StatusCode != HttpStatusCode.Unauthorized)
                     {
-                        var webReturn = new Dictionary<string, string>();
-                        webReturn.Add("remote-firstheader", GeneralUtils.Base64Decode(webResp.Headers["remote-firstheader"] ?? ""));
-                        webReturn.Add("remote-lastheader", GeneralUtils.Base64Decode(webResp.Headers["remote-lastheader"] ?? ""));
-                        webReturn.Add("remote-seoheader", GeneralUtils.Base64Decode(webResp.Headers["remote-seoheader"] ?? ""));
+                        var readStream = new StreamReader(webResp.GetResponseStream(), System.Text.Encoding.UTF8);
 
                         RocketClientData.StatusCode = webResp.Headers["razor-statuscode"];
                         RocketClientData.ErrorMsg = GeneralUtils.Base64Decode(webResp.Headers["razor-errormsg"]);
-
-                        var readStream = new StreamReader(webResp.GetResponseStream(), System.Text.Encoding.UTF8);
-                        webReturn.Add("remote-return", readStream.ReadToEnd());
-
-                        if (webResp.Headers["remote-cache"] != null) RocketClientData.CacheFlag = bool.Parse(GeneralUtils.Base64Decode(webResp.Headers["remote-cache"]));
-                        if (webReturn.ContainsKey("remote-firstheader")) RocketClientData.FirstHeader = webReturn["remote-firstheader"] ?? "";
-                        if (webReturn.ContainsKey("remote-lastheader")) RocketClientData.LastHeader = webReturn["remote-lastheader"] ?? "";
-
-                        // The SeoHeader is returned as a XML string.
-                        // Move the XML into SimplsityRecord so it's easy to process.  Then populate the MetaSEO data class.
-                        var seoHeaderXml = "";
-                        if (webReturn.ContainsKey("remote-seoheader")) seoHeaderXml = webReturn["remote-seoheader"];
-                        var MetaSEO = new MetaSEO();
-                        try
-                        {
-                            var sRec = new SimplisityRecord();
-                            sRec.FromXmlItem(seoHeaderXml);
-                            MetaSEO.Title = GeneralUtils.CleanInput(sRec.GetXmlProperty("genxml/title"));
-                            MetaSEO.Description = sRec.GetXmlProperty("genxml/description");
-                            MetaSEO.KeyWords = sRec.GetXmlProperty("genxml/keywords");
-                        }
-                        catch (Exception)
-                        {
-                            // ignore
-                        }
-                        RocketClientData.SeoHeader = MetaSEO;
-
-                        if (webReturn.ContainsKey("remote-return")) RocketClientData.ViewHtml = webReturn["remote-return"];
-                        if (webReturn.ContainsKey("remote-json")) RocketClientData.JsonReturn = webReturn["remote-json"];
+                        RocketClientData.FirstHeader = GeneralUtils.Base64Decode(webResp.Headers["remote-firstheader"] ?? "");
+                        RocketClientData.LastHeader = GeneralUtils.Base64Decode(webResp.Headers["remote-lastheader"] ?? "");
+                        RocketClientData.SeoHeaderXml = GeneralUtils.Base64Decode(webResp.Headers["remote-seoheader"] ?? "");
+                        RocketClientData.JsonReturn = GeneralUtils.Base64Decode(webResp.Headers["remote-json"] ?? "");
+                        RocketClientData.SettingsXml = GeneralUtils.Base64Decode(webResp.Headers["remote-settingsxml"] ?? "");
+                        RocketClientData.ViewHtml = readStream.ReadToEnd();
+                        RocketClientData.CacheFlag = bool.Parse(GeneralUtils.Base64Decode(webResp.Headers["remote-cache"] ?? "True"));
                     }
                     else
                     {
