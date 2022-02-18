@@ -58,14 +58,15 @@ namespace RocketComm
                         var readStream = new StreamReader(webResp.GetResponseStream(), System.Text.Encoding.UTF8);
 
                         RocketClientData.StatusCode = webResp.Headers["razor-statuscode"];
-                        RocketClientData.ErrorMsg = GeneralUtils.Base64Decode(webResp.Headers["razor-errormsg"]);
+                        RocketClientData.ErrorMsg = GeneralUtils.Base64Decode(webResp.Headers["razor-errormsg"] ?? "");
                         RocketClientData.FirstHeader = GeneralUtils.Base64Decode(webResp.Headers["remote-firstheader"] ?? "");
                         RocketClientData.LastHeader = GeneralUtils.Base64Decode(webResp.Headers["remote-lastheader"] ?? "");
                         RocketClientData.SeoHeaderXml = GeneralUtils.Base64Decode(webResp.Headers["remote-seoheader"] ?? "");
                         RocketClientData.JsonReturn = GeneralUtils.Base64Decode(webResp.Headers["remote-json"] ?? "");
                         RocketClientData.SettingsXml = GeneralUtils.Base64Decode(webResp.Headers["remote-settingsxml"] ?? "");
                         RocketClientData.ViewHtml = readStream.ReadToEnd();
-                        RocketClientData.CacheFlag = bool.Parse(GeneralUtils.Base64Decode(webResp.Headers["remote-cache"] ?? "True"));
+                        RocketClientData.CacheFlag = false;
+                        if (webResp.Headers["remote-cache"] != null) RocketClientData.CacheFlag = bool.Parse(GeneralUtils.Base64Decode(webResp.Headers["remote-cache"]));
                     }
                     else
                     {
