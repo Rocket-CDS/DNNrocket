@@ -17,7 +17,7 @@ namespace RocketComm
             RemoteParams = remoteParams;
         }
 
-        public CommData CallRedirect(string cmd, string jsonPost, string jsonParams, string systemKey = "")
+        public CommData CallRedirect(string cmd, string jsonPost = "", string jsonParams = "", string systemKey = "")
         {
             var RocketClientData = new CommData();
             if (systemKey == "") systemKey = RemoteParams.GetXmlProperty("genxml/remote/systemkey");
