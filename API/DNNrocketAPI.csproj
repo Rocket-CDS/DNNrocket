@@ -294,6 +294,7 @@
     <None Include="app.config" />
     <None Include="DNNpackager.dnnpack" />
     <None Include="Documents\AjaxDropDownCode.docx" />
+    <None Include="Documents\API-reference.md" />
     <None Include="Documents\Build-DNNrocket-EventPlugin.docx" />
     <None Include="Documents\Command Tracking.docx" />
     <None Include="Documents\DNNrocket-File-Download.docx" />
