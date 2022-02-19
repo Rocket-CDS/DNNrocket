@@ -19,7 +19,7 @@ namespace RocketComm
             FirstHeader = "";
             LastHeader = "";
             SeoHeaderXml = "";
-            ViewHtml = "";
+            Body = "";
             JsonReturn = "{\"\":\"\"}";
             CacheFlag = false;
             SettingsXml = "";
@@ -61,7 +61,8 @@ namespace RocketComm
         public string FirstHeader { set; get; }
         public string LastHeader { set; get; }
         public string SeoHeaderXml { set; get; }
-        public string ViewHtml { set; get; }
+        public string ViewHtml { get { return Body; } }
+        public string Body { set; get; }
         public string JsonReturn { set; get; }
         public string SettingsXml { set; get; }
         public bool CacheFlag { set; get; }

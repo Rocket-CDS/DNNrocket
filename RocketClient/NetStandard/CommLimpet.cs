@@ -64,7 +64,7 @@ namespace RocketComm
                         RocketClientData.SeoHeaderXml = GeneralUtils.Base64Decode(webResp.Headers["remote-seoheader"] ?? "");
                         RocketClientData.JsonReturn = GeneralUtils.Base64Decode(webResp.Headers["remote-json"] ?? "");
                         RocketClientData.SettingsXml = GeneralUtils.Base64Decode(webResp.Headers["remote-settingsxml"] ?? "");
-                        RocketClientData.ViewHtml = readStream.ReadToEnd();
+                        RocketClientData.Body = readStream.ReadToEnd();
                         RocketClientData.CacheFlag = false;
                         if (webResp.Headers["remote-cache"] != null) RocketClientData.CacheFlag = bool.Parse(GeneralUtils.Base64Decode(webResp.Headers["remote-cache"]));
                     }
