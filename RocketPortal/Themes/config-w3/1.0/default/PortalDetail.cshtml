@@ -53,23 +53,23 @@
     @HiddenField(info, "genxml/config/securitykey")
     @HiddenField(info, "genxml/config/securitykeyedit")
 
-    <div class="w3-row">
-        <div onclick="selectmenu('generaldata');" class="w3-col m2 w3-hover-light-grey w3-center">
+    <div class="w3-row w3-border-bottom">
+        <div onclick="selectmenu('generaldata');" class="w3-col m3 w3-hover-light-grey w3-center">
             <div class="a-generaldata mitem w3-bottombar w3-border-black w3-large w3-padding">
                 @ResourceKey("RP.general")
             </div>
         </div>
-        <div onclick="selectmenu('languagesdata');" class="w3-col m2 w3-hover-light-grey w3-center">
+        <div onclick="selectmenu('languagesdata');" class="w3-col m3 w3-hover-light-grey w3-center">
             <div class="a-languagesdata mitem w3-bottombar w3-large w3-padding">
                 @ResourceKey("RP.languages")
             </div>
         </div>
-        <div onclick="selectmenu('managerdata');" class="w3-col m2 w3-hover-light-grey w3-center">
+        <div onclick="selectmenu('managerdata');" class="w3-col m3 w3-hover-light-grey w3-center">
             <div class="a-managerdata mitem w3-bottombar w3-large w3-padding">
                 @ResourceKey("DNNrocket.managers")
             </div>
         </div>
-        <div onclick="selectmenu('setupdata');" class="w3-col m2 w3-hover-light-grey w3-center simplisity_click" s-return="#setupdata" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@info.GetXmlProperty("genxml/radio/systemkey")"}'>
+        <div onclick="selectmenu('setupdata');" class="w3-col m3 w3-hover-light-grey w3-center simplisity_click" s-return="#setupdata" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@info.GetXmlProperty("genxml/radio/systemkey")"}'>
             <div class="a-setupdata mitem w3-bottombar w3-large w3-padding">
                 @ResourceKey("DNNrocket.setup")
             </div>
