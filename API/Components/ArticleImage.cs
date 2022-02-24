@@ -107,6 +107,32 @@ namespace DNNrocketAPI.Components
                 Info.SetXmlProperty("genxml/lang/genxml/textbox/imagehtml" + FieldId, value);
             }
         }
+        public string Url
+        {
+            get
+            {
+                var rtn = Info.GetXmlProperty("genxml/textbox/url" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/url" + FieldId);
+                return rtn;
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/lang/genxml/textbox/url" + FieldId, value);
+            }
+        }
+        public string UrlText
+        {
+            get
+            {
+                var rtn = Info.GetXmlProperty("genxml/textbox/urltext" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/lang/genxml/textbox/urltext" + FieldId);
+                return rtn;
+            }
+            set
+            {
+                Info.SetXmlProperty("genxml/lang/genxml/textbox/urltext" + FieldId, value);
+            }
+        }
         public int Width
         {
             get
