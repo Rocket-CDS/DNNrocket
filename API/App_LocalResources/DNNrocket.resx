@@ -910,4 +910,7 @@ play_arrow
   <data name="imageresize.Text" xml:space="preserve">
     <value>Image Resize</value>
   </data>
+  <data name="invalidcatalog.Text" xml:space="preserve">
+    <value>Invalid Catalog</value>
+  </data>
 </root>

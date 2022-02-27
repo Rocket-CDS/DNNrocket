@@ -29,8 +29,8 @@ namespace RocketPortal.API
                     {
                         PagesUtils.AddPageSkin(portalid, homeTabId, "rocketportal", "rockethome.ascx");
                         ModuleUtils.DeleteAllTabModules(homeTabId);
-                        var dtid = ModuleUtils.GetDesktopModuleId(portalid, "RocketSystem");
-                        if (dtid > -1) ModuleUtils.AddNewModuleToTab(portalid, homeTabId, "RocketSystem", dtid, "", 0, 0, "");
+                        //var dtid = ModuleUtils.GetDesktopModuleId(portalid, "RocketSystem");
+                        //if (dtid > -1) ModuleUtils.AddNewModuleToTab(portalid, homeTabId, "RocketSystem", dtid, "", 0, 0, "");
                     }
 
                     DNNrocketUtils.CreateDefaultRocketRoles(portalid);
