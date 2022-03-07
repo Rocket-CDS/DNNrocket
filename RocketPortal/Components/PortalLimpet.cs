@@ -266,7 +266,6 @@ namespace RocketPortal.Components
         public int UserId { get { return Record.UserId; } private set { Record.UserId = value; } }
         public string SystemKey { get { return Record.GetXmlProperty("genxml/radio/systemkey"); } }
         public string ColorAdminTheme { get { var rtn = Record.GetXmlProperty("genxml/select/colortheme"); if (rtn == "") rtn = "grey-theme.css"; return rtn; } set { Record.SetXmlProperty("genxml/select/colortheme", value); } }
-        public string ColorFrontTheme { get { var rtn = Record.GetXmlProperty("genxml/select/colorthemefront"); if (rtn == "") rtn = "grey-theme.css"; return rtn; } set { Record.SetXmlProperty("genxml/select/colorthemefront", value); } }
 
     }
 }
