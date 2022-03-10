@@ -325,6 +325,9 @@ namespace Simplisity
                                 case "coded":
                                     xmlOut.SetXmlProperty(xpath, GeneralUtils.DeCode(val));
                                     break;
+                                case "int":
+                                    xmlOut.SetXmlProperty(xpath, val, TypeCode.Int32);
+                                    break;
                                 default:
                                     xmlOut.SetXmlProperty(xpath, val);
                                     break;
