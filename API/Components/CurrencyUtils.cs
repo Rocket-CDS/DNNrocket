@@ -29,6 +29,11 @@ namespace DNNrocketAPI.Components
         {
             return CurrencyCentsToDollars(intValue, currencyCultureCode).ToString();
         }
+        public static string CurrenyDisplay(string cents, string currencyCultureCode)
+        {
+            if (!GeneralUtils.IsNumeric(cents)) return "0";
+            return CurrenyDisplay(CurrencyCentsToDollars(Convert.ToInt32(cents), currencyCultureCode), currencyCultureCode);
+        }
         public static string CurrenyDisplay(decimal value, string currencyCultureCode)
         {
             return value.ToString("C", CultureInfo.GetCultureInfo(currencyCultureCode));
