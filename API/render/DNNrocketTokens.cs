@@ -238,7 +238,7 @@ namespace DNNrocketAPI.render
 
         public IEncodedString EditFlag(SessionParams sessionParams, string classvalues = "")
         {
-            var strOut = "<img class='" + classvalues + "' src='//" + PortalUtils.DefaultPortalAlias() + "/DesktopModules/DNNrocket/API/images/flags/16/" + sessionParams.CultureCodeEdit + ".png' alt='" + sessionParams.CultureCodeEdit + "' />";
+            var strOut = "<img class='" + classvalues + "' src='//" + PortalUtils.DomainSubUrl() + "/DesktopModules/DNNrocket/API/images/flags/16/" + sessionParams.CultureCodeEdit + ".png' alt='" + sessionParams.CultureCodeEdit + "' />";
             return new RawString(strOut);
         }
         [Obsolete("Use EditFlag(SessionParams sessionParams, string classvalues) instead")]
