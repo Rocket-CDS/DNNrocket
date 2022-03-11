@@ -84,5 +84,6 @@
     <value>\API\_external\netstandard.dll</value>
     <value>\API\_external\RazorEngine.dll</value>
     <value>\API\_external\System.Drawing.Common.dll</value>
+    <value>\API\_external\handlebars.dll</value>
   </assembly>
 </root>

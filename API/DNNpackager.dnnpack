@@ -25,5 +25,6 @@
 	<assembly>
 		<value>DNNrocketAPI.dll</value>
     <value>DNNrocketAPI.pdb</value>
+    <value>handlebars.dll</value>
   </assembly>
 </root>

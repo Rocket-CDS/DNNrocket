@@ -102,6 +102,12 @@ It also contains the popular RocketMod modules, which is a dynamic content build
               <sourceFileName>Newtonsoft.Json.dll</sourceFileName>
             </assembly>
 
+            <assembly>
+              <path>bin</path>
+              <name>handlebars.dll</name>
+              <sourceFileName>handlebars.dll</sourceFileName>
+            </assembly>
+
           </assemblies>
 				</component>
 
