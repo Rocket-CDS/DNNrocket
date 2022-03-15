@@ -32,7 +32,7 @@ namespace RocketComm
             {
                 var sRec = new SimplisityRecord();
                 sRec.FromXmlItem(SeoHeaderXml);
-                metaSEO.Title = GeneralUtils.CleanInput(sRec.GetXmlProperty("genxml/title"));
+                metaSEO.Title = sRec.GetXmlProperty("genxml/title");
                 metaSEO.Description = sRec.GetXmlProperty("genxml/description");
                 metaSEO.KeyWords = sRec.GetXmlProperty("genxml/keywords");
             }

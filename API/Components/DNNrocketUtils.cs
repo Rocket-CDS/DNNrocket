@@ -956,7 +956,7 @@ namespace DNNrocketAPI.Components
 
         public static string GetCurrentCulture()
         {
-            // The API mayeb wring, so this should be set by code.
+            // The API maybe wrong, so this should be set by code.
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             return currentCulture.Name;
         }
