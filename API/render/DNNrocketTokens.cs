@@ -258,6 +258,16 @@ namespace DNNrocketAPI.render
             }
             return new RawString("");
         }
+        public IEncodedString DisplayEngineFlag(string engineUrl, string cultureCode, string classvalues = "")
+        {
+            var flagRelPath = "/DesktopModules/DNNrocket/API/images/flags/16/" + cultureCode + ".png";
+            if (File.Exists(DNNrocketUtils.MapPath(flagRelPath)))
+            {
+                var strOut = "<img class='" + classvalues + "' src='" + engineUrl.TrimEnd('/') + "/DesktopModules/DNNrocket/API/images/flags/16/" + cultureCode + ".png' alt='" + cultureCode + "' />";
+                return new RawString(strOut);
+            }
+            return new RawString("");
+        }
 
         public IEncodedString ThumbnailImageUrl(string engineUrl, string url, int width = 0, int height = 0, string extraurlparams = "", bool pngImage = true)
         {
