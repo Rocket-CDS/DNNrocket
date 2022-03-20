@@ -3,6 +3,7 @@ using Simplisity;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Xml;
 
@@ -20,29 +21,46 @@ namespace DNNrocketAPI.Components
         private string _systemKey;
         private RocketInterface _rocketInterface;
         static ConcurrentDictionary<string, bool> _commandSecurity;  // thread safe dictionary.
-        private string _defaultFileMapPath;
-        public SecurityLimpet(int portalId, string systemKey, RocketInterface rocketInterface, int tabid, int moduleid)
+        private string _defaultFileRelPath;
+        public SecurityLimpet(int portalId, string systemKey, RocketInterface rocketInterface, int tabid, int moduleid, string wrapperSystemKey = "")
         {
             try
             {
+                // Check for Wrapper System for systemdefaults/comands.
+                if (wrapperSystemKey != "")
+                {
+                    _systemKey = wrapperSystemKey;
+                    SystemData = new SystemLimpet(_systemKey);
+                    _defaultFileRelPath = SystemData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
+                    if (!File.Exists(DNNrocketUtils.MapPath(_defaultFileRelPath)))
+                    {
+                        _systemKey = systemKey;
+                        SystemData = new SystemLimpet(_systemKey);
+                    }
+                }
+                else
+                {
+                    _systemKey = systemKey;
+                    SystemData = new SystemLimpet(_systemKey);
+                }
+                _defaultFileRelPath = SystemData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
+                var filenamepath = DNNrocketUtils.MapPath(_defaultFileRelPath);
+
+
                 PortalId = portalId;
-                _systemKey = systemKey;
-                SystemData = new SystemLimpet(_systemKey);
-                _defaultFileMapPath = SystemData.SystemRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
+
                 _userId = UserUtils.GetCurrentUserId();
                 _moduleid = moduleid;
                 _tabid = tabid;
                 _rocketInterface = rocketInterface;
                 ValidateUser();
-                Info = (SimplisityInfo)CacheUtilsDNN.GetCache(_defaultFileMapPath);
+                Info = (SimplisityInfo)CacheUtilsDNN.GetCache(_defaultFileRelPath);
                 if (Info == null)
                 {
-                    var filenamepath = DNNrocketUtils.MapPath(_defaultFileMapPath);
                     var xmlString = FileUtils.ReadFile(filenamepath);
                     Info = new SimplisityInfo();
                     Info.XMLData = xmlString;
-                    CacheUtilsDNN.SetCache(_defaultFileMapPath, Info);
-
+                    CacheUtilsDNN.SetCache(_defaultFileRelPath, Info);
                }
                 _commandSecurity = (ConcurrentDictionary<string, bool>)CacheUtilsDNN.GetCache(_systemKey + "Security" + _userId);
                 if (_commandSecurity == null)
@@ -170,6 +188,41 @@ namespace DNNrocketAPI.Components
                 _userId = -1;
             }
         }
+        public string Get(string xpath)
+        {
+            return Info.GetXmlProperty(xpath);
+        }
+
+        //defaults
+        public Dictionary<string, string> ArticleOrderBy()
+        {
+            var rtn = new Dictionary<string, string>();
+            var nodList = Info.XMLDoc.SelectNodes("root/sqlorderby/article/*");
+            if (nodList != null)
+            {
+                foreach (XmlNode nod in nodList)
+                {
+                    rtn.Add("sqlorderby-article-" + nod.Name, nod.InnerText);
+                }
+            }
+            return rtn;
+        }
+        public Dictionary<string, string> PortalCatalogLinks()
+        {
+            var rtn = new Dictionary<string, string>();
+            var nodList = Info.XMLDoc.SelectNodes("root/pageslinks/*");
+            if (nodList != null)
+            {
+                foreach (XmlNode nod in nodList)
+                {
+                    rtn.Add(nod.Name, nod.InnerText);
+                }
+            }
+            return rtn;
+        }
+
+
+
         public int CommandCount { set; get; }
         public int TabId { get { return _tabid; } }
         public int ModuleId { get { return _moduleid; } }
