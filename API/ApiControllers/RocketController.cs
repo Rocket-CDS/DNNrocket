@@ -454,8 +454,11 @@ namespace DNNrocketAPI.ApiControllers
                     var appThemeDNNrocket = new AppThemeDNNrocketLimpet(systemkey);
                     razorTempl = appThemeDNNrocket.GetTemplate(template);
                 }
-
-                return RenderRazorUtils.RazorDetail(razorTempl, null, null, _sessionParams, true);
+                var dataObjects = new Dictionary<string, object>();
+                dataObjects.Add("systemdata",systemData);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, dataObjects, null, _sessionParams, true);
+                if (pr.ErrorMsg != "") return pr.ErrorMsg;
+                return pr.RenderedText;
             }
             catch (Exception ex)
             {
