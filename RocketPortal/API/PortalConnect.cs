@@ -73,8 +73,15 @@ namespace RocketPortal.API
             {
                 var portalData = new PortalLimpet(portalId);
                 if (portalData.PortalId >= 0) portalData.Save(_postInfo);
-                _portalData = new PortalLimpet(portalId); // reload portal data after save (for langauge change)
-                //CacheUtils.ClearAllCache();  
+                if (!PagesUtils.PageExists(portalId, portalData.SystemKey))
+                {
+                    var tabid = PagesUtils.CreatePage(portalId, portalData.SystemKey);
+                    PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Manager);
+                    PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Editor);
+                    PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.ClientEditor);
+                    PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rocketadmin.ascx");
+                }
+                _portalData = new PortalLimpet(portalId); // reload portal data after save (for langauge change)               
                 return GetPortalDetail();
             }
             return "Invalid PortalId";

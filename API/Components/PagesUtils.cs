@@ -256,7 +256,16 @@ namespace DNNrocketAPI.Components
             var l = TabController.GetTabPathDictionary(portalId, cultureCode);
             return l.First().Value;
         }
-
+        public static bool PageExists(int portalId, string pageName, int parentId = 0)
+        {
+            var controller = new TabController();
+            var tab = controller.GetTabByName(pageName, portalId);
+            if (tab == null)
+                return false;
+            else
+                if (tab.IsDeleted) return false;
+            return true;
+        }
         public static int CreatePage(int portalId, string pageName, int parentId = 0)
         {
             var controller = new TabController();
