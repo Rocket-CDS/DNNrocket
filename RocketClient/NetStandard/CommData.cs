@@ -30,11 +30,14 @@ namespace RocketComm
             var metaSEO = new MetaSEO();
             try
             {
-                var sRec = new SimplisityRecord();
-                sRec.FromXmlItem(SeoHeaderXml);
-                metaSEO.Title = sRec.GetXmlProperty("genxml/title");
-                metaSEO.Description = sRec.GetXmlProperty("genxml/description");
-                metaSEO.KeyWords = sRec.GetXmlProperty("genxml/keywords");
+                if (!String.IsNullOrEmpty(SeoHeaderXml))
+                {
+                    var sRec = new SimplisityRecord();
+                    sRec.FromXmlItem(SeoHeaderXml);
+                    metaSEO.Title = sRec.GetXmlProperty("genxml/title");
+                    metaSEO.Description = sRec.GetXmlProperty("genxml/description");
+                    metaSEO.KeyWords = sRec.GetXmlProperty("genxml/keywords");
+                }
             }
             catch (Exception)
             {
@@ -47,7 +50,10 @@ namespace RocketComm
             var sRec = new SimplisityInfo();
             try
             {
-                sRec.FromXmlItem(SettingsXml);
+                if (!String.IsNullOrEmpty(SettingsXml))
+                {
+                    sRec.FromXmlItem(SettingsXml);
+                }
             }
             catch (Exception)
             {
