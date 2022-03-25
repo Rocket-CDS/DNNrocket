@@ -155,8 +155,8 @@ $(document).ready(function () {
         $('#adminmenu').slideToggle();
     });
 
-    simplisity_setSessionField('culturecode', '@sessionParams.CultureCode')
-    simplisity_setSessionField('culturecodeedit', '@sessionParams.CultureCodeEdit')
+    simplisity_setSessionField('culturecode', '@(sessionParams.CultureCode)')
+    simplisity_setSessionField('culturecodeedit', '@(sessionParams.CultureCodeEdit)')
 
 });
 </script>
