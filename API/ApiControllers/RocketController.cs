@@ -201,8 +201,17 @@ namespace DNNrocketAPI.ApiControllers
             }
 
             _sessionParams = new SessionParams(paramInfo);
-            if (_sessionParams.CultureCode == "") _sessionParams.CultureCode = DNNrocketUtils.GetCurrentCulture();
-            if (_sessionParams.CultureCodeEdit == "") _sessionParams.CultureCodeEdit = DNNrocketUtils.GetEditCulture();
+            //Check for invalid CultureCode
+            if (_sessionParams.CultureCode == "" || _sessionParams.CultureCode.Length > 5)
+            {
+                _sessionParams.CultureCode = DNNrocketUtils.GetCurrentCulture();
+                paramInfo.SetXmlProperty("genxml/hidden/culturecode", DNNrocketUtils.GetCurrentCulture());
+            }
+            if (_sessionParams.CultureCodeEdit == "" || _sessionParams.CultureCodeEdit.Length > 5)
+            {
+                _sessionParams.CultureCodeEdit = DNNrocketUtils.GetEditCulture();
+                paramInfo.SetXmlProperty("genxml/hidden/culturecode", DNNrocketUtils.GetEditCulture());
+            }
 
             return paramInfo;
         }
