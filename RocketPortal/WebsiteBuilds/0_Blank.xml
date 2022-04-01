@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<genxml>
+  <name>Blank</name>
+  <desc1>1 page</desc1>
+  <desc2>Default Skin</desc2>
+  <desc3></desc3>
+  <desc4></desc4>
+  <pages>
+    
+    <page>
+      <name>Home</name>
+      <skin></skin>
+      <modules>
+        <module>
+          <name></name>
+          <ctrl>DNNcdsviewer</ctrl>
+          <container></container>
+        </module>
+      </modules>
+    </page>
+    
+  </pages>
+</genxml>
