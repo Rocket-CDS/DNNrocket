@@ -14,35 +14,32 @@ using System.Xml;
 
 namespace DNNrocketAPI.Components
 {
-    /// <summary>
-    /// Used to call remote engine and returns data
-    /// </summary>
     public class RemoteParams
     {
-        public RemoteParams(string systemKey)
+        public RemoteParams()
         {
             Record = new SimplisityRecord();
-            SystemKey = systemKey;
         }
+        public void AddSystem(string systemKey)
+        {
+            var sRec = new SimplisityRecord();
+            sRec.SetXmlProperty("genxml/systemkey", systemKey);
+            Record.AddRecordListItem("systems", sRec);
+        }
+        public void RemoveSystems()
+        {
+            Record.RemoveRecordList("systems");
+        }
+        public List<SimplisityRecord> GetSystems()
+        {
+            return Record.GetRecordList("systems");
+        }
+
         #region "properties"
         public SimplisityRecord Record { get; private set; }
-        public bool Exists
-        {
-            get
-            {
-                if (Record.ItemID <= 0)
-                {
-                    return false;
-                }
-                return true;
-            }
-        }
         public string SecurityKey { get { return Record.GetXmlProperty("genxml/settings/securitykey"); } set { Record.SetXmlProperty("genxml/settings/securitykey", value); } }
         public string SecurityKeyEdit { get { return Record.GetXmlProperty("genxml/settings/securitykeyedit"); } set { Record.SetXmlProperty("genxml/settings/securitykeyedit", value); } }
-        public string SystemKey { get { return Record.GetXmlProperty("genxml/settings/systemkey"); } set { Record.SetXmlProperty("genxml/settings/systemkey", value); } }
-        public string RemoteAPI { get { return EngineURL.TrimEnd('/') + "/Desktopmodules/DNNrocket/api/rocket/actionremote"; } }
         public string EngineURL { get { return Record.GetXmlProperty("genxml/settings/engineurl"); } set { Record.SetXmlProperty("genxml/settings/engineurl", value); } }
-        public string AdminUrl { get { return EngineURL.TrimEnd('/') + "/" + SystemKey; } }
         public string RecordItemBase64 { get { return GeneralUtils.Base64Encode(Record.ToXmlItem()); } }
 
         #endregion

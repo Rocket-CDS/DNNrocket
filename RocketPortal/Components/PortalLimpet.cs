@@ -191,7 +191,7 @@ namespace RocketPortal.Components
         /// <returns></returns>
         public string RemoteBase64Params()
         {
-            var remoteParams = new RemoteParams(SystemKey);
+            var remoteParams = new RemoteParams();
             remoteParams.EngineURL = EngineUrlWithProtocol;
             remoteParams.SecurityKey = SecurityKey;
             remoteParams.SecurityKeyEdit = SecurityKeyEdit;

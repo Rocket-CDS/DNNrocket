@@ -130,26 +130,10 @@
         </div>
         <div class="w3-third">
             <label><b>@ResourceKey("RP.system")</b></label>
-            @{
-                var lp = 0;
-                var disabledflag = "";
-                if (info.GetXmlProperty("genxml/radio/systemkey") != "")
-                {
-                    disabledflag = "disabled";
-                }
-            }
+            <br />
             @foreach (var systemData in systemList)
             {
-                var selectedvalue = "";
-                if (info.GetXmlProperty("genxml/radio/systemkey") == systemData.SystemKey)
-                {
-                    selectedvalue = "checked='checked'";
-                }
-                <p>
-                    <input class="w3-radio" id="systemkey_@(lp)" s-xpath="genxml/radio/systemkey" @(disabledflag) @(selectedvalue) s-update="save" name="systemkeyradio" type="radio" value="@systemData.SystemKey">
-                    <label class="">@systemData.SystemName</label>
-                </p>
-                lp += 1;
+                @CheckBox(info, "genxml/systems/" + systemData.SystemKey, "&nbsp;" + systemData.SystemName, " class='w3-check' ")<br />
             }
         </div>
 
