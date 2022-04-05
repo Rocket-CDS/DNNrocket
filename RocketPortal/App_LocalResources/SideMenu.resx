@@ -121,7 +121,7 @@
     <value>App Store</value>
   </data>
   <data name="dashboard.Text" xml:space="preserve">
-    <value>Data Services</value>
+    <value>Web Services</value>
   </data>
   <data name="dataclients.Text" xml:space="preserve">
     <value>Data Clients</value>

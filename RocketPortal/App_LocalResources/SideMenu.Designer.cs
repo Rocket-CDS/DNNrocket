@@ -70,7 +70,7 @@ namespace RocketPortal.App_LocalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data Services.
+        ///   Looks up a localized string similar to Web Services.
         /// </summary>
         internal static string dashboard_Text {
             get {

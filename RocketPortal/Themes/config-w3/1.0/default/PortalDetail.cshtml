@@ -42,8 +42,6 @@
 
     </div>
 
-    @IsSystemValid(portalData.PortalId, info.GetXmlProperty("genxml/radio/systemkey"))
-
     <div class="w3-row w3-padding">
         <div class="w3-col m10 w3-xlarge">@(portalData.EngineUrl)</div>
         <div class="w3-col m2 w3-tiny w3-right w3-right-align w3-hide-small">Id:&nbsp;@info.ItemID &nbsp; PortalId:&nbsp;@portalData.PortalId</div>
@@ -53,24 +51,19 @@
     @HiddenField(info, "genxml/config/securitykeyedit")
 
     <div class="w3-row w3-border-bottom">
-        <div onclick="selectmenu('generaldata');" class="w3-col m3 w3-hover-light-grey w3-center">
+        <div onclick="selectmenu('generaldata');" class="w3-col m4 w3-hover-light-grey w3-center">
             <div class="a-generaldata mitem w3-bottombar w3-border-black w3-large w3-padding">
                 @ResourceKey("RP.general")
             </div>
         </div>
-        <div onclick="selectmenu('languagesdata');" class="w3-col m3 w3-hover-light-grey w3-center">
+        <div onclick="selectmenu('languagesdata');" class="w3-col m4 w3-hover-light-grey w3-center">
             <div class="a-languagesdata mitem w3-bottombar w3-large w3-padding">
                 @ResourceKey("RP.languages")
             </div>
         </div>
-        <div onclick="selectmenu('managerdata');" class="w3-col m3 w3-hover-light-grey w3-center">
+        <div onclick="selectmenu('managerdata');" class="w3-col m4 w3-hover-light-grey w3-center">
             <div class="a-managerdata mitem w3-bottombar w3-large w3-padding">
                 @ResourceKey("DNNrocket.managers")
-            </div>
-        </div>
-        <div onclick="selectmenu('setupdata');" class="w3-col m3 w3-hover-light-grey w3-center simplisity_click" s-return="#setupdata" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@info.GetXmlProperty("genxml/radio/systemkey")"}'>
-            <div class="a-setupdata mitem w3-bottombar w3-large w3-padding">
-                @ResourceKey("DNNrocket.setup")
             </div>
         </div>
     </div>
@@ -133,7 +126,16 @@
             <br />
             @foreach (var systemData in systemList)
             {
-                @CheckBox(info, "genxml/systems/" + systemData.SystemKey, "&nbsp;" + systemData.SystemName, " class='w3-check' ")<br />
+                <div class="w3-row">
+                    <div class="w3-col m10">
+                        @CheckBox(info, "genxml/systems/" + systemData.SystemKey, "&nbsp;" + systemData.SystemName, " class='w3-check' ")
+                    </div>
+                    <div class="w3-col m10" style="width:64px;">
+                        <div class="w3-button simplisity_click" s-return="" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@systemData.SystemKey"}'>
+                            @ButtonIcon(ButtonTypes.setup)
+                        </div>
+                    </div>
+                </div>
             }
         </div>
 
