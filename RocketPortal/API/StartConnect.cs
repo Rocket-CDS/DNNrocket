@@ -29,6 +29,7 @@ namespace RocketPortal.API
             var rtnDic = new Dictionary<string, object>();
 
             var strOut = "";
+            var jsonOut = "";
 
             switch (paramCmd)
             {
@@ -66,6 +67,9 @@ namespace RocketPortal.API
                     break;
                 case "dataclients_register":
                     strOut = GetDataClientRegister();
+                    break;
+                case "dataclients_getsystems":
+                    jsonOut = ActiveSystemJson();
                     break;
 
 
@@ -143,7 +147,7 @@ namespace RocketPortal.API
             // if we have changed language, reset the editlang.  The _nextLang is defined on the "InitCmd" function.
             if (_nextLang != _editLang) DNNrocketUtils.SetEditCulture(_nextLang);
             // -----------------------------------------------------------------------
-
+            if (jsonOut != "") rtnDic.Add("outputjson", jsonOut);
             if (!rtnDic.ContainsKey("outputjson")) rtnDic.Add("outputhtml", strOut);
 
             return rtnDic;
@@ -183,7 +187,7 @@ namespace RocketPortal.API
             _portalData = new PortalLimpet(portalid);
 
             // SECURITY --------------------------------
-            if (paramCmd == "dataclients_register")
+            if (paramCmd == "dataclients_register" || paramCmd == "dataclients_getsystems")
             {
                 var sk = _paramInfo.GetXmlProperty("genxml/remote/securitykey");
                 if (_portalData.SecurityKey != sk) return "";
@@ -222,15 +226,21 @@ namespace RocketPortal.API
         }
         private string ActiveSystemPanel()
         {
-            try
+            var razorTempl = _appThemeSystem.GetTemplate("ActiveSystemPanel.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, null, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
+        private string ActiveSystemJson()
+        {
+            var rtnxml = "<root>";
+            var l = _portalData.GetSystems();
+            foreach (var s in l)
             {
-                var razorTempl = _appThemeSystem.GetTemplate("ActiveSystemPanel.cshtml");
-                return RenderRazorUtils.RazorDetail(razorTempl, _portalData, _passSettings, _sessionParams, true);
+                rtnxml += s.Record.ToXmlItem();
             }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            rtnxml += "</root>";
+            return GeneralUtils.Base64Encode(rtnxml);
         }
         private string ActiveSystems()
         {

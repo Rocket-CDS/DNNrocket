@@ -42,8 +42,12 @@
       <cmd>dashboard_activesystempanel</cmd>
       <action>true</action>
     </command>
+    <command>
+      <cmd>dataclients_getsystems</cmd>
+      <action>true</action>
+    </command>
 
-    
+
     <command>
       <cmd>organisations_list</cmd>
       <action>true</action>
