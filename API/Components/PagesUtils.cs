@@ -285,7 +285,7 @@ namespace DNNrocketAPI.Components
                 newTab.DisableLink = false; // whether it has a menu link
                 newTab.IconFile = ""; // the image file used in the menu
                 newTab.Url = ""; // if the page is a redirection to a URL such as another page or an external site
-                //newTab.ParentId = parentId;
+                if (parentId > 0) newTab.ParentId = parentId;
 
                 return controller.AddTab(newTab);
             }

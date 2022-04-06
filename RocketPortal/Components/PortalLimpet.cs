@@ -208,6 +208,17 @@ namespace RocketPortal.Components
             return false;
         }
 
+        public List<SystemLimpet> GetSystems()
+        {
+            var rtn = new List<SystemLimpet>();
+            var l = SystemDataList.GetSystemActiveList();
+            foreach (var s in l)
+            {
+                if (Record.GetXmlPropertyBool("genxml/systems/" + s.SystemKey)) rtn.Add(s);
+            }
+            return rtn;
+        }
+
         #region "setting"
         public string GetPortalSetting(int idx)
         {
@@ -264,7 +275,6 @@ namespace RocketPortal.Components
         public string SecurityKeyEdit { get { return Record.GetXmlProperty("genxml/config/securitykeyedit"); } set { Record.SetXmlProperty("genxml/config/securitykeyedit", value); } }
         public bool EmailActive { get { return Record.GetXmlPropertyBool("genxml/config/emailon"); } }
         public int UserId { get { return Record.UserId; } private set { Record.UserId = value; } }
-        public string SystemKey { get { return Record.GetXmlProperty("genxml/radio/systemkey"); } }
         public string ColorAdminTheme { get { var rtn = Record.GetXmlProperty("genxml/select/colortheme"); if (rtn == "") rtn = "grey-theme.css"; return rtn; } set { Record.SetXmlProperty("genxml/select/colortheme", value); } }
 
     }

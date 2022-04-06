@@ -37,19 +37,10 @@ namespace RocketPortal.API
 
                     // add portal record
                     var portalData = new PortalLimpet(portalid);
-                    var systemkey = _postInfo.GetXmlProperty("genxml/radio/systemkey");
-                    portalData.Record.SetXmlProperty("genxml/radio/systemkey", systemkey);
                     portalData.Record.SetXmlProperty("genxml/textbox/name", "");
                     portalData.EngineUrl = engineurl;
                     portalData.Update();
                     _portalData = new PortalLimpet(portalid);
-
-                    // Create the system record in the DB.
-                    var systemData = new SystemLimpet(_portalData.SystemKey);
-                    var interfacekey = "rocketsystem";
-                    var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
-                    _paramInfo.SetXmlProperty("genxml/hidden/newportalid", portalid.ToString());
-                    var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketsystem_init", systemData.SystemInfo, rocketInterface, _postInfo, _paramInfo, "/DesktopModules/DNNrocket/api", "");
 
                     // Add current user as manager, if not superuser
                     if (UserUtils.GetCurrentUserId() != portalAdminUserId)
@@ -73,15 +64,39 @@ namespace RocketPortal.API
             {
                 var portalData = new PortalLimpet(portalId);
                 if (portalData.PortalId >= 0) portalData.Save(_postInfo);
-                if (!PagesUtils.PageExists(portalId, portalData.SystemKey))
+
+                // Create a SysAdmin page, with subpages of each system.
+                if (!PagesUtils.PageExists(portalId, "SysAdmin"))
                 {
-                    var tabid = PagesUtils.CreatePage(portalId, portalData.SystemKey);
-                    PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Manager);
-                    PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Editor);
-                    PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.ClientEditor);
-                    PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rocketadmin.ascx");
+                    var tabid = PagesUtils.CreatePage(portalId, "SysAdmin");
+                    PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rockethome.ascx");
                 }
-                _portalData = new PortalLimpet(portalId); // reload portal data after save (for langauge change)               
+                var sysAdminTabId = PagesUtils.GetPageByTabPath(portalId, "//SysAdmin");
+                if (sysAdminTabId > 0 )
+                {
+                    foreach (var s in portalData.GetSystems())
+                    {
+                        if (PagesUtils.GetPageByTabPath(portalId, "//SysAdmin//" + s.SystemKey) == -1)
+                        {
+                            var tabid = PagesUtils.CreatePage(portalId, s.SystemKey, sysAdminTabId);
+                            PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Manager);
+                            PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Editor);
+                            PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.ClientEditor);
+                            PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rocketadmin.ascx");
+                        }
+
+                        // Create the system record in the DB.
+                        var systemData = new SystemLimpet(s.SystemKey);
+                        if (!systemData.Exists)
+                        {
+                            var interfacekey = "rocketsystem";
+                            var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+                            _paramInfo.SetXmlProperty("genxml/hidden/newportalid", portalId.ToString());
+                            var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketsystem_init", systemData.SystemInfo, rocketInterface, _postInfo, _paramInfo, "/DesktopModules/DNNrocket/api", "");
+                        }
+                    }
+                }
+                _portalData = new PortalLimpet(portalId); // reload portal data after save (for language change)               
                 return GetPortalDetail();
             }
             return "Invalid PortalId";
@@ -91,17 +106,18 @@ namespace RocketPortal.API
             var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
             if (portalId >= 0)
             {
-                // delete system data
-                var systemData = new SystemLimpet(_portalData.SystemKey);
-                var interfacekey = "rocketsystem";
-                var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
-                var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketsystem_delete", systemData.SystemInfo, rocketInterface, _postInfo, _paramInfo, "/DesktopModules/DNNrocket/api", "");
-
-
-                var PortalShop = new PortalLimpet(portalId);
-                PortalUtils.DeletePortal(portalId); // Delete base portal will crash install.
+                var PortalData = new PortalLimpet(portalId);
+                foreach (var s in PortalData.SystemDataList.GetSystemActiveList())
+                {
+                    // delete system data
+                    var systemData = new SystemLimpet(s.SystemKey);
+                    var interfacekey = "rocketsystem";
+                    var rocketInterface = new RocketInterface(systemData.SystemInfo, interfacekey);
+                    var returnDictionary = DNNrocketUtils.GetProviderReturn("rocketsystem_delete", systemData.SystemInfo, rocketInterface, _postInfo, _paramInfo, "/DesktopModules/DNNrocket/api", "");
+                }
+                PortalUtils.DeletePortal(portalId); 
                 //DNNrocketUtils.RecycleApplicationPool();
-                PortalShop.Delete();
+                PortalData.Delete();
                 _userParams.TrackClear(_systemData.SystemKey);
                 return GetPortalList();
             }
