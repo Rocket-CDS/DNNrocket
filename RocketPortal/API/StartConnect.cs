@@ -29,7 +29,7 @@ namespace RocketPortal.API
             var rtnDic = new Dictionary<string, object>();
 
             var strOut = "";
-            var jsonOut = "";
+            var xmlOut = "";
 
             switch (paramCmd)
             {
@@ -69,7 +69,7 @@ namespace RocketPortal.API
                     strOut = GetDataClientRegister();
                     break;
                 case "dataclients_getsystems":
-                    jsonOut = ActiveSystemJson();
+                    xmlOut = ActiveSystemJson();
                     break;
 
 
@@ -147,7 +147,7 @@ namespace RocketPortal.API
             // if we have changed language, reset the editlang.  The _nextLang is defined on the "InitCmd" function.
             if (_nextLang != _editLang) DNNrocketUtils.SetEditCulture(_nextLang);
             // -----------------------------------------------------------------------
-            if (jsonOut != "") rtnDic.Add("outputjson", jsonOut);
+            if (xmlOut != "") rtnDic.Add("outputxml", xmlOut);
             if (!rtnDic.ContainsKey("outputjson")) rtnDic.Add("outputhtml", strOut);
 
             return rtnDic;
@@ -240,7 +240,7 @@ namespace RocketPortal.API
                 rtnxml += s.Record.ToXmlItem();
             }
             rtnxml += "</root>";
-            return GeneralUtils.Base64Encode(rtnxml);
+            return rtnxml;
         }
         private string ActiveSystems()
         {
