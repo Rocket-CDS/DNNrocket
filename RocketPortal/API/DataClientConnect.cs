@@ -13,7 +13,9 @@ namespace RocketPortal.API
         {
             var dataClientList = new DataClientLimpetList(_paramInfo);
             var razorTempl = _appThemeSystem.GetTemplate("DataClientList.cshtml");
-            return RenderRazorUtils.RazorDetail(razorTempl, dataClientList, _passSettings, _sessionParams, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataClientList, null, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         private String GetDataClientRegister()
         {
