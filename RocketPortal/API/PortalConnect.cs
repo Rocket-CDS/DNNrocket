@@ -129,7 +129,9 @@ namespace RocketPortal.API
             {
                 var portalList = new PortalLimpetList(_paramInfo);
                 var razorTempl = _appThemeSystem.GetTemplate("PortalList.cshtml");
-                return RenderRazorUtils.RazorDetail(razorTempl, portalList, _passSettings, _sessionParams, true);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, portalList, _dataObjects, _passSettings, _sessionParams, true);
+                if (pr.StatusCode != "00") return pr.ErrorMsg;
+                return pr.RenderedText;
             }
             catch (Exception ex)
             {
@@ -148,7 +150,9 @@ namespace RocketPortal.API
             try
             {
                 var razorTempl = _appThemeSystem.GetTemplate("PortalDetail.cshtml");
-                return RenderRazorUtils.RazorDetail(razorTempl, _portalData, _passSettings, _sessionParams, true);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
+                if (pr.StatusCode != "00") return pr.ErrorMsg;
+                return pr.RenderedText;
             }
             catch (Exception ex)
             {
@@ -232,7 +236,9 @@ namespace RocketPortal.API
                 _passSettings.Add("success", success.ToString());
                 _passSettings.Add("statusmsg", statusMsg);                
                 var razorTempl = _appThemeSystem.GetTemplate("PortalAddManager.cshtml");
-                return RenderRazorUtils.RazorDetail(razorTempl, _portalData, _passSettings, _sessionParams, true);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
+                if (pr.StatusCode != "00") return pr.ErrorMsg;
+                return pr.RenderedText;
             }
             catch (Exception ex)
             {

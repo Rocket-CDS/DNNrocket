@@ -16,7 +16,7 @@
 
     var systemDataList = new SystemLimpetList();
     var systemList = systemDataList.GetSystemActiveList();
-    var appThemeSystem = new AppThemeDNNrocketLimpet("rocketportal");
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
     var edittextbox = "disabled";
     if (UserUtils.IsSuperUser())
     {

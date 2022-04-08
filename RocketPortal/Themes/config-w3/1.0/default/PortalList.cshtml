@@ -2,14 +2,14 @@
 @using Simplisity;
 @using DNNrocketAPI.Components;
 @using RocketPortal.Components;
+@using System.IO;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
 
 @{
     var portalList = (PortalLimpetList)Model.List.First();
-    var systemDataList = new SystemLimpetList();
-    var systemList = systemDataList.GetSystemActiveList();
+    var websiteBuild = (WebsiteBuild)Model.GetDataObject("websitebuild");
 }
 
 <div id="portallist" class="">
@@ -63,23 +63,33 @@
 <div id="portaldetail" class="" style="display:none;">
     <div class="w3-row w3-padding">
         <div class="w3-button" onclick="$('#portaldetail').hide();$('#portallist').show();">@ButtonIcon(ButtonTypes.back)</div>
-        <div id="createbutton" class="w3-button w3-theme-action simplisity_click" s-cmd="portal_create" s-reload="false" s-post="#portaldetail" style="display:none;">@ButtonText(ButtonTypes.create)</div>
     </div>
-    <div class="w3-container w3-xlarge">
-        @ResourceKey("RP.selectsystem")
-    </div>
-    <div class="w3-container" style="">
-            @{
-                var lp = 0;
-            }
-            @foreach (var systemData in systemList)
-            {
-                <p>
-                    <input class="w3-radio" id="systemkey_@(lp)" s-xpath="genxml/radio/systemkey" s-update="save" name="systemkeyradio" type="radio" value="@systemData.SystemKey">
-                    <label class="w3-large">@systemData.SystemName</label>
-                </p>
-                lp += 1;
-            }
+    <div class="w3-container w3-margin-top">
+        @{
+            var lp = 0;
+        }
+        @foreach (var buildConfig in websiteBuild.ConfigList)
+        {
+        <div class="w3-quarter w3-padding">
+            <div class="w3-card-4">
+
+                <header class="w3-container w3-light-grey">
+                    <h3>@buildConfig.GetXmlProperty("genxml/name")</h3>
+                </header>
+
+                <div class="w3-container w3-margin-top w3-margin-bottom">
+                    <div>@buildConfig.GetXmlProperty("genxml/desc1")&nbsp;</div>
+                    <div>@buildConfig.GetXmlProperty("genxml/desc2")&nbsp;</div>
+                    <div>@buildConfig.GetXmlProperty("genxml/desc3")&nbsp;</div>
+                    <div>@buildConfig.GetXmlProperty("genxml/desc4")&nbsp;</div>
+                </div>
+
+                <div class="w3-button w3-block w3-dark-grey simplisity_click" s-cmd="portal_create" s-reload="false" s-fields='{"buildconfigfile":"@buildConfig.GetXmlProperty("genxml/filename")"}'>@ButtonText(ButtonTypes.create)</div>
+
+            </div>
+        </div>
+            lp += 1;
+        }
     </div>
 </div>
 
