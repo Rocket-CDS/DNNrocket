@@ -26,7 +26,6 @@ namespace RocketPortal.API
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
-            var rtnDic = new Dictionary<string, object>();
 
             var strOut = "";
             var xmlOut = "";
@@ -69,7 +68,7 @@ namespace RocketPortal.API
                     strOut = GetDataClientRegister();
                     break;
                 case "dataclients_getsystems":
-                    xmlOut = ActiveSystemJson();
+                    xmlOut = ActiveSystemXml();
                     break;
 
 
@@ -147,11 +146,12 @@ namespace RocketPortal.API
             // if we have changed language, reset the editlang.  The _nextLang is defined on the "InitCmd" function.
             if (_nextLang != _editLang) DNNrocketUtils.SetEditCulture(_nextLang);
             // -----------------------------------------------------------------------
-            if (xmlOut != "") rtnDic.Add("outputxml", xmlOut);
-            if (!rtnDic.ContainsKey("outputjson")) rtnDic.Add("outputhtml", strOut);
+
+            var rtnDic = new Dictionary<string, object>();
+            if (xmlOut != "") rtnDic.Add("remote-xml", xmlOut);
+            rtnDic.Add("outputhtml", strOut);
 
             return rtnDic;
-
 
         }
 
@@ -231,16 +231,18 @@ namespace RocketPortal.API
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
-        private string ActiveSystemJson()
+        private string ActiveSystemXml()
         {
-            var rtnxml = "<root>";
+            var rtnxml = new SimplisityRecord();
             var l = _portalData.GetSystems();
             foreach (var s in l)
             {
-                rtnxml += s.Record.ToXmlItem();
+                var sRec = new SimplisityRecord();
+                sRec.SetXmlProperty("genxml/systemkey", s.Record.GetXmlProperty("genxml/systemkey"));
+                sRec.SetXmlProperty("genxml/systemname", s.Record.GetXmlProperty("genxml/systemname"));
+                rtnxml.AddRecordListItem("systems", sRec);
             }
-            rtnxml += "</root>";
-            return rtnxml;
+            return rtnxml.ToXmlItem();
         }
         private string ActiveSystems()
         {

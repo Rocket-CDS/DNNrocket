@@ -415,18 +415,14 @@ namespace DNNrocketAPI.ApiControllers
             #region "return results"
 
             HttpResponseMessage resp = null;
-            if (jsonReturn != null)
-            {
-                resp = this.Request.CreateResponse(HttpStatusCode.OK, jsonReturn, System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
-            }
-            if (xmlReturn != null)
-            {
-                resp = this.Request.CreateResponse(HttpStatusCode.OK, xmlReturn, System.Net.Http.Formatting.XmlMediaTypeFormatter.DefaultMediaType);
-            }
-            if (resp == null)
-            {
-                resp = this.Request.CreateResponse(HttpStatusCode.OK, strOut, "text/plain");
-            }
+
+            //[TODO: Kept for legacy systems, to be removed in future.  All remote formatted data is now returned as headers, only text is in the response body.]
+            //-------------------------------------------------
+            if (jsonReturn != null) resp = this.Request.CreateResponse(HttpStatusCode.OK, jsonReturn, System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
+            if (xmlReturn != null) resp = this.Request.CreateResponse(HttpStatusCode.OK, xmlReturn, System.Net.Http.Formatting.XmlMediaTypeFormatter.DefaultMediaType);
+            //-------------------------------------------------
+
+            if (resp == null) resp = this.Request.CreateResponse(HttpStatusCode.OK, strOut, "text/plain");
 
             resp.Headers.Add("razor-statuscode", statusCode);
             resp.Headers.Add("razor-errormsg", GeneralUtils.Base64Encode(errorMsg));
@@ -436,7 +432,6 @@ namespace DNNrocketAPI.ApiControllers
             {
                 if (h.Key.StartsWith("remote-")) resp.Headers.Add(h.Key, GeneralUtils.Base64Encode(h.Value.ToString()));
             }
-
 
             return resp;
 

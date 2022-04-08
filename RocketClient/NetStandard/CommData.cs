@@ -23,6 +23,7 @@ namespace RocketComm
             JsonReturn = "{\"\":\"\"}";
             CacheFlag = false;
             SettingsXml = "";
+            XmlReturn = "<genxml></genxml>";
         }
 
         public MetaSEO SeoHeader()
@@ -70,6 +71,7 @@ namespace RocketComm
         public string ViewHtml { get { return Body; } }
         public string Body { set; get; }
         public string JsonReturn { set; get; }
+        public string XmlReturn { set; get; }
         public string SettingsXml { set; get; }
         public bool CacheFlag { set; get; }
 
