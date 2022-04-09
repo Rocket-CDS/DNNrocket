@@ -9,10 +9,12 @@
     <page>
       <name>Home</name>
       <skin></skin>
+      <skinlayout></skinlayout>
+      <skincontainer></skincontainer>
       <modules>
         <module>
           <name></name>
-          <ctrl>DNNcdsviewer</ctrl>
+          <ctrl></ctrl>
           <container></container>
         </module>
       </modules>

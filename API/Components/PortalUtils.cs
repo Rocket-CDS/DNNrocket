@@ -68,6 +68,88 @@ namespace DNNrocketAPI.Components
             return portalId;
         }
 
+        public static void BuildPortal(int portalid, int portalAdminUserId, string buildconfigfile)
+        {
+            var xmlData = FileUtils.ReadFile(buildconfigfile);
+            if (xmlData != "")
+            {
+                var sRec = new SimplisityRecord(xmlData);
+                // create pages
+                var nodList = sRec.XMLDoc.SelectNodes("genxml/pages/page");
+                if (nodList == null || nodList.Count == 0)
+                {
+                    // Add HomePage Skin and Modules
+                    var homeTabId = PagesUtils.GetHomePage(portalid, DNNrocketUtils.GetCurrentCulture());
+                    if (homeTabId >= 0)
+                    {
+                        PagesUtils.AddPageSkin(portalid, homeTabId, "rocketportal", "rockethome.ascx");
+                        ModuleUtils.DeleteAllTabModules(homeTabId);
+                    }
+                }
+                else
+                {
+                    foreach (XmlNode nod in nodList)
+                    {
+                        var tabid = -1;
+                        var pagename = nod.SelectSingleNode("page/name").Value;
+                        if (PagesUtils.PageExists(portalid, pagename))
+                        {
+                            tabid = PagesUtils.GetPageByTabPath(portalid, pagename);
+                        }
+                        else
+                        {
+                            tabid = PagesUtils.CreatePage(portalid, pagename);
+                            var skin = nod.SelectSingleNode("page/skin").Value;
+                            if (skin != "")
+                            {
+                                var skinlayout = nod.SelectSingleNode("page/skinlayout").Value;
+                                var skincontainer = nod.SelectSingleNode("page/skincontainer").Value;
+                                PagesUtils.AddPageSkin(portalid, tabid, skin, skinlayout);
+                            }
+                        }
+                        var moduleList = nod.SelectNodes("page/modules/module");
+                        foreach (XmlNode mNod in moduleList)
+                        {
+                            var modulename = nod.SelectSingleNode("module/name").Value;
+                            var modulectrl = nod.SelectSingleNode("module/ctrl").Value;
+                            var modulecontainer = nod.SelectSingleNode("module/container").Value;
+                            if (modulectrl != "")
+                            {
+                                //[TODO: add required modules to containers.]
+                                var dtid = ModuleUtils.GetDesktopModuleId(portalid, modulectrl);
+                                if (dtid > -1) ModuleUtils.AddNewModuleToTab(portalid, tabid, modulename, dtid, "", 0, 0, "");
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // Add HomePage Skin and Modules
+                var homeTabId = PagesUtils.GetHomePage(portalid, DNNrocketUtils.GetCurrentCulture());
+                if (homeTabId >= 0)
+                {
+                    PagesUtils.AddPageSkin(portalid, homeTabId, "rocketportal", "rockethome.ascx");
+                    ModuleUtils.DeleteAllTabModules(homeTabId);
+                }
+            }
+
+
+            DNNrocketUtils.CreateDefaultRocketRoles(portalid);
+
+            // Add current user as manager, if not superuser
+            if (UserUtils.GetCurrentUserId() != portalAdminUserId)
+            {
+                UserUtils.CreateUser(portalid, UserUtils.GetCurrentUserName(), UserUtils.GetCurrentUserEmail(), DNNrocketRoles.Manager);
+                var role = UserUtils.GetRoleByName(portalid, DNNrocketRoles.Premium);
+                var roleid = role.GetXmlPropertyInt("genxml/roleid");
+                if (roleid > 0) UserUtils.AddUserRole(portalid, UserUtils.GetCurrentUserId(), roleid);
+            }
+
+            PortalUtils.Registration(portalid, 0);
+            PortalUtils.EnablePopups(portalid, false);
+
+        }
         public static List<int> GetPortals()
         {
             var rtnList = new List<int>();

@@ -23,18 +23,6 @@ namespace RocketPortal.API
                 var portalid = PortalUtils.CreatePortal("", engineurl, portalAdminUserId);
                 if (portalid > 0)
                 {
-                    // Add HomePage Skin and Modules
-                    var homeTabId = PagesUtils.GetHomePage(portalid, DNNrocketUtils.GetCurrentCulture());
-                    if (homeTabId >= 0)
-                    {
-                        PagesUtils.AddPageSkin(portalid, homeTabId, "rocketportal", "rockethome.ascx");
-                        ModuleUtils.DeleteAllTabModules(homeTabId);
-                        //var dtid = ModuleUtils.GetDesktopModuleId(portalid, "RocketSystem");
-                        //if (dtid > -1) ModuleUtils.AddNewModuleToTab(portalid, homeTabId, "RocketSystem", dtid, "", 0, 0, "");
-                    }
-
-                    DNNrocketUtils.CreateDefaultRocketRoles(portalid);
-
                     // add portal record
                     var portalData = new PortalLimpet(portalid);
                     portalData.Record.SetXmlProperty("genxml/textbox/name", "");
@@ -42,17 +30,8 @@ namespace RocketPortal.API
                     portalData.Update();
                     _portalData = new PortalLimpet(portalid);
 
-                    // Add current user as manager, if not superuser
-                    if (UserUtils.GetCurrentUserId() != portalAdminUserId)
-                    {
-                        UserUtils.CreateUser(portalid, UserUtils.GetCurrentUserName(), UserUtils.GetCurrentUserEmail(), DNNrocketRoles.Manager);
-                        var role = UserUtils.GetRoleByName(portalid, DNNrocketRoles.Premium);
-                        var roleid = role.GetXmlPropertyInt("genxml/roleid");
-                        if (roleid > 0) UserUtils.AddUserRole(portalid, UserUtils.GetCurrentUserId(), roleid);
-                    }
-
-                    PortalUtils.Registration(portalid, 0);
-                    PortalUtils.EnablePopups(portalid, false);
+                    var buildconfigfile = _paramInfo.GetXmlProperty("genxml/hidden/buildconfigfile");
+                    PortalUtils.BuildPortal(portalid, portalAdminUserId, buildconfigfile);
                 }
             }
             return GetPortalDetail();

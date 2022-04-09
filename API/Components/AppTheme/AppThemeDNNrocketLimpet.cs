@@ -14,7 +14,11 @@ namespace DNNrocketAPI.Components
 
     public class AppThemeDNNrocketLimpet : AppThemeBase
     {
-        public AppThemeDNNrocketLimpet(string systemKey) : base("/DesktopModules/dnnrocket/" + systemKey.Trim('/') + "/Themes/config-w3", "")
+        public AppThemeDNNrocketLimpet(string systemKey) : base(PortalUtils.GetCurrentPortalId(), "/DesktopModules/dnnrocket/" + systemKey.Trim('/') + "/Themes/config-w3", "")
+        {
+            SystemKey = systemKey;
+        }
+        public AppThemeDNNrocketLimpet(int portalId, string systemKey) : base(portalId, "/DesktopModules/dnnrocket/" + systemKey.Trim('/') + "/Themes/config-w3", "")
         {
             SystemKey = systemKey;
         }
