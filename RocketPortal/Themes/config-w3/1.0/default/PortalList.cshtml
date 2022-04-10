@@ -70,56 +70,63 @@
         }
         @foreach (var buildConfig in websiteBuild.ConfigList)
         {
-        <div class="w3-quarter w3-padding">
-            <div class="w3-card-4">
-                <div class="build@(lp)">
-                    <header class="w3-container w3-light-grey">
-                        <h3>@buildConfig.GetXmlProperty("genxml/name")</h3>
-                    </header>
+            <div class="w3-quarter w3-padding">
+                <div class="w3-card-4">
+                    <div class="build@(lp)">
+                        <header class="w3-container w3-light-grey">
+                            <h3>@buildConfig.GetXmlProperty("genxml/name")</h3>
+                        </header>
 
-                    <div class="w3-container w3-margin-top w3-margin-bottom">
-                        <div>@buildConfig.GetXmlProperty("genxml/desc1")&nbsp;</div>
-                        <div>@buildConfig.GetXmlProperty("genxml/desc2")&nbsp;</div>
-                        <div>@buildConfig.GetXmlProperty("genxml/desc3")&nbsp;</div>
-                        <div>@buildConfig.GetXmlProperty("genxml/desc4")&nbsp;</div>
+                        <div class="w3-container w3-margin-top w3-margin-bottom">
+                            <div>@buildConfig.GetXmlProperty("genxml/desc1")&nbsp;</div>
+                            <div>@buildConfig.GetXmlProperty("genxml/desc2")&nbsp;</div>
+                            <div>@buildConfig.GetXmlProperty("genxml/desc3")&nbsp;</div>
+                            <div>@buildConfig.GetXmlProperty("genxml/desc4")&nbsp;</div>
+                        </div>
                     </div>
+
+                    <div class="w3-button w3-block w3-dark-grey" onclick="$('#buildconfig').val('@buildConfig.GetXmlProperty("genxml/filename")'); $('#portaldetail').hide(); $('#portaldetaildata').show(); $('.selectedbuild').html('');$('.build@(lp)').clone().appendTo('.selectedbuild');">@ButtonText(ButtonTypes.use)</div>
+
                 </div>
-
-                <div class="w3-button w3-block w3-dark-grey" onclick="$('#buildconfig').val('@buildConfig.GetXmlProperty("genxml/filename")'); $('.portaldetailselect').hide(); $('.portaldetaildata').show();$('.build@(lp)').clone().appendTo('.selectedbuild');">@ButtonText(ButtonTypes.use)</div>
-
             </div>
-        </div>
             lp += 1;
         }
     </div>
 
-    <div class="portaldetaildata" style="display:none;">
-        <div class="w3-quarter w3-padding selectedbuild">
+</div>
 
-        </div>
-        <div class="w3-threequarter w3-padding">
-            @{
-                var info = new SimplisityInfo();
-            }
-            @HiddenField(info, "genxml/hidden/buildconfig")
-            <div class="w3-row w3-padding">
-                <label><b>@ResourceKey("RP.name")</b></label>
-                @TextBox(info, "genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ")
-            </div>
+<div id="portaldetaildata" style="display:none;">
+    <div class="w3-row w3-padding">
+        <div class="w3-button" onclick="$('#portaldetaildata').hide();$('#portaldetail').show();">@ButtonIcon(ButtonTypes.back)</div>
+    </div>
 
-            <div class="w3-row">
-                <div class="w3-col m2 w3-padding" style="width:120px;">
-                    <label class=""><b>@ResourceKey("RP.protocol")</b></label>
-                    <div class='w3-input w3-border w3-light-grey'>https://</div>
-                </div>
-                <div class="w3-rest w3-padding">
-                    <label><b>@ResourceKey("RP.serviceurl")</b></label>
-                    @TextBox(info, "genxml/textbox/engineurl", " class='w3-input w3-border' autocomplete='off' ")
-                </div>
-            </div>
+    <div class="w3-quarter w3-padding selectedbuild">
+
+    </div>
+    <div class="w3-threequarter w3-padding">
+        @{
+            var info = new SimplisityInfo();
+        }
+        @HiddenField(info, "genxml/hidden/buildconfig")
+        <div class="w3-row w3-padding">
+            <label><b>@ResourceKey("RP.name")</b></label>
+            @TextBox(info, "genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ")
         </div>
 
-        <div class="w3-button w3-block w3-dark-grey simplisity_click" s-cmd="portal_create" s-post=".portaldetaildata" s-reload="false">@ButtonText(ButtonTypes.create)</div>
+        <div class="w3-row">
+            <div class="w3-col m2 w3-padding" style="width:120px;">
+                <label class=""><b>@ResourceKey("RP.protocol")</b></label>
+                <div class='w3-input w3-border w3-light-grey'>https://</div>
+            </div>
+            <div class="w3-rest w3-padding">
+                <label><b>@ResourceKey("RP.serviceurl")</b></label>
+                @TextBox(info, "genxml/textbox/engineurl", " class='w3-input w3-border' autocomplete='off' ")
+            </div>
+        </div>
+
+        <div class="w3-row w3-center">
+            <div class="w3-button w3-center w3-dark-grey simplisity_click" s-cmd="portal_create" s-post="#portaldetaildata" s-reload="false">@ButtonText(ButtonTypes.create)</div>
+        </div>
 
     </div>
 

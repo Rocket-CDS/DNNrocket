@@ -9,10 +9,14 @@ namespace RocketPortal.API
     {
         private string CreatePortal()
         {
-            var globalData = new SystemGlobalData();
-            if (globalData.RootDomain == "") return "Invalid Root Domain.  Update Global Settings.";
-
-            var portalurl = GeneralUtils.UrlFriendly(GeneralUtils.GetGuidKey()) + "." + globalData.RootDomain;
+            var postName = _postInfo.GetXmlProperty("genxml/textbox/name");
+            var portalurl = _postInfo.GetXmlProperty("genxml/textbox/engineurl");
+            if (!GeneralUtils.IsUriValid(portalurl))
+            {
+                var globalData = new SystemGlobalData();
+                if (globalData.RootDomain == "") return "Invalid Root Domain.  Update Global Settings.";
+                portalurl = GeneralUtils.UrlFriendly(GeneralUtils.GetGuidKey()) + "." + globalData.RootDomain;
+            }
             var engineurl = portalurl;
 
             int portalAdminUserId = -1;
@@ -20,12 +24,12 @@ namespace RocketPortal.API
             if (userList.Count >= 1) portalAdminUserId = userList[0].GetXmlPropertyInt("user/userid");
             if (portalAdminUserId > 0)
             {
-                var portalid = PortalUtils.CreatePortal("", engineurl, portalAdminUserId);
+                var portalid = PortalUtils.CreatePortal(postName, engineurl, portalAdminUserId);
                 if (portalid > 0)
                 {
                     // add portal record
                     var portalData = new PortalLimpet(portalid);
-                    portalData.Record.SetXmlProperty("genxml/textbox/name", "");
+                    portalData.Record.SetXmlProperty("genxml/textbox/name", postName);
                     portalData.EngineUrl = engineurl;
                     portalData.Update();
                     _portalData = new PortalLimpet(portalid);
