@@ -19,6 +19,20 @@ namespace RocketPortal.API
             }
             var engineurl = portalurl;
 
+            var portalExists = false;
+            foreach (var p in PortalUtils.GetPortals())
+            {
+                if (PortalUtils.GetPortalAliases(p).Contains(engineurl)) portalExists = true;
+            }
+            if (portalExists)
+            {
+                _passSettings.Add("portalurl", portalurl);
+                var razorTempl = _appThemeSystem.GetTemplate("PortalExistsErr.cshtml");
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
+                if (pr.StatusCode != "00") return pr.ErrorMsg;
+                return pr.RenderedText;
+            }
+
             int portalAdminUserId = -1;
             var userList = UserUtils.GetSuperUsers();
             if (userList.Count >= 1) portalAdminUserId = userList[0].GetXmlPropertyInt("user/userid");

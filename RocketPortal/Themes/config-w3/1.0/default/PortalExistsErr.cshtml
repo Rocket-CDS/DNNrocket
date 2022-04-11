@@ -1,0 +1,12 @@
+@inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+<br/>
+<div class="w3-panel w3-red w3-center w3-xlarge w3-margin">
+    <p>@ResourceKey("RP.portalexists") - @Model.GetSetting("portalurl")</p>
+</div>
+
+<div class="w3-row w3-padding w3-center">
+    <div class="w3-button w3-black w3-padding" onclick="window.location.reload(true)">OK</div>
+</div>

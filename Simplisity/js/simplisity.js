@@ -942,6 +942,7 @@ async function simplisity_initFileUpload(fileuploadselector) {
             })
             .bind('fileuploaddrop', function (e, data) {
                 jQuery('#simplisity-file-progress-bar').show();
+                jQuery('input[id*="simplisity_fileuploadlist"]').val('');
                 jQuery.each(data.files, function (index, file) {
                     jQuery('input[id*="simplisity_fileuploadlist"]').val(jQuery('input[id*="simplisity_fileuploadlist"]').val() + simplisity_encode(file.name) + ';');
                 });
