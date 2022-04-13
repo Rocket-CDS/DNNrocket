@@ -43,6 +43,7 @@
     <value>\RocketPortal\Themes\*</value>
     <value>\RocketPortal\Skins\*</value>
     <value>\RocketPortal\Installation</value>
+    <value>\RocketPortal\WebsiteBuilds</value>
 
     <value>\RocketAppTheme</value>
     <value>\RocketAppTheme\App_LocalResources</value>

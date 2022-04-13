@@ -33,6 +33,8 @@
     <value>\Skins\rocketportal\rocketportal.xml</value>
     <value>\Skins\rocketportal\rocketcms.ascx</value>
     <value>\Skins\rocketportal\rocketcms.xml</value>
+    <value>\WebsiteBuilds\0_CDS.xml</value>
+    <value>\WebsiteBuilds\10_Blank.xml</value>
   </file>
   <assembly>
 		<value>RocketPortal.dll</value>
