@@ -163,7 +163,16 @@ namespace DNNrocketAPI.ApiControllers
                 paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
                 paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, "");
             }
+            if (DNNrocketUtils.RequestParam(context, "localapi") != "")
+            {
+                // we may have a localapi for the module, to avoid CORS error.
+                // This can be used on the templates to ensure we have the correct API call.
+                paramInfo.SetXmlProperty("genxml/settings/apiurl", HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "localapi")));
+            }            
+
             paramInfo.PortalId = PortalUtils.GetPortalId();
+
+
 
             // get all query string params
             foreach (string key in context.Request.QueryString.AllKeys)
