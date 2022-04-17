@@ -613,7 +613,7 @@ send
   </data>
   <data name="previous.Icon" xml:space="preserve">
     <value>&lt;span class="material-icons"&gt;
-arrow_left
+navigate_before
 &lt;/span&gt;</value>
   </data>
   <data name="previous.Text" xml:space="preserve">
