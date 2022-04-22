@@ -83,7 +83,7 @@
             $('#selectedorg').off("change");
             $('#selectedorg').change(function () {
                 simplisity_setSessionField('selectedorg', $('#selectedorg').val());
-                $("#sidebarplaceholder [s-cmd='rocketapptheme_getlist']").trigger('click');
+                $("#sidebarplaceholder[s-cmd='rocketapptheme_getlist']").trigger('click');
                 return false;
             });
 
