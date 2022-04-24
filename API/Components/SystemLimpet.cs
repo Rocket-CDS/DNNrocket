@@ -40,24 +40,28 @@ namespace DNNrocketAPI.Components
                 var dirPath = SystemMapPath + "\\Plugins";
                 if (Directory.Exists(dirPath))
                 {
-                    var files = Directory.GetFiles(dirPath, "*.rules");
-                    foreach (var f in files)
+                    foreach (var dirSubPath in Directory.GetDirectories(dirPath))
                     {
-                        var fileStr2 = FileUtils.ReadFile(f);
-                        var sRec = new SimplisityRecord();
-                        sRec.XMLData = fileStr2;
-
-                        var pList = sRec.GetRecordList("providerdata");
-                        foreach (var p in pList)
+                        var files = Directory.GetFiles(dirSubPath, "*.rules");
+                        foreach (var f in files)
                         {
-                            Record.AddRecordListItem("providerdata", p);
-                        }
+                            var fileStr2 = FileUtils.ReadFile(f);
+                            var sRec = new SimplisityRecord();
+                            sRec.XMLData = fileStr2;
 
-                        var iList = sRec.GetRecordList("interfacedata");
-                        foreach (var i in iList)
-                        {
-                            Record.AddRecordListItem("interfacedata", i);
+                            var pList = sRec.GetRecordList("providerdata");
+                            foreach (var p in pList)
+                            {
+                                Record.AddRecordListItem("providerdata", p);
+                            }
+
+                            var iList = sRec.GetRecordList("interfacedata");
+                            foreach (var i in iList)
+                            {
+                                Record.AddRecordListItem("interfacedata", i);
+                            }
                         }
+                        //Do NOT delete th eplugin files, they are used to build the system data
                     }
                 }
             }
