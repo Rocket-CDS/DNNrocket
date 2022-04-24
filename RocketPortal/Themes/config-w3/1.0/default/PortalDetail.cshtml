@@ -36,7 +36,13 @@
     </div>
 
     <div class="w3-row w3-padding">
-        <div class="w3-col m10 w3-xlarge">@(portalData.EngineUrl)</div>
+        <div class="w3-col m10 w3-xlarge">
+            @if (portalData.EngineUrl != "")
+            {
+                <a href="@(portalData.EngineUrlWithProtocol)" target="_blank">@ButtonIcon(ButtonTypes.home)</a>
+                <span>&nbsp;@(portalData.EngineUrl)</span>                
+            }
+        </div>
         <div class="w3-col m2 w3-tiny w3-right w3-right-align w3-hide-small">Id:&nbsp;@info.ItemID &nbsp; PortalId:&nbsp;@portalData.PortalId</div>
     </div>
 
@@ -122,11 +128,17 @@
         <div class="w3-row">
             <div class="w3-col m8">
                 @CheckBox(info, "genxml/systems/" + systemData.SystemKey, "&nbsp;" + systemData.SystemName, " class='w3-check' ")
+                @HiddenField(info, "genxml/systems/" + systemData.SystemKey + "setup")
             </div>
             <div class="w3-col m1" style="width:64px;">
                 @if (info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey))
                 {
-                    <div class="w3-button simplisity_click" s-return="" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@systemData.SystemKey"}'>
+                    var rCol = "w3-text-green";
+                    if (!info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey + "setup"))
+                    {
+                        rCol = "w3-text-red";
+                    }
+                    <div class="w3-button @(rCol) simplisity_click" s-return="" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@systemData.SystemKey"}'>
                         @ButtonIcon(ButtonTypes.setup)
                     </div>
                 }
