@@ -136,10 +136,27 @@ namespace DNNrocketAPI.Components
         {
             ZipFile.CreateFromDirectory(folderMapPath, zipFileMapPath);
         }
-
-        public static void ExtractZipFolder(string zipFileMapPath, string outFolderMapPath)
+        public static void ExtractZipFolder(string zipFileMapPath, string outFolderMapPath, bool overwrite)
         {
-            ZipFile.ExtractToDirectory(zipFileMapPath, outFolderMapPath);
+            if (!overwrite)
+            {
+                ZipFile.ExtractToDirectory(zipFileMapPath, outFolderMapPath);
+            }
+            else
+            {
+                using (var archive = ZipFile.OpenRead(zipFileMapPath))
+                {
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        string fullPath = Path.Combine(outFolderMapPath, entry.FullName);
+                        // If it's a directory, it doesn't have a "Name".
+                        if (string.IsNullOrEmpty(entry.Name))
+                            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+                        else
+                            entry.ExtractToFile(fullPath, true);
+                    }
+                }
+            }
         }
 
         /// <summary>

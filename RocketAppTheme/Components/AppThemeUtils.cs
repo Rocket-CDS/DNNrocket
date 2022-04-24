@@ -113,7 +113,7 @@ namespace Rocket.AppThemes.Components
             var extractDir = downloadFolderMapPath.TrimEnd('\\') + "\\Temp";
             if (Directory.Exists(extractDir)) Directory.Delete(extractDir, true);
             Directory.CreateDirectory(extractDir);
-            DNNrocketUtils.ExtractZipFolder(downloadFolderMapPath + "\\main.zip", extractDir);
+            DNNrocketUtils.ExtractZipFolder(downloadFolderMapPath + "\\main.zip", extractDir, true);
             // check for correct folder and move to AppTheme. (3rd level)
             foreach ( var d in Directory.GetDirectories(extractDir))
             {
@@ -127,14 +127,14 @@ namespace Rocket.AppThemes.Components
                         if (!Directory.Exists(gitFolder)) // if we have a git repo, do not download. (Dev Site)
                         {
                             if (Directory.Exists(rDir)) Directory.Delete(rDir, true);
-                            Directory.Move(d2, rDir);
+                            if (Directory.Exists(d2)) Directory.Move(d2, rDir);
                         }
                     }
                 }
             }
             //delete temp files.
-            Directory.Delete(extractDir, true);
-            File.Delete(zFile);
+            if (Directory.Exists(extractDir)) Directory.Delete(extractDir, true);
+            if (File.Exists(zFile)) File.Delete(zFile);
         }
 
         #endregion
