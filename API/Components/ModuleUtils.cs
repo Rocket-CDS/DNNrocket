@@ -18,7 +18,7 @@ namespace DNNrocketAPI.Components
 {
     public static class ModuleUtils
     {
-        public static void CraeteModuleFromManifest(string manifestMapPath)
+        public static void CreateModuleFromManifest(string manifestMapPath)
         {
             var manifest = FileUtils.ReadFile(manifestMapPath);
             var installer = new DotNetNuke.Services.Installer.Installer(manifest, DNNrocketUtils.MapPath("/"), true);
