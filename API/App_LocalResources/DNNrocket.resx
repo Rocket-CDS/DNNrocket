@@ -913,4 +913,13 @@ play_arrow
   <data name="invalidcatalog.Text" xml:space="preserve">
     <value>Invalid Catalog</value>
   </data>
+  <data name="cds.Text" xml:space="preserve">
+    <value>CDS</value>
+  </data>
+  <data name="website.Text" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="dataservice.Text" xml:space="preserve">
+    <value>Data Service</value>
+  </data>
 </root>

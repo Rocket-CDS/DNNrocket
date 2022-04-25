@@ -39,6 +39,7 @@
         <table class="w3-table w3-bordered w3-hoverable">
             <thead>
                 <tr>
+                    <th></th>
                     <th>@ResourceKey("RP.name")</th>
                     <th>@ResourceKey("RP.serviceurl")</th>
                 </tr>
@@ -48,6 +49,7 @@
                 if (portalData.PortalId > 0)
                 {
                     <tr class="simplisity_click" s-cmd="portal_detail" s-fields='{"portalid":"@portalData.PortalId","track":"false"}' style="cursor:pointer;">
+                        <td>@ResourceKey("DNNrocket." + portalData.Record.GetXmlProperty("genxml/portaltype"))</td>
                         <td><b>@portalData.Name</b></td>
                         <td>
                             @portalData.EngineUrl
@@ -76,7 +78,9 @@
                         <header class="w3-container w3-light-grey">
                             <h3>@buildConfig.GetXmlProperty("genxml/name")</h3>
                         </header>
-
+                        <div class="w3-row w3-center">
+                            @ResourceKey("DNNrocket." + buildConfig.GetXmlProperty("genxml/type"))
+                        </div>
                         <div class="w3-container w3-margin-top w3-margin-bottom">
                             <div>@buildConfig.GetXmlProperty("genxml/desc1")&nbsp;</div>
                             <div>@buildConfig.GetXmlProperty("genxml/desc2")&nbsp;</div>

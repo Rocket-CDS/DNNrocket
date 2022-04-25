@@ -41,14 +41,21 @@ namespace RocketPortal.API
                 var portalid = PortalUtils.CreatePortal(postName, engineurl, portalAdminUserId);
                 if (portalid > 0)
                 {
+                    var buildconfigfile = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket/RocketPortal/WebsiteBuilds").TrimEnd('\\') + "\\" +   _postInfo.GetXmlProperty("genxml/hidden/buildconfig");
                     // add portal record
                     var portalData = new PortalLimpet(portalid);
                     portalData.Record.SetXmlProperty("genxml/textbox/name", postName);
+                    var xmlData = FileUtils.ReadFile(buildconfigfile);
+                    if (xmlData != "")
+                    {
+                        var buildconfig = new SimplisityRecord();
+                        buildconfig.XMLData = xmlData;
+                        portalData.Record.SetXmlProperty("genxml/portaltype", buildconfig.GetXmlProperty("genxml/type"));
+                    }
                     portalData.EngineUrl = engineurl;
                     portalData.Update();
                     _portalData = new PortalLimpet(portalid);
 
-                    var buildconfigfile = _paramInfo.GetXmlProperty("genxml/hidden/buildconfigfile");
                     PortalUtils.BuildPortal(portalid, portalAdminUserId, buildconfigfile);
                 }
             }
