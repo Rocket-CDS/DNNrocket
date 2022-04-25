@@ -166,7 +166,6 @@ namespace RocketPortal.API
             _appThemeSystem = new AppThemeDNNrocketLimpet(_systemData.SystemKey);
             _sessionParams = new SessionParams(_paramInfo);
             _userParams = new UserParams(_sessionParams.BrowserSessionId);
-            _rocketInterface = new RocketInterface(interfaceInfo);
             
             // Assign Langauge
             DNNrocketUtils.SetCurrentCulture();
@@ -209,32 +208,17 @@ namespace RocketPortal.API
         }
         private string GetDashboard()
         {
-            try
-            {
-                var razorTempl = _appThemeSystem.GetTemplate("Dashboard.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            var razorTempl = _appThemeSystem.GetTemplate("Dashboard.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         private string AdminPanel()
         {
-            try
-            {
-                var razorTempl = _appThemeSystem.GetTemplate("AdminPanel.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            var razorTempl = _appThemeSystem.GetTemplate("AdminPanel.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
         private string ActiveSystemPanel()
         {
@@ -272,20 +256,12 @@ namespace RocketPortal.API
         }
         private string ReloadPage()
         {
-            try
-            {
-                // user does not have access, logoff
-                UserUtils.SignOut();
-
-                var razorTempl = _appThemeSystem.GetTemplate("Reload.cshtml");
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            // user does not have access, logoff
+            UserUtils.SignOut();
+            var razorTempl = _appThemeSystem.GetTemplate("Reload.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, _dataObjects, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
 
     }
