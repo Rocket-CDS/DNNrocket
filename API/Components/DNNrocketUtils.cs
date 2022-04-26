@@ -138,6 +138,7 @@ namespace DNNrocketAPI.Components
         }
         public static void ExtractZipFolder(string zipFileMapPath, string outFolderMapPath, bool overwrite)
         {
+            if (!Directory.Exists(outFolderMapPath)) Directory.CreateDirectory(outFolderMapPath);
             if (!overwrite)
             {
                 ZipFile.ExtractToDirectory(zipFileMapPath, outFolderMapPath);
