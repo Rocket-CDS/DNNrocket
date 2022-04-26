@@ -78,6 +78,14 @@ namespace RocketPortal.API
                 var sysAdminTabId = PagesUtils.GetPageByTabPath(portalId, "//SysAdmin");
                 if (sysAdminTabId > 0 )
                 {
+                    // Add Tools Page
+                    if (PagesUtils.GetPageByTabPath(portalId, "//SysAdmin//Tools") == -1)
+                    {
+                        var tabid = PagesUtils.CreatePage(portalId, "Tools", sysAdminTabId);
+                        PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Administrators);
+                        PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rocketadmin.ascx");
+                    }
+
                     foreach (var s in portalData.GetSystems())
                     {
                         if (PagesUtils.GetPageByTabPath(portalId, "//SysAdmin//" + s.SystemKey) == -1)

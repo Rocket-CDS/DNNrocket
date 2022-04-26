@@ -60,23 +60,17 @@ namespace SystemView
         {
 
             var strOut = "";
-
-            try
-            {
-                var appThemeSystem = new AppThemeDNNrocketLimpet("rocketportal");
-                var razorTempl = appThemeSystem.GetTemplate("ActiveSystems.cshtml");
-                strOut =  RenderRazorUtils.RazorDetail(razorTempl, PortalId, null, null, true);
-            }
-            catch (Exception ex)
-            {
-                strOut = ex.ToString();
-            }
-
+            var appThemeSystem = new AppThemeDNNrocketLimpet("rocketportal");
+            var razorTempl = appThemeSystem.GetTemplate("ActiveSystems.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, null, null, null, true);
+            if (pr.StatusCode != "00") 
+                strOut = pr.ErrorMsg;
+            else
+                strOut = pr.RenderedText;
 
             var lit = new Literal();
             lit.Text = strOut;
             phData.Controls.Add(lit);
-
         }
 
         public string UpgradeModule(string Version)

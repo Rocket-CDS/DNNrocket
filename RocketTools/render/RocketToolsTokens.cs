@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
 
-namespace Rocket.Tools
+namespace RocketTools
 {
     public class RocketToolsTokens<T> : DNNrocketAPI.render.DNNrocketTokens<T>
     {
