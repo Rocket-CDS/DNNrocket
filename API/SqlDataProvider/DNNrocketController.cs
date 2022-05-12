@@ -594,7 +594,7 @@ namespace DNNrocketAPI
 
             return info;
         }
-        [Obsolete("Use GetData(int portalId, string typeCode, int ItemId, string lang, int moduleId, string tableName) instead")]
+        [Obsolete("Use GetInfo(..) instead and create empty record if needed.")]
         public SimplisityInfo GetData(string typeCode, int ItemId, string lang, int moduleId = -1, string tableName = "DNNrocket")
         {
             return GetData(PortalSettings.Current.PortalId, typeCode, ItemId, lang, moduleId,  tableName);
@@ -608,6 +608,7 @@ namespace DNNrocketAPI
         /// <param name="moduleId"></param>
         /// <param name="tableName"></param>
         /// <returns></returns>
+        [Obsolete("Use GetInfo(..) instead and create empty record if needed.")]
         public SimplisityInfo GetData(int portalId, string typeCode, int ItemId, string lang, int moduleId = -1, string tableName = "DNNrocket")
         {
             var info = GetInfo(ItemId, lang, tableName);
@@ -702,7 +703,7 @@ namespace DNNrocketAPI
         /// <param name="readOnly"></param>
         /// <param name="tableName"></param>
         /// <returns></returns>
-        public SimplisityRecord GetRecord(string typeCode, int ItemId, int moduleId = -1, bool readOnly = true, string tableName = "DNNrocket")
+        public SimplisityRecord GetRecord(int portalId, string typeCode, int ItemId, int moduleId = -1, bool readOnly = true, string tableName = "DNNrocket")
         {
             var info = GetRecord(ItemId, tableName);
             if (info == null && !readOnly)
@@ -712,7 +713,7 @@ namespace DNNrocketAPI
                 info.GUIDKey = "";
                 info.TypeCode = typeCode;
                 info.ModuleId = moduleId;
-                info.PortalId = PortalSettings.Current.PortalId;
+                info.PortalId = portalId;
                 info.ItemID = Update(info, tableName);
             }
             if (info == null) 
@@ -724,6 +725,11 @@ namespace DNNrocketAPI
                 return rtnRec;
             }
         }
+        [Obsolete("Use GetRecord(portalId, typeCode, ItemId, moduleId, readOnly,tableName) instead")]
+        public SimplisityRecord GetRecord(string typeCode, int ItemId, int moduleId = -1, bool readOnly = true, string tableName = "DNNrocket")
+        {
+            return GetRecord(PortalSettings.Current.PortalId, typeCode, ItemId, moduleId, readOnly,tableName);
+        }
 
         public SimplisityRecord SaveRecord(SimplisityRecord sRecord, string tableName = "DNNrocket")
         {
@@ -731,7 +737,7 @@ namespace DNNrocketAPI
             if (info == null)
             {
                 // do read, so it creates the record and do a new read.
-                info = GetRecord(sRecord.TypeCode, sRecord.ItemID, sRecord.ModuleId,false, tableName);
+                info = GetRecord(sRecord.PortalId, sRecord.TypeCode, sRecord.ItemID, sRecord.ModuleId,false, tableName);
             }
             if (info != null)
             {
