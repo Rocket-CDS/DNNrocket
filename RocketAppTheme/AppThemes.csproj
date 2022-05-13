@@ -5,6 +5,7 @@
     <AssemblyName>RocketAppThemes</AssemblyName>
     <RootNamespace>Rocket.AppThemes</RootNamespace>
     <Configurations>Debug;Release;Razor;Comp All;CompAll</Configurations>
+    <IsPublishable>False</IsPublishable>
   </PropertyGroup>
 
   <ItemGroup>
