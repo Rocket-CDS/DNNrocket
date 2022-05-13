@@ -109,6 +109,8 @@ namespace RocketPortal.API
                     }
                 }
                 _portalData = new PortalLimpet(portalId); // reload portal data after save (for language change)               
+                // Export to file, so other plugin systems can access data                
+                FileUtils.SaveFile(PortalUtils.HomeDNNrocketDirectoryMapPath(portalId) + "\\portalcode", portalData.RemoteBase64Params());
                 return GetPortalDetail();
             }
             return "Invalid PortalId";
