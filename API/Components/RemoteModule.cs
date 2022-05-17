@@ -53,8 +53,8 @@ namespace DNNrocketAPI.Components
         public bool Exists { get { if (Record.ItemID <= 0) { return false; } else { return true; }; } }
         public string AppThemeFolder { get { return Record.GetXmlProperty("genxml/remote/apptheme"); } set { Record.SetXmlProperty("genxml/remote/apptheme", value); } }
         public string AppThemeVersion { get { return Record.GetXmlProperty("genxml/remote/appthemeversion"); } set { Record.SetXmlProperty("genxml/remote/appthemeversion", value); } }
-        public string AppThemeViewFolder { get { return Record.GetXmlProperty("genxml/remote/appthemeview"); } set { Record.SetXmlProperty("genxml/remote/appthemeview", value); } }
-        public string AppThemeViewVersion { get { return Record.GetXmlProperty("genxml/remote/appthemeviewversion"); } set { Record.SetXmlProperty("genxml/remote/appthemeviewversion", value); } }
+        public string AppThemeViewFolder { get { if (Record.GetXmlProperty("genxml/remote/appthemeview") == "") return AppThemeFolder; else return Record.GetXmlProperty("genxml/remote/appthemeview"); } set { Record.SetXmlProperty("genxml/remote/appthemeview", value); } }
+        public string AppThemeViewVersion { get { if (Record.GetXmlProperty("genxml/remote/appthemeviewversion") == "") return AppThemeVersion; else return Record.GetXmlProperty("genxml/remote/appthemeviewversion"); } set { Record.SetXmlProperty("genxml/remote/appthemeviewversion", value); } }
         public string ModuleName { get { return Record.GetXmlProperty("genxml/remote/modulename"); } set { Record.SetXmlProperty("genxml/remote/modulename", value); } }
         public string DataRef { get { if (Record.GetXmlProperty("genxml/remote/dataref") == "") return ModuleRef; else return Record.GetXmlProperty("genxml/remote/dataref"); } set { Record.SetXmlProperty("genxml/remote/dataref", value); } }
         public string SiteKey { get { return Record.GetXmlProperty("genxml/remote/sitekey"); } set { Record.SetXmlProperty("genxml/remote/sitekey", value); } }
