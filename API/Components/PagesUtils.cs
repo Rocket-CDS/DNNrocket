@@ -266,7 +266,7 @@ namespace DNNrocketAPI.Components
                 if (tab.IsDeleted) return false;
             return true;
         }
-        public static int CreatePage(int portalId, string pageName, int parentId = 0)
+        public static int CreatePage(int portalId, string pageName, bool IsVisible = true,bool DisableLink = false, int parentId = 0)
         {
             var controller = new TabController();
             var tab = controller.GetTabByName(pageName, portalId);
@@ -283,7 +283,7 @@ namespace DNNrocketAPI.Components
                 newTab.IsSuperTab = false; // whether it should only be accessible by superusers
                 newTab.IsVisible = true; // whether it is visible
                 newTab.DisableLink = false; // whether it has a menu link
-                newTab.IconFile = ""; // the image file used in the menu
+                newTab.IconFile = ""; // the image file used in the menu                
                 newTab.Url = ""; // if the page is a redirection to a URL such as another page or an external site
                 if (parentId > 0) newTab.ParentId = parentId;
 

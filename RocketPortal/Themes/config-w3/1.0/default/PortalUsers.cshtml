@@ -21,6 +21,7 @@
                 <th style="width:32px;"></th>
                 <th>@ResourceKey("DNNrocket.username")</th>
                 <th>@ResourceKey("DNNrocket.email")</th>
+                <th style="width:32px;">@ResourceKey("DNNrocket.admin")</th>
                 <th style="width:32px;">@ResourceKey("DNNrocket.active")</th>
                 <th style="width:32px;"></th>
             </tr>
@@ -37,6 +38,20 @@
         </td>
         <td style="vertical-align: middle;">
             @userData.Email
+        </td>
+        <td>
+            @if (UserUtils.IsInRole(portalData.PortalId, userData.UserId, DNNrocketRoles.Administrators))
+            {
+                <span class="material-icons w3-button w3-text-green simplisity_click" s-cmd="portal_removeadminrole" s-fields='{"portalid":"@(portalData.PortalId)","userid":"@(userData.UserId)"}'>
+                    toggle_on
+                </span>
+            }
+            else
+            {
+                <span class="material-icons w3-button w3-text-red simplisity_click" s-cmd="portal_addadminrole" s-fields='{"portalid":"@(portalData.PortalId)","userid":"@(userData.UserId)"}'>
+                    toggle_off
+                </span>
+            }
         </td>
         <td>
             @if (userData.Approved)

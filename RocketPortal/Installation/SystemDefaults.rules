@@ -90,10 +90,18 @@
     <command>
       <cmd>dataclients_toggleactive</cmd>
       <action>true</action>
-    </command>    
+    </command>
 
-
-    <command>
+	  
+	<command>
+    	<cmd>portal_addadminrole</cmd>
+		<action>true</action>
+	</command>
+	<command>
+		<cmd>portal_removeadminrole</cmd>
+		<action>true</action>
+	</command>
+	<command>
       <cmd>portal_addmanager</cmd>
       <action>true</action>
     </command>

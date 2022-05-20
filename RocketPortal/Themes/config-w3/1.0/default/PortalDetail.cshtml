@@ -221,7 +221,8 @@
                         return false; // prevent the button click from happening
                     }
                 });
-
+                var s = simplisity_getCookieValue("rocketportal_tabselector")	
+                selectmenu(s);
             });
         </script>
 
@@ -230,20 +231,24 @@
     <script>
 
         function selectmenu(selector) {
-            $('#generaldata').hide();
-            $('#managerdata').hide();
-            $('#languagesdata').hide();
-            $('#setupdata').hide();
-            $('#actionprovider').hide();            
+            if (selector != null && typeof(selector) != 'undefined' && selector != '')
+            {
+                $('#generaldata').hide();
+                $('#managerdata').hide();
+                $('#languagesdata').hide();
+                $('#setupdata').hide();
+                $('#actionprovider').hide();            
 
-            $('#a-portalbuttons').show();
-            $('#a-setupbuttons').hide();
+                $('#a-portalbuttons').show();
+                $('#a-setupbuttons').hide();
 
 
-            $('.mitem').removeClass('w3-border-black');
-            $('.a-' + selector).addClass('w3-border-black');
-            $('#' + selector).show();
+                $('.mitem').removeClass('w3-border-black');
+                $('.a-' + selector).addClass('w3-border-black');
+                $('#' + selector).show();
 
+                simplisity_setCookieValue("rocketportal_tabselector",selector)	
+            }
         }
 
     </script>

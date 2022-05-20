@@ -640,6 +640,12 @@ namespace DNNrocketAPI.Components
             }
         }
 
+        public static bool IsInRole(int portalId, int userId, string role)
+        {
+            var userInfo = UserController.GetUserById(portalId, userId);
+            return userInfo.IsInRole(role);
+        }
+
         public static bool IsInRole(string role)
         {
             return UserController.Instance.GetCurrentUserInfo().IsInRole(role);
@@ -766,6 +772,14 @@ namespace DNNrocketAPI.Components
             if (u != null)
             {
                 RoleController.Instance.AddUserRole(portalId, userId, roleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+            }
+        }
+        public static void RemoveUserRole(int portalId, int userId, int roleId)
+        {
+            var u = UserController.GetUserById(portalId, userId);
+            if (u != null)
+            {
+                RoleController.Instance.UpdateUserRole(portalId, userId, roleId, RoleStatus.Approved, false, true);
             }
         }
         public static void SignOut()

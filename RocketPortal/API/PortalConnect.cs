@@ -72,7 +72,7 @@ namespace RocketPortal.API
                 // Create a SysAdmin page, with subpages of each system.
                 if (!PagesUtils.PageExists(portalId, "SysAdmin"))
                 {
-                    var tabid = PagesUtils.CreatePage(portalId, "SysAdmin");
+                    var tabid = PagesUtils.CreatePage(portalId, "SysAdmin", false, true);
                     PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rockethome.ascx");
                 }
                 var sysAdminTabId = PagesUtils.GetPageByTabPath(portalId, "//SysAdmin");
@@ -81,7 +81,7 @@ namespace RocketPortal.API
                     // Add Tools Page
                     if (PagesUtils.GetPageByTabPath(portalId, "//SysAdmin//Tools") == -1)
                     {
-                        var tabid = PagesUtils.CreatePage(portalId, "Tools", sysAdminTabId);
+                        var tabid = PagesUtils.CreatePage(portalId, "Tools", true, false, sysAdminTabId);
                         PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Administrators);
                         PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rocketadmin.ascx");
                     }
@@ -90,7 +90,7 @@ namespace RocketPortal.API
                     {
                         if (PagesUtils.GetPageByTabPath(portalId, "//SysAdmin//" + s.SystemKey) == -1)
                         {
-                            var tabid = PagesUtils.CreatePage(portalId, s.SystemKey, sysAdminTabId);
+                            var tabid = PagesUtils.CreatePage(portalId, s.SystemKey, true, false, sysAdminTabId);
                             PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Manager);
                             PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Editor);
                             PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.ClientEditor);
@@ -193,6 +193,34 @@ namespace RocketPortal.API
             }
             return GetPortalDetail();
         }
+        private string AddAdminRole()
+        {
+            var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+            if (portalId >= 0)
+            {
+                var userid = _paramInfo.GetXmlPropertyInt("genxml/hidden/userid");
+                if (userid > 1)
+                {
+                    var roleRec = UserUtils.GetRoleByName(portalId, DNNrocketRoles.Administrators);
+                    UserUtils.AddUserRole(portalId, userid, roleRec.GetXmlPropertyInt("genxml/roleid"));
+                }
+            }
+            return GetPortalDetail();
+        }
+        private string RemoveAdminRole()
+        {
+            var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+            if (portalId >= 0)
+            {
+                var userid = _paramInfo.GetXmlPropertyInt("genxml/hidden/userid");
+                if (userid > 1)
+                {
+                    var roleRec = UserUtils.GetRoleByName(portalId, DNNrocketRoles.Administrators);
+                    UserUtils.RemoveUserRole(portalId, userid, roleRec.GetXmlPropertyInt("genxml/roleid"));
+                }
+            }
+            return GetPortalDetail();
+        }
         private string DeleteUser()
         {
             var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
@@ -215,6 +243,8 @@ namespace RocketPortal.API
                     var managerpassword = _postInfo.GetXmlProperty("genxml/textbox/password");
                     if (managerpassword != "")
                     {
+                        var adminUserCount = UserUtils.GetUsers(portalid, DNNrocketRoles.Administrators).Count;
+
                         statusString = UserUtils.CreateUser(portalid, manageremail, manageremail);
                         if (statusString == "" && managerpassword != "" && manageremail != "")
                         {
@@ -230,6 +260,11 @@ namespace RocketPortal.API
                                     {
                                         UserUtils.AddUserRole(portalid, userInfo.UserId, r.Key);
                                     }
+                                }
+                                if (adminUserCount == 0)
+                                {
+                                    var roleRec = UserUtils.GetRoleByName(portalid, DNNrocketRoles.Administrators);
+                                    if (roleRec != null && roleRec.GetXmlPropertyInt("genxml/roleid") > 0) UserUtils.AddUserRole(portalid, userInfo.UserId, roleRec.GetXmlPropertyInt("genxml/roleid"));
                                 }
                             }
                             return GetPortalDetail();

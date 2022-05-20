@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28917.181
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNNrocketAPI", "API\DNNrocketAPI.csproj", "{2200F6C3-7D4B-4CDF-908F-DCA37ADFB121}"
 EndProject
@@ -80,7 +80,6 @@ Global
 		{53495277-450E-43EE-A954-40DCF6ECBB4A}.CompAll|Any CPU.Build.0 = CompAll|Any CPU
 		{53495277-450E-43EE-A954-40DCF6ECBB4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{53495277-450E-43EE-A954-40DCF6ECBB4A}.Razor|Any CPU.ActiveCfg = Razor|Any CPU
-		{53495277-450E-43EE-A954-40DCF6ECBB4A}.Razor|Any CPU.Build.0 = Razor|Any CPU
 		{53495277-450E-43EE-A954-40DCF6ECBB4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50555333-D8D2-4CE6-AF95-07756A2BE44C}.Comp All|Any CPU.ActiveCfg = Release|Any CPU
 		{50555333-D8D2-4CE6-AF95-07756A2BE44C}.Comp All|Any CPU.Build.0 = Release|Any CPU
@@ -88,7 +87,6 @@ Global
 		{50555333-D8D2-4CE6-AF95-07756A2BE44C}.CompAll|Any CPU.Build.0 = Release|Any CPU
 		{50555333-D8D2-4CE6-AF95-07756A2BE44C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{50555333-D8D2-4CE6-AF95-07756A2BE44C}.Razor|Any CPU.ActiveCfg = Razor|Any CPU
-		{50555333-D8D2-4CE6-AF95-07756A2BE44C}.Razor|Any CPU.Build.0 = Razor|Any CPU
 		{50555333-D8D2-4CE6-AF95-07756A2BE44C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C650794E-A80D-4725-BFD0-E419A2C337F6}.Comp All|Any CPU.ActiveCfg = Release|Any CPU
 		{C650794E-A80D-4725-BFD0-E419A2C337F6}.Comp All|Any CPU.Build.0 = Release|Any CPU

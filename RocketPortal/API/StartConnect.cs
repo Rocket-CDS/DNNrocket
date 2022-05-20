@@ -105,6 +105,12 @@ namespace RocketPortal.API
                 case "portal_createmanager":
                     strOut = CreateManager();
                     break;
+                case "portal_addadminrole":
+                    strOut = AddAdminRole();
+                    break;
+                case "portal_removeadminrole":
+                    strOut = RemoveAdminRole();
+                    break;
                 case "portal_unauthuser":
                     strOut = UnAuthoriseUser();
                     break;
