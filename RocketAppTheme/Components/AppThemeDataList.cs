@@ -41,7 +41,7 @@ namespace Rocket.AppThemes.Components
             AppSystemThemeFolderRootMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRootRel);
             if (!Directory.Exists(AppSystemThemeFolderRootMapPath)) Directory.CreateDirectory(AppSystemThemeFolderRootMapPath);
 
-            AppThemeOrganisationFolderRootRel = AppSystemThemeFolderRootRel + "\\" + Organisation;
+            AppThemeOrganisationFolderRootRel = AppSystemThemeFolderRootRel + "/" + Organisation;
             AppThemeOrganisationFolderRootMapPath = DNNrocketUtils.MapPath(AppThemeOrganisationFolderRootRel);
             if (!Directory.Exists(AppThemeOrganisationFolderRootMapPath)) Directory.CreateDirectory(AppThemeOrganisationFolderRootMapPath);
 
