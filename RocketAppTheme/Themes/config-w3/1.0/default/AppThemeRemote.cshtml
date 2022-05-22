@@ -11,7 +11,7 @@
 
 <link rel="stylesheet" href="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/@(portalData.ColorAdminTheme)">
 
-@RenderLanguageSelector("rocketapptheme_getremote", "{\"moduleref\":\"" + sessionParams.ModuleRef + "\"}", appThemeSystem, Model)
+@RenderRemoteLanguageSelector("rocketapptheme_getremote", "", appThemeSystem, Model)
 
 @RenderTemplate("AppThemeFields.cshtml", appThemeSystem, Model, true)
 

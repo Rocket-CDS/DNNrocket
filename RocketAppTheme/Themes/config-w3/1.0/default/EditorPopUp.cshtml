@@ -40,11 +40,11 @@
 
 @if (sessionParams.ModuleRef == "")
 {
-    @RenderLanguageSelector("rocketapptheme_getlist", "", appThemeSystem, Model)
+    @RenderRemoteLanguageSelector("rocketapptheme_getlist", "", appThemeSystem, Model)
 }
 else
 {
-    @RenderLanguageSelector("rocketapptheme_getremote", "{\"moduleref\":\"" + sessionParams.ModuleRef + "\"}", appThemeSystem, Model)
+    @RenderRemoteLanguageSelector("rocketapptheme_getremote", "{\"moduleref\":\"" + sessionParams.ModuleRef + "\"}", appThemeSystem, Model)
 }
 
 

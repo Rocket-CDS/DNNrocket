@@ -148,6 +148,12 @@ namespace DNNrocketAPI.render
             model.SetSetting("sfields", sfields);
             return RenderTemplate("RemoteLanguageChange.cshtml", appThemeSystem, model, true);
         }
+        public IEncodedString RenderRemoteLanguageSelector(string scmd, string sfields, AppThemeDNNrocketLimpet appThemeDNNrocket, SimplisityRazor model)
+        {
+            model.SetSetting("scmd", scmd);
+            model.SetSetting("sfields", sfields);
+            return RenderTemplate("RemoteLanguageChange.cshtml", appThemeDNNrocket, model, true);
+        }
 
         public IEncodedString RenderPagingTemplate(string scmd, string spost, SimplisityRazor model, string sreturn = "", string versionFolder = "1.0")
         {
