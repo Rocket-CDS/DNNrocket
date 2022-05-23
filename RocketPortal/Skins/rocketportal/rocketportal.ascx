@@ -5,6 +5,8 @@
 <%@ Register TagPrefix="dnn" TagName="LOGIN" Src="~/Admin/Skins/Login.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="jQuery" src="~/Admin/Skins/jQuery.ascx" %>
 
+<dnn:JQUERY ID="jquertydnninject" runat="server" />
+
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
 
     <link rel="stylesheet" href="/DesktopModules/DNNrocket/css/w3.css">

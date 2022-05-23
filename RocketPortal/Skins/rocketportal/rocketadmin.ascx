@@ -1,9 +1,12 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Skin" %>
 <%@ Register TagPrefix="dnn" TagName="META" Src="~/Admin/Skins/Meta.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="jQuery" src="~/Admin/Skins/jQuery.ascx" %>
+
+<dnn:JQUERY ID="jquertydnninject" runat="server" />
+
 
 <dnn:META ID="META1" runat="server" Name="viewport" Content="width=device-width,initial-scale=1" />
 
-    <script src="/DesktopModules/DNNrocket/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js?v=1"></script>
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
