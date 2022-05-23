@@ -23,6 +23,7 @@ namespace RocketPortal.API
         private string _editLang;
         private AppThemeDNNrocketLimpet _appThemeSystem;
         private Dictionary<string, object> _dataObjects;
+        private SystemGlobalData _globalData;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -172,7 +173,8 @@ namespace RocketPortal.API
             _appThemeSystem = new AppThemeDNNrocketLimpet(_systemData.SystemKey);
             _sessionParams = new SessionParams(_paramInfo);
             _userParams = new UserParams(_sessionParams.BrowserSessionId);
-            
+            _globalData = new SystemGlobalData();
+
             // Assign Langauge
             DNNrocketUtils.SetCurrentCulture();
             if (_sessionParams.CultureCode == "") _sessionParams.CultureCode = DNNrocketUtils.GetCurrentCulture();
@@ -209,7 +211,10 @@ namespace RocketPortal.API
             _dataObjects.Add("portaldata", _portalData);
             _dataObjects.Add("systemdata", _systemData);
             _dataObjects.Add("websitebuild", new WebsiteBuild());
+            _dataObjects.Add("globaldata", _globalData);
             
+
+
             return paramCmd;
         }
         private string GetDashboard()
