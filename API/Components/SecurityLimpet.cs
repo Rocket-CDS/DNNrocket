@@ -60,6 +60,27 @@ namespace DNNrocketAPI.Components
                     var xmlString = FileUtils.ReadFile(filenamepath);
                     Info = new SimplisityInfo();
                     Info.XMLData = xmlString;
+
+                    // check for plugin commands
+                    var pluginList = SystemData.GetInterfaceList();
+                    foreach (var p in pluginList)
+                    {
+                        var pluginFileRelPath = p.TemplateRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
+                        if (pluginFileRelPath != _defaultFileRelPath)
+                        {
+                            var pluginfilenamepath = DNNrocketUtils.MapPath(pluginFileRelPath);
+                            var xmlString2 = FileUtils.ReadFile(pluginfilenamepath);
+                            var sRec = new SimplisityRecord();
+                            sRec.XMLData = xmlString2;
+                            var cmdNodeList2 = sRec.XMLDoc.SelectNodes("root/commands/command");
+                            foreach (XmlNode nod in cmdNodeList2)
+                            {
+                                Info.AddXmlNode(nod.OuterXml, "command","root/commands") ;
+                            }
+                        }
+
+                    }
+
                     CacheUtilsDNN.SetCache(_defaultFileRelPath, Info);
                }
                 _commandSecurity = (ConcurrentDictionary<string, bool>)CacheUtilsDNN.GetCache(_systemKey + "Security" + _userId);
