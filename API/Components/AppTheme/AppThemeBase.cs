@@ -230,6 +230,23 @@ namespace DNNrocketAPI.Components
                 }
                 return FileUtils.ReadFile(fileMapPath);
             }
+            else
+            {
+                // we might only have the file at portallevel
+                if (PortalFileNameList.ContainsKey(templateFileName.ToLower()))
+                {
+                    var fileMapPath = PortalFileNameList[templateFileName.ToLower()];
+                    if (PortalUtils.GetPortalId() != 0)
+                    {
+                        var fileMP = "";
+                        if (moduleref != "") fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
+                        if (!File.Exists(fileMP)) fileMP = GetPortalFileMapPath(fileMapPath);
+                        if (File.Exists(fileMP)) fileMapPath = fileMP;
+                    }
+                    return FileUtils.ReadFile(fileMapPath);
+                }
+                
+            }
             return "";
         }
         public void SaveEditor(string filename, string editorcode, string moduleref = "")
