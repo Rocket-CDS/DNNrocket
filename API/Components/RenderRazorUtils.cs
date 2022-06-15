@@ -66,7 +66,7 @@ namespace DNNrocketAPI.Components
                 Engine.Razor = service;
 
                 var israzorCached = CacheUtilsDNN.GetCache(razorTempl); // get a cache flag for razor compile.
-                if (israzorCached == null || (string)israzorCached != razorTempl || debugMode)
+                if (israzorCached == null || (string)israzorCached != razorTempl)
                 {
                     try
                     {
