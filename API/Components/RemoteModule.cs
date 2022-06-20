@@ -37,6 +37,14 @@ namespace DNNrocketAPI.Components
             Record = _objCtrl.SaveRecord(Record, _tableName);
             return Record.ItemID;
         }
+        public string PageUrlList(string cultureCode)
+        {
+            return Record.GetXmlProperty("genxml/remote/listpageurl" + cultureCode);
+        }
+        public string PageUrlDetail(string cultureCode)
+        {
+            return Record.GetXmlProperty("genxml/remote/detailpageurl" + cultureCode);
+        }
 
         #region "properties"
 
