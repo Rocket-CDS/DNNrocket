@@ -18,16 +18,90 @@ namespace Rocket.AppThemes.Components
     public static class AppThemeUtils
     {
         private static readonly object _cacheLock1 = new object();
-        public static AppThemeLimpet GetAppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder, string org)
+
+        public static AppThemeRocketApiLimpet AppThemeRocketApi(int portalId)
         {
-            var cKey = "AppThemeLimpet*" + systemKey + "*" + appThemeFolder + "*" + versionFolder + "*" + PortalUtils.GetPortalId() + "-" + org;
-            var systemData = new SystemLimpet(systemKey);
+            var cacheKey = "AppThemeRocketApi" + portalId;
+            var appTheme = (AppThemeRocketApiLimpet)CacheUtilsDNN.GetCache(cacheKey);
+            lock (_cacheLock1)
+            {
+                if (appTheme == null)
+                {
+                    appTheme = new AppThemeRocketApiLimpet(portalId);
+                    CacheUtilsDNN.SetCache(cacheKey, appTheme);
+                }
+            }
+            return appTheme;
+        }
+        public static AppThemeDNNrocketLimpet AppThemeDNNrocket(int portalId, string systemKey)
+        {
+            var cacheKey = "AppThemeDNNrocket" + portalId + "*" + systemKey;
+            var appTheme = (AppThemeDNNrocketLimpet)CacheUtilsDNN.GetCache(cacheKey);
+            lock (_cacheLock1)
+            {
+                if (appTheme == null)
+                {
+                    appTheme = new AppThemeDNNrocketLimpet(portalId, systemKey);
+                    CacheUtilsDNN.SetCache(cacheKey, appTheme);
+                }
+            }
+            return appTheme;
+        }
+
+        public static AppThemeModule AppThemeModule(int moduleId, string systemKey)
+        {
+            var cacheKey = "AppThemeModule" + moduleId + "*" + systemKey;
+            var appTheme = (AppThemeModule)CacheUtilsDNN.GetCache(cacheKey);
+            lock (_cacheLock1)
+            {
+                if (appTheme == null)
+                {
+                    appTheme = new AppThemeModule(moduleId, systemKey);
+                    CacheUtilsDNN.SetCache(cacheKey, appTheme);
+                }
+            }
+            return appTheme;
+        }
+
+        public static AppThemeSystemLimpet AppThemeSystem(int portalId, string systemKey)
+        {
+            var cacheKey = "AppThemeSystem" + portalId + "*" + systemKey;
+            var appTheme = (AppThemeSystemLimpet)CacheUtilsDNN.GetCache(cacheKey);
+            lock (_cacheLock1)
+            {
+                if (appTheme == null)
+                {
+                    appTheme = new AppThemeSystemLimpet(portalId, systemKey);
+                    CacheUtilsDNN.SetCache(cacheKey, appTheme);
+                }
+            }
+            return appTheme;
+        }
+
+        public static AppThemeLimpet AppThemeDefault(int portalId, SystemLimpet systemData, string appThemeFolder, string versionFolder)
+        {
+            var cKey = "AppThemeLimpet*" + appThemeFolder + "*" + versionFolder + "*" + portalId + "-" + systemData.SystemKey;
             var appTheme = (AppThemeLimpet)CacheUtilsDNN.GetCache(cKey);
             lock (_cacheLock1)
             {
                 if (appTheme == null)
                 {
-                    appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), appThemeFolder, versionFolder, org);
+                    appTheme = new AppThemeLimpet(portalId, systemData, appThemeFolder, versionFolder);
+                    CacheUtilsDNN.SetCache(cKey, appTheme);
+                }
+            }
+            return appTheme;
+        }
+
+        public static AppThemeLimpet AppTheme(int portalId, string appThemeFolder, string versionFolder, string org)
+        {
+            var cKey = "AppThemeLimpet*" + appThemeFolder + "*" + versionFolder + "*" + portalId + "-" + org;
+            var appTheme = (AppThemeLimpet)CacheUtilsDNN.GetCache(cKey);
+            lock (_cacheLock1)
+            {
+                if (appTheme == null)
+                {
+                    appTheme = new AppThemeLimpet(portalId, appThemeFolder, versionFolder, org);
                     CacheUtilsDNN.SetCache(cKey, appTheme);
                 }
             }
@@ -92,7 +166,7 @@ namespace Rocket.AppThemes.Components
             {
                 if (a.GetXmlNode("genxml/name") != "")
                 {
-                    var appTheme = AppThemeUtils.GetAppThemeLimpet("", a.GetXmlNode("genxml/name"), "", org);
+                    var appTheme = AppThemeUtils.AppTheme(PortalUtils.GetPortalId(), a.GetXmlNode("genxml/name"), "", org);
                     DownloadRepoFromGitHub(a.GetXmlProperty("genxml/html_url") + "/archive/refs/heads/main.zip", appTheme.AppThemeFolderMapPath);
                 }
             }
