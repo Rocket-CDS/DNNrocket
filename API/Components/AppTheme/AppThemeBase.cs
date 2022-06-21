@@ -41,7 +41,10 @@ namespace DNNrocketAPI.Components
             if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
             AppVersion = Convert.ToDouble(AppVersionFolder, CultureInfo.GetCultureInfo("en-US"));
             LatestVersion = Convert.ToDouble(LatestVersionFolder, CultureInfo.GetCultureInfo("en-US"));
-            PortalId = PortalUtils.GetPortalId();
+            if (portalid < 0)
+                PortalId = PortalUtils.GetPortalId();
+            else
+                PortalId = portalid;
             PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath().TrimEnd('\\') + "\\" + org + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
             AssignVersionFolders();
             ImportConfig();
