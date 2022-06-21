@@ -58,7 +58,7 @@ namespace DNNrocketAPI.Components
             Save();
             Load();
         }
-        public void RestoreData()
+        public void RestoreData(int portalId, string systemKey)
         {
             var objCtrl = new DNNrocketController();
             foreach (var s in ItemList)
@@ -72,7 +72,7 @@ namespace DNNrocketAPI.Components
                 {
                     // recreate the IDX record.
                     var idxInfo = objCtrl.GetInfo(s.ItemID, s.Lang, DatabaseTable);
-                    objCtrl.RebuildIndex(idxInfo, DatabaseTable);
+                    objCtrl.RebuildIndex(portalId, idxInfo.ItemID, systemKey, DatabaseTable);
                     objCtrl.RebuildLangIndex(idxInfo.PortalId, idxInfo.ItemID, DatabaseTable);
                 }
             }

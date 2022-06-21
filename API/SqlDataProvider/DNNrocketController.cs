@@ -155,69 +155,31 @@ namespace DNNrocketAPI
         /// </summary>
         /// <param name="objInfo"></param>
         /// <param name="itemid"></param>
-        public void RebuildIndex(SimplisityRecord objInfo, string tableName = "DNNrocket")
+        public void RebuildIndex(int portalId, int dataItemId, string systemKey, string tableName = "DNNrocket")
         {
-            if (!String.IsNullOrEmpty(objInfo.TypeCode) && objInfo.TypeCode.ToUpper() != "LANG") // do not process non-data records.
+            var systemLinkList = GetList(-1, -1, "SYSTEMLINK", " and [XMLData].value('(genxml/systemkey)[1]','nvarchar(max)') = '" + systemKey + "' " );
+            foreach (var systemLinkRec in systemLinkList)
             {
-                if (String.IsNullOrEmpty(objInfo.Lang)) // do not process language records 
+                var xpath = systemLinkRec.GetXmlProperty("genxml/xpath");
+                var culutreCodeList = DNNrocketUtils.GetCultureCodeList(portalId);
+                foreach (var lang in culutreCodeList)
                 {
-                    var dataitemid = objInfo.ItemID;
-                    var entityTypeCode = objInfo.TypeCode;
-
-                    var xrefitemid = objInfo.ParentItemId; // check for xref record, therefore parentitemid will be set.
-                    if (xrefitemid <= 0)
+                    var info = GetInfo(dataItemId, lang, tableName);
+                    if (info != null)
                     {
-                        xrefitemid = objInfo.ItemID; // not a xref record, so take the id.
-                    }
-                    var systemLinkRec = GetByGuidKey(-1, -1, "SYSTEMLINK", objInfo.TypeCode, "", tableName);
-                    if (systemLinkRec == null)
-                    {
-                        // might be a xref, search for xref typecode
-                        systemLinkRec = GetByGuidKey(-1, -1, "SYSTEMLINK", objInfo.GUIDKey, "", tableName);
-                    }
-                    if (systemLinkRec != null)
-                    {
-                        var xrefTypeCodeList = GetList(-1, -1, "SYSTEMLINK" + objInfo.TypeCode, " and R1.ParentitemId = '" + systemLinkRec.ItemID + "' ", "", "", 0, 0, 0, 0, tableName);
-                        foreach (var i in xrefTypeCodeList)
-                        {
-                            var indexref = i.GUIDKey;
-                            var xpath = i.GetXmlProperty("genxml/textbox/xpath");
-                            if (xpath.StartsWith("genxml/lang/"))
-                            {
-                                // we need a langauge recrod.
-                                var langList = DNNrocketUtils.GetCultureCodeList(objInfo.PortalId);
-                                foreach (var lang in langList)
-                                {
-                                    var dataInfo = GetInfo(objInfo.ItemID, lang, tableName);
-                                    if (dataInfo != null)
-                                    {
-                                        var value = dataInfo.GetXmlProperty(xpath);
-                                        if (!String.IsNullOrEmpty(value))
-                                        {
-                                            CreateSystemLinkIdx(dataInfo.PortalId, indexref, xrefitemid, dataitemid, lang, value, tableName);
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                // non-langauge recrdo
-                                var value = objInfo.GetXmlProperty(xpath);
-                                if (!String.IsNullOrEmpty(value))
-                                {
-                                    CreateSystemLinkIdx(objInfo.PortalId, indexref, xrefitemid, dataitemid, "", value, tableName);
-                                }
-                            }
-                        }
+                        var sqlindexref = systemLinkRec.GetXmlProperty("genxml/ref");
+                        var value = info.GetXmlProperty(xpath);
+                        CreateSystemLinkIdx(portalId, sqlindexref, info.ItemID, systemLinkRec.ItemID, lang, value, systemKey, tableName);
                     }
                 }
             }
+
         }
 
-        private void CreateSystemLinkIdx(int portalId, string indexref, int xrefitemid, int parentItemId, string lang, string value, string tableName = "DNNrocket")
+        private void CreateSystemLinkIdx(int portalId, string indexref, int xrefitemid, int parentItemId, string lang, string value, string systemKey, string tableName)
         {
             // read is index exists already
-            var strFilter = "and R1.ParentItemId = '" + parentItemId + "' and R1.Lang = '" + lang + "'";
+            var strFilter = "and R1.XrefItemId = '" + xrefitemid + "' and R1.Lang = '" + lang + "'";
             SimplisityInfo sRecord = null;
             var l = GetList(portalId, -1, "IDX_" + indexref, strFilter, "", "", 1,0,0,0, tableName);
             if (l.Count == 1)
@@ -235,6 +197,7 @@ namespace DNNrocketAPI
             sRecord.TypeCode = "IDX_" + indexref;
             sRecord.ModifiedDate = DateTime.Now;
             sRecord.Lang = lang;
+            sRecord.TextData = systemKey;
             sRecord.XrefItemId = xrefitemid;
             if (sRecord.GUIDKey != value)
             {
@@ -573,7 +536,6 @@ namespace DNNrocketAPI
                     Update(nbi2, tableName);
                 }
 
-                RebuildIndex(sInfo, tableName);
                 RebuildLangIndex(sInfo.PortalId, itemId, tableName);
 
                 info = GetInfo(itemId, requiredLang, tableName);
