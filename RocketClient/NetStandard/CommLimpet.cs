@@ -30,6 +30,7 @@ namespace RocketComm
                 {
                     RocketClientData.CacheFlag = false;
                     var webReq = WebRequest.Create(weburl);
+                    webReq.Proxy = null;
                     webReq.Method = "POST";
                     webReq.ContentType = "application/x-www-form-urlencoded";
 
@@ -52,28 +53,29 @@ namespace RocketComm
                     // write the content to the stream
                     newStream.Write(byte1, 0, byte1.Length);
 
-                    var webResp = (HttpWebResponse)webReq.GetResponse();
-
-                    if (webResp.StatusCode != HttpStatusCode.Unauthorized)
+                    using (var webResp = (HttpWebResponse)webReq.GetResponse())
                     {
-                        var readStream = new StreamReader(webResp.GetResponseStream(), System.Text.Encoding.UTF8);
+                        if (webResp.StatusCode != HttpStatusCode.Unauthorized)
+                        {
+                            var readStream = new StreamReader(webResp.GetResponseStream(), System.Text.Encoding.UTF8);
 
-                        RocketClientData.StatusCode = webResp.Headers["razor-statuscode"];
-                        RocketClientData.ErrorMsg = GeneralUtils.Base64Decode(webResp.Headers["razor-errormsg"] ?? "");
-                        RocketClientData.FirstHeader = GeneralUtils.Base64Decode(webResp.Headers["remote-firstheader"] ?? "");
-                        RocketClientData.LastHeader = GeneralUtils.Base64Decode(webResp.Headers["remote-lastheader"] ?? "");
-                        RocketClientData.SeoHeaderXml = GeneralUtils.Base64Decode(webResp.Headers["remote-seoheader"] ?? "");
-                        RocketClientData.JsonReturn = GeneralUtils.Base64Decode(webResp.Headers["remote-json"] ?? "");
-                        RocketClientData.XmlReturn = GeneralUtils.Base64Decode(webResp.Headers["remote-xml"] ?? "");
-                        RocketClientData.SettingsXml = GeneralUtils.Base64Decode(webResp.Headers["remote-settingsxml"] ?? "");
-                        RocketClientData.Body = readStream.ReadToEnd();
-                        RocketClientData.CacheFlag = false;
-                        if (webResp.Headers["remote-cache"] != null) RocketClientData.CacheFlag = bool.Parse(GeneralUtils.Base64Decode(webResp.Headers["remote-cache"]));
-                    }
-                    else
-                    {
-                        RocketClientData.ErrorMsg = "Unauthorized Code:" + HttpStatusCode.Unauthorized;
-                        RocketClientData.StatusCode = webResp.StatusCode.ToString();
+                            RocketClientData.StatusCode = webResp.Headers["razor-statuscode"];
+                            RocketClientData.ErrorMsg = GeneralUtils.Base64Decode(webResp.Headers["razor-errormsg"] ?? "");
+                            RocketClientData.FirstHeader = GeneralUtils.Base64Decode(webResp.Headers["remote-firstheader"] ?? "");
+                            RocketClientData.LastHeader = GeneralUtils.Base64Decode(webResp.Headers["remote-lastheader"] ?? "");
+                            RocketClientData.SeoHeaderXml = GeneralUtils.Base64Decode(webResp.Headers["remote-seoheader"] ?? "");
+                            RocketClientData.JsonReturn = GeneralUtils.Base64Decode(webResp.Headers["remote-json"] ?? "");
+                            RocketClientData.XmlReturn = GeneralUtils.Base64Decode(webResp.Headers["remote-xml"] ?? "");
+                            RocketClientData.SettingsXml = GeneralUtils.Base64Decode(webResp.Headers["remote-settingsxml"] ?? "");
+                            RocketClientData.Body = readStream.ReadToEnd();
+                            RocketClientData.CacheFlag = false;
+                            if (webResp.Headers["remote-cache"] != null) RocketClientData.CacheFlag = bool.Parse(GeneralUtils.Base64Decode(webResp.Headers["remote-cache"]));
+                        }
+                        else
+                        {
+                            RocketClientData.ErrorMsg = "Unauthorized Code:" + HttpStatusCode.Unauthorized;
+                            RocketClientData.StatusCode = webResp.StatusCode.ToString();
+                        }
                     }
                 }
                 catch (Exception ex)
