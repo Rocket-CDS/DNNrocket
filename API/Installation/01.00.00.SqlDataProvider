@@ -384,7 +384,7 @@ FETCH NEXT FROM idx_cursor INTO @idxname, @idxparentItemId, @TCode
 WHILE @@FETCH_STATUS = 0  
 BEGIN  
 
-	if (CHARINDEX(@idxname, @Filter) > 0)
+	if (CHARINDEX(@idxname, @Filter) > 0 or CHARINDEX(@idxname, @orderby) > 0)
 	begin
 
 		set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [' + @idxname + '] on [' + @idxname + '].XrefItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
