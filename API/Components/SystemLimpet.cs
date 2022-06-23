@@ -36,7 +36,7 @@ namespace DNNrocketAPI.Components
                 var idxList = Record.GetRecordList("sqlindex");
                 foreach (var idx in idxList)
                 {
-                    UpdateSqlIndex(idx);
+                    DNNrocketUtils.UpdateSqlIndex(idx);
                 }
             }
             else
@@ -72,7 +72,7 @@ namespace DNNrocketAPI.Components
                             var idxList = sRec.GetRecordList("sqlindex");
                             foreach (var idx in idxList)
                             {
-                                UpdateSqlIndex(idx);
+                                DNNrocketUtils.UpdateSqlIndex(idx);
                             }
                         }
                         //Do NOT delete the plugin files, they are used to build the system data
@@ -81,49 +81,6 @@ namespace DNNrocketAPI.Components
             }
 
             return Record;
-        }
-        private void UpdateSqlIndex(SimplisityRecord idx)
-        {
-            var itemid = -1;
-            var objCtrl = new DNNrocketController();
-            var systemKey = idx.GetXmlProperty("genxml/systemkey");
-            var sqlindexref = idx.GetXmlProperty("genxml/ref");
-            var entityTypeCode = idx.GetXmlProperty("genxml/typecode");
-            var idxinfo2 = objCtrl.GetRecordByGuidKey(-1, -1, "SYSTEMLINK", entityTypeCode);
-            if (idxinfo2 == null)
-            {
-                idxinfo2 = new SimplisityRecord();
-                idxinfo2.TypeCode = "SYSTEMLINK";
-                idxinfo2.GUIDKey = entityTypeCode;
-                idxinfo2.XMLData = idx.XMLData;
-                itemid = objCtrl.Update(idxinfo2);
-            }
-            else
-            {
-                idxinfo2.XMLData = idx.XMLData;
-                itemid = objCtrl.Update(idxinfo2);
-            }
-            if (itemid > 0)
-            {
-                var itemid3 = -1;
-                var idxinfo3 = objCtrl.GetList(-1, -1, "SYSTEMLINKIDX", " and ParentItemId = " + itemid + " and GUIdKey = '" + sqlindexref + "' ","","",1);
-                if (idxinfo3.Count == 0)
-                {
-                    var idxRec = new SimplisityRecord();
-                    idxRec.TypeCode = "SYSTEMLINKIDX";
-                    idxRec.GUIDKey = sqlindexref;
-                    idxRec.XMLData = idx.XMLData;
-                    idxRec.ParentItemId = itemid;
-                    itemid3 = objCtrl.Update(idxRec);
-                }
-                else
-                {
-                    var idxRec = idxinfo3.First();
-                    idxRec.XMLData = idx.XMLData;
-                    itemid3 = objCtrl.Update(idxRec);
-                }
-            }
-
         }
 
         private void InitSystem()
