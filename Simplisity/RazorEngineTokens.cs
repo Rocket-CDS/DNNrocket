@@ -135,9 +135,14 @@ namespace Simplisity
             var upd = getUpdateAttr(xpath, attributes, localized);
             var id = getIdFromXpath(xpath, row, listname);
 
+            if (info.Lang != "" && valueStr == "" && GeneralUtils.IsDate(defaultValue, info.Lang))
+            {
+                valueStr = defaultValue;
+                value = Convert.ToDateTime(defaultValue, new CultureInfo(info.Lang));
+            }
             if (valueStr == "" && GeneralUtils.IsDate(defaultValue, "en-US"))
             {
-                value = Convert.ToDateTime(defaultValue);
+                value = Convert.ToDateTime(defaultValue, new CultureInfo("en-US"));
             }
 
             var typeattr = "type='date'";
