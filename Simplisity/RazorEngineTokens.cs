@@ -371,7 +371,11 @@ namespace Simplisity
         {
             return new RawString(System.Web.HttpUtility.HtmlDecode(htmlString));
         }
-
+        public IEncodedString DateOf(SimplisityInfo info, String xpath, String cultureCode, String format = "d")
+        {
+            var eventdate = info.GetXmlPropertyDate(xpath);
+            return new RawString(eventdate.ToString(format, new CultureInfo(cultureCode)));
+        }
         public IEncodedString BreakOf(SimplisityInfo info, String xpath)
         {
             var strOut = info.GetXmlProperty(xpath);
