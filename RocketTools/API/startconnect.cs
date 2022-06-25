@@ -237,7 +237,7 @@ namespace RocketTools.API
             if (File.Exists(filemappath))
             {
                 var backupData = new BackUpData(filemappath);
-                backupData.RestoreData();
+                //backupData.RestoreData();
                 CacheUtilsDNN.ClearAllCache();
                 DNNrocketUtils.ClearAllCache();
             }
