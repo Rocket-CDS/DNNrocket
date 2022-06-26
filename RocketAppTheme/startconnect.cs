@@ -141,7 +141,10 @@ namespace DNNrocket.AppThemes
                                 break;
 
                             case "rocketapptheme_downloadgithub":
+                                var folderExists = false;
+                                if (Directory.Exists(_appTheme.AppThemeFolderMapPath)) folderExists = true;
                                 AppThemeUtils.DownloadGitHubAppTheme(_paramInfo.GetXmlProperty("genxml/hidden/htmlurl"), _appTheme.AppThemeFolderMapPath);
+                                if (!folderExists) DNNrocketUtils.RecycleApplicationPool();// recycle so we pickup new AppTheme Folders.
                                 strOut = GetAppStoreList();
                                 break;
 

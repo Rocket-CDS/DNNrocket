@@ -18,7 +18,21 @@ namespace Rocket.AppThemes.Components
     public static class AppThemeUtils
     {
         private static readonly object _cacheLock1 = new object();
-
+        public static AppThemeLimpet GetAppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder, string org)
+        {
+            var cKey = "AppThemeLimpet*" + systemKey + "*" + appThemeFolder + "*" + versionFolder + "*" + PortalUtils.GetPortalId() + "-" + org;
+            var systemData = new SystemLimpet(systemKey);
+            var appTheme = (AppThemeLimpet)CacheUtilsDNN.GetCache(cKey);
+            lock (_cacheLock1)
+            {
+                if (appTheme == null)
+                {
+                    appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), appThemeFolder, versionFolder, org);
+                    CacheUtilsDNN.SetCache(cKey, appTheme);
+                }
+            }
+            return appTheme;
+        }
         public static AppThemeRocketApiLimpet AppThemeRocketApi(int portalId)
         {
             var cacheKey = "AppThemeRocketApi" + portalId;
@@ -161,15 +175,18 @@ namespace Rocket.AppThemes.Components
         }
         public static void DownloadAllGitHubAppTheme(string org)
         {
+            var newFolder = false;
             var l = GetGitHubAppThemes(org);
             foreach (var a in l)
             {
                 if (a.GetXmlNode("genxml/name") != "")
                 {
                     var appTheme = AppThemeUtils.AppTheme(PortalUtils.GetPortalId(), a.GetXmlNode("genxml/name"), "", org);
+                    if (!Directory.Exists(appTheme.AppThemeFolderMapPath)) newFolder = true;
                     DownloadRepoFromGitHub(a.GetXmlProperty("genxml/html_url") + "/archive/refs/heads/main.zip", appTheme.AppThemeFolderMapPath);
                 }
             }
+            if (newFolder) DNNrocketUtils.RecycleApplicationPool();// recycle so we pickup new AppTheme Folders.
             CacheUtilsDNN.ClearAllCache();
         }
         public static void DownloadGitHubAppTheme(string contentsUrl, string downloadFolderMapPath)
