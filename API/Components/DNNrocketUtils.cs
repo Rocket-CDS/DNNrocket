@@ -1692,7 +1692,11 @@ namespace DNNrocketAPI.Components
             else
                 return text.Substring(0, maxCharacters) + trailingText;
         }
-
+        public static string RemoveScriptInjection(string inStr)
+        {
+            inStr = inStr.Replace("script", "");
+            return inStr;
+        }
         public static Boolean CheckForSQLInjection(string userInput)
         {
             bool isSQLInjection = false;
