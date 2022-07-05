@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace DNNrocketAPI.Components
@@ -22,6 +23,55 @@ namespace DNNrocketAPI.Components
         private RocketInterface _rocketInterface;
         static ConcurrentDictionary<string, bool> _commandSecurity;  // thread safe dictionary.
         private string _defaultFileRelPath;
+
+        private const RegexOptions RxOptions = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled;
+        
+        private static readonly Regex[] RxListStrings = new[]
+        {
+            new Regex("<script[^>]*>.*?</script[^><]*>", RxOptions),
+            new Regex("<script", RxOptions),
+            new Regex("<input[^>]*>.*?</input[^><]*>", RxOptions),
+            new Regex("<object[^>]*>.*?</object[^><]*>", RxOptions),
+            new Regex("<embed[^>]*>.*?</embed[^><]*>", RxOptions),
+            new Regex("<applet[^>]*>.*?</applet[^><]*>", RxOptions),
+            new Regex("<form[^>]*>.*?</form[^><]*>", RxOptions),
+            new Regex("<option[^>]*>.*?</option[^><]*>", RxOptions),
+            new Regex("<select[^>]*>.*?</select[^><]*>", RxOptions),
+            new Regex("<source[^>]*>.*?</source[^><]*>", RxOptions),
+            new Regex("<iframe[^>]*>.*?</iframe[^><]*>", RxOptions),
+            new Regex("<iframe.*?<", RxOptions),
+            new Regex("<iframe.*?", RxOptions),
+            new Regex("<ilayer[^>]*>.*?</ilayer[^><]*>", RxOptions),
+            new Regex("<form[^>]*>", RxOptions),
+            new Regex("</form[^><]*>", RxOptions),
+            new Regex("\bonerror\b", RxOptions),
+            new Regex("\bonload\b", RxOptions),
+            new Regex("\bonfocus\b", RxOptions),
+            new Regex("\bonblur\b", RxOptions),
+            new Regex("\bonclick\b", RxOptions),
+            new Regex("\bondblclick\b", RxOptions),
+            new Regex("\bonchange\b", RxOptions),
+            new Regex("\bonselect\b", RxOptions),
+            new Regex("\bonsubmit\b", RxOptions),
+            new Regex("\bonreset\b", RxOptions),
+            new Regex("\bonkeydown\b", RxOptions),
+            new Regex("\bonkeyup\b", RxOptions),
+            new Regex("\bonkeypress\b", RxOptions),
+            new Regex("\bonmousedown\b", RxOptions),
+            new Regex("\bonmousemove\b", RxOptions),
+            new Regex("\bonmouseout\b", RxOptions),
+            new Regex("\bonmouseover\b", RxOptions),
+            new Regex("\bonmouseup\b", RxOptions),
+            new Regex("\bonreadystatechange\b", RxOptions),
+            new Regex("\bonfinish\b", RxOptions),
+            new Regex("javascript:", RxOptions),
+            new Regex("vbscript:", RxOptions),
+            new Regex("unescape", RxOptions),
+            new Regex("alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?", RxOptions),
+            new Regex(@"eval*.\(", RxOptions),
+        };
+
+
         public SecurityLimpet(int portalId, string systemKey, RocketInterface rocketInterface, int tabid, int moduleid, string wrapperSystemKey = "")
         {
             try

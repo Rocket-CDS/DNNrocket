@@ -96,7 +96,14 @@ namespace DNNrocketAPI.Components
         {
             return System.Web.HttpUtility.HtmlDecode(htmlString);
         }
-
+        public static string HtmlDecode(String htmlString)
+        {
+            return System.Web.HttpUtility.HtmlDecode(htmlString);
+        }
+        public static string HtmlEncode(String planStr)
+        {
+            return System.Web.HttpUtility.HtmlEncode(planStr);
+        }
         public static string RequestParam(HttpContext context, string paramName)
         {
             string result = null;
@@ -1696,46 +1703,6 @@ namespace DNNrocketAPI.Components
         {
             inStr = inStr.Replace("script", "");
             return inStr;
-        }
-        public static Boolean CheckForSQLInjection(string userInput)
-        {
-            bool isSQLInjection = false;
-            string[] sqlCheckList = 
-                { 
-                "--",
-                ";--",
-                ";",
-                "/*",
-                "*/",
-                "@@",
-                "@",
-                "alter",
-                "begin",
-                "cast",
-                "create",
-                "cursor",
-                "declare",
-                "delete",
-                "drop",
-                "end",
-                "exec",
-                "execute",
-                "fetch",
-                "insert",
-                "kill",
-                "select",
-                "sys",
-                "sysobjects",
-                "syscolumns",
-                "table",
-                "update"
-            };
-            string CheckString = userInput.Replace("'", "''");
-            for (int i = 0; i <= sqlCheckList.Length - 1; i++)
-            {
-                if ((CheckString.IndexOf(sqlCheckList[i], StringComparison.OrdinalIgnoreCase) >= 0)) isSQLInjection = true;
-            }
-            return isSQLInjection;
         }
 
         private static string lockobjectUpdateSqlIndex = "lockit";
