@@ -99,7 +99,7 @@ namespace Simplisity
         public string SiteKey { get { return Info.GetXmlProperty("r/sitekey"); } set { Info.SetXmlProperty("r/sitekey", value.ToString()); } }
         public string PageUrl { get { return Info.GetXmlProperty("r/pageurl"); } set { Info.SetXmlProperty("r/pageurl", value.ToString()); } }
         public string PageDetailUrl { get { return Info.GetXmlProperty("r/pagedetailurl"); } set { Info.SetXmlProperty("r/pagedetailurl", value.ToString()); } }
-        public string PageListUrl { get { return Info.GetXmlProperty("r/pagelisturl"); } set { Info.SetXmlProperty("r/pagelisturl", value.ToString()); } }
+        public string PageListUrl { get { if (Info.GetXmlProperty("r/pagelisturl") == "") return PageUrl; else return Info.GetXmlProperty("r/pagelisturl"); } set { Info.SetXmlProperty("r/pagelisturl", value.ToString()); } }
         public string EngineURL { get { return Info.GetXmlProperty("r/engineurl"); } set { Info.SetXmlProperty("r/engineurl", value.ToString()); } }
         public string UserHostAddress { get { return Info.GetXmlProperty("r/userhostaddress"); } set { Info.SetXmlProperty("r/userhostaddress", value.ToString()); } }
         public string ApiUrl { get { return Info.GetXmlProperty("r/apiurl"); } set { Info.SetXmlProperty("r/apiurl", value.ToString()); } }
