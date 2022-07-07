@@ -128,9 +128,11 @@ namespace Rocket.AppThemes.Components
             {
                 if (o.GetXmlPropertyBool("genxml/checkbox/active"))
                 {
-                    if (!orgDict.ContainsKey(o.GetXmlProperty("genxml/textbox/org")))
+                    var org = o.GetXmlProperty("genxml/textbox/org");
+                    if (org == "") org = o.GetXmlProperty("genxml/textbox/name");
+                    if (!orgDict.ContainsKey(org))
                     {
-                        orgDict.Add(o.GetXmlProperty("genxml/textbox/org"), o.GetXmlProperty("genxml/textbox/name"));
+                        orgDict.Add(org, o.GetXmlProperty("genxml/textbox/name"));
                     }
                 }
             }
