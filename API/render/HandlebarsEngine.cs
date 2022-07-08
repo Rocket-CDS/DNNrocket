@@ -1131,6 +1131,7 @@ namespace DNNrocketAPI.Components
             {
                 if (arguments != null && arguments.Length >= 2)
                 {
+                    JsonConvert.DefaultSettings = () => new JsonSerializerSettings { MaxDepth = 128 };
                     var o = JsonConvert.DeserializeObject<JObject>(arguments[0].ToString());
                     var h = o.Value<JObject>("genxml")
                         .Value<JObject>("resxlist")
@@ -1239,6 +1240,7 @@ namespace DNNrocketAPI.Components
             {
                 if (arguments != null && arguments.Length == 4)
                 {
+                    JsonConvert.DefaultSettings = () => new JsonSerializerSettings { MaxDepth = 128 };
                     var o = JsonConvert.DeserializeObject<JObject>(arguments[0].ToString());
 
                     string listname = arguments[1].ToString();

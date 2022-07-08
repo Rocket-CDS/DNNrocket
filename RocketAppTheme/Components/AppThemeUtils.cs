@@ -151,6 +151,7 @@ namespace Rocket.AppThemes.Components
                 rtnList = new List<SimplisityRecord>();
                 try
                 {
+                    JsonConvert.DefaultSettings = () => new JsonSerializerSettings { MaxDepth = 128 };
                     var contentsJson = HttpGet($"https://api.github.com/orgs/{org}/repos");
                     var contents = (JArray)JsonConvert.DeserializeObject(contentsJson);
                     foreach (var file in contents)
