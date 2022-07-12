@@ -45,7 +45,7 @@ namespace DNNrocketAPI.Components
                 PortalId = PortalUtils.GetPortalId();
             else
                 PortalId = portalid;
-            PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath().TrimEnd('\\') + "\\" + org + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
+            PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath(portalid).TrimEnd('\\') + "\\" + org + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
             AssignVersionFolders();
             ImportConfig();
 

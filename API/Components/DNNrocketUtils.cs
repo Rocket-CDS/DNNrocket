@@ -1841,11 +1841,6 @@ namespace DNNrocketAPI.Components
             return PortalUtils.DefaultPortalAlias(portalId);
         }
         [Obsolete("Use PortalUtils instead")]
-        public static string SiteGuid()
-        {
-            return PortalUtils.SiteGuid();
-        }
-        [Obsolete("Use PortalUtils instead")]
         public static string GetPortalAlias(string lang, int portalid = -1)
         {
             return PortalUtils.GetPortalAlias(lang, portalid);

@@ -29,7 +29,10 @@ namespace DNNrocketAPI.Components
         {
             Record = new SimplisityRecord();
             var fileStr = FileUtils.ReadFile(SystemMapPath + "\\system.rules"); 
-            if (fileStr == "") fileStr = FileUtils.ReadFile(PortalUtils.HomeDirectoryMapPath().TrimEnd('\\') + "\\system.rules");
+
+            // WE do not have a portalid to get the correct portal in the Scheduler.
+            //if (fileStr == "") fileStr = FileUtils.ReadFile(PortalUtils.HomeDirectoryMapPath().TrimEnd('\\') + "\\system.rules");
+            
             if (fileStr != "")
             {
                 Record.XMLData = fileStr;

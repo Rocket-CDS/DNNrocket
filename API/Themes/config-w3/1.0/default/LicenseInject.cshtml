@@ -10,29 +10,8 @@
 
 @{
     var moduleParams = (ModuleParams)Model.List.First();
-    var licenseData = new LicenseData(moduleParams.SystemKey, PortalUtils.SiteGuid());
 }
 
-@if (licenseData.ValidateCertificateKey(PortalUtils.SiteGuid()))
-{
-    <div class="w3-panel w3-purple">
-        <div class="w3-row">
-            <div class="w3-col m3">
-                <h2>@ResourceKey("DNNrocket.prolicense")</h2>
-            </div>
-            <div class="w3-col m7 w3-padding">
-                @ResourceKey("DNNrocket.domainurl"):&nbsp;@licenseData.DomainUrl<br />
-                @ResourceKey("DNNrocket.certificatekey"):&nbsp;@licenseData.CertificateKey<br />
-            </div>
-            <div class="w3-col m2 w3-padding" id="verifycertificatekey">
-                <div class="w3-button w3-blue w3-right simplisity_click" s-post="" s-return="#verifycertificatekey" s-cmd="systemapi_licenseverify" s-fields='{"sitekey":"@PortalUtils.SiteGuid()","systemkey":"@licenseData.SystemKey"}' s-track="false"><i class="fas fa-check"></i>&nbsp;@ResourceKey("DNNrocket.checkkey")</div>
-            </div>
-        </div>
-    </div>
-
-}
-else
-{
     <div class="w3-panel w3-red">
         <h2>@ResourceKey("DNNrocket.getlicense")</h2>
 
@@ -54,8 +33,6 @@ else
     @RenderTemplate("LicenseForm.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
 
     @RenderTemplate("LicenseKeyForm.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", Model, "1.0", true)
-
-}
 
 
 <script>

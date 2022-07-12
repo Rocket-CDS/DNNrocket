@@ -214,9 +214,7 @@ namespace DNNrocketAPI.Components
         }
         public static PortalSettings GetPortalSettings(int portalId)
         {
-            var controller = new PortalController();
-            var portal = controller.GetPortal(portalId);
-            return new PortalSettings(portal);
+            return new PortalSettings(portalId);
         }
         public static int GetPortalByModuleID(int moduleId)
         {
@@ -472,10 +470,6 @@ namespace DNNrocketAPI.Components
             var ps = GetPortalSettings(portalId);
             return ps.GUID.ToString();
         }
-        public static string SiteGuid()
-        {
-            return PortalSettings.Current.GUID.ToString();
-        }
 
         public static string GetPortalAlias(string lang, int portalid = -1)
         {
@@ -497,66 +491,43 @@ namespace DNNrocketAPI.Components
         }
         public static string HomeDNNrocketDirectoryMapPath(int portalId = -1)
         {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectoryMapPath + "DNNrocket";
-            else
-                return GetCurrentPortalSettings().HomeDirectoryMapPath + "DNNrocket";
+            return HomeDirectoryMapPath(portalId).TrimEnd('\\') + "\\DNNrocket";
         }
         public static string HomeDNNrocketDirectoryRel(int portalId = -1)
         {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectory + "DNNrocket";
-            else
-                return GetCurrentPortalSettings().HomeDirectory + "DNNrocket";
+            return HomeDirectoryRel(portalId).TrimEnd('/') + "/DNNrocket";
         }
         public static string DNNrocketThemesDirectoryMapPath(int portalId = -1)
         {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectoryMapPath.TrimEnd('\\') + "\\RocketThemes";
-            else
-                return GetCurrentPortalSettings().HomeDirectoryMapPath.TrimEnd('\\') + "\\RocketThemes";
+            return HomeDirectoryMapPath(portalId).TrimEnd('\\') + "\\RocketThemes";
         }
         public static string DNNrocketThemesDirectoryRel(int portalId = -1)
         {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectory + "RocketThemes/";
-            else
-                return GetCurrentPortalSettings().HomeDirectory + "RocketThemes/";
+            return HomeDirectoryRel(portalId).TrimEnd('/') + "/RocketThemes/";
         }
         public static string TempDirectoryMapPath(int portalId = -1)
         {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketTemp";
-            else
-                return GetCurrentPortalSettings().HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketTemp";
+            return HomeDirectoryMapPath(portalId).TrimEnd('\\') + "\\DNNrocketTemp";
         }
         public static string BackUpDirectoryMapPath(int portalId = -1)
         {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketBackUp";
-            else
-                return GetCurrentPortalSettings().HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocketBackUp";
+            return HomeDirectoryMapPath(portalId).TrimEnd('\\') + "\\DNNrocketBackUp";
         }
         public static string TempDirectoryRel(int portalId = -1)
         {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectory.TrimEnd('/') + "/DNNrocketTemp";
-            else
-                return GetCurrentPortalSettings().HomeDirectory.TrimEnd('/') + "/DNNrocketTemp";
+            return HomeDirectoryRel(portalId).TrimEnd('/') + "/DNNrocketTemp/";
         }
-        public static string HomeDirectoryMapPath(int portalId = -1)
+        public static string HomeDirectoryMapPath(int portalId)
         {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectoryMapPath;
-            else
-                return GetCurrentPortalSettings().HomeDirectoryMapPath;
+            if (portalId < 0) portalId = PortalSettings.Current.PortalId;
+            var portalInfo = PortalController.Instance.GetPortal(portalId);
+            return portalInfo.HomeDirectoryMapPath;
         }
-        public static string HomeDirectoryRel(int portalId = -1)
+        public static string HomeDirectoryRel(int portalId)
         {
-            if (portalId >= 0)
-                return GetPortalSettings(portalId).HomeDirectory;
-            else
-                return GetCurrentPortalSettings().HomeDirectory;
+            if (portalId < 0) portalId = PortalSettings.Current.PortalId;
+            var portalInfo = PortalController.Instance.GetPortal(portalId);
+            return portalInfo.HomeDirectory;
         }
         public static void CreateRocketDirectories(int portalId = -1)
         {            
