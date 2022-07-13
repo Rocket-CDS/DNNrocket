@@ -222,6 +222,7 @@ namespace DNNrocketAPI.Components
             get { return Record.GetXmlProperty("genxml/systemname"); }
             set { Record.SetXmlProperty("genxml/systemname", value); }
         }
+        public bool IsPlugin { get { return Record.GetXmlPropertyBool("genxml/plugin"); } }
         public string Icon
         {
             get { return Record.GetXmlProperty("genxml/icon"); }
