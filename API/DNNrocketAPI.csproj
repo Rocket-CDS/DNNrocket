@@ -217,6 +217,7 @@
     <Compile Include="Components\FastReplacerSnippet.cs" />
     <Compile Include="Components\DocUtils.cs" />
     <Compile Include="Components\SecurityInput.cs" />
+    <Compile Include="Interfaces\RazorInterface.cs" />
     <Compile Include="Interfaces\HandleBarsInterface.cs" />
     <Compile Include="render\HandlebarsEngine.cs" />
     <Compile Include="Components\LogUtils.cs" />

@@ -91,6 +91,7 @@ namespace DNNrocketAPI.Components
             EventList = new List<RocketInterface>();
             SchedulerList = new List<RocketInterface>();
             HandleBarsList = new List<RocketInterface>();
+            RazorList = new List<RocketInterface>();
             ProviderList = new List<RocketInterface>();
             InterfaceList = new Dictionary<string, RocketInterface>();
             Settings = new Dictionary<string, string>();
@@ -123,6 +124,10 @@ namespace DNNrocketAPI.Components
                 {
                     HandleBarsList.Add(rocketInterface);
                 }
+                if (rocketInterface.IsActive && rocketInterface.IsProvider("razor") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
+                {
+                    RazorList.Add(rocketInterface);
+                }
                 if (rocketInterface.IsActive && !rocketInterface.IsProvider("") && rocketInterface.Assembly != "" && rocketInterface.NameSpaceClass != "")
                 {
                     ProviderList.Add(rocketInterface);
@@ -152,6 +157,7 @@ namespace DNNrocketAPI.Components
         public List<RocketInterface> EventList { get; set;}
         public List<RocketInterface> SchedulerList { get; set; }
         public List<RocketInterface> HandleBarsList { get; set; }
+        public List<RocketInterface> RazorList { get; set; }        
         public List<RocketInterface> ProviderList { get; set; }
         public bool Exists { get; set; }
         public Dictionary<string, RocketInterface> InterfaceList { get; set; }

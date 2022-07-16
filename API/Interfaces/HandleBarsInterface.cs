@@ -18,7 +18,7 @@ namespace DNNrocketAPI
             var handle = Activator.CreateInstance(assembly, namespaceclass);
             return (HandleBarsInterface)handle.Unwrap();
         }
-        public abstract void RegisterHelpers(ref IHandlebars hbs);
+        public abstract void RegisterHelpers(ref IHandlebars hbs, string systemKey);
     }
 
 }

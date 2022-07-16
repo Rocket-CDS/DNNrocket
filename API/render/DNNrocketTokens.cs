@@ -154,14 +154,6 @@ namespace DNNrocketAPI.render
             model.SetSetting("sfields", sfields);
             return RenderTemplate("RemoteLanguageChange.cshtml", appThemeDNNrocket, model, true);
         }
-
-        public IEncodedString RenderPagingTemplate(string scmd, string spost, SimplisityRazor model, string sreturn = "", string versionFolder = "1.0")
-        {
-            model.SessionParamsData.Set("s-paging-return", sreturn);
-            model.SessionParamsData.Set("s-paging-cmd", scmd);
-            model.SessionParamsData.Set("s-paging-post", spost);
-            return RenderTemplate("Paging.cshtml", "\\DesktopModules\\DNNrocket\\api", "config-w3", model, versionFolder);
-        }        
         public IEncodedString RenderTemplate(string razorTemplateName, AppThemeRocketApiLimpet appThemeSystem, SimplisityRazor model, bool cacheOff = false)
         {
             return RenderTemplate(appThemeSystem.GetTemplate(razorTemplateName), model, cacheOff);
@@ -187,6 +179,29 @@ namespace DNNrocketAPI.render
             else
                 if (debugMode) strOut = "ERROR: " + pr.StatusCode + " ---> " + pr.ErrorMsg;
 
+            return new RawString(strOut);
+        }
+        public IEncodedString RenderPlugin(string interfaceKey, string cmd, SimplisityRazor model)
+        {
+            var strOut = "";
+            var systemData = (SystemLimpet)model.GetDataObject("systemdata");
+            if (systemData == null) return new RawString("systemData object not available, the 'systemdata' SystemLimpet object must be added to the Model.");
+            foreach (var p in systemData.RazorList)
+            {
+                if (interfaceKey == p.InterfaceKey)
+                {
+                    var assembly = p.Assembly;
+                    var nameSpaceClass = p.NameSpaceClass;
+                    var cacheKeyRazor = assembly + "," + nameSpaceClass;
+                    var razorprov = (RazorInterface)CacheUtilsDNN.GetCache(cacheKeyRazor);
+                    if (razorprov == null)
+                    {
+                        razorprov = RazorInterface.Instance(assembly, nameSpaceClass);
+                        CacheUtilsDNN.SetCache(cacheKeyRazor, razorprov);
+                    }
+                    strOut = razorprov.RenderToken(interfaceKey, cmd, model);
+                }
+            }
             return new RawString(strOut);
         }
         [Obsolete("Use RenderTemplate(string razorTemplateName, AppThemeLimpet appTheme, SimplisityRazor model, bool cacheOff = false) instead")]
