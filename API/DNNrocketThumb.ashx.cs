@@ -20,6 +20,8 @@ namespace DNNrocketAPI.Components
             var src = DNNrocketUtils.RequestQueryStringParam(context, "src");
             var imgtype = DNNrocketUtils.RequestQueryStringParam(context, "imgtype");
 
+            src = "/" + src.TrimStart('/'); // ensure a valid rel path.
+
             if (h == "") h = "0";
             if (w == "") w = "0";
 
