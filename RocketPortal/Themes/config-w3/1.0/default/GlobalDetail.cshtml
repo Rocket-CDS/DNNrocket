@@ -39,8 +39,18 @@
         </div>
         <div class="w3-row">
             <div class="w3-half w3-padding">
-                <label class=""><b>@ResourceKey("RP.imagetype")</b></label>
-                @DropDownList(info, "genxml/select/imagetype", "png,jpg", "png,jpg", "class='w3-input w3-border' style='width:96px'", "png")
+                <div class="w3-row">
+                    <div class="w3-third">
+                        <label class=""><b>@ResourceKey("RP.imagetype")</b></label>
+                        @DropDownList(info, "genxml/select/imagetype", "png,jpg", "png,jpg", "class='w3-input w3-border' style='width:96px'", "png")
+                    </div>
+                    <div class="w3-third">
+                        @CheckBox(info, "genxml/checkbox/precompilerazoradmin", " Precompile Razor Admin", "class='w3-check'", true)
+                    </div>
+                    <div class="w3-third">
+                        @CheckBox(info, "genxml/checkbox/precompilerazor", " Precompile Razor", "class='w3-check'", true)
+                    </div>
+                </div>
             </div>
             <div class="w3-half w3-padding">
                 <label><b>Scheduler</b></label><br />

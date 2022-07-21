@@ -17,13 +17,24 @@ namespace DNNrocketAPI.Components
         {
             try
             {
-                var rocketThemesFolder = DNNrocketUtils.MapPath("/DesktopModules/RocketThemes");
-                RenderRazorUtils.PreCompileRazorFolder(rocketThemesFolder);
+                var gloablSettings = new SystemGlobalData();
+                if (gloablSettings.PreCompileRazor)
+                {
+                    LogUtils.LogSystem("Precompile Razor - Start");
+                    var rocketThemesFolder = DNNrocketUtils.MapPath("/DesktopModules/RocketThemes");
+                    RenderRazorUtils.PreCompileRazorFolder(rocketThemesFolder);
+                    LogUtils.LogSystem("Precompile Razor - End");
+                }
 
                 var systemDataList = new SystemLimpetList();
                 foreach (var systemData in systemDataList.GetSystemList())
                 {
-                    RenderRazorUtils.PreCompileRazorFolder(systemData.SystemMapPath);
+                    if (gloablSettings.PreCompileRazorAdmin)
+                    {
+                        LogUtils.LogSystem("Precompile Razor Admin - Start " + systemData.SystemKey);
+                        RenderRazorUtils.PreCompileRazorFolder(systemData.SystemMapPath);
+                        LogUtils.LogSystem("Precompile Razor Admin - End " + systemData.SystemKey);
+                    }
 
                     if (!systemData.IsPlugin) // plugins should be triggered by the parent system.
                     {
