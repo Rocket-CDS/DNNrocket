@@ -120,6 +120,28 @@ namespace DNNrocketAPI.Components
             return processResult;
         }
 
+        public static void PreCompileRazorFolder(string folderMapPath)
+        {
+            foreach (var f in Directory.GetFiles(folderMapPath,"*.cshtml", SearchOption.AllDirectories))
+            {
+                var c = CacheUtilsDNN.GetCache(f);
+                if (c == null )
+                {
+                    var razorTempl = FileUtils.ReadFile(f);
+                    var hashCacheKey = GeneralUtils.GetMd5Hash(razorTempl);
+                    try
+                    {
+                        Engine.Razor.Compile(razorTempl, hashCacheKey, null);
+                    }
+                    catch (Exception)
+                    {
+                        // ignore, expect to fail on some templates
+                    }
+                    CacheUtilsDNN.SetCache(f, hashCacheKey);
+                }
+            }
+        }
+
 
         [Obsolete("Use RazorProcess(SimplisityRazor model, string razorTempl, Boolean debugMode = false) instead")]
         public static string RazorRender(SimplisityRazor model, string razorTempl, Boolean debugMode = false)
@@ -185,6 +207,7 @@ namespace DNNrocketAPI.Components
         /// <param name="model"></param>
         /// <param name="razorTempl"></param>
         /// <returns></returns>
+        [Obsolete("Use RazorProcess(SimplisityRazor model, string razorTempl, Boolean debugMode = false) instead")]
         private static string RazorRunCompile(SimplisityRazor model, string razorTempl)
         {
             try

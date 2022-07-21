@@ -17,9 +17,14 @@ namespace DNNrocketAPI.Components
         {
             try
             {
+                var rocketThemesFolder = DNNrocketUtils.MapPath("/DesktopModules/RocketThemes");
+                RenderRazorUtils.PreCompileRazorFolder(rocketThemesFolder);
+
                 var systemDataList = new SystemLimpetList();
                 foreach (var systemData in systemDataList.GetSystemList())
                 {
+                    RenderRazorUtils.PreCompileRazorFolder(systemData.SystemMapPath);
+
                     if (!systemData.IsPlugin) // plugins should be triggered by the parent system.
                     {
                         foreach (var rocketInterface in systemData.SchedulerList)
