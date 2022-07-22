@@ -490,6 +490,18 @@ namespace DNNrocketAPI.Components
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
+        public Dictionary<string, string> GetTemplateSelectName()
+        {
+            var rtnDict = new Dictionary<string, string>();
+            foreach (var t in GetTemplatesRazor())
+            {
+                if (!t.Key.ToLower().EndsWith("-settings.cshtml") && !t.Key.ToLower().EndsWith(".hbs"))
+                {
+                    if (!rtnDict.ContainsKey(Path.GetFileName(t.Value))) rtnDict.Add(Path.GetFileName(t.Value), Path.GetFileName(t.Value));
+                }
+            }
+            return rtnDict;
+        }
 
         public Dictionary<string, string> GetTemplatesRazor()
         {

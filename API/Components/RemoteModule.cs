@@ -1,6 +1,7 @@
 ﻿using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,7 +68,10 @@ namespace DNNrocketAPI.Components
         public string DataRef { get { if (Record.GetXmlProperty("genxml/remote/dataref") == "") return ModuleRef; else return Record.GetXmlProperty("genxml/remote/dataref"); } set { Record.SetXmlProperty("genxml/remote/dataref", value); } }
         public string SiteKey { get { return Record.GetXmlProperty("genxml/remote/sitekey"); } set { Record.SetXmlProperty("genxml/remote/sitekey", value); } }
         public string Organisation { get { return Record.GetXmlProperty("genxml/remote/org"); } }
+        public string TemplateSelected { get { return Record.GetXmlProperty("genxml/remote/template"); } }
+        public string TemplateSelectedSettings { get { return Path.GetFileNameWithoutExtension(TemplateSelected) + "-Settings" + Path.GetExtension(TemplateSelected); } }
 
+        
         #endregion
 
     }
