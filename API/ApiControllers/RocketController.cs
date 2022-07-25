@@ -222,6 +222,15 @@ namespace DNNrocketAPI.ApiControllers
                 paramInfo.SetXmlProperty("genxml/hidden/culturecode", DNNrocketUtils.GetEditCulture());
             }
 
+            if (DNNrocketUtils.IsMobile())
+            {
+                paramInfo.SetXmlProperty("genxml/hidden/ismobile", "True");
+            }
+            else
+            {
+                paramInfo.SetXmlProperty("genxml/hidden/ismobile", "False");
+            }
+
             return paramInfo;
         }
 

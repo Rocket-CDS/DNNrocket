@@ -117,6 +117,7 @@ namespace Simplisity
         public string EngineURL { get { return Info.GetXmlProperty("r/engineurl"); } set { Info.SetXmlProperty("r/engineurl", value.ToString()); } }
         public string UserHostAddress { get { return Info.GetXmlProperty("r/userhostaddress"); } set { Info.SetXmlProperty("r/userhostaddress", value.ToString()); } }
         public string ApiUrl { get { return Info.GetXmlProperty("r/apiurl"); } set { Info.SetXmlProperty("r/apiurl", value.ToString()); } }
+        public bool IsMobile { get { return Info.GetXmlPropertyBool("r/ismobile"); } set { Info.SetXmlProperty("r/ismobile", value.ToString()); } }
 
         #endregion
 

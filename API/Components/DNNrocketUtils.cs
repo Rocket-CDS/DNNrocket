@@ -42,6 +42,7 @@ using System.Collections.Specialized;
 using DotNetNuke.UI.Skins;
 using Encoding = System.Text.Encoding;
 using System.Web.Hosting;
+using DotNetNuke.Services.ClientCapability;
 
 namespace DNNrocketAPI.Components
 {
@@ -1752,6 +1753,10 @@ namespace DNNrocketAPI.Components
             }
         }
 
+        public static bool IsMobile()
+        {
+            return (HttpContext.Current.Request.Browser != null) && (ClientCapabilityProvider.Instance() != null) && ClientCapabilityProvider.CurrentClientCapability.IsMobile;
+        }
 
 
         #region "Temp Storage"

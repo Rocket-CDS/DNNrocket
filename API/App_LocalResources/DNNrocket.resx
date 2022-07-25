@@ -922,4 +922,7 @@ play_arrow
   <data name="dataservice.Text" xml:space="preserve">
     <value>Data Service</value>
   </data>
+  <data name="disabled.Text" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
 </root>
