@@ -46,6 +46,10 @@ namespace DNNrocketAPI.Components
         {
             return Record.GetXmlProperty("genxml/remote/detailpageurl" + cultureCode);
         }
+        public string SearchUrlList(string cultureCode)
+        {
+            return Record.GetXmlProperty("genxml/remote/searchpageurl" + cultureCode);
+        }
 
         #region "properties"
 
