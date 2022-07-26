@@ -16,7 +16,7 @@ namespace DNNrocketAPI.Components
         }
         public string RenderEmailBody(bool debugmode = true)
         {
-            if (EmailData.RazorTemplateName != "")
+            if (EmailData.EmailBody == "" && EmailData.RazorTemplateName != null && EmailData.RazorTemplateName != "")
             {
                 if (EmailData.SystemKey == null) EmailData.SystemKey = EmailData.AppTheme.SystemKey;
                 var systemData = new SystemLimpet(EmailData.SystemKey);
@@ -25,16 +25,14 @@ namespace DNNrocketAPI.Components
                 // if we have no theme template, look in the system folder.
                 if (razorTempl == "")
                 {
-                    var appthemeSystem = new AppThemeSystemLimpet(EmailData.SystemKey);
+                    var appthemeSystem = new AppThemeSystemLimpet(EmailData.PortalId, EmailData.SystemKey);
                     razorTempl = appthemeSystem.GetTemplate(EmailData.RazorTemplateName);
                 }
 
                 var pr = RenderRazorUtils.RazorProcess(EmailData.Model, razorTempl, false);
                 if (pr.IsValid) EmailData.EmailBody = pr.RenderedText;
-
-                return EmailData.EmailBody;
             }
-            return "";
+            return EmailData.EmailBody;
         }
 
         public bool SendEmail()
@@ -111,6 +109,8 @@ namespace DNNrocketAPI.Components
         public string Attchments { get; set; }
         public bool DebugMode { get; set; }
         public string SystemKey { get; set; }
+
+        public int PortalId { get; set; }
 
         public AppThemeLimpet AppTheme { get; set; }
 
