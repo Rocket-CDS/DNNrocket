@@ -111,10 +111,10 @@ namespace Simplisity
         public string CultureCode { get { return Info.GetXmlProperty("r/culturecode"); } set { Info.SetXmlProperty("r/culturecode", value.ToString()); } }
         public string CultureCodeEdit { get { if (Info.GetXmlProperty("r/culturecodeedit") == "") return CultureCode; else return Info.GetXmlProperty("r/culturecodeedit"); } set { Info.SetXmlProperty("r/culturecodeedit", value.ToString()); } }
         public string SiteKey { get { return Info.GetXmlProperty("r/sitekey"); } set { Info.SetXmlProperty("r/sitekey", value.ToString()); } }
-        public string PageUrl { get { return Info.GetXmlProperty("r/pageurl"); } set { Info.SetXmlProperty("r/pageurl", value.ToString()); } }
-        public string PageDetailUrl { get { return Info.GetXmlProperty("r/pagedetailurl"); } set { Info.SetXmlProperty("r/pagedetailurl", value.ToString()); } }
-        public string PageListUrl { get { if (Info.GetXmlProperty("r/pagelisturl") == "") return PageUrl; else return Info.GetXmlProperty("r/pagelisturl"); } set { Info.SetXmlProperty("r/pagelisturl", value.ToString()); } }
-        public string EngineURL { get { return Info.GetXmlProperty("r/engineurl"); } set { Info.SetXmlProperty("r/engineurl", value.ToString()); } }
+        public string PageUrl { get { return Info.GetXmlProperty("r/pageurl").TrimEnd('/'); } set { Info.SetXmlProperty("r/pageurl", value.ToString()); } }
+        public string PageDetailUrl { get { return Info.GetXmlProperty("r/pagedetailurl").TrimEnd('/'); } set { Info.SetXmlProperty("r/pagedetailurl", value.ToString()); } }
+        public string PageListUrl { get { if (Info.GetXmlProperty("r/pagelisturl") == "") return PageUrl; else return Info.GetXmlProperty("r/pagelisturl").TrimEnd('/'); } set { Info.SetXmlProperty("r/pagelisturl", value.ToString()); } }
+        public string EngineURL { get { return Info.GetXmlProperty("r/engineurl").TrimEnd('/'); } set { Info.SetXmlProperty("r/engineurl", value.ToString()); } }
         public string UserHostAddress { get { return Info.GetXmlProperty("r/userhostaddress"); } set { Info.SetXmlProperty("r/userhostaddress", value.ToString()); } }
         public string ApiUrl { get { return Info.GetXmlProperty("r/apiurl"); } set { Info.SetXmlProperty("r/apiurl", value.ToString()); } }
         public bool IsMobile { get { return Info.GetXmlPropertyBool("r/ismobile"); } set { Info.SetXmlProperty("r/ismobile", value.ToString()); } }
