@@ -82,6 +82,7 @@ namespace Simplisity
 
         public static byte[] StrToByteArray(string str)
         {
+            if (str == null) str = "";
             var encoding = new UTF8Encoding();
             return encoding.GetBytes(str);
         }

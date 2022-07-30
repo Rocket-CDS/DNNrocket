@@ -928,4 +928,7 @@ play_arrow
   <data name="tools.Text" xml:space="preserve">
     <value>Tools</value>
   </data>
+  <data name="users.Text" xml:space="preserve">
+    <value>Users</value>
+  </data>
 </root>
