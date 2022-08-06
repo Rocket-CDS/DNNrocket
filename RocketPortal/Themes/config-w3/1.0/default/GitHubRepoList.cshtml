@@ -1,0 +1,145 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using DNNrocketAPI.Components;
+@using Rocket.AppThemes.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+@{
+    var organisationData = (OrganisationLimpet)Model.List.First();
+    var lp3 = 1;
+}
+
+<div>
+
+    <div class="w3-bar searchdata w3-padding-8">
+        <div class="w3-button w3-theme-action simplisity_click" s-cmd="organisations_add" s-fields=''>@ButtonText(ButtonTypes.add)</div>
+        <div class="w3-button  w3-theme-light simplisity_click" s-cmd="organisations_save" s-post="#datalist" s-list=".organisations" s-fields=''>@ButtonText(ButtonTypes.save)</div>
+        <input class="w3-bar-item  w3-right w3-input w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("DNNrocket.search")..." id="searchtext" onkeyup="searchFunction()">
+    </div>
+
+    <div id="datalist" class="w3-container w3-margin-top">
+
+        <table class="w3-table w3-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th style="width:64px;">@ResourceKey("DNNrocket.default")</th>
+                    <th style="width:64px;">@ResourceKey("DNNrocket.active")</th>
+                    <th style="width:64px;"></th>
+                </tr>
+            </thead>
+            @foreach (SimplisityRecord r in organisationData.List)
+            {
+        <tr class="organisations">
+            <td>
+                <div class="w3-padding">
+                @TextBox(new SimplisityInfo(r), "genxml/textbox/name", "class='w3-input w3-border' maxlength='250'  placeholder='" + ResourceKey("DNNrocket.name") + "...' ", "", false, lp3)
+                </div>
+                <div class="w3-padding">
+                @TextBox(new SimplisityInfo(r), "genxml/textbox/githubusername", "class='w3-input w3-border' maxlength='250' placeholder='GitHub Username...' ", "", false, lp3)
+                </div>
+            </td>
+            <td>
+                <div class="w3-padding">
+                @TextBox(new SimplisityInfo(r), "genxml/textbox/githubrepourl", "class='w3-input w3-border' maxlength='250' placeholder='GitHub Repo URL...' ", "", false, lp3)
+                </div>
+                <div class="w3-padding">
+                @TextBox(new SimplisityInfo(r), "genxml/textbox/githubtoken", "class='w3-input w3-border' maxlength='250' placeholder='GitHub Token...' ", "", false, lp3)
+                </div>
+            </td>
+            <td>
+                @HiddenField(new SimplisityInfo(r), "genxml/checkbox/default", " class='a-defaultvalue'", "", false, lp3)
+                @if (r.GetXmlPropertyBool("genxml/checkbox/default"))
+                {
+                    <span class="material-icons w3-button a-defaultbutton" idx="@(lp3)">
+                        radio_button_checked
+                    </span>
+                }
+                else
+                {
+                    <span class="material-icons w3-button a-defaultbutton" idx="@(lp3)">
+                        radio_button_unchecked
+                    </span>
+                }
+            </td>
+            <td>
+                @HiddenField(new SimplisityInfo(r), "genxml/checkbox/active", "", "", false, lp3)
+                @if (r.GetXmlPropertyBool("genxml/checkbox/active"))
+                {
+                    <span class="material-icons w3-button w3-text-green a-toggle" idx="@(lp3)">
+                        toggle_on
+                    </span>
+                }
+                else
+                {
+                    <span class="material-icons w3-button w3-text-red a-toggle" idx="@(lp3)">
+                        toggle_off
+                    </span>
+                }
+            </td>
+            <td>
+                <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="organisations_delete" s-fields='{"idx":"@(lp3)"}'>
+                    @ButtonIcon(ButtonTypes.delete)
+                </div>
+            </td>
+        </tr>
+                lp3 += 1;
+            }
+        </table>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $(".a-toggle").off("click")
+        $(".a-toggle").click(function () {
+            var idx = $(this).attr('idx');
+            if ($('#active_' + idx).val() == 'True') {
+                $('#active_' + idx).val("False");
+                $(this).removeClass('w3-text-green');
+                $(this).addClass('w3-text-red');
+                $(this).text('toggle_off');
+            } else {
+                $('#active_' + idx).val("True");
+                $(this).addClass('w3-text-green');
+                $(this).removeClass('w3-text-red');
+                $(this).text('toggle_on');
+            }
+        });
+
+        $(".a-defaultbutton").off("click")
+        $(".a-defaultbutton").click(function () {
+            var idx = $(this).attr('idx');
+            $(".a-defaultbutton").text('radio_button_unchecked');
+            $('.a-defaultvalue').val("False");
+            $(this).text('radio_button_checked');
+            $('#default_' + idx).val("True");
+        });
+        
+
+    });
+
+    function searchFunction() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("searchtext");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("datalist");
+        li = $('.searchdiv');
+        for (i = 0; i < li.length; i++) {
+            txtValue = li[i].textContent || li[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
+
+</script>
+
+

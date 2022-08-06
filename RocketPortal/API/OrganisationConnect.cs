@@ -13,7 +13,7 @@ namespace RocketPortal.API
         private String GetOrgList()
         {
             var orgData = new OrganisationLimpet();
-            var razorTempl = _appThemeSystem.GetTemplate("OrganisationList.cshtml");
+            var razorTempl = _appThemeSystem.GetTemplate("GitHubRepoList.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, orgData, null, _passSettings, _sessionParams, true);
             return pr.RenderedText;
         }
