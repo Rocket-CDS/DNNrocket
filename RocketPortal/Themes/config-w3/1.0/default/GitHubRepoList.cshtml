@@ -36,7 +36,7 @@
         <tr class="organisations">
             <td>
                 <div class="w3-padding">
-                    @TextBox(new SimplisityInfo(r), "genxml/textbox/githubrepourl", "class='w3-input w3-border' maxlength='250' placeholder='GitHub Repo URL...' ", "", false, lp3)
+                    @TextBox(new SimplisityInfo(r), "genxml/textbox/githubrepourl", "class='w3-input w3-border githubrepourl' idx='" + lp3 + "' maxlength='250' placeholder='GitHub Repo URL...' ", "", false, lp3)
                 </div>
                 <div class="w3-padding">
                     @TextBox(new SimplisityInfo(r), "genxml/textbox/githubusername", "class='w3-input w3-border' maxlength='250' placeholder='GitHub Username...' ", "", false, lp3)
@@ -121,6 +121,16 @@
             $('#default_' + idx).val("True");
         });
         
+        $('.githubrepourl').off("change")
+        $(".githubrepourl").change(function () {
+            var fileNameIndex = $(this).val().lastIndexOf("/") + 1;
+            var filename = $(this).val().substr(fileNameIndex);
+            var idx = $(this).attr('idx');
+            if ($('#name_' + idx).val() == '') {
+                $('#name_' + idx).val(filename.replace('.git',''));
+            }
+            return false;
+        });
 
     });
 
