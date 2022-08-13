@@ -198,6 +198,9 @@
   <data name="downloadall.Text" xml:space="preserve">
     <value>Download All</value>
   </data>
+  <data name="downloadappthemes.Text" xml:space="preserve">
+    <value>Download all Appthemes for the selected Project?  - WARNING: This will overwrite existing AppThemes.</value>
+  </data>
   <data name="downloadmsg.Text" xml:space="preserve">
     <value>Download AppTheme</value>
   </data>

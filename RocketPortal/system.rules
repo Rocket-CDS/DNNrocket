@@ -191,12 +191,12 @@
 
       <genxml>
         <textbox>
-          <interfacekey>organisations</interfacekey>
+          <interfacekey>appthemeprojects</interfacekey>
           <namespaceclass>RocketPortal.API.StartConnect</namespaceclass>
           <providernamespaceclass></providernamespaceclass>
           <assembly>RocketPortal</assembly>
           <interfaceicon>corporate_fare</interfaceicon>
-          <defaultcommand>organisations_list</defaultcommand>
+          <defaultcommand>appthemeprojects_list</defaultcommand>
           <relpath>/DesktopModules/DNNrocket/RocketPortal</relpath>
         </textbox>
         <providertype></providertype>

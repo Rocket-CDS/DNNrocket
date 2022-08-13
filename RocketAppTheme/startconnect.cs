@@ -28,8 +28,8 @@ namespace DNNrocket.AppThemes
         private SessionParams _sessionParams;
         private PortalLimpet _portalData;
         private string _moduleref;
-        private string _org;
-        private OrganisationLimpet _orgData;
+        private string _projectName;
+        private AppThemeProjectLimpet _appThemeProjectData;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -57,8 +57,7 @@ namespace DNNrocket.AppThemes
                         strOut = GetList();
                         break;
                     case "rocketapptheme_downloadallgithub":
-                        AppThemeUtils.DownloadAllGitHubAppTheme(_org);
-                        strOut = GetAppStoreList();
+                        strOut = DownloadAppThemes();
                         break;
                     default:
 
@@ -103,14 +102,8 @@ namespace DNNrocket.AppThemes
                                 break;
                             case "rocketapptheme_export":
                                 return ExportAppTheme();
-                            case "rocketapptheme_import":
-                                strOut = ImportAppTheme();
-                                break;
                             case "rocketapptheme_docopy":
                                 strOut = DoCopyAppTheme();
-                                break;
-                            case "rocketapptheme_uploadversioncheck":
-                                strOut = CheckServerVersion();
                                 break;
 
                             case "rocketapptheme_getresxdata":
@@ -142,8 +135,7 @@ namespace DNNrocket.AppThemes
 
                             case "rocketapptheme_downloadgithub":
                                 var folderExists = false;
-                                if (Directory.Exists(_appTheme.AppThemeFolderMapPath)) folderExists = true;
-                                AppThemeUtils.DownloadGitHubAppTheme(_paramInfo.GetXmlProperty("genxml/hidden/htmlurl"), _appTheme.AppThemeFolderMapPath);
+                                AppThemeUtils.DownloadGitHubAppTheme(_paramInfo.GetXmlProperty("genxml/hidden/htmlurl"), PortalUtils.DNNrocketThemesDirectoryMapPath());
                                 if (!folderExists) DNNrocketUtils.RecycleApplicationPool();// recycle so we pickup new AppTheme Folders.
                                 strOut = GetAppStoreList();
                                 break;
@@ -172,7 +164,7 @@ namespace DNNrocket.AppThemes
             _rocketInterface = new RocketInterface(interfaceInfo);
             _sessionParams = new SessionParams(_paramInfo);
             _portalData = new PortalLimpet(PortalUtils.GetPortalId());
-            _orgData = new OrganisationLimpet();
+            _appThemeProjectData = new AppThemeProjectLimpet();
 
             // Assign Langauge
             DNNrocketUtils.SetCurrentCulture();
@@ -201,12 +193,9 @@ namespace DNNrocket.AppThemes
                 _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
             }
-            _org = _paramInfo.GetXmlProperty("genxml/remote/selectedorg");
-            if (_org == "") _org = _paramInfo.GetXmlProperty("genxml/hidden/selectedorg");
-            if (_org == "") _org = _orgData.DefaultOrg();
-
-            _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _org);
-
+            _projectName = _paramInfo.GetXmlProperty("genxml/remote/selectedproject");
+            if (_projectName == "") _projectName = _paramInfo.GetXmlProperty("genxml/hidden/selectedproject");
+            if (_projectName == "") _projectName = _appThemeProjectData.DefaultProjectName();
 
             return paramCmd;
         }
@@ -218,7 +207,7 @@ namespace DNNrocket.AppThemes
             {
                 var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
                 _appTheme.DeleteFile(filename, moduleref);
-                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _org);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _projectName);
             }
             return GetDetail();
         }
@@ -237,7 +226,7 @@ namespace DNNrocket.AppThemes
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 
-                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _org);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _projectName);
             }
             return GetDetail();
         }
@@ -328,7 +317,7 @@ namespace DNNrocket.AppThemes
                 }
 
                 // crearte new _appTheme.
-                var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), newAppThemeName, "1.0", _org);
+                var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), newAppThemeName, "1.0", _projectName);
 
                 ClearServerCacheLists();
 
@@ -434,10 +423,11 @@ namespace DNNrocket.AppThemes
         {
             try
             {
-                var appThemeDataList = new AppThemeDataList(_org);
+                var appThemeDataList = new AppThemeDataList(_projectName);
                 var razorTempl = _appThemeSystem.GetTemplate("appthemelist.cshtml");
                 var passSettings = _postInfo.ToDictionary();
                 var pr = RenderRazorUtils.RazorProcessData(razorTempl, appThemeDataList, null, passSettings, _sessionParams, true);
+                if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }
             catch (Exception ex)
@@ -448,43 +438,27 @@ namespace DNNrocket.AppThemes
         }
         public String GetAppStoreList()
         {
-            try
-            {
-                var appThemeDataList = new AppThemeDataList(_org);
-                var razorTempl = _appThemeSystem.GetTemplate("AppStoreList.cshtml");
-                var passSettings = _postInfo.ToDictionary();
+            var appThemeDataList = new AppThemeDataList(_projectName);
+            var razorTempl = _appThemeSystem.GetTemplate("AppStoreList.cshtml");
+            var passSettings = _postInfo.ToDictionary();
 
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, appThemeDataList, null, _passSettings, _sessionParams, true);
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-
-            }
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, appThemeDataList, null, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
 
-        private void DownloadPublicAppTheme(string appThemeFolder = "")
+        public string DownloadAppThemes()
         {
-            // [TODO: look at downloading github files]
-            //if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
-            //var httpConnect = new HttpConnect(_selectedSystemKey);
-            //var userid = UserUtils.GetCurrentUserId();
-            //var destinationMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + userid + "_" + appThemeFolder + ".zip";
-            //httpConnect.DownloadAppThemeToFile(appThemeFolder, destinationMapPath);
-            //var appTheme = new AppThemeLimpet(_selectedSystemKey, destinationMapPath, true);
-            //_appTheme.Update();
-            //File.Delete(destinationMapPath);
-            //ClearServerCacheLists();
+            _appThemeProjectData.DownloadGitHubProject(_projectName);
+            return GetAppStoreList();
         }
-
         private Dictionary<string, object> ExportAppTheme()
         {
             var appThemeFolder = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/appthemefolder"));
             if (appThemeFolder == "") appThemeFolder = _appThemeFolder;
             var appVersionFolder = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/appversionfolder"));
             if (appVersionFolder == "") appVersionFolder = _appVersionFolder;
-            var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), appThemeFolder, appVersionFolder, _org);
+            var appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), appThemeFolder, appVersionFolder, _projectName);
 
             var exportZipMapPath = appTheme.ExportZipFile();
 
@@ -494,68 +468,6 @@ namespace DNNrocket.AppThemes
 
             return rtnDic;
         }
-        private string CheckServerVersion()
-        {
-            //[TODO: Github?]
-
-            //var rtnDic = ExportAppTheme();
-            //if (rtnDic["filenamepath"] != null && (string)rtnDic["filenamepath"] != "")
-            //{
-            //    var appTheme = new AppThemeLimpet(_selectedSystemKey, _appThemeFolder, _appVersionFolder);
-            //    var ftpConnect = new FtpConnect(_selectedSystemKey);
-
-            //    var serverxml = ftpConnect.DownloadAppThemeXml(_appThemeFolder);
-            //    double version = -1;
-            //    double rev = -1;
-            //    var sRec = new SimplisityRecord();
-            //    if (!String.IsNullOrEmpty(serverxml) && serverxml.ToUpper() != "FAIL")
-            //    {
-            //        sRec.XMLData = serverxml;
-            //        version = sRec.GetXmlPropertyDouble("item/genxml/hidden/latestversion");
-            //        rev = sRec.GetXmlPropertyDouble("item/genxml/hidden/latestrev");
-            //    }
-            //    if (appTheme.LatestVersion > version)
-            //    {
-            //        return UploadAppTheme();
-            //    }
-            //    if (appTheme.LatestVersion == version)
-            //    {
-            //        var razorTempl2 = RenderRazorUtils.GetSystemRazorTemplate(_systemData.SystemKey, "versioncheckequal.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
-            //        return RenderRazorUtils.RazorDetail(razorTempl2, new SimplisityInfo(sRec), _passSettings, null, true);
-            //    }
-            //    var razorTempl1 = RenderRazorUtils.GetSystemRazorTemplate(_systemData.SystemKey, "versioncheck.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
-            //    return RenderRazorUtils.RazorDetail(razorTempl1, new SimplisityInfo(sRec), _passSettings, null, true);
-            //}
-            //var razorTempl = RenderRazorUtils.GetSystemRazorTemplate(_systemData.SystemKey, "ftpfail.cshtml", _rocketInterface.TemplateRelPath, _rocketInterface.DefaultTheme, DNNrocketUtils.GetCurrentCulture(), _rocketInterface.ThemeVersion, true);
-            //return RenderRazorUtils.RazorDetail(razorTempl, new SimplisityInfo(), _passSettings, null, true);
-            return "TODO - Check version in GitHub";
-        }
-
-        private string ImportAppTheme()
-        {
-            //[TODO: work out import of zip]
-
-            //var fileuploadlist = _paramInfo.GetXmlProperty("genxml/hidden/fileuploadlist");
-            //if (fileuploadlist != "")
-            //{
-            //    foreach (var f in fileuploadlist.Split(';'))
-            //    {
-            //        if (f != "")
-            //        {
-            //            var userid = UserUtils.GetCurrentUserId();
-            //            var userFolder = PortalUtils.TempDirectoryMapPath();
-            //            var friendlyname = GeneralUtils.DeCode(f);
-            //            var fname = userFolder + "\\" + userid + "_" + friendlyname;
-            //            var _appTheme = new AppThemeLimpet(_selectedSystemKey, fname, true);
-            //            // delete import file
-            //            File.Delete(fname);
-            //        }
-            //    }
-            //    ClearServerCacheLists();
-            //}
-            return GetList();
-        }
-
         public string DoCopyAppTheme()
         {
             try
@@ -570,7 +482,7 @@ namespace DNNrocket.AppThemes
                 var newAppThemeDirName = _appTheme.AppThemeFolderMapPath.TrimEnd('\\') + "\\..\\" + newAppThemeName;
 
                 _appTheme.Copy(newAppThemeDirName);
-                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), newAppThemeName, _appTheme.LatestVersionFolder, _org);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), newAppThemeName, _appTheme.LatestVersionFolder, _projectName);
                 ClearServerCacheLists();
                 return GetDetail();
             }
@@ -599,6 +511,7 @@ namespace DNNrocket.AppThemes
 
                 var razorTempl = _appThemeSystem.GetTemplate("EditorPopUp.cshtml");
                 var pr = RenderRazorUtils.RazorProcessData(razorTempl, _appTheme, null, _passSettings, _sessionParams, true);
+                if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }
             catch (Exception ex)
@@ -614,7 +527,7 @@ namespace DNNrocket.AppThemes
             var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
             _appTheme.SaveEditor(filename, editorcode, moduleref);
             CacheFileUtils.ClearAllCache();
-            _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appTheme.AppThemeFolder, _appTheme.AppVersionFolder, _org);
+            _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appTheme.AppThemeFolder, _appTheme.AppVersionFolder, _projectName);
             return GetEditorDetail();
         }
 
@@ -642,7 +555,7 @@ namespace DNNrocket.AppThemes
                 {
                     if (File.Exists(fileMapPath)) resxFileData = FileUtils.ReadFile(fileMapPath);
                     FileUtils.SaveFile(fileMapPath, resxFileData);
-                    _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder, _org);
+                    _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder, _projectName);
                 }
             }
         }
@@ -656,7 +569,7 @@ namespace DNNrocket.AppThemes
                 var cssFileData = "";
                 if (File.Exists(fileMapPath)) cssFileData = FileUtils.ReadFile(fileMapPath);
                 FileUtils.SaveFile(fileMapPath, cssFileData);
-                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder, _org);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder, _projectName);
             }
         }
         private void AddJsFile()
@@ -669,7 +582,7 @@ namespace DNNrocket.AppThemes
                 var jsFileData = "";
                 if (File.Exists(fileMapPath)) jsFileData = FileUtils.ReadFile(fileMapPath);
                 FileUtils.SaveFile(fileMapPath, jsFileData);
-                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder, _org);
+                _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder, _projectName);
             }
         }
         private void AddTemplateFile()
@@ -682,7 +595,7 @@ namespace DNNrocket.AppThemes
                 var templateFileData = "";
                 if (File.Exists(fileMapPath)) templateFileData = FileUtils.ReadFile(fileMapPath);
                 FileUtils.SaveFile(fileMapPath, templateFileData);
-                _appTheme = new AppThemeLimpet(_portalData.PortalId, _appThemeFolder, _appTheme.AppVersionFolder, _org);
+                _appTheme = new AppThemeLimpet(_portalData.PortalId, _appThemeFolder, _appTheme.AppVersionFolder, _projectName);
             }
         }
         private void AssignEditLang()

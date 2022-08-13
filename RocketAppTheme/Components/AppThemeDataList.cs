@@ -18,17 +18,17 @@ namespace Rocket.AppThemes.Components
 
     public class AppThemeDataList
     {
-        public AppThemeDataList(string org)
+        public AppThemeDataList(string projectName)
         {
-            Organisation = org; // assign first.
+            ProjectName = projectName; // assign first.
             SelectedSystemKey = "";
 
             AssignFolders();
             PopulateAppThemeList();
         }
-        public AppThemeDataList(string org, string selectedsystemkey)
+        public AppThemeDataList(string projectName, string selectedsystemkey)
         {
-            Organisation = org; // assign first.
+            ProjectName = projectName; // assign first.
             SelectedSystemKey = selectedsystemkey;
 
             AssignFolders();
@@ -41,20 +41,20 @@ namespace Rocket.AppThemes.Components
             AppSystemThemeFolderRootMapPath = DNNrocketUtils.MapPath(AppSystemThemeFolderRootRel);
             if (!Directory.Exists(AppSystemThemeFolderRootMapPath)) Directory.CreateDirectory(AppSystemThemeFolderRootMapPath);
 
-            AppThemeOrganisationFolderRootRel = AppSystemThemeFolderRootRel + "/" + Organisation;
-            AppThemeOrganisationFolderRootMapPath = DNNrocketUtils.MapPath(AppThemeOrganisationFolderRootRel);
-            if (!Directory.Exists(AppThemeOrganisationFolderRootMapPath)) Directory.CreateDirectory(AppThemeOrganisationFolderRootMapPath);
+            AppThemeProjectNameFolderRootRel = AppSystemThemeFolderRootRel + "/" + ProjectName;
+            AppThemeProjectNameFolderRootMapPath = DNNrocketUtils.MapPath(AppThemeProjectNameFolderRootRel);
+            if (!Directory.Exists(AppThemeProjectNameFolderRootMapPath)) Directory.CreateDirectory(AppThemeProjectNameFolderRootMapPath);
 
         }
 
         public void PopulateAppThemeList()
         {
             var list = new List<AppThemeLimpet>();
-            var dirlist1 = System.IO.Directory.GetDirectories(AppThemeOrganisationFolderRootMapPath);
+            var dirlist1 = System.IO.Directory.GetDirectories(AppThemeProjectNameFolderRootMapPath);
             foreach (var d1 in dirlist1)
             {
                 var dirlist = System.IO.Directory.GetDirectories(d1);
-                var org = new System.IO.DirectoryInfo(AppThemeOrganisationFolderRootMapPath).Name;
+                var org = new System.IO.DirectoryInfo(AppThemeProjectNameFolderRootMapPath).Name;
                 var dr = new System.IO.DirectoryInfo(d1);
                 if (dr.Name.StartsWith(SelectedSystemKey) || SelectedSystemKey == "")
                 {
@@ -77,14 +77,14 @@ namespace Rocket.AppThemes.Components
             ClearCacheLists();
         }
 
-        public string AppThemeOrganisationFolderRootRel { get; set; }
-        public string AppThemeOrganisationFolderRootMapPath { get; set; }
+        public string AppThemeProjectNameFolderRootRel { get; set; }
+        public string AppThemeProjectNameFolderRootMapPath { get; set; }
         public string AppSystemThemeFolderRootRel { get; set; }
         public string AppSystemThemeFolderRootMapPath { get; set; }
         public string AppProjectThemesFolderRel { get; set; }
         public string AppProjectThemesFolderMapPath { get; set; }
         public string SelectedSystemKey { get; set; }
-        public string Organisation { get; set; }        
+        public string ProjectName { get; set; }        
         public Dictionary<string,string> NameList
         {
             get

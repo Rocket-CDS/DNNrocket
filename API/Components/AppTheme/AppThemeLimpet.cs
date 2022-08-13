@@ -16,39 +16,39 @@ namespace DNNrocketAPI.Components
     {
         public AppThemeLimpet(int portalId, SystemLimpet systemData, string appThemeFolder, string versionFolder = "") : base(portalId, systemData.SystemRelPath.TrimEnd('/') + "/Themes/" + appThemeFolder, versionFolder)
         {
-            Organisation = "";
+            ProjectName = "";
             SystemKey = systemData.SystemKey;
         }
         [Obsolete("Use AppThemeLimpet(int portalId, SystemLimpet systemData, string appThemeFolder, string versionFolder) instead")]
         public AppThemeLimpet(SystemLimpet systemData, string appThemeFolder, string versionFolder = "") : base(-1, systemData.SystemRelPath.TrimEnd('/') + "/Themes/" + appThemeFolder, versionFolder)
         {
-            Organisation = "";
+            ProjectName = "";
             SystemKey = systemData.SystemKey;
         }
         [Obsolete("Use AppThemeLimpet(int portalId, SystemLimpet systemData, string appThemeFolder, string versionFolder) instead")]
         public AppThemeLimpet(SystemLimpet systemData, string versionFolder = "") : base(-1, systemData.SystemRelPath.TrimEnd('/') + "/Themes/config-w3", versionFolder)
         {
-            Organisation = "";
+            ProjectName = "";
             SystemKey = systemData.SystemKey;
         }
-        [Obsolete("Use AppThemeLimpet(int portalId, string appThemeFolder, string versionFolder, string org) instead")]
+        [Obsolete("Use AppThemeLimpet(int portalId, string appThemeFolder, string versionFolder, string projectName) instead")]
         public AppThemeLimpet(string appThemeFolder, string versionFolder = "") : base(-1, "/DesktopModules/RocketThemes/" + appThemeFolder, versionFolder)
         {
-            Organisation = "";
+            ProjectName = "";
             SystemKey = "";
             var s = appThemeFolder.Split('.');
             if (s.Length == 2) SystemKey = s[0];
         }
-        public AppThemeLimpet(int portalId, string appThemeFolder, string versionFolder, string org) : base(portalId, "/DesktopModules/RocketThemes/" + org  + "/" + appThemeFolder, versionFolder, org)
+        public AppThemeLimpet(int portalId, string appThemeFolder, string versionFolder, string projectName) : base(portalId, "/DesktopModules/RocketThemes/" + projectName + "/" + appThemeFolder, versionFolder, projectName)
         {
-            Organisation = org;
+            ProjectName = projectName;
             SystemKey = "";
             var s = appThemeFolder.Split('.');
             if (s.Length == 2) SystemKey = s[0];
         }
 
         public string SystemKey { get; set; }
-        public string Organisation { get; set; }
+        public string ProjectName { get; set; }
 
 
     }

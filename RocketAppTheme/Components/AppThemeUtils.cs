@@ -141,66 +141,66 @@ namespace Rocket.AppThemes.Components
         #region "GitHub"
 
         private static readonly object _cacheLock2 = new object();
-        public static List<SimplisityRecord> GetGitHubAppThemes(string org)
+        //public static List<SimplisityRecord> GetGitHubAppThemes(string projectThemeName)
+        //{
+        //    var cKey = "GetGitHubAppThemes*" + projectThemeName;
+        //    var rtnList = (List<SimplisityRecord>)CacheUtilsDNN.GetCache(cKey);
+        //    if (rtnList != null) return rtnList;
+        //    lock (_cacheLock2)
+        //    {
+        //        rtnList = new List<SimplisityRecord>();
+        //        try
+        //        {
+        //            JsonConvert.DefaultSettings = () => new JsonSerializerSettings { MaxDepth = 128 };
+        //            var contentsJson = HttpGet($"https://api.github.com/orgs/{org}/repos");
+        //            var contents = (JArray)JsonConvert.DeserializeObject(contentsJson);
+        //            foreach (var file in contents)
+        //            {
+        //                var themename = (string)file["name"];
+        //                if (!String.IsNullOrEmpty(themename))
+        //                {
+        //                    XmlDocument doc = JsonConvert.DeserializeXmlNode("{\"genxml\":" + file.ToString() + "}");
+        //                    var sRec = new SimplisityRecord();
+        //                    sRec.XMLData = doc.OuterXml;
+        //                    rtnList.Add(sRec);
+        //                }
+        //            }
+        //            CacheUtilsDNN.SetCache(cKey, rtnList);
+        //        }
+        //        catch (Exception)
+        //        {
+        //            // Organisation does not exist, ignore and return empty list
+        //        }
+        //        return rtnList;
+        //    }
+        //}
+        //public static void DownloadAllGitHubAppTheme(string org)
+        //{
+        //    var newFolder = false;
+        //    var l = GetGitHubAppThemes(org);
+        //    foreach (var a in l)
+        //    {
+        //        if (a.GetXmlNode("genxml/name") != "")
+        //        {
+        //            var appTheme = AppThemeUtils.AppTheme(PortalUtils.GetPortalId(), a.GetXmlNode("genxml/name"), "", org);
+        //            if (!Directory.Exists(appTheme.AppThemeFolderMapPath)) newFolder = true;
+        //            DownloadRepoFromGitHub(a.GetXmlProperty("genxml/html_url") + "/archive/refs/heads/main.zip", appTheme.AppThemeFolderMapPath);
+        //        }
+        //    }
+        //    if (newFolder) DNNrocketUtils.RecycleApplicationPool();// recycle so we pickup new AppTheme Folders.
+        //    CacheUtilsDNN.ClearAllCache();
+        //}
+        public static void DownloadGitHubAppTheme(string projectThemeUrl, string downloadFolderMapPath)
         {
-            var cKey = "GetGitHubAppThemes*" + org;
-            var rtnList = (List<SimplisityRecord>)CacheUtilsDNN.GetCache(cKey);
-            if (rtnList != null) return rtnList;
-            lock (_cacheLock2)
-            {
-                rtnList = new List<SimplisityRecord>();
-                try
-                {
-                    JsonConvert.DefaultSettings = () => new JsonSerializerSettings { MaxDepth = 128 };
-                    var contentsJson = HttpGet($"https://api.github.com/orgs/{org}/repos");
-                    var contents = (JArray)JsonConvert.DeserializeObject(contentsJson);
-                    foreach (var file in contents)
-                    {
-                        var themename = (string)file["name"];
-                        if (!String.IsNullOrEmpty(themename))
-                        {
-                            XmlDocument doc = JsonConvert.DeserializeXmlNode("{\"genxml\":" + file.ToString() + "}");
-                            var sRec = new SimplisityRecord();
-                            sRec.XMLData = doc.OuterXml;
-                            rtnList.Add(sRec);
-                        }
-                    }
-                    CacheUtilsDNN.SetCache(cKey, rtnList);
-                }
-                catch (Exception)
-                {
-                    // Organisation does not exist, ignore and return empty list
-                }
-                return rtnList;
-            }
-        }
-        public static void DownloadAllGitHubAppTheme(string org)
-        {
-            var newFolder = false;
-            var l = GetGitHubAppThemes(org);
-            foreach (var a in l)
-            {
-                if (a.GetXmlNode("genxml/name") != "")
-                {
-                    var appTheme = AppThemeUtils.AppTheme(PortalUtils.GetPortalId(), a.GetXmlNode("genxml/name"), "", org);
-                    if (!Directory.Exists(appTheme.AppThemeFolderMapPath)) newFolder = true;
-                    DownloadRepoFromGitHub(a.GetXmlProperty("genxml/html_url") + "/archive/refs/heads/main.zip", appTheme.AppThemeFolderMapPath);
-                }
-            }
-            if (newFolder) DNNrocketUtils.RecycleApplicationPool();// recycle so we pickup new AppTheme Folders.
-            CacheUtilsDNN.ClearAllCache();
-        }
-        public static void DownloadGitHubAppTheme(string contentsUrl, string downloadFolderMapPath)
-        {
-            DownloadRepoFromGitHub(contentsUrl + "/archive/refs/heads/main.zip", downloadFolderMapPath);
+            DownloadRepoFromGitHub(projectThemeUrl + "/archive/refs/heads/main.zip", downloadFolderMapPath);
             CacheUtilsDNN.ClearAllCache();
         }
 
-        private static void DownloadRepoFromGitHub(string contentsUrl, string downloadFolderMapPath)
+        private static void DownloadRepoFromGitHub(string projectThemeUrl, string downloadFolderMapPath)
         {
             var zFile = downloadFolderMapPath + "\\main.zip";
             WebClient client = new WebClient();
-            client.DownloadFile(contentsUrl, zFile);
+            client.DownloadFile(projectThemeUrl, zFile);
             // unzip
             var extractDir = downloadFolderMapPath.TrimEnd('\\') + "\\Temp";
             if (Directory.Exists(extractDir)) Directory.Delete(extractDir, true);

@@ -10,32 +10,34 @@ namespace RocketPortal.API
     public partial class StartConnect
     {
 
-        private String GetOrgList()
+        private String GetProjectList()
         {
-            var orgData = new OrganisationLimpet();
+            var orgData = new AppThemeProjectLimpet();
             var razorTempl = _appThemeSystem.GetTemplate("GitHubRepoList.cshtml");
+
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, orgData, null, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
-        private String AddOrg()
+        private String AddProject()
         {
-            var orgData = new OrganisationLimpet();
+            var orgData = new AppThemeProjectLimpet();
             orgData.AddRow();
-            return GetOrgList();
+            return GetProjectList();
         }
-        private String SaveOrg()
+        private String SaveProject()
         {
-            var orgData = new OrganisationLimpet();
+            var orgData = new AppThemeProjectLimpet();
             orgData.Record.XMLData = _postInfo.XMLData;
             orgData.Update();
-            return GetOrgList();
+            return GetProjectList();
         }
-        private String DeleteOrg()
+        private String DeleteProject()
         {
             var idx = _paramInfo.GetXmlPropertyInt("genxml/hidden/idx") -1;
-            var orgData = new OrganisationLimpet();
+            var orgData = new AppThemeProjectLimpet();
             orgData.DeleteRow(idx);
-            return GetOrgList();
+            return GetProjectList();
         }
     }
 }

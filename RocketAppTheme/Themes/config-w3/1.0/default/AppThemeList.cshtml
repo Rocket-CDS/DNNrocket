@@ -10,14 +10,14 @@
 @{
     var sessionParams = Model.SessionParamsData;
     var appThemeList = (AppThemeDataList)Model.List.First();
-    var systemAppTheme = new AppThemeSystemLimpet("rocketapptheme");
+    var systemAppTheme = new AppThemeSystemLimpet(PortalUtils.GetPortalId(), "rocketapptheme");
     var rocketAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
-    var orgData = new OrganisationLimpet();
+    var orgData = new AppThemeProjectLimpet();
 
-    var selectedOrg = sessionParams.Get("selectedorg");
+    var selectedOrg = sessionParams.Get("selectedproject");
     if (selectedOrg == "" && orgData.ActiveList().Count > 0)
     {
-        selectedOrg = orgData.DefaultOrg();
+        selectedOrg = orgData.DefaultProjectName();
     }
 
     var systemDict = new Dictionary<string, string>();

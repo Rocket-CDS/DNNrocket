@@ -17,16 +17,16 @@ namespace DNNrocketAPI.Components
         {
         }
 
-        [Obsolete("Use AppThemeBase(int portalid, string appThemeFolderRel, string versionFolder, string org) instead")]
-        public AppThemeBase(string appThemeFolderRel, string versionFolder = "", string org = "")
+        [Obsolete("Use AppThemeBase(int portalid, string appThemeFolderRel, string versionFolder, string projectName) instead")]
+        public AppThemeBase(string appThemeFolderRel, string versionFolder = "", string projectName = "")
         {
-            Init(-1, appThemeFolderRel, versionFolder, org);
+            Init(-1, appThemeFolderRel, versionFolder, projectName);
         }
-        public AppThemeBase(int portalid, string appThemeFolderRel, string versionFolder = "", string org = "")
+        public AppThemeBase(int portalid, string appThemeFolderRel, string versionFolder = "", string projectName = "")
         {
-            Init(portalid, appThemeFolderRel, versionFolder, org);
+            Init(portalid, appThemeFolderRel, versionFolder, projectName);
         }
-        private void Init(int portalid, string appThemeFolderRel, string versionFolder = "", string org = "")
+        private void Init(int portalid, string appThemeFolderRel, string versionFolder = "", string projectName = "")
         {
             AppThemeFolderRel = appThemeFolderRel;
             FileNameList = new Dictionary<string, string>();
@@ -45,9 +45,11 @@ namespace DNNrocketAPI.Components
                 PortalId = PortalUtils.GetPortalId();
             else
                 PortalId = portalid;
-            PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath(portalid).TrimEnd('\\') + "\\" + org + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
+            PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath(portalid).TrimEnd('\\') + "\\" + projectName + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
             AssignVersionFolders();
             ImportConfig();
+
+            LastUpdated = Directory.GetLastWriteTime(AppThemeFolderMapPath);
 
             Exists = false;
             if (File.Exists(RazorFolderMapPath + "\\view.cshtml")) Exists = true;
@@ -577,6 +579,7 @@ namespace DNNrocketAPI.Components
         public Dictionary<string, string> ImageFileNameList { get; set; }
         public Dictionary<string, string> FileNameList { get; set; }
         public Dictionary<string, string> PortalFileNameList { get; set; }
+        public DateTime LastUpdated { get; set; }
         #endregion
 
 

@@ -7,15 +7,15 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
 
 @{
-    var organisationData = (OrganisationLimpet)Model.List.First();
+    var appThemeProjctData = (AppThemeProjectLimpet)Model.List.First();
     var lp3 = 1;
 }
 
 <div>
 
     <div class="w3-bar searchdata w3-padding-8">
-        <div class="w3-button w3-theme-action simplisity_click" s-cmd="organisations_add" s-fields=''>@ButtonText(ButtonTypes.add)</div>
-        <div class="w3-button  w3-theme-light simplisity_click" s-cmd="organisations_save" s-post="#datalist" s-list=".organisations" s-fields=''>@ButtonText(ButtonTypes.save)</div>
+        <div class="w3-button w3-theme-action simplisity_click" s-cmd="appthemeprojects_add" s-fields=''>@ButtonText(ButtonTypes.add)</div>
+        <div class="w3-button  w3-theme-light simplisity_click" s-cmd="appthemeprojects_save" s-post="#datalist" s-list=".appthemeprojects" s-fields=''>@ButtonText(ButtonTypes.save)</div>
         <input class="w3-bar-item  w3-right w3-input w3-border w3-light-grey" autocomplete="off" type="text" placeholder="@ResourceKey("DNNrocket.search")..." id="searchtext" onkeyup="searchFunction()">
     </div>
 
@@ -31,9 +31,9 @@
                     <th style="width:64px;"></th>
                 </tr>
             </thead>
-            @foreach (SimplisityRecord r in organisationData.List)
+            @foreach (SimplisityRecord r in appThemeProjctData.List)
             {
-        <tr class="organisations">
+        <tr class="appthemeprojects">
             <td>
                 <div class="w3-padding">
                     @TextBox(new SimplisityInfo(r), "genxml/textbox/githubrepourl", "class='w3-input w3-border githubrepourl' idx='" + lp3 + "' maxlength='250' placeholder='GitHub Repo URL...' ", "", false, lp3)
@@ -81,7 +81,7 @@
                 }
             </td>
             <td>
-                <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="organisations_delete" s-fields='{"idx":"@(lp3)"}'>
+                <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="appthemeprojects_delete" s-fields='{"idx":"@(lp3)"}'>
                     @ButtonIcon(ButtonTypes.delete)
                 </div>
             </td>

@@ -74,17 +74,17 @@ namespace RocketPortal.API
                     break;
 
 
-                case "organisations_list":
-                    strOut = GetOrgList();
+                case "appthemeprojects_list":
+                    strOut = GetProjectList();
                     break;
-                case "organisations_save":
-                    strOut = SaveOrg();
+                case "appthemeprojects_save":
+                    strOut = SaveProject();
                     break;
-                case "organisations_add":
-                    strOut = AddOrg();
+                case "appthemeprojects_add":
+                    strOut = AddProject();
                     break;
-                case "organisations_delete":
-                    strOut = DeleteOrg();
+                case "appthemeprojects_delete":
+                    strOut = DeleteProject();
                     break;
 
 

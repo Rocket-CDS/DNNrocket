@@ -7,18 +7,20 @@
   <pageslinks>
   </pageslinks>
 
-  <organisations>
+  <appthemeprojects>
     <genxml>
       <checkbox>
         <default>True</default>
         <active>True</active>
       </checkbox>
-      <textbox>
-        <name>RocketAppThemes-W3-CSS</name>
-        <org>RocketAppThemes-W3-CSS</org>
-      </textbox>
+      <textbox>  
+		  <name>AppTheme-W3-CSS</name>
+		  <githubrepourl>https://github.com/Rocket-CDS/AppTheme-W3-CSS.git</githubrepourl>
+		  <githubusername></githubusername>
+		  <githubtoken></githubtoken>
+	  </textbox>
     </genxml>
-  </organisations>
+  </appthemeprojects>
   
   <commands>
 
@@ -49,19 +51,19 @@
 
 
     <command>
-      <cmd>organisations_list</cmd>
+      <cmd>appthemeprojects_list</cmd>
       <action>true</action>
     </command>
     <command>
-      <cmd>organisations_add</cmd>
+      <cmd>appthemeprojects_add</cmd>
       <action>true</action>
     </command>
     <command>
-      <cmd>organisations_delete</cmd>
+      <cmd>appthemeprojects_delete</cmd>
       <action>true</action>
     </command>
     <command>
-      <cmd>organisations_save</cmd>
+      <cmd>appthemeprojects_save</cmd>
       <action>true</action>
     </command>
 

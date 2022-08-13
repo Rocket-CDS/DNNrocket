@@ -19,7 +19,7 @@ namespace RocketPortal.App_LocalResources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SideMenu {
@@ -61,11 +61,20 @@ namespace RocketPortal.App_LocalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to App Store.
+        ///   Looks up a localized string similar to AppThemes.
         /// </summary>
         internal static string appstore_Text {
             get {
                 return ResourceManager.GetString("appstore.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme Sources.
+        /// </summary>
+        internal static string appthemeprojects_Text {
+            get {
+                return ResourceManager.GetString("appthemeprojects.Text", resourceCulture);
             }
         }
         
@@ -93,15 +102,6 @@ namespace RocketPortal.App_LocalResources {
         internal static string global_Text {
             get {
                 return ResourceManager.GetString("global.Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Theme Sources.
-        /// </summary>
-        internal static string organisations_Text {
-            get {
-                return ResourceManager.GetString("organisations.Text", resourceCulture);
             }
         }
         
