@@ -1,5 +1,6 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
+using RestSharp;
 using Simplisity;
 using System;
 using System.Collections.Concurrent;
@@ -7,6 +8,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Xml;
 
@@ -144,6 +147,15 @@ namespace Rocket.AppThemes.Components
             }
             return DefaultProjectUrl();
         }
+        public string GitHubToken(string projectName)
+        {
+            var dl = Record.GetRecordList(_listName);
+            foreach (var d in dl)
+            {
+                if (d.GetXmlProperty("genxml/textbox/name") == projectName) return d.GetXmlProperty("genxml/textbox/githubtoken");
+            }
+            return "";
+        }
 
         public Dictionary<string, string> ActiveList()
         {
@@ -184,19 +196,36 @@ namespace Rocket.AppThemes.Components
         public void DownloadGitHubProject(string projectName)
         {
             var projectThemeUrl = ProjectUrl(projectName);
-            DownloadRepoFromGitHub(projectName, projectThemeUrl.ToLower().Replace(".git","") + "/archive/refs/heads/main.zip");
+            DownloadRepoFromGitHub(projectName, projectThemeUrl.ToLower().Replace(".git","") + "/archive/refs/heads/main.zip", GitHubToken(projectName));
             CacheUtilsDNN.ClearAllCache();
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="projectThemeUrl"></param>
-        private void DownloadRepoFromGitHub(string projectName, string projectThemeUrl)
+        private void DownloadRepoFromGitHub(string projectName, string projectThemeUrl, string githubToken)
         {
             var downloadFolderMapPath = PortalUtils.TempDirectoryMapPath();
             var zFile = downloadFolderMapPath + "\\main.zip";
-            WebClient client = new WebClient();
-            client.DownloadFile(projectThemeUrl, zFile);
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    //client.Headers.Add(HttpRequestHeader.UserAgent, "RocketCDS/1.0.0");
+                    client.Headers.Add("user-agent", "request");
+                    client.Headers.Add(HttpRequestHeader.Accept, "*/*");
+                    client.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate, br");
+                    if (githubToken != "") client.Headers.Add(HttpRequestHeader.Authorization, "token " + githubToken);
+                    // [TODO:  THIS DOES NOT WORK WHEN THE REPO IS PRIVATE]
+                    // 7+ hours in C#, no solution.  Only 404 error eveytime.
+                    client.DownloadFile("https://github.com/rocket-cds/apptheme-w3-css/archive/refs/heads/main.zip", zFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+
             // unzip
             var extractDir = downloadFolderMapPath.TrimEnd('\\') + "\\Temp";
             if (Directory.Exists(extractDir)) Directory.Delete(extractDir, true);

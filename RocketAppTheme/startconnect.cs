@@ -47,14 +47,14 @@ namespace DNNrocket.AppThemes
                 switch (paramCmd)
                 {
                     case "rocketapptheme_getlist":
-                        strOut = GetList();
+                        strOut = GetAppStoreList();
                         break;
                     case "rocketapptheme_getappstore":
                         strOut = GetAppStoreList();
                         break;                        
                     case "rocketapptheme_clearcache":
                         ClearServerCacheLists();
-                        strOut = GetList();
+                        strOut = GetAppStoreList();
                         break;
                     case "rocketapptheme_downloadallgithub":
                         strOut = DownloadAppThemes();
@@ -275,7 +275,7 @@ namespace DNNrocket.AppThemes
 
                 _appTheme.DeleteTheme();
                 ClearServerCacheLists();
-                return GetList();
+                return GetAppStoreList();
             }
             catch (Exception)
             {
@@ -419,23 +419,7 @@ namespace DNNrocket.AppThemes
                 return ex.ToString();
             }
         }
-        public String GetList()
-        {
-            try
-            {
-                var appThemeDataList = new AppThemeDataList(_projectName);
-                var razorTempl = _appThemeSystem.GetTemplate("appthemelist.cshtml");
-                var passSettings = _postInfo.ToDictionary();
-                var pr = RenderRazorUtils.RazorProcessData(razorTempl, appThemeDataList, null, passSettings, _sessionParams, true);
-                if (pr.StatusCode != "00") return pr.ErrorMsg;
-                return pr.RenderedText;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
 
-            }
-        }
         public String GetAppStoreList()
         {
             var appThemeDataList = new AppThemeDataList(_projectName);
