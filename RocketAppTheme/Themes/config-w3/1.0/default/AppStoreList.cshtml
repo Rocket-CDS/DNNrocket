@@ -88,8 +88,8 @@
             return false;
         });
 
-        $('#selectedorg').off("change");
-        $('#selectedorg').change(function () {
+        $('#selectedproject').off("change");
+        $('#selectedproject').change(function () {
             simplisity_setSessionField('selectedproject', $('#selectedproject').val());
             $("#sidebarplaceholder [s-cmd='rocketapptheme_getappstore']").trigger('click');
             return false;
