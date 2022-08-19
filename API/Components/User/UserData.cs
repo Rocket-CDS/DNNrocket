@@ -33,7 +33,7 @@ namespace DNNrocketAPI.Components
         public bool IsLockedOut { get; set; }
         public bool Approved { get; set; }
         public bool IsDeleted { get; set; }
-
+        public bool Exists { get; set; }
 
         #endregion
 

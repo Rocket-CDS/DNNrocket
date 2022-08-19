@@ -452,6 +452,7 @@ namespace DNNrocketAPI.Components
             userData.Approved = false;
             userData.IsDeleted = false;
             userData.DisplayName = "";
+            userData.Exists = false;
 
             if (userInfo != null)
             {
@@ -467,7 +468,7 @@ namespace DNNrocketAPI.Components
                 userData.Approved = userInfo.Membership.Approved;
                 userData.IsDeleted = userInfo.IsDeleted;
                 userData.DisplayName = userInfo.DisplayName;
-
+                userData.Exists = true;
             }
 
             return userData;
