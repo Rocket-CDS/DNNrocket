@@ -931,4 +931,9 @@ play_arrow
   <data name="users.Text" xml:space="preserve">
     <value>Users</value>
   </data>
+  <data name="settings.Icon" xml:space="preserve">
+    <value>&lt;span class="material-icons"&gt;
+settings
+&lt;/span&gt;</value>
+  </data>
 </root>
