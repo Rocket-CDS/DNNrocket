@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,88 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cancel.Text" xml:space="preserve">
-    <value>Annuler</value>
+  <data name="system.Text" xml:space="preserve">
+    <value>Système</value>
   </data>
-  <data name="CloseModal.Text" xml:space="preserve">
-    <value>Fermer Modal</value>
-  </data>
-  <data name="enterpassword.Text" xml:space="preserve">
-    <value>Entrez le mot de passe</value>
-  </data>
-  <data name="EnterUsername.Text" xml:space="preserve">
-    <value>Entrez le nom d’utilisateur</value>
-  </data>
-  <data name="Forgotpassword.Text" xml:space="preserve">
-    <value>Vous avez oubli&amp;#233; le mot de passe ?</value>
-  </data>
-  <data name="incorrectpass.Text" xml:space="preserve">
-    <value>Nom d’utilisateur ou mot de passe incorrect!</value>
-  </data>
-  <data name="Login.Text" xml:space="preserve">
-    <value>connectez-vous</value>
-  </data>
-  <data name="Password.Text" xml:space="preserve">
-    <value>mot de passe</value>
-  </data>
-  <data name="Rememberme.Text" xml:space="preserve">
-    <value>souvenez-vous de moi</value>
-  </data>
-  <data name="Username.Text" xml:space="preserve">
-    <value>nom d&amp;#39;utilisateur</value>
-  </data>
-  <data name="emailaddress.Text" xml:space="preserve">
-    <value>Adresse e-mail</value>
-  </data>
-  <data name="enteremailaddress.Text" xml:space="preserve">
-    <value>Entrer l’adresse e-mail</value>
-  </data>
-  <data name="sendreset.Text" xml:space="preserve">
-    <value>Envoyer le lien de r&amp;#233;initialisation</value>
-  </data>
-  <data name="autorize.Text" xml:space="preserve">
-    <value>Autoriser</value>
-  </data>
-  <data name="confirmpassword.Text" xml:space="preserve">
-    <value>Mot de passe de confirmation</value>
-  </data>
-  <data name="displayname.Text" xml:space="preserve">
-    <value>Nom de l’affichage</value>
-  </data>
-  <data name="email.Text" xml:space="preserve">
-    <value>E-mail utilisateur</value>
-  </data>
-  <data name="enterconfirmpassword.Text" xml:space="preserve">
-    <value>Entrez le mot de passe de confirmation</value>
-  </data>
-  <data name="enterdisplayname.Text" xml:space="preserve">
-    <value>Entrez le nom d’affichage</value>
-  </data>
-  <data name="enteremail.Text" xml:space="preserve">
-    <value>Entrez le courrier &amp;#233;lectronique utilisateur</value>
-  </data>
-  <data name="enterusernameemail.Text" xml:space="preserve">
-    <value>Entrez le nom d’utilisateur ou l’adresse e-mail</value>
-  </data>
-  <data name="notification.Text" xml:space="preserve">
-    <value>Notification</value>
-  </data>
-  <data name="usernameemail.Text" xml:space="preserve">
-    <value>Nom d’utilisateur ou adresse e-mail</value>
-  </data>
-  <data name="createuser.Text" xml:space="preserve">
-    <value>Cr&amp;#233;er un utilisateur</value>
-  </data>
-  <data name="randompassword.Text" xml:space="preserve">
-    <value>Attribuer un mot de passe al&amp;#233;atoire</value>
-  </data>
-  <data name="register.Text" xml:space="preserve">
-    <value>Registre</value>
-  </data>
-  <data name="loginpage.Text" xml:space="preserve">
-    <value>Page de connexion</value>
-  </data>
-  <data name="cancel.Text" xml:space="preserve">
-    <value>Annuler</value>
+  <data name="validate.Text" xml:space="preserve">
+    <value>Valider</value>
   </data>
 </root>
