@@ -16,7 +16,7 @@ namespace DNNrocketAPI.Components
         }
         public string RenderEmailBody(bool debugmode = true)
         {
-            if (EmailData.EmailBody == "" && EmailData.RazorTemplateName != null && EmailData.RazorTemplateName != "")
+            if (String.IsNullOrEmpty(EmailData.EmailBody) && EmailData.RazorTemplateName != null && EmailData.RazorTemplateName != "")
             {
                 if (EmailData.SystemKey == null) EmailData.SystemKey = EmailData.AppTheme.SystemKey;
                 var systemData = new SystemLimpet(EmailData.SystemKey);
@@ -40,11 +40,11 @@ namespace DNNrocketAPI.Components
             Error = "";
             EmailData.ToEmail = EmailData.ToEmail.Trim();
             EmailData.FromEmail = EmailData.FromEmail.Trim();
-            if (EmailData.ReplyToEmail == "") EmailData.ReplyToEmail = EmailData.FromEmail;
-            if (EmailData.EmailBody == "") Error = "Missing EmailBody";
-            if (EmailData.ToEmail == "") Error = "Missing ToEmail";
-            if (EmailData.FromEmail == "") Error = "Missing FromEmail";
-            if (EmailData.Attchments == null) EmailData.Attchments = "";
+            if (String.IsNullOrEmpty(EmailData.ReplyToEmail)) EmailData.ReplyToEmail = EmailData.FromEmail;
+            if (String.IsNullOrEmpty(EmailData.EmailBody)) Error = "Missing EmailBody";
+            if (String.IsNullOrEmpty(EmailData.ToEmail)) Error = "Missing ToEmail";
+            if (String.IsNullOrEmpty(EmailData.FromEmail)) Error = "Missing FromEmail";
+            if (String.IsNullOrEmpty(EmailData.Attchments)) EmailData.Attchments = "";
 
             if (Error == "")
             {
