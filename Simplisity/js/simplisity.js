@@ -671,6 +671,10 @@ function simplisity_removelistitem(item) {
     simplisity_remove(item, 'li');
 }
 
+function simplisity_removegriditem(item) {
+    simplisity_remove(item, 'div');
+}
+
 function simplisity_remove(item, tagName) {
     var slist = jQuery(item).attr('s-removelist').replace('.', '');
     var sindex = jQuery(item).attr('s-index');
@@ -1030,6 +1034,16 @@ function simplisity_assignevents(cmdurl) {
             simplisity_removelistitem(this);
         });
     });
+
+    jQuery('.simplisity_removegriditem').each(function (index) {
+        jQuery(this).attr("s-index", index);
+        jQuery(this).parents('div').first().attr("s-index", index);
+
+        jQuery(this).unbind("click");
+        jQuery(this).click(function () {
+            simplisity_removegriditem(this);
+        });
+    });    
 
     jQuery('.simplisity_removetablerow').each(function (index) {
         jQuery(this).attr("s-index", index);
