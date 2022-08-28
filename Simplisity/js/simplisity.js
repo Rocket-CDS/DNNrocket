@@ -205,7 +205,9 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                         var obj = jsonObj[i];
                         jQuery(sdropdownlist).append("<option value='" + obj.key + "'>" + obj.value + "</option>");
                     }
-                    jQuery('.simplisity_loader').hide();
+                    if (shideloader === true) {
+                        jQuery('.simplisity_loader').hide();
+                    }
                 }
             });
         }
@@ -216,63 +218,91 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                 console.log('------- START AJAX CALL------- ' + scmd);
             }
 
-            var request = jQuery.ajax({
-                type: "POST",
-                url: cmdupdate,
-                async: true,
-                cache: false,
-                timeout: 120000,
-                data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd }
-            });
+            if (sreturntype === 'json') {
+                jQuery.ajax({
+                    type: "POST",
+                    url: cmdupdate,
+                    cache: false,
+                    async: true,
+                    dataType: 'json',
+                    timeout: 120000,
+                    data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd },
+                    success: function (json) {
+                        window.sessionStorage.setItem(sreturn, json); // use session storage, idependant of browser.
 
-            request.done(function (data) {
-
-                if (data !== 'noaction') {
-                    if (sreturntype === 'json') {
-                        data = JSON.stringify(data);
-                    }
-                    if ((typeof sreturn !== 'undefined') && sreturn !== '') {
-                        if (sreturn === 'document') {
-                            // replace the document (new FULL html page)
-                            document.open();
-                            document.write(data);
-                            document.close();
-                        } else {
-                            if ((typeof sappend === 'undefined') || sappend === '' || sappend === false) {
-                                jQuery(sreturn).children().remove();
-                                jQuery(sreturn).html(data).trigger('change');
-                            } else {
-                                jQuery(sreturn).append(data).trigger('change');
+                        if ((typeof safter !== 'undefined') && safter !== '') {
+                            var funclist = safter.split(',');
+                            for (var i = 0; i < funclist.length; i++) {
+                                window[funclist[i]]();
                             }
                         }
+                        if (shideloader === true) {
+                            jQuery('.simplisity_loader').hide();
+                        }
                     }
+                });
+            }
+            else {
+                var request = jQuery.ajax({
+                    type: "POST",
+                    url: cmdupdate,
+                    async: true,
+                    cache: false,
+                    timeout: 120000,
+                    data: { inputjson: encodeURIComponent(jsonData), paramjson: encodeURIComponent(jsonParam), simplisity_cmd: scmd }
+                });
 
-                    if (debugmode) {
-                        // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
-                        //console.log('returned data: ' + data);
+                request.done(function (data) {
+
+                    if (data !== 'noaction') {
+                        //if (sreturntype === 'json') {
+                        //    alert("rtn : " + data);
+                        //    //data = JSON.stringify(data);
+                        //    window.sessionStorage.setItem('simplisity_' + sreturn, data); // use session storage, idependant of browser.
+                        //}
+                        if ((typeof sreturn !== 'undefined') && sreturn !== '') {
+                            if (sreturn === 'document') {
+                                // replace the document (new FULL html page)
+                                document.open();
+                                document.write(data);
+                                document.close();
+                            } else {
+                                if ((typeof sappend === 'undefined') || sappend === '' || sappend === false) {
+                                    jQuery(sreturn).children().remove();
+                                    jQuery(sreturn).html(data).trigger('change');
+                                } else {
+                                    jQuery(sreturn).append(data).trigger('change');
+                                }
+                            }
+                        }
+
+                        if (debugmode) {
+                            // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
+                            //console.log('returned data: ' + data);
+                        }
+
+                        if (reload === 'true') {
+                            location.reload();
+                        } else {
+                            // trigger completed.
+                            jQuery.event.trigger({
+                                type: "simplisitypostgetcompleted",
+                                cmd: scmd,
+                                sindex: sindex,
+                                sloader: shideloader,
+                                sreturn: sreturn,
+                                safter: safter
+                            });
+                        }
+
+                        jQuery('#simplisity_params').val(''); // clear param fields, so each call is fresh.
                     }
+                });
 
-                    if (reload === 'true') {
-                        location.reload();
-                    } else {
-                        // trigger completed.
-                        jQuery.event.trigger({
-                            type: "simplisitypostgetcompleted",
-                            cmd: scmd,
-                            sindex: sindex,
-                            sloader: shideloader,
-                            sreturn: sreturn,
-                            safter: safter
-                        });
-                    }
-
-                    jQuery('#simplisity_params').val(''); // clear param fields, so each call is fresh.
-                }
-            });
-
-            request.fail(function (jqXHR, textStatus) {
-                jQuery('.simplisity_loader').hide();
-            });
+                request.fail(function (jqXHR, textStatus) {
+                    jQuery('.simplisity_loader').hide();
+                });
+            }
 
         }
 
@@ -874,6 +904,10 @@ function simplisity_setSessionField(fieldkey, fieldvalue) {
 function simplisity_getSessionField(fieldkey) {
     var result = JSON.parse(simplisity_sessionjson());
     return simplisity_getField(JSON.stringify(result), fieldkey);
+}
+
+function simplisity_requestjson(scmdurl, scmd, spost, id, sfields, safter) {
+        simplisityPost(scmdurl, scmd, spost, id, '', false, 0, sfields, true, safter, '', false, 'json');
 }
 
 function simplisity_parsejson(json) {
