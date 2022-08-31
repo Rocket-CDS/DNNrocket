@@ -197,6 +197,8 @@ namespace DNNrocket.AppThemes
             if (_projectName == "") _projectName = _paramInfo.GetXmlProperty("genxml/hidden/selectedproject");
             if (_projectName == "") _projectName = _appThemeProjectData.DefaultProjectName();
 
+            _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _projectName);
+
             return paramCmd;
         }
 

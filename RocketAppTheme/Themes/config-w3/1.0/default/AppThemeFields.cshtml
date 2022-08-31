@@ -13,9 +13,12 @@
     var appTheme = (AppThemeLimpet)Model.List.First();
     var sessionParam = Model.SessionParamsData;
     var dataDic = new Dictionary<string, string>();
-    foreach (string i in appTheme.VersionList)
+    if (appTheme != null)
     {
-        dataDic.Add(i, i);
+        foreach (string i in appTheme.VersionList)
+        {
+            dataDic.Add(i, i);
+        }        
     }
     var savelists = ".imagelist,.templatelist,.csslist,.jslist,.resxlist,.fielddata,.settingfielddata";
     var systemAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
@@ -32,15 +35,18 @@
     public string LevelColor(AppThemeLimpet appTheme, string filename, string moduleref)
     {
         var typecolor = "";
-        if (appTheme.IsModuleLevel(filename, moduleref))
+        if (appTheme != null)
         {
-            typecolor = "w3-pale-blue";
-        }
-        else
-        {
-            if (appTheme.IsPortalLevel(filename))
+            if (appTheme.IsModuleLevel(filename, moduleref))
             {
-                typecolor = "w3-indigo";
+                typecolor = "w3-pale-blue";
+            }
+            else
+            {
+                if (appTheme.IsPortalLevel(filename))
+                {
+                    typecolor = "w3-indigo";
+                }
             }
         }
         return typecolor;
