@@ -47,7 +47,7 @@ namespace DNNrocket.AppThemes
                 switch (paramCmd)
                 {
                     case "rocketapptheme_getlist":
-                        strOut = GetAppStoreList();
+                        strOut = GetEditList();
                         break;
                     case "rocketapptheme_getappstore":
                         strOut = GetAppStoreList();
@@ -426,6 +426,16 @@ namespace DNNrocket.AppThemes
         {
             var appThemeDataList = new AppThemeDataList(_projectName);
             var razorTempl = _appThemeSystem.GetTemplate("AppStoreList.cshtml");
+            var passSettings = _postInfo.ToDictionary();
+
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, appThemeDataList, null, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
+        public String GetEditList()
+        {
+            var appThemeDataList = new AppThemeDataList(_projectName);
+            var razorTempl = _appThemeSystem.GetTemplate("EditList.cshtml");
             var passSettings = _postInfo.ToDictionary();
 
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, appThemeDataList, null, _passSettings, _sessionParams, true);

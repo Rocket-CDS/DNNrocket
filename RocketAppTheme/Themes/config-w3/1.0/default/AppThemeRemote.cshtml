@@ -9,8 +9,6 @@
     var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
 }
 
-<link rel="stylesheet" href="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/@(portalData.ColorAdminTheme)">
-
 @RenderRemoteLanguageSelector("rocketapptheme_getremote", "", appThemeSystem, Model)
 
 @RenderTemplate("AppThemeFields.cshtml", appThemeSystem, Model, true)
