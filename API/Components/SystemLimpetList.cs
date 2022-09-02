@@ -32,7 +32,7 @@ namespace DNNrocketAPI.Components
                 {
                     string dirName = new DirectoryInfo(d).Name;
                     var systemData = new SystemLimpet(dirName);
-                    _systemList.Add(systemData);
+                    if (!systemData.IsPlugin) _systemList.Add(systemData); // Plugins are not systems
                 }
             }
         }

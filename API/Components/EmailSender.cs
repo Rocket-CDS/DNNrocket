@@ -30,7 +30,10 @@ namespace DNNrocketAPI.Components
                 }
 
                 var pr = RenderRazorUtils.RazorProcess(EmailData.Model, razorTempl, false);
-                if (pr.IsValid) EmailData.EmailBody = pr.RenderedText;
+                if (pr.IsValid)
+                    EmailData.EmailBody = pr.RenderedText;
+                else
+                    LogUtils.LogSystem("ERROR RenderEmailBody() - " + EmailData.AppTheme.AppThemeVersionFolderRel + "/" + EmailData.RazorTemplateName + " : " + pr.ErrorMsg);
             }
             return EmailData.EmailBody;
         }
