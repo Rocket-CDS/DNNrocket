@@ -78,6 +78,18 @@ namespace DNNrocketAPI.Components
                 CacheUtilsDNN.ClearAllCache();
             }
         }
+        public static void SchedulerRun()
+        {
+            SchedulingProvider scheduler = SchedulingProvider.Instance();
+
+            var typeFullName = "DNNrocketAPI.Components.RocketScheduler,DNNrocketAPI";
+            var s = scheduler.GetSchedule(typeFullName, "");
+            if (s != null)
+            {
+                scheduler.RunScheduleItemNow(s);
+                CacheUtilsDNN.ClearAllCache();
+            }
+        }
 
         public static void SchedulerStatus(bool enabled)
         {
