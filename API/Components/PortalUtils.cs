@@ -446,6 +446,19 @@ namespace DNNrocketAPI.Components
                 LogUtils.LogException(ex);
             }
         }
+        public static string GetDefaultLanguage(int portalId)
+        {
+            try
+            {
+                PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
+                return objPortal.DefaultLanguage;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+            }
+            return "en-US";
+        }
         public static string RootDomain(int portalId = -1)
         {
             var da = DefaultPortalAlias(portalId);
