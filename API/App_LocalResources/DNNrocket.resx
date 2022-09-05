@@ -936,4 +936,7 @@ play_arrow
 settings
 &lt;/span&gt;</value>
   </data>
+  <data name="providers.Text" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
 </root>
