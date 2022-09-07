@@ -939,4 +939,13 @@ settings
   <data name="providers.Text" xml:space="preserve">
     <value>Plugins</value>
   </data>
+  <data name="displayname.Text" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="firstname.Text" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="lastname.Text" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
 </root>

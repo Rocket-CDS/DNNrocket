@@ -541,6 +541,11 @@ namespace DNNrocketAPI.Components
         }
         #endregion
 
+        public static Dictionary<string, string> GetUserProfileProperties(int portalId, int userId)
+        {
+            var userInfo = UserController.GetUserById(portalId, userId);
+            return GetUserProfileProperties(userInfo);
+        }
         public static Dictionary<string, string> GetUserProfileProperties(string userId)
         {
             if (!GeneralUtils.IsNumeric(userId)) return null;
@@ -565,8 +570,12 @@ namespace DNNrocketAPI.Components
             foreach (var p in properties)
             {
                 userInfo.Profile.SetProfileProperty(p.Key, p.Value);
-                UserController.UpdateUser(PortalSettings.Current.PortalId, userInfo);
             }
+            if (properties.ContainsKey("DisplayName")) // Special processing for DisplayName
+            {
+                userInfo.UpdateDisplayName(properties["DisplayName"]);
+            }
+            UserController.UpdateUser(userInfo.PortalID, userInfo);
         }
         public static void SetUserProfileProperties(String userId, Dictionary<string, string> properties)
         {
@@ -575,6 +584,11 @@ namespace DNNrocketAPI.Components
                 var userInfo = UserController.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(userId));
                 SetUserProfileProperties(userInfo, properties);
             }
+        }
+        public static void SetUserProfileProperties(int portalId, int userId, Dictionary<string, string> properties)
+        {
+            var userInfo = UserController.GetUserById(portalId, userId);
+            SetUserProfileProperties(userInfo, properties);
         }
         public static int GetUserIdByUserName(int portalId, string username)
         {
