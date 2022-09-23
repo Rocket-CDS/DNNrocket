@@ -1,0 +1,71 @@
+@inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+@using RocketPortal.Components;
+@using DNNrocketAPI.Components;
+@using Simplisity;
+ 
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+@{
+    var portalData = (PortalLimpet)Model.List.First();
+    var info = new SimplisityInfo(portalData.Record);
+    var systemDataList = new SystemLimpetList();
+    var systemList = systemDataList.GetSystemActiveList();
+}
+
+<div class="w3-row w3-margin-top">
+
+    <table class="w3-table w3-bordered ">
+        <thead>
+            <tr>
+                <th style="width:32px;"></th>
+                <th style="width:32px;">@ResourceKey("DNNrocket.setup")</th>
+                <th style="width:32px;">@ResourceKey("DNNrocket.admin")</th>
+            </tr>
+        </thead>
+
+        @foreach (var systemData in systemList)
+        {
+            <tr>
+                <td style="vertical-align: middle;">
+                    @CheckBox(info, "genxml/systems/" + systemData.SystemKey, "&nbsp;" + systemData.SystemName, " class='w3-check' ")
+                    @HiddenField(info, "genxml/systems/" + systemData.SystemKey + "setup")
+                </td>
+                <td style="vertical-align: middle;">
+                    @if (info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey))
+                    {
+                        var rCol = "w3-text-green";
+                        if (!info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey + "setup"))
+                        {
+                            rCol = "w3-text-red";
+                        }
+                        <div class="w3-button @(rCol) simplisity_click" s-return="" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@systemData.SystemKey"}'>
+                            @ButtonIcon(ButtonTypes.setup)
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="w3-button w3-text-grey">
+                            @ButtonIcon(ButtonTypes.setup)
+                        </div>
+                    }
+                </td>
+                <td style="vertical-align: middle;">
+                    @if (info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey))
+                    {
+                        <a href="@(portalData.EngineUrlWithProtocol)/SysAdmin/@(systemData.SystemKey)" target="_blank" class="w3-button" style="color: black; text-decoration: none; ">@ButtonIcon(ButtonTypes.admin)</a>
+                    }
+                    else
+                    {
+                        <div class="w3-button w3-text-grey">
+                            @ButtonIcon(ButtonTypes.admin)
+                        </div>
+                    }
+                </td>
+            </tr>
+
+
+        }
+    </table>
+
+</div>

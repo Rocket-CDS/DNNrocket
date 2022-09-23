@@ -9,12 +9,14 @@
 @{
     var portalData = (PortalLimpet)Model.List.First();
     var info = new SimplisityInfo(portalData.Record);
+    var culturesinfo = new SimplisityInfo();
+    culturesinfo.PortalId = portalData.PortalId;
 }
 
 <div class="w3-row w3-padding">
     <div class="w3-quarter">
         <label class="">@ResourceKey("RP.defaultlanguage")</label>
-        @DropDownCultureCodeList(info, "genxml/select/defaultlanguage", "class='w3-input w3-border'", DNNrocketUtils.GetEditCulture())
+        @DropDownCultureCodeList(culturesinfo, "genxml/select/defaultlanguage", "s-update='ignore' class='w3-input w3-border'", portalData.DefaultLanguage())
     </div>
 </div>
 
@@ -22,20 +24,21 @@
     @{
         var cultureCodes = new Dictionary<string, string>();
         var cultureList = DNNrocketUtils.GetAllCultureCodeList();
+        var activeCultureList = DNNrocketUtils.GetCultureCodeList(portalData.PortalId);
         var lp = 0;
         foreach (var cc in cultureList)
         {
             if (DisplayFlag(cc.GetXmlProperty("genxml/code")).ToString() != "")
             {
                 var checkedflag = "";
-                if (info.GetXmlProperty("genxml/radio/culturecodes/chk[@data='" + cc.GetXmlProperty("genxml/code") + "']/@value").ToLower() == "true")
+                if (activeCultureList.Contains(cc.GetXmlProperty("genxml/code")))
                 {
                     checkedflag = " checked='True' ";
                 }
 
                 <div class="w3-quarter">
-                    <input id='culturecodes_@(lp)' s-xpath='genxml/radio/culturecodes' @(checkedflag) name='culturecodes$@(lp)' type='checkbox' value='@(cc.GetXmlProperty("genxml/code"))'>
-                    <label for='culturecodes_@(lp)'>&nbsp;@DisplayFlag(cc.GetXmlProperty("genxml/code"))&nbsp;@cc.GetXmlProperty("genxml/displayname")</label>
+                <input id='culturecodes_@(lp)' class="a-selectlanguage" s-update='ignore' @(checkedflag) name='culturecodes$@(lp)' type='checkbox' value='@(cc.GetXmlProperty("genxml/code"))'>
+                <label for='culturecodes_@(lp)'>&nbsp;@DisplayFlag(cc.GetXmlProperty("genxml/code"))&nbsp;@cc.GetXmlProperty("genxml/displayname")</label>
                 </div>
 
                 lp += 1;
@@ -43,3 +46,33 @@
         }
     }
 </div>
+
+<script>
+    $(document).ready(function () {
+
+        $('.a-selectlanguage').unbind("click");
+        $('.a-selectlanguage').click(function () {
+
+            $('.simplisity_loader').show();
+
+            if ($(this).prop("checked") == true) {
+                $('#simplisity_startpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'portal_addlanguage', '{"portalid":"@(portalData.PortalId)","selectlanguage":"' + $(this).val() + '"}', '')
+            }
+            else {
+                $('#simplisity_startpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'portal_removelanguage', '{"portalid":"@(portalData.PortalId)","selectlanguage":"' + $(this).val() + '"}', '')
+            }
+                  
+            return false; // prevent the button click from happening
+        });
+
+        $('#defaultlanguage').unbind("change");
+        $('#defaultlanguage').change(function () {
+            $('.simplisity_loader').show();
+            $('#simplisity_startpanel').getSimplisity('/Desktopmodules/dnnrocket/api/rocket/action', 'portal_setdefaultlanguage', '{"portalid":"@(portalData.PortalId)","defaultlanguage":"' + $(this).val() + '"}', '')
+            return false; // prevent the button click from happening
+        });        
+
+
+    });
+</script>
+

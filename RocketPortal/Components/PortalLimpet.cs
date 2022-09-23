@@ -65,7 +65,11 @@ namespace RocketPortal.Components
             Record.XMLData = info.XMLData;
             return Update();
         }
-        private void UpdateDefaultLanguage(string cultureCode)
+        public string DefaultLanguage()
+        {
+            return PortalUtils.GetDefaultLanguage(PortalId);
+        }
+        public void UpdateDefaultLanguage(string cultureCode)
         {
             if (cultureCode != "")
             {
@@ -114,75 +118,60 @@ namespace RocketPortal.Components
             }
 
             EngineUrl = EngineUrl.ToLower(); // only allow lowercase
-
+        }
+        private void UpdatePortalAlias()
+        {
             if (EngineUrl != "")
             {
-                // Portal Alias
-                var requiredPortalAlias = new Dictionary<string, string>();
-                requiredPortalAlias.Add(EngineUrl,"");
+                var cultureList = DNNrocketUtils.GetCultureCodeList(PortalId);
 
-                var defaultLanguage = Record.GetXmlProperty("genxml/select/defaultlanguage");
-                var defaultBackupLanguage = "";
-                var nodList = Record.XMLDoc.SelectNodes("genxml/radio/culturecodes/chk");
-                foreach (XmlNode nod in nodList)
-                {
-                    var cultureCode = nod.Attributes["data"].Value;
-                    if (nod.Attributes["value"].Value.ToLower() == "true")
-                    {
-                        requiredPortalAlias.Add(EngineUrl + "/" + cultureCode.ToLower(), cultureCode);
-                        defaultBackupLanguage = cultureCode;
-                    }
-                    else
-                    {
-                        PortalUtils.RemoveLanguage(_portalId, cultureCode);
-                    }
-                }
-
-                if (requiredPortalAlias.Count == 1)
-                {
-                    // no langauge selected, set default language
-                    XmlElement formData = (XmlElement)Record.XMLDoc.SelectSingleNode("genxml/radio/culturecodes/chk[@data='" + defaultLanguage + "']");
-                    if (formData != null) formData.SetAttribute("value", "true");
-                }
-
-                if (requiredPortalAlias.Count == 2)
-                {
-                    // we only have 1 language, only set 1 neutral portalalias
-                    requiredPortalAlias.Remove(requiredPortalAlias.Last().Key);
-                }
-
-                var pAlias = PortalUtils.GetPortalAliases(_portalId);
+                // delete ALL portal Alias with this Engine URL.  (Overkill, but tracking which to delete is awkward.  It needs to be on url and culture.)
+                var pAlias = PortalUtils.GetPortalAliasesWithCultureCode(_portalId);
                 foreach (var pa in pAlias)
                 {
-                    if (!requiredPortalAlias.ContainsKey(pa)) PortalUtils.DeletePortalAlias(_portalId, pa);
+                    if (pa.Key.StartsWith(EngineUrl)) PortalUtils.DeletePortalAlias(_portalId, pa.Key);
                 }
 
-                pAlias = PortalUtils.GetPortalAliases(_portalId);
-                if (pAlias.Count == 0) PortalUtils.AddPortalAlias(_portalId, EngineUrl, ""); // incorrectly removed.
+                // Add root domain url
+                PortalUtils.AddPortalAlias(_portalId, EngineUrl, "");
 
-                foreach (var pa in requiredPortalAlias)
+                if (cultureList.Count > 1) // use root domain for only 1 langauge.
                 {
-                    if (!pAlias.Contains(pa.Key))
+                    foreach (var cultureCode in cultureList)
                     {
-                        if (pa.Value != "") PortalUtils.AddLanguage(_portalId, pa.Value);
-                        PortalUtils.AddPortalAlias(_portalId, pa.Key, pa.Value);
+                        PortalUtils.AddPortalAlias(_portalId, EngineUrl + "/" + cultureCode.ToLower(), cultureCode);
                     }
-                    PortalUtils.SetPrimaryPortalAlias(_portalId, pa.Key);
                 }
-                if (requiredPortalAlias.ContainsValue(defaultLanguage)) 
-                    UpdateDefaultLanguage(defaultLanguage);
-                else
-                    UpdateDefaultLanguage(defaultBackupLanguage);
-            }
 
+                //Always set this EngineUrl to primary
+                pAlias = PortalUtils.GetPortalAliasesWithCultureCode(_portalId);
+                foreach (var pa in pAlias)
+                {
+                    if (pa.Key.StartsWith(EngineUrl)) PortalUtils.SetPrimaryPortalAlias(_portalId, pa.Key);
+                }
+            }
         }
-        public void AddLangauge(string cultureCode)
+        public void AddLanguage(string cultureCode)
         {
             PortalUtils.AddLanguage(PortalId, cultureCode);
+            // no langauge selected, set default language
+            XmlElement formData = (XmlElement)Record.XMLDoc.SelectSingleNode("genxml/radio/culturecodes/chk[@data='" + cultureCode + "']");
+            if (formData != null) formData.SetAttribute("value", "true");
+            Update();
+            UpdatePortalAlias();
         }
-        public void RemoveLangauge(string cultureCode)
+        public void RemoveLanguage(string cultureCode)
         {
-            PortalUtils.RemoveLanguage(PortalId, cultureCode);
+            var cultureList = DNNrocketUtils.GetCultureCodeList(PortalId);
+            if (cultureList.Count > 1 && cultureCode != DefaultLanguage())
+            {
+                PortalUtils.RemoveLanguage(PortalId, cultureCode);
+                // no langauge selected, set default language
+                XmlElement formData = (XmlElement)Record.XMLDoc.SelectSingleNode("genxml/radio/culturecodes/chk[@data='" + cultureCode + "']");
+                if (formData != null) formData.SetAttribute("value", "false");
+                Update();
+                UpdatePortalAlias();
+            }
         }
 
         /// <summary>

@@ -151,9 +151,17 @@
       <cmd>portal_addsetting</cmd>
       <action>true</action>
     </command>
+	  <command>
+		  <cmd>portal_setdefaultlanguage</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>portal_addlanguage</cmd>
+		  <action>true</action>
+	  </command>
 
 
-    <!-- Security for commands in other systems, for the side Menu. -->    
+	  <!-- Security for commands in other systems, for the side Menu. -->    
     <command>
       <cmd>rocketapptheme_getlist</cmd>
       <action>true</action>

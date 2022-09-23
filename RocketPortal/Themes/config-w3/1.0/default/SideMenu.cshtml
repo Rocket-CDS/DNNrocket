@@ -32,11 +32,11 @@
                 }
                 if (submenu)
                 {
-                    rtn = "<div class='w3-bar-item w3-button w3-margin-left  simplisity_click' s-cmd='" + rinterface.DefaultCommand + "' s-fields='{\"track\":\"true\"}'><strong>" + interfaceName + "</strong></div>";
+                    rtn = "<div class='w3-bar-item w3-button w3-margin-left sidemenubutton sidemenu" + rinterface.InterfaceKey + " simplisity_click' s-cmd='" + rinterface.DefaultCommand + "' s-fields='{\"track\":\"true\"}'><strong>" + interfaceName + "</strong></div>";
                 }
                 else
                 {
-                    rtn = "<div class='w3-bar-item w3-button w3-padding-16 simplisity_click' s-cmd='" + rinterface.DefaultCommand + "'  s-fields='{\"track\":\"true\"}'><strong><span class='material-icons'>" + rinterface.InterfaceIcon + "</span>&nbsp;" + interfaceName + "</strong></div>";
+                    rtn = "<div class='w3-bar-item w3-button w3-padding-16 sidemenubutton sidemenu" + rinterface.InterfaceKey + " simplisity_click' s-cmd='" + rinterface.DefaultCommand + "'  s-fields='{\"track\":\"true\"}'><strong><span class='material-icons'>" + rinterface.InterfaceIcon + "</span>&nbsp;" + interfaceName + "</strong></div>";
                 }
             }
         }
@@ -44,7 +44,7 @@
     }
 }
 
-<nav class="w3-sidebar w3-collapse w3-card w3-theme" style="width:280px;" id="mySidebar">
+<nav class="w3-sidebar w3-collapse w3-card w3-theme-l5" style="width:280px;" id="mySidebar">
     <div class="w3-container w3-xxlarge w3-center w3-theme-d5" style="height:56px;">
         <span class="material-icons">
             rocket_launch
@@ -138,6 +138,10 @@ function w3_close() {
     overlayBg.style.display = "none";
 }
 
+    function selectMenu(interfacekey) {
+        $('.sidemenubutton').removeClass("w3-theme-l1");
+        $('.sidemenu' + interfacekey).addClass("w3-theme-l1");
+    }
 
 
 $(document).ready(function () {

@@ -147,6 +147,16 @@ namespace RocketPortal.API
                     _portalData.Update();
                     strOut = GetPortalDetail();
                     break;
+                case "portal_setdefaultlanguage":
+                    strOut = UpdateDefaultLangauge();
+                    break;
+                case "portal_addlanguage":
+                    strOut = AddLangauge();
+                    break;
+                case "portal_removelanguage":
+                    strOut = RemoveLangauge();
+                    break;
+
             }
 
 

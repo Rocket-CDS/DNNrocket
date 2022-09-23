@@ -14,8 +14,6 @@
     var info = new SimplisityInfo(portalData.Record);
     var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
 
-    var systemDataList = new SystemLimpetList();
-    var systemList = systemDataList.GetSystemActiveList();
     var appThemeSystem = (AppThemeDNNrocketLimpet)Model.GetDataObject("appthemesystem");
     var edittextbox = "disabled";
     if (UserUtils.IsSuperUser())
@@ -51,17 +49,22 @@
     @HiddenField(info, "genxml/portaltype")
 
     <div class="w3-row w3-border-bottom">
-        <div onclick="selectmenu('generaldata');" class="w3-col m4 w3-hover-light-grey w3-center">
+        <div onclick="selectmenu('generaldata');" class="w3-col m3 w3-hover-light-grey w3-center">
             <div class="a-generaldata mitem w3-bottombar w3-border-black w3-large w3-padding">
                 @ResourceKey("RP.general")
             </div>
         </div>
-        <div onclick="selectmenu('languagesdata');" class="w3-col m4 w3-hover-light-grey w3-center">
+        <div onclick="selectmenu('systemdata');" class="w3-col m3 w3-hover-light-grey w3-center">
+            <div class="a-systemdata mitem w3-bottombar w3-large w3-padding">
+                @ResourceKey("DNNrocket.systems")
+            </div>
+        </div>
+        <div onclick="selectmenu('languagesdata');" class="w3-col m3 w3-hover-light-grey w3-center">
             <div class="a-languagesdata mitem w3-bottombar w3-large w3-padding">
                 @ResourceKey("RP.languages")
             </div>
         </div>
-        <div onclick="selectmenu('managerdata');" class="w3-col m4 w3-hover-light-grey w3-center">
+        <div onclick="selectmenu('managerdata');" class="w3-col m3 w3-hover-light-grey w3-center">
             <div class="a-managerdata mitem w3-bottombar w3-large w3-padding">
                 @ResourceKey("DNNrocket.managers")
             </div>
@@ -69,8 +72,6 @@
     </div>
 
     <div id="generaldata" class="w3-row w3-padding">
-        <div class="w3-twothird">
-
             <div class="w3-row w3-padding">
                 <label><b>@ResourceKey("RP.name")</b></label>
                 @TextBox(info, "genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ")
@@ -119,42 +120,10 @@
                     }
                 </div>
             }
+    </div>
 
-        </div>
-        <div class="w3-third">
-            <label><b>@ResourceKey("RP.system")</b></label>
-            <br />
-            @foreach (var systemData in systemList)
-            {
-                <div class="w3-row">
-                    <div class="w3-col m8">
-                        @CheckBox(info, "genxml/systems/" + systemData.SystemKey, "&nbsp;" + systemData.SystemName, " class='w3-check' ")
-                        @HiddenField(info, "genxml/systems/" + systemData.SystemKey + "setup")
-                    </div>
-                    <div class="w3-col m1" style="width:64px;">
-                        @if (info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey))
-                        {
-                            var rCol = "w3-text-green";
-                            if (!info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey + "setup"))
-                            {
-                                rCol = "w3-text-red";
-                            }
-                            <div class="w3-button @(rCol) simplisity_click" s-return="" s-cmd="rocketsystem_edit" s-fields='{"portalid":"@portalData.PortalId","systemkey":"@systemData.SystemKey"}'>
-                                @ButtonIcon(ButtonTypes.setup)
-                            </div>
-                        }
-                    </div>
-                    <div class="w3-col m1" style="width:64px;">
-                        @if (info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey))
-                        {
-                            <a href="@(portalData.EngineUrlWithProtocol)/SysAdmin/@(systemData.SystemKey)" target="_blank" class="w3-button" style="color: black; text-decoration: none; ">@ButtonIcon(ButtonTypes.admin)</a>
-                        }
-                    </div>
-
-                </div>
-            }
-        </div>
-
+    <div id="systemdata" class="w3-row w3-padding" style="display:none;">
+        @RenderTemplate("PortalSystems.cshtml", appThemeSystem, Model)
     </div>
 
 
@@ -235,6 +204,7 @@
             {
                 $('#generaldata').hide();
                 $('#managerdata').hide();
+                $('#systemdata').hide();
                 $('#languagesdata').hide();
                 $('#setupdata').hide();
                 $('#actionprovider').hide();            

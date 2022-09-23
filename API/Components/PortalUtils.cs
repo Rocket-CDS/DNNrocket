@@ -347,6 +347,19 @@ namespace DNNrocketAPI.Components
             return rtn;
         }
 
+        public static Dictionary<string, string> GetPortalAliasesWithCultureCode(int portalId)
+        {
+            var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());
+            var rtnList = new Dictionary<string, string>();
+            foreach (var pa in padic)
+            {
+                if (pa.Value.PortalID == portalId)
+                {
+                    rtnList.Add(pa.Key, pa.Value.CultureCode);
+                }
+            }
+            return rtnList;
+        }
         public static List<string> GetPortalAliases(int portalId)
         {
             var padic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias", DotNetNuke.Data.DataProvider.Instance().GetPortalAliases());

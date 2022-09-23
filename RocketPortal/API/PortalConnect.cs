@@ -110,7 +110,7 @@ namespace RocketPortal.API
                 }
                 _portalData = new PortalLimpet(portalId); // reload portal data after save (for language change)               
                 // Export to file, so other plugin systems can access data                
-                FileUtils.SaveFile(PortalUtils.HomeDNNrocketDirectoryMapPath(portalId) + "\\portalcode", portalData.RemoteBase64Params());
+                //FileUtils.SaveFile(PortalUtils.HomeDNNrocketDirectoryMapPath(portalId) + "\\portalcode", portalData.RemoteBase64Params());
                 return GetPortalDetail();
             }
             return "Invalid PortalId";
@@ -294,6 +294,23 @@ namespace RocketPortal.API
                 return ex.ToString();
             }
         }
+        private string UpdateDefaultLangauge()
+        {
+            var defaultLanguage = _paramInfo.GetXmlProperty("genxml/hidden/defaultlanguage");
+            _portalData.UpdateDefaultLanguage(defaultLanguage);
+            return GetPortalDetail();
+        }
+        private string AddLangauge()
+        {
+            _portalData.AddLanguage(_paramInfo.GetXmlProperty("genxml/hidden/selectlanguage"));
+            return GetPortalDetail();
+        }
+        private string RemoveLangauge()
+        {
+            _portalData.RemoveLanguage(_paramInfo.GetXmlProperty("genxml/hidden/selectlanguage"));
+            return GetPortalDetail();
+        }
+
 
 
     }
