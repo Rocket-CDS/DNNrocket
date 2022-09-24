@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace RocketPortal.Components
 {
@@ -60,7 +61,57 @@ namespace RocketPortal.Components
             _objCtrl.Delete(Record.ItemID);
             CacheUtils.RemoveCache(_cacheKey, _portalId.ToString());
         }
+        public bool AccessCodeCheck(string accessCode, string accessPassword)
+        {
+            var accessfailcountDate = Record.GetXmlPropertyDate("genxml/accessfaildatetime");
+            if (accessfailcountDate < DateTime.Now)
+            {
+                Record.GetXmlProperty("genxml/accessfailcount", "0");
+                Update();
+            }
+            var accessfailCount = Record.GetXmlPropertyInt("genxml/accessfailcount");
+            if (accessfailCount > 3) return false;
 
+            var gData = new SystemGlobalData();
+            if (gData.AccessCode == accessCode)
+            {
+                if (gData.AccessPassword == accessPassword) return true;
+                Record.SetXmlProperty("genxml/accessfailcount", (accessfailCount + 1).ToString());
+                Record.SetXmlProperty("genxml/accessfaildatetime", DateTime.Now.AddMinutes(10).ToString("O"), TypeCode.DateTime);
+                Update();
+            }
+            return false;
+        }
+        public bool SecurityKeyCheck(int portalId, string securityKey, string securityKetEdit)
+        {
+            var accessfailcountDate = Record.GetXmlPropertyDate("genxml/securityfaildatetime");
+            if (accessfailcountDate < DateTime.Now)
+            {
+                Record.GetXmlProperty("genxml/securityfailcount", "0");
+                Update();
+            }
+            var accessfailCount = Record.GetXmlPropertyInt("genxml/securityfailcount");
+            if (accessfailCount > 3) return false;
+
+            var portalData = new PortalLimpet(portalId);
+            if (portalData.SecurityKey == securityKey)
+            {
+                if (portalData.SecurityKeyEdit == securityKetEdit) return true;
+                Record.SetXmlProperty("genxml/securityfailcount", (accessfailCount + 1).ToString());
+                Record.SetXmlProperty("genxml/securityfaildatetime", DateTime.Now.AddMinutes(10).ToString("O"), TypeCode.DateTime);
+                Update();
+            }
+
+            return false;
+        }
+        public void ResetSecurity()
+        {
+            Record.SetXmlProperty("genxml/accessfailcount", "0");
+            Record.SetXmlProperty("genxml/accessfaildatetime", DateTime.Now.AddMinutes(-1).ToString("O"), TypeCode.DateTime);
+            Record.SetXmlProperty("genxml/securityfailcount", "0");
+            Record.SetXmlProperty("genxml/securityfaildatetime", DateTime.Now.AddMinutes(-1).ToString("O"), TypeCode.DateTime);
+            Update();
+        }
         public string EntityTypeCode { get { return _entityTypeCode; } }
         public SimplisityRecord Record { get; set; }
         public int PortalId { get { return Record.PortalId; } }

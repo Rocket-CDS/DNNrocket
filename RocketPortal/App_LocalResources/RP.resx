@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="accesscode.Text" xml:space="preserve">
+    <value>Access Code</value>
+  </data>
+  <data name="accesspassword.Text" xml:space="preserve">
+    <value>Access Password</value>
+  </data>
   <data name="actionprovider.Help" xml:space="preserve">
     <value>Action providers can be executed from here.  An action provider is designed to do a single action on the system installation, usually to update records or fix problems.
 &lt;br/&gt;
@@ -172,6 +178,12 @@ The assembly that will be executed should be installed into the bin folder and t
   </data>
   <data name="protocol.Text" xml:space="preserve">
     <value>Protocol</value>
+  </data>
+  <data name="resetsecurity.Confirm" xml:space="preserve">
+    <value>WARNING.  Resetting the security codes may stop communication with other systems.  Do you want to continue to reset the codes?</value>
+  </data>
+  <data name="resetsecurity.Text" xml:space="preserve">
+    <value>Reset Security</value>
   </data>
   <data name="rootdomain.Text" xml:space="preserve">
     <value>Root Domain</value>

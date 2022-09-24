@@ -93,9 +93,13 @@
       <cmd>dataclients_toggleactive</cmd>
       <action>true</action>
     </command>
+	  <command>
+		  <cmd>dataclients_rsetsecurity</cmd>
+		  <action>true</action>
+	  </command>
 
-	  
-	<command>
+
+	  <command>
     	<cmd>portal_addadminrole</cmd>
 		<action>true</action>
 	</command>

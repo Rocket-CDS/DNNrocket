@@ -354,13 +354,27 @@ namespace DNNrocketAPI.ApiControllers
                         }
                         break;
                     case "global_installscheduler":
-                        SchedulerUtils.SchedulerInstall();
-                        strOut = SystemGlobalDetail(paramInfo);
+                        if (UserUtils.IsSuperUser())
+                        {
+                            SchedulerUtils.SchedulerInstall();
+                            strOut = SystemGlobalDetail(paramInfo);
+                        }
                         break;
                     case "global_uninstallscheduler":
-                        SchedulerUtils.SchedulerUnInstall();
-                        strOut = SystemGlobalDetail(paramInfo);
+                        if (UserUtils.IsSuperUser())
+                        {
+                            SchedulerUtils.SchedulerUnInstall();
+                            strOut = SystemGlobalDetail(paramInfo);
+                        }
                         break;
+                    case "global_resetaccesscodes":
+                        if (UserUtils.IsSuperUser())
+                        {
+                            GlobalResetAccessCodes();
+                            strOut = SystemGlobalDetail(paramInfo);
+                        }
+                        break;
+
                     default:
                         strOut = "process"; // process the provider              
                         break;
@@ -598,6 +612,13 @@ namespace DNNrocketAPI.ApiControllers
         {
             var globalData = new SystemGlobalData();
             globalData.Save(postInfo);
+            ClearCache();
+        }
+        private void GlobalResetAccessCodes()
+        {
+            var globalData = new SystemGlobalData();
+            globalData.RegenerateAccessCodes();
+            globalData.Update();
             ClearCache();
         }
 

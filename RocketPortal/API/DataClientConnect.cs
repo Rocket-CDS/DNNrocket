@@ -27,8 +27,15 @@ namespace RocketPortal.API
             dataClient.UrlWithProtocol = _paramInfo.GetXmlProperty("genxml/remote/url");
             dataClient.Update();
             return "OK";
+        }        
+        private String ResetSecuirtyDataClient()
+        {
+            var siteKey = _paramInfo.GetXmlProperty("genxml/hidden/sitekey");
+            var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+            var dataClient = new DataClientLimpet(portalid, siteKey);
+            if (dataClient.Exists) dataClient.ResetSecurity();
+            return GetDataClientList();
         }
-
         private String DeleteDataClient()
         {
             var siteKey = _paramInfo.GetXmlProperty("genxml/hidden/sitekey");

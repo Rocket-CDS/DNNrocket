@@ -63,6 +63,9 @@ namespace RocketPortal.API
                 case "dataclients_delete":
                     strOut = DeleteDataClient();
                     break;
+                case "dataclients_rsetsecurity":
+                    strOut = ResetSecuirtyDataClient();
+                    break;
                 case "dataclients_toggleactive":
                     strOut = DataClientActive();
                     break;
@@ -204,11 +207,22 @@ namespace RocketPortal.API
             if (portalid == 0) portalid = PortalUtils.GetCurrentPortalId();
             _portalData = new PortalLimpet(portalid);
 
+            var siteKey = _paramInfo.GetXmlProperty("genxml/hidden/sitekey");
+            var dataClient = new DataClientLimpet(portalid, siteKey);
+
             // SECURITY --------------------------------
-            if (paramCmd == "dataclients_register" || paramCmd == "dataclients_getsystems")
+            if (paramCmd == "dataclients_register")
             {
                 var sk = _paramInfo.GetXmlProperty("genxml/remote/securitykey");
-                if (_portalData.SecurityKey != sk) return "";
+                var ske = _paramInfo.GetXmlProperty("genxml/remote/securitykeyedit");
+                if (dataClient.Exists || _portalData.SecurityKey != sk || _portalData.SecurityKeyEdit != ske ) return "";
+            }
+            else if (paramCmd == "dataclients_getsystems")
+            {
+                if (!dataClient.Exists) return "";
+                var sk = _paramInfo.GetXmlProperty("genxml/remote/securitykey");
+                var ske = _paramInfo.GetXmlProperty("genxml/remote/securitykeyedit");
+                if (dataClient.SecurityKeyCheck(portalid, sk, ske)) return "";
             }
             else
             {

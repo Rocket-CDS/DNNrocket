@@ -50,11 +50,11 @@ namespace RocketPortal.Components
 
             if (SecurityKey == "")
             {
-                SecurityKey = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString(1);
+                SecurityKey = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString();
             }
             if (SecurityKeyEdit == "")
             {
-                SecurityKeyEdit = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString(1);
+                SecurityKeyEdit = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString();
             }
             // add systems
             SystemDataList = new SystemLimpetList();

@@ -15,7 +15,7 @@ namespace DNNrocketAPI.Components
             _cacheKey = "rocketGLOBALSETTINGS";
             if (cache) Info = (SimplisityInfo)CacheUtilsDNN.GetCache(_cacheKey);
             if (Info == null) LoadData();
-
+            if (AccessCode == "") RegenerateAccessCodes();
             if (cache) ConfigInfo = (SimplisityRecord)CacheUtilsDNN.GetCache(_cacheKey + "ConfigInfo");
             if (ConfigInfo == null) LoadConfig();
         }
@@ -57,7 +57,11 @@ namespace DNNrocketAPI.Components
             }
             CacheUtilsDNN.SetCache(_cacheKey, Info);
         }
-
+        public void RegenerateAccessCodes()
+        {
+            AccessCode = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString();
+            AccessPassword = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString();
+        }
         public SimplisityInfo Info { get; set; }
         public SimplisityRecord ConfigInfo { get; set; }
 
@@ -69,5 +73,7 @@ namespace DNNrocketAPI.Components
         public string RootDomain { get { return Info.GetXmlProperty("genxml/textbox/rootdomain"); } set { Info.SetXmlProperty("genxml/textbox/rootdomain", value); } }
         public bool PreCompileRazor { get { return Info.GetXmlPropertyBool("genxml/checkbox/precompilerazor"); } set { Info.SetXmlProperty("genxml/checkbox/precompilerazor", value.ToString()); } }
         public bool PreCompileRazorAdmin { get { return Info.GetXmlPropertyBool("genxml/checkbox/precompilerazoradmin"); } set { Info.SetXmlProperty("genxml/checkbox/precompilerazoradmin", value.ToString()); } }
+        public string AccessCode { get { return Info.GetXmlProperty("genxml/config/accesscode"); } set { Info.SetXmlProperty("genxml/config/accesscode", value); } }
+        public string AccessPassword { get { return Info.GetXmlProperty("genxml/config/accesspassword"); } set { Info.SetXmlProperty("genxml/config/accesspassword", value); } }
     }
 }

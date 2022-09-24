@@ -94,6 +94,26 @@
 
         @if (UserUtils.IsSuperUser())
         {
+            <div class="w3-row">
+                <div class="w3-third w3-padding">
+                    <div class="w3-button" onclick="rpadmin.CopyTextToClipboard($('#accesscode'))">
+                        <b>@ResourceKey("RP.accesscode")</b>&nbsp;<span id="iconaccesscode" class=" action-clipboardicon">@ButtonIcon(ButtonTypes.copy)</span></div>
+                    <div id="accesscode" class="w3-padding w3-light-grey w3-border" style="width:100%;word-wrap:break-word;">@(systemGlobalData.AccessCode)</div>
+                </div>
+                <div class="w3-third w3-padding">
+                    <div class="w3-button" onclick="rpadmin.CopyTextToClipboard($('#accesspassword'))"><b>@ResourceKey("RP.accesspassword")</b>&nbsp;<span id="iconaccesspassword" class=" action-clipboardicon">@ButtonIcon(ButtonTypes.copy)</span></div>
+                    <div id="accesspassword" class="w3-padding w3-light-grey w3-border" style="width:100%;word-wrap:break-word;">@(systemGlobalData.AccessPassword)</div>
+                </div>
+                <div class="w3-third w3-padding">
+                    <div style="height:40px;">&nbsp;</div>
+                    <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("RP.resetsecurity","","Confirm")" s-cmd="global_resetaccesscodes">
+                        <b>@ResourceKey("RP.resetsecurity")</b>&nbsp;<span>@ButtonIcon(ButtonTypes.reset)</span>
+                    </div>
+                </div>
+
+            </div>
+
+
             <div id="actionprovider" class="w3-row w3-padding">
                 <div class="w3-row">
 

@@ -37,54 +37,70 @@
                     <th style="width:64px;"></th>
                     <th style="width:64px;"></th>
                     <th style="width:64px;"></th>
+                    <th style="width:64px;"></th>
+                    <th style="width:64px;"></th>
                 </tr>
             </thead>
             @foreach (DataClientLimpet dataClient in dataClientList.GetDataClientList())
             {
-        <tr class="">
-            <td>
-                <b>
-                    @dataClient.UrlWithProtocol
-                </b>
-                <div class="w3-tiny">
-                    @dataClient.SiteKey
-                </div>
-            </td>
-            <td>
-                <span>@dataClient.ServiceData.Name</span>
-            </td>
-            <td>
-                <b>
-                    <span>@dataClient.ServiceData.EngineUrlWithProtocol</span>
-                </b>
-            </td>
-            <td>
-                <a href="@dataClient.UrlWithProtocol" target="_blank">
-                    <span class="material-icons w3-button">
-                        preview
-                    </span>
-                </a>
-            </td>
-            <td>
-                @if (dataClient.Active)
-                {
-                    <span class="material-icons w3-button w3-text-green simplisity_click" s-cmd="dataclients_toggleactive" s-fields='{"portalid":"@(dataClient.PortalId)","sitekey":"@(dataClient.SiteKey)"}'>
-                        toggle_on
-                    </span>
-                }
-                else
-                {
-                    <span class="material-icons w3-button w3-text-red simplisity_click" s-cmd="dataclients_toggleactive" s-fields='{"portalid":"@(dataClient.PortalId)","sitekey":"@(dataClient.SiteKey)"}'>
-                        toggle_off
-                    </span>
-                }
-            </td>
-            <td>
-                <div class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="dataclients_delete" s-fields='{"portalid":"@(dataClient.PortalId)","sitekey":"@(dataClient.SiteKey)"}'>
-                    @ButtonIcon(ButtonTypes.delete)
-                </div>
-            </td>
-        </tr>
+                <tr class="">
+                    <td>
+                        <b>
+                            @dataClient.UrlWithProtocol
+                        </b>
+                        <div class="w3-tiny">
+                            @dataClient.SiteKey
+                        </div>
+                    </td>
+                    <td>
+                        <span>@dataClient.ServiceData.Name</span>
+                    </td>
+                    <td>
+                        <b>
+                            <span>@dataClient.ServiceData.EngineUrlWithProtocol</span>
+                        </b>
+                    </td>
+                    <td>
+                        <a href="@dataClient.UrlWithProtocol" target="_blank">
+                            <span class="material-icons w3-button">
+                                preview
+                            </span>
+                        </a>
+                    </td>
+                    <td>
+                        @if (dataClient.Active)
+                        {
+                            <span class="material-icons w3-button w3-text-green simplisity_click" s-cmd="dataclients_toggleactive" s-fields='{"portalid":"@(dataClient.PortalId)","sitekey":"@(dataClient.SiteKey)"}'>
+                                toggle_on
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="material-icons w3-button w3-text-red simplisity_click" s-cmd="dataclients_toggleactive" s-fields='{"portalid":"@(dataClient.PortalId)","sitekey":"@(dataClient.SiteKey)"}'>
+                                toggle_off
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        <div class="w3-button simplisity_confirmclick" title="@ResourceKey("DNNrocket.delete")" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="dataclients_delete" s-fields='{"portalid":"@(dataClient.PortalId)","sitekey":"@(dataClient.SiteKey)"}'>
+                            @ButtonIcon(ButtonTypes.delete)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="w3-button simplisity_confirmclick" title="@ResourceKey("RP.resetsecurity")" s-confirm="@ResourceKey("RP.resetsecurity") ?" s-cmd="dataclients_rsetsecurity" s-fields='{"portalid":"@(dataClient.PortalId)","sitekey":"@(dataClient.SiteKey)"}'>
+                            @ButtonIcon(ButtonTypes.reset)
+                        </div>
+                    </td>
+                   <td class="w3-small">
+                       <span>
+                            @dataClient.Record.GetXmlPropertyInt("genxml/accessfailcount").ToString()
+                       </span>
+                       <span>-</span>
+                        <span>
+                            @dataClient.Record.GetXmlPropertyInt("genxml/securityfailcount").ToString()
+                        </span>
+                    </td>
+                </tr>
             }
         </table>
 
