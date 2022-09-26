@@ -40,11 +40,9 @@ namespace Simplisity
             // Do remote node last, if present then we are dealing with a remote system. (values will not be overwritten by subsequence values)
             foreach (var d in paramInfo.ToDictionary("remote"))
             {
-                if (d.Key != "urlparams")
-                    Set(d.Key, d.Value);
-                else
+                if (d.Key == "urlparams" || d.Key == "session")
                 {
-                    var nods = paramInfo.XMLDoc.SelectNodes("genxml/remote/urlparams/*");
+                    var nods = paramInfo.XMLDoc.SelectNodes("genxml/remote/" + d.Key + "/*");
                     if (nods != null)
                     {
                         foreach (XmlNode nod in nods)
@@ -52,7 +50,10 @@ namespace Simplisity
                             Set(nod.Name, nod.InnerText);
                         }
                     }
-
+                }
+                else
+                {
+                    Set(d.Key, d.Value);
                 }
 
             }
