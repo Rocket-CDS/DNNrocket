@@ -951,4 +951,13 @@ settings
   <data name="systems.Text" xml:space="preserve">
     <value>Systems</value>
   </data>
+  <data name="destination.Text" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="overwrite.Text" xml:space="preserve">
+    <value>Overwrite</value>
+  </data>
+  <data name="source.Text" xml:space="preserve">
+    <value>Source</value>
+  </data>
 </root>
