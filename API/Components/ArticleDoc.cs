@@ -40,7 +40,9 @@ namespace DNNrocketAPI.Components
         {
             get
             {
-                return Info.GetXmlProperty("genxml/hidden/documentpath" + FieldId);
+                var rtn = Info.GetXmlProperty("genxml/textbox/documentpath" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/textbox/documentpath");
+                return rtn;
             }
             set
             {
@@ -51,7 +53,9 @@ namespace DNNrocketAPI.Components
         {
             get
             {
-                return Info.GetXmlProperty("genxml/textbox/documentname" + FieldId);
+                var rtn = Info.GetXmlProperty("genxml/textbox/documentname" + FieldId);
+                if (rtn == "") rtn = Info.GetXmlProperty("genxml/textbox/documentname");
+                return rtn;
             }
             set
             {
@@ -62,7 +66,9 @@ namespace DNNrocketAPI.Components
         {
             get
             {
-                return Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/documenthidden" + FieldId);
+                var rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/documenthidden" + FieldId);
+                if (Info.GetXmlProperty("genxml/lang/genxml/checkbox/documenthidden" + FieldId) == "") rtn = Info.GetXmlPropertyBool("genxml/lang/genxml/checkbox/documenthidden");
+                return rtn;
             }
             set
             {
