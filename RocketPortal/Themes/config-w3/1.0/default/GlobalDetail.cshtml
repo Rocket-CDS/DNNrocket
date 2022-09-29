@@ -32,9 +32,13 @@
                 <label><b>@ResourceKey("DNNrocket.name")</b></label>
                 @TextBox(info, "genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ")
             </div>
-            <div class="w3-half w3-padding">
+            <div class="w3-quarter w3-padding">
                 <label><b>@ResourceKey("RP.rootdomain")</b></label>
                 @TextBox(info, "genxml/textbox/rootdomain", " class='w3-input w3-border' autocomplete='off' placeholder='toasted.site' ")
+            </div>
+            <div class="w3-quarter w3-padding">
+                <label><b>Logo Razor Template</b></label>
+                @TextBox(info, "genxml/textbox/logotemplate", " class='w3-input w3-border' autocomplete='off' ","Logo.cshtml")
             </div>
         </div>
         <div class="w3-row">

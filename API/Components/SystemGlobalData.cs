@@ -75,5 +75,6 @@ namespace DNNrocketAPI.Components
         public bool PreCompileRazorAdmin { get { return Info.GetXmlPropertyBool("genxml/checkbox/precompilerazoradmin"); } set { Info.SetXmlProperty("genxml/checkbox/precompilerazoradmin", value.ToString()); } }
         public string AccessCode { get { return Info.GetXmlProperty("genxml/config/accesscode"); } set { Info.SetXmlProperty("genxml/config/accesscode", value); } }
         public string AccessPassword { get { return Info.GetXmlProperty("genxml/config/accesspassword"); } set { Info.SetXmlProperty("genxml/config/accesspassword", value); } }
+        public string LogoTemplate { get { if (Info.GetXmlProperty("genxml/textbox/logotemplate") != "") return Info.GetXmlProperty("genxml/textbox/logotemplate"); else return "Logo.cshtml"; } }
     }
 }
