@@ -159,6 +159,15 @@ namespace RocketPortal.API
                 case "portal_removelanguage":
                     strOut = RemoveLangauge();
                     break;
+                case "portal_addsystem":
+                    strOut = AddSystem();
+                    break;
+                case "portal_removesystem":
+                    strOut = RemoveSystem();
+                    break;
+                case "portal_togglesystem":
+                    strOut = ToggleSystem();
+                    break;
 
             }
 

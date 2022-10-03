@@ -163,6 +163,18 @@
 		  <cmd>portal_addlanguage</cmd>
 		  <action>true</action>
 	  </command>
+	  <command>
+		  <cmd>portal_addsystem</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>portal_removesystem</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>portal_togglesystem</cmd>
+		  <action>true</action>
+	  </command>
 
 
 	  <!-- Security for commands in other systems, for the side Menu. -->    

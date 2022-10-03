@@ -28,8 +28,7 @@
         {
             <tr>
                 <td style="vertical-align: middle;">
-                    @CheckBox(info, "genxml/systems/" + systemData.SystemKey, "&nbsp;" + systemData.SystemName, " class='w3-check' ")
-                    @HiddenField(info, "genxml/systems/" + systemData.SystemKey + "setup")
+                    @CheckBox(info, "genxml/systems/" + systemData.SystemKey, "&nbsp;" + systemData.SystemName, " class='w3-check simplisity_click' s-cmd='portal_togglesystem' s-fields='{\"portalid\":\"" + portalData.PortalId + "\",\"systemkeyref\":\"" + systemData.SystemKey + "\"}' ")
                 </td>
                 <td style="vertical-align: middle;">
                     @if (info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey))

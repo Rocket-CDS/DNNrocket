@@ -27,7 +27,7 @@
     <div id="a-showsetupbuttons">
         <div id="a-portalbuttons" class="w3-bar">
             <span class="w3-button simplisity_click" s-cmd="dashboard_get">@ButtonIcon(ButtonTypes.back)</span>
-            <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-list=".systemlist" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</span>
+            <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</span>
             <span class="w3-padding w3-button w3-red w3-right" onclick="$('#portaltab').hide();$('#deleteportaltab').show();">@ButtonText(ButtonTypes.delete)</span>
         </div>
 

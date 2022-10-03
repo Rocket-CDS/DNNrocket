@@ -60,9 +60,23 @@ namespace RocketPortal.Components
             SystemDataList = new SystemLimpetList();
         }
 
+        private void ReplaceInfoFields(SimplisityInfo postInfo, string xpathListSelect)
+        {
+            var textList = postInfo.XMLDoc.SelectNodes(xpathListSelect);
+            if (textList != null)
+            {
+                foreach (XmlNode nod in textList)
+                {
+                    Record.SetXmlProperty(xpathListSelect.Replace("*", "") + nod.Name, nod.InnerText);
+                }
+            }
+        }
+
         public int Save(SimplisityInfo info)
         {
-            Record.XMLData = info.XMLData;
+            ReplaceInfoFields(info, "genxml/config/*");
+            ReplaceInfoFields(info, "genxml/select/*");
+            ReplaceInfoFields(info, "genxml/textbox/*");
             return Update();
         }
         public string DefaultLanguage()
