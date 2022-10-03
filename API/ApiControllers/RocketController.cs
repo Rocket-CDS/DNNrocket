@@ -23,6 +23,7 @@ namespace DNNrocketAPI.ApiControllers
     {
         private SessionParams _sessionParams;
         public static string TemplateRelPath = "/DesktopModules/DNNrocket/api";
+        private bool _debugapi;
 
         [AllowAnonymous]
         [HttpGet]
@@ -148,6 +149,13 @@ namespace DNNrocketAPI.ApiControllers
                 requestJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "inputjson"));
                 postInfo = SimplisityJson.GetSimplisityInfoFromJson(requestJson, "");
                 postInfo.PortalId = PortalUtils.GetPortalId();
+
+                if (_debugapi)
+                {
+                    var paramCmd = context.Request.QueryString["cmd"];
+                    FileUtils.SaveFile(DNNrocketUtils.MapPath("/Portals/_default/RocketLogs/").TrimEnd('\\') + "\\" + paramCmd + "_inputjson.json", requestJson);
+                }
+
             }
             return postInfo;
         }
@@ -162,6 +170,14 @@ namespace DNNrocketAPI.ApiControllers
             {
                 paramJson = HttpUtility.UrlDecode(DNNrocketUtils.RequestParam(context, "paramjson"));
                 paramInfo = SimplisityJson.GetSimplisityInfoFromJson(paramJson, "");
+
+                _debugapi = paramInfo.GetXmlPropertyBool("genxml/hidden/debugapi");
+                if (_debugapi)
+                {
+                    var paramCmd = context.Request.QueryString["cmd"];
+                    FileUtils.SaveFile(DNNrocketUtils.MapPath("/Portals/_default/RocketLogs/") + "\\" + paramCmd + "_paramjson.json", paramJson);
+                }
+
             }
             if (DNNrocketUtils.RequestParam(context, "localapi") != "")
             {

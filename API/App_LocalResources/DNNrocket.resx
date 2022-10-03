@@ -960,4 +960,10 @@ settings
   <data name="source.Text" xml:space="preserve">
     <value>Source</value>
   </data>
+  <data name="subdomain.Text" xml:space="preserve">
+    <value>Subdomain</value>
+  </data>
+  <data name="region.Text" xml:space="preserve">
+    <value>Region</value>
+  </data>
 </root>
