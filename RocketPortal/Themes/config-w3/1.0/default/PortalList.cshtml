@@ -18,7 +18,7 @@
 
         @HiddenField(new SimplisityInfo(), "genxml/hidden/page", " class='simplisity_sessionfield' s-update='ignore'", "1")
 
-        <button type="button" class="w3-button w3-theme-action" onclick="$('#portallist').hide();$('#portaldetail').show();">@ButtonText(ButtonTypes.add)</button>
+        <button type="button" class="w3-button w3-theme-action" onclick="$('#portallist').hide();$('#portaldetaildata').show();">@ButtonText(ButtonTypes.add)</button>
         <button class="w3-button simplisity_click" title="Clear All Cache" s-cmd="dashboard_clearallcache" s-post="" s-reload="true">@ButtonIcon(ButtonTypes.refresh)</button>
 
         <div class="w3-right w3-hide-small w3-margin-left" style="width: 100px">
@@ -39,7 +39,6 @@
         <table class="w3-table w3-bordered w3-hoverable">
             <thead>
                 <tr>
-                    <th></th>
                     <th>@ResourceKey("RP.name")</th>
                     <th>@ResourceKey("RP.serviceurl")</th>
                 </tr>
@@ -49,7 +48,6 @@
                 if (portalData.PortalId > 0)
                 {
                     <tr class="simplisity_click" s-cmd="portal_detail" s-fields='{"portalid":"@portalData.PortalId","track":"false"}' style="cursor:pointer;">
-                        <td>@ResourceKey("DNNrocket." + portalData.Record.GetXmlProperty("genxml/portaltype"))</td>
                         <td><b>@portalData.Name</b></td>
                         <td>
                             @portalData.EngineUrl
@@ -62,56 +60,19 @@
     </div>
 </div>
 
-<div id="portaldetail" class="" style="display:none;">
-    <div class="w3-row w3-padding">
-        <div class="w3-button" onclick="$('#portaldetail').hide();$('#portallist').show();">@ButtonIcon(ButtonTypes.back)</div>
-    </div>
-    <div class="w3-container w3-margin-top portaldetailselect">
-        @{
-            var lp = 0;
-        }
-        @foreach (var buildConfig in websiteBuild.ConfigList)
-        {
-            <div class="w3-quarter w3-padding">
-                <div class="w3-card-4">
-                    <div class="build@(lp)">
-                        <header class="w3-container w3-light-grey">
-                            <h3>@buildConfig.GetXmlProperty("genxml/name")</h3>
-                        </header>
-                        <div class="w3-row w3-center">
-                            @ResourceKey("DNNrocket." + buildConfig.GetXmlProperty("genxml/type"))
-                        </div>
-                        <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <div>@buildConfig.GetXmlProperty("genxml/desc1")&nbsp;</div>
-                            <div>@buildConfig.GetXmlProperty("genxml/desc2")&nbsp;</div>
-                            <div>@buildConfig.GetXmlProperty("genxml/desc3")&nbsp;</div>
-                            <div>@buildConfig.GetXmlProperty("genxml/desc4")&nbsp;</div>
-                        </div>
-                    </div>
-
-                    <div class="w3-button w3-block w3-dark-grey" onclick="$('#buildconfig').val('@buildConfig.GetXmlProperty("genxml/filename")'); $('#portaldetail').hide(); $('#portaldetaildata').show(); $('.selectedbuild').html('');$('.build@(lp)').clone().appendTo('.selectedbuild');">@ButtonText(ButtonTypes.use)</div>
-
-                </div>
-            </div>
-            lp += 1;
-        }
-    </div>
-
-</div>
-
 <div id="portaldetaildata" style="display:none;">
     <div class="w3-row w3-padding">
-        <div class="w3-button" onclick="$('#portaldetaildata').hide();$('#portaldetail').show();">@ButtonIcon(ButtonTypes.back)</div>
+        <div class="w3-button" onclick="$('#portaldetaildata').hide();$('#portallist').show();">@ButtonIcon(ButtonTypes.back)</div>
     </div>
 
-    <div class="w3-quarter w3-padding selectedbuild">
-
+    <div class="w3-quarter w3-padding">
+        &nbsp;
     </div>
-    <div class="w3-threequarter w3-padding">
+    <div class="w3-half w3-padding">
         @{
             var info = new SimplisityInfo();
         }
-        @HiddenField(info, "genxml/hidden/buildconfig")
+        @HiddenField(info, "genxml/hidden/buildconfig", "", "0_CDS.xml")
         <div class="w3-row w3-padding">
             <label><b>@ResourceKey("RP.name")</b></label>
             @TextBox(info, "genxml/textbox/name", " class='w3-input w3-border' autocomplete='off' ")
@@ -132,6 +93,9 @@
             <div class="w3-button w3-center w3-dark-grey simplisity_click" s-cmd="portal_create" s-post="#portaldetaildata" s-reload="false">@ButtonText(ButtonTypes.create)</div>
         </div>
 
+    </div>
+    <div class="w3-quarter w3-padding">
+        &nbsp;
     </div>
 
 

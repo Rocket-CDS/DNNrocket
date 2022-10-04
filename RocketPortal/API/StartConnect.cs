@@ -224,7 +224,7 @@ namespace RocketPortal.API
             {
                 var sk = _paramInfo.GetXmlProperty("genxml/remote/securitykey");
                 var ske = _paramInfo.GetXmlProperty("genxml/remote/securitykeyedit");
-                if (dataClient.Exists || _portalData.SecurityKey != sk || _portalData.SecurityKeyEdit != ske ) return "";
+                if (!dataClient.SecurityKeyCheck(portalid, sk, ske)) return "";
             }
             else if (paramCmd == "dataclients_getsystems")
             {
