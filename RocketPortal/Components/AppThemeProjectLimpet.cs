@@ -218,7 +218,7 @@ namespace Rocket.AppThemes.Components
                     if (githubToken != "") client.Headers.Add(HttpRequestHeader.Authorization, "token " + githubToken);
                     // [TODO:  THIS DOES NOT WORK WHEN THE REPO IS PRIVATE]
                     // 7+ hours in C#, no solution.  Only 404 error eveytime.
-                    client.DownloadFile("https://github.com/rocket-cds/apptheme-w3-css/archive/refs/heads/main.zip", zFile);
+                    client.DownloadFile("https://github.com/rocket-cds/" + projectName + "/archive/refs/heads/main.zip", zFile);
                 }
             }
             catch (Exception ex)
