@@ -77,27 +77,6 @@
     </command>
 
 
-    <command>
-      <cmd>dataclients_register</cmd>
-      <action>true</action>
-    </command>    
-    <command>
-      <cmd>dataclients_getlist</cmd>
-      <action>true</action>
-    </command>
-    <command>
-      <cmd>dataclients_delete</cmd>
-      <action>true</action>
-    </command>
-    <command>
-      <cmd>dataclients_toggleactive</cmd>
-      <action>true</action>
-    </command>
-	  <command>
-		  <cmd>dataclients_rsetsecurity</cmd>
-		  <action>true</action>
-	  </command>
-
 
 	  <command>
     	<cmd>portal_addadminrole</cmd>
@@ -173,6 +152,10 @@
 	  </command>
 	  <command>
 		  <cmd>portal_togglesystem</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>portal_resetsecurity</cmd>
 		  <action>true</action>
 	  </command>
 

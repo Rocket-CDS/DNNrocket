@@ -347,6 +347,11 @@ namespace RocketPortal.API
             }
             return "Invalid PortalId";
         }
+        private String ResetSecuirtyPortal()
+        {
+            _portalData.ResetSecurity();
+            return GetPortalDetail();
+        }
 
     }
 

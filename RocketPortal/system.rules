@@ -73,36 +73,6 @@
 
       <genxml>
         <textbox>
-          <interfacekey>dataclients</interfacekey>
-          <namespaceclass>RocketPortal.API.StartConnect</namespaceclass>
-          <providernamespaceclass></providernamespaceclass>
-          <assembly>RocketPortal</assembly>
-          <interfaceicon>cast</interfaceicon>
-          <defaultcommand>dataclients_getlist</defaultcommand>
-          <relpath>/DesktopModules/DNNrocket/RocketPortal</relpath>
-        </textbox>
-        <providertype></providertype>
-        <dropdownlist>
-          <group></group>
-        </dropdownlist>
-        <checkbox>
-          <onmenu>true</onmenu>
-          <active>true</active>
-        </checkbox>
-        <radio>
-          <securityrolesadministrators>1</securityrolesadministrators>
-          <securityrolesmanager>1</securityrolesmanager>
-          <securityroleseditor>1</securityroleseditor>
-          <securityrolesclienteditor>0</securityrolesclienteditor>
-          <securityrolesregisteredusers>1</securityrolesregisteredusers>
-          <securityrolessubscribers>0</securityrolessubscribers>
-          <securityrolesall>0</securityrolesall>
-        </radio>
-      </genxml>
-
-
-      <genxml>
-        <textbox>
           <interfacekey>portal</interfacekey>
           <namespaceclass>RocketPortal.API.StartConnect</namespaceclass>
           <providernamespaceclass></providernamespaceclass>
