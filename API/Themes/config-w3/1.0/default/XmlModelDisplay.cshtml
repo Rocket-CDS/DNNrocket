@@ -18,7 +18,24 @@
         <div class="w3-modal-content" style="height:95%;width:90%;">
             <div class="w3-container w3-padding" style="height:100%;width:100%;">
                 <span onclick="document.getElementById('xmldisplaydatamodel').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <textarea style="width:100%;height:100%;border: none;" class="">@info.PrettyXml()</textarea>
+                <div class="w3-row">
+                    <div class="w3-third">
+                        <b>PortalId:&nbsp;</b>@info.PortalId<br />
+                        <b>ItemID:&nbsp;</b>@info.ItemID<br />
+                        <b>EntityTypeCode:&nbsp;</b>@info.TypeCode<br />
+                    </div>
+                    <div class="w3-third">
+                        <b>GUIDKey:&nbsp;</b>@info.GUIDKey<br />
+                        <b>CultureCode:&nbsp;</b>@info.Lang<br />
+                        <b>ParentItemId&nbsp;</b>@info.ParentItemId<br />
+                    </div>
+                    <div class="w3-third">
+                        <b>XrefItemId&nbsp;</b>@info.XrefItemId<br />
+                        <b>ModuleId&nbsp;</b>@info.ModuleId<br />
+                        <b>ModifiedDate:&nbsp;</b>@info.ModifiedDate.ToString()<br />
+                    </div>
+                </div>
+                <textarea style="width:100%;height:90%;border: none;" class="w3-border">@info.PrettyXml()</textarea>
             </div>
         </div>
     </div>
