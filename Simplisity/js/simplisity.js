@@ -152,7 +152,7 @@ function simplisity_nbxgetCompleted(e) {
 
 }
 
-function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype) {
+function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, paramfields) {
 
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
@@ -180,8 +180,8 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
             cmdupdate = scmdurl + '?cmd=' + scmd + '&systemkey=' + systemkey;
         }
 
-        var jsonData = simplisity_ConvertFormToJSON(spost, slist, sfields);
-        var jsonParam = simplisity_ConvertParamToJSON(sfields);
+        var jsonData = simplisity_ConvertFormToJSON(spost, slist, sfields, paramfields);
+        var jsonParam = simplisity_ConvertParamToJSON(sfields, paramfields);
 
         if ((typeof sdropdownlist !== 'undefined') && sdropdownlist !== '') {
 
@@ -337,6 +337,10 @@ function simplisity_callSessionFields(element) {
 async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
 
     try {
+
+        simplisity_setParamField('activevalue', jQuery(element).val()); // do first
+        var paramfields = jQuery('#simplisity_params').val(); // get params, seem to be cleared when await functions. Unsure why.
+
         var scmd = jQuery(element).attr("s-cmd");
         if (typeof scmd !== 'undefined' && scmd !== '' && scmd !== null) {
 
@@ -346,7 +350,6 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
             }
 
             await simplisity_callBeforeFunction(element);
-
             await simplisity_callSessionFields(element);
 
             if (jQuery(element).attr("s-stop") !== 'stop') {
@@ -389,8 +392,6 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
                     sfields = '';
                 }
 
-                simplisity_setParamField('activevalue', jQuery(element).val());
-
                 if (typeof shideloader === 'undefined') {
                     shideloader = true;
                 }
@@ -409,7 +410,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
                     }
                 }
 
-                simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype);
+                simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, paramfields);
             }
             else {
                 jQuery(element).attr('s-stop', '');
@@ -423,7 +424,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
     return;
 }
 
-function simplisity_ConvertParamToJSON(sfields) {
+function simplisity_ConvertParamToJSON(sfields, paramfields) {
 
     var viewData = {
         sfield: [],
@@ -438,7 +439,6 @@ function simplisity_ConvertParamToJSON(sfields) {
     }
 
     // add param fields
-    var paramfields = jQuery('#simplisity_params').val();
     if (typeof paramfields !== 'undefined' && paramfields !== '') {
         var obj2 = JSON.parse(paramfields);
         jsonDataF = simplisity_mergeJson({}, jsonDataF, obj2);
@@ -459,7 +459,7 @@ function simplisity_ConvertParamToJSON(sfields) {
 }
 
 
-function simplisity_ConvertFormToJSON(spost, slist, sfields) {
+function simplisity_ConvertFormToJSON(spost, slist, sfields, paramfields) {
     var viewData = {
         sfield: [],
         system: [],
@@ -559,8 +559,7 @@ function simplisity_ConvertFormToJSON(spost, slist, sfields) {
         jsonDataF = simplisity_mergeJson({}, jsonDataF, obj);
     }
 
-    // add param fields
-    var paramfields = jQuery('#simplisity_params').val();
+    console.log("paramfields: " + paramfields);
     if (typeof paramfields !== 'undefined' && paramfields !== '') {
         var obj2 = JSON.parse(paramfields);
         jsonDataF = simplisity_mergeJson({}, jsonDataF, obj2);
