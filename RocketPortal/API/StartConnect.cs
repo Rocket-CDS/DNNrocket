@@ -150,7 +150,10 @@ namespace RocketPortal.API
                 case "portal_resetsecurity":
                     strOut = ResetSecuirtyPortal();
                     break;
-
+                case "portal_resetcodes":
+                    strOut = ResetCodes();
+                    break;
+                    
             }
 
 

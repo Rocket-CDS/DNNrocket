@@ -107,6 +107,7 @@
                 <i>@ResourceKey("RP.securitycode", "", "Help")</i>
                 <br />
                 <div class="w3-button" onclick="rpadmin.CopyTextToClipboard($('#secretcode'))"><b>@ResourceKey("RP.securitycode")</b>&nbsp;<span id="iconsecretcode" class=" action-clipboardicon">@ButtonIcon(ButtonTypes.copy)</span></div>
+            <span class="w3-button w3-padding w3-pale-red simplisity_confirmclick" s-cmd="portal_resetcodes" s-fields='{"portalid":"@portalData.PortalId"}' s-confirm="@ResourceKey("RP.resetwebservicecode","","Confirm")" title="@ResourceKey("RP.resetwebservicecode")">@ButtonIcon(ButtonTypes.refresh)</span>
                 <div id="secretcode" class="w3-padding w3-light-grey w3-border" style="width:100%;word-wrap:break-word;">@(portalData.RemoteBase64Params())</div>
             </div>
 

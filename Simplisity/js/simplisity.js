@@ -559,7 +559,6 @@ function simplisity_ConvertFormToJSON(spost, slist, sfields, paramfields) {
         jsonDataF = simplisity_mergeJson({}, jsonDataF, obj);
     }
 
-    console.log("paramfields: " + paramfields);
     if (typeof paramfields !== 'undefined' && paramfields !== '') {
         var obj2 = JSON.parse(paramfields);
         jsonDataF = simplisity_mergeJson({}, jsonDataF, obj2);

@@ -352,6 +352,11 @@ namespace RocketPortal.API
             _portalData.ResetSecurity();
             return GetPortalDetail();
         }
+        private String ResetCodes()
+        {
+            _portalData.ResetCodes();
+            return GetPortalDetail();
+        }
 
     }
 

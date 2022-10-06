@@ -271,6 +271,12 @@ namespace RocketPortal.Components
             Record.SetXmlProperty("genxml/securityfaildatetime", DateTime.Now.AddMinutes(-1).ToString("O"), TypeCode.DateTime);
             Update();
         }
+        public void ResetCodes()
+        {
+            SecurityKey = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString();
+            SecurityKeyEdit = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString();
+            ResetSecurity(); // also updates
+        }
 
         #region "setting"
         public string GetPortalSetting(int idx)

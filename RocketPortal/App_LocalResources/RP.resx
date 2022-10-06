@@ -171,10 +171,10 @@ The assembly that will be executed should be installed into the bin folder and t
     <value>Namespace.Class</value>
   </data>
   <data name="newservice.Text" xml:space="preserve">
-    <value>New Service</value>
+    <value>New WebService</value>
   </data>
   <data name="portalexists.Text" xml:space="preserve">
-    <value>Portal URL already Exists</value>
+    <value>URL already Exists</value>
   </data>
   <data name="protocol.Text" xml:space="preserve">
     <value>Protocol</value>
@@ -185,23 +185,29 @@ The assembly that will be executed should be installed into the bin folder and t
   <data name="resetsecurity.Text" xml:space="preserve">
     <value>Reset Security</value>
   </data>
+  <data name="resetwebservicecode.Confirm" xml:space="preserve">
+    <value>WARNING.  Resetting the WebService codes may stop communication with other systems.  Do you want to continue to reset the codes?</value>
+  </data>
+  <data name="resetwebservicecode.Text" xml:space="preserve">
+    <value>Reset WebService Code</value>
+  </data>
   <data name="rootdomain.Text" xml:space="preserve">
     <value>Root Domain</value>
   </data>
   <data name="securitycode.Help" xml:space="preserve">
-    <value>The Secuirty Code is used to register a Data Client.  This code is sent by the client system to get access to this Data Service.  &lt;b&gt;KEEP THIS CODE SECRET&lt;/b&gt;</value>
+    <value>The WebService Code is used to register a WebClient.  This code is sent by the client system to get access to this WebService.  &lt;b&gt;KEEP THIS CODE SECRET&lt;/b&gt;</value>
   </data>
   <data name="securitycode.Text" xml:space="preserve">
-    <value>Security Code</value>
+    <value>WebService Code</value>
   </data>
   <data name="selectsystem.Text" xml:space="preserve">
-    <value>Select the type of Service.</value>
+    <value>Select the type of WebService.</value>
   </data>
   <data name="service.Text" xml:space="preserve">
-    <value>Services</value>
+    <value>WebServices</value>
   </data>
   <data name="serviceurl.Text" xml:space="preserve">
-    <value>Service URL</value>
+    <value>WebService URL</value>
   </data>
   <data name="system.Text" xml:space="preserve">
     <value>System</value>
