@@ -153,7 +153,10 @@ namespace RocketPortal.API
                 case "portal_resetcodes":
                     strOut = ResetCodes();
                     break;
-                    
+                case "portal_getsystems":
+                    xmlOut = ActiveSystemXml(); 
+                    break;                    
+
             }
 
 
@@ -205,7 +208,15 @@ namespace RocketPortal.API
             var sk = _paramInfo.GetXmlProperty("genxml/remote/securitykey");
             var ske = _paramInfo.GetXmlProperty("genxml/remote/securitykeyedit");
 
-            if (!UserUtils.IsInRole("Registered Users")) return "rocketportal_login";
+            if (paramCmd == "portal_getsystems" || paramCmd == "dataclients_getsystems")
+            {
+                if (!_portalData.SecurityKeyCheck(sk, ske)) return "";
+            }
+            else
+            {
+                if (!UserUtils.IsInRole("Registered Users")) return "rocketportal_login";
+            }
+
             // SECURITY --------------------------------
 
             _dataObjects = new Dictionary<string, object>();

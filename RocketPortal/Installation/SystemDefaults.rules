@@ -44,11 +44,6 @@
       <cmd>dashboard_activesystempanel</cmd>
       <action>true</action>
     </command>
-    <command>
-      <cmd>dataclients_getsystems</cmd>
-      <action>true</action>
-    </command>
-
 
     <command>
       <cmd>appthemeprojects_list</cmd>
@@ -162,7 +157,17 @@
 		  <cmd>portal_resetcodes</cmd>
 		  <action>true</action>
 	  </command>
+	  <command>
+		  <cmd>portal_getsystems</cmd>
+		  <action>true</action>
+	  </command>
 	  
+	  <!-- Legacy -->
+	  <command>
+		  <cmd>dataclients_getsystems</cmd>
+		  <action>true</action>
+	  </command>	  
+
 
 	  <!-- Security for commands in other systems, for the side Menu. -->    
     <command>
