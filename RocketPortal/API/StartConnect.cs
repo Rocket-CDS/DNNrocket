@@ -36,10 +36,13 @@ namespace RocketPortal.API
             {
 
                 case "dashboard_clearallcache":
-                    CacheFileUtils.ClearFileCacheAllPortals();
-                    CacheUtils.ClearAllCache();
-                    CacheUtilsDNN.ClearAllCache();
-                    DNNrocketUtils.ClearAllCache();
+                    if (UserUtils.IsAdministrator())
+                    {
+                        CacheFileUtils.ClearFileCacheAllPortals();
+                        CacheUtils.ClearAllCache();
+                        CacheUtilsDNN.ClearAllCache();
+                        DNNrocketUtils.ClearAllCache();
+                    }
                     strOut = "OK";
                     break;
                 case "dashboard_activesystems":

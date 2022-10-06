@@ -216,31 +216,34 @@ namespace RocketPortal.API
                     var managerpassword = _postInfo.GetXmlProperty("genxml/textbox/password");
                     if (managerpassword != "")
                     {
-                        var adminUserCount = UserUtils.GetUsers(portalid, DNNrocketRoles.Administrators).Count;
-
-                        statusString = UserUtils.CreateUser(portalid, manageremail, manageremail);
-                        if (statusString == "" && managerpassword != "" && manageremail != "")
+                        var userCount = UserUtils.GetUsers(portalid).Count;
+                        if (userCount <= 10)
                         {
-                            var userInfo = UserUtils.GetUserDataByEmail(portalid, manageremail);
-                            if (userInfo != null)
+                            var adminUserCount = UserUtils.GetUsers(portalid, DNNrocketRoles.Administrators).Count;
+                            statusString = UserUtils.CreateUser(portalid, manageremail, manageremail);
+                            if (statusString == "" && managerpassword != "" && manageremail != "")
                             {
-                                UserUtils.ChangePassword(portalid, userInfo.UserId, managerpassword);
-
-                                var rolelist = UserUtils.GetRoles(portalid);
-                                foreach (var r in rolelist)
+                                var userInfo = UserUtils.GetUserDataByEmail(portalid, manageremail);
+                                if (userInfo != null)
                                 {
-                                    if (r.Value == DNNrocketRoles.Manager)
+                                    UserUtils.ChangePassword(portalid, userInfo.UserId, managerpassword);
+
+                                    var rolelist = UserUtils.GetRoles(portalid);
+                                    foreach (var r in rolelist)
                                     {
-                                        UserUtils.AddUserRole(portalid, userInfo.UserId, r.Key);
+                                        if (r.Value == DNNrocketRoles.Manager)
+                                        {
+                                            UserUtils.AddUserRole(portalid, userInfo.UserId, r.Key);
+                                        }
+                                    }
+                                    if (adminUserCount == 0)
+                                    {
+                                        var roleRec = UserUtils.GetRoleByName(portalid, DNNrocketRoles.Administrators);
+                                        if (roleRec != null && roleRec.GetXmlPropertyInt("genxml/roleid") > 0) UserUtils.AddUserRole(portalid, userInfo.UserId, roleRec.GetXmlPropertyInt("genxml/roleid"));
                                     }
                                 }
-                                if (adminUserCount == 0)
-                                {
-                                    var roleRec = UserUtils.GetRoleByName(portalid, DNNrocketRoles.Administrators);
-                                    if (roleRec != null && roleRec.GetXmlPropertyInt("genxml/roleid") > 0) UserUtils.AddUserRole(portalid, userInfo.UserId, roleRec.GetXmlPropertyInt("genxml/roleid"));
-                                }
+                                return GetPortalDetail();
                             }
-                            return GetPortalDetail();
                         }
                     }
                 }
