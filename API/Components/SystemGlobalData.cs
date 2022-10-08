@@ -62,6 +62,11 @@ namespace DNNrocketAPI.Components
             AccessCode = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString();
             AccessPassword = GeneralUtils.GetGuidKey() + GeneralUtils.GetUniqueString();
         }
+        public bool ValidClient(string clientCode)
+        {
+            return ClientCodes.Contains(clientCode);
+        }
+
         public SimplisityInfo Info { get; set; }
         public SimplisityRecord ConfigInfo { get; set; }
 
@@ -76,5 +81,6 @@ namespace DNNrocketAPI.Components
         public string AccessCode { get { return Info.GetXmlProperty("genxml/config/accesscode"); } set { Info.SetXmlProperty("genxml/config/accesscode", value); } }
         public string AccessPassword { get { return Info.GetXmlProperty("genxml/config/accesspassword"); } set { Info.SetXmlProperty("genxml/config/accesspassword", value); } }
         public string LogoTemplate { get { if (Info.GetXmlProperty("genxml/textbox/logotemplate") != "") return Info.GetXmlProperty("genxml/textbox/logotemplate"); else return "Logo.cshtml"; } }
+        public string[] ClientCodes { get { return Info.GetXmlProperty("genxml/textbox/clientcodes").Split(','); } }
     }
 }

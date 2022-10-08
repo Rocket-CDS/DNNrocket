@@ -117,6 +117,10 @@
 
             </div>
 
+            <div class="w3-row w3-padding">
+                <label>Client Codes</label>
+                @TextArea(info, "genxml/textbox/clientcodes", " class='w3-input w3-border action_tageditor' ")
+            </div>
 
             <div id="actionprovider" class="w3-row w3-padding">
                 <div class="w3-row">
@@ -165,7 +169,15 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-        selectMenu('global');
+            selectMenu('global');
+
+            $('.action_tageditor').tagEditor({
+                delimiter: ', ', /* space and comma */
+                removeDuplicates: true,
+                forceLowercase: false,
+            });
+            $('.tag-editor').height(60)
+
         });
 
     </script>

@@ -45,7 +45,9 @@ namespace RocketPortal.Components
             }
             else
             {
-                PortalList = _objCtrl.GetList(-1, -1, EntityTypeCode, " and UserId = " + UserUtils.GetCurrentUserId() + " ", "", " order by R1.PortalId", 0, 0, 0, 0);
+                var uId = SessionParamData.GetInt("userid");
+                if (uId == 0) uId = UserUtils.GetCurrentUserId();
+                PortalList = _objCtrl.GetList(-1, -1, EntityTypeCode, " and UserId = " + uId + " ", "", " order by R1.PortalId", 0, 0, 0, 0);
             }
         }
         public void Validate()

@@ -221,7 +221,7 @@ namespace RocketPortal.Components
             }
             return rtn;
         }
-        public bool AccessCodeCheck(string accessCode, string accessPassword)
+        public bool AccessCodeCheck(string accessCode, string accessPassword, string clientcode)
         {
             var accessfailcountDate = Record.GetXmlPropertyDate("genxml/accessfaildatetime");
             if (accessfailcountDate < DateTime.Now)
@@ -235,7 +235,7 @@ namespace RocketPortal.Components
             var gData = new SystemGlobalData();
             if (gData.AccessCode == accessCode)
             {
-                if (gData.AccessPassword == accessPassword) return true;
+                if (gData.ValidClient(clientcode) && gData.AccessPassword == accessPassword) return true;
                 Record.SetXmlProperty("genxml/accessfailcount", (accessfailCount + 1).ToString());
                 Record.SetXmlProperty("genxml/accessfaildatetime", DateTime.Now.AddMinutes(10).ToString("O"), TypeCode.DateTime);
                 Update();
