@@ -966,4 +966,7 @@ settings
   <data name="region.Text" xml:space="preserve">
     <value>Region</value>
   </data>
+  <data name="loading.Text" xml:space="preserve">
+    <value>Loading</value>
+  </data>
 </root>
