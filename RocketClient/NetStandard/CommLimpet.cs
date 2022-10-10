@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Xml;
 
 namespace RocketComm
 {
@@ -14,6 +15,15 @@ namespace RocketComm
     {
         public CommLimpet(SimplisityRecord  remoteParams)
         {
+            // make compatible with legacy code. (copy settings node)
+            var nodList = remoteParams.XMLDoc.SelectNodes("genxml/settings/*");
+            if (nodList != null)
+            {
+                foreach (XmlNode nod in nodList)
+                {
+                    remoteParams.SetXmlProperty("genxml/remote/" + nod.Name, nod.InnerText);
+                }
+            }
             RemoteParams = remoteParams;
         }
 
