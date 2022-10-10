@@ -9,7 +9,7 @@ var debugmode = false;
             // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
             console.log('[$.fn.getSimplisity] ', cmdurl, scmd, '#' + this.attr('id'), sfields, spost);
         }
-        simplisityPost(cmdurl, scmd, spost, '#' + this.attr('id'), '', false, 0, sfields, true, safter);
+        simplisityPost(cmdurl, scmd, spost, '#' + this.attr('id'), '', false, 0, sfields, true, safter, '', '', '', '');
     };
 
 }(jQuery));
@@ -161,9 +161,13 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
 
     if (typeof scmd !== 'undefined' && scmd !== '') {
 
-        // Load sessionParams into fieldParams to post to server. 
-        // These are to persist data across session, for search, sort, paging, etc.
-        simplisity_sessionpost();
+        if (paramfields == '') {
+            // NOTE: simplisity_sessionpost(); populates the "paramfields".  The parameter "paramfields" is left for legacy.
+            // Load sessionParams into fieldParams to post to server.
+            // These are to persist data across session, for search, sort, paging, etc.
+            paramfields = simplisity_sessionpost();
+        }
+        
 
         var systemkey = simplisity_getsystemkey(sfields);
 
@@ -257,7 +261,7 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                     if (data !== 'noaction') {
                         //if (sreturntype === 'json') {
                         //    alert("rtn : " + data);
-                        //    //data = JSON.stringify(data);
+                        //    //data = simplisity_stringifyjson(data);
                         //    window.sessionStorage.setItem('simplisity_' + sreturn, data); // use session storage, idependant of browser.
                         //}
                         if ((typeof sreturn !== 'undefined') && sreturn !== '') {
@@ -339,7 +343,6 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
     try {
 
         simplisity_setParamField('activevalue', jQuery(element).val()); // do first
-        var paramfields = jQuery('#simplisity_params').val(); // get params, seem to be cleared when await functions. Unsure why.
 
         var scmd = jQuery(element).attr("s-cmd");
         if (typeof scmd !== 'undefined' && scmd !== '' && scmd !== null) {
@@ -410,7 +413,7 @@ async function simplisity_callserver(element, cmdurl, returncontainer, reload) {
                     }
                 }
 
-                simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, paramfields);
+                simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, sfields, shideloader, safter, sdropdownlist, reload, sreturntype, '');
             }
             else {
                 jQuery(element).attr('s-stop', '');
@@ -434,28 +437,27 @@ function simplisity_ConvertParamToJSON(sfields, paramfields) {
     // Put s-fields into the json object.
     var jsonDataF = {};
     if (typeof sfields !== 'undefined' && sfields !== '') {
-        var obj = JSON.parse(sfields);
+        var obj = simplisity_parsejson(sfields);
         jsonDataF = simplisity_mergeJson({}, jsonDataF, obj);
     }
 
     // add param fields
     if (typeof paramfields !== 'undefined' && paramfields !== '') {
-        var obj2 = JSON.parse(paramfields);
+        var obj2 = simplisity_parsejson(paramfields);
         jsonDataF = simplisity_mergeJson({}, jsonDataF, obj2);
     }
 
     viewData.sfield.push(jsonDataF);
 
     var system = '{"systemkey":"' + simplisity_getsystemkey(sfields) + '","requesturl":"' + window.location.href + '"}';
-    var systemobj = JSON.parse(system);
+    var systemobj = simplisity_parsejson(system);
     viewData.system.push(systemobj);
 
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
-        console.log('[simplisity_ConvertParamToJSON(sfields)] stringify json: ' + JSON.stringify(viewData));
+        console.log('[simplisity_ConvertParamToJSON(sfields)] stringify json: ' + simplisity_stringifyjson(viewData));
     }
-
-    return JSON.stringify(viewData);
+    return simplisity_stringifyjson(viewData);
 }
 
 
@@ -555,28 +557,28 @@ function simplisity_ConvertFormToJSON(spost, slist, sfields, paramfields) {
     // Put s-fields into the json object.
     var jsonDataF = {};
     if (typeof sfields !== 'undefined' && sfields !== '') {
-        var obj = JSON.parse(sfields);
+        var obj = simplisity_parsejson(sfields);
         jsonDataF = simplisity_mergeJson({}, jsonDataF, obj);
     }
 
     if (typeof paramfields !== 'undefined' && paramfields !== '') {
-        var obj2 = JSON.parse(paramfields);
+        var obj2 = simplisity_parsejson(paramfields);
         jsonDataF = simplisity_mergeJson({}, jsonDataF, obj2);
     }
 
     viewData.sfield.push(jsonDataF);
 
     var system = '{"systemkey":"' + simplisity_getsystemkey(sfields) + '"}';
-    var systemobj = JSON.parse(system);
+    var systemobj = simplisity_parsejson(system);
     viewData.system.push(systemobj);
 
 
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
-        console.log('json: ' + JSON.stringify(viewData));
+        console.log('json: ' + simplisity_stringifyjson(viewData));
     }
 
-    return JSON.stringify(viewData);
+    return simplisity_stringifyjson(viewData);
 }
 
 
@@ -620,10 +622,10 @@ function simplisity_getpostjson(spost) {
 
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
-        console.log('json: ' + JSON.stringify(viewData));
+        console.log('json: ' + simplisity_stringifyjson(viewData));
     }
 
-    return JSON.stringify(viewData);
+    return simplisity_stringifyjson(viewData);
 }
 
 
@@ -673,10 +675,10 @@ function simplisity_getlistjson(slist) {
 
     if (debugmode) {
         // DEBUG ++++++++++++++++++++++++++++++++++++++++++++
-        console.log('json: ' + JSON.stringify(viewData));
+        console.log('json: ' + simplisity_stringifyjson(viewData));
     }
 
-    return JSON.stringify(viewData);
+    return simplisity_stringifyjson(viewData);
 }
 
 
@@ -755,10 +757,10 @@ function simplisity_setParamField(fieldkey, fieldvalue) {
         var jsonParams = jQuery('#simplisity_params').val();
         var obj = {};
         if (typeof jsonParams !== 'undefined' && jsonParams !== '') {
-            obj = JSON.parse(jsonParams);
+            obj = simplisity_parsejson(jsonParams);
         }
         obj[fieldkey] = fieldvalue;
-        jQuery('#simplisity_params').val(JSON.stringify(obj));
+        jQuery('#simplisity_params').val(simplisity_stringifyjson(obj));
     }
 }
 
@@ -769,7 +771,7 @@ function simplisity_getParamField(fieldkey) {
 function simplisity_getField(sfields, fieldkey) {
     if (typeof sfields !== 'undefined' && sfields !== '') {
         if (typeof fieldkey !== 'undefined' && fieldkey !== '') {
-            var obj = JSON.parse(sfields);
+            var obj = simplisity_parsejson(sfields);
             return obj[fieldkey];
         }
     }
@@ -834,11 +836,11 @@ function simplisity_sessionjson() {
         out = rtn;
     }
     try {
-        var json = JSON.stringify(eval("(" + out + ")"));
+        var json = simplisity_stringifyjson(eval("(" + out + ")"));
         return json;
     }
     catch (err) {
-        var json2 = JSON.stringify(eval("({'null':'null'})"));
+        var json2 = simplisity_stringifyjson(eval("({'null':'null'})"));
         return json2;
     }
 }
@@ -848,9 +850,9 @@ function simplisity_sessionremove() {
 }
 function simplisity_sessionpost() {
     // This will post ALL data fields in the sessionParams back to the server in the param fields.
-    var p = JSON.parse(simplisity_sessionjson());
+    var p = simplisity_parsejson(simplisity_sessionjson());
     for (var key of Object.keys(p)) {
-         simplisity_setParamField(key, p[key]);
+        simplisity_setParamField(key, p[key]);
     }
 
     // set a browser sessionid, to use serverside to identify the browser session
@@ -871,6 +873,7 @@ function simplisity_sessionpost() {
     simplisity_setParamField('browserid', browser_id); // return browser_sessionid
     simplisity_setSessionField('browserid', browser_id) // add to session data so it is in the cookie
 
+    return jQuery('#simplisity_params').val(); // get session/param values
 }
 
 function CreateUUID() {
@@ -888,11 +891,11 @@ function simplisity_setSessionField(fieldkey, fieldvalue) {
         var jsonParams = simplisity_sessionjson();
         var obj = {};
         if (typeof jsonParams !== 'undefined' && jsonParams !== '') {
-            obj = JSON.parse(jsonParams);
+            obj = simplisity_parsejson(jsonParams);
         }
         obj[fieldkey] = fieldvalue;
 
-        window.sessionStorage.setItem('simplisity_sessionparams', JSON.stringify(obj)); // use session storage, idependant of browser.
+        window.sessionStorage.setItem('simplisity_sessionparams', simplisity_stringifyjson(obj)); // use session storage, idependant of browser.
 
         // cookie needed as cookie for toated version, where the module calls the toast server and we assign in the module before client based API call.
         simplisity_setCookieValue('simplisity_sessionparams', window.sessionStorage.getItem('simplisity_sessionparams'));
@@ -900,8 +903,8 @@ function simplisity_setSessionField(fieldkey, fieldvalue) {
     }
 }
 function simplisity_getSessionField(fieldkey) {
-    var result = JSON.parse(simplisity_sessionjson());
-    return simplisity_getField(JSON.stringify(result), fieldkey);
+    var result = simplisity_parsejson(simplisity_sessionjson());
+    return simplisity_getField(simplisity_stringifyjson(result), fieldkey);
 }
 
 function simplisity_requestjson(scmdurl, scmd, spost, id, sfields, safter) {
@@ -915,6 +918,15 @@ function simplisity_parsejson(json) {
     } else {
         // it's probably already an object
         retval = json;
+    }
+    return retval;
+}
+function simplisity_stringifyjson(json) {
+    var retval;
+    if (typeof (json) === "string") {
+        retval = json; // already string
+    } else {
+        retval = JSON.stringify(json); // object
     }
     return retval;
 }
@@ -1123,7 +1135,7 @@ function simplisity_assignevents(cmdurl) {
 
         if (typeof sfields !== 'undefined' && sfields !== '') {
 
-            var obj = JSON.parse(sfields);
+            var obj = simplisity_parsejson(sfields);
             for (x in obj) {
                 params = params + '&' + x + '=' + simplisity_encode(simplisity_getField(sfields, x));
             }
