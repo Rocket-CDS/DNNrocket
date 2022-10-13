@@ -190,7 +190,7 @@ namespace Simplisity
                 var xmlTarget = XMLDoc.SelectSingleNode(xPathRootDestination);
                 if (xmlTarget == null)
                 {
-                    SetXmlProperty(xPathRootDestination, "");
+                    SetXmlProperty(xPathRootDestination, "", System.TypeCode.String,false);
                     xmlTarget = XMLDoc.SelectSingleNode(xPathRootDestination);
                 }
                 if (xmlTarget != null)
