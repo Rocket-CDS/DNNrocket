@@ -217,6 +217,9 @@
     <Compile Include="Components\FastReplacerSnippet.cs" />
     <Compile Include="Components\DocUtils.cs" />
     <Compile Include="Components\SecurityInput.cs" />
+    <Compile Include="downloadauthfile.ashx.cs">
+      <DependentUpon>downloadauthfile.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\RazorInterface.cs" />
     <Compile Include="Interfaces\HandleBarsInterface.cs" />
     <Compile Include="render\HandlebarsEngine.cs" />
@@ -307,6 +310,7 @@
     <None Include="Documents\File-Upload.docx" />
     <None Include="Documents\Filtering_Sorting_Data.docx" />
     <None Include="Documents\ManualSortList.docx" />
+    <None Include="downloadauthfile.ashx" />
     <None Include="downloadfile.ashx" />
     <None Include="DNNrocketThumb.ashx" />
     <None Include="Documents\Build-DNNrocket-Module.docx" />

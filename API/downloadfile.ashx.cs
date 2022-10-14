@@ -31,31 +31,37 @@ namespace DNNrocketAPI.Components
                 var tablename = context.Request.QueryString["tablename"];
                 var downloadname = context.Request.QueryString["downloadname"];
                 var listname = context.Request.QueryString["listname"];
-                if (String.IsNullOrEmpty(listname)) listname = "documentlist";
-                var sInfo = objCtrl.GetInfo(Convert.ToInt32(itemid), DNNrocketUtils.GetCurrentCulture(), tablename);
-                if (sInfo != null)
+                var publicaccess = Convert.ToBoolean(context.Request.QueryString["public"]);
+                if (!publicaccess && !UserUtils.IsAuthorised()) msg = "Access Denied";
+                if (msg == "")
                 {
-                    var sInfoItem = sInfo.GetListItem(listname, Convert.ToInt32(fileindex));
-                    var fpath = sInfoItem.GetXmlProperty("genxml/lang/genxml/hidden/documentpath" + fieldid);
-                    if (fpath == "") fpath = sInfoItem.GetXmlProperty("genxml/hidden/documentpath" + fieldid);
-                    if (fpath != "")
+                    if (String.IsNullOrEmpty(listname)) listname = "documentlist";
+                    var sInfo = objCtrl.GetInfo(Convert.ToInt32(itemid), DNNrocketUtils.GetCurrentCulture(), tablename);
+                    if (sInfo != null)
                     {
-                        fpath = DNNrocketUtils.MapPath(fpath);
-                        if (String.IsNullOrEmpty(downloadname)) downloadname = sInfoItem.GetXmlProperty("genxml/lang/genxml/textbox/documentname" + fieldid);
-                        if (String.IsNullOrEmpty(downloadname)) downloadname = sInfoItem.GetXmlProperty("genxml/textbox/documentname" + fieldid);
-                        if (String.IsNullOrEmpty(downloadname)) downloadname = Path.GetFileName(fpath);
-                        DNNrocketUtils.ForceDocDownload(fpath, downloadname, context.Response);
-                        msg = " - Cannot find: " + fpath;
+                        var sInfoItem = sInfo.GetListItem(listname, Convert.ToInt32(fileindex));
+                        var fpath = sInfoItem.GetXmlProperty("genxml/lang/genxml/hidden/documentpath" + fieldid);
+                        if (fpath == "") fpath = sInfoItem.GetXmlProperty("genxml/hidden/documentpath" + fieldid);
+                        if (fpath != "")
+                        {
+                            fpath = DNNrocketUtils.MapPath(fpath);
+                            if (String.IsNullOrEmpty(downloadname)) downloadname = sInfoItem.GetXmlProperty("genxml/lang/genxml/textbox/documentname" + fieldid);
+                            if (String.IsNullOrEmpty(downloadname)) downloadname = sInfoItem.GetXmlProperty("genxml/textbox/documentname" + fieldid);
+                            if (String.IsNullOrEmpty(downloadname)) downloadname = Path.GetFileName(fpath);
+                            DNNrocketUtils.ForceDocDownload(fpath, downloadname, context.Response);
+                            msg = " - Cannot find: " + fpath;
+                        }
+                        else
+                        {
+                            msg = "File Download Error, no data found for '" + fieldid + "'";
+                        }
                     }
                     else
                     {
-                        msg = "File Download Error, no data found for '" + fieldid + "'";
+                        msg = "Invalid Data Record";
                     }
                 }
-                else
-                {
-                    msg = "Invalid Data Record";
-                }
+
             }
             var strOut = "File Download Error, itemid: " + itemid + ", fileindex: " + fileindex + " Message:" + msg;
 
