@@ -28,16 +28,14 @@
         <div id="a-portalbuttons" class="w3-bar">
             <span class="w3-button simplisity_click" s-cmd="dashboard_get">@ButtonIcon(ButtonTypes.back)</span>
             <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</span>
-            <span class="w3-padding w3-button simplisity_confirmclick" title="@ResourceKey("RP.resetsecurity")" s-confirm="@ResourceKey("RP.resetsecurity") ?" s-cmd="portal_resetsecurity" s-fields='{"portalid":"@(portalData.PortalId)"}'>
-                @ButtonIcon(ButtonTypes.reset) &nbsp; @ResourceKey("RP.resetsecurity")
-            </span>
-            <span>
-                @portalData.Record.GetXmlPropertyInt("genxml/accessfailcount").ToString()
-            </span>
-            <span>-</span>
-            <span>
-                @portalData.Record.GetXmlPropertyInt("genxml/securityfailcount").ToString()
-            </span>
+
+            @if (CacheUtils.GetCache("securitylock", "security") != null)
+            {
+                <span class="w3-padding w3-button simplisity_confirmclick" title="@ResourceKey("RP.resetsecurity")" s-confirm="@ResourceKey("RP.resetsecurity") ?" s-cmd="portal_resetsecurity" s-fields='{"portalid":"@(portalData.PortalId)"}'>
+                    @ButtonIcon(ButtonTypes.reset) &nbsp; @ResourceKey("RP.resetsecurity")
+                </span>
+            }
+
             <span class="w3-padding w3-button w3-red w3-right" onclick="$('#portaltab').hide();$('#deleteportaltab').show();">@ButtonText(ButtonTypes.delete)</span>
         </div>
 

@@ -223,53 +223,34 @@ namespace RocketPortal.Components
         }
         public bool AccessCodeCheck(string accessCode, string accessPassword, string clientcode)
         {
-            var accessfailcountDate = Record.GetXmlPropertyDate("genxml/accessfaildatetime");
-            if (accessfailcountDate < DateTime.Now)
-            {
-                Record.GetXmlProperty("genxml/accessfailcount", "0");
-                Update();
-            }
-            var accessfailCount = Record.GetXmlPropertyInt("genxml/accessfailcount");
-            if (accessfailCount > 9) return false;
-
             var gData = new SystemGlobalData();
             if (gData.AccessCode == accessCode)
             {
+                var securityfailcount = (string)CacheUtils.GetCache(accessCode + "count", "security");
+                if (securityfailcount == null) securityfailcount = "0";
+                if (Convert.ToInt32(securityfailcount) > 9) return false;
                 if (gData.ValidClient(clientcode) && gData.AccessPassword == accessPassword) return true;
-                Record.SetXmlProperty("genxml/accessfailcount", (accessfailCount + 1).ToString());
-                Record.SetXmlProperty("genxml/accessfaildatetime", DateTime.Now.AddMinutes(10).ToString("O"), TypeCode.DateTime);
-                Update();
+                CacheUtils.SetCache(accessCode + "count", (Convert.ToInt32(securityfailcount) + 1).ToString(), "security");
+                CacheUtils.SetCache("securitylock", "true", "security");
             }
             return false;
         }
         public bool SecurityKeyCheck(string securityKey, string securityKetEdit)
         {
-            var accessfailcountDate = Record.GetXmlPropertyDate("genxml/securityfaildatetime");
-            if (accessfailcountDate < DateTime.Now)
-            {
-                Record.GetXmlProperty("genxml/securityfailcount", "0");
-                Update();
-            }
-            var accessfailCount = Record.GetXmlPropertyInt("genxml/securityfailcount");
-            if (accessfailCount > 9) return false;
-
             if (SecurityKey == securityKey)
             {
+                var securityfailcount = (string)CacheUtils.GetCache(securityKey + "count", "security");
+                if (securityfailcount == null) securityfailcount = "0";
+                if (Convert.ToInt32(securityfailcount) > 9) return false;
                 if (SecurityKeyEdit == securityKetEdit) return true;
-                Record.SetXmlProperty("genxml/securityfailcount", (accessfailCount + 1).ToString());
-                Record.SetXmlProperty("genxml/securityfaildatetime", DateTime.Now.AddMinutes(10).ToString("O"), TypeCode.DateTime);
-                Update();
+                CacheUtils.SetCache(securityKey + "count", (Convert.ToInt32(securityfailcount) + 1).ToString(), "security");
+                CacheUtils.SetCache("securitylock", "true", "security");
             }
-
             return false;
         }
         public void ResetSecurity()
         {
-            Record.SetXmlProperty("genxml/accessfailcount", "0");
-            Record.SetXmlProperty("genxml/accessfaildatetime", DateTime.Now.AddMinutes(-1).ToString("O"), TypeCode.DateTime);
-            Record.SetXmlProperty("genxml/securityfailcount", "0");
-            Record.SetXmlProperty("genxml/securityfaildatetime", DateTime.Now.AddMinutes(-1).ToString("O"), TypeCode.DateTime);
-            Update();
+            CacheUtils.ClearAllCache("security");
         }
         public void ResetCodes()
         {
