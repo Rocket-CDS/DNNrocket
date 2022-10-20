@@ -443,7 +443,7 @@ system_update
 &lt;/span&gt;</value>
   </data>
   <data name="dnnrocketaccount.Help" xml:space="preserve">
-    <value>An account at &lt;a href='https://www.dnnrocket.com' target='_blank'&gt;www.dnnrocket.com&lt;/a&gt; is free and allows you to track, maintain, transfer and validate licenses.  It also entiles you to have multi-license discount, promotions, direct email and ticket support, which is included with the professional licenses.  If you require a more dedicated support: subscription, consultation and development options are available.   </value>
+    <value>An account at &lt;a href='https://www.rocket-cds.org' target='_blank'&gt;www.rocket-cds.org&lt;/a&gt; is free and allows you to track, maintain, transfer and validate licenses.  It also entiles you to have multi-license discount, promotions, direct email and ticket support, which is included with the professional licenses.  If you require a more dedicated support: subscription, consultation and development options are available.   </value>
   </data>
   <data name="getlicense.Help" xml:space="preserve">
     <value>You are currently running a FREE trial or community version of this product.  Purchasing a professional license entitles you to direct email and ticket support.  It will also unlock professional features.  If you require a more dedicated support: subscription, consultation and development options are available.</value>

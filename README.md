@@ -21,3 +21,28 @@ When DNNpackager.exe is used to open "..\DNNpackager.dnnpack" in 'release' confi
 
 **Right click on the DNNpackager.dnnpack file in VS and select Open With..**
 
+## Release Version Control
+DNNrocket is made of multiple projects that can be updated independantly.  
+Each project version can be different to the release version.  
+The release version is in "DNNpackages.dnnpack" and "DNNrocketAPI.dnn" files and should be updated for all occurences in these files.  
+Finding which assembly versions should be in a release can be found in GitHub, by looking at the version tag.  The tag will be the same as the release version.  
+
+**DNNpackages.dnnpack changes**
+```
+  <!-- To build install file use "Solution Directory" -->
+	<version>1.0.14</version>
+```
+**DNNrocketAPI.dnn changes**
+```
+	<package name="RocketSystem" type="Library" version="1.0.14">
+		....
+		.....
+	<package name="RocketSystem" type="Module" version="1.0.14">
+		....
+		.....
+	<package name="RocketPortal" type="Library" version="1.0.14">
+		....
+		.....
+	<package name="RocketAppTheme" type="Library" version="1.0.14">
+```
+

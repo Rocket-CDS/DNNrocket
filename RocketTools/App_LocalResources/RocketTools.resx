@@ -139,7 +139,7 @@
     <value>The module has been cloned to the selected pages.</value>
   </data>
   <data name="companykey.Help" xml:space="preserve">
-    <value>A DNNrocket company key is used for license administration and links this website to a company.  Multiple websites can have the same company key.  You can find company keys in your &lt;a href='https://www.dnnrocket.com' target='_blank'&gt;DNNrocket account&lt;/a&gt; under the companies section.</value>
+    <value>A DNNrocket company key is used for license administration and links this website to a company.  Multiple websites can have the same company key.  You can find company keys in your &lt;a href='https://www.rocket-cds.org' target='_blank'&gt;DNNrocket account&lt;/a&gt; under the companies section.</value>
   </data>
   <data name="companykey.Text" xml:space="preserve">
     <value>Company Key</value>
