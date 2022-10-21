@@ -38,7 +38,7 @@ var debugmode = false;
 
         var settings = $.extend({
             activatepanel: true,
-            overlayclass: 'w3-overlay',
+            overlayclass: '',
             debug: false
         }, options);
 
@@ -67,10 +67,8 @@ function simplisity_createStaticPageFields(cmdurl, settings) {
     jQuery('#simplisity_fileuploadlist').remove();
     jQuery('#simplisity_fileuploadbase64').remove();
 
-    var elementstr = '<div class="' + settings.overlayclass + ' simplisity_loader " style="z-index:999;">';
-    elementstr += '<span class="w3-display-middle">';
-    elementstr += '<img class="w3-spin" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAQAAAD/5HvMAAACmklEQVRo3u3YrU9CURgG8EcHm5sfRebURACLSSsGRtBioN2G06CFIIVKISPFYOUPUItzFpNuWpTOGMHNoBM3UGe4cky691yvcM8H555N3xvd+/DzcO857wX4rz9bJdtAzDYSs43EbCMx20jMNhKzjcRsI7HwSTNwUMUJGrj/wTFMmkYeV76IEEhzqOA1AMYIKYoiuoExQwclcSuEGTIni45NnB24Ph/ZRg2bSCOBCbOcbR/METKIhLMxZn+szgVS4R0dSc+946IQ5uEaxQ3HecZquONH0cNZVBzQ4nBUOPPcNuhiTXGEjaOFB0zJgyrc+uwqDvlxtMDAUJY/Ql8I51LxNeiLw9DBuBwoz61PSulejKBJsnJyIdfcNqhaxyTtXG786pGIjDIoTdI+EBMPcEjAE3dIyNUoN1euiwfskfaalj3tgCRKPGmn6jehp7ZI4pl4e4O0p7WAlkliXbz9kbQvaAHNksQ78fZ30j6pBTRGEt/E299I+5gW0CRJfBdvvyPts1pACyTxUby9TtqXtIDo1tgQbz8j7RtaQDmSeCreXibt+1pANZK4J96+zj2kI8qcCJ5IosTcGMMHCVhRBmVIWg8zMhHnJOJQGXRE0q7Vb8Km4nmf4oa9vFzI+PcbWQtxxQH2knBeMC37f5UDc1jfv+9y61ORX+gpPATk9AOtca/iXcyrfPdOQM7voEU8c+tTHO6bben7g/xr1cO5QdQMxx9U8Pxu0kHSFIf5POgXnh9xXGTNcRh3SGS4bfDr2jbJYZhAAmlsooa2D8bFjllO/6tj9ssadN2avJUHXV0Uh/ugi4BeUcEcDFQQ0hXy8keoLtI9GjhBFY7c+KWbFHqVbAMNOjpCJ8E2EmwjwTYSbCPBNtJ//dX6BHY6L4BgfX6bAAAAAElFTkSuQmCC" />';
-    elementstr += '</span>';
+    var elementstr = '<div class="' + settings.overlayclass + ' simplisity_loader ">';
+    elementstr += '<div class="simplisity_loader_inner"></div>';
     elementstr += '</div>';
     elementstr += '<input id="simplisity_systemkey" type="hidden" value="' + settings.systemkey + '" />';
     elementstr += '<input id="simplisity_cmdurl" type="hidden" value="' + cmdurl + '" />';
