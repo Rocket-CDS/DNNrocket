@@ -719,7 +719,7 @@ content_paste
     <value>Image Limit</value>
   </data>
   <data name="documentlimit.Msg" xml:space="preserve">
-    <value>You document upload for this article has been reached.  You must upgrade if you want to add more documents.</value>
+    <value>You document upload has been reached. </value>
   </data>
   <data name="documentlimit.Text" xml:space="preserve">
     <value>Document Limit</value>
@@ -968,5 +968,11 @@ settings
   </data>
   <data name="loading.Text" xml:space="preserve">
     <value>Loading</value>
+  </data>
+  <data name="imagelimit.Msg" xml:space="preserve">
+    <value>The Image Limit will not allow additional images to be added.  </value>
+  </data>
+  <data name="imagelimit.Text" xml:space="preserve">
+    <value>Image Limit</value>
   </data>
 </root>
