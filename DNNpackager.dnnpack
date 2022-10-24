@@ -32,8 +32,9 @@
 
     <value>\Simplisity</value>
     <value>\Simplisity\js</value>
+	<value>\Simplisity\css</value>
 
-    <value>\css\*</value>
+	<value>\css\*</value>
     <value>\js\*</value>
     <value>\Quill\*</value>
     <value>\CKEditor\*</value>
