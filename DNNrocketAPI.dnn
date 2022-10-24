@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="RocketSystem" type="Library" version="1.0.14">
+		<package name="RocketSystem" type="Library" version="1.0.15">
 			<friendlyName>RocketSystem</friendlyName>
 			<description>Rocket System</description>
       <iconFile></iconFile>
@@ -114,7 +114,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
       </components>
 		</package>
 
-    <package name="RocketSystem" type="Module" version="1.0.14">
+    <package name="RocketSystem" type="Module" version="1.0.15">
       <friendlyName>RocketSystem (Update on Install)</friendlyName>
       <description>RocketSystem</description>
       <iconFile />
@@ -180,7 +180,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
       </components>
     </package>
 
-    <package name="RocketPortal" type="Library" version="1.0.14">
+    <package name="RocketPortal" type="Library" version="1.0.15">
       <friendlyName>RocketPortal</friendlyName>
       <description>RocketPortal</description>
       <iconFile></iconFile>
@@ -265,7 +265,7 @@ It also contains the popular RocketMod modules, which is a dynamic content build
       </components>
     </package>
 
-    <package name="RocketAppTheme" type="Library" version="1.0.14">
+    <package name="RocketAppTheme" type="Library" version="1.0.15">
       <friendlyName>RocketAppTheme</friendlyName>
       <description>RocketAppTheme</description>
       <iconFile></iconFile>
