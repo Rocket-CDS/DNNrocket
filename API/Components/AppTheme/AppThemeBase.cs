@@ -434,6 +434,7 @@ namespace DNNrocketAPI.Components
             if (AppThemeFolder != null && AppThemeFolder != "")
             {
                 VersionList = new List<string>();
+                VersionListDict = new Dictionary<string, string>();
                 if (System.IO.Directory.Exists(AppThemeFolderMapPath))
                 {
                     var dirlist = System.IO.Directory.GetDirectories(AppThemeFolderMapPath);
@@ -445,11 +446,30 @@ namespace DNNrocketAPI.Components
                 }
                 if (VersionList.Count == 0) VersionList.Add("1.0");
                 VersionList.Reverse();
+                foreach (var v in VersionList)
+                {
+                    VersionListDict.Add(v, v);
+                }
                 LatestVersionFolder = (string)VersionList.First();
             }
-            if (AppVersionFolder == "") AppVersionFolder = LatestVersionFolder;
+            if (AppVersionFolder == "" || AppVersionFolder == null) AppVersionFolder = LatestVersionFolder;
         }
-
+        public object VersionListJson()
+        {
+            var jsonList = new List<ValuePair>();
+            if (VersionList != null)
+            {
+                var valuePair = new ValuePair();
+                foreach (var i in VersionList)
+                {
+                    valuePair = new ValuePair();
+                    valuePair.Key = i;
+                    valuePair.Value = i;
+                    jsonList.Add(valuePair);
+                }
+            }
+            return jsonList;
+        }
         public string ExportZipFile()
         {
             // Create zip
@@ -557,6 +577,7 @@ namespace DNNrocketAPI.Components
         public string AppThemeVersionFolderRel { get; set; }
         public string AppThemeVersionFolderMapPath { get; set; }
         public List<string> VersionList { get; set; }
+        public Dictionary<string, string> VersionListDict { get; set; }
         public double LatestVersion { get; set; }
         public string LatestVersionFolder { get; set; }
         public string ImageFolderMapPath { get; set; }

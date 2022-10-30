@@ -76,7 +76,6 @@ namespace Rocket.AppThemes.Components
             SelectedSystemKey = "";
             ClearCacheLists();
         }
-
         public string AppThemeProjectNameFolderRootRel { get; set; }
         public string AppThemeProjectNameFolderRootMapPath { get; set; }
         public string AppSystemThemeFolderRootRel { get; set; }
@@ -92,12 +91,22 @@ namespace Rocket.AppThemes.Components
                 var rtn = new Dictionary<string, string>();
                 foreach (var a in List)
                 {
-                    var n = a.AppThemeFolder;
-                    if (n == "") n = a.AppThemeFolder;
+                    var n = a.AppThemeFolder.Replace(SelectedSystemKey + ".","");
                     rtn.Add(a.AppThemeFolder, n);
                 }
                 return rtn;
             }
+        }
+        public Dictionary<string, string> NameListDict(bool addEmpty = true)
+        {
+            var rtn = new Dictionary<string, string>();
+            if (addEmpty) rtn.Add("", "");
+            foreach (var a in List)
+            {
+                var n = a.AppThemeFolder.Replace(SelectedSystemKey + ".", "");
+                rtn.Add(a.AppThemeFolder, n);
+            }
+            return rtn;
         }
         public List<AppThemeLimpet> List {
             get

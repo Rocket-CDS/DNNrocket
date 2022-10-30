@@ -33,6 +33,7 @@ namespace DNNrocket.AppThemes
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
+            object jsonOut = null;
             var strOut = "ERROR - Must be SuperUser"; // return ERROR if not matching commands.
 
             paramCmd = InitCmd(paramCmd, systemInfo, interfaceInfo, postInfo, paramInfo, langRequired);
@@ -40,7 +41,6 @@ namespace DNNrocket.AppThemes
             var sk = _paramInfo.GetXmlProperty("genxml/remote/securitykeyedit");
             if (UserUtils.IsSuperUser() || _portalData.SecurityKeyEdit == sk)
             {
-
 
                 AssignEditLang();
 
@@ -140,6 +140,13 @@ namespace DNNrocket.AppThemes
                                 strOut = GetAppStoreList();
                                 break;
 
+                            case "rocketapptheme_versionjson":
+                                strOut = "";
+                                var appThemeName = _postInfo.GetXmlProperty("genxml/hidden/activevalue");
+                                var appTheme = new AppThemeLimpet(_portalData.PortalId, _systemData, appThemeName);
+                                jsonOut = appTheme.VersionListJson();
+                                break;
+
                         }
 
                         break;
@@ -150,7 +157,7 @@ namespace DNNrocket.AppThemes
                 strOut = ReloadPage();
             }
 
-            return DNNrocketUtils.ReturnString(strOut);
+            return DNNrocketUtils.ReturnString(strOut, jsonOut);
         }
 
 

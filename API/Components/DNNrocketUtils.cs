@@ -86,7 +86,7 @@ namespace DNNrocketAPI.Components
             }
             return c;
         }
-        public static Dictionary<string, object> ReturnString(string strOut, string jsonOut = null)
+        public static Dictionary<string, object> ReturnString(string strOut, object jsonOut = null)
         {
             var rtnDic = new Dictionary<string, object>();
             rtnDic.Add("outputhtml", strOut);
