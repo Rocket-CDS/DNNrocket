@@ -975,4 +975,7 @@ settings
   <data name="imagelimit.Text" xml:space="preserve">
     <value>Image Limit</value>
   </data>
+  <data name="template.Text" xml:space="preserve">
+    <value>Template</value>
+  </data>
 </root>
