@@ -142,10 +142,18 @@ namespace DNNrocket.AppThemes
 
                             case "rocketapptheme_versionjson":
                                 strOut = "";
-                                var appThemeName = _postInfo.GetXmlProperty("genxml/hidden/activevalue");
-                                var appTheme = new AppThemeLimpet(_portalData.PortalId, _systemData, appThemeName);
+                                var appThemeFolder = _postInfo.GetXmlProperty("genxml/hidden/activevalue");
+                                var projectName = _postInfo.GetXmlProperty("genxml/select/selectedprojectname");
+                                var appTheme = new AppThemeLimpet(_portalData.PortalId, appThemeFolder, "", projectName);
                                 jsonOut = appTheme.VersionListJson();
                                 break;
+                            case "rocketapptheme_appthemejson":
+                                strOut = "";
+                                var projectName2 = _postInfo.GetXmlProperty("genxml/hidden/activevalue");
+                                var appThemeList2 = new AppThemeDataList(projectName2);
+                                appThemeList2.SelectedSystemKey = _paramInfo.GetXmlProperty("genxml/hidden/systemkey");
+                                jsonOut = appThemeList2.NameListJson();
+                                break;                                
 
                         }
 

@@ -108,6 +108,23 @@ namespace Rocket.AppThemes.Components
             }
             return rtn;
         }
+        public object NameListJson()
+        {
+            var jsonList = new List<ValuePair>();
+            if (NameList != null)
+            {
+                var valuePair = new ValuePair();
+                foreach (var i in NameList)
+                {
+                    valuePair = new ValuePair();
+                    valuePair.Key = i.Key;
+                    valuePair.Value = i.Value;
+                    jsonList.Add(valuePair);
+                }
+            }
+            return jsonList;
+        }
+
         public List<AppThemeLimpet> List {
             get
             {
