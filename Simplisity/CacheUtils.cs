@@ -96,6 +96,8 @@ namespace Simplisity
 
         private static string GetMd5Hash(string input)
         {
+            if (input.Length < 200) return input;  // Only use MD5 if we have a large key. It throws stackoverflow from scheudler. + I'm unsure about the collisions that can happen.
+
             var md5 = MD5.Create();
             var inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
             var hash = md5.ComputeHash(inputBytes);
