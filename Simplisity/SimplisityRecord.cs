@@ -792,77 +792,74 @@ namespace Simplisity
 
         private void internalReplaceXmlNode(string xPath, string newValue, bool cdata)
         {
-            if (!string.IsNullOrEmpty(XMLData))
+            var nod = XMLDoc.SelectSingleNode(xPath);
+            if ((nod != null))
             {
-                var nod = XMLDoc.SelectSingleNode(xPath);
-                if ((nod != null))
+                if (newValue == "") cdata = false; //stops invalid "<" char error
+                if (cdata)
                 {
-                    if (newValue == "") cdata = false; //stops invalid "<" char error
-                    if (cdata)
-                    {
-                        nod.InnerXml = "<![CDATA[" + newValue + "]]>";
-                    }
-                    else
-                    {
-                        nod.InnerXml = newValue;
-                    }
+                    nod.InnerXml = "<![CDATA[" + newValue + "]]>";
                 }
                 else
                 {
-                    string[] partsOfXPath = xPath.Trim('/').Split('/');
+                    nod.InnerXml = newValue;
+                }
+            }
+            else
+            {
+                string[] partsOfXPath = xPath.Trim('/').Split('/');
 
-                    // check for root element
-                    XmlElement rootNode = XMLDoc.DocumentElement;
-                    // if root does not exist create it, base on the first element of the xml.
-                    if (rootNode == null) XMLDoc.CreateElement(partsOfXPath[0]);
-                    // if xpath root does not match document root element, make xpath root same as document root. (To make it valid XmlDocument and avoid multiple root nodes)
-                    if (partsOfXPath.Length >= 1 && rootNode != null) partsOfXPath[0] = rootNode.Name;
+                // check for root element
+                XmlElement rootNode = XMLDoc.DocumentElement;
+                // if root does not exist create it, base on the first element of the xml.
+                if (rootNode == null) XMLDoc.CreateElement(partsOfXPath[0]);
+                // if xpath root does not match document root element, make xpath root same as document root. (To make it valid XmlDocument and avoid multiple root nodes)
+                if (partsOfXPath.Length >= 1 && rootNode != null) partsOfXPath[0] = rootNode.Name;
 
-                    // Build full path so we can append. 
-                    var xPathTest = "";
-                    var xPathPrevious = "";
-                    var lp = 1;
-                    foreach (var p in partsOfXPath)
+                // Build full path so we can append. 
+                var xPathTest = "";
+                var xPathPrevious = "";
+                var lp = 1;
+                foreach (var p in partsOfXPath)
+                {
+                    if (lp < partsOfXPath.Length)
                     {
-                        if (lp < partsOfXPath.Length)
+                        xPathTest += "/" + p;
+                        xPathTest = xPathTest.TrimStart('/');
+                        var nodtest = XMLDoc.SelectSingleNode(xPathTest);
+                        if ((nodtest == null))
                         {
-                            xPathTest += "/" + p;
-                            xPathTest = xPathTest.TrimStart('/');
-                            var nodtest = XMLDoc.SelectSingleNode(xPathTest);
-                            if ((nodtest == null))
+                            var elemtest = XMLDoc.CreateElement(p);
+                            if (xPathPrevious == "") xPathPrevious = "/";
+                            var selectSingleNodeTest = XMLDoc.SelectSingleNode(xPathPrevious);
+                            if (selectSingleNodeTest != null)
                             {
-                                var elemtest = XMLDoc.CreateElement(p);
-                                if (xPathPrevious == "") xPathPrevious = "/";
-                                var selectSingleNodeTest = XMLDoc.SelectSingleNode(xPathPrevious);
-                                if (selectSingleNodeTest != null)
-                                {
-                                    selectSingleNodeTest.AppendChild(elemtest);
-                                }
+                                selectSingleNodeTest.AppendChild(elemtest);
                             }
-                            xPathPrevious = xPathTest;
                         }
-                        lp += 1;
+                        xPathPrevious = xPathTest;
                     }
+                    lp += 1;
+                }
 
 
 
-                    //Create a new node.
-                    var elem = XMLDoc.CreateElement(partsOfXPath[partsOfXPath.Length - 1]);
-                    if (cdata)
-                    {
-                        elem.InnerXml = "<![CDATA[" + newValue + "]]>";
-                    }
-                    else
-                    {
-                        elem.InnerXml = newValue;
-                    }
+                //Create a new node.
+                var elem = XMLDoc.CreateElement(partsOfXPath[partsOfXPath.Length - 1]);
+                if (cdata)
+                {
+                    elem.InnerXml = "<![CDATA[" + newValue + "]]>";
+                }
+                else
+                {
+                    elem.InnerXml = newValue;
+                }
 
-                    //Add the node to the document.
-                    var selectSingleNode = XMLDoc.SelectSingleNode(GeneralUtils.ReplaceLastOccurrence(xPath, partsOfXPath[partsOfXPath.Length - 1], "").TrimEnd('/'));
-                    if (selectSingleNode != null)
-                    {
-                        selectSingleNode.AppendChild(elem);
-                    }
+                //Add the node to the document.
+                var selectSingleNode = XMLDoc.SelectSingleNode(GeneralUtils.ReplaceLastOccurrence(xPath, partsOfXPath[partsOfXPath.Length - 1], "").TrimEnd('/'));
+                if (selectSingleNode != null)
+                {
+                    selectSingleNode.AppendChild(elem);
                 }
             }
         }
