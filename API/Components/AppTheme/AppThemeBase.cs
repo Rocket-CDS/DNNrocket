@@ -431,10 +431,10 @@ namespace DNNrocketAPI.Components
         public void PopulateVersionList()
         {
             LatestVersionFolder = "1.0";
+            VersionList = new List<string>();
+            VersionListDict = new Dictionary<string, string>();
             if (AppThemeFolder != null && AppThemeFolder != "")
             {
-                VersionList = new List<string>();
-                VersionListDict = new Dictionary<string, string>();
                 if (System.IO.Directory.Exists(AppThemeFolderMapPath))
                 {
                     var dirlist = System.IO.Directory.GetDirectories(AppThemeFolderMapPath);

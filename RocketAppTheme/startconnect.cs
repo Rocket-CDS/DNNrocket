@@ -151,7 +151,7 @@ namespace DNNrocket.AppThemes
                                 strOut = "";
                                 var projectName2 = _postInfo.GetXmlProperty("genxml/hidden/activevalue");
                                 var appThemeList2 = new AppThemeDataList(projectName2);
-                                appThemeList2.SelectedSystemKey = _paramInfo.GetXmlProperty("genxml/hidden/systemkey");
+                                appThemeList2.SelectedSystemKey = _paramInfo.GetXmlProperty("genxml/hidden/selectedsystemkey");
                                 jsonOut = appThemeList2.NameListJson();
                                 break;                                
 
