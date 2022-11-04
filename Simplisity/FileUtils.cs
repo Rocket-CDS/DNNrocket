@@ -166,17 +166,10 @@ namespace Simplisity
         public static void AppendToLog(string logMapPathFolder, string logName, string logMessage)
         {
             var dstring = DateTime.Now.ToString("yyyy-MM-dd");
-            var logfilename = logMapPathFolder.TrimEnd('\\') + "\\" + dstring + "_" + Path.GetFileNameWithoutExtension(logName) + ".txt";
-            if (!File.Exists(logfilename)) SaveFile(logfilename, "START" + Environment.NewLine);
-            using (StreamWriter w = File.AppendText(logfilename))
-            {
-                Log(DateTime.Now.ToString("d/MM/yyyy HH:mm:ss") + " :  " + logMessage, w);
-            }
-
-        }
-        public static void Log(string logMessage, TextWriter w)
-        {
-            w.WriteLine($"{logMessage}");
+            var logfilename = logMapPathFolder.TrimEnd('\\') + "\\" + dstring + "_" + Path.GetFileNameWithoutExtension(logName) + ".log.resources";
+            var lines = new List<string>();
+            lines.Add(DateTime.Now.ToString("d/MM/yyyy HH:mm:ss") + " :  " + logMessage);
+            File.AppendAllLines(logfilename, lines);
         }
 
         public static bool CompareAreSame(string fileMapPath1, string fileMapPath2)
