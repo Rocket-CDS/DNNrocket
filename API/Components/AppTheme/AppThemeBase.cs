@@ -430,6 +430,8 @@ namespace DNNrocketAPI.Components
 
         public void PopulateVersionList()
         {
+            VersionList = new List<string>();
+            VersionListDict = new Dictionary<string, string>();
             LatestVersionFolder = "1.0";
             VersionList = new List<string>();
             VersionListDict = new Dictionary<string, string>();
