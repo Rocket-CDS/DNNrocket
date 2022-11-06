@@ -50,15 +50,22 @@
                     }
                 </td>
                 <td style="vertical-align: middle;">
-                    @if (info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey))
+                    @if (!PagesUtils.PageExists(portalData.PortalId, systemData.SystemKey, PagesUtils.GetPageByTabPath(portalData.PortalId, "SysAdmin")))
                     {
-                        <a href="@(portalData.EngineUrlWithProtocol)/SysAdmin/@(systemData.SystemKey)" target="_blank" class="w3-button" style="color: black; text-decoration: none; ">@ButtonIcon(ButtonTypes.admin)</a>
+                        <span>&nbsp;</span>
                     }
                     else
                     {
-                        <div class="w3-button w3-text-grey">
-                            @ButtonIcon(ButtonTypes.admin)
-                        </div>
+                        if (info.GetXmlPropertyBool("genxml/systems/" + systemData.SystemKey))
+                        {
+                            <a href="@(portalData.EngineUrlWithProtocol)/SysAdmin/@(systemData.SystemKey)" target="_blank" class="w3-button" style="color: black; text-decoration: none; ">@ButtonIcon(ButtonTypes.admin)</a>
+                        }
+                        else
+                        {
+                            <div class="w3-button w3-text-grey">
+                                @ButtonIcon(ButtonTypes.admin)
+                            </div>
+                        }
                     }
                 </td>
             </tr>
