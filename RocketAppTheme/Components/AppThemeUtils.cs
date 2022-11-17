@@ -22,13 +22,13 @@ namespace Rocket.AppThemes.Components
         {
             var cKey = "AppThemeLimpet*" + systemKey + "*" + appThemeFolder + "*" + versionFolder + "*" + PortalUtils.GetPortalId() + "-" + org;
             var systemData = new SystemLimpet(systemKey);
-            var appTheme = (AppThemeLimpet)CacheUtilsDNN.GetCache(cKey);
+            var appTheme = (AppThemeLimpet)CacheUtils.GetCache(cKey);
             lock (_cacheLock1)
             {
                 if (appTheme == null)
                 {
                     appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), appThemeFolder, versionFolder, org);
-                    CacheUtilsDNN.SetCache(cKey, appTheme);
+                    CacheUtils.SetCache(cKey, appTheme);
                 }
             }
             return appTheme;
@@ -36,13 +36,13 @@ namespace Rocket.AppThemes.Components
         public static AppThemeRocketApiLimpet AppThemeRocketApi(int portalId)
         {
             var cacheKey = "AppThemeRocketApi" + portalId;
-            var appTheme = (AppThemeRocketApiLimpet)CacheUtilsDNN.GetCache(cacheKey);
+            var appTheme = (AppThemeRocketApiLimpet)CacheUtils.GetCache(cacheKey);
             lock (_cacheLock1)
             {
                 if (appTheme == null)
                 {
                     appTheme = new AppThemeRocketApiLimpet(portalId);
-                    CacheUtilsDNN.SetCache(cacheKey, appTheme);
+                    CacheUtils.SetCache(cacheKey, appTheme);
                 }
             }
             return appTheme;
@@ -50,13 +50,13 @@ namespace Rocket.AppThemes.Components
         public static AppThemeDNNrocketLimpet AppThemeDNNrocket(int portalId, string systemKey)
         {
             var cacheKey = "AppThemeDNNrocket" + portalId + "*" + systemKey;
-            var appTheme = (AppThemeDNNrocketLimpet)CacheUtilsDNN.GetCache(cacheKey);
+            var appTheme = (AppThemeDNNrocketLimpet)CacheUtils.GetCache(cacheKey);
             lock (_cacheLock1)
             {
                 if (appTheme == null)
                 {
                     appTheme = new AppThemeDNNrocketLimpet(portalId, systemKey);
-                    CacheUtilsDNN.SetCache(cacheKey, appTheme);
+                    CacheUtils.SetCache(cacheKey, appTheme);
                 }
             }
             return appTheme;
@@ -65,13 +65,13 @@ namespace Rocket.AppThemes.Components
         public static AppThemeModule AppThemeModule(int moduleId, string systemKey)
         {
             var cacheKey = "AppThemeModule" + moduleId + "*" + systemKey;
-            var appTheme = (AppThemeModule)CacheUtilsDNN.GetCache(cacheKey);
+            var appTheme = (AppThemeModule)CacheUtils.GetCache(cacheKey);
             lock (_cacheLock1)
             {
                 if (appTheme == null)
                 {
                     appTheme = new AppThemeModule(moduleId, systemKey);
-                    CacheUtilsDNN.SetCache(cacheKey, appTheme);
+                    CacheUtils.SetCache(cacheKey, appTheme);
                 }
             }
             return appTheme;
@@ -80,13 +80,13 @@ namespace Rocket.AppThemes.Components
         public static AppThemeSystemLimpet AppThemeSystem(int portalId, string systemKey)
         {
             var cacheKey = "AppThemeSystem" + portalId + "*" + systemKey;
-            var appTheme = (AppThemeSystemLimpet)CacheUtilsDNN.GetCache(cacheKey);
+            var appTheme = (AppThemeSystemLimpet)CacheUtils.GetCache(cacheKey);
             lock (_cacheLock1)
             {
                 if (appTheme == null)
                 {
                     appTheme = new AppThemeSystemLimpet(portalId, systemKey);
-                    CacheUtilsDNN.SetCache(cacheKey, appTheme);
+                    CacheUtils.SetCache(cacheKey, appTheme);
                 }
             }
             return appTheme;
@@ -95,13 +95,13 @@ namespace Rocket.AppThemes.Components
         public static AppThemeLimpet AppThemeDefault(int portalId, SystemLimpet systemData, string appThemeFolder, string versionFolder)
         {
             var cKey = "AppThemeLimpet*" + appThemeFolder + "*" + versionFolder + "*" + portalId + "-" + systemData.SystemKey;
-            var appTheme = (AppThemeLimpet)CacheUtilsDNN.GetCache(cKey);
+            var appTheme = (AppThemeLimpet)CacheUtils.GetCache(cKey);
             lock (_cacheLock1)
             {
                 if (appTheme == null)
                 {
                     appTheme = new AppThemeLimpet(portalId, systemData, appThemeFolder, versionFolder);
-                    CacheUtilsDNN.SetCache(cKey, appTheme);
+                    CacheUtils.SetCache(cKey, appTheme);
                 }
             }
             return appTheme;
@@ -110,13 +110,13 @@ namespace Rocket.AppThemes.Components
         public static AppThemeLimpet AppTheme(int portalId, string appThemeFolder, string versionFolder, string org)
         {
             var cKey = "AppThemeLimpet*" + appThemeFolder + "*" + versionFolder + "*" + portalId + "-" + org;
-            var appTheme = (AppThemeLimpet)CacheUtilsDNN.GetCache(cKey);
+            var appTheme = (AppThemeLimpet)CacheUtils.GetCache(cKey);
             lock (_cacheLock1)
             {
                 if (appTheme == null)
                 {
                     appTheme = new AppThemeLimpet(portalId, appThemeFolder, versionFolder, org);
-                    CacheUtilsDNN.SetCache(cKey, appTheme);
+                    CacheUtils.SetCache(cKey, appTheme);
                 }
             }
             return appTheme;
@@ -144,7 +144,7 @@ namespace Rocket.AppThemes.Components
         //public static List<SimplisityRecord> GetGitHubAppThemes(string projectThemeName)
         //{
         //    var cKey = "GetGitHubAppThemes*" + projectThemeName;
-        //    var rtnList = (List<SimplisityRecord>)CacheUtilsDNN.GetCache(cKey);
+        //    var rtnList = (List<SimplisityRecord>)CacheUtils.GetCache(cKey);
         //    if (rtnList != null) return rtnList;
         //    lock (_cacheLock2)
         //    {
@@ -165,7 +165,7 @@ namespace Rocket.AppThemes.Components
         //                    rtnList.Add(sRec);
         //                }
         //            }
-        //            CacheUtilsDNN.SetCache(cKey, rtnList);
+        //            CacheUtils.SetCache(cKey, rtnList);
         //        }
         //        catch (Exception)
         //        {
@@ -188,12 +188,12 @@ namespace Rocket.AppThemes.Components
         //        }
         //    }
         //    if (newFolder) DNNrocketUtils.RecycleApplicationPool();// recycle so we pickup new AppTheme Folders.
-        //    CacheUtilsDNN.ClearAllCache();
+        //    CacheUtils.ClearAllCache();
         //}
         public static void DownloadGitHubAppTheme(string projectThemeUrl, string downloadFolderMapPath)
         {
             DownloadRepoFromGitHub(projectThemeUrl + "/archive/refs/heads/main.zip", downloadFolderMapPath);
-            CacheUtilsDNN.ClearAllCache();
+            CacheUtils.ClearAllCache();
         }
 
         private static void DownloadRepoFromGitHub(string projectThemeUrl, string downloadFolderMapPath)

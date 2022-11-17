@@ -493,13 +493,16 @@ namespace DNNrocketAPI.ApiControllers
         {
             try
             {
+                var rtn = (string)CacheUtils.GetCache("sidemenu" + systemkey + UserUtils.GetCurrentUserId(), PortalUtils.GetCurrentPortalId().ToString());
+                if (rtn != null) return rtn;
+
                 var systemData = new SystemLimpet(systemkey);
                 if (!systemData.Exists) return "ERROR: No SystemKey, Missing system.rules";
 
                 var template = sInfo.GetXmlProperty("genxml/hidden/template");
                 if (template == "") template = "SideMenu.cshtml";
 
-                var appThemeSystem = new AppThemeSystemLimpet(systemkey);
+                var appThemeSystem = new AppThemeSystemLimpet(PortalUtils.GetCurrentPortalId(), systemkey);
                 var razorTempl = appThemeSystem.GetTemplate(template);
                 if (razorTempl == "")
                 {
@@ -510,6 +513,7 @@ namespace DNNrocketAPI.ApiControllers
                 dataObjects.Add("systemdata",systemData);
                 var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, dataObjects, null, _sessionParams, true);
                 if (pr.ErrorMsg != "") return pr.ErrorMsg;
+                CacheUtils.SetCache("sidemenu" + systemkey + UserUtils.GetCurrentUserId(), pr.RenderedText, PortalUtils.GetCurrentPortalId().ToString());
                 return pr.RenderedText;
             }
             catch (Exception ex)
@@ -596,7 +600,7 @@ namespace DNNrocketAPI.ApiControllers
         {
             CacheFileUtils.ClearFileCacheAllPortals();
             CacheUtils.ClearAllCache();
-            CacheUtilsDNN.ClearAllCache();
+            CacheUtils.ClearAllCache();
             DNNrocketUtils.ClearAllCache();
             return "OK";
         }

@@ -67,7 +67,7 @@ namespace Rocket.AppThemes.Components
         public void ClearCacheLists()
         {
             var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath + "*" + SelectedSystemKey;
-            CacheUtilsDNN.RemoveCache(cachekey);
+            CacheUtils.RemoveCache(cachekey);
             PopulateAppThemeList();
         }
 
@@ -129,13 +129,13 @@ namespace Rocket.AppThemes.Components
             get
             {
                 var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath + "*" + SelectedSystemKey;
-                if (CacheUtilsDNN.GetCache(cachekey) == null) return new List<AppThemeLimpet>();
-                return (List<AppThemeLimpet>)CacheUtilsDNN.GetCache(cachekey);
+                if (CacheUtils.GetCache(cachekey) == null) return new List<AppThemeLimpet>();
+                return (List<AppThemeLimpet>)CacheUtils.GetCache(cachekey);
             }
             set
             {
                 var cachekey = "AppThemeDataList*" + AppProjectThemesFolderMapPath + "*" + SelectedSystemKey;
-                CacheUtilsDNN.SetCache(cachekey, value);
+                CacheUtils.SetCache(cachekey, value);
             }
         }
 

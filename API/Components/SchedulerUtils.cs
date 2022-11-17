@@ -55,7 +55,7 @@ namespace DNNrocketAPI.Components
                     globalData.SchedulerIsEnabled = true;
                     globalData.Update();
 
-                    CacheUtilsDNN.ClearAllCache();
+                    CacheUtils.ClearAllCache();
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace DNNrocketAPI.Components
                 globalData.SchedulerIsEnabled = false;
                 globalData.Update();
 
-                CacheUtilsDNN.ClearAllCache();
+                CacheUtils.ClearAllCache();
             }
         }
         public static void SchedulerRun()
@@ -87,7 +87,7 @@ namespace DNNrocketAPI.Components
             if (s != null)
             {
                 scheduler.RunScheduleItemNow(s);
-                CacheUtilsDNN.ClearAllCache();
+                CacheUtils.ClearAllCache();
             }
         }
 
@@ -106,7 +106,7 @@ namespace DNNrocketAPI.Components
                 globalData.SchedulerIsEnabled = enabled;
                 globalData.Update();
 
-                CacheUtilsDNN.ClearAllCache();
+                CacheUtils.ClearAllCache();
             }
         }
 

@@ -197,7 +197,7 @@ namespace Rocket.AppThemes.Components
         {
             var projectThemeUrl = ProjectUrl(projectName);
             DownloadRepoFromGitHub(projectName, projectThemeUrl.ToLower().Replace(".git","") + "/archive/refs/heads/main.zip", GitHubToken(projectName));
-            CacheUtilsDNN.ClearAllCache();
+            CacheUtils.ClearAllCache();
         }
         /// <summary>
         /// 

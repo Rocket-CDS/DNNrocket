@@ -40,7 +40,7 @@ namespace RocketPortal.API
                     {
                         CacheFileUtils.ClearFileCacheAllPortals();
                         CacheUtils.ClearAllCache();
-                        CacheUtilsDNN.ClearAllCache();
+                        CacheUtils.ClearAllCache();
                         DNNrocketUtils.ClearAllCache();
                     }
                     strOut = "OK";

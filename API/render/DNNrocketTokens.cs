@@ -193,11 +193,11 @@ namespace DNNrocketAPI.render
                     var assembly = p.Assembly;
                     var nameSpaceClass = p.NameSpaceClass;
                     var cacheKeyRazor = assembly + "," + nameSpaceClass;
-                    var razorprov = (RazorInterface)CacheUtilsDNN.GetCache(cacheKeyRazor);
+                    var razorprov = (RazorInterface)CacheUtils.GetCache(cacheKeyRazor);
                     if (razorprov == null)
                     {
                         razorprov = RazorInterface.Instance(assembly, nameSpaceClass);
-                        CacheUtilsDNN.SetCache(cacheKeyRazor, razorprov);
+                        CacheUtils.SetCache(cacheKeyRazor, razorprov);
                     }
                     strOut = razorprov.RenderToken(interfaceKey, cmd, model);
                 }

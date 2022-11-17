@@ -23,7 +23,7 @@ namespace DNNrocketAPI.Components
         private RocketInterface _rocketInterface;
         static ConcurrentDictionary<string, bool> _commandSecurity;  // thread safe dictionary.
         private string _defaultFileRelPath;
-
+        private SimplisityInfo _info;
         private const RegexOptions RxOptions = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled;
         
         private static readonly Regex[] RxListStrings = new[]
@@ -104,17 +104,18 @@ namespace DNNrocketAPI.Components
                 _tabid = tabid;
                 _rocketInterface = rocketInterface;
                 ValidateUser();
-                Info = (SimplisityInfo)CacheUtilsDNN.GetCache(_defaultFileRelPath);
-                if (Info == null)
+                _info = (SimplisityInfo)CacheUtils.GetCache(_defaultFileRelPath);
+                if (_info == null)
                 {
                     var xmlString = FileUtils.ReadFile(filenamepath);
-                    Info = new SimplisityInfo();
-                    Info.XMLData = xmlString;
+                    _info = new SimplisityInfo();
+                    _info.XMLData = xmlString;
 
                     // check for plugin commands
                     var pluginList = SystemData.GetInterfaceList();
                     foreach (var p in pluginList)
                     {
+                        LogUtils.LogSystem(SystemData.SystemKey + " - " + p.InterfaceKey);
                         var pluginFileRelPath = p.TemplateRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
                         if (pluginFileRelPath != _defaultFileRelPath)
                         {
@@ -125,24 +126,24 @@ namespace DNNrocketAPI.Components
                             var cmdNodeList2 = sRec.XMLDoc.SelectNodes("root/commands/command");
                             foreach (XmlNode nod in cmdNodeList2)
                             {
-                                Info.AddXmlNode(nod.OuterXml, "command","root/commands") ;
+                                _info.AddXmlNode(nod.OuterXml, "command","root/commands") ;
                             }
                         }
 
                     }
 
-                    CacheUtilsDNN.SetCache(_defaultFileRelPath, Info);
+                    CacheUtils.SetCache(_defaultFileRelPath, _info);
                }
-                _commandSecurity = (ConcurrentDictionary<string, bool>)CacheUtilsDNN.GetCache(_systemKey + "Security" + _userId);
+                _commandSecurity = (ConcurrentDictionary<string, bool>)CacheUtils.GetCache(_systemKey + "Security" + _userId);
                 if (_commandSecurity == null)
                 {
                     _commandSecurity = new ConcurrentDictionary<string, bool>();
-                    var cmdNodeList = Info.XMLDoc.SelectNodes("root/commands/command");
+                    var cmdNodeList = _info.XMLDoc.SelectNodes("root/commands/command");
                     foreach (XmlNode nod in cmdNodeList)
                     {
                         AddCommand(nod.SelectSingleNode("cmd").InnerText, Convert.ToBoolean(nod.SelectSingleNode("action").InnerText));
                     }
-                    CacheUtilsDNN.SetCache(_systemKey + "Security" + _userId, _commandSecurity);
+                    CacheUtils.SetCache(_systemKey + "Security" + _userId, _commandSecurity);
                 }
             }
             catch (Exception ex)
@@ -151,7 +152,7 @@ namespace DNNrocketAPI.Components
             }
         }
 
-        public SimplisityInfo Info { get; set; }
+        public SimplisityInfo Info { get { return _info; } }
         public SystemLimpet SystemData { get; set; }
 
         /// <summary>
@@ -261,14 +262,14 @@ namespace DNNrocketAPI.Components
         }
         public string Get(string xpath)
         {
-            return Info.GetXmlProperty(xpath);
+            return _info.GetXmlProperty(xpath);
         }
 
         //defaults
         public Dictionary<string, string> ArticleOrderBy()
         {
             var rtn = new Dictionary<string, string>();
-            var nodList = Info.XMLDoc.SelectNodes("root/sqlorderby/article/*");
+            var nodList = _info.XMLDoc.SelectNodes("root/sqlorderby/article/*");
             if (nodList != null)
             {
                 foreach (XmlNode nod in nodList)
@@ -281,7 +282,7 @@ namespace DNNrocketAPI.Components
         public Dictionary<string, string> PortalCatalogLinks()
         {
             var rtn = new Dictionary<string, string>();
-            var nodList = Info.XMLDoc.SelectNodes("root/pageslinks/*");
+            var nodList = _info.XMLDoc.SelectNodes("root/pageslinks/*");
             if (nodList != null)
             {
                 foreach (XmlNode nod in nodList)

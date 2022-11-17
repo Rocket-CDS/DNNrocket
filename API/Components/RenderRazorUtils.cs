@@ -65,13 +65,13 @@ namespace DNNrocketAPI.Components
                 }
                 Engine.Razor = service;
 
-                var israzorCached = CacheUtilsDNN.GetCache(razorTempl); // get a cache flag for razor compile.
+                var israzorCached = CacheUtils.GetCache(razorTempl); // get a cache flag for razor compile.
                 if (israzorCached == null || (string)israzorCached != razorTempl)
                 {
                     try
                     {
                         processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                        CacheUtilsDNN.SetCache(razorTempl, razorTempl);
+                        CacheUtils.SetCache(razorTempl, razorTempl);
                     }
                     catch (Exception ex)
                     {
@@ -94,7 +94,7 @@ namespace DNNrocketAPI.Components
                         try
                         {
                             processResult.RenderedText = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                            CacheUtilsDNN.SetCache(razorTempl, razorTempl);
+                            CacheUtils.SetCache(razorTempl, razorTempl);
                         }
                         catch (Exception ex1)
                         {
@@ -109,7 +109,7 @@ namespace DNNrocketAPI.Components
             }
             catch (Exception ex)
             {
-                CacheUtilsDNN.ClearAllCache();
+                CacheUtils.ClearAllCache();
                 processResult.RenderedText = "";
                 processResult.StatusCode = "03";
                 processResult.ErrorMsg = ex.ToString();
@@ -124,7 +124,7 @@ namespace DNNrocketAPI.Components
         {
             foreach (var f in Directory.GetFiles(folderMapPath,"*.cshtml", SearchOption.AllDirectories))
             {
-                var c = CacheUtilsDNN.GetCache(f);
+                var c = CacheUtils.GetCache(f);
                 if (c == null )
                 {
                     var razorTempl = FileUtils.ReadFile(f);
@@ -137,7 +137,7 @@ namespace DNNrocketAPI.Components
                     {
                         // ignore, expect to fail on some templates
                     }
-                    CacheUtilsDNN.SetCache(f, hashCacheKey);
+                    CacheUtils.SetCache(f, hashCacheKey);
                 }
             }
         }
@@ -169,12 +169,12 @@ namespace DNNrocketAPI.Components
                 Engine.Razor = service;
                 var hashCacheKey = GeneralUtils.GetMd5Hash(razorTempl);
 
-                var israzorCached = CacheUtilsDNN.GetCache(razorTempl); // get a cache flag for razor compile.
+                var israzorCached = CacheUtils.GetCache(razorTempl); // get a cache flag for razor compile.
                 if (israzorCached == null || (string)israzorCached != razorTempl || debugMode)
                 {
                     errorPath += "RunCompile1>";
                     result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                    CacheUtilsDNN.SetCache(razorTempl, razorTempl);
+                    CacheUtils.SetCache(razorTempl, razorTempl);
                 }
                 else
                 {
@@ -188,14 +188,14 @@ namespace DNNrocketAPI.Components
                         errmsg = ex.ToString();
                         errorPath += "RunCompile2>";
                         result = Engine.Razor.RunCompile(razorTempl, hashCacheKey, null, model);
-                        CacheUtilsDNN.SetCache(razorTempl, razorTempl);
+                        CacheUtils.SetCache(razorTempl, razorTempl);
                     }
                 }
 
             }
             catch (Exception ex)
             {
-                CacheUtilsDNN.ClearAllCache();
+                CacheUtils.ClearAllCache();
                 result = "CANNOT REBUILD TEMPLATE: errorPath=" + errorPath + " - " + ex.ToString() + " -------> " + result + " [" + errmsg + "]";
             }
 
@@ -351,7 +351,7 @@ namespace DNNrocketAPI.Components
         private static TemplateGetter GetTemplateEngine(string systemKey, string templateControlPath, string themeFolder, string lang, string versionFolder = "1.0", bool debugMode = false)
         {
             var cacheKey = templateControlPath + "*" + themeFolder + "*" + lang + "*" + versionFolder + "*" + debugMode + "*" + PortalUtils.GetPortalId();
-            var templCtrl = CacheUtilsDNN.GetCache(cacheKey);
+            var templCtrl = CacheUtils.GetCache(cacheKey);
             if (templCtrl == null)
             {
                 var controlMapPath = DNNrocketUtils.MapPath(templateControlPath);
@@ -360,7 +360,7 @@ namespace DNNrocketAPI.Components
                 if (!Directory.Exists(controlMapPath.TrimEnd('\\') + "\\" + themeFolderPath)) themeFolderPath = "Themes\\" + themeFolder;
                 var RocketThemes = PortalUtils.DNNrocketThemesDirectoryMapPath(-1);
                 templCtrl = new TemplateGetter(RocketThemes, themeFolderPath, controlMapPath, debugMode);
-                CacheUtilsDNN.SetCache(cacheKey, templCtrl);
+                CacheUtils.SetCache(cacheKey, templCtrl);
             }
             return (TemplateGetter)templCtrl;
         }

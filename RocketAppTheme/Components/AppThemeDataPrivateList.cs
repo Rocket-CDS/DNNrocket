@@ -24,14 +24,14 @@ namespace Rocket.AppThemes.Components
                 SelectedSystemKey = selectedsystemkey;
 
                 var cachekey = AppThemeListType + "*SystemFolders" + UserUtils.GetCurrentUserId();
-                if (useCache) SystemFolderList = (List<SystemLimpet>)CacheUtilsDNN.GetCache(cachekey);
+                if (useCache) SystemFolderList = (List<SystemLimpet>)CacheUtils.GetCache(cachekey);
                 if (SystemFolderList == null) PopulateSystemFolderList();
 
                 cachekey = AppThemeListType + "*" + UserUtils.GetCurrentUserId();
                 if (useCache)
                 {
-                    List = (List<SimplisityRecord>)CacheUtilsDNN.GetCache(cachekey);
-                    var cacheRtn = CacheUtilsDNN.GetCache(cachekey + "ERROR");
+                    List = (List<SimplisityRecord>)CacheUtils.GetCache(cachekey);
+                    var cacheRtn = CacheUtils.GetCache(cachekey + "ERROR");
                     if (cacheRtn == null)
                     {
                         Error = false;
@@ -91,11 +91,11 @@ namespace Rocket.AppThemes.Components
             //            }
 
             //            // ensure we have the image from the xml file
-            //            ////var onlineIndex = (OnlineAppThemeIndex)CacheUtilsDNN.GetCache(SelectedSystemKey + "_privateIndex");
+            //            ////var onlineIndex = (OnlineAppThemeIndex)CacheUtils.GetCache(SelectedSystemKey + "_privateIndex");
             //            ////if (onlineIndex == null)
             //            ////{
             //            ////    onlineIndex = new OnlineAppThemeIndex(SelectedSystemKey, "private");
-            //            ////    CacheUtilsDNN.SetCache(SelectedSystemKey + "_privateIndex", onlineIndex);
+            //            ////    CacheUtils.SetCache(SelectedSystemKey + "_privateIndex", onlineIndex);
             //            ////}
 
             //            //a.SetXmlProperty("genxml/hidden/logobase64", onlineIndex.GetLogoBase64String(appTheme.AppThemeFolder));
@@ -109,8 +109,8 @@ namespace Rocket.AppThemes.Components
             //        ErrorMsg = "";
             //    }
             //    var cachekey = AppThemeListType + "*" + UserUtils.GetCurrentUserId();
-            //    CacheUtilsDNN.SetCache(cachekey, List);
-            //    CacheUtilsDNN.SetCache(cachekey + "ERROR", Error);
+            //    CacheUtils.SetCache(cachekey, List);
+            //    CacheUtils.SetCache(cachekey + "ERROR", Error);
             }
         }
         public void PopulateSystemFolderList()
@@ -128,16 +128,16 @@ namespace Rocket.AppThemes.Components
             }
 
             var cachekey = AppThemeListType + "*SystemFolders" + UserUtils.GetCurrentUserId();
-            CacheUtilsDNN.SetCache(cachekey, SystemFolderList);
+            CacheUtils.SetCache(cachekey, SystemFolderList);
 
         }
         public void ClearCache()
         {
             SelectedSystemKey = "";
             var cachekey = AppThemeListType + "*" + UserUtils.GetCurrentUserId();
-            CacheUtilsDNN.RemoveCache(cachekey);
+            CacheUtils.RemoveCache(cachekey);
             cachekey = AppThemeListType + "*SystemFolders" + UserUtils.GetCurrentUserId();
-            CacheUtilsDNN.RemoveCache(cachekey);
+            CacheUtils.RemoveCache(cachekey);
         }
         public string SelectedSystemKey { get; set; }
         public List<SimplisityRecord> List { get; set; }

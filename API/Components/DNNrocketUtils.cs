@@ -801,7 +801,7 @@ namespace DNNrocketAPI.Components
         {
             if (lang == "") lang = GetCurrentCulture();
             var ckey = resourcePath + resourceKey + lang;
-            var obj = CacheUtilsDNN.GetCache(ckey);
+            var obj = CacheUtils.GetCache(ckey);
             if (obj != null) return (Dictionary<String, String>)obj;
 
             var rtnList = new Dictionary<String, String>();
@@ -840,7 +840,7 @@ namespace DNNrocketAPI.Components
                     }
                 }
 
-                CacheUtilsDNN.SetCache(ckey, rtnList);
+                CacheUtils.SetCache(ckey, rtnList);
             }
             return rtnList;
         }
@@ -1093,7 +1093,7 @@ namespace DNNrocketAPI.Components
         public static string GetModuleSystemKey(int moduleId, int tabId)
         {
             var cacheKey = "systemkey.moduleid" + moduleId + ".tabid" + tabId;
-            var systemKey = (string)CacheUtilsDNN.GetCache(cacheKey);
+            var systemKey = (string)CacheUtils.GetCache(cacheKey);
             if (systemKey == null)
             {
                 systemKey = "";
@@ -1104,7 +1104,7 @@ namespace DNNrocketAPI.Components
                 if (mlist.Length == 2)
                 {
                     systemKey = mlist[0];
-                    CacheUtilsDNN.SetCache(cacheKey, systemKey);
+                    CacheUtils.SetCache(cacheKey, systemKey);
                 }
             }
             return  systemKey;
@@ -1118,7 +1118,7 @@ namespace DNNrocketAPI.Components
         public static string GetModuleInterfaceKey(int moduleId, int tabId)
         {
             var cacheKey = "interfacekey.moduleid" + moduleId + ".tabid" + tabId;
-            var interfacekey = (string)CacheUtilsDNN.GetCache(cacheKey);
+            var interfacekey = (string)CacheUtils.GetCache(cacheKey);
             if (interfacekey == null)
             {
                 var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
@@ -1129,7 +1129,7 @@ namespace DNNrocketAPI.Components
                 if (mlist.Length == 2)
                 {
                     interfacekey = mlist[1];
-                    CacheUtilsDNN.SetCache(cacheKey, interfacekey);
+                    CacheUtils.SetCache(cacheKey, interfacekey);
                 }
             }
             return interfacekey;
@@ -1150,18 +1150,18 @@ namespace DNNrocketAPI.Components
         {
             var objCtrl = new DNNrocketController();
 
-            var systemInfo = (SimplisityInfo)CacheUtilsDNN.GetCache(systemkey + "modid" + moduleId);
+            var systemInfo = (SimplisityInfo)CacheUtils.GetCache(systemkey + "modid" + moduleId);
             if (systemInfo == null)
             {
                 systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
-                if (systemInfo != null) CacheUtilsDNN.SetCache(systemkey + "modid" + moduleId, systemInfo);
+                if (systemInfo != null) CacheUtils.SetCache(systemkey + "modid" + moduleId, systemInfo);
             }
             if (systemInfo == null && loadSystemXml)
             {
                 // no system data, so must be new install.
                 var sData = new SystemLimpetList(); // load XML files.
                 systemInfo = objCtrl.GetByGuidKey(-1, -1, "SYSTEM", systemkey);
-                if (systemInfo != null) CacheUtilsDNN.SetCache(systemkey + "modid" + moduleId, systemInfo);
+                if (systemInfo != null) CacheUtils.SetCache(systemkey + "modid" + moduleId, systemInfo);
             }
             return systemInfo;
         }
@@ -1283,11 +1283,11 @@ namespace DNNrocketAPI.Components
                     try
                     {
                         var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
-                        var ajaxprov = (EventInterface)CacheUtilsDNN.GetCache(cacheKey);
+                        var ajaxprov = (EventInterface)CacheUtils.GetCache(cacheKey);
                         if (ajaxprov == null)
                         {
                             ajaxprov = EventInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                            CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
+                            CacheUtils.SetCache(cacheKey, ajaxprov);
                         }
                         rtnDic = ajaxprov.BeforeEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
                     }
@@ -1311,11 +1311,11 @@ namespace DNNrocketAPI.Components
                     try
                     {
                         var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
-                        var ajaxprov = (EventInterface)CacheUtilsDNN.GetCache(cacheKey);
+                        var ajaxprov = (EventInterface)CacheUtils.GetCache(cacheKey);
                         if (ajaxprov == null)
                         {
                             ajaxprov = EventInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                            CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
+                            CacheUtils.SetCache(cacheKey, ajaxprov);
                         }
                         rtnDic = ajaxprov.AfterEvent(paramCmd, systemData, rocketInterface.Info, postInfo, paramInfo, editlang);
                     }

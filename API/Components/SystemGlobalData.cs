@@ -13,10 +13,10 @@ namespace DNNrocketAPI.Components
         public SystemGlobalData(bool cache = true)
         {
             _cacheKey = "rocketGLOBALSETTINGS";
-            if (cache) Info = (SimplisityInfo)CacheUtilsDNN.GetCache(_cacheKey);
+            if (cache) Info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
             if (Info == null) LoadData();
             if (AccessCode == "") RegenerateAccessCodes();
-            if (cache) ConfigInfo = (SimplisityRecord)CacheUtilsDNN.GetCache(_cacheKey + "ConfigInfo");
+            if (cache) ConfigInfo = (SimplisityRecord)CacheUtils.GetCache(_cacheKey + "ConfigInfo");
             if (ConfigInfo == null) LoadConfig();
         }
         public void Save(SimplisityInfo postInfo)
@@ -33,8 +33,8 @@ namespace DNNrocketAPI.Components
         {
             var objCtrl = new DNNrocketController();
             objCtrl.Update(Info);
-            CacheUtilsDNN.ClearAllCache();
-            CacheUtilsDNN.SetCache(_cacheKey, Info);
+            CacheUtils.ClearAllCache();
+            CacheUtils.SetCache(_cacheKey, Info);
         }
         private void LoadConfig()
         {
@@ -43,7 +43,7 @@ namespace DNNrocketAPI.Components
             var fullFileName = DNNrocketUtils.MapPath("/DesktopModules/DNNrocket").TrimEnd('\\') + "\\globalconfig.xml";
             var xmlData = FileUtils.ReadFile(fullFileName);
             if (xmlData != "") ConfigInfo.XMLData = xmlData;
-            CacheUtilsDNN.SetCache(_cacheKey + "ConfigInfo", ConfigInfo);
+            CacheUtils.SetCache(_cacheKey + "ConfigInfo", ConfigInfo);
         }
 
         private void LoadData()
@@ -59,7 +59,7 @@ namespace DNNrocketAPI.Components
 
                 Info.ItemID = objCtrl.Update(Info);
             }
-            CacheUtilsDNN.SetCache(_cacheKey, Info);
+            CacheUtils.SetCache(_cacheKey, Info);
         }
         public void RegenerateAccessCodes()
         {

@@ -27,7 +27,7 @@ namespace DNNrocketAPI.Components
 
 
             nodes = BuildNodes(nodes, portalSettings);
-            CacheUtilsDNN.SetCache(cachekey, nodes);
+            CacheUtils.SetCache(cachekey, nodes);
             return nodes;
         }
 

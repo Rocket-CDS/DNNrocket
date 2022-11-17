@@ -44,7 +44,7 @@ namespace DNNrocketAPI.Components
             // only put into memeory for users in Rocket Roles.
             if (UserUtils.IsEditor())
             {
-                Record = (SimplisityRecord)CacheUtilsDNN.GetCache(_guidKey);
+                Record = (SimplisityRecord)CacheUtils.GetCache(_guidKey);
                 if (Record == null)
                 {
                     if (_useDB)
@@ -99,7 +99,7 @@ namespace DNNrocketAPI.Components
                 {
                     Record.ItemID = _objCtrl.Update(Record, _tableName);
                 }                                       
-                CacheUtilsDNN.SetCache(_guidKey, Record);
+                CacheUtils.SetCache(_guidKey, Record);
             }
         }
         public void Update()
@@ -113,7 +113,7 @@ namespace DNNrocketAPI.Components
         }
         public void ClearCache()
         {
-            CacheUtilsDNN.RemoveCache(_guidKey);
+            CacheUtils.RemoveCache(_guidKey);
         }
         public void Set(string nodename,string value, string systemKey = "", System.TypeCode DataTyp = System.TypeCode.String)
         {

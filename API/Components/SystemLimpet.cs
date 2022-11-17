@@ -17,11 +17,11 @@ namespace DNNrocketAPI.Components
             Record = new SimplisityRecord();
             SystemKey = systemKey.ToLower();
             GetSystemRelPath();
-            Record = (SimplisityRecord)CacheUtilsDNN.GetCache(systemKey); // use cache for SystemKey read.
+            Record = (SimplisityRecord)CacheUtils.GetCache(systemKey); // use cache for SystemKey read.
             if (Record == null || Record.GetXmlProperty("genxml/systemkey") == "")
             {
                 Record = GetConfig();
-                CacheUtilsDNN.SetCache(systemKey, Record);
+                CacheUtils.SetCache(systemKey, Record);
             }
             InitSystem();
         }

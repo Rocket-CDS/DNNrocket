@@ -602,7 +602,7 @@ namespace DNNrocketAPI
 
         public SimplisityRecord GetRecord(string GuidKey, string typeCode, int moduleId = -1, bool readOnly = false, string tableName = "DNNrocket")
         {
-            //CacheUtilsDNN.ClearAllCache(); // clear ALL cache.
+            //CacheUtils.ClearAllCache(); // clear ALL cache.
             var info = GetByGuidKey(PortalSettings.Current.PortalId, moduleId, typeCode, GuidKey,"", tableName);
             if (info == null && !readOnly)
             {

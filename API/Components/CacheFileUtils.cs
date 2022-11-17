@@ -18,7 +18,7 @@ namespace DNNrocketAPI.Components
 
         public static string GetCache(string cacheKey)
         {
-            var cacheData = (string)CacheUtilsDNN.GetCache(cacheKey);
+            var cacheData = (string)CacheUtils.GetCache(cacheKey);
             if (cacheData == null)
             {
                 var cacheFile = GetMd5Hash(cacheKey);
@@ -33,7 +33,7 @@ namespace DNNrocketAPI.Components
         {
             if (!String.IsNullOrEmpty(objObject))
             {
-                CacheUtilsDNN.SetCache(cacheKey, objObject);
+                CacheUtils.SetCache(cacheKey, objObject);
 
                 if (!Directory.Exists(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache"))
                 {
@@ -46,7 +46,7 @@ namespace DNNrocketAPI.Components
 
         public static void RemoveCache(string cacheKey)
         {
-            CacheUtilsDNN.RemoveCache(cacheKey);
+            CacheUtils.RemoveCache(cacheKey);
             var cacheFile = GetMd5Hash(cacheKey);
 
             if (File.Exists(PortalUtils.TempDirectoryMapPath().Trim('\\') + "\\cache\\" + cacheFile))
@@ -63,7 +63,7 @@ namespace DNNrocketAPI.Components
                 {
                     ClearFileCache(portalid);
                 }
-                CacheUtilsDNN.ClearAllCache();
+                CacheUtils.ClearAllCache();
             }
             catch (Exception ex)
             {
@@ -76,7 +76,7 @@ namespace DNNrocketAPI.Components
             try
             {
                 ClearFileCache(portalid);
-                CacheUtilsDNN.ClearAllCache();
+                CacheUtils.ClearAllCache();
             }
             catch (Exception ex)
             {

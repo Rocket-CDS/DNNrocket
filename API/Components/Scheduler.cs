@@ -45,11 +45,11 @@ namespace DNNrocketAPI.Components
                                 try
                                 {
                                     var cacheKey = rocketInterface.Assembly + "," + rocketInterface.NameSpaceClass;
-                                    var ajaxprov = (SchedulerInterface)CacheUtilsDNN.GetCache(cacheKey);
+                                    var ajaxprov = (SchedulerInterface)CacheUtils.GetCache(cacheKey);
                                     if (ajaxprov == null)
                                     {
                                         ajaxprov = SchedulerInterface.Instance(rocketInterface.Assembly, rocketInterface.NameSpaceClass);
-                                        CacheUtilsDNN.SetCache(cacheKey, ajaxprov);
+                                        CacheUtils.SetCache(cacheKey, ajaxprov);
                                     }
                                     ajaxprov.DoWork();
                                 }

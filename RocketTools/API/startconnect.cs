@@ -238,6 +238,7 @@ namespace RocketTools.API
             {
                 var backupData = new BackUpData(filemappath);
                 //backupData.RestoreData();
+                CacheUtils.ClearAllCache();
                 CacheUtilsDNN.ClearAllCache();
                 DNNrocketUtils.ClearAllCache();
             }
@@ -451,7 +452,7 @@ namespace RocketTools.API
         #region "general"
         public SimplisityInfo GetCachedInfo()
         {
-            var info = (SimplisityInfo)CacheUtilsDNN.GetCache(_pageRef);
+            var info = (SimplisityInfo)CacheUtils.GetCache(_pageRef);
             if (info == null)
             {
                 info = new SimplisityInfo();
@@ -476,7 +477,7 @@ namespace RocketTools.API
                     info.AddRecordListItem(listName, sRec);
                 }
             }
-            CacheUtilsDNN.SetCache(_pageRef, info);
+            CacheUtils.SetCache(_pageRef, info);
         }
         public void SaveModules(string listName)
         {
@@ -495,7 +496,7 @@ namespace RocketTools.API
                     info.AddRecordListItem(listName, sRec);
                 }
             }
-            CacheUtilsDNN.SetCache(_pageRef, info);
+            CacheUtils.SetCache(_pageRef, info);
         }
 
         public void SaveTreeView(string listName)
@@ -523,7 +524,7 @@ namespace RocketTools.API
                     }
                 }
             }
-            CacheUtilsDNN.SetCache(_pageRef, info);
+            CacheUtils.SetCache(_pageRef, info);
         }
 
         #endregion

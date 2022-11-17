@@ -33,7 +33,7 @@ namespace DNNrocketAPI.Components
             _tableName = tableName;
             _moduleid = moduleId;
             _cacheKey = "moduleparams*" + moduleId;
-            _moduleParamsRec = (SimplisityRecord)CacheUtilsDNN.GetCache(_cacheKey);
+            _moduleParamsRec = (SimplisityRecord)CacheUtils.GetCache(_cacheKey);
             var objCtrl = new DNNrocketController();
             if ((_moduleParamsRec == null || !useCache))
             {
@@ -53,7 +53,7 @@ namespace DNNrocketAPI.Components
                         _moduleParamsRec.ModuleId = _moduleid;
                         _moduleParamsRec = objCtrl.SaveRecord(_moduleParamsRec);
                     }
-                    CacheUtilsDNN.SetCache(_cacheKey, _moduleParamsRec);
+                    CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
                 }
             }
             DataSourceExternal = false;
@@ -106,14 +106,14 @@ namespace DNNrocketAPI.Components
             DataSourceExternal = false;
             if (ModuleIdDataSource != _moduleid) DataSourceExternal = true;
             _moduleParamsRec = objCtrl.SaveRecord(_cacheKey, "MODULEPARAMS", _moduleParamsRec, _moduleid, _tableName);
-            CacheUtilsDNN.SetCache(_cacheKey, _moduleParamsRec);
+            CacheUtils.SetCache(_cacheKey, _moduleParamsRec);
         }
         public void Delete()
         {
             var objCtrl = new DNNrocketController();
             objCtrl.Delete(Record.ItemID, _tableName);
             _moduleParamsRec = new SimplisityRecord();
-            CacheUtilsDNN.RemoveCache(_cacheKey);
+            CacheUtils.RemoveCache(_cacheKey);
         }
 
         public string GetValue(string key, string defaultValue = "")
