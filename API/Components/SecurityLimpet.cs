@@ -115,7 +115,6 @@ namespace DNNrocketAPI.Components
                     var pluginList = SystemData.GetInterfaceList();
                     foreach (var p in pluginList)
                     {
-                        LogUtils.LogSystem(SystemData.SystemKey + " - " + p.InterfaceKey);
                         var pluginFileRelPath = p.TemplateRelPath.TrimEnd('/') + "/Installation/SystemDefaults.rules";
                         if (pluginFileRelPath != _defaultFileRelPath)
                         {
