@@ -495,4 +495,247 @@
   <data name="width.Text" xml:space="preserve">
     <value>Largeur</value>
   </data>
+  <data name="paste.Text" xml:space="preserve">
+    <value>Pâte</value>
+  </data>
+  <data name="anchor.Text" xml:space="preserve">
+    <value>Ancrage</value>
+  </data>
+  <data name="url.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="blank.Text" xml:space="preserve">
+    <value>Nouvelle fenêtre</value>
+  </data>
+  <data name="externallink.Text" xml:space="preserve">
+    <value>Lien externe</value>
+  </data>
+  <data name="hidelink.Text" xml:space="preserve">
+    <value>Masquer le lien</value>
+  </data>
+  <data name="internallink.Text" xml:space="preserve">
+    <value>Lien interne</value>
+  </data>
+  <data name="document.Text" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="justify.Text" xml:space="preserve">
+    <value>Justifier</value>
+  </data>
+  <data name="imageupload.Msg" xml:space="preserve">
+    <value>Utilisez le bouton de téléchargement pour sélectionner des images à partir de votre système de fichiers. !</value>
+  </data>
+  <data name="imageupload.Text" xml:space="preserve">
+    <value>Chargement d'image</value>
+  </data>
+  <data name="articleimagelimit.Msg" xml:space="preserve">
+    <value>Le téléchargement de votre image pour cet article a été atteint.  Vous devez mettre à niveau si vous voulez ajouter plus d'images. !</value>
+  </data>
+  <data name="articleimagelimit.Text" xml:space="preserve">
+    <value>Limite d'image</value>
+  </data>
+  <data name="documentlimit.Msg" xml:space="preserve">
+    <value>Le téléchargement de votre document a été atteint. !</value>
+  </data>
+  <data name="documentlimit.Text" xml:space="preserve">
+    <value>Limite de document !</value>
+  </data>
+  <data name="documentupload.Msg" xml:space="preserve">
+    <value>Utilisez  le bouton de téléchargement pour sélectionner des documents à partir de votre système de fichiers.  (Certains fichiers potentiellement dangereux ne seront pas autorisés à être téléchargés. Seuls les fichiers .PDF et .ZIP sont autorisés.) !</value>
+  </data>
+  <data name="documentupload.Text" xml:space="preserve">
+    <value>Télécharger le document</value>
+  </data>
+  <data name="html.Text" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="text.Text" xml:space="preserve">
+    <value>Texte</value>
+  </data>
+  <data name="content.Text" xml:space="preserve">
+    <value>Contenu</value>
+  </data>
+  <data name="remote.Text" xml:space="preserve">
+    <value>Isolé</value>
+  </data>
+  <data name="no.Text" xml:space="preserve">
+    <value>Non!</value>
+  </data>
+  <data name="yes.Text" xml:space="preserve">
+    <value>Oui !</value>
+  </data>
+  <data name="fail.Text" xml:space="preserve">
+    <value>Échec !</value>
+  </data>
+  <data name="keywords.Text" xml:space="preserve">
+    <value>Mots clé</value>
+  </data>
+  <data name="name.Text" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="ref.Text" xml:space="preserve">
+    <value>Ref.</value>
+  </data>
+  <data name="summary.Text" xml:space="preserve">
+    <value>Résumé</value>
+  </data>
+  <data name="cleartempdb.Text" xml:space="preserve">
+    <value>Effacer la température</value>
+  </data>
+  <data name="recycleapppool.Text" xml:space="preserve">
+    <value>Recycle AppPool !</value>
+  </data>
+  <data name="emailon.Text" xml:space="preserve">
+    <value>Envoyer le message</value>
+  </data>
+  <data name="apidomain.Text" xml:space="preserve">
+    <value>Domaine API !</value>
+  </data>
+  <data name="apiprotocol.Text" xml:space="preserve">
+    <value>Protocole</value>
+  </data>
+  <data name="home.Text" xml:space="preserve">
+    <value>Accueil</value>
+  </data>
+  <data name="cmsadmin.Text" xml:space="preserve">
+    <value>Administrateur</value>
+  </data>
+  <data name="portaladmin.Text" xml:space="preserve">
+    <value>Administrateur du portail</value>
+  </data>
+  <data name="notes.Text" xml:space="preserve">
+    <value>Remarques !</value>
+  </data>
+  <data name="services.Text" xml:space="preserve">
+    <value>Services</value>
+  </data>
+  <data name="unlocked.text" xml:space="preserve">
+    <value>Déverrouillé !</value>
+  </data>
+  <data name="login.Text" xml:space="preserve">
+    <value>Connectez-vous!</value>
+  </data>
+  <data name="colortheme.Text" xml:space="preserve">
+    <value>Thème de couleur</value>
+  </data>
+  <data name="username.Text" xml:space="preserve">
+    <value>Identifiant</value>
+  </data>
+  <data name="managers.Text" xml:space="preserve">
+    <value>Managers</value>
+  </data>
+  <data name="password.Text" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
+  <data name="passwordconfirm.Text" xml:space="preserve">
+    <value>Confirmer le mot de passe</value>
+  </data>
+  <data name="danger.Text" xml:space="preserve">
+    <value>Danger !</value>
+  </data>
+  <data name="warning.Text" xml:space="preserve">
+    <value>Attention!</value>
+  </data>
+  <data name="general.Text" xml:space="preserve">
+    <value>Général !</value>
+  </data>
+  <data name="accessdenied.Text" xml:space="preserve">
+    <value>Accès refusé !</value>
+  </data>
+  <data name="savesend.Text" xml:space="preserve">
+    <value>Enregistrer et envoyer</value>
+  </data>
+  <data name="task.Text" xml:space="preserve">
+    <value>Tâche</value>
+  </data>
+  <data name="dataname.Text" xml:space="preserve">
+    <value>Nom de données</value>
+  </data>
+  <data name="manager.Text" xml:space="preserve">
+    <value>Directeur !</value>
+  </data>
+  <data name="version.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="execute.Text" xml:space="preserve">
+    <value>Exécuter</value>
+  </data>
+  <data name="advanced.Text" xml:space="preserve">
+    <value>Avancé</value>
+  </data>
+  <data name="suonly.Text" xml:space="preserve">
+    <value>REMARQUE : Pour la sécurité, seul le SuperUser peut mettre à jour. !</value>
+  </data>
+  <data name="map.Text" xml:space="preserve">
+    <value>Carte</value>
+  </data>
+  <data name="securitycode.Text" xml:space="preserve">
+    <value>Code de sécurité</value>
+  </data>
+  <data name="securitykey.Text" xml:space="preserve">
+    <value>Clef de sécurité</value>
+  </data>
+  <data name="imageresize.Text" xml:space="preserve">
+    <value>Redimensionner l'image</value>
+  </data>
+  <data name="invalidcatalog.Text" xml:space="preserve">
+    <value>Catalogue invalide !</value>
+  </data>
+  <data name="cds.Text" xml:space="preserve">
+    <value>CDS !</value>
+  </data>
+  <data name="website.Text" xml:space="preserve">
+    <value>Site internet</value>
+  </data>
+  <data name="dataservice.Text" xml:space="preserve">
+    <value>Service de données</value>
+  </data>
+  <data name="disabled.Text" xml:space="preserve">
+    <value>Désactivé !</value>
+  </data>
+  <data name="tools.Text" xml:space="preserve">
+    <value>Outils</value>
+  </data>
+  <data name="providers.Text" xml:space="preserve">
+    <value>Plugins premium et utiles</value>
+  </data>
+  <data name="displayname.Text" xml:space="preserve">
+    <value>Nom affiché</value>
+  </data>
+  <data name="firstname.Text" xml:space="preserve">
+    <value>Prénom</value>
+  </data>
+  <data name="lastname.Text" xml:space="preserve">
+    <value>Nom de famille</value>
+  </data>
+  <data name="systems.Text" xml:space="preserve">
+    <value>Systèmes</value>
+  </data>
+  <data name="destination.Text" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="overwrite.Text" xml:space="preserve">
+    <value>Écraser</value>
+  </data>
+  <data name="source.Text" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="subdomain.Text" xml:space="preserve">
+    <value>Sous-domaine</value>
+  </data>
+  <data name="region.Text" xml:space="preserve">
+    <value>Région</value>
+  </data>
+  <data name="loading.Text" xml:space="preserve">
+    <value>Chargement !</value>
+  </data>
+  <data name="imagelimit.Msg" xml:space="preserve">
+    <value>La limite d'image ne permettra pas d'ajouter des images supplémentaires. !</value>
+  </data>
+  <data name="imagelimit.Text" xml:space="preserve">
+    <value>Limite d'image</value>
+  </data>
+  <data name="template.Text" xml:space="preserve">
+    <value>Modèle</value>
+  </data>
 </root>
