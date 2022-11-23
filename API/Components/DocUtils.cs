@@ -21,6 +21,18 @@ namespace DNNrocketAPI.Components
         {
             return strExtension.ToLower() == ".pdf" | strExtension.ToLower() == ".zip" | UserUtils.IsSuperUser();
         }
+        public static Dictionary<string,string> SecureFiles(List<string> fileList)
+        {
+            var rtn = new Dictionary<string, string>();
+            foreach (var f in fileList)
+            {
+                var newFileMapPath = Path.GetDirectoryName(f) + "\\" + GeneralUtils.GetGuidKey();
+                File.Copy(f, newFileMapPath);
+                if (!rtn.ContainsKey(f)) rtn.Add(f, newFileMapPath);
+                File.Delete(f);
+            }
+            return rtn;
+        }
         public static List<string> UploadBase64file(string[] filenameList, string[] filebase64List, string docFolderMapPath)
         {
             var rtn = new List<string>();

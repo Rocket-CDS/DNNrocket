@@ -738,4 +738,13 @@
   <data name="template.Text" xml:space="preserve">
     <value>Modèle</value>
   </data>
+  <data name="hidden.Text" xml:space="preserve">
+    <value>Caché</value>
+  </data>
+  <data name="users.Text" xml:space="preserve">
+    <value>Utilisateurs</value>
+  </data>
+  <data name="locked.Text" xml:space="preserve">
+    <value>Verrouillé</value>
+  </data>
 </root>
