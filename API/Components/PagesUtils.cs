@@ -276,8 +276,8 @@ namespace DNNrocketAPI.Components
                 // set new page properties
                 newTab.PortalID = portalId; // the portal you want the page created on
                 newTab.TabName = pageName; // the new page name
-                newTab.Title = pageName; // the new page title
-                newTab.Description = pageName; // the new page description
+                newTab.Title = ""; // the new page title
+                newTab.Description = ""; // the new page description
                 newTab.KeyWords = ""; // the new page keywords (used for meta keywords and search)
                 newTab.IsDeleted = false; // whether it is deleted - always false for new pages
                 newTab.IsSuperTab = false; // whether it should only be accessible by superusers
