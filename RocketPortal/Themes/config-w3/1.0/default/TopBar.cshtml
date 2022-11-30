@@ -16,12 +16,12 @@
 
     @foreach (var l in enabledlanguages)
     {
-        var selectedcolor = "w3-theme";
+        var selectedcolor = "w3-theme-d3";
         if (sessionParams.CultureCodeEdit == l)
         {
             selectedcolor = "w3-theme-l5";
         }
-        <button href="javascript:void(0);" class="w3-button w3-round @(selectedcolor) " onclick="simplisity_setSessionField('culturecodeedit', '@(l)'); location.reload();"><img src="/DesktopModules/DNNrocket/API/images/flags/24/@(l).png" class="w3-round" /></button>
+        <div class="w3-button w3-round @(selectedcolor) " onclick="simplisity_setSessionField('culturecodeedit', '@(l)'); location.reload();"><img src="/DesktopModules/DNNrocket/API/images/flags/24/@(l).png" class="w3-round" /></div>
     }
     <div class="w3-right">
         <button type="button" class="w3-button " onclick="topbaractiontools()"><span class="material-icons">more_vert</span></button>

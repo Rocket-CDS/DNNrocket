@@ -104,12 +104,7 @@
             <div class="w3-row w3-padding">
                 @foreach (var l in enabledlanguages)
                 {
-                    var selectedcolor = "w3-theme-l5";
-                    if (sessionParams.CultureCode == l)
-                    {
-                        selectedcolor = "w3-theme-l3";
-                    }
-                    <div class="w3-button w3-round @(selectedcolor) " onclick="simplisity_setSessionField('culturecode', '@(l)'); location.reload();"><img src="/DesktopModules/DNNrocket/API/images/flags/16/@(l).png" class="w3-round" /></div>
+                    <div class="w3-button w3-round " onclick="simplisity_setSessionField('culturecode', '@(l)'); location.reload();"><img src="/DesktopModules/DNNrocket/API/images/flags/16/@(l).png" class="w3-round" /></div>
                 }
             </div>
         </div>
