@@ -283,6 +283,19 @@ namespace DNNrocketAPI.Components
 
         #region "Unified RazorProcess"
 
+        public static RazorProcessResult RazorProcessData(string razorTemplate, Dictionary<string, object> dataObjects, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
+        {
+            if (razorTemplate != "")
+            {
+                if (settings == null) settings = new Dictionary<string, string>();
+                var nbRazor = new SimplisityRazor();
+                nbRazor.SessionParamsData = sessionParams;
+                nbRazor.DataObjects = dataObjects;
+                nbRazor.Settings = settings;
+                return RazorProcess(nbRazor, razorTemplate, debugmode);
+            }
+            return new RazorProcessResult();
+        }
         public static RazorProcessResult RazorProcessData(string razorTemplate, object obj, Dictionary<string, object> dataObjects = null, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
         {
             if (razorTemplate != "")

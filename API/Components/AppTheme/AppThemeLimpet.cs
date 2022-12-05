@@ -14,6 +14,13 @@ namespace DNNrocketAPI.Components
 
     public class AppThemeLimpet : AppThemeBase
     {
+        /// <summary>
+        /// Read AppTheme from <system>/Themes/<AppFolder>/<version>
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="systemData"></param>
+        /// <param name="appThemeFolder"></param>
+        /// <param name="versionFolder"></param>
         public AppThemeLimpet(int portalId, SystemLimpet systemData, string appThemeFolder, string versionFolder = "") : base(portalId, systemData.SystemRelPath.TrimEnd('/') + "/Themes/" + appThemeFolder, versionFolder)
         {
             ProjectName = "";
@@ -39,6 +46,13 @@ namespace DNNrocketAPI.Components
             var s = appThemeFolder.Split('.');
             if (s.Length == 2) SystemKey = s[0];
         }
+        /// <summary>
+        /// Read AppTheme from /DesktopModules/RocketThemes/<projectName>/[systemkey].<AppFolder>/<version>
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="appThemeFolder"></param>
+        /// <param name="versionFolder"></param>
+        /// <param name="projectName"></param>
         public AppThemeLimpet(int portalId, string appThemeFolder, string versionFolder, string projectName) : base(portalId, "/DesktopModules/RocketThemes/" + projectName + "/" + appThemeFolder, versionFolder, projectName)
         {
             ProjectName = projectName;
