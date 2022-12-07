@@ -978,4 +978,16 @@ settings
   <data name="template.Text" xml:space="preserve">
     <value>Template</value>
   </data>
+  <data name="disablecache.Text" xml:space="preserve">
+    <value>Disable Cache</value>
+  </data>
+  <data name="disableheader.Text" xml:space="preserve">
+    <value>Disable Header</value>
+  </data>
+  <data name="enablecache.Text" xml:space="preserve">
+    <value>Enable Cache</value>
+  </data>
+  <data name="injectjquery.Text" xml:space="preserve">
+    <value>Inject JQuery</value>
+  </data>
 </root>

@@ -1757,7 +1757,30 @@ namespace DNNrocketAPI.Components
         {
             return (HttpContext.Current.Request.Browser != null) && (ClientCapabilityProvider.Instance() != null) && ClientCapabilityProvider.CurrentClientCapability.IsMobile;
         }
-
+        public static SimplisityInfo UpdateSimplsityInfoFields(SimplisityInfo newInfo, SimplisityInfo postInfo, string xpathListSelect)
+        {
+            var textList = postInfo.XMLDoc.SelectNodes(xpathListSelect);
+            if (textList != null)
+            {
+                foreach (XmlNode nod in textList)
+                {
+                    newInfo.SetXmlProperty(xpathListSelect.Replace("*", "") + nod.Name, nod.InnerText);
+                }
+            }
+            return newInfo;
+        }
+        public static SimplisityRecord UpdateSimplsityRecordFields(SimplisityRecord newRec, SimplisityInfo postInfo, string xpathListSelect)
+        {
+            var textList = postInfo.XMLDoc.SelectNodes(xpathListSelect);
+            if (textList != null)
+            {
+                foreach (XmlNode nod in textList)
+                {
+                    newRec.SetXmlProperty(xpathListSelect.Replace("*", "") + nod.Name, nod.InnerText);
+                }
+            }
+            return newRec;
+        }
 
         #region "Temp Storage"
 
