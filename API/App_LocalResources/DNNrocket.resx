@@ -990,4 +990,7 @@ settings
   <data name="injectjquery.Text" xml:space="preserve">
     <value>Inject JQuery</value>
   </data>
+  <data name="view.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
 </root>
