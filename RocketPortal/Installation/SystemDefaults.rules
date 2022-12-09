@@ -14,8 +14,8 @@
         <active>True</active>
       </checkbox>
       <textbox>  
-		  <name>AppTheme-W3-CSS</name>
-		  <githubrepourl>https://github.com/Rocket-CDS/AppTheme-W3-CSS.git</githubrepourl>
+		  <name>AppThemes-W3-CSS</name>
+		  <githubrepourl>https://github.com/Rocket-CDS/AppThemes-W3-CSS.git</githubrepourl>
 		  <githubusername></githubusername>
 		  <githubtoken></githubtoken>
 	  </textbox>
