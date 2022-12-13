@@ -214,7 +214,7 @@ namespace DNNrocketAPI.Components
             }
             return _rocketInterface.DefaultCommand;
         }
-        private bool HasCommandSecurityAccess(string commandKey)
+        public bool HasCommandSecurityAccess(string commandKey)
         {
             // if the command is NOT defined, the do not give access.  Commands MUST be defined.
             if (!_commandSecurity.ContainsKey(commandKey))
