@@ -275,7 +275,8 @@ namespace DNNrocketAPI.Components
                             fileMP = GetPortalFileMapPath(fileMapPath);
                         if (fileMP != "") fileMapPath = fileMP;
                     }
-                    new FileInfo(fileMapPath).Directory.Create();
+                    var dir = Path.GetDirectoryName(fileMapPath);
+                    if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
                     FileUtils.SaveFile(fileMapPath, formHtml);
                 }
             }
