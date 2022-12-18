@@ -744,7 +744,11 @@ function simplisity_getCookieValue(cookiename) {
 function simplisity_setCookieValue(cookiename, cookievalue) {
     document.cookie = cookiename + "=" + cookievalue + ";path=/;maxAge: 604800";
 }
-
+function simplisity_deleteCookie(cookiename) {
+    if (simplisity_getCookieValue(cookiename)) {
+        document.cookie = cookiename + "=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    }
+}
 function simplisity_replaceAll(target, search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 }
