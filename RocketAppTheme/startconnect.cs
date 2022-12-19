@@ -202,7 +202,7 @@ namespace DNNrocket.AppThemes
                     _appThemeFolder = HttpUtility.ParseQueryString(requestUri.Query).Get("appthemefolder");
                     _appVersionFolder = HttpUtility.ParseQueryString(requestUri.Query).Get("appversionfolder");
                     _projectName = HttpUtility.ParseQueryString(requestUri.Query).Get("project");
-                    _returnUrl = HttpUtility.UrlDecode(HttpUtility.ParseQueryString(requestUri.Query).Get("rtn"));
+                    _returnUrl = HttpUtility.UrlDecode(GeneralUtils.DeCode(HttpUtility.ParseQueryString(requestUri.Query).Get("rtn")));
                 }
             }
             else
