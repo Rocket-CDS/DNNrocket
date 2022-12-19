@@ -17,20 +17,15 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
 
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/rocketcds-theme.css">
+
 <style>
-#editBarContainer {
-    display: none !important
-}
-
-.personalBarContainer {
-    display: none !important
-}
-#Body {
-    margin-left: 0px !important
-}
-
+    #editBarContainer { display: none !important }
+    .personalBarContainer { display: none !important }
+    #Body { margin-left: 0px !important }
+    .material-icons { vertical-align: middle; }
+    iframe.editBar-iframe{ display: none !important; }
 </style>
-
 
     <div id="adminpanel">
         <div class="simplisity_loader">

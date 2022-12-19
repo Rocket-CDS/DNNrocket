@@ -36,13 +36,11 @@
 
 }
 
-@RenderLanguageSelector("rocketapptheme_getlist", "", systemAppTheme, Model)
-
 @RenderTemplate("Popups.cshtml", systemAppTheme, Model, true)
 
 <div>
 
-    <div class="w3-bar searchdata w3-margin-top">
+    <div class="w3-bar searchdata w3-padding">
         <div class="w3-bar-item">
             @DropDownList(new SimplisityInfo(), "genxml/selectedproject", appThemeProjectData.ActiveList(), " class='w3-input w3-border'", selectedProject)
         </div>

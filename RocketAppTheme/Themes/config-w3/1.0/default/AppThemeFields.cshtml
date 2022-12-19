@@ -82,11 +82,7 @@
 
                 <div class=" w3-margin-bottom w3-border-bottom">
                     <div class="w3-bar-item w3-button tablink tabTemplates" onclick="openDataTab('tabTemplates','Templates')">@ResourceKey("AppThemes.templates")</div>
-
-                    @if (PortalUtils.GetPortalId() == 0)
-                    {
-                        <div class="w3-bar-item w3-button tablink tabResources" onclick="openDataTab('tabResources','Resources')">@ResourceKey("AppThemes.resources")</div>
-                    }
+                    <div class="w3-bar-item w3-button tablink tabResources" onclick="openDataTab('tabResources','Resources')">@ResourceKey("AppThemes.resources")</div>
                     <div class="w3-bar-item w3-button tablink tabCSS" onclick="openDataTab('tabCSS','CSS')">@ResourceKey("AppThemes.css")</div>
                     <div class="w3-bar-item w3-button tablink tabJavascript" onclick="openDataTab('tabJavascript','Javascript')">@ResourceKey("AppThemes.javascript")</div>
                     @if (PortalUtils.GetPortalId() == 0)
@@ -263,37 +259,31 @@
                         </ul>
                     </div>
                 </div>
-                @if (PortalUtils.GetPortalId() == 0)
-                {
-                    <div id="Resources" class="w3-container w3-border city" style="display:none">
-                        <div id="resxdatasection" class="w3-row resxlistdatasection">
+                <div id="Resources" class="w3-container w3-border city" style="display:none">
+                    <div id="resxdatasection" class="w3-row resxlistdatasection">
 
-                            <input id="defaultjsonresx" type="hidden" value="@Model.GetSetting("defaultjsonresx")" />
+                        <input id="defaultjsonresx" type="hidden" value="@Model.GetSetting("defaultjsonresx")" />
 
-                            @if (PortalUtils.GetPortalId() == 0)
-                            {
-                                <div class="w3-container">
-                                    <div class="w3-col w3-padding" style="width:160px;">
-                                        <div class="w3-button w3-teal w3-padding-8 " onclick="$('#resxfilename').show();"><span>@ButtonIcon(ButtonTypes.add)</span></div>
-                                    </div>
-                                </div>
-                            }
-
-                            <ul id="resxlistdata" class="w3-ul">
-                                @foreach (var templateDict in appTheme.GetTemplatesResx())
-                                {
-                                    <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
-                                        <div class="w3-row w3-display-container w3-padding  w3-card @LevelColor(appTheme, templateDict.Key, sessionParam.Get("moduleref"))">
-                                            <span class="simplisity_click" s-cmd="rocketapptheme_getresxdata" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
-                                            &nbsp;
-                                            @templateDict.Key
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
+                        <div class="w3-container">
+                            <div class="w3-col w3-padding" style="width:160px;">
+                                <div class="w3-button w3-teal w3-padding-8 " onclick="$('#resxfilename').show();"><span>@ButtonIcon(ButtonTypes.add)</span></div>
+                            </div>
                         </div>
+
+                        <ul id="resxlistdata" class="w3-ul">
+                            @foreach (var templateDict in appTheme.GetTemplatesResx())
+                            {
+                                <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
+                                    <div class="w3-row w3-display-container w3-padding  w3-card @LevelColor(appTheme, templateDict.Key, sessionParam.Get("moduleref"))">
+                                        <span class="simplisity_click" s-cmd="rocketapptheme_getresxdata" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
+                                        &nbsp;
+                                        @templateDict.Key
+                                    </div>
+                                </li>
+                            }
+                        </ul>
                     </div>
-                }
+                </div>
             </div>
         </div>
     </div>

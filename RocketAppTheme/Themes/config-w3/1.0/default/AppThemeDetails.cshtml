@@ -10,29 +10,29 @@
     var appTheme = (AppThemeLimpet)Model.List.First();
     var sessionParam = Model.SessionParamsData;
     var systemAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
-    Model.SetSetting("remoteedit", "false");
 }
 
-@RenderLanguageSelector("rocketapptheme_getdetail", "", systemAppTheme, Model)
+<div class="w3-container">
+    <div class="w3-bar  w3-padding w3-margin-top">
 
-<div class="w3-container" style="top:64px;">
-    <div class="w3-bar">
-        <button class="w3-button w3-bar-item  simplisity_click" s-cmd="rocketapptheme_getlist">@ButtonIcon(ButtonTypes.back)</button>
-        <div class="w3-dropdown-hover">
-            <div class="w3-button" style="">@ButtonIcon(ButtonTypes.bars)</div>
-            <div class="w3-dropdown-content w3-bar-block w3-card" style="width:340px;">
+        @if (sessionParam.Get("returnurl") != "")
+        {
+            <a href="@sessionParam.Get("returnurl")" class="w3-button w3-black" style="text-decoration: none;">@ButtonText(ButtonTypes.back)</a>
+        }
+        @if (sessionParam.ModuleRef == "")
+        {
+            <span class="w3-button w3-black  simplisity_click" s-cmd="rocketapptheme_getlist">@ButtonText(ButtonTypes.back)</span>
+        }
 
-                @if (PortalUtils.GetPortalId() == 0)
-                {
-                    <div class="w3-bar-item w3-button simplisity_confirmclick" s-return=".articlepopup" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("AppThemes.createversion")</div>
-                    <div class="w3-bar-item w3-button" onclick="document.getElementById('copyapptheme').style.display = 'block';">@ResourceKey("AppThemes.copyapptheme")</div>
-                    <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-confirm="@ResourceKey("DNNrocket.uninstall")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.uninstall")</div>
-                    <div class="w3-bar-item w3-button w3-padding-8 simplisity_confirmclick" s-track="clear" s-return=".articlepopup" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("AppThemes.deleteversion")</div>
-                }
-                <a class="w3-bar-item w3-button w3-padding-8 simplisity_filedownload" s-cmd="rocketapptheme_export" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNRocket.export")</a>
+        <!-- **** planned enhancement ****
+        <span class="w3-button w3-hide simplisity_confirmclick" s-confirm="@ResourceKey("AppThemes.versionmsg")&nbsp;?" s-cmd="rocketapptheme_createversion" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonIcon(ButtonTypes.create) @ResourceKey("AppThemes.createversion")</span>
+        <span class="w3-button w3-hide" onclick="document.getElementById('copyapptheme').style.display = 'block';">@ButtonText(ButtonTypes.copy)</span>
+        <span class="w3-button w3-hide simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.uninstall")&nbsp;AppTheme?" s-cmd="rocketapptheme_deletetheme" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonIcon(ButtonTypes.remove) @ResourceKey("DNNrocket.uninstall")</span>
+        <span class="w3-button w3-hide simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete")&nbsp;@ResourceKey("AppThemes.version")?" s-cmd="rocketapptheme_deleteversion" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonIcon(ButtonTypes.delete) @ResourceKey("AppThemes.deleteversion")</span>
+        -->
 
-            </div>
-        </div>
+        <a class="w3-button simplisity_filedownload" s-cmd="rocketapptheme_export" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.export)</a>
+
     </div>
 </div>
 

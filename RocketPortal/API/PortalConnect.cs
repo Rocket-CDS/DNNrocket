@@ -83,6 +83,13 @@ namespace RocketPortal.API
                         PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Administrators);
                         PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rocketadmin.ascx");
                     }
+                    // Add AppTheme Page
+                    if (PagesUtils.GetPageByTabPath(portalId, "//SysAdmin//rocketapptheme") == -1)
+                    {
+                        var tabid = PagesUtils.CreatePage(portalId, "rocketapptheme", true, false, sysAdminTabId);
+                        PagesUtils.AddPagePermissions(portalId, tabid, DNNrocketRoles.Administrators);
+                        PagesUtils.AddPageSkin(portalId, tabid, "rocketportal", "rocketadmin.ascx");
+                    }
                 }
                 return GetPortalDetail();
             }

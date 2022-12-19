@@ -1,0 +1,62 @@
+﻿@inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketPortal.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketAppTheme/App_LocalResources")
+
+@{
+
+    var cmd = "rocketapptheme_getlist";
+    if (Model.SessionParamsData.ModuleRef != "")
+    {
+        cmd = "rocketapptheme_getdetail";
+    }
+}
+
+<div id="a-displaywrapper" class="w3-animate-opacity" style="">
+
+    <div class="w3-main" style="margin-left:0px;">
+
+        <!-- Main -->
+        <div class="">
+            <!-- Content -->
+            <div id="simplisity_startpanel" class="simplisity_panel" s-cmd="@cmd" s-fields='' style="">
+                <div class="simplisity_loader">
+                    <span class=" simplisity_loader_inner">
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketapptheme', debug: false });
+        simplisity_sessionremove(); // clear the sessions vars on load.  These needs to be reset for the admin panel to work and not use any front office selections.
+    });
+
+</script>
+
+<!-- Load CSS in body, not ideal but is easier to implement and reduces 1 API call. -->
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/css/jquery.tag-editor.css" charset="utf-8">
+<script src="/DesktopModules/DNNrocket/RocketPortal/Themes/config-w3/1.0/js/RP_Admin.js"></script>
+<script src="/DesktopModules/DNNrocket/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/jquery.fileupload.js"></script>
+<script src="/DesktopModules/DNNrocket/js/jquery.selectlistactions.js"></script>
+<script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.caret.min.js"></script>
+<script type="text/javascript" src="/DesktopModules/DNNrocket/js/jquery.tag-editor.min.js"></script>
+
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/rocketcds-theme.css">
+
+<style>
+    #editBarContainer { display: none !important }
+    .personalBarContainer { display: none !important }
+    #Body { margin-left: 0px !important }
+    .material-icons { vertical-align: middle; }
+</style>

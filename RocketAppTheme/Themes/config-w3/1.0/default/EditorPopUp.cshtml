@@ -19,14 +19,7 @@
     var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
 
     var backcmd = "rocketapptheme_getdetail";
-    if (sessionParams.ModuleRef != "")
-    {
-        backcmd = "rocketapptheme_getremote";
-    }
-
 }
-
-<link rel="stylesheet" href="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/@(portalData.ColorAdminTheme)">
 
 <!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 <script src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/codemirror.js"></script>
@@ -38,19 +31,9 @@
 <script src="//@(portalData.EngineUrl)/DesktopModules/DNNrocket/CodeMirror/mode/css/css.js"></script>
 <!-- codemirror.js for editor ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-@if (sessionParams.ModuleRef == "")
-{
-    @RenderRemoteLanguageSelector("rocketapptheme_getlist", "", appThemeSystem, Model)
-}
-else
-{
-    @RenderRemoteLanguageSelector("rocketapptheme_getremote", "{\"moduleref\":\"" + sessionParams.ModuleRef + "\"}", appThemeSystem, Model)
-}
-
-
 <div class="w3-row w3-padding">
-    <div class="w3-bar w3-margin-bottom">
-        <button class="w3-button w3-bar-item  simplisity_click" s-cmd="@(backcmd)" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonIcon(ButtonTypes.back)</button>
+    <div class="w3-bar w3-margin-bottom w3-padding">
+        <button class="w3-button w3-bar-item w3-black  simplisity_click" s-cmd="@(backcmd)" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.back)</button>
         <div class="w3-button w3-bar-item w3-theme-action savebutton simplisity_click" s-before="saveeditordata" s-cmd="@(Model.GetSetting("interfacekey"))_saveeditor" s-post="#editorsave" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
         @if (appTheme.IsModuleLevel(Model.GetSetting("filename"), sessionParams.ModuleRef))
         {

@@ -7,7 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
+using System.Web;
 using System.Xml;
 
 namespace DNNrocket.AppThemes
@@ -30,6 +32,7 @@ namespace DNNrocket.AppThemes
         private string _moduleref;
         private string _projectName;
         private AppThemeProjectLimpet _appThemeProjectData;
+        private string _returnUrl;
 
         public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
@@ -46,6 +49,9 @@ namespace DNNrocket.AppThemes
 
                 switch (paramCmd)
                 {
+                    case "rocketapptheme_adminpanel":
+                        strOut = AdminPanel();
+                        break;
                     case "rocketapptheme_getlist":
                         strOut = GetEditList();
                         break;
@@ -63,9 +69,6 @@ namespace DNNrocket.AppThemes
 
                         switch (paramCmd)
                         {                            
-                            case "rocketapptheme_getremote":
-                                strOut = GetDetail("AppThemeRemote.cshtml");
-                                break;
                             case "rocketapptheme_getdetail":
                                 strOut = GetDetail("AppThemeDetails.cshtml");
                                 break;
@@ -188,35 +191,44 @@ namespace DNNrocket.AppThemes
             DNNrocketUtils.SetCurrentCulture(_sessionParams.CultureCode);
             DNNrocketUtils.SetEditCulture(_sessionParams.CultureCodeEdit);
 
-
-            // actions on selected AppTheme
-            _moduleref = _paramInfo.GetXmlProperty("genxml/remote/moduleref");
-            if (_moduleref != "")
+            // The moduleref are passed via the URL, for module level template editing.
+            var requestUrl = _paramInfo.GetXmlProperty("genxml/hidden/requesturl");
+            if (requestUrl != "" && requestUrl.Contains("?"))
             {
-                // remote apptheme edit
-                var remoteModule = new RemoteModule(PortalUtils.GetCurrentPortalId(), _moduleref);
-                _appThemeFolder = remoteModule.AppThemeViewFolder;
-                _appVersionFolder = remoteModule.AppThemeViewVersion;
-                if (_appThemeFolder == "")
+                Uri requestUri = new Uri(requestUrl);
+                if (HttpUtility.ParseQueryString(requestUri.Query).Get("moduleref") != "")
                 {
-                    _appThemeFolder = remoteModule.AppThemeFolder;
-                    _appVersionFolder = remoteModule.AppThemeVersion;
+                    _moduleref = HttpUtility.ParseQueryString(requestUri.Query).Get("moduleref");
+                    _appThemeFolder = HttpUtility.ParseQueryString(requestUri.Query).Get("appthemefolder");
+                    _appVersionFolder = HttpUtility.ParseQueryString(requestUri.Query).Get("appversionfolder");
+                    _projectName = HttpUtility.ParseQueryString(requestUri.Query).Get("project");
+                    _returnUrl = HttpUtility.UrlDecode(HttpUtility.ParseQueryString(requestUri.Query).Get("rtn"));
                 }
             }
             else
             {
+                _moduleref = "";
                 _appThemeFolder = _paramInfo.GetXmlProperty("genxml/hidden/appthemefolder");
                 _appVersionFolder = _paramInfo.GetXmlProperty("genxml/hidden/appversionfolder");
+                _projectName = _paramInfo.GetXmlProperty("genxml/remote/selectedproject");
+                if (_projectName == "") _projectName = _paramInfo.GetXmlProperty("genxml/hidden/selectedproject");
+                if (_projectName == "") _projectName = _appThemeProjectData.DefaultProjectName();
+                _returnUrl = "";
             }
-            _projectName = _paramInfo.GetXmlProperty("genxml/remote/selectedproject");
-            if (_projectName == "") _projectName = _paramInfo.GetXmlProperty("genxml/hidden/selectedproject");
-            if (_projectName == "") _projectName = _appThemeProjectData.DefaultProjectName();
+            _sessionParams.ModuleRef = _moduleref;
+            _sessionParams.Set("returnurl", _returnUrl);
 
             _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _projectName);
 
             return paramCmd;
         }
-
+        private string AdminPanel()
+        {
+            var razorTempl = _appThemeSystem.GetTemplate("AdminPanel.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _portalData, null, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
         public string DeleteFile()
         {
             var filename = _paramInfo.GetXmlProperty("genxml/hidden/filename");
@@ -617,7 +629,7 @@ namespace DNNrocket.AppThemes
         private string GetEditTemplate(AppThemeLimpet appTheme, string templateName)
         {
             var razorTempl = _appThemeSystem.GetTemplate(templateName);
-            var rtn = RenderRazorUtils.RazorProcessData(razorTempl, appTheme, null, _passSettings, new SessionParams(_paramInfo), true);
+            var rtn = RenderRazorUtils.RazorProcessData(razorTempl, appTheme, null, _passSettings, _sessionParams, true);
             return rtn.RenderedText;
         }
         private string ReloadPage()
