@@ -213,6 +213,9 @@
   <data name="editor.Text" xml:space="preserve">
     <value>Editor</value>
   </data>
+  <data name="editportalappthemes.Text" xml:space="preserve">
+    <value>Edit Portal AppThemes</value>
+  </data>
   <data name="enablesettings.Text" xml:space="preserve">
     <value>Enable Settings</value>
   </data>

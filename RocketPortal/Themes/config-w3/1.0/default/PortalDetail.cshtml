@@ -28,6 +28,12 @@
         <div id="a-portalbuttons" class="w3-bar">
             <span class="w3-button simplisity_click" s-cmd="dashboard_get">@ButtonIcon(ButtonTypes.back)</span>
             <span class="w3-padding w3-button w3-theme-action simplisity_click" s-cmd="portal_save" s-post=".a-portaldata" s-fields='{"portalid":"@portalData.PortalId"}'>@ButtonText(ButtonTypes.save)</span>
+            <a href="@(portalData.EngineUrlWithProtocol)/sysadmin/rocketapptheme" target="_blank" class="w3-button" style="text-decoration:none;">
+                <span class="material-icons">
+                    movie_edit
+                </span>
+                @ResourceKey("RP.editapptheme")
+            </a>
 
             @if (CacheUtils.GetCache("securitylock", "security") != null)
             {

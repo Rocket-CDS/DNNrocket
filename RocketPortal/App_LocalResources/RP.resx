@@ -146,6 +146,9 @@ The assembly that will be executed should be installed into the bin folder and t
   <data name="deleteportal.Msg" xml:space="preserve">
     <value>Deletion of this service will result in the removal of ALL data linked to the service.  To continue enter the code below into the confirmation textbox.</value>
   </data>
+  <data name="editapptheme.Text" xml:space="preserve">
+    <value>Edit AppTheme</value>
+  </data>
   <data name="general.Text" xml:space="preserve">
     <value>General</value>
   </data>

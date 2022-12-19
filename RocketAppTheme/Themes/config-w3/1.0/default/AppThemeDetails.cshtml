@@ -2,6 +2,7 @@
 @using DNNrocketAPI.Components;
 @using Simplisity;
 @using System.IO;
+@using RocketPortal.Components;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketAppTheme/App_LocalResources/")
@@ -10,6 +11,7 @@
     var appTheme = (AppThemeLimpet)Model.List.First();
     var sessionParam = Model.SessionParamsData;
     var systemAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
+    var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
 }
 
 <div class="w3-container">
@@ -32,6 +34,16 @@
         -->
 
         <a class="w3-button simplisity_filedownload" s-cmd="rocketapptheme_export" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.export)</a>
+
+        @if (sessionParam.ModuleRef != "")
+        {
+        <a href="@(portalData.EngineUrlWithProtocol)/sysadmin/rocketapptheme" target="_blank" class="w3-button w3-right" style="text-decoration:none;">
+            <span class="material-icons">
+                movie_edit
+            </span>
+                @ResourceKey("AppThemes.editportalappthemes")
+        </a>
+        }
 
     </div>
 </div>
