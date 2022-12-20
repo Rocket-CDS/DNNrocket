@@ -25,6 +25,8 @@
   </file>
   <file include='true'>
     <value>\system.rules</value>
+    <value>\Skins\rocketportal\rocketedit.ascx</value>
+    <value>\Skins\rocketportal\rocketedit.xml</value>
     <value>\Skins\rocketportal\rocketadmin.ascx</value>
     <value>\Skins\rocketportal\rocketadmin.xml</value>
     <value>\Skins\rocketportal\rockethome.ascx</value>
