@@ -96,7 +96,7 @@ namespace Simplisity
             var upd = getUpdateAttr(xpath, attributes, localized);
             var id = getIdFromXpath(xpath, row, listname);
             if (value == "") value = defaultValue;
-            var strOut = "<input value='" + value + "' id='" + id + "' s-xpath='" + xpath + "' " + attributes + " " + upd + " type='hidden' />";
+            var strOut = "<input value='" + value.Replace("'", "&#39;") + "' id='" + id + "' s-xpath='" + xpath + "' " + attributes + " " + upd + " type='hidden' />";
 
             return new RawString(strOut);
         }
