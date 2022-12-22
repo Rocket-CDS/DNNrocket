@@ -44,6 +44,15 @@
                 @ResourceKey("AppThemes.editportalappthemes")
         </a>
         }
+        @if (sessionParam.ModuleRef != "")
+        {
+            <span class="w3-right w3-large w3-margin-right">@(sessionParam.ModuleRef)</span>
+        }
+        else
+        {
+            <span class="w3-right w3-large w3-margin-right">Portal: @(appTheme.PortalId)</span>
+        }
+
 
     </div>
 </div>

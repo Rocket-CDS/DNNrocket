@@ -8,6 +8,7 @@ using RazorEngine.Text;
 using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,21 +21,33 @@ namespace DNNrocketAPI.render
 {
     public class DNNrocketTokens<T> : Simplisity.RazorEngineTokens<T>
     {
-
-    public IEncodedString DropDownLanguageList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
-    {
-        var dataLangKeys = new Dictionary<string, string>();
-        var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
-        foreach (var l in enabledlanguages)
+        public IEncodedString AddProcessDataResx(AppThemeLimpet appTheme, bool includeAPIresx = false)
         {
-            if (!dataLangKeys.ContainsKey(l))
+            var resxPortalPath = appTheme.PortalFileDirectoryRel.TrimEnd('/') + "/resx/";
+            AddProcessData("resourcepath", resxPortalPath);
+            var resxSysPath = appTheme.AppThemeVersionFolderRel.TrimEnd('/') + "/resx/";
+            AddProcessData("resourcepath", resxSysPath);
+            if (includeAPIresx)
             {
-                dataLangKeys.Add(l, "<img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/" + l + ".png' alt='" + l + "' /><span class='w3-small'>&nbsp;" + DNNrocketUtils.GetCultureCodeName(l) + "</span>");
+                var apiResx = "/DesktopModules/DNNrocket/api/App_LocalResources/";
+                AddProcessData("resourcepath", apiResx);
             }
-
+            return new RawString(""); //return nothing
         }
-        return DropDownList(info, xpath, dataLangKeys, attributes, defaultValue, localized, row, listname);
-    }
+        public IEncodedString DropDownLanguageList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
+        {
+            var dataLangKeys = new Dictionary<string, string>();
+            var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+            foreach (var l in enabledlanguages)
+            {
+                if (!dataLangKeys.ContainsKey(l))
+                {
+                    dataLangKeys.Add(l, "<img class='' src='/DesktopModules/DNNrocket/API/images/flags/16/" + l + ".png' alt='" + l + "' /><span class='w3-small'>&nbsp;" + DNNrocketUtils.GetCultureCodeName(l) + "</span>");
+                }
+
+            }
+            return DropDownList(info, xpath, dataLangKeys, attributes, defaultValue, localized, row, listname);
+        }
         public IEncodedString DropDownCurrencyList(SimplisityInfo info, String xpath, String attributes = "", String defaultValue = "", bool localized = false, int row = 0, string listname = "")
         {
             var dataLangKeys = new Dictionary<string, string>();
@@ -95,6 +108,10 @@ namespace DNNrocketAPI.render
         public IEncodedString ButtonIcon(ButtonTypes buttontype, String lang = "")
         {
             return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang, "Icon"));
+        }
+        public IEncodedString ResourceKey(String moduleRef, String resourceFileKey, String lang = "", String resourceExtension = "Text")
+        {
+            return new RawString(ResourceKeyString(moduleRef + "_" + resourceFileKey, lang, resourceExtension));
         }
 
         public IEncodedString ResourceKey(String resourceFileKey, String lang = "", String resourceExtension = "Text")

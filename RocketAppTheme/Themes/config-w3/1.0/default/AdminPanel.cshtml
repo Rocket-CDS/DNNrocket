@@ -37,6 +37,7 @@
 <script>
 
     $(document).ready(function () {
+        $('.simplisity_loader').show();
         $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketapptheme', debug: false });
         simplisity_sessionremove(); // clear the sessions vars on load.  These needs to be reset for the admin panel to work and not use any front office selections.
     });

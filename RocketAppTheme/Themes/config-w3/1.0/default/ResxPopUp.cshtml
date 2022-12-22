@@ -3,6 +3,7 @@
 @using Simplisity;
 @using System.IO;
 @using DNNrocketAPI.Components;
+@using RocketPortal.Components;
 
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
@@ -12,6 +13,9 @@
 @{
     var appTheme = (AppThemeLimpet)Model.List.First();
     var resxData = (ResxData)Model.DataObjects["resxData"];
+    var disableDelete = true;
+    var sessionParams = Model.SessionParamsData;
+    var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
 
     var flagurl = "";
     if (resxData.CultureCode != "")
@@ -21,16 +25,57 @@
     var listname = "resxlist";
     var lp = 1;
 
+    var backcmd = "rocketapptheme_getdetail";
+
 }
 
 
 <div class="w3-row w3-padding">
-    <div class="w3-button w3-theme-action w3-padding-8 simplisity_click" s-cmd="rocketapptheme_saveresxdata" s-return=".articleselectpopup" s-post="" s-list=".resxdictionarydata" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</div>
-    <div class="w3-button w3-padding-8" onclick="quickresxedit()">@ButtonIcon(ButtonTypes.create)&nbsp;@ResourceKey("AppThemes.quickedit")</div>
-    <div class="w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-before="hideresxpopup" s-return=".articlepopup" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketapptheme_deletefile" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.delete)</div>
+
+    <span class="w3-button w3-black  simplisity_click" s-cmd="@(backcmd)" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.back)</span>
+    <span class="w3-button w3-theme-action w3-padding-8 simplisity_click" s-cmd="rocketapptheme_saveresxdata" s-post="" s-list=".resxdictionarydata" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</span>
+    <span class="w3-button w3-padding" onclick="$('#copylanguageselector').show();">
+        <span class="material-icons">
+            content_copy
+        </span>
+        @ResourceKey("AppThemes.addlanguage")
+    </span>
+
+    <span class="w3-button w3-padding-8" onclick="quickresxedit()">@ButtonIcon(ButtonTypes.create)&nbsp;@ResourceKey("AppThemes.quickedit")</span>
+    @if (appTheme.IsModuleLevel(resxData.FileName, sessionParams.ModuleRef))
+        {
+            disableDelete = false;
+            <span class =" w3-bar-item w3-margin-left w3-text-pale-blue"><img src="/images/level_module.svg" /></span>
+        }
+        else
+        {
+            if (appTheme.IsPortalLevel(resxData.FileName) && PortalUtils.GetPortalId() > 0)
+            {
+                disableDelete = false;
+                if (sessionParams.ModuleRef != "")
+                {
+                    disableDelete = true;
+                }
+                <span class=" w3-bar-item w3-margin-left w3-text-indigo"><img src="/images/level_portal.svg" /></span>
+            }
+        }
+    @if (!disableDelete)
+    {
+        <span class="w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-before="hideresxpopup" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="rocketapptheme_deletefile" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.delete)</span>
+    }
+
+    @if (sessionParams.ModuleRef != "")
+    {
+        <span class="w3-right w3-large w3-margin-right">@(sessionParams.ModuleRef)</span>
+    }
+    else
+    {
+        <span class="w3-right w3-large w3-margin-right">Portal: @(appTheme.PortalId)</span>
+    }
+
 </div>
-<div class="w3-row ">
-    <h5 id="resxfilename" class="" style="">@resxData.FileName</h5>
+<div class="w3-row w3-margin">
+    <h5 id="resxfilename" class="w3-xlarge" style="">@resxData.FileName</h5>
 </div>
 
 
@@ -40,7 +85,7 @@
         <div class="w3-container">
             <div class="w3-display-container ">
 
-                <div class="w3-text-teal w3-padding-8 w3-display-left w3-margin simplisity_click" s-cmd="rocketapptheme_addresxdata" s-return=".articleselectpopup" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ResourceKey("DNNrocket.add", "", "Icon")</div>
+                <div class="w3-text-teal w3-padding-8 w3-display-left w3-margin simplisity_click" s-cmd="rocketapptheme_addresxdata" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ResourceKey("DNNrocket.add", "", "Icon")</div>
 
                 <div class="w3-col m4 w3-center">
                     Key
@@ -73,7 +118,7 @@
                                 </div>
                                 <div class="w3-col m1" style="width:64px">
                                     &nbsp;
-                                    <div class="w3-transparent w3-button w3-padding-8 simplisity_click" s-cmd="rocketapptheme_removeresxdata" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","key":"@r.Key","filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>&times;</div>
+                                    <div class="w3-transparent w3-button w3-padding-8 simplisity_click" s-cmd="rocketapptheme_removeresxdata" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","key":"@r.Key","filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>&times;</div>
                                 </div>
                             </div>
                         </li>
@@ -94,14 +139,7 @@
 <div id="quickresxedit" class="w3-modal">
     <div class="w3-modal-content" style="width:70%;">
         <input id="culturecodeselected" s-update="ignore" type="hidden" value="" />
-
-        <header class="w3-container w3-theme" style="height:38px;">
-            <span onclick="document.getElementById('quickresxedit').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-        </header>
-
-        <div class="w3-bar w3-margin">
-            <div class="w3-button w3-bar-item w3-theme-action w3-padding-8 saveresxquickedit" onclick="saveresxquickedit()">@ButtonText(ButtonTypes.ok)</div>
-        </div>
+        <span onclick="document.getElementById('quickresxedit').style.display='none'" class="w3-button w3-display-topright">&times;</span>
 
 
         @{
@@ -114,7 +152,7 @@
             quickEdit += r.Value.Replace(Environment.NewLine, " ") + Environment.NewLine;
         }
 
-        <div id="resxstring" class="w3-row">
+        <div id="resxstring" class="w3-row" style="padding-top:48px;">
             <div class="w3-quarter w3-margin-right">
                 <textarea id="resxkeysstring" style="border: none;width: 100%;" class="w3-right-align" disabled>@quickKey</textarea>
             </div>
@@ -122,6 +160,33 @@
                 <textarea id="resxvaluesstring" wrap="soft" style="width: 100%;white-space: nowrap;  overflow: auto;">@quickEdit</textarea>
             </div>
         </div>
+
+        <div class="w3-row w3-padding">
+            <div class="w3-button w3-right w3-theme-action w3-padding saveresxquickedit" onclick="saveresxquickedit()">@ButtonText(ButtonTypes.ok)</div>
+        </div>
+
+    </div>
+</div>
+
+<div id="copylanguageselector" class="w3-modal">
+    <div class="w3-modal-content">
+        <span onclick="document.getElementById('copylanguageselector').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <div class="w3-container">
+            @{
+                var enabledlanguages = DNNrocketUtils.GetAllCultureCodeList();
+                foreach (var l in enabledlanguages)
+                {
+                    <div class="w3-col m4 w3-padding" style="cursor: pointer;" editlang='@(l.GetXmlProperty("genxml/code"))' onclick="actionlanguageselect('@(l.GetXmlProperty("genxml/code"))')"><img class='searchlanguagebutton ' src='//@(portalData.EngineUrl)/@(l.GetXmlProperty("genxml/flagurl"))' alt='@(l.GetXmlProperty("genxml/displayname")  + " " + l.GetXmlProperty("genxml/code"))' /><span class="w3-small">&nbsp;@l.GetXmlProperty("genxml/displayname")</span></div>
+                }
+            }
+        </div>
+
+        <span class="w3-button w3-padding-8 simplisity_click" s-cmd="rocketapptheme_copyresx" s-post="" s-fields='{"appthemesystemkey":"@appTheme.SystemKey","filename":"@resxData.FileName","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>
+            <span class="material-icons">
+                content_copy
+            </span>
+            @ResourceKey("AppThemes.addlanguage")
+        </span>
 
     </div>
 </div>

@@ -11,6 +11,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Web;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace DNNrocket.AppThemes
 {
@@ -74,10 +75,6 @@ namespace DNNrocket.AppThemes
                                 break;
                             case "rocketapptheme_addimage":
                                 strOut = AddListImage();
-                                break;
-                            case "rocketapptheme_addresx":
-                                AddResxFile();
-                                strOut = GetDetail();
                                 break;
                             case "rocketapptheme_addcss":
                                 AddCssFile();
@@ -363,11 +360,12 @@ namespace DNNrocket.AppThemes
             try
             {
                 var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
-                var resxData = new ResxData(_appTheme.GetFileMapPath(fname));
+                var resxData = _appTheme.GetResx(fname);
                 var dataObjects = new Dictionary<string, object>();
                 dataObjects.Add("resxData", resxData);
                 var razorTempl = _appThemeSystem.GetTemplate("ResxPopUp.cshtml");
                 var pr = RenderRazorUtils.RazorProcessData(razorTempl, _appTheme, dataObjects, _passSettings, _sessionParams, true);
+                if (pr.StatusCode != "00") return pr.ErrorMsg;
                 return pr.RenderedText;
             }
             catch (Exception ex)
@@ -380,17 +378,17 @@ namespace DNNrocket.AppThemes
             try
             {
                 var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
-                var resxData = new ResxData(_appTheme.GetFileMapPath(fname));
-
-                var key = "new" + (resxData.DataDictionary.Count + 1).ToString() + ".Text";
+                var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
+                var resxData = _appTheme.GetResx(fname, moduleref);
+                var key = "" + (resxData.DataDictionary.Count + 1).ToString() + ".Text";
                 var lp = (resxData.DataDictionary.Count + 1);
                 while (resxData.DataDictionary.ContainsKey(key))
                 {
                     lp += 1;
-                    key = "new" + (lp).ToString() + ".Text";
+                    key = "" + (lp).ToString() + ".Text";
                 }
                 resxData.AddField(key, "");
-                resxData.Update();
+                _appTheme.SaveResx(fname, resxData, moduleref);
                 return GetResxDetail();
             }
             catch (Exception ex)
@@ -404,9 +402,10 @@ namespace DNNrocket.AppThemes
             {
                 var key = _paramInfo.GetXmlProperty("genxml/hidden/key");
                 var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
-                var resxData = new ResxData(_appTheme.GetFileMapPath(fname));
+                var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
+                var resxData = _appTheme.GetResx(fname, moduleref);
                 resxData.RemoveField(key);
-                resxData.Update();
+                _appTheme.SaveResx(fname, resxData, moduleref);
                 return GetResxDetail();
             }
             catch (Exception ex)
@@ -416,24 +415,18 @@ namespace DNNrocket.AppThemes
         }
         public String SaveResxDetail()
         {
-            try
+            var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+            var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
+            var resxData = _appTheme.GetResx(fname, moduleref);
+            resxData.RemoveAllFields();
+            var resxlist = _postInfo.GetRecordList("resxdictionarydata");
+            foreach (var r in resxlist)
             {
-                var key = _paramInfo.GetXmlProperty("genxml/hidden/key");
-                var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
-                var resxData = new ResxData(_appTheme.GetFileMapPath(fname));
-                resxData.RemoveAllFields();
-                var resxlist = _postInfo.GetRecordList("resxdictionarydata");
-                foreach (var r in resxlist)
-                {
-                    resxData.AddField(r.GetXmlProperty("genxml/key"), r.GetXmlProperty("genxml/value"));
-                }
-                resxData.Update();
-                return GetResxDetail();
+                resxData.AddField(r.GetXmlProperty("genxml/key"), r.GetXmlProperty("genxml/value"));
             }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
+            _appTheme.SaveResx(fname, resxData, moduleref);
+            CacheFileUtils.ClearAllCache();
+            return GetResxDetail();
         }
 
 
@@ -559,28 +552,6 @@ namespace DNNrocket.AppThemes
             ImgUtils.MoveImageToFolder(_postInfo, _appTheme.ImageFolderMapPath);
             _appTheme.Populate();
             return GetDetail();
-        }
-
-        private void AddResxFile()
-        {
-            var resxfilename = _postInfo.GetXmlProperty("genxml/textbox/resxfilename");
-            if (resxfilename != "")
-            {
-                var culturecoderesx = _paramInfo.GetXmlProperty("genxml/hidden/culturecoderesx");
-                if (culturecoderesx != "") culturecoderesx = "." + culturecoderesx;
-
-                if (Path.GetExtension(resxfilename) != ".resx") resxfilename = Path.GetFileNameWithoutExtension(resxfilename) + culturecoderesx + ".resx";
-                var fileMapPath = _appTheme.AppThemeVersionFolderMapPath + "\\resx\\" + resxfilename;
-                var resxFileData = "";
-
-                var resxData = new ResxData(fileMapPath);
-                if (!resxData.Exists)
-                {
-                    if (File.Exists(fileMapPath)) resxFileData = FileUtils.ReadFile(fileMapPath);
-                    FileUtils.SaveFile(fileMapPath, resxFileData);
-                    _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appTheme.AppVersionFolder, _projectName);
-                }
-            }
         }
         private void AddCssFile()
         {

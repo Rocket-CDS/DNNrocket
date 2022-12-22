@@ -20,6 +20,7 @@ namespace DNNrocketAPI.Components
             DataDictionary = new Dictionary<string, string>();
             FileMapPath = resxFileMapPath;
             FileName = Path.GetFileName(FileMapPath);
+
             CultureCode = "";
             var templateNameWithoutExtension = Path.GetFileNameWithoutExtension(FileMapPath);
             var t = templateNameWithoutExtension.Split('.');
@@ -129,14 +130,6 @@ namespace DNNrocketAPI.Components
                 if (childNode != null) childNode.ParentNode.RemoveChild(childNode);
             }
             DataDictionary = new Dictionary<string, string>();
-            Update();
-            ResxXmlData.Load(FileMapPath);
-            BuildDictionary();
-        }
-        public void Update()
-        {
-            ResxXmlData.Save(FileMapPath);
-            ResxXmlData.Load(FileMapPath);
             BuildDictionary();
         }
         public string GetJsonResx()
@@ -152,13 +145,6 @@ namespace DNNrocketAPI.Components
             jsonStr = jsonStr.TrimEnd(',') + "]}";
             return jsonStr;
         }
-
-
-        public void Delete()
-        {
-            if (File.Exists(FileMapPath)) File.Delete(FileMapPath);
-        }
-
         public XmlDocument ResxXmlData { get; set; }
         public string ResxFileData { get; set; }
         public string FileName { get; set; }

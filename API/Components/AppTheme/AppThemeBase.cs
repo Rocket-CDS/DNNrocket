@@ -46,6 +46,7 @@ namespace DNNrocketAPI.Components
             else
                 PortalId = portalid;
             PortalFileDirectoryMapPath = PortalUtils.DNNrocketThemesDirectoryMapPath(portalid).TrimEnd('\\') + "\\" + projectName + "\\" + AppThemeFolder + "\\" + AppVersionFolder + "\\";
+            PortalFileDirectoryRel = "/" + PortalUtils.DNNrocketThemesDirectoryRel(portalid).TrimEnd('/') + "/" + projectName + "/" + AppThemeFolder + "/" + AppVersionFolder + "/";
             AssignVersionFolders();
             ImportConfig();
 
@@ -226,13 +227,10 @@ namespace DNNrocketAPI.Components
             if (FileNameList.ContainsKey(templateFileName.ToLower()))
             {
                 var fileMapPath = FileNameList[templateFileName.ToLower()];
-                if (PortalUtils.GetPortalId() != 0)
-                {
-                    var fileMP = "";
-                    if (moduleref != "") fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
-                    if (!File.Exists(fileMP)) fileMP = GetPortalFileMapPath(fileMapPath);
-                    if (File.Exists(fileMP)) fileMapPath = fileMP;
-                }
+                var fileMP = "";
+                if (moduleref != "") fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
+                if (!File.Exists(fileMP)) fileMP = GetPortalFileMapPath(fileMapPath);
+                if (File.Exists(fileMP)) fileMapPath = fileMP;
                 return FileUtils.ReadFile(fileMapPath);
             }
             else
@@ -241,21 +239,62 @@ namespace DNNrocketAPI.Components
                 if (PortalFileNameList.ContainsKey(templateFileName.ToLower()))
                 {
                     var fileMapPath = PortalFileNameList[templateFileName.ToLower()];
-                    if (PortalUtils.GetPortalId() != 0)
-                    {
-                        var fileMP = "";
-                        if (moduleref != "") fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
-                        if (!File.Exists(fileMP)) fileMP = GetPortalFileMapPath(fileMapPath);
-                        if (File.Exists(fileMP)) fileMapPath = fileMP;
-                    }
+                    var fileMP = "";
+                    if (moduleref != "") fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
+                    if (!File.Exists(fileMP)) fileMP = GetPortalFileMapPath(fileMapPath);
+                    if (File.Exists(fileMP)) fileMapPath = fileMP;
                     return FileUtils.ReadFile(fileMapPath);
                 }
                 
             }
             return "";
         }
+        public ResxData GetResx(string templateFileName, string moduleref = "")
+        {
+            if (FileNameList.ContainsKey(templateFileName.ToLower()))
+            {
+                var fileMapPath = FileNameList[templateFileName.ToLower()];
+                var fileMP = "";
+                if (moduleref != "") fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
+                if (!File.Exists(fileMP)) fileMP = GetPortalFileMapPath(fileMapPath);
+                if (File.Exists(fileMP)) fileMapPath = fileMP;
+                return new ResxData(fileMapPath);
+            }
+            else
+            {
+                // we might only have the file at portallevel
+                if (PortalFileNameList.ContainsKey(templateFileName.ToLower()))
+                {
+                    var fileMapPath = PortalFileNameList[templateFileName.ToLower()];
+                    var fileMP = "";
+                    if (moduleref != "") fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
+                    if (!File.Exists(fileMP)) fileMP = GetPortalFileMapPath(fileMapPath);
+                    if (File.Exists(fileMP)) fileMapPath = fileMP;
+                    return new ResxData(fileMapPath);
+                }
+            }
+            return null;
+        }
+        public void SaveResx(string filename, ResxData resxData, string moduleref = "")
+        {
+            filename = filename.ToLower();
+            if (FileNameList.ContainsKey(filename))
+            {
+                var fileMapPath = FileNameList[filename];
+                var fileMP = "";
+                if (moduleref != "")
+                    fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
+                else
+                    fileMP = GetPortalFileMapPath(fileMapPath);
+                if (fileMP != "") fileMapPath = fileMP;
+                var dir = Path.GetDirectoryName(fileMapPath);
+                if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+                FileUtils.SaveFile(fileMapPath, resxData.ResxXmlData.OuterXml);
+            }
+        }
         public void SaveEditor(string filename, string editorcode, string moduleref = "")
         {
+            filename = filename.ToLower();
             if (FileNameList.ContainsKey(filename))
             {
                 // NOTE: ONLY SUPERUSER CAN CHANGE RAZOR TEMPLATES.
@@ -281,29 +320,27 @@ namespace DNNrocketAPI.Components
                 }
             }
         }
+        /// <summary>
+        /// Delete AppTheme File.  Note: never delete system level.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="moduleref"></param>
         public void DeleteFile(string filename, string moduleref)
         {
             GC.Collect();
             GC.WaitForPendingFinalizers();
 
             var fileMapPath = FileNameList[filename.ToLower()];
-            if (PortalUtils.GetPortalId() != 0)
-            {
-                var fileMP = "";
-                if (moduleref != "") 
-                    fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
-                else
-                    fileMP = GetPortalFileMapPath(fileMapPath);
-                if (File.Exists(fileMP)) File.Delete(fileMP);
-            }
+            var fileMP = "";
+            if (moduleref != "") 
+                fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
             else
-            {
-                File.Delete(fileMapPath);
-            }
+                fileMP = GetPortalFileMapPath(fileMapPath);
+                
+            if (File.Exists(fileMP)) File.Delete(fileMP);
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
-
         }
 
         public bool IsModuleLevel(string fileName, string moduleref)
@@ -597,7 +634,8 @@ namespace DNNrocketAPI.Components
         public string JsFolderRel { get; set; }
         public string ResxFolderRel { get; set; }
         public string RazorFolderRel { get; set; }
-        public string PortalFileDirectoryMapPath { get; set; }        
+        public string PortalFileDirectoryMapPath { get; set; }
+        public string PortalFileDirectoryRel { get; set; }
         public int PortalId { get; set; }        
         public bool Exists { get; set; }        
         public Dictionary<string, string> ImageFileNameList { get; set; }
