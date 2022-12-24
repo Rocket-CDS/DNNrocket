@@ -993,4 +993,7 @@ settings
   <data name="view.Text" xml:space="preserve">
     <value>View</value>
   </data>
+  <data name="title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
 </root>
