@@ -109,7 +109,7 @@ namespace DNNrocketAPI.render
         {
             return new RawString(ResourceKeyString("DNNrocket." + buttontype, lang, "Icon"));
         }
-        public IEncodedString ResourceKey(String moduleRef, String resourceFileKey, String lang = "", String resourceExtension = "Text")
+        public IEncodedString ResourceKeyMod(String moduleRef, String resourceFileKey, String lang = "", String resourceExtension = "Text")
         {
             return new RawString(ResourceKeyString(moduleRef + "_" + resourceFileKey, lang, resourceExtension));
         }
