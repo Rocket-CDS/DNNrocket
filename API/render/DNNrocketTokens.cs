@@ -111,9 +111,9 @@ namespace DNNrocketAPI.render
         }
         public IEncodedString ResourceKeyMod(String moduleRef, String resourceFileKey, String lang = "", String resourceExtension = "Text")
         {
-            return new RawString(ResourceKeyString(moduleRef + "_" + resourceFileKey, lang, resourceExtension));
+            if (moduleRef != "") moduleRef = moduleRef + "_";
+            return new RawString(ResourceKeyString(moduleRef + resourceFileKey, lang, resourceExtension));
         }
-
         public IEncodedString ResourceKey(String resourceFileKey, String lang = "", String resourceExtension = "Text")
         {
             return new RawString(ResourceKeyString(resourceFileKey, lang, resourceExtension));
