@@ -310,4 +310,7 @@
     <value>@TextBox(info, "genxml/", String attributes = "", String defaultValue = "yyyy-MM-dd", bool localized = false, int row = 0, string listname = "")</value>
     <comment>Display TextBox field</comment>
   </data>
+  <data name="Razor.ResourceKeyModuleRef" xml:space="preserve">
+    <value>@ResourceKey(String moduleRef, String resourceFileKey, String lang = "", String resourceExtension = "Text")</value>
+  </data>
 </root>
