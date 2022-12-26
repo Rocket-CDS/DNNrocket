@@ -21,7 +21,7 @@ namespace DNNrocketAPI.Components
         /// <param name="systemData"></param>
         /// <param name="appThemeFolder"></param>
         /// <param name="versionFolder"></param>
-        public AppThemeLimpet(int portalId, SystemLimpet systemData, string appThemeFolder, string versionFolder = "") : base(portalId, systemData.SystemRelPath.TrimEnd('/') + "/Themes/" + appThemeFolder, versionFolder)
+        public AppThemeLimpet(int portalId, SystemLimpet systemData, string appThemeFolder, string versionFolder = "") : base(portalId, systemData.SystemRelPath.TrimEnd('/') + "/Themes/" + appThemeFolder, versionFolder, systemData.SystemKey)
         {
             ProjectName = "";
             SystemKey = systemData.SystemKey;
