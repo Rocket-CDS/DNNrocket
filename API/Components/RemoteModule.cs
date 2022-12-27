@@ -9,6 +9,7 @@ using System.Xml;
 
 namespace DNNrocketAPI.Components
 {
+    [Obsolete("Instead create class in the system that inherits ModuleBase.")]
     public class RemoteModule
     {
         private DNNrocketController _objCtrl;
