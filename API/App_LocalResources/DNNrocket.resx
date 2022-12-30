@@ -792,7 +792,7 @@ account_tree
     <value>Home</value>
   </data>
   <data name="cmsadmin.Text" xml:space="preserve">
-    <value>CMS Admin</value>
+    <value>Administration</value>
   </data>
   <data name="portaladmin.Text" xml:space="preserve">
     <value>Portal Admin</value>

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DNNrocketAPI.Components
 {
@@ -287,6 +288,12 @@ namespace DNNrocketAPI.Components
         {
             if (razorTemplate != "")
             {
+                // The replacement INJECT works, but more thought is needed to deal with mismathcing varibles for razor model.
+                // NOTE: This idea was to try and speed up rendering when using multiple razor file.
+                //
+                //razorTemplate = ReplaceInjectTokens(razorTemplate);
+                
+                
                 if (settings == null) settings = new Dictionary<string, string>();
                 var nbRazor = new SimplisityRazor();
                 nbRazor.SessionParamsData = sessionParams;
@@ -295,6 +302,31 @@ namespace DNNrocketAPI.Components
                 return RazorProcess(nbRazor, razorTemplate, debugmode);
             }
             return new RazorProcessResult();
+        }
+        private static string ReplaceInjectTokens(string templateData)
+        {
+            if (templateData.Contains("[INJECT:"))
+            {
+                FastReplacer fr = new FastReplacer("[INJECT:", "]", false);
+                fr.Append(templateData);
+                var tokenList = fr.GetTokenStrings();
+                foreach (var token in tokenList)
+                {
+                    var fileMapPath = DNNrocketUtils.MapPath(token);
+                    if (File.Exists(fileMapPath))
+                    {
+                        string[] lines = File.ReadAllLines(fileMapPath);
+                        var result = lines.SkipWhile(x => x != "<!--START-->")  // skips everything before 
+                      .Skip(1)                           // and <!--START--> itself
+                      .TakeWhile(x => x != "<!--END-->") // and take up to </rs:data>
+                      .ToList();                         // as List<string>
+
+                       fr.Replace("[INJECT:" + token + "]", String.Concat(result));
+                    }
+                }
+                templateData  = fr.ToString();
+            }
+            return templateData;
         }
         public static RazorProcessResult RazorProcessData(string razorTemplate, object obj, Dictionary<string, object> dataObjects = null, Dictionary<string, string> settings = null, SessionParams sessionParams = null, bool debugmode = false)
         {

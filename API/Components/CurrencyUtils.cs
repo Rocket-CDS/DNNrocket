@@ -25,16 +25,16 @@ namespace DNNrocketAPI.Components
             if (IsNumeric(rtnStr)) return Convert.ToInt32(rtnStr);
             return 0;
         }
-        public static string CurrenyEdit(int intValue, string currencyCultureCode)
+        public static string CurrencyEdit(int intValue, string currencyCultureCode)
         {
             return CurrencyCentsToDollars(intValue, currencyCultureCode).ToString();
         }
-        public static string CurrenyDisplay(string cents, string currencyCultureCode)
+        public static string CurrencyDisplay(string cents, string currencyCultureCode)
         {
             if (!GeneralUtils.IsNumeric(cents)) return "0";
-            return CurrenyDisplay(CurrencyCentsToDollars(Convert.ToInt32(cents), currencyCultureCode), currencyCultureCode);
+            return CurrencyDisplay(CurrencyCentsToDollars(Convert.ToInt32(cents), currencyCultureCode), currencyCultureCode);
         }
-        public static string CurrenyDisplay(decimal value, string currencyCultureCode)
+        public static string CurrencyDisplay(decimal value, string currencyCultureCode)
         {
             return value.ToString("C", CultureInfo.GetCultureInfo(currencyCultureCode));
         }

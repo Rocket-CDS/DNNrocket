@@ -258,10 +258,6 @@ namespace DNNrocketAPI.Components
                 return dbt;
             }
         }
-        public string AdminUrl
-        {
-            get { return SystemRelPath + "/" + SystemKey + "/admin.html"; }
-        }
         public string SystemRelPath { get; set; }
         public string SystemMapPath
         {

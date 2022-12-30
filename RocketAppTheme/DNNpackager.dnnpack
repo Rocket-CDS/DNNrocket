@@ -24,7 +24,6 @@
   </file>
   <file include='true'>
     <value>\system.rules</value>
-    <value>\admin.html</value>
     <value>\readme.md</value>
   </file>
   <assembly>

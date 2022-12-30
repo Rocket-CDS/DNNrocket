@@ -40,9 +40,6 @@
           <files>
             <basePath>DesktopModules\DNNrocket\RocketAppTheme</basePath>
             <file>
-              <name>admin.html</name>
-            </file>
-            <file>
               <name>ReadMe.md</name>
             </file>
           </files>
