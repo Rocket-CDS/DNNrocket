@@ -1,6 +1,20 @@
 @inherits RocketPortal.Components.RocketPortalTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using RocketPortal.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+@using DotNetNuke;
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+
+@{
+    var loginTabId = PortalUtils.LoginTabId();
+    var loginPage = "/login";
+    if (loginTabId > 0)
+    {
+        loginPage = PagesUtils.GetPageURL(loginTabId);
+    }
+}
 
 <link rel="stylesheet" href="/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/dnnrocket-theme.css">
 
@@ -9,5 +23,5 @@
 </div>
 
 <div class="w3-container w3-center w3-margin">
-    <div class="w3-button w3-theme-action" onclick="window.location.reload(true);">@ResourceKey("DNNrocket.login")</div>
+    <a class="w3-button w3-theme-action" href="@(loginPage)?returnurl=%2fsysadmin.aspx">@ResourceKey("DNNrocket.login")</a>
 </div>

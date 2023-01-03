@@ -25,7 +25,8 @@ namespace RocketPortal.Components
             if (paramInfo.GetXmlPropertyInt("genxml/urlparams/page") != 0) SessionParamData.Page = paramInfo.GetXmlPropertyInt("genxml/urlparams/page");
             if (SessionParamData.PageSize == 0) SessionParamData.PageSize = 32;
 
-            _searchFilter = " and not(R1.PortalId = 0) ";
+            //_searchFilter = " and not(R1.PortalId = 0) ";
+            _searchFilter = "";
             if (SessionParamData.SearchText != "")
             {
                 _searchFilter = "  and    (";
@@ -39,6 +40,14 @@ namespace RocketPortal.Components
         public void Populate()
         {
             SessionParamData.RowCount = _objCtrl.GetListCount(-1, -1, EntityTypeCode, _searchFilter);
+            if (SessionParamData.RowCount == 0)
+            {
+                // We have no portal record for portal/0, create it.
+                var p = new PortalLimpet(0);
+                p.Name = PortalUtils.GetPortalAlias(DNNrocketUtils.GetCurrentCulture());
+                p.Save(new SimplisityInfo());
+                SessionParamData.RowCount = _objCtrl.GetListCount(-1, -1, EntityTypeCode, _searchFilter);
+            }
             if (UserUtils.IsSuperUser())
             {
                 PortalList = _objCtrl.GetList(-1, -1, EntityTypeCode, _searchFilter, "", " order by R1.PortalId", 0, SessionParamData.Page, SessionParamData.PageSize, SessionParamData.RowCount);

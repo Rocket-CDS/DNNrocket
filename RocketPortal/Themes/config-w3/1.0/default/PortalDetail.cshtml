@@ -41,8 +41,10 @@
                     @ButtonIcon(ButtonTypes.reset) &nbsp; @ResourceKey("RP.resetsecurity")
                 </span>
             }
-
-            <span class="w3-padding w3-button w3-red w3-right" onclick="$('#portaltab').hide();$('#deleteportaltab').show();">@ButtonText(ButtonTypes.delete)</span>
+            @if (portalData.PortalId > 0)
+            {
+                <span class="w3-padding w3-button w3-red w3-right" onclick="$('#portaltab').hide();$('#deleteportaltab').show();">@ButtonText(ButtonTypes.delete)</span>
+            }
         </div>
 
     </div>

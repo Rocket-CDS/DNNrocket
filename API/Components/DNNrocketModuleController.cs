@@ -10,6 +10,7 @@ using Simplisity;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Entities.Content.Taxonomy;
+using System.IO;
 
 namespace DNNrocketAPI.Components
 {
@@ -193,21 +194,36 @@ namespace DNNrocketAPI.Components
             
             DNNrocketUtils.CreateDefaultRocketRoles(0);
                         
-            var homeTabId = PagesUtils.GetHomePage(0,DNNrocketUtils.GetCurrentCulture());
-            if (homeTabId >= 0)
-            {
-                PagesUtils.AddPageSkin(0, homeTabId, "rocketportal", "rocketportal.ascx");
-                ModuleUtils.DeleteAllTabModules(homeTabId);
-                PagesUtils.RemoveAllUsersPagePermissions(0, homeTabId);
-            }
+            //var homeTabId = PagesUtils.GetHomePage(0,DNNrocketUtils.GetCurrentCulture());
+            //if (homeTabId >= 0)
+            //{
+            //    PagesUtils.AddPageSkin(0, homeTabId, "rocketportal", "rocketportal.ascx");
+            //    ModuleUtils.DeleteAllTabModules(homeTabId);
+            //    PagesUtils.RemoveAllUsersPagePermissions(0, homeTabId);
+            //}
 
-            var cmstabid = PagesUtils.CreatePage(0, "cms");
-            PagesUtils.AddPagePermissions(0, cmstabid, "");
-            PagesUtils.RemoveAllUsersPagePermissions(0, cmstabid);
-            PagesUtils.AddPageSkin(0, cmstabid, "rocketportal", "rocketcms.ascx");
+            //var cmstabid = PagesUtils.CreatePage(0, "cms");
+            //PagesUtils.AddPagePermissions(0, cmstabid, "");
+            //PagesUtils.RemoveAllUsersPagePermissions(0, cmstabid);
+            //PagesUtils.AddPageSkin(0, cmstabid, "rocketportal", "rocketcms.ascx");
 
             PortalUtils.Registration(0, 0);
             PortalUtils.EnablePopups(0, false);
+
+            // Add Link in PersonaBar
+            var linkText = "'<li class=\"border server-name\" data-bind=\"visible: ServerName.length > 0\"><label>Rocket CDS</label><a href=\"/sysadmin.aspx\" target=\"_blank\">SysAdmin</a></li>' + ";
+            string filename = DNNrocketUtils.MapPath("/DesktopModules/Admin/Dnn.PersonaBar/scripts/serversummary.js");
+            var fileOutText = "";
+            var lines = File.ReadLines(filename);
+            foreach (var line in lines)
+            {
+                if (line != linkText)
+                {
+                    if (line.Contains("'<li class=\"separator\"></li>'")) fileOutText += linkText + Environment.NewLine;
+                    fileOutText += line + Environment.NewLine;
+                }
+            }
+            FileUtils.SaveFile(filename, fileOutText);
 
             LogUtils.LogSystem("UPGRADE END: " + Version);
 

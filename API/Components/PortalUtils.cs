@@ -216,6 +216,14 @@ namespace DNNrocketAPI.Components
         {
             return new PortalSettings(portalId);
         }
+        public static int LoginTabId(int portalId)
+        {
+            return new PortalSettings(portalId).LoginTabId;
+        }
+        public static int LoginTabId()
+        {
+            return new PortalSettings(PortalSettings.Current.PortalId).LoginTabId;
+        }
         public static int GetPortalByModuleID(int moduleId)
         {
             var objMCtrl = new DotNetNuke.Entities.Modules.ModuleController();

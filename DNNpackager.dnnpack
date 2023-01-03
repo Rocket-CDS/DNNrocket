@@ -71,6 +71,7 @@
     <value>\RocketPortal\Skins\rocketportal\rocketcms.ascx</value>
     <value>\RocketPortal\Skins\rocketportal\rocketcms.xml</value>
     <value>\RocketPortal\Skins\rocketportal\skin.css</value>
+	<value>\RocketPortal\sysadmin.aspx</value>
 
   </file>
 	<assembly>

@@ -16,10 +16,9 @@
 
         THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       </license>
-			<releaseNotes>
-DNNrocket is a module framework that works both client side and server side.
-It also contains the popular RocketMod modules, which is a dynamic content builder.
-      </releaseNotes>
+		<releaseNotes>
+            DNNrocket is a DNN wrapper framework that extends DNN and is designed to help migration to .NetCore
+        </releaseNotes>
       <dependencies>
       </dependencies>
       <components>
@@ -37,15 +36,16 @@ It also contains the popular RocketMod modules, which is a dynamic content build
           </scripts>
         </component>
         <component type="ResourceFile">
-					<resourceFiles>
-						<basePath>DesktopModules\DNNrocket</basePath>
-						<resourceFile>
-							<name>Resource.zip</name>
-						</resourceFile>
-					</resourceFiles>
-				</component>
-				<component type="Assembly">
-					<assemblies>
+			<resourceFiles>
+				<basePath>DesktopModules\DNNrocket</basePath>
+				<resourceFile>
+					<name>Resource.zip</name>
+				</resourceFile>
+			</resourceFiles>
+		</component>
+  
+		  <component type="Assembly">
+			<assemblies>
 
             <assembly>
               <path>bin</path>
@@ -262,7 +262,17 @@ It also contains the popular RocketMod modules, which is a dynamic content build
           </assemblies>
         </component>
 
-      </components>
+        <component type="File">
+	        <files>
+		        <basePath>\</basePath>
+		        <file>
+			        <name>sysadmin.aspx</name>
+			        <sourceFileName>sysadmin.aspx</sourceFileName>
+		        </file>
+	        </files>
+        </component>
+
+	  </components>
     </package>
 
     <package name="RocketAppTheme" type="Library" version="1.0.19">

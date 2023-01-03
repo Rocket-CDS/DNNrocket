@@ -217,7 +217,7 @@ namespace RocketPortal.API
             }
             else
             {
-                if (!UserUtils.IsInRole("Registered Users")) return "rocketportal_login";
+                if (!UserUtils.IsSuperUser()) return "rocketportal_login";
             }
 
             // SECURITY --------------------------------
