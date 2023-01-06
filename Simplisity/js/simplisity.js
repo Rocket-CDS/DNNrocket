@@ -207,6 +207,12 @@ function simplisityPost(scmdurl, scmd, spost, sreturn, slist, sappend, sindex, s
                         var obj = jsonObj[i];
                         jQuery(sdropdownlist).append("<option value='" + obj.key + "'>" + obj.value + "</option>");
                     }
+                    if ((typeof safter !== 'undefined') && safter !== '') {
+                        var funclist = safter.split(',');
+                        for (var i = 0; i < funclist.length; i++) {
+                            window[funclist[i]]();
+                        }
+                    }
                     if (shideloader === true) {
                         jQuery('.simplisity_loader').hide();
                     }

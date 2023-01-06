@@ -108,12 +108,15 @@ namespace Rocket.AppThemes.Components
             }
             return rtn;
         }
-        public object NameListJson()
+        public object NameListJson(bool addEmpty = true)
         {
             var jsonList = new List<ValuePair>();
             if (NameList != null)
             {
                 var valuePair = new ValuePair();
+                valuePair.Key = "";
+                valuePair.Value = "";
+                if (addEmpty) jsonList.Add(valuePair);
                 foreach (var i in NameList)
                 {
                     valuePair = new ValuePair();

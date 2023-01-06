@@ -150,9 +150,9 @@ namespace DNNrocket.AppThemes
                             case "rocketapptheme_appthemejson":
                                 strOut = "";
                                 var projectName2 = _postInfo.GetXmlProperty("genxml/hidden/activevalue");
-                                var appThemeList2 = new AppThemeDataList(projectName2);
-                                appThemeList2.SelectedSystemKey = _paramInfo.GetXmlProperty("genxml/hidden/selectedsystemkey");
-                                jsonOut = appThemeList2.NameListJson();
+                                var appThemeList2 = new AppThemeDataList(projectName2, _paramInfo.GetXmlProperty("genxml/hidden/selectedsystemkey"));
+                                var addEmpty = _postInfo.GetXmlPropertyBool("genxml/hidden/addempty");
+                                jsonOut = appThemeList2.NameListJson(addEmpty);
                                 break;                                
 
                         }
