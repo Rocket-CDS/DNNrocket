@@ -82,15 +82,15 @@ namespace DNNrocketAPI.Components
 
         private void AssignVersionFolders()
         {
-            AppThemeVersionFolderRel = AppThemeFolderRel + "/" + AppVersionFolder;
+            AppThemeVersionFolderRel = AppThemeFolderRel.TrimEnd('/') + "/" + AppVersionFolder;
 
-            ImageFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/img";
-            DocumentFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/doc";
-            CssFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/css";
-            TempFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/temp";
-            JsFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/js";
-            ResxFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/resx";
-            RazorFolderRel = AppThemeFolderRel + "/" + AppVersionFolder + "/default";
+            ImageFolderRel = AppThemeFolderRel.TrimEnd('/') + "/" + AppVersionFolder + "/img";
+            DocumentFolderRel = AppThemeFolderRel.TrimEnd('/') + "/" + AppVersionFolder + "/doc";
+            CssFolderRel = AppThemeFolderRel.TrimEnd('/') + "/" + AppVersionFolder + "/css";
+            TempFolderRel = AppThemeFolderRel.TrimEnd('/') + "/" + AppVersionFolder + "/temp";
+            JsFolderRel = AppThemeFolderRel.TrimEnd('/') + "/" + AppVersionFolder + "/js";
+            ResxFolderRel = AppThemeFolderRel.TrimEnd('/') + "/" + AppVersionFolder + "/resx";
+            RazorFolderRel = AppThemeFolderRel.TrimEnd('/') + "/" + AppVersionFolder + "/default";
 
             AppThemeVersionFolderMapPath = DNNrocketUtils.MapPath(AppThemeVersionFolderRel);
 
