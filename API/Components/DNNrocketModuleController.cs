@@ -209,24 +209,9 @@ namespace DNNrocketAPI.Components
 
             PortalUtils.Registration(0, 0);
             PortalUtils.EnablePopups(0, false);
-
-            // Add Link in PersonaBar
-            var linkText = "'<li class=\"border server-name\" data-bind=\"visible: ServerName.length > 0\"><label>Rocket CDS</label><a href=\"/sysadmin.aspx\" target=\"_blank\">SysAdmin</a></li>' + ";
-            string filename = DNNrocketUtils.MapPath("/DesktopModules/Admin/Dnn.PersonaBar/scripts/serversummary.js");
-            var fileOutText = "";
-            var lines = File.ReadLines(filename);
-            foreach (var line in lines)
-            {
-                if (line != linkText)
-                {
-                    if (line.Contains("'<li class=\"separator\"></li>'")) fileOutText += linkText + Environment.NewLine;
-                    fileOutText += line + Environment.NewLine;
-                }
-            }
-            FileUtils.SaveFile(filename, fileOutText);
+            PortalUtils.AddSysAdminMenu();
 
             LogUtils.LogSystem("UPGRADE END: " + Version);
-
 
             DNNrocketUtils.RecycleApplicationPool();
 
