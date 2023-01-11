@@ -173,6 +173,8 @@ namespace DNNrocketAPI
         }
         public override String ExecSql(string commandText)
         {
+            commandText = commandText.Replace("{databaseOwner}", DatabaseOwner);
+            commandText = commandText.Replace("{objectQualifier}", ObjectQualifier);
             return Convert.ToString(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, commandText));
         }
 
@@ -180,6 +182,9 @@ namespace DNNrocketAPI
         {
             // With the XML return we often want a large data return, so we need to increase the default command timout.
             // becuase we're compiling against DNN6 we can't use PetaPocoHelper class.  So create a new connection and command with timeout.
+
+            commandText = commandText.Replace("{databaseOwner}", DatabaseOwner);
+            commandText = commandText.Replace("{objectQualifier}", ObjectQualifier);
 
             //Create a new connection
             var rtnData = "Error data reader fail";
