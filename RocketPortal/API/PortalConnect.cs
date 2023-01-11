@@ -137,7 +137,8 @@ namespace RocketPortal.API
             if (!UserUtils.IsSuperUser()) return "";
             var portalList = new PortalLimpetList(_paramInfo);
             portalList.Validate();
-            return GetDashboard();
+            PortalUtils.AddSysAdminMenu();
+            return GetPortalList();
         }
         private String GetPortalDetail()
         {
