@@ -18,21 +18,6 @@ namespace Rocket.AppThemes.Components
     public static class AppThemeUtils
     {
         private static readonly object _cacheLock1 = new object();
-        public static AppThemeLimpet GetAppThemeLimpet(string systemKey, string appThemeFolder, string versionFolder, string org)
-        {
-            var cKey = "AppThemeLimpet*" + systemKey + "*" + appThemeFolder + "*" + versionFolder + "*" + PortalUtils.GetPortalId() + "-" + org;
-            var systemData = new SystemLimpet(systemKey);
-            var appTheme = (AppThemeLimpet)CacheUtils.GetCache(cKey);
-            lock (_cacheLock1)
-            {
-                if (appTheme == null)
-                {
-                    appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), appThemeFolder, versionFolder, org);
-                    CacheUtils.SetCache(cKey, appTheme);
-                }
-            }
-            return appTheme;
-        }
         public static AppThemeRocketApiLimpet AppThemeRocketApi(int portalId)
         {
             var cacheKey = "AppThemeRocketApi" + portalId;
@@ -107,20 +92,50 @@ namespace Rocket.AppThemes.Components
             return appTheme;
         }
 
-        public static AppThemeLimpet AppTheme(int portalId, string appThemeFolder, string versionFolder, string org)
+        public static AppThemeLimpet AppTheme(int portalId, string appThemeFolder, string versionFolder, string projectName, bool refresh = false)
         {
-            var cKey = "AppThemeLimpet*" + appThemeFolder + "*" + versionFolder + "*" + portalId + "-" + org;
+            var cKey = "AppThemeLimpet*" + appThemeFolder + "*" + versionFolder + "*" + portalId + "-" + projectName;
             var appTheme = (AppThemeLimpet)CacheUtils.GetCache(cKey);
             lock (_cacheLock1)
             {
-                if (appTheme == null)
+                if (appTheme == null || refresh)
                 {
-                    appTheme = new AppThemeLimpet(portalId, appThemeFolder, versionFolder, org);
+                    appTheme = new AppThemeLimpet(portalId, appThemeFolder, versionFolder, projectName);
                     CacheUtils.SetCache(cKey, appTheme);
                 }
             }
             return appTheme;
         }
+
+        public static AppThemeDataList AppThemeDataList(string projectName, string systemKey, bool refresh = false)
+        {
+            var cKey = "AppThemeDataList*" + systemKey + "-" + projectName;
+            var appthemedatalistview = (AppThemeDataList)CacheUtils.GetCache(cKey);
+            lock (_cacheLock1)
+            {
+                if (appthemedatalistview == null || refresh)
+                {
+                    appthemedatalistview = new AppThemeDataList(projectName, systemKey);
+                    CacheUtils.SetCache(cKey, appthemedatalistview);
+                }
+            }
+            return appthemedatalistview;
+        }
+        public static AppThemeProjectLimpet AppThemeProjects(bool refresh = false)
+        {
+            var cKey = "AppThemeProjectLimpet";
+            var appThemeProjectLimpet = (AppThemeProjectLimpet)CacheUtils.GetCache(cKey);
+            lock (_cacheLock1)
+            {
+                if (appThemeProjectLimpet == null || refresh)
+                {
+                    appThemeProjectLimpet = new AppThemeProjectLimpet();
+                    CacheUtils.SetCache(cKey, appThemeProjectLimpet);
+                }
+            }
+            return appThemeProjectLimpet;
+        }
+        
 
         public static string HttpGet(string URI)
         {

@@ -1781,6 +1781,35 @@ namespace DNNrocketAPI.Components
             }
             return newRec;
         }
+        /// <summary>
+        /// Gets a query parameter from a URL string.  This function parses the URL string to get the parameter.
+        /// it assumes friendly URL format first and the uses HttpUtility.ParseQueryString(url.Query).
+        /// Because friendly format may have a page the same name as a key, be careful with the name of query keys.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="requesturl"></param>
+        /// <returns></returns>
+        public static string ParseQueryString(string key, string requesturl)
+        {
+            // check for friendly url (default)
+            char[] s1 = { '/', '#' };
+            var l = requesturl.Split(s1);
+            var lp = (l.Length - 2);
+            while (lp > 0)
+            {
+                if (l[lp] == key) return l[lp + 1];
+                lp -= 1;
+            }
+            // check query params
+            var url = new Uri(requesturl);
+            var parseQuery = HttpUtility.ParseQueryString(url.Query);
+            foreach (String s in parseQuery.AllKeys)
+            {
+                if (s == key) return parseQuery[key];
+            }
+            return "";
+        }
+
 
         #region "Temp Storage"
 
