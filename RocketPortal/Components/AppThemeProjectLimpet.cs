@@ -1,6 +1,5 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
-using RestSharp;
 using Simplisity;
 using System;
 using System.Collections.Concurrent;

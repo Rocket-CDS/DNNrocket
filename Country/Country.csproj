@@ -22,8 +22,7 @@
 
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\bin\Newtonsoft.Json.dll</HintPath>
-      <SpecificVersion>false</SpecificVersion>
+      <HintPath>..\Simplisity\_external\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
 

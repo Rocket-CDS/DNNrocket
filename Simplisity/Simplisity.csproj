@@ -39,12 +39,14 @@ Simplisity is designed to take data from the html page, pass it to a server side
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="RazorEngine" Version="3.10.0" />
     <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>_external\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="RazorEngine">
       <HintPath>..\..\..\Websites\OpenStore\dev.ea.com\Install\bin\RazorEngine.dll</HintPath>
     </Reference>
