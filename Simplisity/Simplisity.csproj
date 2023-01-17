@@ -45,7 +45,7 @@ Simplisity is designed to take data from the html page, pass it to a server side
 
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>_external\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\API\_external\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RazorEngine">
       <HintPath>..\..\..\Websites\OpenStore\dev.ea.com\Install\bin\RazorEngine.dll</HintPath>
