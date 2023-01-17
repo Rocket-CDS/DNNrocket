@@ -769,6 +769,7 @@ function simplisity_setParamField(fieldkey, fieldvalue) {
         }
         obj[fieldkey] = fieldvalue;
         jQuery('#simplisity_params').val(simplisity_stringifyjson(obj));
+        simplisity_setSessionField(fieldkey, fieldvalue) // add to session data so it is in the cookie
     }
 }
 
