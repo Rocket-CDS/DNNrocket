@@ -98,12 +98,6 @@
 
             <assembly>
               <path>bin</path>
-              <name>Newtonsoft.Json.dll</name>
-              <sourceFileName>Newtonsoft.Json.dll</sourceFileName>
-            </assembly>
-
-            <assembly>
-              <path>bin</path>
               <name>handlebars.dll</name>
               <sourceFileName>handlebars.dll</sourceFileName>
             </assembly>

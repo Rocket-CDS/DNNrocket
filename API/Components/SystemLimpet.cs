@@ -140,11 +140,11 @@ namespace DNNrocketAPI.Components
         /// </summary>
         private void GetSystemRelPath()
         {
-            var f = DNNrocketUtils.MapPath("/Desktopmodules/dnnrocketmodules/" + SystemKey + "/system.rules");
+            var f = DNNrocketUtils.MapPath("/Desktopmodules/DNNrocketModules/" + SystemKey + "/system.rules");
             if (File.Exists(f))
-                SystemRelPath = "/Desktopmodules/dnnrocketmodules/" + SystemKey;
+                SystemRelPath = "/Desktopmodules/DNNrocketModules/" + SystemKey;
             else
-                SystemRelPath = "/Desktopmodules/dnnrocket/" + SystemKey;
+                SystemRelPath = "/Desktopmodules/DNNrocket/" + SystemKey;
         }
         public RocketInterface GetProvider(string interfaceKey)
         {

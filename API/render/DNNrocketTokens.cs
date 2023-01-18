@@ -145,7 +145,7 @@ namespace DNNrocketAPI.render
         {
             model.SetSetting("scmd", scmd);
             model.SetSetting("sfields", sfields);
-            return RenderTemplate("LanguageChange.cshtml", new AppThemeSystemLimpet(systemKey), model, true);
+            return RenderTemplate("LanguageChange.cshtml", new AppThemeSystemLimpet(PortalUtils.GetCurrentPortalId(), systemKey), model, true);
         }
         public IEncodedString RenderLanguageSelector(string scmd, string sfields, AppThemeSystemLimpet appThemeSystem, SimplisityRazor model)
         {

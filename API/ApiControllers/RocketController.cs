@@ -502,13 +502,23 @@ namespace DNNrocketAPI.ApiControllers
                 var template = sInfo.GetXmlProperty("genxml/hidden/template");
                 if (template == "") template = "SideMenu.cshtml";
 
-                var appThemeSystem = new AppThemeSystemLimpet(PortalUtils.GetCurrentPortalId(), systemkey);
-                var razorTempl = appThemeSystem.GetTemplate(template);
-                if (razorTempl == "")
+                var razorTempl = "";
+                if (systemkey == "rocketportal") // stop folder being created
                 {
                     var appThemeDNNrocket = new AppThemeDNNrocketLimpet(systemkey);
                     razorTempl = appThemeDNNrocket.GetTemplate(template);
                 }
+                else
+                {
+                    var appThemeSystem = new AppThemeSystemLimpet(PortalUtils.GetCurrentPortalId(), systemkey);
+                    razorTempl = appThemeSystem.GetTemplate(template);
+                    if (razorTempl == "")
+                    {
+                        var appThemeDNNrocket = new AppThemeDNNrocketLimpet(systemkey);
+                        razorTempl = appThemeDNNrocket.GetTemplate(template);
+                    }
+                }
+
                 var dataObjects = new Dictionary<string, object>();
                 dataObjects.Add("systemdata",systemData);
                 var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, dataObjects, null, _sessionParams, true);
@@ -528,14 +538,27 @@ namespace DNNrocketAPI.ApiControllers
                 var template = sInfo.GetXmlProperty("genxml/hidden/template");
                 if (template == "") template = "TopBar.cshtml";
                 var passSettings = sInfo.ToDictionary();
-                var appThemeSystem = new AppThemeSystemLimpet(systemkey);
-                var razorTempl = appThemeSystem.GetTemplate(template);
-                if (razorTempl == "")
+
+                var razorTempl = "";
+                if (systemkey == "rocketportal") // stop folder being created
                 {
                     var appThemeDNNrocket = new AppThemeDNNrocketLimpet(systemkey);
                     razorTempl = appThemeDNNrocket.GetTemplate(template);
                 }
-                return RenderRazorUtils.RazorDetail(razorTempl, sInfo, passSettings, _sessionParams, true);
+                else
+                {
+                    var appThemeSystem = new AppThemeSystemLimpet(PortalUtils.GetCurrentPortalId(), systemkey);
+                    razorTempl = appThemeSystem.GetTemplate(template);
+                    if (razorTempl == "")
+                    {
+                        var appThemeDNNrocket = new AppThemeDNNrocketLimpet(systemkey);
+                        razorTempl = appThemeDNNrocket.GetTemplate(template);
+                    }
+                }
+
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, sInfo, null, passSettings, _sessionParams, true);
+                if (pr.StatusCode != "00") return pr.ErrorMsg;
+                return pr.RenderedText;
             }
             catch (Exception ex)
             {
@@ -624,8 +647,9 @@ namespace DNNrocketAPI.ApiControllers
 
             SchedulerUtils.SchedulerIsInstalled();
             var globalData = new SystemGlobalData();
-            var strOut = RenderRazorUtils.RazorDetail(razorTempl, globalData, passSettings);
-            return strOut;
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, globalData, null, passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
         }
 
         private void SystemGlobalSave(SimplisityInfo postInfo)

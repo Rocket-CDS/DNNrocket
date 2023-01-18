@@ -241,7 +241,7 @@ namespace DNNrocketAPI.Components
             {
                 sInfo.SetXmlProperty("genxml/securityaccess", "You do not have security access");
             }
-            var _appSystemTheme = new AppThemeSystemLimpet(systemkey);
+            var _appSystemTheme = new AppThemeSystemLimpet(PortalUtils.GetCurrentPortalId(), systemkey);
             var razorTempl = _appSystemTheme.GetTemplate("LoginForm.cshtml");
             if (razorTempl == "")
             {
