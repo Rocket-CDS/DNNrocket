@@ -305,15 +305,14 @@ namespace DNNrocketAPI.Components
                 {
                     var fileMapPath = FileNameList[filename];
                     var formHtml = GeneralUtils.DeCode(editorcode);
-                    if (PortalUtils.GetPortalId() != 0)
-                    {
-                        var fileMP = "";
-                        if (moduleref != "")
-                            fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
-                        else
-                            fileMP = GetPortalFileMapPath(fileMapPath);
-                        if (fileMP != "") fileMapPath = fileMP;
-                    }
+
+                    var fileMP = "";
+                    if (moduleref != "")
+                        fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
+                    else
+                        fileMP = GetPortalFileMapPath(fileMapPath);
+                    if (fileMP != "") fileMapPath = fileMP;
+
                     var dir = Path.GetDirectoryName(fileMapPath);
                     if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
                     FileUtils.SaveFile(fileMapPath, formHtml);
