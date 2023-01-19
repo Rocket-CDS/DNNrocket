@@ -1809,7 +1809,19 @@ namespace DNNrocketAPI.Components
             }
             return "";
         }
-
+        public static List<ModuleBase> GetModList(int portalId, string systemkey)
+        {
+            var rtnList = new List<ModuleBase>();
+            // get template
+            var objCtrl = new DNNrocketController();
+            var dataList = objCtrl.GetList(portalId, -1, "MOD" + systemkey, "", "", " order by [XMLData].value('(genxml/data/tabid)[1]', 'int'), [XMLData].value('(genxml/settings/name)[1]', 'varchar(max)') ");
+            foreach (var sInfo in dataList)
+            {
+                var mData = new ModuleBase(portalId, sInfo.GUIDKey, sInfo.ModuleId, sInfo.GetXmlPropertyInt("genxml/data/tabid"), systemkey);
+                if (mData != null) rtnList.Add(mData);
+            }
+            return rtnList;
+        }
 
         #region "Temp Storage"
 

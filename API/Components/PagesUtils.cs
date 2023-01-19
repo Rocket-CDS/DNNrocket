@@ -266,6 +266,16 @@ namespace DNNrocketAPI.Components
                 if (tab.IsDeleted) return false;
             return true;
         }
+        public static string GetPageName(int tabId, int portalId)
+        {
+            var controller = new TabController();
+            var tab = controller.GetTab(tabId, portalId);
+            if (tab == null)
+                return "";
+            else
+                if (tab.IsDeleted) return "";
+            return tab.TabName;
+        }
         public static int CreatePage(int portalId, string pageName, bool IsVisible = true,bool DisableLink = false, int parentId = 0)
         {
             var controller = new TabController();

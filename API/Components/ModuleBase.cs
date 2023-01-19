@@ -13,10 +13,11 @@ namespace DNNrocketAPI.Components
     {
         private DNNrocketController _objCtrl;
         private const string _tableName = "DNNrocket";
-        private const string _entityTypeCode = "RMODSETTINGS";
+        private string _entityTypeCode;
         private string _cacheKey;
-        public ModuleBase(int portalId, string moduleRef, int moduleid = -1, int tabid = -1)
+        public ModuleBase(int portalId, string moduleRef, int moduleid = -1, int tabid = -1, string systemKey = "")
         {
+            _entityTypeCode = "MOD" + systemKey;
             _cacheKey = portalId + moduleRef + _entityTypeCode;
             _objCtrl = new DNNrocketController();
             Record = (SimplisityRecord)CacheUtils.GetCache(_cacheKey, moduleRef);
@@ -70,14 +71,15 @@ namespace DNNrocketAPI.Components
         public bool HasAppThemeView { get { if (Record.GetXmlProperty("genxml/data/appthemeviewfolder") == "") return false; else return true; } }
         public string AppThemeViewVersion { get { return Record.GetXmlProperty("genxml/data/appthemeviewversion"); } set { Record.SetXmlProperty("genxml/data/appthemeviewversion", value); } }
         public bool HasAppThemeViewVersion { get { if (Record.GetXmlProperty("genxml/data/appthemeviewversion") == "") return false; else return true; } }
-        public string DataRef { get { if (Record.GetXmlProperty("genxml/data/dataref") == "") return ModuleRef; else return Record.GetXmlProperty("genxml/data/dataref"); } set { Record.SetXmlProperty("genxml/data/dataref", value); } }
+        public string DataRef { get { if (Record.GetXmlProperty("genxml/settings/dataref") == "") return ModuleRef; else return Record.GetXmlProperty("genxml/settings/dataref"); } set { Record.SetXmlProperty("genxml/settings/dataref", value); } }
         public string ProjectName { get { return Record.GetXmlProperty("genxml/data/projectname"); } set { Record.SetXmlProperty("genxml/data/projectname", value); } }
         public bool HasProject { get { if (Record.GetXmlProperty("genxml/data/projectname") == "") return false; else return true; } }
         public bool InjectJQuery { get { return Record.GetXmlPropertyBool("genxml/settings/injectjquery"); } set { Record.SetXmlProperty("genxml/settings/injectjquery", value.ToString()); } }
         public bool DisableCache { get { return Record.GetXmlPropertyBool("genxml/settings/disablecache"); } set { Record.SetXmlProperty("genxml/settings/disablecache", value.ToString()); } }
         public bool DisableHeader { get { return Record.GetXmlPropertyBool("genxml/settings/disableheader"); } set { Record.SetXmlProperty("genxml/settings/disableheader", value.ToString()); } }
         public bool SecureSave { get { return Record.GetXmlPropertyBool("genxml/settings/securesave"); } set { Record.SetXmlProperty("genxml/settings/securesave", value.ToString()); } }
-
+        public string Name { get { return Record.GetXmlProperty("genxml/settings/name"); } set { Record.SetXmlProperty("genxml/settings/name", value); } }
+        public bool IsSatellite { get { if (Record.GUIDKey == Record.GetXmlProperty("genxml/settings/dataref") || Record.GetXmlProperty("genxml/settings/dataref") == "") return false; else return true; } }
         #endregion
 
     }
