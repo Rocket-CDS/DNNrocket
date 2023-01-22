@@ -360,7 +360,9 @@ namespace DNNrocket.AppThemes
             try
             {
                 var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
-                var resxData = _appTheme.GetResx(fname);
+                _passSettings.Add("filename", fname);
+                var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
+                var resxData = _appTheme.GetResx(fname, moduleref);
                 var dataObjects = new Dictionary<string, object>();
                 dataObjects.Add("resxData", resxData);
                 var razorTempl = _appThemeSystem.GetTemplate("ResxPopUp.cshtml");

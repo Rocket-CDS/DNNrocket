@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 
 namespace DNNrocketAPI.Components
 {
@@ -277,10 +278,14 @@ namespace DNNrocketAPI.Components
         }
         public void SaveResx(string filename, ResxData resxData, string moduleref = "")
         {
+            var fileMapPath = "";
             filename = filename.ToLower();
             if (FileNameList.ContainsKey(filename))
+                fileMapPath = FileNameList[filename];
+            else
+                if (PortalFileNameList.ContainsKey(filename)) fileMapPath = PortalFileNameList[filename];
+            if (fileMapPath != "")
             {
-                var fileMapPath = FileNameList[filename];
                 var fileMP = "";
                 if (moduleref != "")
                     fileMP = GetModuleFileMapPath(fileMapPath, moduleref);
