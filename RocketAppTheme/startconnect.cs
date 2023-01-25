@@ -119,6 +119,17 @@ namespace DNNrocket.AppThemes
                                 strOut = SaveResxDetail();
                                 break;
 
+                            case "rocketapptheme_getdepdata":
+                                strOut = GetDepDetail();
+                                break;
+                            case "rocketapptheme_adddepdata":
+                                strOut = AddDep();
+                                break;
+                            case "rocketapptheme_savedepdata":
+                                strOut = SaveDep();
+                                break;
+
+
                             case "rocketapptheme_geteditor":
                                 strOut = GetEditorDetail();
                                 break;
@@ -431,6 +442,36 @@ namespace DNNrocket.AppThemes
             return GetResxDetail();
         }
 
+        public String GetDepDetail()
+        {
+            var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+            _passSettings.Add("filename", fname);
+            var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
+            var depData = _appTheme.GetDep(fname, moduleref);
+            var dataObjects = new Dictionary<string, object>();
+            dataObjects.Add("depdata", depData);
+            _passSettings.Add("interfacekey", _rocketInterface.InterfaceKey);
+            var razorTempl = _appThemeSystem.GetTemplate("DepDetail.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _appTheme, dataObjects, _passSettings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
+        public String AddDep()
+        {
+            var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+            var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
+            _appTheme.AddDep(fname, moduleref);
+            return GetDepDetail();
+        }
+        public String SaveDep()
+        {
+            var fname = _paramInfo.GetXmlProperty("genxml/hidden/filename");
+            var moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
+            _appTheme.SaveDep(fname, _postInfo, moduleref);
+            _appTheme = new AppThemeLimpet(PortalUtils.GetCurrentPortalId(), _appThemeFolder, _appVersionFolder, _projectName);
+            CacheFileUtils.ClearAllCache();
+            return GetDepDetail();
+        }
 
         public String GetDetail(string templateName = "AppThemeDetails.cshtml")
         {

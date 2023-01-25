@@ -189,6 +189,12 @@
   <data name="deleteversion.Text" xml:space="preserve">
     <value>Delete Version</value>
   </data>
+  <data name="dependancies.Note" xml:space="preserve">
+    <value>NOTE: Dependancies are only used in the front website view.  For Admin use "AdminFirstHeader.cshtml".</value>
+  </data>
+  <data name="dependancies.Text" xml:space="preserve">
+    <value>Dependancies</value>
+  </data>
   <data name="details.Text" xml:space="preserve">
     <value>AppTheme Details</value>
   </data>

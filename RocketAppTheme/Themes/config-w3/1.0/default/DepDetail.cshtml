@@ -1,0 +1,125 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using System.IO;
+@using DNNrocketAPI.Components;
+@using RocketPortal.Components;
+
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/SystemData/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketAppTheme/App_LocalResources/")
+
+@{
+    var appTheme = (AppThemeLimpet)Model.List.First();
+    var depRecord = (SimplisityRecord)Model.DataObjects["depdata"];
+    var disableDelete = true;
+    var sessionParams = Model.SessionParamsData;
+    var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
+
+    var listname = "deps";
+    var lp = 1;
+
+    var backcmd = "rocketapptheme_getdetail";
+
+}
+
+
+<div class="w3-row w3-padding">
+
+    <span class="w3-button w3-black  simplisity_click" s-cmd="@(backcmd)" s-fields='{"moduleref":"@(sessionParams.ModuleRef)","filename":"@sessionParams.Get("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.back)</span>
+    <span class="w3-button w3-theme-action w3-padding-8 simplisity_click" s-cmd="rocketapptheme_savedepdata" s-post="" s-list=".deps" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}'>@ButtonText(ButtonTypes.save)</span>
+    @if (appTheme.IsModuleLevel(Model.GetSetting("filename"), sessionParams.ModuleRef))
+    {
+        disableDelete = false;
+        <span class=" w3-bar-item w3-margin-left w3-text-pale-blue">[M]</span>
+    }
+    else
+    {
+        if (appTheme.IsPortalLevel(Model.GetSetting("filename")))
+        {
+            disableDelete = false;
+            if (sessionParams.ModuleRef != "")
+            {
+                disableDelete = true;
+            }
+            <span class=" w3-bar-item w3-margin-left w3-text-indigo">[P]</span>
+        }
+    }
+    @if (!disableDelete)
+    {
+        <div class=" w3-bar-item w3-button w3-right w3-red w3-padding-8 simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-cmd="@(Model.GetSetting("interfacekey"))_deletefile" s-fields='{"filename":"@Model.GetSetting("filename")","appthemesystemkey":"@appTheme.SystemKey","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder","moduleref":"@sessionParams.Get("moduleref")"}'>@ButtonText(ButtonTypes.delete)</div>
+    }
+
+    @if (sessionParams.ModuleRef != "")
+    {
+        <span class="w3-right w3-large w3-margin-right">@(sessionParams.ModuleRef)</span>
+    }
+    else
+    {
+        <span class="w3-right w3-large w3-margin-right">Portal: @(appTheme.PortalId)</span>
+    }
+
+</div>
+<div class="w3-row w3-margin">
+    <h5 id="depfilename" class="w3-xlarge" style="">@sessionParams.Get("filename")</h5>
+</div>
+
+
+<div id="depdatasection" class="w3-container">
+
+    <div id="depdictionarydisplay" class="w3-row ">
+        <div class="w3-container">
+            <div class="w3-display-container ">
+
+                <div class="w3-text-teal w3-padding-8 w3-display-left w3-margin simplisity_click" s-cmd="rocketapptheme_adddepdata" s-fields='{"moduleref":"@sessionParams.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@sessionParams.Get("filename")","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ResourceKey("DNNrocket.add", "", "Icon")</div>
+
+                <div class="w3-col m8 w3-center">
+                    URL
+                </div>
+            </div>
+        </div>
+        <div class="w3-container">
+            <div class="w3-margin-top ">
+                <ul id="depdatadictionarylist" class="w3-ul w3-border">
+                    @foreach (var r in depRecord.GetRecordList(listname))
+                    {
+                        var info = new SimplisityInfo(r);
+                        <li class="deps w3-display-container">
+                            <div class="w3-row">
+                                <div class="w3-col m1 w3-padding " style="width:120px">
+                                    @DropDownList(info, "genxml/ctrltype", "css,js", "CSS,JS", " class='w3-input w3-border '  ", "", false, lp)
+                                </div>
+                                <div class="w3-col m10  w3-padding ">
+                                    @TextBox(info, "genxml/url", " class='w3-input w3-border ' autocomplete='off' ", "", false, lp)
+                                </div>
+                                <div class="w3-col m1 " style="width:64px">
+                                    &nbsp;
+                                    <div class="w3-transparent w3-button w3-padding-8">&times;</div>
+                                </div>
+                            </div>
+                        </li>
+
+                        lp += 1;
+
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <b>keys: @lp </b>
+
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#depdatadictionarylist").sortable();
+        $("#depdatadictionarylist").disableSelection();
+
+    });
+
+</script>

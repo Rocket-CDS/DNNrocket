@@ -85,10 +85,8 @@
                     <div class="w3-bar-item w3-button tablink tabCSS" onclick="openDataTab('tabCSS','CSS')">@ResourceKey("AppThemes.css")</div>
                     <div class="w3-bar-item w3-button tablink tabJavascript" onclick="openDataTab('tabJavascript','Javascript')">@ResourceKey("AppThemes.javascript")</div>
                     <div class="w3-bar-item w3-button tablink tabResources" onclick="openDataTab('tabResources','Resources')">@ResourceKey("AppThemes.resources")</div>
-                    @if (PortalUtils.GetPortalId() == 0)
-                    {
-                        <div class="w3-bar-item w3-button tablink tabImages" onclick="openDataTab('tabImages','Images')">@ResourceKey("DNNrocket.images")</div>
-                    }
+                    <div class="w3-bar-item w3-button tablink tabDependancies" onclick="openDataTab('tabDependancies','Dependancies')">@ResourceKey("AppThemes.dependancies")</div>
+                    <div class="w3-bar-item w3-button tablink tabImages" onclick="openDataTab('tabImages','Images')">@ResourceKey("DNNrocket.images")</div>
                 </div>
 
                 <div id="Templates" class="w3-container w3-border city" style="display:none">
@@ -287,6 +285,36 @@
                             }
                         </ul>
                     </div>
+                </div>
+                <div id="Dependancies" class="w3-container w3-border city" style="display:none">
+                    <div id="dependanciesdatasection" class="w3-row dependenciesdatasection">
+
+                        <ul id="dependancieslistdata" class="w3-ul">
+                            @foreach (var templateDict in appTheme.GetTemplatesDep())
+                            {
+                                var levelColor = LevelColor(appTheme, templateDict.Key, sessionParam.ModuleRef);
+                                <li class="templatelist w3-col m4 w3-display-container w3-padding w3-border-0">
+                                    <div class="w3-row w3-display-container w3-padding  w3-card @levelColor">
+                                        <span class="simplisity_click" s-cmd="rocketapptheme_getdepdata" s-fields='{"moduleref":"@sessionParam.ModuleRef","appthemesystemkey":"@appTheme.SystemKey","filename":"@templateDict.Key","appthemefolder":"@appTheme.AppThemeFolder","appversionfolder":"@appTheme.AppVersionFolder"}' style="cursor:pointer;">@ButtonIcon(ButtonTypes.edit)</span>
+                                        &nbsp;
+                                        @templateDict.Key
+                                        <span class="w3-right">
+                                            @if (levelColor == "w3-pale-blue")
+                                            {
+                                                <span><img src="/images/level_module.svg" /></span>
+                                            }
+                                            @if (levelColor == "w3-indigo")
+                                            {
+                                                <span><img src="/images/level_portal.svg" /></span>
+                                            }
+                                        </span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <br />
+                    <i>@ResourceKey("AppThemes.dependancies","","Note")</i>
                 </div>
             </div>
         </div>
