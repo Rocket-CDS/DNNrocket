@@ -32,8 +32,7 @@
 
 </head>
 <body>
-    <form id="form1" runat="server">
- 
+
         <div id="adminpanel">
             <div class="simplisity_loader">
                 <span class=" simplisity_loader_inner">
@@ -63,9 +62,6 @@
         </div>
     
     </div>
-    
-        </form>
-
 
 </body>
 </html>
