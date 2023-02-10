@@ -7,6 +7,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using Simplisity;
+using ImageProcessor.Plugins.WebP;
+using ImageProcessor;
+using ImageProcessor.Plugins.WebP.Imaging.Formats;
+using ImageProcessor.Imaging.Formats;
 
 namespace DNNrocketAPI.Components
 {
@@ -36,6 +40,11 @@ namespace DNNrocketAPI.Components
                         {
                             var unqName = DNNrocketUtils.GetUniqueFileName(friendlyname.Replace(" ", "_"), destinationFolder);
                             var fname = ImgUtils.ResizeImage(PortalUtils.TempDirectoryMapPath() + "\\" + userfilename, destinationFolder + "\\" + unqName, resize);
+
+                            // change extension incase we converted from unsupported image type. (.webp)
+                            unqName = Path.GetDirectoryName(unqName) + "\\" + Path.GetFileNameWithoutExtension(unqName) + Path.GetExtension(fname); 
+                            userfilename = Path.GetFileNameWithoutExtension(userfilename) + Path.GetExtension(fname); 
+
                             if (File.Exists(fname))
                             {
                                 if (createseo)
@@ -245,6 +254,13 @@ namespace DNNrocketAPI.Components
 
         public static string ResizeImage(string fileNamePath, string fileNamePathOut, double intMaxWidth)
         {
+            var extension = Path.GetExtension(fileNamePath);
+            if (extension != null && extension.ToLower() == ".webp")
+            {
+                fileNamePath = ConvertWebpToJpg(fileNamePath);
+                fileNamePathOut = Path.GetDirectoryName(fileNamePathOut) + "\\" + Path.GetFileNameWithoutExtension(fileNamePathOut) + ".jpg";
+            }
+            extension = Path.GetExtension(fileNamePath);
 
             try
             {
@@ -276,7 +292,6 @@ namespace DNNrocketAPI.Components
                             if ((newImage != null))
                             {
                                 ImageCodecInfo useEncoder;
-                                var extension = Path.GetExtension(fileNamePathOut);
                                 if (extension != null && extension.ToLower() == ".png")
                                 {
                                     useEncoder = GetEncoder(ImageFormat.Png);
@@ -399,6 +414,13 @@ namespace DNNrocketAPI.Components
                 {
                     var thumbSizeList = thumbSizeCsv.Split(',');
 
+                    var extension = Path.GetExtension(imgPathName);
+                    if (extension != null && extension.ToLower() == ".webp")
+                    {
+                        imgPathName = ConvertWebpToJpg(imgPathName);
+                    }
+                    extension = Path.GetExtension(imgPathName);
+
                     for (var lp = 0; lp <= thumbSizeList.GetUpperBound(0); lp++)
                     {
                         var thumbW = GetThumbWidth(thumbSizeList[lp]);
@@ -412,7 +434,6 @@ namespace DNNrocketAPI.Components
                             if ((newImage != null))
                             {
                                 ImageCodecInfo useEncoder;
-                                var extension = Path.GetExtension(imgPathName);
                                 if (extension != null && extension.ToLower() == ".png")
                                 {
                                     useEncoder = GetEncoder(ImageFormat.Png);
@@ -456,7 +477,73 @@ namespace DNNrocketAPI.Components
 
 
         }
+        public static void CreateThumbnailOnDisk(string imgPathName, int intMaxWidth, int intMaxHeight)
+        {
+            var filePathOut = Path.GetDirectoryName(imgPathName) + "\thumb_" + intMaxWidth + "x" + intMaxHeight + "_" + Path.GetFileName(imgPathName);
+            CreateThumbnailOnDisk(imgPathName, intMaxWidth, intMaxHeight, filePathOut);
+        }
+        public static string ConvertWebpToJpg(string imgPathName)
+        {
+            // Currently .webp is not well supported, so we convert to jpeg. (This may chnage in future)
+            var outFileMapPath = Path.GetDirectoryName(imgPathName) + "\\" + Path.GetFileNameWithoutExtension(imgPathName) + ".jpg";
 
+            var imageFactory = new ImageFactory(preserveExifData: false);
+            imageFactory.Load(imgPathName)
+                        .Format(new JpegFormat())
+                        .Quality(100)
+                        .Save(outFileMapPath);
+
+            imageFactory.Dispose();
+
+            File.Delete(imgPathName);
+
+            return outFileMapPath;
+        }
+        public static void CreateThumbnailOnDisk(string imgPathName, int intMaxWidth, int intMaxHeight, string filePathOut)
+        {
+            var extension = Path.GetExtension(imgPathName);
+            if (extension != null && extension.ToLower() == ".webp")
+            {
+                imgPathName = ConvertWebpToJpg(imgPathName);
+                filePathOut = Path.GetDirectoryName(filePathOut) + "\\" + Path.GetFileNameWithoutExtension(filePathOut) + ".jpg";
+            }
+            extension = Path.GetExtension(imgPathName);
+
+            using (var newImage = CreateThumbnail(imgPathName, intMaxWidth, intMaxHeight))
+            {
+                if ((newImage != null))
+                {
+                    ImageCodecInfo useEncoder;
+                    if (extension != null && extension.ToLower() == ".png")
+                        useEncoder = GetEncoder(ImageFormat.Png);
+                    else
+                        useEncoder = GetEncoder(ImageFormat.Jpeg);
+
+                    var encoderParameters = new EncoderParameters(1);
+                    encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 85L);
+
+                    try
+                    {
+                        newImage.Save(filePathOut, useEncoder, encoderParameters);
+                    }
+                    catch (Exception)
+                    {
+                        GC.Collect();
+                        try
+                        {
+                            newImage.Save(filePathOut, useEncoder, encoderParameters);
+                        }
+                        catch
+                        {
+                            //abandon save. 
+                            //Assumption is the thumb already is there, but locked. So no need for error.
+                        }
+                    }
+                    newImage.Dispose();
+                }
+            }
+
+        }
         public static Bitmap CreateThumbnail(string strFilepath, int intMaxWidth)
         {
             return CreateThumbnail(strFilepath, intMaxWidth, 0);

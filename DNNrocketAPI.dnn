@@ -102,7 +102,19 @@
               <sourceFileName>handlebars.dll</sourceFileName>
             </assembly>
 
-          </assemblies>
+				<assembly>
+					<path>bin</path>
+					<name>ImageProcessor.dll</name>
+					<sourceFileName>ImageProcessor.dll</sourceFileName>
+				</assembly>
+
+				<assembly>
+					<path>bin</path>
+					<name>ImageProcessor.Plugins.WebP.dll</name>
+					<sourceFileName>ImageProcessor.Plugins.WebP.dll</sourceFileName>
+				</assembly>
+				
+			</assemblies>
 				</component>
 
       </components>

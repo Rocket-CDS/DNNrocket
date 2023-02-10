@@ -89,5 +89,7 @@
     <value>\API\_external\RazorEngine.dll</value>
     <value>\API\_external\System.Drawing.Common.dll</value>
     <value>\API\_external\handlebars.dll</value>
-  </assembly>
+		<value>\API\_external\ImageProcessor.dll</value>
+		<value>\API\_external\ImageProcessor.Plugins.WebP.dll</value>
+	</assembly>
 </root>
