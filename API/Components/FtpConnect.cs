@@ -1,385 +1,373 @@
-﻿using Simplisity;
+﻿using DotNetNuke.Entities.Host;
+using DotNetNuke.Services.FileSystem.Internal;
+using DotNetNuke.UI.UserControls;
+using Simplisity;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace DNNrocketAPI.Components
 {
     public class FtpConnect
     {
-    //    private SystemLimpet _systemData;
-    //    private SystemGlobalData _systemGlobalData;
-    //    private string _baseuri;
-    //    public FtpConnect(string selectedSystemKey)
-    //    {
-    //        //_systemData = new SystemLimpet(selectedSystemKey);
-    //        //_systemGlobalData = new SystemGlobalData();
-    //        //_baseuri = "ftp://" + _systemGlobalData.FtpServer + "/" + _systemData.FtpRoot.TrimStart('/').TrimEnd('/') + "/" + _systemData.SystemKey;
-    //        //IsValid = true;
-    //        //if (String.IsNullOrEmpty(_systemGlobalData.FtpServer) || String.IsNullOrEmpty(_systemGlobalData.FtpUserName) || String.IsNullOrEmpty(_systemGlobalData.FtpPassword)) IsValid = false;
+        private string _baseuri;
+        private string user = null;
+        private string pass = null;
+        private FtpWebRequest ftpRequest = null;
+        private FtpWebResponse ftpResponse = null;
+        private Stream ftpStream = null;
+        private int bufferSize = 2048;
+        public FtpConnect(string baseuri, string username, string password)
+        {
+            _baseuri = baseuri;
+            if (!_baseuri.ToLower().StartsWith("ftp:")) _baseuri = "ftp://" + _baseuri.TrimStart('/').TrimEnd('/');
+            user = username;
+            pass = password;
 
-    //        //var imgidxFolder = DNNrocketUtils.SystemThemeImgDirectoryMapPath();
-    //        //if (!Directory.Exists(imgidxFolder)) Directory.CreateDirectory(imgidxFolder);
+            //overwrite the certificate checks
+            ServicePointManager.ServerCertificateValidationCallback = (s, certificate, chain, sslPolicyErrors) => true;
+        }
 
-    //    }
+        public void Upload(string localFile, string subDirectory = "")
+        {
+            try
+            {
+                var rootUri = _baseuri;
+                if (subDirectory != "") rootUri = _baseuri + "/" + subDirectory;
+                var remoteFile = Path.GetFileName(localFile);
+                var fileuri = rootUri + "/" + remoteFile;
+                CreateFTPDirectory(rootUri);
 
-    //    public bool IsValid { get; private set; }
+                /* Create an FTP Request */
+                ftpRequest = (FtpWebRequest)FtpWebRequest.Create(fileuri);
+                /* Log in to the FTP Server with the User Name and Password Provided */
+                ftpRequest.Credentials = new NetworkCredential(user, pass);
+                /* When in doubt, use these options */
+                ftpRequest.UseBinary = true;
+                ftpRequest.UsePassive = true;
+                ftpRequest.KeepAlive = true;
+                ftpRequest.EnableSsl = true;
+                /* Specify the Type of FTP Request */
+                ftpRequest.Method = WebRequestMethods.Ftp.UploadFile;
+                /* Establish Return Communication with the FTP Server */
 
-    //    public string UploadAppTheme(AppThemeLimpet appTheme)
-    //    {
-    //        if (!IsValid) return "Invalid FTP Credentials";
+                ftpStream = ftpRequest.GetRequestStream();
+                /* Open a File Stream to Read the File for Upload */
+                FileStream localFileStream = new FileStream(localFile, FileMode.Open);
+                /* Buffer for the Downloaded Data */
+                byte[] byteBuffer = new byte[bufferSize];
+                int bytesSent = localFileStream.Read(byteBuffer, 0, bufferSize);
+                /* Upload the File by Sending the Buffered Data Until the Transfer is Complete */
+                try
+                {
+                    while (bytesSent != 0)
+                    {
+                        ftpStream.Write(byteBuffer, 0, bytesSent);
+                        bytesSent = localFileStream.Read(byteBuffer, 0, bufferSize);
+                    }
+                }
+                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                /* Resource Cleanup */
+                localFileStream.Close();
+                ftpStream.Close();
+                ftpRequest = null;
+            }
+            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            return;
+        }
 
-    //        var exportZipMapPath = appTheme.ExportZipFile();
-    //        var filename = Path.GetFileName(exportZipMapPath);
+        public bool CreateFTPDirectory(string directory)
+        {
+            try
+            {
+                //create the directory
+                FtpWebRequest requestDir = (FtpWebRequest)FtpWebRequest.Create(new Uri(directory));
+                requestDir.Method = WebRequestMethods.Ftp.MakeDirectory;
+                requestDir.Credentials = new NetworkCredential(user, pass);
+                requestDir.UsePassive = true;
+                requestDir.UseBinary = true;
+                requestDir.KeepAlive = false;
+                requestDir.EnableSsl = true;
+                FtpWebResponse response = (FtpWebResponse)requestDir.GetResponse();
+                Stream ftpStream = response.GetResponseStream();
 
-    //        //var dirlist = (_systemData.FtpRoot + "/" + _systemData.SystemKey).Split('/');
-    //        var createftpdir = "";
-    //        //foreach (var d in dirlist)
-    //        //{
-    //        //    if (d != "")
-    //        //    {
-    //        //        createftpdir += "/" + d;
-    //        //        CreateFTPDirectory("ftp://" + _systemGlobalData.FtpServer + "/" + createftpdir);
-    //        //    }
-    //        //}
+                ftpStream.Close();
+                response.Close();
 
-    //        var urixml = _baseuri + "/xml";
-    //        CreateFTPDirectory(urixml);
-    //        var urizip = _baseuri + "/zip";
-    //        CreateFTPDirectory(urizip);
-    //        try
-    //        {
-    //            using (var client = new WebClient())
-    //            {
-    //                client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-    //                client.UploadFile(urizip + "/" + filename, WebRequestMethods.Ftp.UploadFile, exportZipMapPath);
-    //            }
-    //            using (var client = new WebClient())
-    //            {
-    //                client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-    //                var xmlMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + appTheme.AppThemeFolder + ".xml";
-    //                var sInfo = new SimplisityRecord();
-    //                //sInfo.SetXmlProperty("genxml/hidden/appthemefolder", appTheme.AppThemeFolder);
-    //                //sInfo.SetXmlProperty("genxml/hidden/appthemename", appTheme.AppThemeName);
-    //                //sInfo.SetXmlProperty("genxml/hidden/appthemeprefix", appTheme.AppThemePrefix);
-    //                //sInfo.SetXmlProperty("genxml/hidden/summary", appTheme.AppSummary);
-    //                //sInfo.SetXmlProperty("genxml/hidden/latestversion", appTheme.LatestVersionFolder);
-    //                //var logoMapPath = DNNrocketUtils.MapPath(appTheme.Logo);
-    //                //sInfo.SetXmlProperty("genxml/hidden/logo", Path.GetFileName(logoMapPath));
-    //                ////var outMapPath = "";
-    //                //if (File.Exists(logoMapPath))
-    //                //{
-    //                //    //var newImage = ImgUtils.CreateThumbnail(logoMapPath, Convert.ToInt32(140), Convert.ToInt32(140));
-    //                //    //var imgidxFolder = DNNrocketUtils.SystemThemeImgDirectoryMapPath();
-    //                //    //if (!Directory.Exists(imgidxFolder)) Directory.CreateDirectory(imgidxFolder);
-    //                //    //outMapPath = imgidxFolder + "\\" + Path.GetFileName(logoMapPath);
-    //                //    //ImgUtils.CreateThumbOnDisk(logoMapPath, "80,80", outMapPath);
-    //                //}
+                return true;
+            }
+            catch (WebException ex)
+            {
+                //LogUtils.LogException(ex);
+                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
+                {
+                    response.Close();
+                    return true;
+                }
+                else
+                {
+                    response.Close();
+                    return false;
+                }
+            }
+        }
+        public string Download(string uri)
+        {
+            try
+            {
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uri);
+                request.KeepAlive = false;
+                request.EnableSsl = true;
+                request.Method = WebRequestMethods.Ftp.DownloadFile;
+                request.Credentials = new NetworkCredential(user, pass);
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                Stream responseStream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(responseStream);
+                var rtnString = reader.ReadToEnd();
+                reader.Close();
+                response.Close();
+                return rtnString;
+            }
+            catch (Exception)
+            {
+                return "FAIL";
+            }
+        }
+        public void Download(string remoteFile, string localFile)
+        {
+            try
+            {
+                /* Create an FTP Request */
+                ftpRequest = (FtpWebRequest)FtpWebRequest.Create(_baseuri + "/" + remoteFile);
+                /* Log in to the FTP Server with the User Name and Password Provided */
+                ftpRequest.Credentials = new NetworkCredential(user, pass);
+                /* When in doubt, use these options */
+                ftpRequest.UseBinary = true;
+                ftpRequest.UsePassive = true;
+                ftpRequest.KeepAlive = true;
+                ftpRequest.EnableSsl = true;
+                /* Specify the Type of FTP Request */
+                ftpRequest.Method = WebRequestMethods.Ftp.DownloadFile;
+                /* Establish Return Communication with the FTP Server */
+                ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
+                /* Get the FTP Server's Response Stream */
+                ftpStream = ftpResponse.GetResponseStream();
+                /* Open a File Stream to Write the Downloaded File */
+                FileStream localFileStream = new FileStream(localFile, FileMode.Create);
+                /* Buffer for the Downloaded Data */
+                byte[] byteBuffer = new byte[bufferSize];
+                int bytesRead = ftpStream.Read(byteBuffer, 0, bufferSize);
+                /* Download the File by Writing the Buffered Data Until the Transfer is Complete */
+                try
+                {
+                    while (bytesRead > 0)
+                    {
+                        localFileStream.Write(byteBuffer, 0, bytesRead);
+                        bytesRead = ftpStream.Read(byteBuffer, 0, bufferSize);
+                    }
+                }
+                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                /* Resource Cleanup */
+                localFileStream.Close();
+                ftpStream.Close();
+                ftpResponse.Close();
+                ftpRequest = null;
+            }
+            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            return;
+        }
+        public void RemoveDirectory(string directory)
+        {
+            try
+            {
+                /* Create an FTP Request */
+                ftpRequest = (FtpWebRequest)WebRequest.Create(_baseuri + "/" + directory);
+                /* Log in to the FTP Server with the User Name and Password Provided */
+                ftpRequest.Credentials = new NetworkCredential(user, pass);
+                /* When in doubt, use these options */
+                ftpRequest.UseBinary = true;
+                ftpRequest.UsePassive = true;
+                ftpRequest.KeepAlive = true;
+                ftpRequest.EnableSsl = true;
+                /* Specify the Type of FTP Request */
+                ftpRequest.Method = WebRequestMethods.Ftp.RemoveDirectory;
+                /* Establish Return Communication with the FTP Server */
+                ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
+                /* Resource Cleanup */
+                ftpResponse.Close();
+                ftpRequest = null;
+            }
+            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            return;
+        }
+        /* Delete File */
+        public void Delete(string deleteFile)
+        {
+            try
+            {
+                /* Create an FTP Request */
+                ftpRequest = (FtpWebRequest)WebRequest.Create(_baseuri + "/" + deleteFile);
+                /* Log in to the FTP Server with the User Name and Password Provided */
+                ftpRequest.Credentials = new NetworkCredential(user, pass);
+                /* When in doubt, use these options */
+                ftpRequest.UseBinary = true;
+                ftpRequest.UsePassive = true;
+                ftpRequest.KeepAlive = true;
+                ftpRequest.EnableSsl = true;
+                /* Specify the Type of FTP Request */
+                ftpRequest.Method = WebRequestMethods.Ftp.DeleteFile;
+                /* Establish Return Communication with the FTP Server */
+                ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
+                /* Resource Cleanup */
+                ftpResponse.Close();
+                ftpRequest = null;
+            }
+            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            return;
+        }
+        /* List Directory Contents File/Folder Name Only */
+        public string[] DirectoryFileListSimple(string directory)
+        {
+            try
+            {
+                /* Create an FTP Request */
+                ftpRequest = (FtpWebRequest)FtpWebRequest.Create(_baseuri + "/" + directory);
+                /* Log in to the FTP Server with the User Name and Password Provided */
+                ftpRequest.Credentials = new NetworkCredential(user, pass);
+                /* When in doubt, use these options */
+                ftpRequest.UseBinary = true;
+                ftpRequest.UsePassive = true;
+                ftpRequest.KeepAlive = true;
+                /* Specify the Type of FTP Request */
+                ftpRequest.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
+                /* Establish Return Communication with the FTP Server */
+                ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
+                /* Establish Return Communication with the FTP Server */
+                ftpStream = ftpResponse.GetResponseStream();
+                /* Get the FTP Server's Response Stream */
+                StreamReader ftpReader = new StreamReader(ftpStream);
 
-    //                var updateXml = sInfo.ToXmlItem();
-    //                FileUtils.SaveFile(xmlMapPath, updateXml);
-    //                client.UploadFile(urixml + "/" + Path.GetFileName(xmlMapPath), WebRequestMethods.Ftp.UploadFile, xmlMapPath);
-    //                UploadChangedXmlIndex(appTheme.AppThemeFolder, updateXml);
 
-    //                ////if (outMapPath != "")
-    //                ////{
-    //                ////    // upload idx image
-    //                ////    client.UploadFile(urixml + "/" + Path.GetFileName(outMapPath), WebRequestMethods.Ftp.UploadFile, outMapPath);
-    //                ////}
-    //            }
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            LogUtils.LogException(ex);
-    //            return "[FAIL]  uri:" + _baseuri + " exportZipMapPath:" + exportZipMapPath + " Error:" + ex.ToString();
-    //        }
-    //        return "OK";
-    //    }
+                string directoryRaw = "";
+                string line = ftpReader.ReadLine();
+                while (line != null)
+                {
+                    var sline = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (sline[2].ToUpper() != "<DIR>")
+                    {
+                        directoryRaw += sline[3] + "|";
+                    }
+                    line = ftpReader.ReadLine();
+                }
 
-    //    private void UploadChangedXmlIndex(string appThemeFolder, string updateXml = "")
-    //    {
-    //        if (IsValid)
-    //        {
-    //            var uriidx = _baseuri + "/idx";
-    //            var reindexuri = uriidx + "/list.xml";
-    //            var xmlIdx = Download(reindexuri);
+                /* Resource Cleanup */
+                ftpReader.Close();
+                ftpStream.Close();
+                ftpResponse.Close();
+                ftpRequest = null;
+                /* Return the Directory Listing as a string Array by Parsing 'directoryRaw' with the Delimiter you Append (I use | in This Example) */
+                try { string[] directoryList = directoryRaw.Split("|".ToCharArray()); return directoryList; }
+                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            }
+            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            /* Return an Empty string Array if an Exception Occurs */
+            return new string[] { "" };
+        }
+        /* List Directory Contents in Detail (Name, Size, Created, etc.) */
+        public string[] DirectoryListDetailed(string directory)
+        {
+            try
+            {
+                /* Create an FTP Request */
+                ftpRequest = (FtpWebRequest)FtpWebRequest.Create(_baseuri + "/" + directory);
+                /* Log in to the FTP Server with the User Name and Password Provided */
+                ftpRequest.Credentials = new NetworkCredential(user, pass);
+                /* When in doubt, use these options */
+                ftpRequest.UseBinary = true;
+                ftpRequest.UsePassive = true;
+                ftpRequest.KeepAlive = true;
+                ftpRequest.EnableSsl = true;
+                /* Specify the Type of FTP Request */
+                ftpRequest.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
+                /* Establish Return Communication with the FTP Server */
+                ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
+                /* Establish Return Communication with the FTP Server */
+                ftpStream = ftpResponse.GetResponseStream();
+                /* Get the FTP Server's Response Stream */
+                StreamReader ftpReader = new StreamReader(ftpStream);
+                /* Store the Raw Response */
+                string directoryRaw = null;
+                /* Read Each Line of the Response and Append a Pipe to Each Line for Easy Parsing */
+                try { while (ftpReader.Peek() != -1) { directoryRaw += ftpReader.ReadLine() + "|"; } }
+                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                /* Resource Cleanup */
+                ftpReader.Close();
+                ftpStream.Close();
+                ftpResponse.Close();
+                ftpRequest = null;
+                /* Return the Directory Listing as a string Array by Parsing 'directoryRaw' with the Delimiter you Append (I use | in This Example) */
+                try { string[] directoryList = directoryRaw.Split("|".ToCharArray()); return directoryList; }
+                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            }
+            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            /* Return an Empty string Array if an Exception Occurs */
+            return new string[] { "" };
+        }
+        public string[] ListDirectories(string directory)
+        {
+            try
+            {
+                /* Create an FTP Request */
+                ftpRequest = (FtpWebRequest)FtpWebRequest.Create(_baseuri + "/" + directory);
+                /* Log in to the FTP Server with the User Name and Password Provided */
+                ftpRequest.Credentials = new NetworkCredential(user, pass);
+                /* When in doubt, use these options */
+                ftpRequest.UseBinary = true;
+                ftpRequest.UsePassive = true;
+                ftpRequest.KeepAlive = true;
+                /* Specify the Type of FTP Request */
+                ftpRequest.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
+                /* Establish Return Communication with the FTP Server */
+                ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
+                /* Establish Return Communication with the FTP Server */
+                ftpStream = ftpResponse.GetResponseStream();
+                /* Get the FTP Server's Response Stream */
+                StreamReader ftpReader = new StreamReader(ftpStream);
 
-    //            if (xmlIdx == "" || xmlIdx == "FAIL")
-    //            {
-    //                ReindexPrivateXmlList();
-    //            }
-    //            else
-    //            {
-    //                if (updateXml != "")
-    //                {
-    //                    var idxInfo = new SimplisityRecord();
-    //                    idxInfo.XMLData = xmlIdx;
-    //                    idxInfo.RemoveRecordListItem("idx", "genxml/hidden/appthemefolder", appThemeFolder);
-    //                    var updateInfo = new SimplisityRecord();
-    //                    updateInfo.FromXmlItem(updateXml);
-    //                    idxInfo.AddListItem("idx", updateInfo.XMLData);
-    //                    UploadXmlIndex(idxInfo.XMLData);
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    private void UploadXmlIndex(string fulllistxml)
-    //    {
-    //        if (IsValid)
-    //        {
-    //            var uriidx = _baseuri + "/idx";
-    //            CreateFTPDirectory(uriidx);
-
-    //            using (var client = new WebClient())
-    //            {
-    //                client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-    //                var idxMapPath = PortalUtils.TempDirectoryMapPath() + "\\list.xml";
-
-    //                var sInfo = new SimplisityInfo();
-    //                sInfo.XMLData = fulllistxml;
-
-    //                FileUtils.SaveFile(idxMapPath, sInfo.XMLData);
-    //                client.UploadFile(uriidx + "/list.xml", WebRequestMethods.Ftp.UploadFile, idxMapPath);
-    //            }
-    //        }
-    //    }
-    //    public string ReindexPrivateXmlList()
-    //    {
-    //        if (IsValid)
-    //        {
-    //            var idxMapPath = PortalUtils.TempDirectoryMapPath() + "\\list.xml";
-    //            if (File.Exists(idxMapPath)) File.Delete(idxMapPath);
-
-    //            var ftpidx = "<genxml>";
-    //            ftpidx += "<idx list=\"true\">";
-
-    //            var l = DownloadAppThemeXmlList();
-    //            foreach (var x in l)
-    //            {
-    //                ftpidx += x.XMLData;
-    //            }
-    //            ftpidx += "</idx>";
-    //            ftpidx += "</genxml>";
-    //            UploadXmlIndex(ftpidx);
-    //            return ftpidx;
-    //        }
-    //        return "<genxml></genxml>";
-    //    }
-
-
-    //    public bool CreateFTPDirectory(string directory)
-    //    {
-    //        if (!IsValid) return false;
-    //        try
-    //        {
-    //            //create the directory
-    //            FtpWebRequest requestDir = (FtpWebRequest)FtpWebRequest.Create(new Uri(directory));
-    //            requestDir.Method = WebRequestMethods.Ftp.MakeDirectory;
-    //            requestDir.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-    //            requestDir.UsePassive = true;
-    //            requestDir.UseBinary = true;
-    //            requestDir.KeepAlive = false;
-    //            FtpWebResponse response = (FtpWebResponse)requestDir.GetResponse();
-    //            Stream ftpStream = response.GetResponseStream();
-
-    //            ftpStream.Close();
-    //            response.Close();
-
-    //            return true;
-    //        }
-    //        catch (WebException ex)
-    //        {
-    //            //LogUtils.LogException(ex);
-    //            FtpWebResponse response = (FtpWebResponse)ex.Response;
-    //            if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
-    //            {
-    //                response.Close();
-    //                return true;
-    //            }
-    //            else
-    //            {
-    //                response.Close();
-    //                return false;
-    //            }
-    //        }
-    //    }
-    //    public string DownloadAppThemeToFile(string appThemeFolder, string destinationMapPath)
-    //    {
-    //        if (!IsValid) return "FAIL";
-    //        try
-    //        {
-    //            var uri = _baseuri + "/zip/" + appThemeFolder + ".zip";
-    //            DownloadZip(uri, destinationMapPath);
-    //        }
-    //        catch (Exception exc)
-    //        {
-    //            LogUtils.LogException(exc);
-    //            return "FAIL";
-    //        }
-    //        return "OK";
-    //    }
-
-    //    public void DownloadZip(string uri, string destinationmapPath)
-    //    {
-    //        if (IsValid)
-    //        {
-    //            WebClient client = new WebClient();
-    //            client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-    //            client.DownloadFile(uri, destinationmapPath);
-    //        }
-    //    }
-
-    //    public string DownloadAppThemeXml(string appThemeFolder)
-    //    {
-    //        try
-    //        {
-    //            var uri = _baseuri + "/xml/" + appThemeFolder + ".xml";
-    //            return Download(uri);
-    //        }
-    //        catch (Exception exc)
-    //        {
-    //            LogUtils.LogException(exc);
-    //        }
-    //        return "<genxml></genxml>";
-    //    }
-
-    //    public void DownloadAppThemeXmlToFile(string appThemeFolder, string destinatioFileMapPath)
-    //    {
-    //        try
-    //        {
-    //            WebClient client = new WebClient();
-    //            client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-    //            var uri = _baseuri + "/xml/" + appThemeFolder + ".xml";
-    //            client.DownloadFile(uri, destinatioFileMapPath);
-    //        }
-    //        catch (Exception exc)
-    //        {
-    //            LogUtils.LogException(exc);
-    //        }
-    //    }
-    //    public void DownloadImageToFile(string uri, string destinationMapPath)
-    //    {
-    //        try
-    //        {
-    //            WebClient client = new WebClient();
-    //            client.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-    //            client.DownloadFile(uri, destinationMapPath);
-    //        }
-    //        catch (Exception exc)
-    //        {
-    //            LogUtils.LogException(exc);
-    //        }
-    //    }
-
-    //    public string Download(string uri)
-    //    {
-    //        if (!IsValid) return "FAIL";
-    //        try
-    //        {
-    //            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uri);
-    //            request.KeepAlive = false;
-    //            request.Method = WebRequestMethods.Ftp.DownloadFile;
-    //            request.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-    //            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-    //            Stream responseStream = response.GetResponseStream();
-    //            StreamReader reader = new StreamReader(responseStream);
-    //            var rtnString = reader.ReadToEnd();
-    //            reader.Close();
-    //            response.Close();
-    //            return rtnString;
-    //        }
-    //        catch (Exception)
-    //        {
-    //            return "FAIL";
-    //        }
-    //    }
-
-    //    public List<SimplisityRecord> DownloadAppThemeXmlIndexList()
-    //    {
-    //        var rtnList = new List<SimplisityRecord>();
-    //        if (!IsValid) return rtnList;
-
-    //        var uriidx = _baseuri + "/idx";
-    //        var reindexuri = uriidx + "/list.xml";
-    //        var xmlIdx = Download(reindexuri);
-
-    //        if (xmlIdx == "" || xmlIdx == "FAIL")
-    //        {
-    //            xmlIdx = ReindexPrivateXmlList();
-    //        }
-
-    //        var sRec = new SimplisityRecord();
-    //        sRec.XMLData = xmlIdx;
-
-    //        var xmlReclist = sRec.GetRecordList("idx");
-    //        foreach (var n in xmlReclist)
-    //        {
-    //            rtnList.Add(n);
-    //        }
-    //        return rtnList;
-    //    }
-
-    //    public List<SimplisityRecord> DownloadAppThemeXmlList()
-    //    {
-    //        var rtnList = new List<SimplisityRecord>();
-    //        if (!IsValid) return rtnList;
-    //        var namelist = ListXmlFiles();
-    //        foreach (var n in namelist)
-    //        {
-    //            var uri = _baseuri + "/xml/" + n;
-    //            var xmlDownload = Download(uri);
-    //            if (xmlDownload != "FAIL" && Path.GetExtension(n).ToLower() == ".xml")
-    //            {
-    //                var sInfo = new SimplisityRecord();
-    //                sInfo.FromXmlItem(xmlDownload);
-    //                rtnList.Add(sInfo);
-    //                // download index image, to display on list.
-    //                var imgLogo = sInfo.GetXmlProperty("genxml/hidden/logo");
-    //                var localMapPath = DNNrocketUtils.SystemThemeImgDirectoryMapPath() + "\\" + imgLogo;
-    //                if (!File.Exists(localMapPath))
-    //                {
-    //                    uri = _baseuri + "/xml/" + imgLogo;
-    //                    DownloadImageToFile(uri, localMapPath);
-    //                }
-    //            }
-    //        }
-    //        return rtnList;
-    //    }
-
-    //    private List<string> ListXmlFiles()
-    //    {
-    //        try
-    //        {
-    //            if (IsValid) 
-    //            {
-    //                var uri = _baseuri + "/xml";
-    //                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uri);
-    //                request.KeepAlive = false;
-    //                request.Method = WebRequestMethods.Ftp.ListDirectory;
-    //                request.Credentials = new NetworkCredential(_systemGlobalData.FtpUserName, _systemGlobalData.FtpPassword);
-    //                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-    //                Stream responseStream = response.GetResponseStream();
-    //                StreamReader reader = new StreamReader(responseStream);
-    //                string names = reader.ReadToEnd();
-    //                reader.Close();
-    //                response.Close();
-    //                return names.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-    //            }
-    //            return new List<string>();
-    //        }
-    //        catch (Exception exc)
-    //        {
-    //            throw exc;
-    //        }
-    //    }
-
+                string directoryRaw = "";
+                string line = ftpReader.ReadLine();
+                while (line != null)
+                {
+                    var sline = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (sline[2].ToUpper() == "<DIR>")
+                    {
+                        directoryRaw += sline[3] + "|";
+                    }
+                    line = ftpReader.ReadLine();
+                }
+                /* Resource Cleanup */
+                ftpReader.Close();
+                ftpStream.Close();
+                ftpResponse.Close();
+                ftpRequest = null;
+                /* Return the Directory Listing as a string Array by Parsing 'directoryRaw' with the Delimiter you Append (I use | in This Example) */
+                try { string[] directoryList = directoryRaw.Split("|".ToCharArray()); return directoryList; }
+                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            }
+            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            /* Return an Empty string Array if an Exception Occurs */
+            return new string[] { "" };
+        }
 
     }
 }
