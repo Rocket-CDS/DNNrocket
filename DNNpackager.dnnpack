@@ -73,6 +73,32 @@
     <value>\RocketPortal\Skins\rocketportal\skin.css</value>
 	<value>\RocketPortal\sysadmin.aspx</value>
 
+    <value>\API\images\action_bottom.svg</value>
+    <value>\API\images\action_delete.svg</value>
+    <value>\API\images\action_down.svg</value>
+    <value>\API\images\action_export.svg</value>
+    <value>\API\images\action_help.svg</value>
+    <value>\API\images\action_import.svg</value>
+    <value>\API\images\action_move.svg</value>
+    <value>\API\images\action_print.svg</value>
+    <value>\API\images\action_refresh.svg</value>
+    <value>\API\images\action_rss.svg</value>
+    <value>\API\images\action_settings.svg</value>
+    <value>\API\images\action_source.svg</value>
+    <value>\API\images\action_sourcecode.svg</value>
+    <value>\API\images\action_top.svg</value>
+    <value>\API\images\action_up.svg</value>
+    <value>\API\images\clear_cache.svg</value>
+    <value>\API\images\edit.svg</value>
+    <value>\API\images\edit_app.svg</value>
+    <value>\API\images\level_module.svg</value>
+    <value>\API\images\level_portal.svg</value>
+    <value>\API\images\restart_app.svg</value>
+    <value>\API\images\rocketcds-logo-hd-square.jpg</value>
+    <value>\API\images\rocketcds-logo-web.png</value>
+    <value>\API\images\rocketcds-logo.svg</value>
+
+
   </file>
 	<assembly>
     <value>\bin\Simplisity.dll</value>

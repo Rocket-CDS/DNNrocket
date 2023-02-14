@@ -275,7 +275,106 @@
 			        <name>sysadmin.aspx</name>
 			        <sourceFileName>sysadmin.aspx</sourceFileName>
 		        </file>
-	        </files>
+
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_bottom.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_delete.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_down.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_export.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_help.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_import.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_move.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_print.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_refresh.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_rss.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_settings.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_source.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_sourcecode.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_top.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>action_up.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>clear_cache.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>edit.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>edit_app.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>level_module.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>level_portal.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>restart_app.svg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>rocketcds-logo-hd-square.jpg</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>rocketcds-logo-web.png</sourceFileName>
+				</file>
+				<file>
+					<name>sysadmin.aspx</name>
+					<sourceFileName>rocketcds-logo.svg</sourceFileName>
+				</file>
+
+
+			</files>
         </component>
 
 	  </components>
